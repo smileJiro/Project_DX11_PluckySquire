@@ -195,7 +195,7 @@ HRESULT CRenderer::Draw_RenderObject()
 
 HRESULT CRenderer::Render_Book2D()
 {
-    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Book_2D"), m_pShadowDepthStencilView)))
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Book_2D"))))
         return E_FAIL;
 
     for (auto& pRenderObject : m_RenderObjects[RG_BOOK_2D])
