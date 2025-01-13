@@ -1,0 +1,97 @@
+{
+  "ColorKeyFramesArray": [
+    [
+      {
+        "A": 1.0,
+        "B": 0.0,
+        "G": 0.0,
+        "R": 0.0,
+        "TimeRatio": 0.0
+      },
+      {
+        "A": 1.0,
+        "B": 0.011101502925157547,
+        "G": 0.011101502925157547,
+        "R": 0.20588237047195435,
+        "TimeRatio": 0.20000000298023224
+      },
+      {
+        "A": 1.0,
+        "B": 0.11495020985603333,
+        "G": 0.059688590466976166,
+        "R": 0.529411792755127,
+        "TimeRatio": 0.30000001192092896
+      },
+      {
+        "A": 1.0,
+        "B": 0.02681659907102585,
+        "G": 0.02681659907102585,
+        "R": 0.6078431606292725,
+        "TimeRatio": 0.4000000059604645
+      }
+    ],
+    null
+  ],
+  "ShaderTexturePrototypeTags": [
+    "Prototype_Component_Texture_Liuguang001 #1306690",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "WorldMatrix": {
+    "Look": [
+      6.353709697723389,
+      1.8117321729660034,
+      2.312560796737671,
+      0.0
+    ],
+    "Position": [
+      0.10000000149011612,
+      1.0,
+      0.0,
+      1.0
+    ],
+    "Right": [
+      -2.394136905670166,
+      0.0,
+      6.577837944030762,
+      0.0
+    ],
+    "Up": [
+      0.2432103455066681,
+      -0.9659258127212524,
+      0.0885213166475296,
+      0.0
+    ]
+  },
+  "fBloomWeights": 2.763000011444092,
+  "fBrightnessThreshold": 0.008999999612569809,
+  "fDelayTime": 0.7,
+  "fPlayTime": 0.5,
+  "fScalingSpeedPerSec": 0.0,
+  "iLightIndex": -1,
+  "iPassIndex": 2,
+  "isLoop": false,
+  "isUpdateParentMatrix": true,
+  "isScaling": true,
+  "strModelPrototypeTag": "Prototype_Component_Model_Daoguang006",
+  "strShaderPrototypeTag": "Prototype_Component_Shader_Effect",
+  "vScrollSpeedX": 4.1010000705718994,
+  "vScrollSpeedY": -0.0,
+  "vTargetScale": {
+    "X": 1.0,
+    "Y": 1.0,
+    "Z": 1.0
+  },
+  "vTurnSpeed": {
+    "X": 0.0,
+    "Y": 0.0,
+    "Z": 0.0
+  }
+}

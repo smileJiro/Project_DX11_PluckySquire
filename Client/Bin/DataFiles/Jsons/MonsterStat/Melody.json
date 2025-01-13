@@ -1,0 +1,19 @@
+{
+  "Basic Stat": {
+    "iHP": 50000,
+    "fDamage": 300.0,
+    "fDefense": 46.0,
+    "fCritical": 200.0,
+    "fAttackDamageRatio": 8.25,
+    "iAttackCount" : 18
+  },
+
+  "Elemental Stat": {
+    "fPhysical": 1.0,
+    "fFire": 0.0,
+    "fFreeze": 0.0,
+    "fElectric": 0.0,
+    "fDark": 0.0
+  }
+
+}

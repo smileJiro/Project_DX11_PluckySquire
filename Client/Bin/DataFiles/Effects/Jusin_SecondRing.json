@@ -1,0 +1,85 @@
+{
+    "ColorKeyFramesArray": [
+        [
+            {
+                "A": 1.0,
+                "B": 0.3333333134651184,
+                "G": 0.3319876790046692,
+                "R": 0.3300653398036957,
+                "TimeRatio": 0.0
+            },
+            {
+                "A": 1.0,
+                "B": 0.14705884456634521,
+                "G": 0.14705884456634521,
+                "R": 0.14705884456634521,
+                "TimeRatio": 0.8999999761581421
+            }
+        ],
+        null
+    ],
+    "ShaderTexturePrototypeTags": [
+        "Prototype_Component_Texture_1",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "WorldMatrix": {
+        "Look": [
+            10.916540145874023,
+            0.0,
+            -10.287330627441406,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            0.10999999940395355,
+            0.0,
+            1.0
+        ],
+        "Right": [
+            -10.287333488464355,
+            0.0,
+            -10.916537284851074,
+            0.0
+        ],
+        "Up": [
+            0.0,
+            15.0,
+            0.0,
+            0.0
+        ]
+    },
+    "fBloomWeights": 0.164000004529953,
+    "fBrightnessThreshold": 0.5,
+    "fDelayTime": 0.0,
+    "fDropSpeed": 0.0,
+    "fDropTargetYPos": 0.0,
+    "fPlayTime": 10.0,
+    "fScalingSpeedPerSec": -1.0,
+    "iLightIndex": -1,
+    "iPassIndex": 0,
+    "isLoop": false,
+    "isScaling": false,
+    "isUpdateParentMatrix": true,
+    "strModelPrototypeTag": "Prototype_Component_Model_Yuanbian02",
+    "strShaderPrototypeTag": "Prototype_Component_Shader_Effect",
+    "vScrollSpeedX": 0.0,
+    "vScrollSpeedY": 0.0,
+    "vTargetScale": {
+        "X": 12.0,
+        "Y": 12.0,
+        "Z": 12.0
+    },
+    "vTurnSpeed": {
+        "X": 0.0,
+        "Y": 200.0,
+        "Z": 0.0
+    }
+}
