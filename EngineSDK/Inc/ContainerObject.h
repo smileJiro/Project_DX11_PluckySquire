@@ -35,7 +35,7 @@ public:
 	_int				Get_NumPartObjects() {
 		if (true == m_PartObjects.empty())
 			return 0;
-		return m_PartObjects.size();
+		return (_int)m_PartObjects.size();
 	}
 
 protected:
