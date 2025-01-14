@@ -27,9 +27,9 @@ HRESULT CAnimation::Initialize(const aiAnimation* _pAnimation, const CModel* _pM
 	strcpy_s(m_szName, _pAnimation->mName.data);
 
 	/* 현재 애니메이션의 길이 */
-	m_fDuration = _pAnimation->mDuration;
+	m_fDuration = (_float)_pAnimation->mDuration;
 	/* 1초당 얼마만큼의 속도로 Track을 이동할지(애니메이션의 기본 재생속도), */
-	m_fTickPerSecond = _pAnimation->mTicksPerSecond;
+	m_fTickPerSecond = (_float)_pAnimation->mTicksPerSecond;
 
 	/* 해당 애니메이션에서 컨트롤 해야하는 뼈들의 개수 */
 	m_iNumChannels = _pAnimation->mNumChannels;
