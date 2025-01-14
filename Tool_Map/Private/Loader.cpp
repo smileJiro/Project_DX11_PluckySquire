@@ -61,7 +61,7 @@ HRESULT CLoader::Loading()
         hr = Loading_Level_Static();
          break;
     case Map_Tool::LEVEL_TOOL_MAP:
-        hr = Loading_Level_Logo();
+        hr = Loading_Level_Map_Tool();
         break;
     case Map_Tool::LEVEL_TOOL_TRIGGER:
         hr = S_OK;
@@ -170,7 +170,7 @@ HRESULT CLoader::Loading_Level_Map_Tool()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,
-        TEXT("../Bin/Resources/Models/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/Models/"), matPretransform)))
         return E_FAIL;
 
 
