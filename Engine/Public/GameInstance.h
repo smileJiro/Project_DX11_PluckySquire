@@ -148,12 +148,22 @@ public: /* For. Sound_Manager */
 	void				Set_SFXVolume(const wstring& strSFXTag, _float _fVolume);
 
 
-public: /* For. Imgui_Manager*/
+public: /* For. Imgui_Manager */
 	HRESULT				Start_Imgui(); // 시작을 알림.
 	HRESULT				End_Imgui(); // 종료를 알림.
 	void				Render_DrawData_Imgui(); // 수집 된 정보를 기반으로 그리기를 수행함.
+	//HRESULT			LevelChange_Imgui();
+	
+public: /* For. GlobalFunction_Manager */
+	_float2				Get_CursorPos();
+	_vector				Get_OnClickPos();
+	string				WStringToString(const _wstring& _wstr);
+	_wstring			StringToWString(const string& _str);
+	_float3				Get_RotationFromMatrix_Quaternion(const _fmatrix _WorldMatrix);
+	_float				Nomalize_Angle(_float _fAngle);	// 0-360 사이로 각도 변환
+	_float				Lerp(_float _fLeft, _float _fRight, _float _fRatio);
+	_fvector			Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio);
 
-	//HRESULT LevelChange_Imgui();
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -170,6 +180,7 @@ private:
 	class CShadow* m_pShadow = nullptr;
 	class CSound_Manager* m_pSound_Manager = nullptr;
 	class CImgui_Manager* m_pImgui_Manager = nullptr;
+	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
 
 private:
 	HWND m_hWnd = nullptr;

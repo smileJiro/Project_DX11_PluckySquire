@@ -125,10 +125,6 @@ HRESULT CModel::Initialize_Prototype(TYPE _eModelType, void* _pModelDesc, _fmatr
 
 
 	}
-	
-	
-
-	
 
 	return S_OK;
 }

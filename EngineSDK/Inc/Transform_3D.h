@@ -38,7 +38,6 @@ public:
 public:
 	// Get
 	const _float3*		Get_AutoRotationYDirection_Ptr() const { return &m_vAutoRotationYDirection; }
-	const _float4x4&	Get_LookAtRotationMatrix(_fvector _vPos, _fvector _vAt);
 
 	// Set
 	void				Set_AutoRotationYDirection(_fvector _vRotYTarget)  { XMStoreFloat3(&m_vAutoRotationYDirection, XMVector3Normalize(_vRotYTarget)); }

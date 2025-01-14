@@ -17,6 +17,7 @@ public:
 
 public:
 	_float2 Transform_WorldToScreen(_fvector _vWorldPos, _float2 _fScreenSize);
+
 public:
 	// Get
 	_matrix Get_TransformMatrix(D3DTRANSFORMSTATE _eState)

@@ -12,6 +12,7 @@
 #include "Target_Manager.h"
 #include "Sound_Manager.h"
 #include "Imgui_Manager.h"
+#include "GlobalFunction_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -86,6 +87,11 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pImgui_Manager)
 		return E_FAIL;
 
+	m_pGlobalFunction_Manager = CGlobalFunction_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pGlobalFunction_Manager)
+		return E_FAIL;
+
+	
 	return S_OK;
 }
 
@@ -803,6 +809,46 @@ void CGameInstance::Render_DrawData_Imgui()
 	return m_pImgui_Manager->Render_DrawData();
 }
 
+_float2 CGameInstance::Get_CursorPos()
+{
+	return m_pGlobalFunction_Manager->Get_CursorPos(m_hWnd);
+}
+
+_vector CGameInstance::Get_OnClickPos()
+{
+	return m_pGlobalFunction_Manager->Get_OnClickPos(m_hWnd);
+}
+
+string CGameInstance::WStringToString(const _wstring& _wstr)
+{
+	return m_pGlobalFunction_Manager->WStringToString(_wstr);
+}
+
+_wstring CGameInstance::StringToWString(const string& _str)
+{
+	return m_pGlobalFunction_Manager->StringToWString(_str);
+}
+
+_float3 CGameInstance::Get_RotationFromMatrix_Quaternion(const _fmatrix _WorldMatrix)
+{
+	return m_pGlobalFunction_Manager->Get_RotationFromMatrix_Quaternion(_WorldMatrix);
+}
+
+_float CGameInstance::Nomalize_Angle(_float _fAngle)
+{
+	return m_pGlobalFunction_Manager->Nomalize_Angle(_fAngle);
+}
+
+_float CGameInstance::Lerp(_float _fLeft, _float _fRight, _float _fRatio)
+{
+	return m_pGlobalFunction_Manager->Lerp(_fLeft, _fRight, _fRatio);
+}
+
+_fvector CGameInstance::Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio)
+{
+	return m_pGlobalFunction_Manager->Get_BezierCurve(_vStartPoint, _vGuidePoint, _vEndPoint, _fRatio);
+}
+
 
 #ifdef _DEBUG
 
@@ -839,6 +885,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 {	
 	// Engine Manager Class Release
 	// 여기서 Manger Class->Free() 호출 >>> 참조 중이던 CGameInstance에 대한 Safe_Release() 호출 됌.
+	Safe_Release(m_pGlobalFunction_Manager);
 	Safe_Release(m_pImgui_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pSound_Manager);

@@ -15,6 +15,7 @@ public:
 		_uint iShaderPass_2D = {};
 		_uint iShaderPass_3D = {};
 	}MODELOBJECT_DESC;
+
 protected:
 	CModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CModelObject(const CModelObject& _Prototype);
@@ -23,7 +24,7 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype(); // 프로토 타입 전용 Initialize
 	virtual HRESULT Initialize(void* _pArg); // 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
-	virtual HRESULT Render_Shadow() {  return S_OK; }
+	virtual HRESULT Render_Shadow() { return S_OK; }
 
 public:
 	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;

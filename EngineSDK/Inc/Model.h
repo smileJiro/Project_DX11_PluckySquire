@@ -85,8 +85,10 @@ private:/* Åø¿ë */
 	_int m_iCurAnimIndex = 0;
 	_bool m_isFinished = false;
 	_bool m_isLoop = true;
+
 public:
 	void SetUp_ToolAnimation(_int _iAnimIndex, _bool _isLoop) { m_iCurAnimIndex = _iAnimIndex; m_isLoop = _isLoop; }
+
 private:
 	HRESULT Ready_Meshes();
 	HRESULT Ready_Meshes(vector<FBX_MESH>& _vecMesh);

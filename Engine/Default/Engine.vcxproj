@@ -215,6 +215,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Font_Manager.h" />
     <ClInclude Include="..\Public\GameInstance.h" />
     <ClInclude Include="..\Public\GameObject.h" />
+    <ClInclude Include="..\Public\GlobalFunction_Manager.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
     <ClInclude Include="..\Public\Imgui_Manager.h" />
     <ClInclude Include="..\Public\Key_Manager.h" />
@@ -280,6 +281,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Font_Manager.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
+    <ClCompile Include="..\Private\GlobalFunction_Manager.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
     <ClCompile Include="..\Private\Imgui_Manager.cpp" />
     <ClCompile Include="..\Private\Key_Manager.cpp" />
