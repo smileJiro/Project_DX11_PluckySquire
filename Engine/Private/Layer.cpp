@@ -73,7 +73,7 @@ CComponent* CLayer::Find_Component(const _wstring& _strComponentTag, _uint _iObj
 
     auto iter = m_GameObjects.begin();
 
-    for (size_t i = 0; i < _iObjectIndex; ++i)
+    for (_uint i = 0; i < _iObjectIndex; ++i)
         ++iter;
 
     return (*iter)->Find_Component(_strComponentTag);
@@ -86,7 +86,7 @@ CComponent* CLayer::Find_Part_Component(_uint _iPartObjectIndex, const _wstring&
 
     auto iter = m_GameObjects.begin();
 
-    for (size_t i = 0; i < _iObjectIndex; ++i)
+    for (_uint i = 0; i < _iObjectIndex; ++i)
         ++iter;
 
     return static_cast<CContainerObject*>(*iter)->Find_Part_Component(_iPartObjectIndex, _strPartComponentTag);

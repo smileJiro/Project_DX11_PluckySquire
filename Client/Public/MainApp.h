@@ -14,12 +14,11 @@ class CMainApp final : public CBase
 private:
 	CMainApp();
 	virtual ~CMainApp() = default;
+
 public:
 	HRESULT Initialize();
-	void Progress(_float _fTimeDelta);
-
+	void	Progress(_float _fTimeDelta);
 	HRESULT Render();
-
 
 private:
 	CGameInstance* m_pGameInstance = nullptr;

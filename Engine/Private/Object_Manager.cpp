@@ -25,7 +25,7 @@ HRESULT CObject_Manager::Initialize(_uint _iNumLevels)
 
 void CObject_Manager::Priority_Update(_float _fTimeDelta)
 {
-    for (size_t i = 0; i < m_iNumLevels; ++i)
+    for (_uint i = 0; i < m_iNumLevels; ++i)
     {
         for (auto& Pair : m_pLayers[i])
         {
@@ -36,7 +36,7 @@ void CObject_Manager::Priority_Update(_float _fTimeDelta)
 
 void CObject_Manager::Update(_float _fTimeDelta)
 {
-    for (size_t i = 0; i < m_iNumLevels; ++i)
+    for (_uint i = 0; i < m_iNumLevels; ++i)
     {
         for (auto& Pair : m_pLayers[i])
         {
@@ -47,7 +47,7 @@ void CObject_Manager::Update(_float _fTimeDelta)
 
 void CObject_Manager::Late_Update(_float _fTimeDelta)
 {
-    for (size_t i = 0; i < m_iNumLevels; ++i)
+    for (_uint i = 0; i < m_iNumLevels; ++i)
     {
         for (auto& Pair : m_pLayers[i])
         {

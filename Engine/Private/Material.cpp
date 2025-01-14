@@ -76,7 +76,7 @@ CMaterial* CMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 void CMaterial::Free()
 {
-	for (size_t i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
 	{
 		for (size_t j = 0; j < m_MaterialTexture[i].size(); ++j)
 		{

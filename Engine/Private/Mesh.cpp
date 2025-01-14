@@ -161,7 +161,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, CModel* pModel)
 	VTXANIMMESH* pVertices = new VTXANIMMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXANIMMESH) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVertices; i++)
+	for (_uint i = 0; i < m_iNumVertices; i++)
 	{
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vPosition), sizeof(_float3));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vNormal), sizeof(_float3));

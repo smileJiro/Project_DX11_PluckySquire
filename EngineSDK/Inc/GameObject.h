@@ -41,7 +41,7 @@ public: /* 모드 전환 */
 public:
 	// Get
 	const _wstring&				Get_Name() const								{ return m_strName; }
-	COORDINATE					Get_CurCoord()									{ return m_pControllerTransform->Get_CurCoord(); }
+	COORDINATE					Get_CurCoord() const							{ return m_pControllerTransform->Get_CurCoord(); }
 	CController_Transform*		Get_ControllerTransform() const					{ return m_pControllerTransform; }
 	_matrix						Get_WorldMatrix()								{ return m_pControllerTransform->Get_WorldMatrix(); }
  	_vector						Get_Position() const							{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }

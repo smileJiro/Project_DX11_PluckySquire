@@ -79,7 +79,7 @@ HRESULT CVIBuffer_Particle_Rect::Initialize_Prototype(const PARTICLE_DESC& _Part
 
     /* Instance의 개수만큼 Loop 돌며, IndexBuffer를 할당한다. */
     _uint			iNumIndices = { 0 };
-    for (size_t i = 0; i < m_iNumInstances; ++i)
+    for (_uint i = 0; i < m_iNumInstances; ++i)
     {
         pIndices[iNumIndices++] = 0;
         pIndices[iNumIndices++] = 1;
@@ -120,7 +120,7 @@ HRESULT CVIBuffer_Particle_Rect::Initialize_Prototype(const PARTICLE_DESC& _Part
     m_vPivot = _ParticleDesc.vPivot;              // Particle Effect Data
     m_pSpeeds = new _float[m_iNumInstances];      // Particle Effect Data
 
-    for (size_t i = 0; i < m_iNumInstances; ++i)
+    for (_uint i = 0; i < m_iNumInstances; ++i)
     {
         m_pSpeeds[i] = m_pGameInstance->Compute_Random(_ParticleDesc.vSpeed.x, _ParticleDesc.vSpeed.y);
 

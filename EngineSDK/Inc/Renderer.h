@@ -54,7 +54,6 @@ private:
 
 private:
 	/* 10.10 추가 : Is_Dead() == true; Object 는 해당 그리기 작업을 완수하고, 실제 메모리가 해제된다. Renderer 에서 원본 객체가 소멸되는 것. */
-	
 	HRESULT Render_Book2D();
 	HRESULT Render_Priority();
 	HRESULT Render_Shadow();

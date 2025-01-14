@@ -129,7 +129,6 @@
     <ClInclude Include="..\Public\Level_Static.h">
       <Filter>01.Levels\01.Static</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CriticalSectionGuard.h" />
     <ClInclude Include="..\public\TestPlayer.h">
       <Filter>02.GameObjects\TestPlayer</Filter>
     </ClInclude>
@@ -138,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="..\public\TestTerrain.h">
       <Filter>02.GameObjects\TestTerrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CriticalSectionGuard.h">
+      <Filter>01.Levels\00.Loading\Loader\CriticalSectionGuard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +179,6 @@
     <ClCompile Include="..\Private\Level_Static.cpp">
       <Filter>01.Levels\01.Static</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
     <ClCompile Include="..\private\TestPlayer.cpp">
       <Filter>02.GameObjects\TestPlayer</Filter>
     </ClCompile>
@@ -186,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="..\private\TestTerrain.cpp">
       <Filter>02.GameObjects\TestTerrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CriticalSectionGuard.cpp">
+      <Filter>01.Levels\00.Loading\Loader\CriticalSectionGuard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
