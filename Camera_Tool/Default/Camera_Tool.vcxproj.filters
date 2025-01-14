@@ -16,9 +16,6 @@
     <Filter Include="01. Levels\00. Loading">
       <UniqueIdentifier>{f3810425-bef6-415e-8c30-8afa0cb32e08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Levels\01. Camera_Tool">
-      <UniqueIdentifier>{1ff6f1bb-4731-4f86-a174-61d21983b4a6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Levels\00. Loading\Loader">
       <UniqueIdentifier>{9665f9c1-73a6-4a88-88a9-f3c5d82ad25b}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,21 @@
     </Filter>
     <Filter Include="02. GameObjects\TestTerrain">
       <UniqueIdentifier>{22304141-a28b-41ec-a526-f6ff1eb2640e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\01. Static">
+      <UniqueIdentifier>{88c16176-04c8-48ab-abf7-58e4a2e01fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\02. Camera_Tool">
+      <UniqueIdentifier>{1ff6f1bb-4731-4f86-a174-61d21983b4a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Camera">
+      <UniqueIdentifier>{a51ae0a0-28ff-4521-a66a-cae01f239569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Camera\01. Camera_Free">
+      <UniqueIdentifier>{29f57e64-6a9f-48b1-bc35-1e490944ac08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Camera\02. Camera_Target">
+      <UniqueIdentifier>{73621881-c2d6-4187-840b-6c9b4e63cefd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,7 +85,7 @@
       <Filter>01. Levels\00. Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Camera_Tool.h">
-      <Filter>01. Levels\01. Camera_Tool</Filter>
+      <Filter>01. Levels\02. Camera_Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Event_Manager.h">
       <Filter>96. Event</Filter>
@@ -81,14 +93,23 @@
     <ClInclude Include="..\Public\Camera_Tool_Function.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Test_Player.h">
-      <Filter>02. GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Test_Body_Player.h">
       <Filter>02. GameObjects\TestPlayer\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Test_Terrain.h">
       <Filter>02. GameObjects\TestTerrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Test_Player.h">
+      <Filter>02. GameObjects\TestPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Static.h">
+      <Filter>01. Levels\01. Static</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Free.h">
+      <Filter>02. GameObjects\Camera\01. Camera_Free</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Target.h">
+      <Filter>02. GameObjects\Camera\02. Camera_Target</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -111,7 +132,7 @@
       <Filter>01. Levels\00. Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Camera_Tool.cpp">
-      <Filter>01. Levels\01. Camera_Tool</Filter>
+      <Filter>01. Levels\02. Camera_Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Event_Manager.cpp">
       <Filter>96. Event</Filter>
@@ -119,14 +140,23 @@
     <ClCompile Include="..\Private\Camera_Tool_Fuction.cpp">
       <Filter>99. Defines</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Test_Player.cpp">
-      <Filter>02. GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Test_Body_Player.cpp">
       <Filter>02. GameObjects\TestPlayer\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Test_Terrain.cpp">
       <Filter>02. GameObjects\TestTerrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Test_Player.cpp">
+      <Filter>02. GameObjects\TestPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Static.cpp">
+      <Filter>01. Levels\01. Static</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Free.cpp">
+      <Filter>02. GameObjects\Camera\01. Camera_Free</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Target.cpp">
+      <Filter>02. GameObjects\Camera\02. Camera_Target</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,5 +171,34 @@
     <ResourceCompile Include="Camera_Tool.rc">
       <Filter>98. Default</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect_Anim.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

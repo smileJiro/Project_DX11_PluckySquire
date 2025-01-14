@@ -5,9 +5,9 @@
 #include "CriticalSectionGuard.h"
 
 //#include "Camera_Target.h"
-//#include "TestPlayer.h"
-//#include "TestBody.h"
-//#include "TestTerrain.h"
+#include "Test_Player.h"
+#include "Test_Body_Player.h"
+#include "Test_Terrain.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -147,9 +147,45 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
+
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
+    /* For. Prototype_Component_VIBuffer_Rect */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_VIBuffer_Rect"),
+        CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Model_Test */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_Model_Test"),
+        CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Test/Tree_Mod_03.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Model_WoodenPlatform_01 */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_Model_WoodenPlatform_01"),
+        CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+    /* For. Prototype_GameObject_TestPlayer */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Player"),
+        CTest_Player::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_TestBody */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Body_Player"),
+        CTest_Body_Player::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_TestTerrain */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Terrain"),
+        CTest_Terrain::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    ///* For. Prototype_GameObject_Camera_Target */
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
+    //    CCamera_Target::Create(m_pDevice, m_pContext))))
+    //    return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

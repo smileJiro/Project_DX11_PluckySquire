@@ -38,7 +38,7 @@ private:
 
 private:
 	HRESULT Client_Level_Enter(_uint _iNextLevelID);
-	HRESULT Client_Level_Exit();
+	HRESULT Client_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 
 private:
 	CGameInstance* m_pGameInstance = nullptr;
