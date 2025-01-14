@@ -5,7 +5,7 @@
 
 
 CPick_Bulb::CPick_Bulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CUI (_pDevice, _pContext)
+	: CUI (_pDevice, _pContext)
 {
 }
 
@@ -114,7 +114,7 @@ void CPick_Bulb::Free()
 	
 }
 
-HRESULT CPick_Bulb::Safe_Release_DeadObjects()
+HRESULT CPick_Bulb::Cleanup_DeadReferences()
 {
 
 	return S_OK;

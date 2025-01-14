@@ -23,7 +23,7 @@ private:
 	virtual ~CEvent_Manager() = default;
 
 public:
-	void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger);
 	void Update(_float _fTimeDelta);
 	void AddEvent(const EVENT& _tEvent) { m_Events.push_back(_tEvent); }
 
@@ -41,13 +41,16 @@ private:
 	HRESULT Tool_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 
 private:
-	CGameInstance* m_pGameInstance = nullptr;
-	vector<CGameObject*> m_DeadObjectsList;
-	vector<pair<CBase*, _bool>> m_DelayActiveList;
-	vector<EVENT> m_Events;
+	CImguiLogger*				m_pLogger = { nullptr };
 
-	ID3D11Device* m_pDevice = nullptr;
-	ID3D11DeviceContext* m_pContext = nullptr;
+
+	CGameInstance*				m_pGameInstance = nullptr;
+	vector<CGameObject*>		m_DeadObjectsList;
+	vector<pair<CBase*, _bool>> m_DelayActiveList;
+	vector<EVENT>				m_Events;
+
+	ID3D11Device*				m_pDevice = nullptr;
+	ID3D11DeviceContext*		m_pContext = nullptr;
 
 public:
 	virtual void Free() override;

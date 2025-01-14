@@ -195,9 +195,11 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\public\Camera_Target.h" />
+    <ClInclude Include="..\Public\Pick_Bulb.h" />
     <ClInclude Include="..\public\TestBody.h" />
     <ClInclude Include="..\public\TestPlayer.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
+    <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
     <ClInclude Include="Resource.h" />
@@ -216,9 +218,11 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\private\Camera_Target.cpp" />
+    <ClCompile Include="..\Private\Pick_Bulb.cpp" />
     <ClCompile Include="..\private\TestBody.cpp" />
     <ClCompile Include="..\private\TestPlayer.cpp" />
     <ClCompile Include="..\private\TestTerrain.cpp" />
+    <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

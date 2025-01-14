@@ -6,6 +6,10 @@
 
 #include "Camera_Free.h"
 
+#include <filesystem>
+#include <iostream>
+
+
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
     , m_pContext(_pContext)
@@ -27,10 +31,11 @@ _uint APIENTRY LoadingMain(void* pArg)
 }
 
 
-HRESULT CLoader::Initialize(LEVEL_ID _eNextLevelID)
+HRESULT CLoader::Initialize(LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger)
 {
     m_eNextLevelID = _eNextLevelID;
-
+    m_pLogger = _pLogger;
+    Safe_AddRef(m_pLogger);
     InitializeCriticalSection(&m_Critical_Section);
     m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
     if (0 == m_hThread)
@@ -56,7 +61,7 @@ HRESULT CLoader::Loading()
         hr = Loading_Level_Static();
          break;
     case Map_Tool::LEVEL_TOOL_MAP:
-        hr = Loading_Level_Logo();
+        hr = Loading_Level_Map_Tool();
         break;
     case Map_Tool::LEVEL_TOOL_TRIGGER:
         hr = S_OK;
@@ -110,15 +115,6 @@ HRESULT CLoader::Loading_Level_Static()
         CShader::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
         return E_FAIL;
 
-    /* For. Prototype_Component_Shader_VtxRectInstance */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxRectInstance"),
-        CShader::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/ShaderFiles/Shader_VtxRectInstance.hlsl"), VTXRECTINSTANCE::Elements, VTXRECTINSTANCE::iNumElements))))
-        return E_FAIL;
-
-    /* For. Prototype_Component_Shader_VtxPointInstance */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPointInstance"),
-        CShader::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"), VTXPOINTINSTANCE::Elements, VTXPOINTINSTANCE::iNumElements))))
-        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
@@ -172,20 +168,26 @@ HRESULT CLoader::Loading_Level_Map_Tool()
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
-    /* For. Prototype_Component_VIBuffer_Rect */
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,
+        TEXT("../../Client/Bin/Resources/Models/"), matPretransform)))
+        return E_FAIL;
+
+
+    /* For. Prototype_Component_VIBuffer_Rect */    
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_VIBuffer_Rect"),
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_Component_Model_Test */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Model_Test"),
-        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Test/Tree_Mod_03.fbx", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
-        return E_FAIL;
+    ///* For. Prototype_Component_Model_Test */
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Model_Test"),
+    //    C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Test/Tree_Mod_03.fbx", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
+    //    return E_FAIL;
 
-    /* For. Prototype_Component_Model_WoodenPlatform_01 */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Model_WoodenPlatform_01"),
-        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.fbx", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
-        return E_FAIL;
+    ///* For. Prototype_Component_Model_WoodenPlatform_01 */
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Model_WoodenPlatform_01"),
+    //    C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.fbx", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
+    //    return E_FAIL;
     
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
@@ -201,11 +203,77 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     return S_OK;
 }
 
-CLoader* CLoader::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID)
+
+
+HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
+{
+    WIN32_FIND_DATA		FindFileData = {};
+    HANDLE				hFind = INVALID_HANDLE_VALUE;
+
+    _tchar				szFilePath[MAX_PATH] = TEXT("");
+    _tchar				szFullPath[MAX_PATH] = TEXT("");
+    _tchar				szProtoTag[MAX_PATH] = TEXT("");
+    _tchar				szExtension[MAX_PATH] = TEXT(".model");
+
+    lstrcpy(szFilePath, _szDirPath);
+    lstrcat(szFilePath, TEXT("*"));
+    lstrcat(szFilePath, szExtension);
+
+    hFind = FindFirstFile(szFilePath, &FindFileData);
+
+    if (INVALID_HANDLE_VALUE == hFind)
+        return E_FAIL;
+
+    do
+    {
+        if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            continue;
+
+        lstrcpy(szFullPath, _szDirPath);
+        lstrcat(szFullPath, FindFileData.cFileName);
+
+        wstring wstr = szFullPath;
+        string str{ wstr.begin(), wstr.end() };
+
+        wstring filename = wstring(FindFileData.cFileName);
+        size_t lastDot = filename.find_last_of('.');
+        filename = filename.substr(0, lastDot); // 확장자 제거
+
+        if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
+            C3DModel::Create(m_pDevice, m_pContext, str.c_str(), _PreTransformMatrix))))
+            return E_FAIL;
+
+    } while (FindNextFile(hFind, &FindFileData));
+
+    FindClose(hFind);
+
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
+{
+    std::filesystem::path path;
+    path = _szDirPath;
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+        if (entry.path().extension() == ".model") {
+            //cout << entry.path().string() << endl;
+            LOG_TYPE("Model Loading(" + entry.path().stem().string() + ".model)...", LOG_LOADING);
+
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
+                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+                return E_FAIL;
+        }
+    }
+    return S_OK;
+}
+
+
+
+CLoader* CLoader::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger)
 {
     CLoader* pInstance = new CLoader(_pDevice, _pContext);
 
-    if (FAILED(pInstance->Initialize(_eNextLevelID)))
+    if (FAILED(pInstance->Initialize(_eNextLevelID, _pLogger)))
     {
         MSG_BOX("Failed to Created : CLoader");
         Safe_Release(pInstance);
@@ -227,5 +295,6 @@ void CLoader::Free()
 
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
+    Safe_Release(m_pLogger);
     Safe_Release(m_pGameInstance);
 }
