@@ -2,105 +2,102 @@
 #include "UI.h"
 #include "GameInstance.h"
 
-CUI::CUI(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    : CUIObject (_pDevice, _pContext)
+CUI::CUI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CUIObject{ pDevice, pContext }
 {
 }
 
-CUI::CUI(const CUI& _Prototype)
-    : CUIObject (_Prototype)
+CUI::CUI(const CUI& Prototype)
+	: CUIObject(Prototype)
 {
 }
 
 HRESULT CUI::Initialize_Prototype()
 {
-    return S_OK;
+	return S_OK;
 }
 
-HRESULT CUI::Initialize(void* _pArg)
+HRESULT CUI::Initialize(void* pArg)
 {
-    __super::Initialize(_pArg);
+	__super::Initialize(pArg);
 
-    if (FAILED(Ready_Components()))
-        return E_FAIL;
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
 
-    return S_OK;
+	//m_mapUIObject.emplace(TEXT("123"), this);
+
+	return S_OK;
 }
 
-void CUI::Priority_Update(_float _fTimeDelta)
+void CUI::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CUI::Update(_float _fTimeDelta)
+void CUI::Update(_float fTimeDelta)
 {
-    
+
 }
 
-void CUI::Late_Update(_float _fTimeDelta)
+void CUI::Late_Update(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 }
 
-HRESULT CUI::Render()
+HRESULT CUI::Render(_int iTemType)
 {
-	m_pShaderComs[COORDINATE_2D]->Begin(m_iShaderPasses[COORDINATE_2D]);
-	// Buffer정보 전달
+	if (FAILED(Bind_ShaderResources(iTemType)))
+		return E_FAIL;
+
+
+	m_pShaderComs[COORDINATE_2D]->Begin(0);
+
 	m_pVIBufferCom->Bind_BufferDesc();
 
-	// 그리기 연산 수행
 	m_pVIBufferCom->Render();
 
-
-    if(FAILED(Bind_ShaderResources()))
-        return E_FAIL;
-
-    //m_pShaderCom->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
-    m_pVIBufferCom->Bind_BufferDesc();
-    m_pVIBufferCom->Render();
-
-    return S_OK;
+	return S_OK;
 }
 
 HRESULT CUI::Ready_Components()
 {
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-        return E_FAIL;
+	if (FAILED(Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
+		return E_FAIL;
 
-    /* Com_VIBuffer */
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-        TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-        return E_FAIL;
+	/* Com_VIBuffer */
+	if (FAILED(Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
 
-    /* Com_Texture */
-    //if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_StartLogo"),
-    //    TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-	//    return E_FAIL;
+	/* Com_Texture */
+	if (FAILED(Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_StartLogo"),
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
 }
 
-HRESULT CUI::Bind_ShaderResources()
+HRESULT CUI::Bind_ShaderResources(_int iTemType)
 {
-    if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
-        return E_FAIL;
+	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
+		return E_FAIL;
 
-    if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-        return E_FAIL;
+	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
 
-    if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-        return E_FAIL;
+	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
 
-    if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_Texture")))
-        return E_FAIL;
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_Texture", iTemType)))
+		return E_FAIL;
 
-    return S_OK;
+	return S_OK;
 }
 
 
 void CUI::Free()
 {
-    __super::Free();
+	__super::Free();
 
-   Safe_Release(m_pShaderComs[COORDINATE_2D]);
-   Safe_Release(m_pTextureCom);
-   Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pShaderComs[COORDINATE_2D]);
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pVIBufferCom);
 }

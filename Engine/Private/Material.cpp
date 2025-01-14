@@ -8,7 +8,7 @@ CMaterial::CMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 {
 	//cout << m_iNumSRVs << endl;
-	for (_uint texIdx = 1; texIdx < AI_TEXTURE_TYPE_MAX; texIdx++)
+	for (_uint texIdx = 1; texIdx < aiTextureType_UNKNOWN; texIdx++)
 	{
 		_uint iNumSRVs = 0;
 		inFile.read(reinterpret_cast<char*>(&iNumSRVs), sizeof(_uint));
@@ -52,12 +52,8 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 				hr = CreateWICTextureFromFile(m_pDevice, szWideFullPath, nullptr, &pSRV);
 
 			delete[] strTexturePath;
-
 			if (FAILED(hr))
 				continue;
-			//	hr = CreateDDSTextureFromFile(m_pDevice, TEXT("../Bin/Resources/Textures/Default.dds"), nullptr, &pSRV);
-
-			//assert(SUCCEEDED(hr));
 
 			m_MaterialTexture[texIdx].push_back(pSRV);
 
