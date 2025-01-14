@@ -49,7 +49,7 @@ HRESULT CShader::Initialize_Prototype(const _tchar* _pShaderFilePath, const D3D1
     m_iNumLayouts = TechniqueDesc.Passes;
 
     // 2. 패스의 개수만큼 반복문을 수행하며 InputLayout을 생성한다.
-    for (size_t i = 0; i < m_iNumLayouts; ++i)
+    for (_uint i = 0; i < m_iNumLayouts; ++i)
     {
         ID3DX11EffectPass* pPass = pTechnique->GetPassByIndex(i);
         if (nullptr == pPass)

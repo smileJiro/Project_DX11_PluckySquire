@@ -113,30 +113,6 @@ _float CTransform_3D::Compute_Distance_Scaled(CTransform_3D* const _pTargetTrans
     return XMVectorGetX(XMVector3Length(vTargetPos - vPos));
 }
 
-
-const _float4x4& CTransform_3D::Get_LookAtRotationMatrix(_fvector _vPos, _fvector _vAt)
-{
-    // 0. Scale 정보를 가져온다.
-    _float3 vScale = Get_Scale();
-
-    // 1. 타겟의 위치와 나의 위치를 기반으로 Look Vector를 구한다.
-    _vector vLook = _vAt - _vPos;
-    _vector vRight = XMVector3Cross(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), vLook);
-    _vector vUp = XMVector3Cross(vLook, vRight);
-
-    _float4x4 LookAtRotMatrix = {};
-    XMStoreFloat4x4(&LookAtRotMatrix, XMMatrixIdentity());
-
-    XMStoreFloat4((_float4*)&LookAtRotMatrix.m[0], XMVector3Normalize(vRight));
-    XMStoreFloat4((_float4*)&LookAtRotMatrix.m[1], XMVector3Normalize(vUp));
-    XMStoreFloat4((_float4*)&LookAtRotMatrix.m[2], XMVector3Normalize(vLook));
-    
-    
-    return LookAtRotMatrix;
-}
-
-
-
 CTransform_3D* CTransform_3D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CTransform_3D* pInstance = new CTransform_3D(_pDevice, _pContext);

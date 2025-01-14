@@ -20,8 +20,12 @@ public:
 	_bool Is_Active() const { return m_isActive; }
 
 	void Set_Active(_bool _b) { m_isActive = _b; }
+
+
 	void Active_On() { m_isActive = true; }
 	void Active_Off() { m_isActive = false; }
+
+	/* Active 변경시 호출되는 함수 추가. */
 
 protected:
 	_bool m_isActive = true;

@@ -50,7 +50,7 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE _eModelType, class CModel* _pMo
 	_uint		iNumIndices = { 0 };
 
 	// 삼각형 면 개수만큼 순회.
-	for (size_t i = 0; i < _pAIMesh->mNumFaces; ++i)
+	for (_uint i = 0; i < _pAIMesh->mNumFaces; ++i)
 	{
 		/* mFaces[] : 면 객체 배열 우리는 타입을 삼각형으로 지정하여, Face는 각각 3개의 인덱스를 가진다.*/
 		pIndices[iNumIndices++] = _pAIMesh->mFaces[i].mIndices[0];
@@ -121,7 +121,7 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE _eModelType, FBX_MESH& _tMesh, 
 
 	if (_eModelType == CModel::TYPE::NONANIM)
 	{
-		for (size_t i = 0; i < m_iNumIndices; ++i)
+		for (_uint i = 0; i < m_iNumIndices; ++i)
 		{
 			m_vecIndexBuffer.push_back(_tMesh.pIndices[i]);
 		}
@@ -179,7 +179,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(const aiMesh* _pAIMesh, _fmatrix _
 	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVertices; ++i)
+	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		/* 4. mVertices : aiVector3D 타입이다 .실수형 타입 3개가 있다고 보면되는데, 우리의 xmfloat과는 오버로딩 되지 않아서 멤카피를 한다. */
 		memcpy(&pVertices[i].vPosition, &_pAIMesh->mVertices[i], sizeof(_float3));
@@ -229,7 +229,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* _pAIMesh, CModel* _pMod
 	VTXANIMMESH* pVertices = new VTXANIMMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXANIMMESH) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVertices; i++)
+	for (_uint i = 0; i < m_iNumVertices; i++)
 	{
 		memcpy(&pVertices[i].vPosition, &_pAIMesh->mVertices[i], sizeof(_float3));
 		memcpy(&pVertices[i].vNormal, &_pAIMesh->mNormals[i], sizeof(_float3));
@@ -250,7 +250,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* _pAIMesh, CModel* _pMod
 	m_iNumBones = _pAIMesh->mNumBones;
 
 	/* 2. aiBone : 자기자신(메쉬)에게 영향을 주는 뼈에 대한 정보를 담을 것임. */
-	for (size_t i = 0; i < m_iNumBones; ++i)
+	for (_uint i = 0; i < m_iNumBones; ++i)
 	{
 		// 현재 메쉬에게 영향을 주는 본들을 가져오는 작업,
 		aiBone* pAIBone = _pAIMesh->mBones[i];
@@ -266,7 +266,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const aiMesh* _pAIMesh, CModel* _pMod
 		m_BoneIndices.push_back(_pModel->Find_BoneIndex(pAIBone->mName.data));
 
 		// 현재 이 뼈가 영향을 주고있는 Vertex의 개수만큼 순회.
-		for (size_t j = 0; j < pAIBone->mNumWeights; ++j)
+		for (_uint j = 0; j < pAIBone->mNumWeights; ++j)
 		{
 			// pAIBone->mWeights[j] : 현재 pAIBone 이 영향을 주고있는 Vertex. >>> mVertexID : VertexBuffer에 저장된 인덱스를 리턴.
 			if (0 == pVertices[pAIBone->mWeights[j].mVertexId].vBlendWeights.x)
@@ -338,7 +338,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(const FBX_MESH& _tMeshDesc, _fmatr
 	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVertices; ++i)
+	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		/* 4. mVertices : aiVector3D 타입이다 .실수형 타입 3개가 있다고 보면되는데, 우리의 xmfloat과는 오버로딩 되지 않아서 멤카피를 한다. */
 		pVertices[i].vPosition = _tMeshDesc.vecVertices[i].vPosition;
@@ -383,7 +383,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const FBX_MESH& _tMeshDesc)
 	VTXANIMMESH* pVertices = new VTXANIMMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXANIMMESH) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVertices; ++i)
+	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		/* 4. mVertices : aiVector3D 타입이다 .실수형 타입 3개가 있다고 보면되는데, 우리의 xmfloat과는 오버로딩 되지 않아서 멤카피를 한다. */
 		pVertices[i].vPosition = _tMeshDesc.vecVertices[i].vPosition;
@@ -408,7 +408,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(const FBX_MESH& _tMeshDesc)
 	m_iNumBones = _tMeshDesc.iNumBones;
 	m_BoneIndices.resize(m_iNumBones);
 	m_BoneOffsetMatrices.resize(m_iNumBones);
-	for (size_t i = 0; i < m_iNumBones; ++i)
+	for (_uint i = 0; i < m_iNumBones; ++i)
 	{
 		m_BoneIndices[i] = _tMeshDesc.vecBoneIndices[i];
 		m_BoneOffsetMatrices[i] = _tMeshDesc.vecOffsetMatrix[i];
@@ -484,7 +484,7 @@ HRESULT CMesh::ConvertToBinary(HANDLE _hFile, DWORD* _dwByte, const aiMesh* _pAI
 		return E_FAIL;
 	vector<VTXANIMMESH> vecAnimMesh;
 	vecAnimMesh.resize(m_iNumVertices);
-	for (size_t i = 0; i < m_iNumVertices; ++i)
+	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		memcpy(&vecAnimMesh[i].vPosition, &_pAIMesh->mVertices[i], sizeof(_float3));
 		memcpy(&vecAnimMesh[i].vNormal, &_pAIMesh->mNormals[i], sizeof(_float3));
@@ -495,11 +495,11 @@ HRESULT CMesh::ConvertToBinary(HANDLE _hFile, DWORD* _dwByte, const aiMesh* _pAI
 		vecAnimMesh[i].vBlendWeights = { 0, 0, 0, 0 };
 	}
 
-	for (size_t i = 0; i < _pAIMesh->mNumBones; ++i)
+	for (_uint i = 0; i < _pAIMesh->mNumBones; ++i)
 	{
 		aiBone* pAIBone = _pAIMesh->mBones[i];
 
-		for (size_t j = 0; j < pAIBone->mNumWeights; ++j)
+		for (_uint j = 0; j < pAIBone->mNumWeights; ++j)
 		{
 			if (0 == vecAnimMesh[pAIBone->mWeights[j].mVertexId].vBlendWeights.x)
 			{
@@ -547,7 +547,7 @@ HRESULT CMesh::ConvertToBinary(HANDLE _hFile, DWORD* _dwByte, const aiMesh* _pAI
 
 	if (!WriteFile(_hFile, &_pAIMesh->mNumFaces, sizeof(_uint), _dwByte, nullptr))
 		return E_FAIL;
-	for (size_t i = 0; i < _pAIMesh->mNumFaces; ++i)
+	for (_uint i = 0; i < _pAIMesh->mNumFaces; ++i)
 	{
 		if (!WriteFile(_hFile, &_pAIMesh->mFaces[i].mIndices[0], sizeof(_uint), _dwByte, nullptr))
 			return E_FAIL;

@@ -12,13 +12,13 @@ CRenderTarget::CRenderTarget(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCont
 HRESULT CRenderTarget::Initialize(_uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor)
 {
 	m_vClearColor = _vClearColor;
-	m_vSize.x = _iWidth;
-	m_vSize.y = _iHeight;
+	m_vSize.x = (_float)_iWidth;
+	m_vSize.y = (_float)_iHeight;
 	/* 구조체에 RenderTarget의 값을 할당한 뒤, RenderTarget을 생성. */
 	D3D11_TEXTURE2D_DESC			TextureDesc{};
 
-	TextureDesc.Width = m_vSize.x;
-	TextureDesc.Height = m_vSize.y;
+	TextureDesc.Width = (_uint)m_vSize.x;
+	TextureDesc.Height = (_uint)m_vSize.y;
 	TextureDesc.MipLevels = 1;
 	TextureDesc.ArraySize = 1;
 	TextureDesc.Format = _ePixelFormat; // RenderTarget의 용도에 따라 format이 달라진다. (데이터의 구조)

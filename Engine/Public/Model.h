@@ -37,7 +37,8 @@ public:
 	_bool					Play_Animation_Tool(_float _fTimeDelta);
 
 public:
-	HRESULT Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices);
+	HRESULT					Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices);
+
 public:
 	// Get
 	_uint					Get_NumMeshes() const { return m_iNumMeshes; } // Client 쪽에서 Render를 위한 데이터들을 조작하기위함.
@@ -84,8 +85,10 @@ private:/* 툴용 */
 	_int m_iCurAnimIndex = 0;
 	_bool m_isFinished = false;
 	_bool m_isLoop = true;
+
 public:
 	void SetUp_ToolAnimation(_int _iAnimIndex, _bool _isLoop) { m_iCurAnimIndex = _iAnimIndex; m_isLoop = _isLoop; }
+
 private:
 	HRESULT Ready_Meshes();
 	HRESULT Ready_Meshes(vector<FBX_MESH>& _vecMesh);

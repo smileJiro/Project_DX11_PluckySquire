@@ -97,7 +97,7 @@ HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const PARTICLE_DESC& _Par
 	m_pSpeeds = new _float[m_iNumInstances];
 	m_vPivot = _ParticleDesc.vPivot;
 
-	for (size_t i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		m_pSpeeds[i] = m_pGameInstance->Compute_Random(_ParticleDesc.vSpeed.x, _ParticleDesc.vSpeed.y);
 

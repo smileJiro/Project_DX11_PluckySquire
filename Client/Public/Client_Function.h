@@ -14,7 +14,6 @@ namespace Client
 	void Event_LevelChange(_uint _iChangeLevelIndex, _uint _iNextChangeLevelIndex = 0);
 	void Event_SetActive(CBase* _pObject, _bool _isActive, _bool _isDelay = false);
 
-
-	std::wstring Utf8ToWstring(const std::string& _strUTF8);
-	std::string WstringToUtf8(const std::wstring& wstr); 
+	std::wstring StringToWstring(const std::string& _strUTF8);
+	std::string WstringToString(const std::wstring& wstr); 
 }

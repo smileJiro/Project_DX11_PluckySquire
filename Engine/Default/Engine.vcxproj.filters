@@ -208,6 +208,12 @@
     <Filter Include="01.Utility\11.Controller\Controller_Model">
       <UniqueIdentifier>{ba7d4e60-3bd0-46b3-b83b-33d230d6272e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\97.GlobalFunction">
+      <UniqueIdentifier>{31adf97d-3e06-40f4-8292-5cc960d34fac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\97.GlobalFunction\Manager">
+      <UniqueIdentifier>{aca80557-781d-4987-a298-a5c6fac2bbdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -408,6 +414,9 @@
     <ClInclude Include="..\Public\Engine_Enum.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\GlobalFunction_Manager.h">
+      <Filter>01.Utility\97.GlobalFunction\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -595,6 +604,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Engine_Function.cpp">
       <Filter>99.Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GlobalFunction_Manager.cpp">
+      <Filter>01.Utility\97.GlobalFunction\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,28 +23,28 @@ HRESULT CChannel::Initialize(const aiNodeAnim* _pAIChannel, const CModel* _pMode
     _float4 vRotation{};
 
     /* 4. 루프를 돌며, 해당 뼈(Channel)에 저장된 해당 애니메이션 상에서의 모든 KeyFrame 정보를 Assimp를 통해 가져와서 저장한다. */
-    for (size_t i = 0; i < m_iNumKeyFrames; ++i)
+    for (_uint i = 0; i < m_iNumKeyFrames; ++i)
     {
         KEYFRAME KeyFrame = {};
         if (i < _pAIChannel->mNumScalingKeys)
         {
             memcpy(&vScale, &_pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
             /* 추가 : 현재 KeyFrame의 Track 상의 위치정보도 받아오자. 크, 자, 이 중 키프레임 데이터가 없는경우가 있으니까, 세곳에서 일단 다받는거임. 하나만 걸려라. */
-            KeyFrame.fTrackPosition = _pAIChannel->mScalingKeys[i].mTime;
+            KeyFrame.fTrackPosition = (_float)_pAIChannel->mScalingKeys[i].mTime;
         }
         if (i < _pAIChannel->mNumRotationKeys)
         {
             /* 사원수를 이용하기 위해 float4타입의 데이터를 받는데, w,z,y,x 순으로 데이터가 저장되어있음. 그래서 멤카피 불가 */
-            vRotation.x = _pAIChannel->mRotationKeys[i].mValue.x;
-            vRotation.y = _pAIChannel->mRotationKeys[i].mValue.y;
-            vRotation.z = _pAIChannel->mRotationKeys[i].mValue.z;
-            vRotation.w = _pAIChannel->mRotationKeys[i].mValue.w;
-            KeyFrame.fTrackPosition = _pAIChannel->mRotationKeys[i].mTime;
+            vRotation.x = (_float)_pAIChannel->mRotationKeys[i].mValue.x;
+            vRotation.y = (_float)_pAIChannel->mRotationKeys[i].mValue.y;
+            vRotation.z = (_float)_pAIChannel->mRotationKeys[i].mValue.z;
+            vRotation.w = (_float)_pAIChannel->mRotationKeys[i].mValue.w;
+            KeyFrame.fTrackPosition = (_float)_pAIChannel->mRotationKeys[i].mTime;
         }
         if (i < _pAIChannel->mNumPositionKeys)
         {
             memcpy(&vPosition, &_pAIChannel->mPositionKeys[i].mValue, sizeof(_float3));
-            KeyFrame.fTrackPosition = _pAIChannel->mPositionKeys[i].mTime;
+            KeyFrame.fTrackPosition = (_float)_pAIChannel->mPositionKeys[i].mTime;
         }
 
         KeyFrame.vScale = vScale;
@@ -65,7 +65,7 @@ HRESULT CChannel::Initialize(const FBX_CHANNEL& _ChannelDesc)
     m_iNumKeyFrames = _ChannelDesc.iNumKeyFrames;
 
     m_KeyFrames.resize(m_iNumKeyFrames);
-    for (size_t i = 0; i < m_iNumKeyFrames; ++i)
+    for (_uint i = 0; i < m_iNumKeyFrames; ++i)
     {
         m_KeyFrames[i].vScale = _ChannelDesc.vecKeyFrames[i].vScale;
         m_KeyFrames[i].vRotation = _ChannelDesc.vecKeyFrames[i].vRotation;

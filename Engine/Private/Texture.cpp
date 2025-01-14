@@ -25,7 +25,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 
     _tchar szTextureFilePath[MAX_PATH] = TEXT("");
 
-    for (size_t i = 0; i < m_iNumSRVs; ++i)
+    for (_uint i = 0; i < m_iNumSRVs; ++i)
     {
         // %d 에 i를 대입한 후, szTextureFilePath 구성.
         // 만약 Single_Texture 라면, i 대입하는 구문이 생략됌.

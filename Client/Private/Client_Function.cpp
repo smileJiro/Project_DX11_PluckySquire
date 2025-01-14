@@ -56,15 +56,16 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	std::wstring Utf8ToWstring(const std::string& _strUTF8)
-	{
-		if (_strUTF8.empty()) return L"";
 
-		int iWstrLen = MultiByteToWideChar(CP_UTF8, 0, _strUTF8.c_str(), -1, nullptr, 0);
+	std::wstring StringToWstring(const std::string& _str)
+	{
+		if (_str.empty()) return L"";
+
+		int iWstrLen = MultiByteToWideChar(CP_UTF8, 0, _str.c_str(), -1, nullptr, 0);
 		if (iWstrLen <= 0) return L"";
 
 		std::wstring wstr(iWstrLen, 0);
-		MultiByteToWideChar(CP_UTF8, 0, _strUTF8.c_str(), -1, &wstr[0], iWstrLen);
+		MultiByteToWideChar(CP_UTF8, 0, _str.c_str(), -1, &wstr[0], iWstrLen);
 
 		// Null-terminated string에서 null 제거
 		wstr.resize(iWstrLen - 1);
@@ -75,7 +76,7 @@ namespace Client
 		//return converter.from_bytes(_strUTF8);
 	}
 
-	std::string WstringToUtf8(const std::wstring& _strWide)
+	std::string WstringToString(const std::wstring& _strWide)
 	{
 		if (_strWide.empty()) return "";
 
