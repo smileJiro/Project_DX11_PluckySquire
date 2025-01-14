@@ -97,25 +97,33 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXANIMMESH;
 
-
+	typedef struct ENGINE_DLL tagVtxPoint
+	{
+		_float3 vPosition;
+		_float2 vSize;	
+	} VTXPOINT;
 
 	/* Instancing */
-	/* Sprite(Point) Particle의 인스턴싱 */
-	typedef struct tagVtxPointInstance
+	/* 모든 Instance의 부모 구조체 */
+	typedef struct tagVtxInstance
 	{
 		XMFLOAT4 vRight, vUp, vLook, vTranslation;
 		XMFLOAT2 vLifeTime;
 		XMFLOAT4 vColor = { 1.f, 1.f, 1.f, 1.f };		// 색상 설정, 기본 = 흰색
-		XMFLOAT4 vUV = { 0.f, 0.f, 1.f, 1.f };			// Animation Particle을 위한 UV(LTRB), 기본 (0, 0), (1, 1)
-	
+
+	} VTXINSTANCE;
+
+	/* Sprite(Point) Particle의 인스턴싱 */
+	typedef struct tagVtxPointInstance : public VTXINSTANCE
+	{
+		XMFLOAT4 vUV = { 0.f, 0.f, 1.f, 1.f };			// Animation Particle을 위한 UV(LTRB), 기본 (0, 0), (1, 1)	
 	}VTXPOINTINSTANCE;
 
 
 	typedef struct ENGINE_DLL tagPointParticle
 	{
-		static const unsigned int iNumElements = 8;		// Position +  VTXPOINTINSTANCE
+		static const unsigned int iNumElements = 9;		// Position + Size + VTXPOINTINSTANCE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
-
 	}VTXPOINTPARTICLE;
 
 #pragma endregion // Vertex

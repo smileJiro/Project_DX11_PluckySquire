@@ -14,6 +14,8 @@ struct VS_IN
     /* Instancing Buffer Data */
     row_major float4x4 InstancingMatrix : WORLD;
     float2 vLifeTime : TEXCOORD0;
+    float4 vColor : TEXCOORD1;
+    float4 vTexcoord : TEXCOORD2;
 };
 
 struct VS_OUT
@@ -21,6 +23,7 @@ struct VS_OUT
     float4 vPosition : POSITION; // SV_POSITION : 그리기전에 필요한 변환들이 끝났어! >>> z 나누기 및 래스터라이져 과정을 수행해!  없다면 >>> 할일이 남았어.
     float2 vPSize : PSIZE;
     float2 vLifeTime : TEXCOORD0;
+    float4 vTexcoord : TEXCOORD1;
 };
 
 // Rendering PipeLine : Vertex Shader // 
@@ -33,11 +36,11 @@ VS_OUT VS_MAIN(VS_IN In)
     // Scale 값을 별도로 추출하여, PSize에 곱하여 줄 것이다. 그리고 , Instancing Matrix에서는 Scale을 1로 고정시킬 것 이다. 
     float fScaleX = length(In.InstancingMatrix._11_12_13);
     float fScaleY = length(In.InstancingMatrix._21_22_23);
-    float fScaleZ = length(In.InstancingMatrix._31_32_33);
+    //float fScaleZ = length(In.InstancingMatrix._31_32_33);
    
-    matrix FinalMatrix = float4x4(  float4(1.0f, 0.0f, 0.0f, 0.0f), 
-                                    float4(0.0f, 1.0f, 0.0f, 0.0f), 
-                                    float4(0.0f, 0.0f, 1.0f, 0.0f), 
+    matrix FinalMatrix = float4x4(  In.InstancingMatrix._11_12_13_14,
+                                    In.InstancingMatrix._21_22_23_24,
+                                    In.InstancingMatrix._31_32_33_34,
                                     In.InstancingMatrix._41_42_43_44);
     
     // Size에 대한 값을 psize 하나로 처리하기 위해 기존 InstancingMatrix의 Scale을 1로 밀어버리고 곱하였다. 
@@ -46,6 +49,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = mul(vPostion, g_WorldMatrix);
     Out.vPSize = float2(In.vPSize.x * fScaleX, In.vPSize.y * fScaleY);
     Out.vLifeTime = In.vLifeTime;
+    Out.vTexcoord = In.vTexcoord;
     
     return Out;
 }
@@ -56,6 +60,7 @@ struct GS_IN
     float4 vPosition : POSITION;
     float2 vPSize : PSIZE;
     float2 vLifeTime : TEXCOORD0;
+    float4 vTexcoord : TEXCOORD1;
 };
 
 struct GS_OUT
@@ -89,25 +94,25 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     // 정점 기준 우상단 (카메라가 바라보는 기준 좌상단.)
     Out[0].vPosition = float4(vCenter + vRightDist + vUpDist, 1.0f);
     Out[0].vPosition = mul(Out[0].vPosition, matVP);
-    Out[0].vTexcoord = float2(0.0f, 0.0f);
+    Out[0].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.y);
     Out[0].vLifeTime = In[0].vLifeTime;
 
     // 정점 기준 좌상단 (카메라가 바라보는 기준 우상단.)
     Out[1].vPosition = float4(vCenter - vRightDist + vUpDist, 1.0f);
     Out[1].vPosition = mul(Out[1].vPosition, matVP);
-    Out[1].vTexcoord = float2(1.0f, 0.0f);
+    Out[1].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.y);
     Out[1].vLifeTime = In[0].vLifeTime;
     
     // 정점 기준 좌하단 (카메라가 바라보는 기준 우하단.)
     Out[2].vPosition = float4(vCenter - vRightDist - vUpDist, 1.0f);
     Out[2].vPosition = mul(Out[2].vPosition,  matVP);
-    Out[2].vTexcoord = float2(1.0f, 1.0f);
+    Out[2].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.w);
     Out[2].vLifeTime = In[0].vLifeTime;
     
     // 정점 기준 우하단 (카메라가 바라보는 기준 좌하단.)
     Out[3].vPosition = float4(vCenter + vRightDist - vUpDist, 1.0f);
     Out[3].vPosition = mul(Out[3].vPosition, matVP);
-    Out[3].vTexcoord = float2(0.0f, 1.0f);
+    Out[3].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.w);
     Out[3].vLifeTime = In[0].vLifeTime;
     
     

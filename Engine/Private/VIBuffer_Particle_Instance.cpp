@@ -23,6 +23,7 @@ HRESULT CVIBuffer_Particle_Instance::Initialize_Prototype()
     return S_OK;
 }
 
+
 HRESULT CVIBuffer_Particle_Instance::Initialize(void* _pArg)
 {
     m_pDevice->CreateBuffer(&m_InstanceBufferDesc, &m_InstanceInitialDesc, &m_pVBInstance);
@@ -66,6 +67,12 @@ HRESULT CVIBuffer_Particle_Instance::Bind_BufferDesc()
 void CVIBuffer_Particle_Instance::Free()
 {
     Safe_Release(m_pVBInstance);
+
+    if (false == m_isCloned)
+    {
+        Safe_Delete_Array(m_pInstanceVertices);
+    }
+
 
     __super::Free();
 }

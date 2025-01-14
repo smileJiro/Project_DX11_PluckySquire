@@ -5,7 +5,6 @@
 #include "VIBuffer_Rect_Vertical.h"
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Cube.h"
-#include "VIBuffer_Particle_Rect.h"
 #include "VIBuffer_Particle_Point.h"
 #include "Controller_Transform.h"
 #include "Texture.h"
@@ -22,6 +21,8 @@
 #include "Bounding_Sphere.h"
 #include "CustomFont.h"
 #include "RenderTarget.h"
+
+#include "Effect.h"
 
 /* 원형객체들을 레벨별로 관리하겠다. */
 /* 특정 레벨에서 복제할 필요가 없는 원형들은 삭제하겠다 */

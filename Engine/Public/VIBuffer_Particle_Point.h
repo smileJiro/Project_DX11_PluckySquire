@@ -9,7 +9,7 @@ private:
 	virtual ~CVIBuffer_Particle_Point() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const json& _json);
+	virtual HRESULT Initialize_Prototype(const json& _json);	// json을 통해서 Buffer 초기화합니다.
 	virtual HRESULT Initialize(void* _pArg) override;
 
 private:
