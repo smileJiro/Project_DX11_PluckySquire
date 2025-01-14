@@ -11,6 +11,10 @@ END
 class CPick_Bulb final : public CUI
 {
 
+protected:
+	explicit CPick_Bulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	explicit CPick_Bulb(const CPick_Bulb& _Prototype);
+	virtual ~CPick_Bulb() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
