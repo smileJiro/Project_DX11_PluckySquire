@@ -45,6 +45,7 @@ protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 	virtual HRESULT			Render_2D();
 	virtual HRESULT			Render_3D();
+
 private:
 	HRESULT					Ready_Components(MODELOBJECT_DESC* _pDesc);
 

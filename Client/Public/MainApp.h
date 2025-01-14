@@ -17,7 +17,6 @@ private:
 public:
 	HRESULT Initialize();
 	void Progress(_float _fTimeDelta);
-
 	HRESULT Render();
 
 

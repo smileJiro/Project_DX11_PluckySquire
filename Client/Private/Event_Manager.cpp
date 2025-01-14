@@ -10,9 +10,6 @@
 
 #include "Cam_Manager.h"
 
-
-
-
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
 CEvent_Manager::CEvent_Manager()
@@ -28,30 +25,29 @@ void CEvent_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
-
 }
 
 void CEvent_Manager::Update(_float _fTimeDelta)
 {
-	for (auto& Pair : m_vecDelayActiveList)
+	for (auto& Pair : m_DelayActiveList)
 	{
 		Pair.first->Set_Active(Pair.second);
 		Safe_Release(Pair.first);
 	}
-	m_vecDelayActiveList.clear();
+	m_DelayActiveList.clear();
 	
-	for (auto& pDeadObject : m_vecDeadList)
+	for (auto& pDeadObject : m_DeadObjectsList)
 	{
 		pDeadObject->Set_Dead();
 		Safe_Release(pDeadObject);
 	}
-	m_vecDeadList.clear();
+	m_DeadObjectsList.clear();
 
-	for (size_t i = 0; i < m_vecEvent.size(); ++i)
+	for (size_t i = 0; i < m_Events.size(); ++i)
 	{
-		Excute(m_vecEvent[i]);
+		Excute(m_Events[i]);
 	}
-	m_vecEvent.clear();
+	m_Events.clear();
 
 }
 
@@ -120,7 +116,7 @@ HRESULT CEvent_Manager::Excute_DeleteObject(const EVENT& _tEvent)
 	if (nullptr == pDeleteObject)
 		return E_FAIL;
 
-	m_vecDeadList.push_back(pDeleteObject);
+	m_DeadObjectsList.push_back(pDeleteObject);
 	Safe_AddRef(pDeleteObject);
 
 	return S_OK;
@@ -128,9 +124,8 @@ HRESULT CEvent_Manager::Excute_DeleteObject(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
 {
-	// Parameter[0] : NextLevelID(클라에선 로딩만 오고, 로딩에선 실제 전환 인덱스가 옴);
-	// Parameter[1] : Next CLevel Class Address
-	_uint iNextLevelID = (_uint)(_tEvent.Parameters[0]);
+	// par
+	_uint iNextLevelID = (_uint)(_tEvent.Parameters[0]); 
 
 	if (iNextLevelID >= (_uint)LEVEL_ID::LEVEL_END)
 		return E_FAIL;
@@ -201,7 +196,7 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 
 	if (true == isDelay)
 	{
-		m_vecDelayActiveList.push_back(make_pair(pBase, isActive));
+		m_DelayActiveList.push_back(make_pair(pBase, isActive));
 		Safe_AddRef(pBase);
 	}
 	else
@@ -212,6 +207,7 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Client_Level_Enter(_uint _iNextLevelID)
 {
+	
 	return S_OK;
 }
 
@@ -219,12 +215,13 @@ HRESULT CEvent_Manager::Client_Level_Exit()
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
+
 	return S_OK;
 }
 
 void CEvent_Manager::Free()
 {
-	for (auto& pDeadObject : m_vecDeadList)
+	for (auto& pDeadObject : m_DeadObjectsList)
 		Safe_Release(pDeadObject);
 
 	Safe_Release(m_pDevice);

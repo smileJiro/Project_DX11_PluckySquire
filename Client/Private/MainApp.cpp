@@ -67,9 +67,9 @@ void CMainApp::Progress(_float _fTimeDelta)
 	}
 
 	// 뷰포트 나가도 렌더되는 처리 // 
-	ImGui::RenderPlatformWindowsDefault(); // 여기 위치해야함.
+	ImGui::RenderPlatformWindowsDefault(); 
 
-	CEvent_Manager::GetInstance()->Update(m_pGameInstance->Get_TimeDelta(TEXT("Timer_Default")));
+	CEvent_Manager::GetInstance()->Update(_fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
@@ -84,7 +84,6 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Render_DrawData_Imgui();
 
-
 	if (FAILED(m_pGameInstance->Render_End()))
 		return E_FAIL;
 
@@ -95,7 +94,6 @@ HRESULT CMainApp::SetUp_StartLevel(LEVEL_ID _eLevelID)
 {
 	// OpenLevel을 통해, Loading Scene을 반드시 거치게하고, 그 후 실제로 전환시킬 NextLevelID를 넘겨, Loading에서의 작업이 완료 후, Level을 전환한다.
 	Event_LevelChange(LEVEL_LOADING, _eLevelID);
-
 
 	return S_OK;
 }

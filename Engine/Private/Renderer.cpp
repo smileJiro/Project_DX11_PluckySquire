@@ -22,7 +22,7 @@ HRESULT CRenderer::Initialize()
     m_iOriginViewportHeight = (_uint)ViewportDesc.Height;
 
     /* Target Book2D */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
         return E_FAIL;
 
     /* Target Diffuse */
@@ -30,7 +30,7 @@ HRESULT CRenderer::Initialize()
         return E_FAIL;
 
     /* Target_Normal */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.0f, 0.0f, 1.0f, 1.0f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
         return E_FAIL;
 
     /* Target_Depth */

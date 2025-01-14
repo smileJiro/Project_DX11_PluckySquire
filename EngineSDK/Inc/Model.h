@@ -37,7 +37,8 @@ public:
 	_bool					Play_Animation_Tool(_float _fTimeDelta);
 
 public:
-	HRESULT Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices);
+	HRESULT					Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices);
+
 public:
 	// Get
 	_uint					Get_NumMeshes() const { return m_iNumMeshes; } // Client 쪽에서 Render를 위한 데이터들을 조작하기위함.
