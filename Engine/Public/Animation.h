@@ -21,7 +21,7 @@ private:
 	virtual ~CAnimation() = default;
 
 public:
-	HRESULT Initialize(ifstream& inFile, const class CModel* pModel);
+	HRESULT Initialize(ifstream& inFile, const class C3DModel* pModel);
 	bool Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta);
 	bool Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& m_mapAnimTransLeftFrame);
 
@@ -57,7 +57,7 @@ private:
 	vector<_uint>			m_CurrentKeyFrameIndices;
 	list< ANIM_EVENT>m_listAnimEvent;
 public:
-	static CAnimation* Create(ifstream& inFile, const class CModel* pModel);
+	static CAnimation* Create(ifstream& inFile, const class C3DModel* pModel);
 	virtual CAnimation* Clone();
 	virtual void Free() override;
 };

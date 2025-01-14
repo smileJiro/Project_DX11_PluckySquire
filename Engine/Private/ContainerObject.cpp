@@ -101,7 +101,7 @@ void CContainerObject::Free()
     __super::Free();
 }
 
-HRESULT CContainerObject::Safe_Release_DeadObjects()
+HRESULT CContainerObject::Cleanup_DeadReferences()
 {
     for (auto& pPartObject : m_PartObjects)
     {

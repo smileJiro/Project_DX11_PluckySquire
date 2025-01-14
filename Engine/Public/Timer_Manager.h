@@ -19,8 +19,9 @@ public:
 	_uint Get_FPS() const { return m_iFPS; }
 
 public:
-	HRESULT Add_Timer(const _wstring& strTimerTag);
-	void Update_Timer(const _wstring& strTimerTag);
+	HRESULT Add_Timer(const _wstring& _strTimerTag);
+	void Update_Timer(const _wstring& _strTimerTag);
+	void Render_FPS(HWND _hWnd, const _wstring& _strTimerTag);
 
 public: /* Timer Controll */
 	HRESULT Set_TimeScale(_float _fTimeScale, const _wstring& _strTimeTag);

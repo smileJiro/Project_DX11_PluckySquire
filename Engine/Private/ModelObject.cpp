@@ -172,7 +172,7 @@ HRESULT CModelObject::Render_3D()
         }
 
         /* Bind Bone Matrices */
-        if (CModel::TYPE::ANIM == m_pModelCom->Get_ModelType())
+        if (C3DModel::TYPE::ANIM == m_pModelCom->Get_ModelType())
         {
             if (FAILED(m_pModelCom->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", i)))
                 return E_FAIL;

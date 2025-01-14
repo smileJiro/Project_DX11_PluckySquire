@@ -264,7 +264,7 @@ void CCamera::Free()
 	__super::Free();
 }
 
-HRESULT CCamera::Safe_Release_DeadObjects()
+HRESULT CCamera::Cleanup_DeadReferences()
 {
 	return S_OK;
 }

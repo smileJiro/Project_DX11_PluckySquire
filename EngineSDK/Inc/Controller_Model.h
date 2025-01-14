@@ -7,7 +7,7 @@
 BEGIN(Engine)
 class CGameInstance;
 class CVIBuffer_Rect;
-class CModel;
+class C3DModel;
 class CShader;
 class ENGINE_DLL CController_Model : public CBase
 {
@@ -52,7 +52,7 @@ private:
 
 private:
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-	CModel*					m_pModelCom = nullptr;
+	C3DModel*					m_pModelCom = nullptr;
 
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;
 	_bool					m_isCoordChangeEnable = false;

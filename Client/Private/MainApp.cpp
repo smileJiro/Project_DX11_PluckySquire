@@ -69,6 +69,10 @@ void CMainApp::Progress(_float _fTimeDelta)
 	// 뷰포트 나가도 렌더되는 처리 // 
 	ImGui::RenderPlatformWindowsDefault(); 
 
+#ifdef _DEBUG
+	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+#endif // _DEBUG
+
 	CEvent_Manager::GetInstance()->Update(_fTimeDelta);
 }
 

@@ -52,7 +52,7 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
             if (nullptr == pComponent)
                 return E_FAIL;
 
-            m_pModelCom = static_cast<CModel*>(pComponent);
+            m_pModelCom = static_cast<C3DModel*>(pComponent);
         }
     }
         break;
@@ -63,7 +63,7 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
         if (nullptr == pComponent)
             return E_FAIL;
 
-        m_pModelCom = static_cast<CModel*>(pComponent);
+        m_pModelCom = static_cast<C3DModel*>(pComponent);
         if (true == m_isCoordChangeEnable)
         {
             /* Com_VIBuffer */

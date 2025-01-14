@@ -79,7 +79,6 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Render_DrawData_Imgui();
 
-
 	if (FAILED(m_pGameInstance->Render_End()))
 		return E_FAIL;
 

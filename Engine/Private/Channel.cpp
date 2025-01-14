@@ -1,6 +1,6 @@
 
 #include "..\Public\Channel.h"
-#include "Model.h"
+#include "3DModel.h"
 #include "Bone.h"
 #include "Animation.h"
 
@@ -8,7 +8,7 @@ CChannel::CChannel()
 {
 }
 
-HRESULT CChannel::Initialize(ifstream& inFile, const CModel* pModel)
+HRESULT CChannel::Initialize(ifstream& inFile, const C3DModel* pModel)
 {
 	_uint iNameLength = 0;
 	inFile.read(reinterpret_cast<char*>(&iNameLength), sizeof(_uint));
@@ -71,7 +71,7 @@ void CChannel::Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) 
 	(*pOutKeyFrames)[m_iBoneIndex] = Get_Frame(fTrackPos, &iCurrentKeyFrameIdx);
 }
 
-CChannel* CChannel::Create(ifstream& inFile, const CModel* pModel)
+CChannel* CChannel::Create(ifstream& inFile, const C3DModel* pModel)
 {
 	CChannel* pInstance = new CChannel();
 

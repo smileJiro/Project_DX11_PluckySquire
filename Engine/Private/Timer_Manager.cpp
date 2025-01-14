@@ -53,6 +53,16 @@ void CTimer_Manager::Update_Timer(const _wstring& strTimerTag)
 
 }
 
+void CTimer_Manager::Render_FPS(HWND _hWnd, const _wstring& _strTimerTag)
+{
+	CTimer* pInstance = Find_Timer(_strTimerTag);
+	if (nullptr == pInstance)
+		return;
+
+	return pInstance->Render_FPS(_hWnd);
+	
+}
+
 HRESULT CTimer_Manager::Set_TimeScale(_float _fTimeScale, const _wstring& _strTimeTag)
 {
 	CTimer* pTimer = Find_Timer(_strTimeTag);

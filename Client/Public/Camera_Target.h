@@ -8,12 +8,16 @@ class CCamera_Target  : public CCamera
 public:
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
 	{
+		// Target Object 
 		CGameObject*	pTarget;
-		_float3			vArmRotAxis;
-		_float			fArmAngle;
-		_float			fDistance;
-
-		_float			fMouseSensor = {};
+		// 룩벡터를 어떤 축으로 회전시킬 것 인가? (기본값 : x 축 넣으면 됨)
+		_float3			vArmRotAxis = {};
+		// vArmRotAxis로 몇도 만큼 돌릴 것 인가.
+		_float			fArmAngle = 0.0f;
+		// TargetObject와의 거리
+		_float			fDistance = 0.0f;
+		// 마우스 감도.
+		_float			fMouseSensor = 0.0f;
 	}CAMERA_TARGET_DESC;
 protected:
 	CCamera_Target(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

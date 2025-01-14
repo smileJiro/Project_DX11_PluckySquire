@@ -12,7 +12,7 @@ private:
 	virtual ~CChannel() = default;
 
 public:
-	HRESULT Initialize(ifstream& inFile, const class CModel* pModel);
+	HRESULT Initialize(ifstream& inFile, const class C3DModel* pModel);
 	void Update_TransformationMatrix(_float fCurrentTrackPosition, _uint* pKeyFrameIndex, const vector<class CBone*>& Bones);
 
 	void Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const;
@@ -27,7 +27,7 @@ private:
 	_uint						m_iBoneIndex = {};
 
 public:
-	static CChannel* Create(ifstream& inFile, const class CModel* pModel);
+	static CChannel* Create(ifstream& inFile, const class C3DModel* pModel);
 	virtual void Free() override;
 };
 

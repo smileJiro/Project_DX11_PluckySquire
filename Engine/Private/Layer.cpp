@@ -47,7 +47,7 @@ void CLayer::Late_Update(_float fTimeDelta)
         else
         {
             /* 만약 Active가 False인 애들 중 Dead Object를 참조하고있었다면, 올바르게 참조 해제. */
-            (*iter)->Safe_Release_DeadObjects();
+            (*iter)->Cleanup_DeadReferences();
         }
 
 

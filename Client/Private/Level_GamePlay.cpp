@@ -33,7 +33,8 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 HRESULT CLevel_GamePlay::Render()
 {
 #ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
     return S_OK;
@@ -119,7 +120,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	TerrainDesc.isCoordChangeEnable = false;
 
 	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	TerrainDesc.strModelPrototypeTag = TEXT("Prototype_Component_Model_WoodenPlatform_01");
+	TerrainDesc.strModelPrototypeTag = TEXT("WoodenPlatform_01");
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 

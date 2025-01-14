@@ -89,7 +89,7 @@ void CPartObject::Free()
     __super::Free();
 }
 
-HRESULT CPartObject::Safe_Release_DeadObjects()
+HRESULT CPartObject::Cleanup_DeadReferences()
 {
 
     return S_OK;
