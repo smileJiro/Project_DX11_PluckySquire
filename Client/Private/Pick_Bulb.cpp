@@ -5,7 +5,7 @@
 
 
 CPick_Bulb::CPick_Bulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CUI (_pDevice, _pContext)
+	: CUI (_pDevice, _pContext)
 {
 }
 
