@@ -43,6 +43,9 @@ private:
 	HRESULT Loading_Level_Logo();
 	HRESULT Loading_Level_GamePlay();
 
+	HRESULT Load_Dirctory_Models(_uint eLevId, const _tchar* szDirPath, _fmatrix PreTransformMatrix);
+	HRESULT Load_Dirctory_Models_Recursive(_uint eLevId, const _tchar* szDirPath, _fmatrix PreTransformMatrix);
+
 public:
 	static CLoader* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID);
 	virtual void Free() override;

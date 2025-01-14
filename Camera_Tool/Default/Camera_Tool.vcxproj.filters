@@ -10,6 +10,39 @@
     <Filter Include="99. Defines">
       <UniqueIdentifier>{4221ff3c-96c2-40dc-a319-42b1e352e84e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Levels">
+      <UniqueIdentifier>{33f7c85c-02f2-4656-8f63-4583953312d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\00. Loading">
+      <UniqueIdentifier>{f3810425-bef6-415e-8c30-8afa0cb32e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\01. Camera_Tool">
+      <UniqueIdentifier>{1ff6f1bb-4731-4f86-a174-61d21983b4a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\00. Loading\Loader">
+      <UniqueIdentifier>{9665f9c1-73a6-4a88-88a9-f3c5d82ad25b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\00. Loading\Loader\ClickSectionGuard">
+      <UniqueIdentifier>{01039860-298e-4476-9d0d-485515a5ce4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. ShaderFiles">
+      <UniqueIdentifier>{65aea6ce-3ba7-44b0-8f5e-d4587a40fcff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Event">
+      <UniqueIdentifier>{33dcaab9-9006-4a20-8cf2-61050d165095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects">
+      <UniqueIdentifier>{738e3b4b-35bf-43e2-810c-50b47be85b04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\TestPlayer">
+      <UniqueIdentifier>{d2ed7948-0a54-4156-897b-a26739d6a329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\TestPlayer\Body">
+      <UniqueIdentifier>{fe28e44a-3cea-4bf4-bdce-fa673eca1abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\TestTerrain">
+      <UniqueIdentifier>{22304141-a28b-41ec-a526-f6ff1eb2640e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera_Tool.h">
@@ -24,11 +57,38 @@
     <ClInclude Include="targetver.h">
       <Filter>98. Default</Filter>
     </ClInclude>
-    <ClInclude Include="Camera_Tool_Defines.h">
-      <Filter>99. Defines</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\MainApp.h">
       <Filter>00. MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Tool_Defines.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>01. Levels\00. Loading\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CriticalSectionGuard.h">
+      <Filter>01. Levels\00. Loading\Loader\ClickSectionGuard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01. Levels\00. Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Camera_Tool.h">
+      <Filter>01. Levels\01. Camera_Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Event_Manager.h">
+      <Filter>96. Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Tool_Function.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Test_Player.h">
+      <Filter>02. GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Test_Body_Player.h">
+      <Filter>02. GameObjects\TestPlayer\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Test_Terrain.h">
+      <Filter>02. GameObjects\TestTerrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +100,33 @@
     </ClCompile>
     <ClCompile Include="..\Private\MainApp.cpp">
       <Filter>00. MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loader.cpp">
+      <Filter>01. Levels\00. Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CriticalSectionGuard.cpp">
+      <Filter>01. Levels\00. Loading\Loader\ClickSectionGuard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Loading.cpp">
+      <Filter>01. Levels\00. Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Camera_Tool.cpp">
+      <Filter>01. Levels\01. Camera_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Event_Manager.cpp">
+      <Filter>96. Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Tool_Fuction.cpp">
+      <Filter>99. Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Test_Player.cpp">
+      <Filter>02. GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Test_Body_Player.cpp">
+      <Filter>02. GameObjects\TestPlayer\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Test_Terrain.cpp">
+      <Filter>02. GameObjects\TestTerrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
