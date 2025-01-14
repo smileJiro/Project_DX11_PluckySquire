@@ -253,7 +253,6 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\VIBuffer_Cube.h" />
     <ClInclude Include="..\public\VIBuffer_Particle_Instance.h" />
     <ClInclude Include="..\public\VIBuffer_Particle_Point.h" />
-    <ClInclude Include="..\public\VIBuffer_Particle_Rect.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect_Vertical.h" />
     <ClInclude Include="..\public\VIBuffer_Terrain.h" />
@@ -319,7 +318,6 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\VIBuffer_Cube.cpp" />
     <ClCompile Include="..\private\VIBuffer_Particle_Instance.cpp" />
     <ClCompile Include="..\private\VIBuffer_Particle_Point.cpp" />
-    <ClCompile Include="..\private\VIBuffer_Particle_Rect.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect_Vertical.cpp" />
     <ClCompile Include="..\private\VIBuffer_Terrain.cpp" />

@@ -360,9 +360,6 @@
     <ClInclude Include="..\public\Font_Manager.h">
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\VIBuffer_Particle_Rect.h">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Rect</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Particle_Instance.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
     </ClInclude>
@@ -550,9 +547,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Font_Manager.cpp">
       <Filter>01.Utility\08.Font\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\VIBuffer_Particle_Rect.cpp">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Rect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Particle_Instance.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>

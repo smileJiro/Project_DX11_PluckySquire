@@ -5,7 +5,6 @@
 #include "VIBuffer_Rect_Vertical.h"
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Cube.h"
-#include "VIBuffer_Particle_Rect.h"
 #include "VIBuffer_Particle_Point.h"
 #include "Controller_Transform.h"
 #include "Texture.h"
