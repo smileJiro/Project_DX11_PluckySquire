@@ -125,9 +125,23 @@ _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 	return _float2(ptCursorPos.x, ptCursorPos.y);
 }
 
-string CGlobalFunction_Manager::WStringToString(const _wstring& wstr)
+string CGlobalFunction_Manager::WStringToString(const _wstring& _wstr)
 {
-	if (wstr.empty())
+	if (_wstr.empty()) return "";
+
+	int iStrLen = WideCharToMultiByte(CP_UTF8, 0, _wstr.c_str(), -1, nullptr, 0, nullptr, nullptr);
+	if (iStrLen <= 0) return "";
+
+	std::string str(iStrLen, 0);
+	WideCharToMultiByte(CP_UTF8, 0, _wstr.c_str(), -1, &str[0], iStrLen, nullptr, nullptr);
+
+	// Null-terminated string에서 null 제거
+	str.resize(iStrLen - 1);
+	return str;
+
+
+	/* 효쪽이 버전. */
+	/*if (wstr.empty()) 
 		return string();
 
 	_int isize = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (_int)wstr.size(), nullptr, 0, nullptr, nullptr);
@@ -135,12 +149,26 @@ string CGlobalFunction_Manager::WStringToString(const _wstring& wstr)
 
 	WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (_int)wstr.size(), &szResult[0], isize, nullptr, nullptr);
 
-	return szResult;
+	return szResult;*/
 }
 
-_wstring CGlobalFunction_Manager::StringToWString(const string& str)
+_wstring CGlobalFunction_Manager::StringToWString(const string& _str)
 {
-	if (str.empty())
+	if (_str.empty()) return L"";
+
+	int iWstrLen = MultiByteToWideChar(CP_UTF8, 0, _str.c_str(), -1, nullptr, 0);
+	if (iWstrLen <= 0) return L"";
+
+	std::wstring wstr(iWstrLen, 0);
+	MultiByteToWideChar(CP_UTF8, 0, _str.c_str(), -1, &wstr[0], iWstrLen);
+
+	// Null-terminated string에서 null 제거
+	wstr.resize(iWstrLen - 1);
+	return wstr;
+
+
+	/* 효쪽이 버전 */
+	/*if (str.empty())
 		return _wstring();
 
 	_int isize = MultiByteToWideChar(CP_UTF8, 0, &str[0], (_int)str.size(), nullptr, 0);
@@ -148,7 +176,7 @@ _wstring CGlobalFunction_Manager::StringToWString(const string& str)
 
 	MultiByteToWideChar(CP_UTF8, 0, &str[0], (_int)str.size(), &wszResult[0], isize);
 
-	return wszResult;
+	return wszResult;*/
 }
 
 CGlobalFunction_Manager* CGlobalFunction_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
