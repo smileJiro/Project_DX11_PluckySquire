@@ -26,6 +26,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_hInstance = EngineDesc.hInst;
 	m_iViewportWidth = EngineDesc.iViewportWidth;
 	m_iViewportHeight = EngineDesc.iViewportHeight;
+	m_iStaticLevelID = EngineDesc.iStaticLevelID;
 
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iViewportWidth, EngineDesc.iViewportHeight, ppDevice, ppContext);
 	if (nullptr == m_pGraphic_Device)
@@ -192,6 +193,14 @@ _float CGameInstance::Get_TimeDelta(const _wstring& _strTimerTag)
 		return 0.f;
 
 	return m_pTimer_Manager->Get_TimeDelta(_strTimerTag);
+}
+
+void CGameInstance::Render_FPS(const _wstring& _strTimerTag)
+{
+	if (nullptr == m_pTimer_Manager)
+		return;
+
+	return m_pTimer_Manager->Render_FPS(m_hWnd, _strTimerTag);
 }
 
 _int CGameInstance::Get_FPS()

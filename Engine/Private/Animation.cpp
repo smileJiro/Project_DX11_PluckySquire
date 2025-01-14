@@ -35,7 +35,7 @@ CAnimation::CAnimation(const CAnimation& Prototype)
 	strcpy_s(m_szName, Prototype.m_szName);
 }
 
-HRESULT CAnimation::Initialize(ifstream& inFile, const CModel* pModel)
+HRESULT CAnimation::Initialize(ifstream& inFile, const C3DModel* pModel)
 {
 	_uint iNameLength = 0;
 	inFile.read(reinterpret_cast<char*>(&iNameLength), sizeof(_uint));
@@ -164,7 +164,7 @@ void CAnimation::Ready_AnimTransition()
 	Reset_CurrentTrackPosition();
 }
 
-CAnimation* CAnimation::Create(ifstream& inFile, const CModel* pModel)
+CAnimation* CAnimation::Create(ifstream& inFile, const C3DModel* pModel)
 {
 	CAnimation* pInstance = new CAnimation();
 

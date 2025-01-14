@@ -44,6 +44,23 @@ void CTimer::Update_Timer(void)
 	m_LastTime = m_FrameTime;
 }
 
+void CTimer::Render_FPS(HWND _hWnd)
+{
+	++m_iCallCount;
+	m_fFPSAcc += m_fTimeDelta; // DT 누적
+	if (m_fFPSAcc >= 1.0f) // 1초 카운트
+	{
+		m_iFPS = m_iCallCount;
+		m_fFPSAcc = 0.;
+		m_iCallCount = 0;
+
+		wchar_t szBuffer[255] = {};
+		swprintf_s(szBuffer, L"FPS : %d, DT : %f", m_iFPS, m_fTimeDelta);
+		SetWindowText(_hWnd, szBuffer);
+	}
+
+}
+
 CTimer* CTimer::Create(void)
 {
 	CTimer* pInstance = new CTimer;

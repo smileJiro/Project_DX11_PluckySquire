@@ -1,6 +1,6 @@
 #pragma once
 #include "VIBuffer.h"
-#include "Model.h"
+#include "3DModel.h"
 
 /* 1. fbx 파일에서 읽어들인 데이터를 기반으로 각 부위 별 메쉬에 대한 VB, IB를 저장하는 객체. */
 /* 2. VIBuffer의 VB, IB, 및 Render 관련 함수들을 사용하기 위해 상속 받았다. */
@@ -13,7 +13,7 @@ private:
 	virtual ~CMesh() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(CModel::TYPE _eModelType, CModel* _pModel, ifstream& inFile, _fmatrix _PreTransformMatrix);
+	virtual HRESULT Initialize_Prototype(C3DModel::TYPE _eModelType, C3DModel* _pModel, ifstream& inFile, _fmatrix _PreTransformMatrix);
 	virtual HRESULT Initialize(void* _pArg);
 
 public:
@@ -39,10 +39,11 @@ private:
 	_float4x4					m_BoneMatrices[256];
 private:
 	HRESULT Ready_VertexBuffer_For_NonAnim(ifstream& _inFile, _fmatrix _PreTransformMatrix);
-	HRESULT Ready_VertexBuffer_For_Anim(ifstream& _inFile, class CModel* _pModel);
+	HRESULT Ready_VertexBuffer_For_Anim(ifstream& _inFile,  C3DModel* _pModel);
 
 public:
-public:	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CModel::TYPE _eModelType, CModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix);
+public:	
+	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, C3DModel::TYPE _eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
 };

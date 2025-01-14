@@ -147,7 +147,7 @@ HRESULT CTestPlayer::Ready_PartObjects()
 
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.strModelPrototypeTag = TEXT("Prototype_Component_Model_Test");
+    BodyDesc.strModelPrototypeTag = TEXT("Tree_Mod_03");
     BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::COLOR_ALPHA;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 

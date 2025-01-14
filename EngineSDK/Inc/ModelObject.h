@@ -2,17 +2,22 @@
 #include "PartObject.h"
 BEGIN(Engine)
 class CVIBuffer_Rect;
-class CModel;
+class C3DModel;
 class ENGINE_DLL CModelObject abstract : public CPartObject
 {
 public:
 	typedef struct tagModelObjectDesc : public CPartObject::PARTOBJECT_DESC
 	{
+		// 2D Shader Prototype Tag
 		_wstring strShaderPrototypeTag_2D;
+		// 2D Shader Prototype Tag
 		_wstring strShaderPrototypeTag_3D;
+		// 3D Model Prototype Tag (2D는 기본 VIBuffer_Rect 임)
 		_wstring strModelPrototypeTag;
 
+		// 2D ShaderPass
 		_uint iShaderPass_2D = {};
+		// 3D ShaderPass
 		_uint iShaderPass_3D = {};
 	}MODELOBJECT_DESC;
 
@@ -36,7 +41,7 @@ public:
 
 protected:
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-	CModel*					m_pModelCom = nullptr;
+	C3DModel*					m_pModelCom = nullptr;
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D 렌더링 전용 VP */
 
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};

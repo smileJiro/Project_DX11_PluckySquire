@@ -9,7 +9,7 @@
 #include "Controller_Transform.h"
 #include "Texture.h"
 #include "Ray.h"
-#include "Model.h"
+#include "3DModel.h"
 #include "Mesh.h"
 #include "Collider.h"
 

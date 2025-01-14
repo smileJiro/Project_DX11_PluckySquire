@@ -9,6 +9,7 @@ class ENGINE_DLL CCamera_Free final: public CCamera
 public:
 	typedef struct tagCameraFreeDesc : public CCamera::CAMERA_DESC
 	{
+		// 마우스 감도
 		_float			fMouseSensor = {};
 	}CAMERA_FREE_DESC;
 private:

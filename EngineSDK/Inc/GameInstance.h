@@ -36,8 +36,10 @@ public: /* For.GameInstance */
 	HRESULT				Engine_Level_Enter(_int _iChangeLevelID);
 	HRESULT				Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID = -1);
 
+	_int				Get_StaticLevelID() const { return m_iStaticLevelID; }
 public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
+	void				Render_FPS(const _wstring& _strTimerTag);
 	_int				Get_FPS();
 	HRESULT				Add_Timer(const _wstring& _strTimerTag);
 	void				Update_TimeDelta(const _wstring& _strTimerTag);
@@ -188,6 +190,8 @@ private:
 
 	_uint m_iViewportWidth = 0;
 	_uint m_iViewportHeight = 0;
+
+	_int m_iStaticLevelID = -1;
 public:
 	// Static
 	static void Release_Engine();

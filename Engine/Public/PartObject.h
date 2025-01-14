@@ -9,6 +9,7 @@ class ENGINE_DLL CPartObject abstract : public CGameObject
 public:
 	typedef struct tagPartObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
+		// 2D, 3D 개별적인 부모 매트릭스
 		const _float4x4* pParentMatrices[COORDINATE_LAST] = {};
 	}PARTOBJECT_DESC;
 protected:
@@ -33,7 +34,7 @@ protected:
 
 public:
 	virtual void			Free() override;
-	HRESULT					Safe_Release_DeadObjects() override; 
+	HRESULT					Cleanup_DeadReferences() override; 
 };
 
 END
