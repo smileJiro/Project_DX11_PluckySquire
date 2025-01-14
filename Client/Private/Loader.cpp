@@ -219,7 +219,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     return S_OK;
 }
 
-HRESULT CLoader::Load_Dirctory_Models(_uint eLevId, const _tchar* szDirPath, _fmatrix PreTransformMatrix)
+HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
 {
     WIN32_FIND_DATA		FindFileData = {};
     HANDLE				hFind = INVALID_HANDLE_VALUE;
@@ -229,7 +229,7 @@ HRESULT CLoader::Load_Dirctory_Models(_uint eLevId, const _tchar* szDirPath, _fm
     _tchar				szProtoTag[MAX_PATH] = TEXT("");
     _tchar				szExtension[MAX_PATH] = TEXT(".model");
 
-    lstrcpy(szFilePath, szDirPath);
+    lstrcpy(szFilePath, _szDirPath);
     lstrcat(szFilePath, TEXT("*"));
     lstrcat(szFilePath, szExtension);
 
@@ -243,14 +243,18 @@ HRESULT CLoader::Load_Dirctory_Models(_uint eLevId, const _tchar* szDirPath, _fm
         if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             continue;
 
-        lstrcpy(szFullPath, szDirPath);
+        lstrcpy(szFullPath, _szDirPath);
         lstrcat(szFullPath, FindFileData.cFileName);
 
         wstring wstr = szFullPath;
         string str{ wstr.begin(), wstr.end() };
 
-        if (FAILED(m_pGameInstance->Add_Prototype(eLevId, FindFileData.cFileName,
-            CModel::Create(m_pDevice, m_pContext, str.c_str(), PreTransformMatrix))))
+        wstring filename = wstring(FindFileData.cFileName);
+        size_t lastDot = filename.find_last_of('.');
+        filename = filename.substr(0, lastDot); // 확장자 제거
+
+        if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
+            C3DModel::Create(m_pDevice, m_pContext, str.c_str(), _PreTransformMatrix))))
             return E_FAIL;
 
     } while (FindNextFile(hFind, &FindFileData));
@@ -260,16 +264,16 @@ HRESULT CLoader::Load_Dirctory_Models(_uint eLevId, const _tchar* szDirPath, _fm
     return S_OK;
 }
 
-HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint eLevId, const _tchar* szDirPath, _fmatrix PreTransformMatrix)
+HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
 {
 	std::filesystem::path path;
-    path = szDirPath;
+    path = _szDirPath;
     for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
         if (entry.path().extension() == ".model") {
             //cout << entry.path().string() << endl;
 
-            if (FAILED(m_pGameInstance->Add_Prototype(eLevId, entry.path().filename(),
-                CModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), PreTransformMatrix))))
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
+                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
                 return E_FAIL;
         }
     }

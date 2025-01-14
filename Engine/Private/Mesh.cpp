@@ -1,5 +1,5 @@
 #include "Mesh.h"
-#include "Model.h"
+#include "3DModel.h"
 #include "Shader.h"
 #include "Bone.h"
 
@@ -9,7 +9,7 @@ CMesh::CMesh(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 }
 
-HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, CModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
+HRESULT CMesh::Initialize_Prototype(C3DModel::TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
 {
 
 	inFile.read(reinterpret_cast<char*>(&m_iMaterialIndex), sizeof(_uint));
@@ -31,7 +31,7 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eModelType, CModel* pModel, ifs
 
 #pragma region VERTEX_BUFFER	
 
-	HRESULT hr = CModel::NONANIM == eModelType ? Ready_VertexBuffer_For_NonAnim(inFile, PreTransformMatrix) : Ready_VertexBuffer_For_Anim(inFile, pModel);
+	HRESULT hr = C3DModel::NONANIM == eModelType ? Ready_VertexBuffer_For_NonAnim(inFile, PreTransformMatrix) : Ready_VertexBuffer_For_Anim(inFile, pModel);
 
 	if (FAILED(hr))
 		return E_FAIL;
@@ -141,7 +141,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(ifstream& inFile, _fmatrix PreTran
 	return S_OK;
 }
 
-HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, CModel* pModel)
+HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 {
 
 
@@ -249,7 +249,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, CModel* pModel)
 	return S_OK;
 }
 
-CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eModelType, CModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
+CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, C3DModel::TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
 {
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 

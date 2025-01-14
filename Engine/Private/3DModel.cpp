@@ -1,15 +1,15 @@
-#include "Model.h"
+#include "3DModel.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "Shader.h"
 #include "Bone.h"
 #include "Animation.h"
-CModel::CModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
 {
 }
 
-CModel::CModel(const CModel& _Prototype)
+C3DModel::C3DModel(const C3DModel& _Prototype)
 	: CComponent(_Prototype)
 	, m_eModelType{ _Prototype.m_eModelType }
 	, m_pAIScene{ _Prototype.m_pAIScene }
@@ -40,7 +40,7 @@ CModel::CModel(const CModel& _Prototype)
 
 }
 
-HRESULT CModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
 
@@ -72,13 +72,13 @@ HRESULT CModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTr
 }
 
 
-HRESULT CModel::Initialize(void* _pArg)
+HRESULT C3DModel::Initialize(void* _pArg)
 {
 	return S_OK;
 }
 
 
-HRESULT CModel::Render(_uint _iMeshIndex)
+HRESULT C3DModel::Render(_uint _iMeshIndex)
 {
 	if (_iMeshIndex >= m_iNumMeshes)
 		return E_FAIL;
@@ -92,13 +92,13 @@ HRESULT CModel::Render(_uint _iMeshIndex)
 	return S_OK;
 }
 
-HRESULT CModel::Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex)
+HRESULT C3DModel::Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex)
 {
 	/* 모델의 m_Bones 벡터를 넘겨 여기서 자기들이 필요한 메쉬에 접근해서 행렬을 가져오고 연산할 것임. */
 	return m_Meshes[_iMeshIndex]->Bind_BoneMatrices(_pShader, _pConstantName, m_Bones);
 }
 
-HRESULT CModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex)
+HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex)
 {
 	if (nullptr == _pShader)
 		return E_FAIL;
@@ -112,7 +112,7 @@ HRESULT CModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, _u
 	return _pShader->Bind_SRV(_pConstantName, pSRV);
 }
 
-_uint CModel::Find_BoneIndex(const _char* _pBoneName) const
+_uint C3DModel::Find_BoneIndex(const _char* _pBoneName) const
 {
 	_uint iBoneIndex = 0;
 	/* 1. 매개변수로 들어온 BoneName과 같은 이름을 가진 Bone을 찾고, 해당 본의 인덱스를 리턴함. */
@@ -139,7 +139,7 @@ _uint CModel::Find_BoneIndex(const _char* _pBoneName) const
 	return iBoneIndex;
 }
 
-const _float4x4* CModel::Find_BoneMatrix(const _char* _pBoneName) const
+const _float4x4* C3DModel::Find_BoneMatrix(const _char* _pBoneName) const
 {
 	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
 		{
@@ -155,7 +155,7 @@ const _float4x4* CModel::Find_BoneMatrix(const _char* _pBoneName) const
 	return (*iter)->Get_CombinedTransformationFloat4x4();
 }
 
-HRESULT CModel::Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices)
+HRESULT C3DModel::Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices)
 {
 	if (m_Meshes.size() <= iNumMeshIndex)
 		return E_FAIL;
@@ -166,7 +166,7 @@ HRESULT CModel::Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pO
 	return S_OK;
 }
 
-_string CModel::Get_MeshName(_uint _iMeshIndex)
+_string C3DModel::Get_MeshName(_uint _iMeshIndex)
 {
 	if (m_Meshes.size() <= _iMeshIndex)
 		return _string();
@@ -174,7 +174,7 @@ _string CModel::Get_MeshName(_uint _iMeshIndex)
 	return m_Meshes[_iMeshIndex]->Get_Name();
 }
 
-_float CModel::Get_RootBonePositionY()
+_float C3DModel::Get_RootBonePositionY()
 {
 	for (auto& pBones : m_Bones)
 	{
@@ -187,7 +187,7 @@ _float CModel::Get_RootBonePositionY()
 	return 0.0f;
 }
 
-_uint CModel::Get_BoneIndex(const _char* pBoneName) const
+_uint C3DModel::Get_BoneIndex(const _char* pBoneName) const
 {
 
 	_uint	iBoneIndex = { 0 };
@@ -209,7 +209,7 @@ _uint CModel::Get_BoneIndex(const _char* pBoneName) const
 }
 
 
-HRESULT CModel::Ready_Bones(ifstream& inFile, _uint iParentBoneIndex)
+HRESULT C3DModel::Ready_Bones(ifstream& inFile, _uint iParentBoneIndex)
 {
 
 	CBone* pBone = CBone::Create(inFile, iParentBoneIndex);;
@@ -232,7 +232,7 @@ HRESULT CModel::Ready_Bones(ifstream& inFile, _uint iParentBoneIndex)
 	return S_OK;
 }
 
-HRESULT CModel::Ready_Meshes(ifstream& inFile)
+HRESULT C3DModel::Ready_Meshes(ifstream& inFile)
 {
 
 	//inFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
@@ -250,7 +250,7 @@ HRESULT CModel::Ready_Meshes(ifstream& inFile)
 	return S_OK;
 }
 
-HRESULT CModel::Ready_Materials(ifstream& inFile, const _char* pModelFilePath)
+HRESULT C3DModel::Ready_Materials(ifstream& inFile, const _char* pModelFilePath)
 {
 	inFile.read(reinterpret_cast<char*>(&m_iNumMaterials), sizeof(_uint));
 	//cout << m_iNumMaterials << endl;
@@ -268,7 +268,7 @@ HRESULT CModel::Ready_Materials(ifstream& inFile, const _char* pModelFilePath)
 	return S_OK;
 }
 
-HRESULT CModel::Ready_Animations(ifstream& inFile)
+HRESULT C3DModel::Ready_Animations(ifstream& inFile)
 {
 
 	inFile.read(reinterpret_cast<char*>(&m_iNumAnimations), sizeof(_uint));
@@ -285,9 +285,9 @@ HRESULT CModel::Ready_Animations(ifstream& inFile)
 	return S_OK;
 }
 
-CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
-	CModel* pInstance = new CModel(pDevice, pContext);
+	C3DModel* pInstance = new C3DModel(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix)))
 	{
@@ -297,9 +297,9 @@ CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, con
 	return pInstance;
 }
 
-CComponent* CModel::Clone(void* _pArg)
+CComponent* C3DModel::Clone(void* _pArg)
 {
-	CModel* pInstance = new CModel(*this);
+	C3DModel* pInstance = new C3DModel(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
@@ -310,7 +310,7 @@ CComponent* CModel::Clone(void* _pArg)
 	return pInstance;
 }
 
-void CModel::Free()
+void C3DModel::Free()
 {
 	for (auto& pAnimation : m_Animations)
 		Safe_Release(pAnimation);

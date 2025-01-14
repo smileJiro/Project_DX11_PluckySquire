@@ -6,14 +6,14 @@ class CMesh;
 class CMaterial;
 class CBone;
 class CAnimation;
-class ENGINE_DLL CModel final : public CComponent
+class ENGINE_DLL C3DModel final : public CComponent
 {
 public:
 	enum TYPE { NONANIM, ANIM, LAST, };
 private:
-	CModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CModel(const CModel& _Prototype);
-	virtual ~CModel() = default;
+	C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	C3DModel(const C3DModel& _Prototype);
+	virtual ~C3DModel() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix);
@@ -92,7 +92,7 @@ protected:
 	HRESULT Ready_Materials(ifstream& inFile, const _char* pModelFilePath);
 	HRESULT Ready_Animations(ifstream& inFile);
 public:
-	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	static C3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
 public:
