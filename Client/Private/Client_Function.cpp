@@ -31,7 +31,7 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Event_LevelChange(_uint _iChangeLevelIndex, _uint _iNextChangeLevelIndex)
+	void Event_LevelChange(_int _iChangeLevelIndex, _int _iNextChangeLevelIndex)
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::LEVEL_CHANGE;

@@ -33,20 +33,20 @@ public: /* For.GameInstance */
 	_float				Compute_Random_Normal(); // 0 ~ 1사이 
 	_float				Compute_Random(_float _fMin, _float _fMax); // 범위 지정.
 
-	HRESULT				Engine_Level_Enter(_int _iNextLevelID);
-	HRESULT				Engine_Level_Exit();
+	HRESULT				Engine_Level_Enter(_int _iChangeLevelID);
+	HRESULT				Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID = -1);
 
 public: /* For.Timer_Manager */
-	_float				Get_TimeDelta(const _wstring& strTimerTag);
+	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	_int				Get_FPS();
-	HRESULT				Add_Timer(const _wstring& strTimerTag);
-	void				Update_TimeDelta(const _wstring& strTimerTag);
+	HRESULT				Add_Timer(const _wstring& _strTimerTag);
+	void				Update_TimeDelta(const _wstring& _strTimerTag);
 	HRESULT				Set_TimeScale(_float _fTimeScale, const _wstring& _strTimeTag);
 	HRESULT				Reset_TimeScale(const _wstring& _strTimeTag);
 
 public: /* For.Level_Manager */
 	HRESULT				Level_Manager_Enter(_int _iLevelID, class CLevel* _pNewLevel); // Level 진입 시 해야 할 처리.
-	HRESULT				Level_Manager_Exit(); // 현재 레벨에 대한 오브젝트들을 삭제한다.
+	HRESULT				Level_Manager_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID = -1); // 현재 레벨에 대한 오브젝트들을 삭제한다.
 	_int				Get_CurLevelID() const;
 
 public: /* For. Proto_Manager */
