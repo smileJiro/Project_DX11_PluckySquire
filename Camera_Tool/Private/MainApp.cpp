@@ -32,9 +32,6 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 	}
 
-	/* Event Manager */
-	//CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
-
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
 	{
 		return E_FAIL;
@@ -62,10 +59,8 @@ void CMainApp::Progress(_float _fTimeDelta)
 		return;
 	}
 
-	// 뷰포트 나가도 렌더되는 처리 // 
 	ImGui::RenderPlatformWindowsDefault(); // 여기 위치해야함.
 
-	//CEvent_Manager::GetInstance()->Update(m_pGameInstance->Get_TimeDelta(TEXT("Timer_Default")));
 }
 
 HRESULT CMainApp::Render()
@@ -117,11 +112,6 @@ void CMainApp::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 
-	/* Client Singleton Delete */
-	//CEvent_Manager::DestroyInstance();
-	//CCam_Manager::DestroyInstance();
-
-	/* GameInstance Release*/
 	CGameInstance::Release_Engine();
 }
 

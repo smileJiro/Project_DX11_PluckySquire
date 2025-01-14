@@ -125,58 +125,59 @@ HRESULT CEvent_Manager::Excute_DeleteObject(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
 {
 	// par
-	_uint iNextLevelID = (_uint)(_tEvent.Parameters[0]); 
-
-	if (iNextLevelID >= (_uint)LEVEL_ID::LEVEL_END)
+	_int iChangeLevelID = (_int)(_tEvent.Parameters[0]);
+	_int iNextChangeLevelID = (_int)(_tEvent.Parameters[1]);
+	
+	if (iChangeLevelID >= (_int)LEVEL_ID::LEVEL_END)
 		return E_FAIL;
 
 	/* Client Exit */
-	if (FAILED(Client_Level_Exit()))
+	if (FAILED(Client_Level_Exit(iChangeLevelID, iNextChangeLevelID)))
 		return E_FAIL;
 
 	/* Engine Exit */
-	if (FAILED(m_pGameInstance->Engine_Level_Exit()))
+	if (FAILED(m_pGameInstance->Engine_Level_Exit(iChangeLevelID, iNextChangeLevelID)))
 		return E_FAIL;
 
 	/* Level_Manager Exit */
-	if (FAILED(m_pGameInstance->Level_Manager_Exit()))
+	if (FAILED(m_pGameInstance->Level_Manager_Exit(iChangeLevelID, iNextChangeLevelID)))
 		return E_FAIL;
 
-	CLevel* pNextLevel = nullptr;
-	switch ((LEVEL_ID)_tEvent.Parameters[0])
+	CLevel* pChangeLevel = nullptr;
+	switch ((LEVEL_ID)iChangeLevelID)
 	{
 	case Client::LEVEL_STATIC:
-		pNextLevel = CLevel_Static::Create(m_pDevice, m_pContext);
+		pChangeLevel = CLevel_Static::Create(m_pDevice, m_pContext);
 		break;
 	case Client::LEVEL_LOADING:
-		pNextLevel = CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL_ID)_tEvent.Parameters[1]);
+		pChangeLevel = CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL_ID)iNextChangeLevelID);
 		break;
 	case Client::LEVEL_LOGO:
-		pNextLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
+		pChangeLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 		break;
 	case Client::LEVEL_GAMEPLAY:
-		pNextLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
 		break;
 	default:
 		break;
 	}
 
-	if (nullptr == pNextLevel)
+	if (nullptr == pChangeLevel)
 		return E_FAIL;
 
 	/* Level_Manager Enter */
-	if (FAILED(m_pGameInstance->Level_Manager_Enter(iNextLevelID, pNextLevel)))
+	if (FAILED(m_pGameInstance->Level_Manager_Enter(iChangeLevelID, pChangeLevel)))
 	{
-		Safe_Release(pNextLevel);
+		Safe_Release(pChangeLevel);
 		return E_FAIL;
 	}
 
 	/* Engine Level Enter */
-	if (FAILED(m_pGameInstance->Engine_Level_Enter(iNextLevelID)))
+	if (FAILED(m_pGameInstance->Engine_Level_Enter(iChangeLevelID)))
 		return E_FAIL;
 
 	/* Client Enter */
-	if (FAILED(Client_Level_Enter(iNextLevelID)))
+	if (FAILED(Client_Level_Enter(iChangeLevelID)))
 		return E_FAIL;
 
 	return S_OK;
@@ -205,13 +206,13 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Client_Level_Enter(_uint _iNextLevelID)
+HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
 	
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Client_Level_Exit()
+HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
