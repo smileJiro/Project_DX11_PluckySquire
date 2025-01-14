@@ -7,6 +7,8 @@
 #include "TestPlayer.h"
 #include "TestTerrain.h"
 
+#include "UI.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CLevel(_pDevice, _pContext)
 {
@@ -19,6 +21,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	Ready_Layer_UI(TEXT("Layer_UI"));
     return S_OK;
 }
 
@@ -130,6 +133,22 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestTerrain"), LEVEL_GAMEPLAY, _strLayerTag, &TerrainDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
+{
+	CUI::UIOBJDESC pDesc = {};
+
+	pDesc.fX = g_iWinSizeX / 2;
+	pDesc.fY = g_iWinSizeY / 2;
+	pDesc.fSizeX = 100.f;
+	pDesc.fSizeY = 100.f;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObject_PickBulb"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
 	return S_OK;
