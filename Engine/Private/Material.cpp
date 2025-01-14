@@ -24,7 +24,7 @@ CMaterial* CMaterial::Create()
 
 void CMaterial::Free()
 {
-	for (size_t i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
 	{
 		for (size_t j = 0; j < m_MaterialTexture[i].size(); ++j)
 		{
@@ -38,9 +38,9 @@ void CMaterial::Free()
 
 HRESULT CMaterial::ConvertToBinary(HANDLE _hFile, DWORD* _dwByte)
 {
-	for (size_t i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
 	{
-		_uint iNumTextures = m_TexturePaths[i].size();
+		_uint iNumTextures = (_uint)m_TexturePaths[i].size();
 		if (!WriteFile(_hFile, &iNumTextures, sizeof(_uint), _dwByte, nullptr))
 			return E_FAIL;
 		for (auto& TexturePath : m_TexturePaths[i])

@@ -23,7 +23,7 @@ HRESULT CChannel::Initialize(const aiNodeAnim* _pAIChannel, const CModel* _pMode
     _float4 vRotation{};
 
     /* 4. 루프를 돌며, 해당 뼈(Channel)에 저장된 해당 애니메이션 상에서의 모든 KeyFrame 정보를 Assimp를 통해 가져와서 저장한다. */
-    for (size_t i = 0; i < m_iNumKeyFrames; ++i)
+    for (_uint i = 0; i < m_iNumKeyFrames; ++i)
     {
         KEYFRAME KeyFrame = {};
         if (i < _pAIChannel->mNumScalingKeys)
@@ -44,7 +44,7 @@ HRESULT CChannel::Initialize(const aiNodeAnim* _pAIChannel, const CModel* _pMode
         if (i < _pAIChannel->mNumPositionKeys)
         {
             memcpy(&vPosition, &_pAIChannel->mPositionKeys[i].mValue, sizeof(_float3));
-            KeyFrame.fTrackPosition = _pAIChannel->mPositionKeys[i].mTime;
+            KeyFrame.fTrackPosition = (_float)_pAIChannel->mPositionKeys[i].mTime;
         }
 
         KeyFrame.vScale = vScale;
@@ -65,7 +65,7 @@ HRESULT CChannel::Initialize(const FBX_CHANNEL& _ChannelDesc)
     m_iNumKeyFrames = _ChannelDesc.iNumKeyFrames;
 
     m_KeyFrames.resize(m_iNumKeyFrames);
-    for (size_t i = 0; i < m_iNumKeyFrames; ++i)
+    for (_uint i = 0; i < m_iNumKeyFrames; ++i)
     {
         m_KeyFrames[i].vScale = _ChannelDesc.vecKeyFrames[i].vScale;
         m_KeyFrames[i].vRotation = _ChannelDesc.vecKeyFrames[i].vRotation;

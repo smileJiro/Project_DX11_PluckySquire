@@ -521,7 +521,7 @@ void CRenderer::Free()
 
 #endif // _DEBUG Components
 
-    for (size_t i = 0; i < RG_END; ++i)
+    for (_uint i = 0; i < RG_END; ++i)
     {
         for (auto& pRenderObject : m_RenderObjects[i])
         {

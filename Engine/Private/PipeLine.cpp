@@ -34,7 +34,7 @@ _float2 CPipeLine::Transform_WorldToScreen(_fvector _vWorldPos, _float2 _fScreen
 void CPipeLine::Setting_PipeLineData()
 {
     // Inverse Matrix
-    for (size_t i = 0; i < D3DTS_END; ++i)
+    for (_uint i = 0; i < D3DTS_END; ++i)
     {
         XMStoreFloat4x4(&m_TransformInverseMatrices[i], XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_TransformMatrices[i])));
     }

@@ -164,7 +164,7 @@ HRESULT CModelObject::Render_3D()
     _uint iNumMeshes = m_pModelCom->Get_NumMeshes();
 
     /* Mesh ¥‹¿ß ∑ª¥ı. */
-    for (size_t i = 0; i < iNumMeshes; ++i)
+    for (_uint i = 0; i < iNumMeshes; ++i)
     {
         if (FAILED(m_pModelCom->Bind_Material(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
         {
