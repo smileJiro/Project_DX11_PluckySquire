@@ -1,0 +1,70 @@
+{
+  "ColorKeyFramesArray": [
+    null,
+    null
+  ],
+  "ShaderTexturePrototypeTags": [
+    "Prototype_Component_Texture_Mask122",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "WorldMatrix": {
+    "Look": [
+      0.0,
+      0.0,
+      0.999999463558197,
+      0.0
+    ],
+    "Position": [
+      0.0,
+      3.0,
+      0.0,
+      1.0
+    ],
+    "Right": [
+      -0.9999997615814209,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Up": [
+      -0.0,
+      -0.9999997019767761,
+      0.0,
+      0.0
+    ]
+  },
+  "fBloomWeights": 7.0,
+  "fBrightnessThreshold": 0.0,
+  "fDelayTime": 3.1,
+  "fDropSpeed": -50.0,
+  "fDropTargetYPos": 0.2,
+  "fPlayTime": 3.0,
+  "fScalingSpeedPerSec": 0.0,
+  "iLightIndex": -1,
+  "iPassIndex": 4,
+  "isLoop": false,
+  "isUpdateParentMatrix": true,
+  "isScaling": false,
+  "strModelPrototypeTag": "Prototype_Component_Model_Effect_Luxiya_CoreWeapon",
+  "strShaderPrototypeTag": "Prototype_Component_Shader_Effect",
+  "vScrollSpeedX": 0.0,
+  "vScrollSpeedY": 0.0,
+  "vTargetScale": {
+    "X": 1.0,
+    "Y": 1.0,
+    "Z": 1.0
+  },
+  "vTurnSpeed": {
+    "X": 0.0,
+    "Y": 0.0,
+    "Z": 0.0
+  }
+}

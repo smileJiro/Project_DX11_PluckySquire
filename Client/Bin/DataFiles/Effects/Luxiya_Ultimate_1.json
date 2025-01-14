@@ -1,0 +1,97 @@
+{
+  "ColorKeyFramesArray": [
+    [
+      {
+        "A": 1.0,
+        "B": 0.2078431397676468,
+        "G": 0.10196078568696976,
+        "R": 0.9960784316062927,
+        "TimeRatio": 0.0
+      },
+      {
+        "A": 1.0,
+        "B": 0.775086522102356,
+        "G": 0.7450979948043823,
+        "R": 1.0,
+        "TimeRatio": 0.05000000074505806
+      },
+      {
+        "A": 1.0,
+        "B": 0.07337681204080582,
+        "G": 0.028258370235562325,
+        "R": 0.4117646813392639,
+        "TimeRatio": 0.20000000298023224
+      },
+      {
+        "A": 1.0,
+        "B": 0.07968657463788986,
+        "G": 0.04325258359313011,
+        "R": 0.3529411554336548,
+        "TimeRatio": 0.699999988079071
+      }
+    ],
+    null
+  ],
+  "ShaderTexturePrototypeTags": [
+    "Prototype_Component_Texture_Path007",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "WorldMatrix": {
+    "Look": [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    "Position": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "Right": [
+      1.0000001192092896,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Up": [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ]
+  },
+  "fBloomWeights": 4.5,
+  "fBrightnessThreshold": 0.06700000166893005,
+  "fDelayTime": 1.31,
+  "fPlayTime": 1.0,
+  "fScalingSpeedPerSec": 0.0,
+  "iLightIndex": -1,
+  "iPassIndex": 2,
+  "isLoop": false,
+  "isUpdateParentMatrix": false,
+  "isScaling": true,
+  "strModelPrototypeTag": "Prototype_Component_Model_Luxiya_51_1",
+  "strShaderPrototypeTag": "Prototype_Component_Shader_Effect",
+  "vScrollSpeedX": 2.2090001106262207,
+  "vScrollSpeedY": -0.2759999930858612,
+  "vTargetScale": {
+    "X": 1.0,
+    "Y": 1.0,
+    "Z": 1.0
+  },
+  "vTurnSpeed": {
+    "X": 0.0,
+    "Y": 0.0,
+    "Z": 0.0
+  }
+}

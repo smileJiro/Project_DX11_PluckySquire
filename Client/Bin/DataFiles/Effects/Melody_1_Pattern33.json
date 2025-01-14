@@ -1,0 +1,78 @@
+{
+    "ColorKeyFramesArray": [
+        [
+            {
+                "A": 1.0,
+                "B": 0.8666666746139526,
+                "G": 1.0,
+                "R": 0.7411764860153198,
+                "TimeRatio": 0.0
+            }
+        ],
+        null
+    ],
+    "ShaderTexturePrototypeTags": [
+        "Prototype_Component_Texture_Path007",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "WorldMatrix": {
+        "Look": [
+            -0.18825207650661469,
+            -0.17207296192646027,
+            0.15796224772930145,
+            0.0
+        ],
+        "Position": [
+            0.3499999940395355,
+            0.019999999552965164,
+            0.9,
+            1.0
+        ],
+        "Right": [
+            0.19283629953861237,
+            0.0,
+            0.2298133671283722,
+            0.0
+        ],
+        "Up": [
+            -0.13181553781032562,
+            0.24574564397335052,
+            0.1106063574552536,
+            0.0
+        ]
+    },
+    "fBloomWeights": 1.0,
+    "fBrightnessThreshold": 0.5,
+    "fDelayTime": 1.9599999904632568,
+    "fDropSpeed": 0.0,
+    "fDropTargetYPos": 0.0,
+    "fPlayTime": 1.0,
+    "fScalingSpeedPerSec": 0.0,
+    "iLightIndex": -1,
+    "iPassIndex": 2,
+    "isLoop": false,
+    "isScaling": true,
+    "isUpdateParentMatrix": true,
+    "strModelPrototypeTag": "Prototype_Component_Model_Sting",
+    "strShaderPrototypeTag": "Prototype_Component_Shader_Effect",
+    "vScrollSpeedX": 3.134999990463257,
+    "vScrollSpeedY": 0.0,
+    "vTargetScale": {
+        "X": 0.30000001192092896,
+        "Y": 0.30000001192092896,
+        "Z": 0.30000001192092896
+    },
+    "vTurnSpeed": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+    }
+}

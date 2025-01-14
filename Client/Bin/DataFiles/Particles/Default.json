@@ -1,0 +1,19 @@
+{
+  "iNumInstances": 15,
+  "isLoop": false,
+  "vCenter": [ 0.0, 0.0, 0.0 ],
+  "vRange": [ 0.5, 0.5, 0.5 ],
+  "vSpeed": {
+    "Min": 10.0,
+    "Max": 10.0
+  },
+  "vLifeTime": {
+    "Min": 0.1,
+    "Max": 0.3
+  },
+  "vSize": {
+    "Min": 0.02,
+    "Max": 0.1
+  },
+  "vPivot": [ 0.0, 0.0, 0.0 ]
+}

@@ -1,0 +1,10 @@
+{
+  "Basic Stat": {
+    "HP": 100,
+    "Damage": 20.0,
+    "Defense": 10.0,
+    "Critical" : 10.0
+
+  }
+
+}

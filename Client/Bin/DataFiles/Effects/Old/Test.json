@@ -1,0 +1,89 @@
+{
+    "ColorKeyFramesArray": [
+        [
+            {
+                "A": 1.0,
+                "B": 0.16078431904315948,
+                "G": 0.0941176488995552,
+                "R": 0.8392156958580017,
+                "TimeRatio": 0.0
+            },
+            {
+                "A": 1.0,
+                "B": 0.07575143128633499,
+                "G": 0.041810836642980576,
+                "R": 0.4264705777168274,
+                "TimeRatio": 0.5
+            },
+            {
+                "A": 1.0,
+                "B": 0.016291813924908638,
+                "G": 0.009803918190300465,
+                "R": 0.08333331346511841,
+                "TimeRatio": 1.0
+            }
+        ],
+        null
+    ],
+    "ShaderTexturePrototypeTags": [
+        "Prototype_Component_Texture_FX_DebiMarleme_11",
+        "Prototype_Component_Texture_Mask114",
+        "Prototype_Component_Texture_Noise101",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "WorldMatrix": {
+        "Look": [
+            0.7386056184768677,
+            0.2604721784591675,
+            1.2793024778366089,
+            0.0
+        ],
+        "Position": [
+            0.5,
+            0.30000001192092896,
+            3.0,
+            1.0
+        ],
+        "Right": [
+            0.8377916812896729,
+            0.17101004719734192,
+            -0.5185177326202393,
+            0.0
+        ],
+        "Up": [
+            -0.2358887493610382,
+            0.969846248626709,
+            -0.06127496808767319,
+            0.0
+        ]
+    },
+    "fBloomWeights": 1.0,
+    "fBrightnessThreshold": 0.1120000034570694,
+    "fDelayTime": 0.15000000596046448,
+    "fPlayTime": 0.4000000059604645,
+    "fScalingSpeedPerSec": 0.0,
+    "iLightIndex": -1,
+    "iPassIndex": 1,
+    "isLoop": false,
+    "isScaling": true,
+    "strModelPrototypeTag": "Prototype_Component_Model_Effect_Bash1",
+    "strShaderPrototypeTag": "Prototype_Component_Shader_Effect_Anim",
+    "vScrollSpeedX": 0.0,
+    "vScrollSpeedY": -1.1629999876022339,
+    "vTargetScale": {
+        "X": 1.0,
+        "Y": 1.0,
+        "Z": 1.0
+    },
+    "vTurnSpeed": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+    }
+}

@@ -1,0 +1,90 @@
+{
+  "ColorKeyFramesArray": [
+    [
+      {
+        "A": 1.0,
+        "B": 0.7990195751190186,
+        "G": 0.7990195751190186,
+        "R": 1.0,
+        "TimeRatio": 0.0
+      },
+      {
+        "A": 1.0,
+        "B": 0.2549019455909729,
+        "G": 0.36447519063949585,
+        "R": 1.0,
+        "TimeRatio": 0.5
+      },
+      {
+        "A": 1.0,
+        "B": 0.0,
+        "G": 0.14633797109127045,
+        "R": 0.9950980544090271,
+        "TimeRatio": 0.550000011920929
+      }
+    ],
+    null
+  ],
+  "ShaderTexturePrototypeTags": [
+    "Prototype_Component_Texture_FX_DebiMarleme_11",
+    "Prototype_Component_Texture_Mask114",
+    "Prototype_Component_Texture_Noise101",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "WorldMatrix": {
+    "Look": [
+      0.0,
+      -0.3420201241970062,
+      0.9396926164627075,
+      0.0
+    ],
+    "Position": [
+      -0.5,
+      1.7000000476837158,
+      2.5,
+      1.0
+    ],
+    "Right": [
+      -0.6427875757217407,
+      -0.7198463678359985,
+      -0.2620026469230652,
+      0.0
+    ],
+    "Up": [
+      0.7660444974899292,
+      -0.604022741317749,
+      -0.21984629333019257,
+      0.0
+    ]
+  },
+  "fBloomWeights": 3.3329999446868896,
+  "fBrightnessThreshold": 0.0,
+  "fDelayTime": 0.10999999940395355,
+  "fPlayTime": 0.699999988079071,
+  "fScalingSpeedPerSec": 3.0,
+  "iLightIndex": -1,
+  "iPassIndex": 1,
+  "isLoop": false,
+  "isUpdateParentMatrix": false,
+  "isScaling": false,
+  "strModelPrototypeTag": "Prototype_Component_Model_Effect_Bash",
+  "strShaderPrototypeTag": "Prototype_Component_Shader_Effect_Anim",
+  "vScrollSpeedX": 0.0,
+  "vScrollSpeedY": -3.6549999713897705,
+  "vTargetScale": {
+    "X": 1.0,
+    "Y": 1.0,
+    "Z": 1.0
+  },
+  "vTurnSpeed": {
+    "X": 0.0,
+    "Y": 0.0,
+    "Z": 0.0
+  }
+}

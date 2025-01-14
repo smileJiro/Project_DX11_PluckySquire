@@ -1,0 +1,106 @@
+{
+    "ColorKeyFramesArray": [
+        [
+            {
+                "A": 1.0,
+                "B": 1.0,
+                "G": 0.47058823704719543,
+                "R": 0.0,
+                "TimeRatio": 0.0
+            },
+            {
+                "A": 1.0,
+                "B": 1.0,
+                "G": 0.9299308061599731,
+                "R": 0.8676470518112183,
+                "TimeRatio": 0.05000000074505806
+            },
+            {
+                "A": 1.0,
+                "B": 1.0,
+                "G": 0.3823530673980713,
+                "R": 0.0,
+                "TimeRatio": 0.10000000149011612
+            },
+            {
+                "A": 1.0,
+                "B": 1.0,
+                "G": 0.7713379859924316,
+                "R": 0.4019607901573181,
+                "TimeRatio": 0.20000000298023224
+            },
+            {
+                "A": 1.0,
+                "B": 1.0,
+                "G": 0.0,
+                "R": 0.29411745071411133,
+                "TimeRatio": 0.550000011920929
+            }
+        ],
+        null
+    ],
+    "ShaderTexturePrototypeTags": [
+        "Prototype_Component_Texture_FX_DebiMarleme_11",
+        "Prototype_Component_Texture_Mask114",
+        "Prototype_Component_Texture_Noise101",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "WorldMatrix": {
+        "Look": [
+            0.0,
+            0.6928203701972961,
+            0.3999999463558197,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            1.7000000476837158,
+            0.3,
+            1.0
+        ],
+        "Right": [
+            -0.6128355264663696,
+            0.25711506605148315,
+            -0.44533640146255493,
+            0.0
+        ],
+        "Up": [
+            -0.5142301917076111,
+            -0.30641770362854004,
+            0.5307311415672302,
+            0.0
+        ]
+    },
+    "fBloomWeights": 1.5849999904632568,
+    "fBrightnessThreshold": 0.023000000044703484,
+    "fDelayTime": 0.49999998927116394,
+    "fDropSpeed": 0.0,
+    "fDropTargetYPos": 0.0,
+    "fPlayTime": 0.5,
+    "fScalingSpeedPerSec": 3.0,
+    "iLightIndex": -1,
+    "iPassIndex": 1,
+    "isLoop": false,
+    "isScaling": false,
+    "isUpdateParentMatrix": false,
+    "strModelPrototypeTag": "Prototype_Component_Model_Effect_Bash",
+    "strShaderPrototypeTag": "Prototype_Component_Shader_Effect_Anim",
+    "vScrollSpeedX": 0.0,
+    "vScrollSpeedY": -4.460999965667725,
+    "vTargetScale": {
+        "X": 0.800000011920929,
+        "Y": 0.800000011920929,
+        "Z": 0.800000011920929
+    },
+    "vTurnSpeed": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+    }
+}

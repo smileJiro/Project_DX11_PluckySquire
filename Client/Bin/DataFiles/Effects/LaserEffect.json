@@ -1,0 +1,92 @@
+{
+    "ColorKeyFramesArray": [
+        [
+            {
+                "A": 1.0,
+                "B": 0.9117646813392639,
+                "G": 0.9221453070640564,
+                "R": 1.0,
+                "TimeRatio": 0.0
+            },
+            {
+                "A": 1.0,
+                "B": 1.0,
+                "G": 1.0,
+                "R": 1.0,
+                "TimeRatio": 0.30000001192092896
+            },
+            {
+                "A": 1.0,
+                "B": 0.07843136787414551,
+                "G": 0.18685120344161987,
+                "R": 1.0,
+                "TimeRatio": 0.5
+            }
+        ],
+        null
+    ],
+    "ShaderTexturePrototypeTags": [
+        "Prototype_Component_Texture_Path046",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "WorldMatrix": {
+        "Look": [
+            -0.0,
+            -5.0,
+            -5.960465045973251e-07,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            1.100000023841858,
+            1.0,
+            1.0
+        ],
+        "Right": [
+            0.009999999776482582,
+            -0.0,
+            0.0,
+            0.0
+        ],
+        "Up": [
+            0.0,
+            -5.960465045973251e-07,
+            5.0,
+            0.0
+        ]
+    },
+    "fBloomWeights": 4.0840001106262207,
+    "fBrightnessThreshold": 0.09700000286102295,
+    "fDelayTime": 0.0,
+    "fDropSpeed": 0.0,
+    "fDropTargetYPos": 0.0,
+    "fPlayTime": 0.20000000149011612,
+    "fScalingSpeedPerSec": 1.0,
+    "iLightIndex": -1,
+    "iPassIndex": 0,
+    "isLoop": false,
+    "isScaling": false,
+    "isUpdateParentMatrix": true,
+    "strModelPrototypeTag": "Prototype_Component_Model_Billboard",
+    "strShaderPrototypeTag": "Prototype_Component_Shader_Effect",
+    "vScrollSpeedX": 0.0,
+    "vScrollSpeedY": 0.0,
+    "vTargetScale": {
+        "X": 0.03999999910593033,
+        "Y": 5.0,
+        "Z": 5.0
+    },
+    "vTurnSpeed": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+    }
+}
