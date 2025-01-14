@@ -9,7 +9,15 @@ class CGameInstance;
 END
 
 
+
+
 BEGIN(Map_Tool)
+
+
+
+class CImguiLogger;
+	
+
 class CLoader final : public CBase
 {
 private:
@@ -17,7 +25,7 @@ private:
 	virtual ~CLoader() = default;
 
 public:
-	HRESULT Initialize(LEVEL_ID _eNextLevelID);
+	HRESULT Initialize(LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger);
 	HRESULT Loading();
 
 #ifdef _DEBUG
@@ -34,18 +42,26 @@ private:
 	HANDLE					m_hThread = {};
 	CRITICAL_SECTION		m_Critical_Section = { nullptr };
 	CGameInstance*			m_pGameInstance = { nullptr };
+	CImguiLogger*			m_pLogger = { nullptr };
 
 private:
+	
 	_bool					m_isFinished = false;
 	_tchar					m_szLoadingText[MAX_PATH] = {};
+
+
 private:
 	HRESULT Loading_Level_Static();
 	HRESULT Loading_Level_Logo();
 	HRESULT Loading_Level_Map_Tool();
 	HRESULT Loading_Level_Trigger();
 
+	HRESULT Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
+	HRESULT Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
+
+
 public:
-	static CLoader* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID);
+	static CLoader* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger);
 	virtual void Free() override;
 };
 
