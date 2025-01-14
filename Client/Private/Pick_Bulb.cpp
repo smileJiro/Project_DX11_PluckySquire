@@ -114,7 +114,7 @@ void CPick_Bulb::Free()
 	
 }
 
-HRESULT CPick_Bulb::Safe_Release_DeadObjects()
+HRESULT CPick_Bulb::Cleanup_DeadReferences()
 {
 
 	return S_OK;
