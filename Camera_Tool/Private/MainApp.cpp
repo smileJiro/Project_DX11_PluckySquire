@@ -2,7 +2,7 @@
 #include "MainApp.h"
 
 #include "GameInstance.h"
-//#include "Event_Manager.h"
+#include "Event_Manager.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -24,7 +24,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iNumLevels = LEVEL_END;
 	EngineDesc.iViewportWidth = g_iWinSizeX;
 	EngineDesc.iViewportHeight = g_iWinSizeY;
-	EngineDesc.iStaticLevelID = LEVEL_STATIC;
+	EngineDesc.iStaticLevelID = LEVEL_CAMERA_TOOL;
 
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
@@ -32,7 +32,14 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 	}
 
+<<<<<<< HEAD
+	/* Event Manager */
+	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
+
+	if (FAILED(SetUp_StartLevel(LEVEL_CAMERA_TOOL))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
+=======
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
+>>>>>>> 35d5726d32b6f92bb502bdbc13d3c47ff4acecd9
 	{
 		return E_FAIL;
 	}
@@ -61,7 +68,10 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	ImGui::RenderPlatformWindowsDefault(); // 여기 위치해야함.
 
-
+<<<<<<< HEAD
+	CEvent_Manager::GetInstance()->Update(m_pGameInstance->Get_TimeDelta(TEXT("Timer_Default")));
+=======
+>>>>>>> 35d5726d32b6f92bb502bdbc13d3c47ff4acecd9
 }
 
 HRESULT CMainApp::Render()
@@ -85,7 +95,7 @@ HRESULT CMainApp::Render()
 HRESULT CMainApp::SetUp_StartLevel(LEVEL_ID _eLevelID)
 {
 	// OpenLevel을 통해, Loading Scene을 반드시 거치게하고, 그 후 실제로 전환시킬 NextLevelID를 넘겨, Loading에서의 작업이 완료 후, Level을 전환한다.
-	//Event_LevelChange(LEVEL_LOADING, _eLevelID);
+	Event_LevelChange(LEVEL_LOADING, _eLevelID);
 
 
 	return S_OK;
@@ -112,6 +122,14 @@ void CMainApp::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 
+<<<<<<< HEAD
+	/* Client Singleton Delete */
+	CEvent_Manager::DestroyInstance();
+	//CCam_Manager::DestroyInstance();
+
+	/* GameInstance Release*/
+=======
+>>>>>>> 35d5726d32b6f92bb502bdbc13d3c47ff4acecd9
 	CGameInstance::Release_Engine();
 }
 

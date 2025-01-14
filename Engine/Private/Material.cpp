@@ -33,6 +33,10 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 
 			strcat_s(szFullPath, szDirPath);
 			strcat_s(szFullPath, szFileName);
+			if (false == strcmp(szExt, ".tga"))
+			{
+				strcpy_s(szExt, ".dds");
+			}
 			strcat_s(szFullPath, szExt);
 
 			_tchar		szWideFullPath[MAX_PATH] = TEXT("");

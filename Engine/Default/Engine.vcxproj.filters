@@ -312,7 +312,7 @@
     <ClInclude Include="..\public\Mesh.h">
       <Filter>01.Utility\04.Components\Model\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Model.h">
+    <ClInclude Include="..\Public\3DModel.h">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Material.h">
@@ -503,7 +503,7 @@
     <ClCompile Include="..\private\Mesh.cpp">
       <Filter>01.Utility\04.Components\Model\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Model.cpp">
+    <ClCompile Include="..\Private\3DModel.cpp">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Material.cpp">
