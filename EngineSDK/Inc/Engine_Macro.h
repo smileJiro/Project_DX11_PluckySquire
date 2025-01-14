@@ -70,7 +70,6 @@ namespace Engine
 #define MOUSE_MOVE(key)			m_pGameInstance->GetDIMouseMove(key)
 
 	// Sound_Manager
-
 	/* BGM */
 #define LOAD_BGM(strBGMTag, strBGMFilePath) m_pGameInstance->Load_BGM(strBGMTag, strBGMFilePath)
 #define START_BGM(strBGMTag, fVolume) m_pGameInstance->Start_BGM(strBGMTag, fVolume)
@@ -87,6 +86,15 @@ namespace Engine
 #define END_SFX(strSFXTag) m_pGameInstance->End_SFX(strSFXTag)
 #define GET_VOLUME_SFX(strSFXTag) m_pGameInstance->Get_SFXVolume(strSFXTag)
 #define SET_VOLUME_SFX(strSFXTag, fVolume) m_pGameInstance->Set_SFXVolume(strSFXTag, fVolume)
+
+	// GlobalFunction_Manager
+
+#define STRINGTOWSTRING(str) m_pGameInstance->StringToWString(str)
+#define WSTRINGTOSTRING(wstr) m_pGameInstance->WStringToString(wstr)
+
+#define GET_CURSOR_POS() m_pGameInstance->Get_CursorPos()
+#define GET_CURSOR_CLICKPOS() m_pGameInstance->Get_OnClickPos()
+#define LERP(fLeft, fRight, fRatio) m_pGameInstance->Lerp(fLeft, fRight, fRatio)
 
 }
 

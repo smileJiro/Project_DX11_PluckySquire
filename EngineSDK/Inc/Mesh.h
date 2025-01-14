@@ -13,10 +13,7 @@ private:
 	virtual ~CMesh() = default;
 
 public:
-	_uint Get_MaterialIndex() const { return m_iMaterialIndex; }
-public:
-	virtual HRESULT Initialize_Prototype(CModel::TYPE _eModelType, class CModel* _pModel, const aiMesh* _pAIMesh, _matrix _PreTransformMatrix);
-	virtual HRESULT Initialize_Prototype(CModel::TYPE _eModelType, FBX_MESH& _tMeshDesc, _matrix _PreTransformMatrix);
+	virtual HRESULT Initialize_Prototype(CModel::TYPE _eModelType, CModel* _pModel, ifstream& inFile, _fmatrix _PreTransformMatrix);
 	virtual HRESULT Initialize(void* _pArg);
 
 public:
@@ -25,6 +22,7 @@ public:
 	HRESULT Copy_BoneMatrices(array<_float4x4, 256>* _pOutBoneMatrices);
 public:
 	// Get
+	_uint Get_MaterialIndex() const { return m_iMaterialIndex; }
 	_string Get_Name() const { return _string(m_szName); }
 	vector<_uint>& Get_BoneIndices() { return m_BoneIndices; }
 	// Set
@@ -40,22 +38,13 @@ private:
 	vector<_float4x4>			m_BoneOffsetMatrices;
 	_float4x4					m_BoneMatrices[256];
 private:
-	HRESULT Ready_VertexBuffer_For_NonAnim(const aiMesh* _pAIMesh, _fmatrix _PreTransformMatrix);
-	HRESULT Ready_VertexBuffer_For_Anim(const aiMesh* _pAIMesh, class CModel* _pModel);
+	HRESULT Ready_VertexBuffer_For_NonAnim(ifstream& _inFile, _fmatrix _PreTransformMatrix);
+	HRESULT Ready_VertexBuffer_For_Anim(ifstream& _inFile, class CModel* _pModel);
 
-	HRESULT Ready_VertexBuffer_For_NonAnim(const FBX_MESH& _tMeshDesc, _fmatrix _PreTransformMatrix);
-	HRESULT Ready_VertexBuffer_For_Anim(const FBX_MESH& _tMeshDesc);
 public:
-	/* Modeltype : Anim인지, NonAnim인지에 따라 각기 다른 처리를 하기위함. pModel* :*/
-	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CModel::TYPE _eModelType, class CModel* _pModel, const aiMesh* _pAIMesh, _matrix _PreTransformMatrix);
-	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CModel::TYPE _eModelType, FBX_MESH& _tMeshDesc, _matrix _PreTransformMatrix);
-	virtual CComponent* Clone(void* _pArg) override; // Clone은 순수가상함수라 만들었다. 실제로 Mesh 는 얕은 복사하지 않고 깊은 복사할 것이다.
+public:	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CModel::TYPE _eModelType, CModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix);
+	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
-
-
-public:
-	/* 바이너리 관련 */
-	HRESULT ConvertToBinary(HANDLE _hFile, DWORD* _dwByte, const aiMesh* _pAIMesh, CModel* _pModel);
 };
 
 END

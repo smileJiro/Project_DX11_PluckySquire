@@ -16,8 +16,7 @@ private:
 	virtual ~CModel() = default;
 
 public:
-	virtual HRESULT			Initialize_Prototype(TYPE _eModelType, const _char* _pModelFilePath, _fmatrix _PreTransformMatrix);
-	virtual HRESULT			Initialize_Prototype(TYPE _eModelType, void* _pModelDesc, _fmatrix _PreTransformMatrix);
+	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual HRESULT			Render(_uint _iMeshIndex);
 	
@@ -34,11 +33,9 @@ public:
 		std::swap(m_Animations[iSrc], m_Animations[_iDst]);
 		return true;
 	}
-	_bool					Play_Animation_Tool(_float _fTimeDelta);
 
 public:
-	HRESULT					Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices);
-
+	HRESULT Copy_BoneMatrices(_int _iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices);
 public:
 	// Get
 	_uint					Get_NumMeshes() const { return m_iNumMeshes; } // Client 쪽에서 Render를 위한 데이터들을 조작하기위함.
@@ -54,7 +51,7 @@ public:
 	CAnimation*				Get_Animation(_uint _iAnimIndex) { return m_Animations[_iAnimIndex]; }
 	vector<CBone*>*			Get_BonesAdress() { return &m_Bones; }
 	_float					Get_RootBonePositionY();
-
+	_uint Get_BoneIndex(const _char* _pBoneName) const;
 	// Set
 
 private: /* for. File Load */
@@ -89,29 +86,17 @@ private:/* 툴용 */
 public:
 	void SetUp_ToolAnimation(_int _iAnimIndex, _bool _isLoop) { m_iCurAnimIndex = _iAnimIndex; m_isLoop = _isLoop; }
 
-private:
-	HRESULT Ready_Meshes();
-	HRESULT Ready_Meshes(vector<FBX_MESH>& _vecMesh);
-	HRESULT Ready_Materials(const _char* pModelFilePath);
-	HRESULT Ready_Materials(void* _pModelDesc);
-	/* aiNode : m_Bones 데이터 정렬을 위해, iParentBoneIndex : 각각의 본들의 부모 본인덱스를 전달하기위해 (재귀 호출)*/
-	HRESULT Ready_Bones(const aiNode* _pNode, _int _iParentBoneIndex);
-	HRESULT Ready_Bones(const vector<FBX_BONE>& _vecBones);
-	HRESULT Ready_Animations();
-	HRESULT Ready_Animations(const vector<FBX_ANIMATION>& _vecAnimation);
+protected:
+	HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);
+	HRESULT Ready_Meshes(ifstream& inFile);
+	HRESULT Ready_Materials(ifstream& inFile, const _char* pModelFilePath);
+	HRESULT Ready_Animations(ifstream& inFile);
 public:
-	static CModel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, TYPE _eModelType, const _char* _pModelFilePath, _fmatrix _PreTransformMatrix);
-	static CModel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, TYPE _eModelType, void* _pModelDesc, _fmatrix _PreTransformMatrix);
+	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
-
-
 public:
-	// 바이너리화 함수
-	HRESULT ConvertToBinary(const _char* _pModelFilePath, const _tchar* _szSavePath);
+
 };
 
 END
-
-/* 애님 모델까지 다 완료되면 최종적으로 void* 받아서 생성하는 로직을 고정로직으로 한다. */
-/* 그리고 기존의 Ready_Meshes 등등의 assimp 사용함수들은 제거한다. */

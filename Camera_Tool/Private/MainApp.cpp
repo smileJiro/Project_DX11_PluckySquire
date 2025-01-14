@@ -32,10 +32,14 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 	}
 
+<<<<<<< HEAD
 	/* Event Manager */
 	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
 
 	if (FAILED(SetUp_StartLevel(LEVEL_CAMERA_TOOL))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
+=======
+	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
+>>>>>>> 35d5726d32b6f92bb502bdbc13d3c47ff4acecd9
 	{
 		return E_FAIL;
 	}
@@ -62,10 +66,12 @@ void CMainApp::Progress(_float _fTimeDelta)
 		return;
 	}
 
-	// 뷰포트 나가도 렌더되는 처리 // 
 	ImGui::RenderPlatformWindowsDefault(); // 여기 위치해야함.
 
+<<<<<<< HEAD
 	CEvent_Manager::GetInstance()->Update(m_pGameInstance->Get_TimeDelta(TEXT("Timer_Default")));
+=======
+>>>>>>> 35d5726d32b6f92bb502bdbc13d3c47ff4acecd9
 }
 
 HRESULT CMainApp::Render()
@@ -117,11 +123,14 @@ void CMainApp::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 
+<<<<<<< HEAD
 	/* Client Singleton Delete */
 	CEvent_Manager::DestroyInstance();
 	//CCam_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
+=======
+>>>>>>> 35d5726d32b6f92bb502bdbc13d3c47ff4acecd9
 	CGameInstance::Release_Engine();
 }
 

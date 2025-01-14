@@ -11,7 +11,7 @@ namespace Client
 {
 	void Event_CreateObject(_uint _iCurLevelIndex, const _tchar* _strLayerTag, Engine::CGameObject* _pGameObject);
 	void Event_DeleteObject(CGameObject* _pGameObject);
-	void Event_LevelChange(_uint _iChangeLevelIndex, _uint _iNextChangeLevelIndex = 0);
+	void Event_LevelChange(_int _iChangeLevelIndex, _int _iNextChangeLevelIndex = -1);
 	void Event_SetActive(CBase* _pObject, _bool _isActive, _bool _isDelay = false);
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
