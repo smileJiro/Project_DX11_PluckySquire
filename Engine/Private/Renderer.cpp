@@ -386,6 +386,7 @@ HRESULT CRenderer::Render_Blend()
 
 HRESULT CRenderer::Render_Debug()
 {
+
     for (auto& pDebugCom : m_DebugComponents)
     {
         if (nullptr != pDebugCom)
@@ -404,6 +405,8 @@ HRESULT CRenderer::Render_Debug()
     if (FAILED(m_pVIBuffer->Bind_BufferDesc()))
         return E_FAIL;
 
+
+    //Imgui_Render_RT_Debug();
     if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Book_2D"), m_pShader, m_pVIBuffer)))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))
@@ -416,6 +419,11 @@ HRESULT CRenderer::Render_Debug()
         return E_FAIL;
 
 
+    return S_OK;
+}
+
+HRESULT CRenderer::Imgui_Render_RT_Debug()
+{
     return S_OK;
 }
 
