@@ -61,6 +61,8 @@ void CMap_Tool_MainApp::Progress(_float _fTimeDelta)
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
+	m_pLogger->Draw_Log();
+
 	m_pGameInstance->End_Imgui();
 
 	if (FAILED(Render()))
