@@ -98,7 +98,7 @@ HRESULT CMainApp::SetUp_StartLevel(LEVEL_ID _eLevelID)
 {
 	// OpenLevel을 통해, Loading Scene을 반드시 거치게하고, 그 후 실제로 전환시킬 NextLevelID를 넘겨, Loading에서의 작업이 완료 후, Level을 전환한다.
 	Event_LevelChange(LEVEL_LOADING, _eLevelID);
-
+	
 	return S_OK;
 }
 

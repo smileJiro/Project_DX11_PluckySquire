@@ -12,11 +12,11 @@ CLevel_Loading::CLevel_Loading(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 {
 }
 
-HRESULT CLevel_Loading::Initialize(LEVEL_ID _eNextLevelID)
+HRESULT CLevel_Loading::Initialize(LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger)
 {
     m_eNextLevelID = _eNextLevelID;
 
-    m_pLoader = CLoader::Create(m_pDevice, m_pContext, m_eNextLevelID);
+    m_pLoader = CLoader::Create(m_pDevice, m_pContext, m_eNextLevelID, _pLogger);
     if (nullptr == m_pLoader)
         return E_FAIL;
 
@@ -43,11 +43,11 @@ HRESULT CLevel_Loading::Render()
     return S_OK;
 }
 
-CLevel_Loading* CLevel_Loading::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID)
+CLevel_Loading* CLevel_Loading::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger)
 {
     CLevel_Loading* pInstance = new CLevel_Loading(_pDevice, _pContext);
 
-    if (FAILED(pInstance->Initialize(_eNextLevelID)))
+    if (FAILED(pInstance->Initialize(_eNextLevelID, _pLogger)))
     {
         MSG_BOX("Failed to Created : CLevel_Loading");
         Safe_Release(pInstance);
