@@ -174,7 +174,7 @@ HRESULT CLoader::Loading_Level_Map_Tool()
         return E_FAIL;
 
 
-    /* For. Prototype_Component_VIBuffer_Rect */
+    /* For. Prototype_Component_VIBuffer_Rect */    
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_VIBuffer_Rect"),
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
