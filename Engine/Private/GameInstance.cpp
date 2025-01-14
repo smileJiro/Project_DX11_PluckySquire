@@ -161,19 +161,21 @@ _float CGameInstance::Compute_Random(_float _fMin, _float _fMax)
 	return _fMin + (_fMax - _fMin) * Compute_Random_Normal();
 }
 
-HRESULT CGameInstance::Engine_Level_Enter(_int _iNextLevelID)
+HRESULT CGameInstance::Engine_Level_Enter(_int _iChangeLevelID)
 {
 	/* Engine Manager 의 Level Enter 시점. 이벤트 매니저에서 새로운 레벨을 생성한 후, 호출된다. */
-	m_pCollision_Manager->Level_Enter(_iNextLevelID);
+	m_pCollision_Manager->Level_Enter(_iChangeLevelID);
 	return S_OK;
 }
 
-HRESULT CGameInstance::Engine_Level_Exit()
+HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
-
 	if (iCurLevelID == -1)
 		return S_OK;
+
+	/* _iNextChangeLevelID가 유효한 경우					>>>  _iChangeLevelID == LEVEL_LOADING */
+	/* _iNextChangeLevelID가 유효하지 않은 경우.			>>>  _iChangeLevelID != LEVEL_LOADING */
 
 	/* Engine Manager 의 Level Exit 시점. 이벤트 매니저에서 새로운 레벨을 생성하기 전, 호출된다. */
 	m_pObject_Manager->Level_Exit((_uint)iCurLevelID);
@@ -184,12 +186,12 @@ HRESULT CGameInstance::Engine_Level_Exit()
 	return S_OK;
 }
 
-_float CGameInstance::Get_TimeDelta(const _wstring& strTimerTag)
+_float CGameInstance::Get_TimeDelta(const _wstring& _strTimerTag)
 {
 	if (nullptr == m_pTimer_Manager)
 		return 0.f;
 
-	return m_pTimer_Manager->Get_TimeDelta(strTimerTag);
+	return m_pTimer_Manager->Get_TimeDelta(_strTimerTag);
 }
 
 _int CGameInstance::Get_FPS()
@@ -200,20 +202,20 @@ _int CGameInstance::Get_FPS()
 	return m_pTimer_Manager->Get_FPS();
 }
 
-HRESULT CGameInstance::Add_Timer(const _wstring& strTimerTag)
+HRESULT CGameInstance::Add_Timer(const _wstring& _strTimerTag)
 {
 	if (nullptr == m_pTimer_Manager)
 		return E_FAIL;
 
-	return m_pTimer_Manager->Add_Timer(strTimerTag);
+	return m_pTimer_Manager->Add_Timer(_strTimerTag);
 }
 
-void CGameInstance::Update_TimeDelta(const _wstring& strTimerTag)
+void CGameInstance::Update_TimeDelta(const _wstring& _strTimerTag)
 {
 	if (nullptr == m_pTimer_Manager)
 		return;
 
-	return m_pTimer_Manager->Update_Timer(strTimerTag);
+	return m_pTimer_Manager->Update_Timer(_strTimerTag);
 }
 
 HRESULT CGameInstance::Set_TimeScale(_float _fTimeScale, const _wstring& _strTimeTag)
@@ -240,7 +242,7 @@ HRESULT CGameInstance::Level_Manager_Enter(_int _iLevelID, CLevel* _pNewLevel)
 	return m_pLevel_Manager->Level_Enter(_iLevelID, _pNewLevel);
 }
 
-HRESULT CGameInstance::Level_Manager_Exit()
+HRESULT CGameInstance::Level_Manager_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
