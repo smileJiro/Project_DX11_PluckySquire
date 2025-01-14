@@ -1,145 +1,174 @@
-#include "Animation.h"
+#include "..\Public\Animation.h"
 
 #include "Channel.h"
-#include "Transform.h"
+#include "Bone.h"
+
+namespace Engine
+{
+	KEYFRAME Lerp_Frame(const KEYFRAME& Frame1, const KEYFRAME& Frame2, _float fRatio)
+	{
+		KEYFRAME KeyFrame = {};
+		XMStoreFloat3(&KeyFrame.vScale, XMVectorLerp(XMLoadFloat3(&Frame1.vScale), XMLoadFloat3(&Frame2.vScale), fRatio));
+		XMStoreFloat4(&KeyFrame.vRotation, XMQuaternionSlerp(XMLoadFloat4(&Frame1.vRotation), XMLoadFloat4(&Frame2.vRotation), fRatio));
+		XMStoreFloat3(&KeyFrame.vPosition, XMVectorLerp(XMLoadFloat3(&Frame1.vPosition), XMLoadFloat3(&Frame2.vPosition), fRatio));
+
+		return KeyFrame;
+	}
+}
+
+
 CAnimation::CAnimation()
 {
 }
 
-CAnimation::CAnimation(const CAnimation& _Prototype)
-	: m_iNumChannels(_Prototype.m_iNumChannels)
-	, m_Channels{ _Prototype.m_Channels }
-	, m_fDuration(_Prototype.m_fDuration)
-	, m_fTickPerSecond(_Prototype.m_fTickPerSecond)
-	, m_fCurTrackPosition(_Prototype.m_fCurTrackPosition)
-	, m_CurKeyFrameIndices{ _Prototype.m_CurKeyFrameIndices }
+CAnimation::CAnimation(const CAnimation& Prototype)
+	: m_iNumChannels{ Prototype.m_iNumChannels }
+	, m_vecChannel{ Prototype.m_vecChannel }
+	, m_fDuration{ Prototype.m_fDuration }
+	, m_fTickPerSecond{ Prototype.m_fTickPerSecond }
+	, m_fCurrentTrackPosition{ Prototype.m_fCurrentTrackPosition }
+	, m_CurrentKeyFrameIndices{ Prototype.m_CurrentKeyFrameIndices }
 {
-	// 채널은 얕은복사한다 >>> 애니메이션쪽으로 어짜피 m_CurKeyFrameIndex를 빼냈음 >> 이게 애니메이션 재생을 개별적으로 돌리게하는 요소.
-	// 각각의 애니메이션은 Initialize에서 CurKeyFrameIndices를 0으로 리셋하고 시작함.
-	for (auto& pChannel : m_Channels)
+	for (auto& pChannel : m_vecChannel)
 		Safe_AddRef(pChannel);
 
-	strcpy_s(m_szName, _Prototype.m_szName);
+	strcpy_s(m_szName, Prototype.m_szName);
 }
 
-HRESULT CAnimation::Initialize(const aiAnimation* _pAnimation, const CModel* _pModel)
+HRESULT CAnimation::Initialize(ifstream& inFile, const CModel* pModel)
 {
-	strcpy_s(m_szName, _pAnimation->mName.data);
+	_uint iNameLength = 0;
+	inFile.read(reinterpret_cast<char*>(&iNameLength), sizeof(_uint));
+	inFile.read(m_szName, iNameLength);
+	m_szName[iNameLength] = '\0';
+	//cout << m_szName << endl;
 
-	/* 현재 애니메이션의 길이 */
-	m_fDuration = _pAnimation->mDuration;
-	/* 1초당 얼마만큼의 속도로 Track을 이동할지(애니메이션의 기본 재생속도), */
-	m_fTickPerSecond = _pAnimation->mTicksPerSecond;
 
-	/* 해당 애니메이션에서 컨트롤 해야하는 뼈들의 개수 */
-	m_iNumChannels = _pAnimation->mNumChannels;
+	double dValue = 0.0;
+	inFile.read(reinterpret_cast<char*>(&dValue), sizeof(double));
+	m_fDuration = (_float)dValue;
+	inFile.read(reinterpret_cast<char*>(&dValue), sizeof(double));
+	m_fTickPerSecond = (_float)dValue;
 
-	m_CurKeyFrameIndices.resize(m_iNumChannels);
-	for (size_t i = 0; i < m_iNumChannels; ++i)
+	inFile.read(reinterpret_cast<char*>(&m_iNumChannels), sizeof(_uint));
+
+	m_CurrentKeyFrameIndices.resize(m_iNumChannels);
+
+	for (size_t i = 0; i < m_iNumChannels; i++)
 	{
-		/* 채널(컨트롤당하는뼈)의 수 만큼 루프 돌며 객체 생성하고 Channels 벡터에 저장. */
-		/* 모든 채널들을 순회하며 일괄처리를 하기위한 목적 외에는 딱히 큰 목적이 없음. 중요한 것은 CChannel class의 기능임. */
-		CChannel* pChannel = CChannel::Create(_pAnimation->mChannels[i], _pModel);
+		CChannel* pChannel = CChannel::Create(inFile, pModel);
 		if (nullptr == pChannel)
 			return E_FAIL;
 
-		m_Channels.push_back(pChannel);
-	}
-    return S_OK;
-}
-
-HRESULT CAnimation::Initialize(const FBX_ANIMATION& _tAnimDesc)
-{
-	strcpy_s(m_szName, _tAnimDesc.szName);
-	m_fDuration = _tAnimDesc.fDuration;
-	m_fTickPerSecond = _tAnimDesc.fTickPerSec;
-	m_iNumChannels = _tAnimDesc.iNumChannels;
-
-	m_CurKeyFrameIndices.resize(m_iNumChannels);
-
-	for (size_t i = 0; i < m_iNumChannels; ++i)
-	{
-		/* 채널(컨트롤당하는뼈)의 수 만큼 루프 돌며 객체 생성하고 Channels 벡터에 저장. */
-		/* 모든 채널들을 순회하며 일괄처리를 하기위한 목적 외에는 딱히 큰 목적이 없음. 중요한 것은 CChannel class의 기능임. */
-		CChannel* pChannel = CChannel::Create(_tAnimDesc.vecChannels[i]);
-		if (nullptr == pChannel)
-			return E_FAIL;
-
-		m_Channels.push_back(pChannel);
+		m_vecChannel.push_back(pChannel);
 	}
 	return S_OK;
 }
 
-_bool CAnimation::Update_TransformationMatrices(const vector<CBone*>& _vecBones, _bool _isLoop, _float _fTransitionReadyPercent, _bool* isTransition, _float _fTimeDelta)
+bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta)
 {
-	// 현재 애니메이션 재생이 완료되었다면 true return.
 
-	m_fCurTrackPosition += m_fTickPerSecond * _fTimeDelta;
-	if (m_fCurTrackPosition / m_fDuration >= _fTransitionReadyPercent)
+	if (m_fCurrentTrackPosition >= m_fDuration)
 	{
-		if(false == _isLoop)
-			*isTransition = true;
-	}
-
-	if (true == _isLoop && m_fCurTrackPosition >= m_fDuration)
-	{
-		m_fCurTrackPosition = 0.f;
-
-	}
-	else if (m_fCurTrackPosition >= m_fDuration)
+		if (true == m_bLoop)
+			m_fCurrentTrackPosition = 0.f;
+		else
 			return true;
-
-	for (size_t i = 0; i < m_iNumChannels; ++i)
-	{
-		m_Channels[i]->Update_TransformationMatrix(m_fCurTrackPosition, &m_CurKeyFrameIndices[i], _vecBones);
 	}
 
+
+	for (size_t i = 0; i < m_iNumChannels; i++)
+	{
+		m_vecChannel[i]->Update_TransformationMatrix(m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[i], Bones);
+	}
+	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta;
+
+	for (auto& tEvnt : m_listAnimEvent)
+	{
+		if (tEvnt.bIsTriggered)
+			continue;
+		if (Get_Progress() >= tEvnt.fTime)
+		{
+			tEvnt.pFunc();
+			tEvnt.bIsTriggered = true;
+		}
+	}
 	return false;
 }
 
-_bool CAnimation::Update_TransformationMatrices(const vector<CBone*>& _vecBones, _bool _isLoop, _float _fTimeDelta)
+bool CAnimation::Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& mapAnimTransLeftFrame)
 {
-	// 현재 애니메이션 재생이 완료되었다면 true return.
-
-	m_fCurTrackPosition += m_fTickPerSecond * _fTimeDelta;
-	if (true == _isLoop && m_fCurTrackPosition >= m_fDuration)
+	float _fAnimTransitionTrackPos = m_fAnimTransitionTime * m_fTickPerSecond;
+	if (m_fCurrentTrackPosition >= _fAnimTransitionTrackPos)
 	{
-		m_fCurTrackPosition = 0.f;
-	}
-	else if (m_fCurTrackPosition >= m_fDuration)
+		Reset_CurrentTrackPosition();
 		return true;
+	}
+	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta;
 
-	for (size_t i = 0; i < m_iNumChannels; ++i)
+	_float			fRatio = m_fCurrentTrackPosition / _fAnimTransitionTrackPos;
+	KEYFRAME tFrame;
+	for (_uint channel = 0; channel < m_iNumChannels; channel++)
 	{
-		m_Channels[i]->Update_TransformationMatrix(m_fCurTrackPosition, &m_CurKeyFrameIndices[i], _vecBones);
+		_uint iBoneIdx = m_vecChannel[channel]->Get_BoneIndex();
+		KEYFRAME tLeftKey;
+		if (mapAnimTransLeftFrame.find(iBoneIdx) == mapAnimTransLeftFrame.end())
+			tLeftKey = m_vecChannel[channel]->Get_KeyFrame(0);
+		else
+			tLeftKey = mapAnimTransLeftFrame.at(iBoneIdx);
+		tFrame = Lerp_Frame(tLeftKey, m_vecChannel[channel]->Get_KeyFrame(0), fRatio);
+		Bones[iBoneIdx]->Set_TransformationMatrix(XMMatrixAffineTransformation(XMLoadFloat3(&tFrame.vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&tFrame.vRotation), XMVectorSetW(XMLoadFloat3(&tFrame.vPosition), 1.f)));
 	}
 
 	return false;
 }
 
-void CAnimation::Reset_AnimationProgress()
+void CAnimation::Reset_CurrentTrackPosition()
 {
-	m_fCurTrackPosition = 0.0f;
-	ZeroMemory(&m_CurKeyFrameIndices.front(), sizeof(_uint) * m_CurKeyFrameIndices.size());
+	m_fCurrentTrackPosition = 0.f;
+	ZeroMemory(m_CurrentKeyFrameIndices.data(), 0);
+	for (auto& tEvnt : m_listAnimEvent)
+		tEvnt.bIsTriggered = false;
 }
 
-CAnimation* CAnimation::Create(const aiAnimation* _pAIAnimation, const CModel* _pModel)
+void CAnimation::Get_CurrentFrame(map<_uint,KEYFRAME>* pOutKeyFrames) const
+{
+	for (auto& channel : m_vecChannel)
+		channel->Get_Frame(m_fCurrentTrackPosition, pOutKeyFrames);
+}
+
+_float CAnimation::Get_Progress()
+{
+	return m_fCurrentTrackPosition / m_fDuration;
+}
+
+bool CAnimation::Is_AnimChangeable()
+{
+	return m_fDuration * m_fPostDelayPercentage <= m_fCurrentTrackPosition;
+}
+
+void CAnimation::Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const
+{
+	for (auto& channel : m_vecChannel)
+		channel->Get_Frame(fTrackPos, pOutKeyFrames);
+}
+
+
+void CAnimation::Register_AnimEvent(ANIM_EVENT tAnimEvent)
+{
+	m_listAnimEvent.push_back(tAnimEvent);
+}
+
+void CAnimation::Ready_AnimTransition()
+{
+	Reset_CurrentTrackPosition();
+}
+
+CAnimation* CAnimation::Create(ifstream& inFile, const CModel* pModel)
 {
 	CAnimation* pInstance = new CAnimation();
 
-	if (FAILED(pInstance->Initialize(_pAIAnimation, _pModel)))
-	{
-		MSG_BOX("Failed to Created : CAnimation");
-		Safe_Release(pInstance);
-	}
-	return pInstance;
-}
-
-CAnimation* CAnimation::Create(const FBX_ANIMATION& _tAnimDesc)
-{
-	CAnimation* pInstance = new CAnimation();
-
-	if (FAILED(pInstance->Initialize(_tAnimDesc)))
+	if (FAILED(pInstance->Initialize(inFile, pModel)))
 	{
 		MSG_BOX("Failed to Created : CAnimation");
 		Safe_Release(pInstance);
@@ -154,31 +183,10 @@ CAnimation* CAnimation::Clone()
 
 void CAnimation::Free()
 {
-	for (auto& pChannel : m_Channels)
-		Safe_Release(pChannel);
-	m_Channels.clear();
-
 	__super::Free();
-}
 
-HRESULT CAnimation::ConvertToBinary(HANDLE _hFile, DWORD* _dwByte)
-{
-	if (!WriteFile(_hFile, m_szName, sizeof(m_szName), _dwByte, nullptr))
-		return E_FAIL;
+	for (auto& pChannel : m_vecChannel)
+		Safe_Release(pChannel);
 
-	if (!WriteFile(_hFile, &m_iNumChannels, sizeof(_uint), _dwByte, nullptr))
-		return E_FAIL;
-
-	if (!WriteFile(_hFile, &m_fDuration, sizeof(_float), _dwByte, nullptr))
-		return E_FAIL;
-
-	if (!WriteFile(_hFile, &m_fTickPerSecond, sizeof(_float), _dwByte, nullptr))
-		return E_FAIL;
-
-	/* Channel 순회 */
-	for (auto& pChannel : m_Channels)
-	{
-		pChannel->ConvertToBinary(_hFile, _dwByte);
-	}
-	return S_OK;
+	m_vecChannel.clear();
 }
