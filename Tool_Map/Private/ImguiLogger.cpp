@@ -30,7 +30,6 @@ HRESULT CImguiLogger::Draw_Log()
 	//string strLogTypeText;
 	//for (const LOG_MSG& Msg : m_vecLog)
 	//	m_tLog.AddLog((("%s"+Msg.strLogMsg).c_str()), m_arrTypeText[Msg.eType].c_str());
-
 	m_tLog.Draw("Log");
 
     return S_OK;

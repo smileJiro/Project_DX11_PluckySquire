@@ -51,9 +51,10 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			else
 				hr = CreateWICTextureFromFile(m_pDevice, szWideFullPath, nullptr, &pSRV);
 
-			delete[] strTexturePath;
 			if (FAILED(hr))
-				continue;
+				hr = CreateDDSTextureFromFile(m_pDevice, TEXT("../Bin/Resources/Textures/Default.dds"), nullptr, &pSRV);
+
+			assert(SUCCEEDED(hr));
 
 			m_MaterialTexture[texIdx].push_back(pSRV);
 
