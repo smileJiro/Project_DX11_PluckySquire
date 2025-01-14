@@ -83,7 +83,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pSound_Manager)
 		return E_FAIL;
 	
-	m_pImgui_Manager = CImgui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext, _float2(EngineDesc.iViewportWidth, EngineDesc.iViewportHeight));
+	m_pImgui_Manager = CImgui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext, _float2((_float)EngineDesc.iViewportWidth, (_float)EngineDesc.iViewportHeight));
 	if (nullptr == m_pImgui_Manager)
 		return E_FAIL;
 
@@ -195,7 +195,7 @@ _float CGameInstance::Get_TimeDelta(const _wstring& strTimerTag)
 _int CGameInstance::Get_FPS()
 {
 	if (nullptr == m_pTimer_Manager)
-		return 0.f;
+		return 0;
 
 	return m_pTimer_Manager->Get_FPS();
 }

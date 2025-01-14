@@ -88,7 +88,7 @@ _bool CVIBuffer_Particle_Instance::Drop(_float _fTimeDelta)
     VTXINSTANCE* pVertices = static_cast<VTXINSTANCE*>(SubResource.pData);
 
     /* 모든 Instance들에 대해 순회하며 각각의 속도 만큼 떨어트린다. */
-    for (size_t i = 0; i < m_iNumInstances; ++i)
+    for (_uint i = 0; i < m_iNumInstances; ++i)
     {
         pVertices[i].vTranslation.y -= m_pSpeeds[i] * _fTimeDelta;
         pVertices[i].vLifeTime.y += _fTimeDelta; /* y : TimeAcc*/
@@ -124,7 +124,7 @@ _bool CVIBuffer_Particle_Instance::Spread(_float _fTimeDelta)
 
     VTXINSTANCE* pVertices = static_cast<VTXINSTANCE*>(SubResource.pData);
     _int isFinishedCount = 0;
-    for (size_t i = 0; i < m_iNumInstances; ++i)
+    for (_uint i = 0; i < m_iNumInstances; ++i)
     {
         /* 현재 Paticle들의 위치와, Pibot을 기준으로 방향벡터를 구한다. */
         _vector vDir = XMVector3Normalize(XMLoadFloat4(&pVertices[i].vTranslation) - XMVectorSetW(XMLoadFloat3(&m_vPivot), 1.0f));
@@ -178,7 +178,7 @@ _bool CVIBuffer_Particle_Instance::SpreadAndDrop(_float _fTimeDelta)
 
     VTXINSTANCE* pVertices = static_cast<VTXINSTANCE*>(SubResource.pData);
     _int isFinishedCount = 0;
-    for (size_t i = 0; i < m_iNumInstances; ++i)
+    for (_uint i = 0; i < m_iNumInstances; ++i)
     {
 
 
@@ -270,7 +270,7 @@ void CVIBuffer_Particle_Instance::Start_Particle()
 
     VTXINSTANCE* pVertices = static_cast<VTXINSTANCE*>(SubResource.pData);
     _int isFinishedCount = 0;
-    for (size_t i = 0; i < m_iNumInstances; ++i)
+    for (_uint i = 0; i < m_iNumInstances; ++i)
     {
         pVertices[i].vTranslation = m_pInstanceVertices[i].vTranslation;
         pVertices[i].vLifeTime.y = 0.0f;

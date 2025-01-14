@@ -142,7 +142,7 @@ HRESULT CModel::Ready_Meshes()
 	/* 1. Mesh의 개수 : 구분되어있는 각 파츠 Mesh의 개수를 의미함. (Assimp 특징 : Num 변수가 있으면 해당 객체에 대한 배열을 저장하는 포인터 타입 변수가 있다. )*/
 	/* 2. Mesh의 개수만큼 반복문을 돌며, Mesh 객체를 생성하고, 벡터 컨테이너에 넣어준다. */
 	/* 3. 크기, 회전에 대한 변환 행렬을 만들어서 메쉬를 생성시 초기 vertex의 로컬스페이스에서의 변환을 수행해준다. */
-	for (size_t i = 0; i < m_iNumMeshes; ++i)
+	for (_uint i = 0; i < m_iNumMeshes; ++i)
 	{
 		// m_pAIScene->mMeshes[i] >>> aiMesh** Mesh의 정점 개수, 면의 개수 등등 VB, IB를 구성하기 위한 데이터들이 모두 들어있다.
 		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eModelType, this, m_pAIScene->mMeshes[i], XMLoadFloat4x4(&m_PreTransformMatrix));
@@ -163,16 +163,16 @@ HRESULT CModel::Ready_Materials(const _char* pModelFilePath)
 	만약, 축소가 발생했다면, resize() 한 사이즈만큼은 데이터의 값이 남아있고, 범위보다 큰 데이터는 날라감. 여기서 push_back하게되면 마지막 원소 다음 
 	공간에 데이터가 추가됌.*/
 	m_Materials.resize(m_iNumMaterials);
-	for (size_t i = 0; i < m_iNumMaterials; i++)
+	for (_uint i = 0; i < m_iNumMaterials; i++)
 	{
 		m_Materials[i] = CMaterial::Create();
 		// 해당되는 텍스쳐 정보를 받아옴 (diffuse, )
 		aiMaterial* pAIMaterial = m_pAIScene->mMaterials[i];
-		for (size_t j = 0; j < AI_TEXTURE_TYPE_MAX; j++)
+		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX; j++)
 		{
 			// 해당 되는 텍스쳐 장수를 받아옴.
 			_uint		iNumTextures = pAIMaterial->GetTextureCount(aiTextureType(j));
-			for (size_t k = 0; k < iNumTextures; k++)
+			for (_uint k = 0; k < iNumTextures; k++)
 			{
 				// Texture에 경로 정보를 만들어서 저장한다. >> 우리는 fbx 폴더와 같은 공간에 텍스쳐를 두는 것을 기준으로 함.
 				// fbx 파일 경로 + 텍스쳐이름을 조합해서 만들 것.
@@ -205,7 +205,7 @@ HRESULT CModel::Ready_Materials(const _char* pModelFilePath)
 				_tchar szFinalPath[MAX_PATH] = TEXT("");
 
 				// 1바이트 문자열을 멀티바이트 문자열로 변환. (szFinalPath는 현재는 Length가 0이니까, MAX_PATH 넣어줘야함.)
-				MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath), szFinalPath, MAX_PATH);
+				MultiByteToWideChar(CP_ACP, 0, szFullPath, (_int)strlen(szFullPath), szFinalPath, MAX_PATH);
 
 				ID3D11ShaderResourceView* pSRV = nullptr;
 
@@ -239,7 +239,7 @@ HRESULT CModel::Ready_Meshes(vector<FBX_MESH>& _vecMesh)
 {
 	/* 0. 읽어들인 데이터를 기반으로 잘 정리하여, Mesh 안에 데이터를 넣어준다. */
 	
-	for (size_t i = 0; i < m_iNumMeshes; ++i)
+	for (_uint i = 0; i < m_iNumMeshes; ++i)
 	{
 		// m_pAIScene->mMeshes[i] >>> aiMesh** Mesh의 정점 개수, 면의 개수 등등 VB, IB를 구성하기 위한 데이터들이 모두 들어있다.
 		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eModelType, _vecMesh[i], XMLoadFloat4x4(&m_PreTransformMatrix));
@@ -271,11 +271,11 @@ HRESULT CModel::Ready_Materials(void* _pModelDesc)
 		const vector<FBX_MATERIAL>& vecMaterialData = pNonAnimDesc->vecMaterials;
 		m_iNumMaterials = pNonAnimDesc->iNumMaterials;
 		m_Materials.resize(m_iNumMaterials);
-		for (size_t i = 0; i < m_iNumMaterials; ++i)
+		for (_uint i = 0; i < m_iNumMaterials; ++i)
 		{
 			m_Materials[i] = CMaterial::Create();
 
-			for (size_t j = 0; j < MATERIAL_TEXTURE_MAX; ++j)
+			for (_uint j = 0; j < MATERIAL_TEXTURE_MAX; ++j)
 			{
 				for (size_t k = 0; k < vecMaterialData[i].vecTextureFullPath[j].size(); ++k)
 				{
@@ -318,11 +318,11 @@ HRESULT CModel::Ready_Materials(void* _pModelDesc)
 		const vector<FBX_MATERIAL>& vecMaterialData = pAnimDesc->vecMaterials;
 		m_iNumMaterials = pAnimDesc->iNumMaterials;
 		m_Materials.resize(m_iNumMaterials);
-		for (size_t i = 0; i < m_iNumMaterials; ++i)
+		for (_uint i = 0; i < m_iNumMaterials; ++i)
 		{
 			m_Materials[i] = CMaterial::Create();
 
-			for (size_t j = 0; j < MATERIAL_TEXTURE_MAX; ++j)
+			for (_uint j = 0; j < MATERIAL_TEXTURE_MAX; ++j)
 			{
 				for (size_t k = 0; k < vecMaterialData[i].vecTextureFullPath[j].size(); ++k)
 				{
@@ -358,7 +358,7 @@ HRESULT CModel::Ready_Materials(void* _pModelDesc)
 		}
 
 	}
-
+	return S_OK;
 }
 
 HRESULT CModel::Ready_Bones(const aiNode* _pNode, _int _iParentBoneIndex)
@@ -371,10 +371,10 @@ HRESULT CModel::Ready_Bones(const aiNode* _pNode, _int _iParentBoneIndex)
 	/* 1. 벡터에 생성한 Bone을 담는다. */
 	m_Bones.push_back(pBone);
 	/* 2. 벡터의 현재 사이즈 - 1을 부모노드 인덱스로 설정한다. */
-	_iParentBoneIndex = m_Bones.size() - 1;
+	_iParentBoneIndex = ((_int)m_Bones.size()) - 1;
 
 	/* 3. 자식 뼈의 개수만큼 루프 */
-	for (size_t i = 0; i < _pNode->mNumChildren; ++i)
+	for (_uint i = 0; i < _pNode->mNumChildren; ++i)
 	{
 		/* 4. 재귀 호출 (자식 정보를 들고있는 aiNode*, 위에서 구해둔 부모 인덱스.)*/
 		Ready_Bones(_pNode->mChildren[i], _iParentBoneIndex);
@@ -385,7 +385,7 @@ HRESULT CModel::Ready_Bones(const aiNode* _pNode, _int _iParentBoneIndex)
 
 HRESULT CModel::Ready_Bones(const vector<FBX_BONE>& _vecBones)
 {
-	for (size_t i = 0; i < m_iNumBones; ++i)
+	for (_uint i = 0; i < m_iNumBones; ++i)
 	{
 		CBone* pBone = CBone::Create(_vecBones[i]);
 
@@ -399,7 +399,7 @@ HRESULT CModel::Ready_Animations()
 	/* 해당 모델의 총 애니메이션 개수 저장. (idle, attack etc...)*/
 	m_iNumAnimations = m_pAIScene->mNumAnimations;
 	
-	for (size_t i = 0; i < m_iNumAnimations; ++i)
+	for (_uint i = 0; i < m_iNumAnimations; ++i)
 	{
 		CAnimation* pAnimation = CAnimation::Create(m_pAIScene->mAnimations[i], this);
 		if (nullptr == pAnimation)
@@ -413,7 +413,7 @@ HRESULT CModel::Ready_Animations()
 
 HRESULT CModel::Ready_Animations(const vector<FBX_ANIMATION>& _vecAnimation)
 {
-	for (size_t i = 0; i < m_iNumAnimations; ++i)
+	for (_uint i = 0; i < m_iNumAnimations; ++i)
 	{
 		CAnimation* pAnimation = CAnimation::Create(_vecAnimation[i]);
 		if (nullptr == pAnimation)
@@ -667,7 +667,7 @@ HRESULT CModel::ConvertToBinary(const _char* _pModelFilePath, const _tchar* _szS
 	/* Model 기본데이터 */
 	_uint iModelType = (_uint)m_eModelType;
 	WriteFile(hFile, &iModelType, sizeof(_uint), &dwByte, NULL);
-	_uint iNumBones = m_Bones.size();
+	_uint iNumBones = (_uint)m_Bones.size();
 	WriteFile(hFile, &iNumBones, sizeof(_uint), &dwByte, NULL);
 	WriteFile(hFile, &m_iNumMeshes, sizeof(_uint), &dwByte, NULL);
 	WriteFile(hFile, &m_iNumAnimations, sizeof(_uint), &dwByte, NULL);

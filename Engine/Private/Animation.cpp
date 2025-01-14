@@ -35,7 +35,7 @@ HRESULT CAnimation::Initialize(const aiAnimation* _pAnimation, const CModel* _pM
 	m_iNumChannels = _pAnimation->mNumChannels;
 
 	m_CurKeyFrameIndices.resize(m_iNumChannels);
-	for (size_t i = 0; i < m_iNumChannels; ++i)
+	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
 		/* 채널(컨트롤당하는뼈)의 수 만큼 루프 돌며 객체 생성하고 Channels 벡터에 저장. */
 		/* 모든 채널들을 순회하며 일괄처리를 하기위한 목적 외에는 딱히 큰 목적이 없음. 중요한 것은 CChannel class의 기능임. */
@@ -57,7 +57,7 @@ HRESULT CAnimation::Initialize(const FBX_ANIMATION& _tAnimDesc)
 
 	m_CurKeyFrameIndices.resize(m_iNumChannels);
 
-	for (size_t i = 0; i < m_iNumChannels; ++i)
+	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
 		/* 채널(컨트롤당하는뼈)의 수 만큼 루프 돌며 객체 생성하고 Channels 벡터에 저장. */
 		/* 모든 채널들을 순회하며 일괄처리를 하기위한 목적 외에는 딱히 큰 목적이 없음. 중요한 것은 CChannel class의 기능임. */
@@ -89,7 +89,7 @@ _bool CAnimation::Update_TransformationMatrices(const vector<CBone*>& _vecBones,
 	else if (m_fCurTrackPosition >= m_fDuration)
 			return true;
 
-	for (size_t i = 0; i < m_iNumChannels; ++i)
+	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
 		m_Channels[i]->Update_TransformationMatrix(m_fCurTrackPosition, &m_CurKeyFrameIndices[i], _vecBones);
 	}
@@ -109,7 +109,7 @@ _bool CAnimation::Update_TransformationMatrices(const vector<CBone*>& _vecBones,
 	else if (m_fCurTrackPosition >= m_fDuration)
 		return true;
 
-	for (size_t i = 0; i < m_iNumChannels; ++i)
+	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
 		m_Channels[i]->Update_TransformationMatrix(m_fCurTrackPosition, &m_CurKeyFrameIndices[i], _vecBones);
 	}

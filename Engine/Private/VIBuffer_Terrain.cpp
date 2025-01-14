@@ -73,9 +73,9 @@ HRESULT CVIBuffer_Terrain::Initialize(void* _pArg)
     ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
     m_vecVerticesPos.clear();
     m_vecVerticesPos.reserve(m_iNumVertices);
-    for (size_t i = 0; i < m_iNumVerticesX; ++i)
+    for (_uint i = 0; i < m_iNumVerticesX; ++i)
     {
-        for (size_t j = 0; j < m_iNumVerticesZ; ++j)
+        for (_uint j = 0; j < m_iNumVerticesZ; ++j)
         {
             _uint iIndex = i * m_iNumVerticesX + j;
 
@@ -96,9 +96,9 @@ HRESULT CVIBuffer_Terrain::Initialize(void* _pArg)
     _uint iIndicesCount = 0;
 
     // 여기서 반복문의 횟수는 해당 버텍스들로 이루어진 Rect의 수이다. 
-    for (size_t i = 0; i < m_iNumVerticesX - 1; ++i)
+    for (_uint i = 0; i < m_iNumVerticesX - 1; ++i)
     {
-        for (size_t j = 0; j < m_iNumVerticesZ - 1; ++j)
+        for (_uint j = 0; j < m_iNumVerticesZ - 1; ++j)
         {
             _uint iIndex = i * m_iNumVerticesX + j; 
 
@@ -146,7 +146,7 @@ HRESULT CVIBuffer_Terrain::Initialize(void* _pArg)
             XMStoreFloat3(&pVertices[iIndices[3]].vNormal, XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
         }
     }
-    for (size_t i = 0; i < m_iNumVertices; ++i)
+    for (_uint i = 0; i < m_iNumVertices; ++i)
     {
         XMStoreFloat3(&pVertices[i].vNormal, XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
     }
@@ -262,9 +262,9 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Height(void* _pArg)
     ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
     m_vecVerticesPos.clear();
     m_vecVerticesPos.reserve(m_iNumVertices);
-    for (size_t i = 0; i < m_iNumVerticesX; ++i)
+    for (_uint i = 0; i < m_iNumVerticesX; ++i)
     {
-        for (size_t j = 0; j < m_iNumVerticesZ; ++j)
+        for (_uint j = 0; j < m_iNumVerticesZ; ++j)
         {
             _uint iIndex = i * m_iNumVerticesX + j;
 
@@ -285,9 +285,9 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Height(void* _pArg)
     _uint iIndicesCount = 0;
 
     // 여기서 반복문의 횟수는 해당 버텍스들로 이루어진 Rect의 수이다. 
-    for (size_t i = 0; i < m_iNumVerticesX - 1; ++i)
+    for (_uint i = 0; i < m_iNumVerticesX - 1; ++i)
     {
-        for (size_t j = 0; j < m_iNumVerticesZ - 1; ++j)
+        for (_uint j = 0; j < m_iNumVerticesZ - 1; ++j)
         {
             _uint iIndex = i * m_iNumVerticesX + j;
 
@@ -334,7 +334,7 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Height(void* _pArg)
             XMStoreFloat3(&pVertices[iIndices[3]].vNormal, XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
         }
     }
-    for (size_t i = 0; i < m_iNumVertices; ++i)
+    for (_uint i = 0; i < m_iNumVertices; ++i)
     {
         XMStoreFloat3(&pVertices[i].vNormal, XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
     }
@@ -387,9 +387,9 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Flat(void* _pArg)
         Safe_Release(m_pIB);
 
     VIBUFFER_TERRAIN_DESC* pDesc = static_cast<VIBUFFER_TERRAIN_DESC*>(_pArg);
-    m_fVerticesItv = pDesc->fVerticesItv;
-    m_iNumVerticesX = pDesc->fVerticesX;
-    m_iNumVerticesZ = pDesc->fVerticesZ;
+    m_fVerticesItv = (_float)pDesc->fVerticesItv;
+    m_iNumVerticesX = (_uint)pDesc->fVerticesX;
+    m_iNumVerticesZ = (_uint)pDesc->fVerticesZ;
     
 
     m_iNumVertexBuffers = 1;
@@ -431,9 +431,9 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Flat(void* _pArg)
     _uint iIndicesCount = 0;
 
     // 여기서 반복문의 횟수는 해당 버텍스들로 이루어진 Rect의 수이다. 
-    for (size_t i = 0; i < m_iNumVerticesX - 1; ++i)
+    for (_uint i = 0; i < m_iNumVerticesX - 1; ++i)
     {
-        for (size_t j = 0; j < m_iNumVerticesZ - 1; ++j)
+        for (_uint j = 0; j < m_iNumVerticesZ - 1; ++j)
         {
             _uint iIndex = i * m_iNumVerticesX + j;
 
@@ -481,7 +481,7 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Flat(void* _pArg)
         }
     }
 
-    for (size_t i = 0; i < m_iNumVertices; ++i)
+    for (_uint i = 0; i < m_iNumVertices; ++i)
     {
         XMStoreFloat3(&pVertices[i].vNormal, XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
     }

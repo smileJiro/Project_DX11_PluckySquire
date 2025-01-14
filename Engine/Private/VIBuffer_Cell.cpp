@@ -40,7 +40,7 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* _pPoints)
 	ZeroMemory(pVertices, sizeof(VTXPOS) * m_iNumVertices);
 
 	/* 매개변수로 들어온 Points[] 자체를 곧바로 Buffer의 Position으로 설정한다. */
-	for (size_t i = 0; i < m_iNumVertices; i++)
+	for (_uint i = 0; i < m_iNumVertices; i++)
 		pVertices[i].vPosition = _pPoints[i];
 
 	ZeroMemory(&m_SubResourceDesc, sizeof m_SubResourceDesc);

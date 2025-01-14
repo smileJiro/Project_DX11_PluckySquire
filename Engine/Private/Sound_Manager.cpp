@@ -103,7 +103,7 @@ _float CSound_Manager::Get_SFXVolume(const wstring& strSFXTag)
     if (nullptr == pSFXs)
         return -1.0f;
 
-    (*pSFXs)[0]->Get_Volume();
+    return (*pSFXs)[0]->Get_Volume();
 }
 
 void CSound_Manager::Stop_SFX(const wstring& strSFXTag)
@@ -284,7 +284,7 @@ _bool CSound_Manager::Is_BGMPlaying(const wstring& strBGMTag)
 {
     auto iter = m_BGMs.find(strBGMTag);
     if (iter == m_BGMs.end())
-        return -1.0f;
+        return false;
 
     return iter->second->Is_Playing();
 }
