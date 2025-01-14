@@ -8,11 +8,16 @@ class ENGINE_DLL CModelObject abstract : public CPartObject
 public:
 	typedef struct tagModelObjectDesc : public CPartObject::PARTOBJECT_DESC
 	{
+		// 2D Shader Prototype Tag
 		_wstring strShaderPrototypeTag_2D;
+		// 2D Shader Prototype Tag
 		_wstring strShaderPrototypeTag_3D;
+		// 3D Model Prototype Tag (2D는 기본 VIBuffer_Rect 임)
 		_wstring strModelPrototypeTag;
 
+		// 2D ShaderPass
 		_uint iShaderPass_2D = {};
+		// 3D ShaderPass
 		_uint iShaderPass_3D = {};
 	}MODELOBJECT_DESC;
 

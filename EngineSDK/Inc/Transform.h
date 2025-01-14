@@ -9,9 +9,13 @@ public:
 	enum STATE { STATE_RIGHT, STATE_UP, STATE_LOOK, STATE_POSITION, STATE_END };
 	typedef struct tagTransformDesc
 	{
+		// 초당 이동속도
 		_float	fSpeedPerSec = {};
+		// 초당 회전속도
 		_float	fRotationPerSec = {};
+		// 초기화 위치
 		_float3 vPosition = { 0.0f, 0.0f, 0.0f };
+		// 초기화 크기
 		_float3 vScaling = { 1.0f, 1.0f, 1.0f };
 	}TRANSFORM_DESC;
 

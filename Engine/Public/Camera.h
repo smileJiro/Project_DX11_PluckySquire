@@ -11,11 +11,15 @@ public:
 public:
 	typedef struct tagCameraDesc : public CGameObject::GAMEOBJECT_DESC
 	{
+		// 카메라 타입
 		TYPE			eCameraType;
+
 		_float3			vEye = {};
 		_float3			vAt = {};
 
+		// 줌 레벨임 NORMAL이 기본값 임
 		ZOOM_LEVEL		eZoomLevel = NORMAL;
+
 		_float			fAspect = { 0.f };
 		_float			fNear = { 0.f };
 		_float			fFar = { 0.f };
@@ -111,7 +115,7 @@ protected: /* Shake */
 public:
 	virtual CGameObject* Clone(void* _pArg) = 0;
 	virtual void Free() override;
-	virtual HRESULT Safe_Release_DeadObjects(); // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
+	virtual HRESULT Cleanup_DeadReferences(); // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
 
 };
 

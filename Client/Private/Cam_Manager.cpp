@@ -48,7 +48,7 @@ HRESULT CCam_Manager::Change_Cam(CAM_TYPE _eType)
     switch (m_eCamType)
     {
     case Client::CCam_Manager::CAM_TARGET:
-        m_pTargetCamera->Active_On();
+        m_pTargetCamera->Set_Active(true);
         break;
     }
 

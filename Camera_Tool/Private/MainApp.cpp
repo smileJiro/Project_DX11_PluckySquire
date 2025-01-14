@@ -61,6 +61,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	ImGui::RenderPlatformWindowsDefault(); // 여기 위치해야함.
 
+
 }
 
 HRESULT CMainApp::Render()
@@ -74,7 +75,6 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Draw();
 
 	m_pGameInstance->Render_DrawData_Imgui();
-
 
 	if (FAILED(m_pGameInstance->Render_End()))
 		return E_FAIL;

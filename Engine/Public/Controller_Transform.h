@@ -10,10 +10,15 @@ class ENGINE_DLL CController_Transform final : public CBase
 public:
 	typedef struct tagControllerTransformDesc
 	{
+		// 2D, 3D 좌표계 여부 enum
 		COORDINATE							eStartCoord = COORDINATE_LAST;
+		// 좌표계 변환 가능 여부
 		_bool								isCoordChangeEnable = false;
+		// 2D Transform의 Desc, 사용하지 않는다면 채우지 않아도 됌.
 		CTransform_2D::TRANSFORM_2D_DESC	tTransform2DDesc = {};
+		// 2D Transform의 Desc, 사용하지 않는다면 채우지 않아도 됌.
 		CTransform_3D::TRANSFORM_3D_DESC	tTransform3DDesc = {};
+
 	}CON_TRANSFORM_DESC;
 
 private:
@@ -39,9 +44,7 @@ public: /* 2D, 3D */
 	void					RotationQuaternion(const _float3& _vRadianXYZ);
 
 	void					Turn(_float _fRadian, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 기존 회전을 기준으로 추가로 정해진 속도로 회전한다.
-
 	_float					Compute_Distance(_fvector _vTargetPos); // 거리 계산 함수.
-
 	HRESULT					Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 
 public: /* 2D */

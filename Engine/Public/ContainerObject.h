@@ -9,7 +9,8 @@ class ENGINE_DLL CContainerObject abstract : public CGameObject
 public:
 	typedef struct tagContainerObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
-		_uint			iNumPartObjects; // 파트 오브젝트의 개수
+		// 파트 오브젝트의 개수
+		_uint			iNumPartObjects; 
 	}CONTAINEROBJ_DESC;
 
 protected:
@@ -43,7 +44,7 @@ protected:
 
 public:
 	virtual void Free() override;
-	HRESULT Safe_Release_DeadObjects() override;
+	HRESULT Cleanup_DeadReferences() override;
 };
 
 END
