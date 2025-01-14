@@ -17,7 +17,7 @@ _vector CGlobalFunction_Manager::Get_OnClickPos(HWND hWnd)
 	GetCursorPos(&pt);
 	ScreenToClient(hWnd, &pt);
 
-	_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+	_vector vMousePos = XMVectorSet((_float)pt.x, (_float)pt.y, 0.f, 1.f);
 
 	_uint		iNumViewports = { 1 };
 	D3D11_VIEWPORT		ViewportDesc{};
@@ -122,7 +122,7 @@ _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 	GetCursorPos(&ptCursorPos);
 	ScreenToClient(hWnd, &ptCursorPos);
 
-	return _float2(ptCursorPos.x, ptCursorPos.y);
+	return _float2((_float)ptCursorPos.x, (_float)ptCursorPos.y);
 }
 
 string CGlobalFunction_Manager::WStringToString(const _wstring& _wstr)

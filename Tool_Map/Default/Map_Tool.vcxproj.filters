@@ -37,6 +37,9 @@
     <Filter Include="02. Levels\Map_Tool">
       <UniqueIdentifier>{a3250756-0bc0-4fd9-94c5-1398c293aee1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Imgui">
+      <UniqueIdentifier>{edf30b50-710f-417b-be8a-708f3d47ab6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -81,6 +84,12 @@
     <ClInclude Include="..\Public\Level_Map_Tool.h">
       <Filter>02. Levels\Map_Tool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImguiLogger.h">
+      <Filter>05. Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>03. GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -120,6 +129,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Map_Tool.cpp">
       <Filter>02. Levels\Map_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImguiLogger.cpp">
+      <Filter>05. Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>03. GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
