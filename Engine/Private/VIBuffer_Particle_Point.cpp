@@ -11,11 +11,10 @@ CVIBuffer_Particle_Point::CVIBuffer_Particle_Point(const CVIBuffer_Particle_Poin
 {
 }
 
-HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const PARTICLE_DESC& _ParticleDesc)
+HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const json& _json)
 {
 	m_iNumVertexBuffers = 2;
-	m_iNumInstances = _ParticleDesc.iNumInstances;
-
+	m_iNumInstances = _json["Count"];
 
 	m_iVertexStride = sizeof(VTXPOINT);
 	m_iNumVertices = 1; /* 정점의 개수는 1개이겠지. */
@@ -40,7 +39,7 @@ HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const PARTICLE_DESC& _Par
 
 	/* 정점이 1개라 */
 	pVertices->vPosition = XMFLOAT3(0.0f, 0.0f, 0.f);
-	pVertices->vSize = XMFLOAT2(1.f, 1.f);
+	pVertices->vSize = XMFLOAT2(1.f, 1.f);						// TODO : 사이즈 설정
 
 	ZeroMemory(&m_SubResourceDesc, sizeof m_SubResourceDesc);
 	m_SubResourceDesc.pSysMem = pVertices;
@@ -79,7 +78,7 @@ HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const PARTICLE_DESC& _Par
 
 #pragma region INSTANCE_BUFFER
 
-	m_iInstanceStride = sizeof(VTXINSTANCE);
+	m_iInstanceStride = sizeof(VTXPOINTINSTANCE);
 	m_iNumIndicesPerInstance = 6; /* 동일하게 정점 6개당 1개의 Instance Buffer 할당. */
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
 
@@ -90,31 +89,50 @@ HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const PARTICLE_DESC& _Par
 	m_InstanceBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	m_InstanceBufferDesc.MiscFlags = 0;
 
-	m_pInstanceVertices = new VTXINSTANCE[m_iNumInstances];
-	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
+	VTXPOINTINSTANCE* pInstanceVertices = new VTXPOINTINSTANCE[m_iNumInstances];
+	m_pInstanceVertices = pInstanceVertices;
+	//m_pInstanceVertices = new VTXINSTANCE[m_iNumInstances];
+	ZeroMemory(pInstanceVertices, m_iInstanceStride * m_iNumInstances);
 
-	m_isLoop = _ParticleDesc.isLoop;
-	m_pSpeeds = new _float[m_iNumInstances];
-	m_vPivot = _ParticleDesc.vPivot;
 
+	// TODO : 이거에 대한 것들
+	//m_isLoop = _ParticleDesc.isLoop;
+	//m_pSpeeds = new _float[m_iNumInstances];
+	//m_vPivot = _ParticleDesc.vPivot;
+	
 	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
-		m_pSpeeds[i] = m_pGameInstance->Compute_Random(_ParticleDesc.vSpeed.x, _ParticleDesc.vSpeed.y);
-
-		_float		fSize = m_pGameInstance->Compute_Random(_ParticleDesc.vSize.x, _ParticleDesc.vSize.y);
+		// TODO : 스피드 설정
+		//m_pSpeeds[i] = m_pGameInstance->Compute_Random(_ParticleDesc.vSpeed.x, _ParticleDesc.vSpeed.y);		// TODO
 		
+		// TODO: UV 설정
+		pInstanceVertices[i].vUV = { 0.f, 0.f, 1.f, 1.f };		
+
+		// TODO : Size 설정
+		//_float		fSize = m_pGameInstance->Compute_Random(_ParticleDesc.vSize.x, _ParticleDesc.vSize.y);
+		_float fSize = 1.f;
+
 		m_pInstanceVertices[i].vRight = _float4(fSize, 0.f, 0.f, 0.f);
 		m_pInstanceVertices[i].vUp = _float4(0.f, fSize, 0.f, 0.f);
 		m_pInstanceVertices[i].vLook = _float4(0.f, 0.f, fSize, 0.f);
-		m_pInstanceVertices[i].vTranslation =
-			_float4(
-				m_pGameInstance->Compute_Random(_ParticleDesc.vCenter.x - _ParticleDesc.vRange.x * 0.5f, _ParticleDesc.vCenter.x + _ParticleDesc.vRange.x * 0.5f),
-				m_pGameInstance->Compute_Random(_ParticleDesc.vCenter.y - _ParticleDesc.vRange.y * 0.5f, _ParticleDesc.vCenter.y + _ParticleDesc.vRange.y * 0.5f),
-				m_pGameInstance->Compute_Random(_ParticleDesc.vCenter.z - _ParticleDesc.vRange.z * 0.5f, _ParticleDesc.vCenter.z + _ParticleDesc.vRange.z * 0.5f),
-				1.f);
+		// TODO : Translation 설정
+		m_pInstanceVertices[i].vTranslation = _float4(
+			0.f, 0.f, 0.f, 1.f
+		);
+			//_float4(
+			//	m_pGameInstance->Compute_Random(_ParticleDesc.vCenter.x - _ParticleDesc.vRange.x * 0.5f, _ParticleDesc.vCenter.x + _ParticleDesc.vRange.x * 0.5f),
+			//	m_pGameInstance->Compute_Random(_ParticleDesc.vCenter.y - _ParticleDesc.vRange.y * 0.5f, _ParticleDesc.vCenter.y + _ParticleDesc.vRange.y * 0.5f),
+			//	m_pGameInstance->Compute_Random(_ParticleDesc.vCenter.z - _ParticleDesc.vRange.z * 0.5f, _ParticleDesc.vCenter.z + _ParticleDesc.vRange.z * 0.5f),
+			//	1.f);
+
+		// TODO : Life Time 설정
+		/*m_pInstanceVertices[i].vLifeTime = _float2(
+			m_pGameInstance->Compute_Random(_ParticleDesc.vLifeTime.x, _ParticleDesc.vLifeTime.y),
+			0.f
+		);*/
 
 		m_pInstanceVertices[i].vLifeTime = _float2(
-			m_pGameInstance->Compute_Random(_ParticleDesc.vLifeTime.x, _ParticleDesc.vLifeTime.y),
+			1.f,
 			0.f
 		);
 	}
@@ -137,11 +155,11 @@ HRESULT CVIBuffer_Particle_Point::Initialize(void* _pArg)
 	return S_OK;
 }
 
-CVIBuffer_Particle_Point* CVIBuffer_Particle_Point::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const PARTICLE_DESC& _ParticleDesc)
+CVIBuffer_Particle_Point* CVIBuffer_Particle_Point::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _json)
 {
 	CVIBuffer_Particle_Point* pInstance = new CVIBuffer_Particle_Point(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_ParticleDesc)))
+	if (FAILED(pInstance->Initialize_Prototype(_json)))
 	{
 		MSG_BOX("Failed to Created : CVIBuffer_Particle_Point");
 		Safe_Release(pInstance);

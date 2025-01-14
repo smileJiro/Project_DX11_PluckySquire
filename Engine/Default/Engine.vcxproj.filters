@@ -214,6 +214,9 @@
     <Filter Include="01.Utility\97.GlobalFunction\Manager">
       <UniqueIdentifier>{aca80557-781d-4987-a298-a5c6fac2bbdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect">
+      <UniqueIdentifier>{82a2f632-a335-4e00-8c43-3590aeffa6e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -360,9 +363,6 @@
     <ClInclude Include="..\public\Font_Manager.h">
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\VIBuffer_Particle_Rect.h">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Rect</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Particle_Instance.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
     </ClInclude>
@@ -416,6 +416,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\GlobalFunction_Manager.h">
       <Filter>01.Utility\97.GlobalFunction\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect.h">
+      <Filter>01.Utility\03.Objects\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -551,9 +554,6 @@
     <ClCompile Include="..\private\Font_Manager.cpp">
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\VIBuffer_Particle_Rect.cpp">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Rect</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Particle_Instance.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
     </ClCompile>
@@ -607,6 +607,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\GlobalFunction_Manager.cpp">
       <Filter>01.Utility\97.GlobalFunction\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect.cpp">
+      <Filter>01.Utility\03.Objects\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
