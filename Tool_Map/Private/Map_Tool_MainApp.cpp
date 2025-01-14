@@ -1,16 +1,19 @@
 #include "stdafx.h"
-#include "MainApp.h"
+#include "Map_Tool_MainApp.h"
 
 #include "GameInstance.h"
-//#include "Event_Manager.h"
+#include "Level_Loading.h"
 
-CMainApp::CMainApp()
+#include "Event_Manager.h"
+
+
+CMap_Tool_MainApp::CMap_Tool_MainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CMainApp::Initialize()
+HRESULT CMap_Tool_MainApp::Initialize()
 {
 	// MainApp Init
 	// 1. 윈도우 해상도에 대한 정보를 생성하고, 이를 통해 장치를 초기화한다.
@@ -32,6 +35,9 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 	}
 
+	/* Event Manager */
+	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
+
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
 	{
 		return E_FAIL;
@@ -41,7 +47,7 @@ HRESULT CMainApp::Initialize()
 	return S_OK;
 }
 
-void CMainApp::Progress(_float _fTimeDelta)
+void CMap_Tool_MainApp::Progress(_float _fTimeDelta)
 {
 	m_pGameInstance->Start_Imgui();
 
@@ -59,11 +65,13 @@ void CMainApp::Progress(_float _fTimeDelta)
 		return;
 	}
 
-	ImGui::RenderPlatformWindowsDefault(); // 여기 위치해야함.
+	// 뷰포트 나가도 렌더되는 처리 // 
+	ImGui::RenderPlatformWindowsDefault();
 
+	CEvent_Manager::GetInstance()->Update(_fTimeDelta);
 }
 
-HRESULT CMainApp::Render()
+HRESULT CMap_Tool_MainApp::Render()
 {
 	if (nullptr == m_pGameInstance)
 		return E_FAIL;
@@ -75,36 +83,34 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Render_DrawData_Imgui();
 
-
 	if (FAILED(m_pGameInstance->Render_End()))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CMainApp::SetUp_StartLevel(LEVEL_ID _eLevelID)
+HRESULT CMap_Tool_MainApp::SetUp_StartLevel(LEVEL_ID _eLevelID)
 {
 	// OpenLevel을 통해, Loading Scene을 반드시 거치게하고, 그 후 실제로 전환시킬 NextLevelID를 넘겨, Loading에서의 작업이 완료 후, Level을 전환한다.
-	//Event_LevelChange(LEVEL_LOADING, _eLevelID);
-
+	Event_LevelChange(LEVEL_LOADING, _eLevelID);
 
 	return S_OK;
 }
 
-CMainApp* CMainApp::Create()
+CMap_Tool_MainApp* CMap_Tool_MainApp::Create()
 {
-	CMainApp* pInstance = new CMainApp();
+	CMap_Tool_MainApp* pInstance = new CMap_Tool_MainApp();
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed to Created : CMainApp");
+		MSG_BOX("Failed to Created : CMap_Tool_MainApp");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CMainApp::Free()
+void CMap_Tool_MainApp::Free()
 {
 	__super::Free();
 
@@ -112,6 +118,10 @@ void CMainApp::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 
+	/* Client Singleton Delete */
+	CEvent_Manager::DestroyInstance();
+
+	/* GameInstance Release*/
 	CGameInstance::Release_Engine();
 }
 

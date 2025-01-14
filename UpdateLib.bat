@@ -2,6 +2,7 @@
 	
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Client\Bin\
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Camera_Tool\Bin\
+xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Map\Bin\
 xcopy			/y			.\Engine\Bin\Engine.lib			.\EngineSDK\Lib\
 xcopy			/y			.\Engine\ThirdPartyLib\*.lib	.\EngineSDK\Lib\
 xcopy			/y/s		.\Engine\Public\*.*				.\EngineSDK\Inc\
