@@ -6,6 +6,8 @@
 #include "Test_Player.h"
 #include "Test_Terrain.h"
 
+#include "Camera_Free.h"
+
 CLevel_Camera_Tool::CLevel_Camera_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
@@ -13,12 +15,20 @@ CLevel_Camera_Tool::CLevel_Camera_Tool(ID3D11Device* _pDevice, ID3D11DeviceConte
 
 HRESULT CLevel_Camera_Tool::Initialize()
 {
-	Ready_Lights();
+	if (FAILED(Ready_Lights()))
+		return E_FAIL;
+
 	CGameObject* pCameraTarget = nullptr;
-	
-	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
-	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	//
+	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget)))
+	//	return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget)))
+		return E_FAIL;
+
+	//if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
+	//	return E_FAIL;
+
 	return S_OK;
 }
 
@@ -56,7 +66,22 @@ HRESULT CLevel_Camera_Tool::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
-	return E_NOTIMPL;
+	CCamera_Free::CAMERA_FREE_DESC Desc{};
+
+	Desc.fMouseSensor = 0.1f;
+
+	Desc.fFovy = XMConvertToRadians(30.f);
+	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	Desc.fNear = 0.1f;
+	Desc.fFar = 1000.f;
+	Desc.vEye = _float3(0.f, 10.f, -7.f);
+	Desc.vAt = _float3(0.f, 0.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Free"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CLevel_Camera_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
@@ -105,6 +130,12 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 void CLevel_Camera_Tool::Show_CameraTool()
 {
 	ImGui::Begin("Test");
+
+	//ImGui::Text("Camera Position");
+	//ImGui::SameLine(100);
+
+	_vector vCamPos = XMLoadFloat4((m_pGameInstance->Get_CamPosition()));
+	ImGui::Text("Camera Position: %.2f, %.2f, %.2f", XMVectorGetX(vCamPos), XMVectorGetY(vCamPos), XMVectorGetZ(vCamPos));
 
 	ImGui::End();
 }

@@ -87,7 +87,7 @@ void CEffect::Free()
     __super::Free();
 }
 
-HRESULT CEffect::Safe_Release_DeadObjects()
+HRESULT CEffect::Cleanup_DeadReferences()
 {
 	return S_OK;
 }
