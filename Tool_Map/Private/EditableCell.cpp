@@ -42,6 +42,10 @@ void CEditableCell::Update_Vertex()
 }
 HRESULT CEditableCell::Create_Buffer()
 {
+	Safe_Release(m_pVIBuffer);
+
+	
+
 	_float3 fVertexArr[] = {
 		m_vPoints[0]->Get_Pos(),
 		m_vPoints[1]->Get_Pos(),
@@ -116,6 +120,7 @@ HRESULT CEditableCell::Wire_Render()
 	return S_OK;
 }
 #endif
+
 CEditableCell* CEditableCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CNavigationVertex** pPoints, _int iIndex)
 {
 	CEditableCell* pInstance = new CEditableCell(pDevice, pContext);
@@ -146,4 +151,9 @@ void CEditableCell::Free()
 
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+}
+
+HRESULT CEditableCell::Cleanup_DeadReferences()
+{
+	return S_OK;
 }

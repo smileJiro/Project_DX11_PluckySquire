@@ -2,7 +2,7 @@
 #include "VIBuffer.h"
 
 BEGIN(Engine)
-class CVIBuffer_Cell final : public CVIBuffer
+class ENGINE_DLL CVIBuffer_Cell final : public CVIBuffer
 {
 	CVIBuffer_Cell(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CVIBuffer_Cell(const CVIBuffer_Cell& _Prototype);

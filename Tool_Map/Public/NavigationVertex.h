@@ -64,6 +64,9 @@ public :
     virtual void                        Free();
     virtual CGameObject*                Clone(void* pArg);
     static CNavigationVertex*           Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3& vVerTexPos);
+    virtual                             HRESULT Cleanup_DeadReferences() override;
+
+
 
 };
 

@@ -25,7 +25,7 @@
 //
 #pragma once
 #include <stdint.h>
-#include "../imgui.h"
+#include "Map_Tool_Defines.h"
 
 struct ImRect;
 

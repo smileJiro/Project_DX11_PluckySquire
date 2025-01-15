@@ -6,13 +6,13 @@
 BEGIN(Engine)
 
 class CVIBuffer_Cell;
-class CVIBuffer_CellLine;
 
 END
 
 
 BEGIN(Map_Tool)
 
+class CVIBuffer_CellLine;
 
 class CNavigationVertex;
 
@@ -72,14 +72,15 @@ private:
 	_bool							m_bPicking = false;
 #ifdef _DEBUG
 private:
-	class CVIBuffer_Cell* m_pVIBuffer = { nullptr };
-	class CVIBuffer_CellLine* m_pVIStrip = { nullptr };
+	class CVIBuffer_Cell*			m_pVIBuffer = { nullptr };
+	class CVIBuffer_CellLine*		m_pVIStrip = { nullptr };
 #endif
 
 public:
-	static CEditableCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CNavigationVertex** pPoints, _int iIndex);
-	virtual CGameObject* Clone(void* pArg) override;
-	virtual void Free() override;
+	static CEditableCell*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CNavigationVertex** pPoints, _int iIndex);
+	virtual CGameObject*	Clone(void* pArg) override;
+	virtual void			Free() override;
+	virtual HRESULT			Cleanup_DeadReferences() override;
 };
 
 END
