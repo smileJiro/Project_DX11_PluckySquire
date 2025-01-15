@@ -7,6 +7,8 @@
 #include "Test_Terrain.h"
 
 #include "Camera_Free.h"
+#include "Camera_Target.h"
+#include "Camera_Manager.h"
 
 CLevel_Camera_Tool::CLevel_Camera_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -34,6 +36,13 @@ HRESULT CLevel_Camera_Tool::Initialize()
 
 void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::N)) {
+		m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+	}
+	else if (KEY_DOWN(KEY::M)) {
+		m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
+	}
+
 	Show_CameraTool();
 }
 
@@ -66,6 +75,9 @@ HRESULT CLevel_Camera_Tool::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
+	CGameObject* pCamera = nullptr;
+
+	// Free Camera
 	CCamera_Free::CAMERA_FREE_DESC Desc{};
 
 	Desc.fMouseSensor = 0.1f;
@@ -78,8 +90,33 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_CAMERA_TOOL, _strLayerTag, &Desc)))
+		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
+
+	m_pGameInstance->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
+
+	// Target Camera
+	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
+
+	TargetDesc.fSmoothSpeed = 5.f;
+	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
+
+	TargetDesc.fFovy = XMConvertToRadians(30.f);
+	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	TargetDesc.fNear = 0.1f;
+	TargetDesc.fFar = 1000.f;
+	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
+	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Target"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
+		return E_FAIL;
+
+	m_pGameInstance->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+
+	m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+
+	Create_Arms();
 
 	return S_OK;
 }
@@ -138,6 +175,11 @@ void CLevel_Camera_Tool::Show_CameraTool()
 	ImGui::Text("Camera Position: %.2f, %.2f, %.2f", XMVectorGetX(vCamPos), XMVectorGetY(vCamPos), XMVectorGetZ(vCamPos));
 
 	ImGui::End();
+}
+
+void CLevel_Camera_Tool::Create_Arms()
+{
+
 }
 
 CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

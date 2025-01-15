@@ -31,6 +31,7 @@ int g_ArrDK[(int)KEY::LAST] = {
     DIK_J, // 추가
     DIK_K, // 추가
     DIK_M, // 추가
+    DIK_N, // 추가
     DIK_I,
     DIK_O,
     DIK_P,

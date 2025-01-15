@@ -24,14 +24,14 @@
 // SOFTWARE.
 //
 #include "stdafx.h"
-#include "../imgui.h"
-#define IMGUI_DEFINE_MATH_OPERATORS
-#include "../imgui_internal.h"
+#include "Map_Tool_Defines.h"
+
+
 #include <math.h>
 #include <vector>
 #include <float.h>
 #include <array>
-#include "GraphEditor.h"
+#include "gizmo/GraphEditor.h"
 #include <algorithm>
 
 using namespace std;

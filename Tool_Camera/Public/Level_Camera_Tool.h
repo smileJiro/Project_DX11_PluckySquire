@@ -22,6 +22,7 @@ public:
 
 private:
 	void				Show_CameraTool();
+	void				Create_Arms();
 
 public:
 	static CLevel_Camera_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

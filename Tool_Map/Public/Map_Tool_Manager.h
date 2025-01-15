@@ -144,9 +144,9 @@ private:
 	CMapObject*						m_arrObjects[OBJECT_END] = { nullptr, };
 	_wstring						m_arrSelectName[LIST_END];
 
-	vector<_wstring>				m_SaveFileList;
-	vector<_wstring>				m_vecObjectFileList;
-	vector<MAP_OBJ>					m_vecMapObjList;
+	vector<_wstring>				m_SaveFileLists;
+	vector<_wstring>				m_ObjectFileLists;
+	vector<MAP_OBJ>					m_MapObjLists;
 
 
 	_wstring						m_strCacheFilePath = L"../../Client/Bin/cashe.cchc";

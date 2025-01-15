@@ -10,6 +10,8 @@
 
 #include "Cam_Manager.h"
 
+#include "FSM.h"
+
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
 CEvent_Manager::CEvent_Manager()
@@ -73,6 +75,11 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 	case Client::EVENT_TYPE::SET_ACTIVE:
 	{
 		Excute_SetActive(_tEvent);
+	}
+	break;
+	case Client::EVENT_TYPE::CHANGE_MONSTERSTATE:
+	{
+		Excute_ChangeMonsterState(_tEvent);
 	}
 	break;
 	default:
@@ -202,6 +209,25 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 	}
 	else
 		pBase->Set_Active(isActive);
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
+{
+	//¹Ù²Ü ¸ó½ºÅÍ »óÅÂ
+	MONSTER_STATE eState = (MONSTER_STATE)_tEvent.Parameters[0];
+	
+	if (MONSTER_STATE::LAST == eState)
+		return E_FAIL;
+
+	//FSM °´Ã¼
+	CFSM* pFSM=(CFSM*)_tEvent.Parameters[1];
+
+	if (nullptr == pFSM)
+		return E_FAIL;
+
+	pFSM->Change_State(eState);
 
 	return S_OK;
 }

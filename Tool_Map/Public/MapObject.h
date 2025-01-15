@@ -6,13 +6,11 @@ BEGIN(Map_Tool)
 
 class CMapObject final :  public CModelObject
 {
-
-
 public:
 	enum MODE
 	{
 		NORMAL,
-		Preview,
+		PREVIEW,
 		PICKING,
 		MODE_END
 
@@ -20,7 +18,7 @@ public:
 	enum OBJ_CREATE_TYPE
 	{
 		OBJ_CREATE,
-		OBJ__LOAD,
+		OBJ_LOAD,
 		OBJ_CREATE_END
 	};
 
@@ -62,7 +60,6 @@ public:
 
 	const wstring&			Get_ModelName() { return m_strModelName; }
 
-	virtual bool			Check_Picking(_fvector _vRayPos, _fvector _vRayDir, _float3* _vReturnPos, _float* fNewDist);
 
 
 private :

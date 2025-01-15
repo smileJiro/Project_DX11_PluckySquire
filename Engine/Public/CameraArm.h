@@ -8,7 +8,7 @@ BEGIN(Engine)
 class CCameraArm final : public CBase
 {
 public:
-	typedef struct
+	typedef struct tagCameraArmDesc
 	{
 		_float3				vArm = { 0.f, 0.f, -1.f };
 		_float3				vPosOffset = { 0.f, 0.f, 0.f };
@@ -24,14 +24,11 @@ private:
 	CCameraArm(const CCameraArm& Prototype);
 	virtual ~CCameraArm() = default;
 
-
 public:
-	HRESULT				Initialize_Prototype();
 	HRESULT				Initialize(void* pArg);
 	void				Priority_Update(_float fTimeDelta);
 	void				Update(_float fTimeDelta);
 	void				Late_Update(_float fTimeDelta);
-	HRESULT				Render();
 
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
@@ -43,13 +40,18 @@ private:
 	_float3				m_vRotation = {};
 	_float				m_fLength = {};
 
+	// 이거 나중에 Target 월드 행렬 받으려면 Target File Tag 같은 거 필요할 수도
 	const _float4x4*	m_pTargetWorldMatrix = { nullptr };
+
+	// Turn
+	_float2				m_fTurnTime = {};
 
 private:
 	void				Set_CameraPos(_float fTimeDelta);
+	void				Turn_Arm(_float fTimeDelta);
 
 private:
-	static CCameraArm*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CCameraArm*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg);
 	virtual void		Free() override;
 };
 

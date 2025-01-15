@@ -153,7 +153,7 @@ HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
 		pChangeLevel = CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL_ID)iNextChangeLevelID, m_pLogger);
 		break;
 	case Map_Tool::LEVEL_TOOL_MAP:
-		pChangeLevel = CLevel_Map_Tool::Create(m_pDevice, m_pContext);
+		pChangeLevel = CLevel_Map_Tool::Create(m_pDevice, m_pContext, m_pLogger);
 		break;
 	default:
 		break;
