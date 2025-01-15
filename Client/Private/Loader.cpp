@@ -167,9 +167,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PickBulb"),
-	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Bulb_Pickup/pickup_counter_bulb_01.dds"), 1))))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PickBulb"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Bulb_Pickup/pickup_counter_bulb_01.dds"), 1))))
+		return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -225,21 +225,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
 
 	/* For. Prototype_UIObject_Pick_Bubble */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_Pick_Bubble"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
 		CPick_Bulb::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
-
-
-
-
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObject_PickBulb"),
-		CPick_Bulb::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-    
-
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
