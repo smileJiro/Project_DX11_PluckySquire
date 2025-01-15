@@ -90,7 +90,6 @@ void CCamera::Compute_ProjMatrix()
 	m_pGameInstance->Set_Transform(CPipeLine::D3DTS_PROJ, XMMatrixPerspectiveFovLH(m_fFovy, m_fAspect, m_fNear, m_fFar));
 }
 
-
 void CCamera::ZoomIn(_float _fZoomTime)
 {
 

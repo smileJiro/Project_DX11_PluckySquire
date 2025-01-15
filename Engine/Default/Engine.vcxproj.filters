@@ -220,6 +220,9 @@
     <Filter Include="01.Utility\03.Objects\UIObject">
       <UniqueIdentifier>{8705d9f3-8ff3-48cd-b9a0-4976b0e0b551}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Objects\Camera\CameraArm">
+      <UniqueIdentifier>{cbfa353c-d8c7-4c16-beae-da28ac9c74d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -426,6 +429,12 @@
     <ClInclude Include="..\Public\UIObject.h">
       <Filter>01.Utility\03.Objects\UIObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager.h">
+      <Filter>01.Utility\03.Objects\Camera\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CameraArm.h">
+      <Filter>01.Utility\03.Objects\Camera\CameraArm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -619,6 +628,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\UIObject.cpp">
       <Filter>01.Utility\03.Objects\UIObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Manager.cpp">
+      <Filter>01.Utility\03.Objects\Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CameraArm.cpp">
+      <Filter>01.Utility\03.Objects\Camera\CameraArm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
