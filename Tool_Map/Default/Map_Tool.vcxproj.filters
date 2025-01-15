@@ -126,6 +126,7 @@
     <ClInclude Include="..\Public\VIBuffer_CellLine.h">
       <Filter>04. Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MapParsing_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -202,6 +203,7 @@
     <ClCompile Include="..\Private\VIBuffer_CellLine.cpp">
       <Filter>04. Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\MapParsing_Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Map_Tool.rc">

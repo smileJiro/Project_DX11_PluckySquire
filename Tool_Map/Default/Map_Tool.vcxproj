@@ -148,6 +148,7 @@
     <ClInclude Include="..\Public\gizmo\ImZoomSlider.h" />
     <ClInclude Include="..\Public\ImguiLogger.h" />
     <ClInclude Include="..\Public\Level_Map_Tool.h" />
+    <ClInclude Include="..\Public\MapParsing_Manager.h" />
     <ClInclude Include="..\Public\Map_Tool_Manager.h" />
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Map_Tool_Function.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="..\Private\gizmo\ImSequencer.cpp" />
     <ClCompile Include="..\Private\ImguiLogger.cpp" />
     <ClCompile Include="..\Private\Level_Map_Tool.cpp" />
+    <ClCompile Include="..\Private\MapParsing_Manager.cpp" />
     <ClCompile Include="..\Private\Map_Tool_Manager.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Map_Tool_Function.cpp" />
