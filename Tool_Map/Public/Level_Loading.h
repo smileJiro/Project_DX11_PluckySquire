@@ -5,9 +5,9 @@
 /* 다음 레벨에 필요한 자원을 로드하는 역할을 하는 Loader 객체를 생성*/
 
 BEGIN(Map_Tool)
-
+class CImguiLogger;
 class CLoader;
-class CUI_Icon;
+
 class CLevel_Loading final : public CLevel
 {
 private:
@@ -15,16 +15,16 @@ private:
 	virtual ~CLevel_Loading() = default;
 
 public:
-	virtual HRESULT Initialize(LEVEL_ID _eNextLevelID);
+	virtual HRESULT Initialize(LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger);
 	virtual void Update(_float _fTimeDelta) override; 
 	virtual HRESULT Render() override;
 
 private:
-	LEVEL_ID m_eNextLevelID = LEVEL_END;
-	CLoader* m_pLoader = nullptr;
+	LEVEL_ID		m_eNextLevelID = LEVEL_END;
+	CLoader*		m_pLoader = nullptr;
 
 public:
-	static CLevel_Loading* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID);
+	static CLevel_Loading* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger);
 	virtual void Free() override;
 };
 

@@ -35,8 +35,12 @@ HRESULT CMap_Tool_MainApp::Initialize()
 		return E_FAIL;
 	}
 
+	m_pLogger = CImguiLogger::Create();
+	if (nullptr == m_pLogger)
+		return E_FAIL;
+
 	/* Event Manager */
-	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
+	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext, m_pLogger);
 
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
 	{
@@ -56,6 +60,8 @@ void CMap_Tool_MainApp::Progress(_float _fTimeDelta)
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
+
+	m_pLogger->Draw_Log();
 
 	m_pGameInstance->End_Imgui();
 

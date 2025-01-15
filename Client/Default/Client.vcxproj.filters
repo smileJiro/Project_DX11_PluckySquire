@@ -70,6 +70,12 @@
     <Filter Include="02.GameObjects\TestTerrain">
       <UniqueIdentifier>{b4fcc4ee-0579-4fd9-acd6-6c477523958c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI">
+      <UniqueIdentifier>{a5b84525-81cf-4aa2-a436-46bb13091506}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00.Pick_Bulb">
+      <UniqueIdentifier>{22c8afcc-494e-4251-943c-def5afcdc486}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -141,6 +147,12 @@
     <ClInclude Include="..\public\CriticalSectionGuard.h">
       <Filter>01.Levels\00.Loading\Loader\CriticalSectionGuard</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI.h">
+      <Filter>02.GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Pick_Bulb.h">
+      <Filter>02.GameObjects\UI\00.Pick_Bulb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -190,6 +202,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CriticalSectionGuard.cpp">
       <Filter>01.Levels\00.Loading\Loader\CriticalSectionGuard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI.cpp">
+      <Filter>02.GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Pick_Bulb.cpp">
+      <Filter>02.GameObjects\UI\00.Pick_Bulb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

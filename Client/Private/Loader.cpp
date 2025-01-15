@@ -192,6 +192,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
     //    return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
+    //    TEXT("../Bin/Resources/Models/NonAnim/SewingKit_01"), matPretransform)))
+    //    return E_FAIL;
+
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/"), matPretransform)))
         return E_FAIL;
@@ -218,10 +222,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Camera_Target */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObject_PickBulb"),
-	//	CPick_Bulb::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -258,7 +258,9 @@ HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _
         lstrcat(szFullPath, FindFileData.cFileName);
 
         wstring wstr = szFullPath;
-        string str{ wstr.begin(), wstr.end() };
+        string str = m_pGameInstance->WStringToString(wstr);
+
+        //string str{ wstr.begin(), wstr.end() };
 
         wstring filename = wstring(FindFileData.cFileName);
         size_t lastDot = filename.find_last_of('.');

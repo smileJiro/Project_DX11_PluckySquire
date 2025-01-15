@@ -21,9 +21,11 @@ public:
 
 
 private:
-	CGameInstance* m_pGameInstance = nullptr;
-	ID3D11Device* m_pDevice = nullptr;
-	ID3D11DeviceContext* m_pContext = nullptr;
+	CGameInstance*			m_pGameInstance = nullptr;
+	CImguiLogger*			m_pLogger =  nullptr;
+
+	ID3D11Device*			m_pDevice = nullptr;
+	ID3D11DeviceContext*	m_pContext = nullptr;
 
 private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);

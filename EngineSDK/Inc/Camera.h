@@ -20,6 +20,7 @@ public:
 		// 줌 레벨임 NORMAL이 기본값 임
 		ZOOM_LEVEL		eZoomLevel = NORMAL;
 
+		_float			fFovy = { 0.f };
 		_float			fAspect = { 0.f };
 		_float			fNear = { 0.f };
 		_float			fFar = { 0.f };

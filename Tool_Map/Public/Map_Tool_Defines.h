@@ -39,5 +39,9 @@ extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
 #include "Map_Tool_Function.h"
+#include "ImguiLogger.h"
 
 using namespace Map_Tool;
+
+#define LOG_TYPE(msg, type)		m_pLogger->Add_Log(msg,type)
+#define LOG(msg)		m_pLogger->Add_Log(msg)
