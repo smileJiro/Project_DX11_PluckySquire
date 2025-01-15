@@ -15,7 +15,7 @@
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
-
+#include "FSM.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -153,7 +153,7 @@ HRESULT CLoader::Loading_Level_Static()
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    /* For. Prototype_GameObject_TestPlayer */
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CModelObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -188,6 +188,9 @@ HRESULT CLoader::Loading_Level_Logo()
 HRESULT CLoader::Loading_Level_GamePlay()
 {
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+        CFSM::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PickBulb"),
@@ -215,7 +218,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
-        TEXT("../Bin/Resources/Models/"), matPretransform)))
+        TEXT("../Bin/Resources/TestModels/"), matPretransform)))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

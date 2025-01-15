@@ -143,7 +143,7 @@ HRESULT CTestPlayer::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    BodyDesc.i2DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
     BodyDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
     BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Texture_PickBulb");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
@@ -158,12 +158,8 @@ HRESULT CTestPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    BodyDesc.tTransform2DDesc.fSpeedPerSec = 20.f;
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
-    BodyDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_CModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

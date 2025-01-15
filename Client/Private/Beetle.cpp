@@ -2,6 +2,7 @@
 #include "Beetle.h"
 #include "GameInstance.h"
 #include "BeetleBody.h"
+#include "FSM.h"
 
 CBeetle::CBeetle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -40,8 +41,9 @@ HRESULT CBeetle::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pControllerTransform->Set_State(CTransform::STATE_POSITION,
-        XMVectorSet(m_pGameInstance->Compute_Random(0.f, 10.f), 0.f, m_pGameInstance->Compute_Random(0.f, 10.f), 1.f));
+    m_pFSM->Add_State(MONSTER_STATE::IDLE);
+    m_pFSM->Add_State(MONSTER_STATE::CHASE);
+    m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
     return S_OK;
 }
@@ -49,21 +51,19 @@ HRESULT CBeetle::Initialize(void* _pArg)
 void CBeetle::Priority_Update(_float _fTimeDelta)
 {
 
-
-
-    CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
+    __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 void CBeetle::Update(_float _fTimeDelta)
 {
-
-    CContainerObject::Update(_fTimeDelta); /* Part Object Update */
+    m_pFSM->Update(_fTimeDelta);
+    __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CBeetle::Late_Update(_float _fTimeDelta)
 {
 
-    CContainerObject::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
 HRESULT CBeetle::Render()
@@ -81,13 +81,19 @@ HRESULT CBeetle::Render()
 
 HRESULT CBeetle::Ready_Components()
 {
+    /* Com_FSM */
+    if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM))))
+        return E_FAIL;
+    m_pFSM->Set_Owner(this);
+
     return S_OK;
 }
 
 HRESULT CBeetle::Ready_PartObjects()
 {
     /* Part Body */
-    CBeetleBody::BEETLEBODY_DESC BodyDesc{};
+    CModelObject::MODELOBJECT_DESC BodyDesc{};
 
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;

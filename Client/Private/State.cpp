@@ -5,7 +5,9 @@
 #include "FSM.h"
 
 CState::CState()
+	: m_pGameInstance { CGameInstance::GetInstance()}
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 void CState::Set_Owner(CMonster* _pOwner)

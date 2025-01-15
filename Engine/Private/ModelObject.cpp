@@ -191,7 +191,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
     tModelDesc.eStartCoord = _pDesc->eStartCoord;
 	tModelDesc.isCoordChangeEnable = _pDesc->isCoordChangeEnable;
 	tModelDesc.iCurLevelID = iStaticLevelID;
-	tModelDesc.i2DModelPrototypeLevelID = _pDesc->i2DModelPrototypeLevelID;
+	tModelDesc.i2DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_2D;
 	tModelDesc.i3DModelPrototypeLevelID = _pDesc->i3DModelPrototypeLevelID;
 	tModelDesc.wstr2DModelPrototypeTag = _pDesc->strModelPrototypeTag_2D;
 	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;

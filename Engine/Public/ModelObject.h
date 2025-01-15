@@ -9,7 +9,7 @@ class ENGINE_DLL CModelObject : public CPartObject
 public:
 	typedef struct tagModelObjectDesc : public CPartObject::PARTOBJECT_DESC
 	{
-		_uint i2DModelPrototypeLevelID;
+		_uint iModelPrototypeLevelID_2D;
 		_uint i3DModelPrototypeLevelID;
 		_wstring strModelPrototypeTag_2D;
 		_wstring strModelPrototypeTag_3D;
