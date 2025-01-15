@@ -33,16 +33,7 @@ HRESULT CUIObject::Initialize(void* pArg)
 	UIOBJECT_DESC UITransformDesc = {};
 	//m_isha
 
-	UITransformDesc.eStartCoord = COORDINATE_2D;
-	UITransformDesc.isCoordChangeEnable = false;
-
-	m_fX = UITransformDesc.tTransform2DDesc.vPosition.x = pDesc->fX;
-	m_fY = UITransformDesc.tTransform2DDesc.vPosition.y = pDesc->fY;
-
-	m_fSizeX = UITransformDesc.tTransform2DDesc.vScaling.x = pDesc->fSizeX;
-	m_fSizeY = UITransformDesc.tTransform2DDesc.vScaling.y = pDesc->fSizeY;
-
-	_uint				iNumViewports = { 1 };
+	_uint		iNumViewports = { 1 };
 	D3D11_VIEWPORT		ViewportDesc{};
 
 	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
@@ -52,16 +43,18 @@ HRESULT CUIObject::Initialize(void* pArg)
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.f, 1.f));
 
-	if (FAILED(__super::Initialize(&UITransformDesc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	/* 던져준 fX, fY,  fSizeX, fSizeY로 그려질 수 있도록 월드행렬의 상태를 제어해둔다. */
 	m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX , m_fY , 1.f, 1.f));
 
 
 	return S_OK;
 }
+
+
 
 
 
