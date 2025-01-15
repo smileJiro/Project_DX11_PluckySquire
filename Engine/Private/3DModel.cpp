@@ -14,7 +14,6 @@ C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 C3DModel::C3DModel(const C3DModel& _Prototype)
 	: CComponent(_Prototype)
 	, m_eModelType{ _Prototype.m_eModelType }
-	, m_pAIScene{ _Prototype.m_pAIScene }
 	, m_iNumMeshes(_Prototype.m_iNumMeshes)
 	, m_Meshes(_Prototype.m_Meshes)
 	, m_iNumMaterials{ _Prototype.m_iNumMaterials }
@@ -158,6 +157,29 @@ const _float4x4* C3DModel::Find_BoneMatrix(const _char* _pBoneName) const
 	return (*iter)->Get_CombinedTransformationFloat4x4();
 }
 
+_bool C3DModel::Play_Animation(_float fTimeDelta)
+{
+
+	//뼈들의 변환행렬을 갱신
+	_bool bReturn = false;
+	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
+	{
+		bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
+	}
+	else
+	{
+		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame))
+			m_iPrevAnimIndex = m_iCurrentAnimIndex;
+	}
+
+
+	//뼈들의 합성변환행렬을 갱신
+	for (auto& pBone : m_Bones)
+		pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
+
+	return bReturn;
+}
+
 HRESULT C3DModel::Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices)
 {
 	if (m_Meshes.size() <= iNumMeshIndex)
@@ -209,6 +231,30 @@ _uint C3DModel::Get_BoneIndex(const _char* pBoneName) const
 		MSG_BOX("그런 뼈가 없어");
 
 	return iBoneIndex;
+}
+
+void C3DModel::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
+{
+	m_Animations[iIdx]->Set_Loop(bIsLoop);
+}
+
+void C3DModel::Set_Animation(_uint iIdx)
+{
+	m_iCurrentAnimIndex = iIdx;
+	m_iPrevAnimIndex = iIdx;
+	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
+
+}
+
+
+void C3DModel::Switch_Animation(_uint iIdx)
+{
+	m_iPrevAnimIndex = m_iCurrentAnimIndex;
+	m_iCurrentAnimIndex = iIdx;
+	m_mapAnimTransLeftFrame.clear();
+	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
+	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
+
 }
 
 
@@ -330,10 +376,6 @@ void C3DModel::Free()
 	for (auto& pMesh : m_Meshes)
 		Safe_Release(pMesh);
 	m_Meshes.clear();
-
-
-	/* 이걸 해도 Assimp 고질 병인 내부적인 누수는 발생한다. 하지만 해주자. 우리눈에 안보이는 누수임. */
-	m_Importer.FreeScene();
 
 	__super::Free();
 }

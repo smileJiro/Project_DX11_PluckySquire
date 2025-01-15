@@ -19,6 +19,7 @@ public:
 	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual HRESULT			Render(_uint _iMeshIndex);
+	_bool Play_Animation(_float fTimeDelta);
 	
 public:
 	HRESULT					Bind_Matrices(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
@@ -35,6 +36,7 @@ public:
 	}
 
 public:
+
 	HRESULT Copy_BoneMatrices(_int _iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices);
 public:
 	// Get
@@ -47,16 +49,17 @@ public:
 	_uint					Get_NumAnimations() const { return m_iNumAnimations; }
 	_uint					Get_NumBones() const { return m_iNumBones; }
 	vector<CAnimation*>*	Get_AnimationsAdress() { return &m_Animations; }
-	CAnimation*				Get_CurrentAnimation() { return m_Animations[m_iCurAnimIndex]; }
+	CAnimation*				Get_CurrentAnimation() { return m_Animations[m_iCurrentAnimIndex]; }
 	CAnimation*				Get_Animation(_uint _iAnimIndex) { return m_Animations[_iAnimIndex]; }
 	vector<CBone*>*			Get_BonesAdress() { return &m_Bones; }
 	_float					Get_RootBonePositionY();
 	_uint Get_BoneIndex(const _char* _pBoneName) const;
+	_bool Is_AnimModel() { return m_eModelType == TYPE::ANIM; };
 	// Set
-
+	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
+	void Set_Animation(_uint iIdx);
+	void Switch_Animation(_uint iIdx);
 private: /* for. File Load */
-	Assimp::Importer	m_Importer;
-	const aiScene*		m_pAIScene = nullptr;
 	TYPE				m_eModelType = TYPE::LAST;
 
 private: /* for. Bone Data */
@@ -78,13 +81,10 @@ private: /* for. Animation */
 	_uint				m_iNumAnimations = 0;
 	vector<CAnimation*> m_Animations;
 
-private:/* Åø¿ë */
-	_int m_iCurAnimIndex = 0;
-	_bool m_isFinished = false;
-	_bool m_isLoop = true;
+	_uint						m_iCurrentAnimIndex = {};
+	_uint						m_iPrevAnimIndex = {};
 
-public:
-	void SetUp_ToolAnimation(_int _iAnimIndex, _bool _isLoop) { m_iCurAnimIndex = _iAnimIndex; m_isLoop = _isLoop; }
+	map<_uint, KEYFRAME> m_mapAnimTransLeftFrame;
 
 protected:
 	HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);

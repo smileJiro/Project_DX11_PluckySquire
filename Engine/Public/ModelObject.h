@@ -3,6 +3,7 @@
 BEGIN(Engine)
 class CVIBuffer_Rect;
 class C3DModel;
+class C2DModel;
 class ENGINE_DLL CModelObject abstract : public CPartObject
 {
 public:
@@ -30,18 +31,20 @@ public:
 	virtual HRESULT Initialize_Prototype(); // 프로토 타입 전용 Initialize
 	virtual HRESULT Initialize(void* _pArg); // 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
 	virtual HRESULT Render_Shadow() { return S_OK; }
-
-public:
-	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;
+	virtual HRESULT			Render() override;
+	virtual void Update(_float fTimeDelta) override;
 
 public:
 	// Get
 	
 	// Set
+	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
+	void Set_Animation(_uint iIdx);
+	void Switch_Animation(_uint iIdx);
 
 protected:
-	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-	C3DModel*					m_pModelCom = nullptr;
+	C2DModel*			m_p2DModelCom = nullptr;
+	C3DModel*			m_p3DModelCom = nullptr;
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D 렌더링 전용 VP */
 
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};

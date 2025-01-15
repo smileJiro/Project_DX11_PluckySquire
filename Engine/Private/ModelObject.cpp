@@ -1,5 +1,7 @@
 #include "ModelObject.h"
 #include "GameInstance.h"
+#include "3DModel.h"
+#include "2DModel.h"
 
 CModelObject::CModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CPartObject(_pDevice, _pContext)
@@ -46,6 +48,56 @@ HRESULT CModelObject::Initialize(void* _pArg)
     return S_OK;
 }
 
+HRESULT CModelObject::Render()
+{
+
+    if (FAILED(Bind_ShaderResources_WVP()))
+        return E_FAIL;
+
+    switch (m_pControllerTransform->Get_CurCoord())
+    {
+    case Engine::COORDINATE_2D:
+        Render_2D();
+        break;
+    case Engine::COORDINATE_3D:
+        Render_3D();
+        break;
+    default:
+        break;
+    }
+
+    return S_OK;
+}
+
+void CModelObject::Update(_float fTimeDelta)
+{
+    if (m_p3DModelCom->Is_AnimModel())
+    {
+        if (m_p3DModelCom->Play_Animation(fTimeDelta))
+        {
+            //for (auto& callback : m_listAnimEndCallBack)
+            //    callback(m_pModelCom->Get_AnimIndex());
+        }
+    }
+
+	__super::Update(fTimeDelta);
+}
+
+void CModelObject::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
+{
+    m_p3DModelCom->Set_AnimationLoop(iIdx, bIsLoop);
+}
+
+void CModelObject::Set_Animation(_uint iIdx)
+{
+    m_p3DModelCom->Set_Animation(iIdx);
+}
+
+void CModelObject::Switch_Animation(_uint iIdx)
+{
+    m_p3DModelCom->Switch_Animation(iIdx);
+}
+
 HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 {
     switch (_pDesc->eStartCoord)
@@ -54,7 +106,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
     {
         /* Com_VIBuffer */
         if (FAILED(Add_Component(1, TEXT("Prototype_Component_VIBuffer_Rect"),
-            TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+            TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
             return E_FAIL;
 
         /* Com_Shader_2D */
@@ -66,7 +118,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
         {
             /* Com_Model */
             if (FAILED(Add_Component(m_iCurLevelID, _pDesc->strModelPrototypeTag,
-                TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+                TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_p3DModelCom))))
                 return E_FAIL;
 
             /* Com_Shader_3D */
@@ -80,7 +132,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
     {
         /* Com_Model */
         if (FAILED(Add_Component(m_iCurLevelID, _pDesc->strModelPrototypeTag,
-            TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+            TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_p3DModelCom))))
             return E_FAIL;
 
         /* Com_Shader_3D */
@@ -92,7 +144,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
         {
             /* Com_VIBuffer */
             if (FAILED(Add_Component(1, TEXT("Prototype_Component_VIBuffer_Rect"),
-                TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+                TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
                 return E_FAIL;
 
             /* Com_Shader_2D */
@@ -150,31 +202,27 @@ HRESULT CModelObject::Render_2D()
 
     // 어떠한 Pass로 그릴 것인지
     m_pShaderComs[COORDINATE_2D]->Begin(m_iShaderPasses[COORDINATE_2D]);
-    // Buffer정보 전달
-    m_pVIBufferCom->Bind_BufferDesc();
 
-    // 그리기 연산 수행
-    m_pVIBufferCom->Render();
 
     return S_OK;
 }
 
 HRESULT CModelObject::Render_3D()
 {
-    _uint iNumMeshes = m_pModelCom->Get_NumMeshes();
+    _uint iNumMeshes = m_p3DModelCom->Get_NumMeshes();
 
     /* Mesh 단위 렌더. */
     for (_uint i = 0; i < iNumMeshes; ++i)
     {
-        if (FAILED(m_pModelCom->Bind_Material(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+        if (FAILED(m_p3DModelCom->Bind_Material(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
         {
             //continue;
         }
 
         /* Bind Bone Matrices */
-        if (C3DModel::TYPE::ANIM == m_pModelCom->Get_ModelType())
+        if (C3DModel::TYPE::ANIM == m_p3DModelCom->Get_ModelType())
         {
-            if (FAILED(m_pModelCom->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", i)))
+            if (FAILED(m_p3DModelCom->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", i)))
                 return E_FAIL;
         }
 
@@ -183,7 +231,7 @@ HRESULT CModelObject::Render_3D()
         m_pShaderComs[COORDINATE_3D]->Begin(m_iShaderPasses[COORDINATE_3D]);
 
         /* Bind Mesh Vertex Buffer */
-        m_pModelCom->Render(i);
+        m_p3DModelCom->Render(i);
     }
 
     return S_OK;
@@ -191,8 +239,8 @@ HRESULT CModelObject::Render_3D()
 
 void CModelObject::Free()
 {
-    Safe_Release(m_pVIBufferCom);
-    Safe_Release(m_pModelCom);
+    Safe_Release(m_p2DModelCom);
+    Safe_Release(m_p3DModelCom);
 
     for (_int i = 0; i < COORDINATE_LAST; ++i)
     {

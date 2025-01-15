@@ -56,8 +56,6 @@ void CTestPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
 
-
-
     CContainerObject::Update(_fTimeDelta); /* Part Object Update */
 }
 
