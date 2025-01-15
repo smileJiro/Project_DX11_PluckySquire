@@ -3,6 +3,8 @@
 #include "Level_Loading.h"
 #include "GameInstance.h"
 
+#include "UI.h"
+
 CLevel_Logo::CLevel_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
@@ -10,6 +12,8 @@ CLevel_Logo::CLevel_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 HRESULT CLevel_Logo::Initialize()
 {
+
+
  	return S_OK;
 }
 
@@ -31,6 +35,8 @@ HRESULT CLevel_Logo::Render()
 #endif
 	return S_OK;
 }
+
+
 
 CLevel_Logo* CLevel_Logo::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

@@ -5,6 +5,7 @@
 /* 크랄이언트에서 만든 유아이용 객체드르이 부모가 되는 클래스다.*/
 /* 직교투ㅡ여9ㅇ을 위한 데이터와 기능을 가지고 있을 꺼야. */
 
+
 BEGIN(Engine)
 
 class ENGINE_DLL CUIObject abstract : public CGameObject
@@ -14,6 +15,7 @@ public:
 	{
 		_float		fX, fY, fSizeX, fSizeY;
 	}UIOBJECT_DESC;
+
 protected:
 	CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CUIObject(const CUIObject& Prototype);
@@ -23,18 +25,32 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 
+	void Set_Active() { m_bActive = true; };
+	void Set_InActive() { m_bActive = false; };
+	_bool Get_Active() { return m_bActive; };
+
+	void Set_PositionX(_float PosX) {
+		m_fX = PosX;
+	}
+	void Set_PositionY(_float PosY) { m_fY = PosY; }
+
+
+
+
 protected:
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{};
 
 	_uint					m_iDepth = {};
+	_bool					m_bActive = { true };
+
+	//CShader*				m_pShaderComs[COORDINATE_LAST] = {};
+	//_uint					m_iShaderPasses[COORDINATE_LAST] = {};
 
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
-	virtual HRESULT Cleanup_DeadReferences() = 0;
-
 };
 
 END
