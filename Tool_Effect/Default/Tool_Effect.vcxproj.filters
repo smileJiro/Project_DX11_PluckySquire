@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="98. Default">
+      <UniqueIdentifier>{5be39f30-eb91-4aeb-8427-c389109595ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. MainApp">
+      <UniqueIdentifier>{2cf0e2f5-3eb4-41a1-8979-d0087debeb5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Defines">
+      <UniqueIdentifier>{b54ab4d7-8e2b-4684-925e-4a907eb5c84b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels">
+      <UniqueIdentifier>{299b3fb2-b350-436d-b3e2-02c23be4bb33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\Loader">
+      <UniqueIdentifier>{837a4e69-a140-44ea-bcee-42e8ceb10237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\Level_Loading">
+      <UniqueIdentifier>{ea6bc080-a6a5-41b7-b39e-1fd9c53ab07a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\Level_Tool">
+      <UniqueIdentifier>{61c6e3bd-4cb9-4102-be0d-ba099d7dcad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Event_Manager">
+      <UniqueIdentifier>{5b26a87c-b91c-4f2e-911c-665a5ae92adb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Tool_Effect.h">
+      <Filter>98. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>98. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>98. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>98. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>98. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MainEffectTool.h">
+      <Filter>00. MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EffectTool_Defines.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EffectToolLoader.h">
+      <Filter>01. Levels\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_EffectTool.h">
+      <Filter>01. Levels\Level_Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_EffectLoading.h">
+      <Filter>01. Levels\Level_Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Event_Manager.h">
+      <Filter>10. Event_Manager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>98. Default</Filter>
+    </Image>
+    <Image Include="Tool_Effect.ico">
+      <Filter>98. Default</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Tool_Effect.rc">
+      <Filter>98. Default</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Tool_Effect.cpp">
+      <Filter>98. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>98. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MainEffectTool.cpp">
+      <Filter>00. MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EffectToolLoader.cpp">
+      <Filter>01. Levels\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_EffectTool.cpp">
+      <Filter>01. Levels\Level_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_EffectLoading.cpp">
+      <Filter>01. Levels\Level_Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Event_Manager.cpp">
+      <Filter>10. Event_Manager</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

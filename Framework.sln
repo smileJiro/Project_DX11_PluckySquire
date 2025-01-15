@@ -10,11 +10,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Default\Cl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Default\Engine.vcxproj", "{FA872AED-9F1F-4848-8F7C-78CF765EE10B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Camera_Tool", "Camera_Tool\Default\Camera_Tool.vcxproj", "{CFB03C58-7B87-4345-A6FB-F4B3263F4233}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tool_Camera", "Camera_Tool\Default\Camera_Tool.vcxproj", "{CFB03C58-7B87-4345-A6FB-F4B3263F4233}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tool_Map", "Tool_Map\Default\Map_Tool.vcxproj", "{1B98C42B-3E80-40BC-A001-5D08A2B650B4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FBXConverter", "FBXConverter\FBXConverter.vcxproj", "{7E1BFF65-D110-457D-A3AF-0281E4439336}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tool_Effect", "Tool_Effect\Default\Tool_Effect.vcxproj", "{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +66,14 @@ Global
 		{7E1BFF65-D110-457D-A3AF-0281E4439336}.Release|x64.Build.0 = Release|x64
 		{7E1BFF65-D110-457D-A3AF-0281E4439336}.Release|x86.ActiveCfg = Release|Win32
 		{7E1BFF65-D110-457D-A3AF-0281E4439336}.Release|x86.Build.0 = Release|Win32
+		{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}.Debug|x64.ActiveCfg = Debug|x64
+		{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}.Debug|x64.Build.0 = Debug|x64
+		{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}.Debug|x86.ActiveCfg = Debug|Win32
+		{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}.Debug|x86.Build.0 = Debug|Win32
+		{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}.Release|x64.ActiveCfg = Release|x64
+		{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}.Release|x64.Build.0 = Release|x64
+		{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}.Release|x86.ActiveCfg = Release|Win32
+		{0C8D22A4-834D-4EC6-AE25-CFCC4D1A32DF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
