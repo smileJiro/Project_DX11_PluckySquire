@@ -214,6 +214,9 @@ void CCamera_Target::MoveToTarget(_float _fTimeDelta)
     if (nullptr == m_pTarget)
         return;
 
+    if (COORDINATE_2D == m_pTarget->Get_CurCoord()) /* Test Code 임 추후엔 지워야함.*/
+        return;
+
     _vector vTargetPos = m_pTarget->Get_Position(); 
     _vector vEye = vTargetPos + (XMLoadFloat3(&m_vArm) * m_fDistance);
 

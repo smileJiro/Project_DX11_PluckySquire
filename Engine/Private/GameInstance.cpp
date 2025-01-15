@@ -198,6 +198,14 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug()
 {
 	ImGui::Begin("DebugRenderTarget");
 
+	// 기존 스타일 백업
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec4 originalColor = style.Colors[ImGuiCol_WindowBg];
+
+	// 알파 값 제거
+	style.Colors[ImGuiCol_WindowBg].w = 1.0f; // 알파를 1.0으로 설정
+
+
 	/* Image Render */
 	ImGui::Text("Target_Book_2D");
 	ImVec2 imageSize(160, 90); // 이미지 크기 설정
@@ -224,6 +232,12 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug()
 	pSelectImage = Get_RT_SRV(TEXT("Target_Specular"));
 	if (nullptr != pSelectImage)
 		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+
+
+
+	// 스타일 복구
+	style.Colors[ImGuiCol_WindowBg] = originalColor;
+
 
 	ImGui::End();
 
