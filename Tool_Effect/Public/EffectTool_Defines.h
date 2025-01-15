@@ -26,6 +26,7 @@ namespace EffectTool
 
 		LAST,
 	};
+
 }
 
 

@@ -64,6 +64,7 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 		break;
 	case EffectTool::EVENT_TYPE::LEVEL_CHANGE:
 	{
+
 		Excute_LevelChange(_tEvent);
 	}
 		break;

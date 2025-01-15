@@ -2,6 +2,8 @@
 #include "MainEffectTool.h"
 #include "GameInstance.h"
 
+#include "Event_Manager.h"
+
 CMainEffectTool::CMainEffectTool()
 	: m_pGameInstance(CGameInstance::GetInstance())
 {
@@ -30,8 +32,11 @@ HRESULT CMainEffectTool::Initialize()
 		return E_FAIL;
 	}
 
+	if (FAILED(Ready_Prototype_Static()))
+		return E_FAIL;
 
-	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
+
+	if (FAILED(SetUp_StartLevel(LEVEL_TOOL))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
 	{
 		return E_FAIL;
 	}
@@ -64,6 +69,9 @@ void CMainEffectTool::Progress(_float _fTimeDelta)
 #ifdef _DEBUG
 	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
 #endif // _DEBUG
+
+	CEvent_Manager::GetInstance()->Update(_fTimeDelta);
+
 }
 
 HRESULT CMainEffectTool::Render()
@@ -86,9 +94,21 @@ HRESULT CMainEffectTool::Render()
 
 HRESULT CMainEffectTool::SetUp_StartLevel(LEVEL_ID _eLevelID)
 {
-	//if (FAILED(m_pGameInstance->Open_NewLevel(LEVEL_LOADING,
-	//	CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID))))
-	//	return E_FAIL;
+	EVENT tEvent;
+	tEvent.eType = EVENT_TYPE::LEVEL_CHANGE;
+	tEvent.Parameters.resize(2); // NumParameters
+
+	tEvent.Parameters[0] = (DWORD_PTR)LEVEL_LOADING;
+	tEvent.Parameters[1] = (DWORD_PTR)_eLevelID;
+
+	CEvent_Manager::GetInstance()->AddEvent(tEvent);
+
+	return S_OK;
+}
+
+HRESULT CMainEffectTool::Ready_Prototype_Static()
+{
+
 
 	return S_OK;
 }
@@ -113,6 +133,8 @@ void CMainEffectTool::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
+
+	CEvent_Manager::GetInstance()->DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

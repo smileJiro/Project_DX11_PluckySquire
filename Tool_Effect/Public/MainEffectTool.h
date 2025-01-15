@@ -24,7 +24,7 @@ private:
 
 private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
-
+	HRESULT Ready_Prototype_Static();
 
 public:
 	static CMainEffectTool* Create();

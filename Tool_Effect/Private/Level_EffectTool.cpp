@@ -17,8 +17,7 @@ HRESULT CLevel_EffectTool::Initialize()
 	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
-
-
+	return S_OK;
 }
 
 void CLevel_EffectTool::Update(_float _fTimeDelta)
@@ -29,7 +28,7 @@ void CLevel_EffectTool::Update(_float _fTimeDelta)
 HRESULT CLevel_EffectTool::Render()
 {
 #ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	SetWindowText(g_hWnd, TEXT("이펙트 툴입니다."));
 #endif
 
 	return S_OK;
@@ -56,12 +55,12 @@ HRESULT CLevel_EffectTool::Ready_Lights()
 
 HRESULT CLevel_EffectTool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CLevel_EffectTool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 CLevel_EffectTool* CLevel_EffectTool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
