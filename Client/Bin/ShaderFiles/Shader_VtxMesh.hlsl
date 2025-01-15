@@ -74,7 +74,7 @@ PS_OUT PS_MAIN(PS_IN In)
         discard;
     
     Out.vDiffuse = vMtrlDiffuse;
-    Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 1.0f/*0.f*/);
     
     float fFlag = g_iFlag;
     Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
