@@ -181,20 +181,13 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_Component_Model_Test */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Test"),
-    //    CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Test/Tree_Mod_03.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
-    //    return E_FAIL;
 
-    /* For. Prototype_Component_Model_WoodenPlatform_01 */
+    /* 낱개 로딩 예시*/
     //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_WoodenPlatform_01"),
     //    CModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
     //    return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
-    //    TEXT("../Bin/Resources/Models/NonAnim/SewingKit_01"), matPretransform)))
-    //    return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/"), matPretransform)))

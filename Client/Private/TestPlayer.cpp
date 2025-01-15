@@ -91,7 +91,10 @@ void CTestPlayer::Key_Input(_float _fTimeDelta)
         Change_Coordinate(COORDINATE_3D, _float3(0.0f, 0.0f, 0.0f));
         m_PartObjects[PART_BODY]->Change_Coordinate(COORDINATE_3D, _float3(0.0f, 0.0f, 0.0f));
     }
-
+    if (KEY_DOWN(KEY::M))
+    {
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(++itmpIdx);
+    }
     /* Test Move Code */
     if (KEY_PRESSING(KEY::A))
     {
@@ -144,7 +147,7 @@ HRESULT CTestPlayer::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
     BodyDesc.strModelPrototypeTag = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::COLOR_ALPHA;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
@@ -165,6 +168,7 @@ HRESULT CTestPlayer::Ready_PartObjects()
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_TestBody"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(itmpIdx);
 
     return S_OK;
 }

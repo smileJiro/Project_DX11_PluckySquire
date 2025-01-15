@@ -19,18 +19,15 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_iNumMaterials{ _Prototype.m_iNumMaterials }
 	, m_Materials{ _Prototype.m_Materials }
 	, m_PreTransformMatrix{ _Prototype.m_PreTransformMatrix }
-	//, m_Bones{ _Prototype.m_Bones }
-	, m_iNumBones(_Prototype.m_iNumBones)
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
-	//, m_Animations{ _Prototype.m_Animations }
 {
-	for (auto& PrototypeAnim : _Prototype.m_Animations)
-	{
-		m_Animations.push_back(PrototypeAnim->Clone());
-	}
 	for (auto& pPrototypeBone : _Prototype.m_Bones)
 	{
 		m_Bones.push_back(pPrototypeBone->Clone());
+	}
+	for (auto& PrototypeAnim : _Prototype.m_Animations)
+	{
+		m_Animations.push_back(PrototypeAnim->Clone());
 	}
 
 	for (auto& pMaterial : m_Materials)
@@ -97,7 +94,7 @@ HRESULT C3DModel::Render(_uint _iMeshIndex)
 HRESULT C3DModel::Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex)
 {
 	/* 모델의 m_Bones 벡터를 넘겨 여기서 자기들이 필요한 메쉬에 접근해서 행렬을 가져오고 연산할 것임. */
-	return m_Meshes[_iMeshIndex]->Bind_BoneMatrices(_pShader, _pConstantName, m_Bones);
+ 	return m_Meshes[_iMeshIndex]->Bind_BoneMatrices(_pShader, _pConstantName, m_Bones);
 }
 
 HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex)
@@ -106,55 +103,12 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 		return E_FAIL;
 
 	_uint iMaterialIndex = m_Meshes[_iMeshIndex]->Get_MaterialIndex();
-
+	 
 	ID3D11ShaderResourceView* pSRV = m_Materials[iMaterialIndex]->Find_Texture(_eTextureType, _iTextureIndex);
 	if (nullptr == pSRV)
 		return E_FAIL;
 
 	return _pShader->Bind_SRV(_pConstantName, pSRV);
-}
-
-_uint C3DModel::Find_BoneIndex(const _char* _pBoneName) const
-{
-	_uint iBoneIndex = 0;
-	/* 1. 매개변수로 들어온 BoneName과 같은 이름을 가진 Bone을 찾고, 해당 본의 인덱스를 리턴함. */
-	/* 람다식에 대한 이해. */
-	/* https://www.notion.so/43-120b1e26c8a880d0a730d21cf62d76f2 */
-	auto iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)-> bool 
-		{
-			/* 캡쳐절을 사용하여 외부에 있는 데이터도 받을 수 있게 했다. */
-			/* 이름이 같다면, 0를 반환하는 strcmp 함수. 이름이 같다면 true 로 find_if 탈출.*/
-			if (false == strcmp(pBone->Get_Name(), _pBoneName))
-				return true;
-
-			/* 해당 람다식 탈출조건을 만족했을때의 BoneIndex를 리턴할 것임.*/
-			++iBoneIndex;
-
-			return false;
-		});
-
-	/* 만약 같은 이름이 없다면,*/
-	if (iter == m_Bones.end())
-		MSG_BOX("없다.");
-
-
-	return iBoneIndex;
-}
-
-const _float4x4* C3DModel::Find_BoneMatrix(const _char* _pBoneName) const
-{
-	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
-		{
-			if (false == strcmp(pBone->Get_Name(), _pBoneName))
-				return true;
-
-			return false;
-		});
-
-	if (iter == m_Bones.end())
-		return nullptr;
-
-	return (*iter)->Get_CombinedTransformationFloat4x4();
 }
 
 _bool C3DModel::Play_Animation(_float fTimeDelta)
@@ -180,36 +134,27 @@ _bool C3DModel::Play_Animation(_float fTimeDelta)
 	return bReturn;
 }
 
-HRESULT C3DModel::Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices)
+
+_uint C3DModel::Get_MeshIndex(const _char* _szName) const
 {
-	if (m_Meshes.size() <= iNumMeshIndex)
-		return E_FAIL;
 
-	if(FAILED(m_Meshes[iNumMeshIndex]->Copy_BoneMatrices(_pOutBoneMatrices)))
-		return E_FAIL;
+	_uint	 iMeshIndex = { 0 };
 
-	return S_OK;
-}
-
-_string C3DModel::Get_MeshName(_uint _iMeshIndex)
-{
-	if (m_Meshes.size() <= _iMeshIndex)
-		return _string();
-
-	return m_Meshes[_iMeshIndex]->Get_Name();
-}
-
-_float C3DModel::Get_RootBonePositionY()
-{
-	for (auto& pBones : m_Bones)
-	{
-		if (!strcmp(pBones->Get_Name(), "Bip001"))
+	auto	iter = find_if(m_Meshes.begin(), m_Meshes.end(), [&](CMesh* pMesh)->_bool
 		{
-			return pBones->Get_CombinedPosition().m128_f32[1];
-		}
-	}
-	
-	return 0.0f;
+			if (false == strcmp(pMesh->Get_Name(), _szName))
+				return true;
+
+			++iMeshIndex;
+
+			return false;
+		});
+
+	if (iter == m_Meshes.end())
+		MSG_BOX("그런 메쉬가 없어");
+
+
+	return iMeshIndex;
 }
 
 _uint C3DModel::Get_BoneIndex(const _char* pBoneName) const
@@ -231,6 +176,56 @@ _uint C3DModel::Get_BoneIndex(const _char* pBoneName) const
 		MSG_BOX("그런 뼈가 없어");
 
 	return iBoneIndex;
+}
+
+float C3DModel::Get_AnimTime()
+{
+	return m_Animations[m_iCurrentAnimIndex]->Get_AnimTime();
+}
+
+_uint C3DModel::Get_AnimIndex()
+{
+	return m_iCurrentAnimIndex;
+}
+
+_float C3DModel::Get_AnimationProgress(_uint iAnimIdx)
+{
+	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
+		return m_Animations[m_iCurrentAnimIndex]->Get_Progress();
+	else
+		return 0;
+}
+
+const _float4x4* C3DModel::Get_BoneMatrix(const _char* pBoneName) const
+{
+
+	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+		{
+			if (false == strcmp(pBone->Get_Name(), pBoneName))
+				return true;
+
+			return false;
+		});
+
+	if (iter == m_Bones.end())
+		return nullptr;
+
+	return (*iter)->Get_CombinedTransformationFloat4x4();
+}
+
+CBone* C3DModel::Get_Bone(const _char* pBoneName) const
+{
+	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+		{
+			if (false == strcmp(pBone->Get_Name(), pBoneName))
+				return true;
+
+			return false;
+		});
+
+	if (iter == m_Bones.end())
+		return nullptr;
+	return *iter;
 }
 
 void C3DModel::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)

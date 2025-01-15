@@ -216,11 +216,11 @@ HRESULT CModelObject::Render_3D()
     {
         if (FAILED(m_p3DModelCom->Bind_Material(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
         {
-            //continue;
+            continue;
         }
 
         /* Bind Bone Matrices */
-        if (C3DModel::TYPE::ANIM == m_p3DModelCom->Get_ModelType())
+        if (m_p3DModelCom->Is_AnimModel())
         {
             if (FAILED(m_p3DModelCom->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", i)))
                 return E_FAIL;
