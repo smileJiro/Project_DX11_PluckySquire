@@ -9,8 +9,12 @@ CChaseWalkState::CChaseWalkState()
 {
 }
 
-HRESULT CChaseWalkState::Initialize()
+HRESULT CChaseWalkState::Initialize(void* _pArg)
 {
+	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	m_fChaseRange = pDesc->fChaseRange;
+	m_fAttackRange = pDesc->fAttackRange;
+
 	//플레이어 위치 가져오기
 	m_pTargetTransform = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0)->Get_ControllerTransform();
 	Safe_AddRef(m_pTargetTransform);
@@ -27,7 +31,7 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 {
 	//추적 범위 벗어나면 IDLE 전환
 	_float dis = XMVectorGetX(XMVector3Length((m_pTargetTransform->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
-	if (dis >= 3.f)
+	if (dis >= m_fChaseRange)
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 	else
 	{
@@ -40,11 +44,11 @@ void CChaseWalkState::State_Exit()
 {
 }
 
-CChaseWalkState* CChaseWalkState::Create()
+CChaseWalkState* CChaseWalkState::Create(void* _pArg)
 {
 	CChaseWalkState* pInstance = new CChaseWalkState();
 
-	if (FAILED(pInstance->Initialize()))
+	if (FAILED(pInstance->Initialize(_pArg)))
 	{
 		MSG_BOX("Failed to Created : CChaseWalkState");
 		Safe_Release(pInstance);

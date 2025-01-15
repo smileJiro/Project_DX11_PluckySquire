@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BeetleBody.h"
 #include "GameInstance.h"
+#include "Controller_Model.h"
 
 CBeetleBody::CBeetleBody(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -28,6 +29,8 @@ HRESULT CBeetleBody::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+    m_pControllerModel->Set_AnimationLoop(12, true);
+
     return S_OK;
 }
 
@@ -40,7 +43,7 @@ void CBeetleBody::Priority_Update(_float _fTimeDelta)
 void CBeetleBody::Update(_float _fTimeDelta)
 {
 
-
+    m_pControllerModel->Play_Animation(_fTimeDelta);
     /* Update Parent Matrix */
     CPartObject::Update(_fTimeDelta);
 }

@@ -34,10 +34,13 @@ public:
 	virtual void Attack(_float fTimeDelta);
 
 public:
-	virtual void Set_State(MONSTER_STATE eState) {};
+	virtual void Set_State(MONSTER_STATE eState) 
+	{
+		m_eState = eState;
+	}
 
 protected:
-	_uint				m_iState = {};
+	MONSTER_STATE				m_eState = {};
 	_uint				m_iPreState = {};
 	CController_Transform* m_pPlayerTransform = { nullptr };
 	CFSM* m_pFSM = { nullptr };

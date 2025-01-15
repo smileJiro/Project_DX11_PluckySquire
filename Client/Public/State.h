@@ -12,6 +12,13 @@ class CMonster;
 
 class CState abstract : public CBase
 {
+public:
+	typedef struct tagStateDesc
+	{
+		_float fChaseRange;
+		_float fAttackRange;
+	}STATEDESC;
+
 protected:
 	CState();
 	virtual ~CState() = default;
@@ -25,7 +32,7 @@ public:
 	}
 
 public:
-	virtual HRESULT Initialize() = 0;
+	virtual HRESULT Initialize(void* _pArg) = 0;
 
 public:
 	//state 처음 들어갈 때
@@ -41,6 +48,9 @@ protected:
 	//상태를 가지는 몬스터
 	CMonster* m_pOwner = { nullptr };
 	CFSM* m_pFSM = { nullptr };
+
+	_float	m_fChaseRange = {};
+	_float	m_fAttackRange = {};
 
 public:
 	virtual void Free() override;

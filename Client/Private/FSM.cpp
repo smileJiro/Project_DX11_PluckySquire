@@ -28,8 +28,9 @@ HRESULT CFSM::Initialize_Prototype()
 
 HRESULT CFSM::Initialize(void* _pArg)
 {
-	/*if (FAILED(Ready_States()))
-		return E_FAIL;*/
+	FSMDESC* pDesc = static_cast<FSMDESC*>(_pArg);
+	m_fChaseRange = pDesc->fChaseRange;
+	m_fAttackRange = pDesc->fAttackRange;
 
 	return S_OK;
 }
@@ -43,11 +44,14 @@ void CFSM::Update(_float _fTimeDelta)
 HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 {
 	CState* pState = nullptr;
-	
+	CState::STATEDESC Desc;
+	Desc.fChaseRange = m_fChaseRange;
+	Desc.fAttackRange = m_fAttackRange;
+
 	switch (_eState)
 	{
 	case Client::MONSTER_STATE::IDLE:
-		pState = CIdleState::Create();
+		pState = CIdleState::Create(&Desc);
 		if (nullptr == pState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
@@ -56,7 +60,7 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 		break;
 
 	case Client::MONSTER_STATE::CHASE:
-		pState = CChaseWalkState::Create();
+		pState = CChaseWalkState::Create(&Desc);
 		if (nullptr == pState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
@@ -97,17 +101,6 @@ HRESULT CFSM::Set_State(MONSTER_STATE _eState)
 
 	m_CurState->State_Enter();
 	m_pOwner->Set_State(_eState);
-
-	return S_OK;
-}
-
-HRESULT CFSM::Ready_States()
-{
-	CState* pState = CIdleState::Create();
-	if (nullptr == pState)
-		return E_FAIL;
-
-	m_States.emplace(MONSTER_STATE::IDLE, pState);
 
 	return S_OK;
 }

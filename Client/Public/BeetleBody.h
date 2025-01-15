@@ -11,6 +11,9 @@ public:
 	{
 
 	}BEETLEBODY_DESC;
+
+	enum Ani {};
+
 private:
 	CBeetleBody(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CBeetleBody(const CBeetleBody& _Prototype);

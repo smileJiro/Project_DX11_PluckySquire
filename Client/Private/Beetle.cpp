@@ -27,7 +27,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
     pDesc->fChaseRange = 5.f;
     pDesc->fAttackRange = 3.f;
@@ -82,8 +82,12 @@ HRESULT CBeetle::Render()
 HRESULT CBeetle::Ready_Components()
 {
     /* Com_FSM */
+    CFSM::FSMDESC Desc;
+    Desc.fChaseRange = m_fChaseRange;
+    Desc.fAttackRange = m_fAttackRange;
+
     if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
-        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM))))
+        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
         return E_FAIL;
     m_pFSM->Set_Owner(this);
 
