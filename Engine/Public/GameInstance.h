@@ -38,8 +38,13 @@ public: /* For.GameInstance */
 
 	_int				Get_StaticLevelID() const { return m_iStaticLevelID; }
 
-	HRESULT				Imgui_Render_RT_Debug();
-	HRESULT				Imgui_Render_RT_Debug_FullScreen();
+#ifdef _DEBUG
+	HRESULT				Imgui_Debug_Render();
+	HRESULT				Imgui_Debug_Render_RT();
+	HRESULT				Imgui_Debug_Render_RT_FullScreen();
+	HRESULT				Imgui_Debug_Render_ObjectInfo();
+#endif // _DEBUG
+
 public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	void				Render_FPS(const _wstring& _strTimerTag);
@@ -67,7 +72,7 @@ public: /* For. Object_Manager */
 	class CLayer*		Find_Layer(_uint _iLevelID, const _wstring& _strLayerTag);
 	class CGameObject*	Get_PickingModelObjectByCursor(_uint _iLevelID, const _wstring& _strLayerTag, _float2 _fCursorPos); // 마우스 커서로 피킹체크 후 충돌 오브젝트중 가장 가까운 오브젝트 리턴.
 	class CGameObject*	Find_NearestObject_Scaled(_uint _iLevelID, const _wstring& _strLayerTag, CController_Transform* const _pTransform, CGameObject* pCurTargetObject = nullptr);
-
+	class CGameObject*	Get_GameObject_Ptr(_int _iLevelID, const _wstring& _strLayerTag, _int _iObjectIndex);
 public: /* For.Renderer */
 	HRESULT				Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, class CGameObject* _pRenderObject);
 #ifdef _DEBUG

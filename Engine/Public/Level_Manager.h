@@ -12,7 +12,6 @@ class CLevel;
 class CGameInstance;
 
 
-
 // Level Manager의 역할.
 // 1. 현재 화면에 보여주어야 할 레벨 객체를 들고 있는다.
 // 2. 새로운 레벨로 교체하고 기존 레벨을 삭제한다.

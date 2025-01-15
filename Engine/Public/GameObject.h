@@ -71,7 +71,10 @@ protected:
 	vector<CCollider*>			m_Colliders;
 
 protected:
+	_uint						m_iGameObjectID;
+protected:
 	_wstring					m_strName;
+	_wstring					m_strClassName;
 	_uint						m_iCurLevelID = 0;
 	_bool						m_isDead = false;
 	_bool						m_isRender = true;

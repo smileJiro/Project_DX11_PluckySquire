@@ -21,7 +21,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
-	Ready_Layer_UI(TEXT("Layer_UI"));;
+	Ready_Layer_UI(TEXT("Layer_UI"));
     return S_OK;
 }
 
@@ -31,13 +31,14 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
 	}
+
 }
 
 HRESULT CLevel_GamePlay::Render()
 {
 #ifdef _DEBUG
-	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
     return S_OK;
@@ -89,6 +90,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
+
+
 	CCam_Manager::GetInstance()->Set_TargetCamera(static_cast<CCamera_Target*>(pGameObject));
 
 	CCam_Manager::GetInstance()->Change_Cam(CCam_Manager::CAM_TARGET);
@@ -110,6 +113,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
