@@ -8,7 +8,7 @@
 #include "TestPlayer.h"
 #include "TestBody.h"
 #include "TestTerrain.h"
-#include "Pick_Bulb.h"
+//#include "Pick_Bulb.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
