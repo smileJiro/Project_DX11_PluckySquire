@@ -187,6 +187,7 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CriticalSectionGuard.h" />
+    <ClInclude Include="..\public\SettingPanel.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="..\private\Cam_Manager.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
     <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
+    <ClCompile Include="..\private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />

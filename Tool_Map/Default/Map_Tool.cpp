@@ -30,11 +30,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // Memory Leak // 
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    //AllocConsole();
-    //FILE* file;
-    //freopen_s(&file, "CONOUT$", "w", stdout);  // stdout을 콘솔에 연결
-    //freopen_s(&file, "CONOUT$", "w", stderr);  // stderr을 콘솔에 연결
-    //freopen_s(&file, "CONIN$", "r", stdin);    // stdin을 콘솔에 연결
+    AllocConsole();
+    FILE* file;
+    freopen_s(&file, "CONOUT$", "w", stdout);  // stdout을 콘솔에 연결
+    freopen_s(&file, "CONOUT$", "w", stderr);  // stderr을 콘솔에 연결
+    freopen_s(&file, "CONIN$", "r", stdin);    // stdin을 콘솔에 연결
 #endif
     // Memory Leak // 
 

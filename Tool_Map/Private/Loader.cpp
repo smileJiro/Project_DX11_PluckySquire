@@ -170,7 +170,7 @@ HRESULT CLoader::Loading_Level_Map_Tool()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,
-        TEXT("../../Client/Bin/Resources/Models/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
         return E_FAIL;
 
 
@@ -178,16 +178,6 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_VIBuffer_Rect"),
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
-    ///* For. Prototype_Component_Model_Test */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Model_Test"),
-    //    C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Test/Tree_Mod_03.fbx", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
-    //    return E_FAIL;
-
-    ///* For. Prototype_Component_Model_WoodenPlatform_01 */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Model_WoodenPlatform_01"),
-    //    C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.fbx", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
-    //    return E_FAIL;
     
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

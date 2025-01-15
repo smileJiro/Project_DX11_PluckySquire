@@ -122,6 +122,8 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update 수행 후, DeadObject Safe_Release() + erase();
 	m_pLevel_Manager->Update(fTimeDelta);
 
+	Imgui_Render_RT_Debug();
+	Imgui_Render_RT_Debug_FullScreen();
 }
 
 HRESULT CGameInstance::Render_Begin(const _float4& vClearColor)
@@ -188,6 +190,93 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	m_pPrototype_Manager->Level_Exit((_uint)iCurLevelID);
 	m_pLight_Manager->Level_Exit();
 	m_pCollision_Manager->Level_Exit();
+
+	return S_OK;
+}
+
+HRESULT CGameInstance::Imgui_Render_RT_Debug()
+{
+	ImGui::Begin("DebugRenderTarget");
+
+	/* Image Render */
+	ImGui::Text("Target_Book_2D");
+	ImVec2 imageSize(160, 90); // 이미지 크기 설정
+	ID3D11ShaderResourceView* pSelectImage = Get_RT_SRV(TEXT("Target_Book_2D"));
+	if (nullptr != pSelectImage)
+		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+
+	ImGui::Text("Target_Diffuse");
+	pSelectImage = Get_RT_SRV(TEXT("Target_Diffuse"));
+	if (nullptr != pSelectImage)
+		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+
+	ImGui::Text("Target_Normal");
+	pSelectImage = Get_RT_SRV(TEXT("Target_Normal"));
+	if (nullptr != pSelectImage)
+		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+
+	ImGui::Text("Target_Shade");
+	pSelectImage = Get_RT_SRV(TEXT("Target_Shade"));
+	if (nullptr != pSelectImage)
+		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+
+	ImGui::Text("Target_Specular");
+	pSelectImage = Get_RT_SRV(TEXT("Target_Specular"));
+	if (nullptr != pSelectImage)
+		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+
+	ImGui::End();
+
+
+
+
+	return S_OK;
+}
+
+HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
+{
+	ImGui::Begin("Debug FullScreen");
+
+
+	if (ImGui::TreeNode("MRTs"))
+	{
+		map<const _wstring, list<CRenderTarget*>> MRTs = m_pTarget_Manager->Get_MRTs();
+
+		if (MRTs.empty())
+		{
+			// MRTs가 비어 있는 경우에도 처리
+			ImGui::Text("No MRTs available");
+		}
+		else
+		{
+			for (auto& MRT : MRTs)
+			{
+				_string strMRTName = m_pGlobalFunction_Manager->WStringToString(MRT.first);
+				if (ImGui::TreeNode(strMRTName.c_str()))
+				{
+
+					// TODO :: 렌더타겟 이름을 별도로 저장하시고~ CRenderTarget에서 하든 뭘 하든. MRT >>> RT Name >> 선택하면 >>> 큰화면 ㄱㄱ
+					
+					//for (CRenderTarget* pRenderTarget : MRT.second)
+					//{
+					//	_string strRTName = m_pGlobalFunction_Manager->WStringToString(MRT.first);
+					//}
+
+					ImGui::TreePop();
+				}
+				
+			}
+
+			
+		}
+
+		ImGui::TreePop();
+	}
+
+	
+	ImGui::End();
+
+
 
 	return S_OK;
 }
