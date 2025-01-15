@@ -37,7 +37,7 @@ public:
 
 public:
 	// Get
-	
+	_uint Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
 	// Set
 
 protected:

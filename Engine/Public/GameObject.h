@@ -52,7 +52,7 @@ public:
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_int						Get_CurLevelID() const							{ return m_iCurLevelID; }
-
+	_uint						Get_GameObjectInstanceID() const				{ return m_iGameObjectInstanceID; }
 	// Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
 	void						Set_WorldMatrix(_float4x4 _WorldMatrix)			{ m_pControllerTransform->Set_WorldMatrix(_WorldMatrix); }
@@ -70,11 +70,11 @@ protected:
 	CRay*						m_pRayCom = nullptr;
 	vector<CCollider*>			m_Colliders;
 
-protected:
-	static _uint				g_iIDCount;
+private:
+	static _uint				g_iInstanceIDCount;
 
 protected:
-	_uint						m_iGameObjectID;
+	_uint						m_iGameObjectInstanceID;
 	_wstring					m_strName;
 	_uint						m_iCurLevelID = 0;
 	_bool						m_isDead = false;
