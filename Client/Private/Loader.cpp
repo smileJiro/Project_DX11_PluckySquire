@@ -224,6 +224,13 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
 
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObject_TEST"),
+		CPick_Bulb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+    
+
+
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 

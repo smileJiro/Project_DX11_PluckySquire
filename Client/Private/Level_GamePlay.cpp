@@ -143,11 +143,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
 
-	pDesc.fX = g_iWinSizeX / 2;
-	pDesc.fY = g_iWinSizeY / 2;
+	pDesc.fX = g_iWinSizeX / 4;
+	pDesc.fY = g_iWinSizeY / 4;
 	pDesc.fSizeX = 100.f;
 	pDesc.fSizeY = 100.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObject_TEST"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

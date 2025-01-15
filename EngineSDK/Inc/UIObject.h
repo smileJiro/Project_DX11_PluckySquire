@@ -29,6 +29,9 @@ protected:
 
 	_uint					m_iDepth = {};
 
+	//CShader*				m_pShaderComs[COORDINATE_LAST] = {};
+	//_uint					m_iShaderPasses[COORDINATE_LAST] = {};
+
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

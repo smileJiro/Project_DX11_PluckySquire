@@ -24,8 +24,6 @@ HRESULT CUI::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	//m_mapUIObject.emplace(TEXT("123"), this);
-
 	return S_OK;
 }
 
@@ -49,7 +47,7 @@ HRESULT CUI::Render(_int iTemType)
 		return E_FAIL;
 
 
-	m_pShaderComs[COORDINATE_2D]->Begin(0);
+	m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
 
 	m_pVIBufferCom->Bind_BufferDesc();
 
@@ -80,13 +78,15 @@ HRESULT CUI::Bind_ShaderResources(_int iTemType)
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
 		return E_FAIL;
 
+
+
 	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_Texture", iTemType)))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture")))
 		return E_FAIL;
 
 	return S_OK;
