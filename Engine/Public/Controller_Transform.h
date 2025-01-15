@@ -55,17 +55,17 @@ public: /* 3D */
 public:
 	// Get
 	COORDINATE				Get_CurCoord() const { return m_eCurCoord; }
-	CTransform*				Get_Transform() const;
-	CTransform*				Get_Transform(COORDINATE _eCoordinate) const;
+	CTransform* Get_Transform() const;
+	CTransform* Get_Transform(COORDINATE _eCoordinate) const;
 	_matrix					Get_WorldMatrix() const;
 	_matrix					Get_WorldMatrix(COORDINATE _eCoordinate) const;
-	const _float4x4*		Get_WorldMatrix_Ptr() const;
-	const _float4x4*		Get_WorldMatrix_Ptr(COORDINATE _eCoordinate) const;
+	const _float4x4* Get_WorldMatrix_Ptr() const;
+	const _float4x4* Get_WorldMatrix_Ptr(COORDINATE _eCoordinate) const;
 	_float3					Get_Scale() const;
 	_vector					Get_State(CTransform::STATE _eState) const;
 	_float					Get_SpeedPerSec() const;
 	_float					Get_RotationPerSec() const;
-	_bool					Is_CoordChangeEnable() const {	return m_isCoordChangeEnable; }
+	_bool					Is_CoordChangeEnable() const { return m_isCoordChangeEnable; }
 	// Set
 	void					Set_WorldMatrix(_fmatrix _WorldMatrix);
 	void					Set_WorldMatrix(const _float4x4& _WorldMatrix);
@@ -77,12 +77,12 @@ public:
 	void					Set_RotationPerSec(_float _fRotationPerSec);
 
 private:
-	ID3D11Device*			m_pDevice = nullptr;
-	ID3D11DeviceContext*	m_pContext = nullptr;
-	CGameInstance*			m_pGameInstance = nullptr;
+	ID3D11Device* m_pDevice = nullptr;
+	ID3D11DeviceContext* m_pContext = nullptr;
+	CGameInstance* m_pGameInstance = nullptr;
 
 private:
-	CTransform*				m_pTransforms[COORDINATE::COORDINATE_LAST] = { nullptr, nullptr };
+	CTransform* m_pTransforms[COORDINATE::COORDINATE_LAST] = { nullptr, nullptr };
 
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;
 	_bool					m_isCoordChangeEnable = false;

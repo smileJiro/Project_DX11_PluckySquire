@@ -100,7 +100,8 @@ HRESULT CBeetle::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.strModelPrototypeTag = TEXT("beetle_01");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("beetle_01");
+	BodyDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);

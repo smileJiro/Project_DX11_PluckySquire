@@ -56,8 +56,6 @@ void CTestPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
 
-
-
     CContainerObject::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -90,7 +88,10 @@ void CTestPlayer::Key_Input(_float _fTimeDelta)
         m_PartObjects[PART_BODY]->Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
         
     }
-
+    if (KEY_DOWN(KEY::M))
+    {
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(++itmpIdx);
+    }
     /* Test Move Code */
     if (KEY_PRESSING(KEY::A))
     {
@@ -142,9 +143,12 @@ HRESULT CTestPlayer::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
+    BodyDesc.i2DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+    BodyDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Texture_PickBulb");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.strModelPrototypeTag = TEXT("Tree_Mod_03");
+    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
     BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::COLOR_ALPHA;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
@@ -164,6 +168,7 @@ HRESULT CTestPlayer::Ready_PartObjects()
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_TestBody"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
+    
 
     return S_OK;
 }

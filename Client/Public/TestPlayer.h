@@ -7,7 +7,10 @@ class CTestPlayer final : public CContainerObject
 {
 public:
 	enum PART { PART_BODY, PART_LAST };
+	enum ANIM_STATE
+	{
 
+	};
 private:
 	CTestPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CTestPlayer(const CTestPlayer& _Prototype);
@@ -28,6 +31,8 @@ private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
 
+private:
+	_uint itmpIdx = 0;
 public:
 	static CTestPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

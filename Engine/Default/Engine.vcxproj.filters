@@ -435,6 +435,10 @@
     <ClInclude Include="..\Public\CameraArm.h">
       <Filter>01.Utility\03.Objects\Camera\CameraArm</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\2DModel.h">
+      <Filter>01.Utility\04.Components\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -635,6 +639,10 @@
     <ClCompile Include="..\Private\CameraArm.cpp">
       <Filter>01.Utility\03.Objects\Camera\CameraArm</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\2DModel.cpp">
+      <Filter>01.Utility\04.Components\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
