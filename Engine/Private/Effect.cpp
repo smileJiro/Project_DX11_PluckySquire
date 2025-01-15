@@ -12,25 +12,21 @@ CEffect::CEffect(const CEffect& _Prototype)
 {
 }
 
-HRESULT CEffect::Initialize_Prototype()
+
+HRESULT CEffect::Initialize_Prototype(const _tchar* _szFilePath)
 {
+    json jsonEffectInfo;
+    if (FAILED(m_pGameInstance->Load_Json(_szFilePath, &jsonEffectInfo)))
+        return E_FAIL;
+
+    _int iTemp = jsonEffectInfo["Count"];
+
     return S_OK;
 }
 
 HRESULT CEffect::Initialize(void* _pArg)
-{
-    // TODO : 2D or 3D ?
-
-    {
-        EFFECT_DESC* pDesc = static_cast<EFFECT_DESC*>(_pArg);
-        if (nullptr == pDesc)
-            return E_FAIL;
-
-        pDesc->eStartCoord = COORDINATE_3D; 
-        pDesc->isCoordChangeEnable = false;
-    }
-
-
+{    
+    // TODO : EFFECT Desc ? 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
@@ -56,11 +52,11 @@ HRESULT CEffect::Render()
     return S_OK;
 }
 
-CEffect* CEffect::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CEffect* CEffect::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _szFilePath)
 {
     CEffect* pInstance = new CEffect(_pDevice, _pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype()))
+    if (FAILED(pInstance->Initialize_Prototype(_szFilePath)))
     {
         MSG_BOX("Failed to Cloned : CEffect");
         Safe_Release(pInstance);
@@ -84,6 +80,10 @@ CGameObject* CEffect::Clone(void* _pArg)
 
 void CEffect::Free()
 {
+    Safe_Release(m_pParticleBufferCom);
+    Safe_Release(m_pShaderCom);
+    Safe_Release(m_pTextureCom);
+
     __super::Free();
 }
 

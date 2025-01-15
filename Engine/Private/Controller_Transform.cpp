@@ -103,7 +103,7 @@ _float CController_Transform::Compute_Distance(_fvector _vTargetPos)
 
 HRESULT CController_Transform::Bind_ShaderResource(CShader* pShader, const _char* pConstantName)
 {
-	return m_pTransforms[m_eCurCoord]->Bind_ShaderResource(pShader, pConstantName);
+ 	return m_pTransforms[m_eCurCoord]->Bind_ShaderResource(pShader, pConstantName);
 }
 
 void CController_Transform::LookAt_3D(_fvector _vAt)

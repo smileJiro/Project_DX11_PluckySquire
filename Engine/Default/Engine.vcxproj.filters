@@ -220,6 +220,9 @@
     <Filter Include="01.Utility\03.Objects\UIObject">
       <UniqueIdentifier>{8705d9f3-8ff3-48cd-b9a0-4976b0e0b551}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\96. JsonManager">
+      <UniqueIdentifier>{a8924b62-0eca-426f-b3e5-1c78706ed851}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -426,6 +429,9 @@
     <ClInclude Include="..\Public\UIObject.h">
       <Filter>01.Utility\03.Objects\UIObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Json_Manager.h">
+      <Filter>01.Utility\96. JsonManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -619,6 +625,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UIObject.cpp">
       <Filter>01.Utility\03.Objects\UIObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Json_Manager.cpp">
+      <Filter>01.Utility\96. JsonManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

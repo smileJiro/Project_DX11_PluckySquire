@@ -504,7 +504,7 @@ void CCamera_Target::Free()
     __super::Free();
 }
 
-HRESULT CCamera_Target::Safe_Release_DeadObjects()
+HRESULT CCamera_Target::Cleanup_DeadReferences()
 {
     if (nullptr == m_pTarget)
         return S_OK;

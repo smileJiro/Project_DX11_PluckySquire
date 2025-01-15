@@ -3,6 +3,9 @@
 
 #include "GameInstance.h"
 
+#include "MainEffectTool.h"
+
+
 CEffectToolLoader::CEffectToolLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
     , m_pContext(_pContext)
@@ -72,6 +75,10 @@ void CEffectToolLoader::Show_Debug()
 
 HRESULT CEffectToolLoader::Loading_Level_Tool()
 {
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
+        CEffect::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestEffect.json")))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

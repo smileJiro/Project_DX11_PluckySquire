@@ -26,6 +26,7 @@ HRESULT CVIBuffer_Particle_Instance::Initialize_Prototype()
 
 HRESULT CVIBuffer_Particle_Instance::Initialize(void* _pArg)
 {
+    // 
     m_pDevice->CreateBuffer(&m_InstanceBufferDesc, &m_InstanceInitialDesc, &m_pVBInstance);
 
     return S_OK;
