@@ -182,6 +182,9 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vNormal), sizeof(_float3));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
+		m_vecVerticesPos.push_back(pVertices[i].vPosition);
+		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+
 	}
 	inFile.read(reinterpret_cast<char*>(&m_iNumBones), sizeof(_uint));
 

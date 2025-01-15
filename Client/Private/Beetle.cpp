@@ -51,19 +51,19 @@ HRESULT CBeetle::Initialize(void* _pArg)
 void CBeetle::Priority_Update(_float _fTimeDelta)
 {
 
-    CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
+    __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 void CBeetle::Update(_float _fTimeDelta)
 {
     m_pFSM->Update(_fTimeDelta);
-    CContainerObject::Update(_fTimeDelta); /* Part Object Update */
+    __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CBeetle::Late_Update(_float _fTimeDelta)
 {
 
-    CContainerObject::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
 HRESULT CBeetle::Render()
@@ -97,7 +97,7 @@ HRESULT CBeetle::Ready_Components()
 HRESULT CBeetle::Ready_PartObjects()
 {
     /* Part Body */
-    CBeetleBody::BEETLEBODY_DESC BodyDesc{};
+    CModelObject::MODELOBJECT_DESC BodyDesc{};
 
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
@@ -115,7 +115,7 @@ HRESULT CBeetle::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_BeetleBody"), &BodyDesc));
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_CModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 

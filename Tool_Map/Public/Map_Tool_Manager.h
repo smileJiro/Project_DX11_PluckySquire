@@ -18,6 +18,7 @@ class CNavigationVertex;
 class CModelFile_Manager;
 class CImguiLogger;
 class CCellContainor;
+class CMapParsing_Manager;
 
 
 class CMap_Tool_Manager final : public CBase
@@ -139,7 +140,7 @@ private:
 	ID3D11DeviceContext*			m_pContext;
 	CGameInstance*					m_pGameInstance = { nullptr };
 	CImguiLogger*					m_pLogger = nullptr;
-
+	CMapParsing_Manager*			m_pMapParsingManager;
 
 	CMapObject*						m_arrObjects[OBJECT_END] = { nullptr, };
 	_wstring						m_arrSelectName[LIST_END];

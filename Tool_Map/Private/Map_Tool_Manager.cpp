@@ -13,6 +13,8 @@
 #include "EditableCell.h"
 #include "CellContainor.h"
 #include "Event_Manager.h"
+#include "MapParsing_Manager.h"
+
 using namespace std::filesystem;
 
 
@@ -52,7 +54,9 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	}
 	
 	// SM_desk_split_topboard_02
-
+	m_pLogger = CImguiLogger::Create();
+	if (nullptr == m_pLogger)
+		return E_FAIL;
 
 	CMapObject::MAPOBJ_DESC NormalDesc = {};
 	lstrcpy(NormalDesc.szModelName, L"SM_desk_split_topboard_02");
@@ -74,6 +78,12 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 		Safe_AddRef(m_pCellContainor);
 	}
 
+
+	CMapParsing_Manager* pParsingManager = CMapParsing_Manager::Create(m_pDevice, m_pContext, m_pLogger);
+	if (nullptr == pParsingManager)
+		return E_FAIL;
+
+	pParsingManager->Parsing(string("..\\Bin\\json\\Desk_C04.json"));
 
 
 	return S_OK;

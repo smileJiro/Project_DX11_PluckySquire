@@ -181,7 +181,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Beetle.h" />
-    <ClInclude Include="..\Public\BeetleBody.h" />
     <ClInclude Include="..\public\Cam_Manager.h" />
     <ClInclude Include="..\Public\ChaseWalkState.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -206,7 +205,6 @@
     <ClInclude Include="..\public\Camera_Target.h" />
     <ClInclude Include="..\Public\Pick_Bulb.h" />
     <ClInclude Include="..\public\State.h" />
-    <ClInclude Include="..\public\TestBody.h" />
     <ClInclude Include="..\public\TestPlayer.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
     <ClInclude Include="..\Public\UI.h" />
@@ -218,7 +216,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Beetle.cpp" />
-    <ClCompile Include="..\Private\BeetleBody.cpp" />
     <ClCompile Include="..\private\Cam_Manager.cpp" />
     <ClCompile Include="..\Private\ChaseWalkState.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
@@ -239,7 +236,6 @@
     <ClCompile Include="..\private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\Pick_Bulb.cpp" />
     <ClCompile Include="..\private\State.cpp" />
-    <ClCompile Include="..\private\TestBody.cpp" />
     <ClCompile Include="..\private\TestPlayer.cpp" />
     <ClCompile Include="..\private\TestTerrain.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />

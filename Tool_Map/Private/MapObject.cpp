@@ -142,7 +142,7 @@ CMapObject* CMapObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CMapObject");
+        //MSG_BOX("Failed to Created : CMapObject");
         Safe_Release(pInstance);
     }
 
