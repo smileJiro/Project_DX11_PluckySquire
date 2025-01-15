@@ -2,10 +2,11 @@
 #include "3DModel.h"
 #include "Shader.h"
 #include "Bone.h"
+#include "Engine_Function.h"
+#include "iostream"
 
 CMesh::CMesh(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CVIBuffer(_pDevice, _pContext)
-	, m_szName{}
 {
 }
 
@@ -84,23 +85,29 @@ HRESULT CMesh::Initialize(void* _pArg)
     return S_OK;
 }
 
-HRESULT CMesh::Bind_BoneMatrices(CShader* _pShader, const _char* _pConstantName, const vector<CBone*>& _vecBones)
+HRESULT CMesh::Bind_BoneMatrices(CShader* _pShader, const _char* _pConstantName, const vector<CBone*>& _pBones)
 {
 	ZeroMemory(m_BoneMatrices, sizeof(_float4x4) * 256);
 
+	_uint		iSize = m_BoneIndices.size();
+
 	for (size_t i = 0; i < m_BoneIndices.size(); ++i)
 	{
-		XMStoreFloat4x4(&m_BoneMatrices[i], XMLoadFloat4x4(&m_BoneOffsetMatrices[i]) * _vecBones[m_BoneIndices[i]]->Get_CombinedTransformationMatrix());
+		XMStoreFloat4x4(&m_BoneMatrices[i], XMLoadFloat4x4(&m_BoneOffsetMatrices[i]) * _pBones[m_BoneIndices[i]]->Get_CombinedTransformationMatrix());
 	}
 
-	return _pShader->Bind_Matrices(_pConstantName, m_BoneMatrices, 256);
+	return _pShader->Bind_Matrices(_pConstantName, m_BoneMatrices,  256);
+
 }
 
-HRESULT CMesh::Copy_BoneMatrices(array<_float4x4, 256>* _pOutBoneMatrices)
+void CMesh::ReSet_OffsetMarix()
 {
-	memcpy(_pOutBoneMatrices->data(), m_BoneMatrices, sizeof(m_BoneMatrices));
-	return S_OK;
+	for (auto& i : m_BoneOffsetMatrices)
+	{
+		XMStoreFloat4x4(&i, XMMatrixIdentity());
+	}
 }
+
 
 HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(ifstream& inFile, _fmatrix PreTransformMatrix)
 {
@@ -175,6 +182,9 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vNormal), sizeof(_float3));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
+		m_vecVerticesPos.push_back(pVertices[i].vPosition);
+		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+
 	}
 	inFile.read(reinterpret_cast<char*>(&m_iNumBones), sizeof(_uint));
 
@@ -256,6 +266,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 
 	return S_OK;
 }
+
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, C3DModel::TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
 {

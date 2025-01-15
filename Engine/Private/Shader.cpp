@@ -129,16 +129,18 @@ HRESULT CShader::Bind_Matrices(const _char* _pConstantName, const _float4x4* _pM
     if (nullptr == pVariable)
         return E_FAIL;
 
+
     ID3DX11EffectMatrixVariable* pMatrixVariable = pVariable->AsMatrix();
     if (nullptr == pMatrixVariable)
         return E_FAIL;
 
-    /* 매트릭스 Array를 바인딩하는 함수가 있다. >>> 배열의 개수를 함께 전달해야한다.*/
-    return pMatrixVariable->SetMatrixArray(reinterpret_cast<const _float*>(_pMatrix), 0, _iNumMatrices);
 
-
-
-    return S_OK;
+    HRESULT hr = pMatrixVariable->SetMatrixArray(reinterpret_cast<const _float*>(_pMatrix), 0, _iNumMatrices);
+    if (FAILED(hr))
+    {
+        int a = 0;
+    }
+    return hr;
 }
 
 HRESULT CShader::Bind_SRV(const _char* _pConstantName, ID3D11ShaderResourceView* _pSRV)

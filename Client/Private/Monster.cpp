@@ -28,6 +28,7 @@ HRESULT CMonster::Initialize(void* pArg)
 		return E_FAIL;
 
 	//플레이어 위치 가져오기
+
 	m_pPlayerTransform = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0)->Get_ControllerTransform();
 	if (nullptr == m_pPlayerTransform)
 		return E_FAIL;

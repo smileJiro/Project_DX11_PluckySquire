@@ -30,6 +30,8 @@ private:
 private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 
+
+
 public:
 	static CMap_Tool_MainApp* Create();
 	virtual void Free() override;

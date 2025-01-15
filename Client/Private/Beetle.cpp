@@ -2,6 +2,7 @@
 #include "Beetle.h"
 #include "GameInstance.h"
 #include "BeetleBody.h"
+#include "FSM.h"
 
 CBeetle::CBeetle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -26,7 +27,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
     pDesc->fChaseRange = 5.f;
     pDesc->fAttackRange = 3.f;
@@ -40,8 +41,9 @@ HRESULT CBeetle::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pControllerTransform->Set_State(CTransform::STATE_POSITION,
-        XMVectorSet(m_pGameInstance->Compute_Random(0.f, 10.f), 0.f, m_pGameInstance->Compute_Random(0.f, 10.f), 1.f));
+    m_pFSM->Add_State(MONSTER_STATE::IDLE);
+    m_pFSM->Add_State(MONSTER_STATE::CHASE);
+    m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
     return S_OK;
 }
@@ -49,21 +51,19 @@ HRESULT CBeetle::Initialize(void* _pArg)
 void CBeetle::Priority_Update(_float _fTimeDelta)
 {
 
-
-
-    CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
+    __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 void CBeetle::Update(_float _fTimeDelta)
 {
-
-    CContainerObject::Update(_fTimeDelta); /* Part Object Update */
+    m_pFSM->Update(_fTimeDelta);
+    __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CBeetle::Late_Update(_float _fTimeDelta)
 {
 
-    CContainerObject::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
 HRESULT CBeetle::Render()
@@ -81,20 +81,31 @@ HRESULT CBeetle::Render()
 
 HRESULT CBeetle::Ready_Components()
 {
+    /* Com_FSM */
+    CFSM::FSMDESC Desc;
+    Desc.fChaseRange = m_fChaseRange;
+    Desc.fAttackRange = m_fAttackRange;
+
+    if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
+        return E_FAIL;
+    m_pFSM->Set_Owner(this);
+
     return S_OK;
 }
 
 HRESULT CBeetle::Ready_PartObjects()
 {
     /* Part Body */
-    CBeetleBody::BEETLEBODY_DESC BodyDesc{};
+    CModelObject::MODELOBJECT_DESC BodyDesc{};
 
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.strModelPrototypeTag = TEXT("beetle_01");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("beetle_01");
+	BodyDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -104,7 +115,7 @@ HRESULT CBeetle::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_BeetleBody"), &BodyDesc));
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_CModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 

@@ -10,3 +10,12 @@ XMVECTOR Engine::ExtractQuaternionFromMatrix(const XMMATRIX& _Matrix)
 
 	return quaternion;
 }
+string Engine::MatrixToString(_float4x4 vMatrix)
+{
+	string strMatrix;
+	strMatrix += std::to_string(vMatrix._11) + " " + std::to_string(vMatrix._12) + " " + std::to_string(vMatrix._13) + " " + std::to_string(vMatrix._14) + "\n";
+	strMatrix += std::to_string(vMatrix._21) + " " + std::to_string(vMatrix._22) + " " + std::to_string(vMatrix._23) + " " + std::to_string(vMatrix._24) + "\n";
+	strMatrix += std::to_string(vMatrix._31) + " " + std::to_string(vMatrix._32) + " " + std::to_string(vMatrix._33) + " " + std::to_string(vMatrix._34) + "\n";
+	strMatrix += std::to_string(vMatrix._41) + " " + std::to_string(vMatrix._42) + " " + std::to_string(vMatrix._43) + " " + std::to_string(vMatrix._44) + "\n";
+	return strMatrix;
+}

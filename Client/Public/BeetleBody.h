@@ -11,6 +11,9 @@ public:
 	{
 
 	}BEETLEBODY_DESC;
+
+	enum Ani {};
+
 private:
 	CBeetleBody(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CBeetleBody(const CBeetleBody& _Prototype);
@@ -22,7 +25,7 @@ public:
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
-	virtual HRESULT			Render() override;
+
 	virtual HRESULT			Render_Shadow() override;
 
 private:
