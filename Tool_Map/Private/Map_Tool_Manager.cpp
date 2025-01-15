@@ -68,11 +68,11 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 		L"Layer_Environment",
 		&pGameObject,
 		(void*)&NormalDesc);
-	//if (pGameObject)
-	//{
-	//	m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
-	//	Safe_AddRef(m_pCellContainor);
-	//}
+	if (pGameObject)
+	{
+		m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
+		Safe_AddRef(m_pCellContainor);
+	}
 
 
 
@@ -154,8 +154,6 @@ void CMap_Tool_Manager::Input_Object_Tool_Mode()
 			_float3 fPos = m_fPickingPos;
 			fPos.y += 0.5f;
 			m_arrObjects[OBJECT_PREVIEW]->Set_Position(XMVectorSetW(XMLoadFloat3(&fPos), 1.f));
-			//static_cast<CTransform*>(m_arrObjects[OBJECT_PREVIEW]->Find_Component(L"Com_Transform"))
-			//	->Set_State(CTransform::STATE_POSITION, );
 			m_fPreviewPos = fPos;
 			if (MOUSE_DOWN(MOUSE_KEY::LB))
 			{
@@ -250,11 +248,6 @@ void CMap_Tool_Manager::Input_Navigation_Tool_Mode()
 						}
 						m_vecVertexStack.pop_back();
 					}
-					//else if(m_pCellContainor->Get_CellSize() > 0)
-					//{
-					//	Safe_Release(m_pCellContainor->Get_CellList().back());
-					//	m_pCellContainor->Get_CellList().pop_back();
-					//}
 				}
 
 				break;
@@ -335,7 +328,7 @@ void CMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		ImGui::SeparatorText("Object List");
 		if (ImGui::BeginListBox("##Object List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 		{
-			for (const auto& fileName : m_vecObjectFileList) {
+			for (const auto& fileName : m_ObjectFileLists) {
 				_char szName[MAX_PATH] = {};
 
 				WideCharToMultiByte(CP_ACP, 0, fileName.c_str(), -1, szName, (_int)(lstrlen(fileName.c_str())), NULL, NULL);
@@ -584,7 +577,7 @@ void CMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 		ImGui::SeparatorText("Save File List");
 		if (ImGui::BeginListBox("##Save File List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 		{
-			for (const auto& fileName : m_SaveFileList) {
+			for (const auto& fileName : m_SaveFileLists) {
 				_char szName[MAX_PATH] = {};
 
 				WideCharToMultiByte(CP_ACP, 0, fileName.c_str(), -1, szName, (_int)(lstrlen(fileName.c_str())), NULL, NULL);
@@ -817,7 +810,7 @@ void CMap_Tool_Manager::Load(bool bSelected)
 
 		CMapObject::MAPOBJ_DESC NormalDesc = {};
 		lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(szSaveMeshName).c_str());
-		NormalDesc.eCreateType = CMapObject::OBJ__LOAD;
+		NormalDesc.eCreateType = CMapObject::OBJ_LOAD;
 		NormalDesc.matWorld = vWorld;
 
 
@@ -1133,7 +1126,7 @@ bool CMap_Tool_Manager::Check_VertexSelect()
 
 void CMap_Tool_Manager::Load_ModelList()
 {
-	m_vecObjectFileList.clear();
+	m_ObjectFileLists.clear();
 	_wstring strPath 
 		= TEXT("../../Client/Bin/Resources/TestModels/");
 		//= TEXT("../../Client/Bin/resources/Models/");
@@ -1147,7 +1140,7 @@ void CMap_Tool_Manager::Load_ModelList()
 				if (file.path().extension() == ".model")
 				{
 					wstring strKey = file.path().stem().wstring();
-					m_vecObjectFileList.push_back(strKey);
+					m_ObjectFileLists.push_back(strKey);
 				}
 			}
 		}
@@ -1199,7 +1192,7 @@ void CMap_Tool_Manager::Object_Open_PreviewMode()
 		{
 			m_arrObjects[OBJECT_PREVIEW] = static_cast<CMapObject*>(pGameObject);
 			//Safe_AddRef(m_arrObjects[OBJECT_PREVIEW]);
-			m_arrObjects[OBJECT_PREVIEW]->Set_Mode(CMapObject::Preview);
+			m_arrObjects[OBJECT_PREVIEW]->Set_Mode(CMapObject::PREVIEW);
 		}
 	}
 }
