@@ -87,10 +87,6 @@ void CCamera_Target::Late_Update(_float _fTimeDelta)
 
 }
 
-HRESULT CCamera_Target::Render()
-{
-    return E_NOTIMPL;
-}
 
 HRESULT CCamera_Target::Change_Target(CGameObject* _pNewTarget)
 {
