@@ -45,6 +45,7 @@ enum class KEY // 자체적으로 지원 할 키 종류
 	J,
 	K,
 	M,
+	N,
 	I,
 	O,
 	P,
