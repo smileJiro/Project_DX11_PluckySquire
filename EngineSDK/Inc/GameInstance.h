@@ -195,6 +195,8 @@ private:
 	_uint m_iViewportHeight = 0;
 
 	_int m_iStaticLevelID = -1;
+
+	_bool m_isImguiRTRender = true;
 public:
 	// Static
 	static void Release_Engine();
