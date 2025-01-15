@@ -271,13 +271,13 @@ HRESULT CRenderer::Render_NonBlend()
         if (nullptr != pRenderObject && true == pRenderObject->Is_Render())
             pRenderObject->Render();
        
-        // Render 수행 후 해당 객체는 RefCount-- 
+        // Render 수행 후 해당 객체는 RefCount--
         Safe_Release(pRenderObject);
     }
     // 해당 그룹에 속한 모든 Object들에 대해 Render 수행 후, 해당 리스트는 Clear
     m_RenderObjects[RG_NONBLEND].clear();
 
-    if (FAILED(m_pGameInstance->End_MRT()))                     // MRT에 정보들을 모두 저장했다면, 기존의 BackBuffer로 RTV를 변경. 
+    if (FAILED(m_pGameInstance->End_MRT())) // MRT에 정보들을 모두 저장했다면, 기존의 BackBuffer로 RTV를 변경. 
         return E_FAIL;
 
     return S_OK;
