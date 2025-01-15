@@ -233,7 +233,8 @@ HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _
         lstrcat(szFullPath, FindFileData.cFileName);
 
         wstring wstr = szFullPath;
-        string str{ wstr.begin(), wstr.end() };
+        string str = m_pGameInstance->WStringToString(wstr);
+        //string str{ wstr.begin(), wstr.end() };
 
         wstring filename = wstring(FindFileData.cFileName);
         size_t lastDot = filename.find_last_of('.');

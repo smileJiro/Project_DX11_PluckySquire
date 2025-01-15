@@ -1,3 +1,4 @@
+#include "Camera_Target.h"
 #include "stdafx.h"
 #include "Camera_Target.h"
 #include "GameInstance.h"
@@ -85,6 +86,7 @@ void CCamera_Target::Late_Update(_float _fTimeDelta)
     __super::Compute_PipeLineMatrices();
 
 }
+
 
 HRESULT CCamera_Target::Change_Target(CGameObject* _pNewTarget)
 {

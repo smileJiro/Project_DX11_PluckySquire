@@ -49,10 +49,7 @@
     <Filter Include="02. GameObjects\Camera">
       <UniqueIdentifier>{a51ae0a0-28ff-4521-a66a-cae01f239569}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Camera\01. Camera_Free">
-      <UniqueIdentifier>{29f57e64-6a9f-48b1-bc35-1e490944ac08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Camera\02. Camera_Target">
+    <Filter Include="02. GameObjects\Camera\01. Camera_Target">
       <UniqueIdentifier>{73621881-c2d6-4187-840b-6c9b4e63cefd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -105,11 +102,8 @@
     <ClInclude Include="..\Public\Level_Static.h">
       <Filter>01. Levels\01. Static</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera_Free.h">
-      <Filter>02. GameObjects\Camera\01. Camera_Free</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Camera_Target.h">
-      <Filter>02. GameObjects\Camera\02. Camera_Target</Filter>
+      <Filter>02. GameObjects\Camera\01. Camera_Target</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,11 +146,8 @@
     <ClCompile Include="..\Private\Level_Static.cpp">
       <Filter>01. Levels\01. Static</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Camera_Free.cpp">
-      <Filter>02. GameObjects\Camera\01. Camera_Free</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Camera_Target.cpp">
-      <Filter>02. GameObjects\Camera\02. Camera_Target</Filter>
+      <Filter>02. GameObjects\Camera\01. Camera_Target</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

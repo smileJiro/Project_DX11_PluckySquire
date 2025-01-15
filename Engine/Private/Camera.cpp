@@ -43,7 +43,7 @@ HRESULT CCamera::Initialize(void* _pArg)
 	/* 투영 행렬 구성 시 필요한 데이터를 저장. */
 	m_eCameraType = pDesc->eCameraType;
 	m_iCurZoomLevel = (_uint)pDesc->eZoomLevel;
-	m_fFovy = m_arrZoomFovy[m_iCurZoomLevel];
+	m_fFovy = pDesc->fFovy;	// m_arrZoomFovy[m_iCurZoomLevel];
 	m_fAspect = pDesc->fAspect;
 	m_fNear = pDesc->fNear;
 	m_fFar = pDesc->fFar;
