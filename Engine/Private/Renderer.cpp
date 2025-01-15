@@ -22,11 +22,11 @@ HRESULT CRenderer::Initialize()
     m_iOriginViewportHeight = (_uint)ViewportDesc.Height;
 
     /* Target Book2D */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 0.0f, 0.0f, 0.0f))))
         return E_FAIL;
 
     /* Target Diffuse */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 1.0f, 0.0f, 0.0f))))
         return E_FAIL;
 
     /* Target_Normal */
@@ -271,13 +271,13 @@ HRESULT CRenderer::Render_NonBlend()
         if (nullptr != pRenderObject && true == pRenderObject->Is_Render())
             pRenderObject->Render();
        
-        // Render 수행 후 해당 객체는 RefCount-- 
+        // Render 수행 후 해당 객체는 RefCount--
         Safe_Release(pRenderObject);
     }
     // 해당 그룹에 속한 모든 Object들에 대해 Render 수행 후, 해당 리스트는 Clear
     m_RenderObjects[RG_NONBLEND].clear();
 
-    if (FAILED(m_pGameInstance->End_MRT()))                     // MRT에 정보들을 모두 저장했다면, 기존의 BackBuffer로 RTV를 변경. 
+    if (FAILED(m_pGameInstance->End_MRT())) // MRT에 정보들을 모두 저장했다면, 기존의 BackBuffer로 RTV를 변경. 
         return E_FAIL;
 
     return S_OK;
@@ -397,35 +397,29 @@ HRESULT CRenderer::Render_Debug()
 
     m_DebugComponents.clear();
 
-    if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-        return E_FAIL;
-    if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-        return E_FAIL;
+    //if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+    //    return E_FAIL;
+    //if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+    //    return E_FAIL;
 
-    if (FAILED(m_pVIBuffer->Bind_BufferDesc()))
-        return E_FAIL;
+    //if (FAILED(m_pVIBuffer->Bind_BufferDesc()))
+    //    return E_FAIL;
 
-
-    //Imgui_Render_RT_Debug();
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Book_2D"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Shadow"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Final"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-
+    ////Imgui_Render_RT_Debug();
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Book_2D"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Shadow"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Final"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
 
     return S_OK;
 }
 
-HRESULT CRenderer::Imgui_Render_RT_Debug()
-{
-    return S_OK;
-}
 
 #endif // _DEBUG
 

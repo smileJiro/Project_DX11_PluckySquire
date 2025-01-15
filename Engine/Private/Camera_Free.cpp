@@ -64,12 +64,12 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 
 	if (KEY_PRESSING(KEY::D))
 	{
-		m_pControllerTransform->Go_Left(fTimeDelta);
+		m_pControllerTransform->Go_Right(fTimeDelta);
 	}
 
 	if (KEY_PRESSING(KEY::A))
 	{
-		m_pControllerTransform->Go_Right(fTimeDelta);
+		m_pControllerTransform->Go_Left(fTimeDelta);
 	}
 
 	_long		MouseMove = {};

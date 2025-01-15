@@ -32,6 +32,7 @@ public:
 	virtual HRESULT Render_Shadow() { return S_OK; }
 
 public:
+	_bool Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst);
 	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;
 
 public:

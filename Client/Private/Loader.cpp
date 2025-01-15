@@ -145,6 +145,7 @@ HRESULT CLoader::Loading_Level_Logo()
 {
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
+
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
@@ -152,6 +153,7 @@ HRESULT CLoader::Loading_Level_Logo()
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -222,7 +224,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-
+	/* For. Prototype_UIObject_Pick_Bubble */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
+		CPick_Bulb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
