@@ -79,6 +79,9 @@
     <Filter Include="02.GameObjects\UI\01. SettingPanel">
       <UniqueIdentifier>{a66d5efb-41fc-4d5c-8d0f-10a389f20aef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\01. SettingPannelChild">
+      <UniqueIdentifier>{9d429011-50ef-4188-9ed4-2d9021620b66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

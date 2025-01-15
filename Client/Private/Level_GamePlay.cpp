@@ -21,7 +21,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
-	Ready_Layer_UI(TEXT("Layer_UI"));;
+	Ready_Layer_UI(TEXT("Layer_UI"));
     return S_OK;
 }
 
@@ -143,6 +143,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
 
+	
+
+
+
 	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12;
 	pDesc.fY = g_iWinSizeY / 10;
 	pDesc.fSizeX = 182.f;
@@ -150,6 +154,26 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
+
+
+
+
+
+
+	//pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2;
+	//pDesc.fY = g_iWinSizeY / 2;
+	//
+	//
+	//pDesc.fSizeX = 1200.f;
+	//pDesc.fSizeY = 600.f;
+	////pDesc.fSizeX = g_iWinSizeX / 2;
+	////pDesc.fSizeY = g_iWinSizeX / 2;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+
+
+	
 
 	return S_OK;
 }
