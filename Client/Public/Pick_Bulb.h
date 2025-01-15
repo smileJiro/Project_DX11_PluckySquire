@@ -32,7 +32,7 @@ public:
 	static CPick_Bulb*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
-	HRESULT					Safe_Release_DeadObjects() override;
+	HRESULT					Cleanup_DeadReferences() override;
 
 };
 

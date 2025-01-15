@@ -33,6 +33,8 @@ protected:
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;
+	virtual HRESULT Cleanup_DeadReferences() = 0;
+
 };
 
 END

@@ -1,12 +1,12 @@
 #include "..\Public\UIObject.h"
 
-CUIObject::CUIObject(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-	: CGameObject { pDevice, pContext }
+CUIObject::CUIObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CGameObject{ pDevice, pContext }
 {
 }
 
-CUIObject::CUIObject(const CUIObject & Prototype)
-	: CGameObject( Prototype )
+CUIObject::CUIObject(const CUIObject& Prototype)
+	: CGameObject(Prototype)
 {
 }
 
@@ -16,12 +16,12 @@ HRESULT CUIObject::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CUIObject::Initialize(void * pArg)
+HRESULT CUIObject::Initialize(void* pArg)
 {
 	if (nullptr == pArg)
 		return E_FAIL;
-	
-	UIOBJECT_DESC*	pDesc = static_cast<UIOBJECT_DESC*>(pArg);
+
+	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
 
 	//m_fSizeX = pDesc->fSizeX;
 	//m_fSizeY = pDesc->fSizeY;
@@ -35,7 +35,7 @@ HRESULT CUIObject::Initialize(void * pArg)
 
 	m_fX = UITransformDesc.tTransform2DDesc.vPosition.x = pDesc->fX;
 	m_fY = UITransformDesc.tTransform2DDesc.vPosition.y = pDesc->fY;
-	
+
 	m_fSizeX = UITransformDesc.tTransform2DDesc.vScaling.x = pDesc->fSizeX;
 	m_fSizeY = UITransformDesc.tTransform2DDesc.vScaling.y = pDesc->fSizeY;
 

@@ -4,6 +4,8 @@
 #include "Shader.h"
 #include "Bone.h"
 #include "Animation.h"
+#include "iostream"
+
 C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
 {
@@ -68,6 +70,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	if (FAILED(Ready_Animations(inFile)))
 		return E_FAIL;
 	inFile.close();
+	std::cout << pModelFilePath << endl;
 	return S_OK;
 }
 

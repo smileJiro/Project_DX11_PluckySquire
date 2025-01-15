@@ -16,11 +16,13 @@ CEvent_Manager::CEvent_Manager()
 	Safe_AddRef(m_pGameInstance);
 }
 
-void CEvent_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+void CEvent_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger)
 {
 	m_pDevice = _pDevice;
 	m_pContext = _pContext;
+	m_pLogger = _pLogger;
 
+	Safe_AddRef(m_pLogger);
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 }
@@ -148,7 +150,7 @@ HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
 		pChangeLevel = CLevel_Static::Create(m_pDevice, m_pContext);
 		break;
 	case Map_Tool::LEVEL_LOADING:
-		pChangeLevel = CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL_ID)iNextChangeLevelID);
+		pChangeLevel = CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL_ID)iNextChangeLevelID, m_pLogger);
 		break;
 	case Map_Tool::LEVEL_TOOL_MAP:
 		pChangeLevel = CLevel_Map_Tool::Create(m_pDevice, m_pContext);
@@ -223,6 +225,7 @@ void CEvent_Manager::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pLogger);
 
 	__super::Free();
 }

@@ -148,9 +148,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	pDesc.fSizeY = 100.f;
 
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObject_PickBulb"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
-		return E_FAIL;
-
 	return S_OK;
 }
 
