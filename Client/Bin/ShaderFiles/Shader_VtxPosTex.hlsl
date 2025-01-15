@@ -102,7 +102,7 @@ PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = g_vDiffuseColor;
+    Out.vColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
     
     if (Out.vColor.a < 0.01f)
         discard;
@@ -148,7 +148,7 @@ technique11 DefaultTechnique
     pass ColorAlpha
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_WriteNone, 0);
         SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;

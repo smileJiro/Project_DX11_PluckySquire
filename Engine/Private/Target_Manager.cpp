@@ -19,7 +19,7 @@ HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& _strTargetTag, _uint _
     if (nullptr != Find_RenderTarget(_strTargetTag))
         return E_FAIL;
 
-    CRenderTarget* pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, _iWidth, _iHeight, _ePixelFormat, _vClearColor);
+    CRenderTarget* pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, _strTargetTag, _iWidth, _iHeight, _ePixelFormat, _vClearColor);
     if (nullptr == pRenderTarget)
         return E_FAIL;
 

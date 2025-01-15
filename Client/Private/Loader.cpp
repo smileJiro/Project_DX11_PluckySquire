@@ -9,6 +9,7 @@
 #include "TestBody.h"
 #include "TestTerrain.h"
 #include "Pick_Bulb.h"
+#include "SettingPanel.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -133,6 +134,8 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -199,7 +202,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     //    return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
-        TEXT("../Bin/Resources/Models/"), matPretransform)))
+        TEXT("../Bin/Resources/TestModels/"), matPretransform)))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

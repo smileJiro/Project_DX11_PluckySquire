@@ -23,4 +23,13 @@ namespace Client
 		LAST,
 	};
 
+	enum class MONSTER_STATE
+	{
+		IDLE,
+		CHASE,
+		ATTACK,
+
+		LAST,
+	};
+
 }

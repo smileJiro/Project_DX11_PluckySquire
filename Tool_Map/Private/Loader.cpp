@@ -5,6 +5,9 @@
 #include "CriticalSectionGuard.h"
 
 #include "Camera_Free.h"
+#include "CellContainor.h"
+#include "MapObject.h"
+#include "Ray.h"
 
 #include <filesystem>
 #include <iostream>
@@ -160,6 +163,15 @@ HRESULT CLoader::Loading_Level_Map_Tool()
 {
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
 
+    /* For. Prototype_Component_VIBuffer_Rect */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Ray"),
+        CRay::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    /* For.Prototype_Component_Collider_Sphere */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Collider_Sphere"),
+        CCollider::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -171,6 +183,7 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,
         TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
+        //TEXT("../../Client/Bin/Resources/Models/"), matPretransform)))
         return E_FAIL;
 
 
@@ -185,6 +198,15 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     /* For. Prototype_GameObject_Camera_Target */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_Camera_Free"),
         CCamera_Free::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    /* For. Prototype_GameObject_MapObject */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
+        CMapObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_CellContainor"),
+        CCellContainor::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

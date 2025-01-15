@@ -122,8 +122,30 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update 수행 후, DeadObject Safe_Release() + erase();
 	m_pLevel_Manager->Update(fTimeDelta);
 
-	Imgui_Render_RT_Debug();
-	Imgui_Render_RT_Debug_FullScreen();
+
+
+
+#ifdef _DEBUG
+	if (true == m_isImguiRTRender)
+	{
+		if (FAILED(Imgui_Render_RT_Debug()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
+		}
+		if (FAILED(Imgui_Render_RT_Debug_FullScreen()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
+		}
+	}
+	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
+	{
+		m_isImguiRTRender ^= 1;
+	}
+
+
+#endif
+
+
 }
 
 HRESULT CGameInstance::Render_Begin(const _float4& vClearColor)
@@ -198,37 +220,32 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug()
 {
 	ImGui::Begin("DebugRenderTarget");
 
-	/* Image Render */
-	ImGui::Text("Target_Book_2D");
+	// 기존 스타일 백업
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec4 originalColor = style.Colors[ImGuiCol_WindowBg];
+
+	// 알파 값 제거
+	style.Colors[ImGuiCol_WindowBg].w = 1.0f; // 알파를 1.0으로 설정
+	map<const _wstring, CRenderTarget*>& RenderTargets = m_pTarget_Manager->Get_RenderTargets();
+	ID3D11ShaderResourceView* pSelectImage = nullptr;
 	ImVec2 imageSize(160, 90); // 이미지 크기 설정
-	ID3D11ShaderResourceView* pSelectImage = Get_RT_SRV(TEXT("Target_Book_2D"));
-	if (nullptr != pSelectImage)
-		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+	for (auto& Pair : RenderTargets)
+	{
+		pSelectImage = Pair.second->Get_SRV();
+		if (nullptr != pSelectImage)
+		{
+			_string strRTName = m_pGlobalFunction_Manager->WStringToString(Pair.first);
+			ImGui::Text(strRTName.c_str());
+			ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+		}
 
-	ImGui::Text("Target_Diffuse");
-	pSelectImage = Get_RT_SRV(TEXT("Target_Diffuse"));
-	if (nullptr != pSelectImage)
-		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+	}
 
-	ImGui::Text("Target_Normal");
-	pSelectImage = Get_RT_SRV(TEXT("Target_Normal"));
-	if (nullptr != pSelectImage)
-		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+	// 스타일 복구
+	style.Colors[ImGuiCol_WindowBg] = originalColor;
 
-	ImGui::Text("Target_Shade");
-	pSelectImage = Get_RT_SRV(TEXT("Target_Shade"));
-	if (nullptr != pSelectImage)
-		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
-
-	ImGui::Text("Target_Specular");
-	pSelectImage = Get_RT_SRV(TEXT("Target_Specular"));
-	if (nullptr != pSelectImage)
-		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
 
 	ImGui::End();
-
-
-
 
 	return S_OK;
 }
@@ -241,7 +258,8 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
 	if (ImGui::TreeNode("MRTs"))
 	{
 		map<const _wstring, list<CRenderTarget*>> MRTs = m_pTarget_Manager->Get_MRTs();
-
+		ImVec2 imageSize(800, 450); // 이미지 크기 설정
+		ID3D11ShaderResourceView* pSelectImage = nullptr;
 		if (MRTs.empty())
 		{
 			// MRTs가 비어 있는 경우에도 처리
@@ -257,10 +275,19 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
 
 					// TODO :: 렌더타겟 이름을 별도로 저장하시고~ CRenderTarget에서 하든 뭘 하든. MRT >>> RT Name >> 선택하면 >>> 큰화면 ㄱㄱ
 					
-					//for (CRenderTarget* pRenderTarget : MRT.second)
-					//{
-					//	_string strRTName = m_pGlobalFunction_Manager->WStringToString(MRT.first);
-					//}
+					for (CRenderTarget* pRenderTarget : MRT.second)
+					{
+						_string strRTName = m_pGlobalFunction_Manager->WStringToString(pRenderTarget->Get_Name());
+						if (ImGui::TreeNode(strRTName.c_str()))
+						{
+							
+							pSelectImage = Get_RT_SRV(pRenderTarget->Get_Name());
+
+							if (nullptr != pSelectImage)
+								ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+							ImGui::TreePop();
+						}
+					}
 
 					ImGui::TreePop();
 				}
@@ -271,7 +298,10 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
 		}
 
 		ImGui::TreePop();
+
+
 	}
+
 
 	
 	ImGui::End();

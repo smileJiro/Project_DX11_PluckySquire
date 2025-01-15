@@ -27,14 +27,12 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID _eNextLevelID)
 
 void CLevel_Loading::Update(_float _fTimeDelta)
 {
-    if (true == m_pLoader->isFinished() && KEY_DOWN(KEY::ENTER))
+    if (true == m_pLoader->isFinished())
     {
         Event_LevelChange(m_eNextLevelID);
     }
 
-
     static _wstring strLoading = L"Loading";
-    
 }
 
 HRESULT CLevel_Loading::Render()
