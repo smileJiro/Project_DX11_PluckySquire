@@ -62,7 +62,6 @@ HRESULT CMapObject::Initialize(void* _pArg)
 
 void CMapObject::Priority_Update(_float _fTimeDelta)
 {
-
     CPartObject::Priority_Update(_fTimeDelta);
 }
 

@@ -1,17 +1,17 @@
 #include "stdafx.h"
 #include "VIBuffer_CellLine.h"
 
-CVIBuffer_CellLine::CVIBuffer_CellLine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CVIBuffer(pDevice, pContext)
+CVIBuffer_CellLine::CVIBuffer_CellLine(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CVIBuffer(_pDevice, _pContext)
 {
 }
 
-CVIBuffer_CellLine::CVIBuffer_CellLine(const CVIBuffer_CellLine& Prototype)
-	: CVIBuffer(Prototype)
+CVIBuffer_CellLine::CVIBuffer_CellLine(const CVIBuffer_CellLine& _Prototype)
+	: CVIBuffer(_Prototype)
 {
 }
 
-HRESULT CVIBuffer_CellLine::Initialize_Prototype(const _float3* pPoints)
+HRESULT CVIBuffer_CellLine::Initialize_Prototype(const _float3* _pPoints)
 {
 	m_iNumVertexBuffers = 1;
 
@@ -37,7 +37,7 @@ HRESULT CVIBuffer_CellLine::Initialize_Prototype(const _float3* pPoints)
 	ZeroMemory(pVertices, sizeof(VTXPOS) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; i++)
-		pVertices[i].vPosition = pPoints[i];
+		pVertices[i].vPosition = _pPoints[i];
 
 	ZeroMemory(&m_SubResourceDesc, sizeof m_SubResourceDesc);
 	m_SubResourceDesc.pSysMem = pVertices;
@@ -93,16 +93,16 @@ HRESULT CVIBuffer_CellLine::Initialize_Prototype(const _float3* pPoints)
 	return S_OK;
 }
 
-HRESULT CVIBuffer_CellLine::Initialize(void* pArg)
+HRESULT CVIBuffer_CellLine::Initialize(void* _pArg)
 {
 	return S_OK;
 }
 
-CVIBuffer_CellLine* CVIBuffer_CellLine::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints)
+CVIBuffer_CellLine* CVIBuffer_CellLine::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _float3* _pPoints)
 {
-	CVIBuffer_CellLine* pInstance = new CVIBuffer_CellLine(pDevice, pContext);
+	CVIBuffer_CellLine* pInstance = new CVIBuffer_CellLine(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pPoints)))
+	if (FAILED(pInstance->Initialize_Prototype(_pPoints)))
 	{
 		MSG_BOX("Failed to Created : CVIBuffer_CellLine");
 		Safe_Release(pInstance);
@@ -111,11 +111,11 @@ CVIBuffer_CellLine* CVIBuffer_CellLine::Create(ID3D11Device* pDevice, ID3D11Devi
 	return pInstance;
 }
 
-CComponent* CVIBuffer_CellLine::Clone(void* pArg)
+CComponent* CVIBuffer_CellLine::Clone(void* _pArg)
 {
 	CVIBuffer_CellLine* pInstance = new CVIBuffer_CellLine(*this);
 
-	if (FAILED(pInstance->Initialize(pArg)))
+	if (FAILED(pInstance->Initialize(_pArg)))
 	{
 		MSG_BOX("Failed to Cloned : CVIBuffer_CellLine");
 		Safe_Release(pInstance);

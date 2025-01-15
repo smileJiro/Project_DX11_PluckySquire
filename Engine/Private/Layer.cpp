@@ -92,6 +92,27 @@ CComponent* CLayer::Find_Part_Component(_uint _iPartObjectIndex, const _wstring&
     return static_cast<CContainerObject*>(*iter)->Find_Part_Component(_iPartObjectIndex, _strPartComponentTag);
 }
 
+CGameObject* CLayer::Get_GameObject_Ptr(_int _iObjectIndex)
+{
+    if (true == m_GameObjects.empty())
+        return nullptr;
+
+    auto iter = m_GameObjects.begin();
+    _int iIndex = 0;
+
+    for (; iter != m_GameObjects.end(); )
+    {
+        if (iIndex == _iObjectIndex)
+        {
+            break;
+        }
+        ++iIndex;
+        ++iter;
+    }
+
+    return *iter;
+}
+
 
 CLayer* CLayer::Create()
 {

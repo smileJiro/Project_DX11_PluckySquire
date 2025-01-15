@@ -66,7 +66,7 @@ public:
 	void Set_CameraMoveSpeed(const _float _fMoveSpeed) { if (nullptr != m_pControllerTransform) m_pControllerTransform->Set_SpeedPerSec(_fMoveSpeed); }
 
 public:
-	virtual void	Update_ByCameraArm() {};
+	virtual void	Set_CameraMode(_uint _iCameraMode, _int _iNextCameraMode = -1) {};
 
 protected:
 	/* 뷰, 투영 행렬을 구성하는 기능 */

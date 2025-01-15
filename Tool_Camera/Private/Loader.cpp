@@ -10,6 +10,7 @@
 #include "Test_Terrain.h"
 
 #include "Camera_Free.h"
+#include "Camera_Target.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -184,9 +185,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         CTest_Terrain::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Camera_Target */
+    /* For. Prototype_GameObject_Camera_Free */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Free"),
         CCamera_Free::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_Target */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Target"),
+        CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
