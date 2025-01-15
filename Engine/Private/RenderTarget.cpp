@@ -9,8 +9,9 @@ CRenderTarget::CRenderTarget(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCont
     Safe_AddRef(_pContext);
 }
 
-HRESULT CRenderTarget::Initialize(_uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor)
+HRESULT CRenderTarget::Initialize(_wstring _strName, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor)
 {
+	m_strName = _strName;
 	m_vClearColor = _vClearColor;
 	m_vSize.x = (_float)_iWidth;
 	m_vSize.y = (_float)_iHeight;
@@ -111,11 +112,11 @@ HRESULT CRenderTarget::Copy_Resource(ID3D11Texture2D* _pDest)
 	return S_OK;
 }
 
-CRenderTarget* CRenderTarget::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor)
+CRenderTarget* CRenderTarget::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _wstring _strName, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor)
 {
 	CRenderTarget* pInstance = new CRenderTarget(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize(_iWidth, _iHeight, _ePixelFormat, _vClearColor)))
+	if (FAILED(pInstance->Initialize(_strName, _iWidth, _iHeight, _ePixelFormat, _vClearColor)))
 	{
 		MSG_BOX("Failed to Created : CRenderTarget");
 		Safe_Release(pInstance);

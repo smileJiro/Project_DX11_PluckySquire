@@ -37,6 +37,9 @@ public: /* For.GameInstance */
 	HRESULT				Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID = -1);
 
 	_int				Get_StaticLevelID() const { return m_iStaticLevelID; }
+
+	HRESULT				Imgui_Render_RT_Debug();
+	HRESULT				Imgui_Render_RT_Debug_FullScreen();
 public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	void				Render_FPS(const _wstring& _strTimerTag);
@@ -192,6 +195,8 @@ private:
 	_uint m_iViewportHeight = 0;
 
 	_int m_iStaticLevelID = -1;
+
+	_bool m_isImguiRTRender = true;
 public:
 	// Static
 	static void Release_Engine();

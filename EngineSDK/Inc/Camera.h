@@ -64,6 +64,10 @@ public:
 	void Set_NearZ(const _float _fNear) { m_fNear = _fNear; }
 	void Set_FarZ(const _float _fFar) { m_fFar = _fFar; }
 	void Set_CameraMoveSpeed(const _float _fMoveSpeed) { if (nullptr != m_pControllerTransform) m_pControllerTransform->Set_SpeedPerSec(_fMoveSpeed); }
+
+public:
+	virtual void	Update_ByCameraArm() {};
+
 protected:
 	/* 뷰, 투영 행렬을 구성하는 기능 */
 	/* 만들어 낸 뷰, 투영 행렬을 PipeLine Class 에 저장. */

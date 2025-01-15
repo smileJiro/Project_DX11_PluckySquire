@@ -38,6 +38,7 @@ public:
 	TYPE Get_Type() { return m_eModelType; }
 	const _float4x4* Get_BoneMatrix(const _char* pBoneName) const;
 	class CBone* Get_Bone(const _char* pBoneName) const;
+	const vector<CMesh*>& Get_Meshes() { return m_Meshes; }
 	_bool Is_AnimModel() { return m_eModelType == TYPE::ANIM; };
 	// Set
 	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);

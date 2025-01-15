@@ -28,7 +28,10 @@ HRESULT CUIObject::Initialize(void* pArg)
 	//m_fX = pDesc->fX;
 	//m_fY = pDesc->fY;	
 
+	//m_iShaderPasses[COORDINATE_2D] = pDesc->ishaderPass_2D;
+
 	UIOBJECT_DESC UITransformDesc = {};
+	//m_isha
 
 	UITransformDesc.eStartCoord = COORDINATE_2D;
 	UITransformDesc.isCoordChangeEnable = false;
@@ -57,8 +60,11 @@ HRESULT CUIObject::Initialize(void* pArg)
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f, 0.f, 1.f));
 
 
+
 	return S_OK;
 }
+
+
 
 
 

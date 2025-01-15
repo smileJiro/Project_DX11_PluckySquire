@@ -69,6 +69,49 @@ HRESULT CModelObject::Render()
     return S_OK;
 }
 
+_bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
+{
+    // 예외처리
+    if (nullptr == m_p3DModelCom)
+        return false;
+    if (nullptr == m_pRayCom)
+        return false;
+
+    // 레이 매트릭스 설정.
+    m_pRayCom->Update_RayInfoFromCursor(_float2(_fCursorPos.x, _fCursorPos.y),
+        m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW),
+        m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_PROJ));
+
+    // 모델의 메쉬를 순회하며, 충돌했다면 바로 리턴하고 dst 값을 넘기자.
+    size_t iNumMeshes = m_p3DModelCom->Get_NumMeshes();
+    const vector<CMesh*>& vecMeshes = m_p3DModelCom->Get_Meshes();
+
+    for (size_t i = 0; i < iNumMeshes; ++i)
+    {
+        const vector<_float3>& vecVerticesPos = vecMeshes[i]->Get_VerticesPos();
+        const vector<_uint>& vecIndexBuffer = vecMeshes[i]->Get_IndexBuffer();
+        _uint iNumTriangles = vecMeshes[i]->Get_NumTriangles();
+
+        for (size_t j = 0; j < iNumTriangles; ++j)
+        {
+            _bool bResult = false;
+            _uint iIdx = j * 3;
+            _matrix WorldMatrix = m_pControllerTransform->Get_WorldMatrix();
+
+            bResult = m_pRayCom->Compute_Intersect_Triangle(XMVector3TransformCoord(XMLoadFloat3(&vecVerticesPos[vecIndexBuffer[iIdx]]), WorldMatrix),
+                XMVector3TransformCoord(XMLoadFloat3(&vecVerticesPos[vecIndexBuffer[iIdx + 1]]), WorldMatrix),
+                XMVector3TransformCoord(XMLoadFloat3(&vecVerticesPos[vecIndexBuffer[iIdx + 2]]), WorldMatrix), _fDst);
+            if (bResult)
+            {
+                return true;
+            }
+        }
+    }
+
+
+    return false;
+}
+
 void CModelObject::Update(_float fTimeDelta)
 {
     if (m_p3DModelCom->Is_AnimModel())
@@ -100,17 +143,18 @@ void CModelObject::Switch_Animation(_uint iIdx)
 
 HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 {
+    _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
     switch (_pDesc->eStartCoord)
     {
     case Engine::COORDINATE_2D:
     {
         /* Com_VIBuffer */
-        if (FAILED(Add_Component(1, TEXT("Prototype_Component_VIBuffer_Rect"),
+        if (FAILED(Add_Component(iStaticLevelID, TEXT("Prototype_Component_VIBuffer_Rect"),
             TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
             return E_FAIL;
 
         /* Com_Shader_2D */
-        if (FAILED(Add_Component(1, _pDesc->strShaderPrototypeTag_3D,
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
             TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
             return E_FAIL;
 
@@ -122,7 +166,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
                 return E_FAIL;
 
             /* Com_Shader_3D */
-            if (FAILED(Add_Component(1, _pDesc->strShaderPrototypeTag_3D,
+            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
                 TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
                 return E_FAIL;
         }
@@ -136,19 +180,19 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
             return E_FAIL;
 
         /* Com_Shader_3D */
-        if (FAILED(Add_Component(1, _pDesc->strShaderPrototypeTag_3D,
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
             TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
             return E_FAIL;
 
         if (true == _pDesc->isCoordChangeEnable)
         {
             /* Com_VIBuffer */
-            if (FAILED(Add_Component(1, TEXT("Prototype_Component_VIBuffer_Rect"),
+            if (FAILED(Add_Component(iStaticLevelID, TEXT("Prototype_Component_VIBuffer_Rect"),
                 TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
                 return E_FAIL;
 
             /* Com_Shader_2D */
-            if (FAILED(Add_Component(1, _pDesc->strShaderPrototypeTag_3D,
+            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
                 TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
                 return E_FAIL;
         }
@@ -166,7 +210,6 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
     switch (m_pControllerTransform->Get_CurCoord())
     {
     case Engine::COORDINATE_2D:
-        m_WorldMatrices[COORDINATE_2D]._44 = 1.0f;
         if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_2D])))
             return E_FAIL;
 
@@ -199,7 +242,6 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
 
 HRESULT CModelObject::Render_2D()
 {
-
     // 어떠한 Pass로 그릴 것인지
     m_pShaderComs[COORDINATE_2D]->Begin(m_iShaderPasses[COORDINATE_2D]);
 

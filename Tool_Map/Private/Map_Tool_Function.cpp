@@ -6,6 +6,19 @@
 /* 함수 구현부 */
 namespace Map_Tool
 {
+	void Begin_Draw_ColorButton(const string& key, ImVec4 vStartColor)
+	{
+		ImGui::PushID(key.c_str());
+		ImGui::PushStyleColor(ImGuiCol_Button, vStartColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, vStartColor + (ImVec4)ImColor::HSV(vStartColor.x, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, vStartColor + (ImVec4)ImColor::HSV(vStartColor.x, 0.2f, 0.2f));
+	}
+	void End_Draw_ColorButton()
+	{
+		ImGui::PopStyleColor(3);
+		ImGui::PopID();
+	}
+
 	void Event_CreateObject(_uint _iCurLevelIndex, const _tchar* _strLayerTag, Engine::CGameObject* _pGameObject)
 	{
 		EVENT tEvent;

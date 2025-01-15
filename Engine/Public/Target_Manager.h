@@ -22,7 +22,6 @@ public:
 	HRESULT Copy_RT_Resource(const _wstring& _strTargetTag, ID3D11Texture2D* _pDest);
 	HRESULT Copy_BackBuffer_RT_Resource(const _wstring& _strTargetTag);
 
-	ID3D11ShaderResourceView* Get_SRV(const _wstring& _strTargetTag);
 #ifdef _DEBUG
 public:
 	HRESULT Ready_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY); /* 렌더타겟을 디버그용으로 렌더하기위한 함수 */
@@ -30,8 +29,10 @@ public:
 #endif // _DEBUG
 
 public:
-	_float2 Get_RT_Size(const _wstring& _strTargetTag);
-
+	ID3D11ShaderResourceView*					Get_SRV(const _wstring& _strTargetTag);
+	_float2										Get_RT_Size(const _wstring& _strTargetTag);
+	map<const _wstring, CRenderTarget*>&		Get_RenderTargets() { return m_RenderTargets; }
+	map<const _wstring, list<CRenderTarget*>>&	Get_MRTs() { return m_MRTs; }
 private:
 	ID3D11Device*									m_pDevice = nullptr;
 	ID3D11DeviceContext*							m_pContext = nullptr;

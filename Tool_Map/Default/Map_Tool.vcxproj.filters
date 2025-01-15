@@ -40,6 +40,9 @@
     <Filter Include="05. Imgui">
       <UniqueIdentifier>{edf30b50-710f-417b-be8a-708f3d47ab6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97. gizmo">
+      <UniqueIdentifier>{0eec8388-e4d2-4d52-be93-07e98ed044fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -90,6 +93,39 @@
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>03. GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Map_Tool_Manager.h">
+      <Filter>01. ToolApp_Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ModelFile_Manager.h">
+      <Filter>01. ToolApp_Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CellContainor.h">
+      <Filter>03. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NavigationVertex.h">
+      <Filter>03. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EditableCell.h">
+      <Filter>03. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\gizmo\GraphEditor.h">
+      <Filter>97. gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\gizmo\ImCurveEdit.h">
+      <Filter>97. gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\gizmo\ImGradient.h">
+      <Filter>97. gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\gizmo\ImGuizmo.h">
+      <Filter>97. gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\gizmo\ImSequencer.h">
+      <Filter>97. gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\gizmo\ImZoomSlider.h">
+      <Filter>97. gizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -135,6 +171,36 @@
     </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>03. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Map_Tool_Manager.cpp">
+      <Filter>01. ToolApp_Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ModelFile_Manager.cpp">
+      <Filter>01. ToolApp_Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CellContainor.cpp">
+      <Filter>03. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NavigationVertex.cpp">
+      <Filter>03. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EditableCell.cpp">
+      <Filter>03. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\gizmo\GraphEditor.cpp">
+      <Filter>97. gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\gizmo\ImCurveEdit.cpp">
+      <Filter>97. gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\gizmo\ImGradient.cpp">
+      <Filter>97. gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\gizmo\ImGuizmo.cpp">
+      <Filter>97. gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\gizmo\ImSequencer.cpp">
+      <Filter>97. gizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

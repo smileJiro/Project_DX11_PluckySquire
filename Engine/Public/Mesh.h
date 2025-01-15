@@ -27,6 +27,7 @@ public:
 	_char* Get_Name()  { return m_szName; }
 	_uint Get_MaterialIndex() const { return m_iMaterialIndex; }
 	vector<_uint>& Get_BoneIndices() { return m_BoneIndices; }
+
 	// Set
 	void Set_Name(string _strName) { strcpy_s(m_szName, _strName.c_str()); }
 private:

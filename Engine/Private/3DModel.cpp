@@ -228,6 +228,7 @@ CBone* C3DModel::Get_Bone(const _char* pBoneName) const
 	return *iter;
 }
 
+
 void C3DModel::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
 {
 	m_Animations[iIdx]->Set_Loop(bIsLoop);
