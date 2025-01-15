@@ -77,6 +77,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	Desc.vEye = _float3(0.0f, 10.0f, -7.0f);
 	Desc.vAt = _float3(0.0f, 0.0f, 0.0f);
 	Desc.iCurLevelID = (_uint)LEVEL_GAMEPLAY;
+	Desc.fFovy = XMConvertToRadians(60.f);
 
 	Desc.pTarget = _pTarget;
 	Desc.vArmRotAxis = { 1.0f, 0.0f, 0.0f };
