@@ -21,6 +21,7 @@
 #include "Bounding_Sphere.h"
 #include "CustomFont.h"
 #include "RenderTarget.h"
+#include "CameraArm.h"
 
 /* Camera */
 #include "Camera_Free.h"
