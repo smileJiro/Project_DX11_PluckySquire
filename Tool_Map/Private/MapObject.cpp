@@ -25,7 +25,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components()))
+    if (FAILED(Ready_Components(pDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -47,10 +47,6 @@ void CMapObject::Update(_float _fTimeDelta)
 
 void CMapObject::Late_Update(_float _fTimeDelta)
 {
-
-
-
-
 
     /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
@@ -87,10 +83,34 @@ HRESULT CMapObject::Render_Shadow()
     return S_OK;
 }
 
-HRESULT CMapObject::Ready_Components()
+void CMapObject::Create_Complete()
 {
-    return S_OK;
+    m_eMode = NORMAL; 
+    XMStoreFloat4x4(&m_matWorld, Get_WorldMatrix());
 }
+
+bool CMapObject::Check_Picking(_fvector vRayPos, _fvector vRayDir, _float3* vReturnPos, _float* fNewDist)
+{
+    _matrix			matWorld;
+    _vector			vLocalRayPos = vRayPos;
+    _vector			vLocalRayDir = vRayDir;
+    matWorld = XMMatrixInverse(nullptr, Get_WorldMatrix());
+    vLocalRayPos = XMVector3TransformCoord(vLocalRayPos, matWorld);
+    vLocalRayDir = XMVector3TransformNormal(vLocalRayDir, matWorld);
+    vLocalRayDir = XMVector3Normalize(vLocalRayDir);
+
+    
+    if (Is_PickingCursor_Model(vLocalRayPos, vLocalRayDir, fNewDist))
+    {
+        vLocalRayPos += (vLocalRayDir * *fNewDist);
+        vLocalRayPos = XMVector3TransformCoord(vLocalRayPos, Get_WorldMatrix());
+        XMStoreFloat3(vReturnPos, vLocalRayPos);
+        return true;
+    }
+    else
+        return false;
+}
+
 
 
 CMapObject* CMapObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

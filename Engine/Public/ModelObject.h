@@ -52,7 +52,7 @@ protected:
 	virtual HRESULT			Render_2D();
 	virtual HRESULT			Render_3D();
 
-private:
+protected:
 	HRESULT					Ready_Components(MODELOBJECT_DESC* _pDesc);
 
 

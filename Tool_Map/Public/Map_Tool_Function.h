@@ -13,6 +13,9 @@ namespace Map_Tool
 	void Event_DeleteObject(CGameObject* _pGameObject);
 	void Event_LevelChange(_uint _iChangeLevelIndex, _uint _iNextChangeLevelIndex = 0);
 	void Event_SetActive(CBase* _pObject, _bool _isActive, _bool _isDelay = false);
+	
+	void Begin_Draw_ColorButton(const string& key, ImVec4 vStartColor);
+	void End_Draw_ColorButton();
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 
