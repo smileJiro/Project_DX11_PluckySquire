@@ -82,16 +82,13 @@ HRESULT CTestPlayer::Render()
 
 void CTestPlayer::Key_Input(_float _fTimeDelta)
 {
-    if (KEY_PRESSING(KEY::TAB))
+    if (KEY_DOWN(KEY::NUM1))
     {
-        Change_Coordinate(COORDINATE_2D, _float3(0.0f, 0.0f, 0.0f));
-        m_PartObjects[PART_BODY]->Change_Coordinate(COORDINATE_2D, _float3(0.0f, 0.0f, 0.0f));
+        _int iCurCoord = (_int)Get_CurCoord();
+        (_int)iCurCoord ^= 1;
+        Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
+        m_PartObjects[PART_BODY]->Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
         
-    }
-    if (KEY_PRESSING(KEY::O))
-    {
-        Change_Coordinate(COORDINATE_3D, _float3(0.0f, 0.0f, 0.0f));
-        m_PartObjects[PART_BODY]->Change_Coordinate(COORDINATE_3D, _float3(0.0f, 0.0f, 0.0f));
     }
 
     /* Test Move Code */

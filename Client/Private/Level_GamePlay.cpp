@@ -143,9 +143,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
 
-	pDesc.fX = g_iWinSizeX / 4;
-	pDesc.fY = g_iWinSizeY / 4;
-	pDesc.fSizeX = 100.f;
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12;
+	pDesc.fY = g_iWinSizeY / 10;
+	pDesc.fSizeX = 182.f;
 	pDesc.fSizeY = 100.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))

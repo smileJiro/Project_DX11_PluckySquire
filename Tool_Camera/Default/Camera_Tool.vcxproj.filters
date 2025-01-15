@@ -52,6 +52,9 @@
     <Filter Include="02. GameObjects\Camera\01. Camera_Target">
       <UniqueIdentifier>{73621881-c2d6-4187-840b-6c9b4e63cefd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Manager">
+      <UniqueIdentifier>{0d02a024-2805-46a2-9e6b-f9ee03a03f91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera_Tool.h">
@@ -105,6 +108,9 @@
     <ClInclude Include="..\Public\Camera_Target.h">
       <Filter>02. GameObjects\Camera\01. Camera_Target</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager_Tool.h">
+      <Filter>03. Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp">
@@ -148,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Target.cpp">
       <Filter>02. GameObjects\Camera\01. Camera_Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Manager_Tool.cpp">
+      <Filter>03. Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
