@@ -40,7 +40,6 @@ void CPick_Bulb::Priority_Update(_float _fTimeDelta)
 
 void CPick_Bulb::Update(_float _fTimeDelta)
 {
-	int a = 0;
 }
 
 void CPick_Bulb::Late_Update(_float _fTimeDelta)
