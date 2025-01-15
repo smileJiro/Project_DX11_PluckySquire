@@ -10,10 +10,10 @@ class CMonster abstract : public CContainerObject
 public:
 	enum MONSTERPART { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
 
-	typedef struct : public CContainerObject::CONTAINEROBJ_DESC
+	typedef struct tagMonsterDesc : public CContainerObject::CONTAINEROBJ_DESC
 	{
-		_float fMoveRadius;
-		_float fAttackRadius;
+		_float fChaseRange;
+		_float fAttackRange;
 	}MONSTER_DESC;
 
 protected:
@@ -34,20 +34,15 @@ public:
 	virtual void Attack(_float fTimeDelta);
 
 public:
-	virtual void Collision_Enter(CGameObject* pTarget);
-	virtual void Collision_Stay(CGameObject* pTarget);
-	virtual void Collision_Exit(CGameObject* pTarget);
-
-public:
 	virtual void Set_State(MONSTER_STATE eState) {};
 
 protected:
 	_uint				m_iState = {};
 	_uint				m_iPreState = {};
-	CTransform* m_pPlayerTransform = { nullptr };
+	CController_Transform* m_pPlayerTransform = { nullptr };
 	CFSM* m_pFSM = { nullptr };
-	_float m_fMoveRadius = {};
-	_float m_fAttackRadius = {};
+	_float m_fChaseRange = { 0.f };
+	_float m_fAttackRange = { 0.f };
 
 
 protected:

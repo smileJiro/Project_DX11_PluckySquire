@@ -21,5 +21,5 @@ namespace Client
 	void Event_ChangeMonsterState(MONSTER_STATE _eState, CFSM* _pFSM);
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
-	std::string WstringToString(const std::wstring& wstr); 
+	std::string WstringToString(const std::wstring& wstr);
 }

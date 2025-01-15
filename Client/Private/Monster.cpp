@@ -21,18 +21,18 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* pArg)
 {
 	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(pArg);
-	m_fMoveRadius = pDesc->fMoveRadius;
-	m_fAttackRadius = pDesc->fAttackRadius;
+	m_fChaseRange = pDesc->fChaseRange;
+	m_fAttackRange = pDesc->fAttackRange;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	//플레이어 위치 가져오기
-	/*m_pPlayerTransform = m_pGameInstance->Get_Object(LEVEL_GAMEPLAY, TEXT("Layer_Player"))->Get_Transform();
+	m_pPlayerTransform = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0)->Get_ControllerTransform();
 	if (nullptr == m_pPlayerTransform)
 		return E_FAIL;
 	else
-		Safe_AddRef(m_pPlayerTransform);*/
+		Safe_AddRef(m_pPlayerTransform);
 
 	return S_OK;
 }
@@ -69,27 +69,12 @@ void CMonster::Attack(_float fTimeDelta)
 	//	m_PartObjects[PART_WEAPON]->Set_Collider_Enable(true);
 }
 
-void CMonster::Collision_Enter(CGameObject* pTarget)
-{
-}
-
-void CMonster::Collision_Stay(CGameObject* pTarget)
-{
-	//if (COLLGROUP_MONSTER == pTarget->Get_CollGroup())
-	//{
-	//	//겹치지 않게
-	//}
-}
-
-void CMonster::Collision_Exit(CGameObject* pTarget)
-{
-}
-
 void CMonster::Free()
 {
-	__super::Free();
-
 	if (nullptr != m_pPlayerTransform)
 		Safe_Release(m_pPlayerTransform);
+
 	Safe_Release(m_pFSM);
+
+	__super::Free();
 }

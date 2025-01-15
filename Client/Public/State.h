@@ -25,7 +25,7 @@ public:
 	}
 
 public:
-	virtual HRESULT Initialize_Prototype() = 0;
+	virtual HRESULT Initialize() = 0;
 
 public:
 	//state 처음 들어갈 때
@@ -36,7 +36,7 @@ public:
 	virtual void State_Exit() = 0;
 
 protected:
-	//CGameInstance* m_pGameInstance = { nullptr };
+	CGameInstance* m_pGameInstance = { nullptr };
 	CController_Transform* m_pTargetTransform = { nullptr };
 	//상태를 가지는 몬스터
 	CMonster* m_pOwner = { nullptr };

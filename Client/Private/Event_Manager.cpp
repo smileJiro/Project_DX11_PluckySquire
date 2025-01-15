@@ -76,12 +76,12 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 	{
 		Excute_SetActive(_tEvent);
 	}
-	break;
+		break;
 	case Client::EVENT_TYPE::CHANGE_MONSTERSTATE:
 	{
 		Excute_ChangeMonsterState(_tEvent);
 	}
-	break;
+		break;
 	default:
 		break;
 	}
@@ -215,13 +215,13 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
 {
-	//πŸ≤‹ ∏ÛΩ∫≈Õ ªÛ≈¬
+	/* Parameter_0 : Changing State */
 	MONSTER_STATE eState = (MONSTER_STATE)_tEvent.Parameters[0];
 	
 	if (MONSTER_STATE::LAST == eState)
 		return E_FAIL;
 
-	//FSM ∞¥√º
+	/* Parameter_1 : FSM Address */
 	CFSM* pFSM=(CFSM*)_tEvent.Parameters[1];
 
 	if (nullptr == pFSM)

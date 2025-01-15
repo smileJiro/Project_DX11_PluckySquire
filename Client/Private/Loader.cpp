@@ -10,6 +10,8 @@
 #include "TestTerrain.h"
 #include "Pick_Bulb.h"
 #include "SettingPanel.h"
+#include "Beetle.h"
+#include "BeetleBody.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -227,10 +229,23 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-	/* For. Prototype_UIObject_Pick_Bubble */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
-		CPick_Bulb::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+    /* For. Prototype_UIObject_Pick_Bubble */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
+        CPick_Bulb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+    /* Monster */
+
+    /* For. Prototype_GameObject_Beetle */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"),
+        CBeetle::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_BeetleBody */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BeetleBody"),
+        CBeetleBody::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

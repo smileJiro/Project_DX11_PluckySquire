@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "GameInstance.h"
 #include "State.h"
 #include "Monster.h"
 #include "FSM.h"
@@ -17,5 +18,6 @@ void CState::Free()
 {
 	Safe_Release(m_pOwner);
 	Safe_Release(m_pFSM);
+	Safe_Release(m_pGameInstance);
 	__super::Free();
 }

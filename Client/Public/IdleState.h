@@ -10,7 +10,7 @@ private:
 	virtual ~CIdleState() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
+	virtual HRESULT Initialize() override;
 	//virtual HRESULT Initialize(void* _pArg) override;
 
 public:

@@ -180,6 +180,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\BeetleBody.h" />
     <ClInclude Include="..\public\Cam_Manager.h" />
     <ClInclude Include="..\Public\ChaseWalkState.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -215,6 +217,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\BeetleBody.cpp" />
     <ClCompile Include="..\private\Cam_Manager.cpp" />
     <ClCompile Include="..\Private\ChaseWalkState.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
