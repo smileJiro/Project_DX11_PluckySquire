@@ -76,6 +76,9 @@
     <Filter Include="02.GameObjects\UI\00.Pick_Bulb">
       <UniqueIdentifier>{22c8afcc-494e-4251-943c-def5afcdc486}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel">
+      <UniqueIdentifier>{a66d5efb-41fc-4d5c-8d0f-10a389f20aef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -153,6 +156,9 @@
     <ClInclude Include="..\Public\Pick_Bulb.h">
       <Filter>02.GameObjects\UI\00.Pick_Bulb</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\SettingPanel.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -208,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Pick_Bulb.cpp">
       <Filter>02.GameObjects\UI\00.Pick_Bulb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SettingPanel.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
