@@ -6,6 +6,7 @@
 #include "Cam_Manager.h"
 #include "TestPlayer.h"
 #include "TestTerrain.h"
+#include "Beetle.h"
 
 #include "UI.h"
 
@@ -19,9 +20,11 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
+	
+	Ready_Layer_Monster(TEXT("Layer_Monster"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
-	Ready_Layer_UI(TEXT("Layer_UI"));;
+	//Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	Ready_Layer_UI(TEXT("Layer_UI"));
     return S_OK;
 }
 
@@ -31,13 +34,14 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
 	}
+
 }
 
 HRESULT CLevel_GamePlay::Render()
 {
 #ifdef _DEBUG
-	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
     return S_OK;
@@ -89,6 +93,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
+
+
 	CCam_Manager::GetInstance()->Set_TargetCamera(static_cast<CCamera_Target*>(pGameObject));
 
 	CCam_Manager::GetInstance()->Change_Cam(CCam_Manager::CAM_TARGET);
@@ -101,15 +107,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 	CGameObject** pGameObject = nullptr;
 
 	CTestPlayer::CONTAINEROBJ_DESC Desc;
-	Desc.iCurLevelID = LEVEL_GAMEPLAY;
-	Desc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	Desc.tTransform2DDesc.vScaling = _float3(150.f, 150.f, 150.f);
-
-	Desc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	Desc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -122,9 +123,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	TerrainDesc.eStartCoord = COORDINATE_3D;
 	TerrainDesc.iCurLevelID = LEVEL_GAMEPLAY;
 	TerrainDesc.isCoordChangeEnable = false;
-
+	TerrainDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+	TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
 	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	TerrainDesc.strModelPrototypeTag = TEXT("WoodenPlatform_01");
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
@@ -151,6 +152,42 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+
+
+
+
+
+	//pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2;
+	//pDesc.fY = g_iWinSizeY / 2;
+	//
+	//
+	//pDesc.fSizeX = 1200.f;
+	//pDesc.fSizeY = 600.f;
+	////pDesc.fSizeX = g_iWinSizeX / 2;
+	////pDesc.fSizeY = g_iWinSizeX / 2;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+
+
+	
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
+{
+	CGameObject* pGameObject = nullptr;
+	CBeetle::MONSTER_DESC Monster_Desc;
+	Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
+
+	Monster_Desc.tTransform3DDesc.vPosition = _float3(0.0f, 1.0f, 0.0f);
+	Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
+		return E_FAIL;
+
+	_ppout = &pGameObject;
 	return S_OK;
 }
 

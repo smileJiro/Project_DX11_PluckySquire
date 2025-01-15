@@ -34,23 +34,17 @@ HRESULT CTestBody::Initialize(void* _pArg)
 void CTestBody::Priority_Update(_float _fTimeDelta)
 {
 
-    CPartObject::Priority_Update(_fTimeDelta);
+    __super::Priority_Update(_fTimeDelta);
 }
 
 void CTestBody::Update(_float _fTimeDelta)
 {
-
-
     /* Update Parent Matrix */
-    CPartObject::Update(_fTimeDelta);
+    __super::Update(_fTimeDelta);
 }
 
 void CTestBody::Late_Update(_float _fTimeDelta)
 {
-
-
-
-
 
     /* Add Render Group */
     if(COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
@@ -59,28 +53,10 @@ void CTestBody::Late_Update(_float _fTimeDelta)
         m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 
     /* Update Parent Matrix */
-    CPartObject::Late_Update(_fTimeDelta);
+    __super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CTestBody::Render()
-{
-    if (FAILED(CModelObject::Bind_ShaderResources_WVP()))
-        return E_FAIL;
 
-    switch (m_pControllerTransform->Get_CurCoord())
-    {
-    case Engine::COORDINATE_2D:
-        CModelObject::Render_2D();
-        break;
-    case Engine::COORDINATE_3D:
-        CModelObject::Render_3D();
-        break;
-    default:
-        break;
-    }
-
-    return S_OK;
-}
 
 HRESULT CTestBody::Render_Shadow()
 {
@@ -121,7 +97,5 @@ CGameObject* CTestBody::Clone(void* _pArg)
 
 void CTestBody::Free()
 {
-
-
     __super::Free();
 }

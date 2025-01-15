@@ -64,9 +64,6 @@
     <Filter Include="02.GameObjects\TestPlayer">
       <UniqueIdentifier>{ae177609-321a-4bf1-ac22-18b52b14a6df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\TestBody">
-      <UniqueIdentifier>{d78120a6-f32a-4711-aa63-dfd3013f4ed3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\TestTerrain">
       <UniqueIdentifier>{b4fcc4ee-0579-4fd9-acd6-6c477523958c}</UniqueIdentifier>
     </Filter>
@@ -96,6 +93,9 @@
     </Filter>
     <Filter Include="03.Components\FSM\State\Attack">
       <UniqueIdentifier>{b0744f3d-c61e-44dd-8940-6a42c5d72b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Beetle">
+      <UniqueIdentifier>{e4f8e236-1773-4c39-95eb-432f578067b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -159,9 +159,6 @@
     <ClInclude Include="..\public\TestPlayer.h">
       <Filter>02.GameObjects\TestPlayer</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\TestBody.h">
-      <Filter>02.GameObjects\TestBody</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\TestTerrain.h">
       <Filter>02.GameObjects\TestTerrain</Filter>
     </ClInclude>
@@ -191,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\ChaseWalkState.h">
       <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Beetle.h">
+      <Filter>02.GameObjects\Monster\Beetle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -233,9 +233,6 @@
     <ClCompile Include="..\private\TestPlayer.cpp">
       <Filter>02.GameObjects\TestPlayer</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\TestBody.cpp">
-      <Filter>02.GameObjects\TestBody</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\TestTerrain.cpp">
       <Filter>02.GameObjects\TestTerrain</Filter>
     </ClCompile>
@@ -265,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ChaseWalkState.cpp">
       <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Beetle.cpp">
+      <Filter>02.GameObjects\Monster\Beetle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

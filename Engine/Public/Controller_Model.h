@@ -6,9 +6,11 @@
 
 BEGIN(Engine)
 class CGameInstance;
-class CVIBuffer_Rect;
-class C3DModel;
+
+class CModel;
 class CShader;
+class CVIBuffer_Rect;
+class CTexture;
 class ENGINE_DLL CController_Model : public CBase
 {
 public:
@@ -16,9 +18,12 @@ public:
 	{
 		COORDINATE eStartCoord = COORDINATE_LAST;
 		_bool isCoordChangeEnable = false;
-		
+
 		_uint iCurLevelID;
-		_uint iModelPrototypeLevelID;
+		_uint i2DModelPrototypeLevelID;
+		_uint i3DModelPrototypeLevelID;
+		wstring wstr2DModelPrototypeTag;
+		wstring wstr3DModelPrototypeTag;
 
 	}CON_MODEL_DESC;
 
@@ -29,31 +34,34 @@ private:
 public:
 	HRESULT			Initialize(CON_MODEL_DESC* _pDesc);
 
-	HRESULT			Render(_uint iMeshIndex = 0);
-
+	HRESULT			Render(CShader* _Shader, _uint _iShaderPass);
 public:
 	HRESULT			Change_Coordinate(COORDINATE _eCoordinate);
 
 
 public: /* 2D, 3D */
-	void			Play_Animation() {}; 
-	void			Setup_Animation() {};
+	void			Play_Animation(_float fTimeDelta);
 
-public: /* 2D */
+	//Get
+	CModel* Get_Model(COORDINATE _eCoord) {return m_ModelComs[_eCoord];}
 
-public: /* 3D */
-
+	//Set
+	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
+	void Set_Animation(_uint iIdx);
+	void Switch_Animation(_uint iIdx);
 public:
 
 private:
-	ID3D11Device*			m_pDevice = nullptr;
-	ID3D11DeviceContext*	m_pContext = nullptr;
-	CGameInstance*			m_pGameInstance = nullptr;
+	ID3D11Device* m_pDevice = nullptr;
+	ID3D11DeviceContext* m_pContext = nullptr;
+	CGameInstance* m_pGameInstance = nullptr;
 
 private:
-	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-	C3DModel*					m_pModelCom = nullptr;
+	//TMP
+	CVIBuffer_Rect* m_pVIBufferCom = nullptr;
+	CTexture* m_pTextureCom;
 
+	CModel* m_ModelComs[COORDINATE_LAST] = {};
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;
 	_bool					m_isCoordChangeEnable = false;
 

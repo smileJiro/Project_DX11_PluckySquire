@@ -63,6 +63,8 @@ namespace Engine
 #include <unordered_map>
 #include <unordered_set>
 #include <algorithm>
+#include <iostream>
+#include <typeinfo>
 using namespace std;
 
 #include "Engine_Typedef.h"
