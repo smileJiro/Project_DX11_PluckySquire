@@ -48,17 +48,18 @@ HRESULT CModelObject::Initialize(void* _pArg)
 
 HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 {
+    _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
     switch (_pDesc->eStartCoord)
     {
     case Engine::COORDINATE_2D:
     {
         /* Com_VIBuffer */
-        if (FAILED(Add_Component(1, TEXT("Prototype_Component_VIBuffer_Rect"),
+        if (FAILED(Add_Component(iStaticLevelID, TEXT("Prototype_Component_VIBuffer_Rect"),
             TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
             return E_FAIL;
 
         /* Com_Shader_2D */
-        if (FAILED(Add_Component(1, _pDesc->strShaderPrototypeTag_3D,
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
             TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
             return E_FAIL;
 
@@ -70,7 +71,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
                 return E_FAIL;
 
             /* Com_Shader_3D */
-            if (FAILED(Add_Component(1, _pDesc->strShaderPrototypeTag_3D,
+            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
                 TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
                 return E_FAIL;
         }
@@ -84,19 +85,19 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
             return E_FAIL;
 
         /* Com_Shader_3D */
-        if (FAILED(Add_Component(1, _pDesc->strShaderPrototypeTag_3D,
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
             TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
             return E_FAIL;
 
         if (true == _pDesc->isCoordChangeEnable)
         {
             /* Com_VIBuffer */
-            if (FAILED(Add_Component(1, TEXT("Prototype_Component_VIBuffer_Rect"),
+            if (FAILED(Add_Component(iStaticLevelID, TEXT("Prototype_Component_VIBuffer_Rect"),
                 TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
                 return E_FAIL;
 
             /* Com_Shader_2D */
-            if (FAILED(Add_Component(1, _pDesc->strShaderPrototypeTag_3D,
+            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
                 TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
                 return E_FAIL;
         }
