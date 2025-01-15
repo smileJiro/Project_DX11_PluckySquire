@@ -143,82 +143,45 @@ struct PS_IN
 struct PS_OUT
 {
     float4 vColor : SV_TARGET0;
-    float4 vBrightness : SV_TARGET1;
 };
 
 /* PixelShader */
-PS_OUT PS_MAIN_LOOP(PS_IN In)
+PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
-    
-    Out.vColor *= g_vParticleColor;
-    if (Out.vColor.a < 0.01f)
+    if (0.05f > Out.vColor.a)
         discard;
-
-    // 밝은 영역만 추출.
-    float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > 0.1f) ? Out.vColor : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    vBrightnessColor.a = 1.0f / 4.f;
     
-    Out.vBrightness = vBrightnessColor;
+    //Out.vColor *= g_vParticleColor;
+    //if (Out.vColor.a < 0.01f)
+    //    discard;
 
-    Out.vColor.a *= In.vLifeTime.y / In.vLifeTime.x;
+    //// 밝은 영역만 추출.
+    //float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
+    //float4 vBrightnessColor = (fBrightness > 0.1f) ? Out.vColor : float4(0.0f, 0.0f, 0.0f, 0.0f);
+    //vBrightnessColor.a = 1.0f / 4.f;
+    
+    
+    //Out.vColor.a *= In.vLifeTime.y / In.vLifeTime.x;
     
     return Out;
 }
 
-PS_OUT PS_MAIN_ONCE(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-
-    Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
-    Out.vColor *= g_vParticleColor;
-    if (Out.vColor.a < 0.01f)
-        discard;
-
-    Out.vColor.a *= In.vLifeTime.y / In.vLifeTime.x;
-
-    // 밝은 영역만 추출.
-    float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > 0.1f) ? Out.vColor : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    vBrightnessColor.a = 1.0f / 4.f;
-    
-    Out.vBrightness = vBrightnessColor;
-    
-    if (In.vLifeTime.x <= In.vLifeTime.y)
-        discard;
-    
-    return Out;
-}
-
-// technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
-// pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
-// https://www.notion.so/15-Shader-Keyword-technique11-pass-10eb1e26c8a8807aad86fb2de6738a1a // 컨트롤 클릭
 technique11 DefaultTechnique
 {
 	/* 우리가 수행해야할 정점, 픽셀 셰이더의 진입점 함수를 지정한다. */
     pass Loop
     {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_WriteNone, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN_LOOP();
+        PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
     }
 
-    pass Once
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_WriteNone, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = compile gs_5_0 GS_MAIN();
-        PixelShader = compile ps_5_0 PS_MAIN_ONCE();
-    }
 
 }

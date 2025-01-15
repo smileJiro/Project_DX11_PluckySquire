@@ -14,6 +14,8 @@ HRESULT CLevel_EffectTool::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
+		return E_FAIL;
 	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
@@ -70,6 +72,22 @@ HRESULT CLevel_EffectTool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 		LEVEL_TOOL, _strLayerTag, &Desc)))
 		return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_EffectTool::Ready_Layer_Effect(const _wstring& _strLayerTag)
+{
+	CEffect::EFFECT_DESC Desc = {};
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL;
+	Desc.isCoordChangeEnable = false;
+	Desc.iProtoShaderLevel = LEVEL_STATIC;
+	Desc.szShaderTag = L"Prototype_Component_Shader_VtxPointInstance";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
+		LEVEL_TOOL, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

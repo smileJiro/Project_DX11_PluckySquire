@@ -116,9 +116,12 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Bin\ShaderFiles\DataFiles\Effects\TestEffect.json">
+    <None Include="..\Bin\DataFiles\Effects\TestEffect.json">
       <Filter>96. JsonFiles</Filter>
     </None>
   </ItemGroup>

@@ -1,4 +1,7 @@
 {
-    "Count": 20
+    "Texture": "../Bin/Resources/Textures/Effects/Default_Glow.png",
+    "Buffer": {
+        "Count": 4
+    }
 
 }

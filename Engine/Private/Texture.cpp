@@ -62,6 +62,52 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
     return S_OK;
 }
 
+HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures)
+{
+    m_iNumSRVs = _iNumTextures;
+
+    _char szTextureFullPath[MAX_PATH] = "";
+
+    for (size_t i = 0; i < m_iNumSRVs; ++i)
+    {
+        sprintf_s(szTextureFullPath, _szTextureFilePath, i);
+
+        _char szEXT[MAX_PATH] = "";
+
+        _splitpath_s(szTextureFullPath, nullptr, 0, nullptr, 0, nullptr, 0, szEXT, MAX_PATH);
+
+        _tchar wszFullPath[MAX_PATH] = L"";
+
+        MultiByteToWideChar(CP_ACP, 0, szTextureFullPath, strlen(szTextureFullPath), wszFullPath, MAX_PATH);
+
+        HRESULT hr = {};
+
+        ID3D11ShaderResourceView* pSRV = { nullptr };
+
+        if (false == strcmp(szEXT, ".dds"))
+        {
+            hr = DirectX::CreateDDSTextureFromFile(m_pDevice, wszFullPath, nullptr, &pSRV);
+        }
+        else if (false == strcmp(szEXT, ".tga"))
+        {
+            hr = E_FAIL;
+        }
+        else
+        {
+            hr = DirectX::CreateWICTextureFromFile(m_pDevice, wszFullPath, nullptr, &pSRV);
+        }
+
+        if (FAILED(hr))
+        {
+            return E_FAIL;
+        }
+
+        m_SRVs.push_back(pSRV);
+    }
+
+    return S_OK;
+}
+
 HRESULT CTexture::Initialize(void* _pArg)
 {
     return S_OK;
@@ -76,6 +122,18 @@ HRESULT CTexture::Bind_ShaderResource(CShader* _pShader, const _char* _pConstant
     _pShader->Bind_SRV(_pConstantName, m_SRVs[_iSRVIndex]);
 
     return S_OK;
+}
+
+CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures)
+{
+    CTexture* pInstance = new CTexture(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype(_szTextureFilePath, _iNumTextures)))
+    {
+        MSG_BOX("Failed to Created : CTexture");
+        Safe_Release(pInstance);
+    }
+    return pInstance;
 }
 
 CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures)

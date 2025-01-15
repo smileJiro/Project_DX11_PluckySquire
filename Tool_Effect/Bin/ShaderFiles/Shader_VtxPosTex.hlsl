@@ -55,7 +55,7 @@ struct PS_OUT_EFFECT
 
 
 /* PixelShader */
-PS_OUT PS_WHITE(PS_IN In)
+PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
@@ -78,6 +78,6 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_WHITE();
+        PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
     }
 }

@@ -35,7 +35,7 @@ HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const json& _json)
 	m_BufferDesc.MiscFlags = 0;
 
 	VTXPOINT* pVertices = new VTXPOINT[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXPOSTEX) * m_iNumVertices);
+	ZeroMemory(pVertices, sizeof(VTXPOINT) * m_iNumVertices);
 
 	/* 정점이 1개라 */
 	pVertices->vPosition = XMFLOAT3(0.0f, 0.0f, 0.f);
@@ -116,8 +116,9 @@ HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const json& _json)
 		m_pInstanceVertices[i].vUp = _float4(0.f, fSize, 0.f, 0.f);
 		m_pInstanceVertices[i].vLook = _float4(0.f, 0.f, fSize, 0.f);
 		// TODO : Translation 설정
+
 		m_pInstanceVertices[i].vTranslation = _float4(
-			0.f, 0.f, 0.f, 1.f
+			i * 1.f, 0.f, 0.f, 1.f
 		);
 			//_float4(
 			//	m_pGameInstance->Compute_Random(_ParticleDesc.vCenter.x - _ParticleDesc.vRange.x * 0.5f, _ParticleDesc.vCenter.x + _ParticleDesc.vRange.x * 0.5f),
@@ -135,6 +136,8 @@ HRESULT CVIBuffer_Particle_Point::Initialize_Prototype(const json& _json)
 			1.f,
 			0.f
 		);
+
+		m_pInstanceVertices[i].vColor = _float4(1.f, 0.f, 0.f, 1.f);
 	}
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);

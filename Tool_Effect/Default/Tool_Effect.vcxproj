@@ -180,10 +180,11 @@
     <Image Include="Tool_Effect.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Bin\ShaderFiles\DataFiles\Effects\TestEffect.json" />
+    <None Include="..\Bin\DataFiles\Effects\TestEffect.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,6 +13,7 @@ CVIBuffer_Particle_Instance::CVIBuffer_Particle_Instance(const CVIBuffer_Particl
     , m_iNumInstances{ _Prototype.m_iNumInstances }
     , m_iNumIndicesPerInstance{ _Prototype.m_iNumIndicesPerInstance }
     , m_iInstanceStride{ _Prototype.m_iInstanceStride }
+    , m_pInstanceVertices {_Prototype.m_pInstanceVertices}
 
 {
     Safe_AddRef(m_pVBInstance);
