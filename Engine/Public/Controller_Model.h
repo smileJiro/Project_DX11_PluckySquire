@@ -6,8 +6,9 @@
 
 BEGIN(Engine)
 class CGameInstance;
-class CVIBuffer_Rect;
+
 class C3DModel;
+class C2DModel;
 class CShader;
 class ENGINE_DLL CController_Model : public CBase
 {
@@ -16,9 +17,12 @@ public:
 	{
 		COORDINATE eStartCoord = COORDINATE_LAST;
 		_bool isCoordChangeEnable = false;
-		
+
 		_uint iCurLevelID;
-		_uint iModelPrototypeLevelID;
+		_uint i2DModelPrototypeLevelID;
+		_uint i3DModelPrototypeLevelID;
+		wstring wstr2DModelPrototypeTag;
+		wstring wstr3DModelPrototypeTag;
 
 	}CON_MODEL_DESC;
 
@@ -36,7 +40,7 @@ public:
 
 
 public: /* 2D, 3D */
-	void			Play_Animation() {}; 
+	void			Play_Animation() {};
 	void			Setup_Animation() {};
 
 public: /* 2D */
@@ -46,13 +50,13 @@ public: /* 3D */
 public:
 
 private:
-	ID3D11Device*			m_pDevice = nullptr;
-	ID3D11DeviceContext*	m_pContext = nullptr;
-	CGameInstance*			m_pGameInstance = nullptr;
+	ID3D11Device* m_pDevice = nullptr;
+	ID3D11DeviceContext* m_pContext = nullptr;
+	CGameInstance* m_pGameInstance = nullptr;
 
 private:
-	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-	C3DModel*					m_pModelCom = nullptr;
+	C2DModel* m_p2DModelCom = nullptr;
+	C3DModel* m_p3DModelCom = nullptr;
 
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;
 	_bool					m_isCoordChangeEnable = false;

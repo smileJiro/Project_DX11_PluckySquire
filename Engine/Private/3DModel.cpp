@@ -70,7 +70,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	if (FAILED(Ready_Animations(inFile)))
 		return E_FAIL;
 	inFile.close();
-	std::cout << pModelFilePath << endl;
+	//std::cout << pModelFilePath << endl;
 	return S_OK;
 }
 

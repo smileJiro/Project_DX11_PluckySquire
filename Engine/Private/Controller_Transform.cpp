@@ -36,7 +36,7 @@ HRESULT CController_Transform::Change_Coordinate(COORDINATE _eCoordinate, const 
 	if (false == m_isCoordChangeEnable)
 		return E_FAIL;
 
-	if(nullptr == m_pTransforms[_eCoordinate])
+	if (nullptr == m_pTransforms[_eCoordinate])
 		return E_FAIL;
 
 	m_eCurCoord = _eCoordinate;
@@ -236,14 +236,14 @@ HRESULT CController_Transform::Ready_Transforms(CON_TRANSFORM_DESC* _pDesc)
 			m_pTransforms[COORDINATE_3D] = pTransform3D;
 		}
 	}
-		break;
+	break;
 	case Engine::COORDINATE_3D:
 	{
 		CTransform* pTransform3D = CTransform_3D::Create(m_pDevice, m_pContext);
 		if (nullptr == pTransform3D)
 			return E_FAIL;
 
-		if(FAILED(pTransform3D->Initialize(&(_pDesc->tTransform3DDesc))))
+		if (FAILED(pTransform3D->Initialize(&(_pDesc->tTransform3DDesc))))
 			return E_FAIL;
 
 		m_pTransforms[COORDINATE_3D] = pTransform3D;
@@ -260,7 +260,7 @@ HRESULT CController_Transform::Ready_Transforms(CON_TRANSFORM_DESC* _pDesc)
 			m_pTransforms[COORDINATE_2D] = pTransform2D;
 		}
 	}
-		break;
+	break;
 	default:
 		break;
 	}
