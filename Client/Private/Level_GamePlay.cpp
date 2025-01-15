@@ -149,10 +149,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
 
-	
-
-
-
 	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12;
 	pDesc.fY = g_iWinSizeY / 10;
 	pDesc.fSizeX = 182.f;

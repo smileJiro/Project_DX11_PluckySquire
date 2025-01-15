@@ -50,6 +50,17 @@ HRESULT CModelObject::Initialize(void* _pArg)
     return S_OK;
 }
 
+void CModelObject::Late_Update(_float _fTimeDelta)
+{    /* Add Render Group */
+    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+        m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+
+    /* Update Parent Matrix */
+    __super::Late_Update(_fTimeDelta);
+}
+
 HRESULT CModelObject::Render()
 {
     if (FAILED(Bind_ShaderResources_WVP()))
@@ -226,6 +237,32 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
     return S_OK;
 }
 
+
+CModelObject* CModelObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+    CModelObject* pInstance = new CModelObject(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Created : CModelObject");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+CGameObject* CModelObject::Clone(void* _pArg)
+{
+    CModelObject* pInstance = new CModelObject(*this);
+
+    if (FAILED(pInstance->Initialize(_pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CModelObject");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
 
 void CModelObject::Free()
 {
