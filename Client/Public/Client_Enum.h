@@ -18,6 +18,7 @@ namespace Client
 		DELETE_OBJECT,
 		LEVEL_CHANGE,
 		SET_ACTIVE,
+		CHANGE_MONSTERSTATE,
 		HR,
 
 		LAST,

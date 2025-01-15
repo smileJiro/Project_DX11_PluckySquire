@@ -28,7 +28,7 @@ void CIdleState::State_Update(_float _fTimeDelta)
 	//_float dis = XMVectorGetX(XMVector3Length((m_pTargetTransform->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POSITION))));
 	//if (dis < 3.f)
 	//{
-	//	m_pFSM->Change_State(STATE_CHASE);
+	//	Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
 	//}
 }
 
