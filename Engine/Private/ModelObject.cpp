@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "3DModel.h"
 #include "2DModel.h"
+#include "Controller_Model.h"
 
 CModelObject::CModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CPartObject(_pDevice, _pContext)
@@ -50,21 +51,12 @@ HRESULT CModelObject::Initialize(void* _pArg)
 
 HRESULT CModelObject::Render()
 {
-
     if (FAILED(Bind_ShaderResources_WVP()))
         return E_FAIL;
-
-    switch (m_pControllerTransform->Get_CurCoord())
-    {
-    case Engine::COORDINATE_2D:
-        Render_2D();
-        break;
-    case Engine::COORDINATE_3D:
-        Render_3D();
-        break;
-    default:
-        break;
-    }
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+	CShader* pShader = m_pShaderComs[eCoord];
+	_uint iShaderPass = m_iShaderPasses[eCoord];
+    m_pControllerModel->Render(pShader, iShaderPass);
 
     return S_OK;
 }
@@ -72,6 +64,7 @@ HRESULT CModelObject::Render()
 _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
 {
     // 예외처리
+	C3DModel* m_p3DModelCom = static_cast<C3DModel*>( m_pControllerModel->Get_Model(COORDINATE_3D));
     if (nullptr == m_p3DModelCom)
         return false;
     if (nullptr == m_pRayCom)
@@ -114,93 +107,85 @@ _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
 
 void CModelObject::Update(_float fTimeDelta)
 {
-    if (m_p3DModelCom->Is_AnimModel())
-    {
-        if (m_p3DModelCom->Play_Animation(fTimeDelta))
-        {
-            //for (auto& callback : m_listAnimEndCallBack)
-            //    callback(m_pModelCom->Get_AnimIndex());
-        }
-    }
+    m_pControllerModel->Play_Animation(fTimeDelta);
 
 	__super::Update(fTimeDelta);
 }
 
+HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
+{
+	if (FAILED(__super::Change_Coordinate(_eCoordinate, _vPosition)))
+		return E_FAIL;
+
+    return	m_pControllerModel->Change_Coordinate(_eCoordinate);
+}
+
 void CModelObject::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
 {
-    m_p3DModelCom->Set_AnimationLoop(iIdx, bIsLoop);
+    m_pControllerModel->Set_AnimationLoop(iIdx, bIsLoop);
 }
 
 void CModelObject::Set_Animation(_uint iIdx)
 {
-    m_p3DModelCom->Set_Animation(iIdx);
+    m_pControllerModel->Set_Animation(iIdx);
 }
 
 void CModelObject::Switch_Animation(_uint iIdx)
 {
-    m_p3DModelCom->Switch_Animation(iIdx);
+    m_pControllerModel->Switch_Animation(iIdx);
 }
 
 HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 {
     _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
+
     switch (_pDesc->eStartCoord)
     {
     case Engine::COORDINATE_2D:
     {
-        /* Com_VIBuffer */
-        if (FAILED(Add_Component(iStaticLevelID, TEXT("Prototype_Component_VIBuffer_Rect"),
-            TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
-            return E_FAIL;
-
-        /* Com_Shader_2D */
-        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
-            TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-            return E_FAIL;
-
-        if (true == _pDesc->isCoordChangeEnable)
-        {
-            /* Com_Model */
-            if (FAILED(Add_Component(m_iCurLevelID, _pDesc->strModelPrototypeTag,
-                TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_p3DModelCom))))
-                return E_FAIL;
-
-            /* Com_Shader_3D */
-            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
-                TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
-                return E_FAIL;
-        }
-    }
-    break;
-    case Engine::COORDINATE_3D:
-    {
-        /* Com_Model */
-        if (FAILED(Add_Component(m_iCurLevelID, _pDesc->strModelPrototypeTag,
-            TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_p3DModelCom))))
-            return E_FAIL;
-
         /* Com_Shader_3D */
         if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
             TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
             return E_FAIL;
-
+        /* Com_Shader_2D */
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
+            TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
+            return E_FAIL;
         if (true == _pDesc->isCoordChangeEnable)
         {
-            /* Com_VIBuffer */
-            if (FAILED(Add_Component(iStaticLevelID, TEXT("Prototype_Component_VIBuffer_Rect"),
-                TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
-                return E_FAIL;
-
+        }
+        break;
+    }
+    case Engine::COORDINATE_3D:
+    {
+        /* Com_Shader_3D */
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
+            TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
+            return E_FAIL;
+        if (true == _pDesc->isCoordChangeEnable)
+        {
             /* Com_Shader_2D */
             if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
                 TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
                 return E_FAIL;
         }
+        break;
     }
-    break;
     default:
         break;
     }
+
+    CController_Model::CON_MODEL_DESC tModelDesc{};
+    tModelDesc.eStartCoord = _pDesc->eStartCoord;
+	tModelDesc.isCoordChangeEnable = _pDesc->isCoordChangeEnable;
+	tModelDesc.iCurLevelID = iStaticLevelID;
+	tModelDesc.i2DModelPrototypeLevelID = _pDesc->i2DModelPrototypeLevelID;
+	tModelDesc.i3DModelPrototypeLevelID = _pDesc->i3DModelPrototypeLevelID;
+	tModelDesc.wstr2DModelPrototypeTag = _pDesc->strModelPrototypeTag_2D;
+	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
+
+	m_pControllerModel = CController_Model::Create(m_pDevice, m_pContext, &tModelDesc);
+
 
     return S_OK;
 }
@@ -240,49 +225,10 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
     return S_OK;
 }
 
-HRESULT CModelObject::Render_2D()
-{
-    // 어떠한 Pass로 그릴 것인지
-    m_pShaderComs[COORDINATE_2D]->Begin(m_iShaderPasses[COORDINATE_2D]);
-
-
-    return S_OK;
-}
-
-HRESULT CModelObject::Render_3D()
-{
-    _uint iNumMeshes = m_p3DModelCom->Get_NumMeshes();
-
-    /* Mesh 단위 렌더. */
-    for (_uint i = 0; i < iNumMeshes; ++i)
-    {
-        if (FAILED(m_p3DModelCom->Bind_Material(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
-        {
-            continue;
-        }
-
-        /* Bind Bone Matrices */
-        if (m_p3DModelCom->Is_AnimModel())
-        {
-            if (FAILED(m_p3DModelCom->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", i)))
-                return E_FAIL;
-        }
-
-
-        /* Shader Pass */
-        m_pShaderComs[COORDINATE_3D]->Begin(m_iShaderPasses[COORDINATE_3D]);
-
-        /* Bind Mesh Vertex Buffer */
-        m_p3DModelCom->Render(i);
-    }
-
-    return S_OK;
-}
 
 void CModelObject::Free()
 {
-    Safe_Release(m_p2DModelCom);
-    Safe_Release(m_p3DModelCom);
+    Safe_Release(m_pControllerModel);
 
     for (_int i = 0; i < COORDINATE_LAST; ++i)
     {

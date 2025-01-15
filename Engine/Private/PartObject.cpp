@@ -32,6 +32,7 @@ HRESULT CPartObject::Initialize(void* _pArg)
 
 void CPartObject::Priority_Update(_float _fTimeDelta)
 {
+	__super::Priority_Update(_fTimeDelta);
 }
 
 void CPartObject::Update(_float _fTimeDelta)

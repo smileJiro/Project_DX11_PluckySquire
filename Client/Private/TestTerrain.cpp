@@ -56,25 +56,6 @@ void CTestTerrain::Late_Update(_float _fTimeDelta)
 	CPartObject::Late_Update(_fTimeDelta);
 }
 
-HRESULT CTestTerrain::Render()
-{
-	if (FAILED(CModelObject::Bind_ShaderResources_WVP()))
-		return E_FAIL;
-
-	switch (m_pControllerTransform->Get_CurCoord())
-	{
-	case Engine::COORDINATE_2D:
-		CModelObject::Render_2D();
-		break;
-	case Engine::COORDINATE_3D:
-		CModelObject::Render_3D();
-		break;
-	default:
-		break;
-	}
-
-	return S_OK;
-}
 
 HRESULT CTestTerrain::Render_Shadow()
 {

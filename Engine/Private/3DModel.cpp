@@ -7,13 +7,13 @@
 #include "iostream"
 
 C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CComponent(_pDevice, _pContext)
+	: CModel(_pDevice, _pContext)
 {
 }
 
 C3DModel::C3DModel(const C3DModel& _Prototype)
-	: CComponent(_Prototype)
-	, m_eModelType{ _Prototype.m_eModelType }
+	: CModel(_Prototype)
+
 	, m_iNumMeshes(_Prototype.m_iNumMeshes)
 	, m_Meshes(_Prototype.m_Meshes)
 	, m_iNumMaterials{ _Prototype.m_iNumMaterials }
@@ -76,20 +76,37 @@ HRESULT C3DModel::Initialize(void* _pArg)
 	return S_OK;
 }
 
-
-HRESULT C3DModel::Render(_uint _iMeshIndex)
+HRESULT C3DModel::Render(CShader* _Shader, _uint _iShaderPass)
 {
-	if (_iMeshIndex >= m_iNumMeshes)
-		return E_FAIL;
 
-	/* 순회하며 그리지 않고, 외부에서 Mesh Index를 받아와서 그리고있다. */
-	/* 각각의 메쉬를 그리기 전, 각각의 메쉬가 사용하는 Material Texture를 세팅해주어야한다. 그래서 그러한 작업을 클라에서 수행하고,
-	Engine에서는 매개변수로 들어온 인덱스에 해당하는 메쉬를 그리는 작업만 수행한다. */
-	m_Meshes[_iMeshIndex]->Bind_BufferDesc();
-	m_Meshes[_iMeshIndex]->Render();
+	/* Mesh 단위 렌더. */
+	for (_uint i = 0; i < m_iNumMeshes; ++i)
+	{
+		if (FAILED(Bind_Material(_Shader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+		{
+			continue;
+		}
+
+		/* Bind Bone Matrices */
+		if (Is_AnimModel())
+		{
+			if (FAILED(Bind_Matrices(_Shader, "g_BoneMatrices", i)))
+				return E_FAIL;
+		}
+
+
+		/* Shader Pass */
+		_Shader->Begin(_iShaderPass);
+
+		/* Bind Mesh Vertex Buffer */
+		m_Meshes[i]->Bind_BufferDesc();
+		m_Meshes[i]->Render();
+	}
 
 	return S_OK;
 }
+
+
 
 HRESULT C3DModel::Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex)
 {
@@ -330,11 +347,11 @@ HRESULT C3DModel::Ready_Animations(ifstream& inFile)
 	return S_OK;
 }
 
-C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	C3DModel* pInstance = new C3DModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix)))
+	if (FAILED(pInstance->Initialize_Prototype())
 	{
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);

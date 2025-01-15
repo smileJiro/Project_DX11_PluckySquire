@@ -23,54 +23,45 @@ HRESULT CController_Model::Initialize(CON_MODEL_DESC* _pDesc)
 
     return S_OK;
 }
-
-HRESULT CController_Model::Render(_uint iMeshIndex)
-{
-    return S_OK;
-}
-
-HRESULT CController_Model::Change_Coordinate(COORDINATE _eCoordinate)
-{
-    return S_OK;
-}
-
 HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
 {
     switch (m_eCurCoord)
     {
     case Engine::COORDINATE_2D:
     {
-        /* Com_Model */
+        C2DModel::TWODMODEL_DESC t2DDesc{};
+		t2DDesc.strTextureTag = _pDesc->strTextureTag;
         CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _pDesc->i2DModelPrototypeLevelID, _pDesc->wstr2DModelPrototypeTag, nullptr));
         if (nullptr == pComponent)
             return E_FAIL;
+
+		m_ModelComs[COORDINATE_2D] = static_cast<C2DModel*>(pComponent);
         if (true == m_isCoordChangeEnable)
         {
-            /* Com_Model */
+
             pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _pDesc->i3DModelPrototypeLevelID, _pDesc->wstr3DModelPrototypeTag, nullptr));
             if (nullptr == pComponent)
                 return E_FAIL;
 
-            m_p3DModelCom = static_cast<C3DModel*>(pComponent);
+            m_ModelComs[COORDINATE_3D] = static_cast<C3DModel*>(pComponent);
         }
     }
     break;
     case Engine::COORDINATE_3D:
     {
-        /* Com_Model */
         CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _pDesc->i3DModelPrototypeLevelID, _pDesc->wstr3DModelPrototypeTag, nullptr));
         if (nullptr == pComponent)
             return E_FAIL;
 
-        m_p3DModelCom = static_cast<C3DModel*>(pComponent);
+        m_ModelComs[COORDINATE_3D] = static_cast<C3DModel*>(pComponent);
+
         if (true == m_isCoordChangeEnable)
         {
-            /* Com_VIBuffer */
-            pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, 1, TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
+            pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _pDesc->i2DModelPrototypeLevelID, _pDesc->wstr2DModelPrototypeTag, nullptr));
             if (nullptr == pComponent)
                 return E_FAIL;
 
-            m_p2DModelCom = static_cast<C2DModel*>(pComponent);
+            m_ModelComs[COORDINATE_2D] = static_cast<C2DModel*>(pComponent);
         }
     }
     break;
@@ -81,6 +72,43 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
 
     return S_OK;
 }
+
+
+HRESULT CController_Model::Render(CShader* _Shader, _uint _iShaderPass)
+{
+    return 	m_ModelComs[m_eCurCoord]->Render(_Shader, _iShaderPass);
+}
+
+
+HRESULT CController_Model::Change_Coordinate(COORDINATE _eCoordinate)
+{
+    m_eCurCoord = _eCoordinate;
+
+    return S_OK;
+}
+
+void CController_Model::Play_Animation(_float fTimeDelta)
+{
+	m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta);
+}
+
+
+
+void CController_Model::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
+{
+	m_ModelComs[m_eCurCoord]->Set_AnimationLoop(iIdx, bIsLoop);
+}
+
+void CController_Model::Set_Animation(_uint iIdx)
+{
+	m_ModelComs[m_eCurCoord]->Set_Animation(iIdx);
+}
+
+void CController_Model::Switch_Animation(_uint iIdx)
+{
+	m_ModelComs[m_eCurCoord]->Switch_Animation(iIdx);
+}
+
 
 CController_Model* CController_Model::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CON_MODEL_DESC* _pDesc)
 {
@@ -96,9 +124,10 @@ CController_Model* CController_Model::Create(ID3D11Device* _pDevice, ID3D11Devic
 
 void CController_Model::Free()
 {
-    Safe_Release(m_p3DModelCom);
-    Safe_Release(m_p2DModelCom);
-
+    for (auto& pModel : m_ModelComs)
+    {
+		Safe_Release(pModel);
+    }
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);

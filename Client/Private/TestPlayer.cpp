@@ -143,9 +143,12 @@ HRESULT CTestPlayer::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
+    BodyDesc.i2DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+    BodyDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Texture_PickBulb");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.strModelPrototypeTag = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::COLOR_ALPHA;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 

@@ -10,6 +10,9 @@
 #include "TestTerrain.h"
 #include "Pick_Bulb.h"
 #include "SettingPanel.h"
+#include "2DModel.h"
+#include "3DModel.h"
+#include "Controller_Model.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

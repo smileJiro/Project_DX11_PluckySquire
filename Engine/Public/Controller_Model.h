@@ -7,8 +7,7 @@
 BEGIN(Engine)
 class CGameInstance;
 
-class C3DModel;
-class C2DModel;
+class CModel;
 class CShader;
 class ENGINE_DLL CController_Model : public CBase
 {
@@ -33,20 +32,21 @@ private:
 public:
 	HRESULT			Initialize(CON_MODEL_DESC* _pDesc);
 
-	HRESULT			Render(_uint iMeshIndex = 0);
-
+	HRESULT			Render(CShader* _Shader, _uint _iShaderPass);
 public:
 	HRESULT			Change_Coordinate(COORDINATE _eCoordinate);
 
 
 public: /* 2D, 3D */
-	void			Play_Animation() {};
-	void			Setup_Animation() {};
+	void			Play_Animation(_float fTimeDelta);
 
-public: /* 2D */
+	//Get
+	CModel* Get_Model(COORDINATE _eCoord) {return m_ModelComs[_eCoord];}
 
-public: /* 3D */
-
+	//Set
+	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
+	void Set_Animation(_uint iIdx);
+	void Switch_Animation(_uint iIdx);
 public:
 
 private:
@@ -55,9 +55,8 @@ private:
 	CGameInstance* m_pGameInstance = nullptr;
 
 private:
-	C2DModel* m_p2DModelCom = nullptr;
-	C3DModel* m_p3DModelCom = nullptr;
 
+	CModel* m_ModelComs[COORDINATE_LAST] = {};
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;
 	_bool					m_isCoordChangeEnable = false;
 

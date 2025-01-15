@@ -1,15 +1,14 @@
 #pragma once
-#include "Component.h"
+#include "Model.h"
 
 BEGIN(Engine)
 class CMesh;
 class CMaterial;
 class CBone;
 class CAnimation;
-class ENGINE_DLL C3DModel final : public CComponent
+class ENGINE_DLL C3DModel final : public CModel
 {
-public:
-	enum TYPE { NONANIM, ANIM, LAST, };
+
 private:
 	C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C3DModel(const C3DModel& _Prototype);
@@ -18,12 +17,12 @@ private:
 public:
 	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual HRESULT			Initialize(void* _pArg) override;
-	virtual HRESULT			Render(_uint _iMeshIndex);
+	virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass) override;
 
 public:
 	HRESULT					Bind_Material(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
 	HRESULT					Bind_Matrices(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
-	_bool Play_Animation(_float fTimeDelta);
+	virtual _bool Play_Animation(_float fTimeDelta) override;
 
 
 public:
@@ -35,17 +34,16 @@ public:
 	float Get_AnimTime();
 	_uint Get_AnimIndex();
 	_float Get_AnimationProgress(_uint iAnimIdx);
-	TYPE Get_Type() { return m_eModelType; }
+
 	const _float4x4* Get_BoneMatrix(const _char* pBoneName) const;
 	class CBone* Get_Bone(const _char* pBoneName) const;
 	const vector<CMesh*>& Get_Meshes() { return m_Meshes; }
-	_bool Is_AnimModel() { return m_eModelType == TYPE::ANIM; };
+
 	// Set
-	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
-	void Set_Animation(_uint iIdx);
-	void Switch_Animation(_uint iIdx);
+	virtual void Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
+	virtual void Set_Animation(_uint iIdx)override;
+	virtual void Switch_Animation(_uint iIdx)override;
 protected:
-	TYPE				m_eModelType = TYPE::LAST;
 
 	_uint				m_iNumMeshes = 0;
 	vector<CMesh*>		m_Meshes;
@@ -72,7 +70,6 @@ public:
 	static C3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
-public:
 
 };
 
