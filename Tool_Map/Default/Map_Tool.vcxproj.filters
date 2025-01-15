@@ -96,9 +96,6 @@
     <ClInclude Include="..\Public\Map_Tool_Manager.h">
       <Filter>01. ToolApp_Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ModelFile_Manager.h">
-      <Filter>01. ToolApp_Managers</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CellContainor.h">
       <Filter>03. GameObject</Filter>
     </ClInclude>
@@ -125,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\gizmo\ImZoomSlider.h">
       <Filter>97. gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_CellLine.h">
+      <Filter>04. Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +175,6 @@
     <ClCompile Include="..\Private\Map_Tool_Manager.cpp">
       <Filter>01. ToolApp_Managers</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ModelFile_Manager.cpp">
-      <Filter>01. ToolApp_Managers</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CellContainor.cpp">
       <Filter>03. GameObject</Filter>
     </ClCompile>
@@ -201,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\gizmo\ImSequencer.cpp">
       <Filter>97. gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_CellLine.cpp">
+      <Filter>04. Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

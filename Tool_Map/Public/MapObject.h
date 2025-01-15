@@ -62,7 +62,6 @@ public:
 
 	const wstring&			Get_ModelName() { return m_strModelName; }
 
-	virtual bool			Check_Picking(_fvector _vRayPos, _fvector _vRayDir, _float3* _vReturnPos, _float* fNewDist);
 
 
 private :

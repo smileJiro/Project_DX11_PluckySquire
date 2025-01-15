@@ -62,7 +62,7 @@ void CCellContainor::Update(_float fTimeDelta)
 {
 	for (auto& pVertex : m_vecVertexList)
 		pVertex->Update(fTimeDelta);
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_PRIORITY, this);
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 }
 _bool	CCellContainor::Is_ContainCell(CNavigationVertex** pPoints)
 {
@@ -327,4 +327,9 @@ void CCellContainor::Free()
 	All_Delete();
 
 	__super::Free();
+}
+
+HRESULT CCellContainor::Cleanup_DeadReferences()
+{
+	return E_NOTIMPL;
 }

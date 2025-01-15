@@ -5,7 +5,6 @@
 #include "Transform.h"
 #include "VIBuffer_Terrain.h"
 #include "MapObject.h"
-#include "ModelFile_Manager.h"
 #include <DirectXCollision.h>
 #include <filesystem>
 #include "gizmo/ImGuizmo.h"
@@ -45,12 +44,38 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	// 셀 관리 컨테이너 생성
 	CGameObject* pGameObject = nullptr;
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_CellContainor"),
-		LEVEL_TOOL_MAP, L"Layer_Cell", &pGameObject);
+		LEVEL_TOOL_MAP, L"Layer_Cell", &pGameObject, nullptr);
 	if (pGameObject)
 	{
 		m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
 		Safe_AddRef(m_pCellContainor);
 	}
+	
+	// SM_desk_split_topboard_02
+
+
+	CMapObject::MAPOBJ_DESC NormalDesc = {};
+	lstrcpy(NormalDesc.szModelName, L"SM_desk_split_topboard_02");
+	//lstrcpy(NormalDesc.szModelName, L"WoodenPlatform_01");
+	NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
+	//NormalDesc.matWorld = vWorld;
+
+
+
+	pGameObject = nullptr;
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
+		LEVEL_TOOL_MAP,
+		L"Layer_Environment",
+		&pGameObject,
+		(void*)&NormalDesc);
+	//if (pGameObject)
+	//{
+	//	m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
+	//	Safe_AddRef(m_pCellContainor);
+	//}
+
+
+
 	return S_OK;
 }
 
@@ -128,8 +153,9 @@ void CMap_Tool_Manager::Input_Object_Tool_Mode()
 			// 프리뷰 모드 코드.
 			_float3 fPos = m_fPickingPos;
 			fPos.y += 0.5f;
-			static_cast<CTransform*>(m_arrObjects[OBJECT_PREVIEW]->Find_Component(L"Com_Transform"))
-				->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&fPos), 1.f));
+			m_arrObjects[OBJECT_PREVIEW]->Set_Position(XMVectorSetW(XMLoadFloat3(&fPos), 1.f));
+			//static_cast<CTransform*>(m_arrObjects[OBJECT_PREVIEW]->Find_Component(L"Com_Transform"))
+			//	->Set_State(CTransform::STATE_POSITION, );
 			m_fPreviewPos = fPos;
 			if (MOUSE_DOWN(MOUSE_KEY::LB))
 			{
@@ -261,9 +287,10 @@ void CMap_Tool_Manager::Object_Info_Imgui(_bool _bLock)
 	// 1. 기본 위치 세팅, 기즈모 세팅.
 	if (pPickingObj)
 	{
-		XMStoreFloat3(&vPos, static_cast<CTransform*>
-			(pPickingObj->Find_Component(L"Com_Transform"))
-			->Get_State(CTransform::STATE_POSITION));
+		XMStoreFloat3(&vPos, pPickingObj->Get_Position());
+
+
+
 		eOper = pPickingObj->Get_Operation();
 		ImGui::SeparatorText("Gizmo Mode");
 		if (ImGui::RadioButton("Translate", eOper == ImGuizmo::TRANSLATE))
@@ -796,7 +823,7 @@ void CMap_Tool_Manager::Load(bool bSelected)
 
 
 		CGameObject* pGameObject = nullptr;
-		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
 			LEVEL_TOOL_MAP,
 			L"Layer_MapObject",
 			&pGameObject,
@@ -830,12 +857,12 @@ void CMap_Tool_Manager::Load(bool bSelected)
 		LOG_TYPE(log, LOG_LOAD);
 }
 
-void CMap_Tool_Manager::Object_Clear(bool bSelected)
+void CMap_Tool_Manager::Object_Clear(_bool _bSelected)
 {
 	Object_Clear_PickingMode();
 	Object_Close_PreviewMode();
 
-	if (bSelected)
+	if (_bSelected)
 		LOG_TYPE("Object All Clear", LOG_DELETE);
 	CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_MapObject");
 	DWORD	dwByte(0);
@@ -862,29 +889,36 @@ HRESULT CMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject**
 {
 	_float3			vRayPos, vRayDir;
 
+	POINT		ptMouse{};
 
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
 	Compute_World_PickingLay(&vRayPos, &vRayDir);
 
 	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_Environment");
 	if (!pLayer)
 		return E_FAIL;
-
 	auto List = pLayer->Get_GameObjects();
 	_float	 fDist = 0.f, fNewDist = 0.f;
 	_float3  vReturnPos = {};
 	_float3  vReturnNewPos = {};
 	CMapObject* pReturnObject = nullptr;
-	for_each(List.begin(), List.end(), [this, &vRayPos, &vRayDir, &fDist, &fNewDist, &vReturnNewPos, &vReturnPos, &pReturnObject](CGameObject* pGameObject)
+	for_each(List.begin(), List.end(), [this, &fCursorPos,  &fDist, &fNewDist, &vReturnNewPos, &vReturnPos, &pReturnObject](CGameObject* pGameObject)
 		{
 			CMapObject* pMapObject = dynamic_cast<CMapObject*>(pGameObject);
 			if (pMapObject)
 			{
-				bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnNewPos, &fNewDist);
+				//bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnNewPos, &fNewDist);
+				_bool bRange = pMapObject->Is_PickingCursor_Model(fCursorPos, fNewDist);
+				if (bRange)
+				{
+					int a = 1;
+				}
 				if (bRange && (fNewDist < fDist || fDist == 0.f))
 				{
 					pReturnObject = pMapObject;
 					fDist = fNewDist;
-					vReturnPos = vReturnNewPos;
 				}
 			}
 		});
@@ -892,7 +926,12 @@ HRESULT CMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject**
 	if (pReturnObject)
 	{
 		*ppMap = pReturnObject;
-		*fPickingPos = vReturnPos;
+
+		_vector vWorldRayPos = XMLoadFloat3(&vRayPos) + (XMLoadFloat3(&vRayDir) * fDist);
+		//vLocalRayPos = XMVector3TransformCoord(vLocalRayPos, m_pTransformCom->Get_WorldMatrix());
+		XMStoreFloat3(fPickingPos, vWorldRayPos);
+
+		//*fPickingPos = vRayPos * fDist;
 		return S_OK;
 	}
 	else
@@ -913,10 +952,11 @@ HRESULT CMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos)
 
 CMapObject* CMap_Tool_Manager::Picking_On_Object()
 {
-	_float3			vRayPos, vRayDir;
+	POINT		ptMouse{};
 
-
-	Compute_World_PickingLay(&vRayPos, &vRayDir);
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
 
 	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_GameObject");
 	if (!pLayer)
@@ -926,12 +966,13 @@ CMapObject* CMap_Tool_Manager::Picking_On_Object()
 	_float	 fDist = 0.f, fNewDist = 0.f;
 	_float3  vReturnPos = {};
 	CMapObject* pReturnObject = nullptr;
-	for_each(List.begin(), List.end(), [this, &vRayPos, &vRayDir, &fDist, &vReturnPos, &fNewDist, &pReturnObject](CGameObject* pGameObject)
+	for_each(List.begin(), List.end(), [this, &fCursorPos, &fDist, &vReturnPos, &fNewDist, &pReturnObject](CGameObject* pGameObject)
 		{
 			CMapObject* pMapObject = dynamic_cast<CMapObject*>(pGameObject);
 			if (pMapObject)
 			{
-				bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnPos, &fNewDist);
+				bool bRange = pMapObject->Is_PickingCursor_Model(fCursorPos, fNewDist);
+				//bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnPos, &fNewDist);
 				if (bRange && (fNewDist < fDist || fDist == 0.f))
 				{
 					pReturnObject = pMapObject;
@@ -1092,7 +1133,29 @@ bool CMap_Tool_Manager::Check_VertexSelect()
 
 void CMap_Tool_Manager::Load_ModelList()
 {
+	m_vecObjectFileList.clear();
+	_wstring strPath 
+		= TEXT("../../Client/Bin/Resources/TestModels/");
+		//= TEXT("../../Client/Bin/resources/Models/");
 
+	for (const auto& entry : ::recursive_directory_iterator(strPath))
+	{
+		if (is_directory(entry))
+		{
+			for (const auto& file : ::recursive_directory_iterator(entry))
+			{
+				if (file.path().extension() == ".model")
+				{
+					wstring strKey = file.path().stem().wstring();
+					m_vecObjectFileList.push_back(strKey);
+				}
+			}
+		}
+	}
+}
+
+void CMap_Tool_Manager::Load_SaveFileList()
+{
 }
 
 void CMap_Tool_Manager::Object_Open_PickingMode()
@@ -1129,9 +1192,9 @@ void CMap_Tool_Manager::Object_Open_PreviewMode()
 
 		CGameObject* pGameObject = nullptr;
 
-		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
 			LEVEL_TOOL_MAP, L"Layer_GameObject", &pGameObject, (void*)&NormalDesc);
-
+		
 		if (nullptr != pGameObject)
 		{
 			m_arrObjects[OBJECT_PREVIEW] = static_cast<CMapObject*>(pGameObject);

@@ -18,7 +18,6 @@
 #include <tchar.h>
 #include <iostream>
 #include <functional>
-#include <codecvt>
 #include <locale>
 #include <filesystem>
 #include <iostream>
