@@ -3,7 +3,7 @@
 
 
 
-
+_uint CGameObject::g_iIDCount = 0;
 CGameObject::CGameObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
     , m_pContext(_pContext)
@@ -20,6 +20,7 @@ CGameObject::CGameObject(const CGameObject& Prototype)
     , m_pGameInstance(Prototype.m_pGameInstance)
     , m_iCurLevelID(Prototype.m_iCurLevelID)
     , m_Colliders(Prototype.m_Colliders)
+    , m_iGameObjectID(g_iIDCount++)
 {
 
     for (auto& pCollider : m_Colliders)

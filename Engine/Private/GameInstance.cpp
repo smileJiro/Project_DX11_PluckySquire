@@ -343,6 +343,9 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 				{
 
 
+
+
+
 					ImGui::TreePop();
 				}
 			}

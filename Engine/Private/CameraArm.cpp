@@ -20,6 +20,7 @@ HRESULT CCameraArm::Initialize(void* pArg)
 
     m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 
+
     return S_OK;
 }
 
