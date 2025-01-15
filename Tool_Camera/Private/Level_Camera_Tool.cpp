@@ -19,15 +19,15 @@ HRESULT CLevel_Camera_Tool::Initialize()
 		return E_FAIL;
 
 	CGameObject* pCameraTarget = nullptr;
-	//
-	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget)))
-	//	return E_FAIL;
+	
+	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget)))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget)))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
 
 	return S_OK;
 }
