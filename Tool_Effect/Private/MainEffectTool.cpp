@@ -55,6 +55,9 @@ void CMainEffectTool::Progress(_float _fTimeDelta)
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
+#ifdef _DEBUG
+	Debug_Default(_fTimeDelta);
+#endif
 	m_pGameInstance->End_Imgui();
 
 	if (FAILED(Render()))
@@ -62,6 +65,7 @@ void CMainEffectTool::Progress(_float _fTimeDelta)
 		MSG_BOX("Failed Render MainApp");
 		return;
 	}
+
 
 	// 뷰포트 나가도 렌더되는 처리 // 
 	ImGui::RenderPlatformWindowsDefault();
@@ -92,6 +96,8 @@ HRESULT CMainEffectTool::Render()
 	return S_OK;
 }
 
+
+
 HRESULT CMainEffectTool::SetUp_StartLevel(LEVEL_ID _eLevelID)
 {
 	EVENT tEvent;
@@ -108,7 +114,9 @@ HRESULT CMainEffectTool::SetUp_StartLevel(LEVEL_ID _eLevelID)
 
 HRESULT CMainEffectTool::Ready_Prototype_Static()
 {
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -139,3 +147,14 @@ void CMainEffectTool::Free()
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();
 }
+
+#ifdef _DEBUG
+void CMainEffectTool::Debug_Default(_float _fTimeDelta)
+{
+	ImGui::Begin("Main");
+	const _float4* pCamPosition = m_pGameInstance->Get_CamPosition();
+
+	ImGui::Text("Camera Position : %.4f, %.4f, %.4f, %.4f", (*pCamPosition).x, (*pCamPosition).y, (*pCamPosition).z, (*pCamPosition).w);
+	ImGui::End();
+}
+#endif

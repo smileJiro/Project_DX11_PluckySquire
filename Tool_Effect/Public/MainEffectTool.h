@@ -22,12 +22,23 @@ private:
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
 
+
+
 private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 	HRESULT Ready_Prototype_Static();
 
+	
+
 public:
 	static CMainEffectTool* Create();
 	virtual void Free() override;
+
+#ifdef _DEBUG
+private:
+	_float	fAccTime = 0.f;
+private:
+	void	Debug_Default(_float _fTimeDelta);
+#endif
 };
 
