@@ -28,9 +28,7 @@
 #include <vector>
 #include <stdint.h>
 #include <string>
-#include "../imgui.h"
-#include "../imgui_internal.h"
-
+#include "Map_Tool_Defines.h"
 namespace GraphEditor {
 
 typedef size_t NodeIndex;

@@ -46,6 +46,7 @@ HRESULT CModelObject::Initialize(void* _pArg)
     // Projection Matrix는 Viewport Desc 를 기반으로 생성.
     XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)ViewportDesc.Width, (_float)ViewportDesc.Height, 0.0f, 1.0f));
 
+
     return S_OK;
 }
 

@@ -8,19 +8,19 @@ CImguiLogger::CImguiLogger()
 {
 }
 
-void CImguiLogger::Add_Log(const string& strLog, LOG_TYPE eType)
+void CImguiLogger::Add_Log(const string& _strLog, LOG_TYPE _eType)
 {
 	if (m_bLock) return;
-	LOG_MSG logmsg = { strLog + "\n", eType };
+	LOG_MSG logmsg = { _strLog + "\n", _eType };
 	m_tLog.AddLog((("%s"+ logmsg.strLogMsg).c_str()), m_arrTypeText[logmsg.eType].c_str());
 
 }
 
-void CImguiLogger::Add_Log(const wstring& strLog, LOG_TYPE eType)
+void CImguiLogger::Add_Log(const wstring& _strLog, LOG_TYPE _eType)
 {
 	
-	string TagText = m_pGameInstance->WStringToString(strLog);
-	Add_Log(TagText, eType);
+	string TagText = m_pGameInstance->WStringToString(_strLog);
+	Add_Log(TagText, _eType);
 }
 
 HRESULT CImguiLogger::Draw_Log()

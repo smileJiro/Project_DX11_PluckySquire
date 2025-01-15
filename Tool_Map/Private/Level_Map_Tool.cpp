@@ -2,24 +2,32 @@
 #include "Level_Map_Tool.h"
 #include "GameInstance.h"
 #include "Camera_Free.h"
+#include "Map_Tool_Manager.h"
 
 CLevel_Map_Tool::CLevel_Map_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
 }
 
-HRESULT CLevel_Map_Tool::Initialize()
+HRESULT CLevel_Map_Tool::Initialize(CImguiLogger* _pLogger)
 {
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	m_pToolManager = CMap_Tool_Manager::Create(m_pDevice, m_pContext, m_pLogger);
+	if (nullptr == m_pToolManager)
+		return E_FAIL;
+
+
+
 	return S_OK;
 }
 
 void CLevel_Map_Tool::Update(_float _fTimeDelta)
 {
+	m_pToolManager->Update_Tool();
 }
 
 HRESULT CLevel_Map_Tool::Render()
@@ -57,15 +65,16 @@ HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 
 	//Desc.fSpeedPerSec = 10.f;
 	//Desc.fRotationPerSec = XMConvertToRadians(180.f);
-	Desc.fMouseSensor = 0.1f;
+	Desc.fMouseSensor = 0.5f;
 	Desc.eZoomLevel = Engine::CCamera::ZOOM_LEVEL::NORMAL;
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.fNear = 0.1f;
 	Desc.fFar = 1000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Desc.fFovy = XMConvertToRadians(60.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_TOOL_MAP, _strLayerTag, &Desc)))
 		return E_FAIL;
 
@@ -84,11 +93,11 @@ HRESULT CLevel_Map_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 }
 
 
-CLevel_Map_Tool* CLevel_Map_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CLevel_Map_Tool* CLevel_Map_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger)
 {
 	CLevel_Map_Tool* pInstance = new CLevel_Map_Tool(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize()))
+	if (FAILED(pInstance->Initialize(_pLogger)))
 	{
 		MSG_BOX("Failed to Created : CLevel_Map_Tool");
 		Safe_Release(pInstance);
@@ -99,5 +108,6 @@ CLevel_Map_Tool* CLevel_Map_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceCon
 
 void CLevel_Map_Tool::Free()
 {
+	Safe_Release(m_pToolManager);
 	__super::Free();
 }

@@ -347,11 +347,11 @@ HRESULT C3DModel::Ready_Animations(ifstream& inFile)
 	return S_OK;
 }
 
-C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	C3DModel* pInstance = new C3DModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype())
+	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix)))
 	{
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);

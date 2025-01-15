@@ -21,6 +21,7 @@ HRESULT C2DModel::Initialize(void* _pDesc)
 
     m_pVIBufferCom = static_cast<CVIBuffer_Rect*>(pComponent);
 
+
 	return S_OK;
 }
 

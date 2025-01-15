@@ -10,6 +10,8 @@
 #include "TestTerrain.h"
 #include "Pick_Bulb.h"
 #include "SettingPanel.h"
+#include "Beetle.h"
+#include "BeetleBody.h"
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
@@ -92,6 +94,18 @@ void CLoader::Show_Debug()
 HRESULT CLoader::Loading_Level_Static()
 {
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_Outline"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bg_border.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_OutOutline"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bg_border_outline.dds"), 1))))
+		return E_FAIL;
+
+
+              
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
@@ -139,7 +153,6 @@ HRESULT CLoader::Loading_Level_Static()
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -223,10 +236,23 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-	/* For. Prototype_UIObject_Pick_Bubble */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
-		CPick_Bulb::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+    /* For. Prototype_UIObject_Pick_Bubble */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
+        CPick_Bulb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+    /* Monster */
+
+    /* For. Prototype_GameObject_Beetle */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"),
+        CBeetle::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_BeetleBody */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BeetleBody"),
+        CBeetleBody::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

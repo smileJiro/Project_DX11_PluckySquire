@@ -168,7 +168,7 @@ HRESULT CTestPlayer::Ready_PartObjects()
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_TestBody"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(itmpIdx);
+    
 
     return S_OK;
 }

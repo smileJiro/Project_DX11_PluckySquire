@@ -3,9 +3,16 @@
 
 BEGIN(Engine)
 class CVIBuffer_Rect;
+class CTexture;
 class C2DModel :
     public CModel
 {
+public:
+    typedef struct tag2DModelDesc
+    {
+        string strTextureTag;
+        json j2DModelData;
+    }TWODMODEL_DESC;
 private:
     C2DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
     C2DModel(const C2DModel& _Prototype);
@@ -24,6 +31,12 @@ public:
 private:
     CVIBuffer_Rect* m_pVIBufferCom = nullptr;
     _uint					m_iSRVIndex = 0;
+	vector<CTexture*> m_TextureComs ;
+
+public:
+    static C2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+    virtual CComponent* Clone(void* _pArg) override;
+    virtual void Free() override;
 };
 
 END

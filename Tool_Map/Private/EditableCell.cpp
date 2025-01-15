@@ -4,24 +4,25 @@
 #include "VIBuffer_CellLine.h"
 #include "NavigationVertex.h"
 #include "GameInstance.h"
-CEditableCell::CEditableCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject(pDevice,pContext)
+
+CEditableCell::CEditableCell(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CGameObject(_pDevice,_pContext)
 {
 }
 
-CEditableCell::CEditableCell(const CEditableCell& Prototype)
-	: CGameObject(Prototype)
+CEditableCell::CEditableCell(const CEditableCell& _Prototype)
+	: CGameObject(_Prototype)
 {
 }
-HRESULT CEditableCell::Initialize(CNavigationVertex** pPoints, _int iIndex)
+HRESULT CEditableCell::Initialize(CNavigationVertex** _pPoints, _int _iIndex)
 {
 	for (_uint i = 0; i < 3; i++)
 	{
-		if (nullptr != pPoints[i])
-			m_vPoints[i] = pPoints[i];
+		if (nullptr != _pPoints[i])
+			m_vPoints[i] = _pPoints[i];
 	}
 
-	m_iIndex = iIndex;
+	m_iIndex = _iIndex;
 
 #ifdef _DEBUG
 	Create_Buffer();
@@ -29,9 +30,9 @@ HRESULT CEditableCell::Initialize(CNavigationVertex** pPoints, _int iIndex)
 
 	return S_OK;
 }
-void CEditableCell::Update(_float fTimeDelta)
+void CEditableCell::Update(_float _fTimeDelta)
 {
-	__super::Update(fTimeDelta);
+	__super::Update(_fTimeDelta);
 }
 void CEditableCell::Update_Vertex()
 {
@@ -42,6 +43,10 @@ void CEditableCell::Update_Vertex()
 }
 HRESULT CEditableCell::Create_Buffer()
 {
+	Safe_Release(m_pVIBuffer);
+
+
+
 	_float3 fVertexArr[] = {
 		m_vPoints[0]->Get_Pos(),
 		m_vPoints[1]->Get_Pos(),
@@ -51,7 +56,7 @@ HRESULT CEditableCell::Create_Buffer()
 	if (nullptr == m_pVIBuffer)
 		return E_FAIL;
 
-	
+
 	// 점 1당, 5개니까, 18개.
 	// 점 1당, 3개면, 12개.
 	_float3 fVertexArr2[18] = {
@@ -64,10 +69,10 @@ HRESULT CEditableCell::Create_Buffer()
 		fVertexArr2[i * 3 + i] = fVertexArr[i];
 		for (_uint j = 0; j < 3; j++)
 		{
-			
+
 			XMStoreFloat3(&fVertexArr2[i * 3 + i + 1 + j],
 				XMVectorLerp(XMLoadFloat3(&fVertexArr[(i + 1) % LINE_END]), XMLoadFloat3(&fVertexArr[(i + 2) % LINE_END]), fLef)
-				);
+			);
 			fLef += 0.3f;
 		}
 	}
@@ -81,14 +86,14 @@ HRESULT CEditableCell::Create_Buffer()
 }
 
 
-_bool	CEditableCell::Equal(CNavigationVertex** pPoints)
+_bool	CEditableCell::Equal(CNavigationVertex** _pPoints)
 {
 	_uint iboolCount = 0;
 	for (auto pVertex : m_vPoints)
 	{
 		for (_uint i = 0; i < POINT_END; i++)
 		{
-			if(pVertex == pPoints[i])
+			if(pVertex == _pPoints[i])
 			iboolCount++;
 		}
 	}
@@ -116,11 +121,12 @@ HRESULT CEditableCell::Wire_Render()
 	return S_OK;
 }
 #endif
-CEditableCell* CEditableCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CNavigationVertex** pPoints, _int iIndex)
-{
-	CEditableCell* pInstance = new CEditableCell(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(pPoints, iIndex)))
+CEditableCell* CEditableCell::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CNavigationVertex** _pPoints, _int _iIndex)
+{
+	CEditableCell* pInstance = new CEditableCell(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize(_pPoints, _iIndex)))
 	{
 		MSG_BOX("Failed to Created : CEditableCell");
 		Safe_Release(pInstance);
@@ -128,7 +134,7 @@ CEditableCell* CEditableCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext*
 	return pInstance;
 }
 
-CGameObject* CEditableCell::Clone(void* pArg)
+CGameObject* CEditableCell::Clone(void* _pArg)
 {
 	CEditableCell* pInstance = new CEditableCell(*this);
 
@@ -146,4 +152,9 @@ void CEditableCell::Free()
 
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+}
+
+HRESULT CEditableCell::Cleanup_DeadReferences()
+{
+	return S_OK;
 }

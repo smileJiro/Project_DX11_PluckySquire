@@ -25,7 +25,7 @@
 //
 #pragma once
 #include <cstddef>
-
+#include "Map_Tool_Defines.h"
 struct ImVec4;
 struct ImVec2;
 

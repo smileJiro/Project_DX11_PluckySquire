@@ -13,6 +13,8 @@
 #include "Sound_Manager.h"
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
+#include "Camera_Manager.h"
+#include "Layer.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -92,7 +94,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pGlobalFunction_Manager)
 		return E_FAIL;
 
-	
+	m_pCamera_Manager = CCamera_Manager::Create();
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -108,6 +113,7 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
+	m_pCamera_Manager->Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
 	m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 }
@@ -117,26 +123,9 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update 수행 후, DeadObject Safe_Release() + erase();
 	m_pLevel_Manager->Update(fTimeDelta);
 
-
-
-
 #ifdef _DEBUG
-	if (true == m_isImguiRTRender)
-	{
-		if (FAILED(Imgui_Render_RT_Debug()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
-		}
-		if (FAILED(Imgui_Render_RT_Debug_FullScreen()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
-		}
-	}
-	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
-	{
-		m_isImguiRTRender ^= 1;
-	}
 
+	Imgui_Debug_Render();
 
 #endif
 
@@ -211,7 +200,34 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	return S_OK;
 }
 
-HRESULT CGameInstance::Imgui_Render_RT_Debug()
+#ifdef _DEBUG
+
+HRESULT CGameInstance::Imgui_Debug_Render()
+{
+	if (true == m_isImguiRTRender)
+	{
+		if (FAILED(Imgui_Debug_Render_RT()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
+		}
+		if (FAILED(Imgui_Debug_Render_RT_FullScreen()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
+		}
+		if (FAILED(Imgui_Debug_Render_ObjectInfo()))
+		{
+			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
+		}
+	}
+	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
+	{
+		m_isImguiRTRender ^= 1;
+	}
+
+	return S_OK;
+}
+
+HRESULT CGameInstance::Imgui_Debug_Render_RT()
 {
 	ImGui::Begin("DebugRenderTarget");
 
@@ -245,7 +261,7 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug()
 	return S_OK;
 }
 
-HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
+HRESULT CGameInstance::Imgui_Debug_Render_RT_FullScreen()
 {
 	ImGui::Begin("Debug FullScreen");
 
@@ -298,13 +314,70 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
 	}
 
 
-	
 	ImGui::End();
 
 
 
 	return S_OK;
 }
+
+HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
+{
+	/* 트리노드로 Layer 들을 렌더한다. */
+	ImGui::Begin("ObjectsInfo");
+
+	if (ImGui::TreeNode("Object Layers")) // Layer 
+	{
+		map<const _wstring, CLayer*>* pLayers = m_pObject_Manager->Get_Layers_Ptr();
+		if (nullptr != pLayers)
+		{
+			_uint iNumLevels = m_pObject_Manager->Get_NumLevels();
+
+			/* Current Level */
+			ImGui::Text("Current Level Layers");
+			_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
+			for (auto& Pair : pLayers[iCurLevelID])
+			{
+				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
+				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
+				{
+
+
+
+
+
+					ImGui::TreePop();
+				}
+			}
+
+			/* Static Level */
+			ImGui::Text("Static Level Layers");
+			for (auto& Pair : pLayers[m_iStaticLevelID])
+			{
+				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
+				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
+				{
+					const list<CGameObject*>& GameObjects = Pair.second->Get_GameObjects();
+
+					for (auto& pGameObject : GameObjects)
+					{
+						//pGameObject.
+					}
+					ImGui::TreePop();
+				}
+			}
+
+		}
+
+		ImGui::TreePop();
+	}
+
+	ImGui::End();
+
+	return S_OK;
+}
+
+#endif // _DEBUG
 
 _float CGameInstance::Get_TimeDelta(const _wstring& _strTimerTag)
 {
@@ -459,6 +532,16 @@ CGameObject* CGameInstance::Find_NearestObject_Scaled(_uint _iLevelID, const _ws
 	}
 
 	return m_pObject_Manager->Find_NearestObject_Scaled(_iLevelID, _strLayerTag, _pConTransform, pCurTargetObject);
+}
+
+CGameObject* CGameInstance::Get_GameObject_Ptr(_int _iLevelID, const _wstring& _strLayerTag, _int _iObjectIndex)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+
+
+	return m_pObject_Manager->Get_GameObject_Ptr(_iLevelID, _strLayerTag, _iObjectIndex);
 }
 
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, CGameObject* _pRenderObject)
@@ -979,6 +1062,46 @@ _fvector CGameInstance::Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuideP
 	return m_pGlobalFunction_Manager->Get_BezierCurve(_vStartPoint, _vGuidePoint, _vEndPoint, _fRatio);
 }
 
+CCamera* CGameInstance::Get_CurrentCamera()
+{
+	return m_pCamera_Manager->Get_CurrentCamera();
+}
+
+_vector CGameInstance::Get_CameraVector(CTransform::STATE _eState)
+{
+	return m_pCamera_Manager->Get_CameraVector(_eState);
+}
+
+void CGameInstance::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
+{
+	m_pCamera_Manager->Add_Camera(_iCurrentCameraType, _pCamera);
+}
+
+void CGameInstance::Add_Arm(CCameraArm* _pCameraArm)
+{
+	m_pCamera_Manager->Add_Arm(_pCameraArm);
+}
+
+void CGameInstance::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
+{
+	m_pCamera_Manager->Change_CameraMode(_iCameraMode, _iNextMode);
+}
+
+void CGameInstance::Change_CameraArm(_wstring _wszArmTag)
+{
+	m_pCamera_Manager->Change_CameraArm(_wszArmTag);
+}
+
+void CGameInstance::Change_CameraType(_uint _iCurrentCameraType)
+{
+	m_pCamera_Manager->Change_CameraType(_iCurrentCameraType);
+}
+
+void CGameInstance::Set_CameraPos(_vector _vCameraPos)
+{
+	m_pCamera_Manager->Set_CameraPos(_vCameraPos);
+}
+
 
 #ifdef _DEBUG
 
@@ -1015,6 +1138,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 {	
 	// Engine Manager Class Release
 	// 여기서 Manger Class->Free() 호출 >>> 참조 중이던 CGameInstance에 대한 Safe_Release() 호출 됌.
+	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);
 	Safe_Release(m_pImgui_Manager);
 	Safe_Release(m_pFont_Manager);

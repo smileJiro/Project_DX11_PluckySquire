@@ -36,18 +36,18 @@ private :
 		void    Clear() { Buf.clear(); 
 		}
 
-		void    AddLog(const _char* fmt, ...) IM_FMTARGS(2)
+		void    AddLog(const _char* _fmt, ...) IM_FMTARGS(2)
 		{
 			va_list args;
-			va_start(args, fmt);
-			Buf.appendfv(fmt, args);
+			va_start(args, _fmt);
+			Buf.appendfv(_fmt, args);
 			va_end(args);
 		}
 
-		void    Draw(const _char* title, _bool* p_opened = NULL)
+		void    Draw(const _char* _title, _bool* _p_opened = NULL)
 		{
 
-			ImGui::Begin(title, p_opened);
+			ImGui::Begin(_title, _p_opened);
 			if (ImGui::Button("Clear"))
 				Clear();
 			ImGui::SameLine();
@@ -73,18 +73,18 @@ private :
 	
 
 public :
-	void Add_Log(const string& strLog, LOG_TYPE eType);
-	void Add_Log(const wstring& strLog, LOG_TYPE eType);
+	void Add_Log(const string& _strLog, LOG_TYPE _eType);
+	void Add_Log(const wstring& _strLog, LOG_TYPE _eType);
 	void Clear_Log() { m_vecLog.clear(); }
 	
 	HRESULT Draw_Log();
 
 	LOG_MSG* Get_BackMsg() { if (m_vecLog.empty()) return nullptr; return &m_vecLog.back(); }
 
-	void Set_Lock(bool bLock) { m_bLock = bLock; }
+	void Set_Lock(_bool _bLock) { m_bLock = _bLock; }
 
 private :
-	CGameInstance* m_pGameInstance = nullptr;
+	CGameInstance*	m_pGameInstance = nullptr;
 	LOGOBJ			m_tLog;
 	vector<LOG_MSG>	m_vecLog;
 	bool			m_bAutoScroll = { false };

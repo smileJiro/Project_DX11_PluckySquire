@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CVIBuffer_Rect;
+class CTexture;
 class C2DModel :
     public CModel
 {

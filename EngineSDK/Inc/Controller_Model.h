@@ -9,6 +9,8 @@ class CGameInstance;
 
 class CModel;
 class CShader;
+class CVIBuffer_Rect;
+class CTexture;
 class ENGINE_DLL CController_Model : public CBase
 {
 public:
@@ -55,6 +57,9 @@ private:
 	CGameInstance* m_pGameInstance = nullptr;
 
 private:
+	//TMP
+	CVIBuffer_Rect* m_pVIBufferCom = nullptr;
+	CTexture* m_pTextureCom;
 
 	CModel* m_ModelComs[COORDINATE_LAST] = {};
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;

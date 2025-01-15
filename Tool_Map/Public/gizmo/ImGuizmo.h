@@ -111,8 +111,8 @@ void EditTransform(const Camera& camera, matrix_t& matrix)
 #define IMGUI_API
 #endif
 
+#include "Map_Tool_Defines.h"
 
-#include "Imgui/imgui.h"
 
 namespace ImGuizmo
 {

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MapObject.h"
 #include "GameInstance.h"
+#include <gizmo/ImGuizmo.h>
 
 CMapObject::CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -21,25 +22,70 @@ HRESULT CMapObject::Initialize_Prototype()
 HRESULT CMapObject::Initialize(void* _pArg)
 {
     MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
+    m_strModelName = pDesc->szModelName;
+    m_matWorld = pDesc->matWorld;
+    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->iCurLevelID = LEVEL_TOOL_MAP;
+    pDesc->isCoordChangeEnable = false;
 
+    pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    pDesc->strModelPrototypeTag = m_strModelName;
+
+    pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+
+    pDesc->tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    pDesc->tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components(pDesc)))
+
+    D3D11_VIEWPORT ViewportDesc = {};
+    _uint iNumViewport = 1;
+
+    m_pContext->RSGetViewports(&iNumViewport, &ViewportDesc);
+
+    CRay::RAY_DESC RayDesc = {};
+    RayDesc.fViewportWidth =   (_float)ViewportDesc.Width;
+    RayDesc.fViewportHeight =  (_float)ViewportDesc.Height;
+    if (FAILED(Add_Component(m_iCurLevelID, L"Prototype_Component_Ray",
+            TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom),&RayDesc)))
         return E_FAIL;
+
+
+    //if (FAILED(Ready_Components(pDesc)))
+    //    return E_FAIL;
 
     return S_OK;
 }
 
 void CMapObject::Priority_Update(_float _fTimeDelta)
 {
-
     CPartObject::Priority_Update(_fTimeDelta);
 }
 
 void CMapObject::Update(_float _fTimeDelta)
 {
+    if (m_eMode == MODE::PICKING)
+    {
+        _float4x4 fMat = {};
+        _float4x4 fMatView = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+        _float4x4 fMatProj = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+        RECT rect{};
+        GetWindowRect(g_hWnd, &rect);
+        ImGuizmo::SetRect((_float)rect.left, (_float)rect.top, (_float)g_iWinSizeX, (_float)g_iWinSizeY);
+        ImGuizmo::Manipulate(fMatView.m[0],
+            fMatProj.m[0], (ImGuizmo::OPERATION)m_CurrentGizmoOperation,
+            ImGuizmo::WORLD,
+            m_matWorld.m[0]
+        );
 
+        for (_uint i = 0; i < CTransform::STATE_END; i++)
+        {
+            Set_WorldMatrix(m_matWorld);
+        }
+    }
 
     /* Update Parent Matrix */
     CPartObject::Update(_fTimeDelta);
@@ -88,29 +134,6 @@ void CMapObject::Create_Complete()
     m_eMode = NORMAL; 
     XMStoreFloat4x4(&m_matWorld, Get_WorldMatrix());
 }
-
-bool CMapObject::Check_Picking(_fvector vRayPos, _fvector vRayDir, _float3* vReturnPos, _float* fNewDist)
-{
-    _matrix			matWorld;
-    _vector			vLocalRayPos = vRayPos;
-    _vector			vLocalRayDir = vRayDir;
-    matWorld = XMMatrixInverse(nullptr, Get_WorldMatrix());
-    vLocalRayPos = XMVector3TransformCoord(vLocalRayPos, matWorld);
-    vLocalRayDir = XMVector3TransformNormal(vLocalRayDir, matWorld);
-    vLocalRayDir = XMVector3Normalize(vLocalRayDir);
-
-    
-    if (Is_PickingCursor_Model(vLocalRayPos, vLocalRayDir, fNewDist))
-    {
-        vLocalRayPos += (vLocalRayDir * *fNewDist);
-        vLocalRayPos = XMVector3TransformCoord(vLocalRayPos, Get_WorldMatrix());
-        XMStoreFloat3(vReturnPos, vLocalRayPos);
-        return true;
-    }
-    else
-        return false;
-}
-
 
 
 CMapObject* CMapObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -25,9 +25,7 @@
 //
 #include "stdafx.h"
 
-#include "ImGradient.h"
-#include "../imgui.h"
-#include "../imgui_internal.h"
+#include "gizmo\ImGradient.h"
 
 namespace ImGradient
 {
