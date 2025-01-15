@@ -23,6 +23,7 @@ public:
 public:
 	// Get
 	const list<class CGameObject*>& Get_GameObjects() { return m_GameObjects; }
+	CGameObject* Get_GameObject_Ptr(_int _iObjectIndex);
 private:
 	list<class CGameObject*>			m_GameObjects{};
 

@@ -79,8 +79,23 @@
     <Filter Include="02.GameObjects\UI\01. SettingPanel">
       <UniqueIdentifier>{a66d5efb-41fc-4d5c-8d0f-10a389f20aef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\01. SettingPanel\01. SettingPannelChild">
-      <UniqueIdentifier>{9d429011-50ef-4188-9ed4-2d9021620b66}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\Monster">
+      <UniqueIdentifier>{fe5f45a6-a62b-4b5b-b990-1b0b74ca0795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM">
+      <UniqueIdentifier>{ecc725c4-a4f9-43c7-976e-be4cb5b7f9ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State">
+      <UniqueIdentifier>{299f0664-1db1-4223-9fdc-7354980828dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Idle">
+      <UniqueIdentifier>{7ad3a1ab-c3ce-498d-b2c0-acda38947213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Chase">
+      <UniqueIdentifier>{869d6463-aa2f-46e7-8661-51e988fce1a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Attack">
+      <UniqueIdentifier>{b0744f3d-c61e-44dd-8940-6a42c5d72b2f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +177,21 @@
     <ClInclude Include="..\public\SettingPanel.h">
       <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Monster.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FSM.h">
+      <Filter>03.Components\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\State.h">
+      <Filter>03.Components\FSM\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ChaseWalkState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -220,6 +250,21 @@
     </ClCompile>
     <ClCompile Include="..\private\SettingPanel.cpp">
       <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Monster.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FSM.cpp">
+      <Filter>03.Components\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\State.cpp">
+      <Filter>03.Components\FSM\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\IdleState.cpp">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ChaseWalkState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

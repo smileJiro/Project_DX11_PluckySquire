@@ -22,11 +22,11 @@ HRESULT CRenderer::Initialize()
     m_iOriginViewportHeight = (_uint)ViewportDesc.Height;
 
     /* Target Book2D */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 0.0f, 0.0f, 0.0f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
         return E_FAIL;
 
     /* Target Diffuse */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 1.0f, 0.0f, 0.0f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
         return E_FAIL;
 
     /* Target_Normal */
@@ -34,7 +34,7 @@ HRESULT CRenderer::Initialize()
         return E_FAIL;
 
     /* Target_Depth */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
         return E_FAIL;  
 
     /* Target_Shade */
@@ -185,7 +185,7 @@ HRESULT CRenderer::Draw_RenderObject()
             return E_FAIL;
         }
 
-    if (KEY_DOWN(KEY::P))
+    if (KEY_DOWN(KEY::NUM9))
         m_isDebugRender ^= 1;
 #endif
 
@@ -212,6 +212,7 @@ HRESULT CRenderer::Render_Book2D()
 
     if (FAILED(m_pGameInstance->End_MRT()))
         return E_FAIL;
+
     return S_OK;
 }
 
@@ -386,7 +387,6 @@ HRESULT CRenderer::Render_Blend()
 
 HRESULT CRenderer::Render_Debug()
 {
-
     for (auto& pDebugCom : m_DebugComponents)
     {
         if (nullptr != pDebugCom)
@@ -405,7 +405,6 @@ HRESULT CRenderer::Render_Debug()
     //if (FAILED(m_pVIBuffer->Bind_BufferDesc()))
     //    return E_FAIL;
 
-    ////Imgui_Render_RT_Debug();
     //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Book_2D"), m_pShader, m_pVIBuffer)))
     //    return E_FAIL;
     //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))

@@ -25,9 +25,7 @@
 //
 #include "stdafx.h"
 
-#include "ImSequencer.h"
-#include "../imgui.h"
-#include "../imgui_internal.h"
+#include "gizmo/ImSequencer.h"
 #include <cstdlib>
 
 namespace ImSequencer

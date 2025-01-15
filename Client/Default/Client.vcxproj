@@ -181,12 +181,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Cam_Manager.h" />
+    <ClInclude Include="..\Public\ChaseWalkState.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\Client_Function.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CriticalSectionGuard.h" />
+    <ClInclude Include="..\public\FSM.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\public\IdleState.h" />
+    <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\public\SettingPanel.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
@@ -197,6 +203,7 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\public\Camera_Target.h" />
     <ClInclude Include="..\Public\Pick_Bulb.h" />
+    <ClInclude Include="..\public\State.h" />
     <ClInclude Include="..\public\TestBody.h" />
     <ClInclude Include="..\public\TestPlayer.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
@@ -209,8 +216,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Cam_Manager.cpp" />
+    <ClCompile Include="..\Private\ChaseWalkState.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
     <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
+    <ClCompile Include="..\private\FSM.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\private\IdleState.cpp" />
+    <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
@@ -221,6 +234,7 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\Pick_Bulb.cpp" />
+    <ClCompile Include="..\private\State.cpp" />
     <ClCompile Include="..\private\TestBody.cpp" />
     <ClCompile Include="..\private\TestPlayer.cpp" />
     <ClCompile Include="..\private\TestTerrain.cpp" />

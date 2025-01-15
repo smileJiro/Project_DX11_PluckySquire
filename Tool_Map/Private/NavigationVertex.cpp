@@ -2,46 +2,51 @@
 #include "NavigationVertex.h"
 #include "GameInstance.h"
 #include "EditableCell.h"
-#include "imgui/gizmo/ImGuizmo.h"
-CNavigationVertex::CNavigationVertex(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject(pDevice,pContext)
+#include "gizmo/ImGuizmo.h"
+CNavigationVertex::CNavigationVertex(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	:CGameObject(_pDevice,_pContext)
 {
 }
 
-CNavigationVertex::CNavigationVertex(const CNavigationVertex& Prototype)
-	:CGameObject(Prototype)
+CNavigationVertex::CNavigationVertex(const CNavigationVertex& _Prototype)
+	:CGameObject(_Prototype)
 {
 }
 
-HRESULT CNavigationVertex::Initialize(const _float3& vVerTexPos)
+HRESULT CNavigationVertex::Initialize(const _float3& _vVerTexPos)
 {
+
+	CGameObject::GAMEOBJECT_DESC Desc = {};
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL_MAP;
+	Desc.isCoordChangeEnable = false;
+	__super::Initialize(&Desc);
+
 	XMStoreFloat4x4(&m_matGizmoWorld, XMMatrixIdentity());
 
-	XMStoreFloat4(&m_vColorArr[MODE::SET],DirectX::Colors::HotPink);
-	XMStoreFloat4(&m_vColorArr[MODE::NORMAL],DirectX::Colors::LimeGreen);
-	XMStoreFloat4(&m_vColorArr[MODE::PICKING_VERTEX],DirectX::Colors::Coral);
-	XMStoreFloat4(&m_vColorArr[MODE::PICKING_FIRST],DirectX::Colors::Red);
-	XMStoreFloat4(&m_vColorArr[MODE::PICKING_SECOND],DirectX::Colors::Green);
-	XMStoreFloat4(&m_vColorArr[MODE::PICKING_THIRD],DirectX::Colors::Blue);
+	XMStoreFloat4(&m_vColorArr[MODE::SET], DirectX::Colors::HotPink);
+	XMStoreFloat4(&m_vColorArr[MODE::NORMAL], DirectX::Colors::LimeGreen);
+	XMStoreFloat4(&m_vColorArr[MODE::PICKING_VERTEX], DirectX::Colors::Coral);
+	XMStoreFloat4(&m_vColorArr[MODE::PICKING_FIRST], DirectX::Colors::Red);
+	XMStoreFloat4(&m_vColorArr[MODE::PICKING_SECOND], DirectX::Colors::Green);
+	XMStoreFloat4(&m_vColorArr[MODE::PICKING_THIRD], DirectX::Colors::Blue);
 
-	m_vPos = vVerTexPos;
+	m_vPos = _vVerTexPos;
 	memcpy(&m_matGizmoWorld.m[3],&m_vPos,sizeof(_float3));
 	CBounding_Sphere::BOUND_SPHERE_DESC ColliderDesc = {};
-	ColliderDesc.vCenter = { m_vPos };
+	//ColliderDesc.vCenterPos = { m_vPos };
+	Set_Position(XMLoadFloat3(&m_vPos));
 	ColliderDesc.fRadius = 0.5f;
 
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+	if (FAILED(Add_Component(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pCollider), &ColliderDesc)))
 		return E_FAIL;
 
-	CGameObject::GAMEOBJECT_DESC Desc = {};
-
-	__super::Initialize(&Desc);
 
 	return S_OK;
 }
 
-void CNavigationVertex::Priority_Update(_float fTimeDelta)
+void CNavigationVertex::Priority_Update(_float _fTimeDelta)
 {
 	for (auto iter = m_vecIncludeCell.begin(); iter != m_vecIncludeCell.end();)
 	{
@@ -52,7 +57,7 @@ void CNavigationVertex::Priority_Update(_float fTimeDelta)
 	}
 }
 
-void CNavigationVertex::Update(_float fTimeDelta)
+void CNavigationVertex::Update(_float _fTimeDelta)
 {
 	if (m_eMode == MODE::PICKING_VERTEX)
 	{
@@ -78,27 +83,27 @@ void CNavigationVertex::Update(_float fTimeDelta)
 
 
 	if (m_pCollider)
-		m_pCollider->Update(m_pTransformCom->Get_WorldMatrix());
+		m_pCollider->Update(Get_WorldMatrix());
 
 }
 
-void CNavigationVertex::Late_Update(_float fTimeDelta)
+void CNavigationVertex::Late_Update(_float _fTimeDelta)
 {
 }
 
 HRESULT CNavigationVertex::Render()
 {
 	if (m_pCollider)
-		m_pCollider->Render(XMLoadFloat4(&m_vColorArr[m_eMode]));
+		m_pCollider->Render();
 	return S_OK;
 }
 
-bool CNavigationVertex::Check_Picking(_fvector vRayPos, _fvector vRayDir, _float* fNewDist)
+bool CNavigationVertex::Check_Picking(_fvector _vRayPos, _fvector _vRayDir, _float* _fNewDist)
 {
 	_matrix			matWorld;
-	_vector			vLocalRayPos = vRayPos;
-	_vector			vLocalRayDir = vRayDir;
-	matWorld = m_pTransformCom->Get_WorldMatrix_Inverse();
+	_vector			vLocalRayPos = _vRayPos;
+	_vector			vLocalRayDir = _vRayDir;
+	matWorld = XMMatrixInverse(nullptr, Get_WorldMatrix());
 
 	vLocalRayPos = XMVector3TransformCoord(vLocalRayPos, matWorld);
 	vLocalRayDir = XMVector3TransformNormal(vLocalRayDir, matWorld);
@@ -106,9 +111,8 @@ bool CNavigationVertex::Check_Picking(_fvector vRayPos, _fvector vRayDir, _float
 
 	if (m_pCollider)
 	{
-		return m_pCollider->Intersect(vRayPos, vRayDir, fNewDist);
+		return m_pCollider->Intersect_Ray(_vRayPos, _vRayDir, _fNewDist);
 	}
-
 
 	return false;
 }
@@ -116,7 +120,9 @@ bool CNavigationVertex::Check_Picking(_fvector vRayPos, _fvector vRayDir, _float
 void CNavigationVertex::Update_Pos()
 {
 	memcpy(&m_vPos, &m_matGizmoWorld.m[3], sizeof(_float3));
-	m_pCollider->Set_Center(m_vPos);
+	Set_Position(XMLoadFloat3(&m_vPos));
+	//m_pCollider->Set_OffsetMatrix(XMLoadFloat4x4(&m_matGizmoWorld));
+	//m_pCollider->Set_Center(m_vPos);
 	for (auto& pCell : m_vecIncludeCell)
 		pCell->Update_Vertex();
 
@@ -124,23 +130,28 @@ void CNavigationVertex::Update_Pos()
 
 void CNavigationVertex::Delete_Vertex()
 {
-	m_pGameInstance->Promise_Event(CEvent::Generator(CEvent::OBJECT_DISTROY)->Push_Object((CGameObject*)this));
+	OBJECT_DESTROY(this);
 	for (auto& pCell : m_vecIncludeCell)
-		m_pGameInstance->Promise_Event(CEvent::Generator(CEvent::OBJECT_DISTROY)->Push_Object((CGameObject*)pCell));
+		OBJECT_DESTROY(pCell);
 }
 
 
-CNavigationVertex* CNavigationVertex::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3& vVerTexPos)
+CNavigationVertex* CNavigationVertex::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _float3& _vVerTexPos)
 {
-	CNavigationVertex* pInstance = new CNavigationVertex(pDevice, pContext);
+	CNavigationVertex* pInstance = new CNavigationVertex(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize(vVerTexPos)))
+	if (FAILED(pInstance->Initialize(_vVerTexPos)))
 	{
 		MSG_BOX("Failed to Created : CNavigationVertex");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
+}
+
+HRESULT CNavigationVertex::Cleanup_DeadReferences()
+{
+	return S_OK;
 }
 
 

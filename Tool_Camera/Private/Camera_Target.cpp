@@ -20,13 +20,15 @@ HRESULT CCamera_Target::Initialize_Prototype()
 
 HRESULT CCamera_Target::Initialize(void* pArg)
 {
-	/*CAMERA_MAIN_DESC* pDesc = static_cast<CAMERA_MAIN_DESC*>(pArg);
+	CAMERA_TARGET_DESC* pDesc = static_cast<CAMERA_TARGET_DESC*>(pArg);
 
-	m_eCameraMode = pDesc->eCameraMode;
-	m_vOffset = pDesc->vOffset;
-	m_vLockOnOffset = pDesc->vLockOnOffset;
+	pDesc->eStartCoord = COORDINATE_3D;
+	pDesc->isCoordChangeEnable = false;
+	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
-	m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;*/
+	m_eCameraMode = pDesc->eCameraMode;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -50,6 +52,20 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 HRESULT CCamera_Target::Render()
 {
 	return S_OK;
+}
+
+void CCamera_Target::Action_Mode(_float fTimeDelta)
+{
+	switch (m_eCameraMode) {
+	case DEFAULT:
+		break;
+	case TURN:
+		break;
+	}
+}
+
+void CCamera_Target::Move(_float fTimeDelta)
+{
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -213,7 +213,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     //    return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
-        TEXT("../Bin/Resources/Models/"), matPretransform)))
+        TEXT("../Bin/Resources/TestModels/"), matPretransform)))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

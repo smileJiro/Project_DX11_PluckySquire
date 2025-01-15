@@ -43,6 +43,7 @@ HRESULT CModelObject::Initialize(void* _pArg)
     // Projection Matrix는 Viewport Desc 를 기반으로 생성.
     XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)ViewportDesc.Width, (_float)ViewportDesc.Height, 0.0f, 1.0f));
 
+
     return S_OK;
 }
 
@@ -102,7 +103,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
             return E_FAIL;
 
         /* Com_Shader_2D */
-        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
             TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
             return E_FAIL;
 
@@ -140,7 +141,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
                 return E_FAIL;
 
             /* Com_Shader_2D */
-            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
+            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
                 TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
                 return E_FAIL;
         }
@@ -158,7 +159,6 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
     switch (m_pControllerTransform->Get_CurCoord())
     {
     case Engine::COORDINATE_2D:
-        m_WorldMatrices[COORDINATE_2D]._44 = 1.0f;
         if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_2D])))
             return E_FAIL;
 
@@ -191,7 +191,6 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
 
 HRESULT CModelObject::Render_2D()
 {
-
     // 어떠한 Pass로 그릴 것인지
     m_pShaderComs[COORDINATE_2D]->Begin(m_iShaderPasses[COORDINATE_2D]);
     // Buffer정보 전달

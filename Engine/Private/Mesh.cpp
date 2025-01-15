@@ -58,8 +58,12 @@ HRESULT CMesh::Initialize_Prototype(C3DModel::TYPE eModelType, C3DModel* pModel,
 	for (size_t i = 0; i < iNumFaces; i++)
 	{
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
+
 	}
 
 	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
@@ -126,6 +130,10 @@ HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(ifstream& inFile, _fmatrix PreTran
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vTangent), PreTransformMatrix));
+
+
+		m_vecVerticesPos.push_back(pVertices[i].vPosition);
+		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
 
 	}
 

@@ -6,12 +6,14 @@ class CShader;
 class CVIBuffer_Rect;
 class CRenderTarget final : public CBase
 {
+public:
+
 private:
 	CRenderTarget(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CRenderTarget() = default;
 
 public:
-	HRESULT Initialize(_uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor);
+	HRESULT Initialize(_wstring _strName, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor);
 
 #ifdef _DEBUG
 public:
@@ -29,7 +31,9 @@ public:
 	ID3D11RenderTargetView*		Get_RTV() const { return m_pRTV; }
 	ID3D11ShaderResourceView*	Get_SRV() const { return m_pSRV; }
 	_float2						Get_Size() const { return m_vSize; }
+	const _wstring&				Get_Name() const { return m_strName; }
 private:
+	_wstring					m_strName;
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
 	ID3D11Texture2D*			m_pTexture2D = nullptr;
@@ -44,7 +48,7 @@ private:
 
 
 public:
-	static CRenderTarget* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor);
+	static CRenderTarget* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _wstring _strName, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor);
 	virtual void Free() override;
 };
 
