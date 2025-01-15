@@ -100,7 +100,7 @@ CGameObject* CLayer::Get_GameObject_Ptr(_int _iObjectIndex)
     auto iter = m_GameObjects.begin();
     _int iIndex = 0;
 
-    for (;iter != m_GameObjects.end(); )
+    for (; iter != m_GameObjects.end(); )
     {
         if (iIndex == _iObjectIndex)
         {

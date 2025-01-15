@@ -101,6 +101,7 @@ CTestTerrain* CTestTerrain::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 CGameObject* CTestTerrain::Clone(void* _pArg)
 {
+
 	CTestTerrain* pInstance = new CTestTerrain(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))

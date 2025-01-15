@@ -5,6 +5,7 @@
 #include "Level_Loading.h"
 
 #include "Event_Manager.h"
+#include <gizmo/ImGuizmo.h>
 
 
 CMap_Tool_MainApp::CMap_Tool_MainApp()
@@ -54,7 +55,8 @@ HRESULT CMap_Tool_MainApp::Initialize()
 void CMap_Tool_MainApp::Progress(_float _fTimeDelta)
 {
 	m_pGameInstance->Start_Imgui();
-
+	ImGuizmo::SetOrthographic(true);
+	ImGuizmo::BeginFrame();
 	m_pGameInstance->Priority_Update_Engine(_fTimeDelta);
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);

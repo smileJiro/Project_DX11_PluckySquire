@@ -18,7 +18,17 @@ namespace Client
 		DELETE_OBJECT,
 		LEVEL_CHANGE,
 		SET_ACTIVE,
+		CHANGE_MONSTERSTATE,
 		HR,
+
+		LAST,
+	};
+
+	enum class MONSTER_STATE
+	{
+		IDLE,
+		CHASE,
+		ATTACK,
 
 		LAST,
 	};

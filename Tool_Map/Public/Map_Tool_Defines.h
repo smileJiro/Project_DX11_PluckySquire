@@ -1,9 +1,6 @@
 #pragma once
 #include <process.h>
-#pragma warning (disable : 5208)
-#pragma comment(lib,"Engine.lib")
-#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
-
+#pragma warning (disable : 4273)
 namespace Map_Tool
 {
 	const unsigned int g_iWinSizeX = 1600;
@@ -38,8 +35,21 @@ namespace Map_Tool
 extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
+
+
+#define IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS_IMPLEMENTED
+
+#include "imguidll\imgui.h"
+#include "imguidll\imgui_internal.h"
+
+
+
 #include "Map_Tool_Function.h"
 #include "ImguiLogger.h"
+
+
+
 
 using namespace Map_Tool;
 

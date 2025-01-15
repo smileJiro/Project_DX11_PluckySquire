@@ -270,7 +270,7 @@ CGameObject* CObject_Manager::Find_NearestObject_Scaled(_uint _iLevelID, const _
     return nullptr;
 }
 
-CGameObject* CObject_Manager::Get_GameObject_Ptr(_int _iLevelID,const _wstring& _strLayerTag, _int _iObjectIndex)
+CGameObject* CObject_Manager::Get_GameObject_Ptr(_int _iLevelID, const _wstring& _strLayerTag, _int _iObjectIndex)
 {
     CLayer* pLayer = Find_Layer(_iLevelID, _strLayerTag);
     if (nullptr == pLayer)

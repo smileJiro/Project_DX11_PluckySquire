@@ -3,15 +3,16 @@
 #include "EditableCell.h"
 #include "NavigationVertex.h"
 #include "GameInstance.h"
-CCellContainor::CCellContainor(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CGameObject(pDevice,pContext)
+
+CCellContainor::CCellContainor(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CGameObject(_pDevice,_pContext)
 
 {
 }
 
-CCellContainor::CCellContainor(const CCellContainor& Prototype)
-	: CGameObject(Prototype)
-	, m_WorldMatrix{ Prototype.m_WorldMatrix }
+CCellContainor::CCellContainor(const CCellContainor& _Prototype)
+	: CGameObject(_Prototype)
+	, m_WorldMatrix{ _Prototype.m_WorldMatrix }
 {
 }
 
@@ -22,7 +23,7 @@ HRESULT CCellContainor::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CCellContainor::Initialize(void* pArg)
+HRESULT CCellContainor::Initialize(void* _pArg)
 {
 
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../../EngineSDK/hlsl/Shader_Cell.hlsl"), VTXPOS::Elements, VTXPOS::iNumElements);
@@ -32,48 +33,48 @@ HRESULT CCellContainor::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CCellContainor::Priority_Update(_float fTimeDelta)
+void CCellContainor::Priority_Update(_float _fTimeDelta)
 {
-	for (auto iter = m_vecCellList.begin(); iter != m_vecCellList.end();)
+	for (auto iter = m_CellLists.begin(); iter != m_CellLists.end();)
 	{
 		if ((*iter)->Is_Dead())
-			iter = m_vecCellList.erase(iter);
+			iter = m_CellLists.erase(iter);
 		else
 		{
-			(*iter)->Priority_Update(fTimeDelta);
+			(*iter)->Priority_Update(_fTimeDelta);
 			iter++;
 		}
 	}
 
-	for (auto iter = m_vecVertexList.begin(); iter != m_vecVertexList.end();)
+	for (auto iter = m_VertexLists.begin(); iter != m_VertexLists.end();)
 	{
 		if ((*iter)->Is_Dead())
-			iter = m_vecVertexList.erase(iter);
+			iter = m_VertexLists.erase(iter);
 		else
 		{
-			(*iter)->Priority_Update(fTimeDelta);
+			(*iter)->Priority_Update(_fTimeDelta);
 			iter++;
 		}
 	}
 
 }
 
-void CCellContainor::Update(_float fTimeDelta)
+void CCellContainor::Update(_float _fTimeDelta)
 {
-	for (auto& pVertex : m_vecVertexList)
-		pVertex->Update(fTimeDelta);
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_PRIORITY, this);
+	for (auto& pVertex : m_VertexLists)
+		pVertex->Update(_fTimeDelta);
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 }
 _bool	CCellContainor::Is_ContainCell(CNavigationVertex** pPoints)
 {
-	auto iter = find_if(m_vecCellList.begin(), m_vecCellList.end(), [&pPoints](CEditableCell* pCell)->_bool {
+	auto iter = find_if(m_CellLists.begin(), m_CellLists.end(), [&pPoints](CEditableCell* pCell)->_bool {
 		return pCell->Equal(pPoints);
 		});
 
-	return iter != m_vecCellList.end();
+	return iter != m_CellLists.end();
 }
 
-void CCellContainor::Late_Update(_float fTimeDelta)
+void CCellContainor::Late_Update(_float _fTimeDelta)
 {
 }
 
@@ -89,7 +90,7 @@ HRESULT CCellContainor::Render()
 		return E_FAIL;
 	_float4 vDefaultColor = {};
 	_float4 vWireColor = {};
-	for (auto& pCell : m_vecCellList)
+	for (auto& pCell : m_CellLists)
 	{
 		if (nullptr != pCell)
 		{
@@ -99,9 +100,9 @@ HRESULT CCellContainor::Render()
 			//
 			switch (pCell->Get_State())
 			{
-			case 0 :
+			case 0:
 				break;
-			case 1 :
+			case 1:
 				vWireColor = { 0.f,0.f,1.f,0.f };
 				break;
 			default:
@@ -109,7 +110,7 @@ HRESULT CCellContainor::Render()
 			}
 
 			if (pCell->Is_Picking())
-				vDefaultColor = vWireColor = {1.f,0.f,0.f,0.f};
+				vDefaultColor = vWireColor = { 1.f,0.f,0.f,0.f };
 
 			//
 			//
@@ -122,7 +123,7 @@ HRESULT CCellContainor::Render()
 			//m_pShader->Begin(iDefaultPass);
 			pCell->Render();
 
-			if (m_bWireRender)
+			if (m_isWireRender)
 			{
 				if (FAILED(m_pShader->Bind_RawValue("g_vColor", &vWireColor, sizeof(_float4))))
 					return E_FAIL;
@@ -133,7 +134,7 @@ HRESULT CCellContainor::Render()
 		}
 	}
 
-	for (auto& pVertex : m_vecVertexList)
+	for (auto& pVertex : m_VertexLists)
 	{
 		if (nullptr != pVertex)
 			pVertex->Render();
@@ -144,14 +145,14 @@ HRESULT CCellContainor::Render()
 }
 
 
-CNavigationVertex* CCellContainor::Picking_On_Vertex(const _float3& vRayPos, const _float3& vRayDir)
+CNavigationVertex* CCellContainor::Picking_On_Vertex(const _float3& _vRayPos, const _float3& _vRayDir)
 {
 	_float	 fDist = 0.f, fNewDist = 0.f;
 	CNavigationVertex* pReturnVertex = nullptr;
-	for_each(m_vecVertexList.begin(), m_vecVertexList.end(), [this, &vRayPos, &vRayDir, &fDist, &fNewDist, &pReturnVertex]
+	for_each(m_VertexLists.begin(), m_VertexLists.end(), [this, &_vRayPos, &_vRayDir, &fDist, &fNewDist, &pReturnVertex]
 	(CNavigationVertex* pVertex)
 		{
-			bool bRange = pVertex->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &fNewDist);
+			bool bRange = pVertex->Check_Picking(XMLoadFloat3(&_vRayPos), XMLoadFloat3(&_vRayDir), &fNewDist);
 			if (bRange && (fNewDist < fDist || fDist == 0.f))
 			{
 				pReturnVertex = pVertex;
@@ -166,18 +167,17 @@ CNavigationVertex* CCellContainor::Picking_On_Vertex(const _float3& vRayPos, con
 
 void CCellContainor::All_Delete()
 {
-
-	for (auto& pCell : m_vecCellList)
+	for (auto& pCell : m_CellLists)
 		Safe_Release(pCell);
 
-	for (auto& pVertex : m_vecVertexList)
+	for (auto& pVertex : m_VertexLists)
 		Safe_Release(pVertex);
 }
 
-HRESULT CCellContainor::Export(const _wstring& strFilePath, const _wstring& strFileName)
+HRESULT CCellContainor::Export(const _wstring& _strFilePath, const _wstring& _strFileName)
 {
-	_wstring strDefaultFilePath = strFilePath + strFileName + L".nchc";
-	_wstring strCasheFilePath = strFilePath + strFileName + L".nhc";
+	_wstring strDefaultFilePath = _strFilePath + _strFileName + L".nchc";
+	_wstring strCasheFilePath = _strFilePath + _strFileName + L".nhc";
 
 	HANDLE	hFile = CreateFile(strDefaultFilePath.c_str(),
 		GENERIC_WRITE,
@@ -193,29 +193,29 @@ HRESULT CCellContainor::Export(const _wstring& strFilePath, const _wstring& strF
 		CREATE_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL,
 		NULL);
-	
-	
+
+
 	if (INVALID_HANDLE_VALUE == hFile || INVALID_HANDLE_VALUE == hChsheFile)
 		return E_FAIL;
 
 	_ulong				dwByte = {};
 
 
-	_uint iVertexCount = (_uint)m_vecVertexList.size();
-	_uint iCellCount = (_uint)m_vecCellList.size();
+	_uint iVertexCount = (_uint)m_VertexLists.size();
+	_uint iCellCount = (_uint)m_CellLists.size();
 	WriteFile(hChsheFile, &iVertexCount, sizeof(_uint), &dwByte, nullptr);
 	WriteFile(hChsheFile, &iCellCount, sizeof(_uint), &dwByte, nullptr);
 
-	for (_uint i = 0 ; i < (_uint)m_vecVertexList.size(); ++i)
+	for (_uint i = 0; i < (_uint)m_VertexLists.size(); ++i)
 	{
-		m_vecVertexList[i]->Set_Index(i);
-		WriteFile(hChsheFile, &m_vecVertexList[i]->Get_Pos(), sizeof(_float3), &dwByte, nullptr);
+		m_VertexLists[i]->Set_Index(i);
+		WriteFile(hChsheFile, &m_VertexLists[i]->Get_Pos(), sizeof(_float3), &dwByte, nullptr);
 	}
-	
+
 	_uint iIdx = 0;
 	_uint iState = 0;
 	_float3 vPosition = {};
-	for (auto& pCell : m_vecCellList)
+	for (auto& pCell : m_CellLists)
 	{
 		iState = pCell->Get_State();
 		WriteFile(hChsheFile, &iState, sizeof(_uint), &dwByte, nullptr);
@@ -238,10 +238,10 @@ HRESULT CCellContainor::Export(const _wstring& strFilePath, const _wstring& strF
 	return S_OK;
 }
 
-HRESULT CCellContainor::Import(const _wstring& strFilePath, const _wstring& strFileName)
+HRESULT CCellContainor::Import(const _wstring& _strFilePath, const _wstring& _strFileName)
 {
 	All_Delete();
-	_wstring strCasheFilePath = strFilePath + strFileName + L".nhc";
+	_wstring strCasheFilePath = _strFilePath + _strFileName + L".nhc";
 
 
 	HANDLE	hFile = CreateFile(strCasheFilePath.c_str(),
@@ -268,12 +268,12 @@ HRESULT CCellContainor::Import(const _wstring& strFilePath, const _wstring& strF
 	{
 		ReadFile(hFile, &vPosition, sizeof(_float3), &dwByte, nullptr);
 		pVertex = CNavigationVertex::Create(m_pDevice, m_pContext, vPosition);
-		m_vecVertexList.push_back(pVertex);
+		m_VertexLists.push_back(pVertex);
 	}
 
 	_uint				iIdx[CEditableCell::POINT_END] = {};
-	CNavigationVertex*	VertexArr[CEditableCell::POINT_END] = {nullptr,};
-	CEditableCell*		pCell = nullptr;
+	CNavigationVertex* VertexArr[CEditableCell::POINT_END] = { nullptr, };
+	CEditableCell* pCell = nullptr;
 	_uint iState = 0;
 	for (_uint i = 0; i < iCellCount; ++i)
 	{
@@ -282,13 +282,13 @@ HRESULT CCellContainor::Import(const _wstring& strFilePath, const _wstring& strF
 
 		for (_uint j = 0; j < CEditableCell::POINT_END; j++)
 		{
-			VertexArr[j] = m_vecVertexList[iIdx[j]];
+			VertexArr[j] = m_VertexLists[iIdx[j]];
 		}
-		pCell = CEditableCell::Create(m_pDevice, m_pContext, VertexArr, (_int)m_vecCellList.size());
+		pCell = CEditableCell::Create(m_pDevice, m_pContext, VertexArr, (_int)m_CellLists.size());
 		for (_uint j = 0; j < CEditableCell::POINT_END; j++)
 			VertexArr[j]->Add_Cell(pCell);
 		pCell->Set_State(iState);
-		m_vecCellList.push_back(pCell);
+		m_CellLists.push_back(pCell);
 	}
 
 	CloseHandle(hFile);
@@ -296,9 +296,9 @@ HRESULT CCellContainor::Import(const _wstring& strFilePath, const _wstring& strF
 	return S_OK;
 }
 
-CCellContainor* CCellContainor::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CCellContainor* CCellContainor::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CCellContainor* pInstance = new CCellContainor(pDevice, pContext);
+	CCellContainor* pInstance = new CCellContainor(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -308,11 +308,11 @@ CCellContainor* CCellContainor::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 	return pInstance;
 }
 
-CGameObject* CCellContainor::Clone(void* pArg)
+CGameObject* CCellContainor::Clone(void* _pArg)
 {
 	CCellContainor* pInstance = new CCellContainor(*this);
 
-	if (FAILED(pInstance->Initialize(pArg)))
+	if (FAILED(pInstance->Initialize(_pArg)))
 	{
 		MSG_BOX("Failed to Cloned : CCellContainor");
 		Safe_Release(pInstance);
@@ -327,4 +327,9 @@ void CCellContainor::Free()
 	All_Delete();
 
 	__super::Free();
+}
+
+HRESULT CCellContainor::Cleanup_DeadReferences()
+{
+	return E_NOTIMPL;
 }

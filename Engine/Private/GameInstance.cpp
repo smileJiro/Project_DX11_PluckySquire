@@ -13,6 +13,7 @@
 #include "Sound_Manager.h"
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
+#include "Camera_Manager.h"
 #include "Layer.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -93,7 +94,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pGlobalFunction_Manager)
 		return E_FAIL;
 
-	
+	m_pCamera_Manager = CCamera_Manager::Create();
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -109,6 +113,7 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
+	m_pCamera_Manager->Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
 	m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 }
@@ -1054,6 +1059,46 @@ _fvector CGameInstance::Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuideP
 	return m_pGlobalFunction_Manager->Get_BezierCurve(_vStartPoint, _vGuidePoint, _vEndPoint, _fRatio);
 }
 
+CCamera* CGameInstance::Get_CurrentCamera()
+{
+	return m_pCamera_Manager->Get_CurrentCamera();
+}
+
+_vector CGameInstance::Get_CameraVector(CTransform::STATE _eState)
+{
+	return m_pCamera_Manager->Get_CameraVector(_eState);
+}
+
+void CGameInstance::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
+{
+	m_pCamera_Manager->Add_Camera(_iCurrentCameraType, _pCamera);
+}
+
+void CGameInstance::Add_Arm(CCameraArm* _pCameraArm)
+{
+	m_pCamera_Manager->Add_Arm(_pCameraArm);
+}
+
+void CGameInstance::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
+{
+	m_pCamera_Manager->Change_CameraMode(_iCameraMode, _iNextMode);
+}
+
+void CGameInstance::Change_CameraArm(_wstring _wszArmTag)
+{
+	m_pCamera_Manager->Change_CameraArm(_wszArmTag);
+}
+
+void CGameInstance::Change_CameraType(_uint _iCurrentCameraType)
+{
+	m_pCamera_Manager->Change_CameraType(_iCurrentCameraType);
+}
+
+void CGameInstance::Set_CameraPos(_vector _vCameraPos)
+{
+	m_pCamera_Manager->Set_CameraPos(_vCameraPos);
+}
+
 
 #ifdef _DEBUG
 
@@ -1090,6 +1135,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 {	
 	// Engine Manager Class Release
 	// 여기서 Manger Class->Free() 호출 >>> 참조 중이던 CGameInstance에 대한 Safe_Release() 호출 됌.
+	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);
 	Safe_Release(m_pImgui_Manager);
 	Safe_Release(m_pFont_Manager);

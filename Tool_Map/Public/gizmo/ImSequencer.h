@@ -24,7 +24,7 @@
 // SOFTWARE.
 //
 #pragma once
-
+#include "Map_Tool_Defines.h"
 #include <cstddef>
 
 struct ImDrawList;

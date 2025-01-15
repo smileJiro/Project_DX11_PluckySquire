@@ -174,6 +174,16 @@ public: /* For. GlobalFunction_Manager */
 	_float				Lerp(_float _fLeft, _float _fRight, _float _fRatio);
 	_fvector			Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio);
 
+public: /* For. Camera_Manager */
+	CCamera*			Get_CurrentCamera();
+	_vector				Get_CameraVector(CTransform::STATE _eState);
+	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);
+	void				Add_Arm(CCameraArm* _pCameraArm);
+	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);
+	void				Change_CameraArm(_wstring _wszArmTag);
+	void				Change_CameraType(_uint _iCurrentCameraType);
+	void				Set_CameraPos(_vector _vCameraPos);
+
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -191,6 +201,7 @@ private:
 	class CSound_Manager* m_pSound_Manager = nullptr;
 	class CImgui_Manager* m_pImgui_Manager = nullptr;
 	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
+	class CCamera_Manager* m_pCamera_Manager = nullptr;
 
 private:
 	HWND m_hWnd = nullptr;
