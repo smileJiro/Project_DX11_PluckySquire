@@ -43,6 +43,8 @@ private:
 	HRESULT Loading_Level_Logo();
 	HRESULT Loading_Level_GamePlay();
 
+
+
 	HRESULT Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
 	HRESULT Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
 

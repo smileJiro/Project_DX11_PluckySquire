@@ -44,14 +44,23 @@ void CUI::Late_Update(_float fTimeDelta)
 
 HRESULT CUI::Render()
 {
-	if (FAILED(Bind_ShaderResources()))
+	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture")))
 		return E_FAIL;
 
 
 	m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
-
 	m_pVIBufferCom->Bind_BufferDesc();
 	m_pVIBufferCom->Render();
+
 
 	return S_OK;
 }

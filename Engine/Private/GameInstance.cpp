@@ -14,6 +14,7 @@
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager.h"
+#include "Layer.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -122,26 +123,9 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update 수행 후, DeadObject Safe_Release() + erase();
 	m_pLevel_Manager->Update(fTimeDelta);
 
-
-
-
 #ifdef _DEBUG
-	if (true == m_isImguiRTRender)
-	{
-		if (FAILED(Imgui_Render_RT_Debug()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
-		}
-		if (FAILED(Imgui_Render_RT_Debug_FullScreen()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
-		}
-	}
-	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
-	{
-		m_isImguiRTRender ^= 1;
-	}
 
+	Imgui_Debug_Render();
 
 #endif
 
@@ -216,7 +200,34 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	return S_OK;
 }
 
-HRESULT CGameInstance::Imgui_Render_RT_Debug()
+#ifdef _DEBUG
+
+HRESULT CGameInstance::Imgui_Debug_Render()
+{
+	if (true == m_isImguiRTRender)
+	{
+		if (FAILED(Imgui_Debug_Render_RT()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
+		}
+		if (FAILED(Imgui_Debug_Render_RT_FullScreen()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
+		}
+		if (FAILED(Imgui_Debug_Render_ObjectInfo()))
+		{
+			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
+		}
+	}
+	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
+	{
+		m_isImguiRTRender ^= 1;
+	}
+
+	return S_OK;
+}
+
+HRESULT CGameInstance::Imgui_Debug_Render_RT()
 {
 	ImGui::Begin("DebugRenderTarget");
 
@@ -250,7 +261,7 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug()
 	return S_OK;
 }
 
-HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
+HRESULT CGameInstance::Imgui_Debug_Render_RT_FullScreen()
 {
 	ImGui::Begin("Debug FullScreen");
 
@@ -303,13 +314,70 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
 	}
 
 
-	
 	ImGui::End();
 
 
 
 	return S_OK;
 }
+
+HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
+{
+	/* 트리노드로 Layer 들을 렌더한다. */
+	ImGui::Begin("ObjectsInfo");
+
+	if (ImGui::TreeNode("Object Layers")) // Layer 
+	{
+		map<const _wstring, CLayer*>* pLayers = m_pObject_Manager->Get_Layers_Ptr();
+		if (nullptr != pLayers)
+		{
+			_uint iNumLevels = m_pObject_Manager->Get_NumLevels();
+
+			/* Current Level */
+			ImGui::Text("Current Level Layers");
+			_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
+			for (auto& Pair : pLayers[iCurLevelID])
+			{
+				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
+				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
+				{
+
+
+
+
+
+					ImGui::TreePop();
+				}
+			}
+
+			/* Static Level */
+			ImGui::Text("Static Level Layers");
+			for (auto& Pair : pLayers[m_iStaticLevelID])
+			{
+				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
+				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
+				{
+					const list<CGameObject*>& GameObjects = Pair.second->Get_GameObjects();
+
+					for (auto& pGameObject : GameObjects)
+					{
+						//pGameObject.
+					}
+					ImGui::TreePop();
+				}
+			}
+
+		}
+
+		ImGui::TreePop();
+	}
+
+	ImGui::End();
+
+	return S_OK;
+}
+
+#endif // _DEBUG
 
 _float CGameInstance::Get_TimeDelta(const _wstring& _strTimerTag)
 {

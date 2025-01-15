@@ -12,6 +12,10 @@ END
 BEGIN(Client)
 class CUI : public Engine::CUIObject
 {
+
+	
+
+
 public:
 	typedef struct : public CUIObject::UIOBJECT_DESC
 	{
@@ -44,7 +48,7 @@ public:
 
 protected:
 	CShader* m_pShaderComs[COORDINATE_LAST] = {nullptr};
-	CTexture* m_pTextureCom = { nullptr };
+	CTexture* m_pTextureCom = {nullptr};
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	_uint			m_iShaderPasses[COORDINATE_LAST] = {};
 

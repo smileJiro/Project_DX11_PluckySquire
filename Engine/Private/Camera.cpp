@@ -51,8 +51,6 @@ HRESULT CCamera::Initialize(void* _pArg)
 
 	m_pGameInstance->Set_NearFarZ(_float2(m_fNear, m_fFar));
 
-
-
 	return S_OK;
 }
 

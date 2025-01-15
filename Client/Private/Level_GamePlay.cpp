@@ -33,13 +33,14 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
 	}
+
 }
 
 HRESULT CLevel_GamePlay::Render()
 {
 #ifdef _DEBUG
-	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
     return S_OK;
@@ -91,6 +92,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
+
+
 	CCam_Manager::GetInstance()->Set_TargetCamera(static_cast<CCamera_Target*>(pGameObject));
 
 	CCam_Manager::GetInstance()->Change_Cam(CCam_Manager::CAM_TARGET);
@@ -112,6 +115,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -145,6 +149,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
 
+	
+
+
+
 	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12;
 	pDesc.fY = g_iWinSizeY / 10;
 	pDesc.fSizeX = 182.f;
@@ -152,6 +160,26 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
+
+
+
+
+
+
+	//pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2;
+	//pDesc.fY = g_iWinSizeY / 2;
+	//
+	//
+	//pDesc.fSizeX = 1200.f;
+	//pDesc.fSizeY = 600.f;
+	////pDesc.fSizeX = g_iWinSizeX / 2;
+	////pDesc.fSizeY = g_iWinSizeX / 2;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+
+
+	
 
 	return S_OK;
 }

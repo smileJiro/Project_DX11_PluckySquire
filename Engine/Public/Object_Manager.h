@@ -41,6 +41,8 @@ public:
 	CGameObject* Find_NearestObject_Scaled(_uint _iLevelID, const _wstring& _strLayerTag, CController_Transform* const _pTransform, CGameObject* pExceptionObject = nullptr);
 
 	CGameObject* Get_GameObject_Ptr(_int _iLevelID, const _wstring& _strLayerTag, _int _iObjectIndex);
+	map<const _wstring, class CLayer*>* Get_Layers_Ptr() { return m_pLayers; }
+	_uint Get_NumLevels() { return m_iNumLevels; }
 private:
 	_uint m_iNumLevels = 0;
 	map<const _wstring, class CLayer*>* m_pLayers = nullptr;

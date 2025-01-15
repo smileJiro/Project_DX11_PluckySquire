@@ -42,7 +42,7 @@ public:
 
 protected:
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-	C3DModel*					m_pModelCom = nullptr;
+	C3DModel*				m_pModelCom = nullptr;
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D ·»´õ¸µ Àü¿ë VP */
 
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};
