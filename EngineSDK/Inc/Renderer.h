@@ -69,7 +69,7 @@ private:
 #ifdef _DEBUG
 private:
 	HRESULT Render_Debug();
-	HRESULT Imgui_Render_RT_Debug();
+	
 #endif
 
 public:

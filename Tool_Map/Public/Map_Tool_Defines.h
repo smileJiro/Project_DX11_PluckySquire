@@ -45,3 +45,6 @@ using namespace Map_Tool;
 
 #define LOG_TYPE(msg, type)		m_pLogger->Add_Log(msg,type)
 #define LOG(msg)		m_pLogger->Add_Log(msg)
+
+#define OBJECT_DESTROY(Obj) (Event_DeleteObject(Obj));
+

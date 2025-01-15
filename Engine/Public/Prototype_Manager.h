@@ -23,6 +23,10 @@
 #include "RenderTarget.h"
 #include "CameraArm.h"
 
+/* Camera */
+#include "Camera_Free.h"
+
+/* Object */
 #include "Effect.h"
 
 /* 원형객체들을 레벨별로 관리하겠다. */

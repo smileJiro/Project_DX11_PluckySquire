@@ -1,6 +1,8 @@
 #pragma once
 #include "UIObject.h"
 #include "Client_Defines.h"
+#include "ModelObject.h"
+
 
 BEGIN(Engine)
 class CTexture;
@@ -28,12 +30,12 @@ public:
 	virtual void Priority_Update(_float fTimeDelta);
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
-	virtual HRESULT Render(_int iTemType = 0);
+	virtual HRESULT Render();
 
 
 protected:
-	virtual HRESULT Ready_Components() = 0;
-	HRESULT Bind_ShaderResources(_int iTemType = 0);
+	virtual HRESULT Ready_Components();
+	HRESULT Bind_ShaderResources();
 
 
 public:
@@ -44,6 +46,7 @@ protected:
 	CShader* m_pShaderComs[COORDINATE_LAST] = {nullptr};
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	_uint			m_iShaderPasses[COORDINATE_LAST] = {};
 
 };
 
