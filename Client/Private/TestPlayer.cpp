@@ -47,8 +47,6 @@ HRESULT CTestPlayer::Initialize(void* _pArg)
 void CTestPlayer::Priority_Update(_float _fTimeDelta)
 {
 
-
-
     CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
