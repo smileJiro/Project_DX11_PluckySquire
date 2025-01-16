@@ -13,7 +13,7 @@ private:
 	virtual ~CMesh() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(C3DModel::TYPE _eModelType, C3DModel* _pModel, ifstream& inFile, _fmatrix _PreTransformMatrix);
+	virtual HRESULT Initialize_Prototype(C3DModel::ANIM_TYPE _eModelType, C3DModel* _pModel, ifstream& inFile, _fmatrix _PreTransformMatrix);
 	virtual HRESULT Initialize(void* _pArg);
 
 public:
@@ -42,7 +42,7 @@ private:
 	_float4x4					m_BoneMatrices[256];
 public:
 public:	
-	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, C3DModel::TYPE _eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix);
+	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, C3DModel::ANIM_TYPE _eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
 };

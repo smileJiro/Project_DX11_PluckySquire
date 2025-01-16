@@ -1,4 +1,5 @@
 #include "Engine_Function.h"
+#include "Engine_Defines.h"
 
 XMVECTOR Engine::ExtractQuaternionFromMatrix(const XMMATRIX& _Matrix)
 {
@@ -19,3 +20,35 @@ string Engine::MatrixToString(_float4x4 vMatrix)
 	strMatrix += std::to_string(vMatrix._41) + " " + std::to_string(vMatrix._42) + " " + std::to_string(vMatrix._43) + " " + std::to_string(vMatrix._44) + "\n";
 	return strMatrix;
 }
+//
+//HRESULT Engine::ReadJsonFile(const _char* strJsonFilePath, json* pOut)
+//
+//{
+//	std::ifstream input_file(strJsonFilePath);
+//
+//
+//	if (!input_file.is_open()) {
+//		// Handle error
+//		return E_FAIL;
+//	}
+//	// JSON 
+//	input_file >> *pOut;
+//
+//	// 
+//	input_file.close();
+//	return S_OK;
+//}
+//
+//HRESULT Engine::SaveJsonFile(const _char* strJsonFilePath, const json& pJson)
+//{
+//	std::ofstream file(strJsonFilePath);
+//	if (file.is_open()) {
+//		file << pJson.dump(4);
+//		file.close();
+//
+//	}
+//	else {
+//		return E_FAIL;
+//	}
+//	return S_OK;
+//}

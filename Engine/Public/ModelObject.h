@@ -10,7 +10,7 @@ public:
 	typedef struct tagModelObjectDesc : public CPartObject::PARTOBJECT_DESC
 	{
 		_uint iModelPrototypeLevelID_2D;
-		_uint i3DModelPrototypeLevelID;
+		_uint iModelPrototypeLevelID_3D;
 		_wstring strModelPrototypeTag_2D;
 		_wstring strModelPrototypeTag_3D;
 
@@ -40,6 +40,7 @@ public:
 public:
 	_bool Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst);
 	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;
+	void Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback);
 
 public:
 	// Get
@@ -49,6 +50,7 @@ public:
 	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
 	void Set_Animation(_uint iIdx);
 	void Switch_Animation(_uint iIdx);
+	void To_NextAnimation();
 
 protected:
 	CController_Model*		m_pControllerModel = nullptr;

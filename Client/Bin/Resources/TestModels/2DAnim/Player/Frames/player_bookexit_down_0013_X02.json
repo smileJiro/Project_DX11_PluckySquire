@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_bookexit_down_0013_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2017.0,
+        "Y": 3209.0
+      },
+      "BakedSourceDimension": {
+        "X": 232.0,
+        "Y": 278.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_1'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 103.0,
+          "Y": 241.0,
+          "Z": 0.5488281,
+          "W": 0.7836914
+        },
+        {
+          "X": -127.0,
+          "Y": 241.0,
+          "Z": 0.49267578,
+          "W": 0.7836914
+        },
+        {
+          "X": -127.0,
+          "Y": -35.0,
+          "Z": 0.49267578,
+          "W": 0.8510742
+        },
+        {
+          "X": 103.0,
+          "Y": -35.0,
+          "Z": 0.5488281,
+          "W": 0.8510742
+        },
+        {
+          "X": 103.0,
+          "Y": 241.0,
+          "Z": 0.5488281,
+          "W": 0.7836914
+        },
+        {
+          "X": -127.0,
+          "Y": -35.0,
+          "Z": 0.49267578,
+          "W": 0.8510742
+        }
+      ]
+    }
+  }
+]

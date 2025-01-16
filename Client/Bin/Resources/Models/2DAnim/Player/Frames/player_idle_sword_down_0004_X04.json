@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_idle_sword_down_0004_X04",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 442.0,
+        "Y": 1177.0
+      },
+      "BakedSourceDimension": {
+        "X": 212.0,
+        "Y": 311.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_1'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 92.0,
+          "Y": 260.0,
+          "Z": 0.15942383,
+          "W": 0.28759766
+        },
+        {
+          "X": -118.0,
+          "Y": 260.0,
+          "Z": 0.1081543,
+          "W": 0.28759766
+        },
+        {
+          "X": -118.0,
+          "Y": -49.0,
+          "Z": 0.1081543,
+          "W": 0.3630371
+        },
+        {
+          "X": 92.0,
+          "Y": -49.0,
+          "Z": 0.15942383,
+          "W": 0.3630371
+        },
+        {
+          "X": 92.0,
+          "Y": 260.0,
+          "Z": 0.15942383,
+          "W": 0.28759766
+        },
+        {
+          "X": -118.0,
+          "Y": -49.0,
+          "Z": 0.1081543,
+          "W": 0.3630371
+        }
+      ]
+    }
+  }
+]

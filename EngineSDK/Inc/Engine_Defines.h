@@ -74,12 +74,12 @@ using namespace std;
 #include "Engine_Enum.h"
 
 #include <fstream>
+using namespace Engine;
 
 #include <json.hpp>
 
 using json = nlohmann::json;
 
-using namespace Engine;
 
 // Memory Leak Check Code
 

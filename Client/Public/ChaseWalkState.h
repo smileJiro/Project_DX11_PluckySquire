@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+
+//공격 범위가 추적 범위보다 작고 이동값이 일정한 추적 상태
 class CChaseWalkState final : public CState
 {
 private:

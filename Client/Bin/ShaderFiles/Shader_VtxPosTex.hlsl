@@ -34,6 +34,10 @@ Texture2D g_HpBarTexture;
 Texture2D g_StaminaTexture; // 대쉬 게이지 텍스쳐.
 Texture2D g_MaskTexture; 
 
+//SPRITE ANIMATION
+float2 g_vSpriteStartUV;
+float2 g_vSpriteEndUV;
+float g_fPixelsPerUnrealUnit;
 /* 구조체 */
 struct VS_IN
 {
@@ -63,6 +67,21 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+VS_OUT VS_SPRITEANIM(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT) 0;
+
+    matrix matWV, matWVP;
+
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
+    Out.vTexcoord = clamp(In.vTexcoord, g_vSpriteStartUV, g_vSpriteEndUV);
+
+
+    return Out;
+}
 // (장치가 수행)Rendering PipeLine : Projection 변환 (W 나누기 연산 진행) // 
 // (장치가 수행)Rendering PipeLine : Viewport 변환 // 
 // (장치가 수행)Rendering PipeLine : Rasterization // 
@@ -109,6 +128,8 @@ PS_OUT PS_COLOR(PS_IN In)
     
     return Out;
 }
+
+
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
 // https://www.notion.so/15-Shader-Keyword-technique11-pass-10eb1e26c8a8807aad86fb2de6738a1a // 컨트롤 클릭
@@ -153,5 +174,15 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_COLOR();
+    }
+
+    pass SpriteAnim
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_SPRITEANIM();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 }

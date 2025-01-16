@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Beetle.h"
 #include "GameInstance.h"
-#include "BeetleBody.h"
 #include "FSM.h"
 #include "ModelObject.h"
 
@@ -31,7 +30,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
     pDesc->fChaseRange = 5.f;
-    pDesc->fAttackRange = 3.f;
+    pDesc->fAttackRange = 2.f;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
@@ -44,6 +43,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
 
     m_pFSM->Add_State(MONSTER_STATE::IDLE);
     m_pFSM->Add_State(MONSTER_STATE::CHASE);
+    m_pFSM->Add_State(MONSTER_STATE::ATTACK);
     m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Idle, true);
@@ -97,6 +97,10 @@ void CBeetle::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Run);
             break;
 
+        case MONSTER_STATE::ATTACK:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AttackStrike);
+            break;
+
         default:
             break;
         }
@@ -129,7 +133,7 @@ HRESULT CBeetle::Ready_PartObjects()
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("beetle_01");
-	BodyDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);

@@ -21,16 +21,11 @@ HRESULT CController_Model::Initialize(CON_MODEL_DESC* _pDesc)
     if (FAILED(Ready_Models(_pDesc)))
         return E_FAIL;
 
-    /* Com_VIBuffer */
-    CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT,m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
-    if (nullptr == pComponent)
-        return E_FAIL;
-
-    m_pVIBufferCom = static_cast<CVIBuffer_Rect*>(pComponent);
 
     return S_OK;
 }
-//3d: model 파일이 있음 -> Loader에서 model파일을 읽고 Prototype을 만듦 -> 여기서 PrototypeTag로 ClonePrototype을 함
+//3d: model 파일이 있음 -> Loader에서 model파일을 읽고 3DModel의 Prototype을 만듦 -> 여기서 PrototypeTag로 ClonePrototype을 함
+//2D : 
 HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
 {
     switch (m_eCurCoord)
@@ -42,7 +37,7 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
         if (nullptr == pComponent)
             return E_FAIL;
 
-        m_pTextureCom = static_cast<CTexture*>(pComponent);
+        m_ModelComs[COORDINATE_2D] = static_cast<C2DModel*>(pComponent);
         if (true == m_isCoordChangeEnable)
         {
 
@@ -68,7 +63,7 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
             if (nullptr == pComponent)
                 return E_FAIL;
 
-            m_pTextureCom = static_cast<CTexture*>(pComponent);
+            m_ModelComs[COORDINATE_2D] = static_cast<C2DModel*>(pComponent);
         }
     }
     break;
@@ -83,23 +78,6 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
 
 HRESULT CController_Model::Render(CShader* _Shader, _uint _iShaderPass)
 {
-    //TMP
-    if (m_eCurCoord == COORDINATE_2D)
-    {
-        if (m_pTextureCom)
-            if (FAILED(m_pTextureCom->Bind_ShaderResource(_Shader, "g_Texture", 0)))
-                return E_FAIL;
-
-        if (_Shader)
-            _Shader->Begin(0);
-
-        if (m_pVIBufferCom)
-        {
-            m_pVIBufferCom->Bind_BufferDesc();
-            m_pVIBufferCom->Render();
-        }
-        return S_OK;
-    }
     return 	m_ModelComs[m_eCurCoord]->Render(_Shader, _iShaderPass);
 }
 
@@ -113,9 +91,14 @@ HRESULT CController_Model::Change_Coordinate(COORDINATE _eCoordinate)
 
 void CController_Model::Play_Animation(_float fTimeDelta)
 {
-	if (m_eCurCoord == COORDINATE_2D)
-		return;
-	m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta);
+	if (m_ModelComs[m_eCurCoord] && m_ModelComs[m_eCurCoord]->Is_AnimModel())
+    {
+        if(m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta))
+        {
+            for (auto& callback : m_listAnimEndCallBack)
+                callback(m_eCurCoord,m_ModelComs[m_eCurCoord]->Get_CurrentAnimIndex());
+        }
+    }
 }
 
 
@@ -133,6 +116,11 @@ void CController_Model::Set_Animation(_uint iIdx)
 void CController_Model::Switch_Animation(_uint iIdx)
 {
 	m_ModelComs[m_eCurCoord]->Switch_Animation(iIdx);
+}
+
+void CController_Model::To_NextAnimation()
+{
+    m_ModelComs[m_eCurCoord]->To_NextAnimation();
 }
 
 
@@ -154,8 +142,6 @@ void CController_Model::Free()
     {
 		Safe_Release(pModel);
     }
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);

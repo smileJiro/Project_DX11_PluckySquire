@@ -103,6 +103,9 @@
     <Filter Include="95.Pulling\Manager">
       <UniqueIdentifier>{4306c12f-adec-4da0-b70f-b9d1c79d53f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\BarfBug">
+      <UniqueIdentifier>{67bad6d7-2648-479f-83bb-27d29ba71422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -198,6 +201,12 @@
     <ClInclude Include="..\public\Beetle.h">
       <Filter>02.GameObjects\Monster\Beetle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MeleeAttackState.h">
+      <Filter>03.Components\FSM\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\Poolling_Manager.h">
       <Filter>95.Pulling</Filter>
     </ClInclude>
@@ -274,6 +283,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Beetle.cpp">
       <Filter>02.GameObjects\Monster\Beetle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MeleeAttackState.cpp">
+      <Filter>03.Components\FSM\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BarfBug.cpp">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Poolling_Manager.cpp">
       <Filter>95.Pulling</Filter>

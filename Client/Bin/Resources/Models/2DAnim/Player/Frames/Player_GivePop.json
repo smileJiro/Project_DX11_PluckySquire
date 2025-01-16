@@ -1,0 +1,96 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_GivePop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0009_X06'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0009_X06.0"
+          },
+          "FrameRun": 6
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0011_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0011_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GivePop_0012_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/Player_GivePop_0012_X03.0"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

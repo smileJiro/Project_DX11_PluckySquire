@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_run_sword_up_0006_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2386.0,
+        "Y": 534.0
+      },
+      "BakedSourceDimension": {
+        "X": 187.0,
+        "Y": 264.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_2'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_2.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 91.0,
+          "Y": 258.0,
+          "Z": 0.6279297,
+          "W": 0.13061523
+        },
+        {
+          "X": -94.0,
+          "Y": 258.0,
+          "Z": 0.5827637,
+          "W": 0.13061523
+        },
+        {
+          "X": -94.0,
+          "Y": -4.0,
+          "Z": 0.5827637,
+          "W": 0.19458008
+        },
+        {
+          "X": 91.0,
+          "Y": -4.0,
+          "Z": 0.6279297,
+          "W": 0.19458008
+        },
+        {
+          "X": 91.0,
+          "Y": 258.0,
+          "Z": 0.6279297,
+          "W": 0.13061523
+        },
+        {
+          "X": -94.0,
+          "Y": -4.0,
+          "Z": 0.5827637,
+          "W": 0.19458008
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "player_catch_glitchbird_outline_0001_X03",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 28.0,
+              "Y": 0.0,
+              "Z": 101.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 278.0,
+            "Y": 10.0,
+            "Z": 295.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "DD2248FD49F50FCF6AAB708E459AF211"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_catch_glitchbird_outline_0001_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 337.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 280.0,
+        "Y": 297.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_catch_glitchbird_outline-0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_catch_glitchbird_outline-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_catch_glitchbird_outline_0001_X03:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_catch_glitchbird_outline_0001_X03.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 167.0,
+          "Y": 249.0,
+          "Z": 0.6015625,
+          "W": 0.0009765625
+        },
+        {
+          "X": -111.0,
+          "Y": 249.0,
+          "Z": 0.33007812,
+          "W": 0.0009765625
+        },
+        {
+          "X": -111.0,
+          "Y": -46.0,
+          "Z": 0.33007812,
+          "W": 0.14501953
+        },
+        {
+          "X": 167.0,
+          "Y": -46.0,
+          "Z": 0.6015625,
+          "W": 0.14501953
+        },
+        {
+          "X": 167.0,
+          "Y": 249.0,
+          "Z": 0.6015625,
+          "W": 0.0009765625
+        },
+        {
+          "X": -111.0,
+          "Y": -46.0,
+          "Z": 0.33007812,
+          "W": 0.14501953
+        }
+      ]
+    }
+  }
+]
