@@ -15,6 +15,7 @@
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager.h"
 #include "Layer.h"
+#include "ModelObject.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -326,9 +327,11 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 	/* 트리노드로 Layer 들을 렌더한다. */
 	ImGui::Begin("ObjectsInfo");
 
+	static CGameObject* pSelectObject = nullptr;
 	if (ImGui::TreeNode("Object Layers")) // Layer 
 	{
 		map<const _wstring, CLayer*>* pLayers = m_pObject_Manager->Get_Layers_Ptr();
+		_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
 		if (nullptr != pLayers)
 		{
 			_uint iNumLevels = m_pObject_Manager->Get_NumLevels();
@@ -339,11 +342,32 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 			for (auto& Pair : pLayers[iCurLevelID])
 			{
 				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
+				
 				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
 				{
+					const list<CGameObject*> pGameObjects = Pair.second->Get_GameObjects();
+					vector<const char*> strInstanceIDs;
+					_int iSelectObjectIndex = -1;
+					strInstanceIDs.clear();
+					_string strGameObjectName;
+					for (auto& pGameObject : pGameObjects)
+					{
+						strGameObjectName = typeid(*pGameObject).name();
+						_int iInstanceID = (_int)(pGameObject->Get_GameObjectInstanceID());
+						strGameObjectName += "_" + to_string(iInstanceID);
+						strInstanceIDs.push_back(strGameObjectName.c_str());
+						
+					}
 
+					if (ImGui::ListBox(" ", &iSelectObjectIndex, strInstanceIDs.data(), (_int)strInstanceIDs.size()))
+					{
+						if (iSelectObjectIndex != -1) 
+						{
+							
+							pSelectObject = Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectObjectIndex);
 
-
+						}
+					}
 
 
 					ImGui::TreePop();
@@ -371,9 +395,77 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 
 		ImGui::TreePop();
 	}
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+	ImGui::Separator();
+	ImGui::Separator();
+	ImGui::Text("<Select Object Info>");
+	
+	Imgui_Debug_Render_ObjectInfo_Detail(pSelectObject);
+	
+
 
 	ImGui::End();
 
+	return S_OK;
+}
+
+HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject)
+{
+	if (nullptr == _pGameObject)
+		return S_OK;
+
+	
+	COORDINATE eCurCoord = _pGameObject->Get_ControllerTransform()->Get_CurCoord();
+	_string strCurCoord = "Current Coord : ";
+	
+	switch (eCurCoord)
+	{
+	case Engine::COORDINATE_2D:
+	{
+		strCurCoord += "2D";
+	}
+		break;
+	case Engine::COORDINATE_3D:
+	{
+		strCurCoord += "3D";
+	}
+		break;
+	}
+	ImGui::Text(strCurCoord.c_str());
+	ImGui::Separator();
+
+	/* Coordinate Change Enable */
+	_bool isCoordChangeEnable = _pGameObject->Get_ControllerTransform()->Is_CoordChangeEnable();
+	_string strCoordChangeEnable = "CoordChangeEnable : ";
+	if (true == isCoordChangeEnable)
+		strCoordChangeEnable += "true";
+	else
+		strCoordChangeEnable += "false";
+	ImGui::Text(strCoordChangeEnable.c_str());
+	ImGui::Separator();
+
+	/* Active */
+	_bool isActive = _pGameObject->Is_Active();
+	_string strActive = "Active : ";
+	if (true == isActive)
+		strActive += "true";
+	else
+		strActive += "false";
+	ImGui::Text(strActive.c_str());
+	ImGui::Separator();
+
+	CModelObject* pModelObject = dynamic_cast<CModelObject*>(_pGameObject);
+	if (nullptr != pModelObject)
+	{
+		_uint iShaderPassIndex = pModelObject->Get_ShaderPassIndex(eCurCoord);
+		_string strShaderPass = "ShaderPassIndex : ";
+		
+		if (true == isActive)
+			strShaderPass += to_string(iShaderPassIndex);
+		else
+			strShaderPass += to_string(iShaderPassIndex);
+
+	}
 	return S_OK;
 }
 

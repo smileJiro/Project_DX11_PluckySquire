@@ -43,6 +43,7 @@ public: /* For.GameInstance */
 	HRESULT				Imgui_Debug_Render_RT();
 	HRESULT				Imgui_Debug_Render_RT_FullScreen();
 	HRESULT				Imgui_Debug_Render_ObjectInfo();
+	HRESULT				Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject);
 #endif // _DEBUG
 
 public: /* For.Timer_Manager */

@@ -43,7 +43,7 @@ public:
 
 public:
 	// Get
-	
+	_uint Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
 	// Set
 	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
 	void Set_Animation(_uint iIdx);
