@@ -194,6 +194,7 @@
     </ClInclude>
     <ClInclude Include="..\public\IdleState.h" />
     <ClInclude Include="..\public\Monster.h" />
+    <ClInclude Include="..\public\Poolling_Manager.h" />
     <ClInclude Include="..\public\SettingPanel.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
@@ -225,6 +226,7 @@
     </ClCompile>
     <ClCompile Include="..\private\IdleState.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
+    <ClCompile Include="..\private\Poolling_Manager.cpp" />
     <ClCompile Include="..\private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />

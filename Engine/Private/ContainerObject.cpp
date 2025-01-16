@@ -118,13 +118,15 @@ HRESULT CContainerObject::Cleanup_DeadReferences()
     return S_OK;
 }
 
+#ifdef _DEBUG
+
 HRESULT CContainerObject::Imgui_Render_ObjectInfos()
 {
     CGameObject::Imgui_Render_ObjectInfos();
     ImGui::Begin("PartObject Infos");
 
     ImGui::Text("<Parts Infos>");
-    
+
     static CGameObject* pSelectObject = nullptr;
     _int iNumParts = m_PartObjects.size();
     ImGui::Text("iNumParts : %d", iNumParts);
@@ -159,9 +161,11 @@ HRESULT CContainerObject::Imgui_Render_ObjectInfos()
         ImGui::TreePop();
     }
 
-   
-    if(nullptr != pSelectObject)
+
+    if (nullptr != pSelectObject)
         pSelectObject->Imgui_Render_ObjectInfos();
     ImGui::End();
     return S_OK;
 }
+
+#endif // _DEBUG

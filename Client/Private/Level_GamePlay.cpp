@@ -4,6 +4,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Cam_Manager.h"
+#include "Poolling_Manager.h"
 #include "TestPlayer.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
@@ -25,6 +26,16 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 
+
+	POOLLING_DESC Poolling_Desc;
+	Poolling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+	Poolling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Poolling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
+	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
+	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
+	CPoolling_Manager::GetInstance()->Register_PoollingObject(TEXT("Poolling_TestBeetle"), Poolling_Desc, pDesc);
+
+	
     return S_OK;
 }
 
@@ -33,6 +44,12 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::ENTER))
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
+	}
+	
+	if (KEY_DOWN(KEY::NUM6))
+	{
+		_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
+		CPoolling_Manager::GetInstance()->Create_Objects(TEXT("Poolling_TestBeetle"), 1, &vPosition);
 	}
 
 }
@@ -107,6 +124,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 	CGameObject** pGameObject = nullptr;
 
 	CTestPlayer::CONTAINEROBJ_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;

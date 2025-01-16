@@ -97,6 +97,12 @@
     <Filter Include="02.GameObjects\Monster\Beetle">
       <UniqueIdentifier>{e4f8e236-1773-4c39-95eb-432f578067b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95.Pulling">
+      <UniqueIdentifier>{cc263f96-5434-457f-a65e-e14dc3e287ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95.Pulling\Manager">
+      <UniqueIdentifier>{4306c12f-adec-4da0-b70f-b9d1c79d53f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -192,6 +198,9 @@
     <ClInclude Include="..\public\Beetle.h">
       <Filter>02.GameObjects\Monster\Beetle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Poolling_Manager.h">
+      <Filter>95.Pulling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -265,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Beetle.cpp">
       <Filter>02.GameObjects\Monster\Beetle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Poolling_Manager.cpp">
+      <Filter>95.Pulling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
