@@ -19,7 +19,7 @@ HRESULT CLevel_GamePlay::Initialize()
 {
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
-	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
+	//Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	
 	Ready_Layer_Monster(TEXT("Layer_Monster"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);

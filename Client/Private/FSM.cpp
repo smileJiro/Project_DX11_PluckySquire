@@ -18,7 +18,6 @@ CFSM::CFSM(const CFSM& _Prototype)
 void CFSM::Set_Owner(CMonster* _pOwner)
 {
 	m_pOwner = _pOwner;
-	Safe_AddRef(m_pOwner);
 }
 
 HRESULT CFSM::Initialize_Prototype()
@@ -137,8 +136,6 @@ void CFSM::Free()
 		Safe_Release(pState.second);
 
 	m_States.clear();
-
-	Safe_Release(m_pOwner);
-
+	m_pOwner = nullptr;
 	__super::Free();
 }
