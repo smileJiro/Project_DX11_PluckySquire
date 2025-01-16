@@ -84,8 +84,11 @@ HRESULT CFSM::Change_State(MONSTER_STATE _eState)
 		return E_FAIL;
 
 	m_CurState->State_Exit();
+	m_pOwner->Set_PreState(m_eCurState);
 
 	Set_State(_eState);
+
+	m_pOwner->Change_Animation();
 
 	return S_OK;
 }

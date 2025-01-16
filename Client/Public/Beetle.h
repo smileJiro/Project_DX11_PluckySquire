@@ -52,6 +52,9 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+public:
+	virtual void Change_Animation() override;
+
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
