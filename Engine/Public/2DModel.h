@@ -22,6 +22,7 @@ public:
 
     //Get
     virtual _uint Get_AnimCount() override;
+	virtual _uint Get_CurrentAnimIndex() override { return m_iCurAnimIdx; }
     //Set
     virtual void Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)override;
     virtual void Set_Animation(_uint _iIdx)override;

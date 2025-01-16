@@ -105,7 +105,7 @@ CAnimation2D::CAnimation2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 
 		SpriteFrames.push_back(CSpriteFrame::Create(_pDevice, _pContext,_strDirectory, jKeyFrame));
 	}
-	iFrameCount = SpriteFrames.size();
+	iFrameCount = (_uint)SpriteFrames.size();
 
 }
 

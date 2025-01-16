@@ -41,6 +41,7 @@ public:
 
 public: /* 2D, 3D */
 	void			Play_Animation(_float fTimeDelta);
+	void			Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback) { m_listAnimEndCallBack.push_back(fCallback); }
 
 	//Get
 	CModel* Get_Model(COORDINATE _eCoord) {return m_ModelComs[_eCoord];}
@@ -63,6 +64,8 @@ private:
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;
 	_bool					m_isCoordChangeEnable = false;
 
+
+	list<function<void(COORDINATE,_uint)>> m_listAnimEndCallBack;
 private:
 	HRESULT					Ready_Models(CON_MODEL_DESC* _pDesc);
 

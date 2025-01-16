@@ -76,6 +76,11 @@ HRESULT CTestPlayer::Render()
     return S_OK;
 }
 
+void CTestPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    int a = 0;
+}
+
 void CTestPlayer::Key_Input(_float _fTimeDelta)
 {
     if (KEY_DOWN(KEY::NUM1))
@@ -169,6 +174,7 @@ HRESULT CTestPlayer::Ready_PartObjects()
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
     
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CTestPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
     return S_OK;
 }

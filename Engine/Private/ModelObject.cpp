@@ -131,6 +131,11 @@ _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
     return false;
 }
 
+void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_uint)>& fCallback)
+{
+	m_pControllerModel->Register_OnAnimEndCallBack(fCallback);
+}
+
 void CModelObject::Update(_float fTimeDelta)
 {
     m_pControllerModel->Play_Animation(fTimeDelta);

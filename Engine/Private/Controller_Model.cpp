@@ -92,7 +92,13 @@ HRESULT CController_Model::Change_Coordinate(COORDINATE _eCoordinate)
 void CController_Model::Play_Animation(_float fTimeDelta)
 {
 	if (m_ModelComs[m_eCurCoord] && m_ModelComs[m_eCurCoord]->Is_AnimModel())
-	    m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta);
+    {
+        if(m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta))
+        {
+            for (auto& callback : m_listAnimEndCallBack)
+                callback(m_eCurCoord,m_ModelComs[m_eCurCoord]->Get_CurrentAnimIndex());
+        }
+    }
 }
 
 
