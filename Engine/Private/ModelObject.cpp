@@ -1,5 +1,9 @@
 #include "ModelObject.h"
 #include "GameInstance.h"
+#include "3DModel.h"
+#include "2DModel.h"
+#include "Controller_Model.h"
+
 
 CModelObject::CModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CPartObject(_pDevice, _pContext)
@@ -23,7 +27,8 @@ HRESULT CModelObject::Initialize(void* _pArg)
     // Save 
     m_iShaderPasses[COORDINATE_2D] = pDesc->iShaderPass_2D;
     m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
-
+    m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
+    m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
     // Add
 
 
@@ -34,14 +39,50 @@ HRESULT CModelObject::Initialize(void* _pArg)
         return E_FAIL;
 
 
-    D3D11_VIEWPORT ViewportDesc{};
-    _uint iNumViewports = 1;
-    m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
 
     // View Matrix는 IdentityMatrix
     XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+
     // Projection Matrix는 Viewport Desc 를 기반으로 생성.
-    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)ViewportDesc.Width, (_float)ViewportDesc.Height, 0.0f, 1.0f));
+    // 2025-01-16 박예슬 수정 : Viewport Desc -> Rendertarget Size
+
+    _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
+    
+    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
+
+
+    return S_OK;
+}
+
+void CModelObject::Late_Update(_float _fTimeDelta)
+{    /* Add Render Group */
+    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+        m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+
+    /* Update Parent Matrix */
+    __super::Late_Update(_fTimeDelta);
+}
+
+HRESULT CModelObject::Render()
+{
+#ifdef _DEBUG
+    if (m_iInstanceID == 1)
+    {
+        int a = 0;
+    }
+#endif // _DEBUG
+
+
+
+
+    if (FAILED(Bind_ShaderResources_WVP()))
+        return E_FAIL;
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+	CShader* pShader = m_pShaderComs[eCoord];
+	_uint iShaderPass = m_iShaderPasses[eCoord];
+    m_pControllerModel->Render(pShader, iShaderPass);
 
     return S_OK;
 }
@@ -49,7 +90,8 @@ HRESULT CModelObject::Initialize(void* _pArg)
 _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
 {
     // 예외처리
-    if (nullptr == m_pModelCom)
+	C3DModel* m_p3DModelCom = static_cast<C3DModel*>( m_pControllerModel->Get_Model(COORDINATE_3D));
+    if (nullptr == m_p3DModelCom)
         return false;
     if (nullptr == m_pRayCom)
         return false;
@@ -60,8 +102,8 @@ _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
         m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_PROJ));
 
     // 모델의 메쉬를 순회하며, 충돌했다면 바로 리턴하고 dst 값을 넘기자.
-    size_t iNumMeshes = m_pModelCom->Get_NumMeshes();
-    const vector<CMesh*>& vecMeshes = m_pModelCom->Get_Meshes();
+    size_t iNumMeshes = m_p3DModelCom->Get_NumMeshes();
+    const vector<CMesh*>& vecMeshes = m_p3DModelCom->Get_Meshes();
 
     for (size_t i = 0; i < iNumMeshes; ++i)
     {
@@ -69,7 +111,7 @@ _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
         const vector<_uint>& vecIndexBuffer = vecMeshes[i]->Get_IndexBuffer();
         _uint iNumTriangles = vecMeshes[i]->Get_NumTriangles();
 
-        for (size_t j = 0; j < iNumTriangles; ++j)
+        for (_uint j = 0; j < iNumTriangles; ++j)
         {
             _bool bResult = false;
             _uint iIdx = j * 3;
@@ -89,66 +131,98 @@ _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
     return false;
 }
 
+void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_uint)>& fCallback)
+{
+	m_pControllerModel->Register_OnAnimEndCallBack(fCallback);
+}
+
+void CModelObject::Update(_float fTimeDelta)
+{
+    m_pControllerModel->Play_Animation(fTimeDelta);
+
+	__super::Update(fTimeDelta);
+}
+
+HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
+{
+	if (FAILED(__super::Change_Coordinate(_eCoordinate, _vPosition)))
+		return E_FAIL;
+
+    return	m_pControllerModel->Change_Coordinate(_eCoordinate);
+}
+
+void CModelObject::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
+{
+    m_pControllerModel->Set_AnimationLoop(iIdx, bIsLoop);
+}
+
+void CModelObject::Set_Animation(_uint iIdx)
+{
+    m_pControllerModel->Set_Animation(iIdx);
+}
+
+void CModelObject::Switch_Animation(_uint iIdx)
+{
+    m_pControllerModel->Switch_Animation(iIdx);
+}
+
+void CModelObject::To_NextAnimation()
+{
+    m_pControllerModel->To_NextAnimation();
+}
+
 HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 {
     _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
+
     switch (_pDesc->eStartCoord)
     {
     case Engine::COORDINATE_2D:
     {
-        /* Com_VIBuffer */
-        if (FAILED(Add_Component(iStaticLevelID, TEXT("Prototype_Component_VIBuffer_Rect"),
-            TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-            return E_FAIL;
-
-        /* Com_Shader_2D */
-        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
-            TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-            return E_FAIL;
-
-        if (true == _pDesc->isCoordChangeEnable)
-        {
-            /* Com_Model */
-            if (FAILED(Add_Component(m_iCurLevelID, _pDesc->strModelPrototypeTag,
-                TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-                return E_FAIL;
-
-            /* Com_Shader_3D */
-            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
-                TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
-                return E_FAIL;
-        }
-    }
-    break;
-    case Engine::COORDINATE_3D:
-    {
-        /* Com_Model */
-        if (FAILED(Add_Component(m_iCurLevelID, _pDesc->strModelPrototypeTag,
-            TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-            return E_FAIL;
-
         /* Com_Shader_3D */
         if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
             TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
             return E_FAIL;
-
+        /* Com_Shader_2D */
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
+            TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
+            return E_FAIL;
         if (true == _pDesc->isCoordChangeEnable)
         {
-            /* Com_VIBuffer */
-            if (FAILED(Add_Component(iStaticLevelID, TEXT("Prototype_Component_VIBuffer_Rect"),
-                TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-                return E_FAIL;
-
+        }
+        break;
+    }
+    case Engine::COORDINATE_3D:
+    {
+        /* Com_Shader_3D */
+        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
+            TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
+            return E_FAIL;
+        if (true == _pDesc->isCoordChangeEnable)
+        {
             /* Com_Shader_2D */
             if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
                 TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
                 return E_FAIL;
         }
+        break;
     }
-    break;
     default:
         break;
     }
+
+    CController_Model::CON_MODEL_DESC tModelDesc{};
+    tModelDesc.eStartCoord = _pDesc->eStartCoord;
+	tModelDesc.isCoordChangeEnable = _pDesc->isCoordChangeEnable;
+	tModelDesc.iCurLevelID = iStaticLevelID;
+	tModelDesc.i2DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_2D;
+	tModelDesc.i3DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_3D;
+	tModelDesc.wstr2DModelPrototypeTag = _pDesc->strModelPrototypeTag_2D;
+	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
+
+	m_pControllerModel = CController_Model::Create(m_pDevice, m_pContext, &tModelDesc);
+    if (nullptr == m_pControllerModel)
+        return E_FAIL;
 
     return S_OK;
 }
@@ -188,53 +262,36 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
     return S_OK;
 }
 
-HRESULT CModelObject::Render_2D()
+
+CModelObject* CModelObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    // 어떠한 Pass로 그릴 것인지
-    m_pShaderComs[COORDINATE_2D]->Begin(m_iShaderPasses[COORDINATE_2D]);
-    // Buffer정보 전달
-    m_pVIBufferCom->Bind_BufferDesc();
+    CModelObject* pInstance = new CModelObject(_pDevice, _pContext);
 
-    // 그리기 연산 수행
-    m_pVIBufferCom->Render();
-
-    return S_OK;
-}
-
-HRESULT CModelObject::Render_3D()
-{
-    _uint iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-    /* Mesh 단위 렌더. */
-    for (_uint i = 0; i < iNumMeshes; ++i)
+    if (FAILED(pInstance->Initialize_Prototype()))
     {
-        if (FAILED(m_pModelCom->Bind_Material(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
-        {
-            //continue;
-        }
-
-        /* Bind Bone Matrices */
-        if (C3DModel::TYPE::ANIM == m_pModelCom->Get_ModelType())
-        {
-            if (FAILED(m_pModelCom->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", i)))
-                return E_FAIL;
-        }
-
-
-        /* Shader Pass */
-        m_pShaderComs[COORDINATE_3D]->Begin(m_iShaderPasses[COORDINATE_3D]);
-
-        /* Bind Mesh Vertex Buffer */
-        m_pModelCom->Render(i);
+        MSG_BOX("Failed to Created : CModelObject");
+        Safe_Release(pInstance);
     }
 
-    return S_OK;
+    return pInstance;
+}
+
+CGameObject* CModelObject::Clone(void* _pArg)
+{
+    CModelObject* pInstance = new CModelObject(*this);
+
+    if (FAILED(pInstance->Initialize(_pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CModelObject");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
 }
 
 void CModelObject::Free()
 {
-    Safe_Release(m_pVIBufferCom);
-    Safe_Release(m_pModelCom);
+    Safe_Release(m_pControllerModel);
 
     for (_int i = 0; i < COORDINATE_LAST; ++i)
     {
@@ -242,5 +299,109 @@ void CModelObject::Free()
     }
 
     __super::Free();
+}
+
+HRESULT CModelObject::Imgui_Render_ObjectInfos()
+{
+    COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+
+    /* Model Prototype Tag */
+    if (false == m_strModelPrototypeTag[eCurCoord].empty())
+    {
+        _string strModelPrototypeTag = "ModelTag : ";
+        strModelPrototypeTag += WSTRINGTOSTRING(m_strModelPrototypeTag[eCurCoord]);
+        ImGui::Text(strModelPrototypeTag.c_str());
+    }
+
+
+    /* Current Coord */
+    eCurCoord = m_pControllerTransform->Get_CurCoord();
+    _string strCurCoord = "Current Coord : ";
+    switch (eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        strCurCoord += "2D";
+        break;
+    case Engine::COORDINATE_3D:
+        strCurCoord += "3D";
+        break;
+    case Engine::COORDINATE_LAST:
+        strCurCoord += "LAST";
+        break;
+    }
+    ImGui::Text(strCurCoord.c_str());
+
+
+    /* Coordinate Change Enable */
+    _bool isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+    _string strCoordChangeEnable = "CoordChangeEnable : ";
+    if (true == isCoordChangeEnable)
+        strCoordChangeEnable += "true";
+    else
+        strCoordChangeEnable += "false";
+    ImGui::Text(strCoordChangeEnable.c_str());
+
+
+    /* Active */
+    _bool isActive = Is_Active();
+    _string strActive = "Active : ";
+    if (true == isActive)
+        strActive += "true";
+    else
+        strActive += "false";
+    ImGui::Text(strActive.c_str());
+    ImGui::SameLine();
+    if (ImGui::Button("ActiveOnOff")) { isActive ^= 1; Set_Active(isActive); }
+
+    /* isRender */
+    _bool isRender = Is_Render();
+    _string strRender = "Render : ";
+    if (true == isRender)
+        strRender += "true";
+    else
+        strRender += "false";
+    ImGui::Text(strRender.c_str());
+    ImGui::SameLine();
+    if (ImGui::Button("RenderOnOff")) { isRender ^= 1; Set_Render(isRender); }
+
+
+    /* Transform Data */
+    ImGui::Separator();
+    ImGui::Text("<Transform Data>");
+    ImGui::Text("World Matrix");
+    ImGui::PushItemWidth(200.f);
+    _float4 vRight = {};
+    XMStoreFloat4(&vRight, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+    ImGui::BeginDisabled();/* 수정 불가 영역 시작. */
+    ImGui::InputFloat4("Model_vRight", (float*)&vRight, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+    _float4 vUp = {};
+    XMStoreFloat4(&vUp, m_pControllerTransform->Get_State(CTransform::STATE_UP));
+    ImGui::InputFloat4("Model_vUp", (float*)&vUp, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+    _float4 vLook = {};
+    XMStoreFloat4(&vLook, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+    ImGui::InputFloat4("Model_vLook", (float*)&vLook, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+    ImGui::EndDisabled();/* 수정 불가 영역 끝. */
+
+    _float4 vPosition = {};
+    ImGui::PushItemWidth(150.f);
+    XMStoreFloat4(&vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+    if (ImGui::InputFloat3("...", (float*)&vPosition, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
+        Set_Position(XMLoadFloat4(&vPosition));
+    ImGui::SameLine();
+    ImGui::Text("%.2f", vPosition.w);
+    ImGui::SameLine();
+    ImGui::Text("Model_vPosition");
+
+
+    ImGui::PushItemWidth(150.f);
+    _float3 vScale = Get_Scale();
+    if (ImGui::InputFloat3("       Model_vScale", (float*)&vScale, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
+        Set_Scale(vScale);
+    ImGui::PopItemWidth();
+
+    
+    return S_OK;
 }
 

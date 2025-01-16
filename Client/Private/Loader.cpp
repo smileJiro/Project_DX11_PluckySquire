@@ -5,12 +5,17 @@
 #include "CriticalSectionGuard.h"
 
 #include "Camera_Target.h"
+#include "ModelObject.h"
 #include "TestPlayer.h"
-#include "TestBody.h"
 #include "TestTerrain.h"
 #include "Pick_Bulb.h"
 #include "SettingPanel.h"
-
+#include "Beetle.h"
+#include "BeetleBody.h"
+#include "2DModel.h"
+#include "3DModel.h"
+#include "Controller_Model.h"
+#include "FSM.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -89,6 +94,18 @@ void CLoader::Show_Debug()
 HRESULT CLoader::Loading_Level_Static()
 {
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_Outline"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bg_border.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_OutOutline"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bg_border_outline.dds"), 1))))
+		return E_FAIL;
+
+
+              
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
@@ -137,7 +154,10 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+        CModelObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 
@@ -168,6 +188,9 @@ HRESULT CLoader::Loading_Level_Logo()
 HRESULT CLoader::Loading_Level_GamePlay()
 {
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+        CFSM::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PickBulb"),
@@ -186,37 +209,27 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_Component_Model_Test */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Test"),
-    //    CModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Test/Tree_Mod_03.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
-    //    return E_FAIL;
 
-    /* For. Prototype_Component_Model_WoodenPlatform_01 */
+    /* 낱개 로딩 예시*/
     //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_WoodenPlatform_01"),
-    //    CModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
+    //    C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
     //    return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
+        return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
-    //    TEXT("../Bin/Resources/Models/NonAnim/SewingKit_01"), matPretransform)))
-    //    return E_FAIL;
-
+    matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/TestModels/"), matPretransform)))
         return E_FAIL;
 
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
-    /* For. Prototype_GameObject_TestPlayer */
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
         CTestPlayer::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
-    /* For. Prototype_GameObject_TestBody */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestBody"),
-        CTestBody::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
     /* For. Prototype_GameObject_TestTerrain */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestTerrain"),
         CTestTerrain::Create(m_pDevice, m_pContext))))
@@ -227,10 +240,18 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-	/* For. Prototype_UIObject_Pick_Bubble */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
-		CPick_Bulb::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+    /* For. Prototype_UIObject_Pick_Bubble */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
+        CPick_Bulb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+    /* Monster */
+
+    /* For. Prototype_GameObject_Beetle */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"),
+        CBeetle::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -285,6 +306,54 @@ HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _
     return S_OK;
 }
 
+HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
+{
+
+    WIN32_FIND_DATA		FindFileData = {};
+    HANDLE				hFind = INVALID_HANDLE_VALUE;
+
+    _tchar				szFilePath[MAX_PATH] = TEXT("");
+    _tchar				szFullPath[MAX_PATH] = TEXT("");
+    _tchar				szProtoTag[MAX_PATH] = TEXT("");
+    _tchar				szExtension[MAX_PATH] = TEXT(".json");
+
+    lstrcpy(szFilePath, _szDirPath);
+    lstrcat(szFilePath, TEXT("*"));
+    lstrcat(szFilePath, szExtension);
+
+    hFind = FindFirstFile(szFilePath, &FindFileData);
+
+    if (INVALID_HANDLE_VALUE == hFind)
+        return E_FAIL;
+
+    do
+    {
+        if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            continue;
+
+        lstrcpy(szFullPath, _szDirPath);
+        lstrcat(szFullPath, FindFileData.cFileName);
+
+        wstring wstr = szFullPath;
+        string str = m_pGameInstance->WStringToString(wstr);
+
+        //string str{ wstr.begin(), wstr.end() };
+
+        wstring filename = wstring(FindFileData.cFileName);
+        size_t lastDot = filename.find_last_of('.');
+        filename = filename.substr(0, lastDot); // 확장자 제거
+
+        if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
+            C2DModel::Create(m_pDevice, m_pContext, str.c_str()))))
+            return E_FAIL;
+
+    } while (FindNextFile(hFind, &FindFileData));
+
+    FindClose(hFind);
+
+    return S_OK;
+}
+
 HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
 {
 	std::filesystem::path path;
@@ -300,6 +369,7 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
     }
     return S_OK;
 }
+
 
 CLoader* CLoader::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID)
 {

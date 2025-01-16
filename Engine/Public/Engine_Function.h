@@ -3,6 +3,7 @@
 
 namespace Engine
 {
+
 	// 템플릿은 기능의 정해져있으나 자료형은 정해져있지 않은 것
 	// 기능을 인스턴스화 하기 위하여 만들어두는 틀
 
@@ -53,8 +54,11 @@ namespace Engine
 
 		return iRefCnt;
 	}
+	string MatrixToString(_float4x4 vMatrix);
 
 
+	//HRESULT ReadJsonFile(const _char* strJsonFilePath, json* pOut);
+	//HRESULT SaveJsonFile(const _char* strJsonFilePath, const json& pJson);
 }
 
 #endif // Engine_Function_h__

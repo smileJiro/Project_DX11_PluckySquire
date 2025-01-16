@@ -1,0 +1,69 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_attack_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 45.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attack_up_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attack_up_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attack_up_0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attack_up_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attack_up_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attack_up_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attack_up_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attack_up_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attack_up_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attack_up_0005_X02.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attack_up_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attack_up_0006_X02.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attack_up_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attack_up_0007_X02.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attack_up_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attack_up_0008_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ],
+      "CollisionSource": "EFlipbookCollisionMode::EachFrameCollision"
+    }
+  }
+]

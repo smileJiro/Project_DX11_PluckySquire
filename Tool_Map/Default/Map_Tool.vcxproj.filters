@@ -43,6 +43,15 @@
     <Filter Include="97. gizmo">
       <UniqueIdentifier>{0eec8388-e4d2-4d52-be93-07e98ed044fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. ToolApp_Managers\Event">
+      <UniqueIdentifier>{42200b2a-0a0e-420e-be25-5d3a30236f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ToolApp_Managers\MapTool">
+      <UniqueIdentifier>{3047ddb0-b5b5-457b-8f07-bfc690e62f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ToolApp_Managers\MapParsing">
+      <UniqueIdentifier>{25188e90-152a-4ab0-8f0b-b9cebde9e6f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -81,9 +90,6 @@
     <ClInclude Include="..\Public\Map_Tool_Function.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Event_Manager.h">
-      <Filter>01. ToolApp_Managers</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Map_Tool.h">
       <Filter>02. Levels\Map_Tool</Filter>
     </ClInclude>
@@ -92,9 +98,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>03. GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Map_Tool_Manager.h">
-      <Filter>01. ToolApp_Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CellContainor.h">
       <Filter>03. GameObject</Filter>
@@ -125,6 +128,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_CellLine.h">
       <Filter>04. Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Event_Manager.h">
+      <Filter>01. ToolApp_Managers\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Map_Tool_Manager.h">
+      <Filter>01. ToolApp_Managers\MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapParsing_Manager.h">
+      <Filter>01. ToolApp_Managers\MapParsing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -160,9 +172,6 @@
     <ClCompile Include="..\Private\Map_Tool_Function.cpp">
       <Filter>99. Defines</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Event_Manager.cpp">
-      <Filter>01. ToolApp_Managers</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Level_Map_Tool.cpp">
       <Filter>02. Levels\Map_Tool</Filter>
     </ClCompile>
@@ -171,9 +180,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>03. GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Map_Tool_Manager.cpp">
-      <Filter>01. ToolApp_Managers</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CellContainor.cpp">
       <Filter>03. GameObject</Filter>
@@ -201,6 +207,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_CellLine.cpp">
       <Filter>04. Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Event_Manager.cpp">
+      <Filter>01. ToolApp_Managers\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Map_Tool_Manager.cpp">
+      <Filter>01. ToolApp_Managers\MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapParsing_Manager.cpp">
+      <Filter>01. ToolApp_Managers\MapParsing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

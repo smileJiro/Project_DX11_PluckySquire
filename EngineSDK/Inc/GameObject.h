@@ -52,12 +52,13 @@ public:
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_int						Get_CurLevelID() const							{ return m_iCurLevelID; }
-
+	_uint						Get_GameObjectInstanceID() const				{ return m_iInstanceID; }
 	// Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
 	void						Set_WorldMatrix(_float4x4 _WorldMatrix)			{ m_pControllerTransform->Set_WorldMatrix(_WorldMatrix); }
 	void						Set_Position(_fvector _vPos)					{ m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(_vPos, 1.0f)); }
 	void						Set_Scale(_float _fX, _float _fY, _float _fZ)	{ m_pControllerTransform->Set_Scale(_fX, _fY, _fZ); }
+	void						Set_Scale(const _float3& _vScale)				{ m_pControllerTransform->Set_Scale(_vScale); }
 	void						Set_Dead()										{ m_isDead = true; }
 	void						Set_Alive()										{ m_isDead = false; }
 	virtual void				Set_Render(_bool _isRender)						{ m_isRender = _isRender; }
@@ -70,7 +71,11 @@ protected:
 	CRay*						m_pRayCom = nullptr;
 	vector<CCollider*>			m_Colliders;
 
+private:
+	static _uint				g_iInstanceIDCount;
+
 protected:
+	_uint						m_iInstanceID;
 	_wstring					m_strName;
 	_uint						m_iCurLevelID = 0;
 	_bool						m_isDead = false;
@@ -87,6 +92,11 @@ public:
 	virtual CGameObject*	Clone(void* _pArg) = 0; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void			Free() override;
 	virtual HRESULT			Cleanup_DeadReferences() = 0; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
+
+#ifdef _DEBUG
+public:
+	virtual HRESULT Imgui_Render_ObjectInfos();
+#endif // _DEBUG
 
 };
 

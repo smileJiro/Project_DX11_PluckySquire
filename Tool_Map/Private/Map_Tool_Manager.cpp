@@ -13,6 +13,8 @@
 #include "EditableCell.h"
 #include "CellContainor.h"
 #include "Event_Manager.h"
+#include "MapParsing_Manager.h"
+
 using namespace std::filesystem;
 
 
@@ -51,8 +53,6 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 		Safe_AddRef(m_pCellContainor);
 	}
 	
-	// SM_desk_split_topboard_02
-
 
 	CMapObject::MAPOBJ_DESC NormalDesc = {};
 	lstrcpy(NormalDesc.szModelName, L"SM_desk_split_topboard_02");
@@ -63,18 +63,26 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 
 
 	pGameObject = nullptr;
-	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
-		LEVEL_TOOL_MAP,
-		L"Layer_Environment",
-		&pGameObject,
-		(void*)&NormalDesc);
-	if (pGameObject)
-	{
-		m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
-		Safe_AddRef(m_pCellContainor);
-	}
+	//m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
+	//	LEVEL_TOOL_MAP,
+	//	L"Layer_Environment",
+	//	&pGameObject,
+	//	(void*)&NormalDesc);
+	//if (pGameObject)
+	//{
+	//	//m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
+	//}
 
 
+	m_pMapParsingManager = CMapParsing_Manager::Create(m_pDevice, m_pContext, m_pLogger);
+	if (nullptr == m_pMapParsingManager)
+		return E_FAIL;
+
+	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04.json",L"Layer_MapObject");
+	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C02.json",L"Layer_MapObject");
+	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04_000.json",L"Layer_MapObject");
+	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Environment");
+	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Streets.json",L"Layer_Environment");
 
 	return S_OK;
 }
@@ -89,6 +97,8 @@ void CMap_Tool_Manager::Update_Tool()
 
 	// 임구이 화면 구성
 	Update_Imgui_Logic();
+
+	m_pMapParsingManager->Update();
 
 }
 
@@ -1231,5 +1241,7 @@ void CMap_Tool_Manager::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pLogger);
+	Safe_Release(m_pMapParsingManager);
+
 	__super::Free();
 }

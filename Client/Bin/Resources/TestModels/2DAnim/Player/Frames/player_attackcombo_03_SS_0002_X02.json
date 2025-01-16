@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_attackcombo_03_SS_0002_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1599.0,
+        "Y": 3687.0
+      },
+      "BakedSourceDimension": {
+        "X": 389.0,
+        "Y": 321.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_attackcombo-0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/player_attackcombo-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 85.0,
+          "Y": 305.0,
+          "Z": 0.48510742,
+          "W": 0.9003906
+        },
+        {
+          "X": -302.0,
+          "Y": 305.0,
+          "Z": 0.390625,
+          "W": 0.9003906
+        },
+        {
+          "X": -302.0,
+          "Y": -14.0,
+          "Z": 0.390625,
+          "W": 0.9782715
+        },
+        {
+          "X": 85.0,
+          "Y": -14.0,
+          "Z": 0.48510742,
+          "W": 0.9782715
+        },
+        {
+          "X": 85.0,
+          "Y": 305.0,
+          "Z": 0.48510742,
+          "W": 0.9003906
+        },
+        {
+          "X": -302.0,
+          "Y": -14.0,
+          "Z": 0.390625,
+          "W": 0.9782715
+        }
+      ]
+    }
+  }
+]

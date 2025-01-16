@@ -3,13 +3,13 @@
 #include "GameInstance.h"
 #include "FSM.h"
 
-CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CContainerObject{ pDevice, pContext }
+CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CContainerObject(_pDevice, _pContext)
 {
 }
 
-CMonster::CMonster(const CMonster& Prototype)
-	: CContainerObject{ Prototype }
+CMonster::CMonster(const CMonster& _Prototype)
+	: CContainerObject(_Prototype)
 {
 }
 
@@ -18,38 +18,43 @@ HRESULT CMonster::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CMonster::Initialize(void* pArg)
+HRESULT CMonster::Initialize(void* _pArg)
 {
-	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(pArg);
-	m_fMoveRadius = pDesc->fMoveRadius;
-	m_fAttackRadius = pDesc->fAttackRadius;
+	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(_pArg);
+	m_fChaseRange = pDesc->fChaseRange;
+	m_fAttackRange = pDesc->fAttackRange;
 
-	if (FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
 	//플레이어 위치 가져오기
-	/*m_pPlayerTransform = m_pGameInstance->Get_Object(LEVEL_GAMEPLAY, TEXT("Layer_Player"))->Get_Transform();
-	if (nullptr == m_pPlayerTransform)
-		return E_FAIL;
-	else
-		Safe_AddRef(m_pPlayerTransform);*/
+	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	if (nullptr == m_pTarget)
+	{
+	#ifdef _DEBUG
+		cout << "MONSTERINIT : NO PLAYER" << endl;
+	#endif // _DEBUG
+		return S_OK;
+	}
+
+	Safe_AddRef(m_pTarget);
 
 	return S_OK;
 }
 
-void CMonster::Priority_Update(_float fTimeDelta)
+void CMonster::Priority_Update(_float _fTimeDelta)
 {
-	__super::Priority_Update(fTimeDelta);
+	__super::Priority_Update(_fTimeDelta);
 }
 
-void CMonster::Update(_float fTimeDelta)
+void CMonster::Update(_float _fTimeDelta)
 {
-	__super::Update(fTimeDelta);
+	__super::Update(_fTimeDelta);
 }
 
-void CMonster::Late_Update(_float fTimeDelta)
+void CMonster::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(fTimeDelta);
+	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CMonster::Render()
@@ -63,33 +68,59 @@ _float CMonster::Calculate_Distance()
 	return 0.f;
 }
 
-void CMonster::Attack(_float fTimeDelta)
+void CMonster::Attack(_float _fTimeDelta)
 {
 	//if (m_PartObjects[PART_WEAPON] != nullptr && m_PartObjects[PART_WEAPON]->Get_UseColl())
 	//	m_PartObjects[PART_WEAPON]->Set_Collider_Enable(true);
 }
 
-void CMonster::Collision_Enter(CGameObject* pTarget)
+HRESULT CMonster::Cleanup_DeadReferences()
 {
+	if (FAILED(__super::Cleanup_DeadReferences()))
+		return E_FAIL;
+
+	if (nullptr == m_pTarget)
+	{
+#ifdef _DEBUG
+		cout << "MONSTER : NO PLAYER" << endl;
+#endif // _DEBUG
+		return S_OK;
+	}
+
+	if (true == m_pTarget->Is_Dead())
+	{
+		Safe_Release(m_pTarget);
+		m_pTarget = nullptr;
+		m_pFSM->CleanUp();
+	}
+
+	return S_OK;
 }
 
-void CMonster::Collision_Stay(CGameObject* pTarget)
+void CMonster::Active_OnEnable()
 {
-	//if (COLLGROUP_MONSTER == pTarget->Get_CollGroup())
-	//{
-	//	//겹치지 않게
-	//}
+//	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+//	if (nullptr == m_pTarget)
+//	{
+//#ifdef _DEBUG
+//		cout << "MONSTERINIT : NO PLAYER" << endl;
+//#endif // _DEBUG
+//		return;
+//	}
+//
+//	Safe_AddRef(m_pTarget);
 }
 
-void CMonster::Collision_Exit(CGameObject* pTarget)
+void CMonster::Active_OnDisable()
 {
 }
 
 void CMonster::Free()
 {
-	__super::Free();
+	if (nullptr != m_pTarget)
+		Safe_Release(m_pTarget);
 
-	if (nullptr != m_pPlayerTransform)
-		Safe_Release(m_pPlayerTransform);
 	Safe_Release(m_pFSM);
+
+	__super::Free();
 }

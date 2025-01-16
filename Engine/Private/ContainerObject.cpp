@@ -1,4 +1,5 @@
 #include "ContainerObject.h"
+#include "GameInstance.h"
 
 CContainerObject::CContainerObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CGameObject(_pDevice, _pContext)
@@ -116,3 +117,55 @@ HRESULT CContainerObject::Cleanup_DeadReferences()
 
     return S_OK;
 }
+
+#ifdef _DEBUG
+
+HRESULT CContainerObject::Imgui_Render_ObjectInfos()
+{
+    CGameObject::Imgui_Render_ObjectInfos();
+    ImGui::Begin("PartObject Infos");
+
+    ImGui::Text("<Parts Infos>");
+
+    static CGameObject* pSelectObject = nullptr;
+    _int iNumParts = m_PartObjects.size();
+    ImGui::Text("iNumParts : %d", iNumParts);
+
+    if (ImGui::TreeNode("PartObjects"))
+    {
+        vector<const char*> strInstanceIDs;
+        _int iSelectObjectIndex = 0;
+        strInstanceIDs.clear();
+        vector<_string> strPartNames;
+        strPartNames.resize(m_PartObjects.size());
+        int iIndex = 0;
+        for (auto& pPart : m_PartObjects)
+        {
+            if (nullptr == pPart)
+                continue;
+            strPartNames[iIndex] = typeid(*pPart).name();
+            _int iInstanceID = (_int)(pPart->Get_GameObjectInstanceID());
+            strPartNames[iIndex] += "_" + to_string(iInstanceID);
+            strInstanceIDs.push_back(strPartNames[iIndex++].c_str());
+        }
+
+        if (ImGui::ListBox(" ", &iSelectObjectIndex, strInstanceIDs.data(), (_int)strInstanceIDs.size()))
+        {
+            if (iSelectObjectIndex != -1)
+            {
+                pSelectObject = m_PartObjects[iSelectObjectIndex];
+            }
+
+        }
+
+        ImGui::TreePop();
+    }
+
+
+    if (nullptr != pSelectObject)
+        pSelectObject->Imgui_Render_ObjectInfos();
+    ImGui::End();
+    return S_OK;
+}
+
+#endif // _DEBUG

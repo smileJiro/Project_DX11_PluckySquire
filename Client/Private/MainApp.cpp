@@ -5,6 +5,7 @@
 #include "Level_Loading.h"
 
 #include "Event_Manager.h"
+#include "Poolling_Manager.h"
 #include "Cam_Manager.h"
 
 
@@ -32,17 +33,14 @@ HRESULT CMainApp::Initialize()
 
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
-	{
 		return E_FAIL;
-	}
 
 	/* Event Manager */
 	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
+	CPoolling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
 
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
-	{
 		return E_FAIL;
-	}
 
 
 	return S_OK;
@@ -125,6 +123,7 @@ void CMainApp::Free()
 
 	/* Client Singleton Delete */ 
 	CEvent_Manager::DestroyInstance();
+	CPoolling_Manager::DestroyInstance();
 	CCam_Manager::DestroyInstance();
 
 	/* GameInstance Release*/

@@ -47,16 +47,12 @@ HRESULT CTestPlayer::Initialize(void* _pArg)
 void CTestPlayer::Priority_Update(_float _fTimeDelta)
 {
 
-
-
     CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 void CTestPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
-
-
 
     CContainerObject::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -80,6 +76,11 @@ HRESULT CTestPlayer::Render()
     return S_OK;
 }
 
+void CTestPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    int a = 0;
+}
+
 void CTestPlayer::Key_Input(_float _fTimeDelta)
 {
     if (KEY_DOWN(KEY::NUM1))
@@ -91,6 +92,15 @@ void CTestPlayer::Key_Input(_float _fTimeDelta)
         
     }
 
+    if (KEY_DOWN(KEY::NUM4))
+    {
+        Event_DeleteObject(this);
+    }
+
+    if (KEY_DOWN(KEY::M))
+    {
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
+    }
     /* Test Move Code */
     if (KEY_PRESSING(KEY::A))
     {
@@ -142,28 +152,29 @@ HRESULT CTestPlayer::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_player2DAnimation");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.strModelPrototypeTag = TEXT("Tree_Mod_03");
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::COLOR_ALPHA;
+    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    BodyDesc.tTransform2DDesc.vScaling = _float3(100.0f, 100.0f, 100.0f);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    BodyDesc.tTransform2DDesc.fSpeedPerSec = 20.f;
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
-    BodyDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_TestBody"), &BodyDesc));
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
+    
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CTestPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
     return S_OK;
 }

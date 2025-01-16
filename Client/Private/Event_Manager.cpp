@@ -9,6 +9,9 @@
 #include "Layer.h"
 
 #include "Cam_Manager.h"
+#include "Poolling_Manager.h"
+
+#include "FSM.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -74,7 +77,12 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 	{
 		Excute_SetActive(_tEvent);
 	}
-	break;
+		break;
+	case Client::EVENT_TYPE::CHANGE_MONSTERSTATE:
+	{
+		Excute_ChangeMonsterState(_tEvent);
+	}
+		break;
 	default:
 		break;
 	}
@@ -206,8 +214,28 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 	return S_OK;
 }
 
+HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
+{
+	/* Parameter_0 : Changing State */
+	MONSTER_STATE eState = (MONSTER_STATE)_tEvent.Parameters[0];
+	
+	if (MONSTER_STATE::LAST == eState)
+		return E_FAIL;
+
+	/* Parameter_1 : FSM Address */
+	CFSM* pFSM=(CFSM*)_tEvent.Parameters[1];
+
+	if (nullptr == pFSM)
+		return E_FAIL;
+
+	pFSM->Change_State(eState);
+
+	return S_OK;
+}
+
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
+	CPoolling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	
 	return S_OK;
 }
@@ -216,6 +244,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
+	CPoolling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
 	return S_OK;
 }

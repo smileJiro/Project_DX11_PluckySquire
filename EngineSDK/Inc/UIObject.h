@@ -11,7 +11,7 @@ BEGIN(Engine)
 class ENGINE_DLL CUIObject abstract : public CGameObject
 {
 public:
-	typedef struct : CGameObject::GAMEOBJECT_DESC
+	typedef struct tagUiObjectDesc: CGameObject::GAMEOBJECT_DESC
 	{
 		_float		fX, fY, fSizeX, fSizeY;
 	}UIOBJECT_DESC;

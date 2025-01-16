@@ -14,6 +14,9 @@
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager.h"
+#include "Layer.h"
+#include "ModelObject.h"
+#include "ContainerObject.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -122,27 +125,8 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update 수행 후, DeadObject Safe_Release() + erase();
 	m_pLevel_Manager->Update(fTimeDelta);
 
-
-
-
 #ifdef _DEBUG
-	if (true == m_isImguiRTRender)
-	{
-		if (FAILED(Imgui_Render_RT_Debug()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
-		}
-		if (FAILED(Imgui_Render_RT_Debug_FullScreen()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
-		}
-	}
-	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
-	{
-		m_isImguiRTRender ^= 1;
-	}
-
-
+	Imgui_Debug_Render();
 #endif
 
 
@@ -215,7 +199,42 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	return S_OK;
 }
 
-HRESULT CGameInstance::Imgui_Render_RT_Debug()
+#ifdef _DEBUG
+
+HRESULT CGameInstance::Imgui_Debug_Render()
+{
+	if (true == m_isImguiRTRender)
+	{
+		if (FAILED(Imgui_Debug_Render_RT()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
+		}
+		if (FAILED(Imgui_Debug_Render_RT_FullScreen()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
+		}
+
+	}
+	if (true == m_isImguiObjRender)
+	{
+		if (FAILED(Imgui_Debug_Render_ObjectInfo()))
+		{
+			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
+		}
+	}
+	if (GetKeyState(KEY::NUM9) == KEY_STATE::DOWN)
+	{
+		m_isImguiObjRender ^= 1;
+	}
+	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
+	{
+		m_isImguiRTRender ^= 1;
+	}
+
+	return S_OK;
+}
+
+HRESULT CGameInstance::Imgui_Debug_Render_RT()
 {
 	ImGui::Begin("DebugRenderTarget");
 
@@ -249,7 +268,7 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug()
 	return S_OK;
 }
 
-HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
+HRESULT CGameInstance::Imgui_Debug_Render_RT_FullScreen()
 {
 	ImGui::Begin("Debug FullScreen");
 
@@ -302,13 +321,179 @@ HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
 	}
 
 
-	
 	ImGui::End();
 
 
 
 	return S_OK;
 }
+
+HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
+{
+	/* 트리노드로 Layer 들을 렌더한다. */
+	ImGui::Begin("ObjectsInfo");
+
+	static CGameObject* pSelectObject = nullptr;
+	if (ImGui::TreeNode("Object Layers")) // Layer
+	{
+		map<const _wstring, CLayer*>* pLayers = m_pObject_Manager->Get_Layers_Ptr();
+		_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
+		if (nullptr != pLayers)
+		{
+			_uint iNumLevels = m_pObject_Manager->Get_NumLevels();
+
+			/* Current Level */
+			ImGui::Text("Current Level Layers");
+			_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
+			for (auto& Pair : pLayers[iCurLevelID])
+			{
+				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
+				
+				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
+				{
+					const list<CGameObject*> pGameObjects = Pair.second->Get_GameObjects();
+					vector<const char*> strInstanceIDs;
+					_int iSelectObjectIndex = -1;
+					strInstanceIDs.clear();
+					vector<_string> strGameObjectNames;
+					strGameObjectNames.resize(pGameObjects.size());
+					int iIndex = 0;
+					for (auto& pGameObject : pGameObjects)
+					{
+						strGameObjectNames[iIndex] = typeid(*pGameObject).name();
+						_int iInstanceID = (_int)(pGameObject->Get_GameObjectInstanceID());
+						strGameObjectNames[iIndex] += "_" + to_string(iInstanceID);
+						strInstanceIDs.push_back(strGameObjectNames[iIndex++].c_str());
+					}
+
+					if (ImGui::ListBox(" ", &iSelectObjectIndex, strInstanceIDs.data(), (_int)strInstanceIDs.size()))
+					{
+						if (iSelectObjectIndex != -1) 
+						{
+							
+							pSelectObject = Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectObjectIndex);
+
+						}
+						else
+						{
+							pSelectObject = nullptr;
+						}
+					}
+
+
+					ImGui::TreePop();
+				}
+			}
+
+			/* Static Level */
+			ImGui::Text("Static Level Layers");
+			for (auto& Pair : pLayers[m_iStaticLevelID])
+			{
+				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
+				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
+				{
+					const list<CGameObject*>& GameObjects = Pair.second->Get_GameObjects();
+
+					for (auto& pGameObject : GameObjects)
+					{
+						//pGameObject.
+					}
+					ImGui::TreePop();
+				}
+			}
+
+		}
+
+		ImGui::TreePop();
+	}
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+	ImGui::Separator();
+	ImGui::Separator();
+	ImGui::Text("<Select Object Info>");
+
+	/* Object 세부 정보 렌더링 */
+	if(nullptr != pSelectObject)
+		pSelectObject->Imgui_Render_ObjectInfos();
+	
+	
+
+
+	ImGui::End();
+
+	return S_OK;
+}
+
+HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject)
+{
+	//if (nullptr == _pGameObject)
+	//	return S_OK;
+
+	//
+	//COORDINATE eCurCoord = _pGameObject->Get_ControllerTransform()->Get_CurCoord();
+	//_string strCurCoord = "Current Coord : ";
+	//
+	//switch (eCurCoord)
+	//{
+	//case Engine::COORDINATE_2D:
+	//{
+	//	strCurCoord += "2D";
+	//}
+	//	break;
+	//case Engine::COORDINATE_3D:
+	//{
+	//	strCurCoord += "3D";
+	//}
+	//	break;
+	//}
+	//ImGui::Text(strCurCoord.c_str());
+	//ImGui::Separator();
+
+	///* Coordinate Change Enable */
+	//_bool isCoordChangeEnable = _pGameObject->Get_ControllerTransform()->Is_CoordChangeEnable();
+	//_string strCoordChangeEnable = "CoordChangeEnable : ";
+	//if (true == isCoordChangeEnable)
+	//	strCoordChangeEnable += "true";
+	//else
+	//	strCoordChangeEnable += "false";
+	//ImGui::Text(strCoordChangeEnable.c_str());
+	//ImGui::Separator();
+
+	///* Active */
+	//_bool isActive = _pGameObject->Is_Active();
+	//_string strActive = "Active : ";
+	//if (true == isActive)
+	//	strActive += "true";
+	//else
+	//	strActive += "false";
+	//ImGui::Text(strActive.c_str());
+	//ImGui::Separator();
+
+	//CContainerObject* pContainerObject = dynamic_cast<CContainerObject*>(_pGameObject);
+	//if (nullptr != pContainerObject)
+	//{
+	//	_int iNumParts = pContainerObject->Get_NumPartObjects();
+
+	//	if (_int i = 0; i < iNumParts; ++i)
+	//	{
+
+	//	}
+	//	Imgui_Debug_Render_PartObject_Detail
+
+	//		
+
+	//	_uint iShaderPassIndex = pModelObject->Get_ShaderPassIndex(eCurCoord);
+	//	_string strShaderPass = "ShaderPassIndex : ";
+	//	
+	//	if (true == isActive)
+	//		strShaderPass += to_string(iShaderPassIndex);
+	//	else
+	//		strShaderPass += to_string(iShaderPassIndex);
+
+	//}
+	return S_OK;
+}
+
+#endif // _DEBUG
 
 _float CGameInstance::Get_TimeDelta(const _wstring& _strTimerTag)
 {

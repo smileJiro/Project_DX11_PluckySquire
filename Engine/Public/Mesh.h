@@ -13,18 +13,21 @@ private:
 	virtual ~CMesh() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(C3DModel::TYPE _eModelType, C3DModel* _pModel, ifstream& inFile, _fmatrix _PreTransformMatrix);
+	virtual HRESULT Initialize_Prototype(C3DModel::ANIM_TYPE _eModelType, C3DModel* _pModel, ifstream& inFile, _fmatrix _PreTransformMatrix);
 	virtual HRESULT Initialize(void* _pArg);
 
 public:
-	HRESULT Bind_BoneMatrices(class CShader* _pShader, const _char* _pConstantName, const vector<CBone*>& _vecBones);
-
-	HRESULT Copy_BoneMatrices(array<_float4x4, 256>* _pOutBoneMatrices);
+	HRESULT Bind_BoneMatrices(class CShader* _pShader, const _char* _pConstantName, const vector<CBone*>& _Bones);
+	void ReSet_OffsetMarix();
+public:
+	HRESULT Ready_VertexBuffer_For_NonAnim(ifstream& _inFile, _fmatrix _PreTransformMatrix);
+	HRESULT Ready_VertexBuffer_For_Anim(ifstream& _inFile,  C3DModel* _pModel);
 public:
 	// Get
+	_char* Get_Name()  { return m_szName; }
 	_uint Get_MaterialIndex() const { return m_iMaterialIndex; }
-	_string Get_Name() const { return _string(m_szName); }
 	vector<_uint>& Get_BoneIndices() { return m_BoneIndices; }
+
 	// Set
 	void Set_Name(string _strName) { strcpy_s(m_szName, _strName.c_str()); }
 private:
@@ -37,13 +40,9 @@ private:
 	vector<_uint>				m_BoneIndices;
 	vector<_float4x4>			m_BoneOffsetMatrices;
 	_float4x4					m_BoneMatrices[256];
-private:
-	HRESULT Ready_VertexBuffer_For_NonAnim(ifstream& _inFile, _fmatrix _PreTransformMatrix);
-	HRESULT Ready_VertexBuffer_For_Anim(ifstream& _inFile,  C3DModel* _pModel);
-
 public:
 public:	
-	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, C3DModel::TYPE _eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix);
+	static CMesh* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, C3DModel::ANIM_TYPE _eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
 };

@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+
+//공격 범위가 추적 범위보다 작고 이동값이 일정한 추적 상태
 class CChaseWalkState final : public CState
 {
 private:
@@ -10,8 +12,7 @@ private:
 	virtual ~CChaseWalkState() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
-	//virtual HRESULT Initialize(void* _pArg) override;
+	virtual HRESULT Initialize(void* _pArg) override;
 
 public:
 	virtual void State_Enter() override;
@@ -19,8 +20,7 @@ public:
 	virtual void State_Exit() override;
 
 public:
-	static CChaseWalkState* Create();
-	//virtual CChaseWalkState* Clone(void* _pArg);
+	static CChaseWalkState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

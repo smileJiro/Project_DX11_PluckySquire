@@ -38,8 +38,14 @@ public: /* For.GameInstance */
 
 	_int				Get_StaticLevelID() const { return m_iStaticLevelID; }
 
-	HRESULT				Imgui_Render_RT_Debug();
-	HRESULT				Imgui_Render_RT_Debug_FullScreen();
+#ifdef _DEBUG
+	HRESULT				Imgui_Debug_Render();
+	HRESULT				Imgui_Debug_Render_RT();
+	HRESULT				Imgui_Debug_Render_RT_FullScreen();
+	HRESULT				Imgui_Debug_Render_ObjectInfo();
+	HRESULT				Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject);
+#endif // _DEBUG
+
 public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	void				Render_FPS(const _wstring& _strTimerTag);
@@ -209,6 +215,7 @@ private:
 	_int m_iStaticLevelID = -1;
 
 	_bool m_isImguiRTRender = true;
+	_bool m_isImguiObjRender = true;
 public:
 	// Static
 	static void Release_Engine();
