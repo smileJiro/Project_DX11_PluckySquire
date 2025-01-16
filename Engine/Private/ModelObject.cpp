@@ -27,7 +27,8 @@ HRESULT CModelObject::Initialize(void* _pArg)
     // Save 
     m_iShaderPasses[COORDINATE_2D] = pDesc->iShaderPass_2D;
     m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
-
+    m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
+    m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
     // Add
 
 
@@ -292,8 +293,19 @@ void CModelObject::Free()
 
 HRESULT CModelObject::Imgui_Render_ObjectInfos()
 {
-    /* Current Coord */
     COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+
+    /* Model Prototype Tag */
+    if (false == m_strModelPrototypeTag[eCurCoord].empty())
+    {
+        _string strModelPrototypeTag = "ModelTag : ";
+        strModelPrototypeTag += WSTRINGTOSTRING(m_strModelPrototypeTag[eCurCoord]);
+        ImGui::Text(strModelPrototypeTag.c_str());
+    }
+
+
+    /* Current Coord */
+    eCurCoord = m_pControllerTransform->Get_CurCoord();
     _string strCurCoord = "Current Coord : ";
     switch (eCurCoord)
     {
