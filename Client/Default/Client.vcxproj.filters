@@ -97,14 +97,14 @@
     <Filter Include="02.GameObjects\Monster\Beetle">
       <UniqueIdentifier>{e4f8e236-1773-4c39-95eb-432f578067b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95.Pulling">
-      <UniqueIdentifier>{cc263f96-5434-457f-a65e-e14dc3e287ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="95.Pulling\Manager">
-      <UniqueIdentifier>{4306c12f-adec-4da0-b70f-b9d1c79d53f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\BarfBug">
       <UniqueIdentifier>{67bad6d7-2648-479f-83bb-27d29ba71422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95.Poolling">
+      <UniqueIdentifier>{cc263f96-5434-457f-a65e-e14dc3e287ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95.Poolling\Manager">
+      <UniqueIdentifier>{4306c12f-adec-4da0-b70f-b9d1c79d53f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -208,7 +208,7 @@
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Poolling_Manager.h">
-      <Filter>95.Pulling</Filter>
+      <Filter>95.Poolling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -291,7 +291,7 @@
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Poolling_Manager.cpp">
-      <Filter>95.Pulling</Filter>
+      <Filter>95.Poolling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
