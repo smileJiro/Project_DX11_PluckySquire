@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_jump_rise_object_right_0003_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 3844.0,
+        "Y": 1271.0
+      },
+      "BakedSourceDimension": {
+        "X": 237.0,
+        "Y": 249.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_2'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_2.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 106.0,
+          "Y": 264.0,
+          "Z": 0.99609375,
+          "W": 0.31054688
+        },
+        {
+          "X": -129.0,
+          "Y": 264.0,
+          "Z": 0.9387207,
+          "W": 0.31054688
+        },
+        {
+          "X": -129.0,
+          "Y": 17.0,
+          "Z": 0.9387207,
+          "W": 0.3708496
+        },
+        {
+          "X": 106.0,
+          "Y": 17.0,
+          "Z": 0.99609375,
+          "W": 0.3708496
+        },
+        {
+          "X": 106.0,
+          "Y": 264.0,
+          "Z": 0.99609375,
+          "W": 0.31054688
+        },
+        {
+          "X": -129.0,
+          "Y": 17.0,
+          "Z": 0.9387207,
+          "W": 0.3708496
+        }
+      ]
+    }
+  }
+]

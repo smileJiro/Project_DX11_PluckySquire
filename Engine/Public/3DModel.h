@@ -39,10 +39,14 @@ public:
 	class CBone* Get_Bone(const _char* pBoneName) const;
 	const vector<CMesh*>& Get_Meshes() { return m_Meshes; }
 
+	//Get
+	virtual _uint Get_AnimCount() override;
+	virtual _uint Get_CurrentAnimIndex() override { return m_iCurrentAnimIndex; }
 	// Set
 	virtual void Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
 	virtual void Set_Animation(_uint iIdx)override;
 	virtual void Switch_Animation(_uint iIdx)override;
+	virtual void To_NextAnimation() override;
 protected:
 
 	_uint				m_iNumMeshes = 0;

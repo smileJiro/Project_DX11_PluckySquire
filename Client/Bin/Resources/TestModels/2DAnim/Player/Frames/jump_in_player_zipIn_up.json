@@ -1,0 +1,67 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "jump_in_player_zipIn_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_in_player_zipIn_up_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_in_player_zipIn_up_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_in_player_zipIn_up_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_in_player_zipIn_up_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_in_player_zipIn_up_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_in_player_zipIn_up_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_in_player_zipIn_up_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_in_player_zipIn_up_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_in_player_zipIn_up_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_in_player_zipIn_up_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_in_player_zipIn_up_0006_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_in_player_zipIn_up_0006_X03.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_in_player_zipIn_up_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_in_player_zipIn_up_0007_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_in_player_zipIn_up_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_in_player_zipIn_up_0008_X02.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

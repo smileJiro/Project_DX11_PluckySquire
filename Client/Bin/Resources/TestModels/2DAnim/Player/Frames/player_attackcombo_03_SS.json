@@ -1,0 +1,104 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_attackcombo_03_SS",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 45.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0006_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0006_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0007_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0007_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0008_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0008_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0009_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0011_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackcombo_03_SS_0013_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_SS_0013_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ],
+      "CollisionSource": "EFlipbookCollisionMode::EachFrameCollision"
+    }
+  }
+]

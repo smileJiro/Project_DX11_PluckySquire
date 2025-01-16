@@ -27,7 +27,8 @@ HRESULT CModelObject::Initialize(void* _pArg)
     // Save 
     m_iShaderPasses[COORDINATE_2D] = pDesc->iShaderPass_2D;
     m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
-
+    m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
+    m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
     // Add
 
 
@@ -130,6 +131,11 @@ _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
     return false;
 }
 
+void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_uint)>& fCallback)
+{
+	m_pControllerModel->Register_OnAnimEndCallBack(fCallback);
+}
+
 void CModelObject::Update(_float fTimeDelta)
 {
     m_pControllerModel->Play_Animation(fTimeDelta);
@@ -158,6 +164,11 @@ void CModelObject::Set_Animation(_uint iIdx)
 void CModelObject::Switch_Animation(_uint iIdx)
 {
     m_pControllerModel->Switch_Animation(iIdx);
+}
+
+void CModelObject::To_NextAnimation()
+{
+    m_pControllerModel->To_NextAnimation();
 }
 
 HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
@@ -205,7 +216,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 	tModelDesc.isCoordChangeEnable = _pDesc->isCoordChangeEnable;
 	tModelDesc.iCurLevelID = iStaticLevelID;
 	tModelDesc.i2DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_2D;
-	tModelDesc.i3DModelPrototypeLevelID = _pDesc->i3DModelPrototypeLevelID;
+	tModelDesc.i3DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_3D;
 	tModelDesc.wstr2DModelPrototypeTag = _pDesc->strModelPrototypeTag_2D;
 	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
 
@@ -292,8 +303,19 @@ void CModelObject::Free()
 
 HRESULT CModelObject::Imgui_Render_ObjectInfos()
 {
-    /* Current Coord */
     COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+
+    /* Model Prototype Tag */
+    if (false == m_strModelPrototypeTag[eCurCoord].empty())
+    {
+        _string strModelPrototypeTag = "ModelTag : ";
+        strModelPrototypeTag += WSTRINGTOSTRING(m_strModelPrototypeTag[eCurCoord]);
+        ImGui::Text(strModelPrototypeTag.c_str());
+    }
+
+
+    /* Current Coord */
+    eCurCoord = m_pControllerTransform->Get_CurCoord();
     _string strCurCoord = "Current Coord : ";
     switch (eCurCoord)
     {

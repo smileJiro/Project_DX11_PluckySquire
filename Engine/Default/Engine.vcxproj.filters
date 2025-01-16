@@ -438,7 +438,12 @@
     <ClInclude Include="..\Public\2DModel.h">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Model.h" />
+    <ClInclude Include="..\Public\Model.h">
+      <Filter>01.Utility\04.Components\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation2D.h">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -642,7 +647,12 @@
     <ClCompile Include="..\Private\2DModel.cpp">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Model.cpp" />
+    <ClCompile Include="..\Private\Model.cpp">
+      <Filter>01.Utility\04.Components\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation2D.cpp">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">

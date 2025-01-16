@@ -12,6 +12,7 @@ public:
 
 	typedef struct tagMonsterDesc : public CContainerObject::CONTAINEROBJ_DESC
 	{
+		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
 	}MONSTER_DESC;

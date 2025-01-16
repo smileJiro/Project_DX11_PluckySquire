@@ -235,6 +235,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\ModelObject.h" />
     <ClInclude Include="..\Public\3DModel.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
+    <ClInclude Include="..\Public\Animation2D.h" />
     <ClInclude Include="..\Public\PartObject.h" />
     <ClInclude Include="..\public\PipeLine.h" />
     <ClInclude Include="..\Public\Prototype_Manager.h" />
@@ -306,6 +307,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\ModelObject.cpp" />
     <ClCompile Include="..\Private\3DModel.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
+    <ClCompile Include="..\Private\Animation2D.cpp" />
     <ClCompile Include="..\Private\PartObject.cpp" />
     <ClCompile Include="..\private\PipeLine.cpp" />
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />

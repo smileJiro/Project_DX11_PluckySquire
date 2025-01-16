@@ -36,18 +36,17 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
-	Key_Input(fTimeDelta);
-
-	__super::Compute_PipeLineMatrices();
-
+	
 }
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
+	Key_Input(fTimeDelta);
 }
 
 void CCamera_Free::Late_Update(_float fTimeDelta)
 {
+	__super::Compute_PipeLineMatrices();
 }
 
 void CCamera_Free::Key_Input(_float fTimeDelta)

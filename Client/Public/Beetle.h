@@ -5,38 +5,38 @@ class CBeetle final : public CMonster
 public:
 	enum Animation
 	{
-		Alert,
-		AttackShort,
-		AttackRecovery,
-		AttackStrike,
-		Concered,
-		Concered_AttackReady,
-		Damage,
-		Death,
-		FlyLand,
-		Fly_Left,
-		Fly_Right,
-		Fly_Takeoff,
-		Idle,
-		Run,
-		Walk,
-		Caught,
-		CaughtLoop,
-		Dragged,
-		Idle_Stop,
-		Pause1,
-		Pause2,
-		Strafe_Back_Fast,
-		Strafe_Back_Slow,
-		Strafe_Left_Fast,
-		Turn_Left,
-		Strafe_Left_Slow,
-		Strafe_Right_Fast,
-		Turn_Right,
-		Strafe_Right_Slow,
-		Wait1,
-		Wait2,
-		End,
+		ALERT,
+		ATTACKSHORT,
+		ATTACKRECOVERY,
+		ATTACKSTRIKE,
+		CONCERED,
+		CONCERED_ATTACKREADY,
+		DAMAGE,
+		DIE,
+		FLYLAND,
+		FLY_LEFT,
+		FLY_RIGHT,
+		FLY_TAKEOFF,
+		IDLE,
+		RUN,
+		WALK,
+		CAUGHT,
+		CAUGHTLOOP,
+		DRAGGED,
+		IDLE_STOP,
+		PAUSE1,
+		PAUSE2,
+		STRAFE_BACK_FAST,
+		STRAFE_BACK_SLOW,
+		STRAFE_LEFT_FAST,
+		TURN_LEFT,
+		STRAFE_LEFT_SLOW,
+		STRAFE_RIGHT_FAST,
+		TURN_RIGHT,
+		STRAFE_RIGHT_SLOW,
+		WAIT1,
+		WAIT2,
+		LAST,
 	};
 
 private:
@@ -54,6 +54,8 @@ public:
 
 public:
 	virtual void Change_Animation() override;
+	void	Attack_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Attack_Recovery_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
 	HRESULT					Ready_Components();

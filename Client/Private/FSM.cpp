@@ -4,6 +4,7 @@
 
 #include "IdleState.h"
 #include "ChaseWalkState.h"
+#include "MeleeAttackState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -68,6 +69,12 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 		break;
 
 	case Client::MONSTER_STATE::ATTACK:
+		pState = CMeleeAttackState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace(MONSTER_STATE::ATTACK, pState);
 		break;
 	case Client::MONSTER_STATE::LAST:
 		break;

@@ -115,8 +115,8 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
-	m_pCamera_Manager->Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
+	m_pCamera_Manager->Update(fTimeDelta);
 	m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 }
 
@@ -145,7 +145,6 @@ HRESULT CGameInstance::Draw()
 	m_pRenderer->Draw_RenderObject();
 
 	m_pLevel_Manager->Render();
-
 
 	return S_OK;
 }
@@ -1184,9 +1183,19 @@ CCamera* CGameInstance::Get_CurrentCamera()
 	return m_pCamera_Manager->Get_CurrentCamera();
 }
 
+CCamera* CGameInstance::Get_Camera(_uint _eType)
+{
+	return  m_pCamera_Manager->Get_Camera(_eType);
+}
+
 _vector CGameInstance::Get_CameraVector(CTransform::STATE _eState)
 {
 	return m_pCamera_Manager->Get_CameraVector(_eState);
+}
+
+_uint CGameInstance::Get_CameraType()
+{
+	return m_pCamera_Manager->Get_CameraType();
 }
 
 void CGameInstance::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
@@ -1194,19 +1203,9 @@ void CGameInstance::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 	m_pCamera_Manager->Add_Camera(_iCurrentCameraType, _pCamera);
 }
 
-void CGameInstance::Add_Arm(CCameraArm* _pCameraArm)
-{
-	m_pCamera_Manager->Add_Arm(_pCameraArm);
-}
-
 void CGameInstance::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 {
 	m_pCamera_Manager->Change_CameraMode(_iCameraMode, _iNextMode);
-}
-
-void CGameInstance::Change_CameraArm(_wstring _wszArmTag)
-{
-	m_pCamera_Manager->Change_CameraArm(_wszArmTag);
 }
 
 void CGameInstance::Change_CameraType(_uint _iCurrentCameraType)
@@ -1214,11 +1213,10 @@ void CGameInstance::Change_CameraType(_uint _iCurrentCameraType)
 	m_pCamera_Manager->Change_CameraType(_iCurrentCameraType);
 }
 
-void CGameInstance::Set_CameraPos(_vector _vCameraPos)
+void CGameInstance::Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos)
 {
-	m_pCamera_Manager->Set_CameraPos(_vCameraPos);
+	m_pCamera_Manager->Set_CameraPos(_vCameraPos, _vTargetPos);
 }
-
 
 #ifdef _DEBUG
 

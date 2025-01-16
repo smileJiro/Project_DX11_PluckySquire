@@ -4,6 +4,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Cam_Manager.h"
+#include "Poolling_Manager.h"
 #include "TestPlayer.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
@@ -25,6 +26,16 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 
+
+	POOLLING_DESC Poolling_Desc;
+	Poolling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+	Poolling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Poolling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
+	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
+	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
+	CPoolling_Manager::GetInstance()->Register_PoollingObject(TEXT("Poolling_TestBeetle"), Poolling_Desc, pDesc);
+
+	
     return S_OK;
 }
 
@@ -33,6 +44,12 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::ENTER))
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
+	}
+	
+	if (KEY_DOWN(KEY::NUM6))
+	{
+		_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
+		CPoolling_Manager::GetInstance()->Create_Objects(TEXT("Poolling_TestBeetle"), 1, &vPosition);
 	}
 
 }
@@ -107,6 +124,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 	CGameObject** pGameObject = nullptr;
 
 	CTestPlayer::CONTAINEROBJ_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -123,7 +141,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	TerrainDesc.eStartCoord = COORDINATE_3D;
 	TerrainDesc.iCurLevelID = LEVEL_GAMEPLAY;
 	TerrainDesc.isCoordChangeEnable = false;
-	TerrainDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
 	TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
 	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 
@@ -177,18 +195,19 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
-	CGameObject* pGameObject = nullptr;
 	CBeetle::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
 	Monster_Desc.tTransform3DDesc.vPosition = _float3(10.0f, 1.0f, 10.0f);
 	Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
-	if(nullptr != _ppout)
-		_ppout = &pGameObject;
+	Monster_Desc.tTransform3DDesc.vPosition = _float3(-10.0f, 1.0f, 10.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

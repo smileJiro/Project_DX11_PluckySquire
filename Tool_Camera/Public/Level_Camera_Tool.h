@@ -21,8 +21,21 @@ public:
 	HRESULT				Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 
 private:
+	_float				m_fRotationValue = { 0.5f };
+	_float				m_fLengthValue = { 0.5f };
+	_bool				m_isCopyArm = { false };
+
+	_char				m_szCopyArmName[MAX_PATH] = { "" };
+
+private:
 	void				Show_CameraTool();
 	void				Create_Arms();
+
+private:
+	// Tool
+	void				Rotate_Arm(_bool _isCopyArm);
+	void				Change_ArmLength(_bool _isCopyArm);
+	void				Add_CopyArm();
 
 public:
 	static CLevel_Camera_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
