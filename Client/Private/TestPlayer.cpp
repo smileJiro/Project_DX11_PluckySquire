@@ -161,7 +161,7 @@ HRESULT CTestPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_CModelObject"), &BodyDesc));
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
     
