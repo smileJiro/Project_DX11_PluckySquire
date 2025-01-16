@@ -22,7 +22,7 @@ HRESULT CController_Model::Initialize(CON_MODEL_DESC* _pDesc)
         return E_FAIL;
 
     /* Com_VIBuffer */
-    CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, 1, TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
+    CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT,m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
     if (nullptr == pComponent)
         return E_FAIL;
 
@@ -154,6 +154,8 @@ void CController_Model::Free()
     {
 		Safe_Release(pModel);
     }
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
