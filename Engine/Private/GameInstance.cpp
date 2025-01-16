@@ -16,6 +16,7 @@
 #include "Camera_Manager.h"
 #include "Layer.h"
 #include "ModelObject.h"
+#include "ContainerObject.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -328,7 +329,7 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 	ImGui::Begin("ObjectsInfo");
 
 	static CGameObject* pSelectObject = nullptr;
-	if (ImGui::TreeNode("Object Layers")) // Layer 
+	if (ImGui::TreeNode("Object Layers")) // Layer
 	{
 		map<const _wstring, CLayer*>* pLayers = m_pObject_Manager->Get_Layers_Ptr();
 		_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
@@ -356,7 +357,6 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 						_int iInstanceID = (_int)(pGameObject->Get_GameObjectInstanceID());
 						strGameObjectName += "_" + to_string(iInstanceID);
 						strInstanceIDs.push_back(strGameObjectName.c_str());
-						
 					}
 
 					if (ImGui::ListBox(" ", &iSelectObjectIndex, strInstanceIDs.data(), (_int)strInstanceIDs.size()))
@@ -399,8 +399,11 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 	ImGui::Separator();
 	ImGui::Separator();
 	ImGui::Text("<Select Object Info>");
+
+	/* Object 세부 정보 렌더링 */
+	if(nullptr != pSelectObject)
+		pSelectObject->Imgui_Render_ObjectInfos();
 	
-	Imgui_Debug_Render_ObjectInfo_Detail(pSelectObject);
 	
 
 
@@ -411,61 +414,71 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 
 HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject)
 {
-	if (nullptr == _pGameObject)
-		return S_OK;
+	//if (nullptr == _pGameObject)
+	//	return S_OK;
 
-	
-	COORDINATE eCurCoord = _pGameObject->Get_ControllerTransform()->Get_CurCoord();
-	_string strCurCoord = "Current Coord : ";
-	
-	switch (eCurCoord)
-	{
-	case Engine::COORDINATE_2D:
-	{
-		strCurCoord += "2D";
-	}
-		break;
-	case Engine::COORDINATE_3D:
-	{
-		strCurCoord += "3D";
-	}
-		break;
-	}
-	ImGui::Text(strCurCoord.c_str());
-	ImGui::Separator();
+	//
+	//COORDINATE eCurCoord = _pGameObject->Get_ControllerTransform()->Get_CurCoord();
+	//_string strCurCoord = "Current Coord : ";
+	//
+	//switch (eCurCoord)
+	//{
+	//case Engine::COORDINATE_2D:
+	//{
+	//	strCurCoord += "2D";
+	//}
+	//	break;
+	//case Engine::COORDINATE_3D:
+	//{
+	//	strCurCoord += "3D";
+	//}
+	//	break;
+	//}
+	//ImGui::Text(strCurCoord.c_str());
+	//ImGui::Separator();
 
-	/* Coordinate Change Enable */
-	_bool isCoordChangeEnable = _pGameObject->Get_ControllerTransform()->Is_CoordChangeEnable();
-	_string strCoordChangeEnable = "CoordChangeEnable : ";
-	if (true == isCoordChangeEnable)
-		strCoordChangeEnable += "true";
-	else
-		strCoordChangeEnable += "false";
-	ImGui::Text(strCoordChangeEnable.c_str());
-	ImGui::Separator();
+	///* Coordinate Change Enable */
+	//_bool isCoordChangeEnable = _pGameObject->Get_ControllerTransform()->Is_CoordChangeEnable();
+	//_string strCoordChangeEnable = "CoordChangeEnable : ";
+	//if (true == isCoordChangeEnable)
+	//	strCoordChangeEnable += "true";
+	//else
+	//	strCoordChangeEnable += "false";
+	//ImGui::Text(strCoordChangeEnable.c_str());
+	//ImGui::Separator();
 
-	/* Active */
-	_bool isActive = _pGameObject->Is_Active();
-	_string strActive = "Active : ";
-	if (true == isActive)
-		strActive += "true";
-	else
-		strActive += "false";
-	ImGui::Text(strActive.c_str());
-	ImGui::Separator();
+	///* Active */
+	//_bool isActive = _pGameObject->Is_Active();
+	//_string strActive = "Active : ";
+	//if (true == isActive)
+	//	strActive += "true";
+	//else
+	//	strActive += "false";
+	//ImGui::Text(strActive.c_str());
+	//ImGui::Separator();
 
-	CModelObject* pModelObject = dynamic_cast<CModelObject*>(_pGameObject);
-	if (nullptr != pModelObject)
-	{
-		_uint iShaderPassIndex = pModelObject->Get_ShaderPassIndex(eCurCoord);
-		_string strShaderPass = "ShaderPassIndex : ";
-		
-		if (true == isActive)
-			strShaderPass += to_string(iShaderPassIndex);
-		else
-			strShaderPass += to_string(iShaderPassIndex);
+	//CContainerObject* pContainerObject = dynamic_cast<CContainerObject*>(_pGameObject);
+	//if (nullptr != pContainerObject)
+	//{
+	//	_int iNumParts = pContainerObject->Get_NumPartObjects();
 
-	}
+	//	if (_int i = 0; i < iNumParts; ++i)
+	//	{
+
+	//	}
+	//	Imgui_Debug_Render_PartObject_Detail
+
+	//		
+
+	//	_uint iShaderPassIndex = pModelObject->Get_ShaderPassIndex(eCurCoord);
+	//	_string strShaderPass = "ShaderPassIndex : ";
+	//	
+	//	if (true == isActive)
+	//		strShaderPass += to_string(iShaderPassIndex);
+	//	else
+	//		strShaderPass += to_string(iShaderPassIndex);
+
+	//}
 	return S_OK;
 }
 

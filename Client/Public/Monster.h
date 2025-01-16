@@ -34,13 +34,13 @@ public:
 	virtual void Attack(_float _fTimeDelta);
 
 public:
-	virtual void Set_State(MONSTER_STATE eState) 
+	virtual void Set_State(MONSTER_STATE _eState) 
 	{
-		m_eState = eState;
+		m_eState = _eState;
 	}
 
 protected:
-	MONSTER_STATE				m_eState = {};
+	MONSTER_STATE		m_eState = {};
 	_uint				m_iPreState = {};
 	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
