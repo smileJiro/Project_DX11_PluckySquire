@@ -171,13 +171,14 @@ public: /* For. GlobalFunction_Manager */
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();
+	CCamera*			Get_Camera(_uint _eType);
 	_vector				Get_CameraVector(CTransform::STATE _eState);
+	_uint				Get_CameraType();
+
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);
-	void				Add_Arm(CCameraArm* _pCameraArm);
 	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);
-	void				Change_CameraArm(_wstring _wszArmTag);
 	void				Change_CameraType(_uint _iCurrentCameraType);
-	void				Set_CameraPos(_vector _vCameraPos);
+	void				Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos);
 
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;

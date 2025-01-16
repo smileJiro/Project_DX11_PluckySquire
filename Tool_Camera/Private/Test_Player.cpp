@@ -76,22 +76,42 @@ HRESULT CTest_Player::Render()
 
 void CTest_Player::Key_Input(_float _fTimeDelta)
 {
-    //if (KEY_PRESSING(KEY::TAB))
-    //{
-    //    Change_Coordinate(COORDINATE_2D, _float3(0.0f, 0.0f, 0.0f));
-    //    m_PartObjects[PART_BODY]->Change_Coordinate(COORDINATE_2D, _float3(0.0f, 0.0f, 0.0f));
+    if (KEY_DOWN(KEY::N)) {
+        m_isMove = false;
+    }
+    else if (KEY_DOWN(KEY::M)) {
+        m_isMove = true;
+    }
 
-    //}
-    //if (KEY_PRESSING(KEY::O))
-    //{
-    //    Change_Coordinate(COORDINATE_3D, _float3(0.0f, 0.0f, 0.0f));
-    //    m_PartObjects[PART_BODY]->Change_Coordinate(COORDINATE_3D, _float3(0.0f, 0.0f, 0.0f));
-    //}
+    if (true == m_isMove) {
+        /* Test Move Code */
+        if (KEY_PRESSING(KEY::A))
+        {
+            if (KEY_PRESSING(KEY::W))
+            {
+                m_pControllerTransform->Go_Straight(_fTimeDelta);
+            }
+            else if (KEY_PRESSING(KEY::S))
+            {
+                m_pControllerTransform->Go_Backward(_fTimeDelta);
+            }
 
-    /* Test Move Code */
-    if (KEY_PRESSING(KEY::A))
-    {
-        if (KEY_PRESSING(KEY::W))
+            m_pControllerTransform->Go_Left(_fTimeDelta);
+        }
+        else if (KEY_PRESSING(KEY::D))
+        {
+            if (KEY_PRESSING(KEY::W))
+            {
+                m_pControllerTransform->Go_Straight(_fTimeDelta);
+            }
+            else if (KEY_PRESSING(KEY::S))
+            {
+                m_pControllerTransform->Go_Backward(_fTimeDelta);
+            }
+
+            m_pControllerTransform->Go_Right(_fTimeDelta);
+        }
+        else if (KEY_PRESSING(KEY::W))
         {
             m_pControllerTransform->Go_Straight(_fTimeDelta);
         }
@@ -99,29 +119,6 @@ void CTest_Player::Key_Input(_float _fTimeDelta)
         {
             m_pControllerTransform->Go_Backward(_fTimeDelta);
         }
-
-        m_pControllerTransform->Go_Left(_fTimeDelta);
-    }
-    else if (KEY_PRESSING(KEY::D))
-    {
-        if (KEY_PRESSING(KEY::W))
-        {
-            m_pControllerTransform->Go_Straight(_fTimeDelta);
-        }
-        else if (KEY_PRESSING(KEY::S))
-        {
-            m_pControllerTransform->Go_Backward(_fTimeDelta);
-        }
-
-        m_pControllerTransform->Go_Right(_fTimeDelta);
-    }
-    else if (KEY_PRESSING(KEY::W))
-    {
-        m_pControllerTransform->Go_Straight(_fTimeDelta);
-    }
-    else if (KEY_PRESSING(KEY::S))
-    {
-        m_pControllerTransform->Go_Backward(_fTimeDelta);
     }
 }
 

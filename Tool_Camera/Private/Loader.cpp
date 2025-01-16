@@ -90,7 +90,12 @@ HRESULT CLoader::Loading_Level_Static()
 {
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
-    lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+    lstrcpy(m_szLoadingText, TEXT("Collider를 로딩중입니다."));
+    
+    /* For.Prototype_Component_Collider_SPHERE */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+        CCollider::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 

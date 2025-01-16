@@ -23,6 +23,9 @@ public:
 	virtual HRESULT			Render() override;
 
 private:
+	_bool					m_isMove = { false };
+
+private:
 	void					Key_Input(_float _fTimeDelta);
 
 private:

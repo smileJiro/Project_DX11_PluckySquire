@@ -17,6 +17,14 @@ class ENGINE_DLL CCamera_Manager : public CBase
 public:
 	enum CAMERA_TYPE { FREE, TARGET, CAMERA_TYPE_END };
 
+	typedef struct tagArmDataDesc
+	{
+		_float3				vArm = { 0.f, 0.f, -1.f };
+		_float				fLength = 1.f;
+		_float				fTurnTime = {};
+		_float				fLengthTime = {};
+	} ARM_DATA;
+
 private:
 	CCamera_Manager();
 	virtual ~CCamera_Manager() = default;
@@ -25,32 +33,33 @@ public:
 	HRESULT				Initialize();
 	void				Update(_float fTimeDelta);
 
+#ifdef _DEBUG
+	void				Render();
+#endif
+
 public:
 	CCamera*			Get_CurrentCamera() { return m_Cameras[m_eCurrentCameraType]; }
+	CCamera*			Get_Camera(_uint _iCameraType) { return m_Cameras[_iCameraType]; }
 	_vector				Get_CameraVector(CTransform::STATE _eState);						// 현재 카메라 Right, Up, Look, Pos 가져오는 함수
+	_uint				Get_CameraType() { return m_eCurrentCameraType; }					
 
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
-	void				Add_Arm(CCameraArm* _pCameraArm);									// CameraArm 셋팅 -> 나중에 json으로 한 번에 로드
-	
+
 	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);		// 카메라 모드 전환(아마 Target Camera만 적용)
-	void				Change_CameraArm(_wstring _wszArmTag);								// CameraArm 바꾸기
+	//void				Change_CameraArm(_wstring _wszArmTag);								// CameraArm 바꾸기
 	void				Change_CameraType(_uint _iCurrentCameraType);
 
-	void				Set_CameraPos(_vector _vCameraPos);									// CameraArm이 호출해서 Camera의 위치 설정
+	void				Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos);			// CameraArm이 호출해서 Camera의 위치 설정
 	
 private:
 	CGameInstance*							m_pGameInstance = { nullptr };
 
 private:
-	map<_wstring, CCameraArm*>				m_Arms;
-	CCameraArm*								m_pCurrentArm = { nullptr };
+	map<_wstring, ARM_DATA*>				m_ArmDatas;
 
 	CCamera*								m_Cameras[CAMERA_TYPE_END];
 	_uint									m_eCurrentCameraType = { CAMERA_TYPE_END };
-
-private:
-	CCameraArm*			Find_Arm(_wstring _wszArmTag);
 
 public:
 	static CCamera_Manager* Create();
