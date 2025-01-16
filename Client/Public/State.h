@@ -28,7 +28,6 @@ public:
 	void Set_FSM(CFSM* _pFSM)
 	{
 		m_pFSM = _pFSM;
-		Safe_AddRef(m_pFSM);
 	}
 
 public:
