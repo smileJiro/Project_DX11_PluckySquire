@@ -53,10 +53,6 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 		Safe_AddRef(m_pCellContainor);
 	}
 	
-	// SM_desk_split_topboard_02
-	m_pLogger = CImguiLogger::Create();
-	if (nullptr == m_pLogger)
-		return E_FAIL;
 
 	CMapObject::MAPOBJ_DESC NormalDesc = {};
 	lstrcpy(NormalDesc.szModelName, L"SM_desk_split_topboard_02");
@@ -74,8 +70,7 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 		(void*)&NormalDesc);
 	if (pGameObject)
 	{
-		m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
-		Safe_AddRef(m_pCellContainor);
+		//m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
 	}
 
 
