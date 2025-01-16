@@ -45,6 +45,9 @@ private:
 	_float	m_fAttackRange = {};
 
 public:
+	HRESULT CleanUp();
+
+public:
 	static CFSM* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CFSM* Clone(void* _pArg);
 

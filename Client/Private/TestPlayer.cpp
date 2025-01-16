@@ -86,6 +86,12 @@ void CTestPlayer::Key_Input(_float _fTimeDelta)
         m_PartObjects[PART_BODY]->Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
         
     }
+
+    if (KEY_DOWN(KEY::NUM4))
+    {
+        Event_DeleteObject(this);
+    }
+
     if (KEY_DOWN(KEY::M))
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(++itmpIdx);
