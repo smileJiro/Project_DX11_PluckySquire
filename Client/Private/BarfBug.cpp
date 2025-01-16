@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "Beetle.h"
+#include "BarfBug.h"
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
 
-CBeetle::CBeetle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
 {
 }
 
-CBeetle::CBeetle(const CBeetle& _Prototype)
+CBarfBug::CBarfBug(const CBarfBug& _Prototype)
     : CMonster(_Prototype)
 {
 }
 
-HRESULT CBeetle::Initialize_Prototype()
+HRESULT CBarfBug::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CBeetle::Initialize(void* _pArg)
+HRESULT CBarfBug::Initialize(void* _pArg)
 {
-    CBeetle::MONSTER_DESC* pDesc = static_cast<CBeetle::MONSTER_DESC*>(_pArg);
+    CBarfBug::MONSTER_DESC* pDesc = static_cast<CBarfBug::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
@@ -43,7 +43,6 @@ HRESULT CBeetle::Initialize(void* _pArg)
 
     m_pFSM->Add_State(MONSTER_STATE::IDLE);
     m_pFSM->Add_State(MONSTER_STATE::CHASE);
-    m_pFSM->Add_State(MONSTER_STATE::ATTACK);
     m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Idle, true);
@@ -53,24 +52,24 @@ HRESULT CBeetle::Initialize(void* _pArg)
     return S_OK;
 }
 
-void CBeetle::Priority_Update(_float _fTimeDelta)
+void CBarfBug::Priority_Update(_float _fTimeDelta)
 {
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
-void CBeetle::Update(_float _fTimeDelta)
+void CBarfBug::Update(_float _fTimeDelta)
 {
     m_pFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
-void CBeetle::Late_Update(_float _fTimeDelta)
+void CBarfBug::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
-HRESULT CBeetle::Render()
+HRESULT CBarfBug::Render()
 {
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
@@ -83,7 +82,7 @@ HRESULT CBeetle::Render()
     return S_OK;
 }
 
-void CBeetle::Change_Animation()
+void CBarfBug::Change_Animation()
 {
     if(m_eState != m_ePreState)
     {
@@ -107,7 +106,7 @@ void CBeetle::Change_Animation()
     }
 }
 
-HRESULT CBeetle::Ready_Components()
+HRESULT CBarfBug::Ready_Components()
 {
     /* Com_FSM */
     CFSM::FSMDESC Desc;
@@ -122,7 +121,7 @@ HRESULT CBeetle::Ready_Components()
     return S_OK;
 }
 
-HRESULT CBeetle::Ready_PartObjects()
+HRESULT CBarfBug::Ready_PartObjects()
 {
     /* Part Body */
     CModelObject::MODELOBJECT_DESC BodyDesc{};
@@ -150,33 +149,33 @@ HRESULT CBeetle::Ready_PartObjects()
     return S_OK;
 }
 
-CBeetle* CBeetle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CBarfBug* CBarfBug::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CBeetle* pInstance = new CBeetle(_pDevice, _pContext);
+    CBarfBug* pInstance = new CBarfBug(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBeetle");
+        MSG_BOX("Failed to Created : CBarfBug");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBeetle::Clone(void* _pArg)
+CGameObject* CBarfBug::Clone(void* _pArg)
 {
-    CBeetle* pInstance = new CBeetle(*this);
+    CBarfBug* pInstance = new CBarfBug(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CBeetle");
+        MSG_BOX("Failed to Cloned : CBarfBug");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBeetle::Free()
+void CBarfBug::Free()
 {
 
     __super::Free();
