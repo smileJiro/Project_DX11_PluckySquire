@@ -27,6 +27,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_UI(TEXT("Layer_UI"));
 
 
+	/* Pooling Test */
 	POOLLING_DESC Poolling_Desc;
 	Poolling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
 	Poolling_Desc.strLayerTag = TEXT("Layer_Monster");
@@ -48,8 +49,11 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	
 	if (KEY_DOWN(KEY::NUM6))
 	{
+		/* Pooling Test */
 		_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		CPoolling_Manager::GetInstance()->Create_Objects(TEXT("Poolling_TestBeetle"), 1, &vPosition);
+		//CPoolling_Manager::GetInstance()->Create_Objects(TEXT("Poolling_TestBeetle"), 1); // 여러마리 동시 생성. 
+
+		CPoolling_Manager::GetInstance()->Create_Object(TEXT("Poolling_TestBeetle"), &vPosition); // 한마리 생성.
 	}
 
 	// Change Camera Free  Or Target
@@ -65,8 +69,8 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 HRESULT CLevel_GamePlay::Render()
 {
 #ifdef _DEBUG
-	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
     return S_OK;

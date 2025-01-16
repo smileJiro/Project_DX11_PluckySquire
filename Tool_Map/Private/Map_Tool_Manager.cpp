@@ -73,7 +73,7 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	//	//m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
 	//}
 
-
+	
 	m_pMapParsingManager = CMapParsing_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pMapParsingManager)
 		return E_FAIL;
@@ -82,7 +82,7 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C02.json",L"Layer_MapObject");
 	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04_000.json",L"Layer_MapObject");
 	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Environment");
-	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Streets.json",L"Layer_Environment");
+	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Streets.json",L"Layer_Sibal");
 
 	return S_OK;
 }
@@ -961,7 +961,7 @@ CMapObject* CMap_Tool_Manager::Picking_On_Object()
 	ScreenToClient(g_hWnd, &ptMouse);
 	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
 
-	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_GameObject");
+	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_MapObject");
 	if (!pLayer)
 		return nullptr;
 

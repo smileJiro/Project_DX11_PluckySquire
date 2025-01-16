@@ -65,9 +65,6 @@ HRESULT CLevel_Map_Tool::Ready_Lights()
 HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
 	CCamera_Free::CAMERA_FREE_DESC		Desc{};
-
-	//Desc.fSpeedPerSec = 10.f;
-	//Desc.fRotationPerSec = XMConvertToRadians(180.f);
 	Desc.fMouseSensor = 0.5f;
 	Desc.eZoomLevel = Engine::CCamera::ZOOM_LEVEL::NORMAL;
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -77,8 +74,10 @@ HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.fFovy = XMConvertToRadians(60.f);
 
+	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_TOOL_MAP, _strLayerTag, &Desc)))
+		LEVEL_TOOL_MAP, _strLayerTag, &pGameObject, &Desc)))
+		static_cast<CCamera_Free*>(pGameObject)->Get_ControllerTransform()->Set_SpeedPerSec(1000.f);
 		return E_FAIL;
 
 	return S_OK;
