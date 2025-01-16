@@ -15,9 +15,8 @@ HRESULT CChaseWalkState::Initialize(void* _pArg)
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
-	//플레이어 위치 가져오기
-	m_pTargetTransform = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0)->Get_ControllerTransform();
-	Safe_AddRef(m_pTargetTransform);
+	if (FAILED(__super::Initialize(pDesc)))
+		return E_FAIL;
 		
 	return S_OK;
 }
@@ -29,6 +28,9 @@ void CChaseWalkState::State_Enter()
 
 void CChaseWalkState::State_Update(_float _fTimeDelta)
 {
+	if (nullptr == m_pTargetTransform)
+		return;
+
 	//추적 범위 벗어나면 IDLE 전환
 	_float dis = XMVectorGetX(XMVector3Length((m_pTargetTransform->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
 	if (dis >= m_fChaseRange)
@@ -56,19 +58,6 @@ CChaseWalkState* CChaseWalkState::Create(void* _pArg)
 
 	return pInstance;
 }
-
-//CChaseWalkState* CChaseWalkState::Clone(void* _pArg)
-//{
-//	CChaseWalkState* pInstance = new CChaseWalkState(*this);
-//
-//	if (FAILED(pInstance->Initialize(_pArg)))
-//	{
-//		MSG_BOX("Failed to Cloned : CChaseWalkState");
-//		Safe_Release(pInstance);
-//	}
-//
-//	return pInstance;
-//}
 
 void CChaseWalkState::Free()
 {

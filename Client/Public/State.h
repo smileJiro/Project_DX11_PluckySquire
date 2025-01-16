@@ -32,7 +32,7 @@ public:
 	}
 
 public:
-	virtual HRESULT Initialize(void* _pArg) = 0;
+	virtual HRESULT Initialize(void* _pArg);
 
 public:
 	//state 처음 들어갈 때

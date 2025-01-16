@@ -2,6 +2,7 @@
 #include "Monster.h"
 class CBeetle final : public CMonster
 {
+public:
 
 
 private:

@@ -10,6 +10,25 @@ CState::CState()
 	Safe_AddRef(m_pGameInstance);
 }
 
+HRESULT CState::Initialize(void* _pArg)
+{
+	//플레이어 위치 가져오기
+	CGameObject* pObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	if (nullptr == pObject)
+	{
+		cout << "STATE : NO PLAYER" << endl;
+		return S_OK;
+	}
+	else
+	{
+		m_pTargetTransform = pObject->Get_ControllerTransform();
+		Safe_AddRef(m_pTargetTransform);
+	}
+
+	return S_OK;
+}
+
+
 void CState::Set_Owner(CMonster* _pOwner)
 {
 	m_pOwner = _pOwner;
