@@ -149,7 +149,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 	TerrainDesc.isCoordChangeEnable = false;
 
 	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	TerrainDesc.strModelPrototypeTag = TEXT("Prototype_Component_Model_WoodenPlatform_01");
+	TerrainDesc.strModelPrototypeTag_3D = TEXT("Prototype_Component_Model_WoodenPlatform_01");
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
