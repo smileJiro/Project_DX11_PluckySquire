@@ -28,12 +28,17 @@ HRESULT CMonster::Initialize(void* _pArg)
 		return E_FAIL;
 
 	//플레이어 위치 가져오기
+	CGameObject* pObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	if (nullptr == pObject)
+	{
+		#ifdef _DEBUG
+				cout << "MONSTER : NO PLAYER" << endl;
+		#endif // _DEBUG
+		return S_OK;
+	}
 
-	m_pPlayerTransform = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0)->Get_ControllerTransform();
-	if (nullptr == m_pPlayerTransform)
-		return E_FAIL;
-	else
-		Safe_AddRef(m_pPlayerTransform);
+	m_pPlayerTransform = pObject->Get_ControllerTransform();
+	Safe_AddRef(m_pPlayerTransform);
 
 	return S_OK;
 }

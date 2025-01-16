@@ -11,7 +11,6 @@ private:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
-	//virtual HRESULT Initialize(void* _pArg) override;
 
 public:
 	virtual void State_Enter() override;
@@ -20,7 +19,6 @@ public:
 
 public:
 	static CIdleState* Create(void* _pArg);
-	//virtual CIdleState* Clone(void* _pArg);
 
 public:
 	virtual void Free() override;
