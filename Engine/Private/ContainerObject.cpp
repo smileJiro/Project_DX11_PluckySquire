@@ -116,3 +116,12 @@ HRESULT CContainerObject::Cleanup_DeadReferences()
 
     return S_OK;
 }
+
+HRESULT CContainerObject::Imgui_Render_ObjectInfos()
+{
+    CGameObject::Imgui_Render_ObjectInfos();
+
+
+
+    return S_OK;
+}
