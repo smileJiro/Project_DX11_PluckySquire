@@ -66,6 +66,16 @@ void CModelObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CModelObject::Render()
 {
+#ifdef _DEBUG
+    if (m_iInstanceID == 1)
+    {
+        int a = 0;
+    }
+#endif // _DEBUG
+
+
+
+
     if (FAILED(Bind_ShaderResources_WVP()))
         return E_FAIL;
     COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
@@ -278,5 +288,13 @@ void CModelObject::Free()
     }
 
     __super::Free();
+}
+
+HRESULT CModelObject::Imgui_Render_ObjectInfos()
+{
+    CGameObject::Imgui_Render_ObjectInfos();
+
+    
+    return S_OK;
 }
 

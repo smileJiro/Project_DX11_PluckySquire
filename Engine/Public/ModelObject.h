@@ -51,16 +51,11 @@ public:
 	void Switch_Animation(_uint iIdx);
 
 protected:
-	CController_Model* m_pControllerModel = nullptr;
+	CController_Model*		m_pControllerModel = nullptr;
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D ·»´õ¸µ Àü¿ë VP */
 
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};
-
-
-public:
-	static constexpr _tchar s_szPrototypeTag[] = L"Prototype_GameObject_ModelObject";
-	
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 
@@ -73,5 +68,10 @@ public:
 	static CModelObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
+
+#ifdef _DEBUG
+public:
+	HRESULT Imgui_Render_ObjectInfos() override;
+#endif // _DEBUG
 };
 END
