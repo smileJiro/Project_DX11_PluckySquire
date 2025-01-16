@@ -112,12 +112,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 		return E_FAIL;
 
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
-		return E_FAIL;
-
 	return S_OK;
 }
 
