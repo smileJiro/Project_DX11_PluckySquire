@@ -198,7 +198,8 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
 
 	m_pControllerModel = CController_Model::Create(m_pDevice, m_pContext, &tModelDesc);
-
+    if (m_pControllerModel)
+        return E_FAIL;
 
     return S_OK;
 }

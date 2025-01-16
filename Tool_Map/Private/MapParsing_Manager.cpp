@@ -10,10 +10,14 @@ CMapParsing_Manager::CMapParsing_Manager(ID3D11Device* _pDevice, ID3D11DeviceCon
 	m_pGameInstance(Engine::CGameInstance::GetInstance())
 
 {
+	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
 }
 
 HRESULT CMapParsing_Manager::Initialize(CImguiLogger* _pLogger)
 {
+	Safe_AddRef(m_pLogger);
 	m_pLogger = _pLogger;
 	return S_OK;
 }
@@ -178,4 +182,10 @@ CMapParsing_Manager* CMapParsing_Manager::Create(ID3D11Device* _pDevice, ID3D11D
 
 void CMapParsing_Manager::Free()
 {
+	Safe_Release(m_pLogger);
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pGameInstance);
+	
+	__super::Free();
 }
