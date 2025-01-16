@@ -59,7 +59,7 @@ private:
 private:
 	//TMP
 	CVIBuffer_Rect* m_pVIBufferCom = nullptr;
-	CTexture* m_pTextureCom;
+	CTexture* m_pTextureCom = nullptr;
 
 	CModel* m_ModelComs[COORDINATE_LAST] = {};
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;
