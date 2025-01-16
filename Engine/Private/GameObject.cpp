@@ -209,7 +209,19 @@ HRESULT CGameObject::Imgui_Render_ObjectInfos()
     else
         strActive += "false";
     ImGui::Text(strActive.c_str());
+    ImGui::SameLine();
+    if (ImGui::Button("ActiveOnOff")) { isActive ^= 1; Set_Active(isActive); }
 
+    /* isRender */
+    _bool isRender = Is_Render();
+    _string strRender = "Render : ";
+    if (true == isRender)
+        strRender += "true";
+    else
+        strRender += "false";
+    ImGui::Text(strRender.c_str());
+    ImGui::SameLine();
+    if (ImGui::Button("RenderOnOff")) { isRender ^= 1; Set_Render(isRender); }
 
     /* Transform Data */
     ImGui::Separator();
@@ -246,6 +258,7 @@ HRESULT CGameObject::Imgui_Render_ObjectInfos()
     if (ImGui::InputFloat3("       vScale", (float*)&vScale, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
         Set_Scale(vScale);
     ImGui::PopItemWidth();
+
 
     return S_OK;
 }

@@ -6,7 +6,6 @@ BEGIN(Client)
 class CTestPlayer final : public CContainerObject
 {
 public:
-	enum PART { PART_BODY, PART_LAST };
 	enum ANIM_STATE
 	{
 
