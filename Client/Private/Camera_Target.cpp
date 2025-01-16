@@ -489,9 +489,10 @@ CGameObject* CCamera_Target::Clone(void* _pArg)
     CCamera_Target* pInstance = new CCamera_Target(*this);
 
     // 단순히 복사만해서 주는 것이 아니라, Prototype을 통해 복사받은 후, 추가적으로 필요한 Initialize는 따로 수행한다.
+
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CCamera_Free");
+        MSG_BOX("Failed to Cloned : CCamera_Target");
         Safe_Release(pInstance);
     }
 
