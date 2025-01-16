@@ -177,6 +177,7 @@ CComponent* C2DModel::Clone(void* _pArg)
 
 void C2DModel::Free()
 {
+	Safe_Release(m_pVIBufferCom);
 	for (auto& pAnimation : m_Animation2Ds)
 		Safe_Release(pAnimation);
 	m_Animation2Ds.clear();
