@@ -2,7 +2,7 @@
 #include "Component.h"
 BEGIN(Engine)
 class CShader;
-class CModel :
+class ENGINE_DLL CModel :
     public CComponent
 {
 public:

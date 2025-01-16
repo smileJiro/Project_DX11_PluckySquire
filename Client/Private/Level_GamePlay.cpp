@@ -19,11 +19,10 @@ HRESULT CLevel_GamePlay::Initialize()
 {
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
-	//Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
-	
-	Ready_Layer_Monster(TEXT("Layer_Monster"), &pCameraTarget);
+	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	//Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
     return S_OK;
 }
@@ -187,7 +186,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
 		return E_FAIL;
 
-	_ppout = &pGameObject;
+	if(nullptr != _ppout)
+		_ppout = &pGameObject;
+
 	return S_OK;
 }
 

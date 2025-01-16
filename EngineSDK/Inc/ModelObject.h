@@ -44,6 +44,7 @@ public:
 public:
 	// Get
 	_uint Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
+	
 	// Set
 	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
 	void Set_Animation(_uint iIdx);
@@ -56,6 +57,10 @@ protected:
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};
 
+
+public:
+	static constexpr _tchar s_szPrototypeTag[] = L"Prototype_GameObject_ModelObject";
+	
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

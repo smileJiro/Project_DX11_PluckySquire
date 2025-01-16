@@ -27,9 +27,9 @@ HRESULT CMapObject::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->iCurLevelID = LEVEL_TOOL_MAP;
     pDesc->isCoordChangeEnable = false;
-
+    pDesc->i3DModelPrototypeLevelID = LEVEL_TOOL_MAP;
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    pDesc->strModelPrototypeTag = m_strModelName;
+    pDesc->strModelPrototypeTag_3D = m_strModelName;
 
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
@@ -109,17 +109,7 @@ HRESULT CMapObject::Render()
     if (FAILED(CModelObject::Bind_ShaderResources_WVP()))
         return E_FAIL;
 
-    switch (m_pControllerTransform->Get_CurCoord())
-    {
-    case Engine::COORDINATE_2D:
-        CModelObject::Render_2D();
-        break;
-    case Engine::COORDINATE_3D:
-        CModelObject::Render_3D();
-        break;
-    default:
-        break;
-    }
+    CModelObject::Render();
 
     return S_OK;
 }

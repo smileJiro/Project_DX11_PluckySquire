@@ -4,6 +4,7 @@
 #include "2DModel.h"
 #include "Controller_Model.h"
 
+
 CModelObject::CModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CPartObject(_pDevice, _pContext)
 {
@@ -197,7 +198,8 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
 
 	m_pControllerModel = CController_Model::Create(m_pDevice, m_pContext, &tModelDesc);
-
+    if (nullptr == m_pControllerModel)
+        return E_FAIL;
 
     return S_OK;
 }

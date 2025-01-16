@@ -183,10 +183,10 @@ CAnimation* CAnimation::Clone()
 
 void CAnimation::Free()
 {
-	__super::Free();
-
 	for (auto& pChannel : m_vecChannel)
 		Safe_Release(pChannel);
 
 	m_vecChannel.clear();
+
+	__super::Free();
 }
