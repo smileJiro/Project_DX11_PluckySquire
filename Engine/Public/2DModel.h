@@ -4,7 +4,7 @@
 BEGIN(Engine)
 class CVIBuffer_Rect;
 class CTexture;
-class C2DModel :
+class ENGINE_DLL C2DModel :
     public CModel
 {
 public:
