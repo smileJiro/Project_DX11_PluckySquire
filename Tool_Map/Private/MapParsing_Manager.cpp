@@ -18,11 +18,20 @@ _uint APIENTRY ParsingMain(void* pArg)
 
 HRESULT CMapParsing_Manager::Update()
 {
-	if (m_isLoading && m_isLoadComp)
+	if (m_isLoading)
 	{
-		DeleteObject(m_hThread);
-		DeleteCriticalSection(&m_Critical_Section);
-		m_isLoading = false;
+		if (m_isLoadComp)
+		{
+			DeleteObject(m_hThread);
+			DeleteCriticalSection(&m_Critical_Section);
+			m_isLoading = false;
+		}
+		else
+			return S_OK;
+	}
+	if (!m_LoadInfos.empty()) 
+	{
+		Open_Parsing();
 	}
 	return S_OK;
 }
@@ -139,14 +148,18 @@ HRESULT CMapParsing_Manager::Parsing(json _jsonObj)
 
 HRESULT CMapParsing_Manager::Parsing()
 {
+	m_Models.clear();
+	string strFilePath = m_LoadInfos.front().first;
+	wstring strLayerTag = m_LoadInfos.front().second;
+
 
 	CCriticalSectionGuard csGuard(&m_Critical_Section);
 
 
-	LOG_TYPE("Model Parsing Start - [ " + m_strParsingName + " ]", LOG_LOAD);
+	LOG_TYPE("Model Parsing Start - [ " + strFilePath + " ]", LOG_LOAD);
 
 	///* Read json Standard Stat Data */
-	const std::string filePathDialog = m_strParsingName;
+	const std::string filePathDialog = strFilePath;
 	std::ifstream inputFile(filePathDialog);
 	if (!inputFile.is_open()) {
 		throw std::runtime_error("json Error :  " + filePathDialog);
@@ -177,7 +190,7 @@ HRESULT CMapParsing_Manager::Parsing()
 
 		CGameObject* pGameObject = nullptr;
 		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
-			LEVEL_TOOL_MAP, L"Layer_GameObject", &pGameObject, (void*)&NormalDesc);
+			LEVEL_TOOL_MAP, strLayerTag, &pGameObject, (void*)&NormalDesc);
 		if (pGameObject)
 		{
 			iCompCnt++;
@@ -197,18 +210,25 @@ HRESULT CMapParsing_Manager::Parsing()
 	
 	CoUninitialize();
 	m_isLoadComp = true;
+	m_LoadInfos.pop();
+
 	return S_OK;
 }
 
 
 
-void CMapParsing_Manager::Open_Parsing(const string& _strParsingFileName)
+void CMapParsing_Manager::Open_Parsing()
 {
-	m_strParsingName = _strParsingFileName;
 	m_isLoading = true;
 	m_isLoadComp = false;
+
 	InitializeCriticalSection(&m_Critical_Section);
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ParsingMain, this, 0, nullptr);
+
+}
+void CMapParsing_Manager::Push_Parsing(const string& _strParsingFileName, const wstring& _strLayerName)
+{
+	m_LoadInfos.push(make_pair(_strParsingFileName, _strLayerName));
 }
 
 

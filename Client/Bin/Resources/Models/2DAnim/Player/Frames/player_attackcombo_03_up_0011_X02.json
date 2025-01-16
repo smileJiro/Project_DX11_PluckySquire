@@ -1,0 +1,1408 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_7",
+    "Outer": "player_attackcombo_03_up_0011_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "ConvexElems": [
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -102.97864,
+                "Y": 300.0,
+                "Z": 52.98242
+              },
+              {
+                "X": -102.97864,
+                "Y": -300.0,
+                "Z": 52.98242
+              },
+              {
+                "X": -146.84167,
+                "Y": 300.0,
+                "Z": 108.61243
+              },
+              {
+                "X": -146.84167,
+                "Y": -300.0,
+                "Z": 108.61243
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -146.84167,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": 108.61243
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -146.84167,
+                "Y": 300.0,
+                "Z": 108.61243
+              },
+              {
+                "X": -146.84167,
+                "Y": -300.0,
+                "Z": 108.61243
+              },
+              {
+                "X": -181.7279,
+                "Y": 300.0,
+                "Z": 190.1388
+              },
+              {
+                "X": -181.7279,
+                "Y": -300.0,
+                "Z": 190.1388
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -181.7279,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": 190.1388
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -181.7279,
+                "Y": 300.0,
+                "Z": 190.1388
+              },
+              {
+                "X": -181.7279,
+                "Y": -300.0,
+                "Z": 190.1388
+              },
+              {
+                "X": -205.80804,
+                "Y": 300.0,
+                "Z": 295.23987
+              },
+              {
+                "X": -205.80804,
+                "Y": -300.0,
+                "Z": 295.23987
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -205.80804,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": 295.23987
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -205.80804,
+                "Y": 300.0,
+                "Z": 295.23987
+              },
+              {
+                "X": -205.80804,
+                "Y": -300.0,
+                "Z": 295.23987
+              },
+              {
+                "X": -216.9599,
+                "Y": 300.0,
+                "Z": 406.64453
+              },
+              {
+                "X": -216.9599,
+                "Y": -300.0,
+                "Z": 406.64453
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -216.9599,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": 406.64453
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -216.9599,
+                "Y": 300.0,
+                "Z": 406.64453
+              },
+              {
+                "X": -216.9599,
+                "Y": -300.0,
+                "Z": 406.64453
+              },
+              {
+                "X": -194.62695,
+                "Y": 300.0,
+                "Z": 488.44287
+              },
+              {
+                "X": -194.62695,
+                "Y": -300.0,
+                "Z": 488.44287
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -216.9599,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": 488.44287
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -194.62695,
+                "Y": 300.0,
+                "Z": 488.44287
+              },
+              {
+                "X": -194.62695,
+                "Y": -300.0,
+                "Z": 488.44287
+              },
+              {
+                "X": -144.64258,
+                "Y": 300.0,
+                "Z": 560.728
+              },
+              {
+                "X": -144.64258,
+                "Y": -300.0,
+                "Z": 560.728
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -194.62695,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": 560.728
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -144.64258,
+                "Y": 300.0,
+                "Z": 560.728
+              },
+              {
+                "X": -144.64258,
+                "Y": -300.0,
+                "Z": 560.728
+              },
+              {
+                "X": -79.42993,
+                "Y": 300.0,
+                "Z": 597.1924
+              },
+              {
+                "X": -79.42993,
+                "Y": -300.0,
+                "Z": 597.1924
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -144.64258,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": 597.1924
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -79.42993,
+                "Y": 300.0,
+                "Z": 597.1924
+              },
+              {
+                "X": -79.42993,
+                "Y": -300.0,
+                "Z": 597.1924
+              },
+              {
+                "X": -10.46936,
+                "Y": 300.0,
+                "Z": 620.1797
+              },
+              {
+                "X": -10.46936,
+                "Y": -300.0,
+                "Z": 620.1797
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -79.42993,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": -10.46936,
+                "Y": 300.0,
+                "Z": 620.1797
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -10.46936,
+                "Y": 300.0,
+                "Z": 620.1797
+              },
+              {
+                "X": -10.46936,
+                "Y": -300.0,
+                "Z": 620.1797
+              },
+              {
+                "X": 78.2832,
+                "Y": 300.0,
+                "Z": 610.81006
+              },
+              {
+                "X": 78.2832,
+                "Y": -300.0,
+                "Z": 610.81006
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 78.2832,
+                "Y": 300.0,
+                "Z": 620.1797
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 78.2832,
+                "Y": 300.0,
+                "Z": 610.81006
+              },
+              {
+                "X": 78.2832,
+                "Y": -300.0,
+                "Z": 610.81006
+              },
+              {
+                "X": 162.08008,
+                "Y": 300.0,
+                "Z": 569.77344
+              },
+              {
+                "X": 162.08008,
+                "Y": -300.0,
+                "Z": 569.77344
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 162.08008,
+                "Y": 300.0,
+                "Z": 610.81006
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 162.08008,
+                "Y": 300.0,
+                "Z": 569.77344
+              },
+              {
+                "X": 162.08008,
+                "Y": -300.0,
+                "Z": 569.77344
+              },
+              {
+                "X": 222.14038,
+                "Y": 300.0,
+                "Z": 494.32227
+              },
+              {
+                "X": 222.14038,
+                "Y": -300.0,
+                "Z": 494.32227
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 222.14038,
+                "Y": 300.0,
+                "Z": 569.77344
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 222.14038,
+                "Y": 300.0,
+                "Z": 494.32227
+              },
+              {
+                "X": 222.14038,
+                "Y": -300.0,
+                "Z": 494.32227
+              },
+              {
+                "X": 235.76855,
+                "Y": 300.0,
+                "Z": 398.65332
+              },
+              {
+                "X": 235.76855,
+                "Y": -300.0,
+                "Z": 398.65332
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 235.76855,
+                "Y": 300.0,
+                "Z": 494.32227
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 235.76855,
+                "Y": 300.0,
+                "Z": 398.65332
+              },
+              {
+                "X": 235.76855,
+                "Y": -300.0,
+                "Z": 398.65332
+              },
+              {
+                "X": 222.69019,
+                "Y": 300.0,
+                "Z": 302.67786
+              },
+              {
+                "X": 222.69019,
+                "Y": -300.0,
+                "Z": 302.67786
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 235.76855,
+                "Y": 300.0,
+                "Z": 398.65332
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 222.69019,
+                "Y": 300.0,
+                "Z": 302.67786
+              },
+              {
+                "X": 222.69019,
+                "Y": -300.0,
+                "Z": 302.67786
+              },
+              {
+                "X": 204.36401,
+                "Y": 300.0,
+                "Z": 230.19836
+              },
+              {
+                "X": 204.36401,
+                "Y": -300.0,
+                "Z": 230.19836
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 222.69019,
+                "Y": 300.0,
+                "Z": 302.67786
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 204.36401,
+                "Y": 300.0,
+                "Z": 230.19836
+              },
+              {
+                "X": 204.36401,
+                "Y": -300.0,
+                "Z": 230.19836
+              },
+              {
+                "X": 174.36987,
+                "Y": 300.0,
+                "Z": 147.48108
+              },
+              {
+                "X": 174.36987,
+                "Y": -300.0,
+                "Z": 147.48108
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 204.36401,
+                "Y": 300.0,
+                "Z": 230.19836
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 174.36987,
+                "Y": 300.0,
+                "Z": 147.48108
+              },
+              {
+                "X": 174.36987,
+                "Y": -300.0,
+                "Z": 147.48108
+              },
+              {
+                "X": 131.90619,
+                "Y": 300.0,
+                "Z": 78.54956
+              },
+              {
+                "X": 131.90619,
+                "Y": -300.0,
+                "Z": 78.54956
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 174.36987,
+                "Y": 300.0,
+                "Z": 147.48108
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 131.90619,
+                "Y": 300.0,
+                "Z": 78.54956
+              },
+              {
+                "X": 131.90619,
+                "Y": -300.0,
+                "Z": 78.54956
+              },
+              {
+                "X": 87.167114,
+                "Y": 300.0,
+                "Z": 37.006348
+              },
+              {
+                "X": 87.167114,
+                "Y": -300.0,
+                "Z": 37.006348
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 131.90619,
+                "Y": 300.0,
+                "Z": 78.54956
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": -30.630615,
+                "Y": 300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              {
+                "X": 87.167114,
+                "Y": 300.0,
+                "Z": 37.006348
+              },
+              {
+                "X": 87.167114,
+                "Y": -300.0,
+                "Z": 37.006348
+              },
+              {
+                "X": 30.97229,
+                "Y": 300.0,
+                "Z": 0.9038086
+              },
+              {
+                "X": 30.97229,
+                "Y": -300.0,
+                "Z": 0.9038086
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -30.630615,
+                "Y": -300.0,
+                "Z": -1.4506836
+              },
+              "Max": {
+                "X": 87.167114,
+                "Y": 300.0,
+                "Z": 37.006348
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "AD9ADC694DF7CF022F7CEBA69CCC8CF0",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 13813,
+        "SizeOnDisk": 13813,
+        "OffsetInFile": "0xA721"
+      }
+    }
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_attackcombo_03_up_0011_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 1446.0
+      },
+      "BakedSourceDimension": {
+        "X": 378.0,
+        "Y": 694.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_attackcombo-0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/player_attackcombo-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_attackcombo_03_up_0011_X02:BodySetup_7'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackcombo_03_up_0011_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 177.0,
+          "Y": 675.0,
+          "Z": 0.092285156,
+          "W": 0.35327148
+        },
+        {
+          "X": -199.0,
+          "Y": 675.0,
+          "Z": 0.00048828125,
+          "W": 0.35327148
+        },
+        {
+          "X": -199.0,
+          "Y": -17.0,
+          "Z": 0.00048828125,
+          "W": 0.5222168
+        },
+        {
+          "X": 177.0,
+          "Y": -17.0,
+          "Z": 0.092285156,
+          "W": 0.5222168
+        },
+        {
+          "X": 177.0,
+          "Y": 675.0,
+          "Z": 0.092285156,
+          "W": 0.35327148
+        },
+        {
+          "X": -199.0,
+          "Y": -17.0,
+          "Z": 0.00048828125,
+          "W": 0.5222168
+        }
+      ]
+    }
+  }
+]

@@ -123,7 +123,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	TerrainDesc.eStartCoord = COORDINATE_3D;
 	TerrainDesc.iCurLevelID = LEVEL_GAMEPLAY;
 	TerrainDesc.isCoordChangeEnable = false;
-	TerrainDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
 	TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
 	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 

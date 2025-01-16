@@ -10,7 +10,7 @@ public:
 	typedef struct tagModelObjectDesc : public CPartObject::PARTOBJECT_DESC
 	{
 		_uint iModelPrototypeLevelID_2D;
-		_uint i3DModelPrototypeLevelID;
+		_uint iModelPrototypeLevelID_3D;
 		_wstring strModelPrototypeTag_2D;
 		_wstring strModelPrototypeTag_3D;
 
@@ -44,11 +44,12 @@ public:
 public:
 	// Get
 	_uint Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
-	
+
 	// Set
 	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
 	void Set_Animation(_uint iIdx);
 	void Switch_Animation(_uint iIdx);
+	void To_NextAnimation();
 
 protected:
 	CController_Model*		m_pControllerModel = nullptr;
@@ -56,6 +57,7 @@ protected:
 
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};
+	_wstring				m_strModelPrototypeTag[COORDINATE_LAST];
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

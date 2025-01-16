@@ -126,9 +126,7 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pLevel_Manager->Update(fTimeDelta);
 
 #ifdef _DEBUG
-
 	Imgui_Debug_Render();
-
 #endif
 
 
@@ -216,10 +214,18 @@ HRESULT CGameInstance::Imgui_Debug_Render()
 		{
 			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
 		}
+
+	}
+	if (true == m_isImguiObjRender)
+	{
 		if (FAILED(Imgui_Debug_Render_ObjectInfo()))
 		{
 			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
 		}
+	}
+	if (GetKeyState(KEY::NUM9) == KEY_STATE::DOWN)
+	{
+		m_isImguiObjRender ^= 1;
 	}
 	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
 	{
@@ -368,6 +374,10 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 							
 							pSelectObject = Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectObjectIndex);
 
+						}
+						else
+						{
+							pSelectObject = nullptr;
 						}
 					}
 

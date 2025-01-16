@@ -7,7 +7,7 @@ CModel::CModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CModel::CModel(const CModel& _Prototype)
 	:CComponent(_Prototype)
-	, m_eModelType{ _Prototype.m_eModelType }
+	, m_eAnimType{ _Prototype.m_eAnimType }
 {
 }
 

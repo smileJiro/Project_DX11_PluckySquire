@@ -51,7 +51,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	}
 	bool bAnim;
 	inFile.read(reinterpret_cast<char*>(&bAnim), 1);
-	m_eModelType = bAnim ? ANIM : NONANIM;
+	m_eAnimType = bAnim ? ANIM : NONANIM;
 
 
 	if (FAILED(Ready_Bones(inFile, -1)))
@@ -270,6 +270,16 @@ void C3DModel::Switch_Animation(_uint iIdx)
 
 }
 
+void C3DModel::To_NextAnimation()
+{
+	Switch_Animation((m_iCurrentAnimIndex + 1) % m_Animations.size());
+}
+
+_uint C3DModel::Get_AnimCount()
+{
+	return (_uint)m_Animations.size();
+}
+
 
 HRESULT C3DModel::Ready_Bones(ifstream& inFile, _uint iParentBoneIndex)
 {
@@ -302,7 +312,7 @@ HRESULT C3DModel::Ready_Meshes(ifstream& inFile)
 	//cout  << m_iNumMeshes << endl;
 	for (_uint i = 0; i < m_iNumMeshes; i++)
 	{
-		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eModelType, this, inFile, XMLoadFloat4x4(&m_PreTransformMatrix));
+		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eAnimType, this, inFile, XMLoadFloat4x4(&m_PreTransformMatrix));
 		if (nullptr == pMesh)
 			return E_FAIL;
 

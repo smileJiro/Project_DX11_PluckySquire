@@ -49,6 +49,7 @@ public: /* 2D, 3D */
 	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
 	void Set_Animation(_uint iIdx);
 	void Switch_Animation(_uint iIdx);
+	void To_NextAnimation();
 public:
 
 private:
@@ -57,9 +58,6 @@ private:
 	CGameInstance* m_pGameInstance = nullptr;
 
 private:
-	//TMP
-	CVIBuffer_Rect* m_pVIBufferCom = nullptr;
-	CTexture* m_pTextureCom = nullptr;
 
 	CModel* m_ModelComs[COORDINATE_LAST] = {};
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;

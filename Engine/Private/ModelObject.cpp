@@ -27,7 +27,8 @@ HRESULT CModelObject::Initialize(void* _pArg)
     // Save 
     m_iShaderPasses[COORDINATE_2D] = pDesc->iShaderPass_2D;
     m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
-
+    m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
+    m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
     // Add
 
 
@@ -110,7 +111,7 @@ _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
         const vector<_uint>& vecIndexBuffer = vecMeshes[i]->Get_IndexBuffer();
         _uint iNumTriangles = vecMeshes[i]->Get_NumTriangles();
 
-        for (size_t j = 0; j < iNumTriangles; ++j)
+        for (_uint j = 0; j < iNumTriangles; ++j)
         {
             _bool bResult = false;
             _uint iIdx = j * 3;
@@ -160,6 +161,11 @@ void CModelObject::Switch_Animation(_uint iIdx)
     m_pControllerModel->Switch_Animation(iIdx);
 }
 
+void CModelObject::To_NextAnimation()
+{
+    m_pControllerModel->To_NextAnimation();
+}
+
 HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 {
     _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
@@ -205,7 +211,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 	tModelDesc.isCoordChangeEnable = _pDesc->isCoordChangeEnable;
 	tModelDesc.iCurLevelID = iStaticLevelID;
 	tModelDesc.i2DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_2D;
-	tModelDesc.i3DModelPrototypeLevelID = _pDesc->i3DModelPrototypeLevelID;
+	tModelDesc.i3DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_3D;
 	tModelDesc.wstr2DModelPrototypeTag = _pDesc->strModelPrototypeTag_2D;
 	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
 
@@ -292,7 +298,103 @@ void CModelObject::Free()
 
 HRESULT CModelObject::Imgui_Render_ObjectInfos()
 {
-    CGameObject::Imgui_Render_ObjectInfos();
+    COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+
+    /* Model Prototype Tag */
+    if (false == m_strModelPrototypeTag[eCurCoord].empty())
+    {
+        _string strModelPrototypeTag = "ModelTag : ";
+        strModelPrototypeTag += WSTRINGTOSTRING(m_strModelPrototypeTag[eCurCoord]);
+        ImGui::Text(strModelPrototypeTag.c_str());
+    }
+
+
+    /* Current Coord */
+    eCurCoord = m_pControllerTransform->Get_CurCoord();
+    _string strCurCoord = "Current Coord : ";
+    switch (eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        strCurCoord += "2D";
+        break;
+    case Engine::COORDINATE_3D:
+        strCurCoord += "3D";
+        break;
+    case Engine::COORDINATE_LAST:
+        strCurCoord += "LAST";
+        break;
+    }
+    ImGui::Text(strCurCoord.c_str());
+
+
+    /* Coordinate Change Enable */
+    _bool isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+    _string strCoordChangeEnable = "CoordChangeEnable : ";
+    if (true == isCoordChangeEnable)
+        strCoordChangeEnable += "true";
+    else
+        strCoordChangeEnable += "false";
+    ImGui::Text(strCoordChangeEnable.c_str());
+
+
+    /* Active */
+    _bool isActive = Is_Active();
+    _string strActive = "Active : ";
+    if (true == isActive)
+        strActive += "true";
+    else
+        strActive += "false";
+    ImGui::Text(strActive.c_str());
+    ImGui::SameLine();
+    if (ImGui::Button("ActiveOnOff")) { isActive ^= 1; Set_Active(isActive); }
+
+    /* isRender */
+    _bool isRender = Is_Render();
+    _string strRender = "Render : ";
+    if (true == isRender)
+        strRender += "true";
+    else
+        strRender += "false";
+    ImGui::Text(strRender.c_str());
+    ImGui::SameLine();
+    if (ImGui::Button("RenderOnOff")) { isRender ^= 1; Set_Render(isRender); }
+
+
+    /* Transform Data */
+    ImGui::Separator();
+    ImGui::Text("<Transform Data>");
+    ImGui::Text("World Matrix");
+    ImGui::PushItemWidth(200.f);
+    _float4 vRight = {};
+    XMStoreFloat4(&vRight, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+    ImGui::BeginDisabled();/* 수정 불가 영역 시작. */
+    ImGui::InputFloat4("Model_vRight", (float*)&vRight, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+    _float4 vUp = {};
+    XMStoreFloat4(&vUp, m_pControllerTransform->Get_State(CTransform::STATE_UP));
+    ImGui::InputFloat4("Model_vUp", (float*)&vUp, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+    _float4 vLook = {};
+    XMStoreFloat4(&vLook, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+    ImGui::InputFloat4("Model_vLook", (float*)&vLook, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+    ImGui::EndDisabled();/* 수정 불가 영역 끝. */
+
+    _float4 vPosition = {};
+    ImGui::PushItemWidth(150.f);
+    XMStoreFloat4(&vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+    if (ImGui::InputFloat3("...", (float*)&vPosition, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
+        Set_Position(XMLoadFloat4(&vPosition));
+    ImGui::SameLine();
+    ImGui::Text("%.2f", vPosition.w);
+    ImGui::SameLine();
+    ImGui::Text("Model_vPosition");
+
+
+    ImGui::PushItemWidth(150.f);
+    _float3 vScale = Get_Scale();
+    if (ImGui::InputFloat3("       Model_vScale", (float*)&vScale, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
+        Set_Scale(vScale);
+    ImGui::PopItemWidth();
 
     
     return S_OK;

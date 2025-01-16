@@ -60,6 +60,7 @@ namespace Engine
 #include <vector>
 #include <list>
 #include <map>
+#include <queue>
 #include <unordered_map>
 #include <unordered_set>
 #include <algorithm>
@@ -74,12 +75,12 @@ using namespace std;
 #include "Engine_Enum.h"
 
 #include <fstream>
+using namespace Engine;
 
 #include <json.hpp>
 
 using json = nlohmann::json;
 
-using namespace Engine;
 
 // Memory Leak Check Code
 

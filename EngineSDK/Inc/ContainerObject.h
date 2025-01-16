@@ -7,6 +7,8 @@ class CComponent;
 class ENGINE_DLL CContainerObject abstract : public CGameObject
 {
 public:
+	enum PART { PART_BODY, PART_LAST };
+public:
 	typedef struct tagContainerObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		// 파트 오브젝트의 개수
