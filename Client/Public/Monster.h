@@ -17,21 +17,21 @@ public:
 	}MONSTER_DESC;
 
 protected:
-	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CMonster(const CMonster& Prototype);
+	CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CMonster(const CMonster& _Prototype);
 	virtual ~CMonster() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Priority_Update(_float fTimeDelta) override;
-	virtual void Update(_float fTimeDelta) override;
-	virtual void Late_Update(_float fTimeDelta) override;
+	virtual HRESULT Initialize(void* _pArg) override;
+	virtual void Priority_Update(_float _fTimeDelta) override;
+	virtual void Update(_float _fTimeDelta) override;
+	virtual void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
 
 public:
 	_float Calculate_Distance();
-	virtual void Attack(_float fTimeDelta);
+	virtual void Attack(_float _fTimeDelta);
 
 public:
 	virtual void Set_State(MONSTER_STATE eState) 
@@ -54,7 +54,7 @@ protected:
 
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* _pArg) = 0;
 	virtual void Free() override;
 };
 
