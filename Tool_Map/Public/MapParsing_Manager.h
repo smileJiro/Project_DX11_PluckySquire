@@ -31,22 +31,23 @@ public :
 	HRESULT Initialize(CImguiLogger* _pLogger);
 	HRESULT	Update();
 public :
-	HRESULT Open_ParsingDialog();
-	HRESULT Parsing();
-	HRESULT Parsing(json _jsonObj);
-	void	Open_Parsing(const string& _strParsingFileName);
+	HRESULT		Open_ParsingDialog();
+	void		Push_Parsing(const string& _strParsingFileName, const wstring& _strLayerName);
+	HRESULT		Parsing();
 
+
+private :
+	void		Open_Parsing();
+	HRESULT		Parsing(json _jsonObj);
 private :
 	CGameInstance*					m_pGameInstance = nullptr;
 	ID3D11Device*					m_pDevice = nullptr;
 	ID3D11DeviceContext*			m_pContext = nullptr;
 	CImguiLogger*					m_pLogger =  nullptr;
 
-	// ÆÄ½Ì °æ·Î
-	string							m_strParsingName;
 	// ÆÄ½ÌÇØ¿Â ¸ðµ¨ Á¤º¸.
 	vector<pair<string, MAP_DATA>>	m_Models;
-
+	queue<pair<string, wstring>>	m_LoadInfos;
 	// ÆÄ½Ì½º·¹µå ºÐ¸®.
 	CRITICAL_SECTION				m_Critical_Section = { nullptr };
 	HANDLE							m_hThread = {};

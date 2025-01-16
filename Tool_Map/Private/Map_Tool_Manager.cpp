@@ -63,23 +63,26 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 
 
 	pGameObject = nullptr;
-	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
-		LEVEL_TOOL_MAP,
-		L"Layer_Environment",
-		&pGameObject,
-		(void*)&NormalDesc);
-	if (pGameObject)
-	{
-		//m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
-	}
+	//m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
+	//	LEVEL_TOOL_MAP,
+	//	L"Layer_Environment",
+	//	&pGameObject,
+	//	(void*)&NormalDesc);
+	//if (pGameObject)
+	//{
+	//	//m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
+	//}
 
 
 	m_pMapParsingManager = CMapParsing_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pMapParsingManager)
 		return E_FAIL;
 
-	//m_pMapParsingManager->Open_Parsing(string("..\\Bin\\json\\Desk_C04.json"));
-	m_pMapParsingManager->Open_Parsing(string("..\\Bin\\json\\Desk_C04_000.json"));
+	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04.json",L"Layer_MapObject");
+	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C02.json",L"Layer_MapObject");
+	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04_000.json",L"Layer_MapObject");
+	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Environment");
+	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Streets.json",L"Layer_Environment");
 
 	return S_OK;
 }
