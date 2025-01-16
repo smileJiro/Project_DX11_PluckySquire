@@ -3,13 +3,13 @@
 #include "GameInstance.h"
 #include "FSM.h"
 
-CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CContainerObject{ pDevice, pContext }
+CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CContainerObject(_pDevice, _pContext)
 {
 }
 
-CMonster::CMonster(const CMonster& Prototype)
-	: CContainerObject{ Prototype }
+CMonster::CMonster(const CMonster& _Prototype)
+	: CContainerObject(_Prototype)
 {
 }
 
@@ -18,13 +18,13 @@ HRESULT CMonster::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CMonster::Initialize(void* pArg)
+HRESULT CMonster::Initialize(void* _pArg)
 {
-	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(pArg);
+	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(_pArg);
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
-	if (FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
 	//플레이어 위치 가져오기
@@ -43,19 +43,19 @@ HRESULT CMonster::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CMonster::Priority_Update(_float fTimeDelta)
+void CMonster::Priority_Update(_float _fTimeDelta)
 {
-	__super::Priority_Update(fTimeDelta);
+	__super::Priority_Update(_fTimeDelta);
 }
 
-void CMonster::Update(_float fTimeDelta)
+void CMonster::Update(_float _fTimeDelta)
 {
-	__super::Update(fTimeDelta);
+	__super::Update(_fTimeDelta);
 }
 
-void CMonster::Late_Update(_float fTimeDelta)
+void CMonster::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(fTimeDelta);
+	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CMonster::Render()
@@ -69,7 +69,7 @@ _float CMonster::Calculate_Distance()
 	return 0.f;
 }
 
-void CMonster::Attack(_float fTimeDelta)
+void CMonster::Attack(_float _fTimeDelta)
 {
 	//if (m_PartObjects[PART_WEAPON] != nullptr && m_PartObjects[PART_WEAPON]->Get_UseColl())
 	//	m_PartObjects[PART_WEAPON]->Set_Collider_Enable(true);

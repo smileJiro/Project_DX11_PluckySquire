@@ -85,7 +85,7 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 
 	pParsingManager->Parsing(string("..\\Bin\\json\\Desk_C04.json"));
 
-
+	Safe_Release(pParsingManager);
 	return S_OK;
 }
 
