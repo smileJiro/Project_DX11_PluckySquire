@@ -97,6 +97,24 @@ HRESULT CMonster::Cleanup_DeadReferences()
 	return S_OK;
 }
 
+void CMonster::Active_OnEnable()
+{
+//	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+//	if (nullptr == m_pTarget)
+//	{
+//#ifdef _DEBUG
+//		cout << "MONSTERINIT : NO PLAYER" << endl;
+//#endif // _DEBUG
+//		return;
+//	}
+//
+//	Safe_AddRef(m_pTarget);
+}
+
+void CMonster::Active_OnDisable()
+{
+}
+
 void CMonster::Free()
 {
 	if (nullptr != m_pTarget)

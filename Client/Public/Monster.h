@@ -49,6 +49,8 @@ protected:
 
 public:
 	HRESULT Cleanup_DeadReferences() override;
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 
 protected:
