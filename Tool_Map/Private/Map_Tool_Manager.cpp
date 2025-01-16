@@ -74,13 +74,13 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	}
 
 
-	CMapParsing_Manager* pParsingManager = CMapParsing_Manager::Create(m_pDevice, m_pContext, m_pLogger);
-	if (nullptr == pParsingManager)
+	m_pMapParsingManager = CMapParsing_Manager::Create(m_pDevice, m_pContext, m_pLogger);
+	if (nullptr == m_pMapParsingManager)
 		return E_FAIL;
 
-	pParsingManager->Parsing(string("..\\Bin\\json\\Desk_C04.json"));
+	//m_pMapParsingManager->Open_Parsing(string("..\\Bin\\json\\Desk_C04.json"));
+	m_pMapParsingManager->Open_Parsing(string("..\\Bin\\json\\Desk_C04_000.json"));
 
-	Safe_Release(pParsingManager);
 	return S_OK;
 }
 
@@ -94,6 +94,8 @@ void CMap_Tool_Manager::Update_Tool()
 
 	// 임구이 화면 구성
 	Update_Imgui_Logic();
+
+	m_pMapParsingManager->Update();
 
 }
 
@@ -1236,5 +1238,7 @@ void CMap_Tool_Manager::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pLogger);
+	Safe_Release(m_pMapParsingManager);
+
 	__super::Free();
 }
