@@ -4,12 +4,12 @@
 BEGIN(Client)
 
 
-//공격 범위가 추적 범위보다 작고 이동값이 일정한 추적 상태
-class CChaseWalkState final : public CState
+//공격 범위가 추적 범위보다 작은 근접공격 상태
+class CMeleeAttackState final : public CState
 {
 private:
-	CChaseWalkState();
-	virtual ~CChaseWalkState() = default;
+	CMeleeAttackState();
+	virtual ~CMeleeAttackState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -20,7 +20,7 @@ public:
 	virtual void State_Exit() override;
 
 public:
-	static CChaseWalkState* Create(void* _pArg);
+	static CMeleeAttackState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;
