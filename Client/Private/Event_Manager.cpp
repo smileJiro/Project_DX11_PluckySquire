@@ -9,6 +9,7 @@
 #include "Layer.h"
 
 #include "Cam_Manager.h"
+#include "Poolling_Manager.h"
 
 #include "FSM.h"
 
@@ -234,6 +235,7 @@ HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
+	CPoolling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	
 	return S_OK;
 }
@@ -242,6 +244,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
+	CPoolling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
 	return S_OK;
 }

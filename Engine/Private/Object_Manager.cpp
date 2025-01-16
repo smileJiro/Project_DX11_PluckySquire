@@ -148,7 +148,7 @@ HRESULT CObject_Manager::Add_GameObject_ToLayer(_uint _iPrototypeLevelID, const 
     CGameObject* pGameObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(Engine::PROTOTYPE::PROTO_GAMEOBJ, _iPrototypeLevelID, _strPrototypeTag, pArg));
     if (nullptr == pGameObject)
         return E_FAIL;
-
+    
     // 객체가 정상적으로 Clone 되었다면, 
     CLayer* pLayer = Find_Layer(_iLevelID, _strLayerTag);
     if (nullptr == pLayer)
