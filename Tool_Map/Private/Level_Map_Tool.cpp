@@ -11,6 +11,9 @@ CLevel_Map_Tool::CLevel_Map_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 HRESULT CLevel_Map_Tool::Initialize(CImguiLogger* _pLogger)
 {
+
+	m_pLogger = _pLogger;
+	Safe_AddRef(m_pLogger);
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
@@ -109,5 +112,6 @@ CLevel_Map_Tool* CLevel_Map_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceCon
 void CLevel_Map_Tool::Free()
 {
 	Safe_Release(m_pToolManager);
+	Safe_Release(m_pLogger);
 	__super::Free();
 }
