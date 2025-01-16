@@ -111,7 +111,7 @@ _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
         const vector<_uint>& vecIndexBuffer = vecMeshes[i]->Get_IndexBuffer();
         _uint iNumTriangles = vecMeshes[i]->Get_NumTriangles();
 
-        for (size_t j = 0; j < iNumTriangles; ++j)
+        for (_uint j = 0; j < iNumTriangles; ++j)
         {
             _bool bResult = false;
             _uint iIdx = j * 3;
