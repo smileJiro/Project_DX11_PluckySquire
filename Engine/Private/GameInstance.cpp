@@ -350,13 +350,15 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 					vector<const char*> strInstanceIDs;
 					_int iSelectObjectIndex = -1;
 					strInstanceIDs.clear();
-					_string strGameObjectName;
+					vector<_string> strGameObjectNames;
+					strGameObjectNames.resize(pGameObjects.size());
+					int iIndex = 0;
 					for (auto& pGameObject : pGameObjects)
 					{
-						strGameObjectName = typeid(*pGameObject).name();
+						strGameObjectNames[iIndex] = typeid(*pGameObject).name();
 						_int iInstanceID = (_int)(pGameObject->Get_GameObjectInstanceID());
-						strGameObjectName += "_" + to_string(iInstanceID);
-						strInstanceIDs.push_back(strGameObjectName.c_str());
+						strGameObjectNames[iIndex] += "_" + to_string(iInstanceID);
+						strInstanceIDs.push_back(strGameObjectNames[iIndex++].c_str());
 					}
 
 					if (ImGui::ListBox(" ", &iSelectObjectIndex, strInstanceIDs.data(), (_int)strInstanceIDs.size()))

@@ -6,6 +6,7 @@ CPipeLine::CPipeLine()
 
 HRESULT CPipeLine::Initialize()
 {
+
     return S_OK;
 }
 
