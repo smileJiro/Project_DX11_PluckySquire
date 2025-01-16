@@ -28,15 +28,16 @@ void CIdleState::State_Enter()
 
 void CIdleState::State_Update(_float _fTimeDelta)
 {
-	if (nullptr == m_pTargetTransform)
+	if (nullptr == m_pTarget)
 		return;
 
 	//몬스터 범위 안에 들어오면 추적으로 전환
-	_float dis = XMVectorGetX(XMVector3Length((m_pTargetTransform->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
+	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
 	if (dis < m_fChaseRange)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
 	}
+
 }
 
 void CIdleState::State_Exit()
@@ -58,7 +59,5 @@ CIdleState* CIdleState::Create(void* _pArg)
 
 void CIdleState::Free()
 {
-	Safe_Release(m_pTargetTransform);
-
 	__super::Free();
 }
