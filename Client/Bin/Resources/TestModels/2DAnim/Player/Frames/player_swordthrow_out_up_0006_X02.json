@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_swordthrow_out_up_0006_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 358.0,
+        "Y": 3193.0
+      },
+      "BakedSourceDimension": {
+        "X": 203.0,
+        "Y": 305.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_1'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 92.0,
+          "Y": 300.0,
+          "Z": 0.13671875,
+          "W": 0.77978516
+        },
+        {
+          "X": -109.0,
+          "Y": 300.0,
+          "Z": 0.087646484,
+          "W": 0.77978516
+        },
+        {
+          "X": -109.0,
+          "Y": -3.0,
+          "Z": 0.087646484,
+          "W": 0.85375977
+        },
+        {
+          "X": 92.0,
+          "Y": -3.0,
+          "Z": 0.13671875,
+          "W": 0.85375977
+        },
+        {
+          "X": 92.0,
+          "Y": 300.0,
+          "Z": 0.13671875,
+          "W": 0.77978516
+        },
+        {
+          "X": -109.0,
+          "Y": -3.0,
+          "Z": 0.087646484,
+          "W": 0.85375977
+        }
+      ]
+    }
+  }
+]

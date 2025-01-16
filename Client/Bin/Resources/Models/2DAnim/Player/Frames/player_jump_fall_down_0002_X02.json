@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_jump_fall_down_0002_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1241.0,
+        "Y": 1341.0
+      },
+      "BakedSourceDimension": {
+        "X": 210.0,
+        "Y": 266.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_2'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_2.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 103.0,
+          "Y": 266.0,
+          "Z": 0.3540039,
+          "W": 0.32763672
+        },
+        {
+          "X": -105.0,
+          "Y": 266.0,
+          "Z": 0.30322266,
+          "W": 0.32763672
+        },
+        {
+          "X": -105.0,
+          "Y": 2.0,
+          "Z": 0.30322266,
+          "W": 0.39208984
+        },
+        {
+          "X": 103.0,
+          "Y": 2.0,
+          "Z": 0.3540039,
+          "W": 0.39208984
+        },
+        {
+          "X": 103.0,
+          "Y": 266.0,
+          "Z": 0.3540039,
+          "W": 0.32763672
+        },
+        {
+          "X": -105.0,
+          "Y": 2.0,
+          "Z": 0.30322266,
+          "W": 0.39208984
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_bookenter_up_0003_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1453.0,
+        "Y": 1341.0
+      },
+      "BakedSourceDimension": {
+        "X": 187.0,
+        "Y": 266.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_2'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_2.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 92.0,
+          "Y": 248.0,
+          "Z": 0.40014648,
+          "W": 0.32763672
+        },
+        {
+          "X": -93.0,
+          "Y": 248.0,
+          "Z": 0.35498047,
+          "W": 0.32763672
+        },
+        {
+          "X": -93.0,
+          "Y": -16.0,
+          "Z": 0.35498047,
+          "W": 0.39208984
+        },
+        {
+          "X": 92.0,
+          "Y": -16.0,
+          "Z": 0.40014648,
+          "W": 0.39208984
+        },
+        {
+          "X": 92.0,
+          "Y": 248.0,
+          "Z": 0.40014648,
+          "W": 0.32763672
+        },
+        {
+          "X": -93.0,
+          "Y": -16.0,
+          "Z": 0.35498047,
+          "W": 0.39208984
+        }
+      ]
+    }
+  }
+]

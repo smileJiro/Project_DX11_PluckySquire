@@ -20,7 +20,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
-	//Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
+	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
@@ -122,7 +122,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	TerrainDesc.eStartCoord = COORDINATE_3D;
 	TerrainDesc.iCurLevelID = LEVEL_GAMEPLAY;
 	TerrainDesc.isCoordChangeEnable = false;
-	TerrainDesc.i3DModelPrototypeLevelID = LEVEL_GAMEPLAY;
+	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
 	TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
 	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 

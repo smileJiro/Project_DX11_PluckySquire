@@ -10,7 +10,7 @@ CMesh::CMesh(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 }
 
-HRESULT CMesh::Initialize_Prototype(C3DModel::TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
+HRESULT CMesh::Initialize_Prototype(C3DModel::ANIM_TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
 {
 
 	inFile.read(reinterpret_cast<char*>(&m_iMaterialIndex), sizeof(_uint));
@@ -268,7 +268,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 }
 
 
-CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, C3DModel::TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
+CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, C3DModel::ANIM_TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
 {
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 

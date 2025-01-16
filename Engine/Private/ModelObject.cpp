@@ -148,6 +148,11 @@ void CModelObject::Switch_Animation(_uint iIdx)
     m_pControllerModel->Switch_Animation(iIdx);
 }
 
+void CModelObject::To_NextAnimation()
+{
+    m_pControllerModel->To_NextAnimation();
+}
+
 HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 {
     _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
@@ -193,7 +198,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 	tModelDesc.isCoordChangeEnable = _pDesc->isCoordChangeEnable;
 	tModelDesc.iCurLevelID = iStaticLevelID;
 	tModelDesc.i2DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_2D;
-	tModelDesc.i3DModelPrototypeLevelID = _pDesc->i3DModelPrototypeLevelID;
+	tModelDesc.i3DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_3D;
 	tModelDesc.wstr2DModelPrototypeTag = _pDesc->strModelPrototypeTag_2D;
 	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
 

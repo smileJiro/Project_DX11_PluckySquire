@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "player_zipline_0021_X01",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -10.5,
+              "Y": 0.0,
+              "Z": 288.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 299.0,
+            "Y": 10.0,
+            "Z": 587.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "6E2E096E4E7F40ED5CD6C69C510CB4AE"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_zipline_0021_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1137.0,
+        "Y": 631.0
+      },
+      "BakedSourceDimension": {
+        "X": 301.0,
+        "Y": 589.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_zipline-0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/player_zipline-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_zipline_0021_X01:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_zipline_0021_X01.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 139.0,
+          "Y": 582.0,
+          "Z": 0.70166016,
+          "W": 0.30859375
+        },
+        {
+          "X": -160.0,
+          "Y": 582.0,
+          "Z": 0.55566406,
+          "W": 0.30859375
+        },
+        {
+          "X": -160.0,
+          "Y": -5.0,
+          "Z": 0.55566406,
+          "W": 0.59521484
+        },
+        {
+          "X": 139.0,
+          "Y": -5.0,
+          "Z": 0.70166016,
+          "W": 0.59521484
+        },
+        {
+          "X": 139.0,
+          "Y": 582.0,
+          "Z": 0.70166016,
+          "W": 0.30859375
+        },
+        {
+          "X": -160.0,
+          "Y": -5.0,
+          "Z": 0.55566406,
+          "W": 0.59521484
+        }
+      ]
+    }
+  }
+]

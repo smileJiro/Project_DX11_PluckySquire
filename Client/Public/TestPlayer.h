@@ -32,7 +32,7 @@ private:
 	HRESULT					Ready_PartObjects();
 
 private:
-	_uint itmpIdx = 0;
+
 public:
 	static CTestPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

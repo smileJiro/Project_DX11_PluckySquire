@@ -43,6 +43,9 @@ public:
 	virtual void Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
 	virtual void Set_Animation(_uint iIdx)override;
 	virtual void Switch_Animation(_uint iIdx)override;
+	virtual void To_NextAnimation() override;
+	//Get
+	virtual _uint Get_AnimCount() override;
 protected:
 
 	_uint				m_iNumMeshes = 0;
