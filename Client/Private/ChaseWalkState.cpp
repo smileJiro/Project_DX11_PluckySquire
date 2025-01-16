@@ -28,16 +28,16 @@ void CChaseWalkState::State_Enter()
 
 void CChaseWalkState::State_Update(_float _fTimeDelta)
 {
-	if (nullptr == m_pTargetTransform)
+	if (nullptr == m_pTarget)
 		return;
 
 	//추적 범위 벗어나면 IDLE 전환
-	_float dis = XMVectorGetX(XMVector3Length((m_pTargetTransform->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
+	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
 	if (dis >= m_fChaseRange)
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 	else
 	{
-		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTargetTransform->Get_State(CTransform::STATE_POSITION));
+		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
 	}
 }

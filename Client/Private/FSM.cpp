@@ -104,6 +104,16 @@ HRESULT CFSM::Set_State(MONSTER_STATE _eState)
 	return S_OK;
 }
 
+HRESULT CFSM::CleanUp()
+{
+	for (auto& Pair : m_States)
+	{
+		Pair.second->CleanUp();
+	}
+
+	return S_OK;
+}
+
 CFSM* CFSM::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CFSM* pInstance = new CFSM(_pDevice, _pContext);

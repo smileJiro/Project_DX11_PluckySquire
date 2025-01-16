@@ -28,17 +28,16 @@ HRESULT CMonster::Initialize(void* _pArg)
 		return E_FAIL;
 
 	//플레이어 위치 가져오기
-	CGameObject* pObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
-	if (nullptr == pObject)
+	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	if (nullptr == m_pTarget)
 	{
 	#ifdef _DEBUG
-		cout << "MONSTER : NO PLAYER" << endl;
+		cout << "MONSTERINIT : NO PLAYER" << endl;
 	#endif // _DEBUG
 		return S_OK;
 	}
 
-	m_pPlayerTransform = pObject->Get_ControllerTransform();
-	Safe_AddRef(m_pPlayerTransform);
+	Safe_AddRef(m_pTarget);
 
 	return S_OK;
 }
@@ -75,10 +74,33 @@ void CMonster::Attack(_float _fTimeDelta)
 	//	m_PartObjects[PART_WEAPON]->Set_Collider_Enable(true);
 }
 
+HRESULT CMonster::Cleanup_DeadReferences()
+{
+	if (FAILED(__super::Cleanup_DeadReferences()))
+		return E_FAIL;
+
+	if (nullptr == m_pTarget)
+	{
+#ifdef _DEBUG
+		cout << "MONSTER : NO PLAYER" << endl;
+#endif // _DEBUG
+		return S_OK;
+	}
+
+	if (true == m_pTarget->Is_Dead())
+	{
+		Safe_Release(m_pTarget);
+		m_pTarget = nullptr;
+		m_pFSM->CleanUp();
+	}
+
+	return S_OK;
+}
+
 void CMonster::Free()
 {
-	if (nullptr != m_pPlayerTransform)
-		Safe_Release(m_pPlayerTransform);
+	if (nullptr != m_pTarget)
+		Safe_Release(m_pTarget);
 
 	Safe_Release(m_pFSM);
 

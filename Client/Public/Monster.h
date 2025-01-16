@@ -42,10 +42,13 @@ public:
 protected:
 	MONSTER_STATE				m_eState = {};
 	_uint				m_iPreState = {};
-	CController_Transform* m_pPlayerTransform = { nullptr };
+	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
 	_float m_fChaseRange = { 0.f };
 	_float m_fAttackRange = { 0.f };
+
+public:
+	HRESULT Cleanup_DeadReferences() override;
 
 
 protected:
