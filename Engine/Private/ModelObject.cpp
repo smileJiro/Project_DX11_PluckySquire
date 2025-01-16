@@ -4,6 +4,7 @@
 #include "2DModel.h"
 #include "Controller_Model.h"
 
+
 CModelObject::CModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CPartObject(_pDevice, _pContext)
 {
