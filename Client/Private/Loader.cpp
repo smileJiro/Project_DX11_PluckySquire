@@ -216,7 +216,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     //    return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-
+    matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/TestModels/"), matPretransform)))
         return E_FAIL;
