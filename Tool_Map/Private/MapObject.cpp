@@ -41,14 +41,9 @@ HRESULT CMapObject::Initialize(void* _pArg)
         return E_FAIL;
 
 
-    D3D11_VIEWPORT ViewportDesc = {};
-    _uint iNumViewport = 1;
-
-    m_pContext->RSGetViewports(&iNumViewport, &ViewportDesc);
-
     CRay::RAY_DESC RayDesc = {};
-    RayDesc.fViewportWidth =   (_float)ViewportDesc.Width;
-    RayDesc.fViewportHeight =  (_float)ViewportDesc.Height;
+    RayDesc.fViewportWidth =   (_float)g_iWinSizeX;
+    RayDesc.fViewportHeight =  (_float)g_iWinSizeY;
     if (FAILED(Add_Component(m_iCurLevelID, L"Prototype_Component_Ray",
             TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom),&RayDesc)))
         return E_FAIL;
@@ -145,7 +140,7 @@ CGameObject* CMapObject::Clone(void* _pArg)
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CMapObject");
+        //MSG_BOX("Failed to Cloned : CMapObject");
         Safe_Release(pInstance);
     }
 

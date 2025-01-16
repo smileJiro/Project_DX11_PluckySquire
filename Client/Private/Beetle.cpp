@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "BeetleBody.h"
 #include "FSM.h"
+#include "ModelObject.h"
 
 CBeetle::CBeetle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -45,6 +46,10 @@ HRESULT CBeetle::Initialize(void* _pArg)
     m_pFSM->Add_State(MONSTER_STATE::CHASE);
     m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Idle, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Run, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(Idle);
+
     return S_OK;
 }
 
@@ -62,7 +67,6 @@ void CBeetle::Update(_float _fTimeDelta)
 
 void CBeetle::Late_Update(_float _fTimeDelta)
 {
-
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -77,6 +81,26 @@ HRESULT CBeetle::Render()
     /* Font Render */
 
     return S_OK;
+}
+
+void CBeetle::Change_Animation()
+{
+    if(m_eState != m_ePreState)
+    {
+        switch (m_eState)
+        {
+        case MONSTER_STATE::IDLE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Idle);
+            break;
+
+        case MONSTER_STATE::CHASE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Run);
+            break;
+
+        default:
+            break;
+        }
+    }
 }
 
 HRESULT CBeetle::Ready_Components()

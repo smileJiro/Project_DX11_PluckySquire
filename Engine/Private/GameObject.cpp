@@ -20,9 +20,8 @@ CGameObject::CGameObject(const CGameObject& Prototype)
     , m_pGameInstance(Prototype.m_pGameInstance)
     , m_iCurLevelID(Prototype.m_iCurLevelID)
     , m_Colliders(Prototype.m_Colliders)
-    , m_iGameObjectInstanceID(g_iInstanceIDCount++)
+    , m_iInstanceID(g_iInstanceIDCount++)
 {
-
     for (auto& pCollider : m_Colliders)
         Safe_AddRef(pCollider);
 
@@ -170,4 +169,96 @@ void CGameObject::Free()
 
     __super::Free();
 
+}
+
+HRESULT CGameObject::Imgui_Render_ObjectInfos()
+{
+    /* Current Coord */
+    COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+    _string strCurCoord = "Current Coord : ";
+    switch (eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        strCurCoord += "2D";
+    break;
+    case Engine::COORDINATE_3D:
+        strCurCoord += "3D";
+    break;
+    case Engine::COORDINATE_LAST:
+        strCurCoord += "LAST";
+        break;
+    }
+    ImGui::Text(strCurCoord.c_str());
+
+
+    /* Coordinate Change Enable */
+    _bool isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+    _string strCoordChangeEnable = "CoordChangeEnable : ";
+    if (true == isCoordChangeEnable)
+        strCoordChangeEnable += "true";
+    else
+        strCoordChangeEnable += "false";
+    ImGui::Text(strCoordChangeEnable.c_str());
+
+
+    /* Active */
+    _bool isActive = Is_Active();
+    _string strActive = "Active : ";
+    if (true == isActive)
+        strActive += "true";
+    else
+        strActive += "false";
+    ImGui::Text(strActive.c_str());
+    ImGui::SameLine();
+    if (ImGui::Button("ActiveOnOff")) { isActive ^= 1; Set_Active(isActive); }
+
+    /* isRender */
+    _bool isRender = Is_Render();
+    _string strRender = "Render : ";
+    if (true == isRender)
+        strRender += "true";
+    else
+        strRender += "false";
+    ImGui::Text(strRender.c_str());
+    ImGui::SameLine();
+    if (ImGui::Button("RenderOnOff")) { isRender ^= 1; Set_Render(isRender); }
+
+    /* Transform Data */
+    ImGui::Separator();
+    ImGui::Text("<Transform Data>");
+    ImGui::Text("World Matrix");
+    ImGui::PushItemWidth(200.f);
+    _float4 vRight = {};
+    XMStoreFloat4(&vRight, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+    ImGui::BeginDisabled();/* 수정 불가 영역 시작. */
+    ImGui::InputFloat4("vRight", (float*)&vRight, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+    _float4 vUp = {};
+    XMStoreFloat4(&vUp, m_pControllerTransform->Get_State(CTransform::STATE_UP));
+    ImGui::InputFloat4("vUp", (float*)&vUp, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+
+    _float4 vLook = {};
+    XMStoreFloat4(&vLook, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+    ImGui::InputFloat4("vLook", (float*)&vLook, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+    ImGui::EndDisabled();/* 수정 불가 영역 끝. */
+
+    _float4 vPosition = {};
+    ImGui::PushItemWidth(150.f);
+    XMStoreFloat4(&vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+    if (ImGui::InputFloat3("", (float*)&vPosition, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
+        Set_Position(XMLoadFloat4(&vPosition));
+    ImGui::SameLine();
+    ImGui::Text("%.2f", vPosition.w);
+    ImGui::SameLine();
+    ImGui::Text(" vPosition");
+
+
+    ImGui::PushItemWidth(150.f);
+    _float3 vScale = Get_Scale();
+    if (ImGui::InputFloat3("       vScale", (float*)&vScale, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
+        Set_Scale(vScale);
+    ImGui::PopItemWidth();
+
+
+    return S_OK;
 }

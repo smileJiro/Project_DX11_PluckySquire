@@ -124,7 +124,7 @@ CController_Model* CController_Model::Create(ID3D11Device* _pDevice, ID3D11Devic
 
     if (FAILED(pInstance->Initialize(_pDesc)))
     {
-        MSG_BOX("Failed to Created : CController_Model");
+        //MSG_BOX("Failed to Created : CController_Model");
         Safe_Release(pInstance);
     }
     return pInstance;

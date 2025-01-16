@@ -22,6 +22,16 @@ protected:
 	virtual ~CMonster() = default;
 
 public:
+	virtual void Set_State(MONSTER_STATE _eState)
+	{
+		m_eState = _eState;
+	}
+	virtual void Set_PreState(MONSTER_STATE _eState)
+	{
+		m_ePreState = _eState;
+	}
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
 	virtual void Priority_Update(_float _fTimeDelta) override;
@@ -34,18 +44,20 @@ public:
 	virtual void Attack(_float _fTimeDelta);
 
 public:
-	virtual void Set_State(MONSTER_STATE eState) 
-	{
-		m_eState = eState;
-	}
+	virtual void Change_Animation() {};
 
 protected:
-	MONSTER_STATE				m_eState = {};
-	_uint				m_iPreState = {};
-	CController_Transform* m_pPlayerTransform = { nullptr };
+	MONSTER_STATE		m_eState = {};
+	MONSTER_STATE		m_ePreState = {};
+	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
 	_float m_fChaseRange = { 0.f };
 	_float m_fAttackRange = { 0.f };
+
+public:
+	HRESULT Cleanup_DeadReferences() override;
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 
 protected:

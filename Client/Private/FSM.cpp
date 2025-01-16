@@ -6,12 +6,12 @@
 #include "ChaseWalkState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CComponent{ _pDevice, _pContext }
+	: CComponent(_pDevice, _pContext)
 {
 }
 
 CFSM::CFSM(const CFSM& _Prototype)
-	: CComponent{ _Prototype }
+	: CComponent(_Prototype)
 {
 }
 
@@ -84,8 +84,11 @@ HRESULT CFSM::Change_State(MONSTER_STATE _eState)
 		return E_FAIL;
 
 	m_CurState->State_Exit();
+	m_pOwner->Set_PreState(m_eCurState);
 
 	Set_State(_eState);
+
+	m_pOwner->Change_Animation();
 
 	return S_OK;
 }
@@ -100,6 +103,16 @@ HRESULT CFSM::Set_State(MONSTER_STATE _eState)
 
 	m_CurState->State_Enter();
 	m_pOwner->Set_State(_eState);
+
+	return S_OK;
+}
+
+HRESULT CFSM::CleanUp()
+{
+	for (auto& Pair : m_States)
+	{
+		Pair.second->CleanUp();
+	}
 
 	return S_OK;
 }

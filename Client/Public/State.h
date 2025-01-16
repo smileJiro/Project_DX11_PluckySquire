@@ -1,10 +1,6 @@
 #pragma once
 #include "Base.h"
 
-BEGIN(Engine)
-class CController_Transform;
-END
-
 BEGIN(Client)
 
 class CFSM;
@@ -28,7 +24,6 @@ public:
 	void Set_FSM(CFSM* _pFSM)
 	{
 		m_pFSM = _pFSM;
-		Safe_AddRef(m_pFSM);
 	}
 
 public:
@@ -42,9 +37,12 @@ public:
 	//state 전환시 빠져나가면서 불림
 	virtual void State_Exit() = 0;
 
+public:
+	HRESULT CleanUp();
+
 protected:
 	CGameInstance* m_pGameInstance = { nullptr };
-	CController_Transform* m_pTargetTransform = { nullptr };
+	CGameObject* m_pTarget = { nullptr };
 	//상태를 가지는 몬스터
 	CMonster* m_pOwner = { nullptr };
 	CFSM* m_pFSM = { nullptr };

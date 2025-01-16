@@ -214,6 +214,7 @@ private:
 	_int m_iStaticLevelID = -1;
 
 	_bool m_isImguiRTRender = true;
+	_bool m_isImguiObjRender = true;
 public:
 	// Static
 	static void Release_Engine();

@@ -89,7 +89,7 @@ HRESULT CMesh::Bind_BoneMatrices(CShader* _pShader, const _char* _pConstantName,
 {
 	ZeroMemory(m_BoneMatrices, sizeof(_float4x4) * 256);
 
-	_uint		iSize = m_BoneIndices.size();
+	_uint		iSize = (_uint)m_BoneIndices.size();
 
 	for (size_t i = 0; i < m_BoneIndices.size(); ++i)
 	{
