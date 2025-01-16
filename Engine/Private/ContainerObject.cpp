@@ -121,7 +121,28 @@ HRESULT CContainerObject::Imgui_Render_ObjectInfos()
 {
     CGameObject::Imgui_Render_ObjectInfos();
 
+    ImGui::Separator();
+    ImGui::Text("<Parts Infos>");
+    _int iNumParts = m_PartObjects.size();
+    ImGui::Text("iNumParts : %d", iNumParts);
 
+    //if (ImGui::TreeNode("PartsObjects"))
+    //{
+    //    vector<const char*> strInstanceIDs;
+    //    _int iSelectObjectIndex = -1;
+    //    strInstanceIDs.clear();
+    //    _string strGameObjectName;
+    //    for (auto& pGameObject : pGameObjects)
+    //    {
+    //        strGameObjectName = typeid(*pGameObject).name();
+    //        _int iInstanceID = (_int)(pGameObject->Get_GameObjectInstanceID());
+    //        strGameObjectName += "_" + to_string(iInstanceID);
+    //        strInstanceIDs.push_back(strGameObjectName.c_str());
+    //    }
+    //
+    //    ImGui::TreePop();
+    //}
+    
 
     return S_OK;
 }

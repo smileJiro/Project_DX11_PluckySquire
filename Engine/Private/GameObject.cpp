@@ -239,7 +239,7 @@ HRESULT CGameObject::Imgui_Render_ObjectInfos()
     ImGui::Text("%.2f", vPosition.w);
     ImGui::SameLine();
     ImGui::Text(" vPosition");
-    ImGui::Separator();
+
 
     ImGui::PushItemWidth(150.f);
     _float3 vScale = Get_Scale();
