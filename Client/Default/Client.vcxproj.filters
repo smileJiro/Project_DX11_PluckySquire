@@ -34,9 +34,6 @@
     <Filter Include="02.GameObjects\Camera">
       <UniqueIdentifier>{b01ae067-acc0-4249-a6ba-f9132d7d1f9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camera\Manager">
-      <UniqueIdentifier>{029518bd-44a0-4823-86b9-177f8a52a79c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Components">
       <UniqueIdentifier>{0ada68c6-84b6-4a52-8820-b16cc6d4952f}</UniqueIdentifier>
     </Filter>
@@ -156,9 +153,6 @@
     <ClInclude Include="..\public\Camera_Target.h">
       <Filter>02.GameObjects\Camera\Target</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Cam_Manager.h">
-      <Filter>02.GameObjects\Camera\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Client_Etc.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
@@ -241,9 +235,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_Target.cpp">
       <Filter>02.GameObjects\Camera\Target</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Cam_Manager.cpp">
-      <Filter>02.GameObjects\Camera\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Static.cpp">
       <Filter>01.Levels\01.Static</Filter>

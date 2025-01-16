@@ -148,9 +148,10 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 	TerrainDesc.eStartCoord = COORDINATE_3D;
 	TerrainDesc.iCurLevelID = LEVEL_CAMERA_TOOL;
 	TerrainDesc.isCoordChangeEnable = false;
+	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
 
 	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	TerrainDesc.strModelPrototypeTag_3D = TEXT("Prototype_Component_Model_WoodenPlatform_01");
+	TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
@@ -204,8 +205,8 @@ void CLevel_Camera_Tool::Create_Arms()
 
 	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = { XMConvertToRadians(60.f), XMConvertToRadians(30.f), 0.f };
-	Desc.fLength = 20.f;
+	Desc.vRotation = { XMConvertToRadians(40.f), XMConvertToRadians(0.f), 0.f };
+	Desc.fLength = 12.f;
 	Desc.wszArmTag = TEXT("Player_Arm");
 	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 

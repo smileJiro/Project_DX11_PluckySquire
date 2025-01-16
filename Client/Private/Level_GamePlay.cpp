@@ -3,8 +3,8 @@
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "Camera_Target.h"
-#include "Cam_Manager.h"
 #include "Poolling_Manager.h"
+#include "Camera_Manager.h"
 #include "TestPlayer.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
@@ -52,6 +52,14 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		CPoolling_Manager::GetInstance()->Create_Objects(TEXT("Poolling_TestBeetle"), 1, &vPosition);
 	}
 
+	// Change Camera Free  Or Target
+	if (KEY_DOWN(KEY::B)) {
+		m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+	}
+	else if (KEY_DOWN(KEY::N)) {
+		m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
+	}
+
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -86,35 +94,48 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
-	/* Camera_Target */
-	CGameObject* pGameObject = nullptr;
-	CCamera_Target::CAMERA_TARGET_DESC Desc{};
-	Desc.tTransform3DDesc.fSpeedPerSec = 10.f;
-	Desc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	Desc.eZoomLevel = CCamera::NORMAL;
+	CGameObject* pCamera = nullptr;
+
+	// Free Camera
+	CCamera_Free::CAMERA_FREE_DESC Desc{};
+
+	Desc.fMouseSensor = 0.1f;
+
+	Desc.fFovy = XMConvertToRadians(30.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.fNear = 0.1f;
 	Desc.fFar = 1000.f;
-	Desc.vEye = _float3(0.0f, 10.0f, -7.0f);
-	Desc.vAt = _float3(0.0f, 0.0f, 0.0f);
-	Desc.iCurLevelID = (_uint)LEVEL_GAMEPLAY;
-	Desc.fFovy = XMConvertToRadians(60.f);
+	Desc.vEye = _float3(0.f, 10.f, -7.f);
+	Desc.vAt = _float3(0.f, 0.f, 0.f);
 
-	Desc.pTarget = _pTarget;
-	Desc.vArmRotAxis = { 1.0f, 0.0f, 0.0f };
-	Desc.fArmAngle = XMConvertToRadians(-157.f);
-	Desc.fDistance = 4.5f;
-	Desc.fMouseSensor = 1.2f;
-	Desc.eCameraType = CCamera::TARGET;
-	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Desc);
-	if (nullptr == pGameObject)
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
+	m_pGameInstance->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
 
+	// Target Camera
+	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
 
-	CCam_Manager::GetInstance()->Set_TargetCamera(static_cast<CCamera_Target*>(pGameObject));
+	TargetDesc.fSmoothSpeed = 5.f;
+	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
 
-	CCam_Manager::GetInstance()->Change_Cam(CCam_Manager::CAM_TARGET);
+	TargetDesc.fFovy = XMConvertToRadians(30.f);
+	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	TargetDesc.fNear = 0.1f;
+	TargetDesc.fFar = 1000.f;
+	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
+	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
+		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
+		return E_FAIL;
+
+	m_pGameInstance->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+
+	m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+
+	Create_Arm();
 
 	return S_OK;
 }
@@ -212,6 +233,27 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	return S_OK;
 }
 
+void CLevel_GamePlay::Create_Arm()
+{
+	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+
+	CCameraArm::CAMERA_ARM_DESC Desc{};
+
+	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
+	Desc.vPosOffset = { 0.f, 0.f, 0.f };
+	Desc.vRotation = { XMConvertToRadians(60.f), XMConvertToRadians(0.f), 0.f };
+	Desc.fLength = 20.f;
+	Desc.wszArmTag = TEXT("Player_Arm");
+	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+
+	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
+
+
+	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(m_pGameInstance->Get_Camera(CCamera_Manager::TARGET));
+
+	pTarget->Add_Arm(pArm);
+}
 
 CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
