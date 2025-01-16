@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\Arm_Manager.h" />
     <ClInclude Include="..\Public\Camera_Manager_Tool.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
     <ClInclude Include="..\Public\Camera_Tool_Defines.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\Arm_Manager.cpp" />
     <ClCompile Include="..\Private\Camera_Manager_Tool.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\Camera_Tool_Fuction.cpp" />

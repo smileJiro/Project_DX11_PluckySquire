@@ -27,6 +27,9 @@ private:
 	ID3D11DeviceContext*	m_pContext = nullptr;
 
 private:
+	class CArm_Manager*		m_pArm_Manager = { nullptr };
+
+private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 
 public:

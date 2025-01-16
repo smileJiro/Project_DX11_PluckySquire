@@ -26,6 +26,9 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
 
+    //pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    //pDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
+
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
@@ -45,9 +48,9 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     m_pFSM->Add_State(MONSTER_STATE::CHASE);
     m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Idle, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Run, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(Idle);
+    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Idle, true);
+    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Run, true);
+    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(Idle);
 
     return S_OK;
 }
@@ -84,26 +87,26 @@ HRESULT CBarfBug::Render()
 
 void CBarfBug::Change_Animation()
 {
-    if(m_eState != m_ePreState)
-    {
-        switch (m_eState)
-        {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Idle);
-            break;
+    //if(m_eState != m_ePreState)
+    //{
+    //    switch (m_eState)
+    //    {
+    //    case MONSTER_STATE::IDLE:
+    //        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Idle);
+    //        break;
 
-        case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Run);
-            break;
+    //    case MONSTER_STATE::CHASE:
+    //        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Run);
+    //        break;
 
-        case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AttackStrike);
-            break;
+    //    case MONSTER_STATE::ATTACK:
+    //        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AttackStrike);
+    //        break;
 
-        default:
-            break;
-        }
-    }
+    //    default:
+    //        break;
+    //    }
+    //}
 }
 
 HRESULT CBarfBug::Ready_Components()
@@ -130,17 +133,27 @@ HRESULT CBarfBug::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
+    //BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("beetle_01");
+    //BodyDesc.strModelPrototypeTag_2D = TEXT("barfBug_Rig");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
+	//BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
 	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+   //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
+    //BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
+
+    //BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    //BodyDesc.tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    //BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    //BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

@@ -199,18 +199,19 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
-	CGameObject* pGameObject = nullptr;
 	CBeetle::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
 	Monster_Desc.tTransform3DDesc.vPosition = _float3(10.0f, 1.0f, 10.0f);
 	Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
-	if(nullptr != _ppout)
-		_ppout = &pGameObject;
+	Monster_Desc.tTransform3DDesc.vPosition = _float3(-10.0f, 1.0f, 10.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

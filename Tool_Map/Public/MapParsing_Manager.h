@@ -47,6 +47,7 @@ private :
 
 	// ÆÄ½ÌÇØ¿Â ¸ðµ¨ Á¤º¸.
 	vector<pair<string, MAP_DATA>>	m_Models;
+	vector<string>					m_MapObjectNames;
 	queue<pair<string, wstring>>	m_LoadInfos;
 	// ÆÄ½Ì½º·¹µå ºÐ¸®.
 	CRITICAL_SECTION				m_Critical_Section = { nullptr };
