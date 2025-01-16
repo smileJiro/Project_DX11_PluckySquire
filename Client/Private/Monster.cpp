@@ -31,9 +31,9 @@ HRESULT CMonster::Initialize(void* _pArg)
 	CGameObject* pObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
 	if (nullptr == pObject)
 	{
-		#ifdef _DEBUG
-				cout << "MONSTER : NO PLAYER" << endl;
-		#endif // _DEBUG
+	#ifdef _DEBUG
+		cout << "MONSTER : NO PLAYER" << endl;
+	#endif // _DEBUG
 		return S_OK;
 	}
 

@@ -58,7 +58,5 @@ CIdleState* CIdleState::Create(void* _pArg)
 
 void CIdleState::Free()
 {
-	Safe_Release(m_pTargetTransform);
-
 	__super::Free();
 }

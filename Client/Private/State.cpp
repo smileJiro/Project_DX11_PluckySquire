@@ -5,7 +5,7 @@
 #include "FSM.h"
 
 CState::CState()
-	: m_pGameInstance { CGameInstance::GetInstance()}
+	: m_pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -16,8 +16,9 @@ HRESULT CState::Initialize(void* _pArg)
 	CGameObject* pObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
 	if (nullptr == pObject)
 	{
+	#ifdef _DEBUG
 		cout << "STATE : NO PLAYER" << endl;
-		return S_OK;
+	#endif // _DEBUG
 	}
 	else
 	{
@@ -37,6 +38,7 @@ void CState::Set_Owner(CMonster* _pOwner)
 void CState::Free()
 {
 	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pTargetTransform);
 	m_pOwner = nullptr;
 	__super::Free();
 }

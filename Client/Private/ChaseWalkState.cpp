@@ -61,7 +61,5 @@ CChaseWalkState* CChaseWalkState::Create(void* _pArg)
 
 void CChaseWalkState::Free()
 {
-	Safe_Release(m_pTargetTransform);
-
 	__super::Free();
 }

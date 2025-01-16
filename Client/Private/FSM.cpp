@@ -6,12 +6,12 @@
 #include "ChaseWalkState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CComponent{ _pDevice, _pContext }
+	: CComponent(_pDevice, _pContext)
 {
 }
 
 CFSM::CFSM(const CFSM& _Prototype)
-	: CComponent{ _Prototype }
+	: CComponent(_Prototype)
 {
 }
 
