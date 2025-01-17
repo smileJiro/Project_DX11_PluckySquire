@@ -103,6 +103,21 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\00.Pick_Bulb">
       <UniqueIdentifier>{22c8afcc-494e-4251-943c-def5afcdc486}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp">
+      <UniqueIdentifier>{e0741c40-b025-4a53-9df1-76a1a3d7f7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp">
+      <UniqueIdentifier>{9371d968-c909-4ccc-8c3d-7154a34e0e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\01. BombStamp">
+      <UniqueIdentifier>{4b8be43d-f9a2-4fc1-a003-2bc63e71bf4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\02. ArrowForStamp">
+      <UniqueIdentifier>{8ae41451-8f42-47c5-a5c0-8e023d960d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\100. UI_Manager">
+      <UniqueIdentifier>{0bfe3732-ce5c-4ea9-b556-a293900bd8d1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Camera\Manager">
       <UniqueIdentifier>{dc70aa36-495a-4cc7-85b0-0d18bc005acf}</UniqueIdentifier>
     </Filter>
@@ -216,6 +231,18 @@
     <ClInclude Include="..\Public\Camera_Manager.h">
       <Filter>02.GameObjects\Camera\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\StopStamp.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombStamp.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\01. BombStamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ArrowForStamp.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\02. ArrowForStamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Manager.h">
+      <Filter>02.GameObjects\UI\100. UI_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -304,6 +331,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Manager.cpp">
       <Filter>02.GameObjects\Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StopStamp.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombStamp.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\01. BombStamp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ArrowForStamp.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\02. ArrowForStamp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Manager.cpp">
+      <Filter>02.GameObjects\UI\100. UI_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

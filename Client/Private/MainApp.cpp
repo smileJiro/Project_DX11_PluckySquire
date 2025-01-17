@@ -6,6 +6,7 @@
 
 #include "Event_Manager.h"
 #include "Pooling_Manager.h"
+#include "UI_Manager.h"
 #include "Camera_Manager.h"
 
 CMainApp::CMainApp()
@@ -126,6 +127,7 @@ void CMainApp::Free()
 	CEvent_Manager::DestroyInstance();
 	CCamera_Manager::DestroyInstance();
 	CPooling_Manager::DestroyInstance();
+	CUI_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();
