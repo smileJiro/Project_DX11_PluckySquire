@@ -11,6 +11,7 @@ CLevel_Static::CLevel_Static(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCont
 
 HRESULT CLevel_Static::Initialize()
 {
+	
  	return S_OK;
 }
 
