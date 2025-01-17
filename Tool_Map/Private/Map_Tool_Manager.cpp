@@ -82,7 +82,7 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C02.json",L"Layer_MapObject");
 	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04_000.json",L"Layer_MapObject");
 	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Environment");
-	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Streets.json",L"Layer_Sibal");
+	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Streets.json",L"Layer_Sibal");
 
 	return S_OK;
 }
@@ -961,7 +961,7 @@ CMapObject* CMap_Tool_Manager::Picking_On_Object()
 	ScreenToClient(g_hWnd, &ptMouse);
 	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
 
-	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_MapObject");
+	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_Sibal");
 	if (!pLayer)
 		return nullptr;
 
@@ -1169,6 +1169,10 @@ void CMap_Tool_Manager::Object_Open_PickingMode()
 		Object_Clear_PickingMode();
 		m_arrObjects[OBJECT_PICKING] = pGameObj;
 		m_arrObjects[OBJECT_PICKING]->Set_Mode(CMapObject::PICKING);
+#ifdef _DEBUG
+		m_pGameInstance->Imgui_Select_Debug_ObjectInfo(L"Layer_Sibal", pGameObj->Get_GameObjectInstanceID());
+#endif // _DEBUG
+
 	}
 }
 
