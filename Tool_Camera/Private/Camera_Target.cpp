@@ -72,13 +72,25 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 	m_pArm->Change_Target(_pTargetWorldMatrix);
 }
 
+void CCamera_Target::Set_NextArmData(ARM_DATA* _pData)
+{
+	if (nullptr == _pData)
+		return;
+
+	if (nullptr == m_pArm)
+		return;
+
+	m_pArm->Set_NextArmData(_pData);
+}
+
 void CCamera_Target::Action_Mode(_float fTimeDelta)
 {
 	switch (m_eCameraMode) {
 	case DEFAULT:
 		Defualt_Move(fTimeDelta);
 		break;
-	case TURN:
+	case MOVE_TO_NEXTARM:
+		Move_To_NextArm(fTimeDelta);
 		break;
 	}
 }
@@ -88,15 +100,33 @@ void CCamera_Target::Defualt_Move(_float fTimeDelta)
 	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
+	Look_Target(fTimeDelta);
+}
 
-	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
-	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+void CCamera_Target::Move_To_NextArm(_float fTimeDelta)
+{
+	//_uint iRotateType = m_pArm->GEt
+	//switch(m)
+
+
+	if (true == m_pArm->Move_To_NextArm_Cross(fTimeDelta)) {
+		m_eCameraMode = DEFAULT;
+
+		return;
+	}
+
+	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	Look_Target(fTimeDelta);
 }
 
 void CCamera_Target::Look_Target(_float fTimeDelta)
 {
-	
+	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
+
+	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
+	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

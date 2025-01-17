@@ -136,7 +136,18 @@ namespace Engine
 		XMFLOAT3 vPosition;
 	}KEYFRAME;
 
-
+#pragma region Camera 관련
+	typedef struct tagArmDataDesc
+	{
+		_float3				vArm = { 0.f, 0.f, -1.f };
+		_float				fLength = 1.f;
+		_float2				fMoveTimeAxisY = {};
+		_float2				fMoveTimeAxisRight = {};
+		_float2				fLengthTime = {};
+		_uint				iRotateType = {};
+		_uint				iTimeRateType = {};
+	} ARM_DATA;
+#pragma endregion
 
 #pragma region Binary 관련
 
