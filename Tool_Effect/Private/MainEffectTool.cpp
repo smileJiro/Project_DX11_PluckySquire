@@ -26,7 +26,8 @@ HRESULT CMainEffectTool::Initialize()
 	EngineDesc.iViewportWidth = g_iWinSizeX;
 	EngineDesc.iViewportHeight = g_iWinSizeY;
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
-
+	
+	
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 	{
@@ -171,15 +172,6 @@ void CMainEffectTool::Free()
 void CMainEffectTool::Debug_Default(_float _fTimeDelta)
 {
 	ImGui::Begin("Main");
-	
-	// 카메라 출력
-	const _float4* pCamPosition = m_pGameInstance->Get_CamPosition();
-	ImGui::Text("Camera Position : %.4f, %.4f, %.4f, %.4f", (*pCamPosition).x, (*pCamPosition).y, (*pCamPosition).z, (*pCamPosition).w);
-
-	//_float4x4 CamMatrix = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-	//ImGui::Text("Camera Look : %.4f, %.4f, %.4f, %.4f", CamMatrix._31, CamMatrix._32, CamMatrix._33, CamMatrix._34);
-	//ImGui::Text("Camera Position : %.4f, %.4f, %.4f, %.4f", CamMatrix._41, CamMatrix._42, CamMatrix._43, CamMatrix._44);
-
 
 	// 프레임 출력
 	m_fAccTime += _fTimeDelta;
@@ -191,9 +183,56 @@ void CMainEffectTool::Debug_Default(_float _fTimeDelta)
 		m_iRenderFrame = m_iFrame;
 		m_iFrame = 0;
 	}
-	
+
 	ImGui::Text("FPS : %i", m_iRenderFrame);
-		
+
+
+	// 카메라 출력
+	const _float4* pCamPosition = m_pGameInstance->Get_CamPosition();
+	ImGui::Text("Camera Position : %.4f, %.4f, %.4f, %.4f", (*pCamPosition).x, (*pCamPosition).y, (*pCamPosition).z, (*pCamPosition).w);
+
+	//_float4x4 CamMatrix = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+	//ImGui::Text("Camera Look : %.4f, %.4f, %.4f, %.4f", CamMatrix._31, CamMatrix._32, CamMatrix._33, CamMatrix._34);
+	//ImGui::Text("Camera Position : %.4f, %.4f, %.4f, %.4f", CamMatrix._41, CamMatrix._42, CamMatrix._43, CamMatrix._44);
+
+	// 마우스 위치
+	
+
+	// Matrix
+	_float4x4 ViewMatrix = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+	_float4x4 ProjMatrix = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+
+	ImGui::Text("View");
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", ViewMatrix._11, ViewMatrix._12, ViewMatrix._13, ViewMatrix._14);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", ViewMatrix._21, ViewMatrix._22, ViewMatrix._23, ViewMatrix._24);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", ViewMatrix._31, ViewMatrix._32, ViewMatrix._33, ViewMatrix._34);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", ViewMatrix._41, ViewMatrix._42, ViewMatrix._43, ViewMatrix._44);
+
+	ImGui::Text("Proj");
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", ProjMatrix._11, ProjMatrix._12, ProjMatrix._13, ProjMatrix._14);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", ProjMatrix._21, ProjMatrix._22, ProjMatrix._23, ProjMatrix._24);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", ProjMatrix._31, ProjMatrix._32, ProjMatrix._33, ProjMatrix._34);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", ProjMatrix._41, ProjMatrix._42, ProjMatrix._43, ProjMatrix._44);
+	
+	_float4x4 mulMatrix;
+	XMStoreFloat4x4(&mulMatrix, XMLoadFloat4x4(&ViewMatrix) * XMLoadFloat4x4(&ProjMatrix));
+
+	ImGui::Text("Multiplied");
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", mulMatrix._11, mulMatrix._12, mulMatrix._13, mulMatrix._14);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", mulMatrix._21, mulMatrix._22, mulMatrix._23, mulMatrix._24);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", mulMatrix._31, mulMatrix._32, mulMatrix._33, mulMatrix._34);
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", mulMatrix._41, mulMatrix._42, mulMatrix._43, mulMatrix._44);
+
+
+	static _float4 vInputPos = { 0.f, 0.f, 0.f, 1.f };
+	static _float4 vOutputPos = { 0.f, 0.f, 0.f, 0.f };
+
+	ImGui::InputFloat4("Input Position", (_float*)&vInputPos, "%.4f");
+	XMStoreFloat4(&vOutputPos, XMVector4Transform(XMLoadFloat4(&vInputPos), XMLoadFloat4x4(&mulMatrix)));
+
+	ImGui::Text("%.4f, %.4f, %.4f, %.4f", vOutputPos.x, vOutputPos.y, vOutputPos.z, vOutputPos.w);
+
+
 	ImGui::End();
 }
 #endif

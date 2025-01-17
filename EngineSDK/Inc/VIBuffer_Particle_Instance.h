@@ -29,7 +29,7 @@ protected:
 	/* m_pVBInstance Initialize시에 완성 */
 	/* m_pInstanceVertices는 Prototype에서 완성 */
 protected:
-	VTXINSTANCE*				m_pInstanceVertices = {nullptr};		/* 모든 Instance 자료의 부모형*/
+	VTXPOINTINSTANCE*				m_pInstanceVertices = {nullptr};		/* 모든 Instance 자료의 부모형*/
 
 public:
 

@@ -58,6 +58,7 @@ HRESULT CVIBuffer::Bind_BufferDesc()
     // 버퍼에 대한 정보를 여기서 장치에 세팅 
     ID3D11Buffer* pVertexBuffers[] =
     {
+
         m_pVB,
     };
     _uint iVertexStrides[] =

@@ -151,9 +151,6 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle">
       <UniqueIdentifier>{2bccbdcc-f487-4cc0-ac5f-2f61ef4de991}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Rect">
-      <UniqueIdentifier>{3b7ee815-2282-437c-ba49-55f21b643ea5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Point">
       <UniqueIdentifier>{1943b2ce-e47d-4ba7-94b0-25c928efb2b4}</UniqueIdentifier>
     </Filter>
@@ -214,14 +211,20 @@
     <Filter Include="01.Utility\97.GlobalFunction\Manager">
       <UniqueIdentifier>{aca80557-781d-4987-a298-a5c6fac2bbdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Objects\Effect">
-      <UniqueIdentifier>{82a2f632-a335-4e00-8c43-3590aeffa6e3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.Objects\UIObject">
       <UniqueIdentifier>{8705d9f3-8ff3-48cd-b9a0-4976b0e0b551}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\03.Objects\Camera\CameraArm">
       <UniqueIdentifier>{cbfa353c-d8c7-4c16-beae-da28ac9c74d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Particle_System">
+      <UniqueIdentifier>{82a2f632-a335-4e00-8c43-3590aeffa6e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Particle_System\Particle_Emitter">
+      <UniqueIdentifier>{c652a8f1-65e7-4a94-9af5-c257d26446b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Particle_System\Particle_Emitter\Sprite">
+      <UniqueIdentifier>{a67116ae-d579-43f2-bfde-ed6cf688e678}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -369,12 +372,6 @@
     <ClInclude Include="..\public\Font_Manager.h">
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\VIBuffer_Particle_Instance.h">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\VIBuffer_Particle_Point.h">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Point</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\RenderTarget.h">
       <Filter>01.Utility\09. RenderTargets</Filter>
     </ClInclude>
@@ -423,9 +420,6 @@
     <ClInclude Include="..\Public\GlobalFunction_Manager.h">
       <Filter>01.Utility\97.GlobalFunction\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect.h">
-      <Filter>01.Utility\03.Objects\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UIObject.h">
       <Filter>01.Utility\03.Objects\UIObject</Filter>
     </ClInclude>
@@ -434,6 +428,22 @@
     </ClInclude>
     <ClInclude Include="..\Public\CameraArm.h">
       <Filter>01.Utility\03.Objects\Camera\CameraArm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Json_Manager.h" />
+    <ClInclude Include="..\public\VIBuffer_Instance.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Point_Particle.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Particle_Sprite_Emitter.h">
+      <Filter>01.Utility\03.Objects\Particle_System\Particle_Emitter\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Particle_System.h">
+      <Filter>01.Utility\03.Objects\Particle_System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Particle_Emitter.h">
+      <Filter>01.Utility\03.Objects\Particle_System\Particle_Emitter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -569,12 +579,6 @@
     <ClCompile Include="..\private\Font_Manager.cpp">
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\VIBuffer_Particle_Instance.cpp">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\VIBuffer_Particle_Point.cpp">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Point</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\RenderTarget.cpp">
       <Filter>01.Utility\09. RenderTargets</Filter>
     </ClCompile>
@@ -623,9 +627,6 @@
     <ClCompile Include="..\Private\GlobalFunction_Manager.cpp">
       <Filter>01.Utility\97.GlobalFunction\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect.cpp">
-      <Filter>01.Utility\03.Objects\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UIObject.cpp">
       <Filter>01.Utility\03.Objects\UIObject</Filter>
     </ClCompile>
@@ -634,6 +635,22 @@
     </ClCompile>
     <ClCompile Include="..\Private\CameraArm.cpp">
       <Filter>01.Utility\03.Objects\Camera\CameraArm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Json_Manager.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Instance.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Point_Particle.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp">
+      <Filter>01.Utility\03.Objects\Particle_System\Particle_Emitter\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Particle_System.cpp">
+      <Filter>01.Utility\03.Objects\Particle_System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Particle_Emitter.cpp">
+      <Filter>01.Utility\03.Objects\Particle_System\Particle_Emitter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,10 @@ float4x4 g_LightViewMatrix, g_LightProjMatrix;
 // Deferred Shading RTV
 Texture2D g_Texture, g_NormalTexture, g_DiffuseTexture, g_ShadeTexture, g_DepthTexture, g_SpecularTexture, g_LightDepthTexture, g_FinalTexture;
 
-Texture2D g_EffectTexture, g_Effect_BrightnessTexture, g_Effect_Blur_XTeuxture, g_Effect_Blur_YTeuxture, g_Effect_DistortionTeuxture;
+// Weighted Blended
+Texture2D g_AccumulateTexture, g_RevealageTexture, g_AddTexture;
+
+//Texture2D g_EffectTexture, g_Effect_BrightnessTexture, g_Effect_Blur_XTeuxture, g_Effect_Blur_YTeuxture, g_Effect_DistortionTeuxture;
 
 // Light Data
 vector g_vLightDir, g_vLightPos;
@@ -208,10 +211,33 @@ PS_OUT PS_MAIN_FINAL(PS_IN In)
     return Out;
 }
 
-struct PS_OUT_BLUR
+PS_OUT PS_AFTER_EFFECT(PS_IN In)
 {
-    vector vColor : SV_TARGET0;
-};
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    vector vAccumulate = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
+    float fRevealage = saturate(g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r);
+    vector vCount = g_AddTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    
+    float3 vEffectColor = vAccumulate.rgb / max(vAccumulate.a, 1e-3) * (1.f - fRevealage) / max(1e-2, vCount.r);
+    float3 vColor = vFinal * fRevealage;
+    Out.vColor = float4(vEffectColor + vColor, 1.f);
+    //vEffectColor.a = 1.0f - fRevealage;
+    //Out.vColor.rgb = vColor.rgb * (1.f - vEffectColor.a) + vEffectColor.rgb * vEffectColor.a;
+    
+    //float fCoverage = max(1e-4, 1.0f - fRevealage);
+    //float4 vEffectColor;
+    //vEffectColor.rgb = vAccumulate.rgb / fCoverage;
+   
+ 
+    
+        
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -258,6 +284,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_FINAL();
+    }
+
+    pass AfterEffect // 4
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_AFTER_EFFECT();
     }
 
 }

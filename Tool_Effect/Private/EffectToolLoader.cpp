@@ -76,7 +76,7 @@ void CEffectToolLoader::Show_Debug()
 HRESULT CEffectToolLoader::Loading_Level_Tool()
 {
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
-        CEffect::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestEffect.json")))))
+        CSprite_Particle::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestEffect.json")))))
         return E_FAIL;
 
 

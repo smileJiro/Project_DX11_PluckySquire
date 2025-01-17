@@ -5,6 +5,9 @@ Texture2D       g_DiffuseTexture;
 
 vector          g_vCamPosition;
 float4          g_vParticleColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+float g_Near;
+float g_Far;
+
 /* 구조체 */
 struct VS_IN
 {
@@ -23,7 +26,8 @@ struct VS_OUT
     float4 vPosition : POSITION; // SV_POSITION : 그리기전에 필요한 변환들이 끝났어! >>> z 나누기 및 래스터라이져 과정을 수행해!  없다면 >>> 할일이 남았어.
     float2 vPSize : PSIZE;
     float2 vLifeTime : TEXCOORD0;
-    float4 vTexcoord : TEXCOORD1;
+    float4 vColor : TEXCOORD1;
+    float4 vTexcoord : TEXCOORD2;
 };
 
 // Rendering PipeLine : Vertex Shader // 
@@ -50,6 +54,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPSize = float2(In.vPSize.x * fScaleX, In.vPSize.y * fScaleY);
     Out.vLifeTime = In.vLifeTime;
     Out.vTexcoord = In.vTexcoord;
+    Out.vColor = In.vColor;
     
     return Out;
 }
@@ -60,15 +65,17 @@ struct GS_IN
     float4 vPosition : POSITION;
     float2 vPSize : PSIZE;
     float2 vLifeTime : TEXCOORD0;
-    float4 vTexcoord : TEXCOORD1;
+    float4 vColor : TEXCOORD1;
+    float4 vTexcoord : TEXCOORD2;
 };
 
 struct GS_OUT
 {
     float4 vPosition : SV_POSITION;
-    float2 vTexcoord : TEXCOORD0;
-    float2 vLifeTime : TEXCOORD1;
-    
+    float2 vLifeTime : TEXCOORD0;
+    float4 vColor : TEXCOORD1;
+    float2 vTexcoord : TEXCOORD2;
+    float   vWeight : TEXCOORD3;
 };
 
 
@@ -90,13 +97,13 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     float3 vUpDist = vUpDir * In[0].vPSize.y * 0.5f;
     
     matrix matVP = mul(g_ViewMatrix, g_ProjMatrix);
-    
+        
     // 정점 기준 우상단 (카메라가 바라보는 기준 좌상단.)
     Out[0].vPosition = float4(vCenter + vRightDist + vUpDist, 1.0f);
     Out[0].vPosition = mul(Out[0].vPosition, matVP);
     Out[0].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.y);
     Out[0].vLifeTime = In[0].vLifeTime;
-
+    
     // 정점 기준 좌상단 (카메라가 바라보는 기준 우상단.)
     Out[1].vPosition = float4(vCenter - vRightDist + vUpDist, 1.0f);
     Out[1].vPosition = mul(Out[1].vPosition, matVP);
@@ -115,10 +122,24 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     Out[3].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.w);
     Out[3].vLifeTime = In[0].vLifeTime;
     
-    
     // 만들어낸 정점들로 2개의 삼각형을 구성하자. 
     // Geometry Shader는 기본적으로 Triangle Strip을 기준으로 정점들을 구성하고 연산한다. 
     // 그래서 우린 Triangle List 처럼 사용하기 위한 꼼수가 필요하다. >>> RestartStrip() : 기존의 Strip 상태를 리셋. 처음부터 다시 정점을 구성한다.
+    //float viewDepth = clamp(abs(mul(In[0].vPosition, matVP).w), 0.1f, 500.f);
+    //float fWeight = clamp(0.03 / (1e-5 + pow(viewDepth / 200.f, 4.f)), 1e-2, 3e3);
+    float fWeight = 2000.f;
+    //float fDepthValue = (g_Near * g_Far) / (mul(In[0].vPosition, matVP).w - g_Far) / (g_Near - g_Far);
+    //float fWeight = max(pow((1 - fDepthValue), 3) * 3e3, 1e-2);
+    
+    Out[0].vWeight = fWeight;
+    Out[1].vWeight = fWeight;
+    Out[2].vWeight = fWeight;
+    Out[3].vWeight = fWeight;
+    
+    Out[0].vColor = In[0].vColor;
+    Out[1].vColor = In[0].vColor;
+    Out[2].vColor = In[0].vColor;
+    Out[3].vColor = In[0].vColor;
     
     OutStream.Append(Out[0]);
     OutStream.Append(Out[1]);
@@ -136,8 +157,10 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
-    float2 vTexcoord : TEXCOORD0;
-    float2 vLifeTime : TEXCOORD1;
+    float2 vLifeTime : TEXCOORD0;
+    float4 vColor : TEXCOORD1;
+    float2 vTexcoord : TEXCOORD2;
+    float vWeight : TEXCOORD3;
 };
 
 struct PS_OUT
@@ -150,9 +173,12 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
-    if (0.05f > Out.vColor.a)
+    Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+    if (0.1f > Out.vColor.a)
         discard;
+    
+    
+    //Out.vColor *= In.vColor;
     
     //Out.vColor *= g_vParticleColor;
     //if (Out.vColor.a < 0.01f)
@@ -169,19 +195,57 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
     return Out;
 }
 
+struct PS_OUT_WEIGHTEDBLENDED
+{
+    float4 vAccumulate : SV_TARGET0;
+    float   vRevealage : SV_TARGET1;
+    float2 vCount : SV_TARGET2;
+};
+
+PS_OUT_WEIGHTEDBLENDED PS_WEIGHT_BLENDED(PS_IN In)
+{
+    PS_OUT_WEIGHTEDBLENDED Out = (PS_OUT_WEIGHTEDBLENDED) 0;
+        
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+    if (0.01f > vColor.a)
+        discard;
+    vColor *= In.vColor;
+    //vColor.a = saturate(vColor.a);
+    
+    Out.vAccumulate.rgb = vColor.rgb * vColor.a * In.vWeight;
+    Out.vAccumulate.a = vColor.a * In.vWeight;
+    
+    Out.vRevealage.r = vColor.a;
+    Out.vCount.r = 1.f;
+    Out.vCount.g = vColor.a;
+    
+    return Out;
+}
+
+
 technique11 DefaultTechnique
 {
 	/* 우리가 수행해야할 정점, 픽셀 셰이더의 진입점 함수를 지정한다. */
-    pass Loop
+    pass DEFAULT        // 0
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN();
         PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
     }
 
+    pass WEIGHTED_BLENDED // 1
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+           SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = compile gs_5_0 GS_MAIN();
+        PixelShader = compile ps_5_0 PS_WEIGHT_BLENDED();
+    }
 }
