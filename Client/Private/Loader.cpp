@@ -157,7 +157,7 @@ HRESULT CLoader::Loading_Level_Static()
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
     if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/Resources/Json/Persistent_Room.json"), matPretransform)))
         return E_FAIL;
     if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/Resources/Json/Persistent_Streets.json"), matPretransform)))
@@ -247,7 +247,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
+    //matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
     if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/Resources/Json/Desk_C02.json"), matPretransform)))
         return E_FAIL;
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
@@ -275,6 +275,12 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* For. Prototype_GameObject_Camera_Target */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
         CCamera_Target::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    
+    /* For. Prototype_GameObject_Camera_Target */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),
+        CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
@@ -315,6 +321,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
 
 
+    Map_Object_Create(LEVEL_GAMEPLAY);
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -480,6 +487,84 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
     return S_OK;
 }
 
+HRESULT CLoader::Map_Object_Create(LEVEL_ID _iLevId)
+{
+    wstring filename = L"";
+    switch (_iLevId)
+    {
+    case Client::LEVEL_GAMEPLAY:
+        filename = L"zebal.mchc";
+        break;
+    default:
+        return S_OK;
+    }
+    _wstring strFullFilePath = L"../../Client/Bin/MapSaveFiles/" + filename;
+
+    HANDLE	hFile = CreateFile(strFullFilePath.c_str(),
+        GENERIC_READ,
+        NULL,
+        NULL,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
+    if (INVALID_HANDLE_VALUE == hFile)
+    {
+        return E_FAIL;
+    }
+    _uint iCount = 0;
+
+    DWORD	dwByte(0);
+    _uint iLayerCount = 0;
+
+    ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
+
+    for (_uint i = 0; i < iLayerCount; i++)
+    {
+        _uint		iObjectCnt = 0;
+        _char		szLayerTag[MAX_PATH];
+        wstring		strLayerTag;
+
+        ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+        ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
+
+        strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
+        LEVEL_ID eLevelId = _iLevId;
+        if (strLayerTag == L"Layer_Room_Environment" || strLayerTag == L"Layer_Outside_Environment")
+            eLevelId = LEVEL_STATIC;
+        for (size_t i = 0; i < iObjectCnt; i++)
+        {
+            _char		szSaveMeshName[MAX_PATH];
+            _float4x4	vWorld = {};
+
+
+            ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+            ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+
+
+            CModelObject::MODELOBJECT_DESC NormalDesc = {};
+            NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
+            NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
+            NormalDesc.isCoordChangeEnable = false;
+            NormalDesc.iModelPrototypeLevelID_3D = eLevelId;
+            NormalDesc.eStartCoord = COORDINATE_3D;
+            CGameObject* pGameObject = nullptr;
+            m_pGameInstance->Add_GameObject_ToLayer(_iLevId, TEXT("Prototype_GameObject_MapObject"),
+                _iLevId,
+                strLayerTag,
+                &pGameObject,
+                (void*)&NormalDesc);
+
+            if (pGameObject)
+            {
+                vWorld._41 *= -1.f;
+                vWorld._43 *= -1.f;
+                pGameObject->Set_WorldMatrix(vWorld);
+            }
+        }
+    }
+    CloseHandle(hFile);
+    return S_OK;
+}
 
 CLoader* CLoader::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID)
 {
