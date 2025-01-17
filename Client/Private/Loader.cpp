@@ -13,6 +13,7 @@
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "ArrowForStamp.h"
+#include "ESC_HeartPoint.h"
 /* For. UI*/
 
 #include "ModelObject.h"
@@ -215,6 +216,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ArrowForStamp"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Arrow.dds"), 1))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_HeartPoint"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/HPBar/HUD_Heart_%d.dds"), 13))))
+		return E_FAIL;
 
 
 
@@ -279,6 +283,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ArrowForStamp"),
 		CArrowForStamp::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"),
+		ESC_HeartPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

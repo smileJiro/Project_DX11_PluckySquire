@@ -49,7 +49,31 @@ void CStopStamp::Priority_Update(_float _fTimeDelta)
 void CStopStamp::Update(_float _fTimeDelta)
 {
 	if (m_isActive == false)
+	{
+		if (true == m_isBig || true == m_isSmall)
+		{
+			if (true == m_isBig)
+			{
+				m_fSizeX = 96.f;
+				m_fSizeY = 148.f;
+				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+
+				m_isBig = false;
+			}
+			
+			if (true == m_isSmall)
+			{
+				m_fSizeX = 72.f;
+				m_fSizeY = 111.f;
+				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+
+				m_isSmall = false;
+			}
+		}
+
 		return;
+	}
+		
 
 	ChangeStamp(_fTimeDelta);
 	
@@ -97,20 +121,18 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 	{
 		if (eStamp == CUI_Manager::STAMP_BOMB)
 		{
+			//위치 변경이 필요한가요?
 			m_fX = g_iWinSizeX / 7.5;
 			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
-
 
 			m_isSmall = true;
 		}
 		else if (eStamp == CUI_Manager::STAMP_STOP)
 		{
+			//위치 변경이 필요한가요?
 			m_fX = g_iWinSizeX / 7.5;
 			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
-			//m_fSizeX = 96;
-			//m_fSizeY = 148.f;
-			//
-			//m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+
 			m_isBig = true;
 		}
 
@@ -149,8 +171,6 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 	
 }
 
-
-
 HRESULT CStopStamp::Ready_Components()
 {
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
@@ -169,7 +189,6 @@ HRESULT CStopStamp::Ready_Components()
 
 	return S_OK;
 }
-
 
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

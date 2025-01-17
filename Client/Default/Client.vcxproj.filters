@@ -121,6 +121,18 @@
     <Filter Include="02.GameObjects\Camera\Manager">
       <UniqueIdentifier>{dc70aa36-495a-4cc7-85b0-0d18bc005acf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\00. HeartPoint">
+      <UniqueIdentifier>{5bece5e8-a2e3-4fd6-a3c9-8d34fc011de9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\01. Bulb">
+      <UniqueIdentifier>{fc32b66e-702e-4e5b-9098-847f53c2a8e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\02. BackESC">
+      <UniqueIdentifier>{a0394450-3fab-4f6c-9cc1-05167d7da795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\03. BackArrow">
+      <UniqueIdentifier>{ec3e6f0f-6fce-4868-b12d-3ba61012290a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Monster\BarfBug\Projectile">
       <UniqueIdentifier>{0e711259-b9ff-46d3-9f43-43b0f7522312}</UniqueIdentifier>
     </Filter>
@@ -246,6 +258,9 @@
     <ClInclude Include="..\public\UI_Manager.h">
       <Filter>02.GameObjects\UI\100. UI_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ESC_HeartPoint.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\00. HeartPoint</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\Projectile_BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
     </ClInclude>
@@ -349,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Manager.cpp">
       <Filter>02.GameObjects\UI\100. UI_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_HeartPoint.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\00. HeartPoint</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Projectile_BarfBug.cpp">
       <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>

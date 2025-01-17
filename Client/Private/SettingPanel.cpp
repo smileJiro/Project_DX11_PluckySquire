@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SettingPanel.h"
-#include "GameInstance.h"
+
 
 
 
@@ -40,6 +40,12 @@ void CSettingPanel::Priority_Update(_float _fTimeDelta)
 
 void CSettingPanel::Update(_float _fTimeDelta)
 {
+
+	if (KEY_DOWN(KEY::ESC))
+	{
+		//Update_Active();
+	}
+
 }
 
 void CSettingPanel::Late_Update(_float _fTimeDelta)
@@ -47,15 +53,25 @@ void CSettingPanel::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CSettingPanel::Render()
+HRESULT CSettingPanel::Render(_int _index)
 {
-
-	__super::Render();
+	if (true == m_isActive)
+		__super::Render(_index);
 
 	return S_OK;
 }
 
 
+
+void CSettingPanel::Update_Active()
+{
+	if (m_isActive == false)
+	{
+		m_isActive = true;
+	}
+	else if (m_isActive == true)
+		m_isActive = false;
+}
 
 HRESULT CSettingPanel::Ready_Components()
 {
