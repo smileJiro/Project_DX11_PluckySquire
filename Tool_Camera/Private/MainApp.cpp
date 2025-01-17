@@ -3,11 +3,11 @@
 
 #include "GameInstance.h"
 #include "Event_Manager.h"
-#include "Arm_Manager.h"
+#include "Camera_Manager_Tool.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
-	, m_pArm_Manager{ CArm_Manager::GetInstance() }
+	, m_pCamera_Manager{ CCamera_Manager_Tool::GetInstance() }
 {
 	Safe_AddRef(m_pGameInstance);
 }
@@ -38,7 +38,7 @@ HRESULT CMainApp::Initialize()
 	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
 
 	/* Arm_Manager */
-	if (FAILED(m_pArm_Manager->Initialize()))
+	if (FAILED(m_pCamera_Manager->Initialize()))
 		return E_FAIL;
 
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
@@ -57,7 +57,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 	m_pGameInstance->Priority_Update_Engine(_fTimeDelta);
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
-	m_pArm_Manager->Update();
+	m_pCamera_Manager->Update();
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
@@ -83,7 +83,7 @@ HRESULT CMainApp::Render()
 		return E_FAIL;
 
 	m_pGameInstance->Draw();
-	m_pArm_Manager->Render();
+	m_pCamera_Manager->Render();
 
 	m_pGameInstance->Render_DrawData_Imgui();
 
@@ -125,7 +125,7 @@ void CMainApp::Free()
 
 	/* Client Singleton Delete */
 	CEvent_Manager::DestroyInstance();
-	CArm_Manager::DestroyInstance();
+	CCamera_Manager_Tool::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

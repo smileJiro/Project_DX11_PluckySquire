@@ -1,7 +1,11 @@
-#include "Camera_Manager.h"
+#include "stdafx.h"
+#include "../Public/Camera_Manager.h"
 
 #include "GameInstance.h"
-#include "Camera.h"
+
+#include "Camera_Target.h"
+
+IMPLEMENT_SINGLETON(CCamera_Manager)
 
 CCamera_Manager::CCamera_Manager()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -21,13 +25,6 @@ void CCamera_Manager::Update(_float fTimeDelta)
 {
 
 }
-
-#ifdef _DEBUG
-void CCamera_Manager::Render()
-{
-
-}
-#endif
 
 _vector CCamera_Manager::Get_CameraVector(CTransform::STATE _eState)
 {
@@ -49,26 +46,11 @@ void CCamera_Manager::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 {
 	if (TARGET == m_eCurrentCameraType) {
-		m_Cameras[m_eCurrentCameraType]->Set_CameraMode(_iCameraMode, _iNextMode);
+		dynamic_cast<CCamera_Target*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
 	}
 	else
 		return;
 }
-
-void CCamera_Manager::Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos)
-{
-	m_Cameras[m_eCurrentCameraType]->Set_TargetPos(_vTargetPos);
-
-	CController_Transform* pConTrans = m_Cameras[m_eCurrentCameraType]->Get_ControllerTransform();
-	pConTrans->Set_State(CTransform::STATE_POSITION, _vCameraPos);
-}
-
-#ifdef _DEBUG
-void CCamera_Manager::Set_Rotation(_vector vRotation)
-{
-	m_Cameras[TARGET]->Set_Rotation(vRotation);
-}
-#endif
 
 void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 {
@@ -81,13 +63,13 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 	case FREE:
 		m_Cameras[FREE]->Set_Active(true);
 		m_Cameras[TARGET]->Set_Active(false);
-		
+
 		pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());
 		break;
-	
+
 	case TARGET:
 		m_Cameras[FREE]->Set_Active(false);
-		m_Cameras[TARGET]->Set_Active(true);	
+		m_Cameras[TARGET]->Set_Active(true);
 		break;
 	}
 }
@@ -95,7 +77,7 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
 {
 	if (nullptr != m_Cameras[TARGET] && TARGET == m_eCurrentCameraType) {
-		m_Cameras[TARGET]->Change_Target(_pTargetWorldMatrix);
+		dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Change_Target(_pTargetWorldMatrix);
 	}
 }
 
@@ -116,7 +98,7 @@ void CCamera_Manager::Free()
 {
 	Safe_Release(m_pGameInstance);
 
-	for (auto& Camera : m_Cameras) 
+	for (auto& Camera : m_Cameras)
 		Safe_Release(Camera);
 
 	__super::Free();

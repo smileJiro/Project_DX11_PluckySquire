@@ -32,6 +32,15 @@ public:
 		m_ePreState = _eState;
 	}
 
+	void Set_AnimChangeable(_bool _isChangeable)
+	{
+		m_isAnimChangeable = _isChangeable;
+	}
+	_bool Get_AnimChangeable()
+	{
+		return m_isAnimChangeable;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -55,6 +64,7 @@ protected:
 	_float m_fAlertRange = { 0.f };
 	_float m_fChaseRange = { 0.f };
 	_float m_fAttackRange = { 0.f };
+	_bool m_isAnimChangeable = { true };
 
 public:
 	HRESULT Cleanup_DeadReferences() override;

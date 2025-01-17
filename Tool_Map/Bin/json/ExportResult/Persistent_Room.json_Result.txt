@@ -1,4 +1,4 @@
-Model Create End - [Complete : 276, Failed : 3 ]
+Model Create End - [Complete : 275, Failed : 1 ]
 =================== Model Names ===================
 alphabet_blocks_a_mesh
 alphabet_blocks_b_mesh
@@ -6,7 +6,6 @@ AstronautToy
 cardboard_boxes_01
 colourpen_01
 crayon_01
-Cube
 door_plaque
 eraser_01
 giftbox_01_mesh

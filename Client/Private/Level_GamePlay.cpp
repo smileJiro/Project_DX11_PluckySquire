@@ -1,15 +1,21 @@
 #include "stdafx.h"
 #include "Level_GamePlay.h"
+
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Pooling_Manager.h"
 #include "Camera_Manager.h"
+#include "Camera_Free.h"
+#include "Camera_Target.h"
+
 #include "TestPlayer.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
 
+
 #include "UI.h"
+#include "UI_Manager.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CLevel(_pDevice, _pContext)
@@ -59,9 +65,25 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
-		_uint iCurCameraType = m_pGameInstance->Get_CameraType();
+		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
 		iCurCameraType ^= 1;
-		m_pGameInstance->Change_CameraType(iCurCameraType);
+		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
+	}
+
+	if (KEY_DOWN(KEY::Z))
+	{
+		CUI_Manager::STAMP eStamp;
+		eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
+
+		if (eStamp == CUI_Manager::STAMP_BOMB)
+		{
+			CUI_Manager::GetInstance()->Set_StampIndex(CUI_Manager::STAMP_STOP);
+		}
+		else if (eStamp == CUI_Manager::STAMP_STOP)
+		{
+			CUI_Manager::GetInstance()->Set_StampIndex(CUI_Manager::STAMP_BOMB);
+		}
+
 	}
 
 
@@ -117,7 +139,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
@@ -136,9 +158,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
-
-	m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	Create_Arm();
 
@@ -196,24 +217,37 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	////////////////////////////////
 
+	pDesc.fX = g_iWinSizeX / 20;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
+	
+	// 원래 크기
+	pDesc.fSizeX = 96.f;
+	pDesc.fSizeY = 148.f;
 
+	//작게  크기
+	//pDesc.fSizeX = 48.f;
+	//pDesc.fSizeY = 74.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StopStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
+	pDesc.fX = g_iWinSizeX / 7.5;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
+	pDesc.fSizeX = 72;
+	pDesc.fSizeY = 111.f;
 
-	//pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2;
-	//pDesc.fY = g_iWinSizeY / 2;
-	//
-	//
-	//pDesc.fSizeX = 1200.f;
-	//pDesc.fSizeY = 600.f;
-	////pDesc.fSizeX = g_iWinSizeX / 2;
-	////pDesc.fSizeY = g_iWinSizeX / 2;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BombStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
+	pDesc.fX = g_iWinSizeX / 10.8;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20;
+	pDesc.fSizeX = 42;
+	pDesc.fSizeY = 27.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ArrowForStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
 	
 
 	return S_OK;
@@ -255,7 +289,7 @@ void CLevel_GamePlay::Create_Arm()
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
 
-	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(m_pGameInstance->Get_Camera(CCamera_Manager::TARGET));
+	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 
 	pTarget->Add_Arm(pArm);
 }

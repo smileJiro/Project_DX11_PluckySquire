@@ -8,8 +8,7 @@
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
-#include "Camera_Manager.h"
-#include "Arm_Manager.h"
+#include "Camera_Manager_Tool.h"
 
 CLevel_Camera_Tool::CLevel_Camera_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -38,10 +37,10 @@ HRESULT CLevel_Camera_Tool::Initialize()
 void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::N)) {
-		m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::FREE);
 	}
 	else if (KEY_DOWN(KEY::M)) {
-		m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
+		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::TARGET);
 	}
 
 	Show_CameraTool();
@@ -94,7 +93,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager_Tool::GetInstance()->Add_Camera(CCamera_Manager_Tool::FREE, dynamic_cast<CCamera*>(pCamera));
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
@@ -113,9 +112,8 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
-
-	m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+	CCamera_Manager_Tool::GetInstance()->Add_Camera(CCamera_Manager_Tool::TARGET, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::FREE);
 
 	Create_Arms();
 
@@ -184,7 +182,7 @@ void CLevel_Camera_Tool::Show_CameraTool()
 
 	// Copy
 	if (ImGui::Button("Create CopyArm")) {
-		CArm_Manager::GetInstance()->Copy_Arm();
+		CCamera_Manager_Tool::GetInstance()->Copy_Arm();
 	}
 
 	// Add CopyArm
@@ -213,10 +211,10 @@ void CLevel_Camera_Tool::Create_Arms()
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
 
-	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(m_pGameInstance->Get_Camera(CCamera_Manager::TARGET));
+	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET));
 
 	pTarget->Add_Arm(pArm);
-	CArm_Manager::GetInstance()->Set_CurrentArm(pArm);
+	CCamera_Manager_Tool::GetInstance()->Set_CurrentArm(pArm);
 }
 
 void CLevel_Camera_Tool::Rotate_Arm(_bool _isCopyArm)
@@ -257,7 +255,7 @@ void CLevel_Camera_Tool::Rotate_Arm(_bool _isCopyArm)
 
 	_vector vRadianRotation = XMVectorSet(XMConvertToRadians(XMVectorGetX(vArmRotation)), XMConvertToRadians(XMVectorGetY(vArmRotation)), XMConvertToRadians(XMVectorGetZ(vArmRotation)), 0.f);
 
-	CArm_Manager::GetInstance()->Set_ArmRotation(vRadianRotation, _isCopyArm);
+	CCamera_Manager_Tool::GetInstance()->Set_ArmRotation(vRadianRotation, _isCopyArm);
 }
 
 void CLevel_Camera_Tool::Change_ArmLength(_bool _isCopyArm)
@@ -267,19 +265,19 @@ void CLevel_Camera_Tool::Change_ArmLength(_bool _isCopyArm)
 	ImGui::SameLine();
 	ImGui::DragFloat("##Length", &m_fLengthValue, 0.1f, 0.f, 10.f);
 
-	_float fArmLength = CArm_Manager::GetInstance()->Get_ArmLength(_isCopyArm);
+	_float fArmLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength(_isCopyArm);
 	_bool bActive = false;
 
 	ImGui::Text("Arm Length: %.2f  ", m_fLengthValue);
 	ImGui::SameLine();
 	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
 		fArmLength -= m_fLengthValue;
-		CArm_Manager::GetInstance()->Set_ArmLength(fArmLength, _isCopyArm);
+		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength, _isCopyArm);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
 		fArmLength += m_fLengthValue;
-		CArm_Manager::GetInstance()->Set_ArmLength(fArmLength, _isCopyArm);
+		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength, _isCopyArm);
 	}
 }
 
@@ -288,7 +286,7 @@ void CLevel_Camera_Tool::Add_CopyArm()
 	//ImGui::NewLine();
 
 	ImGui::InputText("CopyArm Tag", m_szCopyArmName, MAX_PATH);
-	CArm_Manager::GetInstance()->Add_CopyArm(m_pGameInstance->StringToWString(m_szCopyArmName));
+	CCamera_Manager_Tool::GetInstance()->Add_CopyArm(m_pGameInstance->StringToWString(m_szCopyArmName));
 }
 
 CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -1,8 +1,6 @@
 #include "CameraArm.h"
 #include "GameInstance.h"
 
-#include "Camera_Manager.h"
-
 CCameraArm::CCameraArm(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
     , m_pContext(_pContext)
@@ -67,7 +65,7 @@ void CCameraArm::Priority_Update(_float fTimeDelta)
 
 void CCameraArm::Update(_float fTimeDelta)
 {
-    Set_CameraPos(fTimeDelta);
+    //Set_CameraPos(fTimeDelta);
 }
 
 void CCameraArm::Late_Update(_float fTimeDelta)
@@ -145,7 +143,7 @@ HRESULT CCameraArm::Set_PrimitiveBatch()
 }
 #endif
 
-void CCameraArm::Set_CameraPos(_float fTimeDelta)
+_vector CCameraArm::Calculate_CameraPos(_float fTimeDelta)
 {
     _vector vTargetPos;
 
@@ -154,7 +152,8 @@ void CCameraArm::Set_CameraPos(_float fTimeDelta)
 
     _vector vCameraPos = vTargetPos + (m_fLength * XMLoadFloat3(&m_vArm));
 
-    m_pGameInstance->Set_CameraPos(vCameraPos, vTargetPos);
+    return vCameraPos;
+   // m_pGameInstance->Set_CameraPos(vCameraPos, vTargetPos);
 }
 
 void CCameraArm::Set_Rotation(_vector _vRotation)
