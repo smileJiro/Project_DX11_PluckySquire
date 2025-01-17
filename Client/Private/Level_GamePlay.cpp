@@ -1,15 +1,21 @@
 #include "stdafx.h"
 #include "Level_GamePlay.h"
+
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "Camera_Target.h"
-#include "Poolling_Manager.h"
+#include "Pooling_Manager.h"
 #include "Camera_Manager.h"
+#include "Camera_Free.h"
+#include "Camera_Target.h"
+
 #include "TestPlayer.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
 
+
 #include "UI.h"
+#include "UI_Manager.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CLevel(_pDevice, _pContext)
@@ -28,13 +34,13 @@ HRESULT CLevel_GamePlay::Initialize()
 
 
 	/* Pooling Test */
-	POOLLING_DESC Poolling_Desc;
-	Poolling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
-	Poolling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Poolling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
 	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
-	CPoolling_Manager::GetInstance()->Register_PoollingObject(TEXT("Poolling_TestBeetle"), Poolling_Desc, pDesc);
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
 	
     return S_OK;
@@ -51,18 +57,34 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	{
 		/* Pooling Test */
 		_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		//CPoolling_Manager::GetInstance()->Create_Objects(TEXT("Poolling_TestBeetle"), 1); // 여러마리 동시 생성. 
+		//CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
 
-		CPoolling_Manager::GetInstance()->Create_Object(TEXT("Poolling_TestBeetle"), &vPosition); // 한마리 생성.
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
 	}
 
 	// Change Camera Free  Or Target
-	if (KEY_DOWN(KEY::B)) {
-		m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+	if (KEY_DOWN(KEY::C)) {
+		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
+		iCurCameraType ^= 1;
+		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
-	else if (KEY_DOWN(KEY::N)) {
-		m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
+
+	if (KEY_DOWN(KEY::Z))
+	{
+		CUI_Manager::STAMP eStamp;
+		eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
+
+		if (eStamp == CUI_Manager::STAMP_BOMB)
+		{
+			CUI_Manager::GetInstance()->Set_StampIndex(CUI_Manager::STAMP_STOP);
+		}
+		else if (eStamp == CUI_Manager::STAMP_STOP)
+		{
+			CUI_Manager::GetInstance()->Set_StampIndex(CUI_Manager::STAMP_BOMB);
+		}
+
 	}
+
 
 }
 
@@ -116,7 +138,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
@@ -135,9 +157,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
-
-	m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	Create_Arm();
 
@@ -195,24 +216,37 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	////////////////////////////////
 
+	pDesc.fX = g_iWinSizeX / 20;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
+	
+	// 원래 크기
+	pDesc.fSizeX = 96.f;
+	pDesc.fSizeY = 148.f;
 
+	//작게  크기
+	//pDesc.fSizeX = 48.f;
+	//pDesc.fSizeY = 74.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StopStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
+	pDesc.fX = g_iWinSizeX / 7.5;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
+	pDesc.fSizeX = 72;
+	pDesc.fSizeY = 111.f;
 
-	//pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2;
-	//pDesc.fY = g_iWinSizeY / 2;
-	//
-	//
-	//pDesc.fSizeX = 1200.f;
-	//pDesc.fSizeY = 600.f;
-	////pDesc.fSizeX = g_iWinSizeX / 2;
-	////pDesc.fSizeY = g_iWinSizeX / 2;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BombStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
+	pDesc.fX = g_iWinSizeX / 10.8;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20;
+	pDesc.fSizeX = 42;
+	pDesc.fSizeY = 27.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ArrowForStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
 	
 
 	return S_OK;
@@ -254,7 +288,7 @@ void CLevel_GamePlay::Create_Arm()
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
 
-	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(m_pGameInstance->Get_Camera(CCamera_Manager::TARGET));
+	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 
 	pTarget->Add_Arm(pArm);
 }

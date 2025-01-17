@@ -45,15 +45,12 @@ void CCamera_Target::Priority_Update(_float fTimeDelta)
 void CCamera_Target::Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
-
-	if (nullptr != m_pArm)
-		m_pArm->Update(fTimeDelta);
+	
+	Action_Mode(fTimeDelta);
 }
 
 void CCamera_Target::Late_Update(_float fTimeDelta)
 {
-	Action_Mode(fTimeDelta);
-
 	__super::Compute_PipeLineMatrices();
 }
 
@@ -82,17 +79,21 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 {
 #ifdef _DEBUG
 	_long		MouseMove = {};
+	_vector		fRotation = {};
 
 	if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
 		if (MouseMove = MOUSE_MOVE(MOUSE_MOVE::X))
 		{
-			m_pControllerTransform->Turn(MouseMove * _fTimeDelta * 0.1f, XMVectorSet(0.f, 1.f, 0.f, 0.f));
+			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
+			
 		}
 
 		if (MouseMove = MOUSE_MOVE(MOUSE_MOVE::Y))
 		{
-			m_pControllerTransform->Turn(MouseMove * _fTimeDelta * 0.1f, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * 0.3f);
 		}
+
+		m_pArm->Set_Rotation(fRotation);
 	}
 #endif
 }
@@ -110,7 +111,12 @@ void CCamera_Target::Action_Mode(_float fTimeDelta)
 
 void CCamera_Target::Defualt_Move(_float fTimeDelta)
 {
-	_vector vAt = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_vAtOffset);
+	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
+
+	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 

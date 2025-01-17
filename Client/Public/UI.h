@@ -2,6 +2,7 @@
 #include "UIObject.h"
 #include "Client_Defines.h"
 #include "ModelObject.h"
+#include "UI_Manager.h"
 
 
 BEGIN(Engine)

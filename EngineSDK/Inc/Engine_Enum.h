@@ -49,10 +49,16 @@ enum class PASS_DEFERRED
 	LIGHT_DIRECTION,
 	LIGHT_POINT,
 	FINAL,
-
+	
 	LAST
 };
 
+enum class CAMERA_TYPE 
+{ 
+	FREE, 
+	TARGET, 
+	LAST
+};
 
 enum class PASS_VTXPOINTINSTANCE
 {

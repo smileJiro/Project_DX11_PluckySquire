@@ -53,9 +53,19 @@ void CLayer::Late_Update(_float fTimeDelta)
 
         if ((*iter)->Is_Dead())
         {
-            Safe_Release((*iter));
-            iter = m_GameObjects.erase(iter);
-            // 레퍼런스카운트? 어디서 AddRef를 해주지? 
+            if (true == (*iter)->Is_Pooling())
+            {
+                /* 풀링등록된 오브젝트인 경우 */
+                (*iter)->Set_Active(false); // 이벤트 처리 안해도 어짜피 LateUpdate까진 돌리니까. 렌더까지 될 것임.
+            }
+            else
+            {
+                /* 일반적인 오브젝트인 경우 */
+                Safe_Release((*iter));
+                iter = m_GameObjects.erase(iter);
+                // 레퍼런스카운트? 어디서 AddRef를 해주지? 
+            }
+            
         }
         else
         {
