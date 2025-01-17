@@ -406,6 +406,12 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 
 		ImGui::TreePop();
 	}
+	if (ImGui::Button("Target Change"))
+	{
+		if (nullptr != pSelectObject)
+			m_pCamera_Manager->Change_CameraTarget(pSelectObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr());
+	}
+
 	ImGui::Dummy(ImVec2(0.0f, 10.0f));
 	ImGui::Separator();
 	ImGui::Separator();
@@ -414,13 +420,7 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 	/* Object 세부 정보 렌더링 */
 	if(nullptr != pSelectObject)
 		pSelectObject->Imgui_Render_ObjectInfos();
-	
-	if (ImGui::Button("Target Change"))
-	{
-		if (nullptr != pSelectObject)
-			pSelectObject;
-	}
-	
+
 
 
 	ImGui::End();
