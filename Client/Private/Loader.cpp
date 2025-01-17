@@ -17,7 +17,7 @@
 /* For. UI*/
 
 #include "ModelObject.h"
-#include "TestPlayer.h"
+#include "Player.h"
 #include "TestTerrain.h"
 
 #include "Beetle.h"
@@ -28,6 +28,7 @@
 #include "Controller_Model.h"
 #include "FSM.h"
 #include "set"
+#include "StateMachine.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -175,7 +176,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
+        CStateMachine::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 
@@ -209,6 +212,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
         CFSM::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PickBulb"),
@@ -260,7 +264,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
-        CTestPlayer::Create(m_pDevice, m_pContext))))
+        CPlayer::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     /* For. Prototype_GameObject_TestTerrain */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestTerrain"),

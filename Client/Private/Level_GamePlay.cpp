@@ -9,7 +9,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 
-#include "TestPlayer.h"
+#include "Player.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
 
@@ -170,7 +170,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 {
 	CGameObject** pGameObject = nullptr;
 
-	CTestPlayer::CONTAINEROBJ_DESC Desc;
+	CPlayer::CONTAINEROBJ_DESC Desc;
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))

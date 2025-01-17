@@ -201,6 +201,8 @@
     <ClInclude Include="..\public\IdleState.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
     <ClInclude Include="..\public\Monster.h" />
+    <ClInclude Include="..\Public\PlayerState_Idle.h" />
+    <ClInclude Include="..\Public\PlayerState_Run.h" />
     <ClInclude Include="..\Public\Pooling_Manager.h" />
     <ClInclude Include="..\public\Projectile_BarfBug.h" />
     <ClInclude Include="..\Public\RangedAttackState.h" />
@@ -216,7 +218,7 @@
     <ClInclude Include="..\Public\Pick_Bulb.h" />
     <ClInclude Include="..\public\State.h" />
     <ClInclude Include="..\Public\StopStamp.h" />
-    <ClInclude Include="..\public\TestPlayer.h" />
+    <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
     <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="..\public\UI_Manager.h" />
@@ -235,6 +237,7 @@
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\ChaseWalkState.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
+    <ClCompile Include="..\Private\Condition.cpp" />
     <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
     <ClCompile Include="..\Private\ESC_HeartPoint.cpp" />
     <ClCompile Include="..\private\FSM.cpp">
@@ -243,6 +246,9 @@
     <ClCompile Include="..\private\IdleState.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
+    <ClCompile Include="..\Private\PlayerState.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Run.cpp" />
     <ClCompile Include="..\Private\Pooling_Manager.cpp" />
     <ClCompile Include="..\private\Projectile_BarfBug.cpp" />
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
@@ -257,9 +263,11 @@
     <ClCompile Include="..\private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\Pick_Bulb.cpp" />
     <ClCompile Include="..\private\State.cpp" />
+    <ClCompile Include="..\Private\StateMachine.cpp" />
     <ClCompile Include="..\Private\StopStamp.cpp" />
-    <ClCompile Include="..\private\TestPlayer.cpp" />
+    <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\TestTerrain.cpp" />
+    <ClCompile Include="..\Private\Transition.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\private\UI_Manager.cpp" />
     <ClCompile Include="Client.cpp" />

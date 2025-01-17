@@ -28,6 +28,22 @@ HRESULT CController_Transform::Initialize(CON_TRANSFORM_DESC* _pDesc)
 	return S_OK;
 }
 
+void CController_Transform::Update_AutoRotation(_float _fTimeDelta)
+{
+	switch (m_eCurCoord)
+	{
+	case Engine::COORDINATE_2D:
+		break;
+	case Engine::COORDINATE_3D:
+		static_cast<CTransform_3D*>( m_pTransforms[m_eCurCoord])->Update_AutoRotationY(_fTimeDelta);		break;
+	case Engine::COORDINATE_LAST:
+		break;
+	default:
+		break;
+	}
+
+}
+
 HRESULT CController_Transform::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
 {
 	if (_eCoordinate == m_eCurCoord)
@@ -74,6 +90,11 @@ _bool CController_Transform::Go_Up(_float _fTimeDelta)
 _bool CController_Transform::Go_Down(_float _fTimeDelta)
 {
 	return m_pTransforms[m_eCurCoord]->Go_Down(_fTimeDelta);
+}
+
+void CController_Transform::Go_Direction(_vector _vDirection, _float _fTimeDelta)
+{
+	m_pTransforms[m_eCurCoord]->Go_Direction(_vDirection, _fTimeDelta);
 }
 
 void CController_Transform::Rotation(_float _fRadian, _fvector _vAxis)
@@ -207,6 +228,11 @@ void CController_Transform::Set_SpeedPerSec(_float _fSpeedPerSec)
 void CController_Transform::Set_RotationPerSec(_float _fRotationPerSec)
 {
 	m_pTransforms[m_eCurCoord]->Set_RotationPerSec(_fRotationPerSec);
+}
+
+void CController_Transform::Set_AutoRotationYDirection(_fvector _vRotYTarget)
+{
+	static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->Set_AutoRotationYDirection(_vRotYTarget);
 }
 
 HRESULT CController_Transform::Ready_Transforms(CON_TRANSFORM_DESC* _pDesc)
