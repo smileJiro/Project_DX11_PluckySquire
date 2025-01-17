@@ -24,6 +24,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
     MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
     m_strModelName = pDesc->szModelName;
     m_matWorld = pDesc->matWorld;
+
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->iCurLevelID = LEVEL_TOOL_MAP;
     pDesc->isCoordChangeEnable = false;
@@ -48,7 +49,11 @@ HRESULT CMapObject::Initialize(void* _pArg)
             TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom),&RayDesc)))
         return E_FAIL;
 
+    if (pDesc->eCreateType == OBJ_LOAD)
+    {
+        Set_WorldMatrix(m_matWorld);
 
+    }
     //if (FAILED(Ready_Components(pDesc)))
     //    return E_FAIL;
 

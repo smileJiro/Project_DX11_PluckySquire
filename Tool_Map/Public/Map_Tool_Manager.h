@@ -150,9 +150,10 @@ private:
 	vector<MAP_OBJ>					m_MapObjLists;
 
 
-	_wstring						m_strCacheFilePath = L"../../Client/Bin/cashe.cchc";
-	_wstring						m_strObjectLoadFilePath = L"../../Client/Bin/Resources/Models/Object/";
+	_wstring						m_strCacheFilePath = L"../Bin/cashe.cchc";
+	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/";
 	_char							m_szSaveFileName[MAX_PATH];
+	_char							m_szImportLayerTag[MAX_PATH];
 
 	string							m_arrCellStateName[CELL_STATE_END] =
 	{

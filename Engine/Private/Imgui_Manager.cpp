@@ -288,7 +288,6 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 					const list<CGameObject*> pGameObjects = Pair.second->Get_GameObjects();
 					_uint iMaxObjectSize = (_uint)pGameObjects.size();
 					ImGui::PushItemFlag(ImGuiItemFlags_NoNav, true);
-
 					_string strObjectListTag = "##ObjectList_" + LayerTag;
 					if (ImGui::BeginListBox(strObjectListTag.c_str(), ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 					{
