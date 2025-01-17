@@ -48,6 +48,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
 {
+
 	if (KEY_DOWN(KEY::ENTER))
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);

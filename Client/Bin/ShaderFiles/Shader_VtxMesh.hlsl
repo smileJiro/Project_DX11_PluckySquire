@@ -106,9 +106,7 @@ PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
-    if (vMtrlDiffuse.a < 0.01f)
-        discard;
+    float4 vMtrlDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
     
     Out.vDiffuse = float4(1.0f, 1.0f, 0.0f, 1.0f);
     Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
