@@ -73,7 +73,7 @@ HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.fFovy = XMConvertToRadians(60.f);
-
+	Desc.eMode = CCamera_Free::INPUT_MODE_WASD;
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_TOOL_MAP, _strLayerTag, &pGameObject, &Desc)))
