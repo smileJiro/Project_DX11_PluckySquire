@@ -52,10 +52,10 @@
     <Filter Include="02. GameObjects\Camera\01. Camera_Target">
       <UniqueIdentifier>{73621881-c2d6-4187-840b-6c9b4e63cefd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Manager">
+    <Filter Include="95. Manager">
       <UniqueIdentifier>{0d02a024-2805-46a2-9e6b-f9ee03a03f91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Manager\Arm_Manager">
+    <Filter Include="95. Manager\Camera_Manager">
       <UniqueIdentifier>{111ef9c2-ae35-45aa-b7c0-cecb3f65d024}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -112,10 +112,7 @@
       <Filter>02. GameObjects\Camera\01. Camera_Target</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Manager_Tool.h">
-      <Filter>03. Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Arm_Manager.h">
-      <Filter>03. Manager\Arm_Manager</Filter>
+      <Filter>95. Manager\Camera_Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -162,10 +159,7 @@
       <Filter>02. GameObjects\Camera\01. Camera_Target</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Manager_Tool.cpp">
-      <Filter>03. Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Arm_Manager.cpp">
-      <Filter>03. Manager\Arm_Manager</Filter>
+      <Filter>95. Manager\Camera_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

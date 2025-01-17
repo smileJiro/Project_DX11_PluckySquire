@@ -45,15 +45,12 @@ void CCamera_Target::Priority_Update(_float fTimeDelta)
 void CCamera_Target::Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
-
-	if (nullptr != m_pArm)
-		m_pArm->Update(fTimeDelta);
+	
+	Action_Mode(fTimeDelta);
 }
 
 void CCamera_Target::Late_Update(_float fTimeDelta)
 {
-	Action_Mode(fTimeDelta);
-
 	__super::Compute_PipeLineMatrices();
 }
 
@@ -114,7 +111,12 @@ void CCamera_Target::Action_Mode(_float fTimeDelta)
 
 void CCamera_Target::Defualt_Move(_float fTimeDelta)
 {
-	_vector vAt = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_vAtOffset);
+	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
+
+	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 
