@@ -204,7 +204,7 @@
     <ClInclude Include="..\Public\AlertState.h">
       <Filter>03.Components\FSM\State\Chase</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Poolling_Manager.h">
+    <ClInclude Include="..\Public\Pooling_Manager.h">
       <Filter>95.Pooling</Filter>
     </ClInclude>
   </ItemGroup>
@@ -290,7 +290,7 @@
     <ClCompile Include="..\Private\AlertState.cpp">
       <Filter>03.Components\FSM\State\Chase</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Poolling_Manager.cpp">
+    <ClCompile Include="..\Private\Pooling_Manager.cpp">
       <Filter>95.Pooling</Filter>
     </ClCompile>
   </ItemGroup>

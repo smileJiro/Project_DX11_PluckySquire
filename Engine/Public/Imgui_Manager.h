@@ -13,7 +13,7 @@ public:
 	HRESULT Initialize(HWND _hWnd, ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _float2 _vViewportSize);
 	HRESULT Start_Imgui(); // 시작을 알림.
 	HRESULT End_Imgui(); // 종료를 알림.
-	void Render_DrawData(); // 수집 된 정보를 기반으로 그리기를 수행함.
+	void	Render_DrawData(); // 수집 된 정보를 기반으로 그리기를 수행함.
 
 	HRESULT LevelChange_Imgui();
 private:

@@ -196,7 +196,7 @@
     <ClInclude Include="..\public\IdleState.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
     <ClInclude Include="..\public\Monster.h" />
-    <ClInclude Include="..\Public\Poolling_Manager.h" />
+    <ClInclude Include="..\Public\Pooling_Manager.h" />
     <ClInclude Include="..\Public\RangedAttackState.h" />
     <ClInclude Include="..\public\SettingPanel.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
@@ -231,7 +231,7 @@
     <ClCompile Include="..\private\IdleState.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
-    <ClCompile Include="..\Private\Poolling_Manager.cpp" />
+    <ClCompile Include="..\Private\Pooling_Manager.cpp" />
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
     <ClCompile Include="..\private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
