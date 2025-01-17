@@ -224,7 +224,7 @@ HRESULT CMapParsing_Manager::Parsing()
 	wstring strResultFileFath = m_pGameInstance->StringToWString(strFilePath);
 	strResultFileFath += L"\\ExportResult\\";
 	strResultFileFath += m_pGameInstance->StringToWString(strFileName);
-	strResultFileFath += L"_Result.txt";
+	strResultFileFath += L"_Result.json";
 
 	json jAddFile;
 	for (auto strModelName : m_MapObjectNames)
