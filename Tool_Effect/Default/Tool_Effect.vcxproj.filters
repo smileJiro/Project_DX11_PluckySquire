@@ -25,6 +25,15 @@
     <Filter Include="10. Event_Manager">
       <UniqueIdentifier>{5b26a87c-b91c-4f2e-911c-665a5ae92adb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject">
+      <UniqueIdentifier>{eebc3766-14e3-48a5-843a-5ee083b7f0d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. ShaderFiles">
+      <UniqueIdentifier>{bc296c5e-997d-4698-9f64-d19fdf2648ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. JsonFiles">
+      <UniqueIdentifier>{6e2e03d3-1272-493a-9f0f-891109193c46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool_Effect.h">
@@ -59,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Event_Manager.h">
       <Filter>10. Event_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_Background.h">
+      <Filter>02. GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,5 +108,21 @@
     <ClCompile Include="..\Private\Event_Manager.cpp">
       <Filter>10. Event_Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Object_Background.cpp">
+      <Filter>02. GameObject</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\DataFiles\Effects\TestEffect.json">
+      <Filter>96. JsonFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

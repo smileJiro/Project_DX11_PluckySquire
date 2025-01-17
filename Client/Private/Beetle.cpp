@@ -30,7 +30,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
     pDesc->fAlertRange = 5.f;
-    pDesc->fChaseRange = 8.f;
+    pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 2.f;
 
     if (FAILED(__super::Initialize(pDesc)))
@@ -113,6 +113,11 @@ void CBeetle::Change_Animation()
     }
 }
 
+void CBeetle::Alert_End(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    Set_AnimChangeable(true);
+}
+
 void CBeetle::Attack_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKRECOVERY);
@@ -121,6 +126,7 @@ void CBeetle::Attack_End(COORDINATE _eCoord, _uint iAnimIdx)
 void CBeetle::Attack_Recovery_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKSTRIKE);
+    Set_AnimChangeable(true);
 }
 
 HRESULT CBeetle::Ready_Components()
@@ -164,6 +170,7 @@ HRESULT CBeetle::Ready_PartObjects()
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Alert_End, this, COORDINATE_3D, ALERT));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Attack_End, this, COORDINATE_3D, ATTACKSTRIKE));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Attack_Recovery_End, this, COORDINATE_3D, ATTACKRECOVERY));
 

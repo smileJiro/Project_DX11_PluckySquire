@@ -14,7 +14,6 @@
 #include "CellContainor.h"
 #include "Event_Manager.h"
 #include "MapParsing_Manager.h"
-
 using namespace std::filesystem;
 
 
@@ -35,13 +34,17 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	m_pLogger = _pLogger;
 	Safe_AddRef(m_pLogger);
 
+	ZeroMemory(m_szSaveFileName,sizeof(m_szSaveFileName));
+	ZeroMemory(m_szImportLayerTag,sizeof(m_szSaveFileName));
+
 	// 임구이 크기 설정
 	ImGui::SetNextWindowSizeConstraints(ImVec2(600, 1200), ImVec2(FLT_MAX, FLT_MAX));
 
 	// 모델 리스트 불러오기
 	Load_ModelList();
+	Load_SaveFileList();
 	// 캐시파일 불러오기
-	Load(false);
+	//Load(false);
 
 	// 셀 관리 컨테이너 생성
 	CGameObject* pGameObject = nullptr;
@@ -79,9 +82,9 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 		return E_FAIL;
 
 	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04.json",L"Layer_MapObject");
-	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C02.json",L"Layer_MapObject");
-	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04_000.json",L"Layer_MapObject");
-	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Environment");
+	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C02.json",L"Layer_MapObject");
+	////m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Desk_C04_000.json",L"Layer_MapObject");
+	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Environment");
 	//m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Streets.json",L"Layer_Sibal");
 
 	return S_OK;
@@ -105,6 +108,14 @@ void CMap_Tool_Manager::Update_Tool()
 
 void CMap_Tool_Manager::Update_Imgui_Logic()
 {
+	// 참 조 정 리 
+	for (_uint i = 0 ; i < (_uint)OBJECT_END; ++i)
+	{
+		if (m_arrObjects[i] && m_arrObjects[i]->Is_Dead())
+			m_arrObjects[i] = nullptr;
+	}
+	
+	
 	Navigation_Imgui(m_arrObjects[OBJECT_PREVIEW]);
 	Object_Create_Imgui(m_bNaviMode);
 	Object_Info_Imgui();
@@ -270,64 +281,42 @@ void CMap_Tool_Manager::Input_Navigation_Tool_Mode()
 
 void CMap_Tool_Manager::Object_Info_Imgui(_bool _bLock)
 {
-	ImGui::Begin("Setting");
-	ImGui::SeparatorText("Map Cursor Pos");
-	ImGui::BulletText("X : %.2f", m_fPickingPos.x);
+	ImGui::Begin("unreal .umap File Parsing");
+	
+	Begin_Draw_ColorButton("##File Parsing", (ImVec4)ImColor::HSV(0.8f, 0.6f, 0.6f));
+
+
+	if (ImGui::Button(".umap File Parsing"))
+		ImGui::OpenPopup("LayerTag_Popup");
 	ImGui::SameLine();
-	ImGui::Text("Y : %.2f", m_fPickingPos.y);
-	ImGui::SameLine();
-	ImGui::Text("Z : %.2f", m_fPickingPos.z);
-
-	_float3 vPos = {};
-
-	CMapObject::OPERATION eOper = CMapObject::TRANSLATE;
-
-	CMapObject* pPickingObj = m_arrObjects[OBJECT_PICKING] ? m_arrObjects[OBJECT_PICKING] : nullptr;
-
-
-
-
-	// 1. 기본 위치 세팅, 기즈모 세팅.
-	if (pPickingObj)
+	if (ImGui::BeginPopup("LayerTag_Popup"))
 	{
-		XMStoreFloat3(&vPos, pPickingObj->Get_Position());
-
-
-
-		eOper = pPickingObj->Get_Operation();
-		ImGui::SeparatorText("Gizmo Mode");
-		if (ImGui::RadioButton("Translate", eOper == ImGuizmo::TRANSLATE))
-			pPickingObj->Set_Operation(CMapObject::TRANSLATE);
-		ImGui::SameLine();
-		if (ImGui::RadioButton("Rotate", eOper == ImGuizmo::ROTATE))
-			pPickingObj->Set_Operation(CMapObject::ROTATE);
-		ImGui::SameLine();
-		if (ImGui::RadioButton("Scale", eOper == ImGuizmo::SCALE))
-			pPickingObj->Set_Operation(CMapObject::SCALE);
-		if (ImGui::IsKeyPressed(ImGuiKey_F1))
-			pPickingObj->Set_Operation(CMapObject::TRANSLATE);
-		if (ImGui::IsKeyPressed(ImGuiKey_F2))
-			pPickingObj->Set_Operation(CMapObject::ROTATE);
-		if (ImGui::IsKeyPressed(ImGuiKey_F3))
-			pPickingObj->Set_Operation(CMapObject::SCALE);
-	}
-	else if (m_arrObjects[OBJECT_PICKING])
-	{
-
-		ImGui::Separator();
-		Begin_Draw_ColorButton("Delete_Obj", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-		if (ImGui::Button("Delete Picking Obj", ImVec2(-FLT_MIN, 1.5f * ImGui::GetTextLineHeightWithSpacing())))
+		_int iCurrent = 1;
+		string strLayerName[] = { "Layer_MapObject", "Layer_Room_Environment", "Layer_Outside_Environment", };
+		if (ImGui::BeginListBox("##LayerNameList", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 		{
-			if (m_arrObjects[OBJECT_PICKING])
+			for (const auto& fileName : strLayerName)
 			{
-				OBJECT_DESTROY(m_arrObjects[OBJECT_PICKING]);
-				m_arrObjects[OBJECT_PICKING] = nullptr;
-				Object_Clear_PickingMode();
+				if (ImGui::Selectable(fileName.c_str(), false))
+					strcpy_s(m_szSaveFileName, fileName.c_str());
 			}
+			ImGui::EndListBox();
+		}
+
+		ImGui::InputText("Layer Tag", m_szSaveFileName, MAX_PATH);
+		ImGui::SameLine();
+		Begin_Draw_ColorButton("##Import", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
+		if (ImGui::Button("Import"))
+		{
+			const wstring strLayerTag = m_pGameInstance->StringToWString(m_szSaveFileName);
+			m_pMapParsingManager->Open_ParsingDialog(strLayerTag);
 		}
 		End_Draw_ColorButton();
 
+		ImGui::EndPopup();
 	}
+	End_Draw_ColorButton();
+
 	ImGui::End();
 }
 
@@ -407,6 +396,32 @@ void CMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 			ImGui::Text("X : %.2f", m_fPreviewPos.x);
 			ImGui::Text("Y : %.2f", m_fPreviewPos.y);
 			ImGui::Text("Z : %.2f", m_fPreviewPos.z);
+		}
+
+
+		_float3 vPos = {};
+		CMapObject::OPERATION eOper = CMapObject::TRANSLATE;
+		CMapObject* pPickingObj = m_arrObjects[OBJECT_PICKING] ? m_arrObjects[OBJECT_PICKING] : nullptr;
+		ImGui::BulletText("Picking  Mode : %s", m_arrObjects[OBJECT_PICKING] ? "On" : "Off");
+		if (pPickingObj)
+		{
+			XMStoreFloat3(&vPos, pPickingObj->Get_Position());
+			eOper = pPickingObj->Get_Operation();
+			ImGui::SeparatorText("Gizmo Mode");
+			if (ImGui::RadioButton("Translate", eOper == ImGuizmo::TRANSLATE))
+				pPickingObj->Set_Operation(CMapObject::TRANSLATE);
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Rotate", eOper == ImGuizmo::ROTATE))
+				pPickingObj->Set_Operation(CMapObject::ROTATE);
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Scale", eOper == ImGuizmo::SCALE))
+				pPickingObj->Set_Operation(CMapObject::SCALE);
+			if (ImGui::IsKeyPressed(ImGuiKey_F1))
+				pPickingObj->Set_Operation(CMapObject::TRANSLATE);
+			if (ImGui::IsKeyPressed(ImGuiKey_F2))
+				pPickingObj->Set_Operation(CMapObject::ROTATE);
+			if (ImGui::IsKeyPressed(ImGuiKey_F3))
+				pPickingObj->Set_Operation(CMapObject::SCALE);
 		}
 
 	}
@@ -606,7 +621,7 @@ void CMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 		}
 
 		Begin_Draw_ColorButton("Save_FileStyle", (ImVec4)ImColor::HSV(0.3f, 0.6f, 0.6f));
-		if (ImGui::Button("Setting Save"))
+		if (ImGui::Button("Map Binary Save"))
 			Save_Popup();
 		ImGui::SameLine();
 		if (ImGui::BeginPopup("Save_Popup"))
@@ -624,7 +639,7 @@ void CMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 		}
 		End_Draw_ColorButton();
 		Begin_Draw_ColorButton("Load_FileStyle", (ImVec4)ImColor::HSV(0.7f, 0.6f, 0.6f));
-		if (ImGui::Button("Setting Load"))
+		if (ImGui::Button("Map Binary Load"))
 		{
 			if (m_arrSelectName[SAVE_LIST] != L"")
 				ImGui::OpenPopup("Load_Popup");
@@ -665,6 +680,43 @@ void CMap_Tool_Manager::Save(bool bSelected)
 	string filename = m_szSaveFileName;
 	string log = "";
 
+
+	// 1. 레이어 검사 후 저장할 레이어 벡터에 삽입
+	auto pLayerMaps = m_pGameInstance->Get_Layers_Ptr();
+
+
+	vector<pair<wstring, CLayer*>> strSaveLayerTag;
+	wstring strEgnoreLayerTags[] = {
+		L"Layer_Cell",
+		L"Layer_Camera"
+	};
+	for (auto& Pair : pLayerMaps[LEVEL_TOOL_MAP])
+	{
+		wstring strLayerTag = Pair.first;
+		auto iter = find_if(begin(strEgnoreLayerTags), end(strEgnoreLayerTags), [&strLayerTag](const wstring& strEgnoreLayerTag)->_bool {
+			return strEgnoreLayerTag == strLayerTag;
+			});
+		if (iter != end(strEgnoreLayerTags))
+			continue;
+		else
+		{
+			CLayer* arrLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, strLayerTag);
+			strSaveLayerTag.push_back(make_pair(strLayerTag, arrLayer));
+		}
+	}
+
+
+	if (strSaveLayerTag.empty())
+	{
+		log = "Save Failed... Save Layer Empty! ";
+		LOG_TYPE(log, LOG_ERROR);
+		return;
+	}
+	// 1. 레이어 검사 후 저장할 레이어 벡터에 삽입 END
+	
+
+	// 2. 저장 파일 경로 및 네이밍 무결성 검사 & 핸들 오픈 
+
 	if (bSelected)
 	{
 		if (filename.empty() ||
@@ -693,7 +745,7 @@ void CMap_Tool_Manager::Save(bool bSelected)
 	if (!bSelected)
 		strFullFilePath = m_strCacheFilePath;
 	else
-		strFullFilePath = (m_strObjectLoadFilePath + L"/" + m_pGameInstance->StringToWString(filename) + L".mchc");
+		strFullFilePath = (m_strMapBinaryPath  + m_pGameInstance->StringToWString(filename) + L".mchc");
 	log = "Save Start... File Name : ";
 	log += filename;
 
@@ -717,45 +769,66 @@ void CMap_Tool_Manager::Save(bool bSelected)
 	if (bSelected)
 		LOG_TYPE(log, LOG_SAVE);
 
-	//m_pImguiManager->Set_Lock(true);
+	// 2. 저장 파일 경로 및 네이밍 무결성 검사 END
 
-	CLayer* arrLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP,L"Layer_MapObject");
+	// 3. 세이브
 	DWORD	dwByte(0);
 
-	_char		szSaveMeshName[MAX_PATH];
+	_uint iLayerCount = (_uint)strSaveLayerTag.size();
+	////	세이브 파라미터 1. 레이어 갯수
+	WriteFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
 
-	_uint iAllCount = 0;
-	if (arrLayer != nullptr)
+	for (auto& LayerPair : strSaveLayerTag)
 	{
-		auto ObjList = arrLayer->Get_GameObjects();
-		iAllCount += (_uint)ObjList.size();
+		_char		szSaveMeshName[MAX_PATH];
+		_char		szLayerTag[MAX_PATH];
+		wstring		strLayerTag = LayerPair.first;
+		CLayer*		pLayer = LayerPair.second;
+
+		strcpy_s(szLayerTag,
+			m_pGameInstance->WStringToString(strLayerTag).c_str());
+
+		//	세이브 파라미터 1. 레이어 태그
+		WriteFile(hFile, &szLayerTag, (DWORD)(sizeof(_char)* MAX_PATH), &dwByte, nullptr);
+
+		_uint iAllCount = 0;
+		if (LayerPair.second != nullptr)
+		{
+			auto ObjList = pLayer->Get_GameObjects();
+			iAllCount += (_uint)ObjList.size();
+		}
+		//	세이브 파라미터 2. 레이어 오브젝트 갯수
+		WriteFile(hFile, &iAllCount, sizeof(_uint), &dwByte, nullptr);
+
+		// 세이브 파라미터 2. 갯수만큼 반복 3.메쉬이름 - 4.월드 메트릭스
+		if (pLayer != nullptr)
+		{
+			auto ObjList = pLayer->Get_GameObjects();
+
+			for_each(ObjList.begin(), ObjList.end(), [&bSelected, &log, &iCount, &hFile, &dwByte, &szSaveMeshName, this](CGameObject* pGameObject)
+				{
+					CMapObject* pObject = static_cast<CMapObject*>(pGameObject);
+					strcpy_s(szSaveMeshName,
+						m_pGameInstance->WStringToString(pObject->Get_ModelName()).c_str());
+
+					//	세이브 파라미터 3. 메쉬 이름
+					WriteFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+					//	세이브 파라미터 4. 월드 매트릭스
+					WriteFile(hFile, &pObject->Get_WorldMatrix(), sizeof(_float4x4), &dwByte, nullptr);
+
+					iCount++;
+					log = "Save... Save Object Count :  ";
+					log += std::to_string(iCount);
+					if (bSelected)
+						LOG_TYPE(log, LOG_SAVE);
+				});
+
+		}
 	}
-	WriteFile(hFile, &iAllCount, sizeof(_uint), &dwByte, nullptr);
 
-	if (arrLayer != nullptr)
-	{
-		auto ObjList = arrLayer->Get_GameObjects();
-
-		for_each(ObjList.begin(), ObjList.end(), [&bSelected, &log, &iCount, &hFile, &dwByte, &szSaveMeshName, this](CGameObject* pGameObject)
-			{
-				CMapObject* pObject = static_cast<CMapObject*>(pGameObject);
-				strcpy_s(szSaveMeshName,
-					m_pGameInstance->WStringToString(pObject->Get_ModelName()).c_str());
-				WriteFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-				WriteFile(hFile, &pObject->Get_WorldMatrix(), sizeof(_float4x4), &dwByte, nullptr);
-
-				iCount++;
-				log = "Save... Save Object Count :  ";
-				log += std::to_string(iCount);
-				if (bSelected)
-					LOG_TYPE(log, LOG_SAVE);
-				//m_pImguiManager->Get_BackMsg()->strLogMsg = log;
-			});
-
-	}
 	CloseHandle(hFile);
+	// 3. 세이브 END
 
-	//m_pImguiManager->Set_Lock(false);
 	log = "Save Complete! FileName : ";
 	log += m_szSaveFileName;
 	if (bSelected)
@@ -773,7 +846,7 @@ void CMap_Tool_Manager::Load(bool bSelected)
 
 	log = "Load Start... File Name : ";
 	log += filename;
-	_wstring strFullFilePath = (m_strObjectLoadFilePath + L"/" + m_arrSelectName[SAVE_LIST] + L".mchc");
+	_wstring strFullFilePath = (m_strMapBinaryPath + L"/" + m_arrSelectName[SAVE_LIST] + L".mchc");
 
 	if (!bSelected)
 		strFullFilePath = m_strCacheFilePath;
@@ -799,61 +872,67 @@ void CMap_Tool_Manager::Load(bool bSelected)
 	if (bSelected)
 		LOG_TYPE(log, LOG_LOAD);
 
-	//m_pImguiManager->Set_Lock(true);
-
-	const CLayer* arrLayer[2]{ m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_Environment")
-	,m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP,L"Layer_MapObject")
-	};
 	DWORD	dwByte(0);
-	_uint iAllCount = 0;
+	_uint iLayerCount = 0;
 
-	ReadFile(hFile, &iAllCount, sizeof(_uint), &dwByte, nullptr);
+	ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
 
-	for (size_t i = 0; i < iAllCount; i++)
+	for (_uint i = 0; i < iLayerCount; i++)
 	{
-		_char		szSaveMeshName[MAX_PATH];
-		_float4x4 vWorld = {};
+		_uint		iObjectCnt = 0;
+		_char		szLayerTag[MAX_PATH];
+		wstring		strLayerTag;
 
+		ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+		ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
-		ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-		ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
-
-		CMapObject::MAPOBJ_DESC NormalDesc = {};
-		lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(szSaveMeshName).c_str());
-		NormalDesc.eCreateType = CMapObject::OBJ_LOAD;
-		NormalDesc.matWorld = vWorld;
-
-
-
-		CGameObject* pGameObject = nullptr;
-		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
-			LEVEL_TOOL_MAP,
-			L"Layer_MapObject",
-			&pGameObject,
-			(void*)&NormalDesc);
-
-		if (pGameObject)
+		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
+			
+		for (size_t i = 0; i < iObjectCnt; i++)
 		{
-			iCount++;
-			log = "Load... Loading Object Count :  ";
-			log += std::to_string(iCount);
-			if (bSelected)
-				LOG_TYPE(log, LOG_SAVE);
+			_char		szSaveMeshName[MAX_PATH];
+			_float4x4	vWorld = {};
 
-			//m_pImguiManager->Get_BackMsg()->strLogMsg = log;
-		}
-		else
-		{
-			log = "Load Fail ! Model Prototype does not exist... : ";
-			log += std::to_string(iCount);
-			LOG_TYPE(log, LOG_ERROR);
 
+			ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+			ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+
+			CMapObject::MAPOBJ_DESC NormalDesc = {};
+			lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(szSaveMeshName).c_str());
+			NormalDesc.eCreateType = CMapObject::OBJ_LOAD;
+			NormalDesc.matWorld = vWorld;
+
+
+
+			CGameObject* pGameObject = nullptr;
+			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
+				LEVEL_TOOL_MAP,
+				strLayerTag,
+				&pGameObject,
+				(void*)&NormalDesc);
+
+			if (pGameObject)
+			{
+				iCount++;
+				log = "Load... Loading Object Count :  ";
+				log += std::to_string(iCount);
+				if (bSelected)
+					LOG_TYPE(log, LOG_SAVE);
+			}
+			else
+			{
+				log = "Load Fail ! Model Prototype does not exist... : ";
+				log += std::to_string(iCount);
+				LOG_TYPE(log, LOG_ERROR);
+
+			}
 		}
 	}
 
+	
 
+	
 	CloseHandle(hFile);
-	//m_pImguiManager->Set_Lock(false);
 	log = "Load Complete! FileName : ";
 	log += m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]);
 	if (bSelected)
@@ -961,7 +1040,7 @@ CMapObject* CMap_Tool_Manager::Picking_On_Object()
 	ScreenToClient(g_hWnd, &ptMouse);
 	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
 
-	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_MapObject");
+	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_Room_Environment");
 	if (!pLayer)
 		return nullptr;
 
@@ -1159,6 +1238,15 @@ void CMap_Tool_Manager::Load_ModelList()
 
 void CMap_Tool_Manager::Load_SaveFileList()
 {
+	m_SaveFileLists.clear();
+	for (const auto& entry : ::recursive_directory_iterator(m_strMapBinaryPath))
+	{
+			if (entry.path().extension() == ".mchc")
+			{
+				wstring strKey = entry.path().stem().wstring();
+				m_SaveFileLists.push_back(strKey);
+			}
+	}
 }
 
 void CMap_Tool_Manager::Object_Open_PickingMode()
@@ -1169,6 +1257,10 @@ void CMap_Tool_Manager::Object_Open_PickingMode()
 		Object_Clear_PickingMode();
 		m_arrObjects[OBJECT_PICKING] = pGameObj;
 		m_arrObjects[OBJECT_PICKING]->Set_Mode(CMapObject::PICKING);
+#ifdef _DEBUG
+		m_pGameInstance->Imgui_Select_Debug_ObjectInfo(L"Layer_Sibal", pGameObj->Get_GameObjectInstanceID());
+#endif // _DEBUG
+
 	}
 }
 

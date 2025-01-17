@@ -22,7 +22,8 @@ HRESULT CTransform_2D::Initialize(void* _pArg)
 {
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
-
+	TRANSFORM_2D_DESC* pDesc = static_cast<TRANSFORM_2D_DESC*>(_pArg);
+	RotationZ(pDesc->fInitialRotation);
 	return S_OK;
 }
 

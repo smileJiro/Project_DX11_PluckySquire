@@ -45,8 +45,12 @@ void CFSM::Update(_float _fTimeDelta)
 
 HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 {
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
 	CState* pState = nullptr;
 	CState::STATEDESC Desc;
+	Desc.fAlertRange = m_fAlertRange;
 	Desc.fChaseRange = m_fChaseRange;
 	Desc.fAttackRange = m_fAttackRange;
 
@@ -100,6 +104,12 @@ HRESULT CFSM::Change_State(MONSTER_STATE _eState)
 {
 	if (nullptr == m_CurState)
 		return E_FAIL;
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
+	//몬스터가 애니메이션 전환 가능하지 않으면 상태 전환 안함
+	if (false == m_pOwner->Get_AnimChangeable())
+		return S_OK;
 
 	m_CurState->State_Exit();
 	m_pOwner->Set_PreState(m_eCurState);
@@ -114,6 +124,8 @@ HRESULT CFSM::Change_State(MONSTER_STATE _eState)
 HRESULT CFSM::Set_State(MONSTER_STATE _eState)
 {
 	if (nullptr == m_States[_eState])
+		return E_FAIL;
+	if (nullptr == m_pOwner)
 		return E_FAIL;
 
 	m_CurState = m_States[_eState];

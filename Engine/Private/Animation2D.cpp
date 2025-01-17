@@ -8,8 +8,8 @@ CSpriteFrame::CSpriteFrame(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 {
 	json& jSprite = jData["Sprite"];
 	string objName = jSprite["ObjectName"];
-	_uint iStart = objName.find_first_of('\'') + 1;
-	_uint iCount = objName.find_last_of('\'') - iStart;
+	_uint iStart = (_uint)objName.find_first_of('\'') + 1;
+	_uint iCount = (_uint)objName.find_last_of('\'') - iStart;
 	objName = objName.substr(iStart, iCount);
 	objName = strDirectory +"Frames/" + objName + ".json";
 	json jSpriteObject;
@@ -27,8 +27,8 @@ CSpriteFrame::CSpriteFrame(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 
 
 	string strSourceTexture = jProperties["BakedSourceTexture"]["ObjectName"];
-	iStart = strSourceTexture.find_first_of('\'') + 1;
-	iCount = strSourceTexture.find_last_of('\'') - iStart;
+	iStart = (_uint)(strSourceTexture.find_first_of('\'')) + 1;
+	iCount = (_uint)strSourceTexture.find_last_of('\'') - iStart;
 	strSourceTexture = strSourceTexture.substr(iStart, iCount);
 	strSourceTexture += ".png";
 	strSourceTexture = strDirectory + "Textures/" + strSourceTexture;

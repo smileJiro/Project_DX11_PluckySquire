@@ -31,8 +31,8 @@ public :
 	HRESULT Initialize(CImguiLogger* _pLogger);
 	HRESULT	Update();
 public :
-	HRESULT		Open_ParsingDialog();
-	void		Push_Parsing(const string& _strParsingFileName, const wstring& _strLayerName);
+	HRESULT		Open_ParsingDialog(const wstring& _strLayerName);
+	void		Push_Parsing(const string& _strParsingFileName, const wstring& _strLayerName, _bool _isClear = true);
 	HRESULT		Parsing();
 
 
@@ -48,10 +48,13 @@ private :
 	// ÆÄ½ÌÇØ¿Â ¸ðµ¨ Á¤º¸.
 	vector<pair<string, MAP_DATA>>	m_Models;
 	vector<string>					m_MapObjectNames;
-	queue<pair<string, wstring>>	m_LoadInfos;
+	queue<pair<pair<string, wstring>,_bool>>	m_LoadInfos;
 	// ÆÄ½Ì½º·¹µå ºÐ¸®.
 	CRITICAL_SECTION				m_Critical_Section = { nullptr };
 	HANDLE							m_hThread = {};
+
+
+	_wstring						m_strUmapJsonPath = L"..\\Bin\\json\\";
 
 
 	_bool							m_isLoading = false;

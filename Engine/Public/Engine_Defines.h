@@ -43,7 +43,49 @@ using namespace DirectX;
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "dsound.lib")
 
+//#pragma warning    (disable : 4514)
+//#pragma warning    (disable : 4820)
+//#pragma warning    (disable : 4127)
+//#pragma warning    (disable : 4710)
+//#pragma warning    (disable : 4711)
+//#pragma warning    (disable : 4577)
+//#pragma warning    (disable : 4996)
+//#pragma warning    (disable : 4251)
+#pragma warning    (disable : 6297)
+#pragma warning    (disable : 33010)
+#pragma warning (disable : 26495)
 
+#include "physx/PxPhysicsAPI.h"
+//#pragma comment    (lib, "physx/LowLevel_static_64.lib")
+//#pragma comment    (lib, "physx/LowLevelAABB_static_64.lib")
+//#pragma comment    (lib, "physx/LowLevelDynamics_static_64.lib")
+//#pragma comment    (lib, "physx/PhysX_64.lib")
+//#pragma comment    (lib, "physx/PhysXCharacterKinematic_static_64.lib")
+//#pragma comment    (lib, "physx/PhysXCommon_64.lib")
+//#pragma comment    (lib, "physx/PhysXCooking_64.lib")
+//#pragma comment    (lib, "physx/PhysXExtensions_static_64.lib")
+//#pragma comment    (lib, "physx/PhysXFoundation_64.lib")
+//#pragma comment    (lib, "physx/PhysXPvdSDK_static_64.lib")
+//#pragma comment    (lib, "physx/PhysXTask_static_64.lib")
+//#pragma comment    (lib, "physx/PhysXVehicle_static_64.lib")
+//#pragma comment    (lib, "physx/PhysXVehicle2_static_64.lib")
+//#pragma comment    (lib, "physx/SceneQuery_static_64.lib")
+//#pragma comment    (lib, "physx/SimulationController_static_64.lib")
+using namespace physx;
+
+#pragma warning (default : 26495)
+#pragma warning    (default : 33010)
+#pragma warning    (default : 6297)
+//#pragma warning    (default : 4514)
+//#pragma warning    (default : 4820)
+//#pragma warning    (default : 4127)
+//#pragma warning    (default : 4710)
+//#pragma warning    (default : 4711)
+//#pragma warning    (default : 4577)
+//#pragma warning    (default : 4996)
+//#pragma warning    (default : 4251)
+
+ 
 
 
 namespace Engine
@@ -60,6 +102,7 @@ namespace Engine
 #include <vector>
 #include <list>
 #include <map>
+#include <set>
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>

@@ -24,11 +24,14 @@ HRESULT CMeleeAttackState::Initialize(void* _pArg)
 
 void CMeleeAttackState::State_Enter()
 {
+	m_pOwner->Set_AnimChangeable(false);
 }
 
 void CMeleeAttackState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pTarget)
+		return;
+	if (nullptr == m_pOwner)
 		return;
 
 	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));

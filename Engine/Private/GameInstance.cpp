@@ -11,6 +11,7 @@
 #include "Font_Manager.h"
 #include "Target_Manager.h"
 #include "Sound_Manager.h"
+#include "Json_Manager.h"
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
@@ -87,6 +88,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pSound_Manager = CSound_Manager::Create(EngineDesc.hWnd);
 	if (nullptr == m_pSound_Manager)
 		return E_FAIL;
+
+	m_pJson_Manager = CJson_Manager::Create();
+	if (nullptr == m_pJson_Manager)
+		return E_FAIL;
 	
 	m_pImgui_Manager = CImgui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext, _float2((_float)EngineDesc.iViewportWidth, (_float)EngineDesc.iViewportHeight));
 	if (nullptr == m_pImgui_Manager)
@@ -126,7 +131,7 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pLevel_Manager->Update(fTimeDelta);
 
 #ifdef _DEBUG
-	Imgui_Debug_Render();
+	m_pImgui_Manager->Imgui_Debug_Render();
 #endif
 
 
@@ -199,311 +204,7 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	return S_OK;
 }
 
-#ifdef _DEBUG
 
-HRESULT CGameInstance::Imgui_Debug_Render()
-{
-	if (true == m_isImguiRTRender)
-	{
-		if (FAILED(Imgui_Debug_Render_RT()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
-		}
-		if (FAILED(Imgui_Debug_Render_RT_FullScreen()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
-		}
-
-	}
-	if (true == m_isImguiObjRender)
-	{
-		if (FAILED(Imgui_Debug_Render_ObjectInfo()))
-		{
-			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
-		}
-	}
-	if (GetKeyState(KEY::NUM9) == KEY_STATE::DOWN)
-	{
-		m_isImguiObjRender ^= 1;
-	}
-	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
-	{
-		m_isImguiRTRender ^= 1;
-	}
-
-	return S_OK;
-}
-
-HRESULT CGameInstance::Imgui_Debug_Render_RT()
-{
-	ImGui::Begin("DebugRenderTarget");
-
-	// 기존 스타일 백업
-	ImGuiStyle& style = ImGui::GetStyle();
-	ImVec4 originalColor = style.Colors[ImGuiCol_WindowBg];
-
-	// 알파 값 제거
-	style.Colors[ImGuiCol_WindowBg].w = 1.0f; // 알파를 1.0으로 설정
-	map<const _wstring, CRenderTarget*>& RenderTargets = m_pTarget_Manager->Get_RenderTargets();
-	ID3D11ShaderResourceView* pSelectImage = nullptr;
-	ImVec2 imageSize(160, 90); // 이미지 크기 설정
-	for (auto& Pair : RenderTargets)
-	{
-		pSelectImage = Pair.second->Get_SRV();
-		if (nullptr != pSelectImage)
-		{
-			_string strRTName = m_pGlobalFunction_Manager->WStringToString(Pair.first);
-			ImGui::Text(strRTName.c_str());
-			ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
-		}
-
-	}
-
-	// 스타일 복구
-	style.Colors[ImGuiCol_WindowBg] = originalColor;
-
-
-	ImGui::End();
-
-	return S_OK;
-}
-
-HRESULT CGameInstance::Imgui_Debug_Render_RT_FullScreen()
-{
-	ImGui::Begin("Debug FullScreen");
-
-
-	if (ImGui::TreeNode("MRTs"))
-	{
-		map<const _wstring, list<CRenderTarget*>> MRTs = m_pTarget_Manager->Get_MRTs();
-		ImVec2 imageSize(800, 450); // 이미지 크기 설정
-		ID3D11ShaderResourceView* pSelectImage = nullptr;
-		if (MRTs.empty())
-		{
-			// MRTs가 비어 있는 경우에도 처리
-			ImGui::Text("No MRTs available");
-		}
-		else
-		{
-			for (auto& MRT : MRTs)
-			{
-				_string strMRTName = m_pGlobalFunction_Manager->WStringToString(MRT.first);
-				if (ImGui::TreeNode(strMRTName.c_str()))
-				{
-
-					// TODO :: 렌더타겟 이름을 별도로 저장하시고~ CRenderTarget에서 하든 뭘 하든. MRT >>> RT Name >> 선택하면 >>> 큰화면 ㄱㄱ
-					
-					for (CRenderTarget* pRenderTarget : MRT.second)
-					{
-						_string strRTName = m_pGlobalFunction_Manager->WStringToString(pRenderTarget->Get_Name());
-						if (ImGui::TreeNode(strRTName.c_str()))
-						{
-							
-							pSelectImage = Get_RT_SRV(pRenderTarget->Get_Name());
-
-							if (nullptr != pSelectImage)
-								ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
-							ImGui::TreePop();
-						}
-					}
-
-					ImGui::TreePop();
-				}
-				
-			}
-
-			
-		}
-
-		ImGui::TreePop();
-
-
-	}
-
-
-	ImGui::End();
-
-
-
-	return S_OK;
-}
-
-HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
-{
-	/* 트리노드로 Layer 들을 렌더한다. */
-	ImGui::Begin("ObjectsInfo");
-
-	static CGameObject* pSelectObject = nullptr;
-	if (ImGui::TreeNode("Object Layers")) // Layer
-	{
-		map<const _wstring, CLayer*>* pLayers = m_pObject_Manager->Get_Layers_Ptr();
-		_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
-		if (nullptr != pLayers)
-		{
-			_uint iNumLevels = m_pObject_Manager->Get_NumLevels();
-
-			/* Current Level */
-			ImGui::Text("Current Level Layers");
-			_int iCurLevelID = m_pLevel_Manager->Get_CurLevelID();
-			for (auto& Pair : pLayers[iCurLevelID])
-			{
-				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
-				
-				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
-				{
-					const list<CGameObject*> pGameObjects = Pair.second->Get_GameObjects();
-					vector<const char*> strInstanceIDs;
-					_int iSelectObjectIndex = -1;
-					strInstanceIDs.clear();
-					vector<_string> strGameObjectNames;
-					strGameObjectNames.resize(pGameObjects.size());
-					int iIndex = 0;
-					for (auto& pGameObject : pGameObjects)
-					{
-						strGameObjectNames[iIndex] = typeid(*pGameObject).name();
-						_int iInstanceID = (_int)(pGameObject->Get_GameObjectInstanceID());
-						strGameObjectNames[iIndex] += "_" + to_string(iInstanceID);
-						strInstanceIDs.push_back(strGameObjectNames[iIndex++].c_str());
-					}
-
-					if (ImGui::ListBox(" ", &iSelectObjectIndex, strInstanceIDs.data(), (_int)strInstanceIDs.size()))
-					{
-						if (iSelectObjectIndex != -1) 
-						{
-							
-							pSelectObject = Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectObjectIndex);
-
-						}
-						else
-						{
-							pSelectObject = nullptr;
-						}
-					}
-
-
-					ImGui::TreePop();
-				}
-			}
-
-			/* Static Level */
-			ImGui::Text("Static Level Layers");
-			for (auto& Pair : pLayers[m_iStaticLevelID])
-			{
-				_string LayerTag = m_pGlobalFunction_Manager->WStringToString(Pair.first);
-				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
-				{
-					const list<CGameObject*>& GameObjects = Pair.second->Get_GameObjects();
-
-					for (auto& pGameObject : GameObjects)
-					{
-						//pGameObject.
-					}
-					ImGui::TreePop();
-				}
-			}
-
-		}
-
-		ImGui::TreePop();
-	}
-	if (ImGui::Button("Target Change"))
-	{
-		if (nullptr != pSelectObject) {
-			CGameObject* pCamera = Get_GameObject_Ptr(Get_CurLevelID(), TEXT("Layer_Camera"), (_int)CAMERA_TYPE::TARGET);
-			
-			if (nullptr != pCamera) {
-				static_cast<CCamera*>(pCamera)->Change_Target(pSelectObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr());
-			}
-		}
-	}
-
-	ImGui::Dummy(ImVec2(0.0f, 10.0f));
-	ImGui::Separator();
-	ImGui::Separator();
-	ImGui::Text("<Select Object Info>");
-
-	/* Object 세부 정보 렌더링 */
-	if(nullptr != pSelectObject)
-		pSelectObject->Imgui_Render_ObjectInfos();
-
-
-
-	ImGui::End();
-
-	return S_OK;
-}
-
-HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject)
-{
-	//if (nullptr == _pGameObject)
-	//	return S_OK;
-
-	//
-	//COORDINATE eCurCoord = _pGameObject->Get_ControllerTransform()->Get_CurCoord();
-	//_string strCurCoord = "Current Coord : ";
-	//
-	//switch (eCurCoord)
-	//{
-	//case Engine::COORDINATE_2D:
-	//{
-	//	strCurCoord += "2D";
-	//}
-	//	break;
-	//case Engine::COORDINATE_3D:
-	//{
-	//	strCurCoord += "3D";
-	//}
-	//	break;
-	//}
-	//ImGui::Text(strCurCoord.c_str());
-	//ImGui::Separator();
-
-	///* Coordinate Change Enable */
-	//_bool isCoordChangeEnable = _pGameObject->Get_ControllerTransform()->Is_CoordChangeEnable();
-	//_string strCoordChangeEnable = "CoordChangeEnable : ";
-	//if (true == isCoordChangeEnable)
-	//	strCoordChangeEnable += "true";
-	//else
-	//	strCoordChangeEnable += "false";
-	//ImGui::Text(strCoordChangeEnable.c_str());
-	//ImGui::Separator();
-
-	///* Active */
-	//_bool isActive = _pGameObject->Is_Active();
-	//_string strActive = "Active : ";
-	//if (true == isActive)
-	//	strActive += "true";
-	//else
-	//	strActive += "false";
-	//ImGui::Text(strActive.c_str());
-	//ImGui::Separator();
-
-	//CContainerObject* pContainerObject = dynamic_cast<CContainerObject*>(_pGameObject);
-	//if (nullptr != pContainerObject)
-	//{
-	//	_int iNumParts = pContainerObject->Get_NumPartObjects();
-
-	//	if (_int i = 0; i < iNumParts; ++i)
-	//	{
-
-	//	}
-	//	Imgui_Debug_Render_PartObject_Detail
-
-	//		
-
-	//	_uint iShaderPassIndex = pModelObject->Get_ShaderPassIndex(eCurCoord);
-	//	_string strShaderPass = "ShaderPassIndex : ";
-	//	
-	//	if (true == isActive)
-	//		strShaderPass += to_string(iShaderPassIndex);
-	//	else
-	//		strShaderPass += to_string(iShaderPassIndex);
-
-	//}
-	return S_OK;
-}
-
-#endif // _DEBUG
 
 _float CGameInstance::Get_TimeDelta(const _wstring& _strTimerTag)
 {
@@ -665,10 +366,17 @@ CGameObject* CGameInstance::Get_GameObject_Ptr(_int _iLevelID, const _wstring& _
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
 
-
-
 	return m_pObject_Manager->Get_GameObject_Ptr(_iLevelID, _strLayerTag, _iObjectIndex);
 }
+
+#ifdef _DEBUG
+map<const _wstring, class CLayer*>* CGameInstance::Get_Layers_Ptr()
+{
+	return m_pObject_Manager->Get_Layers_Ptr();
+}
+#endif // _DEBUG
+
+
 
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, CGameObject* _pRenderObject)
 {
@@ -1123,6 +831,15 @@ void CGameInstance::Set_SFXVolume(const wstring& strSFXTag, _float _fVolume)
 	return m_pSound_Manager->Set_SFXVolume(strSFXTag, _fVolume);
 }
 
+HRESULT CGameInstance::Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJson)
+{
+	if (nullptr == m_pJson_Manager)
+		return E_FAIL;
+
+
+	return m_pJson_Manager->Load_Json(_szFilePath, _pOutJson);
+}
+
 HRESULT CGameInstance::Start_Imgui()
 {
 	if (nullptr == m_pImgui_Manager)
@@ -1147,6 +864,16 @@ void CGameInstance::Render_DrawData_Imgui()
 
 	return m_pImgui_Manager->Render_DrawData();
 }
+#ifdef _DEBUG
+HRESULT	CGameInstance::Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId)
+{
+	if (nullptr == m_pImgui_Manager)
+		return E_FAIL;
+
+	return m_pImgui_Manager->Imgui_Select_Debug_ObjectInfo(_strLayerTag, _iObjectId);
+}
+#endif // _DEBUG
+
 
 _float2 CGameInstance::Get_CursorPos()
 {
@@ -1236,7 +963,15 @@ HRESULT CGameInstance::Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pSh
 	return m_pTarget_Manager->Render_Debug(_strMRTTag, _pShader, _pVIBufferRect);
 }
 
+map<const _wstring, CRenderTarget*>& CGameInstance::Get_RenderTargets()
+{
+	return m_pTarget_Manager->Get_RenderTargets();
+}
 
+map<const _wstring, list<CRenderTarget*>>& CGameInstance::Get_MRTs()
+{
+	return m_pTarget_Manager->Get_MRTs();
+}
 #endif // _DEBUG
 
 
@@ -1256,6 +991,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);
 	Safe_Release(m_pImgui_Manager);
+	Safe_Release(m_pJson_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pSound_Manager);
 	Safe_Release(m_pKey_Manager);
@@ -1265,9 +1001,9 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);
-	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
 

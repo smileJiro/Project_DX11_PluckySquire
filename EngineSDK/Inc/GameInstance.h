@@ -38,13 +38,6 @@ public: /* For.GameInstance */
 
 	_int				Get_StaticLevelID() const { return m_iStaticLevelID; }
 
-#ifdef _DEBUG
-	HRESULT				Imgui_Debug_Render();
-	HRESULT				Imgui_Debug_Render_RT();
-	HRESULT				Imgui_Debug_Render_RT_FullScreen();
-	HRESULT				Imgui_Debug_Render_ObjectInfo();
-	HRESULT				Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject);
-#endif // _DEBUG
 
 public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
@@ -74,6 +67,10 @@ public: /* For. Object_Manager */
 	class CGameObject*	Get_PickingModelObjectByCursor(_uint _iLevelID, const _wstring& _strLayerTag, _float2 _fCursorPos); // 마우스 커서로 피킹체크 후 충돌 오브젝트중 가장 가까운 오브젝트 리턴.
 	class CGameObject*	Find_NearestObject_Scaled(_uint _iLevelID, const _wstring& _strLayerTag, CController_Transform* const _pTransform, CGameObject* pCurTargetObject = nullptr);
 	class CGameObject*	Get_GameObject_Ptr(_int _iLevelID, const _wstring& _strLayerTag, _int _iObjectIndex);
+#ifdef _DEBUG
+	map<const _wstring, class CLayer*>* Get_Layers_Ptr();
+#endif
+
 public: /* For.Renderer */
 	HRESULT				Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, class CGameObject* _pRenderObject);
 #ifdef _DEBUG
@@ -128,7 +125,8 @@ public: /* For. Target_Manager */
 #ifdef _DEBUG
 	HRESULT				Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY);	/* 렌더타겟을 디버그용으로 렌더하기위한 함수 */
 	HRESULT				Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect);			/* 디버그 렌더 함수 */
-
+	map<const _wstring, CRenderTarget*>& Get_RenderTargets();
+	map<const _wstring, list<CRenderTarget*>>& Get_MRTs();
 #endif //_DEBUG
 
 public: /* For. Shadow */
@@ -158,11 +156,18 @@ public: /* For. Sound_Manager */
 	_float				Get_SFXVolume(const wstring& strSFXTag);
 	void				Set_SFXVolume(const wstring& strSFXTag, _float _fVolume);
 
+public: /* For. Json_Manager*/
+	HRESULT				Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJson);
+
+
 
 public: /* For. Imgui_Manager */
 	HRESULT				Start_Imgui(); // 시작을 알림.
 	HRESULT				End_Imgui(); // 종료를 알림.
 	void				Render_DrawData_Imgui(); // 수집 된 정보를 기반으로 그리기를 수행함.
+#ifdef _DEBUG
+	HRESULT				Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId);
+#endif // _DEBUG
 	//HRESULT			LevelChange_Imgui();
 	
 public: /* For. GlobalFunction_Manager */
@@ -199,6 +204,7 @@ private:
 	class CTarget_Manager* m_pTarget_Manager = nullptr;
 	class CShadow* m_pShadow = nullptr;
 	class CSound_Manager* m_pSound_Manager = nullptr;
+	class CJson_Manager* m_pJson_Manager =  nullptr;
 	class CImgui_Manager* m_pImgui_Manager = nullptr;
 	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
 	class CCamera_Manager_Engine* m_pCamera_Manager = nullptr;
@@ -212,8 +218,6 @@ private:
 
 	_int m_iStaticLevelID = -1;
 
-	_bool m_isImguiRTRender = true;
-	_bool m_isImguiObjRender = true;
 public:
 	// Static
 	static void Release_Engine();

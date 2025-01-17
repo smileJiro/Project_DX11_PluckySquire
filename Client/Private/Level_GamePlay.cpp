@@ -9,7 +9,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 
-#include "TestPlayer.h"
+#include "Player.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
 
@@ -29,7 +29,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	Ready_Layer_Monster(TEXT("Layer_Monster"));
+	//Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 
 
@@ -42,12 +42,13 @@ HRESULT CLevel_GamePlay::Initialize()
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
-	
+	//
     return S_OK;
 }
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
 {
+
 	if (KEY_DOWN(KEY::ENTER))
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
@@ -169,7 +170,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 {
 	CGameObject** pGameObject = nullptr;
 
-	CTestPlayer::CONTAINEROBJ_DESC Desc;
+	CPlayer::CONTAINEROBJ_DESC Desc;
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
@@ -234,7 +235,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	pDesc.fX = g_iWinSizeX / 7.5;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
-	pDesc.fSizeX = 72;
+	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 111.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BombStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
@@ -242,12 +243,24 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	pDesc.fX = g_iWinSizeX / 10.8;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20;
-	pDesc.fSizeX = 42;
+	pDesc.fSizeX = 42.f;
 	pDesc.fSizeY = 27.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ArrowForStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 	
+	/////////////////////////////////
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 4;
+	pDesc.fY = g_iWinSizeY / 10;
+	pDesc.fSizeX = 128.f;
+	pDesc.fSizeY = 128.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+	
+
+
+
 
 	return S_OK;
 }

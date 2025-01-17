@@ -69,17 +69,17 @@ HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	Desc.eZoomLevel = Engine::CCamera::ZOOM_LEVEL::NORMAL;
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.fNear = 0.1f;
-	Desc.fFar = 1000.f;
+	Desc.fFar = 10000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.fFovy = XMConvertToRadians(60.f);
-
+	Desc.eMode = CCamera_Free::INPUT_MODE_WASD;
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_TOOL_MAP, _strLayerTag, &pGameObject, &Desc)))
-		static_cast<CCamera_Free*>(pGameObject)->Get_ControllerTransform()->Set_SpeedPerSec(1000.f);
 		return E_FAIL;
-
+	else
+		pGameObject->Get_ControllerTransform()->Set_SpeedPerSec(1000.f);
 	return S_OK;
 }
 

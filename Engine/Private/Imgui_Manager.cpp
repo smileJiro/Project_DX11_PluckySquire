@@ -1,8 +1,12 @@
 #include "Imgui_Manager.h"
-
+#include "GameObject.h"
+#include "GameInstance.h"
+#include "Layer.h"
 
 CImgui_Manager::CImgui_Manager()
+	: m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CImgui_Manager::Initialize(HWND _hWnd, ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _float2 _vViewportSize)
@@ -117,6 +121,271 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
+#ifdef _DEBUG
+
+HRESULT CImgui_Manager::Imgui_Debug_Render()
+{
+	if (true == m_isImguiRTRender)
+	{
+		if (FAILED(Imgui_Debug_Render_RT()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
+		}
+		if (FAILED(Imgui_Debug_Render_RT_FullScreen()))
+		{
+			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
+		}
+
+	}
+	if (true == m_isImguiObjRender)
+	{
+		if (FAILED(Imgui_Debug_Render_ObjectInfo()))
+		{
+			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
+		}
+	}
+	if (KEY_DOWN(KEY::NUM9))
+	{
+		m_isImguiObjRender ^= 1;
+	}
+	if (KEY_DOWN(KEY::NUM0))
+	{
+		m_isImguiRTRender ^= 1;
+	}
+
+	return S_OK;
+}
+
+HRESULT CImgui_Manager::Imgui_Debug_Render_RT()
+{
+	ImGui::Begin("DebugRenderTarget");
+
+	// 기존 스타일 백업
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec4 originalColor = style.Colors[ImGuiCol_WindowBg];
+
+	// 알파 값 제거
+	style.Colors[ImGuiCol_WindowBg].w = 1.0f; // 알파를 1.0으로 설정
+	map<const _wstring, CRenderTarget*>& RenderTargets = m_pGameInstance->Get_RenderTargets();
+	ID3D11ShaderResourceView* pSelectImage = nullptr;
+	ImVec2 imageSize(160, 90); // 이미지 크기 설정
+	for (auto& Pair : RenderTargets)
+	{
+		pSelectImage = Pair.second->Get_SRV();
+		if (nullptr != pSelectImage)
+		{
+			_string strRTName = m_pGameInstance->WStringToString(Pair.first);
+			ImGui::Text(strRTName.c_str());
+			ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+		}
+
+	}
+
+	// 스타일 복구
+	style.Colors[ImGuiCol_WindowBg] = originalColor;
+
+
+	ImGui::End();
+
+	return S_OK;
+}
+
+HRESULT CImgui_Manager::Imgui_Debug_Render_RT_FullScreen()
+{
+	ImGui::Begin("Debug FullScreen");
+
+
+	if (ImGui::TreeNode("MRTs"))
+	{
+		map<const _wstring, list<CRenderTarget*>> MRTs = m_pGameInstance->Get_MRTs();
+		ImVec2 imageSize(800, 450); // 이미지 크기 설정
+		ID3D11ShaderResourceView* pSelectImage = nullptr;
+		if (MRTs.empty())
+		{
+			// MRTs가 비어 있는 경우에도 처리
+			ImGui::Text("No MRTs available");
+		}
+		else
+		{
+			for (auto& MRT : MRTs)
+			{
+				_string strMRTName = m_pGameInstance->WStringToString(MRT.first);
+				if (ImGui::TreeNode(strMRTName.c_str()))
+				{
+
+					// TODO :: 렌더타겟 이름을 별도로 저장하시고~ CRenderTarget에서 하든 뭘 하든. MRT >>> RT Name >> 선택하면 >>> 큰화면 ㄱㄱ
+
+					for (CRenderTarget* pRenderTarget : MRT.second)
+					{
+						_string strRTName = m_pGameInstance->WStringToString(pRenderTarget->Get_Name());
+						if (ImGui::TreeNode(strRTName.c_str()))
+						{
+
+							pSelectImage = m_pGameInstance->Get_RT_SRV(pRenderTarget->Get_Name());
+
+							if (nullptr != pSelectImage)
+								ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+							ImGui::TreePop();
+						}
+					}
+
+					ImGui::TreePop();
+				}
+
+			}
+
+
+		}
+
+		ImGui::TreePop();
+
+
+	}
+
+
+	ImGui::End();
+
+
+
+	return S_OK;
+}
+
+HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
+{
+	_int iAddIndex = 0;
+	/* 트리노드로 Layer 들을 렌더한다. */
+	ImGui::Begin("ObjectsInfo");
+	HWND hWnd = GetFocus();
+	auto& io = ImGui::GetIO();
+	if (nullptr != hWnd && io.WantCaptureKeyboard)
+	{
+		if (ImGui::IsKeyPressed(ImGuiKey_DownArrow))
+			iAddIndex += 1;
+		if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
+			iAddIndex -= 1;
+	}
+	static CGameObject* pSelectObject = nullptr;
+	if (ImGui::TreeNode("Object Layers")) // Layer
+	{
+		map<const _wstring, CLayer*>* pLayers = m_pGameInstance->Get_Layers_Ptr();
+		if (nullptr != pLayers)
+		{
+			ImGui::Text("Current Level Layers");
+			_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
+			for (auto& Pair : pLayers[iCurLevelID])
+			{
+				_int iSelectObjectTag = -1;
+				_string LayerTag = m_pGameInstance->WStringToString(Pair.first);
+				auto iter = m_LayerToSelectObjects.find(Pair.first);
+				if (iter == m_LayerToSelectObjects.end())
+					m_LayerToSelectObjects.try_emplace(Pair.first, -1);
+				else
+					iSelectObjectTag = (*iter).second;
+				_uint iSelectLoopIndix = 0;
+
+				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
+				{
+					const list<CGameObject*> pGameObjects = Pair.second->Get_GameObjects();
+					_uint iMaxObjectSize = (_uint)pGameObjects.size();
+					ImGui::PushItemFlag(ImGuiItemFlags_NoNav, true);
+					_string strObjectListTag = "##ObjectList_" + LayerTag;
+					if (ImGui::BeginListBox(strObjectListTag.c_str(), ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+					{
+						_uint iLoopIndix = 0;
+						for (auto& pGameObject : pGameObjects)
+						{
+							string strGameObjectName;
+							strGameObjectName = typeid(*pGameObject).name();
+							_int iInstanceID = (_int)(pGameObject->Get_GameObjectInstanceID());
+							strGameObjectName += "_" + to_string(iInstanceID);
+
+							if (ImGui::Selectable(strGameObjectName.c_str(), iSelectObjectTag == iInstanceID))
+							{
+								if (iSelectObjectTag == iInstanceID)
+									(*iter).second = -1;
+								else
+									(*iter).second = iInstanceID;
+							}
+							if((*iter).second == iInstanceID)
+								iSelectLoopIndix = iLoopIndix;
+							iLoopIndix++;
+						}
+
+						ImGui::EndListBox();
+					}
+					ImGui::PopItemFlag();
+					if ((*iter).second != -1)
+					{
+						if (iAddIndex != 0 && iSelectLoopIndix + iAddIndex >= 0 && iSelectLoopIndix + iAddIndex < iMaxObjectSize)
+						{
+							pSelectObject = m_pGameInstance->Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectLoopIndix + iAddIndex);
+							(*iter).second = pSelectObject->Get_GameObjectInstanceID();
+						}
+						else
+							pSelectObject = m_pGameInstance->Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectLoopIndix);
+					}
+					ImGui::TreePop();
+				}
+			}
+
+			/* Static Level */
+			ImGui::Text("Static Level Layers");
+			for (auto& Pair : pLayers[m_pGameInstance->Get_StaticLevelID()])
+			{
+				_string LayerTag = m_pGameInstance->WStringToString(Pair.first);
+				if (ImGui::TreeNode(LayerTag.c_str())) // LayerTag
+				{
+					const list<CGameObject*>& GameObjects = Pair.second->Get_GameObjects();
+
+					for (auto& pGameObject : GameObjects)
+					{
+						//pGameObject.
+					}
+					ImGui::TreePop();
+				}
+			}
+
+		}
+
+		ImGui::TreePop();
+	}
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+	ImGui::Separator();
+	ImGui::Separator();
+	ImGui::Text("<Select Object Info>");
+
+	/* Object 세부 정보 렌더링 */
+	if (nullptr != pSelectObject)
+		pSelectObject->Imgui_Render_ObjectInfos();
+	ImGui::End();
+
+	return S_OK;
+}
+
+HRESULT CImgui_Manager::Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId)
+{
+	auto iter = m_LayerToSelectObjects.find(_strLayerTag);
+
+	if (iter == m_LayerToSelectObjects.end())
+		return E_FAIL;
+	else
+	{
+		(*iter).second = _iObjectId;
+	}
+	
+	return S_OK;
+
+}
+
+HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject)
+{
+	return S_OK;
+}
+
+#endif // _DEBUG
+
+
+
 CImgui_Manager* CImgui_Manager::Create(HWND _hWnd, ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _float2 _vViewportSize)
 {
 	CImgui_Manager* pInstance = new CImgui_Manager();
@@ -139,6 +408,7 @@ void CImgui_Manager::Free()
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
+	Safe_Release(m_pGameInstance);
 	__super::Free();
 
 }
