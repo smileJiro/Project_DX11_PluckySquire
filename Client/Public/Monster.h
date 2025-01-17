@@ -52,6 +52,7 @@ protected:
 	MONSTER_STATE		m_ePreState = {};
 	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
+	_float m_fAlertRange = { 0.f };
 	_float m_fChaseRange = { 0.f };
 	_float m_fAttackRange = { 0.f };
 
