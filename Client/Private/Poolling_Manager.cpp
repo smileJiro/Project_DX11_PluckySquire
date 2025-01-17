@@ -76,7 +76,7 @@ HRESULT CPoolling_Manager::Register_PoollingObject(const _wstring& _strPoollingT
 	PullingObjects.push_back(pGameObject);
 	Safe_AddRef(pGameObject);
 	pGameObject->Set_Active(false);
-
+	
 	/* Pulling Objects */
 	m_PoollingObjects.emplace(_strPoollingTag, PullingObjects);
 

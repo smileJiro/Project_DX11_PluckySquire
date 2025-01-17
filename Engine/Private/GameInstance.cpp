@@ -415,6 +415,11 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 	if(nullptr != pSelectObject)
 		pSelectObject->Imgui_Render_ObjectInfos();
 	
+	if (ImGui::Button("Target Change"))
+	{
+		if (nullptr != pSelectObject)
+			pSelectObject;
+	}
 	
 
 

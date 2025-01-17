@@ -301,6 +301,8 @@ void CModelObject::Free()
     __super::Free();
 }
 
+#ifdef _DEBUG
+
 HRESULT CModelObject::Imgui_Render_ObjectInfos()
 {
     COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
@@ -401,7 +403,9 @@ HRESULT CModelObject::Imgui_Render_ObjectInfos()
         Set_Scale(vScale);
     ImGui::PopItemWidth();
 
-    
+
     return S_OK;
 }
 
+
+#endif // _DEBUG

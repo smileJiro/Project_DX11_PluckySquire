@@ -96,6 +96,8 @@ HRESULT CPartObject::Cleanup_DeadReferences()
     return S_OK;
 }
 
+#ifdef _DEBUG
+
 HRESULT CPartObject::Imgui_Render_ObjectInfos()
 {
     /* Current Coord */
@@ -188,3 +190,5 @@ HRESULT CPartObject::Imgui_Render_ObjectInfos()
 
     return S_OK;
 }
+
+#endif // _DEBUG
