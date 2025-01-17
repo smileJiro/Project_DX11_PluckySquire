@@ -97,6 +97,9 @@
     <Filter Include="02.GameObjects\Monster\BarfBug">
       <UniqueIdentifier>{67bad6d7-2648-479f-83bb-27d29ba71422}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95.Pooling">
+      <UniqueIdentifier>{e24fa49e-a85b-4b7b-8eac-fe65b21caaa0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -201,6 +204,9 @@
     <ClInclude Include="..\Public\AlertState.h">
       <Filter>03.Components\FSM\State\Chase</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Poolling_Manager.h">
+      <Filter>95.Pooling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -283,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\AlertState.cpp">
       <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Poolling_Manager.cpp">
+      <Filter>95.Pooling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
