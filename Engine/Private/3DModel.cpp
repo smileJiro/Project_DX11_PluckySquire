@@ -84,7 +84,7 @@ HRESULT C3DModel::Render(CShader* _Shader, _uint _iShaderPass)
 	{
 		if (FAILED(Bind_Material(_Shader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
 		{
-			continue;
+			//continue;
 		}
 
 		/* Bind Bone Matrices */

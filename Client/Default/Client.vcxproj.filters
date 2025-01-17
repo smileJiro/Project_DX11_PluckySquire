@@ -121,6 +121,9 @@
     <Filter Include="02.GameObjects\Camera\Manager">
       <UniqueIdentifier>{dc70aa36-495a-4cc7-85b0-0d18bc005acf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\BarfBug\Projectile">
+      <UniqueIdentifier>{0e711259-b9ff-46d3-9f43-43b0f7522312}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="..\public\UI_Manager.h">
       <Filter>02.GameObjects\UI\100. UI_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Projectile_BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -343,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Manager.cpp">
       <Filter>02.GameObjects\UI\100. UI_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Projectile_BarfBug.cpp">
+      <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

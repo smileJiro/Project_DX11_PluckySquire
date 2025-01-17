@@ -34,7 +34,7 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render_Shadow() { return S_OK; }
 	virtual HRESULT			Render() override;
-	virtual void Update(_float fTimeDelta) override;
+	virtual void Update(_float _fTimeDelta) override;
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
 
 public:
