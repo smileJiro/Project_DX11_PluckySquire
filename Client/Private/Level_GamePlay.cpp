@@ -64,9 +64,9 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
-		_uint iCurCameraType = m_pGameInstance->Get_CameraType();
+		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
 		iCurCameraType ^= 1;
-		m_pGameInstance->Change_CameraType(iCurCameraType);
+		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
 	if (KEY_DOWN(KEY::Z))
