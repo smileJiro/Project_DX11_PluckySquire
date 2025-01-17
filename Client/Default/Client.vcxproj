@@ -119,7 +119,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -162,14 +162,13 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/;.\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -203,6 +202,7 @@
     <ClInclude Include="..\Public\MeleeAttackState.h" />
     <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\Public\Pooling_Manager.h" />
+    <ClInclude Include="..\public\Projectile_BarfBug.h" />
     <ClInclude Include="..\Public\RangedAttackState.h" />
     <ClInclude Include="..\public\SettingPanel.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
@@ -244,6 +244,7 @@
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\Private\Pooling_Manager.cpp" />
+    <ClCompile Include="..\private\Projectile_BarfBug.cpp" />
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
     <ClCompile Include="..\private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />

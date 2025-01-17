@@ -22,10 +22,12 @@
 
 #include "Beetle.h"
 #include "BarfBug.h"
+#include "Projectile_BarfBug.h"
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
 #include "FSM.h"
+#include "set"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -154,6 +156,12 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/Resources/Json/Persistent_Room.json"), matPretransform)))
+        return E_FAIL;
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/Resources/Json/Persistent_Streets.json"), matPretransform)))
+        return E_FAIL;
 
     /* For. Prototype_Component_VIBuffer_Rect */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
@@ -234,19 +242,20 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
 
     /* 낱개 로딩 예시*/
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_WoodenPlatform_01"),
-    //    C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
-    //    return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
-        TEXT("../Bin/Resources/TestModels/"), matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/Resources/Json/Desk_C02.json"), matPretransform)))
         return E_FAIL;
-
-
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
+        TEXT("../Bin/Resources/Models/Anim/"), matPretransform)))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("WoodenPlatform_01"),
+    C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
+         return E_FAIL;
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
 
@@ -298,6 +307,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* For. Prototype_GameObject_BarfBug */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"),
         CBarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Projectile_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Projectile_BarfBug"),
+        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
@@ -415,6 +429,53 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
                 return E_FAIL;
         }
+    }
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix)
+{
+    std::ifstream input_file(_szJsonFilePath);
+
+    json jFileData;
+    if (!input_file.is_open()) 
+    {
+		MSG_BOX("Failed to Open Json File ");
+        return E_FAIL;
+    }
+    input_file >> jFileData;
+    input_file.close();
+
+    json& jModelList = jFileData["data"];
+	set<string> strModelNames;
+    for (auto& j : jModelList)
+		strModelNames.insert(j.get<string>());
+
+
+    std::filesystem::path path;
+    path = "../Bin/Resources/Models/NonAnim/";
+    string strFileName;
+	_uint iLoadedCount = 0;
+    _uint iLoadCount = strModelNames.size();
+	//cout << "LoadStart : " << iLoadCount << endl;
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+        if (entry.path().extension() != ".model") continue; 
+        strFileName = entry.path().filename().replace_extension().string();
+        if (strModelNames.find(strFileName) != strModelNames.end())
+        {
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring( strFileName),
+                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+                return E_FAIL;
+			iLoadedCount++;
+            //cout << iLoadedCount << endl;
+			if (iLoadedCount >= iLoadCount)
+            {
+				//cout << iLoadedCount << "Models Loaded" << endl;
+                break;
+            }
+        }
+
+        
     }
     return S_OK;
 }

@@ -26,8 +26,10 @@ protected:
 	_uint						m_iNumIndicesPerInstance = {};	/* 인스턴스 한개당 할당되는 인덱스의 개수 */
 	_uint						m_iInstanceStride = {};			/* Instancing Buffer의 Stride */
 
+	/* m_pVBInstance Initialize시에 완성 */
+	/* m_pInstanceVertices는 Prototype에서 완성 */
 protected:
-	VTXINSTANCE*				m_pInstanceVertices = {nullptr};		/* 모든 Instance 버퍼의 부모형*/
+	VTXPOINTINSTANCE*				m_pInstanceVertices = {nullptr};		/* 모든 Instance 자료의 부모형*/
 
 public:
 

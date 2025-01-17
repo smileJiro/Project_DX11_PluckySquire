@@ -2,6 +2,9 @@
 #include "TestPlayer.h"
 #include "GameInstance.h"
 #include "TestBody.h"
+#include "Camera_Manager.h"
+#include "StateMachine.h"
+
 
 CTestPlayer::CTestPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CContainerObject(_pDevice, _pContext)
