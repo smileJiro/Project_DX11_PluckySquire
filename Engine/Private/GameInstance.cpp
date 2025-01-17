@@ -13,7 +13,7 @@
 #include "Sound_Manager.h"
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
-#include "Camera_Manager.h"
+#include "Camera_Manager_Engine.h"
 #include "Layer.h"
 #include "ModelObject.h"
 #include "ContainerObject.h"
@@ -96,7 +96,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pGlobalFunction_Manager)
 		return E_FAIL;
 
-	m_pCamera_Manager = CCamera_Manager::Create();
+	m_pCamera_Manager = CCamera_Manager_Engine::Create();
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
 
@@ -926,19 +926,9 @@ void CGameInstance::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 	m_pCamera_Manager->Add_Camera(_iCurrentCameraType, _pCamera);
 }
 
-void CGameInstance::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
-{
-	m_pCamera_Manager->Change_CameraMode(_iCameraMode, _iNextMode);
-}
-
 void CGameInstance::Change_CameraType(_uint _iCurrentCameraType)
 {
 	m_pCamera_Manager->Change_CameraType(_iCurrentCameraType);
-}
-
-void CGameInstance::Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos)
-{
-	m_pCamera_Manager->Set_CameraPos(_vCameraPos, _vTargetPos);
 }
 
 #ifdef _DEBUG

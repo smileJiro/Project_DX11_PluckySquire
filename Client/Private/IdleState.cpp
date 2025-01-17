@@ -12,6 +12,7 @@ CIdleState::CIdleState()
 HRESULT CIdleState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
@@ -30,13 +31,20 @@ void CIdleState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pTarget)
 		return;
+	if (nullptr == m_pOwner)
+		return;
 
-	//몬스터 범위 안에 들어오면 추적으로 전환
+	//몬스터 인식 범위 안에 들어오면 인식상태로 전환
 	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
-	if (dis <= m_fChaseRange)
+	if (dis <= m_fAlertRange)
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+	}
+	
+	/*if (dis <= m_fChaseRange)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
-	}
+	}*/
 
 }
 

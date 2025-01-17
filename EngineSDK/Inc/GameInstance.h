@@ -183,9 +183,7 @@ public: /* For. Camera_Manager */
 	_uint				Get_CameraType();
 
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);
-	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);
 	void				Change_CameraType(_uint _iCurrentCameraType);
-	void				Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos);
 
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
@@ -204,7 +202,7 @@ private:
 	class CSound_Manager* m_pSound_Manager = nullptr;
 	class CImgui_Manager* m_pImgui_Manager = nullptr;
 	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
-	class CCamera_Manager* m_pCamera_Manager = nullptr;
+	class CCamera_Manager_Engine* m_pCamera_Manager = nullptr;
 
 private:
 	HWND m_hWnd = nullptr;

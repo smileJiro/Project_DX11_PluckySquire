@@ -40,3 +40,12 @@
 *.cso
 *.recipe
 .vs/
+/Client/Default/x64/Debug/pick_bulb.obj.enc
+/Engine/Default/x64/Debug/shader.obj.enc
+/Client/Bin/Engine.dll
+/Engine/Bin/Engine.dll
+/Engine/Bin/Engine.lib
+/EngineSDK/Lib/Engine.lib
+/Tool_Effect/Bin/Engine.dll
+/Tool_Map/Bin/Engine.dll
+/Client/Default/imgui.ini

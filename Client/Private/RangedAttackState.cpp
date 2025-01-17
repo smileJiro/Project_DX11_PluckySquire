@@ -30,6 +30,8 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pTarget)
 		return;
+	if (nullptr == m_pOwner)
+		return;
 
 	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
 	//공격 범위 벗어나고 추적 범위 내면 Chase 전환

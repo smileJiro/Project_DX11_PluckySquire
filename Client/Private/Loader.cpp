@@ -7,11 +7,18 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 
+/* For. UI*/
+#include "Pick_Bulb.h"
+#include "SettingPanel.h"
+#include "StopStamp.h"
+#include "BombStamp.h"
+#include "ArrowForStamp.h"
+/* For. UI*/
+
 #include "ModelObject.h"
 #include "TestPlayer.h"
 #include "TestTerrain.h"
-#include "Pick_Bulb.h"
-#include "SettingPanel.h"
+
 #include "Beetle.h"
 #include "BarfBug.h"
 #include "2DModel.h"
@@ -198,6 +205,16 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PickBulb"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Bulb_Pickup/pickup_counter_bulb_01.dds"), 1))))
 		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_BombStamp"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Resize_BombStamp.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_StopStamp"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Resize_StopStamp.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ArrowForStamp"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Arrow.dds"), 1))))
+		return E_FAIL;
+
 
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -247,10 +264,21 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+
+    ///////////////////////////////// UI /////////////////////////////////
     /* For. Prototype_UIObject_Pick_Bubble */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_UIObejct_PickBubble"),
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StopStamp"),
+		CStopStamp::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BombStamp"),
+		CBombStamp::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ArrowForStamp"),
+		CArrowForStamp::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
     /* Monster */
@@ -264,6 +292,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"),
         CBarfBug::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
