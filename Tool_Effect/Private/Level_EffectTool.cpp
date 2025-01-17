@@ -78,7 +78,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 
 HRESULT CLevel_EffectTool::Ready_Layer_Effect(const _wstring& _strLayerTag)
 {
-	CSprite_Particle::PARTICLE_EMITTER_DESC Desc = {};
+	CParticle_Sprite_Emitter::PARTICLE_EMITTER_DESC Desc = {};
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_TOOL;
 	Desc.isCoordChangeEnable = false;
