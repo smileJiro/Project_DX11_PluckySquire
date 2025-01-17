@@ -85,6 +85,13 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 	}
 }
 
+void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
+{
+	if (nullptr != m_Cameras[TARGET] && TARGET == m_eCurrentCameraType) {
+		m_Cameras[TARGET]->Change_Target(_pTargetWorldMatrix);
+	}
+}
+
 CCamera_Manager* CCamera_Manager::Create()
 {
 	CCamera_Manager* pInstance = new CCamera_Manager();
