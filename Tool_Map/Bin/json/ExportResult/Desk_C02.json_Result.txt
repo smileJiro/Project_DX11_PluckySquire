@@ -1,4 +1,4 @@
-Model Create End - [Complete : 1309, Failed : 9 ]
+Model Create End - [Complete : 1294, Failed : 4 ]
 =================== Model Names ===================
 __CardboardBox_1
 __CardboardBox_2
@@ -41,7 +41,6 @@ coin_1p_01
 coin_20p_01
 colourpen_01
 Compass
-Cube
 Desk_C02_SphereRGBLight_01
 Desk_C06_Box_02
 Desk_C06_Box_01
