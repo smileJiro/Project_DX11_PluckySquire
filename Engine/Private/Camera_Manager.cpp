@@ -63,6 +63,13 @@ void CCamera_Manager::Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos)
 	pConTrans->Set_State(CTransform::STATE_POSITION, _vCameraPos);
 }
 
+#ifdef _DEBUG
+void CCamera_Manager::Set_Rotation(_vector vRotation)
+{
+	m_Cameras[TARGET]->Set_Rotation(vRotation);
+}
+#endif
+
 void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 {
 	m_eCurrentCameraType = _iCurrentCameraType;

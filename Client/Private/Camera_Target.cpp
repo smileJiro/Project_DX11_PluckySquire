@@ -82,17 +82,21 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 {
 #ifdef _DEBUG
 	_long		MouseMove = {};
+	_vector		fRotation = {};
 
 	if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
 		if (MouseMove = MOUSE_MOVE(MOUSE_MOVE::X))
 		{
-			m_pControllerTransform->Turn(MouseMove * _fTimeDelta * 0.1f, XMVectorSet(0.f, 1.f, 0.f, 0.f));
+			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
+			
 		}
 
 		if (MouseMove = MOUSE_MOVE(MOUSE_MOVE::Y))
 		{
-			m_pControllerTransform->Turn(MouseMove * _fTimeDelta * 0.1f, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * 0.3f);
 		}
+
+		m_pArm->Set_Rotation(fRotation);
 	}
 #endif
 }
