@@ -19,12 +19,12 @@ private:
 
 private:
 	CGameInstance* m_pGameInstance;
-	STAMP		m_eStampIndex = { STAMP_STOP };
-
+	STAMP			m_eStampIndex = { STAMP_STOP };
 
 public:
 	STAMP Get_StampIndex() { return m_eStampIndex; }
 	void	Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
+	
 
 
 

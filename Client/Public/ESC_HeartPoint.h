@@ -1,7 +1,5 @@
 #pragma once
-#include "UI.h"
-#include "Client_Defines.h"
-#include "GameInstance.h"
+#include "SettingPanel.h"
 
 BEGIN(Engine)
 class CShader;
@@ -9,14 +7,14 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
-class CSettingPanel : public CUI
+class ESC_HeartPoint : public CSettingPanel
 {
 
 
 protected:
-	explicit CSettingPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	explicit CSettingPanel(const CSettingPanel& _Prototype);
-	virtual ~CSettingPanel() = default;
+	explicit ESC_HeartPoint(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	explicit ESC_HeartPoint(const ESC_HeartPoint& _Prototype);
+	virtual ~ESC_HeartPoint() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -24,20 +22,19 @@ public:
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
-	virtual HRESULT			Render(_int _index = 0) override;
-
+	virtual HRESULT			Render() override;
 
 private:
-	void					Update_Active();
+	_int					m_PlayerHP = { 4 };
 
 protected:
 	virtual HRESULT			Ready_Components() override;
 
 public:
-	static CSettingPanel*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static ESC_HeartPoint*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
-	HRESULT					Cleanup_DeadReferences() override;
+	//HRESULT					Cleanup_DeadReferences() override;
 
 
 
