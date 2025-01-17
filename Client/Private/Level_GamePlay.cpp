@@ -124,20 +124,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	TargetDesc.fSmoothSpeed = 5.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
 
-	TargetDesc.fFovy = XMConvertToRadians(30.f);
+	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	TargetDesc.fNear = 0.1f;
 	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
-
+	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
 	m_pGameInstance->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
 
-	m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+	m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
 
 	Create_Arm();
 
@@ -246,8 +246,8 @@ void CLevel_GamePlay::Create_Arm()
 
 	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = { XMConvertToRadians(60.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 20.f;
+	Desc.vRotation = { XMConvertToRadians(30.f), XMConvertToRadians(0.f), 0.f };
+	Desc.fLength = 10.f;
 	Desc.wszArmTag = TEXT("Player_Arm");
 	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 

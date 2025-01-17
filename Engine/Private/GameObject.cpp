@@ -171,6 +171,8 @@ void CGameObject::Free()
 
 }
 
+#ifdef _DEBUG
+
 HRESULT CGameObject::Imgui_Render_ObjectInfos()
 {
     /* Current Coord */
@@ -180,10 +182,10 @@ HRESULT CGameObject::Imgui_Render_ObjectInfos()
     {
     case Engine::COORDINATE_2D:
         strCurCoord += "2D";
-    break;
+        break;
     case Engine::COORDINATE_3D:
         strCurCoord += "3D";
-    break;
+        break;
     case Engine::COORDINATE_LAST:
         strCurCoord += "LAST";
         break;
@@ -262,3 +264,5 @@ HRESULT CGameObject::Imgui_Render_ObjectInfos()
 
     return S_OK;
 }
+
+#endif // _DEBUG

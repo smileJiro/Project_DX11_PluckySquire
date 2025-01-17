@@ -11,6 +11,7 @@ class CState abstract : public CBase
 public:
 	typedef struct tagStateDesc
 	{
+		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
 	}STATEDESC;
@@ -47,6 +48,7 @@ protected:
 	CMonster* m_pOwner = { nullptr };
 	CFSM* m_pFSM = { nullptr };
 
+	_float	m_fAlertRange = {};
 	_float	m_fChaseRange = {};
 	_float	m_fAttackRange = {};
 

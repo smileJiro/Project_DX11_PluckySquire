@@ -31,23 +31,12 @@ void CAlertState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pTarget)
 		return;
 
-	//추적 범위 벗어나면 IDLE 전환
+	//인식 범위 들어오면 CHASE 전환
 	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
-	if (dis <= m_fAttackRange)
+	if (dis <= m_fAlertRange)
 	{
-		//공격 전환
-		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
 		return;
-	}
-	if (dis > m_fChaseRange)
-	{
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-	}
-	else
-	{
-		//추적
-		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
-		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
 	}
 }
 
