@@ -415,6 +415,11 @@ HRESULT CGameInstance::Imgui_Debug_Render_ObjectInfo()
 	if(nullptr != pSelectObject)
 		pSelectObject->Imgui_Render_ObjectInfos();
 	
+	if (ImGui::Button("Target Change"))
+	{
+		if (nullptr != pSelectObject)
+			pSelectObject;
+	}
 	
 
 
@@ -1216,6 +1221,11 @@ void CGameInstance::Change_CameraType(_uint _iCurrentCameraType)
 void CGameInstance::Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos)
 {
 	m_pCamera_Manager->Set_CameraPos(_vCameraPos, _vTargetPos);
+}
+
+void CGameInstance::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
+{
+	m_pCamera_Manager->Change_CameraTarget(_pTargetWorldMatrix);
 }
 
 #ifdef _DEBUG

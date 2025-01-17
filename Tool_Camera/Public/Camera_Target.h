@@ -43,7 +43,7 @@ public:
 
 public:
 	void						Add_Arm(CCameraArm* _pCameraArm);
-	void						Change_Target(const _float4x4* _pTargetWorldMatrix);
+	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix);
 
 private:
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };

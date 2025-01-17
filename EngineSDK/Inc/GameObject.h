@@ -51,8 +51,10 @@ public:
 	CCollider*					Get_Collider(_uint _iCollIndex);				
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
+	_bool						Is_Pooling() const								{ return m_isPooling; }
 	_int						Get_CurLevelID() const							{ return m_iCurLevelID; }
 	_uint						Get_GameObjectInstanceID() const				{ return m_iInstanceID; }
+
 	// Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
 	void						Set_WorldMatrix(_float4x4 _WorldMatrix)			{ m_pControllerTransform->Set_WorldMatrix(_WorldMatrix); }
@@ -62,7 +64,7 @@ public:
 	void						Set_Dead()										{ m_isDead = true; }
 	void						Set_Alive()										{ m_isDead = false; }
 	virtual void				Set_Render(_bool _isRender)						{ m_isRender = _isRender; }
-
+	void						Set_Pooling(_bool _isPooling)					{ m_isPooling = _isPooling; }
 protected:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
@@ -80,7 +82,7 @@ protected:
 	_uint						m_iCurLevelID = 0;
 	_bool						m_isDead = false;
 	_bool						m_isRender = true;
-
+	_bool						m_isPooling = false;
 protected:
 	map<const _wstring, CComponent*> m_Components;
 
