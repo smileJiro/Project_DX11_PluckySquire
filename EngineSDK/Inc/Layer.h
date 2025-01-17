@@ -14,9 +14,9 @@ private:
 
 public:
 	HRESULT Add_GameObject(class CGameObject* pGameObject);
-	void	Priority_Update(_float fTimeDelta);
-	void	Update(_float fTimeDelta);
-	void	Late_Update(_float fTimeDelta);
+	void Priority_Update(_float fTimeDelta);
+	void Update(_float fTimeDelta);
+	void Late_Update(_float fTimeDelta);
 public:
 	CComponent* Find_Component(const _wstring& _strComponentTag, _uint _iObjectIndex = 0);
 	CComponent* Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag, _uint _iObjectIndex = 0);
