@@ -187,6 +187,10 @@ public: /* For. Camera_Manager */
 	void				Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos);
 	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix);
 
+#ifdef _DEBUG
+	void				Set_Rotation(_vector vRotation);
+#endif
+
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;

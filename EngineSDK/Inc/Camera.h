@@ -70,6 +70,10 @@ public:
 	virtual void	Set_TargetPos(_vector	_vTargetPos) {};
 	virtual void	Change_Target(const _float4x4* _pTargetWorldMatrix) {};
 
+#ifdef _DEBUG
+	virtual void	Set_Rotation(_vector vRotation) {};
+#endif
+
 protected:
 	/* 뷰, 투영 행렬을 구성하는 기능 */
 	/* 만들어 낸 뷰, 투영 행렬을 PipeLine Class 에 저장. */
