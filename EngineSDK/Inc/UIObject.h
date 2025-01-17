@@ -25,9 +25,9 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 
-	void Set_Active() { m_bActive = true; };
-	void Set_InActive() { m_bActive = false; };
-	_bool Get_Active() { return m_bActive; };
+	void Set_Active() { m_isActive = true; };
+	void Set_InActive() { m_isActive = false; };
+	_bool Get_Active() { return m_isActive; };
 
 	void Set_PositionX(_float PosX) {
 		m_fX = PosX;
@@ -42,10 +42,7 @@ protected:
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{};
 
 	_uint					m_iDepth = {};
-	_bool					m_bActive = { true };
 
-	//CShader*				m_pShaderComs[COORDINATE_LAST] = {};
-	//_uint					m_iShaderPasses[COORDINATE_LAST] = {};
 
 
 public:

@@ -95,17 +95,13 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 			m_fX = g_iWinSizeX / 7.5;
 			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
 
-
 			m_isSmall = true;
 		}
 		else if (eStamp == CUI_Manager::STAMP_BOMB)
 		{
 			m_fX = g_iWinSizeX / 7.5;
 			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
-			//m_fSizeX = 96;
-			//m_fSizeY = 148.f;
-			//
-			//m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+
 			m_isBig = true;
 		}
 
