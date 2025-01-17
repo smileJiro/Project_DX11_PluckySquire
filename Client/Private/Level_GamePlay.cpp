@@ -2,8 +2,9 @@
 #include "Level_GamePlay.h"
 
 #include "GameInstance.h"
-#include "Poolling_Manager.h"
-
+#include "Camera_Free.h"
+#include "Camera_Target.h"
+#include "Pooling_Manager.h"
 #include "Camera_Manager.h"
 #include "Camera_Free.h"
 #include "Camera_Target.h"
@@ -32,13 +33,13 @@ HRESULT CLevel_GamePlay::Initialize()
 
 
 	/* Pooling Test */
-	POOLLING_DESC Poolling_Desc;
-	Poolling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
-	Poolling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Poolling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
 	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
-	CPoolling_Manager::GetInstance()->Register_PoollingObject(TEXT("Poolling_TestBeetle"), Poolling_Desc, pDesc);
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
 	
     return S_OK;
@@ -55,18 +56,18 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	{
 		/* Pooling Test */
 		_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		//CPoolling_Manager::GetInstance()->Create_Objects(TEXT("Poolling_TestBeetle"), 1); // 여러마리 동시 생성. 
+		//CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
 
-		CPoolling_Manager::GetInstance()->Create_Object(TEXT("Poolling_TestBeetle"), &vPosition); // 한마리 생성.
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
 	}
 
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
-		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
+		_uint iCurCameraType = m_pGameInstance->Get_CameraType();
 		iCurCameraType ^= 1;
-
-		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
+		m_pGameInstance->Change_CameraType(iCurCameraType);
 	}
+
 
 }
 
