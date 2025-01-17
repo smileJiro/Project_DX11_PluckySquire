@@ -251,9 +251,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    //matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
     if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/Resources/Json/Desk_C02.json"), matPretransform)))
         return E_FAIL;
+    matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/Anim/"), matPretransform)))
         return E_FAIL;
