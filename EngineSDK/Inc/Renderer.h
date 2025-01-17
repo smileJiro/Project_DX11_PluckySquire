@@ -61,6 +61,8 @@ private:
 	HRESULT Render_Lights();			// RTV에 저장된 데이터를 기반으로 Shade RTV를 구성하는 단계 >>> 명암 연산 처리 수행.
 	HRESULT Render_Final();				// 지금까지 구성된 RTV를 기반으로 최종 화면을 그려내는 작업. 							
 	HRESULT Render_Blend();
+	HRESULT Render_Effect();
+	HRESULT Render_After_Effect();
 	HRESULT Render_UI();
 
 private:

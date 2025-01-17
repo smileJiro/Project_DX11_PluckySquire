@@ -135,11 +135,11 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 	m_pControllerModel->Register_OnAnimEndCallBack(fCallback);
 }
 
-void CModelObject::Update(_float fTimeDelta)
+void CModelObject::Update(_float _fTimeDelta)
 {
-    m_pControllerModel->Play_Animation(fTimeDelta);
+    m_pControllerModel->Play_Animation(_fTimeDelta);
 
-	__super::Update(fTimeDelta);
+	__super::Update(_fTimeDelta);
 }
 
 HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)

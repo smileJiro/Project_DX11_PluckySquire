@@ -18,6 +18,7 @@ public:
 public:
 	HRESULT					Ready_Lights();
 	HRESULT					Ready_Layer_Camera(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_Effect(const _wstring& _strLayerTag); /* Temp */
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 
 public:

@@ -22,6 +22,7 @@
 
 #include "Beetle.h"
 #include "BarfBug.h"
+#include "Projectile_BarfBug.h"
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
@@ -306,6 +307,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* For. Prototype_GameObject_BarfBug */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"),
         CBarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Projectile_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Projectile_BarfBug"),
+        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 

@@ -156,6 +156,10 @@ public: /* For. Sound_Manager */
 	_float				Get_SFXVolume(const wstring& strSFXTag);
 	void				Set_SFXVolume(const wstring& strSFXTag, _float _fVolume);
 
+public: /* For. Json_Manager*/
+	HRESULT				Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJson);
+
+
 
 public: /* For. Imgui_Manager */
 	HRESULT				Start_Imgui(); // 시작을 알림.
@@ -200,6 +204,7 @@ private:
 	class CTarget_Manager* m_pTarget_Manager = nullptr;
 	class CShadow* m_pShadow = nullptr;
 	class CSound_Manager* m_pSound_Manager = nullptr;
+	class CJson_Manager* m_pJson_Manager =  nullptr;
 	class CImgui_Manager* m_pImgui_Manager = nullptr;
 	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
 	class CCamera_Manager_Engine* m_pCamera_Manager = nullptr;
