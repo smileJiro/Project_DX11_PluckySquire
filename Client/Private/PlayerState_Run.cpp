@@ -26,12 +26,12 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		vMoveDir += _vector{ -1.f, 0.f, 0.f,0.f };
 		bMove = true;
 	}
-	else if (KEY_PRESSING(KEY::S))
+	if (KEY_PRESSING(KEY::S))
 	{
 		vMoveDir += _vector{ 0.f, 0.f, -1.f,0.f };
 		bMove = true;
 	}
-	else if (KEY_PRESSING(KEY::D))
+	if (KEY_PRESSING(KEY::D))
 	{
 		vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
 		bMove = true;

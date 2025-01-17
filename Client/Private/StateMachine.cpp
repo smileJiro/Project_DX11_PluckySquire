@@ -73,5 +73,6 @@ CComponent* CStateMachine::Clone(void* pArg)
 
 void CStateMachine::Free()
 {
+	Safe_Release(m_pState);
 	__super::Free();
 }
