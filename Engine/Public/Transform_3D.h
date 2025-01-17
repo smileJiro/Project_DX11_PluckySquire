@@ -14,7 +14,7 @@ class ENGINE_DLL CTransform_3D final : public CTransform // 상황에 따라 final이 
 public:
 	typedef struct tagTransform3DDesc : public CTransform::TRANSFORM_DESC
 	{
-
+		_float3 vInitialRotation = { 0,0,0 };
 	}TRANSFORM_3D_DESC;
 private:
 	CTransform_3D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

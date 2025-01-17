@@ -136,6 +136,9 @@
     <Filter Include="02.GameObjects\Monster\BarfBug\Projectile">
       <UniqueIdentifier>{0e711259-b9ff-46d3-9f43-43b0f7522312}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\PlayerState">
+      <UniqueIdentifier>{2c11b0f4-d2f1-4207-914c-46e11d497546}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -192,7 +195,7 @@
     <ClInclude Include="..\Public\Level_Static.h">
       <Filter>01.Levels\01.Static</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\TestPlayer.h">
+    <ClInclude Include="..\public\Player.h">
       <Filter>02.GameObjects\TestPlayer</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TestTerrain.h">
@@ -264,6 +267,8 @@
     <ClInclude Include="..\public\Projectile_BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Idle.h" />
+    <ClInclude Include="..\Public\PlayerState_Run.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -299,7 +304,7 @@
     <ClCompile Include="..\Private\Level_Static.cpp">
       <Filter>01.Levels\01.Static</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\TestPlayer.cpp">
+    <ClCompile Include="..\private\Player.cpp">
       <Filter>02.GameObjects\TestPlayer</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TestTerrain.cpp">
@@ -371,6 +376,20 @@
     <ClCompile Include="..\private\Projectile_BarfBug.cpp">
       <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Condition.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StateMachine.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transition.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Run.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

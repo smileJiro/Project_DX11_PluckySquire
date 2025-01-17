@@ -44,13 +44,14 @@ void CCamera_Target::Priority_Update(_float fTimeDelta)
 
 void CCamera_Target::Update(_float fTimeDelta)
 {
-	Key_Input(fTimeDelta);
-	
-	Action_Mode(fTimeDelta);
+
 }
 
 void CCamera_Target::Late_Update(_float fTimeDelta)
 {
+	Key_Input(fTimeDelta);
+
+	Action_Mode(fTimeDelta);
 	__super::Compute_PipeLineMatrices();
 }
 

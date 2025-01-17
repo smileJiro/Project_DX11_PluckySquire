@@ -99,6 +99,13 @@ _bool CTransform::Go_Down(_float _fTimeDelta)
     return true;
 }
 
+void CTransform::Go_Direction(_vector _vDirection, _float _fTimeDelta)
+{
+	_vector vPos = Get_State(STATE::STATE_POSITION);
+	_vector vFinalPos = vPos + XMVector3Normalize(_vDirection) * m_fSpeedPerSec * _fTimeDelta;
+	Set_State(STATE::STATE_POSITION, vFinalPos);
+}
+
 void CTransform::Turn(_float _fTimeDelta, _fvector _vAxis)
 {
     // 지속적인 회전.
