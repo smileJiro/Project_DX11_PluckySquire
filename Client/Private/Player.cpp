@@ -44,7 +44,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
-
+    // TODO ::임시 위치
+    Set_Position(XMVectorSet(-3.f, 1.1f, -19.3f,1.f));
     return S_OK;
 }
 
