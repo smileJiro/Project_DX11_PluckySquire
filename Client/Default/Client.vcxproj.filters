@@ -100,6 +100,9 @@
     <Filter Include="02.GameObjects\Monster\BarfBug">
       <UniqueIdentifier>{67bad6d7-2648-479f-83bb-27d29ba71422}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\StateMachine">
+      <UniqueIdentifier>{f61e63fb-6499-48ed-a358-321e63a5609c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -201,6 +204,18 @@
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Condition.h">
+      <Filter>03.Components\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState.h">
+      <Filter>03.Components\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateMachine.h">
+      <Filter>03.Components\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Transition.h">
+      <Filter>03.Components\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -280,6 +295,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\BarfBug.cpp">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Condition.cpp">
+      <Filter>03.Components\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState.cpp">
+      <Filter>03.Components\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StateMachine.cpp">
+      <Filter>03.Components\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transition.cpp">
+      <Filter>03.Components\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

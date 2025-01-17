@@ -5,6 +5,7 @@
 #include "Controller_Model.h"
 
 
+
 CModelObject::CModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CPartObject(_pDevice, _pContext)
 {
@@ -61,6 +62,7 @@ void CModelObject::Late_Update(_float _fTimeDelta)
     else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
         m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 
+
     /* Update Parent Matrix */
     __super::Late_Update(_fTimeDelta);
 }
@@ -73,9 +75,6 @@ HRESULT CModelObject::Render()
         int a = 0;
     }
 #endif // _DEBUG
-
-
-
 
     if (FAILED(Bind_ShaderResources_WVP()))
         return E_FAIL;
@@ -223,6 +222,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 	m_pControllerModel = CController_Model::Create(m_pDevice, m_pContext, &tModelDesc);
     if (nullptr == m_pControllerModel)
         return E_FAIL;
+
 
     return S_OK;
 }
