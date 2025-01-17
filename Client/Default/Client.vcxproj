@@ -181,8 +181,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\AlertState.h" />
+    <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\ChaseWalkState.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
@@ -209,9 +211,11 @@
     <ClInclude Include="..\public\Camera_Target.h" />
     <ClInclude Include="..\Public\Pick_Bulb.h" />
     <ClInclude Include="..\public\State.h" />
+    <ClInclude Include="..\Public\StopStamp.h" />
     <ClInclude Include="..\public\TestPlayer.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
     <ClInclude Include="..\Public\UI.h" />
+    <ClInclude Include="..\public\UI_Manager.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
     <ClInclude Include="Resource.h" />
@@ -220,8 +224,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\AlertState.cpp" />
+    <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\ChaseWalkState.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
     <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
@@ -244,9 +250,11 @@
     <ClCompile Include="..\private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\Pick_Bulb.cpp" />
     <ClCompile Include="..\private\State.cpp" />
+    <ClCompile Include="..\Private\StopStamp.cpp" />
     <ClCompile Include="..\private\TestPlayer.cpp" />
     <ClCompile Include="..\private\TestTerrain.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
+    <ClCompile Include="..\private\UI_Manager.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

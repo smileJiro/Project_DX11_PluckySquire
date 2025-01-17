@@ -6,6 +6,7 @@
 
 #include "Event_Manager.h"
 #include "Pooling_Manager.h"
+#include "UI_Manager.h"
 
 
 CMainApp::CMainApp()
@@ -123,6 +124,7 @@ void CMainApp::Free()
 	/* Client Singleton Delete */ 
 	CEvent_Manager::DestroyInstance();
 	CPooling_Manager::DestroyInstance();
+	CUI_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();
