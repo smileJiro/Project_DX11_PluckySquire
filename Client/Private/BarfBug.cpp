@@ -161,34 +161,36 @@ HRESULT CBarfBug::Ready_PartObjects()
 
 
     /* Part Weapon */
-    BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
-    BodyDesc.iCurLevelID = m_iCurLevelID;
-    BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+    CModelObject::MODELOBJECT_DESC WeaponDesc{};
 
-    //BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    //BodyDesc.strModelPrototypeTag_2D = TEXT("barfBug_Rig");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
-    //BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
-    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
-    //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
+    WeaponDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    WeaponDesc.iCurLevelID = m_iCurLevelID;
+    WeaponDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    //BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    //WeaponDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    WeaponDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    //WeaponDesc.strModelPrototypeTag_2D = TEXT("barfBug_Rig");
+    WeaponDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
+    //WeaponDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
+    WeaponDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+    //WeaponDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
+    WeaponDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::COLOR;
 
-    BodyDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
+    //WeaponDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+    WeaponDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
-    //BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    //BodyDesc.tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
-    //BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    //BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+    WeaponDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    WeaponDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    WeaponDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    WeaponDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
-    if (nullptr == m_PartObjects[PART_BODY])
+    //WeaponDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    //WeaponDesc.tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    //WeaponDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    //WeaponDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+
+    m_PartObjects[PART_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Projectile_BarfBug"), &WeaponDesc));
+    if (nullptr == m_PartObjects[PART_WEAPON])
         return E_FAIL;
 
     return S_OK;

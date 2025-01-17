@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Projectile_BarfBug.h"
 
 CProjectile_BarfBug::CProjectile_BarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
