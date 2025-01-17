@@ -118,6 +118,9 @@
     <Filter Include="02.GameObjects\UI\100. UI_Manager">
       <UniqueIdentifier>{0bfe3732-ce5c-4ea9-b556-a293900bd8d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Camera\Manager">
+      <UniqueIdentifier>{dc70aa36-495a-4cc7-85b0-0d18bc005acf}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\UI\01. SettingPanel\00. HeartPoint">
       <UniqueIdentifier>{5bece5e8-a2e3-4fd6-a3c9-8d34fc011de9}</UniqueIdentifier>
     </Filter>
@@ -237,6 +240,9 @@
     <ClInclude Include="..\Public\Pooling_Manager.h">
       <Filter>95.Pooling</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager.h">
+      <Filter>02.GameObjects\Camera\Manager</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\StopStamp.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>
     </ClInclude>
@@ -337,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Pooling_Manager.cpp">
       <Filter>95.Pooling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Manager.cpp">
+      <Filter>02.GameObjects\Camera\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\StopStamp.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>

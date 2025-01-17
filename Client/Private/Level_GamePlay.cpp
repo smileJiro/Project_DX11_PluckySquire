@@ -1,13 +1,18 @@
 #include "stdafx.h"
 #include "Level_GamePlay.h"
+
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Pooling_Manager.h"
 #include "Camera_Manager.h"
+#include "Camera_Free.h"
+#include "Camera_Target.h"
+
 #include "TestPlayer.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
+
 
 #include "UI.h"
 #include "UI_Manager.h"
@@ -37,12 +42,13 @@ HRESULT CLevel_GamePlay::Initialize()
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
-	
+	//
     return S_OK;
 }
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
 {
+
 	if (KEY_DOWN(KEY::ENTER))
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
@@ -59,9 +65,9 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
-		_uint iCurCameraType = m_pGameInstance->Get_CameraType();
+		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
 		iCurCameraType ^= 1;
-		m_pGameInstance->Change_CameraType(iCurCameraType);
+		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
 	if (KEY_DOWN(KEY::Z))
@@ -133,7 +139,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
@@ -152,9 +158,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
-
-	m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	Create_Arm();
 
@@ -296,7 +301,7 @@ void CLevel_GamePlay::Create_Arm()
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
 
-	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(m_pGameInstance->Get_Camera(CCamera_Manager::TARGET));
+	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 
 	pTarget->Add_Arm(pArm);
 }

@@ -9,6 +9,7 @@ class ENGINE_DLL CCameraArm final : public CBase
 {
 public:
 	enum ARM_TYPE { DEFAULT, COPY, OTHER, ARM_TYPE_END };
+	enum TARGET_STATE { RIGHT, UP, LOOK, POS, TARGET_STATE_END };
 
 	typedef struct tagCameraArmDesc
 	{
@@ -56,9 +57,11 @@ public:
 
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
+	_vector				Get_TargetState(TARGET_STATE _eTargetState) const { return XMLoadFloat4x4(m_pTargetWorldMatrix).r[_eTargetState]; }
 
 	void				Change_Target(const _float4x4* _pTargetWorldMatrix) { m_pTargetWorldMatrix = _pTargetWorldMatrix; }
-	
+	_vector				Calculate_CameraPos(_float fTimeDelta);					// Arm과 Length에 따라 카메라 위치 결정
+
 private:
 	ID3D11Device*		m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
@@ -96,7 +99,6 @@ private:
 #ifdef _DEBUG
 	HRESULT				Set_PrimitiveBatch();
 #endif
-	void				Set_CameraPos(_float fTimeDelta);
 	void				Turn_ArmX();
 	void				Turn_ArmY();
 

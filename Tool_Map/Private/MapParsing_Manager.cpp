@@ -83,9 +83,9 @@ HRESULT CMapParsing_Manager::Parsing(json _jsonObj)
 							)
 						{
 							string strModelKey = jsonObj.value()["Properties"]["StaticMesh"].at("ObjectName");
+							strModelKey = strModelKey.substr(strModelKey.find("'") + 1 , strModelKey.size() - strModelKey.find("'") -2);
 							if (strModelKey == "Cube")
 								continue;
-							strModelKey = strModelKey.substr(strModelKey.find("'") + 1 , strModelKey.size() - strModelKey.find("'") -2);
 							
 							MAP_DATA tMapData = {};
 							ZeroMemory(&tMapData, sizeof tMapData);
