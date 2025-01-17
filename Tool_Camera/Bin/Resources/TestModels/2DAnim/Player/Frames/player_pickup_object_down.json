@@ -1,0 +1,82 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_pickup_object_down",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_down_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_down_0010_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

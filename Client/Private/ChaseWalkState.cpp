@@ -1,6 +1,7 @@
 #include "stdafx.h"
-#include "ChaseWalkState.h"
+#include "GameInstance.h"
 #include "GameObject.h"
+#include "ChaseWalkState.h"
 #include "Monster.h"
 #include "FSM.h"
 
@@ -8,12 +9,15 @@ CChaseWalkState::CChaseWalkState()
 {
 }
 
-HRESULT CChaseWalkState::Initialize_Prototype()
+HRESULT CChaseWalkState::Initialize(void* _pArg)
 {
-	//플레이어 위치 가져오기
-	/*m_pTargetTransform = m_pGameInstance->Get_Object(LEVEL_GAMEPLAY, TEXT("Layer_Player"))->Get_Transform();
-	Safe_AddRef(m_pTargetTransform);*/
+	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	m_fChaseRange = pDesc->fChaseRange;
+	m_fAttackRange = pDesc->fAttackRange;
 
+	if (FAILED(__super::Initialize(pDesc)))
+		return E_FAIL;
+		
 	return S_OK;
 }
 
@@ -24,23 +28,41 @@ void CChaseWalkState::State_Enter()
 
 void CChaseWalkState::State_Update(_float _fTimeDelta)
 {
+	if (nullptr == m_pTarget)
+		return;
+	if (nullptr == m_pOwner)
+		return;
+
+	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
+	if (dis <= m_fAttackRange)
+	{
+		//공격 전환
+		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		return;
+	}
+
 	//추적 범위 벗어나면 IDLE 전환
-	//_float dis = XMVectorGetX(XMVector3Length((m_pTargetTransform->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_Transform()->Get_State(CTransform::STATE_POSITION))));
-	//if (dis >= 3.f)
-	//	Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-	//else
-	//	추적 행동
+	if (dis > m_fChaseRange)
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+	}
+	else
+	{
+		//추적
+		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
+	}
 }
 
 void CChaseWalkState::State_Exit()
 {
 }
 
-CChaseWalkState* CChaseWalkState::Create()
+CChaseWalkState* CChaseWalkState::Create(void* _pArg)
 {
 	CChaseWalkState* pInstance = new CChaseWalkState();
 
-	if (FAILED(pInstance->Initialize_Prototype()))
+	if (FAILED(pInstance->Initialize(_pArg)))
 	{
 		MSG_BOX("Failed to Created : CChaseWalkState");
 		Safe_Release(pInstance);
@@ -49,22 +71,7 @@ CChaseWalkState* CChaseWalkState::Create()
 	return pInstance;
 }
 
-//CChaseWalkState* CChaseWalkState::Clone(void* _pArg)
-//{
-//	CChaseWalkState* pInstance = new CChaseWalkState(*this);
-//
-//	if (FAILED(pInstance->Initialize(_pArg)))
-//	{
-//		MSG_BOX("Failed to Cloned : CChaseWalkState");
-//		Safe_Release(pInstance);
-//	}
-//
-//	return pInstance;
-//}
-
 void CChaseWalkState::Free()
 {
-	Safe_Release(m_pTargetTransform);
-
 	__super::Free();
 }

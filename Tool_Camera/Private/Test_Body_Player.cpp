@@ -59,17 +59,9 @@ HRESULT CTest_Body_Player::Render()
     if (FAILED(CModelObject::Bind_ShaderResources_WVP()))
         return E_FAIL;
 
-    switch (m_pControllerTransform->Get_CurCoord())
-    {
-    case Engine::COORDINATE_2D:
-        CModelObject::Render_2D();
-        break;
-    case Engine::COORDINATE_3D:
-        CModelObject::Render_3D();
-        break;
-    default:
-        break;
-    }
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+    CShader* pShader = m_pShaderComs[eCoord];
+    _uint iShaderPass = m_iShaderPasses[eCoord];
 
     return S_OK;
 }

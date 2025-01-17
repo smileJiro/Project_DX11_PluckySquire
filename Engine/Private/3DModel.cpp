@@ -7,31 +7,27 @@
 #include "iostream"
 
 C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CComponent(_pDevice, _pContext)
+	: CModel(_pDevice, _pContext)
 {
 }
 
 C3DModel::C3DModel(const C3DModel& _Prototype)
-	: CComponent(_Prototype)
-	, m_eModelType{ _Prototype.m_eModelType }
-	, m_pAIScene{ _Prototype.m_pAIScene }
+	: CModel(_Prototype)
+
 	, m_iNumMeshes(_Prototype.m_iNumMeshes)
 	, m_Meshes(_Prototype.m_Meshes)
 	, m_iNumMaterials{ _Prototype.m_iNumMaterials }
 	, m_Materials{ _Prototype.m_Materials }
 	, m_PreTransformMatrix{ _Prototype.m_PreTransformMatrix }
-	//, m_Bones{ _Prototype.m_Bones }
-	, m_iNumBones(_Prototype.m_iNumBones)
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
-	//, m_Animations{ _Prototype.m_Animations }
 {
-	for (auto& PrototypeAnim : _Prototype.m_Animations)
-	{
-		m_Animations.push_back(PrototypeAnim->Clone());
-	}
 	for (auto& pPrototypeBone : _Prototype.m_Bones)
 	{
 		m_Bones.push_back(pPrototypeBone->Clone());
+	}
+	for (auto& PrototypeAnim : _Prototype.m_Animations)
+	{
+		m_Animations.push_back(PrototypeAnim->Clone());
 	}
 
 	for (auto& pMaterial : m_Materials)
@@ -55,7 +51,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	}
 	bool bAnim;
 	inFile.read(reinterpret_cast<char*>(&bAnim), 1);
-	m_eModelType = bAnim ? ANIM : NONANIM;
+	m_eAnimType = bAnim ? ANIM : NONANIM;
 
 
 	if (FAILED(Ready_Bones(inFile, -1)))
@@ -70,7 +66,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	if (FAILED(Ready_Animations(inFile)))
 		return E_FAIL;
 	inFile.close();
-	std::cout << pModelFilePath << endl;
+	//std::cout << pModelFilePath << endl;
 	return S_OK;
 }
 
@@ -80,25 +76,42 @@ HRESULT C3DModel::Initialize(void* _pArg)
 	return S_OK;
 }
 
-
-HRESULT C3DModel::Render(_uint _iMeshIndex)
+HRESULT C3DModel::Render(CShader* _Shader, _uint _iShaderPass)
 {
-	if (_iMeshIndex >= m_iNumMeshes)
-		return E_FAIL;
 
-	/* 순회하며 그리지 않고, 외부에서 Mesh Index를 받아와서 그리고있다. */
-	/* 각각의 메쉬를 그리기 전, 각각의 메쉬가 사용하는 Material Texture를 세팅해주어야한다. 그래서 그러한 작업을 클라에서 수행하고,
-	Engine에서는 매개변수로 들어온 인덱스에 해당하는 메쉬를 그리는 작업만 수행한다. */
-	m_Meshes[_iMeshIndex]->Bind_BufferDesc();
-	m_Meshes[_iMeshIndex]->Render();
+	/* Mesh 단위 렌더. */
+	for (_uint i = 0; i < m_iNumMeshes; ++i)
+	{
+		if (FAILED(Bind_Material(_Shader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+		{
+			//continue;
+		}
+
+		/* Bind Bone Matrices */
+		if (Is_AnimModel())
+		{
+			if (FAILED(Bind_Matrices(_Shader, "g_BoneMatrices", i)))
+				return E_FAIL;
+		}
+
+
+		/* Shader Pass */
+		_Shader->Begin(_iShaderPass);
+
+		/* Bind Mesh Vertex Buffer */
+		m_Meshes[i]->Bind_BufferDesc();
+		m_Meshes[i]->Render();
+	}
 
 	return S_OK;
 }
 
+
+
 HRESULT C3DModel::Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex)
 {
 	/* 모델의 m_Bones 벡터를 넘겨 여기서 자기들이 필요한 메쉬에 접근해서 행렬을 가져오고 연산할 것임. */
-	return m_Meshes[_iMeshIndex]->Bind_BoneMatrices(_pShader, _pConstantName, m_Bones);
+ 	return m_Meshes[_iMeshIndex]->Bind_BoneMatrices(_pShader, _pConstantName, m_Bones);
 }
 
 HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex)
@@ -107,7 +120,7 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 		return E_FAIL;
 
 	_uint iMaterialIndex = m_Meshes[_iMeshIndex]->Get_MaterialIndex();
-
+	 
 	ID3D11ShaderResourceView* pSRV = m_Materials[iMaterialIndex]->Find_Texture(_eTextureType, _iTextureIndex);
 	if (nullptr == pSRV)
 		return E_FAIL;
@@ -115,79 +128,50 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 	return _pShader->Bind_SRV(_pConstantName, pSRV);
 }
 
-_uint C3DModel::Find_BoneIndex(const _char* _pBoneName) const
+_bool C3DModel::Play_Animation(_float fTimeDelta)
 {
-	_uint iBoneIndex = 0;
-	/* 1. 매개변수로 들어온 BoneName과 같은 이름을 가진 Bone을 찾고, 해당 본의 인덱스를 리턴함. */
-	/* 람다식에 대한 이해. */
-	/* https://www.notion.so/43-120b1e26c8a880d0a730d21cf62d76f2 */
-	auto iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)-> bool 
-		{
-			/* 캡쳐절을 사용하여 외부에 있는 데이터도 받을 수 있게 했다. */
-			/* 이름이 같다면, 0를 반환하는 strcmp 함수. 이름이 같다면 true 로 find_if 탈출.*/
-			if (false == strcmp(pBone->Get_Name(), _pBoneName))
-				return true;
 
-			/* 해당 람다식 탈출조건을 만족했을때의 BoneIndex를 리턴할 것임.*/
-			++iBoneIndex;
-
-			return false;
-		});
-
-	/* 만약 같은 이름이 없다면,*/
-	if (iter == m_Bones.end())
-		MSG_BOX("없다.");
-
-
-	return iBoneIndex;
-}
-
-const _float4x4* C3DModel::Find_BoneMatrix(const _char* _pBoneName) const
-{
-	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
-		{
-			if (false == strcmp(pBone->Get_Name(), _pBoneName))
-				return true;
-
-			return false;
-		});
-
-	if (iter == m_Bones.end())
-		return nullptr;
-
-	return (*iter)->Get_CombinedTransformationFloat4x4();
-}
-
-HRESULT C3DModel::Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices)
-{
-	if (m_Meshes.size() <= iNumMeshIndex)
-		return E_FAIL;
-
-	if(FAILED(m_Meshes[iNumMeshIndex]->Copy_BoneMatrices(_pOutBoneMatrices)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-_string C3DModel::Get_MeshName(_uint _iMeshIndex)
-{
-	if (m_Meshes.size() <= _iMeshIndex)
-		return _string();
-
-	return m_Meshes[_iMeshIndex]->Get_Name();
-}
-
-_float C3DModel::Get_RootBonePositionY()
-{
-	for (auto& pBones : m_Bones)
+	//뼈들의 변환행렬을 갱신
+	_bool bReturn = false;
+	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
 	{
-		if (!strcmp(pBones->Get_Name(), "Bip001"))
-		{
-			return pBones->Get_CombinedPosition().m128_f32[1];
-		}
+		bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
 	}
-	
-	return 0.0f;
+	else
+	{
+		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame))
+			m_iPrevAnimIndex = m_iCurrentAnimIndex;
+	}
+
+
+	//뼈들의 합성변환행렬을 갱신
+	for (auto& pBone : m_Bones)
+		pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
+
+ 	return bReturn;
+}
+
+
+_uint C3DModel::Get_MeshIndex(const _char* _szName) const
+{
+
+	_uint	 iMeshIndex = { 0 };
+
+	auto	iter = find_if(m_Meshes.begin(), m_Meshes.end(), [&](CMesh* pMesh)->_bool
+		{
+			if (false == strcmp(pMesh->Get_Name(), _szName))
+				return true;
+
+			++iMeshIndex;
+
+			return false;
+		});
+
+	if (iter == m_Meshes.end())
+		MSG_BOX("그런 메쉬가 없어");
+
+
+	return iMeshIndex;
 }
 
 _uint C3DModel::Get_BoneIndex(const _char* pBoneName) const
@@ -209,6 +193,91 @@ _uint C3DModel::Get_BoneIndex(const _char* pBoneName) const
 		MSG_BOX("그런 뼈가 없어");
 
 	return iBoneIndex;
+}
+
+float C3DModel::Get_AnimTime()
+{
+	return m_Animations[m_iCurrentAnimIndex]->Get_AnimTime();
+}
+
+_uint C3DModel::Get_AnimIndex()
+{
+	return m_iCurrentAnimIndex;
+}
+
+_float C3DModel::Get_AnimationProgress(_uint iAnimIdx)
+{
+	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
+		return m_Animations[m_iCurrentAnimIndex]->Get_Progress();
+	else
+		return 0;
+}
+
+const _float4x4* C3DModel::Get_BoneMatrix(const _char* pBoneName) const
+{
+
+	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+		{
+			if (false == strcmp(pBone->Get_Name(), pBoneName))
+				return true;
+
+			return false;
+		});
+
+	if (iter == m_Bones.end())
+		return nullptr;
+
+	return (*iter)->Get_CombinedTransformationFloat4x4();
+}
+
+CBone* C3DModel::Get_Bone(const _char* pBoneName) const
+{
+	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+		{
+			if (false == strcmp(pBone->Get_Name(), pBoneName))
+				return true;
+
+			return false;
+		});
+
+	if (iter == m_Bones.end())
+		return nullptr;
+	return *iter;
+}
+
+
+void C3DModel::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
+{
+	m_Animations[iIdx]->Set_Loop(bIsLoop);
+}
+
+void C3DModel::Set_Animation(_uint iIdx)
+{
+	m_iCurrentAnimIndex = iIdx;
+	m_iPrevAnimIndex = iIdx;
+	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
+
+}
+
+
+void C3DModel::Switch_Animation(_uint iIdx)
+{
+	m_iPrevAnimIndex = m_iCurrentAnimIndex;
+	m_iCurrentAnimIndex = iIdx;
+	m_mapAnimTransLeftFrame.clear();
+	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
+	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
+
+}
+
+void C3DModel::To_NextAnimation()
+{
+	Switch_Animation((m_iCurrentAnimIndex + 1) % m_Animations.size());
+}
+
+_uint C3DModel::Get_AnimCount()
+{
+	return (_uint)m_Animations.size();
 }
 
 
@@ -243,7 +312,7 @@ HRESULT C3DModel::Ready_Meshes(ifstream& inFile)
 	//cout  << m_iNumMeshes << endl;
 	for (_uint i = 0; i < m_iNumMeshes; i++)
 	{
-		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eModelType, this, inFile, XMLoadFloat4x4(&m_PreTransformMatrix));
+		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eAnimType, this, inFile, XMLoadFloat4x4(&m_PreTransformMatrix));
 		if (nullptr == pMesh)
 			return E_FAIL;
 
@@ -330,10 +399,6 @@ void C3DModel::Free()
 	for (auto& pMesh : m_Meshes)
 		Safe_Release(pMesh);
 	m_Meshes.clear();
-
-
-	/* 이걸 해도 Assimp 고질 병인 내부적인 누수는 발생한다. 하지만 해주자. 우리눈에 안보이는 누수임. */
-	m_Importer.FreeScene();
 
 	__super::Free();
 }

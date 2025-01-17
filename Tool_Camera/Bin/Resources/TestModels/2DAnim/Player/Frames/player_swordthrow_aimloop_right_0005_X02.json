@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_swordthrow_aimloop_right_0005_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 3468.0,
+        "Y": 2544.0
+      },
+      "BakedSourceDimension": {
+        "X": 278.0,
+        "Y": 299.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 89.0,
+          "Y": 280.0,
+          "Z": 0.91430664,
+          "W": 0.6213379
+        },
+        {
+          "X": -187.0,
+          "Y": 280.0,
+          "Z": 0.8469238,
+          "W": 0.6213379
+        },
+        {
+          "X": -187.0,
+          "Y": -17.0,
+          "Z": 0.8469238,
+          "W": 0.69384766
+        },
+        {
+          "X": 89.0,
+          "Y": -17.0,
+          "Z": 0.91430664,
+          "W": 0.69384766
+        },
+        {
+          "X": 89.0,
+          "Y": 280.0,
+          "Z": 0.91430664,
+          "W": 0.6213379
+        },
+        {
+          "X": -187.0,
+          "Y": -17.0,
+          "Z": 0.8469238,
+          "W": 0.69384766
+        }
+      ]
+    }
+  }
+]

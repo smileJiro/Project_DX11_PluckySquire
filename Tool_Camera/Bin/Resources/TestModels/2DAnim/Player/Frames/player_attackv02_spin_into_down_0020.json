@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_0",
+    "Outer": "player_attackv02_spin_into_down_0020",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -54.0,
+              "Y": 0.0,
+              "Z": 151.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 234.0,
+            "Y": 100.0,
+            "Z": 338.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "1B389FB547C80BAA037B6FAC0BD8561D"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_attackv02_spin_into_down_0020",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 786.0,
+        "Y": 2888.0
+      },
+      "BakedSourceDimension": {
+        "X": 236.0,
+        "Y": 340.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_attack_spininto-0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/player_attack_spininto-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_attackv02_spin_into_down_0020:BodySetup_0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_into_down_0020.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 63.0,
+          "Y": 320.0,
+          "Z": 0.49853516,
+          "W": 0.70532227
+        },
+        {
+          "X": -171.0,
+          "Y": 320.0,
+          "Z": 0.38427734,
+          "W": 0.70532227
+        },
+        {
+          "X": -171.0,
+          "Y": -18.0,
+          "Z": 0.38427734,
+          "W": 0.7878418
+        },
+        {
+          "X": 63.0,
+          "Y": -18.0,
+          "Z": 0.49853516,
+          "W": 0.7878418
+        },
+        {
+          "X": 63.0,
+          "Y": 320.0,
+          "Z": 0.49853516,
+          "W": 0.70532227
+        },
+        {
+          "X": -171.0,
+          "Y": -18.0,
+          "Z": 0.38427734,
+          "W": 0.7878418
+        }
+      ]
+    }
+  }
+]

@@ -2,6 +2,7 @@
 #include "Level_Static.h"
 #include "Level_Loading.h"
 #include "GameInstance.h"
+#include "UI.h"
 
 CLevel_Static::CLevel_Static(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -10,6 +11,7 @@ CLevel_Static::CLevel_Static(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCont
 
 HRESULT CLevel_Static::Initialize()
 {
+	
  	return S_OK;
 }
 
@@ -45,3 +47,4 @@ void CLevel_Static::Free()
 {
 	__super::Free();
 }
+

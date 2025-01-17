@@ -1,0 +1,103 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "jump_out_player_zipOut_up_edit",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0007_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0007_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0013_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0014_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0014_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0015_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0015_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0016_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0016_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0017_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jump_out_player_zipOut_up_0018_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/jump_out_player_zipOut_up_0018_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

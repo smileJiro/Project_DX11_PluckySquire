@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SettingPanel.h"
-#include "GameInstance.h"
+
 
 
 
@@ -31,10 +31,6 @@ HRESULT CSettingPanel::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-
-
-	//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(g_iWinSizeX/ 2, g_iWinSizeY / 2, 1.f, 1.f));
-	//m_pControllerTransform->Set_Scale(50.f, 50.f, 1.f);
 	return S_OK;
 }
 
@@ -44,6 +40,12 @@ void CSettingPanel::Priority_Update(_float _fTimeDelta)
 
 void CSettingPanel::Update(_float _fTimeDelta)
 {
+
+	if (KEY_DOWN(KEY::ESC))
+	{
+		//Update_Active();
+	}
+
 }
 
 void CSettingPanel::Late_Update(_float _fTimeDelta)
@@ -51,33 +53,25 @@ void CSettingPanel::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CSettingPanel::Render()
+HRESULT CSettingPanel::Render(_int _index)
 {
-
-	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture")))
-		return E_FAIL;
-
-
-	m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
-	m_pVIBufferCom->Bind_BufferDesc();
-	m_pVIBufferCom->Render();
-
-	//__super::Render();
-
+	if (true == m_isActive)
+		__super::Render(_index);
 
 	return S_OK;
 }
 
 
+
+void CSettingPanel::Update_Active()
+{
+	if (m_isActive == false)
+	{
+		m_isActive = true;
+	}
+	else if (m_isActive == true)
+		m_isActive = false;
+}
 
 HRESULT CSettingPanel::Ready_Components()
 {
@@ -91,9 +85,10 @@ HRESULT CSettingPanel::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PickBulb"),
-		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -130,12 +125,12 @@ CGameObject* CSettingPanel::Clone(void* _pArg)
 void CSettingPanel::Free()
 {
 
-	__super::Free();
 
+	__super::Free();
 }
 
 HRESULT CSettingPanel::Cleanup_DeadReferences()
 {
-
 	return S_OK;
 }
+

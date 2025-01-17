@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "player_catch_glitchbird_0014_X01",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 5.0,
+              "Y": 0.0,
+              "Z": 122.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 248.0,
+            "Y": 10.0,
+            "Z": 287.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "ACEB636C4850A734AE6608AB2D553C19"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_catch_glitchbird_0014_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 773.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 250.0,
+        "Y": 289.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_catch_glitchbird-0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/player_catch_glitchbird-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_catch_glitchbird_0014_X01:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_catch_glitchbird_0014_X01.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 129.0,
+          "Y": 266.0,
+          "Z": 0.9980469,
+          "W": 0.001953125
+        },
+        {
+          "X": -119.0,
+          "Y": 266.0,
+          "Z": 0.7558594,
+          "W": 0.001953125
+        },
+        {
+          "X": -119.0,
+          "Y": -21.0,
+          "Z": 0.7558594,
+          "W": 0.28222656
+        },
+        {
+          "X": 129.0,
+          "Y": -21.0,
+          "Z": 0.9980469,
+          "W": 0.28222656
+        },
+        {
+          "X": 129.0,
+          "Y": 266.0,
+          "Z": 0.9980469,
+          "W": 0.001953125
+        },
+        {
+          "X": -119.0,
+          "Y": -21.0,
+          "Z": 0.7558594,
+          "W": 0.28222656
+        }
+      ]
+    }
+  }
+]

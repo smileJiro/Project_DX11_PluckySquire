@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_death_down_0007_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1201.0,
+        "Y": 2408.0
+      },
+      "BakedSourceDimension": {
+        "X": 242.0,
+        "Y": 295.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_1'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 170.0,
+          "Y": 274.0,
+          "Z": 0.35205078,
+          "W": 0.58813477
+        },
+        {
+          "X": -70.0,
+          "Y": 274.0,
+          "Z": 0.29345703,
+          "W": 0.58813477
+        },
+        {
+          "X": -70.0,
+          "Y": -19.0,
+          "Z": 0.29345703,
+          "W": 0.65966797
+        },
+        {
+          "X": 170.0,
+          "Y": -19.0,
+          "Z": 0.35205078,
+          "W": 0.65966797
+        },
+        {
+          "X": 170.0,
+          "Y": 274.0,
+          "Z": 0.35205078,
+          "W": 0.58813477
+        },
+        {
+          "X": -70.0,
+          "Y": -19.0,
+          "Z": 0.29345703,
+          "W": 0.65966797
+        }
+      ]
+    }
+  }
+]

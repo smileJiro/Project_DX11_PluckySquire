@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_jump_rise_sword_up_0002_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2227.0,
+        "Y": 1600.0
+      },
+      "BakedSourceDimension": {
+        "X": 182.0,
+        "Y": 264.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_2'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_2.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 89.0,
+          "Y": 250.0,
+          "Z": 0.5878906,
+          "W": 0.39086914
+        },
+        {
+          "X": -91.0,
+          "Y": 250.0,
+          "Z": 0.5439453,
+          "W": 0.39086914
+        },
+        {
+          "X": -91.0,
+          "Y": -12.0,
+          "Z": 0.5439453,
+          "W": 0.45483398
+        },
+        {
+          "X": 89.0,
+          "Y": -12.0,
+          "Z": 0.5878906,
+          "W": 0.45483398
+        },
+        {
+          "X": 89.0,
+          "Y": 250.0,
+          "Z": 0.5878906,
+          "W": 0.39086914
+        },
+        {
+          "X": -91.0,
+          "Y": -12.0,
+          "Z": 0.5439453,
+          "W": 0.45483398
+        }
+      ]
+    }
+  }
+]

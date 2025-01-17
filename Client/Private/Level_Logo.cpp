@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Level_Logo.h"
 #include "Level_Loading.h"
+
 #include "GameInstance.h"
 
 #include "UI.h"
@@ -12,7 +13,7 @@ CLevel_Logo::CLevel_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 HRESULT CLevel_Logo::Initialize()
 {
-
+	
 
  	return S_OK;
 }
@@ -21,6 +22,7 @@ void CLevel_Logo::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::ENTER))
 		Event_LevelChange(LEVEL_LOADING, LEVEL_GAMEPLAY);
+
 
 
 

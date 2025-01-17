@@ -1,0 +1,293 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_attackv02_spin_down_lvl4",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 45.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_down_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_down_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_down_0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_down_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0007_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0007_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0008_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0009_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0009_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0011_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0011_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0013_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0013_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0014_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0014_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0015_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0015_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0016_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0016_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0017_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0017_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0018_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0018_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0019_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0019_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0020_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0020_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0021_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0021_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0022_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0022_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0023_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0023_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0024_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0024_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0025_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0025_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0026_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0026_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0027_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0027_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0028_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0028_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0029_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0029_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0030_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0030_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0031_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0031_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0032_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0032_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0004_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0005_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_spin_0007_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_spin_0007_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_down_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_down_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_down_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_down_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_down_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_down_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_down_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_down_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_attackv02_down_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_attackv02_down_0008_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ],
+      "CollisionSource": "EFlipbookCollisionMode::EachFrameCollision"
+    }
+  }
+]

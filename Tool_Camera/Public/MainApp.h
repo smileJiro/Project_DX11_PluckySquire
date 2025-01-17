@@ -27,6 +27,9 @@ private:
 	ID3D11DeviceContext*	m_pContext = nullptr;
 
 private:
+	class CCamera_Manager_Tool*		m_pCamera_Manager = { nullptr };
+
+private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 
 public:

@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Player_GivePop_0007_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 420.0
+      },
+      "BakedSourceDimension": {
+        "X": 259.0,
+        "Y": 417.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_givepop-0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/player_givepop-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 168.0,
+          "Y": 393.0,
+          "Z": 0.2529297,
+          "W": 0.2055664
+        },
+        {
+          "X": -89.0,
+          "Y": 393.0,
+          "Z": 0.001953125,
+          "W": 0.2055664
+        },
+        {
+          "X": -89.0,
+          "Y": -22.0,
+          "Z": 0.001953125,
+          "W": 0.40820312
+        },
+        {
+          "X": 168.0,
+          "Y": -22.0,
+          "Z": 0.2529297,
+          "W": 0.40820312
+        },
+        {
+          "X": 168.0,
+          "Y": 393.0,
+          "Z": 0.2529297,
+          "W": 0.2055664
+        },
+        {
+          "X": -89.0,
+          "Y": -22.0,
+          "Z": 0.001953125,
+          "W": 0.40820312
+        }
+      ]
+    }
+  }
+]

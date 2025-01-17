@@ -9,6 +9,14 @@ class CMonster;
 
 class CFSM final : public CComponent
 {
+public:
+	typedef struct tagFSMDesc
+	{
+		_float fAlertRange;
+		_float fChaseRange;
+		_float fAttackRange;
+	}FSMDESC;
+
 private:
 	CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CFSM(const CFSM& _Prototype);
@@ -29,13 +37,17 @@ public:
 	HRESULT Set_State(MONSTER_STATE _eState);
 
 private:
-	HRESULT	 Ready_States();
-
-private:
 	map<MONSTER_STATE, CState*> m_States;
 	MONSTER_STATE		m_eCurState = { MONSTER_STATE::LAST };
 	CState* m_CurState = { nullptr };
 	CMonster* m_pOwner = { nullptr };
+
+	_float	m_fAlertRange = {};
+	_float	m_fChaseRange = {};
+	_float	m_fAttackRange = {};
+
+public:
+	HRESULT CleanUp();
 
 public:
 	static CFSM* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

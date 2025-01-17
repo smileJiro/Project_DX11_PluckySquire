@@ -25,9 +25,23 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 	pDesc->isCoordChangeEnable = false;
 	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-
 	m_fMouseSensor = pDesc->fMouseSensor;
-
+	switch (pDesc->eMode)
+	{
+		case Engine::CCamera_Free::INPUT_MODE_WASD:
+			m_iModeKey[0] = (_uint)KEY::W;
+			m_iModeKey[1] = (_uint)KEY::S;
+			m_iModeKey[2] = (_uint)KEY::D;
+			m_iModeKey[3] = (_uint)KEY::A;
+			break;
+		case Engine::CCamera_Free::INPUT_MODE_DEFAULT:
+		default:
+			m_iModeKey[0] =  (_uint)KEY::UP;
+			m_iModeKey[1] =  (_uint)KEY::DOWN;
+			m_iModeKey[2] =  (_uint)KEY::RIGHT;
+			m_iModeKey[3] =  (_uint)KEY::LEFT;
+			break;
+	}
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -36,38 +50,37 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
-	Key_Input(fTimeDelta);
-
-	__super::Compute_PipeLineMatrices();
-
+	
 }
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
+	Key_Input(fTimeDelta);
 }
 
 void CCamera_Free::Late_Update(_float fTimeDelta)
 {
+	__super::Compute_PipeLineMatrices();
 }
 
 void CCamera_Free::Key_Input(_float fTimeDelta)
 {
-	if (KEY_PRESSING(KEY::W))
+	if (KEY_PRESSING((KEY)m_iModeKey[0]))
 	{
 		m_pControllerTransform->Go_Straight(fTimeDelta);
 	}
 
-	if (KEY_PRESSING(KEY::S))
+	if (KEY_PRESSING((KEY)m_iModeKey[1]))
 	{
 		m_pControllerTransform->Go_Backward(fTimeDelta);
 	}
 
-	if (KEY_PRESSING(KEY::D))
+	if (KEY_PRESSING((KEY)m_iModeKey[2]))
 	{
 		m_pControllerTransform->Go_Right(fTimeDelta);
 	}
 
-	if (KEY_PRESSING(KEY::A))
+	if (KEY_PRESSING((KEY)m_iModeKey[3]))
 	{
 		m_pControllerTransform->Go_Left(fTimeDelta);
 	}

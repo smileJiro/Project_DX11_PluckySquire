@@ -1,10 +1,6 @@
 #pragma once
 #include "Base.h"
 
-BEGIN(Engine)
-class CController_Transform;
-END
-
 BEGIN(Client)
 
 class CFSM;
@@ -12,6 +8,14 @@ class CMonster;
 
 class CState abstract : public CBase
 {
+public:
+	typedef struct tagStateDesc
+	{
+		_float fAlertRange;
+		_float fChaseRange;
+		_float fAttackRange;
+	}STATEDESC;
+
 protected:
 	CState();
 	virtual ~CState() = default;
@@ -21,11 +25,10 @@ public:
 	void Set_FSM(CFSM* _pFSM)
 	{
 		m_pFSM = _pFSM;
-		Safe_AddRef(m_pFSM);
 	}
 
 public:
-	virtual HRESULT Initialize_Prototype() = 0;
+	virtual HRESULT Initialize(void* _pArg);
 
 public:
 	//state 처음 들어갈 때
@@ -35,12 +38,19 @@ public:
 	//state 전환시 빠져나가면서 불림
 	virtual void State_Exit() = 0;
 
+public:
+	HRESULT CleanUp();
+
 protected:
-	//CGameInstance* m_pGameInstance = { nullptr };
-	CController_Transform* m_pTargetTransform = { nullptr };
+	CGameInstance* m_pGameInstance = { nullptr };
+	CGameObject* m_pTarget = { nullptr };
 	//상태를 가지는 몬스터
 	CMonster* m_pOwner = { nullptr };
 	CFSM* m_pFSM = { nullptr };
+
+	_float	m_fAlertRange = {};
+	_float	m_fChaseRange = {};
+	_float	m_fAttackRange = {};
 
 public:
 	virtual void Free() override;

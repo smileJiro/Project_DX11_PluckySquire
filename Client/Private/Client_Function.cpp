@@ -107,6 +107,8 @@ namespace Client
 		//return converter.to_bytes(_strWide);
 	}
 
+
+
 }
 
 

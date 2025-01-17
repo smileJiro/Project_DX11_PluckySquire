@@ -10,44 +10,66 @@ class CMonster abstract : public CContainerObject
 public:
 	enum MONSTERPART { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
 
-	typedef struct : public CContainerObject::CONTAINEROBJ_DESC
+	typedef struct tagMonsterDesc : public CContainerObject::CONTAINEROBJ_DESC
 	{
-		_float fMoveRadius;
-		_float fAttackRadius;
+		_float fAlertRange;
+		_float fChaseRange;
+		_float fAttackRange;
 	}MONSTER_DESC;
 
 protected:
-	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CMonster(const CMonster& Prototype);
+	CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CMonster(const CMonster& _Prototype);
 	virtual ~CMonster() = default;
 
 public:
+	virtual void Set_State(MONSTER_STATE _eState)
+	{
+		m_eState = _eState;
+	}
+	virtual void Set_PreState(MONSTER_STATE _eState)
+	{
+		m_ePreState = _eState;
+	}
+
+	void Set_AnimChangeable(_bool _isChangeable)
+	{
+		m_isAnimChangeable = _isChangeable;
+	}
+	_bool Get_AnimChangeable()
+	{
+		return m_isAnimChangeable;
+	}
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Priority_Update(_float fTimeDelta) override;
-	virtual void Update(_float fTimeDelta) override;
-	virtual void Late_Update(_float fTimeDelta) override;
+	virtual HRESULT Initialize(void* _pArg) override;
+	virtual void Priority_Update(_float _fTimeDelta) override;
+	virtual void Update(_float _fTimeDelta) override;
+	virtual void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
 
 public:
 	_float Calculate_Distance();
-	virtual void Attack(_float fTimeDelta);
+	virtual void Attack(_float _fTimeDelta);
 
 public:
-	virtual void Collision_Enter(CGameObject* pTarget);
-	virtual void Collision_Stay(CGameObject* pTarget);
-	virtual void Collision_Exit(CGameObject* pTarget);
-
-public:
-	virtual void Set_State(MONSTER_STATE eState) {};
+	virtual void Change_Animation() {};
 
 protected:
-	_uint				m_iState = {};
-	_uint				m_iPreState = {};
-	CTransform* m_pPlayerTransform = { nullptr };
+	MONSTER_STATE		m_eState = {};
+	MONSTER_STATE		m_ePreState = {};
+	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
-	_float m_fMoveRadius = {};
-	_float m_fAttackRadius = {};
+	_float m_fAlertRange = { 0.f };
+	_float m_fChaseRange = { 0.f };
+	_float m_fAttackRange = { 0.f };
+	_bool m_isAnimChangeable = { true };
+
+public:
+	HRESULT Cleanup_DeadReferences() override;
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 
 protected:
@@ -56,7 +78,7 @@ protected:
 
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
+	virtual CGameObject* Clone(void* _pArg) = 0;
 	virtual void Free() override;
 };
 

@@ -41,7 +41,7 @@ HRESULT CAnimation::Initialize(ifstream& inFile, const C3DModel* pModel)
 	inFile.read(reinterpret_cast<char*>(&iNameLength), sizeof(_uint));
 	inFile.read(m_szName, iNameLength);
 	m_szName[iNameLength] = '\0';
-	//cout << m_szName << endl;
+	cout << m_szName << endl;
 
 
 	double dValue = 0.0;
@@ -183,10 +183,10 @@ CAnimation* CAnimation::Clone()
 
 void CAnimation::Free()
 {
-	__super::Free();
-
 	for (auto& pChannel : m_vecChannel)
 		Safe_Release(pChannel);
 
 	m_vecChannel.clear();
+
+	__super::Free();
 }

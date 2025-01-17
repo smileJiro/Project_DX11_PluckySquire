@@ -1,0 +1,67 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_bookenter_down",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_down_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_down_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_down_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_down_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_down_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_down_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_down_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_down_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_down_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_down_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_down_0006_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_down_0006_X03.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_down_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_down_0007_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_down_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_down_0008_X02.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

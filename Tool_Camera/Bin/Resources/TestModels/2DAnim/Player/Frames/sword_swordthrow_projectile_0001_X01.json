@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "sword_swordthrow_projectile_0001_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2643.0,
+        "Y": 1602.0
+      },
+      "BakedSourceDimension": {
+        "X": 290.0,
+        "Y": 272.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_0'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 151.0,
+          "Y": 151.0,
+          "Z": 0.7158203,
+          "W": 0.39135742
+        },
+        {
+          "X": -137.0,
+          "Y": 151.0,
+          "Z": 0.6455078,
+          "W": 0.39135742
+        },
+        {
+          "X": -137.0,
+          "Y": -119.0,
+          "Z": 0.6455078,
+          "W": 0.4572754
+        },
+        {
+          "X": 151.0,
+          "Y": -119.0,
+          "Z": 0.7158203,
+          "W": 0.4572754
+        },
+        {
+          "X": 151.0,
+          "Y": 151.0,
+          "Z": 0.7158203,
+          "W": 0.39135742
+        },
+        {
+          "X": -137.0,
+          "Y": -119.0,
+          "Z": 0.6455078,
+          "W": 0.4572754
+        }
+      ]
+    }
+  }
+]

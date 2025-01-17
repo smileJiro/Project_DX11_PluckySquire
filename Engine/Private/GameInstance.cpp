@@ -14,7 +14,10 @@
 #include "Json_Manager.h"
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
-#include "Camera_Manager.h"
+#include "Camera_Manager_Engine.h"
+#include "Layer.h"
+#include "ModelObject.h"
+#include "ContainerObject.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -98,7 +101,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pGlobalFunction_Manager)
 		return E_FAIL;
 
-	m_pCamera_Manager = CCamera_Manager::Create();
+	m_pCamera_Manager = CCamera_Manager_Engine::Create();
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
 
@@ -117,8 +120,8 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
-	m_pCamera_Manager->Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
+	m_pCamera_Manager->Update(fTimeDelta);
 	m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 }
 
@@ -127,27 +130,8 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update 수행 후, DeadObject Safe_Release() + erase();
 	m_pLevel_Manager->Update(fTimeDelta);
 
-
-
-
 #ifdef _DEBUG
-	if (true == m_isImguiRTRender)
-	{
-		if (FAILED(Imgui_Render_RT_Debug()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug");
-		}
-		if (FAILED(Imgui_Render_RT_Debug_FullScreen()))
-		{
-			MSG_BOX("Render Failed Imgui_Render_RT_Debug_FullScreen");
-		}
-	}
-	if (GetKeyState(KEY::NUM0) == KEY_STATE::DOWN)
-	{
-		m_isImguiRTRender ^= 1;
-	}
-
-
+	m_pImgui_Manager->Imgui_Debug_Render();
 #endif
 
 
@@ -166,7 +150,6 @@ HRESULT CGameInstance::Draw()
 	m_pRenderer->Draw_RenderObject();
 
 	m_pLevel_Manager->Render();
-
 
 	return S_OK;
 }
@@ -221,100 +204,7 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	return S_OK;
 }
 
-HRESULT CGameInstance::Imgui_Render_RT_Debug()
-{
-	ImGui::Begin("DebugRenderTarget");
 
-	// 기존 스타일 백업
-	ImGuiStyle& style = ImGui::GetStyle();
-	ImVec4 originalColor = style.Colors[ImGuiCol_WindowBg];
-
-	// 알파 값 제거
-	style.Colors[ImGuiCol_WindowBg].w = 1.0f; // 알파를 1.0으로 설정
-	map<const _wstring, CRenderTarget*>& RenderTargets = m_pTarget_Manager->Get_RenderTargets();
-	ID3D11ShaderResourceView* pSelectImage = nullptr;
-	ImVec2 imageSize(160, 90); // 이미지 크기 설정
-	for (auto& Pair : RenderTargets)
-	{
-		pSelectImage = Pair.second->Get_SRV();
-		if (nullptr != pSelectImage)
-		{
-			_string strRTName = m_pGlobalFunction_Manager->WStringToString(Pair.first);
-			ImGui::Text(strRTName.c_str());
-			ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
-		}
-
-	}
-
-	// 스타일 복구
-	style.Colors[ImGuiCol_WindowBg] = originalColor;
-
-
-	ImGui::End();
-
-	return S_OK;
-}
-
-HRESULT CGameInstance::Imgui_Render_RT_Debug_FullScreen()
-{
-	ImGui::Begin("Debug FullScreen");
-
-
-	if (ImGui::TreeNode("MRTs"))
-	{
-		map<const _wstring, list<CRenderTarget*>> MRTs = m_pTarget_Manager->Get_MRTs();
-		ImVec2 imageSize(800, 450); // 이미지 크기 설정
-		ID3D11ShaderResourceView* pSelectImage = nullptr;
-		if (MRTs.empty())
-		{
-			// MRTs가 비어 있는 경우에도 처리
-			ImGui::Text("No MRTs available");
-		}
-		else
-		{
-			for (auto& MRT : MRTs)
-			{
-				_string strMRTName = m_pGlobalFunction_Manager->WStringToString(MRT.first);
-				if (ImGui::TreeNode(strMRTName.c_str()))
-				{
-
-					// TODO :: 렌더타겟 이름을 별도로 저장하시고~ CRenderTarget에서 하든 뭘 하든. MRT >>> RT Name >> 선택하면 >>> 큰화면 ㄱㄱ
-					
-					for (CRenderTarget* pRenderTarget : MRT.second)
-					{
-						_string strRTName = m_pGlobalFunction_Manager->WStringToString(pRenderTarget->Get_Name());
-						if (ImGui::TreeNode(strRTName.c_str()))
-						{
-							
-							pSelectImage = Get_RT_SRV(pRenderTarget->Get_Name());
-
-							if (nullptr != pSelectImage)
-								ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
-							ImGui::TreePop();
-						}
-					}
-
-					ImGui::TreePop();
-				}
-				
-			}
-
-			
-		}
-
-		ImGui::TreePop();
-
-
-	}
-
-
-	
-	ImGui::End();
-
-
-
-	return S_OK;
-}
 
 _float CGameInstance::Get_TimeDelta(const _wstring& _strTimerTag)
 {
@@ -476,10 +366,17 @@ CGameObject* CGameInstance::Get_GameObject_Ptr(_int _iLevelID, const _wstring& _
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
 
-
-
 	return m_pObject_Manager->Get_GameObject_Ptr(_iLevelID, _strLayerTag, _iObjectIndex);
 }
+
+#ifdef _DEBUG
+map<const _wstring, class CLayer*>* CGameInstance::Get_Layers_Ptr()
+{
+	return m_pObject_Manager->Get_Layers_Ptr();
+}
+#endif // _DEBUG
+
+
 
 HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, CGameObject* _pRenderObject)
 {
@@ -967,6 +864,16 @@ void CGameInstance::Render_DrawData_Imgui()
 
 	return m_pImgui_Manager->Render_DrawData();
 }
+#ifdef _DEBUG
+HRESULT	CGameInstance::Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId)
+{
+	if (nullptr == m_pImgui_Manager)
+		return E_FAIL;
+
+	return m_pImgui_Manager->Imgui_Select_Debug_ObjectInfo(_strLayerTag, _iObjectId);
+}
+#endif // _DEBUG
+
 
 _float2 CGameInstance::Get_CursorPos()
 {
@@ -1013,9 +920,19 @@ CCamera* CGameInstance::Get_CurrentCamera()
 	return m_pCamera_Manager->Get_CurrentCamera();
 }
 
+CCamera* CGameInstance::Get_Camera(_uint _eType)
+{
+	return  m_pCamera_Manager->Get_Camera(_eType);
+}
+
 _vector CGameInstance::Get_CameraVector(CTransform::STATE _eState)
 {
 	return m_pCamera_Manager->Get_CameraVector(_eState);
+}
+
+_uint CGameInstance::Get_CameraType()
+{
+	return m_pCamera_Manager->Get_CameraType();
 }
 
 void CGameInstance::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
@@ -1023,31 +940,10 @@ void CGameInstance::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 	m_pCamera_Manager->Add_Camera(_iCurrentCameraType, _pCamera);
 }
 
-void CGameInstance::Add_Arm(CCameraArm* _pCameraArm)
-{
-	m_pCamera_Manager->Add_Arm(_pCameraArm);
-}
-
-void CGameInstance::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
-{
-	m_pCamera_Manager->Change_CameraMode(_iCameraMode, _iNextMode);
-}
-
-void CGameInstance::Change_CameraArm(_wstring _wszArmTag)
-{
-	m_pCamera_Manager->Change_CameraArm(_wszArmTag);
-}
-
 void CGameInstance::Change_CameraType(_uint _iCurrentCameraType)
 {
 	m_pCamera_Manager->Change_CameraType(_iCurrentCameraType);
 }
-
-void CGameInstance::Set_CameraPos(_vector _vCameraPos)
-{
-	m_pCamera_Manager->Set_CameraPos(_vCameraPos);
-}
-
 
 #ifdef _DEBUG
 
@@ -1067,7 +963,15 @@ HRESULT CGameInstance::Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pSh
 	return m_pTarget_Manager->Render_Debug(_strMRTTag, _pShader, _pVIBufferRect);
 }
 
+map<const _wstring, CRenderTarget*>& CGameInstance::Get_RenderTargets()
+{
+	return m_pTarget_Manager->Get_RenderTargets();
+}
 
+map<const _wstring, list<CRenderTarget*>>& CGameInstance::Get_MRTs()
+{
+	return m_pTarget_Manager->Get_MRTs();
+}
 #endif // _DEBUG
 
 

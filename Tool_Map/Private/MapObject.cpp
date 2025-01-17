@@ -27,9 +27,9 @@ HRESULT CMapObject::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->iCurLevelID = LEVEL_TOOL_MAP;
     pDesc->isCoordChangeEnable = false;
-
+    pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL_MAP;
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    pDesc->strModelPrototypeTag = m_strModelName;
+    pDesc->strModelPrototypeTag_3D = m_strModelName;
 
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
@@ -41,14 +41,9 @@ HRESULT CMapObject::Initialize(void* _pArg)
         return E_FAIL;
 
 
-    D3D11_VIEWPORT ViewportDesc = {};
-    _uint iNumViewport = 1;
-
-    m_pContext->RSGetViewports(&iNumViewport, &ViewportDesc);
-
     CRay::RAY_DESC RayDesc = {};
-    RayDesc.fViewportWidth =   (_float)ViewportDesc.Width;
-    RayDesc.fViewportHeight =  (_float)ViewportDesc.Height;
+    RayDesc.fViewportWidth =   (_float)g_iWinSizeX;
+    RayDesc.fViewportHeight =  (_float)g_iWinSizeY;
     if (FAILED(Add_Component(m_iCurLevelID, L"Prototype_Component_Ray",
             TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom),&RayDesc)))
         return E_FAIL;
@@ -109,17 +104,7 @@ HRESULT CMapObject::Render()
     if (FAILED(CModelObject::Bind_ShaderResources_WVP()))
         return E_FAIL;
 
-    switch (m_pControllerTransform->Get_CurCoord())
-    {
-    case Engine::COORDINATE_2D:
-        CModelObject::Render_2D();
-        break;
-    case Engine::COORDINATE_3D:
-        CModelObject::Render_3D();
-        break;
-    default:
-        break;
-    }
+    CModelObject::Render();
 
     return S_OK;
 }
@@ -142,7 +127,7 @@ CMapObject* CMapObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CMapObject");
+        //MSG_BOX("Failed to Created : CMapObject");
         Safe_Release(pInstance);
     }
 
@@ -155,7 +140,7 @@ CGameObject* CMapObject::Clone(void* _pArg)
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CMapObject");
+        //MSG_BOX("Failed to Cloned : CMapObject");
         Safe_Release(pInstance);
     }
 

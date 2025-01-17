@@ -11,6 +11,9 @@ CLevel_Map_Tool::CLevel_Map_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 HRESULT CLevel_Map_Tool::Initialize(CImguiLogger* _pLogger)
 {
+
+	m_pLogger = _pLogger;
+	Safe_AddRef(m_pLogger);
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
@@ -62,22 +65,21 @@ HRESULT CLevel_Map_Tool::Ready_Lights()
 HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
 	CCamera_Free::CAMERA_FREE_DESC		Desc{};
-
-	//Desc.fSpeedPerSec = 10.f;
-	//Desc.fRotationPerSec = XMConvertToRadians(180.f);
 	Desc.fMouseSensor = 0.5f;
 	Desc.eZoomLevel = Engine::CCamera::ZOOM_LEVEL::NORMAL;
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.fNear = 0.1f;
-	Desc.fFar = 1000.f;
+	Desc.fFar = 10000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.fFovy = XMConvertToRadians(60.f);
-
+	Desc.eMode = CCamera_Free::INPUT_MODE_WASD;
+	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_TOOL_MAP, _strLayerTag, &Desc)))
+		LEVEL_TOOL_MAP, _strLayerTag, &pGameObject, &Desc)))
 		return E_FAIL;
-
+	else
+		pGameObject->Get_ControllerTransform()->Set_SpeedPerSec(1000.f);
 	return S_OK;
 }
 
@@ -109,5 +111,6 @@ CLevel_Map_Tool* CLevel_Map_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceCon
 void CLevel_Map_Tool::Free()
 {
 	Safe_Release(m_pToolManager);
+	Safe_Release(m_pLogger);
 	__super::Free();
 }

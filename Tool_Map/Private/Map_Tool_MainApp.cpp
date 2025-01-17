@@ -30,15 +30,14 @@ HRESULT CMap_Tool_MainApp::Initialize()
 	EngineDesc.iViewportHeight = g_iWinSizeY;
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 
+	m_pLogger = CImguiLogger::Create();
+	if (nullptr == m_pLogger)
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 	{
 		return E_FAIL;
 	}
-
-	m_pLogger = CImguiLogger::Create();
-	if (nullptr == m_pLogger)
-		return E_FAIL;
 
 	/* Event Manager */
 	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext, m_pLogger);
@@ -63,7 +62,8 @@ void CMap_Tool_MainApp::Progress(_float _fTimeDelta)
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
-	m_pLogger->Draw_Log();
+	if(m_pLogger)
+		m_pLogger->Draw_Log();
 
 	m_pGameInstance->End_Imgui();
 
@@ -124,6 +124,7 @@ void CMap_Tool_MainApp::Free()
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
+	Safe_Release(m_pLogger);
 	Safe_Release(m_pGameInstance);
 
 	/* Client Singleton Delete */

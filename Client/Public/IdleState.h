@@ -10,8 +10,7 @@ private:
 	virtual ~CIdleState() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
-	//virtual HRESULT Initialize(void* _pArg) override;
+	virtual HRESULT Initialize(void* _pArg) override;
 
 public:
 	virtual void State_Enter() override;
@@ -19,8 +18,7 @@ public:
 	virtual void State_Exit() override;
 
 public:
-	static CIdleState* Create();
-	//virtual CIdleState* Clone(void* _pArg);
+	static CIdleState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

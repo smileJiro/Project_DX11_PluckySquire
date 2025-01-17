@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_jump_rise_sword_down_0005_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 615.0,
+        "Y": 1348.0
+      },
+      "BakedSourceDimension": {
+        "X": 214.0,
+        "Y": 267.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_2'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_2.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 100.0,
+          "Y": 269.0,
+          "Z": 0.20214844,
+          "W": 0.3293457
+        },
+        {
+          "X": -112.0,
+          "Y": 269.0,
+          "Z": 0.15039062,
+          "W": 0.3293457
+        },
+        {
+          "X": -112.0,
+          "Y": 4.0,
+          "Z": 0.15039062,
+          "W": 0.39404297
+        },
+        {
+          "X": 100.0,
+          "Y": 4.0,
+          "Z": 0.20214844,
+          "W": 0.39404297
+        },
+        {
+          "X": 100.0,
+          "Y": 269.0,
+          "Z": 0.20214844,
+          "W": 0.3293457
+        },
+        {
+          "X": -112.0,
+          "Y": 4.0,
+          "Z": 0.15039062,
+          "W": 0.39404297
+        }
+      ]
+    }
+  }
+]

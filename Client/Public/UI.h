@@ -2,6 +2,7 @@
 #include "UIObject.h"
 #include "Client_Defines.h"
 #include "ModelObject.h"
+#include "UI_Manager.h"
 
 
 BEGIN(Engine)
@@ -12,6 +13,10 @@ END
 BEGIN(Client)
 class CUI : public Engine::CUIObject
 {
+
+	
+
+
 public:
 	typedef struct : public CUIObject::UIOBJECT_DESC
 	{
@@ -30,7 +35,7 @@ public:
 	virtual void Priority_Update(_float fTimeDelta);
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
-	virtual HRESULT Render();
+	virtual HRESULT Render(_int _index = 0);
 
 
 protected:
@@ -44,7 +49,7 @@ public:
 
 protected:
 	CShader* m_pShaderComs[COORDINATE_LAST] = {nullptr};
-	CTexture* m_pTextureCom = { nullptr };
+	CTexture* m_pTextureCom = {nullptr};
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	_uint			m_iShaderPasses[COORDINATE_LAST] = {};
 

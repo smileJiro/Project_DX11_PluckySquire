@@ -3,22 +3,23 @@
 #include "Monster.h"
 
 #include "IdleState.h"
+#include "AlertState.h"
 #include "ChaseWalkState.h"
+#include "MeleeAttackState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CComponent{ _pDevice, _pContext }
+	: CComponent(_pDevice, _pContext)
 {
 }
 
 CFSM::CFSM(const CFSM& _Prototype)
-	: CComponent{ _Prototype }
+	: CComponent(_Prototype)
 {
 }
 
 void CFSM::Set_Owner(CMonster* _pOwner)
 {
 	m_pOwner = _pOwner;
-	Safe_AddRef(m_pOwner);
 }
 
 HRESULT CFSM::Initialize_Prototype()
@@ -28,8 +29,10 @@ HRESULT CFSM::Initialize_Prototype()
 
 HRESULT CFSM::Initialize(void* _pArg)
 {
-	/*if (FAILED(Ready_States()))
-		return E_FAIL;*/
+	FSMDESC* pDesc = static_cast<FSMDESC*>(_pArg);
+	m_fAlertRange = pDesc->fAlertRange;
+	m_fChaseRange = pDesc->fChaseRange;
+	m_fAttackRange = pDesc->fAttackRange;
 
 	return S_OK;
 }
@@ -42,12 +45,19 @@ void CFSM::Update(_float _fTimeDelta)
 
 HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 {
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
 	CState* pState = nullptr;
-	
+	CState::STATEDESC Desc;
+	Desc.fAlertRange = m_fAlertRange;
+	Desc.fChaseRange = m_fChaseRange;
+	Desc.fAttackRange = m_fAttackRange;
+
 	switch (_eState)
 	{
 	case Client::MONSTER_STATE::IDLE:
-		pState = CIdleState::Create();
+		pState = CIdleState::Create(&Desc);
 		if (nullptr == pState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
@@ -55,8 +65,17 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 		m_States.emplace(MONSTER_STATE::IDLE, pState);
 		break;
 
+	case Client::MONSTER_STATE::ALERT:
+		pState = CAlertState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace(MONSTER_STATE::ALERT, pState);
+		break;
+
 	case Client::MONSTER_STATE::CHASE:
-		pState = CChaseWalkState::Create();
+		pState = CChaseWalkState::Create(&Desc);
 		if (nullptr == pState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
@@ -65,6 +84,12 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 		break;
 
 	case Client::MONSTER_STATE::ATTACK:
+		pState = CMeleeAttackState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace(MONSTER_STATE::ATTACK, pState);
 		break;
 	case Client::MONSTER_STATE::LAST:
 		break;
@@ -79,10 +104,19 @@ HRESULT CFSM::Change_State(MONSTER_STATE _eState)
 {
 	if (nullptr == m_CurState)
 		return E_FAIL;
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
+	//몬스터가 애니메이션 전환 가능하지 않으면 상태 전환 안함
+	if (false == m_pOwner->Get_AnimChangeable())
+		return S_OK;
 
 	m_CurState->State_Exit();
+	m_pOwner->Set_PreState(m_eCurState);
 
 	Set_State(_eState);
+
+	m_pOwner->Change_Animation();
 
 	return S_OK;
 }
@@ -90,6 +124,8 @@ HRESULT CFSM::Change_State(MONSTER_STATE _eState)
 HRESULT CFSM::Set_State(MONSTER_STATE _eState)
 {
 	if (nullptr == m_States[_eState])
+		return E_FAIL;
+	if (nullptr == m_pOwner)
 		return E_FAIL;
 
 	m_CurState = m_States[_eState];
@@ -101,13 +137,12 @@ HRESULT CFSM::Set_State(MONSTER_STATE _eState)
 	return S_OK;
 }
 
-HRESULT CFSM::Ready_States()
+HRESULT CFSM::CleanUp()
 {
-	CState* pState = CIdleState::Create();
-	if (nullptr == pState)
-		return E_FAIL;
-
-	m_States.emplace(MONSTER_STATE::IDLE, pState);
+	for (auto& Pair : m_States)
+	{
+		Pair.second->CleanUp();
+	}
 
 	return S_OK;
 }
@@ -144,8 +179,6 @@ void CFSM::Free()
 		Safe_Release(pState.second);
 
 	m_States.clear();
-
-	Safe_Release(m_pOwner);
-
+	m_pOwner = nullptr;
 	__super::Free();
 }

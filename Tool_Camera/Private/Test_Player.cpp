@@ -74,24 +74,49 @@ HRESULT CTest_Player::Render()
     return S_OK;
 }
 
+void CTest_Player::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    int a = 0;
+}
+
 void CTest_Player::Key_Input(_float _fTimeDelta)
 {
-    //if (KEY_PRESSING(KEY::TAB))
-    //{
-    //    Change_Coordinate(COORDINATE_2D, _float3(0.0f, 0.0f, 0.0f));
-    //    m_PartObjects[PART_BODY]->Change_Coordinate(COORDINATE_2D, _float3(0.0f, 0.0f, 0.0f));
+    if (KEY_DOWN(KEY::N)) {
+        m_isMove = false;
+    }
+    else if (KEY_DOWN(KEY::M)) {
+        m_isMove = true;
+    }
 
-    //}
-    //if (KEY_PRESSING(KEY::O))
-    //{
-    //    Change_Coordinate(COORDINATE_3D, _float3(0.0f, 0.0f, 0.0f));
-    //    m_PartObjects[PART_BODY]->Change_Coordinate(COORDINATE_3D, _float3(0.0f, 0.0f, 0.0f));
-    //}
+    if (true == m_isMove) {
+        /* Test Move Code */
+        if (KEY_PRESSING(KEY::A))
+        {
+            if (KEY_PRESSING(KEY::W))
+            {
+                m_pControllerTransform->Go_Straight(_fTimeDelta);
+            }
+            else if (KEY_PRESSING(KEY::S))
+            {
+                m_pControllerTransform->Go_Backward(_fTimeDelta);
+            }
 
-    /* Test Move Code */
-    if (KEY_PRESSING(KEY::A))
-    {
-        if (KEY_PRESSING(KEY::W))
+            m_pControllerTransform->Go_Left(_fTimeDelta);
+        }
+        else if (KEY_PRESSING(KEY::D))
+        {
+            if (KEY_PRESSING(KEY::W))
+            {
+                m_pControllerTransform->Go_Straight(_fTimeDelta);
+            }
+            else if (KEY_PRESSING(KEY::S))
+            {
+                m_pControllerTransform->Go_Backward(_fTimeDelta);
+            }
+
+            m_pControllerTransform->Go_Right(_fTimeDelta);
+        }
+        else if (KEY_PRESSING(KEY::W))
         {
             m_pControllerTransform->Go_Straight(_fTimeDelta);
         }
@@ -99,29 +124,6 @@ void CTest_Player::Key_Input(_float _fTimeDelta)
         {
             m_pControllerTransform->Go_Backward(_fTimeDelta);
         }
-
-        m_pControllerTransform->Go_Left(_fTimeDelta);
-    }
-    else if (KEY_PRESSING(KEY::D))
-    {
-        if (KEY_PRESSING(KEY::W))
-        {
-            m_pControllerTransform->Go_Straight(_fTimeDelta);
-        }
-        else if (KEY_PRESSING(KEY::S))
-        {
-            m_pControllerTransform->Go_Backward(_fTimeDelta);
-        }
-
-        m_pControllerTransform->Go_Right(_fTimeDelta);
-    }
-    else if (KEY_PRESSING(KEY::W))
-    {
-        m_pControllerTransform->Go_Straight(_fTimeDelta);
-    }
-    else if (KEY_PRESSING(KEY::S))
-    {
-        m_pControllerTransform->Go_Backward(_fTimeDelta);
     }
 }
 
@@ -139,28 +141,29 @@ HRESULT CTest_Player::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_CAMERA_TOOL;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_player2DAnimation");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.strModelPrototypeTag = TEXT("Prototype_Component_Model_Test");
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::COLOR_ALPHA;
+    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    BodyDesc.tTransform2DDesc.vScaling = _float3(100.0f, 100.0f, 100.0f);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    BodyDesc.tTransform2DDesc.fSpeedPerSec = 20.f;
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
-    BodyDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_Test_Body_Player"), &BodyDesc));
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
+
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CTest_Player::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
     return S_OK;
 }

@@ -123,10 +123,10 @@ namespace Engine
 
 	typedef struct tagKeyFrame
 	{
+		float	 fTrackPosition; // 애니메이션 트랙위에서의 포지션을 정의.
 		XMFLOAT3 vScale;
 		XMFLOAT4 vRotation; // 쿼터니언을 사용하기 위해서.
 		XMFLOAT3 vPosition;
-		float	 fTrackPosition; // 애니메이션 트랙위에서의 포지션을 정의.
 	}KEYFRAME;
 
 

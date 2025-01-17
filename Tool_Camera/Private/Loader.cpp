@@ -11,6 +11,7 @@
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
+#include "2DModel.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -90,7 +91,12 @@ HRESULT CLoader::Loading_Level_Static()
 {
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
-    lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+    lstrcpy(m_szLoadingText, TEXT("Collider를 로딩중입니다."));
+    
+    /* For.Prototype_Component_Collider_SPHERE */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Sphere"),
+        CCollider::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
@@ -134,6 +140,9 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+        CModelObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -158,14 +167,13 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_Component_Model_Test */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_Model_Test"),
-        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/Test/Tree_Mod_03.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
         return E_FAIL;
-
-    /* For. Prototype_Component_Model_WoodenPlatform_01 */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_Model_WoodenPlatform_01"),
-        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/WoodenPlatform_01/WoodenPlatform_01.model", XMMatrixScaling(1.0f / 150.f, 1.0f / 150.f, 1.0f / 150.f)))))
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/TestModels/"), matPretransform)))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
@@ -256,6 +264,117 @@ HRESULT CLoader::Loading_Level_GamePlay()
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
+{
+    WIN32_FIND_DATA		FindFileData = {};
+    HANDLE				hFind = INVALID_HANDLE_VALUE;
+
+    _tchar				szFilePath[MAX_PATH] = TEXT("");
+    _tchar				szFullPath[MAX_PATH] = TEXT("");
+    _tchar				szProtoTag[MAX_PATH] = TEXT("");
+    _tchar				szExtension[MAX_PATH] = TEXT(".model");
+
+    lstrcpy(szFilePath, _szDirPath);
+    lstrcat(szFilePath, TEXT("*"));
+    lstrcat(szFilePath, szExtension);
+
+    hFind = FindFirstFile(szFilePath, &FindFileData);
+
+    if (INVALID_HANDLE_VALUE == hFind)
+        return E_FAIL;
+
+    do
+    {
+        if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            continue;
+
+        lstrcpy(szFullPath, _szDirPath);
+        lstrcat(szFullPath, FindFileData.cFileName);
+
+        wstring wstr = szFullPath;
+        string str = m_pGameInstance->WStringToString(wstr);
+
+        //string str{ wstr.begin(), wstr.end() };
+
+        wstring filename = wstring(FindFileData.cFileName);
+        size_t lastDot = filename.find_last_of('.');
+        filename = filename.substr(0, lastDot); // 확장자 제거
+
+        if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
+            C3DModel::Create(m_pDevice, m_pContext, str.c_str(), _PreTransformMatrix))))
+            return E_FAIL;
+
+    } while (FindNextFile(hFind, &FindFileData));
+
+    FindClose(hFind);
+
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
+{
+
+    WIN32_FIND_DATA		FindFileData = {};
+    HANDLE				hFind = INVALID_HANDLE_VALUE;
+
+    _tchar				szFilePath[MAX_PATH] = TEXT("");
+    _tchar				szFullPath[MAX_PATH] = TEXT("");
+    _tchar				szProtoTag[MAX_PATH] = TEXT("");
+    _tchar				szExtension[MAX_PATH] = TEXT(".json");
+
+    lstrcpy(szFilePath, _szDirPath);
+    lstrcat(szFilePath, TEXT("*"));
+    lstrcat(szFilePath, szExtension);
+
+    hFind = FindFirstFile(szFilePath, &FindFileData);
+
+    if (INVALID_HANDLE_VALUE == hFind)
+        return E_FAIL;
+
+    do
+    {
+        if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            continue;
+
+        lstrcpy(szFullPath, _szDirPath);
+        lstrcat(szFullPath, FindFileData.cFileName);
+
+        wstring wstr = szFullPath;
+        string str = m_pGameInstance->WStringToString(wstr);
+
+        //string str{ wstr.begin(), wstr.end() };
+
+        wstring filename = wstring(FindFileData.cFileName);
+        size_t lastDot = filename.find_last_of('.');
+        filename = filename.substr(0, lastDot); // 확장자 제거
+
+        if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
+            C2DModel::Create(m_pDevice, m_pContext, str.c_str()))))
+            return E_FAIL;
+
+    } while (FindNextFile(hFind, &FindFileData));
+
+    FindClose(hFind);
+
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
+{
+    std::filesystem::path path;
+    path = _szDirPath;
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+        if (entry.path().extension() == ".model") {
+            //cout << entry.path().string() << endl;
+
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
+                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+                return E_FAIL;
+        }
+    }
     return S_OK;
 }
 
