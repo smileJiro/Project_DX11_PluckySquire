@@ -2,7 +2,7 @@
 #include "TestPlayer.h"
 #include "GameInstance.h"
 #include "TestBody.h"
-#include "Cam_Manager.h"
+#include "Camera_Manager.h"
 #include "StateMachine.h"
 
 

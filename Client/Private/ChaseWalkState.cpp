@@ -30,8 +30,9 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pTarget)
 		return;
+	if (nullptr == m_pOwner)
+		return;
 
-	//추적 범위 벗어나면 IDLE 전환
 	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
 	if (dis <= m_fAttackRange)
 	{
@@ -39,6 +40,8 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
 		return;
 	}
+
+	//추적 범위 벗어나면 IDLE 전환
 	if (dis > m_fChaseRange)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);

@@ -3,6 +3,10 @@
 #include "Camera_Tool_Defines.h"
 #include "Camera.h"
 
+BEGIN(Engine)
+class CCameraArm;
+END
+
 BEGIN(Camera_Tool)
 
 class CCamera_Target final : public CCamera
@@ -13,6 +17,7 @@ public:
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_MODE				eCameraMode;
+		_float3					vAtOffset;
 		_float					fSmoothSpeed;
 	}CAMERA_TARGET_DESC;
 
@@ -27,20 +32,30 @@ public:
 	virtual void				Priority_Update(_float fTimeDelta) override;
 	virtual void				Update(_float fTimeDelta) override;
 	virtual void				Late_Update(_float fTimeDelta) override;
-	virtual HRESULT				Render() override;
+
+#ifdef _DEBUG
+	_float3						Get_ArmRotation();
+#endif
 
 public:
-	virtual void				Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) override { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
+	void						Add_Arm(CCameraArm* _pCameraArm);
+	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
+	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
 private:
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	_int						m_iNextCameraMode = { -1 };
 
 	_float						m_fSmoothSpeed = {};
+	_float3						m_vAtOffset = {};
+
+	// Arm
+	CCameraArm*					m_pArm = { nullptr };
 
 private:
 	void						Action_Mode(_float fTimeDelta);
-	void						Move(_float fTimeDelta);
+	void						Defualt_Move(_float fTimeDelta);
+	void						Look_Target(_float fTimeDelta);
 
 public:
 	static CCamera_Target*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

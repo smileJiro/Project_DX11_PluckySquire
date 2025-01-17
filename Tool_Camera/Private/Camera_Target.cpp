@@ -29,6 +29,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
 	m_eCameraMode = pDesc->eCameraMode;
+	m_vAtOffset = pDesc->vAtOffset;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -38,34 +39,64 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 void CCamera_Target::Priority_Update(_float fTimeDelta)
 {
-	__super::Compute_PipeLineMatrices();
+	
 }
 
 void CCamera_Target::Update(_float fTimeDelta)
 {
+	Action_Mode(fTimeDelta);
 }
 
 void CCamera_Target::Late_Update(_float fTimeDelta)
 {
+	__super::Compute_PipeLineMatrices();
 }
 
-HRESULT CCamera_Target::Render()
+#ifdef _DEBUG
+_float3 CCamera_Target::Get_ArmRotation()
 {
-	return S_OK;
+	return m_pArm->Get_Rotation();
+}
+#endif
+
+void CCamera_Target::Add_Arm(CCameraArm* _pCameraArm)
+{
+	if (nullptr == _pCameraArm)
+		return;
+
+	m_pArm = _pCameraArm;
+}
+
+void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
+{
+	m_pArm->Change_Target(_pTargetWorldMatrix);
 }
 
 void CCamera_Target::Action_Mode(_float fTimeDelta)
 {
 	switch (m_eCameraMode) {
 	case DEFAULT:
+		Defualt_Move(fTimeDelta);
 		break;
 	case TURN:
 		break;
 	}
 }
 
-void CCamera_Target::Move(_float fTimeDelta)
+void CCamera_Target::Defualt_Move(_float fTimeDelta)
 {
+	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
+
+	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
+	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+}
+
+void CCamera_Target::Look_Target(_float fTimeDelta)
+{
+	
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -96,5 +127,7 @@ CGameObject* CCamera_Target::Clone(void* pArg)
 
 void CCamera_Target::Free()
 {
+	Safe_Release(m_pArm);
+
 	__super::Free();
 }

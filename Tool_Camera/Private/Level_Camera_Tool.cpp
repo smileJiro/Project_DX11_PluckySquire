@@ -8,7 +8,7 @@
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
-#include "Camera_Manager.h"
+#include "Camera_Manager_Tool.h"
 
 CLevel_Camera_Tool::CLevel_Camera_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -37,10 +37,10 @@ HRESULT CLevel_Camera_Tool::Initialize()
 void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::N)) {
-		m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::FREE);
 	}
 	else if (KEY_DOWN(KEY::M)) {
-		m_pGameInstance->Change_CameraType(CCamera_Manager::TARGET);
+		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::TARGET);
 	}
 
 	Show_CameraTool();
@@ -93,7 +93,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager_Tool::GetInstance()->Add_Camera(CCamera_Manager_Tool::FREE, dynamic_cast<CCamera*>(pCamera));
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
@@ -112,9 +112,8 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
-	m_pGameInstance->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
-
-	m_pGameInstance->Change_CameraType(CCamera_Manager::FREE);
+	CCamera_Manager_Tool::GetInstance()->Add_Camera(CCamera_Manager_Tool::TARGET, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::FREE);
 
 	Create_Arms();
 
@@ -147,9 +146,10 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 	TerrainDesc.eStartCoord = COORDINATE_3D;
 	TerrainDesc.iCurLevelID = LEVEL_CAMERA_TOOL;
 	TerrainDesc.isCoordChangeEnable = false;
+	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
 
 	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	TerrainDesc.strModelPrototypeTag_3D = TEXT("Prototype_Component_Model_WoodenPlatform_01");
+	TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
@@ -167,19 +167,126 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 void CLevel_Camera_Tool::Show_CameraTool()
 {
 	ImGui::Begin("Test");
+	ImGui::Text("Current Arm");
+	
+	// Roteate
+	Rotate_Arm(m_isCopyArm);
 
-	//ImGui::Text("Camera Position");
-	//ImGui::SameLine(100);
+	// Length
+	Change_ArmLength(m_isCopyArm);
 
-	_vector vCamPos = XMLoadFloat4((m_pGameInstance->Get_CamPosition()));
-	ImGui::Text("Camera Position: %.2f, %.2f, %.2f", XMVectorGetX(vCamPos), XMVectorGetY(vCamPos), XMVectorGetZ(vCamPos));
+	// CheckBox
+	ImGui::NewLine();
+	ImGui::Checkbox("Rotate CopyArm", &m_isCopyArm);
+	ImGui::SameLine(155.f);
+
+	// Copy
+	if (ImGui::Button("Create CopyArm")) {
+		CCamera_Manager_Tool::GetInstance()->Copy_Arm();
+	}
+
+	// Add CopyArm
+	if (ImGui::Button("Add CopyArm")) {
+		ImGui::SameLine(155.f);
+		Add_CopyArm();
+	}
 
 	ImGui::End();
 }
 
 void CLevel_Camera_Tool::Create_Arms()
 {
+	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0);
+	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
 
+	CCameraArm::CAMERA_ARM_DESC Desc{};
+
+	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
+	Desc.vPosOffset = { 0.f, 0.f, 0.f };
+	Desc.vRotation = { XMConvertToRadians(40.f), XMConvertToRadians(0.f), 0.f };
+	Desc.fLength = 12.f;
+	Desc.wszArmTag = TEXT("Player_Arm");
+	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+
+	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
+
+
+	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET));
+
+	pTarget->Add_Arm(pArm);
+	CCamera_Manager_Tool::GetInstance()->Set_CurrentArm(pArm);
+}
+
+void CLevel_Camera_Tool::Rotate_Arm(_bool _isCopyArm)
+{
+	_vector vCamPos = XMLoadFloat4((m_pGameInstance->Get_CamPosition()));
+	_vector vArmRotation = {};
+
+	ImGui::Text("Camera Position: %.2f, %.2f, %.2f", XMVectorGetX(vCamPos), XMVectorGetY(vCamPos), XMVectorGetZ(vCamPos));
+	ImGui::NewLine();
+
+	ImGui::Text("Ratation Value: %.2f", m_fRotationValue);
+	ImGui::SameLine();
+	ImGui::DragFloat("##Rotate", &m_fRotationValue, 0.1f, 0.f, 10.f);
+
+	ImGui::Text("RotationValueX: %.2f", m_fRotationValue);
+	ImGui::SameLine();
+	if (ImGui::Button("-X Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
+		vArmRotation = XMVectorSetX(vArmRotation, -m_fRotationValue);
+	ImGui::SameLine();
+	if (ImGui::Button("+X Angle") || ImGui::IsItemActive())
+		vArmRotation = XMVectorSetX(vArmRotation, m_fRotationValue);
+
+	ImGui::Text("RotationValueY: %.2f", m_fRotationValue);
+	ImGui::SameLine();
+	if (ImGui::Button("-Y Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
+		vArmRotation = XMVectorSetY(vArmRotation, -m_fRotationValue);
+	ImGui::SameLine();
+	if (ImGui::Button("+Y Angle") || ImGui::IsItemActive())
+		vArmRotation = XMVectorSetY(vArmRotation, m_fRotationValue);
+
+	ImGui::Text("RotationValueZ: %.2f", m_fRotationValue);
+	ImGui::SameLine();
+	if (ImGui::Button("-Z Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
+		vArmRotation = XMVectorSetZ(vArmRotation, -m_fRotationValue);
+	ImGui::SameLine();
+	if (ImGui::Button("+Z Angle") || ImGui::IsItemActive())
+		vArmRotation = XMVectorSetZ(vArmRotation, m_fRotationValue);
+
+	_vector vRadianRotation = XMVectorSet(XMConvertToRadians(XMVectorGetX(vArmRotation)), XMConvertToRadians(XMVectorGetY(vArmRotation)), XMConvertToRadians(XMVectorGetZ(vArmRotation)), 0.f);
+
+	CCamera_Manager_Tool::GetInstance()->Set_ArmRotation(vRadianRotation, _isCopyArm);
+}
+
+void CLevel_Camera_Tool::Change_ArmLength(_bool _isCopyArm)
+{
+	ImGui::NewLine();
+	ImGui::Text("Length Value: %.2f", m_fLengthValue);
+	ImGui::SameLine();
+	ImGui::DragFloat("##Length", &m_fLengthValue, 0.1f, 0.f, 10.f);
+
+	_float fArmLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength(_isCopyArm);
+	_bool bActive = false;
+
+	ImGui::Text("Arm Length: %.2f  ", m_fLengthValue);
+	ImGui::SameLine();
+	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
+		fArmLength -= m_fLengthValue;
+		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength, _isCopyArm);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
+		fArmLength += m_fLengthValue;
+		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength, _isCopyArm);
+	}
+}
+
+void CLevel_Camera_Tool::Add_CopyArm()
+{
+	//ImGui::NewLine();
+
+	ImGui::InputText("CopyArm Tag", m_szCopyArmName, MAX_PATH);
+	CCamera_Manager_Tool::GetInstance()->Add_CopyArm(m_pGameInstance->StringToWString(m_szCopyArmName));
 }
 
 CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

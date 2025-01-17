@@ -83,8 +83,9 @@ HRESULT CMapParsing_Manager::Parsing(json _jsonObj)
 							)
 						{
 							string strModelKey = jsonObj.value()["Properties"]["StaticMesh"].at("ObjectName");
-
 							strModelKey = strModelKey.substr(strModelKey.find("'") + 1 , strModelKey.size() - strModelKey.find("'") -2);
+							if (strModelKey == "Cube")
+								continue;
 							
 							MAP_DATA tMapData = {};
 							ZeroMemory(&tMapData, sizeof tMapData);
@@ -149,17 +150,21 @@ HRESULT CMapParsing_Manager::Parsing(json _jsonObj)
 HRESULT CMapParsing_Manager::Parsing()
 {
 	m_Models.clear();
-	string strFilePath = m_LoadInfos.front().first;
+	m_MapObjectNames.clear();
+	string strFileFullPath = m_LoadInfos.front().first;
+	string strFileName = strFileFullPath.substr(strFileFullPath.rfind("\\") + 1, strFileFullPath.size() - strFileFullPath.rfind("\\") - 1);
+	string strFilePath = strFileFullPath.substr(0, strFileFullPath.rfind("\\"));
+
 	wstring strLayerTag = m_LoadInfos.front().second;
 
 
 	CCriticalSectionGuard csGuard(&m_Critical_Section);
 
 
-	LOG_TYPE("Model Parsing Start - [ " + strFilePath + " ]", LOG_LOAD);
+	LOG_TYPE("Model Parsing Start - [ " + strFileFullPath + " ]", LOG_LOAD);
 
 	///* Read json Standard Stat Data */
-	const std::string filePathDialog = strFilePath;
+	const std::string filePathDialog = strFileFullPath;
 	std::ifstream inputFile(filePathDialog);
 	if (!inputFile.is_open()) {
 		throw std::runtime_error("json Error :  " + filePathDialog);
@@ -183,6 +188,11 @@ HRESULT CMapParsing_Manager::Parsing()
 	_uint iFailedCnt = 0;
 	for (auto pair : m_Models)
 	{
+		auto iter = find_if(m_MapObjectNames.begin(), m_MapObjectNames.end(), [&pair](const string& _strName)->_bool {
+			return _strName == pair.first; });
+		if (iter == m_MapObjectNames.end())
+			m_MapObjectNames.push_back(pair.first);
+
 		CMapObject::MAPOBJ_DESC NormalDesc = {};
 
 		NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
@@ -206,8 +216,34 @@ HRESULT CMapParsing_Manager::Parsing()
 		}
 	}
 
-	LOG_TYPE("Model Create End - [Complete : " + std::to_string(iCompCnt)  +", Failed : "+ std::to_string(iFailedCnt) +" ]", LOG_ERROR);
+
+	string strLogging = "Model Create End - [Complete : " + std::to_string(iCompCnt) + ", Failed : " + std::to_string(iFailedCnt) + " ]";
+
+	LOG_TYPE(strLogging, LOG_ERROR);
 	
+	wstring strResultFileFath = m_pGameInstance->StringToWString(strFilePath);
+	strResultFileFath += L"\\ExportResult\\";
+	strResultFileFath += m_pGameInstance->StringToWString(strFileName);
+	strResultFileFath += L"_Result.txt";
+
+	wofstream		fout;
+
+
+	fout.open(strResultFileFath, ios::out);
+
+	if (!fout.fail())	// 파일 개방 성공 시
+	{
+		fout << strLogging.c_str() << endl;
+		fout << "=================== Model Names ===================" << endl;
+		for (auto strModelName : m_MapObjectNames)
+		{
+			fout << strModelName.c_str() << endl;
+
+		}
+		fout.close();
+	}
+
+
 	CoUninitialize();
 	m_isLoadComp = true;
 	m_LoadInfos.pop();

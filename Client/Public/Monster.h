@@ -12,6 +12,7 @@ public:
 
 	typedef struct tagMonsterDesc : public CContainerObject::CONTAINEROBJ_DESC
 	{
+		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
 	}MONSTER_DESC;
@@ -29,6 +30,15 @@ public:
 	virtual void Set_PreState(MONSTER_STATE _eState)
 	{
 		m_ePreState = _eState;
+	}
+
+	void Set_AnimChangeable(_bool _isChangeable)
+	{
+		m_isAnimChangeable = _isChangeable;
+	}
+	_bool Get_AnimChangeable()
+	{
+		return m_isAnimChangeable;
 	}
 
 public:
@@ -51,8 +61,10 @@ protected:
 	MONSTER_STATE		m_ePreState = {};
 	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
+	_float m_fAlertRange = { 0.f };
 	_float m_fChaseRange = { 0.f };
 	_float m_fAttackRange = { 0.f };
+	_bool m_isAnimChangeable = { true };
 
 public:
 	HRESULT Cleanup_DeadReferences() override;

@@ -36,38 +36,37 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
-	Key_Input(fTimeDelta);
-
-	__super::Compute_PipeLineMatrices();
-
+	
 }
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
+	Key_Input(fTimeDelta);
 }
 
 void CCamera_Free::Late_Update(_float fTimeDelta)
 {
+	__super::Compute_PipeLineMatrices();
 }
 
 void CCamera_Free::Key_Input(_float fTimeDelta)
 {
-	if (KEY_PRESSING(KEY::W))
+	if (KEY_PRESSING(KEY::UP))
 	{
 		m_pControllerTransform->Go_Straight(fTimeDelta);
 	}
 
-	if (KEY_PRESSING(KEY::S))
+	if (KEY_PRESSING(KEY::DOWN))
 	{
 		m_pControllerTransform->Go_Backward(fTimeDelta);
 	}
 
-	if (KEY_PRESSING(KEY::D))
+	if (KEY_PRESSING(KEY::RIGHT))
 	{
 		m_pControllerTransform->Go_Right(fTimeDelta);
 	}
 
-	if (KEY_PRESSING(KEY::A))
+	if (KEY_PRESSING(KEY::LEFT))
 	{
 		m_pControllerTransform->Go_Left(fTimeDelta);
 	}

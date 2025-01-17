@@ -27,7 +27,7 @@ CSpriteFrame::CSpriteFrame(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 
 
 	string strSourceTexture = jProperties["BakedSourceTexture"]["ObjectName"];
-	iStart = (_uint)strSourceTexture.find_first_of('\'') + 1;
+	iStart = (_uint)(strSourceTexture.find_first_of('\'')) + 1;
 	iCount = (_uint)strSourceTexture.find_last_of('\'') - iStart;
 	strSourceTexture = strSourceTexture.substr(iStart, iCount);
 	strSourceTexture += ".png";
