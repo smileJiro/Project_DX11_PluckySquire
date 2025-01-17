@@ -37,10 +37,10 @@ public:
 public:
 	virtual void				Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) override { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
 	virtual void				Set_TargetPos(_vector	_vTargetPos) { XMStoreFloat3(&m_vTargetPos, _vTargetPos); }
+	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
 public:
 	void						Add_Arm(CCameraArm* _pCameraArm);
-	void						Change_Target(const _float4x4* _pTargetWorldMatrix);
 
 private:
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
@@ -54,6 +54,8 @@ private:
 	CCameraArm*					m_pArm = { nullptr };
 
 private:
+	void						Key_Input(_float _fTimeDelta);
+
 	void						Action_Mode(_float fTimeDelta);
 	void						Defualt_Move(_float fTimeDelta);
 	void						Look_Target(_float fTimeDelta);

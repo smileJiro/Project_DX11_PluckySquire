@@ -1223,6 +1223,11 @@ void CGameInstance::Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos)
 	m_pCamera_Manager->Set_CameraPos(_vCameraPos, _vTargetPos);
 }
 
+void CGameInstance::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
+{
+	m_pCamera_Manager->Change_CameraTarget(_pTargetWorldMatrix);
+}
+
 #ifdef _DEBUG
 
 HRESULT CGameInstance::Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY)

@@ -185,6 +185,7 @@ public: /* For. Camera_Manager */
 	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);
 	void				Change_CameraType(_uint _iCurrentCameraType);
 	void				Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos);
+	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix);
 
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;

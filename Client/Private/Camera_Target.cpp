@@ -44,6 +44,8 @@ void CCamera_Target::Priority_Update(_float fTimeDelta)
 
 void CCamera_Target::Update(_float fTimeDelta)
 {
+	Key_Input(fTimeDelta);
+
 	if (nullptr != m_pArm)
 		m_pArm->Update(fTimeDelta);
 }
@@ -62,6 +64,7 @@ _float3 CCamera_Target::Get_ArmRotation()
 }
 #endif
 
+
 void CCamera_Target::Add_Arm(CCameraArm* _pCameraArm)
 {
 	if (nullptr == _pCameraArm)
@@ -73,6 +76,25 @@ void CCamera_Target::Add_Arm(CCameraArm* _pCameraArm)
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 {
 	m_pArm->Change_Target(_pTargetWorldMatrix);
+}
+
+void CCamera_Target::Key_Input(_float _fTimeDelta)
+{
+#ifdef _DEBUG
+	_long		MouseMove = {};
+
+	if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+		if (MouseMove = MOUSE_MOVE(MOUSE_MOVE::X))
+		{
+			m_pControllerTransform->Turn(MouseMove * _fTimeDelta * 0.1f, XMVectorSet(0.f, 1.f, 0.f, 0.f));
+		}
+
+		if (MouseMove = MOUSE_MOVE(MOUSE_MOVE::Y))
+		{
+			m_pControllerTransform->Turn(MouseMove * _fTimeDelta * 0.1f, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+		}
+	}
+#endif
 }
 
 void CCamera_Target::Action_Mode(_float fTimeDelta)

@@ -68,6 +68,7 @@ public:
 public:
 	virtual void	Set_CameraMode(_uint _iCameraMode, _int _iNextCameraMode = -1) {};
 	virtual void	Set_TargetPos(_vector	_vTargetPos) {};
+	virtual void	Change_Target(const _float4x4* _pTargetWorldMatrix) {};
 
 protected:
 	/* 뷰, 투영 행렬을 구성하는 기능 */
