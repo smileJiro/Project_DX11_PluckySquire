@@ -226,22 +226,27 @@ HRESULT CMapParsing_Manager::Parsing()
 	strResultFileFath += m_pGameInstance->StringToWString(strFileName);
 	strResultFileFath += L"_Result.txt";
 
-	wofstream		fout;
-
-
-	fout.open(strResultFileFath, ios::out);
-
-	if (!fout.fail())	// 파일 개방 성공 시
+	json jAddFile;
+	for (auto strModelName : m_MapObjectNames)
 	{
-		fout << strLogging.c_str() << endl;
-		fout << "=================== Model Names ===================" << endl;
-		for (auto strModelName : m_MapObjectNames)
-		{
-			fout << strModelName.c_str() << endl;
-
-		}
-		fout.close();
+		jAddFile["data"].push_back(strModelName);
 	}
+
+
+
+
+
+	std::ofstream file(strResultFileFath);
+	if (file.is_open()) {
+		file << jAddFile.dump(1);
+		file.close();
+	}
+	else {
+		return E_FAIL;
+	}
+
+
+
 
 
 	CoUninitialize();
