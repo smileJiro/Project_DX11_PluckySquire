@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_jump_fall_sword_right_0004_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 616.0,
+        "Y": 3544.0
+      },
+      "BakedSourceDimension": {
+        "X": 210.0,
+        "Y": 269.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_2'",
+        "ObjectPath": "/Game/Characters/Player/SpriteSheet/Textures/Player_2.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 105.0,
+          "Y": 272.0,
+          "Z": 0.20141602,
+          "W": 0.8654785
+        },
+        {
+          "X": -103.0,
+          "Y": 272.0,
+          "Z": 0.15063477,
+          "W": 0.8654785
+        },
+        {
+          "X": -103.0,
+          "Y": 5.0,
+          "Z": 0.15063477,
+          "W": 0.93066406
+        },
+        {
+          "X": 105.0,
+          "Y": 5.0,
+          "Z": 0.20141602,
+          "W": 0.93066406
+        },
+        {
+          "X": 105.0,
+          "Y": 272.0,
+          "Z": 0.20141602,
+          "W": 0.8654785
+        },
+        {
+          "X": -103.0,
+          "Y": 5.0,
+          "Z": 0.15063477,
+          "W": 0.93066406
+        }
+      ]
+    }
+  }
+]

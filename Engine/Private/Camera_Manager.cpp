@@ -4,7 +4,9 @@
 #include "Camera.h"
 
 CCamera_Manager::CCamera_Manager()
+	: m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CCamera_Manager::Initialize()
@@ -17,9 +19,15 @@ HRESULT CCamera_Manager::Initialize()
 
 void CCamera_Manager::Update(_float fTimeDelta)
 {
-	if(nullptr != m_pCurrentArm)
-		m_pCurrentArm->Update(fTimeDelta);
+
 }
+
+#ifdef _DEBUG
+void CCamera_Manager::Render()
+{
+
+}
+#endif
 
 _vector CCamera_Manager::Get_CameraVector(CTransform::STATE _eState)
 {
@@ -38,18 +46,6 @@ void CCamera_Manager::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 	Safe_AddRef(m_Cameras[_iCurrentCameraType]);
 }
 
-void CCamera_Manager::Add_Arm(CCameraArm* _pCameraArm)
-{
-	if (nullptr == _pCameraArm)
-		return;
-
-	if (nullptr == Find_Arm(_pCameraArm->Get_ArmTag())) {
-		m_Arms.emplace(_pCameraArm->Get_ArmTag(), _pCameraArm);
-	}
-	else
-		return;
-}
-
 void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 {
 	if (TARGET == m_eCurrentCameraType) {
@@ -59,19 +55,12 @@ void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 		return;
 }
 
-void CCamera_Manager::Set_CameraPos(_vector _vCameraPos)
+void CCamera_Manager::Set_CameraPos(_vector _vCameraPos, _vector _vTargetPos)
 {
+	m_Cameras[m_eCurrentCameraType]->Set_TargetPos(_vTargetPos);
+
 	CController_Transform* pConTrans = m_Cameras[m_eCurrentCameraType]->Get_ControllerTransform();
 	pConTrans->Set_State(CTransform::STATE_POSITION, _vCameraPos);
-}
-
-void CCamera_Manager::Change_CameraArm(_wstring _wszArmTag)
-{
-	Safe_Release(m_pCurrentArm);
-
-	m_pCurrentArm = Find_Arm(_wszArmTag);
-
-	Safe_AddRef(m_pCurrentArm);
 }
 
 void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
@@ -85,26 +74,15 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 	case FREE:
 		m_Cameras[FREE]->Set_Active(true);
 		m_Cameras[TARGET]->Set_Active(false);
-
+		
+		pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());
 		break;
 	
 	case TARGET:
 		m_Cameras[FREE]->Set_Active(false);
-		m_Cameras[TARGET]->Set_Active(true);
-	
-		pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());
+		m_Cameras[TARGET]->Set_Active(true);	
 		break;
 	}
-}
-
-CCameraArm* CCamera_Manager::Find_Arm(_wstring _wszArmTag)
-{
-	auto iter = m_Arms.find(_wszArmTag);
-
-	if (iter == m_Arms.end())
-		return nullptr;
-
-	return iter->second;
 }
 
 CCamera_Manager* CCamera_Manager::Create()
@@ -122,14 +100,10 @@ CCamera_Manager* CCamera_Manager::Create()
 
 void CCamera_Manager::Free()
 {
+	Safe_Release(m_pGameInstance);
+
 	for (auto& Camera : m_Cameras) 
 		Safe_Release(Camera);
-	
-	for (auto& Arm : m_Arms)
-		Safe_Release(Arm.second);
-
-	Safe_Release(m_pCurrentArm);
-	m_Arms.clear();
 
 	__super::Free();
 }

@@ -6,7 +6,6 @@
 
 #include "Event_Manager.h"
 #include "Poolling_Manager.h"
-#include "Cam_Manager.h"
 
 
 CMainApp::CMainApp()
@@ -124,7 +123,6 @@ void CMainApp::Free()
 	/* Client Singleton Delete */ 
 	CEvent_Manager::DestroyInstance();
 	CPoolling_Manager::DestroyInstance();
-	CCam_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

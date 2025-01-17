@@ -128,7 +128,7 @@ HRESULT CContainerObject::Imgui_Render_ObjectInfos()
     ImGui::Text("<Parts Infos>");
 
     static CGameObject* pSelectObject = nullptr;
-    _int iNumParts = m_PartObjects.size();
+    _int iNumParts = (_uint)m_PartObjects.size();
     ImGui::Text("iNumParts : %d", iNumParts);
 
     if (ImGui::TreeNode("PartObjects"))

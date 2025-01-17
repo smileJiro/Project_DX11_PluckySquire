@@ -4,7 +4,9 @@
 #include "GameInstance.h"
 #include "CriticalSectionGuard.h"
 
+#include "Camera_Free.h"
 #include "Camera_Target.h"
+
 #include "ModelObject.h"
 #include "TestPlayer.h"
 #include "TestTerrain.h"
@@ -233,6 +235,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* For. Prototype_GameObject_TestTerrain */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestTerrain"),
         CTestTerrain::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_Free */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+        CCamera_Free::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Camera_Target */
