@@ -21,6 +21,7 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* _pArg)
 {
 	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(_pArg);
+	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 

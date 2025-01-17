@@ -3,6 +3,7 @@
 #include "Monster.h"
 
 #include "IdleState.h"
+#include "AlertState.h"
 #include "ChaseWalkState.h"
 #include "MeleeAttackState.h"
 
@@ -29,6 +30,7 @@ HRESULT CFSM::Initialize_Prototype()
 HRESULT CFSM::Initialize(void* _pArg)
 {
 	FSMDESC* pDesc = static_cast<FSMDESC*>(_pArg);
+	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
@@ -57,6 +59,15 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace(MONSTER_STATE::IDLE, pState);
+		break;
+
+	case Client::MONSTER_STATE::ALERT:
+		pState = CAlertState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace(MONSTER_STATE::ALERT, pState);
 		break;
 
 	case Client::MONSTER_STATE::CHASE:

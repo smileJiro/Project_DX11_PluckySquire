@@ -29,7 +29,8 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fChaseRange = 5.f;
+    pDesc->fAlertRange = 5.f;
+    pDesc->fChaseRange = 8.f;
     pDesc->fAttackRange = 2.f;
 
     if (FAILED(__super::Initialize(pDesc)))
@@ -42,6 +43,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
         return E_FAIL;
 
     m_pFSM->Add_State(MONSTER_STATE::IDLE);
+    m_pFSM->Add_State(MONSTER_STATE::ALERT);
     m_pFSM->Add_State(MONSTER_STATE::CHASE);
     m_pFSM->Add_State(MONSTER_STATE::ATTACK);
     m_pFSM->Set_State(MONSTER_STATE::IDLE);
@@ -93,6 +95,10 @@ void CBeetle::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
+        case MONSTER_STATE::ALERT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+            break;
+
         case MONSTER_STATE::CHASE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
             break;
@@ -121,6 +127,7 @@ HRESULT CBeetle::Ready_Components()
 {
     /* Com_FSM */
     CFSM::FSMDESC Desc;
+    Desc.fAlertRange = m_fAlertRange;
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
 
