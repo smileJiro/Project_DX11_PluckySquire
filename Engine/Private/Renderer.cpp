@@ -185,7 +185,7 @@ HRESULT CRenderer::Draw_RenderObject()
             return E_FAIL;
         }
 
-    if (KEY_DOWN(KEY::NUM5))
+    if (KEY_DOWN(KEY::F6))
         m_isDebugRender ^= 1;
 #endif
 

@@ -82,7 +82,7 @@ void CTestPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CTestPlayer::Key_Input(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::NUM1))
+    if (KEY_DOWN(KEY::F1))
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
@@ -91,7 +91,7 @@ void CTestPlayer::Key_Input(_float _fTimeDelta)
         
     }
 
-    if (KEY_DOWN(KEY::NUM4))
+    if (KEY_DOWN(KEY::F4))
     {
         Event_DeleteObject(this);
     }
@@ -100,6 +100,7 @@ void CTestPlayer::Key_Input(_float _fTimeDelta)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
+
     /* Test Move Code */
     if (KEY_PRESSING(KEY::A))
     {
