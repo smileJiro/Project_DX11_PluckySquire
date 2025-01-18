@@ -97,7 +97,9 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
         {
             Delay_Off();
             if (3 <= m_iAttackCount)
+            {
                 CoolTime_On();
+            }
         }
     }
 
@@ -117,6 +119,11 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
+    if (KEY_DOWN(KEY::F3))
+    {
+        Event_DeleteObject(this);
+    }
+
     m_pFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -169,20 +176,19 @@ void CBarfBug::Change_Animation()
 
 void CBarfBug::Attack(_float _fTimeDelta)
 {
-    //if (false == m_isCool && false == m_isDelay)
-    //{
-    //    _float3 vScale, vPosition;
-    //    _float4 vRotation;
-    //    _vector vvScale, vvRotation, vvPosition;
-    //    XMMatrixDecompose(&vvScale, &vvRotation, &vvPosition, m_pControllerTransform->Get_WorldMatrix());
-    //    XMStoreFloat3(&vPosition, m_pControllerTransform->Get_State(CTransform_3D::STATE_POSITION));
-    //    XMStoreFloat4(&vRotation, vvRotation);
+    if (false == m_isDelay && false == m_isCool)
+    {
+        _float3 vPosition;
+        _float4 vRotation;
+        _vector vvScale, vvRotation, vvPosition;
+        XMMatrixDecompose(&vvScale, &vvRotation, &vvPosition, m_pControllerTransform->Get_WorldMatrix());
+        XMStoreFloat3(&vPosition, m_pControllerTransform->Get_State(CTransform_3D::STATE_POSITION));
+        XMStoreFloat4(&vRotation, vvRotation);
 
-    //    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), &vPosition, &vRotation);
-    //    Delay_On();
-    //    ++m_iAttackCount;
-    //}
-
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"),&vPosition, &vRotation);
+        Delay_On();
+        ++m_iAttackCount;
+    }
 }
 
 void CBarfBug::Alert_End(COORDINATE _eCoord, _uint iAnimIdx)
