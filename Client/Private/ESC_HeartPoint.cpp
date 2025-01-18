@@ -54,13 +54,13 @@ void ESC_HeartPoint::Update(_float _fTimeDelta)
 
 void ESC_HeartPoint::Late_Update(_float _fTimeDelta)
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT ESC_HeartPoint::Render()
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Render(m_PlayerHP);
 
 	return S_OK;

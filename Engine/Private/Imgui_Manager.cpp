@@ -332,6 +332,42 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 						else
 							pSelectObject = m_pGameInstance->Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectLoopIndix);
 					}
+
+					if(ImGui::Button("On Render"))
+					{
+						for (auto& pGameObject : pGameObjects)
+						{
+							pGameObject->Set_Render(true);
+						}
+					}
+					ImGui::SameLine();
+					if(ImGui::Button("Off Render"))
+					{
+						for (auto& pGameObject : pGameObjects)
+						{
+							pGameObject->Set_Render(false);
+						}
+					}
+
+					if (ImGui::Button("On Active"))
+					{
+						for (auto& pGameObject : pGameObjects)
+						{
+							pGameObject->Set_Active(true);
+						}
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Off Active"))
+					{
+						for (auto& pGameObject : pGameObjects)
+						{
+							pGameObject->Set_Active(false);
+						}
+					}
+
+
+
+
 					ImGui::TreePop();
 				}
 			}

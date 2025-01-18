@@ -54,13 +54,13 @@ void ESC_Bulb::Update(_float _fTimeDelta)
 
 void ESC_Bulb::Late_Update(_float _fTimeDelta)
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT ESC_Bulb::Render()
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Render();
 
 	return S_OK;

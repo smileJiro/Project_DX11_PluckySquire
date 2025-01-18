@@ -211,7 +211,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
 
-	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12;
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12.f;
 	pDesc.fY = g_iWinSizeY / 10;
 	pDesc.fSizeX = 182.f;
 	pDesc.fSizeY = 100.f;
@@ -221,8 +221,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	////////////////////////////////
 
-	pDesc.fX = g_iWinSizeX / 20;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
+	pDesc.fX = g_iWinSizeX / 20.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 	
 	// 원래 크기
 	pDesc.fSizeX = 96.f;
@@ -236,7 +236,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	pDesc.fX = g_iWinSizeX / 7.5;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 111.f;
 	
@@ -244,46 +244,64 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	pDesc.fX = g_iWinSizeX / 10.8;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
 	pDesc.fSizeX = 42.f;
 	pDesc.fSizeY = 27.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ArrowForStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 	
-	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 4;
-	pDesc.fY = g_iWinSizeY / 10;
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 4.f;
+	pDesc.fY = g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 128.f;
 	pDesc.fSizeY = 128.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 	
-	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 9;
-	pDesc.fY = g_iWinSizeY / 10;
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 9.f;
+	pDesc.fY = g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 60.f;
 	pDesc.fSizeY = 82.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCBulb"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	pDesc.fX = g_iWinSizeX / 14;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18;
+	pDesc.fX = g_iWinSizeX / 14.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
 	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 72.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Back"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	pDesc.fX = g_iWinSizeX / 30;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18;
+	pDesc.fX = g_iWinSizeX / 30.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
 	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 72.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_BackArrow"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 10.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Enter"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+
+	pDesc.fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Book"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	
 
 	return S_OK;
 }

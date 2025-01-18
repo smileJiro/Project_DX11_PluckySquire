@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CGameInstance;
 class CGameObject;
+class CLayer;
 END
 
 
@@ -82,7 +83,6 @@ private:
 
 	// Imgui 메인 로직
 	void				Update_Imgui_Logic();
-	void				Object_Info_Imgui(_bool _isLock = false);
 	void				Object_Create_Imgui(_bool _isLock = false);
 	void				Navigation_Imgui(_bool _isLock = false);
 	void				SaveLoad_Imgui(_bool _isLock = false);
@@ -133,6 +133,9 @@ private:
 #pragma endregion
 
 
+	void				Init_Egnore_Layer();
+	HRESULT				Setting_Action_Layer(vector<pair<wstring, CLayer*>>& _TargetLayerPairs);
+
 
 
 private:
@@ -154,6 +157,7 @@ private:
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/";
 	_char							m_szSaveFileName[MAX_PATH];
 	_char							m_szImportLayerTag[MAX_PATH];
+	_wstring						m_strPickingLayerTag;
 
 	string							m_arrCellStateName[CELL_STATE_END] =
 	{
@@ -173,6 +177,16 @@ private:
 	vector<CNavigationVertex*>		m_vecVertexStack;
 	_int							m_iSelectCellIndex = { -1 };
 	CNavigationVertex*				m_pPickingVertex = { nullptr };
+
+
+
+	vector<wstring>					m_DefaultEgnoreLayerTags;
+	vector<wstring>					m_EgnoreLayerTags;
+
+
+	// 저장할 파일이 스태틱인가 
+	_bool							m_isStaticProto = false;
+
 
 public:
 	virtual void Free();
