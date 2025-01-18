@@ -292,6 +292,17 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+
+	pDesc.fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Book"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	
+
 	return S_OK;
 }
 

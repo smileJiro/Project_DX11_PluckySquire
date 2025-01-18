@@ -1,20 +1,20 @@
 #include "stdafx.h"
-#include "ESC_Enter.h"
+#include "UI_Interaction_Book.h"
 #include "GameInstance.h"
 
 
 
-CESC_Enter::CESC_Enter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CSettingPanel(_pDevice, _pContext)
+CUI_Interaction_Book::CUI_Interaction_Book(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CUI(_pDevice, _pContext)
 {
 }
 
-CESC_Enter::CESC_Enter(const CESC_Enter& _Prototype)
-	: CSettingPanel(_Prototype)
+CUI_Interaction_Book::CUI_Interaction_Book(const CUI_Interaction_Book& _Prototype)
+	: CUI(_Prototype)
 {
 }
 
-HRESULT CESC_Enter::Initialize_Prototype()
+HRESULT CUI_Interaction_Book::Initialize_Prototype()
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -24,7 +24,7 @@ HRESULT CESC_Enter::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CESC_Enter::Initialize(void* _pArg)
+HRESULT CUI_Interaction_Book::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
@@ -34,11 +34,11 @@ HRESULT CESC_Enter::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CESC_Enter::Priority_Update(_float _fTimeDelta)
+void CUI_Interaction_Book::Priority_Update(_float _fTimeDelta)
 {
 }
 
-void CESC_Enter::Update(_float _fTimeDelta)
+void CUI_Interaction_Book::Update(_float _fTimeDelta)
 {
 	if (true == m_isActive)
 	{
@@ -52,13 +52,13 @@ void CESC_Enter::Update(_float _fTimeDelta)
 	
 }
 
-void CESC_Enter::Late_Update(_float _fTimeDelta)
+void CUI_Interaction_Book::Late_Update(_float _fTimeDelta)
 {
 	if (true == m_isRender)
 		__super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CESC_Enter::Render()
+HRESULT CUI_Interaction_Book::Render()
 {
 	if (true == m_isRender)
 		__super::Render();
@@ -68,7 +68,7 @@ HRESULT CESC_Enter::Render()
 
 
 
-HRESULT CESC_Enter::Ready_Components()
+HRESULT CUI_Interaction_Book::Ready_Components()
 {
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
@@ -80,7 +80,7 @@ HRESULT CESC_Enter::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCEnter"),
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_KEYQ"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
@@ -89,13 +89,13 @@ HRESULT CESC_Enter::Ready_Components()
 }
 
 
-CESC_Enter* CESC_Enter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CUI_Interaction_Book* CUI_Interaction_Book::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CESC_Enter* pInstance = new CESC_Enter(_pDevice, _pContext);
+	CUI_Interaction_Book* pInstance = new CUI_Interaction_Book(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Created CESC_Enter Failed");
+		MSG_BOX("Created CUI_Interaction_Book Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -103,13 +103,13 @@ CESC_Enter* CESC_Enter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 	return pInstance;
 }
 
-CGameObject* CESC_Enter::Clone(void* _pArg)
+CGameObject* CUI_Interaction_Book::Clone(void* _pArg)
 {
-	CESC_Enter* pInstance = new CESC_Enter(*this);
+	CUI_Interaction_Book* pInstance = new CUI_Interaction_Book(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Clone CESC_Enter Failed");
+		MSG_BOX("Clone CUI_Interaction_Book Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -117,14 +117,17 @@ CGameObject* CESC_Enter::Clone(void* _pArg)
 	return pInstance;
 }
 
-void CESC_Enter::Free()
+void CUI_Interaction_Book::Free()
 {
-
-
 	__super::Free();
 }
 
-//HRESULT CESC_Enter::Cleanup_DeadReferences()
+HRESULT CUI_Interaction_Book::Cleanup_DeadReferences()
+{
+	return S_OK;
+}
+
+//HRESULT CUI_Interaction_Book::Cleanup_DeadReferences()
 //{
 //	return S_OK;
 //}

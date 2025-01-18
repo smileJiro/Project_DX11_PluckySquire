@@ -43,7 +43,7 @@ void CSettingPanel::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::ESC))
 	{
-		//Update_Active();
+		isRender();
 	}
 
 }
@@ -55,7 +55,7 @@ void CSettingPanel::Late_Update(_float _fTimeDelta)
 
 HRESULT CSettingPanel::Render(_int _index)
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Render(_index);
 
 	return S_OK;
@@ -63,14 +63,14 @@ HRESULT CSettingPanel::Render(_int _index)
 
 
 
-void CSettingPanel::Update_Active()
+void CSettingPanel::isRender()
 {
-	if (m_isActive == false)
+	if (m_isRender == false)
 	{
-		m_isActive = true;
+		m_isRender = true;
 	}
-	else if (m_isActive == true)
-		m_isActive = false;
+	else if (m_isRender == true)
+		m_isRender = false;
 }
 
 HRESULT CSettingPanel::Ready_Components()

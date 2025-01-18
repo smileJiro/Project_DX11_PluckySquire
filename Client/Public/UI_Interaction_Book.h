@@ -1,6 +1,5 @@
 #pragma once
-#include "UI.h"
-#include "Client_Defines.h"
+#include "SettingPanel.h"
 
 BEGIN(Engine)
 class CShader;
@@ -8,13 +7,14 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
-class CBombStamp final : public CUI
+class CUI_Interaction_Book : public CUI
 {
 
+
 protected:
-	explicit CBombStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	explicit CBombStamp(const CBombStamp& _Prototype);
-	virtual ~CBombStamp() = default;
+	explicit CUI_Interaction_Book(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	explicit CUI_Interaction_Book(const CUI_Interaction_Book& _Prototype);
+	virtual ~CUI_Interaction_Book() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -25,23 +25,16 @@ public:
 	virtual HRESULT			Render() override;
 
 
-private:
-	CUI_Manager::STAMP		m_ePreStamp = { CUI_Manager::STAMP_END };
-	_bool					m_isSmall	= {false};
-	_bool					m_isBig = { false };
-	bool					m_isScaling = { false };
-
-private:
-	void					ChangeStamp(_float _fTimeDelta);
-
 protected:
 	virtual HRESULT			Ready_Components() override;
 
 public:
-	static CBombStamp*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CUI_Interaction_Book*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
+
+
 
 };
 

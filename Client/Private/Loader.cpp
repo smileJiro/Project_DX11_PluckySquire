@@ -18,6 +18,7 @@
 #include "ESC_Back.h"
 #include "ESC_BackArrow.h"
 #include "ESC_Enter.h"
+#include "UI_Interaction_Book.h"
 
 /* For. UI*/
 
@@ -258,6 +259,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ESCBulb"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_icon_bulb.dds"), 1))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_KEYQ"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Q.dds"), 1))))
+		return E_FAIL;
 
 
 
@@ -337,6 +341,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCBulb"),
 		ESC_Bulb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Book"),
+		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
