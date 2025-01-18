@@ -351,7 +351,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
 
 
-    Map_Object_Create(LEVEL_GAMEPLAY);
+    //Map_Object_Create(LEVEL_GAMEPLAY);
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
