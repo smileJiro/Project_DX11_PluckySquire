@@ -48,8 +48,9 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
 {
+	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
-	if (KEY_DOWN(KEY::ENTER))
+	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
 	}

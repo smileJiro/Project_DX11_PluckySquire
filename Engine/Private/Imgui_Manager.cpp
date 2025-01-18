@@ -144,13 +144,19 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
 		}
 	}
-	if (KEY_DOWN(KEY::NUM9))
+
+	HWND hWnd = GetFocus();
+	auto& io = ImGui::GetIO();
+	if (nullptr != hWnd && !io.WantCaptureKeyboard)
 	{
-		m_isImguiObjRender ^= 1;
-	}
-	if (KEY_DOWN(KEY::NUM0))
-	{
-		m_isImguiRTRender ^= 1;
+		if (KEY_DOWN(KEY::NUM9))
+		{
+			m_isImguiObjRender ^= 1;
+		}
+		if (KEY_DOWN(KEY::NUM0))
+		{
+			m_isImguiRTRender ^= 1;
+		}
 	}
 
 	return S_OK;
@@ -264,7 +270,8 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 		if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
 			iAddIndex -= 1;
 	}
-	static CGameObject* pSelectObject = nullptr;
+	static CGameObject* pSelectObject;
+	pSelectObject = nullptr;
 	if (ImGui::TreeNode("Object Layers")) // Layer
 	{
 		map<const _wstring, CLayer*>* pLayers = m_pGameInstance->Get_Layers_Ptr();
