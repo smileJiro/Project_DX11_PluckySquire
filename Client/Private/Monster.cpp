@@ -47,29 +47,6 @@ HRESULT CMonster::Initialize(void* _pArg)
 
 void CMonster::Priority_Update(_float _fTimeDelta)
 {
-	if (true == m_isDelay)
-	{
-		m_fAccTime += _fTimeDelta;
-
-		if (m_fDelayTime >= m_fAccTime)
-		{
-			Delay_Off();
-			if (3 <= m_iAttackCount)
-				CoolTime_On();
-		}
-	}
-
-	if (true == m_isCool)
-	{
-		m_fAccTime += _fTimeDelta;
-
-		if (m_fCoolTime >= m_fAccTime)
-		{
-			CoolTime_Off();
-			m_iAttackCount = 0;
-		}
-	}
-
 	__super::Priority_Update(_fTimeDelta);
 }
 
