@@ -15,6 +15,7 @@ public:
 		_float	fRotationPerSec = {};
 		// 초기화 위치
 		_float3 vPosition = { 0.0f, 0.0f, 0.0f };
+
 		// 초기화 크기
 		_float3 vScaling = { 1.0f, 1.0f, 1.0f };
 	}TRANSFORM_DESC;
@@ -35,6 +36,7 @@ public:
 	_bool					Go_Right(_float _fTimeDelta); 
 	_bool					Go_Up(_float _fTimeDelta); 
 	_bool					Go_Down(_float _fTimeDelta);
+	void						Go_Direction(_vector _vDirection, _float _fTimeDelta);
 
 	void					Rotation(_float _fRadian, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 항등상태를 기준으로 지정한 각도로 회전한다.
 	void					RotationZ(_float _vRadianZ);

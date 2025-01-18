@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
+#include "Pooling_Manager.h"
+#include "Projectile_BarfBug.h"
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -32,8 +34,11 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fChaseRange = 5.f;
-    pDesc->fAttackRange = 2.f;
+    pDesc->fAlertRange = 5.f;
+    pDesc->fChaseRange = 12.f;
+    pDesc->fAttackRange = 10.f;
+    pDesc->fDelayTime = 1.f;
+    pDesc->fCoolTime = 3.f;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
@@ -44,13 +49,20 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
+
+
     m_pFSM->Add_State(MONSTER_STATE::IDLE);
+    m_pFSM->Add_State(MONSTER_STATE::ALERT);
     m_pFSM->Add_State(MONSTER_STATE::CHASE);
+    m_pFSM->Add_State(MONSTER_STATE::ATTACK);
     m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Idle, true);
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(Run, true);
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(Idle);
+
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBarfBug::Alert_End, this, COORDINATE_3D, ALERT));
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBarfBug::Attack_End, this, COORDINATE_3D, BARF));
 
     return S_OK;
 }
@@ -87,32 +99,67 @@ HRESULT CBarfBug::Render()
 
 void CBarfBug::Change_Animation()
 {
-    //if(m_eState != m_ePreState)
-    //{
-    //    switch (m_eState)
-    //    {
-    //    case MONSTER_STATE::IDLE:
-    //        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Idle);
-    //        break;
+    if(m_eState != m_ePreState)
+    {
+        switch (m_eState)
+        {
+        case MONSTER_STATE::IDLE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
 
-    //    case MONSTER_STATE::CHASE:
-    //        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Run);
-    //        break;
+        case MONSTER_STATE::ALERT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+            break;
 
-    //    case MONSTER_STATE::ATTACK:
-    //        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AttackStrike);
-    //        break;
+        case MONSTER_STATE::CHASE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+            break;
 
-    //    default:
-    //        break;
-    //    }
-    //}
+        case MONSTER_STATE::ATTACK:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+
+void CBarfBug::Attack(_float _fTimeDelta)
+{
+	/*_float3 vPosition;
+    XMStoreFloat3(&vPosition, m_pControllerTransform->Get_State(CTransform_3D::STATE_POSITION));
+
+    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), &vPosition);*/
+
+    if (false == m_isCool && false == m_isDelay)
+    {
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"));
+        Delay_On();
+        ++m_iAttackCount;
+    }
+
+}
+
+void CBarfBug::Alert_End(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    Set_AnimChangeable(true);
+}
+
+void CBarfBug::Attack_End(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    //딜레이 동안은 애니 전환 안됨. 따라서 상태 전환도 불가
+    if (false == m_isDelay && false == m_isCool)
+    {
+        Set_AnimChangeable(true);
+    }
 }
 
 HRESULT CBarfBug::Ready_Components()
 {
     /* Com_FSM */
     CFSM::FSMDESC Desc;
+    Desc.fAlertRange = m_fAlertRange;
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
 
@@ -120,6 +167,7 @@ HRESULT CBarfBug::Ready_Components()
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
         return E_FAIL;
     m_pFSM->Set_Owner(this);
+
 
     return S_OK;
 }
@@ -158,6 +206,47 @@ HRESULT CBarfBug::Ready_PartObjects()
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
+
+
+    /* Part Weapon */
+    CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pWeaponDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
+
+    pWeaponDesc->eStartCoord = m_pControllerTransform->Get_CurCoord();
+    pWeaponDesc->iCurLevelID = m_iCurLevelID;
+    pWeaponDesc->isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+
+    //pWeaponDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    pWeaponDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    //pWeaponDesc->strModelPrototypeTag_2D = TEXT("barfBug_Rig");
+    pWeaponDesc->strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
+    //pWeaponDesc->iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
+    pWeaponDesc->iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+    //pWeaponDesc->iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
+    pWeaponDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::COLOR;
+
+    //pWeaponDesc->pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+    pWeaponDesc->pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    pWeaponDesc->tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    pWeaponDesc->tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    pWeaponDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pWeaponDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+
+    //pWeaponDesc->tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    //pWeaponDesc->tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    //pWeaponDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    //pWeaponDesc->tTransform2DDesc.fSpeedPerSec = 10.f;
+
+    m_PartObjects[PART_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Projectile_BarfBug"), pWeaponDesc));
+    if (nullptr == m_PartObjects[PART_WEAPON])
+        return E_FAIL;
+
+    
+    Pooling_DESC Pooling_Desc;
+    Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+    Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pWeaponDesc);
 
     return S_OK;
 }

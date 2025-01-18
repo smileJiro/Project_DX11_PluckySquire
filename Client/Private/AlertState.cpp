@@ -36,10 +36,14 @@ void CAlertState::State_Update(_float _fTimeDelta)
 
 	//CHASE ÀüÈ¯
 	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
+	if (dis <= m_fAttackRange)
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		return;
+	}
 	if (dis <= m_fChaseRange)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
-		return;
 	}
 }
 

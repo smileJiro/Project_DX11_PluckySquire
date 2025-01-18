@@ -18,14 +18,6 @@ class CCamera_Manager_Tool : public CBase
 public:
 	enum CAMERA_TYPE { FREE, TARGET, CAMERA_TYPE_END };
 
-	typedef struct tagArmDataDesc
-	{
-		_float3				vArm = { 0.f, 0.f, -1.f };
-		_float				fLength = 1.f;
-		_float				fTurnTime = {};
-		_float				fLengthTime = {};
-	} ARM_DATA;
-
 private:
 	CCamera_Manager_Tool();
 	virtual ~CCamera_Manager_Tool() = default;
@@ -40,6 +32,8 @@ public:
 	CCamera*			Get_Camera(_uint _iCameraType) { return m_Cameras[_iCameraType]; }
 	_vector				Get_CameraVector(CTransform::STATE _eState);						// 현재 카메라 Right, Up, Look, Pos 가져오는 함수
 	_uint				Get_CameraType() { return m_eCurrentCameraType; }
+	void				Get_ArmNames(vector<_wstring>* _vecArmNames);
+	ARM_DATA*			Get_ArmData(_wstring _wszArmName);
 
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
@@ -48,9 +42,13 @@ public:
 	void				Change_CameraType(_uint _iCurrentCameraType);
 	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix);
 
+	void				Set_NextArmData(_wstring _wszNextArmName);
+
+	// Tool 작업 관련
 public:
 	void				Copy_Arm();
-	void				Add_CopyArm(_wstring _wszArmTag);
+	void				Add_CopyArm(_wstring _wszArmTag, ARM_DATA _pData);
+	void				Add_ArmData(_wstring wszArmTag, ARM_DATA _pData);
 	void				Edit_ArmInfo(_wstring _wszArmTag);			// Copy Arm에 넣어서 초록색인 상태로 수정
 
 	_float				Get_ArmLength(_bool _isCopyArm);
@@ -74,6 +72,7 @@ private:
 
 private:
 	CCameraArm*			Find_Arm(_wstring _wszArmTag);
+	ARM_DATA*			Find_ArmData(_wstring _wszArmTag);
 
 public:
 	virtual void		Free() override;

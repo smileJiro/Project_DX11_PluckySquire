@@ -2,7 +2,9 @@
 #include "MapParsing_Manager.h"
 #include "GameInstance.h"
 #include "MapObject.h"
+#include "Layer.h"
 #include "CriticalSectionGuard.h"
+#include <commdlg.h>
 
 
 _uint APIENTRY ParsingMain(void* pArg)
@@ -55,8 +57,34 @@ HRESULT CMapParsing_Manager::Initialize(CImguiLogger* _pLogger)
 	return S_OK;
 }
 
-HRESULT CMapParsing_Manager::Open_ParsingDialog()
+HRESULT CMapParsing_Manager::Open_ParsingDialog(const wstring& _strLayerName)
 {
+
+
+	_tchar originalDir[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, originalDir);
+
+	OPENFILENAME ofn = {};
+	_tchar szName[MAX_PATH] = {};
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = g_hWnd;
+	ofn.lpstrFile = szName;
+	ofn.nMaxFile = sizeof(szName);
+	ofn.lpstrFilter = L".json\0*.json\0";
+	ofn.nFilterIndex = 0;
+	ofn.lpstrFileTitle = nullptr;
+	ofn.nMaxFileTitle = 0;
+	wstring strPath = m_strUmapJsonPath;
+	ofn.lpstrInitialDir = strPath.c_str();
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (GetOpenFileName(&ofn))
+	{
+		SetCurrentDirectory(originalDir);
+		const _string strFilePath = m_pGameInstance->WStringToString(szName);
+		Push_Parsing(strFilePath, _strLayerName);
+	}
+
 	return S_OK;
 }
 HRESULT CMapParsing_Manager::Parsing(json _jsonObj)
@@ -151,12 +179,27 @@ HRESULT CMapParsing_Manager::Parsing()
 {
 	m_Models.clear();
 	m_MapObjectNames.clear();
-	string strFileFullPath = m_LoadInfos.front().first;
+	string strFileFullPath = m_LoadInfos.front().first.first;
 	string strFileName = strFileFullPath.substr(strFileFullPath.rfind("\\") + 1, strFileFullPath.size() - strFileFullPath.rfind("\\") - 1);
 	string strFilePath = strFileFullPath.substr(0, strFileFullPath.rfind("\\"));
 
-	wstring strLayerTag = m_LoadInfos.front().second;
+	wstring strLayerTag = m_LoadInfos.front().first.second;
 
+	if (m_LoadInfos.front().second)
+	{
+		CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, strLayerTag);
+	
+		if (pLayer)
+		{
+			LOG_TYPE("Layer Clear - " +  m_pGameInstance->WStringToString(strLayerTag), LOG_LOAD);
+
+			for (auto _pGameObject : pLayer->Get_GameObjects())
+			{
+				Event_DeleteObject(_pGameObject);
+			}
+		}
+
+	}
 
 	CCriticalSectionGuard csGuard(&m_Critical_Section);
 
@@ -181,8 +224,9 @@ HRESULT CMapParsing_Manager::Parsing()
 	inputFile.close();
 
 	string strLog = std::to_string(m_Models.size());
-
 	LOG_TYPE("Model Parsing End - [ count : " + strLog + " ]", LOG_LOAD);
+
+
 	LOG_TYPE("Model Create Start", LOG_LOAD);
 	_uint iCompCnt = 0;
 	_uint iFailedCnt = 0;
@@ -224,24 +268,29 @@ HRESULT CMapParsing_Manager::Parsing()
 	wstring strResultFileFath = m_pGameInstance->StringToWString(strFilePath);
 	strResultFileFath += L"\\ExportResult\\";
 	strResultFileFath += m_pGameInstance->StringToWString(strFileName);
-	strResultFileFath += L"_Result.txt";
+	strResultFileFath += L"_Result.json";
 
-	wofstream		fout;
-
-
-	fout.open(strResultFileFath, ios::out);
-
-	if (!fout.fail())	// 파일 개방 성공 시
+	json jAddFile;
+	for (auto strModelName : m_MapObjectNames)
 	{
-		fout << strLogging.c_str() << endl;
-		fout << "=================== Model Names ===================" << endl;
-		for (auto strModelName : m_MapObjectNames)
-		{
-			fout << strModelName.c_str() << endl;
-
-		}
-		fout.close();
+		jAddFile["data"].push_back(strModelName);
 	}
+
+
+
+
+
+	std::ofstream file(strResultFileFath);
+	if (file.is_open()) {
+		file << jAddFile.dump(1);
+		file.close();
+	}
+	else {
+		return E_FAIL;
+	}
+
+
+
 
 
 	CoUninitialize();
@@ -262,9 +311,9 @@ void CMapParsing_Manager::Open_Parsing()
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ParsingMain, this, 0, nullptr);
 
 }
-void CMapParsing_Manager::Push_Parsing(const string& _strParsingFileName, const wstring& _strLayerName)
+void CMapParsing_Manager::Push_Parsing(const string& _strParsingFileName, const wstring& _strLayerName, _bool _isClear)
 {
-	m_LoadInfos.push(make_pair(_strParsingFileName, _strLayerName));
+	m_LoadInfos.push(make_pair(make_pair(_strParsingFileName, _strLayerName),_isClear));
 }
 
 

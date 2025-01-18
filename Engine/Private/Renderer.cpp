@@ -53,6 +53,16 @@ HRESULT CRenderer::Initialize()
     if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Final"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
         return E_FAIL;
 
+    /* Target_EffectAccumulate */
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectAccumulate"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+        return E_FAIL;
+
+    /* Target_EffectRevealage */
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectRevealage"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R16_FLOAT, _float4(1.0f, 0.f, 0.0f, 0.0f))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectAdd"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R16G16_FLOAT, _float4(0.f, 0.f, 0.0f, 0.0f))))
+        return E_FAIL;
+
     /* RTV를 모아두는 MRT를 세팅 */
 
     /* MRT_Book_2D*/
@@ -79,6 +89,14 @@ HRESULT CRenderer::Initialize()
 
     /* MRT_Final */
     if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Final"), TEXT("Target_Final"))))
+        return E_FAIL;
+
+    /* MRT_Weighted_Blended*/
+    if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_EffectAccumulate"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_EffectRevealage"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_EffectAdd"))))
         return E_FAIL;
 
     /* 직교 투영으로 그리기 위한 Shader, VIBuffer, Matrix Init */
@@ -109,6 +127,7 @@ HRESULT CRenderer::Initialize()
     m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"),       fX, fY + fSizeY * 2.0f, ViewportDesc.Width * 0.2f, ViewportDesc.Height * 0.2f);
     m_pGameInstance->Ready_RT_Debug(TEXT("Target_Book_2D"),      fX, fY + fSizeY * 3.0f, ViewportDesc.Width * 0.2f, ViewportDesc.Height * 0.2f);
     m_pGameInstance->Ready_RT_Debug(TEXT("Target_LightDepth"),  fX, fY + fSizeY * 4.0f, ViewportDesc.Width * 0.2f, ViewportDesc.Height * 0.2f);
+    
 #endif // _DEBUG
 
     return S_OK;
@@ -170,6 +189,19 @@ HRESULT CRenderer::Draw_RenderObject()
         MSG_BOX("Render Failed Render_Blend");
         return E_FAIL;
     }
+
+    if (FAILED(Render_Effect()))
+    {
+        MSG_BOX("Render Failed Render_Effect");
+        return E_FAIL;
+    }
+
+    if (FAILED(Render_After_Effect()))
+    {
+        MSG_BOX("Render Failed Render_After_Effect");
+        return E_FAIL;
+    }
+
 
     if (FAILED(Render_UI()))
     {
@@ -326,6 +358,8 @@ HRESULT CRenderer::Render_Lights()
 HRESULT CRenderer::Render_Final()
 {
     /* 최종 화면을 그려내는 단계 */
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Final"),  nullptr, true)))
+        return E_FAIL;
 
     // Render_Light 단계에서 직교투영 사각형을 그리기위한 데이터는 전달되어서 그대로 남아있는 상태라 안해줘도 되긴 하지만, 추후 사이에 별도의 작업이 생길수도있으니 안전성을 위해 바인드.
     m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix);
@@ -362,11 +396,17 @@ HRESULT CRenderer::Render_Final()
 
     m_pVIBuffer->Render();
 
+    if (FAILED(m_pGameInstance->End_MRT()))
+        return E_FAIL;
+
     return S_OK;
 }
 
 HRESULT CRenderer::Render_Blend()
 {
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Final"), nullptr, false)))
+        return E_FAIL;
+
     for (auto& pRenderObject : m_RenderObjects[RG_BLEND])
     {
         if (nullptr != pRenderObject && true == pRenderObject->Is_Render())
@@ -378,6 +418,61 @@ HRESULT CRenderer::Render_Blend()
     }
     // 해당 그룹에 속한 모든 Object들에 대해 Render 수행 후, 해당 리스트는 Clear
     m_RenderObjects[RG_BLEND].clear();
+
+    if (FAILED(m_pGameInstance->End_MRT()))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CRenderer::Render_Effect()
+{
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Weighted_Blended"))))
+        return E_FAIL;
+
+    for (auto& pRenderObject : m_RenderObjects[RG_EFFECT])
+    {
+        if (nullptr != pRenderObject && true == pRenderObject->Is_Render())
+        {
+            pRenderObject->Render();
+        }
+        Safe_Release(pRenderObject);
+    }
+    m_RenderObjects[RG_EFFECT].clear();
+
+    if (FAILED(m_pGameInstance->End_MRT()))
+        return E_FAIL;
+
+
+    return S_OK;
+}
+
+HRESULT CRenderer::Render_After_Effect()
+{
+    m_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix);
+    m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix);
+    m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix);
+
+    // 파이널(가제)타겟 + 지금까지 그려진 이펙트를 합쳐서 그려낸다.
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_FinalTexture", TEXT("Target_Final"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_AccumulateTexture", TEXT("Target_EffectAccumulate"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_RevealageTexture", TEXT("Target_EffectRevealage"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_AddTexture", TEXT("Target_EffectAdd"))))
+        return E_FAIL;
+
+
+    /* Final Pass */
+    m_pShader->Begin((_uint)PASS_DEFERRED::AFTER_EFFECT);
+
+    m_pVIBuffer->Bind_BufferDesc();
+
+    m_pVIBuffer->Render();
 
 
     return S_OK;
@@ -426,6 +521,7 @@ HRESULT CRenderer::Render_UI()
 {
     for (auto& pRenderObject : m_RenderObjects[RG_UI])
     {
+
         if (nullptr != pRenderObject)
         {
             pRenderObject->Render();

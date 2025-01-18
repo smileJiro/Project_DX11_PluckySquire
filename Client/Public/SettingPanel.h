@@ -1,6 +1,7 @@
 #pragma once
 #include "UI.h"
 #include "Client_Defines.h"
+#include "GameInstance.h"
 
 BEGIN(Engine)
 class CShader;
@@ -8,7 +9,7 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
-class CSettingPanel final : public CUI
+class CSettingPanel : public CUI
 {
 
 
@@ -23,7 +24,11 @@ public:
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
-	virtual HRESULT			Render() override;
+	virtual HRESULT			Render(_int _index = 0) override;
+
+
+private:
+	void					Update_Active();
 
 protected:
 	virtual HRESULT			Ready_Components() override;

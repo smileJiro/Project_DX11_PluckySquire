@@ -52,6 +52,10 @@ HRESULT CBeetle::Initialize(void* _pArg)
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(RUN, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
 
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Alert_End, this, COORDINATE_3D, ALERT));
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Attack_End, this, COORDINATE_3D, ATTACKSTRIKE));
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Attack_Recovery_End, this, COORDINATE_3D, ATTACKRECOVERY));
+
     return S_OK;
 }
 
@@ -169,10 +173,6 @@ HRESULT CBeetle::Ready_PartObjects()
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
-
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Alert_End, this, COORDINATE_3D, ALERT));
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Attack_End, this, COORDINATE_3D, ATTACKSTRIKE));
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Attack_Recovery_End, this, COORDINATE_3D, ATTACKRECOVERY));
 
     return S_OK;
 }

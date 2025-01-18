@@ -144,14 +144,21 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
 		}
 	}
-	if (KEY_DOWN(KEY::F7))
+
+	HWND hWnd = GetFocus();
+	auto& io = ImGui::GetIO();
+	if (nullptr != hWnd && !io.WantCaptureKeyboard)
 	{
-		m_isImguiObjRender ^= 1;
+		if (KEY_DOWN(KEY::F7))
+		{
+			m_isImguiObjRender ^= 1;
+		}
+		if (KEY_DOWN(KEY::F8))
+		{
+			m_isImguiRTRender ^= 1;
+		}
 	}
-	if (KEY_DOWN(KEY::F8))
-	{
-		m_isImguiRTRender ^= 1;
-	}
+
 
 	return S_OK;
 }
@@ -264,7 +271,8 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 		if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
 			iAddIndex -= 1;
 	}
-	static CGameObject* pSelectObject = nullptr;
+	static CGameObject* pSelectObject;
+	pSelectObject = nullptr;
 	if (ImGui::TreeNode("Object Layers")) // Layer
 	{
 		map<const _wstring, CLayer*>* pLayers = m_pGameInstance->Get_Layers_Ptr();
@@ -288,7 +296,6 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 					const list<CGameObject*> pGameObjects = Pair.second->Get_GameObjects();
 					_uint iMaxObjectSize = (_uint)pGameObjects.size();
 					ImGui::PushItemFlag(ImGuiItemFlags_NoNav, true);
-
 					_string strObjectListTag = "##ObjectList_" + LayerTag;
 					if (ImGui::BeginListBox(strObjectListTag.c_str(), ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 					{
