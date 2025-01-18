@@ -182,7 +182,7 @@ void CBarfBug::Attack(_float _fTimeDelta)
         _float4 vRotation;
         _vector vvScale, vvRotation, vvPosition;
         XMMatrixDecompose(&vvScale, &vvRotation, &vvPosition, m_pControllerTransform->Get_WorldMatrix());
-        XMStoreFloat3(&vPosition, m_pControllerTransform->Get_State(CTransform_3D::STATE_POSITION));
+		XMStoreFloat3(&vPosition, vvPosition + XMVectorSet(0.f, vvScale.m128_f32[1] * 0.5f, 0.f, 1.f));
         XMStoreFloat4(&vRotation, vvRotation);
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"),&vPosition, &vRotation);

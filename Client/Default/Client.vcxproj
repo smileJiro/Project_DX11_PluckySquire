@@ -162,6 +162,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/;.\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -185,6 +186,7 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\ESC_Back.h" />
     <ClInclude Include="..\Public\ESC_BackArrow.h" />
     <ClInclude Include="..\Public\ESC_Bulb.h" />
@@ -238,6 +240,7 @@
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\private\DetectionField.cpp" />
     <ClCompile Include="..\Private\ESC_Back.cpp" />
     <ClCompile Include="..\Private\ESC_BackArrow.cpp" />
     <ClCompile Include="..\Private\ESC_Bulb.cpp" />
