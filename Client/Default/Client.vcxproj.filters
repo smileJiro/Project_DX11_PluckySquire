@@ -269,6 +269,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
+    <ClInclude Include="..\Public\ESC_Bulb.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. Bulb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Back.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\02. BackESC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_BackArrow.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -390,6 +399,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Run.cpp" />
+    <ClCompile Include="..\Private\ESC_Bulb.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. Bulb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Back.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\02. BackESC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_BackArrow.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -238,7 +238,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
 	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 111.f;
-
+	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BombStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
@@ -250,7 +250,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ArrowForStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 	
-	/////////////////////////////////
 	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 4;
 	pDesc.fY = g_iWinSizeY / 10;
 	pDesc.fSizeX = 128.f;
@@ -259,7 +258,29 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 	
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 9;
+	pDesc.fY = g_iWinSizeY / 10;
+	pDesc.fSizeX = 60.f;
+	pDesc.fSizeY = 82.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCBulb"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	pDesc.fX = g_iWinSizeX / 14;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Back"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	pDesc.fX = g_iWinSizeX / 30;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_BackArrow"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
 
 
