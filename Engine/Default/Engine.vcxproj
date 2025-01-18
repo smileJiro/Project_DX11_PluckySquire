@@ -211,7 +211,9 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Controller_Transform.h" />
     <ClInclude Include="..\public\CustomFont.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
-    <ClInclude Include="..\public\Effect.h" />
+    <ClInclude Include="..\public\Particle_Emitter.h" />
+    <ClInclude Include="..\public\Particle_System.h" />
+    <ClInclude Include="..\public\Particle_Sprite_Emitter.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
@@ -224,6 +226,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\GlobalFunction_Manager.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
     <ClInclude Include="..\Public\Imgui_Manager.h" />
+    <ClInclude Include="..\public\Json_Manager.h" />
     <ClInclude Include="..\Public\Key_Manager.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\Level.h" />
@@ -259,8 +262,8 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
     <ClInclude Include="..\public\VIBuffer_Cube.h" />
-    <ClInclude Include="..\public\VIBuffer_Particle_Instance.h" />
-    <ClInclude Include="..\public\VIBuffer_Particle_Point.h" />
+    <ClInclude Include="..\public\VIBuffer_Instance.h" />
+    <ClInclude Include="..\public\VIBuffer_Point_Particle.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect_Vertical.h" />
     <ClInclude Include="..\public\VIBuffer_Terrain.h" />
@@ -288,7 +291,9 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Controller_Transform.cpp" />
     <ClCompile Include="..\private\CustomFont.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
-    <ClCompile Include="..\private\Effect.cpp" />
+    <ClCompile Include="..\private\Particle_Emitter.cpp" />
+    <ClCompile Include="..\private\Particle_System.cpp" />
+    <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp" />
     <ClCompile Include="..\Private\Engine_Function.cpp" />
     <ClCompile Include="..\private\Font_Manager.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
@@ -296,6 +301,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\GlobalFunction_Manager.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
     <ClCompile Include="..\Private\Imgui_Manager.cpp" />
+    <ClCompile Include="..\private\Json_Manager.cpp" />
     <ClCompile Include="..\Private\Key_Manager.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\Level.cpp" />
@@ -331,8 +337,8 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cube.cpp" />
-    <ClCompile Include="..\private\VIBuffer_Particle_Instance.cpp" />
-    <ClCompile Include="..\private\VIBuffer_Particle_Point.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Instance.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Point_Particle.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect_Vertical.cpp" />
     <ClCompile Include="..\private\VIBuffer_Terrain.cpp" />

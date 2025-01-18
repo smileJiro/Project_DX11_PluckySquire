@@ -36,7 +36,9 @@ public:
 
 #ifdef _DEBUG
 private:
-	_float	fAccTime = 0.f;
+	_float	m_fAccTime = 0.f;
+	_int	m_iFrame = 0;
+	_int	m_iRenderFrame = 0;
 private:
 	void	Debug_Default(_float _fTimeDelta);
 #endif

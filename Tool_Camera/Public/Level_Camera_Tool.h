@@ -26,16 +26,32 @@ private:
 	_bool				m_isCopyArm = { false };
 
 	_char				m_szCopyArmName[MAX_PATH] = { "" };
+	vector<_wstring>	m_ArmNames;
+	_uint				m_iSelectedArmNum = {};
+	_wstring			m_wszSelectedArm = {};
+
+	// 
+	_float				m_fMoveTimeAxisY = {};
+	_float				m_fMoveTimeAxisRight = {};
+	_float				m_fLengthTime = {};
+	_uint				m_iRotateType = { 2 };
+	_uint				m_iTimeRateType = { 3 };
 
 private:
 	void				Show_CameraTool();
+	void				Show_ArmInfo();
+
 	void				Create_Arms();
+	void				Show_ComboBox();
 
 private:
 	// Tool
 	void				Rotate_Arm(_bool _isCopyArm);
 	void				Change_ArmLength(_bool _isCopyArm);
 	void				Add_CopyArm();
+	void				Edit_CopyArm();
+	void				Set_MovementInfo();
+	void				Play_Movement();
 
 public:
 	static CLevel_Camera_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -27,7 +27,7 @@ private:
 
 public:
 	HRESULT					Initialize(CON_TRANSFORM_DESC* _pDesc);
-
+	void							Update_AutoRotation(_float _fTimeDelta);
 public: /* Change_Coordinate */
 	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition);
 
@@ -38,6 +38,7 @@ public: /* 2D, 3D */
 	_bool					Go_Right(_float _fTimeDelta);
 	_bool					Go_Up(_float _fTimeDelta);
 	_bool					Go_Down(_float _fTimeDelta);
+	void						Go_Direction(_vector _vDirection, _float _fTimeDelta);
 
 	void					Rotation(_float _fRadian, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 항등상태를 기준으로 지정한 각도로 회전한다.
 	void					RotationXYZ(const _float3& _vRadianXYZ);
@@ -75,7 +76,7 @@ public:
 	void					Set_State(CTransform::STATE _eState, const _float4& _vState);
 	void					Set_SpeedPerSec(_float _fSpeedPerSec);
 	void					Set_RotationPerSec(_float _fRotationPerSec);
-
+	void					Set_AutoRotationYDirection(_fvector _vRotYTarget);
 private:
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;

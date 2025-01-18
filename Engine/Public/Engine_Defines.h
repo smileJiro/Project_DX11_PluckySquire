@@ -102,6 +102,7 @@ namespace Engine
 #include <vector>
 #include <list>
 #include <map>
+#include <set>
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>

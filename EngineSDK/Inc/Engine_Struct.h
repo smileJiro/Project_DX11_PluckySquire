@@ -103,26 +103,19 @@ namespace Engine
 		_float2 vSize;	
 	} VTXPOINT;
 
-	/* Instancing */
-	/* 모든 Instance의 부모 구조체 */
-	typedef struct tagVtxInstance
-	{
-		XMFLOAT4 vRight, vUp, vLook, vTranslation;
-		XMFLOAT2 vLifeTime;
-		XMFLOAT4 vColor = { 1.f, 1.f, 1.f, 1.f };		// 색상 설정, 기본 = 흰색
-
-	} VTXINSTANCE;
-
 	/* Sprite(Point) Particle의 인스턴싱 */
-	typedef struct tagVtxPointInstance : public VTXINSTANCE
+	typedef struct tagVtxPointInstance
 	{
-		XMFLOAT4 vUV = { 0.f, 0.f, 1.f, 1.f };			// Animation Particle을 위한 UV(LTRB), 기본 (0, 0), (1, 1)	
+		XMFLOAT4		vRight, vUp, vLook, vTranslation;
+		XMFLOAT2		vLifeTime;
+		XMFLOAT4		vColor;
+		XMFLOAT4		vUV;
 	}VTXPOINTINSTANCE;
 
 
 	typedef struct ENGINE_DLL tagPointParticle
 	{
-		static const unsigned int iNumElements = 9;		// Position + Size + VTXPOINTINSTANCE
+		static const unsigned int iNumElements = { 9 };		// Position + Size + VTXPOINTINSTANCE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXPOINTPARTICLE;
 
@@ -136,7 +129,18 @@ namespace Engine
 		XMFLOAT3 vPosition;
 	}KEYFRAME;
 
-
+#pragma region Camera 관련
+	typedef struct tagArmDataDesc
+	{
+		_float3				vArm = { 0.f, 0.f, -1.f };
+		_float				fLength = 1.f;
+		_float2				fMoveTimeAxisY = {};
+		_float2				fMoveTimeAxisRight = {};
+		_float2				fLengthTime = {};
+		_uint				iRotateType = {};
+		_uint				iTimeRateType = {};
+	} ARM_DATA;
+#pragma endregion
 
 #pragma region Binary 관련
 

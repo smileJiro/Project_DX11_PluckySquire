@@ -11,6 +11,7 @@
 #include "Font_Manager.h"
 #include "Target_Manager.h"
 #include "Sound_Manager.h"
+#include "Json_Manager.h"
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
@@ -86,6 +87,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pSound_Manager = CSound_Manager::Create(EngineDesc.hWnd);
 	if (nullptr == m_pSound_Manager)
+		return E_FAIL;
+
+	m_pJson_Manager = CJson_Manager::Create();
+	if (nullptr == m_pJson_Manager)
 		return E_FAIL;
 	
 	m_pImgui_Manager = CImgui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext, _float2((_float)EngineDesc.iViewportWidth, (_float)EngineDesc.iViewportHeight));
@@ -826,6 +831,15 @@ void CGameInstance::Set_SFXVolume(const wstring& strSFXTag, _float _fVolume)
 	return m_pSound_Manager->Set_SFXVolume(strSFXTag, _fVolume);
 }
 
+HRESULT CGameInstance::Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJson)
+{
+	if (nullptr == m_pJson_Manager)
+		return E_FAIL;
+
+
+	return m_pJson_Manager->Load_Json(_szFilePath, _pOutJson);
+}
+
 HRESULT CGameInstance::Start_Imgui()
 {
 	if (nullptr == m_pImgui_Manager)
@@ -977,6 +991,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);
 	Safe_Release(m_pImgui_Manager);
+	Safe_Release(m_pJson_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pSound_Manager);
 	Safe_Release(m_pKey_Manager);
@@ -986,9 +1001,9 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);
-	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
 
