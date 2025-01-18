@@ -6,18 +6,6 @@
 /* 함수 구현부 */
 namespace Map_Tool
 {
-	void Begin_Draw_ColorButton(const string& key, ImVec4 vStartColor)
-	{
-		ImGui::PushID(key.c_str());
-		ImGui::PushStyleColor(ImGuiCol_Button, vStartColor);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, vStartColor + (ImVec4)ImColor::HSV(vStartColor.x, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, vStartColor + (ImVec4)ImColor::HSV(vStartColor.x, 0.2f, 0.2f));
-	}
-	void End_Draw_ColorButton()
-	{
-		ImGui::PopStyleColor(3);
-		ImGui::PopID();
-	}
 
 	void Event_CreateObject(_uint _iCurLevelIndex, const _tchar* _strLayerTag, Engine::CGameObject* _pGameObject)
 	{
@@ -106,6 +94,29 @@ namespace Map_Tool
 		/* Ver.14 */
 		//std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		//return converter.to_bytes(_strWide);
+	}
+
+
+	_bool Path_String_Validation_Check(const _string _strText)
+	{
+		if (_strText.empty() ||
+			_strText.rfind(".") != string::npos ||
+			_strText.rfind(":") != string::npos ||
+			_strText.rfind("*") != string::npos ||
+			_strText.rfind("?") != string::npos ||
+			_strText.rfind("\"") != string::npos ||
+			_strText.rfind("<") != string::npos ||
+			_strText.rfind(">") != string::npos ||
+			_strText.rfind("|") != string::npos ||
+			_strText.rfind("/") != string::npos ||
+			_strText.rfind("\\") != string::npos
+			)
+			return false;
+		return true;
+	}
+	_bool Path_String_Validation_Check(const _wstring _strText)
+	{
+		return Path_String_Validation_Check(WstringToString(_strText));
 	}
 
 }

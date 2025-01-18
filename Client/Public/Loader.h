@@ -50,7 +50,7 @@ private:
 	HRESULT Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
 	HRESULT Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix);
 
-	HRESULT Map_Object_Create(LEVEL_ID _iLevId);
+	HRESULT Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName);
 public:
 	static CLoader* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID);
 	virtual void Free() override;

@@ -28,7 +28,7 @@ public:
 
 
 private:
-	void					Update_Active();
+	void					isRender();
 
 protected:
 	virtual HRESULT			Ready_Components() override;

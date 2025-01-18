@@ -75,7 +75,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>..\Bin\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,7 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>..\Bin\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -185,6 +185,9 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\ESC_Back.h" />
+    <ClInclude Include="..\Public\ESC_BackArrow.h" />
+    <ClInclude Include="..\Public\ESC_Bulb.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\ChaseWalkState.h" />
@@ -194,11 +197,13 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CriticalSectionGuard.h" />
+    <ClInclude Include="..\Public\ESC_Enter.h" />
     <ClInclude Include="..\Public\ESC_HeartPoint.h" />
     <ClInclude Include="..\public\FSM.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\public\IdleState.h" />
+    <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
     <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
@@ -234,17 +239,22 @@
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\ESC_Back.cpp" />
+    <ClCompile Include="..\Private\ESC_BackArrow.cpp" />
+    <ClCompile Include="..\Private\ESC_Bulb.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\ChaseWalkState.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
     <ClCompile Include="..\Private\Condition.cpp" />
     <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
+    <ClCompile Include="..\Private\ESC_Enter.cpp" />
     <ClCompile Include="..\Private\ESC_HeartPoint.cpp" />
     <ClCompile Include="..\private\FSM.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\IdleState.cpp" />
+    <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\Private\PlayerState.cpp" />

@@ -42,6 +42,7 @@ public:
 	void					RotationZ(_float _vRadianZ);
 	virtual void			RotationXYZ(const _float3& _vRadianXYZ);
 	virtual void			RotationQuaternion(const _float3& _vRadianXYZ);
+	virtual void			RotationQuaternionW(const _float4& _vQuaternion);	//쿼터니언으로 회전
 
 	void					Turn(_float _fTimeDelta, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 기존 회전을 기준으로 추가로 정해진 속도로 회전한다.
 	void					TurnZ(_float _fTimeDelta);

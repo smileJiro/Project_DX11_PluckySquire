@@ -139,6 +139,15 @@
     <Filter Include="03.Components\PlayerState">
       <UniqueIdentifier>{2c11b0f4-d2f1-4207-914c-46e11d497546}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\04. ESC_Enter">
+      <UniqueIdentifier>{56ebc843-098b-4d7a-b2a2-ef827f9e231b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction">
+      <UniqueIdentifier>{7da9691a-06aa-4f08-826a-3dea2aff39b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book">
+      <UniqueIdentifier>{0c30b99e-6e02-4b43-ba51-f2f732c86957}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -267,6 +276,23 @@
     <ClInclude Include="..\public\Projectile_BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Idle.h" />
+    <ClInclude Include="..\Public\PlayerState_Run.h" />
+    <ClInclude Include="..\Public\ESC_Bulb.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. Bulb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Back.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\02. BackESC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_BackArrow.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Enter.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Interaction_Book.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -394,6 +420,23 @@
     </ClCompile>
     <ClCompile Include="..\Private\Transition.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Run.cpp" />
+    <ClCompile Include="..\Private\ESC_Bulb.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. Bulb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Back.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\02. BackESC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_BackArrow.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Enter.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Interaction_Book.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Idle.cpp">
       <Filter>03.Components\PlayerState</Filter>

@@ -88,18 +88,18 @@ HRESULT CPooling_Manager::Register_PoolingObject(const _wstring& _strPoolingTag,
 	return S_OK;
 }
 
-HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition, _float3* _pScaling)
+HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
 {
 	for(int i = 0; i < iNumPoolingObjects; ++i)
 	{
-		if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pScaling)))
+		if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
 			return E_FAIL;
 	}
 
 	return S_OK;
 }
 
-HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3* _pPosition, _float3* _pScaling)
+HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
 {
 	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
 
@@ -111,12 +111,17 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3*
 	{
 		if (false == pGameObject->Is_Active())
 		{
-			if (nullptr != _pPosition)
-				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
 			if (nullptr != _pScaling)
 				pGameObject->Set_Scale(*_pScaling);
+			if (nullptr != _pRotation)
+				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
+			if (nullptr != _pPosition)
+				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
+
+
 
 			pGameObject->Set_Active(true);
+			pGameObject->Set_Alive();
 
 			return S_OK;
 		}
@@ -126,7 +131,7 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3*
 	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
 		return E_FAIL;
 
-	if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pScaling)))
+	if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
 		return E_FAIL;
 
 	return S_OK;

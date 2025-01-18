@@ -29,8 +29,8 @@ public:
 
 public:
 	HRESULT					Register_PoolingObject(const _wstring& _strPoolingTag, const Pooling_DESC& _tPoolingDesc, CGameObject::GAMEOBJECT_DESC* _pDesc);
-	HRESULT					Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition = nullptr, _float3* _pScaling = nullptr);
-	HRESULT					Create_Object(const _wstring& _strPoolingTag, _float3* _pPosition = nullptr, _float3* _pScaling = nullptr);
+	HRESULT					Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr);
+	HRESULT					Create_Object(const _wstring& _strPoolingTag, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr);
 	HRESULT					Pooling_Objects(const _wstring& _strPoolingTag, _uint _iNumPoolingObjects);
 
 private:
