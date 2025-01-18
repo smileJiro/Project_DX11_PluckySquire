@@ -48,11 +48,11 @@ public:
 	virtual void Free() override;
 
 protected:
-	CShader* m_pShaderComs[COORDINATE_LAST] = {nullptr};
-	CTexture* m_pTextureCom = {nullptr};
+	CShader*		m_pShaderComs[COORDINATE_LAST] = {nullptr};
+	CTexture*		m_pTextureCom = {nullptr};
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	_uint			m_iShaderPasses[COORDINATE_LAST] = {};
-	_bool			m_isRender = { false };
+	_bool			m_isRender = { true };
 
 };
 

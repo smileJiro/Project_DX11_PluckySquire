@@ -290,6 +290,9 @@
     <ClInclude Include="..\Public\ESC_Enter.h">
       <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Interaction_Book.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -422,6 +425,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ESC_Enter.cpp">
       <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Interaction_Book.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
