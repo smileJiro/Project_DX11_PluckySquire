@@ -103,7 +103,7 @@ void CPlayer::Switch_Animation(_uint _iAnimIndex)
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::NUM1))
+    if (KEY_DOWN(KEY::F1))
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
@@ -111,7 +111,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         m_PartObjects[PART_BODY]->Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
     }
 
-    if (KEY_DOWN(KEY::NUM4))
+    if (KEY_DOWN(KEY::F4))
     {
         Event_DeleteObject(this);
     }

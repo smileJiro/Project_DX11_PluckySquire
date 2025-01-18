@@ -149,15 +149,16 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 	auto& io = ImGui::GetIO();
 	if (nullptr != hWnd && !io.WantCaptureKeyboard)
 	{
-		if (KEY_DOWN(KEY::NUM9))
+		if (KEY_DOWN(KEY::F7))
 		{
 			m_isImguiObjRender ^= 1;
 		}
-		if (KEY_DOWN(KEY::NUM0))
+		if (KEY_DOWN(KEY::F8))
 		{
 			m_isImguiRTRender ^= 1;
 		}
 	}
+
 
 	return S_OK;
 }
