@@ -29,7 +29,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_LAST;
-
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
 
@@ -39,10 +38,10 @@ HRESULT CPlayer::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components()))
+    if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    if (FAILED(Ready_PartObjects()))
+    if (FAILED(Ready_Components()))
         return E_FAIL;
     // TODO ::임시 위치
     Set_Position(XMVectorSet(-3.f, 0.35f, -19.3f,1.f));
@@ -88,8 +87,15 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 {
-    m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
-	m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+    if (Get_CurCoord() == COORDINATE_3D)
+    {
+        m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
+        m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+    }
+    else
+    {
+        
+    }
 	m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
 
 }
@@ -99,7 +105,46 @@ void CPlayer::Switch_Animation(_uint _iAnimIndex)
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
 }
 
+void CPlayer::Set_State(STATE _eState)
+{
+    _uint iAnimIdx;
+    switch (_eState)
+    {
+    case Client::CPlayer::IDLE:
 
+        m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+        break;
+    case Client::CPlayer::RUN:
+
+        m_pStateMachine->Transition_To(new CPlayerState_Run(this));
+        break;
+    case Client::CPlayer::JUMP:
+        break;
+    case Client::CPlayer::ATTACK:
+        break;
+    case Client::CPlayer::STATE_LAST:
+        break;
+    default:
+        break;
+    }
+}
+
+
+
+void CPlayer::Set_2DDirection(F_DIRECTION _eFDir)
+{
+    m_e2DDirection = _eFDir; 
+    if (F_DIRECTION::LEFT == m_e2DDirection)
+    {
+        _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+        m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+    }
+    else if (F_DIRECTION::RIGHT == m_e2DDirection)
+    {
+        _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+        m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+    }
+}
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
@@ -129,7 +174,7 @@ HRESULT CPlayer::Ready_Components()
     tStateMachineDesc.pOwner = this;
 
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
-    m_pStateMachine->Transition_To(new CPlayerState_Idle(this, m_pStateMachine));
+    m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
     return S_OK;
 }
 
@@ -154,8 +199,8 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
-    BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform2DDesc.vScaling = _float3(100.0f, 100.0f, 100.0f);
+    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(100.0f, 100.0f, 100.0f);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
@@ -165,8 +210,8 @@ HRESULT CPlayer::Ready_PartObjects()
         return E_FAIL;
     
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(LATCH_PICKUP_IDLE_GT, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(LATCH_ANIM_RUN_01_GT, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop((_uint)ANIM_STATE_3D::LATCH_PICKUP_IDLE_GT, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop((_uint)ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT, true);
     return S_OK;
 }
 

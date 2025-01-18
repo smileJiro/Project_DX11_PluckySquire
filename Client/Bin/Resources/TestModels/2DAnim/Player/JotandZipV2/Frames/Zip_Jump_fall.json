@@ -1,0 +1,47 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Zip_Jump_fall",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_Jump_fall_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_Jump_fall_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_Jump_fall_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_Jump_fall_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_Jump_fall_0003_X03'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_Jump_fall_0003_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_Jump_fall_0004_X03'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_Jump_fall_0004_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_Jump_fall_0005_X03'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_Jump_fall_0005_X03.1"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

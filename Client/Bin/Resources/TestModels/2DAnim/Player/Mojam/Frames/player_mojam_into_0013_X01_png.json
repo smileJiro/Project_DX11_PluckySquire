@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "player_mojam_into_0013_X01_png",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -50.5,
+              "Y": 0.0,
+              "Z": 110.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 287.0,
+            "Y": 10.0,
+            "Z": 252.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "5D0C4EB645EA5EC432AB40AB9632DA60"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_mojam_into_0013_X01_png",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1518.0,
+        "Y": 256.0
+      },
+      "BakedSourceDimension": {
+        "X": 289.0,
+        "Y": 254.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_mojam_0'",
+        "ObjectPath": "/Game/Characters/Player/Mojam/Textures/player_mojam_0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_mojam_into_0013_X01_png:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0013_X01_png.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 93.0,
+          "Y": 236.0,
+          "Z": 0.88183594,
+          "W": 0.12548828
+        },
+        {
+          "X": -194.0,
+          "Y": 236.0,
+          "Z": 0.7416992,
+          "W": 0.12548828
+        },
+        {
+          "X": -194.0,
+          "Y": -16.0,
+          "Z": 0.7416992,
+          "W": 0.24853516
+        },
+        {
+          "X": 93.0,
+          "Y": -16.0,
+          "Z": 0.88183594,
+          "W": 0.24853516
+        },
+        {
+          "X": 93.0,
+          "Y": 236.0,
+          "Z": 0.88183594,
+          "W": 0.12548828
+        },
+        {
+          "X": -194.0,
+          "Y": -16.0,
+          "Z": 0.7416992,
+          "W": 0.24853516
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,124 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Zip_ascend",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0005_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0006_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0006_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0007_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0007_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0008_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0008_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0009_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0009_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0010_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0010_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0011_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0011_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0012_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0012_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0013_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0013_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0014_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0014_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0015_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0015_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_ascend_0016_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_ascend_0016_X01.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

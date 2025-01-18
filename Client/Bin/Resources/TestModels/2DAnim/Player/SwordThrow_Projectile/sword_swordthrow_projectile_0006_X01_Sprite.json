@@ -1,0 +1,101 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_0",
+    "Outer": "sword_swordthrow_projectile_0006_X01_Sprite",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 94.0,
+              "Y": 0.0,
+              "Z": -112.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 240.0,
+            "Y": 10.0,
+            "Z": 266.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "28279E3346C6961A4F15899F50A3A27E"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "sword_swordthrow_projectile_0006_X01_Sprite",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceDimension": {
+        "X": 512.0,
+        "Y": 512.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'sword_swordthrow_projectile_0006_X01'",
+        "ObjectPath": "/Game/Characters/Player/SwordThrow_Projectile/sword_swordthrow_projectile_0006_X01.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'sword_swordthrow_projectile_0006_X01_Sprite:BodySetup_0'",
+        "ObjectPath": "/Game/Characters/Player/SwordThrow_Projectile/sword_swordthrow_projectile_0006_X01_Sprite.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 214.0,
+          "Y": 21.0,
+          "Z": 0.67578125,
+          "W": 0.20898438
+        },
+        {
+          "X": -26.0,
+          "Y": 21.0,
+          "Z": 0.20703125,
+          "W": 0.20898438
+        },
+        {
+          "X": -26.0,
+          "Y": -245.0,
+          "Z": 0.20703125,
+          "W": 0.7285156
+        },
+        {
+          "X": 214.0,
+          "Y": -245.0,
+          "Z": 0.67578125,
+          "W": 0.7285156
+        },
+        {
+          "X": 214.0,
+          "Y": 21.0,
+          "Z": 0.67578125,
+          "W": 0.20898438
+        },
+        {
+          "X": -26.0,
+          "Y": -245.0,
+          "Z": 0.20703125,
+          "W": 0.7285156
+        }
+      ]
+    }
+  }
+]

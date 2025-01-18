@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Zip_swordthrow_into_0002_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -108.5,
+              "Y": 0.0,
+              "Z": 93.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 109.0,
+            "Y": 10.0,
+            "Z": 219.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "CE625CB94BAC1E9CDC28F2A6AF72629D"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Zip_swordthrow_into_0002_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 911.0,
+        "Y": 1808.0
+      },
+      "BakedSourceDimension": {
+        "X": 111.0,
+        "Y": 221.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'jotandzipV2-1'",
+        "ObjectPath": "/Game/Characters/Player/JotandZipV2/Textures/jotandzipV2-1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Zip_swordthrow_into_0002_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_swordthrow_into_0002_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": -54.0,
+          "Y": 203.0,
+          "Z": 0.49853516,
+          "W": 0.8833008
+        },
+        {
+          "X": -163.0,
+          "Y": 203.0,
+          "Z": 0.4453125,
+          "W": 0.8833008
+        },
+        {
+          "X": -163.0,
+          "Y": -16.0,
+          "Z": 0.4453125,
+          "W": 0.9902344
+        },
+        {
+          "X": -54.0,
+          "Y": -16.0,
+          "Z": 0.49853516,
+          "W": 0.9902344
+        },
+        {
+          "X": -54.0,
+          "Y": 203.0,
+          "Z": 0.49853516,
+          "W": 0.8833008
+        },
+        {
+          "X": -163.0,
+          "Y": -16.0,
+          "Z": 0.4453125,
+          "W": 0.9902344
+        }
+      ]
+    }
+  }
+]

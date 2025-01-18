@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_idle_sword_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_idle_sword_right_0001_X04'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_idle_sword_right_0001_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_idle_sword_right_0002_X04'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_idle_sword_right_0002_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_idle_sword_right_0003_X04'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_idle_sword_right_0003_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_idle_sword_right_0004_X04'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_idle_sword_right_0004_X04.0"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

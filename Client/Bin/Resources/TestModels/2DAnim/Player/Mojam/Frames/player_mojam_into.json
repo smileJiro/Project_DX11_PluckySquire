@@ -1,0 +1,285 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_mojam_into",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0001_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0001_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0002_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0002_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0003_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0003_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0004_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0004_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0005_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0005_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0006_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0006_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0007_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0007_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0008_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0008_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0009_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0009_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0010_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0010_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0011_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0011_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0012_X01_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0012_X01_png.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0013_X01_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0013_X01_png.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0014_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0014_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0015_X01_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0015_X01_png.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0016_X01_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0016_X01_png.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0017_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0017_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0018_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0018_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0019_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0019_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0020_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0020_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0021_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0021_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0022_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0022_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0023_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0023_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0024_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0024_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0025_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0025_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0026_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0026_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0027_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0027_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0028_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0028_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0029_X01_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0029_X01_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0030_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0030_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0031_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0031_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0032_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0032_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0033_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0033_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0034_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0034_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0035_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0035_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0036_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0036_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0037_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0037_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0038_X02_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0038_X02_png.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_mojam_into_0039_X04_png'",
+            "ObjectPath": "/Game/Characters/Player/Mojam/Frames/player_mojam_into_0039_X04_png.1"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

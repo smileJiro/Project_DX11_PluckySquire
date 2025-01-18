@@ -1,0 +1,82 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_item_retrieve",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0001_X02.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0002_X02.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0003_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0003_X03.0"
+          },
+          "FrameRun": 6
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0004_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0004_X03.0"
+          },
+          "FrameRun": 6
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_item_retrieve_0010_XHOLD'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_item_retrieve_0010_XHOLD.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

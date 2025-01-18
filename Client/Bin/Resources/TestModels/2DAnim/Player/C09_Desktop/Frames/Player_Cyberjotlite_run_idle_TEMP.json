@@ -1,0 +1,18 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_Cyberjotlite_run_idle_TEMP",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_run_right_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_run_right_0003_X02.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

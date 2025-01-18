@@ -1,0 +1,18 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "LatchSword_",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'LatchSword'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/LatchSword.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

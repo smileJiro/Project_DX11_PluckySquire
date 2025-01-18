@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "player_c06_CrushroomGet_0007_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -53.5,
+              "Y": 0.0,
+              "Z": 224.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 337.0,
+            "Y": 10.0,
+            "Z": 491.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "E6F919574C8B07550D6AF7AE85D7CED0"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_c06_CrushroomGet_0007_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 684.0,
+        "Y": 1010.0
+      },
+      "BakedSourceDimension": {
+        "X": 339.0,
+        "Y": 493.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_C06_crushroomget-0'",
+        "ObjectPath": "/Game/Characters/Player/C06_CrushroomGet/Textures/player_C06_crushroomget-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_c06_CrushroomGet_0007_X02:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Player/C06_CrushroomGet/Frames/player_c06_CrushroomGet_0007_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 115.0,
+          "Y": 470.0,
+          "Z": 0.9980469,
+          "W": 0.49365234
+        },
+        {
+          "X": -222.0,
+          "Y": 470.0,
+          "Z": 0.6689453,
+          "W": 0.49365234
+        },
+        {
+          "X": -222.0,
+          "Y": -21.0,
+          "Z": 0.6689453,
+          "W": 0.73339844
+        },
+        {
+          "X": 115.0,
+          "Y": -21.0,
+          "Z": 0.9980469,
+          "W": 0.73339844
+        },
+        {
+          "X": 115.0,
+          "Y": 470.0,
+          "Z": 0.9980469,
+          "W": 0.49365234
+        },
+        {
+          "X": -222.0,
+          "Y": -21.0,
+          "Z": 0.6689453,
+          "W": 0.73339844
+        }
+      ]
+    }
+  }
+]

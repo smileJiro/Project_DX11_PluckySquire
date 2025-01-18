@@ -178,7 +178,7 @@ technique11 DefaultTechnique
 
     pass SpriteAnim
     {
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_WriteNone, 0);
         SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_SPRITEANIM();

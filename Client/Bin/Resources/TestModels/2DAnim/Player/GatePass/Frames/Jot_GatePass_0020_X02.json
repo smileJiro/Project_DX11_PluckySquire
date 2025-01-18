@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Jot_GatePass_0020_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1185.0,
+        "Y": 282.0
+      },
+      "BakedSourceDimension": {
+        "X": 245.0,
+        "Y": 274.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Jot_GatePass-0'",
+        "ObjectPath": "/Game/Characters/Player/GatePass/Textures/Jot_GatePass-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 168.0,
+          "Y": 253.0,
+          "Z": 0.6977539,
+          "W": 0.1381836
+        },
+        {
+          "X": -75.0,
+          "Y": 253.0,
+          "Z": 0.57910156,
+          "W": 0.1381836
+        },
+        {
+          "X": -75.0,
+          "Y": -19.0,
+          "Z": 0.57910156,
+          "W": 0.2709961
+        },
+        {
+          "X": 168.0,
+          "Y": -19.0,
+          "Z": 0.6977539,
+          "W": 0.2709961
+        },
+        {
+          "X": 168.0,
+          "Y": 253.0,
+          "Z": 0.6977539,
+          "W": 0.1381836
+        },
+        {
+          "X": -75.0,
+          "Y": -19.0,
+          "Z": 0.57910156,
+          "W": 0.2709961
+        }
+      ]
+    }
+  }
+]
