@@ -32,13 +32,8 @@ HRESULT CStopStamp::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-
 	m_ePreStamp = CUI_Manager::GetInstance()->Get_StampIndex();
 
-
-
-	//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(g_iWinSizeX/ 2, g_iWinSizeY / 2, 1.f, 1.f));
-	//m_pControllerTransform->Set_Scale(50.f, 50.f, 1.f);
 	return S_OK;
 }
 
@@ -48,6 +43,9 @@ void CStopStamp::Priority_Update(_float _fTimeDelta)
 
 void CStopStamp::Update(_float _fTimeDelta)
 {
+	
+
+
 	if (m_isActive == false)
 	{
 		if (true == m_isBig || true == m_isSmall)
@@ -116,8 +114,9 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 	CUI_Manager::STAMP eStamp;
 	eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
 
+	
 
-	if (m_ePreStamp != eStamp)
+	if (m_ePreStamp != eStamp && false == m_isScaling)
 	{
 		if (eStamp == CUI_Manager::STAMP_BOMB)
 		{
@@ -126,6 +125,7 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
 
 			m_isSmall = true;
+			m_isScaling = true;
 		}
 		else if (eStamp == CUI_Manager::STAMP_STOP)
 		{
@@ -134,8 +134,8 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
 
 			m_isBig = true;
+			m_isScaling = true;
 		}
-
 		m_ePreStamp = eStamp;
 	}
 
@@ -152,7 +152,11 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
 			else
+			{
 				m_isBig = false;
+				m_isScaling = false;
+			}
+				
 		}
 		else if (true == m_isSmall)
 		{
@@ -164,7 +168,10 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
 			else
+			{
 				m_isSmall = false;
+				m_isScaling = false;
+			}	
 		}
 	}
 
