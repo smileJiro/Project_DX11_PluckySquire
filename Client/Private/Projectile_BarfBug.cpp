@@ -103,7 +103,7 @@ HRESULT CProjectile_BarfBug::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    BodyDesc.tTransform3DDesc.vScaling = _float3(0.5f, 0.5f, 0.5f);
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
