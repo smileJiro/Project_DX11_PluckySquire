@@ -139,6 +139,9 @@
     <Filter Include="03.Components\PlayerState">
       <UniqueIdentifier>{2c11b0f4-d2f1-4207-914c-46e11d497546}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\04. ESC_Enter">
+      <UniqueIdentifier>{56ebc843-098b-4d7a-b2a2-ef827f9e231b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -278,6 +281,9 @@
     <ClInclude Include="..\Public\ESC_BackArrow.h">
       <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ESC_Enter.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -407,6 +413,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ESC_BackArrow.cpp">
       <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Enter.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
