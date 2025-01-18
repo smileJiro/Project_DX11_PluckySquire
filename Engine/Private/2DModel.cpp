@@ -71,7 +71,7 @@ HRESULT C2DModel::Initialize(void* _pDesc)
 		return E_FAIL;
 
     /* Com_VIBuffer */
-	m_pVIBufferCom = static_cast<CVIBuffer_Rect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, 1, TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
+	m_pVIBufferCom = static_cast<CVIBuffer_Rect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
     if (nullptr == m_pVIBufferCom)
         return E_FAIL;
 
