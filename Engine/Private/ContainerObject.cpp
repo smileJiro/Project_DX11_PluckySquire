@@ -127,7 +127,7 @@ HRESULT CContainerObject::Imgui_Render_ObjectInfos()
 
     ImGui::Text("<Parts Infos>");
 
-    static CGameObject* pSelectObject = nullptr;
+    static CGameObject* pPartObject = nullptr;
     _int iNumParts = (_uint)m_PartObjects.size();
     ImGui::Text("iNumParts : %d", iNumParts);
 
@@ -153,7 +153,7 @@ HRESULT CContainerObject::Imgui_Render_ObjectInfos()
         {
             if (iSelectObjectIndex != -1)
             {
-                pSelectObject = m_PartObjects[iSelectObjectIndex];
+                pPartObject = m_PartObjects[iSelectObjectIndex];
             }
 
         }
@@ -162,8 +162,8 @@ HRESULT CContainerObject::Imgui_Render_ObjectInfos()
     }
 
 
-    if (nullptr != pSelectObject)
-        pSelectObject->Imgui_Render_ObjectInfos();
+    if (nullptr != pPartObject)
+        pPartObject->Imgui_Render_ObjectInfos();
     ImGui::End();
     return S_OK;
 }

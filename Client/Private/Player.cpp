@@ -33,7 +33,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(1200);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720);
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
 
     if (FAILED(__super::Initialize(pDesc)))
@@ -45,7 +45,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
     // TODO ::임시 위치
-    Set_Position(XMVectorSet(-3.f, 1.1f, -19.3f,1.f));
+    Set_Position(XMVectorSet(-3.f, 0.35f, -19.3f,1.f));
     return S_OK;
 }
 
