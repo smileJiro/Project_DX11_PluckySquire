@@ -54,13 +54,13 @@ void CESC_Enter::Update(_float _fTimeDelta)
 
 void CESC_Enter::Late_Update(_float _fTimeDelta)
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CESC_Enter::Render()
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Render();
 
 	return S_OK;

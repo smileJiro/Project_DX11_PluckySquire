@@ -52,6 +52,7 @@ protected:
 	CTexture* m_pTextureCom = {nullptr};
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	_uint			m_iShaderPasses[COORDINATE_LAST] = {};
+	_bool			m_isRender = { false };
 
 };
 
