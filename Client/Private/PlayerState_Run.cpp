@@ -47,9 +47,70 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	if (bMove)
 	{
 		m_pOwner->Move(vMoveDir, _fTimeDelta);
+		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+		{
+			F_DIRECTION eNewDir =  To_FDirection(vMoveDir);
+			F_DIRECTION eOldDir = m_pOwner->Get_2DDirection();
+			m_pOwner->Set_2DDirection(eNewDir);
+			if (eNewDir != eOldDir)
+			{
+			
+				switch (eNewDir)
+				{
+				case Client::F_DIRECTION::LEFT:
+				case Client::F_DIRECTION::RIGHT:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT);
+					break;
+				case Client::F_DIRECTION::UP:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP);
+					break;
+				case Client::F_DIRECTION::DOWN:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN);
+					break;
+				case Client::F_DIRECTION::F_DIR_LAST:
+				default:
+					break;
+				}
+			}
+
+		}
 	}
 	else
 	{
 		m_pOwner->Set_State(CPlayer::IDLE);
 	}
+}
+
+void CPlayerState_Run::Enter()
+{
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	
+	if (COORDINATE_2D == eCoord)
+	{
+		F_DIRECTION eOldDir = m_pOwner->Get_2DDirection();
+		switch (eOldDir)
+		{
+		case Client::F_DIRECTION::LEFT:
+		case Client::F_DIRECTION::RIGHT:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT);
+			break;
+		case Client::F_DIRECTION::UP:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP);
+			break;
+		case Client::F_DIRECTION::DOWN:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN);
+			break;
+		case Client::F_DIRECTION::F_DIR_LAST:
+		default:
+			break;
+		}
+	}
+	
+	else
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
+
+}
+
+void CPlayerState_Run::Exit()
+{
 }

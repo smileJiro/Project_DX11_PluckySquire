@@ -12,6 +12,7 @@ class CFSM final : public CComponent
 public:
 	typedef struct tagFSMDesc
 	{
+		_bool isMelee;
 		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
@@ -42,6 +43,7 @@ private:
 	CState* m_CurState = { nullptr };
 	CMonster* m_pOwner = { nullptr };
 
+	_bool	m_isMelee = { true };
 	_float	m_fAlertRange = {};
 	_float	m_fChaseRange = {};
 	_float	m_fAttackRange = {};

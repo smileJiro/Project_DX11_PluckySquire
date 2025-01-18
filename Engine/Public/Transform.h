@@ -14,10 +14,10 @@ public:
 		// 초당 회전속도
 		_float	fRotationPerSec = {};
 		// 초기화 위치
-		_float3 vPosition = { 0.0f, 0.0f, 0.0f };
+		_float3 vInitialPosition = { 0.0f, 0.0f, 0.0f };
 
 		// 초기화 크기
-		_float3 vScaling = { 1.0f, 1.0f, 1.0f };
+		_float3 vInitialScaling = { 1.0f, 1.0f, 1.0f };
 	}TRANSFORM_DESC;
 
 protected:
@@ -65,8 +65,11 @@ public:
 	void					Set_WorldMatrix(const _float4x4& _WorldMatrix) { m_WorldMatrix = _WorldMatrix; }
 	void					Set_Scale(_float _fX, _float _fY, _float _fZ);
 	void					Set_Scale(const _float3& _vScale);
+
 	void					Set_State(STATE _eState, _fvector _vState) { XMStoreFloat4((_float4*)&m_WorldMatrix.m[_eState], _vState); }
-	void					Set_State(STATE _eState, const _float4& _vState) { memcpy(m_WorldMatrix.m[_eState], &_vState, sizeof(_float4)); }
+	void					Set_State(STATE _eState, const _float4& _vState) { 
+		memcpy(m_WorldMatrix.m[_eState], &_vState, sizeof(_float4)); 
+	}
 	void					Set_SpeedPerSec(_float _fSpeedPerSec) { m_fSpeedPerSec = _fSpeedPerSec; };
 	void					Set_RotationPerSec(_float _fRotationPerSec) { m_fRotationPerSec = _fRotationPerSec; };
 

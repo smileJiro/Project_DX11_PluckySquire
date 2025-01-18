@@ -28,8 +28,8 @@ HRESULT CTransform::Initialize(void* _pArg)
     m_fSpeedPerSec = pDesc->fSpeedPerSec;
     m_fRotationPerSec = pDesc->fRotationPerSec;
 
-    Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vPosition), 1.0f));
-    Set_Scale(pDesc->vScaling.x, pDesc->vScaling.y, pDesc->vScaling.z);
+    Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vInitialPosition), 1.0f));
+    Set_Scale(pDesc->vInitialScaling.x, pDesc->vInitialScaling.y, pDesc->vInitialScaling.z);
 
     return S_OK;
 }
@@ -227,6 +227,7 @@ void CTransform::Set_Scale(const _float3& _vScale)
     Set_State(STATE::STATE_UP, XMVector3Normalize(Get_State(STATE::STATE_UP)) * _vScale.y);
     Set_State(STATE::STATE_LOOK, XMVector3Normalize(Get_State(STATE::STATE_LOOK)) * _vScale.z);
 }
+
 
 _float CTransform::Compute_Distance(_fvector _vTargetPos) const
 {

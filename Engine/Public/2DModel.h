@@ -36,6 +36,7 @@ private:
     _float2 m_vNonAnimSpriteStartUV = { 0,0 };
     _float2 m_vNonAnimSpriteEndUV = { 1,1 };
 
+	map<string ,CTexture*> m_AnimTextures ;
     vector<CAnimation2D* >m_Animation2Ds ;
 	_uint m_iCurAnimIdx = 0;
 public:

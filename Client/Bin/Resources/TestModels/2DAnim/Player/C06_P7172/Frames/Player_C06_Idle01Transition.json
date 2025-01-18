@@ -1,0 +1,47 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_C06_Idle01Transition",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle01Transition_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle01Transition_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle01Transition_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle01Transition_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle01Transition_0003_X03'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle01Transition_0003_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle01Transition_0004_X03'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle01Transition_0004_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle01Transition_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle01Transition_0005_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

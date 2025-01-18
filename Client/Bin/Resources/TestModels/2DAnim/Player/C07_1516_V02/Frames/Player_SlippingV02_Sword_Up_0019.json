@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Player_SlippingV02_Sword_Up_0019",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 207.0,
+        "Y": 323.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_slippingv02-0'",
+        "ObjectPath": "/Game/Characters/Player/C07_1516_V02/Textures/player_slippingv02-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 107.0,
+          "Y": 254.0,
+          "Z": 0.05053711,
+          "W": 0.00048828125
+        },
+        {
+          "X": -98.0,
+          "Y": 254.0,
+          "Z": 0.00048828125,
+          "W": 0.00048828125
+        },
+        {
+          "X": -98.0,
+          "Y": -67.0,
+          "Z": 0.00048828125,
+          "W": 0.07885742
+        },
+        {
+          "X": 107.0,
+          "Y": -67.0,
+          "Z": 0.05053711,
+          "W": 0.07885742
+        },
+        {
+          "X": 107.0,
+          "Y": 254.0,
+          "Z": 0.05053711,
+          "W": 0.00048828125
+        },
+        {
+          "X": -98.0,
+          "Y": -67.0,
+          "Z": 0.00048828125,
+          "W": 0.07885742
+        }
+      ]
+    }
+  }
+]

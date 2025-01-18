@@ -36,14 +36,15 @@ HRESULT CLevel_Camera_Tool::Initialize()
 
 void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::N)) {
-		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::FREE);
-	}
-	else if (KEY_DOWN(KEY::M)) {
-		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::TARGET);
+	// Change Camera Free  Or Target
+	if (KEY_DOWN(KEY::TAB)) {
+		_uint iCurCameraType = CCamera_Manager_Tool::GetInstance()->Get_CameraType();
+		iCurCameraType ^= 1;
+		CCamera_Manager_Tool::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
 	Show_CameraTool();
+	Show_ArmInfo();
 }
 
 HRESULT CLevel_Camera_Tool::Render()
@@ -126,11 +127,11 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CGa
 
 	CTest_Player::CONTAINEROBJ_DESC Desc;
 	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	Desc.tTransform2DDesc.vScaling = _float3(150.f, 150.f, 150.f);
+	Desc.tTransform2DDesc.vIniitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	Desc.tTransform2DDesc.vInitialScaling = _float3(150.f, 150.f, 150.f);
 
-	Desc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	Desc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+	Desc.tTransform3DDesc.vIniitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Player"), LEVEL_CAMERA_TOOL, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -153,8 +154,8 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-	TerrainDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	TerrainDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+	TerrainDesc.tTransform3DDesc.vIniitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
 
@@ -167,7 +168,6 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 void CLevel_Camera_Tool::Show_CameraTool()
 {
 	ImGui::Begin("Test");
-	ImGui::Text("Current Arm");
 	
 	// Roteate
 	Rotate_Arm(m_isCopyArm);
@@ -177,6 +177,12 @@ void CLevel_Camera_Tool::Show_CameraTool()
 
 	// CheckBox
 	ImGui::NewLine();
+	
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.3f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Copy Arm & Change Copy Arm Value");
+	ImGui::Separator();
+
 	ImGui::Checkbox("Rotate CopyArm", &m_isCopyArm);
 	ImGui::SameLine(155.f);
 
@@ -186,10 +192,38 @@ void CLevel_Camera_Tool::Show_CameraTool()
 	}
 
 	// Add CopyArm
+	Add_CopyArm();
 	if (ImGui::Button("Add CopyArm")) {
-		ImGui::SameLine(155.f);
-		Add_CopyArm();
+		
+		ARM_DATA tData;
+		tData.fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
+		tData.fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
+		tData.fLengthTime = { m_fLengthTime, 0.f };
+		tData.iRotateType = m_iRotateType;
+		tData.iTimeRateType = m_iTimeRateType;
+
+		CCamera_Manager_Tool::GetInstance()->Add_CopyArm(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
+		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
 	}
+
+	// Edit CopyArm
+	ImGui::SameLine();
+	if (ImGui::Button("Edit CopyArm")) {
+		Edit_CopyArm();
+	}
+
+	// Play Move
+	Set_MovementInfo();
+
+	ImGui::End();
+}
+
+void CLevel_Camera_Tool::Show_ArmInfo()
+{
+	ImGui::Begin("Arm Info");
+
+
+
 
 	ImGui::End();
 }
@@ -217,8 +251,35 @@ void CLevel_Camera_Tool::Create_Arms()
 	CCamera_Manager_Tool::GetInstance()->Set_CurrentArm(pArm);
 }
 
+void CLevel_Camera_Tool::Show_ComboBox()
+{
+	if (m_ArmNames.size() <= 0)
+		return;
+
+	_string Name = m_pGameInstance->WStringToString(m_ArmNames[m_iSelectedArmNum]);
+
+	if (ImGui::BeginCombo("Label", Name.c_str())) {
+		for (_int i = 0; i < m_ArmNames.size(); ++i) {
+			_bool bSelected = (m_iSelectedArmNum == i);
+
+			if(ImGui::Selectable(m_pGameInstance->WStringToString(m_ArmNames[i]).c_str(), bSelected))
+				m_iSelectedArmNum = i;
+
+			if (bSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
 void CLevel_Camera_Tool::Rotate_Arm(_bool _isCopyArm)
 {
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.4f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Change Value of Arm");
+	ImGui::Separator();
+
 	_vector vCamPos = XMLoadFloat4((m_pGameInstance->Get_CamPosition()));
 	_vector vArmRotation = {};
 
@@ -263,7 +324,7 @@ void CLevel_Camera_Tool::Change_ArmLength(_bool _isCopyArm)
 	ImGui::NewLine();
 	ImGui::Text("Length Value: %.2f", m_fLengthValue);
 	ImGui::SameLine();
-	ImGui::DragFloat("##Length", &m_fLengthValue, 0.1f, 0.f, 10.f);
+	ImGui::DragFloat("##Length", &m_fLengthValue, 0.05f, 0.f, 10.f);
 
 	_float fArmLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength(_isCopyArm);
 	_bool bActive = false;
@@ -283,10 +344,123 @@ void CLevel_Camera_Tool::Change_ArmLength(_bool _isCopyArm)
 
 void CLevel_Camera_Tool::Add_CopyArm()
 {
-	//ImGui::NewLine();
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Add Copy Arm");
+	ImGui::Separator();
 
-	ImGui::InputText("CopyArm Tag", m_szCopyArmName, MAX_PATH);
-	CCamera_Manager_Tool::GetInstance()->Add_CopyArm(m_pGameInstance->StringToWString(m_szCopyArmName));
+	ImGui::Text("Copy Arm Tag Input:      ", m_fLengthTime);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(-1);
+	ImGui::InputText("##CopyArm Tag", m_szCopyArmName, MAX_PATH);
+
+	ImGui::Text("Length Time: %.2f        ", m_fLengthTime);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(-1);
+	ImGui::DragFloat("##Length Time", &m_fLengthTime, 0.05f, 0.f, 10.f);
+
+	ImGui::Text("Move Time AxisY: %.2f    ", m_fMoveTimeAxisY);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(-1);
+	ImGui::DragFloat("##Move Time", &m_fMoveTimeAxisY, 0.05f, 0.f, 10.f);
+
+	ImGui::Text("Move Time AxisRight: %.2f", m_fMoveTimeAxisRight);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(-1);
+	ImGui::DragFloat("##Move Time", &m_fMoveTimeAxisRight, 0.05f, 0.f, 10.f);
+	
+	switch (m_iRotateType) {
+	case CCameraArm::CROSS:
+		ImGui::Text("Rotate Type: CROSS       ");
+		break;
+	case CCameraArm::NOT_CROSS:
+		ImGui::Text("Rotate Type: NOT CROSS   ");
+		break;
+	case CCameraArm::ROTATE_TYE_END:
+		ImGui::Text("Rotate Type: NONE        ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Cross")) 
+		m_iRotateType = CCameraArm::CROSS;
+	
+	ImGui::SameLine();
+	if (ImGui::Button("Not Cross")) 
+		m_iRotateType = CCameraArm::NOT_CROSS;
+	
+
+	switch (m_iTimeRateType) {
+	case CCameraArm::EASE_IN:
+		ImGui::Text("Time Rate Type: EASE IN  ");
+		break;
+	case CCameraArm::EASE_OUT:
+		ImGui::Text("Time Rate Type: EASE OUT ");
+		break;
+	case CCameraArm::LERP:
+		ImGui::Text("Time Rate Type: LERP     ");
+		break;
+	case CCameraArm::TIME_RATE_TYPE_END:
+		ImGui::Text("Time Rate Type: NONE     ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Ease In")) 
+		m_iTimeRateType = CCameraArm::EASE_IN;
+	ImGui::SameLine();
+	if (ImGui::Button("Ease Out")) 
+		m_iTimeRateType = CCameraArm::NOT_CROSS;
+	ImGui::SameLine();
+	if (ImGui::Button("Lerp"))
+		m_iTimeRateType = CCameraArm::LERP;
+
+	ImGui::NewLine();
+}
+
+void CLevel_Camera_Tool::Edit_CopyArm()
+{
+	ARM_DATA* pData = CCamera_Manager_Tool::GetInstance()->Get_ArmData(m_ArmNames[m_iSelectedArmNum]);
+
+	if (nullptr == pData)
+		return;
+
+	pData->fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
+	pData->fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
+	pData->fLengthTime = { m_fLengthTime, 0.f };
+	pData->iRotateType = m_iRotateType;
+	pData->iTimeRateType = m_iTimeRateType;
+}
+
+void CLevel_Camera_Tool::Set_MovementInfo()
+{
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Play Move");
+	ImGui::Separator();
+
+	if (m_ArmNames.size() <= 0)
+		return;
+
+	_string Name = m_pGameInstance->WStringToString(m_ArmNames[m_iSelectedArmNum]);
+
+	ImGui::Text("Selected Arm Name: %s", Name.c_str());
+
+	Show_ComboBox();
+
+	if (ImGui::Button("Play Movement")) {
+		CCamera_Manager_Tool::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+		CCamera_Manager_Tool::GetInstance()->Set_NextArmData(m_ArmNames[m_iSelectedArmNum]);
+	}
+
+	// Play_Movement();
+}
+
+void CLevel_Camera_Tool::Play_Movement()
+{
+	
 }
 
 CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

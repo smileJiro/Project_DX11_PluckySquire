@@ -16,6 +16,8 @@ protected:
 	virtual ~CPlayerState() = default;
 public:
 	virtual void Update(_float _fTimeDelta) abstract;
+	virtual void Enter() {};
+	virtual void Exit() {};
 
 protected:
 	CPlayer::STATE m_eStateID;

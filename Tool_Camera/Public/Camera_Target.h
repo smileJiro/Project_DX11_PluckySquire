@@ -12,7 +12,7 @@ BEGIN(Camera_Tool)
 class CCamera_Target final : public CCamera
 {
 public:
-	enum CAMERA_MODE { DEFAULT, TURN, CAMERA_MODE_END };
+	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, CAMERA_MODE_END };
 
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
 	{
@@ -42,6 +42,9 @@ public:
 	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
 	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
+public:
+	void						Set_NextArmData(ARM_DATA* _pData);		// Event 처리 하면 사라지고 바로 Arm에 넣을 수도
+
 private:
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	_int						m_iNextCameraMode = { -1 };
@@ -55,6 +58,7 @@ private:
 private:
 	void						Action_Mode(_float fTimeDelta);
 	void						Defualt_Move(_float fTimeDelta);
+	void						Move_To_NextArm(_float fTimeDelta);
 	void						Look_Target(_float fTimeDelta);
 
 public:

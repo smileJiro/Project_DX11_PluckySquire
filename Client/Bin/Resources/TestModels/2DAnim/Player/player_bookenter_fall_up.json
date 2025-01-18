@@ -1,0 +1,19 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_bookenter_fall_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_bookenter_up_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_bookenter_up_0001_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

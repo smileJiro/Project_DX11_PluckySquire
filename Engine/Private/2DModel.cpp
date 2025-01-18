@@ -14,10 +14,19 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 	, m_vNonAnimSpriteEndUV(_Prototype.m_vNonAnimSpriteEndUV)
 	, m_iCurAnimIdx(_Prototype.m_iCurAnimIdx)
 	, m_pVIBufferCom(_Prototype.m_pVIBufferCom)
+	, m_AnimTextures(_Prototype.m_AnimTextures)
 {
 	for (auto& pAnim : _Prototype.m_Animation2Ds)
 	{
 		m_Animation2Ds.push_back(pAnim->Clone());
+	}
+	for (auto& pTex : m_NonAnimTextures)
+	{
+		Safe_AddRef(pTex);
+	}
+	for (auto& pTex : m_AnimTextures)
+	{
+		Safe_AddRef(pTex.second);
 	}
 }
 
@@ -30,9 +39,9 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
 	//	PaperFlipBook 컨테이너를 순회하면서	Animation2D를 생성.
 	//    Animation2D를 생성할 때 PaperSprite 컨테이너에서 LookUp해서 CSpriteFrame생성.
 
-	list<json> jPaperFlipBooks;
+	map<string,json> jPaperFlipBooks;
 	map<string, json> jPaperSprites;
-	map<string, CTexture*> Textures;
+
 
 	std::filesystem::path path;
 	path = _pModelDirectoryPath;
@@ -53,10 +62,15 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
 				if (strType._Equal("PaperSprite"))
 				{
 					string strName = jObj["Name"];
+
 					jPaperSprites.insert({ strName, jObj });
 				}
 				else if (strType._Equal("PaperFlipbook"))
-					jPaperFlipBooks.push_back(jObj);
+				{
+					string strName = jObj["Name"];
+
+					jPaperFlipBooks.insert({ strName,jObj });
+				}
 				else
 				{
 					continue;
@@ -66,7 +80,7 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
 		}
 		else if (entry.path().extension() == ".png") 
 		{
-			Textures.insert({ entry.path().filename().replace_extension().string(), CTexture::Create(m_pDevice, m_pContext, entry.path().c_str()) });
+			m_AnimTextures.insert({ entry.path().filename().replace_extension().string(), CTexture::Create(m_pDevice, m_pContext, entry.path().c_str()) });
 		}
 	}
 
@@ -77,12 +91,14 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
 	{
 		for (auto& j : jPaperFlipBooks)
 		{
-			m_Animation2Ds.push_back(CAnimation2D::Create(m_pDevice, m_pContext, j,jPaperSprites,Textures));
+			string strName = j.second["Name"];
+
+			m_Animation2Ds.push_back(CAnimation2D::Create(m_pDevice, m_pContext, j.second,jPaperSprites, m_AnimTextures));
 		}
 	}
 	else
 	{
-		for (auto& pTex : Textures)
+		for (auto& pTex : m_AnimTextures)
 		{
 			m_NonAnimTextures.push_back(pTex.second);
 		}
@@ -206,5 +222,11 @@ void C2DModel::Free()
 	for (auto& pAnimation : m_Animation2Ds)
 		Safe_Release(pAnimation);
 	m_Animation2Ds.clear();
+	for (auto& pTex : m_AnimTextures)
+		Safe_Release(pTex.second);
+	m_AnimTextures.clear();
+	for (auto& pTex : m_NonAnimTextures)
+		Safe_Release(pTex);
+	m_NonAnimTextures.clear();
 	__super::Free();
 }

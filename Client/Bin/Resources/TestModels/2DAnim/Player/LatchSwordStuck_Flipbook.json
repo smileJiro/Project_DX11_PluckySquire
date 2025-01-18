@@ -1,0 +1,18 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "LatchSwordStuck_Flipbook",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'LatchSwordStuck_Sprite'",
+            "ObjectPath": "/Game/Characters/Player/SwordThrow_Projectile/LatchSwordStuck_Sprite.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

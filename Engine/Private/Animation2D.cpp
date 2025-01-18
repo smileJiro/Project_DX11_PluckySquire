@@ -72,7 +72,6 @@ CSpriteFrame* CSpriteFrame::Clone()
 }
 void CSpriteFrame::Free()
 {
-	Safe_Release(pTexture);
 	__super::Free();
 }
 ;

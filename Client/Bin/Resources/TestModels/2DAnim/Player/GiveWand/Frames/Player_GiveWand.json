@@ -1,0 +1,124 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_GiveWand",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0008_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0009_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0011_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0012_X05'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0012_X05.1"
+          },
+          "FrameRun": 5
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0013_X03'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0013_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0014_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0014_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0015_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0015_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_GiveWand_0016_X02'",
+            "ObjectPath": "/Game/Characters/Player/GiveWand/Frames/Player_GiveWand_0016_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

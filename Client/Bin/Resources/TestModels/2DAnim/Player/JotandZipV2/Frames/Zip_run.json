@@ -1,0 +1,67 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Zip_run",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_run_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_run_0001_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_run_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_run_0002_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_run_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_run_0003_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_run_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_run_0004_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_run_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_run_0005_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_run_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_run_0006_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_run_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_run_0007_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_run_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_run_0008_X02.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]
