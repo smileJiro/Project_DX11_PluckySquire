@@ -55,6 +55,11 @@ HRESULT CModelObject::Initialize(void* _pArg)
     return S_OK;
 }
 
+void CModelObject::Priority_Update(_float _fTimeDelta)
+{
+    __super::Priority_Update(_fTimeDelta);
+}
+
 void CModelObject::Late_Update(_float _fTimeDelta)
 {    /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
