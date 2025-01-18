@@ -1514,7 +1514,7 @@ void CMap_Tool_Manager::Object_Open_PickingMode()
 		m_arrObjects[OBJECT_PICKING] = pGameObj;
 		m_arrObjects[OBJECT_PICKING]->Set_Mode(CMapObject::PICKING);
 #ifdef _DEBUG
-		m_pGameInstance->Imgui_Select_Debug_ObjectInfo(L"Layer_Sibal", pGameObj->Get_GameObjectInstanceID());
+		m_pGameInstance->Imgui_Select_Debug_ObjectInfo(m_strPickingLayerTag, pGameObj->Get_GameObjectInstanceID());
 #endif // _DEBUG
 
 	}
