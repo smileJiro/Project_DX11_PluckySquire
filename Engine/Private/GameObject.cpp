@@ -176,6 +176,9 @@ void CGameObject::Free()
 HRESULT CGameObject::Imgui_Render_ObjectInfos()
 {
     /* Current Coord */
+    if (nullptr == m_pControllerTransform)
+        return E_FAIL;
+
     COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
     _string strCurCoord = "Current Coord : ";
     switch (eCurCoord)

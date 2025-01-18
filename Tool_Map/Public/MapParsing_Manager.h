@@ -26,39 +26,55 @@ private :
 private :
 	CMapParsing_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CMapParsing_Manager() = default;
+	
 
 public :
-	HRESULT Initialize(CImguiLogger* _pLogger);
-	HRESULT	Update();
+	HRESULT					Initialize(CImguiLogger* _pLogger);
+	HRESULT					Update();
 public :
-	HRESULT		Open_ParsingDialog(const wstring& _strLayerName);
-	void		Push_Parsing(const string& _strParsingFileName, const wstring& _strLayerName, _bool _isClear = true);
-	HRESULT		Parsing();
+	HRESULT					Open_ParsingDialog(const wstring& _strLayerName);
+	void					Push_Parsing(const string& _strParsingFileName, const wstring& _strLayerName, _bool _isClear = true);
+	HRESULT					Parsing();
+
+	HRESULT					Export_SaveResult_ToJson(const _wstring _strFIlePath, const vector<_string>& _SaveModelProtoNames, _bool isStatic = false);
+
+
+
+	const vector<_string>&	Get_EgnoreObjectNames() const { return m_EgnoreObjectNames; };
+	HRESULT					Push_EgnoreModelName(_string _strModelName) 
+	{ if (!m_isLoading) m_EgnoreObjectNames.push_back(_strModelName); }
+	_bool					Is_Loading() { return m_isLoading; }
+	_bool					Is_Loading_Complete() { return m_isLoadComp; }
+
+
 
 
 private :
-	void		Open_Parsing();
-	HRESULT		Parsing(json _jsonObj);
+	void					Open_Parsing();
+	HRESULT					Parsing(json _jsonObj);
+
+	_bool					Check_EgnoreObject(_string _strModelName);
 private :
-	CGameInstance*					m_pGameInstance = nullptr;
-	ID3D11Device*					m_pDevice = nullptr;
-	ID3D11DeviceContext*			m_pContext = nullptr;
-	CImguiLogger*					m_pLogger =  nullptr;
+	CGameInstance*								m_pGameInstance = nullptr;
+	ID3D11Device*								m_pDevice = nullptr;
+	ID3D11DeviceContext*						m_pContext = nullptr;
+	CImguiLogger*								m_pLogger =  nullptr;
 
 	// ÆÄ½ÌÇØ¿Â ¸ðµ¨ Á¤º¸.
-	vector<pair<string, MAP_DATA>>	m_Models;
-	vector<string>					m_MapObjectNames;
+	vector<pair<string, MAP_DATA>>				m_Models;
 	queue<pair<pair<string, wstring>,_bool>>	m_LoadInfos;
 	// ÆÄ½Ì½º·¹µå ºÐ¸®.
-	CRITICAL_SECTION				m_Critical_Section = { nullptr };
-	HANDLE							m_hThread = {};
+	CRITICAL_SECTION							m_Critical_Section = { nullptr };
+	HANDLE										m_hThread = {};
+
+	vector<string>								m_MapObjectNames;
+	vector<string>								m_EgnoreObjectNames;
+
+	_wstring									m_strUmapJsonPath = L"..\\Bin\\json\\";
 
 
-	_wstring						m_strUmapJsonPath = L"..\\Bin\\json\\";
-
-
-	_bool							m_isLoading = false;
-	_bool							m_isLoadComp = true;
+	_bool										m_isLoading = false;
+	_bool										m_isLoadComp = true;
 
 
 public :

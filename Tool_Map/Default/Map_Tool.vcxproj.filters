@@ -138,6 +138,9 @@
     <ClInclude Include="..\Public\MapParsing_Manager.h">
       <Filter>01. ToolApp_Managers\MapParsing</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImGuiStyle_MapTool_Function.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -216,6 +219,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MapParsing_Manager.cpp">
       <Filter>01. ToolApp_Managers\MapParsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGuiStyle_MapTool_Function.cpp">
+      <Filter>99. Defines</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

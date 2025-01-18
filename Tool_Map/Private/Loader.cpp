@@ -181,7 +181,7 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
     
     //XMMATRIX matPretransform = XMMatrixIdentity();
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,

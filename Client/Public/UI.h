@@ -18,7 +18,7 @@ class CUI : public Engine::CUIObject
 
 
 public:
-	typedef struct : public CUIObject::UIOBJECT_DESC
+	typedef struct tagUIDesc: public CUIObject::UIOBJECT_DESC
 	{
 
 	}UIOBJDESC;
