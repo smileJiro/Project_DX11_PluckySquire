@@ -5,20 +5,26 @@
 #include "StateMachine.h"
 #include "PlayerState_Run.h"
 
-CPlayerState_Idle::CPlayerState_Idle(CPlayer* _pOwner, CStateMachine* _pContext)
-	:CPlayerState(_pOwner, _pContext)
+
+CPlayerState_Idle::CPlayerState_Idle(CPlayer* _pOwner)
+	:CPlayerState(_pOwner, CPlayer::IDLE)
 {
 }
 
 void CPlayerState_Idle::Update(_float _fTimeDelta)
 {
 	_bool bMove = false;
+	_bool bJump = false;
 	/* Test Move Code */
-	if (KEY_PRESSING(KEY::W))
+	if (KEY_PRESSING(KEY::SPACE))
+	{
+		bJump = true;
+	}
+	else if (KEY_PRESSING(KEY::W))
 	{
 		bMove = true;
 	}
-	if (KEY_PRESSING(KEY::A))
+	else if (KEY_PRESSING(KEY::A))
 	{
 		bMove = true;
 	}
@@ -30,9 +36,12 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 	{
 		bMove = true;
 	} 
-	if (bMove)
+	if (bJump)
 	{
-		m_pOwner->Switch_Animation(CPlayer::LATCH_ANIM_RUN_01_GT);
-		m_pStateMachine->Transition_To(new CPlayerState_Run(m_pOwner, m_pStateMachine));
+		m_pOwner->Set_State(CPlayer::JUMP);
+	}
+	else if (bMove)
+	{
+		m_pOwner->Set_State(CPlayer::RUN);
 	}
 }

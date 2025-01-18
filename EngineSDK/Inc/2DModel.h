@@ -14,7 +14,7 @@ private:
     C2DModel(const C2DModel& _Prototype);
     virtual ~C2DModel() = default;
 public:
-    HRESULT			Initialize_Prototype(const _char* pModelFilePath);
+    HRESULT			Initialize_Prototype(const _char* _pModelDirectoryPath);
     HRESULT			Initialize(void* _pDesc);
 
     virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)override;
@@ -32,7 +32,7 @@ public:
 private:
     CVIBuffer_Rect* m_pVIBufferCom = nullptr;
 
-	CTexture* m_pNonAnimTexture = nullptr;
+	vector<CTexture*> m_NonAnimTextures ;
     _float2 m_vNonAnimSpriteStartUV = { 0,0 };
     _float2 m_vNonAnimSpriteEndUV = { 1,1 };
 

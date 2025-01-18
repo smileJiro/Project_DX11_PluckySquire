@@ -232,6 +232,7 @@ void CController_Transform::Set_RotationPerSec(_float _fRotationPerSec)
 
 void CController_Transform::Set_AutoRotationYDirection(_fvector _vRotYTarget)
 {
+
 	static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->Set_AutoRotationYDirection(_vRotYTarget);
 }
 

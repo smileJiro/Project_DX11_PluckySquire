@@ -6,19 +6,23 @@
 #include "StateMachine.h"
 
 
-CPlayerState_Run::CPlayerState_Run(CPlayer* _pOwner, CStateMachine* _pContext)
-	:CPlayerState(_pOwner, _pContext)
+CPlayerState_Run::CPlayerState_Run(CPlayer* _pOwner)
+	:CPlayerState(_pOwner, CPlayer::RUN)
 {
 }
 
 void CPlayerState_Run::Update(_float _fTimeDelta)
 {
+	COORDINATE eCoord =  m_pOwner->Get_CurCoord();
 	_vector vMoveDir = XMVectorZero();
 	_bool bMove = false;
-	/* Test Move Code */
+
 	if (KEY_PRESSING(KEY::W))
 	{
-		vMoveDir += _vector{ 0.f, 0.f, 1.f,0.f };
+		if (eCoord == COORDINATE_3D)
+			vMoveDir += _vector{ 0.f, 0.f, 1.f,0.f };
+		else
+			vMoveDir += _vector{ 0.f, 1.f, 0.f,0.f };
 		bMove = true;
 	}
 	if (KEY_PRESSING(KEY::A))
@@ -28,7 +32,11 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	}
 	if (KEY_PRESSING(KEY::S))
 	{
-		vMoveDir += _vector{ 0.f, 0.f, -1.f,0.f };
+		if (eCoord == COORDINATE_3D)
+			vMoveDir += _vector{ 0.f, 0.f, -1.f,0.f };
+		else
+			vMoveDir += _vector{ 0.f, -1.f, 0.f,0.f };
+
 		bMove = true;
 	}
 	if (KEY_PRESSING(KEY::D))
@@ -42,7 +50,6 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	}
 	else
 	{
-		m_pOwner->Switch_Animation(CPlayer::LATCH_ANIM_IDLE_01_GT);
-		m_pStateMachine->Transition_To(new CPlayerState_Idle(m_pOwner, m_pStateMachine));
+		m_pOwner->Set_State(CPlayer::IDLE);
 	}
 }

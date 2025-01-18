@@ -33,7 +33,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(1200);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720);
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
 
     if (FAILED(__super::Initialize(pDesc)))
@@ -88,8 +88,11 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 {
-    m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
-	m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+    if (Get_CurCoord() == COORDINATE_3D)
+    {
+        m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
+        m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+    }
 	m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
 
 }
@@ -97,6 +100,29 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
+}
+
+void CPlayer::Set_State(STATE _eState)
+{
+    switch (_eState)
+    {
+    case Client::CPlayer::IDLE:
+        Switch_Animation(CPlayer::LATCH_ANIM_IDLE_01_GT);
+        m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+        break;
+    case Client::CPlayer::RUN:
+        Switch_Animation(CPlayer::LATCH_ANIM_RUN_01_GT);
+        m_pStateMachine->Transition_To(new CPlayerState_Run(this));
+        break;
+    case Client::CPlayer::JUMP:
+        break;
+    case Client::CPlayer::ATTACK:
+        break;
+    case Client::CPlayer::STATE_LAST:
+        break;
+    default:
+        break;
+    }
 }
 
 
@@ -129,7 +155,7 @@ HRESULT CPlayer::Ready_Components()
     tStateMachineDesc.pOwner = this;
 
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
-    m_pStateMachine->Transition_To(new CPlayerState_Idle(this, m_pStateMachine));
+    m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
     return S_OK;
 }
 

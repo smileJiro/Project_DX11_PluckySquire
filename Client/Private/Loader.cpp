@@ -248,7 +248,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/")))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/Resources/Json/Desk_C02.json"), matPretransform)))
@@ -260,9 +260,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("WoodenPlatform_01"),
     C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
          return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
-
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
         CPlayer::Create(m_pDevice, m_pContext))))
         return E_FAIL;

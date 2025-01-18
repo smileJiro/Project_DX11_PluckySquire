@@ -269,6 +269,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
+    <ClInclude Include="..\Public\PlayerState_Jump.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -390,6 +391,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Run.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Jump.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

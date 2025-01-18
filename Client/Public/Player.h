@@ -6,6 +6,18 @@ class CStateMachine;
 class CPlayer final : public CContainerObject
 {
 public:
+	enum STATE
+	{
+		IDLE,
+		RUN,
+		JUMP,
+		ATTACK,
+		STATE_LAST
+	};
+	enum ANIM_STATE_2D
+	{
+
+	};
 	enum ANIM_STATE_3D
 	{
 		LATCH_ANIM_BOOK_JUMP_FALL_RIGHT
@@ -132,7 +144,7 @@ public:
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	void Move(_vector _vDir,_float _fTimeDelta);
 	void Switch_Animation(_uint _iAnimIndex);
-	void Change_State(_uint _iStateIdx);
+	void Set_State(STATE _eState);
 private:
 	void					Key_Input(_float _fTimeDelta);
 
