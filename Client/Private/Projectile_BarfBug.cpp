@@ -24,6 +24,13 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 	return S_OK;
 }
 
+void CProjectile_BarfBug::Update(_float _fTimeDelta)
+{
+    m_pControllerTransform->Go_Straight(_fTimeDelta);
+
+    __super::Update(_fTimeDelta);
+}
+
 void CProjectile_BarfBug::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
@@ -31,13 +38,8 @@ void CProjectile_BarfBug::Late_Update(_float _fTimeDelta)
 
 HRESULT CProjectile_BarfBug::Render()
 {
-	__super::Render();
-	return S_OK;
-}
-
-void CProjectile_BarfBug::Update(_float _fTimeDelta)
-{
-	__super::Update(_fTimeDelta);
+    __super::Render();
+    return S_OK;
 }
 
 CProjectile_BarfBug* CProjectile_BarfBug::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

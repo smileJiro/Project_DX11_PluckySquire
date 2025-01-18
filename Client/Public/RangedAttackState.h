@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 
-//공격 범위가 추적 범위보다 큰 원거리 공격 상태
+//공격 범위가 인식 범위보다 큰 원거리 공격 상태
 class CRangedAttackState final : public CState
 {
 private:

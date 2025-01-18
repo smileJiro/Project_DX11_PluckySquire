@@ -6,6 +6,7 @@
 #include "AlertState.h"
 #include "ChaseWalkState.h"
 #include "MeleeAttackState.h"
+#include "RangedAttackState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -30,6 +31,7 @@ HRESULT CFSM::Initialize_Prototype()
 HRESULT CFSM::Initialize(void* _pArg)
 {
 	FSMDESC* pDesc = static_cast<FSMDESC*>(_pArg);
+	m_isMelee = pDesc->isMelee;
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
@@ -84,7 +86,11 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 		break;
 
 	case Client::MONSTER_STATE::ATTACK:
-		pState = CMeleeAttackState::Create(&Desc);
+		if(true == m_isMelee)
+			pState = CMeleeAttackState::Create(&Desc);
+		else
+			pState = CRangedAttackState::Create(&Desc);
+
 		if (nullptr == pState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
