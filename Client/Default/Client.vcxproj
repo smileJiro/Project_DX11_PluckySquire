@@ -185,6 +185,9 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\ESC_Back.h" />
+    <ClInclude Include="..\Public\ESC_BackArrow.h" />
+    <ClInclude Include="..\Public\ESC_Bulb.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\ChaseWalkState.h" />
@@ -233,6 +236,9 @@
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\ESC_Back.cpp" />
+    <ClCompile Include="..\Private\ESC_BackArrow.cpp" />
+    <ClCompile Include="..\Private\ESC_Bulb.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\ChaseWalkState.cpp" />
