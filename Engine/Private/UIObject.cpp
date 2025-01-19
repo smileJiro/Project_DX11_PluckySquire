@@ -42,6 +42,9 @@ HRESULT CUIObject::Initialize(void* pArg)
 	m_fSizeX = UITransformDesc.tTransform2DDesc.vInitialScaling.x = pDesc->fSizeX;
 	m_fSizeY = UITransformDesc.tTransform2DDesc.vInitialScaling.y = pDesc->fSizeY;
 
+	m_iCurLevelID = pDesc->iCurLevelID;
+	UITransformDesc.iCurLevelID = m_iCurLevelID;
+
 	_uint				iNumViewports = { 1 };
 	D3D11_VIEWPORT		ViewportDesc{};
 

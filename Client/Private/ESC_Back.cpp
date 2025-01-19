@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ESC_Back.h"
-#include "GameInstance.h"
 
 
 
@@ -16,11 +15,6 @@ CESC_Back::CESC_Back(const CESC_Back& _Prototype)
 
 HRESULT CESC_Back::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-
-
 	return S_OK;
 }
 
@@ -30,6 +24,12 @@ HRESULT CESC_Back::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	
 
 	return S_OK;
 }

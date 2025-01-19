@@ -1,7 +1,6 @@
 #pragma once
-#include "Client_Defines.h"
-#include "GameInstance.h"
 #include "UI.h"
+#include "SettingPanel.h"
 
 BEGIN(Engine)
 class CShader;
@@ -9,14 +8,14 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
-class CSettingPanel : public CUI
+class CSettingPanelBG : public CSettingPanel
 {
 
 
 protected:
-	explicit CSettingPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	explicit CSettingPanel(const CSettingPanel& _Prototype);
-	virtual ~CSettingPanel() = default;
+	explicit CSettingPanelBG(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	explicit CSettingPanelBG(const CSettingPanelBG& _Prototype);
+	virtual ~CSettingPanelBG() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -34,7 +33,7 @@ protected:
 	virtual HRESULT			Ready_Components() override;
 
 public:
-	static CSettingPanel*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CSettingPanelBG*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;

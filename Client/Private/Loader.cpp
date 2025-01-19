@@ -9,7 +9,7 @@
 
 /* For. UI*/
 #include "Pick_Bulb.h"
-#include "SettingPanel.h"
+#include "SettingPanelBG.h"
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "ArrowForStamp.h"
@@ -262,6 +262,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_KEYQ"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Q.dds"), 1))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ShopBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/T_Panel_BG.dds"), 1))))
+		return E_FAIL;
+
 
 
 

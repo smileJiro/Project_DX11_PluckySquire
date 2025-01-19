@@ -16,11 +16,6 @@ CArrowForStamp::CArrowForStamp(const CArrowForStamp& _Prototype)
 
 HRESULT CArrowForStamp::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-	
-
 	return S_OK;
 }
 
@@ -30,6 +25,11 @@ HRESULT CArrowForStamp::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+
 
 
 
@@ -91,7 +91,7 @@ HRESULT CArrowForStamp::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ArrowForStamp"),
+	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_ArrowForStamp"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

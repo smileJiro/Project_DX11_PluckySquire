@@ -205,6 +205,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\public\IdleState.h" />
+    <ClInclude Include="..\Public\SettingPanel.h" />
+    <ClInclude Include="..\Public\ShopPanel.h" />
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
@@ -215,7 +217,7 @@
     <ClInclude Include="..\Public\Pooling_Manager.h" />
     <ClInclude Include="..\public\Projectile_BarfBug.h" />
     <ClInclude Include="..\Public\RangedAttackState.h" />
-    <ClInclude Include="..\public\SettingPanel.h" />
+    <ClInclude Include="..\public\SettingPanelBG.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -258,6 +260,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\IdleState.cpp" />
+    <ClCompile Include="..\Private\SettingPanel.cpp" />
+    <ClCompile Include="..\Private\ShopPanel.cpp" />
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
@@ -269,7 +273,7 @@
     <ClCompile Include="..\Private\Pooling_Manager.cpp" />
     <ClCompile Include="..\private\Projectile_BarfBug.cpp" />
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
-    <ClCompile Include="..\private\SettingPanel.cpp" />
+    <ClCompile Include="..\private\SettingPanelBG.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />

@@ -15,11 +15,6 @@ CBombStamp::CBombStamp(const CBombStamp& _Prototype)
 
 HRESULT CBombStamp::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-	
-
 	return S_OK;
 }
 
@@ -29,6 +24,11 @@ HRESULT CBombStamp::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+
 
 	
 
@@ -163,7 +163,7 @@ HRESULT CBombStamp::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_BombStamp"),
+	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_BombStamp"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
