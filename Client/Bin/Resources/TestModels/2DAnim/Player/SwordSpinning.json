@@ -1,0 +1,54 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "SwordSpinning",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sword_swordthrow_projectile_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/sword_swordthrow_projectile_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sword_swordthrow_projectile_0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/sword_swordthrow_projectile_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sword_swordthrow_projectile_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/sword_swordthrow_projectile_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sword_swordthrow_projectile_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/sword_swordthrow_projectile_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sword_swordthrow_projectile_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/sword_swordthrow_projectile_0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sword_swordthrow_projectile_0006_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/sword_swordthrow_projectile_0006_X01.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

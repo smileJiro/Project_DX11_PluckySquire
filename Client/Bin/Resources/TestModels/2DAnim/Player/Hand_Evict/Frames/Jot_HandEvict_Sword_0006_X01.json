@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Jot_HandEvict_Sword_0006_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 702.0,
+        "Y": 433.0
+      },
+      "BakedSourceDimension": {
+        "X": 215.0,
+        "Y": 289.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'jot_hand_evict_sword-0'",
+        "ObjectPath": "/Game/Characters/Player/Hand_Evict/Textures/jot_hand_evict_sword-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": -189.0,
+          "Y": 809.0,
+          "Z": 0.89453125,
+          "W": 0.21191406
+        },
+        {
+          "X": -402.0,
+          "Y": 809.0,
+          "Z": 0.68652344,
+          "W": 0.21191406
+        },
+        {
+          "X": -402.0,
+          "Y": 522.0,
+          "Z": 0.68652344,
+          "W": 0.35205078
+        },
+        {
+          "X": -189.0,
+          "Y": 522.0,
+          "Z": 0.89453125,
+          "W": 0.35205078
+        },
+        {
+          "X": -189.0,
+          "Y": 809.0,
+          "Z": 0.89453125,
+          "W": 0.21191406
+        },
+        {
+          "X": -402.0,
+          "Y": 522.0,
+          "Z": 0.68652344,
+          "W": 0.35205078
+        }
+      ]
+    }
+  }
+]

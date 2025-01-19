@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "player_dodgeroll_out_right_0006_X01",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -5.0,
+              "Y": 0.0,
+              "Z": 88.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 218.0,
+            "Y": 10.0,
+            "Z": 257.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "B05DA12A41B4AFAA1276B0A37780306D"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_dodgeroll_out_right_0006_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 239.0,
+        "Y": 681.0
+      },
+      "BakedSourceDimension": {
+        "X": 220.0,
+        "Y": 259.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_dodgeroll-0'",
+        "ObjectPath": "/Game/Characters/Player/DodgeRoll/Textures/player_dodgeroll-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_dodgeroll_out_right_0006_X01:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/DodgeRoll/Frames/player_dodgeroll_out_right_0006_X01.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 104.0,
+          "Y": 217.0,
+          "Z": 0.22363281,
+          "W": 0.3330078
+        },
+        {
+          "X": -114.0,
+          "Y": 217.0,
+          "Z": 0.1171875,
+          "W": 0.3330078
+        },
+        {
+          "X": -114.0,
+          "Y": -40.0,
+          "Z": 0.1171875,
+          "W": 0.4584961
+        },
+        {
+          "X": 104.0,
+          "Y": -40.0,
+          "Z": 0.22363281,
+          "W": 0.4584961
+        },
+        {
+          "X": 104.0,
+          "Y": 217.0,
+          "Z": 0.22363281,
+          "W": 0.3330078
+        },
+        {
+          "X": -114.0,
+          "Y": -40.0,
+          "Z": 0.1171875,
+          "W": 0.4584961
+        }
+      ]
+    }
+  }
+]

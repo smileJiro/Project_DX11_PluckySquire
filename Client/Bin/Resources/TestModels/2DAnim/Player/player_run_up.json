@@ -1,0 +1,68 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_run_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_run_up_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_run_up_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_run_up_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_run_up_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_run_up_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_run_up_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_run_up_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_run_up_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_run_up_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_run_up_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_run_up_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_run_up_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_run_up_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_run_up_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_run_up_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_run_up_0008_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

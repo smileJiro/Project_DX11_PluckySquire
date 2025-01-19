@@ -1,0 +1,68 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Zip_descend",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_descend_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_descend_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_descend_0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_descend_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_descend_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_descend_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_descend_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_descend_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_descend_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_descend_0005_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_descend_0006_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_descend_0006_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_descend_0007_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_descend_0007_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Zip_descend_0008_X01'",
+            "ObjectPath": "/Game/Characters/Player/JotandZipV2/Frames/Zip_descend_0008_X01.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

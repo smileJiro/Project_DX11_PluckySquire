@@ -1,0 +1,19 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_carry_idle_right_ss",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_pickup_object_ss_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_pickup_object_ss_0010_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

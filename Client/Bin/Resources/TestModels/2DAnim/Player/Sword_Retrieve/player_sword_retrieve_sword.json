@@ -1,0 +1,39 @@
+[
+  {
+    "Type": "Texture2D",
+    "Name": "player_sword_retrieve_sword",
+    "Class": "UScriptClass'Texture2D'",
+    "Properties": {
+      "ImportedSize": {
+        "X": 110,
+        "Y": 210
+      },
+      "LightingGuid": "9B733F52-4F7B9A15-54F91399-64BC8ED9",
+      "LODGroup": "TEXTUREGROUP_Project03",
+      "Downscale": {
+        "bCooked": true,
+        "Default": 0.0,
+        "Value": 0.0
+      },
+      "NeverStream": true
+    },
+    "SizeX": 112,
+    "SizeY": 212,
+    "PackedData": 1,
+    "PixelFormat": "PF_DXT5",
+    "FirstMipToSerialize": 0,
+    "Mips": [
+      {
+        "BulkData": {
+          "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+          "ElementCount": 23744,
+          "SizeOnDisk": 23744,
+          "OffsetInFile": "0x6614"
+        },
+        "SizeX": 112,
+        "SizeY": 212,
+        "SizeZ": 1
+      }
+    ]
+  }
+]

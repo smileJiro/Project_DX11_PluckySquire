@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,17 +23,21 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_DEFAULT_STREAMS_H
-#define PX_DEFAULT_STREAMS_H
+
+#ifndef PX_PHYSICS_EXTENSIONS_DEFAULT_STREAMS_H
+#define PX_PHYSICS_EXTENSIONS_DEFAULT_STREAMS_H
+/** \addtogroup extensions
+  @{
+*/
 
 #include <stdio.h>
 #include "common/PxPhysXCommonConfig.h"
 #include "foundation/PxIO.h"
-#include "foundation/PxFoundation.h"
+#include "PxFoundation.h"
 
 typedef FILE* PxFileHandle;
 
@@ -44,13 +49,13 @@ namespace physx
 /** 
 \brief default implementation of a memory write stream
 
-\see PxOutputStream
+@see PxOutputStream
 */
 
 class PxDefaultMemoryOutputStream: public PxOutputStream
 {
 public:
-						PxDefaultMemoryOutputStream(PxAllocatorCallback &allocator = *PxGetAllocatorCallback());
+						PxDefaultMemoryOutputStream(PxAllocatorCallback &allocator = PxGetFoundation().getAllocatorCallback());
 	virtual				~PxDefaultMemoryOutputStream();
 
 	virtual	PxU32		write(const void* src, PxU32 count);
@@ -71,7 +76,7 @@ private:
 /** 
 \brief default implementation of a memory read stream
 
-\see PxInputData
+@see PxInputData
 */
 	
 class PxDefaultMemoryInputData: public PxInputData
@@ -95,7 +100,7 @@ private:
 /** 
 \brief default implementation of a file write stream
 
-\see PxOutputStream
+@see PxOutputStream
 */
 
 class PxDefaultFileOutputStream: public PxOutputStream
@@ -114,7 +119,7 @@ private:
 /** 
 \brief default implementation of a file read stream
 
-\see PxInputData
+@see PxInputData
 */
 
 class PxDefaultFileInputData: public PxInputData
@@ -138,6 +143,7 @@ private:
 }
 #endif
 
+/** @} */
 
 #endif
 

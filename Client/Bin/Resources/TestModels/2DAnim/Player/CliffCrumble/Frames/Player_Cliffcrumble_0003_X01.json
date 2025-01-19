@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Player_Cliffcrumble_0003_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 234.0,
+        "Y": 1142.0
+      },
+      "BakedSourceDimension": {
+        "X": 223.0,
+        "Y": 272.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_cliffcrumble-0'",
+        "ObjectPath": "/Game/Characters/Player/CliffCrumble/Textures/player_cliffcrumble-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 57.0,
+          "Y": 252.0,
+          "Z": 0.4453125,
+          "W": 0.55810547
+        },
+        {
+          "X": -164.0,
+          "Y": 252.0,
+          "Z": 0.22949219,
+          "W": 0.55810547
+        },
+        {
+          "X": -164.0,
+          "Y": -18.0,
+          "Z": 0.22949219,
+          "W": 0.6899414
+        },
+        {
+          "X": 57.0,
+          "Y": -18.0,
+          "Z": 0.4453125,
+          "W": 0.6899414
+        },
+        {
+          "X": 57.0,
+          "Y": 252.0,
+          "Z": 0.4453125,
+          "W": 0.55810547
+        },
+        {
+          "X": -164.0,
+          "Y": -18.0,
+          "Z": 0.22949219,
+          "W": 0.6899414
+        }
+      ]
+    }
+  }
+]

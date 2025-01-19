@@ -1,0 +1,89 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "jot_surprise_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0004_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0006_X01'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0006_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0008_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0009_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0011_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

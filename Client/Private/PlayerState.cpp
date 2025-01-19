@@ -3,10 +3,10 @@
 #include "GameInstance.h"
 
 
-CPlayerState::CPlayerState(CPlayer* _pOwner, CStateMachine* _pContext)
+CPlayerState::CPlayerState(CPlayer* _pOwner, CPlayer::STATE _eState)
 	:CBase()
+	, m_eStateID(_eState)
 	, m_pOwner(_pOwner)
-	, m_pStateMachine(_pContext)
 {
 	m_pGameInstance = CGameInstance::GetInstance();
 }

@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,15 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
 #ifndef PX_VEHICLE_DRIVE_H
 #define PX_VEHICLE_DRIVE_H
+/** \addtogroup vehicle
+  @{
+*/
 
 #include "vehicle/PxVehicleWheels.h"
 #include "vehicle/PxVehicleComponents.h"
@@ -46,13 +50,17 @@ class PxMaterial;
 class PxRigidDynamic;
 
 /**
-\deprecated This API is replaced by a new API, see the Vehicles section in the 4.0 to 5.1 migration guide.
-
 \brief Data structure describing non-wheel configuration data of a vehicle that has engine, gears, clutch, and auto-box.
-\see PxVehicleWheelsSimData for wheels configuration data.
+@see PxVehicleWheelsSimData for wheels configuration data.
 */
-class PX_DEPRECATED PxVehicleDriveSimData
+class PxVehicleDriveSimData
 {
+//= ATTENTION! =====================================================================================
+// Changing the data layout of this class breaks the binary serialization format.  See comments for 
+// PX_BINARY_SERIAL_VERSION.  If a modification is required, please adjust the getBinaryMetaData 
+// function.  If the modification is made on a custom branch, please change PX_BINARY_SERIAL_VERSION
+// accordingly.
+//==================================================================================================
 public:
 
 	friend class PxVehicleDriveTank;
@@ -116,32 +124,32 @@ public:
 protected:
 	/*
 	\brief Engine simulation data
-	\see setEngineData, getEngineData
+	@see setEngineData, getEngineData
 	*/
 	PxVehicleEngineData				mEngine;
 
 	/*
 	\brief Gear simulation data
-	\see setGearsData, getGearsData
+	@see setGearsData, getGearsData
 	*/
 	PxVehicleGearsData				mGears;
 
 	/*
 	\brief Clutch simulation data
-	\see setClutchData, getClutchData
+	@see setClutchData, getClutchData
 	*/
 	PxVehicleClutchData				mClutch;
 
 	/*
 	\brief Autobox simulation data
-	\see setAutoboxData, getAutoboxData
+	@see setAutoboxData, getAutoboxData
 	*/
 	PxVehicleAutoBoxData			mAutoBox;
 
 	/**
 	\brief Test that a PxVehicleDriveSimData instance has been configured with legal data.
 	Call only after setting all components with setEngineData,setGearsData,setClutchData,setAutoBoxData
-	\see PxVehicleDrive4W::setup, PxVehicleDriveTank::setup
+	@see PxVehicleDrive4W::setup, PxVehicleDriveTank::setup
 	*/
 	bool isValid() const;
 
@@ -157,12 +165,10 @@ PX_COMPILE_TIME_ASSERT(0==(sizeof(PxVehicleDriveSimData) & 15));
 
 
 /**
-\deprecated This API is replaced by a new API, see the Vehicles section in the 4.0 to 5.1 migration guide.
-
 \brief Data structure with instanced dynamics data for vehicle with engine, clutch, gears, autobox
-\see PxVehicleWheelsDynData for wheels dynamics data.
+@see PxVehicleWheelsDynData for wheels dynamics data.
 */
-class PX_DEPRECATED PxVehicleDriveDynData
+class PxVehicleDriveDynData
 {
 public:
 	
@@ -182,14 +188,14 @@ public:
 	\brief Set an analog control value to drive the vehicle.
 	\param[in] type describes the type of analog control being modified
 	\param[in] analogVal is the new value of the specific analog control.
-	\see PxVehicleDrive4WControl, PxVehicleDriveNWControl, PxVehicleDriveTankControl
+	@see PxVehicleDrive4WControl, PxVehicleDriveNWControl, PxVehicleDriveTankControl
 	*/
 	void setAnalogInput(const PxU32 type, const PxReal analogVal);
 
 	/**
 	\brief Get the analog control value that has been applied to the vehicle.
 	\return The value of the specified analog control value.
-	\see PxVehicleDrive4WControl, PxVehicleDriveNWControl, PxVehicleDriveTankControl
+	@see PxVehicleDrive4WControl, PxVehicleDriveNWControl, PxVehicleDriveTankControl
 	*/
 	PxReal getAnalogInput(const PxU32 type) const;
 
@@ -276,7 +282,7 @@ public:
 	attempt to start a gear change from the current gear that has just been set 
 	towards the target gear at the next call to PxVehicleUpdates.
 
-	\see setTargetGear, PxVehicleGearsData
+	@see setTargetGear, PxVehicleGearsData
 	*/
 	PX_FORCE_INLINE void setCurrentGear(PxU32 currentGear) 
 	{
@@ -288,7 +294,7 @@ public:
 
 	\return The vehicle's current gear.
 
-	\see getTargetGear, PxVehicleGearsData
+	@see getTargetGear, PxVehicleGearsData
 	*/
 	PX_FORCE_INLINE PxU32 getCurrentGear() const
 	{
@@ -304,7 +310,7 @@ public:
 	attempt to start a gear change towards the target gear at the next call to 
 	PxVehicleUpdates.
 
-	\see PxVehicleGearsData
+	@see PxVehicleGearsData
 	*/
 	PX_FORCE_INLINE void setTargetGear(PxU32 targetGear) 
 	{
@@ -316,7 +322,7 @@ public:
 
 	\return The vehicle's target gear.
 
-	\see setTargetGear, PxVehicleGearsData
+	@see setTargetGear, PxVehicleGearsData
 	*/
 	PX_FORCE_INLINE PxU32 getTargetGear() const
 	{
@@ -330,7 +336,7 @@ public:
 
 	\note The gear change will begin at the next call to PxVehicleUpadates.
 
-	\see PxVehicleGearsData
+	@see PxVehicleGearsData
 	*/
 	PX_FORCE_INLINE void startGearChange(const PxU32 targetGear)
 	{
@@ -342,7 +348,7 @@ public:
 
 	\param[in] targetGear is the gear the vehicle will be given immediately.
 
-	\see PxVehicleGearsData
+	@see PxVehicleGearsData
 	*/
 	PX_FORCE_INLINE void forceGearChange(const PxU32 targetGear)
 	{
@@ -377,7 +383,7 @@ public:
 
 	\note If no gear change is in process the gear switch time will be zero.
 
-	\see PxVehicleGearsData.mSwitchTime
+	@see PxVehicleGearsData.mSwitchTime
 	*/
 	PX_FORCE_INLINE PxReal getGearSwitchTime() const
 	{
@@ -389,7 +395,7 @@ public:
 
 	\return  The time that has passed since the autobox last initiated a gear change.
 
-	\see PxVehicleAutoBoxData::setLatency, PxVehicleAutoBoxData::getLatency
+	@see PxVehicleAutoBoxData::setLatency, PxVehicleAutoBoxData::getLatency
 	*/
 	PX_FORCE_INLINE PxReal getAutoBoxSwitchTime() const
 	{
@@ -403,13 +409,13 @@ public:
 
 	/**
 	\brief Analog control values used by vehicle simulation. 
-	\see setAnalogInput, getAnalogInput, PxVehicleDrive4WControl, PxVehicleDriveNWControl, PxVehicleDriveTankControl
+	@see setAnalogInput, getAnalogInput, PxVehicleDrive4WControl, PxVehicleDriveNWControl, PxVehicleDriveTankControl
 	*/
 	PxReal mControlAnalogVals[eMAX_NB_ANALOG_INPUTS];
 
 	/**
 	\brief Auto-gear flag used by vehicle simulation.  Set true to enable the autobox, false to disable the autobox.
-	\see setUseAutoGears, setUseAutoGears, toggleAutoGears, PxVehicleAutoBoxData
+	@see setUseAutoGears, setUseAutoGears, toggleAutoGears, PxVehicleAutoBoxData
 	*/
 	bool mUseAutoGears;
 
@@ -418,7 +424,7 @@ public:
 	
 	\note If true a gear change will be initiated towards currentGear+1 (or to first gear if in reverse).
 
-	\see setDigitalInput, getDigitalInput
+	@see setDigitalInput, getDigitalInput
 	*/
 	bool mGearUpPressed;
 
@@ -427,37 +433,37 @@ public:
 	
 	\note If true a gear change will be initiated towards currentGear-1 (or to reverse if in first).
 
-	\see setDigitalInput, getDigitalInput
+	@see setDigitalInput, getDigitalInput
 	*/
 	bool mGearDownPressed;
 
 	/**
 	\brief Current gear 
-	\see startGearChange, forceGearChange, getCurrentGear, PxVehicleGearsData
+	@see startGearChange, forceGearChange, getCurrentGear, PxVehicleGearsData
 	*/
 	PxU32 mCurrentGear;
 
 	/**
 	\brief Target gear (different from current gear if a gear change is underway) 
-	\see startGearChange, forceGearChange, getTargetGear, PxVehicleGearsData
+	@see startGearChange, forceGearChange, getTargetGear, PxVehicleGearsData
 	*/
 	PxU32 mTargetGear;
 
 	/**
 	\brief Rotation speed of engine
-	\see setToRestState, getEngineRotationSpeed
+	@see setToRestState, getEngineRotationSpeed
 	*/	
 	PxReal mEnginespeed;
 
 	/**
 	\brief Reported time that has passed since gear change started.
-	\see setToRestState, startGearChange, PxVehicleGearsData::mSwitchTime
+	@see setToRestState, startGearChange, PxVehicleGearsData::mSwitchTime
 	*/
 	PxReal mGearSwitchTime;
 
 	/**
 	\brief Reported time that has passed since last autobox gearup/geardown decision.
-	\see setToRestState, PxVehicleAutoBoxData::setLatency
+	@see setToRestState, PxVehicleAutoBoxData::setLatency
 	*/
 	PxReal mAutoBoxSwitchTime;
 
@@ -466,7 +472,7 @@ private:
 
 	/**
 	\brief Test that a PxVehicleDriveDynData instance has legal values.
-	\see setToRestState
+	@see setToRestState
 	*/
 	bool isValid() const;
 
@@ -484,20 +490,24 @@ public:
 PX_COMPILE_TIME_ASSERT(0==(sizeof(PxVehicleDriveDynData) & 15));
 
 /**
-\deprecated This API is replaced by a new API, see the Vehicles section in the 4.0 to 5.1 migration guide.
-
 \brief A complete vehicle with instance dynamics data and configuration data for wheels and engine,clutch,gears,autobox.
-\see PxVehicleDrive4W, PxVehicleDriveTank
+@see PxVehicleDrive4W, PxVehicleDriveTank
 */
-class PX_DEPRECATED PxVehicleDrive : public PxVehicleWheels
+class PxVehicleDrive : public PxVehicleWheels
 {
+//= ATTENTION! =====================================================================================
+// Changing the data layout of this class breaks the binary serialization format.  See comments for 
+// PX_BINARY_SERIAL_VERSION.  If a modification is required, please adjust the getBinaryMetaData 
+// function.  If the modification is made on a custom branch, please change PX_BINARY_SERIAL_VERSION
+// accordingly.
+//==================================================================================================
 public:
 
 	friend class PxVehicleUpdate;
 
 	/**
 	\brief Dynamics data of vehicle instance.
-	\see setup
+	@see setup
 	*/
 	PxVehicleDriveDynData mDriveDynData;
 
@@ -514,7 +524,7 @@ protected:
 	void setToRestState();
 
 	/**
-	\see PxVehicleDrive4W::allocate, PxVehicleDriveTank::allocate
+	@see PxVehicleDrive4W::allocate, PxVehicleDriveTank::allocate
 	*/
 	static PxU32 computeByteSize(const PxU32 numWheels);
 	static PxU8* patchupPointers(const PxU32 nbWheels, PxVehicleDrive* vehDrive, PxU8* ptr);
@@ -522,12 +532,12 @@ protected:
 
 	/**
 	\brief Deallocate a PxVehicle4WDrive instance.
-	\see PxVehicleDrive4W::free, PxVehicleDriveTank::free
+	@see PxVehicleDrive4W::free, PxVehicleDriveTank::free
 	*/
 	void free();
 
 	/**
-	\see PxVehicleDrive4W::setup, PxVehicleDriveTank::setup
+	@see PxVehicleDrive4W::setup, PxVehicleDriveTank::setup
 	*/
 	void setup
 		(PxPhysics* physics, PxRigidDynamic* vehActor, 
@@ -542,7 +552,7 @@ public:
 protected:
 	PxVehicleDrive(PxType concreteType, PxBaseFlags baseFlags) : PxVehicleWheels(concreteType, baseFlags) {}	
 	~PxVehicleDrive() {}
-	virtual bool isKindOf(const char* name)	const { PX_IS_KIND_OF(name, "PxVehicleDrive", PxVehicleWheels); }
+	virtual bool isKindOf(const char* name)	const { return !::strcmp("PxVehicleDrive", name) || PxBase::isKindOf(name); }
 //~serialization
 };
 PX_COMPILE_TIME_ASSERT(0==(sizeof(PxVehicleDrive) & 15));
@@ -551,4 +561,5 @@ PX_COMPILE_TIME_ASSERT(0==(sizeof(PxVehicleDrive) & 15));
 } // namespace physx
 #endif
 
-#endif
+/** @} */
+#endif //PX_VEHICLE_DRIVE_H

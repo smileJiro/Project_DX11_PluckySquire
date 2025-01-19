@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Player_Sleeping_WakeUp_0021_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 217.0,
+        "Y": 3384.0
+      },
+      "BakedSourceDimension": {
+        "X": 208.0,
+        "Y": 255.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Player_Sleeping-0'",
+        "ObjectPath": "/Game/Characters/Player/Sleeping/Textures/Player_Sleeping-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": -89.0,
+          "Y": 315.0,
+          "Z": 0.20703125,
+          "W": 0.826416
+        },
+        {
+          "X": -295.0,
+          "Y": 315.0,
+          "Z": 0.10644531,
+          "W": 0.826416
+        },
+        {
+          "X": -295.0,
+          "Y": 62.0,
+          "Z": 0.10644531,
+          "W": 0.8881836
+        },
+        {
+          "X": -89.0,
+          "Y": 62.0,
+          "Z": 0.20703125,
+          "W": 0.8881836
+        },
+        {
+          "X": -89.0,
+          "Y": 315.0,
+          "Z": 0.20703125,
+          "W": 0.826416
+        },
+        {
+          "X": -295.0,
+          "Y": 62.0,
+          "Z": 0.10644531,
+          "W": 0.8881836
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,397 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Jot_HandEvict",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0004_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0008_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0009_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0010_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0010_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0011_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0011_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0013_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0013_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0014_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0014_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0015_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0015_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0016_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0016_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0017_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0017_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0018_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0018_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0019_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0019_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0020_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0020_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0021_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0021_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0022_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0022_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0023_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0023_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0024_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0024_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0025_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0025_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0026_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0026_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0027_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0027_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0028_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0028_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0029_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0029_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0030_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0030_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0031_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0031_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0032_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0032_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0033_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0033_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0034_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0034_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0035_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0035_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0036_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0036_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0037_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0037_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0038_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0038_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0039_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0039_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0040_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0040_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0041_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0041_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0042_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0042_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0043_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0043_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0044_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0044_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0045_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0045_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0046_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0046_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0047_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0047_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0048_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0048_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0049_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0049_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0050_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0050_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0051_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0051_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0052_X03'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0052_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0053_X03'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0053_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0054_X02'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0054_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_0055_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0055_X01.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

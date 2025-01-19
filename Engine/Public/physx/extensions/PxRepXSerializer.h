@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,14 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
-
 #ifndef PX_REPX_SERIALIZER_H
 #define PX_REPX_SERIALIZER_H
+/** \addtogroup Serializers
+  @{
+*/
 
 #include "common/PxBase.h"
 #include "extensions/PxRepXSimpleType.h"
@@ -45,8 +48,6 @@ namespace physx
 	/**
 	\brief Serializer interface for RepX (Xml) serialization.
 
-	\deprecated Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
-
 	In order to serialize a class to RepX both a PxSerializer and
 	a PxRepXSerializer implementation are needed. 
 
@@ -60,9 +61,9 @@ namespace physx
 
 	\note Implementing a PxRepXSerializer is currently not practical without including the internal PhysXExtension header "SnRepXSerializerImpl.h". 
 
-	\see PxSerializer, PX_NEW_REPX_SERIALIZER, PxSerializationRegistry::registerRepXSerializer
+	@see PxSerializer, PX_NEW_REPX_SERIALIZER, PxSerializationRegistry::registerRepXSerializer
 	*/
-	class PX_DEPRECATED PxRepXSerializer
+	class PxRepXSerializer
 	{
 	protected:
 		virtual ~PxRepXSerializer(){}
@@ -70,7 +71,7 @@ namespace physx
 		
 		/**
 		\brief The type this Serializer is meant to operate on.
-		\see PxRepXObject::typeName
+		@see PxRepXObject::typeName
 		*/
 		virtual const char* getTypeName() = 0;
 
@@ -105,19 +106,17 @@ namespace physx
 
 /**
 \brief Inline helper template function to create PxRepXObject from TDataType type supporting PxTypeInfo<TDataType>::name.
-\deprecated Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
 */
 template<typename TDataType>
-PX_DEPRECATED PX_INLINE physx::PxRepXObject PxCreateRepXObject(const TDataType* inType, const physx::PxSerialObjectId inId)
+PX_INLINE physx::PxRepXObject PxCreateRepXObject(const TDataType* inType, const physx::PxSerialObjectId inId)
 {
 	return physx::PxRepXObject(physx::PxTypeInfo<TDataType>::name(), inType, inId);
 }
 
 /**
 \brief Inline helper function to create PxRepXObject from a PxBase instance.
-\deprecated Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
 */
-PX_DEPRECATED PX_INLINE physx::PxRepXObject PxCreateRepXObject(const physx::PxBase* inType, const physx::PxSerialObjectId inId)
+PX_INLINE physx::PxRepXObject PxCreateRepXObject(const physx::PxBase* inType, const physx::PxSerialObjectId inId)
 {
 	PX_ASSERT(inType);
 	return physx::PxRepXObject(inType->getConcreteTypeName(), inType, inId);
@@ -125,28 +124,25 @@ PX_DEPRECATED PX_INLINE physx::PxRepXObject PxCreateRepXObject(const physx::PxBa
 
 /**
 \brief Inline helper template function to create PxRepXObject form TDataType type using inType pointer as a PxSerialObjectId id.
-\deprecated Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
 */
 template<typename TDataType>
-PX_DEPRECATED PX_INLINE physx::PxRepXObject PxCreateRepXObject(const TDataType* inType)
+PX_INLINE physx::PxRepXObject PxCreateRepXObject(const TDataType* inType)
 {
-	return PxCreateRepXObject(inType, static_cast<physx::PxSerialObjectId>(size_t(inType)));
+	return PxCreateRepXObject(inType, static_cast<physx::PxSerialObjectId>(reinterpret_cast<size_t>(inType)));
 }
 
 /**
 \brief Preprocessor macro for RepX serializer creation.
-\deprecated Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
 */
 #define PX_NEW_REPX_SERIALIZER(T) \
-		*PX_PLACEMENT_NEW(PxGetAllocatorCallback()->allocate(sizeof(T), "PxRepXSerializer", PX_FL), T)(*PxGetAllocatorCallback())
+		*PX_PLACEMENT_NEW(PxGetFoundation().getAllocatorCallback().allocate(sizeof(T), "PxRepXSerializer",  __FILE__, __LINE__ ), T)(PxGetFoundation().getAllocatorCallback())
 
 /**
 \brief Preprocessor Macro to simplify RepX serializer delete.
-\deprecated Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
 */
 #define PX_DELETE_REPX_SERIALIZER(x) \
-		{ PxRepXSerializer* s = x; if (s) { PxGetAllocatorCallback()->deallocate(s); } }
+		{ PxRepXSerializer* s = x; if (s) { PxGetFoundation().getAllocatorCallback().deallocate(s); } }
 
 
-#endif
-
+/** @} */
+#endif // PX_REPX_SERIALIZER_H

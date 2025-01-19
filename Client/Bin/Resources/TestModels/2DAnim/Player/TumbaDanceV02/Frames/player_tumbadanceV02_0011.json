@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "player_tumbadanceV02_0011",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -4.5,
+              "Y": 0.0,
+              "Z": 110.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 221.0,
+            "Y": 10.0,
+            "Z": 250.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "E36F2E7D4FBF27A82E32B594C8A95D91"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "player_tumbadanceV02_0011",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 228.0,
+        "Y": 264.0
+      },
+      "BakedSourceDimension": {
+        "X": 223.0,
+        "Y": 252.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_tumbadanceV02-1'",
+        "ObjectPath": "/Game/Characters/Player/TumbaDanceV02/Textures/player_tumbadanceV02-1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'player_tumbadanceV02_0011:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/TumbaDanceV02/Frames/player_tumbadanceV02_0011.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 106.0,
+          "Y": 235.0,
+          "Z": 0.87890625,
+          "W": 0.25878906
+        },
+        {
+          "X": -115.0,
+          "Y": 235.0,
+          "Z": 0.44726562,
+          "W": 0.25878906
+        },
+        {
+          "X": -115.0,
+          "Y": -15.0,
+          "Z": 0.44726562,
+          "W": 0.5029297
+        },
+        {
+          "X": 106.0,
+          "Y": -15.0,
+          "Z": 0.87890625,
+          "W": 0.5029297
+        },
+        {
+          "X": 106.0,
+          "Y": 235.0,
+          "Z": 0.87890625,
+          "W": 0.25878906
+        },
+        {
+          "X": -115.0,
+          "Y": -15.0,
+          "Z": 0.44726562,
+          "W": 0.5029297
+        }
+      ]
+    }
+  }
+]

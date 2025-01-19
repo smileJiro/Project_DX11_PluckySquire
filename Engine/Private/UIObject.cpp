@@ -36,11 +36,11 @@ HRESULT CUIObject::Initialize(void* pArg)
 	UITransformDesc.eStartCoord = COORDINATE_2D;
 	UITransformDesc.isCoordChangeEnable = false;
 
-	m_fX = UITransformDesc.tTransform2DDesc.vPosition.x = pDesc->fX;
-	m_fY = UITransformDesc.tTransform2DDesc.vPosition.y = pDesc->fY;
+	m_fX = UITransformDesc.tTransform2DDesc.vInitialPosition.x = pDesc->fX;
+	m_fY = UITransformDesc.tTransform2DDesc.vInitialPosition.y = pDesc->fY;
 
-	m_fSizeX = UITransformDesc.tTransform2DDesc.vScaling.x = pDesc->fSizeX;
-	m_fSizeY = UITransformDesc.tTransform2DDesc.vScaling.y = pDesc->fSizeY;
+	m_fSizeX = UITransformDesc.tTransform2DDesc.vInitialScaling.x = pDesc->fSizeX;
+	m_fSizeY = UITransformDesc.tTransform2DDesc.vInitialScaling.y = pDesc->fSizeY;
 
 	m_iCurLevelID = pDesc->iCurLevelID;
 	UITransformDesc.iCurLevelID = m_iCurLevelID;

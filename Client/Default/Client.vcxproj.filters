@@ -154,6 +154,9 @@
     <Filter Include="02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG">
       <UniqueIdentifier>{e33890e6-15c4-477e-9a78-c791eb2c6588}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\DetectionField">
+      <UniqueIdentifier>{04adcb91-4582-41ba-903b-8a861fe8a29f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -305,6 +308,18 @@
     <ClInclude Include="..\Public\SettingPanel.h">
       <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Idle.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Jump.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Run.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DetectionField.h">
+      <Filter>03.Components\DetectionField</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -446,6 +461,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\SettingPanel.cpp">
       <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Idle.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Jump.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Run.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DetectionField.cpp">
+      <Filter>03.Components\DetectionField</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

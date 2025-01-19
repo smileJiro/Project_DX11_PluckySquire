@@ -1,0 +1,96 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_knockedback_loop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0001'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0001.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0002'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0002.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0003'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0003.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0004'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0004.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0005'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0005.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0006'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0006.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0007'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0007.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0008'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0008.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0009'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0009.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0010'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0010.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0011'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0011.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_knockedback_loop_0012'",
+            "ObjectPath": "/Game/Characters/Player/C09_129130/Frames/player_knockedback_loop_0012.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

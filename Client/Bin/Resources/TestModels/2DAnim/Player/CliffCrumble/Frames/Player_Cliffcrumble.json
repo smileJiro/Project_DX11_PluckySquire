@@ -1,0 +1,152 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_Cliffcrumble",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0001_X03'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0001_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0002_X04'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0002_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0005_X03'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0005_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0006_X03'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0006_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0008_X03'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0008_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0009_X03'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0009_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0012_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0012_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0013_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0013_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0014_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0014_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0015_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0015_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0016_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0016_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0017_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0017_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0018_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0018_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0019_X01'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0019_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cliffcrumble_0020_X03'",
+            "ObjectPath": "/Game/Characters/Player/CliffCrumble/Frames/Player_Cliffcrumble_0020_X03.0"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

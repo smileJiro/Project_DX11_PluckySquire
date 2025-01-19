@@ -153,8 +153,8 @@ HRESULT CTest_Player::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
-    BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform2DDesc.vScaling = _float3(100.0f, 100.0f, 100.0f);
+    BodyDesc.tTransform2DDesc.vIniitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(100.0f, 100.0f, 100.0f);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 

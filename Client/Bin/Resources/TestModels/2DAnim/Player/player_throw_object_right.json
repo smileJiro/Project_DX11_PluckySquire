@@ -1,0 +1,61 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_throw_object_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_throw_object_right_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_throw_object_right_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_throw_object_right_0002_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_throw_object_right_0002_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_throw_object_right_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_throw_object_right_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_throw_object_right_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_throw_object_right_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_throw_object_right_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_throw_object_right_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_throw_object_right_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_throw_object_right_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_throw_object_right_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_throw_object_right_0007_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

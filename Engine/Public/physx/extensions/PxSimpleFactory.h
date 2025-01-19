@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_SIMPLE_FACTORY_H
-#define PX_SIMPLE_FACTORY_H
+
+#ifndef PX_PHYSICS_EXTENSIONS_SIMPLE_FACTORY_H
+#define PX_PHYSICS_EXTENSIONS_SIMPLE_FACTORY_H
+/** \addtogroup extensions
+  @{
+*/
 
 #include "common/PxPhysXCommonConfig.h"
 #include "foundation/PxTransform.h"
@@ -46,6 +51,7 @@ namespace physx
 	class PxGeometry;
 	class PxShape;
 
+
 /** \brief simple method to create a PxRigidDynamic actor with a single PxShape. 
 
 	\param[in] sdk the PxPhysics object
@@ -58,14 +64,16 @@ namespace physx
 	\return a new dynamic actor with the PxRigidBodyFlag, or NULL if it could 
 	not be constructed
 
-	\see PxRigidDynamic PxShapeFlag
+	@see PxRigidDynamic PxShapeFlag
 */
+
 PxRigidDynamic*	PxCreateDynamic(PxPhysics& sdk,
 								const PxTransform& transform,
 								const PxGeometry& geometry,
 								PxMaterial& material,
 								PxReal density,
 								const PxTransform& shapeOffset = PxTransform(PxIdentity));
+
 
 /** \brief simple method to create a PxRigidDynamic actor with a single PxShape. 
 
@@ -77,12 +85,14 @@ PxRigidDynamic*	PxCreateDynamic(PxPhysics& sdk,
 	\return a new dynamic actor with the PxRigidBodyFlag, or NULL if it could 
 	not be constructed
 
-	\see PxRigidDynamic PxShapeFlag
+	@see PxRigidDynamic PxShapeFlag
 */
+
 PxRigidDynamic*	PxCreateDynamic(PxPhysics& sdk,
 								const PxTransform& transform,
 								PxShape& shape,
 								PxReal density);
+
 
 /** \brief simple method to create a kinematic PxRigidDynamic actor with a single PxShape. 
 
@@ -101,14 +111,16 @@ PxRigidDynamic*	PxCreateDynamic(PxPhysics& sdk,
 	\return a new dynamic actor with the PxRigidBodyFlag::eKINEMATIC set, or NULL if it could 
 	not be constructed
 
-	\see PxRigidDynamic PxShapeFlag
+	@see PxRigidDynamic PxShapeFlag
 */
+
 PxRigidDynamic*	PxCreateKinematic(PxPhysics& sdk,
 								  const PxTransform& transform,
 								  const PxGeometry& geometry,
 								  PxMaterial& material,
 								  PxReal density,
 								  const PxTransform& shapeOffset = PxTransform(PxIdentity));
+
 
 /** \brief simple method to create a kinematic PxRigidDynamic actor with a single PxShape. 
 
@@ -125,12 +137,14 @@ PxRigidDynamic*	PxCreateKinematic(PxPhysics& sdk,
 	\return a new dynamic actor with the PxRigidBodyFlag::eKINEMATIC set, or NULL if it could 
 	not be constructed
 
-	\see PxRigidDynamic PxShapeFlag
+	@see PxRigidDynamic PxShapeFlag
 */
+
 PxRigidDynamic*	PxCreateKinematic(PxPhysics& sdk,
 								  const PxTransform& transform,
 								  PxShape& shape,
 								  PxReal density);
+
 
 /** \brief simple method to create a PxRigidStatic actor with a single PxShape. 
 
@@ -142,13 +156,15 @@ PxRigidDynamic*	PxCreateKinematic(PxPhysics& sdk,
 
 	\return a new static actor, or NULL if it could not be constructed
 
-	\see PxRigidStatic
+	@see PxRigidStatic
 */
+
 PxRigidStatic*	PxCreateStatic(PxPhysics& sdk,
 							   const PxTransform& transform,
 							   const PxGeometry& geometry,
 							   PxMaterial& material,
 							   const PxTransform& shapeOffset = PxTransform(PxIdentity));
+
 
 /** \brief simple method to create a PxRigidStatic actor with a single PxShape. 
 
@@ -158,11 +174,29 @@ PxRigidStatic*	PxCreateStatic(PxPhysics& sdk,
 
 	\return a new static actor, or NULL if it could not be constructed
 
-	\see PxRigidStatic
+	@see PxRigidStatic
 */
+
 PxRigidStatic*	PxCreateStatic(PxPhysics& sdk,
 							   const PxTransform& transform,
 							   PxShape& shape);
+
+
+/** \brief simple method to create a PxRigidStatic actor with a single PxShape. 
+
+	\param[in] sdk the PxPhysics object
+	\param[in] transform the global pose of the new object
+	\param[in] shape the new object's shape
+
+	\return a new static actor, or NULL if it could not be constructed
+
+	@see PxRigidStatic
+*/
+
+PxRigidStatic*	PxCreateStatic(PxPhysics& sdk,
+							   const PxTransform& transform,
+							   PxShape& shape);
+
 
 /**
 \brief create a shape by copying attributes from another shape
@@ -176,8 +210,6 @@ The function clones a PxShape. The following properties are copied:
 - rest offset
 - simulation filter data
 - query filter data
-- torsional patch radius
-- minimum torsional patch radius
 
 The following are not copied and retain their default values:
 - name
@@ -188,10 +220,14 @@ The following are not copied and retain their default values:
 \param[in] isExclusive whether the new shape should be an exclusive or shared shape.
 
 \return the newly-created rigid static
+
 */
+
 PxShape* PxCloneShape(PxPhysics& physicsSDK,
 					  const PxShape& shape,
 					  bool isExclusive);
+
+
 
 /**
 \brief create a static body by copying attributes from another rigid actor
@@ -200,7 +236,6 @@ The function clones a PxRigidDynamic or PxRigidStatic as a PxRigidStatic. A unif
 - shapes
 - actor flags 
 - owner client and client behavior bits
-- dominance group
 
 The following are not copied and retain their default values:
 - name
@@ -215,21 +250,23 @@ The following are not copied and retain their default values:
 \param[in] transform the transform of the new static.
 
 \return the newly-created rigid static
+
 */
+
 PxRigidStatic* PxCloneStatic(PxPhysics& physicsSDK, 
 							 const PxTransform& transform,
 							 const PxRigidActor& actor);
+
 
 /**
 \brief create a dynamic body by copying attributes from an existing body
 
 The following properties are copied:
 - shapes
-- actor flags, rigidDynamic flags and rigidDynamic lock flags
+- actor flags and rigidDynamic flags
 - mass, moment of inertia, and center of mass frame
 - linear and angular velocity
 - linear and angular damping
-- maximum linear velocity
 - maximum angular velocity
 - position and velocity solver iterations
 - maximum depenetration velocity
@@ -238,7 +275,6 @@ The following properties are copied:
 - dominance group
 - owner client and client behavior bits
 - name pointer
-- kinematic target
 
 The following are not copied and retain their default values:
 - name
@@ -254,10 +290,13 @@ The following are not copied and retain their default values:
 \param[in] transform the transform of the new dynamic
 
 \return the newly-created rigid static
+
 */
+
 PxRigidDynamic*	PxCloneDynamic(PxPhysics& physicsSDK, 	 
 							   const PxTransform& transform,
 							   const PxRigidDynamic& body);
+
 
 /** \brief create a plane actor. The plane equation is n.x + d = 0
 
@@ -267,11 +306,13 @@ PxRigidDynamic*	PxCloneDynamic(PxPhysics& physicsSDK,
 
 	\return a new static actor, or NULL if it could not be constructed
 
-	\see PxRigidStatic
+	@see PxRigidStatic
 */
+
 PxRigidStatic*	PxCreatePlane(PxPhysics& sdk,
 							  const PxPlane& plane,
 							  PxMaterial& material);
+
 
 /**
 \brief scale a rigid actor by a uniform scale
@@ -284,10 +325,13 @@ center of mass is linearly scaled, the mass is multiplied by the cube of the sca
 \param[in] scale the scale by which to multiply the actor. Must be >0.
 \param[in] scaleMassProps whether to scale the mass properties
 */
+
 void PxScaleRigidActor(PxRigidActor& actor, PxReal scale, bool scaleMassProps = true);
+
 
 #if !PX_DOXYGEN
 } // namespace physx
 #endif
 
+/** @} */
 #endif

@@ -1,0 +1,18 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_c06_raisesword_loop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_raisesword_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_raisesword_0011_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_electrocute_0010_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 1342.0
+      },
+      "BakedSourceDimension": {
+        "X": 360.0,
+        "Y": 312.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_electrocute-0'",
+        "ObjectPath": "/Game/Characters/Player/Electrocute/Textures/player_electrocute-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 164.0,
+          "Y": 296.0,
+          "Z": 0.17578125,
+          "W": 0.6557617
+        },
+        {
+          "X": -194.0,
+          "Y": 296.0,
+          "Z": 0.0009765625,
+          "W": 0.6557617
+        },
+        {
+          "X": -194.0,
+          "Y": -14.0,
+          "Z": 0.0009765625,
+          "W": 0.8071289
+        },
+        {
+          "X": 164.0,
+          "Y": -14.0,
+          "Z": 0.17578125,
+          "W": 0.8071289
+        },
+        {
+          "X": 164.0,
+          "Y": 296.0,
+          "Z": 0.17578125,
+          "W": 0.6557617
+        },
+        {
+          "X": -194.0,
+          "Y": -14.0,
+          "Z": 0.0009765625,
+          "W": 0.8071289
+        }
+      ]
+    }
+  }
+]
