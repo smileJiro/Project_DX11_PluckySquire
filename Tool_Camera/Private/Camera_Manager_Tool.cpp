@@ -24,11 +24,11 @@ void CCamera_Manager_Tool::Update()
 
 void CCamera_Manager_Tool::Render()
 {
-	for (auto& Arm : m_Arms) 
-		Arm.second->Render_Arm();
-	
-	if (nullptr != m_pCopyArm)
-		m_pCopyArm->Render_Arm();
+	//for (auto& Arm : m_Arms) 
+	//	Arm.second->Render_Arm();
+	//
+	//if (nullptr != m_pCopyArm)
+	//	m_pCopyArm->Render_Arm();
 
 	if (nullptr != m_pCurrentArm)
 		m_pCurrentArm->Render_Arm();
@@ -121,32 +121,9 @@ void CCamera_Manager_Tool::Set_NextArmData(_wstring _wszNextArmName)
 	}
 }
 
-void CCamera_Manager_Tool::Copy_Arm()
+void CCamera_Manager_Tool::Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData)
 {
-	if (nullptr != m_pCurrentArm) {
-		if(nullptr != m_pCopyArm)
-			Safe_Release(m_pCopyArm);
-		
-		m_pCopyArm = m_pCurrentArm->Clone();
-	}
-}
-
-void CCamera_Manager_Tool::Add_CopyArm(_wstring _wszArmTag, ARM_DATA _pData)
-{
-	if (nullptr == m_pCopyArm)
-		return;
-
-	if (nullptr == Find_Arm(_wszArmTag)) {
-		m_Arms.emplace(_wszArmTag, m_pCopyArm);
-		m_pCopyArm->Set_ArmType(CCameraArm::OTHER);
-		m_pCopyArm->Set_ArmTag(_wszArmTag);
-
-		Add_ArmData(_wszArmTag, _pData);
-
-		m_pCopyArm = nullptr;
-	}
-	else
-		return;
+	Add_ArmData(_wszArmTag, _pData);
 }
 
 void CCamera_Manager_Tool::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
@@ -154,13 +131,12 @@ void CCamera_Manager_Tool::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
 	if (nullptr == Find_ArmData(_wszArmTag)) {
 		ARM_DATA* pArmData = new ARM_DATA();
 
-		XMStoreFloat3(&pArmData->vArm, m_pCopyArm->Get_ArmVector());
-		pArmData->fLength = m_pCopyArm->Get_Length();
+		pArmData->fLength = _pData.fLength;
 		pArmData->fMoveTimeAxisY = _pData.fMoveTimeAxisY;
 		pArmData->fMoveTimeAxisRight = _pData.fMoveTimeAxisRight;
 		pArmData->fLengthTime = _pData.fLengthTime;
-		pArmData->iRotateType = _pData.iRotateType;
-		pArmData->iTimeRateType = _pData.iTimeRateType;
+		pArmData->fRotationPerSecAxisY = _pData.fRotationPerSecAxisY;
+		pArmData->fRotationPerSecAxisRight = _pData.fRotationPerSecAxisRight;
 
 		m_ArmDatas.emplace(_wszArmTag, pArmData);
 	}
@@ -170,41 +146,36 @@ void CCamera_Manager_Tool::Edit_ArmInfo(_wstring _wszArmTag)
 {
 }
 
-_float CCamera_Manager_Tool::Get_ArmLength(_bool _isCopyArm)
+void CCamera_Manager_Tool::Reset_CurrentArmPos(_vector vArm, _float fLength)
 {
-	if (true == _isCopyArm) {
-		if (nullptr != m_pCopyArm)
-			return m_pCopyArm->Get_Length();
-	}
-	else {
-		if (nullptr != m_pCurrentArm)
-			return m_pCurrentArm->Get_Length();
-	}
+	m_pCurrentArm->Set_Length(fLength);
+	m_pCurrentArm->Set_ArmVector(vArm);
+}
+
+_float CCamera_Manager_Tool::Get_ArmLength()
+{
+	if (nullptr != m_pCurrentArm)
+		return m_pCurrentArm->Get_Length();
 		
 }
 
-void CCamera_Manager_Tool::Set_ArmRotation(_vector _vRotation, _bool _isCopyArm)
+_float3 CCamera_Manager_Tool::Get_CurrentArmVector()
 {
-	if (true == _isCopyArm) {
-		if(nullptr != m_pCopyArm)
-			m_pCopyArm->Set_Rotation(_vRotation);
-	}
-	else {
-		if(nullptr != m_pCurrentArm)
-			m_pCurrentArm->Set_Rotation(_vRotation);
-	}
+	_float3 vArm;
+	XMStoreFloat3(&vArm, m_pCurrentArm->Get_ArmVector());
+	return vArm;
 }
 
-void CCamera_Manager_Tool::Set_ArmLength(_float _fLength, _bool _isCopyArm)
+void CCamera_Manager_Tool::Set_ArmRotation(_vector _vRotation)
 {
-	if (true == _isCopyArm) {
-		if (nullptr != m_pCopyArm)
-			m_pCopyArm->Set_Length(_fLength);
-	}
-	else {
-		if (nullptr != m_pCurrentArm)
-			m_pCurrentArm->Set_Length(_fLength);
-	}
+	if (nullptr != m_pCurrentArm)
+		m_pCurrentArm->Set_Rotation(_vRotation);
+}
+
+void CCamera_Manager_Tool::Set_ArmLength(_float _fLength)
+{
+	if (nullptr != m_pCurrentArm)
+		m_pCurrentArm->Set_Length(_fLength);
 		
 }
 
@@ -218,15 +189,15 @@ void CCamera_Manager_Tool::Set_CurrentArm(CCameraArm* _pCameraArm)
 
 }
 
-CCameraArm* CCamera_Manager_Tool::Find_Arm(_wstring _wszArmTag)
-{
-	auto iter = m_Arms.find(_wszArmTag);
-
-	if (iter == m_Arms.end())
-		return nullptr;
-
-	return iter->second;
-}
+//CCameraArm* CCamera_Manager_Tool::Find_Arm(_wstring _wszArmTag)
+//{
+//	auto iter = m_Arms.find(_wszArmTag);
+//
+//	if (iter == m_Arms.end())
+//		return nullptr;
+//
+//	return iter->second;
+//}
 
 ARM_DATA* CCamera_Manager_Tool::Find_ArmData(_wstring _wszArmTag)
 {
@@ -242,16 +213,11 @@ void CCamera_Manager_Tool::Free()
 {
 	Safe_Release(m_pGameInstance);
 
-	for (auto& Arm : m_Arms)
-		Safe_Release(Arm.second);
-	m_Arms.clear();
-
 	for (auto& ArmData : m_ArmDatas)
 		Safe_Delete(ArmData.second);
 	m_ArmDatas.clear();
 
 	Safe_Release(m_pCurrentArm);
-	Safe_Release(m_pCopyArm);
 
 	__super::Free();
 }

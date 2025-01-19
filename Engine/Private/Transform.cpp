@@ -123,6 +123,23 @@ void CTransform::Turn(_float _fTimeDelta, _fvector _vAxis)
     Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
 
+void CTransform::TurnAngle(_float _fRadian, _fvector _vAxis)
+{
+    // 지속적인 회전.
+    _vector vRight = Get_State(STATE::STATE_RIGHT);
+    _vector vUp = Get_State(STATE::STATE_UP);
+    _vector vLook = Get_State(STATE::STATE_LOOK);
+
+    // 회전 행렬 만들기.
+    _matrix RotationMatrix = XMMatrixRotationAxis(XMVector3Normalize(_vAxis), _fRadian);
+
+   // vector * matrix
+   // set_state
+    Set_State(STATE::STATE_RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
+    Set_State(STATE::STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
+    Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
+}
+
 void CTransform::TurnZ(_float _fTimeDelta)
 {
     _vector vRight = Get_State(STATE::STATE_RIGHT);

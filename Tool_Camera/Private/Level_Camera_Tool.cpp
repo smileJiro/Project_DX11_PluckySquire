@@ -101,6 +101,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 
 	TargetDesc.fSmoothSpeed = 5.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
+	TargetDesc.vAtOffset = { 0.f, 3.f, 0.f };
 
 	TargetDesc.fFovy = XMConvertToRadians(30.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -170,50 +171,55 @@ void CLevel_Camera_Tool::Show_CameraTool()
 	ImGui::Begin("Test");
 	
 	// Roteate
-	Rotate_Arm(m_isCopyArm);
+	Rotate_Arm();
 
 	// Length
-	Change_ArmLength(m_isCopyArm);
+	Change_ArmLength();
 
 	// CheckBox
 	ImGui::NewLine();
 	
 	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.3f, 0.0f));
 	ImGui::SameLine();
-	ImGui::Text("Copy Arm & Change Copy Arm Value");
+	ImGui::Text("Change Next ArmPos Value");
 	ImGui::Separator();
 
-	ImGui::Checkbox("Rotate CopyArm", &m_isCopyArm);
-	ImGui::SameLine(155.f);
+	//ImGui::Checkbox("Rotate CopyArm", &m_isCopyArm);
+	//ImGui::SameLine(155.f);
 
 	// Copy
-	if (ImGui::Button("Create CopyArm")) {
-		CCamera_Manager_Tool::GetInstance()->Copy_Arm();
-	}
+	//if (ImGui::Button("Create CopyArm")) {
+	//	CCamera_Manager_Tool::GetInstance()->Copy_Arm();
+	//}
 
 	// Add CopyArm
-	Add_CopyArm();
-	if (ImGui::Button("Add CopyArm")) {
+	Input_NextArm_Info();
+	if (ImGui::Button("Add Next Arm Info")) {
 		
 		ARM_DATA tData;
+		tData.fLength = m_fLength;
 		tData.fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
 		tData.fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
 		tData.fLengthTime = { m_fLengthTime, 0.f };
-		tData.iRotateType = m_iRotateType;
-		tData.iTimeRateType = m_iTimeRateType;
+		tData.fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x), XMConvertToRadians(m_fRotationPerSecAxisY.y) };
+		tData.fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x), XMConvertToRadians(m_fRotationPerSecAxisRight.y)};
 
-		CCamera_Manager_Tool::GetInstance()->Add_CopyArm(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
+		CCamera_Manager_Tool::GetInstance()->Add_NextArm_Info(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
 		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
 	}
 
 	// Edit CopyArm
 	ImGui::SameLine();
+
 	if (ImGui::Button("Edit CopyArm")) {
 		Edit_CopyArm();
 	}
 
 	// Play Move
 	Set_MovementInfo();
+	
+	// Reset Current Arm Pos
+	Reset_CurrentArmPos();
 
 	ImGui::End();
 }
@@ -222,8 +228,7 @@ void CLevel_Camera_Tool::Show_ArmInfo()
 {
 	ImGui::Begin("Arm Info");
 
-
-
+	Show_SelectedArmData();
 
 	ImGui::End();
 }
@@ -237,7 +242,7 @@ void CLevel_Camera_Tool::Create_Arms()
 
 	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = { XMConvertToRadians(40.f), XMConvertToRadians(0.f), 0.f };
+	Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
 	Desc.fLength = 12.f;
 	Desc.wszArmTag = TEXT("Player_Arm");
 	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
@@ -249,6 +254,8 @@ void CLevel_Camera_Tool::Create_Arms()
 
 	pTarget->Add_Arm(pArm);
 	CCamera_Manager_Tool::GetInstance()->Set_CurrentArm(pArm);
+
+	m_vResetArmPos = CCamera_Manager_Tool::GetInstance()->Get_CurrentArmVector();
 }
 
 void CLevel_Camera_Tool::Show_ComboBox()
@@ -273,76 +280,116 @@ void CLevel_Camera_Tool::Show_ComboBox()
 	}
 }
 
-void CLevel_Camera_Tool::Rotate_Arm(_bool _isCopyArm)
+void CLevel_Camera_Tool::Show_SelectedArmData()
 {
-	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.4f, 0.0f));
+	if (m_ArmNames.size() <= 0)
+		return;
+
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
 	ImGui::SameLine();
-	ImGui::Text("Change Value of Arm");
+	ImGui::Text("Selected Arm Data");
 	ImGui::Separator();
 
-	_vector vCamPos = XMLoadFloat4((m_pGameInstance->Get_CamPosition()));
-	_vector vArmRotation = {};
+	ARM_DATA* pData = CCamera_Manager_Tool::GetInstance()->Get_ArmData(m_ArmNames[m_iSelectedArmNum]);
 
-	ImGui::Text("Camera Position: %.2f, %.2f, %.2f", XMVectorGetX(vCamPos), XMVectorGetY(vCamPos), XMVectorGetZ(vCamPos));
+	if (nullptr == pData)
+		return;
+
+	//m_szSelectedArmName = m_pGameInstance->WStringToString(m_ArmNames[m_iSelectedArmNum]).c_str();
+
+	//ImGui::Text("Copy Arm Tag Input:      ");
+	//ImGui::SameLine();
+	//ImGui::SetNextItemWidth(-1);
+	//ImGui::InputText("##SelectedArm Tag",  m_ArmNames[m_iSelectedArmNum], MAX_PATH);
+
+	ImGui::Text("SelectedArm Length Time: %.2f        ", pData->fLengthTime.x);
+
+	ImGui::Text("Move Time AxisY: %.2f    ", pData->fMoveTimeAxisY.x);
+
+	ImGui::Text("Move Time AxisRight: %.2f", pData->fMoveTimeAxisRight.x);
+
+
+	ImGui::Text("Min Rotation Per Sec AixsY: %.2f        ", XMConvertToDegrees(pData->fRotationPerSecAxisY.x));
+	ImGui::Text("Max Rotation Per Sec AixsY: %.2f        ", XMConvertToDegrees(pData->fRotationPerSecAxisY.y));
 	ImGui::NewLine();
+	ImGui::Text("Min Rotation Per Sec AixsRight: %.2f        ", XMConvertToDegrees(pData->fRotationPerSecAxisRight.x));
+	ImGui::Text("Max Rotation Per Sec AixsRight: %.2f        ", XMConvertToDegrees(pData->fRotationPerSecAxisRight.y));
 
-	ImGui::Text("Ratation Value: %.2f", m_fRotationValue);
-	ImGui::SameLine();
-	ImGui::DragFloat("##Rotate", &m_fRotationValue, 0.1f, 0.f, 10.f);
 
-	ImGui::Text("RotationValueX: %.2f", m_fRotationValue);
-	ImGui::SameLine();
-	if (ImGui::Button("-X Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
-		vArmRotation = XMVectorSetX(vArmRotation, -m_fRotationValue);
-	ImGui::SameLine();
-	if (ImGui::Button("+X Angle") || ImGui::IsItemActive())
-		vArmRotation = XMVectorSetX(vArmRotation, m_fRotationValue);
-
-	ImGui::Text("RotationValueY: %.2f", m_fRotationValue);
-	ImGui::SameLine();
-	if (ImGui::Button("-Y Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
-		vArmRotation = XMVectorSetY(vArmRotation, -m_fRotationValue);
-	ImGui::SameLine();
-	if (ImGui::Button("+Y Angle") || ImGui::IsItemActive())
-		vArmRotation = XMVectorSetY(vArmRotation, m_fRotationValue);
-
-	ImGui::Text("RotationValueZ: %.2f", m_fRotationValue);
-	ImGui::SameLine();
-	if (ImGui::Button("-Z Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
-		vArmRotation = XMVectorSetZ(vArmRotation, -m_fRotationValue);
-	ImGui::SameLine();
-	if (ImGui::Button("+Z Angle") || ImGui::IsItemActive())
-		vArmRotation = XMVectorSetZ(vArmRotation, m_fRotationValue);
-
-	_vector vRadianRotation = XMVectorSet(XMConvertToRadians(XMVectorGetX(vArmRotation)), XMConvertToRadians(XMVectorGetY(vArmRotation)), XMConvertToRadians(XMVectorGetZ(vArmRotation)), 0.f);
-
-	CCamera_Manager_Tool::GetInstance()->Set_ArmRotation(vRadianRotation, _isCopyArm);
+	ImGui::NewLine();
 }
 
-void CLevel_Camera_Tool::Change_ArmLength(_bool _isCopyArm)
+void CLevel_Camera_Tool::Rotate_Arm()
+{
+	//ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.4f, 0.0f));
+	//ImGui::SameLine();
+	//ImGui::Text("Change Value of Arm");
+	//ImGui::Separator();
+
+	//_vector vCamPos = XMLoadFloat4((m_pGameInstance->Get_CamPosition()));
+	//_vector vArmRotation = {};
+
+	//ImGui::Text("Camera Position: %.2f, %.2f, %.2f", XMVectorGetX(vCamPos), XMVectorGetY(vCamPos), XMVectorGetZ(vCamPos));
+	//ImGui::NewLine();
+
+	//ImGui::Text("Ratation Value: %.2f", m_fRotationValue);
+	//ImGui::SameLine();
+	//ImGui::DragFloat("##Rotate", &m_fRotationValue, 0.1f, 0.f, 10.f);
+
+	//ImGui::Text("RotationValueX: %.2f", m_fRotationValue);
+	//ImGui::SameLine();
+	//if (ImGui::Button("-X Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
+	//	vArmRotation = XMVectorSetX(vArmRotation, -m_fRotationValue);
+	//ImGui::SameLine();
+	//if (ImGui::Button("+X Angle") || ImGui::IsItemActive())
+	//	vArmRotation = XMVectorSetX(vArmRotation, m_fRotationValue);
+
+	//ImGui::Text("RotationValueY: %.2f", m_fRotationValue);
+	//ImGui::SameLine();
+	//if (ImGui::Button("-Y Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
+	//	vArmRotation = XMVectorSetY(vArmRotation, -m_fRotationValue);
+	//ImGui::SameLine();
+	//if (ImGui::Button("+Y Angle") || ImGui::IsItemActive())
+	//	vArmRotation = XMVectorSetY(vArmRotation, m_fRotationValue);
+
+	//ImGui::Text("RotationValueZ: %.2f", m_fRotationValue);
+	//ImGui::SameLine();
+	//if (ImGui::Button("-Z Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
+	//	vArmRotation = XMVectorSetZ(vArmRotation, -m_fRotationValue);
+	//ImGui::SameLine();
+	//if (ImGui::Button("+Z Angle") || ImGui::IsItemActive())
+	//	vArmRotation = XMVectorSetZ(vArmRotation, m_fRotationValue);
+
+	//_vector vRadianRotation = XMVectorSet(XMConvertToRadians(XMVectorGetX(vArmRotation)), XMConvertToRadians(XMVectorGetY(vArmRotation)), XMConvertToRadians(XMVectorGetZ(vArmRotation)), 0.f);
+
+	//CCamera_Manager_Tool::GetInstance()->Set_ArmRotation(vRadianRotation);
+}
+
+void CLevel_Camera_Tool::Change_ArmLength()
 {
 	ImGui::NewLine();
 	ImGui::Text("Length Value: %.2f", m_fLengthValue);
 	ImGui::SameLine();
 	ImGui::DragFloat("##Length", &m_fLengthValue, 0.05f, 0.f, 10.f);
 
-	_float fArmLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength(_isCopyArm);
+	_float fArmLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength();
 	_bool bActive = false;
 
 	ImGui::Text("Arm Length: %.2f  ", m_fLengthValue);
 	ImGui::SameLine();
 	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
 		fArmLength -= m_fLengthValue;
-		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength, _isCopyArm);
+		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
 		fArmLength += m_fLengthValue;
-		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength, _isCopyArm);
+		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength);
 	}
 }
 
-void CLevel_Camera_Tool::Add_CopyArm()
+void CLevel_Camera_Tool::Input_NextArm_Info()
 {
 	ImGui::NewLine();
 	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
@@ -355,6 +402,11 @@ void CLevel_Camera_Tool::Add_CopyArm()
 	ImGui::SetNextItemWidth(-1);
 	ImGui::InputText("##CopyArm Tag", m_szCopyArmName, MAX_PATH);
 
+	ImGui::Text("Length: %.2f        ", m_fLength);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(-1);
+	ImGui::DragFloat("##Length Info", &m_fLength, 0.05f, 0.f, 30.f);
+
 	ImGui::Text("Length Time: %.2f        ", m_fLengthTime);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
@@ -363,64 +415,36 @@ void CLevel_Camera_Tool::Add_CopyArm()
 	ImGui::Text("Move Time AxisY: %.2f    ", m_fMoveTimeAxisY);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Move Time", &m_fMoveTimeAxisY, 0.05f, 0.f, 10.f);
+	ImGui::DragFloat("##Move Time Y", &m_fMoveTimeAxisY, 0.05f, 0.f, 10.f);
 
 	ImGui::Text("Move Time AxisRight: %.2f", m_fMoveTimeAxisRight);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Move Time", &m_fMoveTimeAxisRight, 0.05f, 0.f, 10.f);
-	
-	switch (m_iRotateType) {
-	case CCameraArm::CROSS:
-		ImGui::Text("Rotate Type: CROSS       ");
-		break;
-	case CCameraArm::NOT_CROSS:
-		ImGui::Text("Rotate Type: NOT CROSS   ");
-		break;
-	case CCameraArm::ROTATE_TYE_END:
-		ImGui::Text("Rotate Type: NONE        ");
-		break;
-	}
+	ImGui::DragFloat("##Move Time Right", &m_fMoveTimeAxisRight, 0.05f, 0.f, 10.f);
 
-	ImGui::SameLine();
-	if (ImGui::Button("Cross")) 
-		m_iRotateType = CCameraArm::CROSS;
 	
+	ImGui::Text("Min Rotation Per Sec AxisY: %.2f        ", m_fRotationPerSecAxisY.x);
 	ImGui::SameLine();
-	if (ImGui::Button("Not Cross")) 
-		m_iRotateType = CCameraArm::NOT_CROSS;
-	
+	ImGui::DragFloat("##Min Rotation Per Sec AxisY", &m_fRotationPerSecAxisY.x, 0.1f, -360.f, 360.f);
+	ImGui::Text("Max Rotation Per Sec AxisY: %.2f        ", m_fRotationPerSecAxisY.y);
+	ImGui::SameLine();
+	ImGui::DragFloat("##Max Rotation Per Sec AxisY", &m_fRotationPerSecAxisY.y, 0.1f, -360.f, 360.f);
 
-	switch (m_iTimeRateType) {
-	case CCameraArm::EASE_IN:
-		ImGui::Text("Time Rate Type: EASE IN  ");
-		break;
-	case CCameraArm::EASE_OUT:
-		ImGui::Text("Time Rate Type: EASE OUT ");
-		break;
-	case CCameraArm::LERP:
-		ImGui::Text("Time Rate Type: LERP     ");
-		break;
-	case CCameraArm::TIME_RATE_TYPE_END:
-		ImGui::Text("Time Rate Type: NONE     ");
-		break;
-	}
-
+	ImGui::Text("Min Rotation Per Sec AxisRight: %.2f        ", m_fRotationPerSecAxisRight.x);
 	ImGui::SameLine();
-	if (ImGui::Button("Ease In")) 
-		m_iTimeRateType = CCameraArm::EASE_IN;
+	ImGui::DragFloat("##Min Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.x, 0.1f, -360.f, 360.f);
+	ImGui::Text("Max Rotation Per Sec AxisRight: %.2f        ", m_fRotationPerSecAxisRight.y);
 	ImGui::SameLine();
-	if (ImGui::Button("Ease Out")) 
-		m_iTimeRateType = CCameraArm::NOT_CROSS;
-	ImGui::SameLine();
-	if (ImGui::Button("Lerp"))
-		m_iTimeRateType = CCameraArm::LERP;
+	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
 
 	ImGui::NewLine();
 }
 
 void CLevel_Camera_Tool::Edit_CopyArm()
 {
+	if (m_ArmNames.size() <= 0)
+		return;
+
 	ARM_DATA* pData = CCamera_Manager_Tool::GetInstance()->Get_ArmData(m_ArmNames[m_iSelectedArmNum]);
 
 	if (nullptr == pData)
@@ -429,9 +453,11 @@ void CLevel_Camera_Tool::Edit_CopyArm()
 	pData->fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
 	pData->fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
 	pData->fLengthTime = { m_fLengthTime, 0.f };
-	pData->iRotateType = m_iRotateType;
-	pData->iTimeRateType = m_iTimeRateType;
+	pData->fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x),   XMConvertToRadians(m_fRotationPerSecAxisY.y) };
+	pData->fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x),   XMConvertToRadians(m_fRotationPerSecAxisRight.y) };
+	// Show Data
 }
+
 
 void CLevel_Camera_Tool::Set_MovementInfo()
 {
@@ -455,12 +481,22 @@ void CLevel_Camera_Tool::Set_MovementInfo()
 		CCamera_Manager_Tool::GetInstance()->Set_NextArmData(m_ArmNames[m_iSelectedArmNum]);
 	}
 
-	// Play_Movement();
+	
+	Reset_CurrentArmPos();
 }
 
 void CLevel_Camera_Tool::Play_Movement()
 {
 	
+}
+
+void CLevel_Camera_Tool::Reset_CurrentArmPos()
+{
+	ImGui::SameLine();
+
+	if (ImGui::Button("Rest Pos")) {
+		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArmPos(XMLoadFloat3(&m_vResetArmPos), 12.f);
+	}
 }
 
 CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

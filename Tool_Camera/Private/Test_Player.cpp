@@ -71,7 +71,7 @@ HRESULT CTest_Player::Render()
 
     /* Font Render */
 
-    return S_OK;
+    return S_OK;w
 }
 
 void CTest_Player::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -79,7 +79,7 @@ void CTest_Player::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
     int a = 0;
 }
 
-void CTest_Player::Key_Input(_float _fTimeDelta)
+void CTest_Player::Key_Input(_float _fTimeDelta)    
 {
     if (KEY_DOWN(KEY::N)) {
         m_isMove = false;

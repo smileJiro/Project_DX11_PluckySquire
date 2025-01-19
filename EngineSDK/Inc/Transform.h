@@ -36,7 +36,7 @@ public:
 	_bool					Go_Right(_float _fTimeDelta); 
 	_bool					Go_Up(_float _fTimeDelta); 
 	_bool					Go_Down(_float _fTimeDelta);
-	void						Go_Direction(_vector _vDirection, _float _fTimeDelta);
+	void					Go_Direction(_vector _vDirection, _float _fTimeDelta);
 
 	void					Rotation(_float _fRadian, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 항등상태를 기준으로 지정한 각도로 회전한다.
 	void					RotationZ(_float _vRadianZ);
@@ -44,6 +44,7 @@ public:
 	virtual void			RotationQuaternion(const _float3& _vRadianXYZ);
 
 	void					Turn(_float _fTimeDelta, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 기존 회전을 기준으로 추가로 정해진 속도로 회전한다.
+	void					TurnAngle(_float _fRadian, _fvector _vAxis = { 0.0f, 1.0f, 0.0f, 0.0f });	// 기존 회전을 기준으로 정해진 각도만큼 회전한다
 	void					TurnZ(_float _fTimeDelta);
 
 	_float					Compute_Distance(_fvector _vTargetPos) const; // 거리 계산 함수.

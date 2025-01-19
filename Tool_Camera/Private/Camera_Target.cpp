@@ -45,6 +45,8 @@ void CCamera_Target::Priority_Update(_float fTimeDelta)
 void CCamera_Target::Update(_float fTimeDelta)
 {
 	Action_Mode(fTimeDelta);
+
+	m_pArm->Get_ArmVector();
 }
 
 void CCamera_Target::Late_Update(_float fTimeDelta)
@@ -105,13 +107,8 @@ void CCamera_Target::Defualt_Move(_float fTimeDelta)
 
 void CCamera_Target::Move_To_NextArm(_float fTimeDelta)
 {
-	//_uint iRotateType = m_pArm->GEt
-	//switch(m)
-
-
-	if (true == m_pArm->Move_To_NextArm_Cross(fTimeDelta)) {
+	if (true == m_pArm->Move_To_NextArm(fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
-
 		return;
 	}
 
@@ -124,7 +121,7 @@ void CCamera_Target::Move_To_NextArm(_float fTimeDelta)
 void CCamera_Target::Look_Target(_float fTimeDelta)
 {
 	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
-
+	
 	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
