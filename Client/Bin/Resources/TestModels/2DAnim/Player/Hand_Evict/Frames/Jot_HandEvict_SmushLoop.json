@@ -1,0 +1,26 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Jot_HandEvict_SmushLoop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_SmushLoop_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_SmushLoop_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Jot_HandEvict_SmushLoop_0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_SmushLoop_0002_X01.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

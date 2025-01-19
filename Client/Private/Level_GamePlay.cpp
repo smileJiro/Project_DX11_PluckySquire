@@ -196,8 +196,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-	TerrainDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	TerrainDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+	TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
 
@@ -320,8 +320,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	CBarfBug::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	Monster_Desc.tTransform3DDesc.vPosition = _float3(-10.0f, 0.3f, -19.0f);
-	Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;

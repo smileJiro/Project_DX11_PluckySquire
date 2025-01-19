@@ -1,0 +1,34 @@
+[
+  {
+    "Type": "Texture2D",
+    "Name": "player_tumbadanceV02-0",
+    "Class": "UScriptClass'Texture2D'",
+    "Properties": {
+      "ImportedSize": {
+        "X": 512,
+        "Y": 2048
+      },
+      "LightingGuid": "A02CC15B-4F845B82-4F79DBA0-A202F608",
+      "LODGroup": "TEXTUREGROUP_Project03",
+      "NeverStream": true
+    },
+    "SizeX": 512,
+    "SizeY": 2048,
+    "PackedData": 1,
+    "PixelFormat": "PF_DXT5",
+    "FirstMipToSerialize": 0,
+    "Mips": [
+      {
+        "BulkData": {
+          "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+          "ElementCount": 1048576,
+          "SizeOnDisk": 1048576,
+          "OffsetInFile": "0x100885"
+        },
+        "SizeX": 512,
+        "SizeY": 2048,
+        "SizeZ": 1
+      }
+    ]
+  }
+]

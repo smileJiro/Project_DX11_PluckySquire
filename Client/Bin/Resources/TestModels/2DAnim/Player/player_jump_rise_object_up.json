@@ -1,0 +1,47 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_jump_rise_object_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jump_rise_object_up_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_jump_rise_object_up_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jump_rise_object_up_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_jump_rise_object_up_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jump_rise_object_up_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_jump_rise_object_up_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jump_rise_object_up_0004_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_jump_rise_object_up_0004_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jump_rise_object_up_0005_X03'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_jump_rise_object_up_0005_X03.0"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

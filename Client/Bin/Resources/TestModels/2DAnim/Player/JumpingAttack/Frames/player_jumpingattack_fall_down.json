@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_jumpingattack_fall_down",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_fall_down_0001_X03'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_fall_down_0001_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_fall_down_0001_X03'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_fall_down_0001_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_fall_down_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_fall_down_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_fall_down_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_fall_down_0003_X01.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

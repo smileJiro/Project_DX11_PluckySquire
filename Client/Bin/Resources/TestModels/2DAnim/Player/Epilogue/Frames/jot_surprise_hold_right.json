@@ -1,0 +1,26 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "jot_surprise_hold_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0010_X02.1"
+          },
+          "FrameRun": 8
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_surprise_right_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_surprise_right_0011_X02.1"
+          },
+          "FrameRun": 8
+        }
+      ]
+    }
+  }
+]

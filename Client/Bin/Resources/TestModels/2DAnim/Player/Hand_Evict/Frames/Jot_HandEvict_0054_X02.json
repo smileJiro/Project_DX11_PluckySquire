@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Jot_HandEvict_0054_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -29.5,
+              "Y": 0.0,
+              "Z": 83.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 957.0,
+            "Y": 10.0,
+            "Z": 801.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "689928A348F4607CB65F8197D0BEA2F4"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Jot_HandEvict_0054_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1533.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 959.0,
+        "Y": 803.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'jot_hand_evict_0'",
+        "ObjectPath": "/Game/Characters/Player/Hand_Evict/Textures/jot_hand_evict_0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Jot_HandEvict_0054_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_0054_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 449.0,
+          "Y": 484.0,
+          "Z": 0.6081543,
+          "W": 0.00048828125
+        },
+        {
+          "X": -508.0,
+          "Y": 484.0,
+          "Z": 0.37451172,
+          "W": 0.00048828125
+        },
+        {
+          "X": -508.0,
+          "Y": -317.0,
+          "Z": 0.37451172,
+          "W": 0.19604492
+        },
+        {
+          "X": 449.0,
+          "Y": -317.0,
+          "Z": 0.6081543,
+          "W": 0.19604492
+        },
+        {
+          "X": 449.0,
+          "Y": 484.0,
+          "Z": 0.6081543,
+          "W": 0.00048828125
+        },
+        {
+          "X": -508.0,
+          "Y": -317.0,
+          "Z": 0.37451172,
+          "W": 0.19604492
+        }
+      ]
+    }
+  }
+]

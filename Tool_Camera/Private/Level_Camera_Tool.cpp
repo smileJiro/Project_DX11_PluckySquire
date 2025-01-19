@@ -127,11 +127,11 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CGa
 
 	CTest_Player::CONTAINEROBJ_DESC Desc;
 	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	Desc.tTransform2DDesc.vScaling = _float3(150.f, 150.f, 150.f);
+	Desc.tTransform2DDesc.vIniitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	Desc.tTransform2DDesc.vInitialScaling = _float3(150.f, 150.f, 150.f);
 
-	Desc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	Desc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+	Desc.tTransform3DDesc.vIniitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Player"), LEVEL_CAMERA_TOOL, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -154,8 +154,8 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-	TerrainDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	TerrainDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+	TerrainDesc.tTransform3DDesc.vIniitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
 

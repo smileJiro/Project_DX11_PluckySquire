@@ -1,0 +1,18 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "jot_lookUp_hold_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_lookUp_right_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/Epilogue/Frames/jot_lookUp_right_0009_X02.1"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

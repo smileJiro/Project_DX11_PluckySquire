@@ -1,0 +1,74 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_roll_loop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0001_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0002_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0003_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0004_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0005_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0006_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0007_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0008_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_roll_loop_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_Excavator/Frames/player_roll_loop_0009_X02.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

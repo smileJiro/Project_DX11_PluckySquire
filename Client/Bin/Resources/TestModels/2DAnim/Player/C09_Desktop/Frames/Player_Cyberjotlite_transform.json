@@ -1,0 +1,628 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_Cyberjotlite_transform",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0001_X03'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0001_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0005_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0008_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0009_X03'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0009_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0011_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0011_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0013_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0013_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0014_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0014_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0015_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0015_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0016_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0016_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0017_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0017_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0018_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0018_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0019_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0019_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0020_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0020_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0021_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0021_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0022_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0022_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0023_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0023_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0024_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0024_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0025_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0025_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0026_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0026_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0027_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0027_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0028_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0028_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0029_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0029_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0030_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0030_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0031_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0031_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0032_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0032_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0033_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0033_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0034_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0034_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0035_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0035_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0036_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0036_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0037_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0037_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0038_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0038_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0039_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0039_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0040_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0040_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0041_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0041_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0042_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0042_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0043_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0043_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0044_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0044_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0045_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0045_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0046_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0046_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0047_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0047_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0048_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0048_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0049_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0049_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0050_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0050_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0051_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0051_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0052_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0052_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0053_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0053_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0054_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0054_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0055_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0055_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0056_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0056_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0057_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0057_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0058_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0058_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0059_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0059_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0060_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0060_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0061_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0061_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0062_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0062_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0063_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0063_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0064_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0064_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0065_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0065_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0066_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0066_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0067_X03'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0067_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0068_X04'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0068_X04.1"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0069_X03'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0069_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0070_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0070_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0071_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0071_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0072_X03'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0072_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0073_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0073_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0074_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0074_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0075_X01'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0075_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0076_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0076_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0077_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0077_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0078_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0078_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0079_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0079_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0080_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0080_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0081_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0081_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0082_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0082_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0083_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0083_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0084_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0084_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0085_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0085_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0086_X02'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0086_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0087_X05'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0087_X05.1"
+          },
+          "FrameRun": 5
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Cyberjotlite_transform_0088_X03'",
+            "ObjectPath": "/Game/Characters/Player/C09_Desktop/Frames/Player_Cyberjotlite_transform_0088_X03.1"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

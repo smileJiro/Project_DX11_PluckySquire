@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_dodgerollV02_out_down_0009_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1029.0,
+        "Y": 1213.0
+      },
+      "BakedSourceDimension": {
+        "X": 205.0,
+        "Y": 207.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_dodgerollV02-0'",
+        "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Textures/player_dodgerollV02-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 105.0,
+          "Y": 189.0,
+          "Z": 0.6020508,
+          "W": 0.59277344
+        },
+        {
+          "X": -98.0,
+          "Y": 189.0,
+          "Z": 0.5029297,
+          "W": 0.59277344
+        },
+        {
+          "X": -98.0,
+          "Y": -16.0,
+          "Z": 0.5029297,
+          "W": 0.6928711
+        },
+        {
+          "X": 105.0,
+          "Y": -16.0,
+          "Z": 0.6020508,
+          "W": 0.6928711
+        },
+        {
+          "X": 105.0,
+          "Y": 189.0,
+          "Z": 0.6020508,
+          "W": 0.59277344
+        },
+        {
+          "X": -98.0,
+          "Y": -16.0,
+          "Z": 0.5029297,
+          "W": 0.6928711
+        }
+      ]
+    }
+  }
+]

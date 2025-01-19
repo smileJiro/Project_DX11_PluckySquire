@@ -33,5 +33,12 @@ namespace Client
 
 		LAST,
 	};
-
+	enum class F_DIRECTION
+	{
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+		F_DIR_LAST
+	};
 }
