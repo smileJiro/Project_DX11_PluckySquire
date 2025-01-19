@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_sword_retrieve_0065_X14",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2888.0,
+        "Y": 1744.0
+      },
+      "BakedSourceDimension": {
+        "X": 276.0,
+        "Y": 285.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_sword_retrieve-0'",
+        "ObjectPath": "/Game/Characters/Player/Sword_Retrieve/Textures/player_sword_retrieve-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 105.0,
+          "Y": 265.0,
+          "Z": 0.7722168,
+          "W": 0.8520508
+        },
+        {
+          "X": -169.0,
+          "Y": 265.0,
+          "Z": 0.70532227,
+          "W": 0.8520508
+        },
+        {
+          "X": -169.0,
+          "Y": -18.0,
+          "Z": 0.70532227,
+          "W": 0.9902344
+        },
+        {
+          "X": 105.0,
+          "Y": -18.0,
+          "Z": 0.7722168,
+          "W": 0.9902344
+        },
+        {
+          "X": 105.0,
+          "Y": 265.0,
+          "Z": 0.7722168,
+          "W": 0.8520508
+        },
+        {
+          "X": -169.0,
+          "Y": -18.0,
+          "Z": 0.70532227,
+          "W": 0.9902344
+        }
+      ]
+    }
+  }
+]

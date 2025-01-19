@@ -15,6 +15,8 @@ public:
 		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
+		_float fDelayTime;
+		_float fCoolTime;
 	}MONSTER_DESC;
 
 protected:
@@ -57,6 +59,28 @@ public:
 	virtual void Change_Animation() {};
 
 protected:
+	void Delay_On() 
+	{ 
+		m_fAccTime = 0.f;
+		m_isDelay = true; 
+	}
+	void Delay_Off()
+	{
+		m_isDelay = false;
+		m_fAccTime = 0.f;
+	}
+	void CoolTime_On()
+	{
+		m_fAccTime = 0.f;
+		m_isCool = true;
+	}
+	void CoolTime_Off()
+	{
+		m_isCool = false;
+		m_fAccTime = 0.f;
+	}
+
+protected:
 	MONSTER_STATE		m_eState = {};
 	MONSTER_STATE		m_ePreState = {};
 	CGameObject* m_pTarget = { nullptr };
@@ -65,6 +89,13 @@ protected:
 	_float m_fChaseRange = { 0.f };
 	_float m_fAttackRange = { 0.f };
 	_bool m_isAnimChangeable = { true };
+
+	_float m_fAccTime = { 0.f };
+	_bool m_isDelay = { false };
+	_float m_fDelayTime = { 0.f };
+	_bool m_isCool = { false };
+	_float m_fCoolTime = { 0.f };
+	_uint	 m_iAttackCount = { 0 };
 
 public:
 	HRESULT Cleanup_DeadReferences() override;

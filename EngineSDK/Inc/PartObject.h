@@ -27,11 +27,12 @@ public:
 
 public:
 	const _float4x4*		Get_FinalWorldMatrix_Ptr(COORDINATE _eCoord) { return &m_WorldMatrices[_eCoord]; }
+	void Set_SocketMatrix(const _float4x4* _pSocketMatrix) { m_pSocketMatrix = _pSocketMatrix; }
 
 protected:
 	const _float4x4*		m_pParentMatrices[COORDINATE_LAST] = {}; // 부모의 월드 행렬의 주소
 	_float4x4				m_WorldMatrices[COORDINATE_LAST] = {}; // 자기자신의 최종 행렬 
-
+	const _float4x4* m_pSocketMatrix = nullptr ;
 public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override; 

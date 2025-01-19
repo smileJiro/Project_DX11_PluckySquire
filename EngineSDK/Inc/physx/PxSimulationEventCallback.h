@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_SIMULATION_EVENT_CALLBACK_H
-#define PX_SIMULATION_EVENT_CALLBACK_H
+
+#ifndef PX_SIMULATION_EVENT_CALLBACK
+#define PX_SIMULATION_EVENT_CALLBACK
+/** \addtogroup physics
+@{
+*/
 
 #include "foundation/PxVec3.h"
 #include "foundation/PxTransform.h"
@@ -51,7 +56,7 @@ class PxConstraint;
 /**
 \brief Extra data item types for contact pairs.
 
-\see PxContactPairExtraDataItem.type
+@see PxContactPairExtraDataItem.type
 */
 struct PxContactPairExtraDataType
 {
@@ -68,7 +73,7 @@ struct PxContactPairExtraDataType
 /**
 \brief Base class for items in the extra data stream of contact pairs
 
-\see PxContactPairHeader.extraDataStream
+@see PxContactPairHeader.extraDataStream
 */
 struct PxContactPairExtraDataItem
 {
@@ -91,7 +96,7 @@ This struct is shared by multiple types of extra data items. The #type field all
 
 \note For static rigid bodies, the velocities will be set to zero.
 
-\see PxContactPairHeader.extraDataStream
+@see PxContactPairHeader.extraDataStream
 */
 struct PxContactPairVelocity : public PxContactPairExtraDataItem
 {
@@ -113,7 +118,7 @@ public:
 /**
 \brief World space actor poses of the contact pair rigid bodies
 
-\see PxContactPairHeader.extraDataStream PxPairFlag::eCONTACT_EVENT_POSE
+@see PxContactPairHeader.extraDataStream PxPairFlag::eCONTACT_EVENT_POSE
 */
 struct PxContactPairPose : public PxContactPairExtraDataItem
 {
@@ -132,7 +137,7 @@ public:
 
 If CCD with multiple passes is enabled, then a fast moving object might bounce on and off the same
 object multiple times. Also, different shapes of the same actor might gain and lose contact with an other
-object over multiple passes. This marker allows to separate the extra data items for each collision case, as well as
+object over multiple passes. This marker allows to seperate the extra data items for each collision case, as well as
 distinguish the shape pair reports of different CCD passes.
 
 Example:
@@ -150,7 +155,7 @@ PxContactPair(touch_found: s0_0, s1) | PxContactPair(touch_lost: s0_0, s1) | PxC
 The #index of PxContactPairIndexA will point to the first entry in the PxContactPair array, for PxContactPairIndexB,
 #index will point to the third entry.
 
-\see PxContactPairHeader.extraDataStream
+@see PxContactPairHeader.extraDataStream
 */
 struct PxContactPairIndex : public PxContactPairExtraDataItem
 {
@@ -167,7 +172,7 @@ public:
 /**
 \brief A class to iterate over a contact pair extra data stream.
 
-\see PxContactPairHeader.extraDataStream
+@see PxContactPairHeader.extraDataStream
 */
 struct PxContactPairExtraDataIterator
 {
@@ -198,7 +203,7 @@ struct PxContactPairExtraDataIterator
 	
 	\return True if there was another set of extra data items in the stream, else false.
 	
-	\see PxContactPairVelocity PxContactPairPose PxContactPairIndex
+	@see PxContactPairVelocity PxContactPairPose PxContactPairIndex
 	*/
 	PX_INLINE bool nextItemSet()
 	{
@@ -284,28 +289,28 @@ public:
 	/**
 	\brief Pointer to the current pre solver velocity item in the stream. NULL if there is none.
 	
-	\see PxContactPairVelocity
+	@see PxContactPairVelocity
 	*/
 	const PxContactPairVelocity* preSolverVelocity;
 	
 	/**
 	\brief Pointer to the current post solver velocity item in the stream. NULL if there is none.
 	
-	\see PxContactPairVelocity
+	@see PxContactPairVelocity
 	*/
 	const PxContactPairVelocity* postSolverVelocity;
 	
 	/**
 	\brief Pointer to the current contact event pose item in the stream. NULL if there is none.
 	
-	\see PxContactPairPose
+	@see PxContactPairPose
 	*/
 	const PxContactPairPose* eventPose;
 	
 	/**
 	\brief The contact pair index of the current item set in the stream.
 	
-	\see PxContactPairIndex
+	@see PxContactPairIndex
 	*/
 	PxU32 contactPairIndex;
 };
@@ -314,7 +319,7 @@ public:
 /**
 \brief Collection of flags providing information on contact report pairs.
 
-\see PxContactPairHeader
+@see PxContactPairHeader
 */
 struct PxContactPairHeaderFlag
 {
@@ -328,7 +333,7 @@ struct PxContactPairHeaderFlag
 /**
 \brief Bitfield that contains a set of raised flags defined in PxContactPairHeaderFlag.
 
-\see PxContactPairHeaderFlag
+@see PxContactPairHeaderFlag
 */
 typedef PxFlags<PxContactPairHeaderFlag::Enum, PxU16> PxContactPairHeaderFlags;
 PX_FLAGS_OPERATORS(PxContactPairHeaderFlag::Enum, PxU16)
@@ -337,7 +342,7 @@ PX_FLAGS_OPERATORS(PxContactPairHeaderFlag::Enum, PxU16)
 /**
 \brief An Instance of this class is passed to PxSimulationEventCallback.onContact().
 
-\see PxSimulationEventCallback.onContact()
+@see PxSimulationEventCallback.onContact()
 */
 struct PxContactPairHeader
 {
@@ -353,9 +358,9 @@ struct PxContactPairHeader
 		  Do not dereference a pointer to a deleted actor. The pointer to a deleted actor is only provided 
 		  such that user data structures which might depend on the pointer value can be updated.
 
-	\see PxActor
+	@see PxActor
 	*/
-	PxActor*				actors[2];
+	PxRigidActor*				actors[2];
 
 	/**
 	\brief Stream containing extra data as requested in the PxPairFlag flags of the simulation filter.
@@ -363,7 +368,7 @@ struct PxContactPairHeader
 	This pointer is only valid if any kind of extra data information has been requested for the contact report pair (see #PxPairFlag::ePOST_SOLVER_VELOCITY etc.),
 	else it will be NULL.
 	
-	\see PxPairFlag
+	@see PxPairFlag
 	*/
 	const PxU8*					extraDataStream;
 	
@@ -375,7 +380,7 @@ struct PxContactPairHeader
 	/**
 	\brief Additional information on the contact report pair.
 
-	\see PxContactPairHeaderFlag
+	@see PxContactPairHeaderFlag
 	*/
 	PxContactPairHeaderFlags	flags;
 
@@ -394,7 +399,7 @@ struct PxContactPairHeader
 /**
 \brief Collection of flags providing information on contact report pairs.
 
-\see PxContactPair
+@see PxContactPair
 */
 struct PxContactPairFlag
 {
@@ -446,7 +451,7 @@ struct PxContactPairFlag
 /**
 \brief Bitfield that contains a set of raised flags defined in PxContactPairFlag.
 
-\see PxContactPairFlag
+@see PxContactPairFlag
 */
 typedef PxFlags<PxContactPairFlag::Enum, PxU16> PxContactPairFlags;
 PX_FLAGS_OPERATORS(PxContactPairFlag::Enum, PxU16)
@@ -488,21 +493,6 @@ struct PxContactPairPoint
 	PxU32   internalFaceIndex1;
 };
 
-/**
-\brief A friction anchor as used by contact notification
-*/
-struct PxContactPairFrictionAnchor
-{
-	/**
-	\brief The position of the friction anchor in world space.
-	*/
-	PxVec3	position;
-
-	/**
-	\brief The impulse applied at the friction anchor, in world space. Divide by the simulation time step to get a force value.
-	*/
-	PxVec3	impulse;
-};
 
 /**
 \brief Contact report pair information.
@@ -510,7 +500,7 @@ struct PxContactPairFrictionAnchor
 Instances of this class are passed to PxSimulationEventCallback.onContact(). If contact reports have been requested for a pair of shapes (see #PxPairFlag),
 then the corresponding contact information will be provided through this structure.
 
-\see PxSimulationEventCallback.onContact()
+@see PxSimulationEventCallback.onContact()
 */
 struct PxContactPair
 {
@@ -526,7 +516,7 @@ struct PxContactPair
 		  deleted shape. The pointer to a deleted shape is only provided such that user data structures which might 
 		  depend on the pointer value can be updated.
 
-	\see PxShape
+	@see PxShape
 	*/
 	PxShape*				shapes[2];
 
@@ -555,11 +545,6 @@ struct PxContactPair
 	const PxReal*			contactImpulses;
 
 	/**
-	\brief Buffer containing contact patches friction information.
-	*/
-	const PxU8*				frictionPatches;
-
-	/**
 	\brief Size of the contact stream [bytes] including force buffer
 	*/
 	PxU32					requiredBufferSize;
@@ -572,17 +557,19 @@ struct PxContactPair
 	/**
 	\brief Number of contact patches stored in the contact stream
 	*/
+
 	PxU8					patchCount;
 
 	/**
 	\brief Size of the contact stream [bytes] not including force buffer
 	*/
+
 	PxU16					contactStreamSize;
 
 	/**
 	\brief Additional information on the contact report pair.
 
-	\see PxContactPairFlag
+	@see PxContactPairFlag
 	*/
 	PxContactPairFlags		flags;
 
@@ -606,7 +593,7 @@ struct PxContactPair
 	\note eNOTIFY_TOUCH_CCD can get raised even if the pair did not request this event. However, in such a case it will only get
 	raised in combination with one of the other flags to point out that the other event occured during a CCD pass.
 
-	\see PxPairFlag
+	@see PxPairFlag
 	*/
 	PxPairFlags				events;
 
@@ -619,20 +606,9 @@ struct PxContactPair
 	\param[in] bufferSize Number of PxContactPairPoint structures the provided buffer can store.
 	\return Number of contact points written to the buffer.
 
-	\see PxContactPairPoint
+	@see PxContactPairPoint
 	*/
 	PX_INLINE PxU32			extractContacts(PxContactPairPoint* userBuffer, PxU32 bufferSize) const;
-
-	/**
-	\brief Extracts the friction anchors from the stream and stores them in a convenient format.
-
-	\param[out] userBuffer Array of PxContactPairFrictionAnchor structures to extract the friction anchors to.
-	\param[in] bufferSize Number of PxContactPairFrictionAnchor structures the provided buffer can store.
-	\return Number of friction anchors written to the buffer.
-
-	\see PxContactPairFrictionAnchor
-	*/
-	PX_INLINE PxU32			extractFrictionAnchors(PxContactPairFrictionAnchor* userBuffer, PxU32 bufferSize) const;
 
 	/**
 	\brief Helper method to clone the contact pair and copy the contact data stream into a user buffer.
@@ -700,40 +676,6 @@ PX_INLINE PxU32 PxContactPair::extractContacts(PxContactPairPoint* userBuffer, P
 	return nbContacts;
 }
 
-PX_INLINE PxU32 PxContactPair::extractFrictionAnchors(PxContactPairFrictionAnchor* userBuffer, PxU32 bufferSize) const
-{
-	PxU32 nbAnchors = 0;
-
-	if(bufferSize)
-	{
-		PxFrictionAnchorStreamIterator iter(contactPatches, frictionPatches, patchCount);
-
-		const PxU32 hasImpulses = (flags & PxContactPairFlag::eINTERNAL_HAS_IMPULSES);
-
-		while(iter.hasNextPatch())
-		{
-			iter.nextPatch();
-			while(iter.hasNextFrictionAnchor())
-			{
-				iter.nextFrictionAnchor();
-				PxContactPairFrictionAnchor& dst = userBuffer[nbAnchors];
-
-				dst.position = iter.getPosition();
-
-				dst.impulse = hasImpulses
-								? iter.getImpulse()
-								: PxVec3(0.0f);
-
-				++nbAnchors;
-				if(nbAnchors == bufferSize)
-					return nbAnchors;
-			}
-		}
-	}
-
-	return nbAnchors;
-}
-
 
 PX_INLINE void PxContactPair::bufferContacts(PxContactPair* newPair, PxU8* bufferMemory) const
 {
@@ -768,7 +710,7 @@ PX_INLINE const PxU32* PxContactPair::getInternalFaceIndices() const
 /**
 \brief Collection of flags providing information on trigger report pairs.
 
-\see PxTriggerPair
+@see PxTriggerPair
 */
 struct PxTriggerPairFlag
 {
@@ -783,7 +725,7 @@ struct PxTriggerPairFlag
 /**
 \brief Bitfield that contains a set of raised flags defined in PxTriggerPairFlag.
 
-\see PxTriggerPairFlag
+@see PxTriggerPairFlag
 */
 typedef PxFlags<PxTriggerPairFlag::Enum, PxU8> PxTriggerPairFlags;
 PX_FLAGS_OPERATORS(PxTriggerPairFlag::Enum, PxU8)
@@ -799,16 +741,16 @@ An array of these structs gets passed to the PxSimulationEventCallback::onTrigge
 	  whether that is the case. Do not dereference a pointer to a deleted shape. The pointer to a deleted shape is 
 	  only provided such that user data structures which might depend on the pointer value can be updated.
 
-\see PxSimulationEventCallback.onTrigger()
+@see PxSimulationEventCallback.onTrigger()
 */
 struct PxTriggerPair
 {
 	PX_INLINE PxTriggerPair() {}
 
 	PxShape*				triggerShape;	//!< The shape that has been marked as a trigger.
-	PxActor*				triggerActor;	//!< The actor to which triggerShape is attached
+	PxRigidActor*			triggerActor;	//!< The actor to which triggerShape is attached
 	PxShape*				otherShape;		//!< The shape causing the trigger event. \deprecated (see #PxSimulationEventCallback::onTrigger()) If collision between trigger shapes is enabled, then this member might point to a trigger shape as well.
-	PxActor*				otherActor;		//!< The actor to which otherShape is attached
+	PxRigidActor*			otherActor;		//!< The actor to which otherShape is attached
 	PxPairFlag::Enum		status;			//!< Type of trigger event (eNOTIFY_TOUCH_FOUND or eNOTIFY_TOUCH_LOST). eNOTIFY_TOUCH_PERSISTS events are not supported.
 	PxTriggerPairFlags		flags;			//!< Additional information on the pair (see #PxTriggerPairFlag)
 };
@@ -819,7 +761,7 @@ struct PxTriggerPair
 
 An array of these structs gets passed to the PxSimulationEventCallback::onConstraintBreak() report.
 
-\see PxConstraint PxSimulationEventCallback.onConstraintBreak()
+@see PxConstraint PxSimulationEventCallback.onConstraintBreak()
 */
 struct PxConstraintInfo
 {
@@ -837,7 +779,7 @@ struct PxConstraintInfo
 
 With the exception of onAdvance(), the events get sent during the call to either #PxScene::fetchResults() or 
 #PxScene::flushSimulation() with sendPendingReports=true. onAdvance() gets called while the simulation
-is running (that is between PxScene::simulate() or PxScene::advance() and PxScene::fetchResults()).
+is running (that is between PxScene::simulate(), onAdvance() and PxScene::fetchResults()).
 
 \note SDK state should not be modified from within the callbacks. In particular objects should not
 be created or destroyed. If state modification is needed then the changes should be stored to a buffer
@@ -846,7 +788,7 @@ and performed after the simulation step.
 <b>Threading:</b> With the exception of onAdvance(), it is not necessary to make these callbacks thread safe as 
 they will only be called in the context of the user thread.
 
-\see PxScene.setSimulationEventCallback() PxScene.getSimulationEventCallback()
+@see PxScene.setSimulationEventCallback() PxScene.getSimulationEventCallback()
 */
 class PxSimulationEventCallback
 	{
@@ -861,7 +803,7 @@ class PxSimulationEventCallback
 	\param[in] constraints - The constraints which have been broken.
 	\param[in] count       - The number of constraints
 
-	\see PxConstraint PxConstraintDesc.linearBreakForce PxConstraintDesc.angularBreakForce
+	@see PxConstraint PxConstraintDesc.linearBreakForce PxConstraintDesc.angularBreakForce
 	*/
 	virtual void onConstraintBreak(PxConstraintInfo* constraints, PxU32 count) = 0;
 
@@ -879,7 +821,7 @@ class PxSimulationEventCallback
 	\param[in] actors - The actors which just woke up.
 	\param[in] count  - The number of actors
 
-	\see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxActorFlag PxActor.setActorFlag()
+	@see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxActorFlag PxActor.setActorFlag()
 	*/
 	virtual void onWake(PxActor** actors, PxU32 count) = 0;
 
@@ -898,7 +840,7 @@ class PxSimulationEventCallback
 	\param[in] actors - The actors which have just been put to sleep.
 	\param[in] count  - The number of actors
 
-	\see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxActorFlag PxActor.setActorFlag()
+	@see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxActorFlag PxActor.setActorFlag()
 	*/
 	virtual void onSleep(PxActor** actors, PxU32 count) = 0;
 
@@ -916,7 +858,7 @@ class PxSimulationEventCallback
 	\param[in] pairs The contact pairs of two actors for which contact reports have been requested. See #PxContactPair.
 	\param[in] nbPairs The number of provided contact pairs.
 
-	\see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxContactPair PxPairFlag PxSimulationFilterShader PxSimulationFilterCallback
+	@see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxContactPair PxPairFlag PxSimulationFilterShader PxSimulationFilterCallback
 	*/
 	virtual void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) = 0;
 
@@ -931,7 +873,7 @@ class PxSimulationEventCallback
 	\param[in] pairs - The trigger pair events.
 	\param[in] count - The number of trigger pair events.
 
-	\see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxPairFlag PxSimulationFilterShader PxShapeFlag PxShape.setFlag()
+	@see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxPairFlag PxSimulationFilterShader PxShapeFlag PxShape.setFlag()
 	*/
 	virtual void onTrigger(PxTriggerPair* pairs, PxU32 count) = 0;
 
@@ -941,8 +883,35 @@ class PxSimulationEventCallback
 	When this call occurs, rigid bodies having the #PxRigidBodyFlag::eENABLE_POSE_INTEGRATION_PREVIEW 
 	flag set, were moved by the simulation and their new poses can be accessed through the provided buffers.
 	
-	\note The provided buffers are valid and can be read until the next call to #PxScene::simulate() or #PxScene::collide().
+	\note The provided buffers 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	                         are valid and can be read until the next call to #PxScene::simulate() or #PxScene::collide().
+	
+	\note Buffered user changes to the rigid body pose will not yet be reflected in the provided data. More important,
+	the provided data might contain bodies that have been deleted while the simulation was running. It is the user's
+	responsibility to detect and avoid dereferencing such bodies.
+
 	\note This callback gets triggered while the simulation is running. If the provided rigid body references are used to
 	read properties of the object, then the callback has to guarantee no other thread is writing to the same body at the same
 	time.
@@ -954,7 +923,7 @@ class PxSimulationEventCallback
 	\param[in] poseBuffer The integrated rigid body poses of the bodies listed in bodyBuffer.
 	\param[in] count The number of entries in the provided buffers.
 
-	\see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxRigidBodyFlag::eENABLE_POSE_INTEGRATION_PREVIEW
+	@see PxScene.setSimulationEventCallback() PxSceneDesc.simulationEventCallback PxRigidBodyFlag::eENABLE_POSE_INTEGRATION_PREVIEW
 	*/
 	virtual void onAdvance(const PxRigidBody*const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count) = 0;
 
@@ -965,4 +934,5 @@ class PxSimulationEventCallback
 } // namespace physx
 #endif
 
+/** @} */
 #endif

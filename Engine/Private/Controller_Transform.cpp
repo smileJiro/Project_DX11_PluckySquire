@@ -112,6 +112,11 @@ void CController_Transform::RotationQuaternion(const _float3& _vRadianXYZ)
 	m_pTransforms[m_eCurCoord]->RotationQuaternion(_vRadianXYZ);
 }
 
+void CController_Transform::RotationQuaternionW(const _float4& _vQuaternion)
+{
+	m_pTransforms[m_eCurCoord]->RotationQuaternionW(_vQuaternion);
+}
+
 void CController_Transform::Turn(_float _fRadian, _fvector _vAxis)
 {
 	m_pTransforms[m_eCurCoord]->Turn(_fRadian, _vAxis);
@@ -232,6 +237,7 @@ void CController_Transform::Set_RotationPerSec(_float _fRotationPerSec)
 
 void CController_Transform::Set_AutoRotationYDirection(_fvector _vRotYTarget)
 {
+
 	static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->Set_AutoRotationYDirection(_vRotYTarget);
 }
 

@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_RIGID_STATIC_H
-#define PX_RIGID_STATIC_H
+
+#ifndef PX_PHYSICS_NX_RIGIDSTATIC
+#define PX_PHYSICS_NX_RIGIDSTATIC
+/** \addtogroup physics
+@{
+*/
 
 #include "PxPhysXConfig.h"
 #include "PxRigidActor.h"
@@ -48,7 +53,7 @@ Instances of this class are created by calling #PxPhysics::createRigidStatic() a
 <h3>Visualizations</h3>
 \li #PxVisualizationParameter::eACTOR_AXES
 
-\see PxRigidActor  PxPhysics.createRigidStatic()  release()
+@see PxRigidActor  PxPhysics.createRigidStatic()  release()
 */
 
 class PxRigidStatic : public PxRigidActor
@@ -58,9 +63,9 @@ public:
 
 protected:
 	PX_INLINE					PxRigidStatic(PxType concreteType, PxBaseFlags baseFlags) : PxRigidActor(concreteType, baseFlags) {}
-	PX_INLINE					PxRigidStatic(PxBaseFlags baseFlags) : PxRigidActor(baseFlags){}
+	PX_INLINE					PxRigidStatic(PxBaseFlags baseFlags) : PxRigidActor(baseFlags) {}
 	virtual						~PxRigidStatic() {}
-	virtual		bool			isKindOf(const char* name)	const { PX_IS_KIND_OF(name, "PxRigidStatic", PxRigidActor); }
+	virtual		bool			isKindOf(const char* name)	const { return !::strcmp("PxRigidStatic", name) || PxRigidActor::isKindOf(name); }
 
 };
 
@@ -68,4 +73,5 @@ protected:
 } // namespace physx
 #endif
 
+/** @} */
 #endif

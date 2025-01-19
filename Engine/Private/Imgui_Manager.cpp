@@ -144,14 +144,21 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 			MSG_BOX("Render Failed Imgui_Debug_Render_ObjectInfo");
 		}
 	}
-	if (KEY_DOWN(KEY::NUM9))
+
+	HWND hWnd = GetFocus();
+	auto& io = ImGui::GetIO();
+	if (nullptr != hWnd && !io.WantCaptureKeyboard)
 	{
-		m_isImguiObjRender ^= 1;
+		if (KEY_DOWN(KEY::F7))
+		{
+			m_isImguiObjRender ^= 1;
+		}
+		if (KEY_DOWN(KEY::F8))
+		{
+			m_isImguiRTRender ^= 1;
+		}
 	}
-	if (KEY_DOWN(KEY::NUM0))
-	{
-		m_isImguiRTRender ^= 1;
-	}
+
 
 	return S_OK;
 }
@@ -264,7 +271,8 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 		if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
 			iAddIndex -= 1;
 	}
-	static CGameObject* pSelectObject = nullptr;
+	static CGameObject* pSelectObject;
+	pSelectObject = nullptr;
 	if (ImGui::TreeNode("Object Layers")) // Layer
 	{
 		map<const _wstring, CLayer*>* pLayers = m_pGameInstance->Get_Layers_Ptr();
@@ -324,6 +332,42 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 						else
 							pSelectObject = m_pGameInstance->Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectLoopIndix);
 					}
+
+					if(ImGui::Button("On Render"))
+					{
+						for (auto& pGameObject : pGameObjects)
+						{
+							pGameObject->Set_Render(true);
+						}
+					}
+					ImGui::SameLine();
+					if(ImGui::Button("Off Render"))
+					{
+						for (auto& pGameObject : pGameObjects)
+						{
+							pGameObject->Set_Render(false);
+						}
+					}
+
+					if (ImGui::Button("On Active"))
+					{
+						for (auto& pGameObject : pGameObjects)
+						{
+							pGameObject->Set_Active(true);
+						}
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Off Active"))
+					{
+						for (auto& pGameObject : pGameObjects)
+						{
+							pGameObject->Set_Active(false);
+						}
+					}
+
+
+
+
 					ImGui::TreePop();
 				}
 			}

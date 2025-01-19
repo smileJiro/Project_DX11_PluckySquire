@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_knockedback_loop_0008",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 654.0,
+        "Y": 1064.0
+      },
+      "BakedSourceDimension": {
+        "X": 204.0,
+        "Y": 325.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_c09_129130-0'",
+        "ObjectPath": "/Game/Characters/Player/C09_129130/Textures/player_c09_129130-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 93.0,
+          "Y": 339.0,
+          "Z": 0.41845703,
+          "W": 0.26000977
+        },
+        {
+          "X": -109.0,
+          "Y": 339.0,
+          "Z": 0.31982422,
+          "W": 0.26000977
+        },
+        {
+          "X": -109.0,
+          "Y": 16.0,
+          "Z": 0.31982422,
+          "W": 0.3388672
+        },
+        {
+          "X": 93.0,
+          "Y": 16.0,
+          "Z": 0.41845703,
+          "W": 0.3388672
+        },
+        {
+          "X": 93.0,
+          "Y": 339.0,
+          "Z": 0.41845703,
+          "W": 0.26000977
+        },
+        {
+          "X": -109.0,
+          "Y": 16.0,
+          "Z": 0.31982422,
+          "W": 0.3388672
+        }
+      ]
+    }
+  }
+]

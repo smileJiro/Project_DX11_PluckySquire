@@ -1,7 +1,7 @@
 #pragma once
-#include "UI.h"
 #include "Client_Defines.h"
 #include "GameInstance.h"
+#include "UI.h"
 
 BEGIN(Engine)
 class CShader;
@@ -28,7 +28,7 @@ public:
 
 
 private:
-	void					Update_Active();
+	void					isRender();
 
 protected:
 	virtual HRESULT			Ready_Components() override;

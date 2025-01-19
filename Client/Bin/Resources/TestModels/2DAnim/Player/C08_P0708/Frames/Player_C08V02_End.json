@@ -1,0 +1,488 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_C08V02_End",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_0001_End_X03'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_0001_End_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0004_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0007_X03'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0007_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0008_X03'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0008_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0009_X03'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0009_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0011_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0013_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0013_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0014_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0014_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0015_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0015_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0016_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0016_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0017_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0017_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0018_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0018_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0019_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0019_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0020_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0020_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0021_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0021_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0022_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0022_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0023_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0023_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0024_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0024_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0025_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0025_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0026_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0026_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0027_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0027_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0028_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0028_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0029_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0029_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0030_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0030_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0031_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0031_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0032_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0032_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0033_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0033_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0034_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0034_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0035_X03'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0035_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0036_X03'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0036_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0037_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0037_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0038_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0038_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0039_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0039_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0040_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0040_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0041_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0041_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0042_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0042_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0043_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0043_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0044_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0044_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0045_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0045_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0046_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0046_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0047_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0047_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0048_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0048_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0049_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0049_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0050_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0050_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0051_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0051_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0052_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0052_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0053_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0053_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0054_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0054_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0055_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0055_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0056_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0056_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0057_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0057_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0058_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0058_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0059_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0059_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0060_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0060_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0061_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0061_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0062_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0062_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0063_X01'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0063_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0064_X02'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0064_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0065_X03'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0065_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0066_X03'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0066_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0067_X04'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0067_X04.1"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0068_X04'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0068_X04.1"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C08V02_End_0069_X04'",
+            "ObjectPath": "/Game/Characters/Player/C08_P0708/Frames/Player_C08V02_End_0069_X04.1"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

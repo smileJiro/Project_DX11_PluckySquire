@@ -15,11 +15,6 @@ CBombStamp::CBombStamp(const CBombStamp& _Prototype)
 
 HRESULT CBombStamp::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-	
-
 	return S_OK;
 }
 
@@ -29,6 +24,11 @@ HRESULT CBombStamp::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+
 
 	
 
@@ -87,22 +87,26 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 	CUI_Manager::STAMP eStamp;
 	eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
 
-
-	if (m_ePreStamp != eStamp)
+	if (m_ePreStamp != eStamp && false == m_isScaling)
 	{
+
 		if (eStamp == CUI_Manager::STAMP_STOP)
 		{
+			//위치 변경이 필요한가요?
 			m_fX = g_iWinSizeX / 7.5;
 			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
 
 			m_isSmall = true;
+			m_isScaling = true;
 		}
 		else if (eStamp == CUI_Manager::STAMP_BOMB)
 		{
+			//위치 변경이 필요한가요?
 			m_fX = g_iWinSizeX / 7.5;
 			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
 
 			m_isBig = true;
+			m_isScaling = true;
 		}
 
 		m_ePreStamp = eStamp;
@@ -118,10 +122,14 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 				m_fSizeX += _fTimeDelta * 100;
 				m_fSizeY += (_fTimeDelta * 1.54) * 100;
 
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY , 1.f);
+				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
 			else
+			{
 				m_isBig = false;
+				m_isScaling = false;
+			}
+
 		}
 		else if (true == m_isSmall)
 		{
@@ -133,7 +141,11 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
 			else
+			{
 				m_isSmall = false;
+				m_isScaling = false;
+			}
+
 		}
 	}
 
@@ -151,7 +163,7 @@ HRESULT CBombStamp::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_BombStamp"),
+	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_BombStamp"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

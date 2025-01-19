@@ -9,58 +9,99 @@ C2DModel::C2DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 C2DModel::C2DModel(const C2DModel& _Prototype)
 	:CModel(_Prototype)
-	, m_pNonAnimTexture(_Prototype.m_pNonAnimTexture)
+	, m_NonAnimTextures(_Prototype.m_NonAnimTextures)
 	, m_vNonAnimSpriteStartUV(_Prototype.m_vNonAnimSpriteStartUV)
 	, m_vNonAnimSpriteEndUV(_Prototype.m_vNonAnimSpriteEndUV)
 	, m_iCurAnimIdx(_Prototype.m_iCurAnimIdx)
 	, m_pVIBufferCom(_Prototype.m_pVIBufferCom)
+	, m_AnimTextures(_Prototype.m_AnimTextures)
 {
 	for (auto& pAnim : _Prototype.m_Animation2Ds)
 	{
 		m_Animation2Ds.push_back(pAnim->Clone());
 	}
+	for (auto& pTex : m_NonAnimTextures)
+	{
+		Safe_AddRef(pTex);
+	}
+	for (auto& pTex : m_AnimTextures)
+	{
+		Safe_AddRef(pTex.second);
+	}
 }
 
 
 
-HRESULT C2DModel::Initialize_Prototype(const _char* pModelFilePath)
+HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
 {
-	json jAnimation2D;
-	std::ifstream input_file(pModelFilePath);
-	if (!input_file.is_open())
-		return E_FAIL;
-	input_file >> jAnimation2D;
-	input_file.close();
-	m_eAnimType = jAnimation2D["AnimType"];
+	//모든 json파일 순회하면서 읽음. 
+	//Type이 PaperSprite인 경우와 PaperFlipBook인 경우로 컨테이너를 나눠서 저장.
+	//	PaperFlipBook 컨테이너를 순회하면서	Animation2D를 생성.
+	//    Animation2D를 생성할 때 PaperSprite 컨테이너에서 LookUp해서 CSpriteFrame생성.
+
+	map<string,json> jPaperFlipBooks;
+	map<string, json> jPaperSprites;
+
+
 	std::filesystem::path path;
-	path = pModelFilePath;
-	path = path.remove_filename();
-	if (ANIM == m_eAnimType)
-	{
-		json& jAnimations = jAnimation2D["Animations"];
-		for (auto& j : jAnimations)
+	path = _pModelDirectoryPath;
+	json jFile;
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+		if (entry.path().extension() == ".json") 
 		{
-			string jAnimFileName = path.string();
-			jAnimFileName += "Frames/";
-			jAnimFileName += j;
-			json jAnimation;
-			std::ifstream input_file(jAnimFileName.c_str());
+			//cout << entry.path().string() << endl;
+			std::ifstream input_file(entry.path());
 			if (!input_file.is_open())
 				return E_FAIL;
-			input_file >> jAnimation;
+			input_file >> jFile;
 			input_file.close();
-			m_Animation2Ds.push_back(CAnimation2D::Create(m_pDevice,m_pContext,path.string(), jAnimation.front()));
+
+			for (auto& jObj : jFile)
+			{
+				string strType = jObj["Type"];
+				if (strType._Equal("PaperSprite"))
+				{
+					string strName = jObj["Name"];
+
+					jPaperSprites.insert({ strName, jObj });
+				}
+				else if (strType._Equal("PaperFlipbook"))
+				{
+					string strName = jObj["Name"];
+
+					jPaperFlipBooks.insert({ strName,jObj });
+				}
+				else
+				{
+					continue;
+				}
+			}
+
+		}
+		else if (entry.path().extension() == ".png") 
+		{
+			m_AnimTextures.insert({ entry.path().filename().replace_extension().string(), CTexture::Create(m_pDevice, m_pContext, entry.path().c_str()) });
+		}
+	}
+
+
+	m_eAnimType = jPaperFlipBooks.size() > 0 ? ANIM : NONANIM;
+
+	if (ANIM == m_eAnimType)
+	{
+		for (auto& j : jPaperFlipBooks)
+		{
+			string strName = j.second["Name"];
+
+			m_Animation2Ds.push_back(CAnimation2D::Create(m_pDevice, m_pContext, j.second,jPaperSprites, m_AnimTextures));
 		}
 	}
 	else
 	{
-		string strSourceTexture = pModelFilePath;
-		strSourceTexture += "Textures/";
-		strSourceTexture += jAnimation2D["TextureName"] + ".png";
-		wstring wstrSourceTexture = CGameInstance::GetInstance()->StringToWString(strSourceTexture);
-		m_pNonAnimTexture = CTexture::Create(m_pDevice, m_pContext, wstrSourceTexture.c_str());
-		m_vNonAnimSpriteStartUV = { jAnimation2D["SpriteStartUV"][0],jAnimation2D["SpriteStartUV"][1] };
-		m_vNonAnimSpriteEndUV = { jAnimation2D["SpriteEndUV"][0],jAnimation2D["SpriteEndUV"][1] };
+		for (auto& pTex : m_AnimTextures)
+		{
+			m_NonAnimTextures.push_back(pTex.second);
+		}
 	}
 	return S_OK;
 }
@@ -71,7 +112,7 @@ HRESULT C2DModel::Initialize(void* _pDesc)
 		return E_FAIL;
 
     /* Com_VIBuffer */
-	m_pVIBufferCom = static_cast<CVIBuffer_Rect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, 1, TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
+	m_pVIBufferCom = static_cast<CVIBuffer_Rect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
     if (nullptr == m_pVIBufferCom)
         return E_FAIL;
 
@@ -92,11 +133,17 @@ void C2DModel::Set_Animation(_uint _iIdx)
 void C2DModel::Switch_Animation(_uint _iIdx)
 {
 	m_iCurAnimIdx = _iIdx;
+	m_Animation2Ds[m_iCurAnimIdx]->Reset_CurrentTrackPosition();
 }
 
 void C2DModel::To_NextAnimation()
 {
 	Switch_Animation((m_iCurAnimIdx + 1) % m_Animation2Ds.size());
+}
+
+const _matrix* C2DModel::Get_CurrentSpriteTransform()
+{
+	return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();
 }
 
 _uint C2DModel::Get_AnimCount()
@@ -115,8 +162,8 @@ HRESULT C2DModel::Render(CShader* _pShader, _uint _iShaderPass)
 	}
 	else
 	{
-		if (m_pNonAnimTexture)
-			if (FAILED(m_pNonAnimTexture->Bind_ShaderResource(_pShader, "g_Texture")))
+		if (m_NonAnimTextures[0])
+			if (FAILED(m_NonAnimTextures[0]->Bind_ShaderResource(_pShader, "g_Texture")))
 				return E_FAIL;
 
 		if (FAILED(_pShader->Bind_RawValue("g_vSpriteStartUV", &m_vNonAnimSpriteStartUV, sizeof(_float2))))
@@ -181,5 +228,11 @@ void C2DModel::Free()
 	for (auto& pAnimation : m_Animation2Ds)
 		Safe_Release(pAnimation);
 	m_Animation2Ds.clear();
+	for (auto& pTex : m_AnimTextures)
+		Safe_Release(pTex.second);
+	m_AnimTextures.clear();
+	for (auto& pTex : m_NonAnimTextures)
+		Safe_Release(pTex);
+	m_NonAnimTextures.clear();
 	__super::Free();
 }

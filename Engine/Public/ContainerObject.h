@@ -31,7 +31,6 @@ public:
 public:
 	CComponent*			Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag);
 	HRESULT				Add_PartObject(CGameObject* _pPartObject);
-
 public:
 	// Get
 	CGameObject*		Get_PartObject(_int _iPartObjectIndex);
@@ -40,7 +39,8 @@ public:
 			return 0;
 		return (_int)m_PartObjects.size();
 	}
-
+	//Set
+	void				Set_PartActive(_uint _iPartID, _bool _bValue);
 protected:
 	vector<CGameObject*> m_PartObjects;
 

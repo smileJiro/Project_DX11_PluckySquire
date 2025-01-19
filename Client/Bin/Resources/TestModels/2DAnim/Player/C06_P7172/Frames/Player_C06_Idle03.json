@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_C06_Idle03",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle03_0001'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle03_0001.1"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle03_0002'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle03_0002.1"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle03_0003'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle03_0003.1"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_C06_Idle03_0004'",
+            "ObjectPath": "/Game/Characters/Player/C06_P7172/Frames/Player_C06_Idle03_0004.1"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

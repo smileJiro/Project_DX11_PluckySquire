@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_c06_swordbeam_out0029_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 3202.0,
+        "Y": 1477.0
+      },
+      "BakedSourceDimension": {
+        "X": 217.0,
+        "Y": 478.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_c06_swordpowerup-0'",
+        "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Textures/player_c06_swordpowerup-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 85.0,
+          "Y": 460.0,
+          "Z": 0.83447266,
+          "W": 0.36083984
+        },
+        {
+          "X": -130.0,
+          "Y": 460.0,
+          "Z": 0.7819824,
+          "W": 0.36083984
+        },
+        {
+          "X": -130.0,
+          "Y": -16.0,
+          "Z": 0.7819824,
+          "W": 0.47705078
+        },
+        {
+          "X": 85.0,
+          "Y": -16.0,
+          "Z": 0.83447266,
+          "W": 0.47705078
+        },
+        {
+          "X": 85.0,
+          "Y": 460.0,
+          "Z": 0.83447266,
+          "W": 0.36083984
+        },
+        {
+          "X": -130.0,
+          "Y": -16.0,
+          "Z": 0.7819824,
+          "W": 0.47705078
+        }
+      ]
+    }
+  }
+]

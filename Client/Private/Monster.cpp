@@ -24,6 +24,8 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
+	m_fDelayTime = pDesc->fDelayTime;
+	m_fCoolTime = pDesc->fCoolTime;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;

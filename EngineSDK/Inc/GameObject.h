@@ -38,7 +38,7 @@ public:
 	
 public: /* 모드 전환 */
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition);
-
+	virtual void                     On_CoordinateChange() {}
 public:
 	// Get
 	const _wstring&				Get_Name() const								{ return m_strName; }

@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
+#include "BarfBug.h"
 
 
 #include "UI.h"
@@ -29,7 +30,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	//Ready_Layer_Monster(TEXT("Layer_Monster"));
+	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 
 
@@ -48,8 +49,9 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
 {
+	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
-	if (KEY_DOWN(KEY::ENTER))
+	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
 	}
@@ -177,6 +179,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 		return E_FAIL;
 
 
+	CPlayer* pPlayer = { nullptr };
+	pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
+	CUI_Manager::GetInstance()->Set_Player(pPlayer);
+	Safe_Release(pPlayer);
+
 	return S_OK;
 }
 
@@ -194,8 +201,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-	TerrainDesc.tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-	TerrainDesc.tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+	TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
 
@@ -208,9 +215,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
+	pDesc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12;
-	pDesc.fY = g_iWinSizeY / 10;
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12.f;
+	pDesc.fY = g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 182.f;
 	pDesc.fSizeY = 100.f;
 
@@ -219,8 +227,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	////////////////////////////////
 
-	pDesc.fX = g_iWinSizeX / 20;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
+	pDesc.fX = g_iWinSizeX / 20.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 	
 	// 원래 크기
 	pDesc.fSizeX = 96.f;
@@ -233,50 +241,93 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StopStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	pDesc.fX = g_iWinSizeX / 7.5;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10;
+	pDesc.fX = g_iWinSizeX / 7.5f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 111.f;
-
+	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BombStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	pDesc.fX = g_iWinSizeX / 10.8;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20;
+	pDesc.fX = g_iWinSizeX / 10.8f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
 	pDesc.fSizeX = 42.f;
 	pDesc.fSizeY = 27.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ArrowForStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 	
-	/////////////////////////////////
-	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 4;
-	pDesc.fY = g_iWinSizeY / 10;
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 4.f;
+	pDesc.fY = g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 128.f;
 	pDesc.fSizeY = 128.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
+
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 9.f;
+	pDesc.fY = g_iWinSizeY / 10.f;
+	pDesc.fSizeX = 60.f;
+	pDesc.fSizeY = 82.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCBulb"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	pDesc.fX = g_iWinSizeX / 14.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Back"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	pDesc.fX = g_iWinSizeX / 30.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_BackArrow"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 10.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Enter"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+
+	pDesc.fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Book"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
 	
-
-
-
 
 	return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
-	CBeetle::MONSTER_DESC Monster_Desc;
+	//CBeetle::MONSTER_DESC Monster_Desc;
+	//Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
+
+	//Monster_Desc.tTransform3DDesc.vPosition = _float3(10.0f, 1.0f, 10.0f);
+	//Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
+
+	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;*/
+
+	CBarfBug::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	Monster_Desc.tTransform3DDesc.vPosition = _float3(10.0f, 1.0f, 10.0f);
-	Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
-		return E_FAIL;
-
-	Monster_Desc.tTransform3DDesc.vPosition = _float3(-10.0f, 1.0f, 10.0f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;

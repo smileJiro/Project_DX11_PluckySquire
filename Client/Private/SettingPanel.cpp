@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "SettingPanel.h"
 
-
-
-
 CSettingPanel::CSettingPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
 {
@@ -16,11 +13,6 @@ CSettingPanel::CSettingPanel(const CSettingPanel& _Prototype)
 
 HRESULT CSettingPanel::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-
-
 	return S_OK;
 }
 
@@ -43,7 +35,7 @@ void CSettingPanel::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::ESC))
 	{
-		//Update_Active();
+		isRender();
 	}
 
 }
@@ -55,7 +47,7 @@ void CSettingPanel::Late_Update(_float _fTimeDelta)
 
 HRESULT CSettingPanel::Render(_int _index)
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Render(_index);
 
 	return S_OK;
@@ -63,32 +55,18 @@ HRESULT CSettingPanel::Render(_int _index)
 
 
 
-void CSettingPanel::Update_Active()
+void CSettingPanel::isRender()
 {
-	if (m_isActive == false)
+	if (m_isRender == false)
 	{
-		m_isActive = true;
+		m_isRender = true;
 	}
-	else if (m_isActive == true)
-		m_isActive = false;
+	else if (m_isRender == true)
+		m_isRender = false;
 }
 
 HRESULT CSettingPanel::Ready_Components()
 {
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-		return E_FAIL;
-
-	/* Com_VIBuffer */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-		return E_FAIL;
-
-	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
-
 
 	return S_OK;
 }

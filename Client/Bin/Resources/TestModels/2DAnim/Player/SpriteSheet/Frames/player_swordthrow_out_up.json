@@ -1,0 +1,54 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_swordthrow_out_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_out_up_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_out_up_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_out_up_0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_out_up_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_out_up_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_out_up_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_out_up_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_out_up_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_out_up_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_out_up_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_out_up_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_out_up_0006_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

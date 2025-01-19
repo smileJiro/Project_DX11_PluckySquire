@@ -52,6 +52,7 @@ CMapParsing_Manager::CMapParsing_Manager(ID3D11Device* _pDevice, ID3D11DeviceCon
 
 HRESULT CMapParsing_Manager::Initialize(CImguiLogger* _pLogger)
 {
+	m_EgnoreObjectNames.push_back("Cube");
 	Safe_AddRef(m_pLogger);
 	m_pLogger = _pLogger;
 	return S_OK;
@@ -59,8 +60,6 @@ HRESULT CMapParsing_Manager::Initialize(CImguiLogger* _pLogger)
 
 HRESULT CMapParsing_Manager::Open_ParsingDialog(const wstring& _strLayerName)
 {
-
-
 	_tchar originalDir[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, originalDir);
 
@@ -112,7 +111,8 @@ HRESULT CMapParsing_Manager::Parsing(json _jsonObj)
 						{
 							string strModelKey = jsonObj.value()["Properties"]["StaticMesh"].at("ObjectName");
 							strModelKey = strModelKey.substr(strModelKey.find("'") + 1 , strModelKey.size() - strModelKey.find("'") -2);
-							if (strModelKey == "Cube")
+
+							if (Check_EgnoreObject(strModelKey))
 								continue;
 							
 							MAP_DATA tMapData = {};
@@ -123,10 +123,8 @@ HRESULT CMapParsing_Manager::Parsing(json _jsonObj)
 								for (_uint i = 0; i < 3; i++)
 								{
 									_float fValue = jsonObj.value()["Properties"]["RelativeLocation"].at(arrAxisKey[i]);
-									if (i == 0)
-									{
+									if (i == 2)
 										fValue *= -1.f;
-									}
 
 									fValue /= 150.f;
 									memcpy(((&tMapData.fPos.x) + i), &fValue, sizeof(_float));
@@ -265,31 +263,6 @@ HRESULT CMapParsing_Manager::Parsing()
 
 	LOG_TYPE(strLogging, LOG_ERROR);
 	
-	wstring strResultFileFath = m_pGameInstance->StringToWString(strFilePath);
-	strResultFileFath += L"\\ExportResult\\";
-	strResultFileFath += m_pGameInstance->StringToWString(strFileName);
-	strResultFileFath += L"_Result.json";
-
-	json jAddFile;
-	for (auto strModelName : m_MapObjectNames)
-	{
-		jAddFile["data"].push_back(strModelName);
-	}
-
-
-
-
-
-	std::ofstream file(strResultFileFath);
-	if (file.is_open()) {
-		file << jAddFile.dump(1);
-		file.close();
-	}
-	else {
-		return E_FAIL;
-	}
-
-
 
 
 
@@ -300,8 +273,45 @@ HRESULT CMapParsing_Manager::Parsing()
 	return S_OK;
 }
 
+HRESULT CMapParsing_Manager::Export_SaveResult_ToJson(const _wstring _strFIlePath, const vector<_string>& _SaveModelProtoNames, _bool isStatic)
+{
+
+	wstring strResultFileFath = _strFIlePath;
+
+	strResultFileFath = strResultFileFath.substr(0, strResultFileFath.rfind(L"."));
+	strResultFileFath += L".json";
 
 
+	json jAddFile;
+	jAddFile["IsStatic"].push_back(isStatic);
+
+	for (auto strModelName : _SaveModelProtoNames)
+	{
+		jAddFile["data"].push_back(strModelName);
+	}
+
+	std::ofstream file(strResultFileFath);
+	if (file.is_open()) {
+		file << jAddFile.dump(1);
+		file.close();
+		return S_OK;
+	}
+	else {
+		return E_FAIL;
+	}
+
+
+}
+
+_bool CMapParsing_Manager::Check_EgnoreObject(_string _strModelName)
+{
+	auto iter = find_if(m_EgnoreObjectNames.begin(), m_EgnoreObjectNames.end(),[&_strModelName]
+	(_string strEgnoreModelName)->_bool {
+		return strEgnoreModelName == _strModelName;
+		});
+
+	return iter != m_EgnoreObjectNames.end();
+}
 void CMapParsing_Manager::Open_Parsing()
 {
 	m_isLoading = true;

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ESC_HeartPoint.h"
-#include "GameInstance.h"
 
 
 
@@ -16,11 +15,6 @@ ESC_HeartPoint::ESC_HeartPoint(const ESC_HeartPoint& _Prototype)
 
 HRESULT ESC_HeartPoint::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-
-
 	return S_OK;
 }
 
@@ -30,6 +24,11 @@ HRESULT ESC_HeartPoint::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	
 
 	return S_OK;
 }
@@ -44,23 +43,22 @@ void ESC_HeartPoint::Update(_float _fTimeDelta)
 	{
 		// 플레이어 체력 동기화 진행.
 
+
 		__super::Update(_fTimeDelta);
 	}
 	
-	
-
 	
 }
 
 void ESC_HeartPoint::Late_Update(_float _fTimeDelta)
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT ESC_HeartPoint::Render()
 {
-	if (true == m_isActive)
+	if (true == m_isRender)
 		__super::Render(m_PlayerHP);
 
 	return S_OK;
@@ -80,7 +78,7 @@ HRESULT ESC_HeartPoint::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_HeartPoint"),
+	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_HeartPoint"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

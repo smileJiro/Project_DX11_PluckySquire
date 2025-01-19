@@ -29,6 +29,7 @@ private:
 	CUI_Manager::STAMP		m_ePreStamp = { CUI_Manager::STAMP_END };
 	_bool					m_isSmall = { false };
 	_bool					m_isBig = { false };
+	_bool					m_isScaling = { false };
 
 private:
 	void					ChangeStamp(_float _fTimeDelta);

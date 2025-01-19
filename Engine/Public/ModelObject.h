@@ -31,10 +31,11 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype(); // 프로토 타입 전용 Initialize
 	virtual HRESULT Initialize(void* _pArg); // 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+	virtual void			Priority_Update(_float _fTimeDelta) override;
+	virtual void			Update(_float fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render_Shadow() { return S_OK; }
 	virtual HRESULT			Render() override;
-	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
 
 public:
@@ -45,13 +46,13 @@ public:
 public:
 	// Get
 	_uint Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
+	CModel* Get_Model(COORDINATE _eCoord);
 
 	// Set
-	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
+	void Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
 	void Set_Animation(_uint iIdx);
 	void Switch_Animation(_uint iIdx);
 	void To_NextAnimation();
-
 protected:
 	CController_Model*		m_pControllerModel = nullptr;
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D 렌더링 전용 VP */

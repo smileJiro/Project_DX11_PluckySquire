@@ -139,6 +139,24 @@
     <Filter Include="03.Components\PlayerState">
       <UniqueIdentifier>{2c11b0f4-d2f1-4207-914c-46e11d497546}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\04. ESC_Enter">
+      <UniqueIdentifier>{56ebc843-098b-4d7a-b2a2-ef827f9e231b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction">
+      <UniqueIdentifier>{7da9691a-06aa-4f08-826a-3dea2aff39b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book">
+      <UniqueIdentifier>{0c30b99e-6e02-4b43-ba51-f2f732c86957}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel">
+      <UniqueIdentifier>{746a2ce1-b787-4d4b-925f-d225804b6b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG">
+      <UniqueIdentifier>{e33890e6-15c4-477e-9a78-c791eb2c6588}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\DetectionField">
+      <UniqueIdentifier>{04adcb91-4582-41ba-903b-8a861fe8a29f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -210,9 +228,6 @@
     <ClInclude Include="..\Public\Pick_Bulb.h">
       <Filter>02.GameObjects\UI\00. GamePlay\00.Pick_Bulb</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\SettingPanel.h">
-      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
@@ -269,6 +284,45 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
+    <ClInclude Include="..\Public\ESC_Bulb.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. Bulb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Back.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\02. BackESC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_BackArrow.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Enter.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Interaction_Book.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SettingPanelBG.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SettingPanel.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Idle.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Jump.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Run.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DetectionField.h">
+      <Filter>03.Components\DetectionField</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Attack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -318,9 +372,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Pick_Bulb.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\00.Pick_Bulb</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\SettingPanel.cpp">
-      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
@@ -390,6 +441,45 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Run.cpp" />
+    <ClCompile Include="..\Private\ESC_Bulb.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. Bulb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Back.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\02. BackESC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_BackArrow.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Enter.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Interaction_Book.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SettingPanelBG.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SettingPanel.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Idle.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Jump.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Run.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DetectionField.cpp">
+      <Filter>03.Components\DetectionField</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

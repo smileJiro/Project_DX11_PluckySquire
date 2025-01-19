@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_tumbadance_0012",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 260.0
+      },
+      "BakedSourceDimension": {
+        "X": 225.0,
+        "Y": 253.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_tumbadance-1'",
+        "ObjectPath": "/Game/Characters/Player/TumbaDance/Textures/player_tumbadance-1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 107.0,
+          "Y": 236.0,
+          "Z": 0.43945312,
+          "W": 0.2548828
+        },
+        {
+          "X": -116.0,
+          "Y": 236.0,
+          "Z": 0.00390625,
+          "W": 0.2548828
+        },
+        {
+          "X": -116.0,
+          "Y": -15.0,
+          "Z": 0.00390625,
+          "W": 0.5
+        },
+        {
+          "X": 107.0,
+          "Y": -15.0,
+          "Z": 0.43945312,
+          "W": 0.5
+        },
+        {
+          "X": 107.0,
+          "Y": 236.0,
+          "Z": 0.43945312,
+          "W": 0.2548828
+        },
+        {
+          "X": -116.0,
+          "Y": -15.0,
+          "Z": 0.00390625,
+          "W": 0.5
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,145 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "jot_gameover",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0002_X03'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0002_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0008_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0009_X01'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0009_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0011_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0013_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0013_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0014_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0014_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0015_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0015_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0016_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0016_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0017_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0017_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0018_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0018_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'jot_gameover_0019_X02'",
+            "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0019_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

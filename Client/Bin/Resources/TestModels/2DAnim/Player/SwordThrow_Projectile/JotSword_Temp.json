@@ -1,0 +1,39 @@
+[
+  {
+    "Type": "Texture2D",
+    "Name": "JotSword_Temp",
+    "Class": "UScriptClass'Texture2D'",
+    "Properties": {
+      "ImportedSize": {
+        "X": 84,
+        "Y": 233
+      },
+      "LightingGuid": "F6DA98F4-48512E7C-A2A027B7-FC786DA9",
+      "LODGroup": "TEXTUREGROUP_Project03",
+      "Downscale": {
+        "bCooked": true,
+        "Default": 0.0,
+        "Value": 0.0
+      },
+      "NeverStream": true
+    },
+    "SizeX": 84,
+    "SizeY": 236,
+    "PackedData": 1,
+    "PixelFormat": "PF_DXT5",
+    "FirstMipToSerialize": 0,
+    "Mips": [
+      {
+        "BulkData": {
+          "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+          "ElementCount": 19824,
+          "SizeOnDisk": 19824,
+          "OffsetInFile": "0x569F"
+        },
+        "SizeX": 84,
+        "SizeY": 236,
+        "SizeZ": 1
+      }
+    ]
+  }
+]

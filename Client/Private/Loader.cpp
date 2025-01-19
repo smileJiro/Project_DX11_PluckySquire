@@ -9,11 +9,17 @@
 
 /* For. UI*/
 #include "Pick_Bulb.h"
-#include "SettingPanel.h"
+#include "SettingPanelBG.h"
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "ArrowForStamp.h"
 #include "ESC_HeartPoint.h"
+#include "ESC_Bulb.h"
+#include "ESC_Back.h"
+#include "ESC_BackArrow.h"
+#include "ESC_Enter.h"
+#include "UI_Interaction_Book.h"
+
 /* For. UI*/
 
 #include "ModelObject.h"
@@ -116,6 +122,15 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_OutOutline"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bg_border_outline.dds"), 1))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBack"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/EscButton.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBackArrow"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Arrow/back_arrow_icon.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCEnter"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
+		return E_FAIL;
 
 
               
@@ -159,10 +174,11 @@ HRESULT CLoader::Loading_Level_Static()
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/Resources/Json/Persistent_Room.json"), matPretransform)))
+
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/MapSaveFiles/Room_Enviroment.json"), matPretransform)))
         return E_FAIL;
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/Resources/Json/Persistent_Streets.json"), matPretransform)))
-        return E_FAIL;
+    //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/Resources/Json/Persistent_Streets.json"), matPretransform)))
+    //    return E_FAIL;
 
     /* For. Prototype_Component_VIBuffer_Rect */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
@@ -172,6 +188,12 @@ HRESULT CLoader::Loading_Level_Static()
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Back"), CESC_Back::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_BackArrow"), CESC_BackArrow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Enter"), CESC_Enter::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
@@ -179,6 +201,10 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+
+
+
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 
@@ -230,6 +256,19 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_HeartPoint"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/HPBar/HUD_Heart_%d.dds"), 13))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ESCBulb"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_icon_bulb.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_KEYQ"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Q.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ShopBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/T_Panel_BG.dds"), 1))))
+		return E_FAIL;
+
+
+
+
 
 
 
@@ -239,30 +278,30 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
-    /* For. Prototype_Component_VIBuffer_Rect */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Rect"),
-        CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/")))))
         return E_FAIL;
+
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/Resources/Json/Desk_C02.json"), matPretransform)))
+    
+    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Desk.json"), matPretransform)))
         return E_FAIL;
+
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
+
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/Anim/"), matPretransform)))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("latch_glove"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/TestModels/latch_glove/latch_glove.model", matPretransform))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("WoodenPlatform_01"),
     C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
          return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
-
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
         CPlayer::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -281,7 +320,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    
     /* For. Prototype_GameObject_Camera_Target */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
@@ -305,6 +343,12 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"),
 		ESC_HeartPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCBulb"),
+		ESC_Bulb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Book"),
+		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
     /* Monster */
@@ -325,7 +369,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
 
 
-    Map_Object_Create(LEVEL_GAMEPLAY);
+    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Desk.mchc");
+    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -467,7 +512,7 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
     path = "../Bin/Resources/Models/NonAnim/";
     string strFileName;
 	_uint iLoadedCount = 0;
-    _uint iLoadCount = strModelNames.size();
+    _uint iLoadCount = (_uint)strModelNames.size();
 	//cout << "LoadStart : " << iLoadCount << endl;
     for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
         if (entry.path().extension() != ".model") continue; 
@@ -491,18 +536,11 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
     return S_OK;
 }
 
-HRESULT CLoader::Map_Object_Create(LEVEL_ID _iLevId)
+HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName)
 {
-    wstring filename = L"";
-    switch (_iLevId)
-    {
-    case Client::LEVEL_GAMEPLAY:
-        filename = L"zebal.mchc";
-        break;
-    default:
-        return S_OK;
-    }
-    _wstring strFullFilePath = L"../../Client/Bin/MapSaveFiles/" + filename;
+    wstring strFileName = _strFileName;
+
+    _wstring strFullFilePath = L"../Bin/MapSaveFiles/" + strFileName;
 
     HANDLE	hFile = CreateFile(strFullFilePath.c_str(),
         GENERIC_READ,
@@ -532,9 +570,6 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _iLevId)
         ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
         strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
-        LEVEL_ID eLevelId = _iLevId;
-        if (strLayerTag == L"Layer_Room_Environment" || strLayerTag == L"Layer_Outside_Environment")
-            eLevelId = LEVEL_STATIC;
         for (size_t i = 0; i < iObjectCnt; i++)
         {
             _char		szSaveMeshName[MAX_PATH];
@@ -549,19 +584,17 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _iLevId)
             NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
             NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
             NormalDesc.isCoordChangeEnable = false;
-            NormalDesc.iModelPrototypeLevelID_3D = eLevelId;
+            NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
             NormalDesc.eStartCoord = COORDINATE_3D;
             CGameObject* pGameObject = nullptr;
-            m_pGameInstance->Add_GameObject_ToLayer(_iLevId, TEXT("Prototype_GameObject_MapObject"),
-                _iLevId,
+            m_pGameInstance->Add_GameObject_ToLayer(_eObjectLevelId, TEXT("Prototype_GameObject_MapObject"),
+                _eObjectLevelId,
                 strLayerTag,
                 &pGameObject,
                 (void*)&NormalDesc);
 
             if (pGameObject)
             {
-                vWorld._41 *= -1.f;
-                vWorld._43 *= -1.f;
                 pGameObject->Set_WorldMatrix(vWorld);
             }
         }

@@ -1,0 +1,257 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Player_Sleeping_WakeUp",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0001_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0001_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0004_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0004_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0005_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0005_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0013_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0013_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0014_X12'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0014_X12.0"
+          },
+          "FrameRun": 12
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0015_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0015_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0016_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0016_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0017_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0018_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0018_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0019_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0019_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0020_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0020_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0021_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0021_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0022_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0022_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0023_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0023_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0024_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0024_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0025_X01'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0025_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0026_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0026_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0027_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0027_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0028_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0028_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0029_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0029_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0030_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0030_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0031_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0031_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0032_X02'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0032_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0033_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0033_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0034_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0034_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Player_Sleeping_WakeUp_0035_X03'",
+            "ObjectPath": "/Game/Characters/Player/Sleeping/Frames/Player_Sleeping_WakeUp_0035_X03.0"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]
