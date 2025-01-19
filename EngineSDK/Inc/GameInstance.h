@@ -189,6 +189,9 @@ public: /* For. Camera_Manager */
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);
 	void				Change_CameraType(_uint _iCurrentCameraType);
 
+
+	public: /* For. Physx_Manager*/
+		void			Physx_Update(_float _fTimeDelta);
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -208,6 +211,7 @@ private:
 	class CImgui_Manager* m_pImgui_Manager = nullptr;
 	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
 	class CCamera_Manager_Engine* m_pCamera_Manager = nullptr;
+	class CPhysx_Manager* m_pPhysx_Manager = nullptr;
 
 private:
 	HWND m_hWnd = nullptr;

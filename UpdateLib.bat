@@ -6,7 +6,7 @@ xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Camera\Bin\
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Map\Bin\
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Effect\Bin\
 xcopy			/y			.\Engine\Bin\Engine.lib			.\EngineSDK\Lib\
-xcopy			/y			.\Engine\ThirdPartyLib\*.lib	.		\EngineSDK\Lib\
+xcopy			/y			.\Engine\ThirdPartyLib\*.lib		.\EngineSDK\Lib\
 
 xcopy			/y/s		.\Engine\Public\*.*				.\EngineSDK\Inc\
 xcopy			/y/s		.\Engine\Bin\ShaderFiles\*.*	.\EngineSDK\hlsl\

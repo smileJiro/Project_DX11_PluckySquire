@@ -235,6 +235,9 @@
     <Filter Include="01.Utility\03.Objects\Effect\Emitter\Sprite">
       <UniqueIdentifier>{eb2f84bd-65ed-409e-ac8d-d5cf7088ee14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\03.Physx">
+      <UniqueIdentifier>{07b9728a-0ce5-4ee1-a194-7f177c43d688}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -465,6 +468,9 @@
     <ClInclude Include="..\public\Particle_Sprite_Emitter.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Physx_Manager.h">
+      <Filter>00.System\03.Physx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -682,6 +688,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Physx_Manager.cpp">
+      <Filter>00.System\03.Physx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
