@@ -58,13 +58,12 @@ void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
     m_pStateMachine->Update(_fTimeDelta);
-    CContainerObject::Update(_fTimeDelta); /* Part Object Update */
+    __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
-
-    CContainerObject::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
 HRESULT CPlayer::Render()
@@ -83,6 +82,14 @@ HRESULT CPlayer::Render()
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
     int a = 0;
+}
+
+void CPlayer::On_CoordinateChange()
+{
+    if (COORDINATE_2D == Get_CurCoord())
+		Set_2DDirection(F_DIRECTION::DOWN);
+
+	Set_State(IDLE);
 }
 
 void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
@@ -111,11 +118,9 @@ void CPlayer::Set_State(STATE _eState)
     switch (_eState)
     {
     case Client::CPlayer::IDLE:
-
         m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
         break;
     case Client::CPlayer::RUN:
-
         m_pStateMachine->Transition_To(new CPlayerState_Run(this));
         break;
     case Client::CPlayer::JUMP:

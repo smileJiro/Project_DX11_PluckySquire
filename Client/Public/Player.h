@@ -366,7 +366,9 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+	void									On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+	virtual void                     On_CoordinateChange() override;
+
 	void Move(_vector _vDir,_float _fTimeDelta);
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);

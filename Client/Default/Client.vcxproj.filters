@@ -308,6 +308,7 @@
     <ClInclude Include="..\public\DetectionField.h">
       <Filter>03.Components\DetectionField</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Attack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -456,6 +457,7 @@
     <ClCompile Include="..\private\DetectionField.cpp">
       <Filter>03.Components\DetectionField</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
