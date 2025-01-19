@@ -24,6 +24,7 @@ public:
 	virtual _uint Get_AnimCount() abstract;
 	virtual _uint Get_CurrentAnimIndex() abstract;
 	ANIM_TYPE Get_AnimType() { return m_eAnimType; }
+
 	_bool Is_AnimModel() { return m_eAnimType == ANIM_TYPE::ANIM; };
 protected:
 	ANIM_TYPE				m_eAnimType = ANIM_TYPE::LAST;

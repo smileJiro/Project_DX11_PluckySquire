@@ -6,7 +6,13 @@ class CStateMachine;
 class CPlayer final : public CContainerObject
 {
 public:
-	
+	enum PLAYER_PART
+	{
+		PLAYER_PART_SWORD= 1,
+		PLAYER_PART_GLOVE,
+		PLAYER_PART_STAMP,
+		PLAYER_PART_LAST
+	};
 	enum STATE
 	{
 		IDLE,
@@ -378,6 +384,8 @@ public:
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
 	void Set_2DDirection(F_DIRECTION _eFDir);
+	void Equip_Part(PLAYER_PART _ePartId);
+	void UnEquip_Part(PLAYER_PART _ePartId);
 private:
 	void					Key_Input(_float _fTimeDelta);
 
@@ -388,7 +396,7 @@ private:
 private:
 	CStateMachine* m_pStateMachine = nullptr;
 	F_DIRECTION m_e2DDirection = F_DIRECTION::F_DIR_LAST;
-	_bool m_bSword = false;
+	
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

@@ -74,10 +74,12 @@ void CModelObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CModelObject::Render()
 {
+    int a = 0;
 #ifdef _DEBUG
-    if (m_iInstanceID == 1)
+    if (m_iInstanceID == 668)
     {
-        int a = 0;
+        a = 1;
+        cout << a << endl;
     }
 #endif // _DEBUG
 
@@ -153,6 +155,11 @@ HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& 
 		return E_FAIL;
 
     return	m_pControllerModel->Change_Coordinate(_eCoordinate);
+}
+
+CModel* CModelObject::Get_Model(COORDINATE _eCoord)
+{
+    return m_pControllerModel->Get_Model(_eCoord);
 }
 
 void CModelObject::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop)

@@ -294,7 +294,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/Anim/"), matPretransform)))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("latch_glove"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/TestModels/latch_glove/latch_glove.model", matPretransform))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("WoodenPlatform_01"),
     C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
          return E_FAIL;
