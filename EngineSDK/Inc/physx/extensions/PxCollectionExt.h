@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
+
 #ifndef PX_COLLECTION_EXT_H
 #define PX_COLLECTION_EXT_H
+/** \addtogroup extensions
+@{
+*/
 
 #include "PxPhysXConfig.h"
 #include "common/PxCollection.h"
@@ -36,9 +41,6 @@
 namespace physx
 {
 #endif
-
-	class PxCollection;
-	class PxScene;
 
 	class PxCollectionExt
 	{
@@ -69,9 +71,10 @@ namespace physx
 		\param[in] concreteType PxConcreteType of sdk objects that should be removed	
 		\param[in,out] to Optional collection to which the removed objects are added
 
-		\see PxCollection, PxConcreteType
+		@see PxCollection, PxConcreteType
 		*/	
 		static void remove(PxCollection& collection, PxType concreteType, PxCollection* to = NULL);
+
 
 		/**
 		\brief Collects all objects in PxPhysics that are shareable across multiple scenes.
@@ -85,16 +88,16 @@ namespace physx
 		\param[in] physics The physics SDK instance from which objects are collected. See #PxPhysics
 		\return Collection to which objects are added. See #PxCollection
 
-		\see PxCollection, PxPhysics
+		@see PxCollection, PxPhysics
 		*/
 		static  PxCollection*	createCollection(PxPhysics& physics);
 	
 		/**
 		\brief Collects all objects from a PxScene.
 
-		This function creates a new collection from all objects that were added to the specified 
+		This function creates a new collection from all objects that where added to the specified 
 		PxScene. Instances of the following types are included: PxActor, PxAggregate, 
-		PxArticulationReducedCoordinate and PxJoint (other PxConstraint types are not included).
+		PxArticulation and PxJoint (other PxConstraint types are not included).
 	
 		This is a helper function to ease the creation of collections for serialization. 
 		The function PxSerialization.complete() can be used to complete the collection with required objects prior to 
@@ -103,7 +106,7 @@ namespace physx
 		\param[in] scene The PxScene instance from which objects are collected. See #PxScene
 		\return Collection to which objects are added. See #PxCollection
 
-		\see PxCollection, PxScene, PxSerialization.complete()
+		@see PxCollection, PxScene, PxSerialization.complete()
 		*/
 		static	PxCollection*	createCollection(PxScene& scene);
 	};
@@ -112,4 +115,5 @@ namespace physx
 } // namespace physx
 #endif
 
+/** @} */
 #endif

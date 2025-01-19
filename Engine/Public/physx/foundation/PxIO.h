@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,13 +23,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.
 
-#ifndef PX_IO_H
-#define PX_IO_H
+#ifndef PXFOUNDATION_PXIO_H
+#define PXFOUNDATION_PXIO_H
 
+/** \addtogroup common
+  @{
+*/
 
 #include "foundation/PxSimpleTypes.h"
 
@@ -130,5 +134,5 @@ class PxOutputStream
 } // namespace physx
 #endif
 
-#endif
-
+/** @} */
+#endif // #ifndef PXFOUNDATION_PXIO_H

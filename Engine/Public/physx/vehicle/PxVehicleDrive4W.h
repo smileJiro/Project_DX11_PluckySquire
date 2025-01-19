@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,15 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
 #ifndef PX_VEHICLE_4WDRIVE_H
 #define PX_VEHICLE_4WDRIVE_H
+/** \addtogroup vehicle
+  @{
+*/
 
 #include "vehicle/PxVehicleDrive.h"
 #include "vehicle/PxVehicleWheels.h"
@@ -48,14 +52,18 @@ class PxMaterial;
 class PxRigidDynamic;
 
 /**
-\deprecated This API is replaced by a new API, see the Vehicles section in the 4.0 to 5.1 migration guide.
-
 \brief Data structure describing the drive model components of a vehicle with up to 4 driven wheels and up to 16 un-driven wheels.
 The drive model incorporates engine, clutch, gears, autobox, differential, and Ackermann steer correction.
-\see PxVehicleDriveSimData
+@see PxVehicleDriveSimData
 */
-class PX_DEPRECATED PxVehicleDriveSimData4W : public PxVehicleDriveSimData
+class PxVehicleDriveSimData4W : public PxVehicleDriveSimData
 {
+//= ATTENTION! =====================================================================================
+// Changing the data layout of this class breaks the binary serialization format.  See comments for 
+// PX_BINARY_SERIAL_VERSION.  If a modification is required, please adjust the getBinaryMetaData 
+// function.  If the modification is made on a custom branch, please change PX_BINARY_SERIAL_VERSION
+// accordingly.
+//==================================================================================================
 public:
 
 	friend class PxVehicleDrive4W;
@@ -67,7 +75,7 @@ public:
 
 	/**
 	\brief Return the data describing the differential.
-	\see PxVehicleDifferential4WData
+	@see PxVehicleDifferential4WData
 	*/
 	PX_FORCE_INLINE const PxVehicleDifferential4WData& getDiffData() const 
 	{
@@ -76,7 +84,7 @@ public:
 
 	/**
 	\brief Return the data describing the Ackermann steer-correction.
-	\see PxVehicleAckermannGeometryData
+	@see PxVehicleAckermannGeometryData
 	*/
 	PX_FORCE_INLINE const PxVehicleAckermannGeometryData& getAckermannGeometryData() const 
 	{
@@ -85,13 +93,13 @@ public:
 
 	/**
 	\brief Set the data describing the differential.
-	\see PxVehicleDifferential4WData
+	@see PxVehicleDifferential4WData
 	*/
 	void setDiffData(const PxVehicleDifferential4WData& diff);
 
 	/**
 	\brief Set the data describing the Ackermann steer-correction.
-	\see PxVehicleAckermannGeometryData
+	@see PxVehicleAckermannGeometryData
 	*/
 	void setAckermannGeometryData(const PxVehicleAckermannGeometryData& ackermannData);
 
@@ -99,20 +107,20 @@ private:
 
 	/**
 	\brief Differential simulation data
-	\see setDiffData, getDiffData
+	@see setDiffData, getDiffData
 	*/
 	PxVehicleDifferential4WData		mDiff;
 
 	/**
 	\brief Data for ackermann steer angle computation.
-	\see setAckermannGeometryData, getAckermannGeometryData
+	@see setAckermannGeometryData, getAckermannGeometryData
 	*/
 	PxVehicleAckermannGeometryData	mAckermannGeometry;
 
 	/**
 	\brief Test if the 4W-drive simulation data has been setup with legal data.
 	\note Call only after setting all components.
-	\see setEnginedata, setClutchData, setGearsData, setAutoboxData, setDiffData, setAckermannGeometryData 
+	@see setEnginedata, setClutchData, setGearsData, setAutoboxData, setDiffData, setAckermannGeometryData 
 	*/
 	bool isValid() const;
 
@@ -127,13 +135,12 @@ PX_COMPILE_TIME_ASSERT(0==(sizeof(PxVehicleDriveSimData4W) & 15));
 
 
 /**
-\deprecated This API is replaced by a new API, see the Vehicles section in the 4.0 to 5.1 migration guide.
-
 \brief The ordering of the driven and steered wheels of a PxVehicleDrive4W.
 
-\see PxVehicleWheelsSimData, PxVehicleWheelsDynData
+@see PxVehicleWheelsSimData, PxVehicleWheelsDynData
 */
-struct PX_DEPRECATED PxVehicleDrive4WWheelOrder
+
+struct PxVehicleDrive4WWheelOrder
 {
 	enum Enum
 	{
@@ -145,13 +152,12 @@ struct PX_DEPRECATED PxVehicleDrive4WWheelOrder
 };
 
 /**
-\deprecated This API is replaced by a new API, see the Vehicles section in the 4.0 to 5.1 migration guide.
-
 \brief The control inputs for a PxVehicleDrive4W.
 
-\see PxVehicleDriveDynData::setAnalogInput, PxVehicleDriveDynData::getAnalogInput
+@see PxVehicleDriveDynData::setAnalogInput, PxVehicleDriveDynData::getAnalogInput
 */
-struct PX_DEPRECATED PxVehicleDrive4WControl
+
+struct PxVehicleDrive4WControl
 {
 	enum Enum
 	{
@@ -165,12 +171,16 @@ struct PX_DEPRECATED PxVehicleDrive4WControl
 };
 
 /**
-\deprecated This API is replaced by a new API, see the Vehicles section in the 4.0 to 5.1 migration guide.
-
 \brief Data structure with instanced dynamics data and configuration data of a vehicle with up to 4 driven wheels and up to 16 non-driven wheels.
 */
-class PX_DEPRECATED PxVehicleDrive4W : public PxVehicleDrive
+class PxVehicleDrive4W : public PxVehicleDrive
 {
+//= ATTENTION! =====================================================================================
+// Changing the data layout of this class breaks the binary serialization format.  See comments for 
+// PX_BINARY_SERIAL_VERSION.  If a modification is required, please adjust the getBinaryMetaData 
+// function.  If the modification is made on a custom branch, please change PX_BINARY_SERIAL_VERSION
+// accordingly.
+//==================================================================================================
 public:
 	friend class PxVehicleUpdate;
 		
@@ -181,13 +191,13 @@ public:
 
 	\return The instantiated vehicle.
 
-	\see free, setup
+	@see free, setup
 	*/
 	static PxVehicleDrive4W* allocate(const PxU32 nbWheels);
 
 	/**
 	\brief Deallocate a PxVehicleDrive4W instance.
-	\see allocate
+	@see allocate
 	*/
 	void free();
 
@@ -200,7 +210,7 @@ public:
 	\param[in] nbNonDrivenWheels is the number of wheels on the vehicle that cannot be connected to the differential (= numWheels - 4).
 	\note It is assumed that the first shapes of the actor are the wheel shapes, followed by the chassis shapes.  To break this assumption use PxVehicleWheelsSimData::setWheelShapeMapping.
 	\note wheelsData must contain data for at least 4 wheels.  Unwanted wheels can be disabled with PxVehicleWheelsSimData::disableWheel after calling setup.
-	\see allocate, free, setToRestState, PxVehicleWheelsSimData::setWheelShapeMapping
+	@see allocate, free, setToRestState, PxVehicleWheelsSimData::setWheelShapeMapping
 	*/
 	void setup
 		(PxPhysics* physics, PxRigidDynamic* vehActor,
@@ -217,7 +227,7 @@ public:
 	\note It is assumed that the first shapes of the actor are the wheel shapes, followed by the chassis shapes.  To break this assumption use PxVehicleWheelsSimData::setWheelShapeMapping.
 	\note wheelsData must contain data for at least 4 wheels.  Unwanted wheels can be disabled with PxVehicleWheelsSimData::disableWheel after calling setup.
 	\return The instantiated vehicle.
-	\see allocate, free, setToRestState, PxVehicleWheelsSimData::setWheelShapeMapping
+	@see allocate, free, setToRestState, PxVehicleWheelsSimData::setWheelShapeMapping
 	*/
 	static PxVehicleDrive4W* create
 		(PxPhysics* physics, PxRigidDynamic* vehActor,
@@ -229,13 +239,13 @@ public:
 	to the state they were in immediately after setup or create.
 	\note Calling setToRestState invalidates the cached raycast hit planes under each wheel meaning that suspension line
 	raycasts need to be performed at least once with PxVehicleSuspensionRaycasts before calling PxVehicleUpdates. 
-	\see setup, create, PxVehicleSuspensionRaycasts, PxVehicleUpdates
+	@see setup, create, PxVehicleSuspensionRaycasts, PxVehicleUpdates
 	*/
 	void setToRestState();
 
 	/**
 	\brief Simulation data that describes the configuration of the vehicle's drive model.
-	\see setup, create
+	@see setup, create
 	*/
 	PxVehicleDriveSimData4W mDriveSimData;
 
@@ -250,7 +260,7 @@ private:
 protected:
 									PxVehicleDrive4W();
 									~PxVehicleDrive4W(){}
-	virtual		bool				isKindOf(const char* name)	const	{ PX_IS_KIND_OF(name, "PxVehicleDrive4W", PxVehicleDrive); }
+	virtual		bool				isKindOf(const char* name)	const	{ return !::strcmp("PxVehicleDrive4W", name) || PxBase::isKindOf(name); }
 public:
 	static		PxVehicleDrive4W*	createObject(PxU8*& address, PxDeserializationContext& context);
 	static		void				getBinaryMetaData(PxOutputStream& stream);
@@ -264,4 +274,5 @@ PX_COMPILE_TIME_ASSERT(0==(sizeof(PxVehicleDrive4W) & 15));
 } // namespace physx
 #endif
 
-#endif
+/** @} */
+#endif //PX_VEHICLE_4WDRIVE_H

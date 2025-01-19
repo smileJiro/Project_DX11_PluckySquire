@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_LOCKED_DATA_H
-#define PX_LOCKED_DATA_H
+
+#ifndef PX_PHYSICS_NX_LOCKED_DATA
+#define PX_PHYSICS_NX_LOCKED_DATA
+/** \addtogroup physics
+@{
+*/
 
 #include "PxPhysXConfig.h"
 #include "foundation/PxFlags.h"
@@ -50,7 +55,7 @@ struct PxDataAccessFlag
 /**
 \brief collection of set bits defined in PxDataAccessFlag.
 
-\see PxDataAccessFlag
+@see PxDataAccessFlag
 */
 typedef PxFlags<PxDataAccessFlag::Enum,PxU8> PxDataAccessFlags;
 PX_FLAGS_OPERATORS(PxDataAccessFlag::Enum,PxU8)
@@ -65,7 +70,7 @@ public:
 
 	/**
 	\brief Any combination of PxDataAccessFlag::eREADABLE and PxDataAccessFlag::eWRITABLE
-	\see PxDataAccessFlag
+	@see PxDataAccessFlag
 	*/
     virtual PxDataAccessFlags getDataAccessFlags() = 0;
 
@@ -84,4 +89,5 @@ public:
 } // namespace physx
 #endif
 
+/** @} */
 #endif

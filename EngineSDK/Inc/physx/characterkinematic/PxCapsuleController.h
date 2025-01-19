@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_CAPSULE_CONTROLLER_H
-#define PX_CAPSULE_CONTROLLER_H
+
+#ifndef PX_PHYSICS_CCT_CAPSULE_CONTROLLER
+#define PX_PHYSICS_CCT_CAPSULE_CONTROLLER
+/** \addtogroup character
+  @{
+*/
 
 #include "characterkinematic/PxController.h"
 
@@ -50,7 +55,7 @@ struct PxCapsuleClimbingMode
 /**
 \brief A descriptor for a capsule character controller.
 
-\see PxCapsuleController PxControllerDesc
+@see PxCapsuleController PxControllerDesc
 */
 class PxCapsuleControllerDesc : public PxControllerDesc
 {
@@ -87,7 +92,7 @@ public:
 
 	<b>Default:</b> 0.0
 
-	\see PxCapsuleController
+	@see PxCapsuleController
 	*/
 	PxF32				radius;
 
@@ -96,7 +101,7 @@ public:
 
 	<b>Default:</b> 0.0
 
-	\see PxCapsuleController
+	@see PxCapsuleController
 	*/
 	PxF32				height;
 
@@ -105,7 +110,7 @@ public:
 
 	<b>Default:</b> PxCapsuleClimbingMode::eEASY
 
-	\see PxCapsuleController
+	@see PxCapsuleController
 	*/
 	PxCapsuleClimbingMode::Enum		climbingMode;
 	
@@ -177,7 +182,7 @@ public:
 
 	\return The radius of the controller.
 
-	\see PxCapsuleControllerDesc.radius setRadius()
+	@see PxCapsuleControllerDesc.radius setRadius()
 	*/
 	virtual		PxF32			getRadius() const = 0;
 
@@ -189,7 +194,7 @@ public:
 	\param[in] radius The new radius for the controller.
 	\return Currently always true.
 
-	\see PxCapsuleControllerDesc.radius getRadius()
+	@see PxCapsuleControllerDesc.radius getRadius()
 	*/
 	virtual		bool			setRadius(PxF32 radius) = 0;
 
@@ -198,7 +203,7 @@ public:
 
 	\return The height of the capsule controller.
 
-	\see PxCapsuleControllerDesc.height setHeight()
+	@see PxCapsuleControllerDesc.height setHeight()
 	*/
 	virtual		PxF32			getHeight() const = 0;
 
@@ -210,7 +215,7 @@ public:
 	\param[in] height The new height for the controller.
 	\return Currently always true.
 
-	\see PxCapsuleControllerDesc.height getHeight()
+	@see PxCapsuleControllerDesc.height getHeight()
 	*/
 	virtual		bool			setHeight(PxF32 height) = 0;
 
@@ -219,7 +224,7 @@ public:
 
 	\return The capsule controller's climbing mode.
 
-	\see PxCapsuleControllerDesc.climbingMode setClimbingMode()
+	@see PxCapsuleControllerDesc.climbingMode setClimbingMode()
 	*/
 	virtual		PxCapsuleClimbingMode::Enum		getClimbingMode()	const	= 0;
 
@@ -228,7 +233,7 @@ public:
 
 	\param[in] mode The capsule controller's climbing mode.
 
-	\see PxCapsuleControllerDesc.climbingMode getClimbingMode()
+	@see PxCapsuleControllerDesc.climbingMode getClimbingMode()
 	*/
 	virtual		bool			setClimbingMode(PxCapsuleClimbingMode::Enum mode)	= 0;
 	
@@ -241,4 +246,5 @@ protected:
 } // namespace physx
 #endif
 
+/** @} */
 #endif

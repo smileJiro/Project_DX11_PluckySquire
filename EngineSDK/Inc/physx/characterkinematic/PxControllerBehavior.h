@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,15 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_CONTROLLER_BEHAVIOR_H
-#define PX_CONTROLLER_BEHAVIOR_H
+#ifndef PX_PHYSICS_CCT_BEHAVIOR
+#define PX_PHYSICS_CCT_BEHAVIOR
+/** \addtogroup character
+  @{
+*/
 
 #include "PxFiltering.h"
 
@@ -56,7 +60,7 @@ namespace physx
 	/**
 	\brief Bitfield that contains a set of raised flags defined in PxControllerBehaviorFlag.
 
-	\see PxControllerBehaviorFlag
+	@see PxControllerBehaviorFlag
 	*/
 	typedef PxFlags<PxControllerBehaviorFlag::Enum, PxU8> PxControllerBehaviorFlags;
 	PX_FLAGS_OPERATORS(PxControllerBehaviorFlag::Enum, PxU8)
@@ -75,12 +79,14 @@ namespace physx
 		When the CCT touches a shape, the CCT's behavior w.r.t. this shape can be customized by users.
 		This function retrieves the desired PxControllerBehaviorFlag flags capturing the desired behavior.
 
+		\note See comments about deprecated functions at the start of this class
+
 		\param[in] shape	The shape the CCT is currently touching
 		\param[in] actor	The actor owning the shape
 
 		\return Desired behavior flags for the given shape
 
-		\see PxControllerBehaviorFlag
+		@see PxControllerBehaviorFlag
 		*/
 		virtual PxControllerBehaviorFlags getBehaviorFlags(const PxShape& shape, const PxActor& actor) = 0;
 
@@ -91,12 +97,13 @@ namespace physx
 		This function retrieves the desired PxControllerBehaviorFlag flags capturing the desired behavior.
 
 		\note The flag PxControllerBehaviorFlag::eCCT_CAN_RIDE_ON_OBJECT is not supported.
+		\note See comments about deprecated functions at the start of this class
 
 		\param[in] controller	The controller the CCT is currently touching
 
 		\return Desired behavior flags for the given controller
 
-		\see PxControllerBehaviorFlag
+		@see PxControllerBehaviorFlag
 		*/
 		virtual PxControllerBehaviorFlags getBehaviorFlags(const PxController& controller) = 0;
 
@@ -106,11 +113,13 @@ namespace physx
 		When the CCT touches an obstacle, the CCT's behavior w.r.t. this obstacle can be customized by users.
 		This function retrieves the desired PxControllerBehaviorFlag flags capturing the desired behavior.
 
+		\note See comments about deprecated functions at the start of this class
+
 		\param[in] obstacle		The obstacle the CCT is currently touching
 
 		\return Desired behavior flags for the given obstacle
 
-		\see PxControllerBehaviorFlag
+		@see PxControllerBehaviorFlag
 		*/
 		virtual PxControllerBehaviorFlags getBehaviorFlags(const PxObstacle& obstacle) = 0;
 
@@ -122,4 +131,5 @@ namespace physx
 }
 #endif
 
+/** @} */
 #endif

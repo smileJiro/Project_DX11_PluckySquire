@@ -1,12 +1,12 @@
 #ifndef Engine_Macro_h__
 #define Engine_Macro_h__
 
-
-namespace Engine
-{
 #define			PI 3.1415926f
 #define			MATERIAL_TEXTURE_MAX	25
 
+
+namespace Engine // Engine NameSpace를 사용하는 클래스의 기능을 호출하는 것이 아닌 상수 정의와 같은 Define은 namespace 안에 넣을 필요없다.
+{
 
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(NULL, TEXT(_message), L"System Message", MB_OK)
@@ -97,6 +97,9 @@ namespace Engine
 #define LERP(fLeft, fRight, fRatio) m_pGameInstance->Lerp(fLeft, fRight, fRatio)
 
 }
+
+
+#define PHYSX_RELEASE(pPxInstance) if(nullptr != pPxInstance){pPxInstance->release(); pPxInstance = nullptr;}
 
 
 #endif // Engine_Macro_h__
