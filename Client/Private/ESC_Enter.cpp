@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ESC_Enter.h"
-#include "GameInstance.h"
 
 
 
@@ -16,11 +15,6 @@ CESC_Enter::CESC_Enter(const CESC_Enter& _Prototype)
 
 HRESULT CESC_Enter::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-
-
 	return S_OK;
 }
 
@@ -30,6 +24,12 @@ HRESULT CESC_Enter::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	
 
 	return S_OK;
 }

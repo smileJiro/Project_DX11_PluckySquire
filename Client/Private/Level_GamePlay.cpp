@@ -179,6 +179,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 		return E_FAIL;
 
 
+	CPlayer* pPlayer = { nullptr };
+	pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
+	CUI_Manager::GetInstance()->Set_Player(pPlayer);
+	Safe_Release(pPlayer);
+
 	return S_OK;
 }
 
@@ -210,9 +215,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
+	pDesc.iCurLevelID = LEVEL_GAMEPLAY;
 
 	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12.f;
-	pDesc.fY = g_iWinSizeY / 10;
+	pDesc.fY = g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 182.f;
 	pDesc.fSizeY = 100.f;
 
@@ -235,7 +241,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StopStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	pDesc.fX = g_iWinSizeX / 7.5;
+	pDesc.fX = g_iWinSizeX / 7.5f;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 111.f;
@@ -243,7 +249,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BombStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	pDesc.fX = g_iWinSizeX / 10.8;
+	pDesc.fX = g_iWinSizeX / 10.8f;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
 	pDesc.fSizeX = 42.f;
 	pDesc.fSizeY = 27.f;
@@ -258,7 +264,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
-	
+
 	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 9.f;
 	pDesc.fY = g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 60.f;
@@ -293,7 +299,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 
 
-	pDesc.fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20;
+	pDesc.fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20.f;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 18.f;
 	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 72.f;

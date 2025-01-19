@@ -148,6 +148,12 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book">
       <UniqueIdentifier>{0c30b99e-6e02-4b43-ba51-f2f732c86957}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel">
+      <UniqueIdentifier>{746a2ce1-b787-4d4b-925f-d225804b6b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG">
+      <UniqueIdentifier>{e33890e6-15c4-477e-9a78-c791eb2c6588}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -218,9 +224,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Pick_Bulb.h">
       <Filter>02.GameObjects\UI\00. GamePlay\00.Pick_Bulb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\SettingPanel.h">
-      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
@@ -293,6 +296,15 @@
     <ClInclude Include="..\Public\UI_Interaction_Book.h">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SettingPanelBG.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SettingPanel.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -342,9 +354,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Pick_Bulb.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\00.Pick_Bulb</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\SettingPanel.cpp">
-      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
@@ -428,6 +437,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SettingPanelBG.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SettingPanel.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

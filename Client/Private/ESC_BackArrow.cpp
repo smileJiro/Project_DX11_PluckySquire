@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ESC_BackArrow.h"
-#include "GameInstance.h"
 
 
 
@@ -16,11 +15,6 @@ CESC_BackArrow::CESC_BackArrow(const CESC_BackArrow& _Prototype)
 
 HRESULT CESC_BackArrow::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-
-
 	return S_OK;
 }
 
@@ -30,6 +24,11 @@ HRESULT CESC_BackArrow::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	
 
 	return S_OK;
 }
