@@ -18,6 +18,7 @@ public:
 	virtual void Update(_float _fTimeDelta) abstract;
 	virtual void Enter() {};
 	virtual void Exit() {};
+	virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) {};
 
 protected:
 	CPlayer::STATE m_eStateID;

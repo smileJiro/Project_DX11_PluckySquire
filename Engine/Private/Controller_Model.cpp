@@ -103,9 +103,9 @@ void CController_Model::Play_Animation(_float fTimeDelta)
 
 
 
-void CController_Model::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
+void CController_Model::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop)
 {
-	m_ModelComs[m_eCurCoord]->Set_AnimationLoop(iIdx, bIsLoop);
+	m_ModelComs[_eCoord]->Set_AnimationLoop(iIdx, bIsLoop);
 }
 
 void CController_Model::Set_Animation(_uint iIdx)

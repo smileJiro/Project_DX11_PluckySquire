@@ -133,11 +133,17 @@ void C2DModel::Set_Animation(_uint _iIdx)
 void C2DModel::Switch_Animation(_uint _iIdx)
 {
 	m_iCurAnimIdx = _iIdx;
+	m_Animation2Ds[m_iCurAnimIdx]->Reset_CurrentTrackPosition();
 }
 
 void C2DModel::To_NextAnimation()
 {
 	Switch_Animation((m_iCurAnimIdx + 1) % m_Animation2Ds.size());
+}
+
+const _matrix* C2DModel::Get_CurrentSpriteTransform()
+{
+	return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();
 }
 
 _uint C2DModel::Get_AnimCount()

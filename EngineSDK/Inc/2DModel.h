@@ -28,6 +28,7 @@ public:
     virtual void Set_Animation(_uint _iIdx)override;
     virtual void Switch_Animation(_uint _iIdx)override;
     virtual void To_NextAnimation()override;
+    const _matrix* Get_CurrentSpriteTransform();
 
 private:
     CVIBuffer_Rect* m_pVIBufferCom = nullptr;

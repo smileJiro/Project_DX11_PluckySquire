@@ -48,8 +48,8 @@ HRESULT CBeetle::Initialize(void* _pArg)
     m_pFSM->Add_State(MONSTER_STATE::ATTACK);
     m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(IDLE, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(RUN, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Alert_End, this, COORDINATE_3D, ALERT));

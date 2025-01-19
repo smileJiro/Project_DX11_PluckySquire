@@ -12,6 +12,11 @@ public:
     void Update(_float _fTimeDelta) override;
     virtual void Enter() override;
     virtual void Exit() override;
+    virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+
+private:
+    _uint m_iComboCount = 0;
+    _bool m_bCombo = false;
 };
 
 END
