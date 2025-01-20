@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "C07_1516_Jot_Slipping_NoSword_Up_0014_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1508.0,
+        "Y": 2121.0
+      },
+      "BakedSourceDimension": {
+        "X": 183.0,
+        "Y": 286.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'C07_1516_JotSlipping-0'",
+        "ObjectPath": "/Game/Characters/Player/C07_1516/Textures/C07_1516_JotSlipping-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 91.0,
+          "Y": 237.0,
+          "Z": 0.8251953,
+          "W": 0.5180664
+        },
+        {
+          "X": -90.0,
+          "Y": 237.0,
+          "Z": 0.7368164,
+          "W": 0.5180664
+        },
+        {
+          "X": -90.0,
+          "Y": -47.0,
+          "Z": 0.7368164,
+          "W": 0.58740234
+        },
+        {
+          "X": 91.0,
+          "Y": -47.0,
+          "Z": 0.8251953,
+          "W": 0.58740234
+        },
+        {
+          "X": 91.0,
+          "Y": 237.0,
+          "Z": 0.8251953,
+          "W": 0.5180664
+        },
+        {
+          "X": -90.0,
+          "Y": -47.0,
+          "Z": 0.7368164,
+          "W": 0.58740234
+        }
+      ]
+    }
+  }
+]

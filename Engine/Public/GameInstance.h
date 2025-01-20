@@ -179,6 +179,7 @@ public: /* For. GlobalFunction_Manager */
 	_float				Nomalize_Angle(_float _fAngle);	// 0-360 사이로 각도 변환
 	_float				Lerp(_float _fLeft, _float _fRight, _float _fRatio);
 	_fvector			Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio);
+	_bool				MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix);
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();
@@ -189,6 +190,9 @@ public: /* For. Camera_Manager */
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);
 	void				Change_CameraType(_uint _iCurrentCameraType);
 
+
+	public: /* For. Physx_Manager*/
+		void			Physx_Update(_float _fTimeDelta);
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -208,6 +212,7 @@ private:
 	class CImgui_Manager* m_pImgui_Manager = nullptr;
 	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
 	class CCamera_Manager_Engine* m_pCamera_Manager = nullptr;
+	class CPhysx_Manager* m_pPhysx_Manager = nullptr;
 
 private:
 	HWND m_hWnd = nullptr;

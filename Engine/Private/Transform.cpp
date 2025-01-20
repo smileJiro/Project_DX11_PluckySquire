@@ -28,8 +28,8 @@ HRESULT CTransform::Initialize(void* _pArg)
     m_fSpeedPerSec = pDesc->fSpeedPerSec;
     m_fRotationPerSec = pDesc->fRotationPerSec;
 
-    Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vPosition), 1.0f));
-    Set_Scale(pDesc->vScaling.x, pDesc->vScaling.y, pDesc->vScaling.z);
+    Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vInitialPosition), 1.0f));
+    Set_Scale(pDesc->vInitialScaling.x, pDesc->vInitialScaling.y, pDesc->vInitialScaling.z);
 
     return S_OK;
 }
@@ -118,6 +118,23 @@ void CTransform::Turn(_float _fTimeDelta, _fvector _vAxis)
 
     // vector * matrix
     // set_state
+    Set_State(STATE::STATE_RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
+    Set_State(STATE::STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
+    Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
+}
+
+void CTransform::TurnAngle(_float _fRadian, _fvector _vAxis)
+{
+    // 지속적인 회전.
+    _vector vRight = Get_State(STATE::STATE_RIGHT);
+    _vector vUp = Get_State(STATE::STATE_UP);
+    _vector vLook = Get_State(STATE::STATE_LOOK);
+
+    // 회전 행렬 만들기.
+    _matrix RotationMatrix = XMMatrixRotationAxis(XMVector3Normalize(_vAxis), _fRadian);
+
+   // vector * matrix
+   // set_state
     Set_State(STATE::STATE_RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
     Set_State(STATE::STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
     Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
@@ -236,6 +253,7 @@ void CTransform::Set_Scale(const _float3& _vScale)
     Set_State(STATE::STATE_UP, XMVector3Normalize(Get_State(STATE::STATE_UP)) * _vScale.y);
     Set_State(STATE::STATE_LOOK, XMVector3Normalize(Get_State(STATE::STATE_LOOK)) * _vScale.z);
 }
+
 
 _float CTransform::Compute_Distance(_fvector _vTargetPos) const
 {

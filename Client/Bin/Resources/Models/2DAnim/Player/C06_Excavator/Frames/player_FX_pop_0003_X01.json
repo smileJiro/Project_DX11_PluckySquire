@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_FX_pop_0003_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 920.0,
+        "Y": 667.0
+      },
+      "BakedSourceDimension": {
+        "X": 334.0,
+        "Y": 274.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_pull_lever-0'",
+        "ObjectPath": "/Game/Characters/Player/C06_Excavator/Textures/player_pull_lever-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 125.0,
+          "Y": 192.0,
+          "Z": 0.6118164,
+          "W": 0.32617188
+        },
+        {
+          "X": -207.0,
+          "Y": 192.0,
+          "Z": 0.44970703,
+          "W": 0.32617188
+        },
+        {
+          "X": -207.0,
+          "Y": -80.0,
+          "Z": 0.44970703,
+          "W": 0.45898438
+        },
+        {
+          "X": 125.0,
+          "Y": -80.0,
+          "Z": 0.6118164,
+          "W": 0.45898438
+        },
+        {
+          "X": 125.0,
+          "Y": 192.0,
+          "Z": 0.6118164,
+          "W": 0.32617188
+        },
+        {
+          "X": -207.0,
+          "Y": -80.0,
+          "Z": 0.44970703,
+          "W": 0.45898438
+        }
+      ]
+    }
+  }
+]

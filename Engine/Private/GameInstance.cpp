@@ -15,6 +15,7 @@
 #include "Imgui_Manager.h"
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
+#include "Physx_Manager.h"
 #include "Layer.h"
 #include "ModelObject.h"
 #include "ContainerObject.h"
@@ -35,6 +36,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iViewportWidth, EngineDesc.iViewportHeight, ppDevice, ppContext);
 	if (nullptr == m_pGraphic_Device)
+		return E_FAIL;
+
+	m_pPhysx_Manager = CPhysx_Manager::Create(*ppDevice, *ppContext); /* PhysX 역시 PxPhysics* 를 Object 생성 시 전달할 예정. (유사 Device, Context 개념.)*/
+	if (nullptr == m_pPhysx_Manager)
 		return E_FAIL;
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
@@ -105,6 +110,8 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
 
+
+
 	return S_OK;
 }
 
@@ -122,7 +129,12 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pObject_Manager->Update(fTimeDelta);
 	m_pCamera_Manager->Update(fTimeDelta);
-	m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
+
+
+	/* 현재는 임시적으로 Physx_Manager가 Scene Update를 돌리며 테스트 예정. 
+	추후 콜리전 매니저 설계시 scene 관리방식 변경.*/
+	m_pPhysx_Manager->Update(fTimeDelta);
+	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 }
 
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
@@ -915,6 +927,11 @@ _fvector CGameInstance::Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuideP
 	return m_pGlobalFunction_Manager->Get_BezierCurve(_vStartPoint, _vGuidePoint, _vEndPoint, _fRatio);
 }
 
+_bool CGameInstance::MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix)
+{
+	return m_pGlobalFunction_Manager->MatrixDecompose(_vScale, _vQuaternion, _vPosition, _Matrix);
+}
+
 CCamera* CGameInstance::Get_CurrentCamera()
 {
 	return m_pCamera_Manager->Get_CurrentCamera();
@@ -943,6 +960,14 @@ void CGameInstance::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 void CGameInstance::Change_CameraType(_uint _iCurrentCameraType)
 {
 	m_pCamera_Manager->Change_CameraType(_iCurrentCameraType);
+}
+
+void CGameInstance::Physx_Update(_float _fTimeDelta)
+{
+	if (nullptr == m_pPhysx_Manager)
+		return;
+
+	m_pPhysx_Manager->Update(_fTimeDelta);
 }
 
 #ifdef _DEBUG
@@ -988,6 +1013,8 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 {	
 	// Engine Manager Class Release
 	// 여기서 Manger Class->Free() 호출 >>> 참조 중이던 CGameInstance에 대한 Safe_Release() 호출 됌.
+
+	Safe_Release(m_pPhysx_Manager); /* 태웅 : 물리적인 처리를하는 rigid 객체를 생성하기 위해 PxPhysics 객체를 오브젝트에 device처럼 포인터를 던질 예정. */
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);
 	Safe_Release(m_pImgui_Manager);

@@ -121,6 +121,7 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3*
 
 
 			pGameObject->Set_Active(true);
+			pGameObject->Set_Alive();
 
 			return S_OK;
 		}

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ESC_Bulb.h"
-#include "GameInstance.h"
 
 
 
@@ -16,11 +15,6 @@ ESC_Bulb::ESC_Bulb(const ESC_Bulb& _Prototype)
 
 HRESULT ESC_Bulb::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-
-
 	return S_OK;
 }
 
@@ -30,6 +24,12 @@ HRESULT ESC_Bulb::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	
 
 	return S_OK;
 }
@@ -80,7 +80,7 @@ HRESULT ESC_Bulb::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ESCBulb"),
+	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_ESCBulb"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

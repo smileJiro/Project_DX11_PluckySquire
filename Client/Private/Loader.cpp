@@ -9,7 +9,7 @@
 
 /* For. UI*/
 #include "Pick_Bulb.h"
-#include "SettingPanel.h"
+#include "SettingPanelBG.h"
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "ArrowForStamp.h"
@@ -26,15 +26,19 @@
 #include "Player.h"
 #include "TestTerrain.h"
 
-#include "Beetle.h"
-#include "BarfBug.h"
-#include "Projectile_BarfBug.h"
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
+
+/* For. Monster */
+#include "Beetle.h"
+#include "BarfBug.h"
+#include "Projectile_BarfBug.h"
+#include "ButterGrump.h"
+
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -203,6 +207,22 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
 
+    /* Monster */
+
+     /* For. Prototype_GameObject_Beetle */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"),
+        CBeetle::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"),
+        CBarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Projectile_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Projectile_BarfBug"),
+        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -262,6 +282,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_KEYQ"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Q.dds"), 1))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ShopBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/T_Panel_BG.dds"), 1))))
+		return E_FAIL;
+
 
 
 
@@ -277,7 +301,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/")))))
         return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -290,14 +314,17 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/Anim/"), matPretransform)))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("latch_glove"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/latch_glove/latch_glove.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("latch_sword"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/latch_sword/latch_sword.model", matPretransform))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("WoodenPlatform_01"),
     C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
          return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
-
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
         CPlayer::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -347,21 +374,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		return E_FAIL;
 
 
-    /* Monster */
+    /* Boss */
 
-    /* For. Prototype_GameObject_Beetle */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"),
-        CBeetle::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_BarfBug */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"),
-        CBarfBug::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Projectile_BarfBug */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Projectile_BarfBug"),
-        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_ButterGrump */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"),
+        CButterGrump::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
@@ -412,7 +429,12 @@ HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _
 
         if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
             C3DModel::Create(m_pDevice, m_pContext, str.c_str(), _PreTransformMatrix))))
+        {
+            wstring str = TEXT("Failed to Create 3DModel");
+            str += filename;
+            MessageBoxW(NULL, str.c_str(), TEXT("에러"), MB_OK);
             return E_FAIL;
+        }
 
     } while (FindNextFile(hFind, &FindFileData));
 
@@ -460,7 +482,12 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
 
         if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
             C2DModel::Create(m_pDevice, m_pContext, str.c_str()))))
+        {
+            wstring str = TEXT("Failed to Create 2DModel");
+            str += filename;
+            MessageBoxW(NULL, str.c_str(), TEXT("에러"), MB_OK);
             return E_FAIL;
+        }
 
     } while (FindNextFile(hFind, &FindFileData));
 
@@ -479,7 +506,12 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
 
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+            {
+                string str = "Failed to Create 3DModel";
+                str += entry.path().filename().replace_extension().string();
+                MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
                 return E_FAIL;
+            }
         }
     }
     return S_OK;

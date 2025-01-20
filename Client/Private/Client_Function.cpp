@@ -107,6 +107,18 @@ namespace Client
 		//return converter.to_bytes(_strWide);
 	}
 
+	F_DIRECTION To_FDirection(_vector _vDir)
+	{
+		//가로축이 더 클 때
+		if (abs(_vDir.m128_f32[0] )> abs(_vDir.m128_f32[1]))
+			return _vDir.m128_f32[0] < 0 ? F_DIRECTION::LEFT: F_DIRECTION::RIGHT;
+		//세로축이 더 클 때
+		else
+			return _vDir.m128_f32[1] > 0 ? F_DIRECTION::UP: F_DIRECTION::DOWN;
+
+		return F_DIRECTION::F_DIR_LAST;
+	}
+
 
 
 }

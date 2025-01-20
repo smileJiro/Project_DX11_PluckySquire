@@ -85,6 +85,12 @@ HRESULT CContainerObject::Add_PartObject(CGameObject* _pPartObject)
     return S_OK;
 }
 
+void CContainerObject::Set_PartActive(_uint _iPartID, _bool _bValue)
+{
+    if(m_PartObjects[_iPartID])
+       m_PartObjects[_iPartID]->Set_Active(_bValue);
+}
+
 CGameObject* CContainerObject::Get_PartObject(_int _iPartObjectIndex)
 {
     if (_iPartObjectIndex >= m_PartObjects.size())

@@ -4,51 +4,46 @@
 //1  0
 //2 4
 
-CSpriteFrame::CSpriteFrame(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, string strDirectory, json& jData)
+CSpriteFrame::CSpriteFrame(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext,json& jData,  map<string, CTexture*>& _Textures)
 {
-	json& jSprite = jData["Sprite"];
-	string objName = jSprite["ObjectName"];
-	_uint iStart = (_uint)objName.find_first_of('\'') + 1;
-	_uint iCount = (_uint)objName.find_last_of('\'') - iStart;
-	objName = objName.substr(iStart, iCount);
-	objName = strDirectory +"Frames/" + objName + ".json";
-	json jSpriteObject;
-	std::ifstream input_file(objName.c_str());
-	if (!input_file.is_open())
-		return ;
-	input_file >> jSpriteObject;
-	input_file.close();
-
-	json& jProperties = jSpriteObject.front() ["Properties"];
+	json& jProperties = jData["Properties"];
 
 	json& jSpriteStart = jProperties["BakedSourceUV"];
 
 	json& jSpriteSize = jProperties["BakedSourceDimension"];
 
-
-	string strSourceTexture = jProperties["BakedSourceTexture"]["ObjectName"];
+	_uint iStart;
+	_uint iCount;
+	json& jBakedSourceTexture = jProperties["BakedSourceTexture"];
+	string strSourceTexture = jBakedSourceTexture["ObjectName"];
 	iStart = (_uint)(strSourceTexture.find_first_of('\'')) + 1;
 	iCount = (_uint)strSourceTexture.find_last_of('\'') - iStart;
 	strSourceTexture = strSourceTexture.substr(iStart, iCount);
-	strSourceTexture += ".png";
-	strSourceTexture = strDirectory + "Textures/" + strSourceTexture;
+	pTexture = _Textures[strSourceTexture];
 
-
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	wstring wstrSourceTexture = pGameInstance->StringToWString(strSourceTexture);
-	pTexture = CTexture::Create(_pDevice,_pContext, wstrSourceTexture.c_str());
 	fPixelsPerUnrealUnit = jProperties["PixelsPerUnrealUnit"];
+
 	json& jBakedRenderData = jProperties["BakedRenderData"];
 	vSpriteStartUV = { 1,1 };
 	vSpriteEndUV = { 0,0 };
+	_float fMinX = D3D11_FLOAT32_MAX, fMinY = D3D11_FLOAT32_MAX;
+	_float fMaxX = -D3D11_FLOAT32_MAX, fMaxY = -D3D11_FLOAT32_MAX;
 	for (json& j : jBakedRenderData)
 	{
 		fBakedRenderData.push_back(_float4{j["X"],j["Y"] ,j["Z"] ,j["W"] });
 		vSpriteStartUV = _float2(min(fBakedRenderData.back().z, vSpriteStartUV.x), min(fBakedRenderData.back().w, vSpriteStartUV.y));
 		vSpriteEndUV = _float2(max(fBakedRenderData.back().z, vSpriteEndUV.x), max(fBakedRenderData.back().w, vSpriteEndUV.y));
+		fMinX = min(fMinX, fBakedRenderData.back().x);
+		fMinY = min(fMinY, fBakedRenderData.back().y);
+		fMaxX = max(fMaxX, fBakedRenderData.back().x);
+		fMaxY = max(fMaxY, fBakedRenderData.back().y);
 	}
-
-	iFrameRun = jData["FrameRun"];
+	_float fWidth= abs(fMaxX - fMinX);
+	_float fHeight = abs(fMaxY - fMinY);
+	_float fXOffset = fMinX + fWidth / 2;
+	_float fYOffset = fMinY + fHeight / 2;
+	matSpriteTransform = XMMatrixScaling(fWidth, fHeight, 1);
+	matSpriteTransform *= XMMatrixTranslation(fXOffset, fYOffset, 0);
 }
 CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
 	: vSpriteStartUV(_Prototype.vSpriteStartUV)
@@ -56,7 +51,7 @@ CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
 	, pTexture(_Prototype.pTexture)
 	, fPixelsPerUnrealUnit(_Prototype.fPixelsPerUnrealUnit)
 	, fBakedRenderData(_Prototype.fBakedRenderData)
-	, iFrameRun(_Prototype.iFrameRun)
+	, matSpriteTransform(_Prototype.matSpriteTransform)
 {
 
 }
@@ -76,9 +71,9 @@ HRESULT CSpriteFrame::Bind_ShaderResource(CShader* _pShader)
 		return E_FAIL;
 	return S_OK;
 }
-CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, string _strDirectory, json& _jData)
+CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, CTexture*>& _Textures)
 {
-	CSpriteFrame* pInstance = new CSpriteFrame(_pDevice, _pContext, _strDirectory, _jData);
+	CSpriteFrame* pInstance = new CSpriteFrame(_pDevice, _pContext, _jData, _Textures);
 
 	return pInstance;
 }
@@ -88,22 +83,29 @@ CSpriteFrame* CSpriteFrame::Clone()
 }
 void CSpriteFrame::Free()
 {
-	Safe_Release(pTexture);
 	__super::Free();
 }
 ;
 
-CAnimation2D::CAnimation2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, string _strDirectory, json& _jData)
+CAnimation2D::CAnimation2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, map<string, CTexture*>& _Textures)
 {
 	strName = _jData["Name"];
 	json& jProperties = _jData["Properties"];
 	if (jProperties.contains("FramesPerSecond"))
 		fFramesPerSecond = jProperties["FramesPerSecond"];
+
 	json& jKeyFrames = jProperties["KeyFrames"];
 	for (json& jKeyFrame : jKeyFrames)
 	{
 
-		SpriteFrames.push_back(CSpriteFrame::Create(_pDevice, _pContext,_strDirectory, jKeyFrame));
+		_uint iFrameRun = jKeyFrame["FrameRun"];
+
+		string strSpriteFileName = jKeyFrame["Sprite"]["ObjectName"];
+		_uint iStart = (_uint)(strSpriteFileName.find_first_of('\'')) + 1;
+		_uint iCount = (_uint)strSpriteFileName.find_last_of('\'') - iStart;
+		strSpriteFileName = strSpriteFileName.substr(iStart, iCount);
+		json& jSpriteFIle = _jPaperSprites[strSpriteFileName];
+		SpriteFrames.push_back({ CSpriteFrame::Create(_pDevice, _pContext, jSpriteFIle, _Textures), iFrameRun});
 	}
 	iFrameCount = (_uint)SpriteFrames.size();
 
@@ -117,13 +119,13 @@ CAnimation2D::CAnimation2D(const CAnimation2D& _Prototype)
 {
 	for (auto& pSpriteFrame : _Prototype.SpriteFrames)
 	{
-		SpriteFrames.push_back(pSpriteFrame->Clone());
+		SpriteFrames.push_back({ pSpriteFrame.first->Clone(),pSpriteFrame.second });
 	}
 }
 
 HRESULT CAnimation2D::Bind_ShaderResource(CShader* _pShader)
 {
-	if (FAILED(SpriteFrames[iCurrentFrame]->Bind_ShaderResource(_pShader)))
+	if (FAILED(SpriteFrames[iCurrentFrame].first->Bind_ShaderResource(_pShader)))
 		return E_FAIL;
 
 
@@ -149,7 +151,7 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 	{
 		fCurrentFrameTime = 0;
 		iCurrentSubFrame++;
-		if (iCurrentSubFrame >= SpriteFrames[iCurrentFrame]->Get_FrameRun())
+		if (iCurrentSubFrame >= SpriteFrames[iCurrentFrame].second)
 		{
 			iCurrentSubFrame = 0;
 			iCurrentFrame++;
@@ -162,11 +164,29 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 	return false;
 }
 
-
-
-CAnimation2D* CAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, string _strDirectory, json& _jData)
+void CAnimation2D::Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun)
 {
-	CAnimation2D* pInstance = new CAnimation2D(_pDevice, _pContext, _strDirectory, _jData);
+	SpriteFrames.push_back({ _pSpriteFrame ,_iFrameRun});
+}
+
+void CAnimation2D::Reset_CurrentTrackPosition()
+{
+	iCurrentFrame = 0;
+	iCurrentSubFrame = 0;
+	fCurrentFrameTime = 0;
+}
+
+const _matrix* CAnimation2D::Get_CurrentSpriteTransform() 
+{
+	return GetCurrentSprite()->Get_Transform();
+}
+
+
+
+
+CAnimation2D* CAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, map<string, CTexture*>& _Textures)
+{
+	CAnimation2D* pInstance = new CAnimation2D(_pDevice, _pContext, _jData, _jPaperSprites, _Textures);
 
 	return pInstance;
 }
@@ -180,7 +200,7 @@ void CAnimation2D::Free()
 {
 	for (auto& pSpriteFrame : SpriteFrames)
 	{
-		Safe_Release(pSpriteFrame);
+		Safe_Release(pSpriteFrame.first);
 	}
 	__super::Free();
 }

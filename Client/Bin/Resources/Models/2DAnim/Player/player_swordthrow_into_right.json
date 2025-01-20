@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_swordthrow_into_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_into_right_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_into_right_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_into_right_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_into_right_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_into_right_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_into_right_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_into_right_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_into_right_0004_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

@@ -119,7 +119,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -162,13 +162,14 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/;.\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -185,6 +186,9 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\ButterGrump.h" />
+    <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\ESC_Back.h" />
     <ClInclude Include="..\Public\ESC_BackArrow.h" />
     <ClInclude Include="..\Public\ESC_Bulb.h" />
@@ -203,15 +207,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\public\IdleState.h" />
+    <ClInclude Include="..\Public\SettingPanel.h" />
+    <ClInclude Include="..\Public\ShopPanel.h" />
+    <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
     <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
+    <ClInclude Include="..\Public\PlayerState_Jump.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
     <ClInclude Include="..\Public\Pooling_Manager.h" />
     <ClInclude Include="..\public\Projectile_BarfBug.h" />
     <ClInclude Include="..\Public\RangedAttackState.h" />
-    <ClInclude Include="..\public\SettingPanel.h" />
+    <ClInclude Include="..\public\SettingPanelBG.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -238,6 +246,9 @@
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\ButterGrump.cpp" />
+    <ClCompile Include="..\private\DetectionField.cpp" />
     <ClCompile Include="..\Private\ESC_Back.cpp" />
     <ClCompile Include="..\Private\ESC_BackArrow.cpp" />
     <ClCompile Include="..\Private\ESC_Bulb.cpp" />
@@ -253,16 +264,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\IdleState.cpp" />
+    <ClCompile Include="..\Private\SettingPanel.cpp" />
+    <ClCompile Include="..\Private\ShopPanel.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\Private\PlayerState.cpp" />
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Jump.cpp" />
     <ClCompile Include="..\Private\PlayerState_Run.cpp" />
     <ClCompile Include="..\Private\Pooling_Manager.cpp" />
     <ClCompile Include="..\private\Projectile_BarfBug.cpp" />
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
-    <ClCompile Include="..\private\SettingPanel.cpp" />
+    <ClCompile Include="..\private\SettingPanelBG.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />

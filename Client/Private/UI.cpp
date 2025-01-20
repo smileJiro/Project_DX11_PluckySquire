@@ -22,8 +22,8 @@ HRESULT CUI::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
+	//if (FAILED(Ready_Components()))
+	//	return E_FAIL;
 
 	return S_OK;
 }

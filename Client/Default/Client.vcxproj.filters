@@ -148,6 +148,18 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book">
       <UniqueIdentifier>{0c30b99e-6e02-4b43-ba51-f2f732c86957}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel">
+      <UniqueIdentifier>{746a2ce1-b787-4d4b-925f-d225804b6b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG">
+      <UniqueIdentifier>{e33890e6-15c4-477e-9a78-c791eb2c6588}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\DetectionField">
+      <UniqueIdentifier>{04adcb91-4582-41ba-903b-8a861fe8a29f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss">
+      <UniqueIdentifier>{48b2cfb8-e859-4efb-9630-ac2adc201dbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -218,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Pick_Bulb.h">
       <Filter>02.GameObjects\UI\00. GamePlay\00.Pick_Bulb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\SettingPanel.h">
-      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
@@ -293,6 +302,34 @@
     <ClInclude Include="..\Public\UI_Interaction_Book.h">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SettingPanelBG.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SettingPanel.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Idle.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Jump.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Run.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DetectionField.h">
+      <Filter>03.Components\DetectionField</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Attack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\ButterGrump.h">
+      <Filter>02.GameObjects\Monster\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -342,9 +379,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Pick_Bulb.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\00.Pick_Bulb</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\SettingPanel.cpp">
-      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
@@ -428,6 +462,34 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SettingPanelBG.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SettingPanel.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Idle.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Jump.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Run.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DetectionField.cpp">
+      <Filter>03.Components\DetectionField</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\ButterGrump.cpp">
+      <Filter>02.GameObjects\Monster\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

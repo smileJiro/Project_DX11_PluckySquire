@@ -1,0 +1,89 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_dodgeroll_up_singlerollonly",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0001_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0002_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0006_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0006_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0007_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0007_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0008_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0008_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0009_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0009_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0010_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0010_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_dodgerollV02_out_up_0011_X01'",
+            "ObjectPath": "/Game/Characters/Player/DodgeRollV02/Frames/player_dodgerollV02_out_up_0011_X01.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

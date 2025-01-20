@@ -14,10 +14,10 @@ public:
 		// 초당 회전속도
 		_float	fRotationPerSec = {};
 		// 초기화 위치
-		_float3 vPosition = { 0.0f, 0.0f, 0.0f };
+		_float3 vInitialPosition = { 0.0f, 0.0f, 0.0f };
 
 		// 초기화 크기
-		_float3 vScaling = { 1.0f, 1.0f, 1.0f };
+		_float3 vInitialScaling = { 1.0f, 1.0f, 1.0f };
 	}TRANSFORM_DESC;
 
 protected:
@@ -36,7 +36,7 @@ public:
 	_bool					Go_Right(_float _fTimeDelta); 
 	_bool					Go_Up(_float _fTimeDelta); 
 	_bool					Go_Down(_float _fTimeDelta);
-	void						Go_Direction(_vector _vDirection, _float _fTimeDelta);
+	void					Go_Direction(_vector _vDirection, _float _fTimeDelta);
 
 	void					Rotation(_float _fRadian, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 항등상태를 기준으로 지정한 각도로 회전한다.
 	void					RotationZ(_float _vRadianZ);
@@ -45,6 +45,7 @@ public:
 	virtual void			RotationQuaternionW(const _float4& _vQuaternion);	//쿼터니언으로 회전
 
 	void					Turn(_float _fTimeDelta, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 기존 회전을 기준으로 추가로 정해진 속도로 회전한다.
+	void					TurnAngle(_float _fRadian, _fvector _vAxis = { 0.0f, 1.0f, 0.0f, 0.0f });	// 기존 회전을 기준으로 정해진 각도만큼 회전한다
 	void					TurnZ(_float _fTimeDelta);
 
 	_float					Compute_Distance(_fvector _vTargetPos) const; // 거리 계산 함수.
@@ -66,8 +67,11 @@ public:
 	void					Set_WorldMatrix(const _float4x4& _WorldMatrix) { m_WorldMatrix = _WorldMatrix; }
 	void					Set_Scale(_float _fX, _float _fY, _float _fZ);
 	void					Set_Scale(const _float3& _vScale);
+
 	void					Set_State(STATE _eState, _fvector _vState) { XMStoreFloat4((_float4*)&m_WorldMatrix.m[_eState], _vState); }
-	void					Set_State(STATE _eState, const _float4& _vState) { memcpy(m_WorldMatrix.m[_eState], &_vState, sizeof(_float4)); }
+	void					Set_State(STATE _eState, const _float4& _vState) { 
+		memcpy(m_WorldMatrix.m[_eState], &_vState, sizeof(_float4)); 
+	}
 	void					Set_SpeedPerSec(_float _fSpeedPerSec) { m_fSpeedPerSec = _fSpeedPerSec; };
 	void					Set_RotationPerSec(_float _fRotationPerSec) { m_fRotationPerSec = _fRotationPerSec; };
 

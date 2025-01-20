@@ -1,0 +1,257 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_c06_swordbeam_out",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0002_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0003_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0004_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0005_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0006_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0006_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0007_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0007_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0008_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0008_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0009_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0009_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0013_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0014_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0014_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0015_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0015_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0016_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0016_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0017_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0017_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0018_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0018_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0019_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0019_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0020_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0020_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0021_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0021_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0022_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0022_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0023_X01'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0023_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0024_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0024_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0025_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0025_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0026_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0026_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0027_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0027_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0028_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0028_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0029_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0029_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0030_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0030_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0031_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0031_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0032_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0032_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0033_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0033_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0034_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0034_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_c06_swordbeam_out0035_X02'",
+            "ObjectPath": "/Game/Characters/Player/C06_2122_SwordPowerUp/Frames/player_c06_swordbeam_out0035_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

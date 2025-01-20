@@ -122,9 +122,9 @@ _uint CController_Model::Get_TextureIndex_To_3D(_uint _eTextureType, _uint _iMat
 
 
 
-void CController_Model::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
+void CController_Model::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop)
 {
-	m_ModelComs[m_eCurCoord]->Set_AnimationLoop(iIdx, bIsLoop);
+	m_ModelComs[_eCoord]->Set_AnimationLoop(iIdx, bIsLoop);
 }
 
 void CController_Model::Set_Animation(_uint iIdx)

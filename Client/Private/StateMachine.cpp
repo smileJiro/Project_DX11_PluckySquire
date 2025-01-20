@@ -39,8 +39,12 @@ HRESULT CStateMachine::Initialize(void* pArg)
 void CStateMachine::Transition_To(CPlayerState* _pNewState)
 {
 	if (nullptr != m_pState)
+	{
+		m_pState->Exit();
 		Safe_Release(m_pState);
+	}
 	m_pState = _pNewState;
+	m_pState-> Enter();
 	for (auto& callback : m_listStateChangeCallback)
 		callback(_pNewState);
 }

@@ -46,7 +46,7 @@ public: /* 2D, 3D */
 	CModel* Get_Model(COORDINATE _eCoord) {return m_ModelComs[_eCoord];}
 
 	//Set
-	void Set_AnimationLoop(_uint iIdx, _bool bIsLoop);
+	void Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
 	void Set_Animation(_uint iIdx);
 	void Switch_Animation(_uint iIdx);
 	void To_NextAnimation();

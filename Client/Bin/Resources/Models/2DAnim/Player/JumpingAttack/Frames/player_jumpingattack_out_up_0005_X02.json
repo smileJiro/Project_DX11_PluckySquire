@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "player_jumpingattack_out_up_0005_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 811.0,
+        "Y": 1469.0
+      },
+      "BakedSourceDimension": {
+        "X": 188.0,
+        "Y": 313.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'player_jumpingattack-2'",
+        "ObjectPath": "/Game/Characters/Player/JumpingAttack/Textures/player_jumpingattack-2.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 86.0,
+          "Y": 295.0,
+          "Z": 0.9746094,
+          "W": 0.71777344
+        },
+        {
+          "X": -100.0,
+          "Y": 295.0,
+          "Z": 0.79296875,
+          "W": 0.71777344
+        },
+        {
+          "X": -100.0,
+          "Y": -16.0,
+          "Z": 0.79296875,
+          "W": 0.8696289
+        },
+        {
+          "X": 86.0,
+          "Y": -16.0,
+          "Z": 0.9746094,
+          "W": 0.8696289
+        },
+        {
+          "X": 86.0,
+          "Y": 295.0,
+          "Z": 0.9746094,
+          "W": 0.71777344
+        },
+        {
+          "X": -100.0,
+          "Y": -16.0,
+          "Z": 0.79296875,
+          "W": 0.8696289
+        }
+      ]
+    }
+  }
+]

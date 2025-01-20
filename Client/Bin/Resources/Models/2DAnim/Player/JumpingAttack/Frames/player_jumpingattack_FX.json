@@ -1,0 +1,55 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_jumpingattack_FX",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_FX_0001_X01'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_FX_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_FX_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_FX_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_FX_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_FX_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_FX_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_FX_0004_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_FX_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_FX_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_jumpingattack_FX_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/JumpingAttack/Frames/player_jumpingattack_FX_0006_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ],
+      "CollisionSource": "EFlipbookCollisionMode::EachFrameCollision"
+    }
+  }
+]

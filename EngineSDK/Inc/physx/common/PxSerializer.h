@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,18 +23,22 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
+
 #ifndef PX_SERIALIZER_H
 #define PX_SERIALIZER_H
+/** \addtogroup extensions
+@{
+*/
 
 #include "foundation/PxAssert.h"
 #include "foundation/PxAllocatorCallback.h"
-#include "foundation/PxFoundation.h"
 #include "common/PxSerialFramework.h"
 #include "common/PxCollection.h"
+#include "PxFoundation.h"
 
 
 #if !PX_DOXYGEN
@@ -54,7 +59,7 @@ namespace physx
 
  A default implementation is available as a template adapter (PxSerializerDefaultAdapter).
 
- \see PxSerializerDefaultAdapter, PX_NEW_SERIALIZER_ADAPTER, PxSerializationRegistry::registerSerializer
+ @see PxSerializerDefaultAdapter, PX_NEW_SERIALIZER_ADAPTER, PxSerializationRegistry::registerSerializer
 */
 class PxSerializer
 {
@@ -62,9 +67,9 @@ public:
 
 	/**********************************************************************************************************************/
 
-	/** \name Basics needed for Binary- and RepX-Serialization
+	/** @name Basics needed for Binary- and RepX-Serialization
 	*/
-	//\{
+	//@{
 	
 	/**
 	\brief Returns string name of dynamic type.
@@ -78,7 +83,7 @@ public:
 	 
 	This method does not add the required objects recursively, e.g. objects required by required objects.
 	 
-	\see PxCollection, PxSerialization::complete
+	@see PxCollection, PxSerialization::complete
 	*/
 	virtual			void			requiresObjects(PxBase&, PxProcessPxBaseCallback&) const									= 0;
 	
@@ -89,18 +94,18 @@ public:
 
 	\return	Whether the class is subordinate
 	
-	\see PxSerialization::isSerializable
+	@see PxSerialization::isSerializable
 	*/
 	virtual			bool			isSubordinate() const																= 0;
 
-	//\}
+	//@}
 	/**********************************************************************************************************************/
 
 	/**********************************************************************************************************************/
 
-	/** \name Functionality needed for Binary Serialization only
+	/** @name Functionality needed for Binary Serialization only
 	*/
-	//\{
+	//@{
 
 	/**
 	\brief Exports object's extra data to stream.
@@ -133,7 +138,7 @@ public:
 	*/
 	virtual         PxBase*			createObject(PxU8*& address, PxDeserializationContext& context) const	= 0; 
 
-	//\}
+	//@}
 	/**********************************************************************************************************************/
 	virtual ~PxSerializer() {}
 };
@@ -149,9 +154,9 @@ public:
 
 	/************************************************************************************************/
 
-	/** \name Basics needed for Binary- and RepX-Serialization
+	/** @name Basics needed for Binary- and RepX-Serialization
 	*/
-	//\{
+	//@{
 
 	PxSerializerDefaultAdapter(const char* name) : mTypeName(name){}
 
@@ -171,12 +176,12 @@ public:
 		return false;
 	}
 		
-	//\}
+	//@}
 	/************************************************************************************************/
 
-	/** \name Functionality needed for Binary Serialization only
+	/** @name Functionality needed for Binary Serialization only
 	*/
-	//\{
+	//@{
 
 	// object methods
 
@@ -188,8 +193,8 @@ public:
 
 	virtual void exportData(PxBase& obj, PxSerializationContext& s) const
 	{
-		PxAllocatorCallback& allocator = *PxGetAllocatorCallback();
-		T* copy = reinterpret_cast<T*>(allocator.allocate(sizeof(T), "TmpAllocExportData", PX_FL));
+		PxAllocatorCallback& allocator = PxGetFoundation().getAllocatorCallback();
+		T* copy = reinterpret_cast<T*>(allocator.allocate(sizeof(T), "TmpAllocExportData", __FILE__, __LINE__));
 		PxMemCopy(copy, &obj, sizeof(T));
 		copy->preExportDataReset();
 		s.writeData(copy, sizeof(T));
@@ -230,7 +235,7 @@ public:
 	}
 
 
-	//\}
+	//@}
 	/************************************************************************************************/
 
 private:
@@ -243,17 +248,18 @@ private:
  Note: that the allocator used for creation needs to match with the one used in PX_DELETE_SERIALIZER_ADAPTER.
 */
 #define PX_NEW_SERIALIZER_ADAPTER(x) \
-	*new( PxGetAllocatorCallback()->allocate(sizeof(PxSerializerDefaultAdapter<x>), \
-	"PxSerializerDefaultAdapter", PX_FL)) PxSerializerDefaultAdapter<x>(#x)
+	*new( PxGetFoundation().getAllocatorCallback().allocate(sizeof(PxSerializerDefaultAdapter<x>), \
+	"PxSerializerDefaultAdapter",  __FILE__, __LINE__ )) PxSerializerDefaultAdapter<x>(#x)
 
 /** 
  \brief Preprocessor Macro to simplify adapter deletion.
 */
 #define PX_DELETE_SERIALIZER_ADAPTER(x) \
-	{ PxSerializer* s = x; if (s) { s->~PxSerializer(); PxGetAllocatorCallback()->deallocate(s); } }
+	{ PxSerializer* s = x; if (s) { s->~PxSerializer(); PxGetFoundation().getAllocatorCallback().deallocate(s); } }
 
 #if !PX_DOXYGEN
 } // namespace physx
 #endif
 
+/** @} */
 #endif

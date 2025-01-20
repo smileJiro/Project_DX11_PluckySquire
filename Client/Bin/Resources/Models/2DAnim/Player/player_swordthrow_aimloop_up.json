@@ -1,0 +1,138 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "player_swordthrow_aimloop_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0001_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0002_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0003_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0004_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0005_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0006_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0007_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0008_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0009_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0010_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0011_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0012_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0013_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0014_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0014_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0015_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0015_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0016_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0016_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0017_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'player_swordthrow_aimloop_up_0018_X02'",
+            "ObjectPath": "/Game/Characters/Player/SpriteSheet/Frames/player_swordthrow_aimloop_up_0018_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

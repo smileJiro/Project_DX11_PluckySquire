@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "jot_gameover_noSword_0009_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -6.5,
+              "Y": 0.0,
+              "Z": 469.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 805.0,
+            "Y": 10.0,
+            "Z": 981.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "0A8FCEF8425F3AF4776D4F9428087575"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "jot_gameover_noSword_0009_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2343.0,
+        "Y": 1004.0
+      },
+      "BakedSourceDimension": {
+        "X": 807.0,
+        "Y": 983.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'jot-gameover-nosword-0'",
+        "ObjectPath": "/Game/Characters/Player/GameOver-NoSword/Textures/jot-gameover-nosword-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'jot_gameover_noSword_0009_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/GameOver-NoSword/Frames/jot_gameover_noSword_0009_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 396.0,
+          "Y": 960.0,
+          "Z": 0.7687988,
+          "W": 0.24536133
+        },
+        {
+          "X": -409.0,
+          "Y": 960.0,
+          "Z": 0.5722656,
+          "W": 0.24536133
+        },
+        {
+          "X": -409.0,
+          "Y": -21.0,
+          "Z": 0.5722656,
+          "W": 0.48486328
+        },
+        {
+          "X": 396.0,
+          "Y": -21.0,
+          "Z": 0.7687988,
+          "W": 0.48486328
+        },
+        {
+          "X": 396.0,
+          "Y": 960.0,
+          "Z": 0.7687988,
+          "W": 0.24536133
+        },
+        {
+          "X": -409.0,
+          "Y": -21.0,
+          "Z": 0.5722656,
+          "W": 0.48486328
+        }
+      ]
+    }
+  }
+]

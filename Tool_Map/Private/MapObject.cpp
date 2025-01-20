@@ -38,8 +38,8 @@ HRESULT CMapObject::Initialize(void* _pArg)
 
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-    pDesc->tTransform3DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    pDesc->tTransform3DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
+    pDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
     if (FAILED(__super::Initialize(pDesc)))

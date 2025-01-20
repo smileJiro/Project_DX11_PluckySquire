@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "SettingPanel.h"
 
-
-
-
 CSettingPanel::CSettingPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
 {
@@ -16,11 +13,6 @@ CSettingPanel::CSettingPanel(const CSettingPanel& _Prototype)
 
 HRESULT CSettingPanel::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-
-
 	return S_OK;
 }
 
@@ -75,20 +67,6 @@ void CSettingPanel::isRender()
 
 HRESULT CSettingPanel::Ready_Components()
 {
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-		return E_FAIL;
-
-	/* Com_VIBuffer */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-		return E_FAIL;
-
-	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
-
 
 	return S_OK;
 }

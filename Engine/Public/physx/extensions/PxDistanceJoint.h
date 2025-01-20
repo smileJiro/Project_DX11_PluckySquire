@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,12 +23,15 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2024 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_DISTANCE_JOINT_H
-#define PX_DISTANCE_JOINT_H
+#ifndef PX_DISTANCEJOINT_H
+#define PX_DISTANCEJOINT_H
+/** \addtogroup extensions
+  @{
+*/
 
 #include "extensions/PxJoint.h"
 
@@ -47,7 +51,7 @@ class PxDistanceJoint;
  \param[in] actor1		An actor to which the joint is attached. NULL may be used to attach the joint to a specific point in the world frame
  \param[in] localFrame1	The position and orientation of the joint relative to actor1 
 
-\see PxDistanceJoint
+@see PxDistanceJoint
 */
 PxDistanceJoint*	PxDistanceJointCreate(PxPhysics& physics, PxRigidActor* actor0, const PxTransform& localFrame0, PxRigidActor* actor1, const PxTransform& localFrame1);
 
@@ -55,7 +59,7 @@ PxDistanceJoint*	PxDistanceJointCreate(PxPhysics& physics, PxRigidActor* actor0,
 /** 
 \brief flags for configuring the drive of a PxDistanceJoint
 
-\see PxDistanceJoint
+@see PxDistanceJoint
 */
 struct PxDistanceJointFlag
 {
@@ -73,7 +77,7 @@ PX_FLAGS_OPERATORS(PxDistanceJointFlag::Enum, PxU16)
 /**
 \brief a joint that maintains an upper or lower bound (or both) on the distance between two points on different objects
 
-\see PxDistanceJointCreate PxJoint
+@see PxDistanceJointCreate PxJoint
 */
 class PxDistanceJoint : public PxJoint
 {
@@ -94,7 +98,7 @@ public:
 
 	\param[in] distance the minimum distance
 
-	\see PxDistanceJoint::minDistance, PxDistanceJointFlag::eMIN_DISTANCE_ENABLED getMinDistance()
+	@see PxDistanceJoint::minDistance, PxDistanceJointFlag::eMIN_DISTANCE_ENABLED getMinDistance()
 	*/
 	virtual void					setMinDistance(PxReal distance)	= 0;
 
@@ -103,7 +107,7 @@ public:
 
 	\return the allowed minimum distance
 
-	\see PxDistanceJoint::minDistance, PxDistanceJointFlag::eMIN_DISTANCE_ENABLED setMinDistance()
+	@see PxDistanceJoint::minDistance, PxDistanceJointFlag::eMIN_DISTANCE_ENABLED setMinDistance()
 	*/
 	virtual PxReal					getMinDistance()	const	= 0;
 
@@ -117,7 +121,7 @@ public:
 
 	\param[in] distance the maximum distance
 
-	\see PxDistanceJoint::maxDistance, PxDistanceJointFlag::eMAX_DISTANCE_ENABLED getMinDistance()
+	@see PxDistanceJoint::maxDistance, PxDistanceJointFlag::eMAX_DISTANCE_ENABLED getMinDistance()
 	*/
 	virtual void					setMaxDistance(PxReal distance)	= 0;
 
@@ -126,7 +130,7 @@ public:
 
 	\return the allowed maximum distance
 
-	\see PxDistanceJoint::maxDistance, PxDistanceJointFlag::eMAX_DISTANCE_ENABLED setMaxDistance()
+	@see PxDistanceJoint::maxDistance, PxDistanceJointFlag::eMAX_DISTANCE_ENABLED setMaxDistance()
 	*/
 	virtual PxReal					getMaxDistance()	const	= 0;
 
@@ -135,7 +139,7 @@ public:
 
 	\param[in] tolerance the distance beyond the allowed range at which the joint becomes active
 
-	\see PxDistanceJoint::tolerance, getTolerance()
+	@see PxDistanceJoint::tolerance, getTolerance()
 	*/
 	virtual void					setTolerance(PxReal tolerance)	= 0;
 
@@ -150,7 +154,7 @@ public:
 	This value should be used to ensure that if the minimum distance is zero and the 
 	spring function is in use, the rest length of the spring is non-zero. 
 
-	\see PxDistanceJoint::tolerance, setTolerance()
+	@see PxDistanceJoint::tolerance, setTolerance()
 	*/
 	virtual PxReal					getTolerance()	const	= 0;
 
@@ -164,7 +168,7 @@ public:
 
 	\param[in] stiffness the spring strength of the joint
 
-	\see PxDistanceJointFlag::eSPRING_ENABLED getStiffness()
+	@see PxDistanceJointFlag::eSPRING_ENABLED getStiffness()
 	*/
 	virtual void					setStiffness(PxReal stiffness)	= 0;
 
@@ -173,7 +177,7 @@ public:
 
 	\return stiffness the spring strength of the joint
 
-	\see PxDistanceJointFlag::eSPRING_ENABLED setStiffness()
+	@see PxDistanceJointFlag::eSPRING_ENABLED setStiffness()
 	*/
 	virtual PxReal					getStiffness()	const	= 0;
 
@@ -187,7 +191,7 @@ public:
 
 	\param[in] damping the degree of damping of the joint spring of the joint
 
-	\see PxDistanceJointFlag::eSPRING_ENABLED setDamping()
+	@see PxDistanceJointFlag::eSPRING_ENABLED setDamping()
 	*/
 	virtual void					setDamping(PxReal damping)	= 0;
 	
@@ -196,7 +200,7 @@ public:
 
 	\return the degree of damping of the joint spring of the joint
 
-	\see PxDistanceJointFlag::eSPRING_ENABLED setDamping()
+	@see PxDistanceJointFlag::eSPRING_ENABLED setDamping()
 	*/
 	virtual PxReal					getDamping()	const	= 0;
 
@@ -207,7 +211,7 @@ public:
 
 	\param[in] flags The joint flags.
 
-	\see PxDistanceJointFlag setFlag() getFlags()
+	@see PxDistanceJointFlag setFlag() getFlags()
 	*/
 	virtual void					setDistanceJointFlags(PxDistanceJointFlags flags) = 0;
 
@@ -217,7 +221,7 @@ public:
 	\param[in] flag The flag to set or clear.
 	\param[in] value the value to which to set the flag
 
-	\see PxDistanceJointFlag, getFlags() setFlags()
+	@see PxDistanceJointFlag, getFlags() setFlags()
 	*/
 	virtual void					setDistanceJointFlag(PxDistanceJointFlag::Enum flag, bool value) = 0;
 
@@ -226,7 +230,7 @@ public:
 
 	\return the joint flags
 
-	\see PxDistanceJoint::flags, PxDistanceJointFlag setFlag() setFlags()
+	@see PxDistanceJoint::flags, PxDistanceJointFlag setFlag() setFlags()
 	*/
 	virtual PxDistanceJointFlags	getDistanceJointFlags()	const	= 0;
 
@@ -252,7 +256,7 @@ protected:
 	/**
 	\brief Returns whether a given type name matches with the type of this instance
 	*/							
-	virtual	bool					isKindOf(const char* name)	const { PX_IS_KIND_OF(name, "PxDistanceJoint", PxJoint);	}
+	virtual	bool					isKindOf(const char* name)	const { return !::strcmp("PxDistanceJoint", name) || PxJoint::isKindOf(name);	}
 
 	//~serialization
 };
@@ -261,4 +265,5 @@ protected:
 } // namespace physx
 #endif
 
+/** @} */
 #endif
