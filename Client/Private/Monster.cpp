@@ -4,12 +4,12 @@
 #include "FSM.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CContainerObject(_pDevice, _pContext)
+	: CCharacter(_pDevice, _pContext)
 {
 }
 
 CMonster::CMonster(const CMonster& _Prototype)
-	: CContainerObject(_Prototype)
+	: CCharacter(_Prototype)
 {
 }
 

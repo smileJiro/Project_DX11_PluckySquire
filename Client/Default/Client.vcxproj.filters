@@ -326,6 +326,7 @@
     <ClInclude Include="..\Public\PlayerState_Attack.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h">
       <Filter>02.GameObjects\Monster\Boss</Filter>
     </ClInclude>
@@ -486,6 +487,7 @@
     <ClCompile Include="..\Private\PlayerState_Attack.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp">
       <Filter>02.GameObjects\Monster\Boss</Filter>
     </ClCompile>

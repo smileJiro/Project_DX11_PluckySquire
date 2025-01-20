@@ -10,12 +10,12 @@
 #include "PlayerState_Attack.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    :CContainerObject(_pDevice, _pContext)
+    :CCharacter(_pDevice, _pContext)
 {
 }
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
-    :CContainerObject(_Prototype)
+    :CCharacter(_Prototype)
 {
 }
 
