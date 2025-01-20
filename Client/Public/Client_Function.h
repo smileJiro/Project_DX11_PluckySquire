@@ -24,4 +24,5 @@ namespace Client
 	std::string WstringToString(const std::wstring& wstr); 
 	std::string MatrixToString(_float4x4 vMatrix);
 	F_DIRECTION To_FDirection(_vector _vDir);
+	void MatrixDecompose(_float4* _vScale, _float4* _vQuaternion, _float4* _vPosition, FXMMATRIX _Matrix);		//원하는 성분만 넣으면 행렬에서 추출
 }

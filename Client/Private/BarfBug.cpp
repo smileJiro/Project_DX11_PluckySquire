@@ -120,11 +120,6 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::F3))
-    {
-        Event_DeleteObject(this);
-    }
-
     m_pFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -183,6 +178,7 @@ void CBarfBug::Attack(_float _fTimeDelta)
         _float4 vRotation;
         _vector vvScale, vvRotation, vvPosition;
         XMMatrixDecompose(&vvScale, &vvRotation, &vvPosition, m_pControllerTransform->Get_WorldMatrix());
+        //MatrixDecompose()
 		XMStoreFloat3(&vPosition, vvPosition + XMVectorSet(0.f, vvScale.m128_f32[1] * 0.5f, 0.f, 1.f));
         XMStoreFloat4(&vRotation, vvRotation);
 

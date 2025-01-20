@@ -26,15 +26,19 @@
 #include "Player.h"
 #include "TestTerrain.h"
 
-#include "Beetle.h"
-#include "BarfBug.h"
-#include "Projectile_BarfBug.h"
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
+
+/* For. Monster */
+#include "Beetle.h"
+#include "BarfBug.h"
+#include "Projectile_BarfBug.h"
+#include "ButterGrump.h"
+
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -369,6 +373,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* For. Prototype_GameObject_Projectile_BarfBug */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Projectile_BarfBug"),
         CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_ButterGrump */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"),
+        CButterGrump::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
