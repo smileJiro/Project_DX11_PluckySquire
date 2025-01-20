@@ -132,13 +132,16 @@ namespace Engine
 #pragma region Camera ฐüทร
 	typedef struct tagArmDataDesc
 	{
-		_float3				vArm = { 0.f, 0.f, -1.f };
 		_float				fLength = 1.f;
 		_float2				fMoveTimeAxisY = {};
 		_float2				fMoveTimeAxisRight = {};
 		_float2				fLengthTime = {};
-		_uint				iRotateType = {};
-		_uint				iTimeRateType = {};
+		_float2				fRotationPerSecAxisY = {};
+		_float2				fRotationPerSecAxisRight = {};
+	
+		/*_uint				iTimeRateAxisY = {};
+		_uint				iTimeRateAxisRight = {};
+		_uint				iTimeRateAt = {};*/
 	} ARM_DATA;
 #pragma endregion
 
