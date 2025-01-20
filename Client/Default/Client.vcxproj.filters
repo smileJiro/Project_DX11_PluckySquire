@@ -151,6 +151,9 @@
     <Filter Include="03.Components\DetectionField">
       <UniqueIdentifier>{04adcb91-4582-41ba-903b-8a861fe8a29f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\04.Physx">
+      <UniqueIdentifier>{79317378-b75b-4bd0-867c-e15e0f78026b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -308,6 +311,9 @@
     <ClInclude Include="..\public\DetectionField.h">
       <Filter>03.Components\DetectionField</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Physx.h">
+      <Filter>01.Levels\04.Physx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -455,6 +461,9 @@
     </ClCompile>
     <ClCompile Include="..\private\DetectionField.cpp">
       <Filter>03.Components\DetectionField</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Physx.cpp">
+      <Filter>01.Levels\04.Physx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

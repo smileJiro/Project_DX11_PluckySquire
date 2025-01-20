@@ -238,6 +238,9 @@
     <Filter Include="00.System\03.Physx">
       <UniqueIdentifier>{07b9728a-0ce5-4ee1-a194-7f177c43d688}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Debug">
+      <UniqueIdentifier>{25b150ad-e1a7-46c1-b997-67bc43f78144}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -471,6 +474,9 @@
     <ClInclude Include="..\Public\Physx_Manager.h">
       <Filter>00.System\03.Physx</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_PxDebug.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -692,12 +698,18 @@
     <ClCompile Include="..\Private\Physx_Manager.cpp">
       <Filter>00.System\03.Physx</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_PxDebug.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
       <Filter>98.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>98.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Debug.hlsl">
       <Filter>98.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

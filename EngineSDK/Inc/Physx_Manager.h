@@ -2,6 +2,9 @@
 #include "Base.h"
 BEGIN(Engine)
 class CGameInstance;
+class CVIBuffer_PxDebug;
+class CShader;
+class CGameObject;
 class CPhysx_Manager final : public CBase
 {
 private:
@@ -13,7 +16,7 @@ private:
 	
 public:
 	void Update(_float _fTimeDelta);
-
+	HRESULT Render();
 private:
 	HRESULT Initialize_Foundation();
 	HRESULT Initialize_Physics();
@@ -49,6 +52,22 @@ private:
 
 private: /* Test Object */
 	PxRigidStatic*				m_pGroundPlane = nullptr;
+	PxRigidDynamic*				m_pRigidDynamic = nullptr;
+	PxShape*					m_pPxshape = nullptr;
+
+	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
+	CShader*					m_pShader = nullptr;
+
+public:
+	void Set_Player(CGameObject* _pPlayer) { 
+		if (nullptr != _pPlayer)
+			Safe_Release(m_pPlayer);
+
+		m_pPlayer = _pPlayer;
+		Safe_AddRef(m_pPlayer);
+	};
+private:
+	CGameObject*				m_pPlayer = nullptr;
 public:
 	static CPhysx_Manager*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void			Free(); /* PhysX Á¾·á ÈÄ °´Ã¼ ¼Ò¸ê */

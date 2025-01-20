@@ -20,7 +20,8 @@ HRESULT CUI::Initialize_Prototype()
 
 HRESULT CUI::Initialize(void* pArg)
 {
-	__super::Initialize(pArg);
+	if(FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;

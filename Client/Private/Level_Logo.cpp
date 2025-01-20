@@ -21,7 +21,7 @@ HRESULT CLevel_Logo::Initialize()
 void CLevel_Logo::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::ENTER))
-		Event_LevelChange(LEVEL_LOADING, LEVEL_GAMEPLAY);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_PHYSX);
 
 
 

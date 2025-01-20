@@ -1,7 +1,14 @@
 #include "Physx_Manager.h"
+#include "GameInstance.h"
 
 CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: m_pGameInstance(CGameInstance::GetInstance())
+	, m_pDevice(_pDevice)
+	, m_pContext(_pContext)
 {
+	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
 }
 
 HRESULT CPhysx_Manager::Initialize()
@@ -27,14 +34,113 @@ HRESULT CPhysx_Manager::Initialize()
 	
 	m_pPxScene->addActor(*m_pGroundPlane);
 
+
+	_float4x4 matTest = {};
+	PxMat44 matPx;
+	XMStoreFloat4x4(&matTest, XMMatrixIdentity());
+	PxTransform transform(PxVec3(0.0f, 0.0f, 0.0f)); // 위치: (0, 0, 0)
+
+	// PxRigidStatic 객체 생성
+	PxRigidDynamic* rigidStatic = m_pPxPhysics->createRigidDynamic(transform);
+	PxBoxGeometry boxGeometry(PxVec3(10.0f, 10.0f, 10.0f));
+	m_pPxshape = PxRigidActorExt::createExclusiveShape(*rigidStatic, boxGeometry, *m_pPxMaterial);
+	rigidStatic->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+	rigidStatic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+	m_pPxScene->addActor(*rigidStatic);
+
+	m_pRigidDynamic = m_pPxPhysics->createRigidDynamic(transform);
+	PxCapsuleGeometry CapsuleGeometry2(0.5f, 0.2f);
+	m_pPxshape = PxRigidActorExt::createExclusiveShape(*m_pRigidDynamic, CapsuleGeometry2, *m_pPxMaterial);
+	m_pRigidDynamic->setGlobalPose(PxTransform(0.0f, 15.0f, 0.0f));
+	m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
+	m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
+	m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+	m_pPxScene->addActor(*m_pRigidDynamic);
+	
+	// 필요한 시각화 기능 활성화
+	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
+	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f); // 충돌 형태 시각화
+	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eJOINT_LOCAL_FRAMES, 1.0f); // 관절 로컬 프레임
+	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
+	
+	/* Debug */
+	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 3000);
+	if (nullptr == m_pVIBufferCom)
+		return E_FAIL;
+
+#ifdef _DEBUG
+	
+	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../../EngineSDK/hlsl/Shader_Debug.hlsl"), VTXPOSCOLOR::Elements, VTXPOSCOLOR::iNumElements);
+	if (nullptr == m_pShader)
+		return E_FAIL;
+
+#endif
 	return S_OK;
 }
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
-	m_pPxScene->simulate(1.0f / 60.f);
+	
+	_float fUpdateTime = 1.0f / 60.f;
+	m_pPxScene->simulate(fUpdateTime);
 
-	m_pPxScene->fetchResults(true);
+	if (nullptr != m_pPlayer)
+	{
+		PxTransform physxTransform = m_pRigidDynamic->getGlobalPose();
+		_matrix TranslationMatrix = XMMatrixTranslation(physxTransform.p.x, physxTransform.p.y, physxTransform.p.z);
+		_matrix QuatMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(physxTransform.q.x, physxTransform.q.y, physxTransform.q.z, physxTransform.q.w));
+		_float4x4 WorldMatrix = {};
+		XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
+		m_pPlayer->Set_WorldMatrix(WorldMatrix);
+
+
+		//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+		//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+		//m_pRigidDynamic->setKinematicTarget();
+
+		if (KEY_PRESSING(KEY::A))
+		{
+			//m_pRigidDynamic->setAngularVelocity(PxVec3(0.f, 180.f, 0.f));
+			m_pRigidDynamic->setLinearVelocity(PxVec3(-3.f, 0.f, 0.f), PxForceMode::eFORCE);
+		}
+		if (KEY_PRESSING(KEY::D))
+		{
+			m_pRigidDynamic->setLinearVelocity(PxVec3(3.f, 0.f, 0.f), PxForceMode::eFORCE);
+		}
+		if (KEY_PRESSING(KEY::SPACE))
+		{
+			m_pRigidDynamic->addForce(PxVec3(0.f, 22.f, 0.f), PxForceMode::eFORCE);
+		}
+		//_float3 vPos = {};
+		//XMStoreFloat3(&vPos, m_pPlayer->Get_Position());
+		//PxTransform Transform = { vPos.x, vPos.y, vPos.z };
+		//m_pRigidDynamic->setKinematicTarget(Transform);
+	}
+
+
+	if (m_pPxScene->fetchResults(true))
+	{
+		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+	}
+}
+
+HRESULT CPhysx_Manager::Render()
+{
+	_float4x4 WorldMatrix = {};
+	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
+	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", &WorldMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
+		return E_FAIL;
+
+	m_pVIBufferCom->Bind_BufferDesc();
+	m_pShader->Begin(0);
+	m_pVIBufferCom->Render();
+
+	return S_OK;
 }
 
 HRESULT CPhysx_Manager::Initialize_Foundation()
@@ -109,7 +215,7 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 
 HRESULT CPhysx_Manager::Initialize_Material()
 {
-	m_pPxMaterial = m_pPxPhysics->createMaterial(0.5f, 0.5f, 0.5f);
+	m_pPxMaterial = m_pPxPhysics->createMaterial(0.01f, 0.01f, 0.5f);
 	if (nullptr == m_pPxMaterial)
 		return E_FAIL;
 
@@ -171,5 +277,11 @@ void CPhysx_Manager::Free()
 	}
 	PHYSX_RELEASE(m_pPxFoundation); /* 가장 마지막 정리 */
 
+	Safe_Release(m_pPlayer);
+	Safe_Release(m_pShader);
+	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 	__super::Free();
 }

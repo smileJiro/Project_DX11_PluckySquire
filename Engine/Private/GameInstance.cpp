@@ -135,6 +135,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	추후 콜리전 매니저 설계시 scene 관리방식 변경.*/
 	m_pPhysx_Manager->Update(fTimeDelta);
 	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
+
+	
 }
 
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
@@ -963,6 +965,22 @@ void CGameInstance::Physx_Update(_float _fTimeDelta)
 		return;
 
 	m_pPhysx_Manager->Update(_fTimeDelta);
+}
+
+HRESULT CGameInstance::Physx_Render()
+{
+	if (nullptr == m_pPhysx_Manager)
+		return E_FAIL;
+
+	return m_pPhysx_Manager->Render();
+}
+
+void CGameInstance::Set_Player(CGameObject* _pPlayer)
+{
+	if (nullptr == m_pPhysx_Manager)
+		return;
+
+	return m_pPhysx_Manager->Set_Player(_pPlayer);
 }
 
 #ifdef _DEBUG

@@ -187,8 +187,8 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
-    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_player2DAnimation");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");

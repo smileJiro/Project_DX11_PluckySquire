@@ -12,6 +12,7 @@
 #include "3DModel.h"
 #include "Mesh.h"
 #include "Collider.h"
+#include "VIBuffer_PxDebug.h"
 
 /* Etc */
 #include "Transform_2D.h"

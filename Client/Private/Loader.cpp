@@ -91,6 +91,9 @@ HRESULT CLoader::Loading()
     case Client::LEVEL_GAMEPLAY:
         hr = Loading_Level_GamePlay();
         break;
+    case Client::LEVEL_PHYSX:
+        hr = Loading_Level_Physx();
+        break;
     }
     
     CoUninitialize();
@@ -132,8 +135,6 @@ HRESULT CLoader::Loading_Level_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
 		return E_FAIL;
 
-
-              
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
@@ -365,6 +366,120 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Desk.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
+
+    lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+    m_isFinished = true;
+
+    return S_OK;
+}
+
+HRESULT CLoader::Loading_Level_Physx()
+{
+    lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_FSM"),
+        CFSM::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+    lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_Texture_PickBulb"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Bulb_Pickup/pickup_counter_bulb_01.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_Texture_BombStamp"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Resize_BombStamp.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_Texture_StopStamp"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Resize_StopStamp.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_Texture_ArrowForStamp"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Arrow.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_Texture_HeartPoint"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/HPBar/HUD_Heart_%d.dds"), 13))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_Texture_ESCBulb"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_icon_bulb.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_Texture_KEYQ"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Q.dds"), 1))))
+        return E_FAIL;
+
+
+
+
+
+
+    lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+
+    /* 낱개 로딩 예시*/
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_Component_player2DAnimation"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/")))))
+        return E_FAIL;
+
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+    if (FAILED(Load_Models_FromJson(LEVEL_PHYSX, TEXT("../Bin/MapSaveFiles/Chapter_04_Desk.json"), matPretransform)))
+        return E_FAIL;
+
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_PHYSX,
+        TEXT("../Bin/Resources/Models/Anim/"), matPretransform)))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("WoodenPlatform_01"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
+        return E_FAIL;
+
+    lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_GameObject_TestPlayer"),
+        CPlayer::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    /* For. Prototype_GameObject_TestTerrain */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_GameObject_TestTerrain"),
+        CTestTerrain::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_Free */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_GameObject_Camera_Free"),
+        CCamera_Free::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_Target */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_GameObject_Camera_Target"),
+        CCamera_Target::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_Target */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_GameObject_MapObject"),
+        CModelObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* Monster */
+
+    /* For. Prototype_GameObject_Beetle */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_GameObject_Beetle"),
+        CBeetle::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_GameObject_BarfBug"),
+        CBarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Projectile_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_PHYSX, TEXT("Prototype_GameObject_Projectile_BarfBug"),
+        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+    Map_Object_Create(LEVEL_PHYSX, LEVEL_PHYSX, L"Chapter_04_Desk.mchc");
+    Map_Object_Create(LEVEL_STATIC, LEVEL_PHYSX, L"Room_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

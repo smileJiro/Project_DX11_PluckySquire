@@ -43,6 +43,7 @@ HRESULT CNavigationVertex::Initialize(const _float3& _vVerTexPos)
 		return E_FAIL;
 
 
+
 	return S_OK;
 }
 

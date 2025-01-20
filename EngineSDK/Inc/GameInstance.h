@@ -190,8 +190,10 @@ public: /* For. Camera_Manager */
 	void				Change_CameraType(_uint _iCurrentCameraType);
 
 
-	public: /* For. Physx_Manager*/
-		void			Physx_Update(_float _fTimeDelta);
+public: /* For. Physx_Manager*/
+	void				Physx_Update(_float _fTimeDelta);
+	HRESULT				Physx_Render();
+	void				Set_Player(CGameObject* _pPlayer);
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
