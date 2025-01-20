@@ -206,7 +206,7 @@ _bool CCameraArm::Move_To_NextArm_Cross(_float _fTimeDelta)
         m_bSave = true;
     }
 
-    _vector vResultArm;
+    //_vector vResultArm;
 
     m_pNextArmData->fMoveTimeAxisY.y += _fTimeDelta;
     _float fRatio = m_pNextArmData->fMoveTimeAxisY.y / m_pNextArmData->fMoveTimeAxisY.x;

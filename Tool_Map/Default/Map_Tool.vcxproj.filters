@@ -52,6 +52,15 @@
     <Filter Include="01. ToolApp_Managers\MapParsing">
       <UniqueIdentifier>{25188e90-152a-4ab0-8f0b-b9cebde9e6f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. ToolAppMain\NewFilter1">
+      <UniqueIdentifier>{60469a03-80de-48ee-90a5-7d32a1a29a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\NaviObject">
+      <UniqueIdentifier>{565e1ef3-0458-4c40-a42a-1d9409cbf948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\Re_PackagingObject">
+      <UniqueIdentifier>{4ef1ebe3-4695-4c99-9761-5ba3a36b3df7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -99,15 +108,6 @@
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>03. GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CellContainor.h">
-      <Filter>03. GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\NavigationVertex.h">
-      <Filter>03. GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\EditableCell.h">
-      <Filter>03. GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\gizmo\GraphEditor.h">
       <Filter>97. gizmo</Filter>
     </ClInclude>
@@ -135,11 +135,23 @@
     <ClInclude Include="..\Public\Map_Tool_Manager.h">
       <Filter>01. ToolApp_Managers\MapTool</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MapParsing_Manager.h">
+    <ClInclude Include="..\Public\Task_Manager.h">
       <Filter>01. ToolApp_Managers\MapParsing</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGuiStyle_MapTool_Function.h">
       <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CellContainor.h">
+      <Filter>03. GameObject\NaviObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EditableCell.h">
+      <Filter>03. GameObject\NaviObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NavigationVertex.h">
+      <Filter>03. GameObject\NaviObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Model_PackagingObject.h">
+      <Filter>03. GameObject\Re_PackagingObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -184,15 +196,6 @@
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>03. GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CellContainor.cpp">
-      <Filter>03. GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\NavigationVertex.cpp">
-      <Filter>03. GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\EditableCell.cpp">
-      <Filter>03. GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\gizmo\GraphEditor.cpp">
       <Filter>97. gizmo</Filter>
     </ClCompile>
@@ -217,11 +220,23 @@
     <ClCompile Include="..\Private\Map_Tool_Manager.cpp">
       <Filter>01. ToolApp_Managers\MapTool</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MapParsing_Manager.cpp">
+    <ClCompile Include="..\Private\Task_Manager.cpp">
       <Filter>01. ToolApp_Managers\MapParsing</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGuiStyle_MapTool_Function.cpp">
       <Filter>99. Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CellContainor.cpp">
+      <Filter>03. GameObject\NaviObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EditableCell.cpp">
+      <Filter>03. GameObject\NaviObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NavigationVertex.cpp">
+      <Filter>03. GameObject\NaviObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model_PackagingObject.cpp">
+      <Filter>03. GameObject\Re_PackagingObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

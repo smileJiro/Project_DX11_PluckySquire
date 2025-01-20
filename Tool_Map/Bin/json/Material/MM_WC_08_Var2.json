@@ -1,0 +1,176 @@
+[
+  {
+    "Type": "Material",
+    "Name": "MM_WC_08_Var2",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Metallic": {
+        "Expression": null,
+        "OutputIndex": 3,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_2",
+        "UseConstant": false,
+        "Constant": 0.0
+      },
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bUsedWithInstancedStaticMeshes": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "9697D5DC-428A9842-20A846A9-3C2FD833",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              7039800480319052385
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "HueShift",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "409B691B-473D3BE6-789CCFB1-50E42F79"
+            ]
+          },
+          "ScalarValues": [
+            0.0
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_8-Var2_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8-Var2_OcclusionRoughnessMetallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_8-Var2_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8-Var2_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_8-Var2_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8-Var2_BaseColor.0"
+          },
+          {
+            "ObjectName": "Texture2D'Var2_Color_Mask'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Var2_Color_Mask.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+            "Function": {
+              "ObjectName": "MaterialFunction'HueShift'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Var2_Color_Mask"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_8-Var2_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_8-Var2_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_8-Var2_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            7039800480319052385
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "HueShift",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "409B691B-473D3BE6-789CCFB1-50E42F79"
+          ]
+        },
+        "ScalarValues": [
+          0.0
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_8-Var2_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8-Var2_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_8-Var2_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8-Var2_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_8-Var2_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8-Var2_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Var2_Color_Mask'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Var2_Color_Mask.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+          "Function": {
+            "ObjectName": "MaterialFunction'HueShift'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_WC_10_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_WC_10'",
+        "ObjectPath": "/Game/Map/3D/Objects/blocks/materials/M_WC_10.0"
+      },
+      "bHasStaticPermutationResource": true,
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "DeSat",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.580952,
+          "ExpressionGUID": "B2ADBE09-4D4D0467-3B2551B6-A656CD73"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "HueShift",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.790475,
+          "ExpressionGUID": "409B691B-473D3BE6-789CCFB1-50E42F79"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "StaticParameters": {
+        "StaticSwitchParameters": [
+          {
+            "Value": false,
+            "ParameterInfo": {
+              "Name": "UseGradient?",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            "bOverride": true,
+            "ExpressionGUID": "585C3BE7-41A26E76-CC5E0EB8-86D01357"
+          }
+        ]
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_10_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_10/Wooden_Cube_10_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_10_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_10/Wooden_Cube_10_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_10_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_10/Wooden_Cube_10_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'10_Color_Mask'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_10/10_Color_Mask.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "10_Color_Mask"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_10_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_10_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_10_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

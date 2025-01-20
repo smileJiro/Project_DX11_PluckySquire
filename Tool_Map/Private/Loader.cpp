@@ -187,6 +187,7 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,
         //TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
         TEXT("../../Client/Bin/Resources/Models/"), matPretransform)))
+        //TEXT("../../Client/Bin/Resources/sibal/"), matPretransform)))
         return E_FAIL;
 
 

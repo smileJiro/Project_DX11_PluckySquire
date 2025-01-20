@@ -1,0 +1,92 @@
+[
+  {
+    "Type": "Material",
+    "Name": "M_WC_04",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_2",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bUsedWithInstancedStaticMeshes": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "3EE678A8-41D27D33-7C7024B2-A0A0B7B7",
+      "CachedExpressionData": {
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_4_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_4/Wooden_Cube_4_BaseColor.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_4_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_4/Wooden_Cube_4_OcclusionRoughnessMetallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_4_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_4/Wooden_Cube_4_Normal.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_4_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_4_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_4_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_4_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_4/Wooden_Cube_4_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_4_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_4/Wooden_Cube_4_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_4_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_4/Wooden_Cube_4_Normal.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

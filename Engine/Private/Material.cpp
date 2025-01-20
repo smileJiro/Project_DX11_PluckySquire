@@ -3,6 +3,7 @@
 CMaterial::CMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
 {
+	ZeroMemory(m_MaterialTextures, sizeof(m_MaterialTextures));
 }
 
 HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
@@ -16,7 +17,7 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 		{
 
 			_uint strLen;
-			inFile.read(reinterpret_cast<char*>(&strLen), sizeof(_uint));
+ 			inFile.read(reinterpret_cast<char*>(&strLen), sizeof(_uint));
 			//cout << strLen << endl;
 			_char* strTexturePath = new _char[strLen + 1];
 			inFile.read(strTexturePath, sizeof(_char) * strLen);
@@ -27,7 +28,7 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			_char		szFileName[MAX_PATH] = "";
 			_char		szExt[MAX_PATH] = "";
 
-			_char		szFullPath[MAX_PATH] = "";
+ 			_char		szFullPath[MAX_PATH] = "";
 
 			_splitpath_s(strTexturePath, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
 
@@ -40,7 +41,11 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			strcat_s(szFullPath, szExt);
 
 			_tchar		szWideFullPath[MAX_PATH] = TEXT("");
+			_tchar		szWideName[MAX_PATH] = TEXT("");
+			_tchar		szWideExt[MAX_PATH] = TEXT("");
 			MultiByteToWideChar(CP_ACP, 0, szFullPath, (int)strlen(szFullPath), szWideFullPath, MAX_PATH);
+			MultiByteToWideChar(CP_ACP, 0, szFileName, (int)strlen(szFileName), szWideName, MAX_PATH);
+			MultiByteToWideChar(CP_ACP, 0, szExt, (int)strlen(szExt), szWideExt, MAX_PATH);
 
 			ID3D11ShaderResourceView* pSRV = { nullptr };
 			HRESULT		hr = {};
@@ -55,7 +60,11 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			if (FAILED(hr))
 				continue;
 
-			m_MaterialTexture[texIdx].push_back(pSRV);
+			if (nullptr == m_MaterialTextures[texIdx])
+				m_MaterialTextures[texIdx] = CTexture::Create(m_pDevice,m_pContext);
+			_wstring strNameAndExt = szWideName;
+			strNameAndExt += szWideExt;
+			m_MaterialTextures[texIdx]->Add_Texture(pSRV, strNameAndExt);
 
 		}
 	}
@@ -79,19 +88,13 @@ CMaterial* CMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 void CMaterial::Free()
 {
 	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
-	{
-		for (size_t j = 0; j < m_MaterialTexture[i].size(); ++j)
-		{
-			Safe_Release(m_MaterialTexture[i][j]);
-		}
-		m_MaterialTexture[i].clear();
-	}
+		Safe_Release(m_MaterialTextures[i]);
 
 	__super::Free();
 }
 
 CComponent* CMaterial::Clone(void* pArg)
 {
-	return nullptr;
+	return this;
 }
 

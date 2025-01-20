@@ -13,7 +13,9 @@
 #include "EditableCell.h"
 #include "CellContainor.h"
 #include "Event_Manager.h"
-#include "MapParsing_Manager.h"
+#include "Task_Manager.h"
+#include "Engine_Defines.h"
+#include <commdlg.h>
 using namespace std::filesystem;
 
 
@@ -64,11 +66,11 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	//lstrcpy(NormalDesc.szModelName, L"SM_desk_split_topboard_02");
 	////lstrcpy(NormalDesc.szModelName, L"WoodenPlatform_01");
 	
-	m_pMapParsingManager = CMapParsing_Manager::Create(m_pDevice, m_pContext, m_pLogger);
+	m_pMapParsingManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pMapParsingManager)
 		return E_FAIL;
 
-	m_pMapParsingManager->Push_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Room_Environment");
+	m_pMapParsingManager->Register_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Room_Environment");
 
 	return S_OK;
 }
@@ -102,6 +104,7 @@ void CMap_Tool_Manager::Update_Imgui_Logic()
 	Navigation_Imgui(m_arrObjects[OBJECT_PREVIEW]);
 	Object_Create_Imgui(m_bNaviMode);
 	SaveLoad_Imgui();
+	Model_Imgui();
 }
 
 
@@ -146,7 +149,7 @@ void CMap_Tool_Manager::Input_Object_Tool_Mode()
 		//	return;
 		if (!m_arrObjects[OBJECT_PREVIEW])
 		{
-			if (MOUSE_DOWN(MOUSE_KEY::LB) && !ImGuizmo::IsOver())
+			if (MOUSE_DOWN(MOUSE_KEY::LB) && !ImGuizmo::IsUsing())
 				Object_Open_PickingMode();
 		}
 		else
@@ -268,20 +271,18 @@ void CMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		ImGui::SeparatorText("Object List");
 		if (ImGui::BeginListBox("##Object List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 		{
-			for (const auto& fileName : m_ObjectFileLists) 
+			for (const auto& PairFileInfo : m_ObjectFileLists) 
 			{
 				_char szName[MAX_PATH] = {};
 
-				WideCharToMultiByte(CP_ACP, 0, fileName.c_str(), -1, szName, (_int)(lstrlen(fileName.c_str())), NULL, NULL);
+				WideCharToMultiByte(CP_ACP, 0, PairFileInfo.first.c_str(), -1, szName, (_int)(lstrlen(PairFileInfo.first.c_str())), NULL, NULL);
 
-				if (ImGui::Selectable(szName, fileName == m_arrSelectName[CREATE_OBJECT])) {
-					if (m_arrSelectName[CREATE_OBJECT] == fileName)
+				if (ImGui::Selectable(szName, PairFileInfo.first == m_arrSelectName[CREATE_OBJECT])) {
+					if (m_arrSelectName[CREATE_OBJECT] == PairFileInfo.first)
 						m_arrSelectName[CREATE_OBJECT] = L"";
 					else
 					{
-						wstring filename;
-						filename.assign(fileName.begin(), fileName.end());
-						m_arrSelectName[CREATE_OBJECT] = filename;
+						m_arrSelectName[CREATE_OBJECT] = PairFileInfo.first;
 					}
 				}
 				_bool isClicked = false;
@@ -838,6 +839,210 @@ void CMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 }
 
 
+void CMap_Tool_Manager::Model_Imgui(_bool _bLock) 
+{
+#ifdef _DEBUG
+
+
+	ImGui::Begin("Model Info");
+	{
+
+		_string arrEnumText[] =
+		{
+			"NONE",
+			"DIFFUSE",
+			"SPECULAR",
+			"AMBIENT",
+			"EMISSIVE",
+			"HEIGHT",
+			"NORMALS",
+			"SHININESS",
+			"OPACITY",
+			"DISPLACEMENT",
+			"LIGHTMAP",
+			"REFLECTION",
+			"BASE_COLOR",
+			"NORMAL_CAMERA",
+			"EMISSION_COLOR",
+			"METALNESS",
+			"DIFFUSE_ROUGHNESS",
+			"AMBIENT_OCCLUSION",
+			"UNKNOWN",
+			"SHEEN",
+			"CLEARCOAT",
+			"TRANSMISSION",
+			"MAYA_BASE",
+			"MAYA_SPECULAR",
+			"MAYA_SPECULAR_COLOR",
+			"MAYA_SPECULAR_ROUGHNESS",
+		};
+
+
+		if (m_arrObjects[OBJECT_PICKING])
+		{
+			CMapObject* pTargetObj = m_arrObjects[OBJECT_PICKING];
+
+			_wstring strModelName = pTargetObj->Get_ModelName();
+			_wstring strModelPath = L"-";
+			ImGui::BulletText("Model Name : %s", WstringToString(strModelName).c_str());
+
+			auto iter = find_if(m_ObjectFileLists.begin(), m_ObjectFileLists.end(), [&strModelName](const pair<_wstring, _wstring>& PairFileInfo)
+				->_bool {
+				
+				return PairFileInfo.first == strModelName;
+				});
+
+			if (iter != m_ObjectFileLists.end())
+				strModelPath = (*iter).second;
+			ImGui::BulletText("Model Path : %s", WstringToString(strModelPath).c_str());
+
+			if (StyleButton(MINI, "Model RePackaging"))
+			{
+				m_pMapParsingManager->Register_RePackaging((*iter).second, pTargetObj);
+			}
+
+			vector<CMapObject::DIFFUSE_INFO> Textures;
+
+			for (_uint iTextureType = 0; iTextureType < AI_TEXTURE_TYPE_MAX; iTextureType++)
+			{
+				if(0 < iTextureType)
+				ImGui::NewLine();
+
+				Textures.clear();
+
+				if (SUCCEEDED(pTargetObj->Get_Textures(Textures, iTextureType))
+					&&
+					0 < Textures.size()
+					)
+				{
+					ImGui::SeparatorText(arrEnumText[iTextureType].c_str());
+
+					_uint iMaterialIdx = 0;
+					for (auto& tDiffuseInfo : Textures)
+					{
+						_uint iMaxDiffuseIdx = 0;
+						_uint iCurMaterial = iMaterialIdx;
+						auto iter = find_if(Textures.begin(), Textures.end(), [&iCurMaterial, &iMaxDiffuseIdx](CMapObject::DIFFUSE_INFO _tDiffuseInfo) {
+							if (iCurMaterial == _tDiffuseInfo.iMaterialIndex
+								&&
+								iMaxDiffuseIdx < _tDiffuseInfo.iDiffuseIIndex
+								)
+								iMaxDiffuseIdx = _tDiffuseInfo.iDiffuseIIndex;
+							return _tDiffuseInfo.iMaterialIndex > iCurMaterial;
+							});
+
+
+
+						if (tDiffuseInfo.iMaterialIndex == iMaterialIdx)
+						{
+							_string strButtonText = "ADD ";
+							_string strMaterialText = "Material ";
+							strButtonText += arrEnumText[iTextureType];
+							strMaterialText += std::to_string(iMaterialIdx);
+
+							ImGui::BulletText(strMaterialText.c_str());
+							//ImGui::SameLine();
+							Begin_Draw_ColorButton("#AddButton_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
+
+							if (StyleButton(MINI, strButtonText.c_str()))
+#pragma region ADD BUTTON
+							{
+								_tchar originalDir[MAX_PATH];
+								GetCurrentDirectory(MAX_PATH, originalDir);
+
+								_wstring strModelPath = L"..\\..\\Client\\Bin\\resources\\Models\\NonAnim\\";
+
+								OPENFILENAME ofn = {};
+								_tchar szName[MAX_PATH] = {};
+								ofn.lStructSize = sizeof(OPENFILENAME);
+								ofn.hwndOwner = g_hWnd;
+								ofn.lpstrFile = szName;
+								ofn.nMaxFile = sizeof(szName);
+								ofn.lpstrFilter = L".dds\0*.dds\0";
+								ofn.nFilterIndex = 0;
+								ofn.lpstrFileTitle = nullptr;
+								ofn.nMaxFileTitle = 0;
+								wstring strPath = strModelPath + pTargetObj->Get_ModelName();
+								ofn.lpstrInitialDir = strPath.c_str();
+								ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+								if (GetOpenFileName(&ofn))
+								{
+									SetCurrentDirectory(originalDir);
+									const _wstring strFilePath = szName;
+
+									ID3D11ShaderResourceView* pSRV = { nullptr };
+									HRESULT		hr = E_FAIL;
+									if (_string::npos != strFilePath.rfind(L".dds") || _string::npos != strFilePath.rfind(L".DDS"))
+									{
+										hr = CreateDDSTextureFromFile(m_pDevice, szName, nullptr, &pSRV);
+
+										if (SUCCEEDED(hr))
+										{
+											auto PairResult = Get_FileName_From_Path(strFilePath);
+
+
+											CMapObject::DIFFUSE_INFO tAddInfo;
+											tAddInfo.iDiffuseIIndex = iMaxDiffuseIdx;
+											tAddInfo.iMaterialIndex = iMaterialIdx;
+											tAddInfo.pSRV = pSRV;
+
+											_wstring strNameAndExt = PairResult.first + L"."+PairResult.second;
+
+											lstrcpy(tAddInfo.szTextureName, strNameAndExt.c_str());
+											pTargetObj->Add_Textures(tAddInfo, iTextureType);
+										}
+
+									}
+								}
+							}
+#pragma endregion
+							End_Draw_ColorButton();
+
+							iMaterialIdx++;
+						}
+
+						string strButtonTag = std::to_string(tDiffuseInfo.iMaterialIndex) + "_" + std::to_string(tDiffuseInfo.iDiffuseIIndex) + "_" + arrEnumText[iTextureType];
+						ImVec2 size = ImVec2(48.0f, 48.0f);
+						ImVec2 uv0 = ImVec2(0.0f, 0.0f);
+						ImVec2 uv1 = ImVec2(1.0f, 1.0f);
+						ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
+						ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+						_uint iCurrenrTextureIndex = pTargetObj->Get_TextureIdx(iTextureType, tDiffuseInfo.iMaterialIndex);
+
+						if (tDiffuseInfo.iDiffuseIIndex == iCurrenrTextureIndex)
+							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.6f, 0.9f, 1.0f)); // 선택된 버튼의 배경색
+
+						if (ImGui::ImageButton(strButtonTag.c_str(), (ImTextureID)tDiffuseInfo.pSRV, size, uv0, uv1, bg_col, tint_col))
+							pTargetObj->Change_TextureIdx(tDiffuseInfo.iDiffuseIIndex, iTextureType, tDiffuseInfo.iMaterialIndex);
+
+						if (tDiffuseInfo.iDiffuseIIndex == iCurrenrTextureIndex)
+							ImGui::PopStyleColor(1);
+
+						if (ImGui::IsItemHovered())
+						{
+							if (ImGui::BeginItemTooltip())
+							{
+								ImGui::SeparatorText(WstringToString(tDiffuseInfo.szTextureName).c_str());
+								ImGui::Image((ImTextureID)tDiffuseInfo.pSRV,
+									ImVec2(256.f, 256.f)
+								);
+								ImGui::EndTooltip();
+							}
+						}
+						ImGui::SameLine();
+					}
+				}
+
+			}
+
+		}
+	}
+
+	ImGui::End();
+#endif // _DEBUG
+}
+
 
 void CMap_Tool_Manager::Save(_bool _bSelected)
 {
@@ -980,7 +1185,8 @@ void CMap_Tool_Manager::Save(_bool _bSelected)
 					WriteFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 					//	세이브 파라미터 4. 월드 매트릭스
 					WriteFile(hFile, &pObject->Get_WorldMatrix(), sizeof(_float4x4), &dwByte, nullptr);
-
+					// 세이브 파라미터 5. 마테리얼 오버라이드
+					pObject->Save_Override_Material(hFile);
 					iCount++;
 					log = "Save... Save Object Count :  ";
 					log += std::to_string(iCount);
@@ -1154,6 +1360,8 @@ void CMap_Tool_Manager::Load(_bool _bSelected)
 
 			if (pGameObject)
 			{
+				static_cast<CMapObject*>(pGameObject)->Load_Override_Material(hFile);
+
 				iCount++;
 				log = "Load... Loading Object Count :  ";
 				log += std::to_string(iCount);
@@ -1473,8 +1681,8 @@ void CMap_Tool_Manager::Load_ModelList()
 {
 	m_ObjectFileLists.clear();
 	_wstring strPath 
-		= TEXT("../../Client/Bin/Resources/TestModels/");
-		//= TEXT("../../Client/Bin/resources/Models/");
+		//= TEXT("../../Client/Bin/Resources/TestModels/");
+		= TEXT("../../Client/Bin/resources/Models/");
 
 	for (const auto& entry : ::recursive_directory_iterator(strPath))
 	{
@@ -1484,8 +1692,9 @@ void CMap_Tool_Manager::Load_ModelList()
 			{
 				if (file.path().extension() == ".model")
 				{
-					wstring strKey = file.path().stem().wstring();
-					m_ObjectFileLists.push_back(strKey);
+					_wstring strName = file.path().stem().wstring();
+					_wstring strPath = file.path().wstring();
+					m_ObjectFileLists.push_back(make_pair(strName, strPath));
 				}
 			}
 		}
@@ -1510,6 +1719,7 @@ void CMap_Tool_Manager::Object_Open_PickingMode()
 	CMapObject* pGameObj = Picking_On_Object();
 	if (pGameObj)
 	{
+		
 		Object_Clear_PickingMode();
 		m_arrObjects[OBJECT_PICKING] = pGameObj;
 		m_arrObjects[OBJECT_PICKING]->Set_Mode(CMapObject::PICKING);
@@ -1544,7 +1754,7 @@ void CMap_Tool_Manager::Object_Open_PreviewMode()
 		CGameObject* pGameObject = nullptr;
 
 		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
-			LEVEL_TOOL_MAP, L"Layer_GameObject", &pGameObject, (void*)&NormalDesc);
+			LEVEL_TOOL_MAP, L"Layer_MapObject", &pGameObject, (void*)&NormalDesc);
 		
 		if (nullptr != pGameObject)
 		{

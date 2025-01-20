@@ -15,6 +15,8 @@ CController_Model::CController_Model(ID3D11Device* _pDevice, ID3D11DeviceContext
 
 HRESULT CController_Model::Initialize(CON_MODEL_DESC* _pDesc)
 {
+
+
     m_eCurCoord = _pDesc->eStartCoord;
     m_isCoordChangeEnable = _pDesc->isCoordChangeEnable;
 
@@ -51,6 +53,8 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
     break;
     case Engine::COORDINATE_3D:
     {
+
+
         CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _pDesc->i3DModelPrototypeLevelID, _pDesc->wstr3DModelPrototypeTag, nullptr));
         if (nullptr == pComponent)
             return E_FAIL;
@@ -99,6 +103,21 @@ void CController_Model::Play_Animation(_float fTimeDelta)
                 callback(m_eCurCoord,m_ModelComs[m_eCurCoord]->Get_CurrentAnimIndex());
         }
     }
+}
+
+HRESULT CController_Model::Binding_TextureIndex_To_3D(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
+{
+    if (nullptr == m_ModelComs[COORDINATE_3D])
+        return E_FAIL;
+    static_cast<C3DModel*>(m_ModelComs[COORDINATE_3D])->Binding_TextureIndex(_iIndex, _eTextureType, _iMaterialIndex);
+    return S_OK;
+}
+
+_uint CController_Model::Get_TextureIndex_To_3D(_uint _eTextureType, _uint _iMaterialIndex)
+{
+    if (nullptr == m_ModelComs[COORDINATE_3D])
+        return E_FAIL;
+    return static_cast<C3DModel*>(m_ModelComs[COORDINATE_3D])->Get_TextureIndex(_eTextureType, _iMaterialIndex);
 }
 
 

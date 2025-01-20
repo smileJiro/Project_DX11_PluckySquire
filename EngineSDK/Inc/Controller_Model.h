@@ -16,7 +16,7 @@ class ENGINE_DLL CController_Model : public CBase
 public:
 	typedef struct tagControllerModelDesc
 	{
-		COORDINATE eStartCoord = COORDINATE_LAST;
+		 COORDINATE eStartCoord = COORDINATE_LAST;
 		_bool isCoordChangeEnable = false;
 
 		_uint iCurLevelID;
@@ -24,7 +24,6 @@ public:
 		_uint i3DModelPrototypeLevelID;
 		wstring wstr2DModelPrototypeTag;
 		wstring wstr3DModelPrototypeTag;
-
 	}CON_MODEL_DESC;
 
 private:
@@ -52,7 +51,8 @@ public: /* 2D, 3D */
 	void Switch_Animation(_uint iIdx);
 	void To_NextAnimation();
 public:
-
+	HRESULT Binding_TextureIndex_To_3D(_uint _iIndex, _uint _eTextureType = aiTextureType_DIFFUSE, _uint _iMaterialIndex = 0);
+	_uint Get_TextureIndex_To_3D(_uint _eTextureType = aiTextureType_DIFFUSE , _uint _iMaterialIndex = 0);
 private:
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
