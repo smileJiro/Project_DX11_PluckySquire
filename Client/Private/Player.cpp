@@ -37,10 +37,15 @@ HRESULT CPlayer::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
 
     if (FAILED(__super::Initialize(pDesc)))
+    {
+        MSG_BOX("CPlayer super Initialize Failed");
         return E_FAIL;
+    }
 
     if (FAILED(Ready_PartObjects()))
+    {
         return E_FAIL;
+    }
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
@@ -84,7 +89,10 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
+    {
+        MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
+    }
 
 	//Part Sword
 	BodyDesc.isCoordChangeEnable = false;
@@ -96,7 +104,10 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_SWORD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
+    {
+        MSG_BOX("CPlayer Sword Creation Failed");
         return E_FAIL;
+    }
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));    
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_SWORD])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r")); /**/
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
@@ -107,7 +118,10 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_GLOVE] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
+    {
+        MSG_BOX("CPlayer Glove Creation Failed");
         return E_FAIL;
+    }
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
 	m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
 	Set_PartActive(PLAYER_PART_GLOVE, false);
