@@ -207,6 +207,22 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
 
+    /* Monster */
+
+     /* For. Prototype_GameObject_Beetle */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"),
+        CBeetle::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"),
+        CBarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Projectile_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Projectile_BarfBug"),
+        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -358,22 +374,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		return E_FAIL;
 
 
-    /* Monster */
-
-    /* For. Prototype_GameObject_Beetle */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"),
-        CBeetle::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_BarfBug */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"),
-        CBarfBug::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Projectile_BarfBug */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Projectile_BarfBug"),
-        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+    /* Boss */
 
     /* For. Prototype_GameObject_ButterGrump */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"),
