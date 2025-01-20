@@ -157,6 +157,9 @@
     <Filter Include="03.Components\DetectionField">
       <UniqueIdentifier>{04adcb91-4582-41ba-903b-8a861fe8a29f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss">
+      <UniqueIdentifier>{48b2cfb8-e859-4efb-9630-ac2adc201dbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -323,6 +326,9 @@
     <ClInclude Include="..\Public\PlayerState_Attack.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump.h">
+      <Filter>02.GameObjects\Monster\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -479,6 +485,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Attack.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ButterGrump.cpp">
+      <Filter>02.GameObjects\Monster\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

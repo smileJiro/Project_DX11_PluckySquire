@@ -119,6 +119,19 @@ namespace Client
 		return F_DIRECTION::F_DIR_LAST;
 	}
 
+	void MatrixDecompose(_float4* _vScale, _float4* _vQuaternion, _float4* _vPosition, _fmatrix _Matrix)
+	{
+		_vector vScale, vRotation, vPosition;
+		XMMatrixDecompose(&vScale, &vRotation, &vPosition, _Matrix);
+		
+		if (_vScale != nullptr)
+			XMStoreFloat4(_vScale, vScale);
+		if (_vQuaternion != nullptr)
+			XMStoreFloat4(_vQuaternion, vRotation);
+		if (_vPosition != nullptr)
+			XMStoreFloat4(_vPosition, vPosition);
+	}
+
 
 
 }
