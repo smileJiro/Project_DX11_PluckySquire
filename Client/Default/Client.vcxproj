@@ -186,6 +186,7 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\ESC_Back.h" />
     <ClInclude Include="..\Public\ESC_BackArrow.h" />
@@ -244,6 +245,7 @@
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
     <ClCompile Include="..\Private\ESC_Back.cpp" />
     <ClCompile Include="..\Private\ESC_BackArrow.cpp" />

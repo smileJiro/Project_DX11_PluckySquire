@@ -323,6 +323,7 @@
     <ClInclude Include="..\Public\PlayerState_Attack.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Character.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -480,6 +481,7 @@
     <ClCompile Include="..\Private\PlayerState_Attack.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

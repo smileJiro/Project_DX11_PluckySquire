@@ -1,9 +1,9 @@
 #pragma once
-#include "ContainerObject.h"
+#include "Character.h"
 
 BEGIN(Client)
 class CStateMachine;
-class CPlayer final : public CContainerObject
+class CPlayer final : public CCharacter
 {
 public:
 	enum PLAYER_PART
