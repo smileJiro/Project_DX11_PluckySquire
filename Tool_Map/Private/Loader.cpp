@@ -172,6 +172,8 @@ HRESULT CLoader::Loading_Level_Map_Tool()
         CCollider::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
         return E_FAIL;
 
+
+
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -183,12 +185,23 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
     
+
+        // TEST~~~~~~~~~~~~~~~~~~~~~
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("TEST"),
+    //    C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/Anim/buttergrump_Rig/buttergrump_Rig.model", matPretransform))))
+    //    return E_FAIL;
+    // TEST END~~~~~~~~~~~~
+
+
+
     //XMMATRIX matPretransform = XMMatrixIdentity();
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,
         //TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
         TEXT("../../Client/Bin/Resources/Models/"), matPretransform)))
         //TEXT("../../Client/Bin/Resources/sibal/"), matPretransform)))
         return E_FAIL;
+
+
 
 
     /* For. Prototype_Component_VIBuffer_Rect */    

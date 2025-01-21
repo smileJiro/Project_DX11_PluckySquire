@@ -21,11 +21,16 @@ HRESULT CCamera::Initialize_Prototype()
 HRESULT CCamera::Initialize(void* _pArg)
 {
 	/* Zoom Level */
-	m_arrZoomFovy[(int)ZOOM_LEVEL::IN_LEVEL2] = XMConvertToRadians(25.f);
-	m_arrZoomFovy[(int)ZOOM_LEVEL::IN_LEVEL1] = XMConvertToRadians(45.f);
-	m_arrZoomFovy[(int)ZOOM_LEVEL::NORMAL] = XMConvertToRadians(60.f);
-	m_arrZoomFovy[(int)ZOOM_LEVEL::OUT_LEVEL1] = XMConvertToRadians(75.f);
-	m_arrZoomFovy[(int)ZOOM_LEVEL::OUT_LEVEL2] = XMConvertToRadians(95.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_1] = XMConvertToRadians(8.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_2] = XMConvertToRadians(17.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_3] = XMConvertToRadians(35.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_4] = XMConvertToRadians(40.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_5] = XMConvertToRadians(47.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_6] = XMConvertToRadians(62.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_7] = XMConvertToRadians(74.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_8] = XMConvertToRadians(84.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_9] = XMConvertToRadians(100.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_10] = XMConvertToRadians(120.f);
 
 	if (nullptr == _pArg)
 		return E_FAIL;
@@ -43,7 +48,7 @@ HRESULT CCamera::Initialize(void* _pArg)
 	/* 투영 행렬 구성 시 필요한 데이터를 저장. */
 	m_eCameraType = pDesc->eCameraType;
 	m_iCurZoomLevel = (_uint)pDesc->eZoomLevel;
-	m_fFovy = pDesc->fFovy;	// m_arrZoomFovy[m_iCurZoomLevel];
+	m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
 	m_fAspect = pDesc->fAspect;
 	m_fNear = pDesc->fNear;
 	m_fFar = pDesc->fFar;
@@ -88,140 +93,225 @@ void CCamera::Compute_ProjMatrix()
 	m_pGameInstance->Set_Transform(CPipeLine::D3DTS_PROJ, XMMatrixPerspectiveFovLH(m_fFovy, m_fAspect, m_fNear, m_fFar));
 }
 
-void CCamera::ZoomIn(_float _fZoomTime)
+//void CCamera::ZoomIn(_float _fZoomTime)
+//{
+//
+//	if (!m_bZoomOn)
+//	{
+//		if (m_iCurZoomLevel > (_int)ZOOM_LEVEL::IN_LEVEL2)
+//		{
+//			m_iPreZoomLevel = m_iCurZoomLevel;
+//			m_iCurZoomLevel -= 1;
+//			m_bZoomOn = true;
+//			m_eCamState = STATE_ZOOM_IN;
+//			m_fStartFovy = m_fFovy;
+//			m_vZoomTime.x = _fZoomTime;
+//			m_vZoomTime.y = 0.0f;
+//		}
+//
+//	}
+//}
+//
+//void CCamera::ZoomIn(_float _fZoomTime, ZOOM_LEVEL _eLevel)
+//{
+//	if (m_iCurZoomLevel == _eLevel)
+//		return;
+//
+//	if (!m_bZoomOn)
+//	{
+//		if (m_iCurZoomLevel > (_int)ZOOM_LEVEL::IN_LEVEL2)
+//		{
+//			m_iPreZoomLevel = m_iCurZoomLevel;
+//			m_iCurZoomLevel = (int)_eLevel; // 줌레벨 지정용 줌인
+//			m_bZoomOn = true;
+//			m_eCamState = STATE_ZOOM_IN;
+//			m_fStartFovy = m_fFovy;
+//			m_vZoomTime.x = _fZoomTime;
+//			m_vZoomTime.y = 0.0f;
+//		}
+//	}
+//}
+//
+//void CCamera::ZoomOut(_float _fZoomTime)
+//{
+//	if (!m_bZoomOn)
+//	{
+//		if (m_iCurZoomLevel < (_int)ZOOM_LEVEL::OUT_LEVEL2)
+//		{
+//			m_iPreZoomLevel = m_iCurZoomLevel;
+//			m_iCurZoomLevel += 1;
+//			m_bZoomOn = true;
+//			m_eCamState = STATE_ZOOM_OUT;
+//			m_vZoomTime.x = _fZoomTime;
+//			m_vZoomTime.y = 0.0f;
+//		}
+//
+//	}
+//}
+//
+//void CCamera::ZoomOut(_float _fZoomTime, ZOOM_LEVEL _eLevel)
+//{
+//	if (m_iCurZoomLevel == _eLevel)
+//		return;
+//
+//	if (!m_bZoomOn)
+//	{
+//		if (m_iCurZoomLevel < (_int)ZOOM_LEVEL::OUT_LEVEL2)
+//		{
+//			m_iPreZoomLevel = m_iCurZoomLevel;
+//			m_iCurZoomLevel = (int)_eLevel;
+//			m_bZoomOn = true;
+//			m_eCamState = STATE_ZOOM_OUT;
+//			m_vZoomTime.x = _fZoomTime;
+//			m_vZoomTime.y = 0.0f;
+//		}
+//
+//	}
+//}
+
+void CCamera::Start_Zoom(_float _fZoomTime, ZOOM_LEVEL _eZoomLevel, RATIO_TYPE _eRatioType)
 {
+	//if (false == m_isZoomOn)
+	//	return;
 
-	if (!m_bZoomOn)
-	{
-		if (m_iCurZoomLevel > (_int)ZOOM_LEVEL::IN_LEVEL2)
-		{
-			m_iPreZoomLevel = m_iCurZoomLevel;
-			m_iCurZoomLevel -= 1;
-			m_bZoomOn = true;
-			m_eCamState = STATE_ZOOM_IN;
-			m_fStartFovy = m_fFovy;
-			m_vZoomTime.x = _fZoomTime;
-			m_vZoomTime.y = 0.0f;
-		}
-
-	}
+	m_isZoomOn = true;
+	m_fZoomTime = { _fZoomTime, 0.f };
+	m_iPreZoomLevel = m_iCurZoomLevel;
+	m_iCurZoomLevel = _eZoomLevel;
+	m_fStartFovy = m_ZoomLevels[m_iPreZoomLevel];
+	m_eRatioType = _eRatioType;
 }
 
-void CCamera::ZoomIn(_float _fZoomTime, ZOOM_LEVEL _eLevel)
+void CCamera::Start_Changing_AtOffset(_float _fAtOffsetTime, _vector _vNextAtOffset, _uint _iRatioType)
 {
-	if (m_iCurZoomLevel == _eLevel)
+	if (true == m_isChangingAtOffset)
 		return;
 
-	if (!m_bZoomOn)
-	{
-		if (m_iCurZoomLevel > (_int)ZOOM_LEVEL::IN_LEVEL2)
-		{
-			m_iPreZoomLevel = m_iCurZoomLevel;
-			m_iCurZoomLevel = (int)_eLevel; // 줌레벨 지정용 줌인
-			m_bZoomOn = true;
-			m_eCamState = STATE_ZOOM_IN;
-			m_fStartFovy = m_fFovy;
-			m_vZoomTime.x = _fZoomTime;
-			m_vZoomTime.y = 0.0f;
-		}
-	}
+	m_isChangingAtOffset = true;
+	m_fAtOffsetTime = { _fAtOffsetTime, 0.f };
+	m_iOffsetRatioType = _iRatioType;
+	XMStoreFloat3(&m_vNextAtOffset, _vNextAtOffset);
+	m_vStartAtOffset = m_vAtOffset;
+	
 }
 
-void CCamera::ZoomOut(_float _fZoomTime)
-{
-	if (!m_bZoomOn)
-	{
-		if (m_iCurZoomLevel < (_int)ZOOM_LEVEL::OUT_LEVEL2)
-		{
-			m_iPreZoomLevel = m_iCurZoomLevel;
-			m_iCurZoomLevel += 1;
-			m_bZoomOn = true;
-			m_eCamState = STATE_ZOOM_OUT;
-			m_vZoomTime.x = _fZoomTime;
-			m_vZoomTime.y = 0.0f;
-		}
-
-	}
-}
-
-void CCamera::ZoomOut(_float _fZoomTime, ZOOM_LEVEL _eLevel)
-{
-	if (m_iCurZoomLevel == _eLevel)
-		return;
-
-	if (!m_bZoomOn)
-	{
-		if (m_iCurZoomLevel < (_int)ZOOM_LEVEL::OUT_LEVEL2)
-		{
-			m_iPreZoomLevel = m_iCurZoomLevel;
-			m_iCurZoomLevel = (int)_eLevel;
-			m_bZoomOn = true;
-			m_eCamState = STATE_ZOOM_OUT;
-			m_vZoomTime.x = _fZoomTime;
-			m_vZoomTime.y = 0.0f;
-		}
-
-	}
-}
-
-void CCamera::Start_Shake(SHAKE_TYPE _eType, _float _fShakeTime, _int _iShakeCount, _float _fPower)
+void CCamera::Start_Shake_ByTime(_float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime, SHAKE_TYPE _ShakeType, _float _fDelayTime)
 {
 	if (true == m_isShake)
 		return;
 
 	m_isShake = true;
-	m_eShakeType = _eType;
-	m_iShakeCount = _iShakeCount;
-	m_fShakePower = _fPower;
-	m_vShakeTime.x = _fShakeTime;
-	m_vShakeTime.y = 0.0f;
-
-	m_vShakeCycleTime.x = _fShakeTime / (float)_iShakeCount;
-	m_vShakeCycleTime.y = 0.0f;
+	m_eShakeType = _ShakeType;
+	m_fShakeTime = { _fShakeTime, 0.f };
+	m_fShakeForce = _fShakeForce;
+	m_fShakeCycleTime = { _fShakeCycleTime, 0.f };
+	m_fDelayTime = { _fDelayTime, 0.f };
 }
+
+void CCamera::Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int _iShakeCount, SHAKE_TYPE _ShakeType, _float _fDelayTime)
+{
+	if (true == m_isShake)
+		return;
+
+	m_isShake = true;
+	m_eShakeType = _ShakeType;
+	m_fShakeTime = { _fShakeTime, 0.f };
+	m_fShakeForce = _fShakeForce;
+	m_fShakeCycleTime = { m_fShakeTime.x / (_float)_iShakeCount, 0.f };
+	m_fDelayTime = { _fDelayTime, 0.f };
+}
+
+//void CCamera::Start_Shake(SHAKE_TYPE _eType, _float _fShakeTime, _int _iShakeCount, _float _fPower)
+//{
+//	if (true == m_isShake)
+//		return;
+//
+//	m_isShake = true;
+//	m_eShakeType = _eType;
+//	m_iShakeCount = _iShakeCount;
+//	m_fShakePower = _fPower;
+//	m_vShakeTime.x = _fShakeTime;
+//	m_vShakeTime.y = 0.0f;
+//
+//	m_vShakeCycleTime.x = _fShakeTime / (float)_iShakeCount;
+//	m_vShakeCycleTime.y = 0.0f;
+//}
 
 void CCamera::End_Shake()
 {
 }
 
+//void CCamera::Action_Zoom(_float _fTimeDelta)
+//{
+//	if (!m_bZoomOn)
+//		return;
+//
+//	switch (m_eCamState)
+//	{
+//	case Engine::CCamera::STATE_NONE:
+//		break;
+//	case Engine::CCamera::STATE_ZOOM_IN:
+//	{
+//		m_vZoomTime.y += _fTimeDelta;
+//		m_fFovy = m_arrZoomFovy[m_iPreZoomLevel] + (m_arrZoomFovy[m_iCurZoomLevel] - m_arrZoomFovy[m_iPreZoomLevel]) * (m_vZoomTime.y / m_vZoomTime.x);
+//		if (m_vZoomTime.x <= m_vZoomTime.y)
+//		{
+//			m_vZoomTime.y = 0.0f;
+//			m_fFovy = m_arrZoomFovy[m_iCurZoomLevel];
+//			m_bZoomOn = false;
+//			m_eCamState = STATE_NONE;
+//		}
+//	}
+//		break;
+//	case Engine::CCamera::STATE_ZOOM_OUT:
+//	{
+//		m_vZoomTime.y += _fTimeDelta;
+//		m_fFovy = m_arrZoomFovy[m_iPreZoomLevel] + (m_arrZoomFovy[m_iCurZoomLevel] - m_arrZoomFovy[m_iPreZoomLevel]) * (m_vZoomTime.y / m_vZoomTime.x);
+//		if (m_vZoomTime.x <= m_vZoomTime.y)
+//		{
+//			m_vZoomTime.y = 0.0f;
+//			m_fFovy = m_arrZoomFovy[m_iCurZoomLevel];
+//			m_bZoomOn = false;
+//			m_eCamState = STATE_NONE;
+//		}
+//	}
+//		break;
+//
+//	}
+//
+//}
+
 void CCamera::Action_Zoom(_float _fTimeDelta)
 {
-	if (!m_bZoomOn)
+	if (false == m_isZoomOn)
 		return;
 
-	switch (m_eCamState)
-	{
-	case Engine::CCamera::STATE_NONE:
-		break;
-	case Engine::CCamera::STATE_ZOOM_IN:
-	{
-		m_vZoomTime.y += _fTimeDelta;
-		m_fFovy = m_arrZoomFovy[m_iPreZoomLevel] + (m_arrZoomFovy[m_iCurZoomLevel] - m_arrZoomFovy[m_iPreZoomLevel]) * (m_vZoomTime.y / m_vZoomTime.x);
-		if (m_vZoomTime.x <= m_vZoomTime.y)
-		{
-			m_vZoomTime.y = 0.0f;
-			m_fFovy = m_arrZoomFovy[m_iCurZoomLevel];
-			m_bZoomOn = false;
-			m_eCamState = STATE_NONE;
-		}
-	}
-		break;
-	case Engine::CCamera::STATE_ZOOM_OUT:
-	{
-		m_vZoomTime.y += _fTimeDelta;
-		m_fFovy = m_arrZoomFovy[m_iPreZoomLevel] + (m_arrZoomFovy[m_iCurZoomLevel] - m_arrZoomFovy[m_iPreZoomLevel]) * (m_vZoomTime.y / m_vZoomTime.x);
-		if (m_vZoomTime.x <= m_vZoomTime.y)
-		{
-			m_vZoomTime.y = 0.0f;
-			m_fFovy = m_arrZoomFovy[m_iCurZoomLevel];
-			m_bZoomOn = false;
-			m_eCamState = STATE_NONE;
-		}
-	}
-		break;
+	_float fRatio = Calculate_Ratio(&m_fZoomTime, _fTimeDelta, m_eRatioType);
 
+	if (fRatio > 1.f) {
+		m_isZoomOn = false;
+		m_fStartFovy = 0.f;
+		m_fZoomTime.y = 0.f;
 	}
 
+	m_fFovy = m_pGameInstance->Lerp(m_fStartFovy, m_ZoomLevels[m_iCurZoomLevel], fRatio);
+}
+
+void CCamera::Change_AtOffset(_float _fTimeDelta)
+{
+	if (false == m_isChangingAtOffset)
+		return;
+
+	_float fRatio = Calculate_Ratio(&m_fAtOffsetTime, _fTimeDelta, m_iOffsetRatioType);
+
+	if (fRatio > 1.f) {
+		m_isChangingAtOffset = false;
+		m_fAtOffsetTime.y = 0.f;
+	}
+
+	_vector vAtOffset = XMVectorLerp(XMLoadFloat3(&m_vStartAtOffset), XMLoadFloat3(&m_vNextAtOffset), fRatio);
+
+	XMStoreFloat3(&m_vAtOffset, vAtOffset);
 }
 
 void CCamera::Action_Shake(_float _fTimeDelta)
@@ -229,31 +319,95 @@ void CCamera::Action_Shake(_float _fTimeDelta)
 	if (false == m_isShake)
 		return;
 
-	m_vShakeTime.y += _fTimeDelta;
-	m_vShakeCycleTime.y += _fTimeDelta;
+	m_fDelayTime.y += _fTimeDelta;
+	m_fShakeTime.y += _fTimeDelta;
+	m_fShakeCycleTime.y += _fTimeDelta;
 
-	if (m_vShakeCycleTime.x <= m_vShakeCycleTime.y)
-		m_vShakeCycleTime.y = 0.0f;
-	else
-	{
-		return;
+	if (m_fDelayTime.y > m_fDelayTime.x) {
+
+		// Shake 끝
+		if (m_fShakeTime.y > m_fShakeTime.x) {
+			m_fDelayTime.y = 0.f;
+			m_fShakeTime.y = 0.f;
+			m_fShakeCycleTime.y = 0.f;
+
+			m_isShake = 0.f;
+			m_vShakeOffset = { 0.f, 0.f, 0.f };
+		}
+
+		// Shake 주기
+		if (m_fShakeCycleTime.y > m_fShakeCycleTime.x) {
+			_float fRandomX = m_pGameInstance->Compute_Random(-1.f * m_fShakeForce, 1.f * m_fShakeForce);
+			_float fRandomY = m_pGameInstance->Compute_Random(-1.f * m_fShakeForce, 1.f * m_fShakeForce);
+
+			switch (m_eShakeType) {
+			case SHAKE_XY:
+				m_vShakeOffset = { fRandomX, fRandomY, 0.f };
+				break;
+			case SHAKE_X:
+				m_vShakeOffset = { fRandomX, 0.f, 0.f };
+				break;
+			case SHAKE_Y:
+				m_vShakeOffset = { 0.f, fRandomY, 0.f };
+				break;
+			}
+
+			m_fShakeCycleTime.y = 0.f;
+		}
+	}
+}
+
+//void CCamera::Action_Shake(_float _fTimeDelta)
+//{
+//	if (false == m_isShake)
+//		return;
+//
+//	m_vShakeTime.y += _fTimeDelta;
+//	m_vShakeCycleTime.y += _fTimeDelta;
+//
+//	if (m_vShakeCycleTime.x <= m_vShakeCycleTime.y)
+//		m_vShakeCycleTime.y = 0.0f;
+//	else
+//	{
+//		return;
+//	}
+//
+//
+//	if (m_vShakeTime.x <= m_vShakeTime.y)
+//	{
+//		m_vShakeTime.y = 0.0f;
+//		m_vShakeCycleTime.y = 0.0f;
+//		m_isShake = false;
+//		m_iShakeCount = 0;
+//		m_iShakeCountAcc = 0;
+//		m_vShakeMovement = { 0.0f ,0.0f ,0.0f };
+//		return;
+//	}
+//	
+//	m_vShakeMovement.x = m_pGameInstance->Compute_Random(m_fShakePower * -1.0f, m_fShakePower);
+//	m_vShakeMovement.y = m_pGameInstance->Compute_Random(m_fShakePower * -1.0f, m_fShakePower);
+//
+//}
+
+_float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType)
+{
+	_float fRatio = {};
+
+	_fTime->y += _fTimeDelta;
+	fRatio = _fTime->y / _fTime->x;
+
+	switch (_iRatioType) {
+	case EASE_IN:
+		fRatio = (fRatio + pow(fRatio, 2)) * 0.5f;
+		break;
+	case EASE_OUT:
+		fRatio = 1.0f - ((1.0f - fRatio) + pow(1.0f - fRatio, 2)) * 0.5f;
+		break;
+	case LERP:
+		break;
 	}
 
-
-	if (m_vShakeTime.x <= m_vShakeTime.y)
-	{
-		m_vShakeTime.y = 0.0f;
-		m_vShakeCycleTime.y = 0.0f;
-		m_isShake = false;
-		m_iShakeCount = 0;
-		m_iShakeCountAcc = 0;
-		m_vShakeMovement = { 0.0f ,0.0f ,0.0f };
-		return;
-	}
-	
-	m_vShakeMovement.x = m_pGameInstance->Compute_Random(m_fShakePower * -1.0f, m_fShakePower);
-	m_vShakeMovement.y = m_pGameInstance->Compute_Random(m_fShakePower * -1.0f, m_fShakePower);
-
+	return fRatio;
 }
 
 void CCamera::Free()

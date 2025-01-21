@@ -121,6 +121,35 @@ void CCamera_Manager_Tool::Set_NextArmData(_wstring _wszNextArmName)
 	}
 }
 
+void CCamera_Manager_Tool::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)
+{
+	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)_iZoomLevel, (CCamera::RATIO_TYPE)_iRatioType);
+}
+
+void CCamera_Manager_Tool::Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType)
+{
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Changing_AtOffset(_fOffsetTime, _vNextOffset, _iRatioType);
+}
+
+void CCamera_Manager_Tool::Start_Shake_ByTime(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime, _uint _iShakeType, _float _fDelayTime)
+{
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Shake_ByTime(_fShakeTime, _fShakeForce, _fShakeCycleTime, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
+}
+
+void CCamera_Manager_Tool::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _uint _iShakeCount, _uint _iShakeType, _float _fDelayTime)
+{
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Shake_ByCount(_fShakeTime, _fShakeForce, _iShakeCount, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
+}
+
 void CCamera_Manager_Tool::Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData)
 {
 	Add_ArmData(_wszArmTag, _pData);
@@ -157,6 +186,7 @@ _float CCamera_Manager_Tool::Get_ArmLength()
 	if (nullptr != m_pCurrentArm)
 		return m_pCurrentArm->Get_Length();
 		
+	return _float();
 }
 
 _float3 CCamera_Manager_Tool::Get_CurrentArmVector()
@@ -216,6 +246,9 @@ void CCamera_Manager_Tool::Free()
 	for (auto& ArmData : m_ArmDatas)
 		Safe_Delete(ArmData.second);
 	m_ArmDatas.clear();
+
+	for (auto& Camera : m_Cameras)
+		Safe_Release(Camera);
 
 	Safe_Release(m_pCurrentArm);
 

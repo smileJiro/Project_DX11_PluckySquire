@@ -31,6 +31,17 @@ HRESULT CLevel_Camera_Tool::Initialize()
 	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
+	m_fFovys[0] = 8.f;
+	m_fFovys[1] = 17.f;
+	m_fFovys[2] = 35.f;
+	m_fFovys[3] = 40.f;
+	m_fFovys[4] = 47.f;
+	m_fFovys[5] = 62.f;
+	m_fFovys[6] = 74.f;
+	m_fFovys[7] = 84.f;
+	m_fFovys[8] = 100.f;
+	m_fFovys[9] = 120.f;
+
 	return S_OK;
 }
 
@@ -89,6 +100,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 	Desc.fFar = 1000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Desc.eZoomLevel = CCamera::LEVEL_6;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &Desc)))
@@ -103,12 +115,13 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
 	TargetDesc.vAtOffset = { 0.f, 3.f, 0.f };
 
-	TargetDesc.fFovy = XMConvertToRadians(30.f);
+	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	TargetDesc.fNear = 0.1f;
 	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
+	Desc.eZoomLevel = CCamera::LEVEL_6;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
@@ -128,11 +141,6 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CGa
 
 	CTest_Player::CONTAINEROBJ_DESC Desc;
 	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-	Desc.tTransform2DDesc.vInitialScaling = _float3(150.f, 150.f, 150.f);
-
-	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Player"), LEVEL_CAMERA_TOOL, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -178,11 +186,6 @@ void CLevel_Camera_Tool::Show_CameraTool()
 
 	// CheckBox
 	ImGui::NewLine();
-	
-	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.3f, 0.0f));
-	ImGui::SameLine();
-	ImGui::Text("Change Next ArmPos Value");
-	ImGui::Separator();
 
 	//ImGui::Checkbox("Rotate CopyArm", &m_isCopyArm);
 	//ImGui::SameLine(155.f);
@@ -215,6 +218,15 @@ void CLevel_Camera_Tool::Show_CameraTool()
 		Edit_CopyArm();
 	}
 
+	// Zoom
+	Set_Zoom();
+
+	// At Offset
+	Set_AtOffsetInfo();
+
+	// Shake
+	Set_ShakeInfo();
+
 	// Play Move
 	Set_MovementInfo();
 	
@@ -229,6 +241,7 @@ void CLevel_Camera_Tool::Show_ArmInfo()
 	ImGui::Begin("Arm Info");
 
 	Show_SelectedArmData();
+	Show_CameraZoomInfo();
 
 	ImGui::End();
 }
@@ -320,6 +333,33 @@ void CLevel_Camera_Tool::Show_SelectedArmData()
 	ImGui::NewLine();
 }
 
+void CLevel_Camera_Tool::Show_CameraZoomInfo()
+{
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Zoom Data");
+	ImGui::Separator();
+
+	CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET);
+	_float fFovy = XMConvertToDegrees(pCamera->Get_Fovy());
+	_uint iPreLevel = pCamera->Get_PreZoomLevel() + 1;
+	_float fPreFovy = XMConvertToDegrees(pCamera->Get_Fovy(iPreLevel - 1));
+	_uint iCurLevel = pCamera->Get_CurrentZoomLevel() + 1;
+	_float fCurFovy = XMConvertToDegrees(pCamera->Get_Fovy(iCurLevel - 1));
+
+	ImGui::Text("Pre Zoom Level: %d", iPreLevel);
+	ImGui::SameLine();
+	ImGui::Text("Pre Zoom Fovy: %.2f", fPreFovy);
+
+	ImGui::Text("Cur Zoom Level: %d", iCurLevel);
+	ImGui::SameLine();
+	ImGui::Text("Cur Zoom Fovy: %.2f", fCurFovy);
+
+	ImGui::Text("Cur Fovy: %.2f", fFovy);
+
+}
+
 void CLevel_Camera_Tool::Rotate_Arm()
 {
 	//ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.4f, 0.0f));
@@ -402,7 +442,7 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::SetNextItemWidth(-1);
 	ImGui::InputText("##CopyArm Tag", m_szCopyArmName, MAX_PATH);
 
-	ImGui::Text("Length: %.2f        ", m_fLength);
+	ImGui::Text("Length: %.2f             ", m_fLength);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
 	ImGui::DragFloat("##Length Info", &m_fLength, 0.05f, 0.f, 30.f);
@@ -423,17 +463,17 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::DragFloat("##Move Time Right", &m_fMoveTimeAxisRight, 0.05f, 0.f, 10.f);
 
 	
-	ImGui::Text("Min Rotation Per Sec AxisY: %.2f        ", m_fRotationPerSecAxisY.x);
+	ImGui::Text("Min RPS AxisY: %.2f      ", m_fRotationPerSecAxisY.x);
 	ImGui::SameLine();
 	ImGui::DragFloat("##Min Rotation Per Sec AxisY", &m_fRotationPerSecAxisY.x, 0.1f, -360.f, 360.f);
-	ImGui::Text("Max Rotation Per Sec AxisY: %.2f        ", m_fRotationPerSecAxisY.y);
+	ImGui::Text("Max RPS AxisY: %.2f      ", m_fRotationPerSecAxisY.y);
 	ImGui::SameLine();
 	ImGui::DragFloat("##Max Rotation Per Sec AxisY", &m_fRotationPerSecAxisY.y, 0.1f, -360.f, 360.f);
 
-	ImGui::Text("Min Rotation Per Sec AxisRight: %.2f        ", m_fRotationPerSecAxisRight.x);
+	ImGui::Text("Min RPS AxisRight: %.2f  ", m_fRotationPerSecAxisRight.x);
 	ImGui::SameLine();
 	ImGui::DragFloat("##Min Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.x, 0.1f, -360.f, 360.f);
-	ImGui::Text("Max Rotation Per Sec AxisRight: %.2f        ", m_fRotationPerSecAxisRight.y);
+	ImGui::Text("Max RPS AxisRight: %.2f  ", m_fRotationPerSecAxisRight.y);
 	ImGui::SameLine();
 	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
 
@@ -496,6 +536,221 @@ void CLevel_Camera_Tool::Reset_CurrentArmPos()
 
 	if (ImGui::Button("Rest Pos")) {
 		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArmPos(XMLoadFloat3(&m_vResetArmPos), 12.f);
+	}
+}
+
+void CLevel_Camera_Tool::Set_Zoom()
+{
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.3f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("             Zoom Info");
+	ImGui::Separator();
+
+	ImGui::Text("Next Zoom Level: %d    ", m_iZoomLevel);
+	ImGui::SameLine();
+	ImGui::InputInt("##Zoom Level", &m_iZoomLevel);
+	ImGui::Text("Next Fovy: %.2f", m_fFovys[m_iZoomLevel - 1]);
+
+	ImGui::Text("Zoom Time: %.2f       ", m_fZoomTime);
+	ImGui::SameLine();
+	ImGui::DragFloat("##Zoom Time", &m_fZoomTime, 0.05f, 0.f, 10.f);
+
+	switch (m_iRatioType) {
+	case CCamera::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN   ");
+		break;
+
+	case CCamera::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT  ");
+		break;
+
+	case CCamera::LERP:
+		ImGui::Text("Ratio Type: LERP      ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("EASE IN")) {
+		m_iRatioType = CCamera::EASE_IN;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("EASE OUT")) {
+		m_iRatioType = CCamera::EASE_OUT;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("LERP")) {
+		m_iRatioType = CCamera::LERP;
+	}
+
+	ImGui::NewLine();
+	if (ImGui::Button("Start Zoom")) {
+		CCamera_Manager_Tool::GetInstance()->Start_Zoom(CCamera_Manager_Tool::TARGET, m_fZoomTime, m_iZoomLevel - 1, m_iRatioType);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Reset Fovy")) {
+		CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET);
+		pCamera->Set_ZoomLevel(CCamera::LEVEL_6);
+		pCamera->Set_Fovy(XMConvertToRadians(m_fFovys[CCamera::LEVEL_6]));
+	}
+
+
+}
+
+void CLevel_Camera_Tool::Set_AtOffsetInfo()
+{
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.3f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("             AtOffset Info");
+	ImGui::Separator();
+
+	ImGui::Text("Position: %.2f, %.2f, %.2f", m_vNextAtOffset.x, m_vNextAtOffset.y, m_vNextAtOffset.z);
+	ImGui::SameLine();
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##X", &m_vNextAtOffset.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##Y", &m_vNextAtOffset.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##Z", &m_vNextAtOffset.z);
+
+	ImGui::Text("AtOffset Time: %.2f       ", m_fAtOffsetTime);
+	ImGui::SameLine();
+	ImGui::DragFloat("##AtOffset Time", &m_fAtOffsetTime, 0.05f, 0.f, 10.f);
+
+	switch (m_iAtOffsetRatioType) {
+	case CCamera::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN       ");
+		break;
+
+	case CCamera::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT      ");
+		break;
+
+	case CCamera::LERP:
+		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("OFFSET EASE IN")) {
+		m_iAtOffsetRatioType = CCamera::EASE_IN;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("OFFSET EASE OUT")) {
+		m_iAtOffsetRatioType = CCamera::EASE_OUT;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("OFFSET LERP")) {
+		m_iAtOffsetRatioType = CCamera::LERP;
+	}
+
+	ImGui::NewLine();
+	if (ImGui::Button("Start Change AtOffset")) {
+		CCamera_Manager_Tool::GetInstance()->Start_Changing_AtOffset(CCamera_Manager_Tool::TARGET, m_fAtOffsetTime, XMLoadFloat3(&m_vNextAtOffset), m_iAtOffsetRatioType);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Reset AtOffset")) {
+		CCamera_Manager_Tool::GetInstance()->Start_Changing_AtOffset(CCamera_Manager_Tool::TARGET, 1.f, XMVectorSet(0.f, 3.f, 0.f, 0.f), CCamera::LERP);
+	}
+
+
+}
+
+void CLevel_Camera_Tool::Set_ShakeInfo()
+{
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.3f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("             Shake Info");
+	ImGui::Separator();
+
+	ImGui::Text("Shake Force: %.2f       ", m_fShakeForce);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);
+	ImGui::DragFloat("##ShakeForce", &m_fShakeForce, 1.f, 0.f, 10.f);
+
+	ImGui::SameLine();
+	ImGui::Text("Shake Time: %.2f", m_fShakeTime);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);
+	ImGui::DragFloat("##ShakeTime", &m_fShakeTime, 0.05f, 0.f, 20.f);
+
+	ImGui::Text("Shake Cycle Time: %.2f  ", m_fShakeCycleTime);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);
+	ImGui::DragFloat("##ShakeCycleTime", &m_fShakeCycleTime, 0.05f, 0.f, 5.f);
+
+	ImGui::SameLine();
+	ImGui::Text("Shake Count: %d  ", m_iShakeCount);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);
+	ImGui::DragInt("##ShakeCount", &m_iShakeCount, 0.05f, 0.f, 200.f);
+
+	ImGui::Text("Shake Delay Time: %.2f  ", m_fShakeDelayTime);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);
+	ImGui::DragFloat("##ShakeDelayTime", &m_fShakeDelayTime, 0.05f, 0.f, 10.f);
+
+	switch (m_iShakeType) {
+	case CCamera::SHAKE_XY:
+		ImGui::Text("Shake Type: SHAKE_XY    ");
+		break;
+
+	case CCamera::SHAKE_X:
+		ImGui::Text("Shake Type: SHAKE_X     ");
+		break;
+
+	case CCamera::SHAKE_Y:
+		ImGui::Text("Shake Type: SHAKE_Y     ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("SHAKE_XY")) {
+		m_iShakeType = CCamera::SHAKE_XY;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("SHAKE_X")) {
+		m_iShakeType = CCamera::SHAKE_X;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("SHAKE_Y")) {
+		m_iShakeType = CCamera::SHAKE_Y;
+	}
+
+	switch (m_iCycleType) {
+	case (_uint)CYCLE_TYPE::TIME:
+		ImGui::Text("Cycle Type: Time        ");
+		break;
+
+	case (_uint)CYCLE_TYPE::COUNT:
+		ImGui::Text("Cycle Type: Count       ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("TIME")) {
+		m_iCycleType = (_uint)CYCLE_TYPE::TIME;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("COUNT")) {
+		m_iCycleType = (_uint)CYCLE_TYPE::COUNT;
+	}
+
+	ImGui::NewLine();
+	if (ImGui::Button("Start Shake")) {
+
+		switch ((_uint)m_iCycleType) {
+		case (_uint)CYCLE_TYPE::TIME:
+			CCamera_Manager_Tool::GetInstance()->Start_Shake_ByTime(CCamera_Manager_Tool::TARGET, m_fShakeTime, m_fShakeForce, m_fShakeCycleTime, m_iShakeType, m_fShakeDelayTime);
+			break;
+		case (_uint)CYCLE_TYPE::COUNT:
+			CCamera_Manager_Tool::GetInstance()->Start_Shake_ByCount(CCamera_Manager_Tool::TARGET, m_fShakeTime, m_fShakeForce, m_iShakeCount, m_iShakeType, m_fShakeDelayTime);
+			break;
+		}
 	}
 }
 
