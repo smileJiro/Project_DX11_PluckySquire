@@ -58,7 +58,7 @@ HRESULT CPlayer::Ready_Components()
 {
     CStateMachine::STATEMACHINE_DESC tStateMachineDesc{};
     tStateMachineDesc.pOwner = this;
-
+    
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
     return S_OK;

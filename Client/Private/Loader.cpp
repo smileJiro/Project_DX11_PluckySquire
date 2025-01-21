@@ -334,6 +334,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
          return E_FAIL;
 
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
         CPlayer::Create(m_pDevice, m_pContext))))

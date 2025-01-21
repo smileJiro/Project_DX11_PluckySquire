@@ -9,6 +9,7 @@
 C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModel(_pDevice, _pContext)
 {
+	ZeroMemory(m_arrTextureBindingIndex, sizeof m_arrTextureBindingIndex);
 }
 
 C3DModel::C3DModel(const C3DModel& _Prototype)
@@ -21,6 +22,13 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_PreTransformMatrix{ _Prototype.m_PreTransformMatrix }
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
 {
+	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
+	{
+		for (_uint j= 0; j< AI_TEXTURE_TYPE_MAX; j++)
+		{
+			m_arrTextureBindingIndex[i][j] = _Prototype.m_arrTextureBindingIndex[i][j];
+		}
+	}
 	for (auto& pPrototypeBone : _Prototype.m_Bones)
 	{
 		m_Bones.push_back(pPrototypeBone->Clone());
@@ -75,7 +83,6 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 HRESULT C3DModel::Initialize(void* _pArg)
 {
 
-	ZeroMemory(m_arrTextureBindingIndex, sizeof m_arrTextureBindingIndex);
 	return S_OK;
 }
 
@@ -364,7 +371,7 @@ C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,
 
 	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix)))
 	{
-		MSG_BOX("Failed to Created : CModel");
+		MSG_BOX("Failed to Created : 3DModel");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
@@ -376,7 +383,7 @@ CComponent* C3DModel::Clone(void* _pArg)
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CModel");
+		MSG_BOX("Failed to Cloned : 3DModel");
 		Safe_Release(pInstance);
 	}
 
