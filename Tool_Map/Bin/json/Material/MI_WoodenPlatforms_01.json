@@ -1,0 +1,294 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_WoodenPlatforms_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_WoodenDeskObjects_01'",
+        "ObjectPath": "/Game/Map/3D/Desk_C07/Materials/MM_WoodenDeskObjects_01.0"
+      },
+      "bHasStaticPermutationResource": true,
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "CloudsAmount",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.64,
+          "ExpressionGUID": "5B6C56F8-4BB3070C-16C8059C-4D709AA8"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "EdgeHighlightAmount_02",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 1.0,
+          "ExpressionGUID": "580237A6-4559F349-64C87788-9B5FD2ED"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "GrungeAmount",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.24,
+          "ExpressionGUID": "8774D922-44621190-2B0C49B1-979D598A"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "HighlightAmount",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.042,
+          "ExpressionGUID": "4C4AE3CA-40355DA6-927C3A96-365F88A1"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "ProceduralColourVariationAmount",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.04,
+          "ExpressionGUID": "29FAA0DD-4C92EEBE-3C498ABB-F61AC4EB"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "UniqeNormalStrength",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.4,
+          "ExpressionGUID": "0A3ADE97-4A2F649F-73132192-8FFBE8FB"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "CloudsTint",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "F8F29141-4E7B1F4B-5A0F6BBF-B2866236"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "EdgeHighlightTint",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "267E09AF-4CB9AFB2-C39C719D-D0331049"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "GrungeTint",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "1BF4F6FC-4D240AA3-8B0BA98D-EF6AED9A"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BaseColour_01",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'TexturesCom_Wood_PlywoodPainted_1K_albedo'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_PlywoodPainted_1K_albedo.0"
+          },
+          "ExpressionGUID": "6CE4E48F-46BFD7AC-8A8823A5-769270CA"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "BaseColour_02",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_albedo'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_albedo.0"
+          },
+          "ExpressionGUID": "F454C3A0-41808925-F86D08BC-B0416F6E"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RGBA_Mask",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'WoodenPlatforms_Masks_01_Masks'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/WoodenPlatforms_Masks_01_Masks.0"
+          },
+          "ExpressionGUID": "37341A6E-4187E654-5F5FC793-1D978B3A"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Roughness",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'TexturesCom_Wood_PlywoodPainted_1K_roughness'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_PlywoodPainted_1K_roughness.0"
+          },
+          "ExpressionGUID": "442B9C2C-45A395A0-FB5A13B4-14BBBA86"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "TilingNormal_01",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'TexturesCom_Wood_PlywoodPainted_1K_normal'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_PlywoodPainted_1K_normal.0"
+          },
+          "ExpressionGUID": "DD68C057-4E06D61E-6D5FE5BF-49170B2A"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "UniqueNormal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_normal'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_normal.0"
+          },
+          "ExpressionGUID": "89BE1E09-41034AA6-96B2B593-42A89F82"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "StaticParameters": {
+        "StaticSwitchParameters": [
+          {
+            "Value": false,
+            "ParameterInfo": {
+              "Name": "UseBaseColourTexture_OR_Vector3",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            "bOverride": true,
+            "ExpressionGUID": "70122339-476CE498-8E2654BD-C5FAAB6C"
+          }
+        ]
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'CardboardBox_01_Masks'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Masks.0"
+        },
+        {
+          "ObjectName": "Texture2D'CardboardBox_01_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Albedo'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Albedo.0"
+        },
+        {
+          "ObjectName": "Texture2D'cardboard_side_42_16_diffuse'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/cardboard_side_42_16_diffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Roughness'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Roughness.0"
+        },
+        {
+          "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_roughness'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_roughness.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_PlywoodPainted_1K_albedo"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_PlywoodPainted_1K_normal"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_PlywoodPainted_1K_roughness"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_Rough_1K_albedo"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_Rough_1K_normal"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_Rough_1K_roughness"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "WoodenPlatforms_Masks_01_Masks"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

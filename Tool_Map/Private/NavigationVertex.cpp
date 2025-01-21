@@ -18,7 +18,7 @@ HRESULT CNavigationVertex::Initialize(const _float3& _vVerTexPos)
 
 	CGameObject::GAMEOBJECT_DESC Desc = {};
 	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = LEVEL_TOOL_MAP;
+	Desc.iCurLevelID = LEVEL_TOOL_3D_MAP;
 	Desc.isCoordChangeEnable = false;
 	__super::Initialize(&Desc);
 
@@ -38,7 +38,7 @@ HRESULT CNavigationVertex::Initialize(const _float3& _vVerTexPos)
 	Set_Position(XMLoadFloat3(&m_vPos));
 	ColliderDesc.fRadius = 0.5f;
 
-	if (FAILED(Add_Component(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Collider_Sphere"),
+	if (FAILED(Add_Component(LEVEL_TOOL_3D_MAP, TEXT("Prototype_Component_Collider_Sphere"),
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pCollider), &ColliderDesc)))
 		return E_FAIL;
 

@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "MapObject.h"
 #include "GameInstance.h"
+#include "Controller_Model.h"
+#include "Material.h"
+
+#include "Bone.h"
 #include <gizmo/ImGuizmo.h>
 
 CMapObject::CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -26,9 +30,9 @@ HRESULT CMapObject::Initialize(void* _pArg)
     m_matWorld = pDesc->matWorld;
 
     pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->iCurLevelID = LEVEL_TOOL_MAP;
+    pDesc->iCurLevelID = LEVEL_TOOL_3D_MAP;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL_MAP;
+    pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     pDesc->strModelPrototypeTag_3D = m_strModelName;
 
@@ -45,7 +49,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
     CRay::RAY_DESC RayDesc = {};
     RayDesc.fViewportWidth =   (_float)g_iWinSizeX;
     RayDesc.fViewportHeight =  (_float)g_iWinSizeY;
-    if (FAILED(Add_Component(m_iCurLevelID, L"Prototype_Component_Ray",
+    if (FAILED(Add_Component(LEVEL_STATIC, L"Prototype_Component_Ray",
             TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom),&RayDesc)))
         return E_FAIL;
 
@@ -64,9 +68,9 @@ void CMapObject::Priority_Update(_float _fTimeDelta)
 {
     CPartObject::Priority_Update(_fTimeDelta);
 }
-
 void CMapObject::Update(_float _fTimeDelta)
 {
+
     if (m_eMode == MODE::PICKING)
     {
         _float4x4 fMat = {};
@@ -110,7 +114,6 @@ HRESULT CMapObject::Render()
         return E_FAIL;
 
     CModelObject::Render();
-
     return S_OK;
 }
 
@@ -118,6 +121,178 @@ HRESULT CMapObject::Render_Shadow()
 {
     return S_OK;
 }
+
+#ifdef _DEBUG
+
+
+HRESULT CMapObject::Get_Textures(vector<DIFFUSE_INFO>& _Diffuses, _uint _eTextureType)
+{
+
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    _uint iMaterialCnt = 0;
+    if (pModel)
+    {
+        auto test = static_cast<C3DModel*>(pModel)->Get_Bones();
+
+        _string strBoneName = test[0]->Get_Name();
+        _uint iBoneNameSize = (_uint)strBoneName.size();
+
+
+        auto pMaterials = static_cast<C3DModel*>(pModel)->Get_Materials();
+        for (auto pMaterial : pMaterials)
+        {
+            _uint iDiffuseCnt = 0;
+            DIFFUSE_INFO tInfo = { iMaterialCnt, };
+            ID3D11ShaderResourceView* pSRV = nullptr;
+
+            do
+            {
+                pSRV = pMaterial->Find_Texture((aiTextureType)_eTextureType, iDiffuseCnt);
+                if (pSRV)
+                {
+                    tInfo.iDiffuseIIndex = iDiffuseCnt;
+                    tInfo.pSRV = pSRV;
+                    lstrcpy(tInfo.szTextureName, pMaterial->Find_Name((aiTextureType)_eTextureType, iDiffuseCnt)->c_str());
+                    _Diffuses.push_back(tInfo);
+                }
+                iDiffuseCnt++;
+            } while (nullptr != pSRV);
+            iMaterialCnt++;
+        }
+    }
+    else
+        return E_FAIL;
+    return S_OK;
+}
+
+HRESULT CMapObject::Add_Textures(DIFFUSE_INFO& _tDiffuseInfo, _uint _eTextureType)
+{
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (pModel)
+    {
+        auto pMaterials = static_cast<C3DModel*>(pModel)->Get_Materials();
+        if (_tDiffuseInfo.iMaterialIndex >= pMaterials.size())
+            return E_FAIL;
+        return pMaterials[_tDiffuseInfo.iMaterialIndex]->Add_Texture((aiTextureType)_eTextureType,
+            _tDiffuseInfo.pSRV
+            , _tDiffuseInfo.szTextureName
+        );
+    }
+    return S_OK;
+}
+HRESULT	CMapObject::Push_Texture(const _string _strTextureName, _uint _eTextureType)
+{
+    if (L"" == m_strModelName || nullptr == m_pControllerModel)
+        return E_FAIL;
+
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    _wstring strTextureFileName = StringToWstring(_strTextureName) + L".dds";
+
+    ID3D11ShaderResourceView* pSRV = { nullptr };
+
+
+    if (nullptr != pModel)
+    {
+        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
+        auto pMaterials = static_cast<C3DModel*>(pModel)->Get_Materials();
+        // 자동 텍스쳐 바인딩은, 마테리얼 정보가 지정되어있지 않아보이므로 그냥 0번 마테리얼을 기준으로 삼습니다. 있다면.
+        if (!pMaterials.empty())
+        {
+            _uint iTextureIdx = 0;
+            pSRV =  pMaterials[0]->Find_Texture((aiTextureType)_eTextureType, strTextureFileName, &iTextureIdx);
+
+            if (nullptr == pSRV)
+            {
+                _wstring strTextureFath = STATIC_3D_MODEL_FILE_PATH; 
+                strTextureFath += L"NonAnim/" + m_strModelName;
+                _tchar szName[MAX_PATH] = {};
+                lstrcpy(szName, (strTextureFath + L"/" + strTextureFileName).c_str());
+
+                if (SUCCEEDED(CreateDDSTextureFromFile(m_pDevice, szName, nullptr, &pSRV)) && nullptr != pSRV)
+                {
+                    CMapObject::DIFFUSE_INFO tAddInfo;
+                    iTextureIdx += 1;
+                    tAddInfo.iDiffuseIIndex = iTextureIdx;
+                    tAddInfo.iMaterialIndex = 0;
+                    tAddInfo.pSRV = pSRV;
+                    lstrcpy(tAddInfo.szTextureName, strTextureFileName.c_str());
+                    
+                    if (FAILED(Add_Textures(tAddInfo, _eTextureType)))
+                        return E_FAIL;
+                }
+            }
+            Change_TextureIdx(iTextureIdx,_eTextureType,0);
+            
+
+        }
+    }
+    return S_OK;
+}
+
+HRESULT CMapObject::Save_Override_Material(HANDLE _hFile)
+{
+    DWORD	dwByte(0);
+
+    _uint iOverrideCount =  0;
+    vector< OVERRIDE_MATERIAL_INFO> OverrideMaterials;
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (pModel)
+    {
+        auto pMaterials = static_cast<C3DModel*>(pModel)->Get_Materials();
+     
+        for (_uint iMaterialIndex = 0; iMaterialIndex < pMaterials.size(); ++iMaterialIndex)
+        {
+            for (_uint iTexTypeIndex = 1; iTexTypeIndex < AI_TEXTURE_TYPE_MAX; ++iTexTypeIndex)
+            {
+                _uint iTexIndex = Get_TextureIdx(iTexTypeIndex, iMaterialIndex);
+                if (0 < iTexIndex)
+                {
+                    iOverrideCount++;
+                    OverrideMaterials.push_back({ iMaterialIndex, iTexTypeIndex, iTexIndex });
+                }
+            }
+        }
+    }
+
+    WriteFile(_hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
+
+    if (iOverrideCount > 0 && (_uint) OverrideMaterials.size() == iOverrideCount)
+    {
+        for (auto& tOverrideInfo : OverrideMaterials)
+        {
+            WriteFile(_hFile, &tOverrideInfo.iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+            WriteFile(_hFile, &tOverrideInfo.iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
+            WriteFile(_hFile, &tOverrideInfo.iTexIndex, sizeof(_uint), &dwByte, nullptr);
+        }
+    }
+
+    return S_OK;
+}
+
+
+HRESULT CMapObject::Load_Override_Material(HANDLE _hFile)
+{
+    DWORD	dwByte(0);
+    _uint iOverrideCount = 0;
+
+    ReadFile(_hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
+    if(0 < iOverrideCount)
+    { 
+        for (_uint i = 0; i < iOverrideCount; i++)
+        {
+            OVERRIDE_MATERIAL_INFO tInfo = {};
+            ReadFile(_hFile, &tInfo.iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+            ReadFile(_hFile, &tInfo.iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
+            ReadFile(_hFile, &tInfo.iTexIndex, sizeof(_uint), &dwByte, nullptr);
+
+            Change_TextureIdx(tInfo.iTexIndex, tInfo.iTexTypeIndex, tInfo.iMaterialIndex);
+        }
+    }
+    return S_OK;
+}
+
+#endif // _DEBUG
+
 
 void CMapObject::Create_Complete()
 {

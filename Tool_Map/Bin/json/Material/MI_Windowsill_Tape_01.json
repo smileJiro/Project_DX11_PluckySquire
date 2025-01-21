@@ -1,0 +1,86 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Windowsill_Tape_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_Windowsill_Tape_01'",
+        "ObjectPath": "/Game/Map/3D/Objects/WindowSill_Tape_01/Materials/MM_Windowsill_Tape_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "HueShiftPercentage",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.35,
+          "ExpressionGUID": "7E3CFD24-4CD04928-76DE7F96-02506472"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "ColourMultiplier_01",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.82,
+            "G": 0.82,
+            "B": 0.82,
+            "A": 1.0,
+            "Hex": "EAEAEA"
+          },
+          "ExpressionGUID": "3D717E61-4F9AC4B8-4AB3EFAA-D1F44CDC"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "TwoSided": true,
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Windowsill_Tape_01_ORMH'",
+          "ObjectPath": "/Game/Map/3D/Objects/WindowSill_Tape_01/Textures/Windowsill_Tape_01_ORMH.0"
+        },
+        {
+          "ObjectName": "Texture2D'Windowsill_Tape_01_normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/WindowSill_Tape_01/Textures/Windowsill_Tape_01_normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Windowsill_Tape_01_basecolor'",
+          "ObjectPath": "/Game/Map/3D/Objects/WindowSill_Tape_01/Textures/Windowsill_Tape_01_basecolor.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 2.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Windowsill_Tape_01_basecolor"
+        },
+        {
+          "SamplingScale": 2.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Windowsill_Tape_01_normal"
+        },
+        {
+          "SamplingScale": 2.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Windowsill_Tape_01_ORMH"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

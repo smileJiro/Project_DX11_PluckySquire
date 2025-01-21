@@ -6,7 +6,7 @@ namespace Map_Tool
 	const unsigned int g_iWinSizeX = 1600;
 	const unsigned int g_iWinSizeY = 900;
 
-	enum LEVEL_ID { LEVEL_STATIC, LEVEL_LOADING, LEVEL_TOOL_MAP, LEVEL_TOOL_TRIGGER, LEVEL_END };
+	enum LEVEL_ID { LEVEL_STATIC, LEVEL_LOADING, LEVEL_TOOL_3D_MAP, LEVEL_TOOL_2D_MAP, LEVEL_TOOL_TRIGGER, LEVEL_END };
 	enum LOG_TYPE
 	{
 		LOG_DEFAULT,
@@ -39,6 +39,9 @@ extern HWND g_hWnd;
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS_IMPLEMENTED
+
+#define STATIC_3D_MODEL_FILE_PATH L"../../Client/Bin/resources/Models/"
+#define STATIC_3D_MAP_SAVE_FILE_PATH L"../../Client/Bin/MapSaveFiles/"
 
 #include "imguidll\imgui.h"
 #include "imguidll\imgui_internal.h"

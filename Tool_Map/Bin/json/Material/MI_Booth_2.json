@@ -1,0 +1,76 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Booth_2",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_Booth'",
+        "ObjectPath": "/Game/Map/3D/Desk_C07/Materials/M_Booth.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Plastic_Color_1",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.023429,
+            "G": 0.171491,
+            "B": 0.672443,
+            "A": 1.0,
+            "Hex": "2A73D6"
+          },
+          "ExpressionGUID": "93771246-4ACD7B17-66A2F3B5-6BA7374A"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Booth_Plastic_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Plastic_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Booth_Plastic_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Plastic_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Booth_Masks'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Masks.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Booth_Masks"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "Booth_Plastic_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "Booth_Plastic_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

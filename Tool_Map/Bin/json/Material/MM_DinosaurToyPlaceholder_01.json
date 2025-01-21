@@ -1,0 +1,287 @@
+[
+  {
+    "Type": "Material",
+    "Name": "MM_DinosaurToyPlaceholder_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSampleParameter2D_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "BlendMode": "BLEND_Masked",
+      "bUsedWithStaticLighting": true,
+      "StateId": "200482BC-4F1D4BAE-8D14D689-464A9DA0",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              440574345582452634,
+              17830933328945584460
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "Roughness",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "CameraBlend",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "86BDD4E2-4FEFC2C6-6D9CFE97-A3A596EA",
+              "8A6F72F9-4109517C-D82E72AF-CE1B255D"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              4708953410708818575,
+              5144476314915595866,
+              12241367727707337503
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "Normal",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "BaseColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "GradientTexture",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "81B9EDBF-46E3D39D-967DBEAF-3C7525F6",
+              "8D758B2B-41A4D826-B2BACC92-D1C33471",
+              "4CFE75A7-4B2A9BC6-B6FAD689-7E346703"
+            ]
+          },
+          "ScalarValues": [
+            0.42,
+            1.0
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "Texture2D'Brachiosaurus_normal_map'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_normal_map.0"
+            },
+            {
+              "ObjectName": "Texture2D'Brachiosaurus_d'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_d.0"
+            },
+            {
+              "ObjectName": "Texture2D'FadeGradient_01'",
+              "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Brachiosaurus_d'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_d.0"
+          },
+          {
+            "ObjectName": "Texture2D'Brachiosaurus_normal_map'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_normal_map.0"
+          },
+          {
+            "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+            "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+          },
+          {
+            "ObjectName": "Texture2D'FadeGradient_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "71028A8D-47BF4037-3A3A0B8A-D7B60E53",
+            "Function": {
+              "ObjectName": "MaterialFunction'ScreenAlignedPixelToPixelUVs'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/ScreenAlignedPixelToPixelUVs.0"
+            }
+          },
+          {
+            "StateId": "22D58D0F-45CC84AB-89A3628B-351D83C8",
+            "Function": {
+              "ObjectName": "MaterialFunction'DitherTemporalAA'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/DitherTemporalAA.0"
+            }
+          },
+          {
+            "StateId": "DE013164-436F5AD7-BA0886B7-DFFD7F63",
+            "Function": {
+              "ObjectName": "MaterialFunction'MF_FX_CameraAlphaFade'",
+              "ObjectPath": "/Game/FX/Material/Function/MF_FX_CameraAlphaFade.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Brachiosaurus_d"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Brachiosaurus_normal_map"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 2,
+          "TextureName": "FadeGradient_01"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            440574345582452634,
+            17830933328945584460
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "Roughness",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "CameraBlend",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "86BDD4E2-4FEFC2C6-6D9CFE97-A3A596EA",
+            "8A6F72F9-4109517C-D82E72AF-CE1B255D"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            4708953410708818575,
+            5144476314915595866,
+            12241367727707337503
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "Normal",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "BaseColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "GradientTexture",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "81B9EDBF-46E3D39D-967DBEAF-3C7525F6",
+            "8D758B2B-41A4D826-B2BACC92-D1C33471",
+            "4CFE75A7-4B2A9BC6-B6FAD689-7E346703"
+          ]
+        },
+        "ScalarValues": [
+          0.42,
+          1.0
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "Texture2D'Brachiosaurus_normal_map'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_normal_map.0"
+          },
+          {
+            "ObjectName": "Texture2D'Brachiosaurus_d'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_d.0"
+          },
+          {
+            "ObjectName": "Texture2D'FadeGradient_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Brachiosaurus_d'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_d.0"
+        },
+        {
+          "ObjectName": "Texture2D'Brachiosaurus_normal_map'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_normal_map.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "71028A8D-47BF4037-3A3A0B8A-D7B60E53",
+          "Function": {
+            "ObjectName": "MaterialFunction'ScreenAlignedPixelToPixelUVs'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/ScreenAlignedPixelToPixelUVs.0"
+          }
+        },
+        {
+          "StateId": "22D58D0F-45CC84AB-89A3628B-351D83C8",
+          "Function": {
+            "ObjectName": "MaterialFunction'DitherTemporalAA'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/DitherTemporalAA.0"
+          }
+        },
+        {
+          "StateId": "DE013164-436F5AD7-BA0886B7-DFFD7F63",
+          "Function": {
+            "ObjectName": "MaterialFunction'MF_FX_CameraAlphaFade'",
+            "ObjectPath": "/Game/FX/Material/Function/MF_FX_CameraAlphaFade.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

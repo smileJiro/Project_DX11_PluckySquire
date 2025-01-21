@@ -80,7 +80,11 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
 		}
 		else if (entry.path().extension() == ".png") 
 		{
-			m_AnimTextures.insert({ entry.path().filename().replace_extension().string(), CTexture::Create(m_pDevice, m_pContext, entry.path().c_str()) });
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, entry.path().c_str());
+		
+			auto result = m_AnimTextures.insert({ entry.path().filename().replace_extension().string(), pTexture });
+			if (result.second == false)
+				Safe_Release(pTexture);
 		}
 	}
 

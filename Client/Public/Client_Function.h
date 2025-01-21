@@ -24,4 +24,5 @@ namespace Client
 	std::string WstringToString(const std::wstring& wstr); 
 	std::string MatrixToString(_float4x4 vMatrix);
 	F_DIRECTION To_FDirection(_vector _vDir);
+	
 }

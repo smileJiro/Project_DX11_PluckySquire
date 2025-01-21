@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "Material",
+    "Name": "M_WC_08",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Metallic": {
+        "Expression": null,
+        "OutputIndex": 3,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_2",
+        "UseConstant": false,
+        "Constant": 0.0
+      },
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bUsedWithInstancedStaticMeshes": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "75B3F2F9-4FD92BAF-FED45292-6462A6E8",
+      "CachedExpressionData": {
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_8_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8_BaseColor.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_8_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8_OcclusionRoughnessMetallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Cube_8_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8_Normal.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_8_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_8_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_8_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_8_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_8_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_8_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_8/Wooden_Cube_8_Normal.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]
