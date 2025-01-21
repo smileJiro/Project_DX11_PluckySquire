@@ -66,7 +66,7 @@ HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 {
 	CCamera_Free::CAMERA_FREE_DESC		Desc{};
 	Desc.fMouseSensor = 0.2f;
-	Desc.eZoomLevel = Engine::CCamera::ZOOM_LEVEL::NORMAL;
+	Desc.eZoomLevel = Engine::CCamera::ZOOM_LEVEL::LEVEL_6;
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.fNear = 0.2f;
 	Desc.fFar = 10000.f;
