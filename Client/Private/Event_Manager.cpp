@@ -6,7 +6,6 @@
 #include "Level_Loading.h"
 #include "Level_Logo.h"
 #include "Level_GamePlay.h"
-#include "Level_Physx.h"
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
@@ -165,9 +164,6 @@ HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
 		break;
 	case Client::LEVEL_GAMEPLAY:
 		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
-		break;
-	case Client::LEVEL_PHYSX:
-		pChangeLevel = CLevel_Physx::Create(m_pDevice, m_pContext);
 		break;
 	default:
 		break;
