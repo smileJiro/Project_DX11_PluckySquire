@@ -140,8 +140,6 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 
 
-              
-
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
