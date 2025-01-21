@@ -18,8 +18,6 @@ public:
 	ID3D11ShaderResourceView* Find_Texture(aiTextureType _eTextureType, const _wstring _strTextureName, _uint* _pIndex = nullptr)
 	{
 		ID3D11ShaderResourceView* pReturnTexture = nullptr;
-		if (m_MaterialTextures[_eTextureType] == nullptr)
-			return nullptr;
 		pReturnTexture = m_MaterialTextures[_eTextureType]->Get_SRV(_strTextureName, _pIndex);
 		return pReturnTexture;
 	}
@@ -44,8 +42,6 @@ public:
 	}
 	HRESULT Add_Texture(aiTextureType _eTextureType, ID3D11ShaderResourceView* _pSRV, const _wstring strSRVName)
 	{
-		if (nullptr == m_MaterialTextures[_eTextureType])
-			m_MaterialTextures[_eTextureType] = CTexture::Create(m_pDevice, m_pContext);
 		m_MaterialTextures[_eTextureType]->Add_Texture(_pSRV, strSRVName);
 		// 일반적으로 SRV는 이곳이 원본일 것임. AddRef() 안한다.
 		return S_OK;
