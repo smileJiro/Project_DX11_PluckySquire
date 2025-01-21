@@ -76,6 +76,8 @@ enum RENDERING_FLAG
 };
 
 
-
-
+/* Physx를 위한 enum 들 */
+enum class SHAPE_TYPE { BOX, SPHERE, CAPSULE, LAST };
+enum class ACTOR_TYPE { STATIC, KINEMATIC, DYNAMIC, LAST }; /* 더 다양한 타입이 있으나 일단 우린 이정도 선에서 사용할 것이기때문.*/
+enum class ACTOR_MATERIAL { DEFAULT, SLIPPERY, BOUNCY, STICKY, CUSTOM };
 END

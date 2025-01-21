@@ -191,19 +191,21 @@ call UpdateLib.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\2DModel.h" />
+    <ClInclude Include="..\public\ActorObject.h" />
+    <ClInclude Include="..\public\Actor_Dynamic.h" />
+    <ClInclude Include="..\public\Actor_Static.h" />
     <ClInclude Include="..\public\Animation.h" />
     <ClInclude Include="..\public\Base.h" />
     <ClInclude Include="..\public\Bone.h" />
-    <ClInclude Include="..\public\Bounding.h" />
-    <ClInclude Include="..\Public\Bounding_OBB.h" />
-    <ClInclude Include="..\public\Bounding_AABB.h" />
-    <ClInclude Include="..\Public\Bounding_Sphere.h" />
     <ClInclude Include="..\public\Camera.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Manager_Engine.h" />
     <ClInclude Include="..\public\Channel.h" />
-    <ClInclude Include="..\public\Collider.h" />
-    <ClInclude Include="..\public\Collision_Manager.h" />
+    <ClInclude Include="..\public\Actor.h" />
+    <ClInclude Include="..\public\Collision_Manager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\ContainerObject.h" />
     <ClInclude Include="..\public\Controller_Model.h">
@@ -272,19 +274,21 @@ call UpdateLib.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\2DModel.cpp" />
+    <ClCompile Include="..\private\ActorObject.cpp" />
+    <ClCompile Include="..\private\Actor_Dynamic.cpp" />
+    <ClCompile Include="..\private\Actor_Static.cpp" />
     <ClCompile Include="..\private\Animation.cpp" />
     <ClCompile Include="..\private\Base.cpp" />
     <ClCompile Include="..\private\Bone.cpp" />
-    <ClCompile Include="..\private\Bounding.cpp" />
-    <ClCompile Include="..\private\Bounding_AABB.cpp" />
-    <ClCompile Include="..\Private\Bounding_OBB.cpp" />
-    <ClCompile Include="..\Private\Bounding_Sphere.cpp" />
     <ClCompile Include="..\private\Camera.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Manager_Engine.cpp" />
     <ClCompile Include="..\private\Channel.cpp" />
-    <ClCompile Include="..\private\Collider.cpp" />
-    <ClCompile Include="..\private\Collision_Manager.cpp" />
+    <ClCompile Include="..\private\Actor.cpp" />
+    <ClCompile Include="..\private\Collision_Manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\ContainerObject.cpp" />
     <ClCompile Include="..\private\Controller_Model.cpp">

@@ -161,11 +161,6 @@ HRESULT CLoader::Loading_Level_Static()
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
         return E_FAIL;
 
-    ///* For. Prototype_Component_Shader_VtxRectInstance */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxRectInstance"),
-    //    CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectInstance.hlsl"), VTXRECTINSTANCE::Elements, VTXRECTINSTANCE::iNumElements))))
-    //    return E_FAIL;
-
     /* For. Prototype_Component_Shader_VtxPointInstance */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPointInstance"),
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"), VTXPOINTPARTICLE::Elements, VTXPOINTPARTICLE::iNumElements))))
@@ -185,6 +180,23 @@ HRESULT CLoader::Loading_Level_Static()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    lstrcpy(m_szLoadingText, TEXT("액터(을)를 로딩중입니다."));
+    /* For. Prototype_Component_Actor_Static */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Static"),
+        CActor_Static::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Actor_Dynamic */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Dynamic"),
+        CActor_Dynamic::Create(m_pDevice, m_pContext, false))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Actor_Kinematic */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Kinematic"),
+        CActor_Dynamic::Create(m_pDevice, m_pContext, true))))
+        return E_FAIL;
+
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -201,8 +213,6 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
-
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
