@@ -187,9 +187,9 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     
 
         // TEST~~~~~~~~~~~~~~~~~~~~~
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("TEST"),
-        C3DModel::Create(m_pDevice, m_pContext, "../Client/Bin/Resources/Models/Anim/buttergrump_Rig/buttergrump_Rig.model", matPretransform))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("TEST"),
+    //    C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/Anim/buttergrump_Rig/buttergrump_Rig.model", matPretransform))))
+    //    return E_FAIL;
     // TEST END~~~~~~~~~~~~
 
 
