@@ -29,8 +29,14 @@ void CUI_Manager::Free()
 	{
 		Safe_Release(iter.second);
 	}
-
 	m_pSettingPanels.clear();
+
+	for (auto iter : m_pShopPanels)
+	{
+		Safe_Release(iter.second);
+	}
+	m_pShopPanels.clear();
+	
 
 	__super::Free();
 }

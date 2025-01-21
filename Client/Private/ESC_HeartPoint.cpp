@@ -112,16 +112,6 @@ CGameObject* ESC_HeartPoint::Clone(void* _pArg)
 
 void ESC_HeartPoint::Free()
 {
-
-
 	__super::Free();
 }
-
-
-
-
-//HRESULT ESC_HeartPoint::Cleanup_DeadReferences()
-//{
-//	return S_OK;
-//}
 
