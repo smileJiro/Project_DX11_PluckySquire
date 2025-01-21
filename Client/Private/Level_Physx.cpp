@@ -178,7 +178,7 @@ HRESULT CLevel_Physx::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObje
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_PHYSX, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_PHYSX, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
 
-	m_pGameInstance->Set_Player(*_ppOut);
+
 	return S_OK;
 }
 

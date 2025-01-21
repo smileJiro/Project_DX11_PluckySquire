@@ -40,23 +40,23 @@ HRESULT CPhysx_Manager::Initialize()
 	XMStoreFloat4x4(&matTest, XMMatrixIdentity());
 	PxTransform transform(PxVec3(0.0f, 0.0f, 0.0f)); // 위치: (0, 0, 0)
 
-	// PxRigidStatic 객체 생성
-	PxRigidDynamic* rigidStatic = m_pPxPhysics->createRigidDynamic(transform);
-	PxBoxGeometry boxGeometry(PxVec3(10.0f, 10.0f, 10.0f));
-	m_pPxshape = PxRigidActorExt::createExclusiveShape(*rigidStatic, boxGeometry, *m_pPxMaterial);
-	rigidStatic->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
-	rigidStatic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
-	m_pPxScene->addActor(*rigidStatic);
+	//// PxRigidStatic 객체 생성
+	//PxRigidDynamic* rigidStatic = m_pPxPhysics->createRigidDynamic(transform);
+	//PxBoxGeometry boxGeometry(PxVec3(10.0f, 10.0f, 10.0f));
+	//m_pPxshape = PxRigidActorExt::createExclusiveShape(*rigidStatic, boxGeometry, *m_pPxMaterial);
+	//rigidStatic->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+	//rigidStatic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+	//m_pPxScene->addActor(*rigidStatic);
 
-	m_pRigidDynamic = m_pPxPhysics->createRigidDynamic(transform);
-	PxCapsuleGeometry CapsuleGeometry2(0.5f, 0.2f);
-	m_pPxshape = PxRigidActorExt::createExclusiveShape(*m_pRigidDynamic, CapsuleGeometry2, *m_pPxMaterial);
-	m_pRigidDynamic->setGlobalPose(PxTransform(0.0f, 15.0f, 0.0f));
-	m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
-	m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
-	m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
-	m_pPxScene->addActor(*m_pRigidDynamic);
-	
+	//m_pRigidDynamic = m_pPxPhysics->createRigidDynamic(transform);
+	//PxCapsuleGeometry CapsuleGeometry2(0.5f, 0.2f);
+	//m_pPxshape = PxRigidActorExt::createExclusiveShape(*m_pRigidDynamic, CapsuleGeometry2, *m_pPxMaterial);
+	//m_pRigidDynamic->setGlobalPose(PxTransform(0.0f, 15.0f, 0.0f));
+	//m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
+	//m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
+	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+	//m_pPxScene->addActor(*m_pRigidDynamic);
+	//
 	// 필요한 시각화 기능 활성화
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f); // 충돌 형태 시각화
@@ -84,38 +84,38 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 	_float fUpdateTime = 1.0f / 60.f;
 	m_pPxScene->simulate(fUpdateTime);
 
-	if (nullptr != m_pPlayer)
-	{
-		PxTransform physxTransform = m_pRigidDynamic->getGlobalPose();
-		_matrix TranslationMatrix = XMMatrixTranslation(physxTransform.p.x, physxTransform.p.y, physxTransform.p.z);
-		_matrix QuatMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(physxTransform.q.x, physxTransform.q.y, physxTransform.q.z, physxTransform.q.w));
-		_float4x4 WorldMatrix = {};
-		XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
-		m_pPlayer->Set_WorldMatrix(WorldMatrix);
+	//if (nullptr != m_pPlayer)
+	//{
+	//	/*PxTransform physxTransform = m_pRigidDynamic->getGlobalPose();
+	//	_matrix TranslationMatrix = XMMatrixTranslation(physxTransform.p.x, physxTransform.p.y, physxTransform.p.z);
+	//	_matrix QuatMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(physxTransform.q.x, physxTransform.q.y, physxTransform.q.z, physxTransform.q.w));
+	//	_float4x4 WorldMatrix = {};
+	//	XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
+	//	m_pPlayer->Set_WorldMatrix(WorldMatrix);*/
 
 
-		//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
-		//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
-		//m_pRigidDynamic->setKinematicTarget();
+	//	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+	//	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+	//	//m_pRigidDynamic->setKinematicTarget();
 
-		if (KEY_PRESSING(KEY::A))
-		{
-			//m_pRigidDynamic->setAngularVelocity(PxVec3(0.f, 180.f, 0.f));
-			m_pRigidDynamic->setLinearVelocity(PxVec3(-3.f, 0.f, 0.f), PxForceMode::eFORCE);
-		}
-		if (KEY_PRESSING(KEY::D))
-		{
-			m_pRigidDynamic->setLinearVelocity(PxVec3(3.f, 0.f, 0.f), PxForceMode::eFORCE);
-		}
-		if (KEY_PRESSING(KEY::SPACE))
-		{
-			m_pRigidDynamic->addForce(PxVec3(0.f, 22.f, 0.f), PxForceMode::eFORCE);
-		}
-		//_float3 vPos = {};
-		//XMStoreFloat3(&vPos, m_pPlayer->Get_Position());
-		//PxTransform Transform = { vPos.x, vPos.y, vPos.z };
-		//m_pRigidDynamic->setKinematicTarget(Transform);
-	}
+	//	if (KEY_PRESSING(KEY::A))
+	//	{
+	//		//m_pRigidDynamic->setAngularVelocity(PxVec3(0.f, 180.f, 0.f));
+	//		m_pRigidDynamic->setLinearVelocity(PxVec3(-3.f, 0.f, 0.f), PxForceMode::eFORCE);
+	//	}
+	//	if (KEY_PRESSING(KEY::D))
+	//	{
+	//		m_pRigidDynamic->setLinearVelocity(PxVec3(3.f, 0.f, 0.f), PxForceMode::eFORCE);
+	//	}
+	//	if (KEY_PRESSING(KEY::SPACE))
+	//	{
+	//		m_pRigidDynamic->addForce(PxVec3(0.f, 22.f, 0.f), PxForceMode::eFORCE);
+	//	}
+	//	//_float3 vPos = {};
+	//	//XMStoreFloat3(&vPos, m_pPlayer->Get_Position());
+	//	//PxTransform Transform = { vPos.x, vPos.y, vPos.z };
+	//	//m_pRigidDynamic->setKinematicTarget(Transform);
+	//}
 
 
 	if (m_pPxScene->fetchResults(true))

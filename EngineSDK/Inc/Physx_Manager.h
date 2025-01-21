@@ -15,12 +15,11 @@ private:
 	HRESULT						Initialize(); /* PhysX √ ±‚»≠ */
 public:
 	void						Update(_float _fTimeDelta);
+
+	HRESULT						Render();
 public:
 	PxPhysics*					Get_Physics() const { return m_pPxPhysics; }
-	PxMaterial* Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
-	void Update(_float _fTimeDelta);
-	HRESULT Render();
-
+	PxMaterial*					Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
 
 
 
@@ -50,6 +49,8 @@ private:
 
 private: /* Test Object */
 	PxRigidStatic*				m_pGroundPlane = nullptr;
+	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
+	CShader*					m_pShader = nullptr;
 
 private:
 	HRESULT						Initialize_Foundation();
@@ -57,10 +58,6 @@ private:
 	HRESULT						Initialize_Scene();
 	HRESULT						Initialize_Material();
 	HRESULT						Initialize_PVD();
-
-
-	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
-	CShader*					m_pShader = nullptr;
 
 public:
 	void Set_Player(CGameObject* _pPlayer) { 

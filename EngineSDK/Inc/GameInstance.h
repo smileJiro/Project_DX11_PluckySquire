@@ -193,8 +193,10 @@ public: /* For. Camera_Manager */
 
 public: /* For. Physx_Manager*/
 	void				Physx_Update(_float _fTimeDelta);
+	HRESULT				Physx_Render();
 	PxPhysics*			Get_Physics() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
+	void				Set_Player(CGameObject* _pPlayer);
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
