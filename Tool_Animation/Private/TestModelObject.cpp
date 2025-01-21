@@ -27,7 +27,6 @@ HRESULT CTestModelObject::Initialize(void* _pArg)
 
     if (FAILED(Ready_TestComponents(pDesc)))
         return E_FAIL;
-
     // View Matrix´Â IdentityMatrix
     XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 
@@ -37,7 +36,18 @@ HRESULT CTestModelObject::Initialize(void* _pArg)
 
     XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
 
+
     return S_OK;
+}
+
+void CTestModelObject::Late_Update(_float _fTimeDelta)
+{
+    /* Add Render Group */
+    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+        m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	CPartObject::Late_Update(_fTimeDelta);
 }
 
 HRESULT CTestModelObject::Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc)
@@ -83,6 +93,12 @@ HRESULT CTestModelObject::Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc)
 
     return S_OK;
 }
+
+void CTestModelObject::Set_2DProjMatrix(_fmatrix _vProjMatrix)
+{
+    XMStoreFloat4x4(&m_ProjMatrix, _vProjMatrix);
+}
+
 
 CTestModelObject* CTestModelObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

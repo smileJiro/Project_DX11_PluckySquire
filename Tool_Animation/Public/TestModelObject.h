@@ -19,10 +19,10 @@ protected:
 
 public:
 	virtual HRESULT Initialize(void* _pArg); 
-
+	virtual void			Late_Update(_float _fTimeDelta) override;
+	void						Set_2DProjMatrix(_fmatrix _vProjMatrix);
 private:
 	HRESULT					Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc);
-
 public:
 	static CTestModelObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

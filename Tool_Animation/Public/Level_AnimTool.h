@@ -42,8 +42,16 @@ private:
 	_tchar					m_szLoadingText[MAX_PATH] = {};
 	CTestModelObject* m_pTestModelObj = nullptr;
 	CCamera_Target* m_pTargetCam = nullptr;
-	_float m_fCamFovY = XMConvertToRadians(60.f);
-	_float m_fCamFovYSpeed = 1.f;
+
+
+	_float m_fDefault3DCamFovY = XMConvertToRadians(60.f);
+	_float2 m_fDefault2DCamSize = {};
+	_float m_f3DZoomSpeed = 3.f;
+	_float m_f2DZoomSpeed = 10.f;
+	_float m_fZoomMultiplier = 1.f;
+
+
+
 public:
 	static CLevel_AnimTool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void			Free() override;

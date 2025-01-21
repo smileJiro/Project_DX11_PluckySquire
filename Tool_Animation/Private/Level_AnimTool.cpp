@@ -16,6 +16,8 @@ CLevel_AnimTool::CLevel_AnimTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 HRESULT CLevel_AnimTool::Initialize()
 {
+	m_fDefault2DCamSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
+
 	Ready_Lights();
 	//Ready_Layer_TestTerrain(TEXT("Terrain"));
 	//Create_Camera(TEXT("Camera"));
@@ -62,8 +64,17 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 	}
 	if (m_pTestModelObj)
 	{
-		m_fCamFovY += (_float)MOUSE_MOVE(MOUSE_AXIS::Z) * m_fCamFovYSpeed;
-		m_pTargetCam->Set_Fovy(m_fCamFovY);
+		_float fMove = (_float)MOUSE_MOVE(MOUSE_AXIS::Z) / 100.f;
+		if (COORDINATE_3D == m_pTestModelObj->Get_CurCoord())
+		{
+			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
+			m_pTargetCam->Set_Fovy(m_fDefault3DCamFovY * m_fZoomMultiplier);
+		}
+		else
+		{
+			m_fZoomMultiplier += fMove * m_f2DZoomSpeed * _fTimeDelta;
+			m_pTestModelObj->Set_2DProjMatrix(XMMatrixOrthographicLH((_float)m_fDefault2DCamSize.x * m_fZoomMultiplier, (_float)m_fDefault2DCamSize.y * m_fZoomMultiplier, 0.0f, 1.0f));
+		}
 	}
 }
 

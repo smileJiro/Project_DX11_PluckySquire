@@ -46,7 +46,6 @@ HRESULT CModelObject::Initialize(void* _pArg)
 
     // Projection Matrix는 Viewport Desc 를 기반으로 생성.
     // 2025-01-16 박예슬 수정 : Viewport Desc -> Rendertarget Size
-
     _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
     
     XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
