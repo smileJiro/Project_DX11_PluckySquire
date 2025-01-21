@@ -391,7 +391,7 @@ private:
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
-
+	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
 	CStateMachine* m_pStateMachine = nullptr;
 	F_DIRECTION m_e2DDirection = F_DIRECTION::F_DIR_LAST;

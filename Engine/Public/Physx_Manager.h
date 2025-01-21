@@ -5,6 +5,7 @@ class CGameInstance;
 class CVIBuffer_PxDebug;
 class CShader;
 class CGameObject;
+class CPhysx_EventCallBack;
 class CPhysx_Manager final : public CBase
 {
 private:
@@ -45,6 +46,9 @@ private: /* iNumThreads */
 private:
 	PxDefaultAllocator			m_Allocator = {};
 	PxDefaultErrorCallback		m_ErrorCallback = {};
+
+private: /* Event CallBack Class */
+	CPhysx_EventCallBack*		m_pPhysx_EventCallBack = nullptr;
 
 private: /* Test Object */
 	PxRigidStatic*				m_pGroundPlane = nullptr;

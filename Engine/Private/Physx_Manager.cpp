@@ -1,5 +1,6 @@
 #include "Physx_Manager.h"
 #include "GameInstance.h"
+#include "Physx_EventCallBack.h"
 
 CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -13,6 +14,11 @@ CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
 HRESULT CPhysx_Manager::Initialize()
 {
+	// Event CallBack Class 
+	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
+	if (nullptr == m_pPhysx_EventCallBack)
+		return E_FAIL;
+
 	if (FAILED(Initialize_Foundation()))
 		return E_FAIL;
 
@@ -31,9 +37,7 @@ HRESULT CPhysx_Manager::Initialize()
 
 	/* Test Code */
 	m_pGroundPlane = PxCreatePlane(*m_pPxPhysics, PxPlane(0, 1, 0, 99), *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
-	
 	m_pPxScene->addActor(*m_pGroundPlane);
-
 
 	_float4x4 matTest = {};
 	PxMat44 matPx;
@@ -45,6 +49,23 @@ HRESULT CPhysx_Manager::Initialize()
 	PxBoxGeometry boxGeometry(PxVec3(100.0f, 10.0f, 100.0f));
 	PxRigidActorExt::createExclusiveShape(*m_pTestDesk, boxGeometry, *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
 	m_pTestDesk->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+
+	/* 충돌 필터에 대한 세팅 ()*/
+	PxFilterData FilterData;
+	FilterData.word0 = 0x08;
+	FilterData.word1 = 0x02; // OhterGroupMask는 비트연산자를 통해 여러 그룹을 포함 가능.
+
+	PxU32 iNumShapes = m_pTestDesk->getNbShapes();
+
+	vector<PxShape*> pShapes;
+	pShapes.resize(iNumShapes);
+	m_pTestDesk->getShapes(pShapes.data(), iNumShapes);
+
+	for (auto& pShape : pShapes)
+	{
+		pShape->setSimulationFilterData(FilterData);
+	}
+
 	m_pPxScene->addActor(*m_pTestDesk);
 
 	//m_pRigidDynamic = m_pPxPhysics->createRigidDynamic(transform);
@@ -61,6 +82,8 @@ HRESULT CPhysx_Manager::Initialize()
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f); // 충돌 형태 시각화
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eJOINT_LOCAL_FRAMES, 1.0f); // 관절 로컬 프레임
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
+
+	
 	
 	/* Debug */
 	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 3000);
@@ -168,7 +191,7 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 {
 	/* Setting Desc */
 	PxSceneDesc SceneDesc(m_pPxPhysics->getTolerancesScale());
-	SceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+	SceneDesc.gravity = PxVec3(0.0f, -9.81f * 3.0f, 0.0f);
 
 	/* Create Dispatcher */
 	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(2);
@@ -176,7 +199,8 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 		return E_FAIL;
 
 	SceneDesc.cpuDispatcher = m_pPxDefaultCpuDispatcher;
-	SceneDesc.filterShader = PxDefaultSimulationFilterShader; // 일단 기본값으로 생성 해보자.
+	SceneDesc.filterShader = PxDefaultSimulationFilterShader;//TWFilterShader; //PxDefaultSimulationFilterShader;//; // 일단 기본값으로 생성 해보자.
+	SceneDesc.simulationEventCallback = m_pPhysx_EventCallBack; // 일단 기본값으로 생성 해보자.
 	
 	/* Create Scene */
 	m_pPxScene = m_pPxPhysics->createScene(SceneDesc);
@@ -220,7 +244,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		switch ((ACTOR_MATERIAL)i)
 		{
 		case Engine::ACTOR_MATERIAL::DEFAULT: // 일반 오브젝트 
-			vMaterialDesc = {0.5f, 0.4f, 0.2f};
+			vMaterialDesc = { 0.7f, 0.5f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::SLIPPERY: // 미끄러운
 			vMaterialDesc = { 0.05f, 0.05f, 0.1f };
@@ -279,13 +303,13 @@ void CPhysx_Manager::Free()
 	/////////////////////////////////
 	/* Release 순서 건들지 마시오. */
 	/////////////////////////////////
-
-	PHYSX_RELEASE(m_pGroundPlane); /* Scene 삭제 전 정리*/
-	PHYSX_RELEASE(m_pTestDesk); /* Scene 삭제 전 정리*/
+	Safe_Release(m_pPhysx_EventCallBack);
+	//PHYSX_RELEASE(m_pGroundPlane);
+	//PHYSX_RELEASE(m_pTestDesk); 
 	PHYSX_RELEASE(m_pPxScene);
 	PHYSX_RELEASE(m_pPxDefaultCpuDispatcher);/* Scene 삭제후 곧바로 정리*/
-	for(_uint i =0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
-		PHYSX_RELEASE(m_pPxMaterial[i]); /* Scene 삭제 후 정리 해야함. */
+	//for(_uint i =0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
+	//	PHYSX_RELEASE(m_pPxMaterial[i]); /* Scene 삭제 후 정리 해야함. */
 	PHYSX_RELEASE(m_pPxPhysics); /* Pvd보다 반드시 먼저 삭제되어야함. */
 	if (nullptr != m_pPxPvd)
 	{

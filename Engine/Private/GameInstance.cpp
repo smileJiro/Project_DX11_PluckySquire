@@ -16,6 +16,7 @@
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
 #include "Physx_Manager.h"
+#include "Physx_EventCallBack.h"
 #include "Layer.h"
 #include "ModelObject.h"
 #include "ContainerObject.h"
@@ -41,6 +42,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pPhysx_Manager = CPhysx_Manager::Create(*ppDevice, *ppContext); /* PhysX 역시 PxPhysics* 를 Object 생성 시 전달할 예정. (유사 Device, Context 개념.)*/
 	if (nullptr == m_pPhysx_Manager)
 		return E_FAIL;
+
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pLight_Manager)

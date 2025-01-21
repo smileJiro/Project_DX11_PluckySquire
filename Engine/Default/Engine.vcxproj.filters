@@ -238,6 +238,9 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Debug">
       <UniqueIdentifier>{25b150ad-e1a7-46c1-b997-67bc43f78144}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\03.Physx\EventCallBack">
+      <UniqueIdentifier>{e50015aa-fe43-413b-a4bd-e7a60c293656}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -471,6 +474,9 @@
     <ClInclude Include="..\Public\VIBuffer_PxDebug.h">
       <Filter>01.Utility\04.Components\VIBuffer\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Physx_EventCallBack.h">
+      <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -691,6 +697,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_PxDebug.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Physx_EventCallBack.cpp">
+      <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,8 @@ CActor_Dynamic::CActor_Dynamic(const CActor_Dynamic& _Prototype)
 
 HRESULT CActor_Dynamic::Initialize_Prototype()
 {
+	if (FAILED(__super::Initialize_Prototype()))
+		return E_FAIL;
 
     return S_OK;
 }
@@ -52,6 +54,9 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 		if (nullptr == m_pOwner)
 			return;
 
+		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+			return;
+
 		PxTransform DynamicTransform = static_cast<PxRigidDynamic*>(m_pActor)->getGlobalPose();
 		_matrix TranslationMatrix = XMMatrixTranslation(DynamicTransform.p.x, DynamicTransform.p.y, DynamicTransform.p.z);
 		_matrix QuatMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(DynamicTransform.q.x, DynamicTransform.q.y, DynamicTransform.q.z, DynamicTransform.q.w));
@@ -59,6 +64,11 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 		XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
 		m_pOwner->Set_WorldMatrix(WorldMatrix);
 	}
+
+#ifdef _DEBUG
+	CActor::Late_Update(_fTimeDelta); // Debug_Render (Trigger Shape)
+#endif // _DEBUG
+
 }
 
 void CActor_Dynamic::Set_LinearVelocity(_vector _vDirection, _float _fVelocity)

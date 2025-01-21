@@ -34,6 +34,7 @@ private:
 	HRESULT Excute_DeleteObject(const EVENT& _tEvent);
 	HRESULT Excute_LevelChange(const EVENT& _tEvent);
 	HRESULT Excute_SetActive(const EVENT& _tEvent);
+	HRESULT Excute_Setup_SimulationFilter(const EVENT& _tEvent);
 
 	HRESULT Excute_ChangeMonsterState(const EVENT& _tEvent);
 
