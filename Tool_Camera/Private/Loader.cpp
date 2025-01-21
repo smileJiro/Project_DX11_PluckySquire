@@ -174,7 +174,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/TestModels/2DAnim/Player/")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Player/")))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
@@ -187,7 +187,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("latch_glove"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/TestModels/latch_glove/latch_glove.model", matPretransform))))
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/latch_glove/latch_glove.model", matPretransform))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("WoodenPlatform_01"),
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
