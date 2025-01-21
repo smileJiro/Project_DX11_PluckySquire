@@ -17,4 +17,5 @@ namespace Camera_Tool
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr);
+	F_DIRECTION To_FDirection(_vector _vDir);
 }

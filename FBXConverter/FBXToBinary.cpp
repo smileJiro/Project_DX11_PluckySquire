@@ -46,7 +46,7 @@ HRESULT CFbxToBinary::FbxToBinary(const string& inFilePath)
 	strcat_s(szNewFileName, ".model");
 	std::ofstream outFile(szNewFileName, std::ios::binary);
 	if (!outFile) {
-		std::cerr << "?뚯씪???????놁뒿?덈떎." << std::endl;
+		std::cerr << "파일 열기 실패." << std::endl;
 	}
 	outFile.write(reinterpret_cast<const char*>(&m_bAnim), 1);
 

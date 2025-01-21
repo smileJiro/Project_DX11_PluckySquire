@@ -58,6 +58,15 @@
     <Filter Include="95. Manager\Camera_Manager">
       <UniqueIdentifier>{111ef9c2-ae35-45aa-b7c0-cecb3f65d024}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\TestPlayer\State">
+      <UniqueIdentifier>{83e6103e-1be0-4a24-9650-81c25716fc9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94. Component">
+      <UniqueIdentifier>{947a0bc7-aae1-4ccc-9553-1a93eb7d1938}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Camera\02. Camera_CutScene">
+      <UniqueIdentifier>{bc784271-f006-4822-aa6c-58ebce4d22dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera_Tool.h">
@@ -114,6 +123,27 @@
     <ClInclude Include="..\Public\Camera_Manager_Tool.h">
       <Filter>95. Manager\Camera_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState.h">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Attack.h">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Idle.h">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Jump.h">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Run.h">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateMachine.h">
+      <Filter>94. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_CutScene.h">
+      <Filter>02. GameObjects\Camera\02. Camera_CutScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp">
@@ -160,6 +190,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Manager_Tool.cpp">
       <Filter>95. Manager\Camera_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState.cpp">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Idle.cpp">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Jump.cpp">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Run.cpp">
+      <Filter>02. GameObjects\TestPlayer\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StateMachine.cpp">
+      <Filter>94. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_CutScene.cpp">
+      <Filter>02. GameObjects\Camera\02. Camera_CutScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

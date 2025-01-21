@@ -2,7 +2,8 @@
 	
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Client\Bin\Debug
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Client\Bin\Release
-xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Camera\Bin\
+xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Camera\Bin\Debug
+xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Camera\Bin\Release
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Map\Bin\
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Effect\Bin\
 xcopy			/y			.\Engine\Bin\Engine.lib			.\EngineSDK\Lib\

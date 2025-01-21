@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BombStamp.h"
 #include "GameInstance.h"
+#include "UI_Manager.h"
 
 
 CBombStamp::CBombStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -28,12 +29,6 @@ HRESULT CBombStamp::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
-
-	
-
-	//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(g_iWinSizeX/ 2, g_iWinSizeY / 2, 1.f, 1.f));
-	//m_pControllerTransform->Set_Scale(50.f, 50.f, 1.f);
 	return S_OK;
 }
 
@@ -56,27 +51,7 @@ void CBombStamp::Late_Update(_float _fTimeDelta)
 
 HRESULT CBombStamp::Render()
 {
-	
-	//if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-	//	return E_FAIL;
-	//
-	//if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture")))
-	//	return E_FAIL;
-	//
-	//
-	//m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
-	//m_pVIBufferCom->Bind_BufferDesc();
-	//m_pVIBufferCom->Render();
-
 	__super::Render();
-	
-
 	return S_OK;
 }
 
@@ -89,12 +64,11 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 
 	if (m_ePreStamp != eStamp && false == m_isScaling)
 	{
-
 		if (eStamp == CUI_Manager::STAMP_STOP)
 		{
 			//위치 변경이 필요한가요?
-			m_fX = g_iWinSizeX / 7.5;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
+			m_fX = g_iWinSizeX / 7.5f;
+			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 
 			m_isSmall = true;
 			m_isScaling = true;
@@ -102,13 +76,12 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 		else if (eStamp == CUI_Manager::STAMP_BOMB)
 		{
 			//위치 변경이 필요한가요?
-			m_fX = g_iWinSizeX / 7.5;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
+			m_fX = g_iWinSizeX / 7.5f;
+			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 
 			m_isBig = true;
 			m_isScaling = true;
 		}
-
 		m_ePreStamp = eStamp;
 	}
 
@@ -119,8 +92,8 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 		{
 			if (m_fSizeX <= 96)
 			{
-				m_fSizeX += _fTimeDelta * 100;
-				m_fSizeY += (_fTimeDelta * 1.54) * 100;
+				m_fSizeX += _fTimeDelta * 100.f;
+				m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
 
 				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
@@ -135,8 +108,8 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 		{
 			if (m_fSizeX > 72)
 			{
-				m_fSizeX -= _fTimeDelta * 100;
-				m_fSizeY -= (_fTimeDelta * 1.54) * 100;
+				m_fSizeX -= _fTimeDelta * 100.f;
+				m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;
 
 				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
@@ -145,7 +118,6 @@ void CBombStamp::ChangeStamp(_float _fTimeDelta)
 				m_isSmall = false;
 				m_isScaling = false;
 			}
-
 		}
 	}
 

@@ -18,6 +18,22 @@ namespace Camera_Tool
 
 		LAST,
 	};
+
+	enum class F_DIRECTION
+	{
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+		F_DIR_LAST
+	};
+
+	enum class CYCLE_TYPE
+	{
+		TIME,
+		COUNT,
+		CYCLE_TYPE_END
+	};
 }
 
 extern HINSTANCE g_hInst;
