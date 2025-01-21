@@ -116,6 +116,13 @@ void CLoader::Show_Debug()
 
 HRESULT CLoader::Loading_Level_Static()
 {
+
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_STATIC,
+        TEXT("../Bin/Resources/Models/Anim/buttergrump_Rig"), matPretransform)))
+        return E_FAIL;
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom.dds"), 1))))
@@ -176,7 +183,7 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
-    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    XMMATRIX matPretransform2 = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
     if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/MapSaveFiles/Room_Enviroment.json"), matPretransform)))
@@ -382,8 +389,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
 
 
-    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Desk.mchc");
-    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
+    //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Desk.mchc");
+    //Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

@@ -94,7 +94,7 @@ HRESULT CFbxToBinary::Write_Meshe(const aiMesh* pAIMesh, ofstream& outFile)
 {
 	outFile.write(reinterpret_cast<const char*>(&pAIMesh->mMaterialIndex), sizeof(_uint));
 	//cout << pAIMesh->mMaterialIndex << endl;
-	outFile.write(reinterpret_cast<const char*>(&pAIMesh->mName.length), sizeof(ai_uint32));
+	outFile.write(reinterpret_cast<const char*>(&pAIMesh->mName.length), sizeof(_uint));
 	//cout << pAIMesh->mName.length << endl;
 	outFile.write(pAIMesh->mName.data, pAIMesh->mName.length);
 	//cout << pAIMesh->mName.data << endl;
@@ -241,7 +241,7 @@ HRESULT CFbxToBinary::Write_Animation(const aiAnimation* pAIAnim, ofstream& outF
 			if (i < pAIChannel->mNumScalingKeys)
 			{
 				memcpy(&vScale, &pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
-				KeyFrame.fTrackPosition = pAIChannel->mScalingKeys[i].mTime;
+				KeyFrame.fTrackPosition = (_float)pAIChannel->mScalingKeys[i].mTime;
 			}
 			if (i < pAIChannel->mNumRotationKeys)
 			{

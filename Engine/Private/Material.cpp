@@ -21,7 +21,7 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			_char* strTexturePath = new _char[strLen + 1];
 			inFile.read(strTexturePath, sizeof(_char) * strLen);
 			strTexturePath[strLen] = '\0';
-			//cout << strTexturePath << endl;z
+			cout << strTexturePath << endl;
 			string strTexturePathStr = strTexturePath;
 
 			_char		szFileName[MAX_PATH] = "";
