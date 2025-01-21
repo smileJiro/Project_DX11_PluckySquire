@@ -4,7 +4,8 @@
 
 #include "Level_Static.h"
 #include "Level_Loading.h"
-#include "Level_Map_Tool.h"
+#include "Level_3D_Map_Tool.h"
+#include "Level_2D_Map_Tool.h"
 #include "Layer.h"
 #include "GameObject.h"
 
@@ -152,8 +153,11 @@ HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
 	case Map_Tool::LEVEL_LOADING:
 		pChangeLevel = CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL_ID)iNextChangeLevelID, m_pLogger);
 		break;
-	case Map_Tool::LEVEL_TOOL_MAP:
-		pChangeLevel = CLevel_Map_Tool::Create(m_pDevice, m_pContext, m_pLogger);
+	case Map_Tool::LEVEL_TOOL_2D_MAP:
+		pChangeLevel = CLevel_2D_Map_Tool::Create(m_pDevice, m_pContext, m_pLogger);
+		break;
+	case Map_Tool::LEVEL_TOOL_3D_MAP:
+		pChangeLevel = CLevel_3D_Map_Tool::Create(m_pDevice, m_pContext, m_pLogger);
 		break;
 	default:
 		break;

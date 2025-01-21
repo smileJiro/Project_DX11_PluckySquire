@@ -22,7 +22,7 @@ class CCellContainor;
 class CTask_Manager;
 
 
-class CMap_Tool_Manager final : public CBase
+class C2DMap_Tool_Manager final : public CBase
 {
 public:
 	enum OBJECT_MODE
@@ -64,9 +64,9 @@ private:
 	}MAP_OBJ;
 
 private:
-	CMap_Tool_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	~CMap_Tool_Manager() = default;
-	CMap_Tool_Manager(const CMap_Tool_Manager& _pManager) = delete;
+	C2DMap_Tool_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	~C2DMap_Tool_Manager() = default;
+	C2DMap_Tool_Manager(const C2DMap_Tool_Manager& _pManager) = delete;
 
 public:
 	void				Update_Tool();
@@ -193,7 +193,7 @@ private:
 
 public:
 	virtual void Free();
-	static CMap_Tool_Manager* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger);
+	static C2DMap_Tool_Manager* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger);
 
 };
 

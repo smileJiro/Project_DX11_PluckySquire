@@ -1,0 +1,85 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_CardboardBox_Kit_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_CardboardBox_Kit_01'",
+        "ObjectPath": "/Game/Map/3D/Desk_C07/Materials/MM_CardboardBox_Kit_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_AO'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_AO.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Albedo'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Albedo.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Roughness'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Roughness.0"
+        },
+        {
+          "ObjectName": "Texture2D'cardboard_side_42_16_diffuse'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/cardboard_side_42_16_diffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'CardboardBox_01_Masks'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Masks.0"
+        },
+        {
+          "ObjectName": "Texture2D'CardboardBox_01_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Normal.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 0.5,
+          "UVChannelIndex": 1,
+          "TextureName": "Cardboard_01_2K_Albedo"
+        },
+        {
+          "SamplingScale": 0.5,
+          "UVChannelIndex": 1,
+          "TextureName": "Cardboard_01_2K_AO"
+        },
+        {
+          "SamplingScale": 0.5,
+          "UVChannelIndex": 1,
+          "TextureName": "Cardboard_01_2K_Normal"
+        },
+        {
+          "SamplingScale": 0.5,
+          "UVChannelIndex": 1,
+          "TextureName": "Cardboard_01_2K_Roughness"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "CardboardBox_01_Masks"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

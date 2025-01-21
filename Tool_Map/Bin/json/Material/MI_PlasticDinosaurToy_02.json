@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_PlasticDinosaurToy_02",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_DinosaurToyPlaceholder_01'",
+        "ObjectPath": "/Game/Map/3D/Desk_C07/Materials/MM_DinosaurToyPlaceholder_01.0"
+      },
+      "bHasStaticPermutationResource": true,
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Diplodocus_d'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Diplodocus_d.0"
+          },
+          "ExpressionGUID": "8D758B2B-41A4D826-B2BACC92-D1C33471"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Diplodocus_normal_map'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Diplodocus_normal_map.0"
+          },
+          "ExpressionGUID": "81B9EDBF-46E3D39D-967DBEAF-3C7525F6"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "StaticParameters": {
+        "StaticSwitchParameters": [
+          {
+            "Value": true,
+            "ParameterInfo": {
+              "Name": "UseGradient?",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            "bOverride": true,
+            "ExpressionGUID": "585C3BE7-41A26E76-CC5E0EB8-86D01357"
+          }
+        ]
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Brachiosaurus_d'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_d.0"
+        },
+        {
+          "ObjectName": "Texture2D'Brachiosaurus_normal_map'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_normal_map.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Diplodocus_d"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Diplodocus_normal_map"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 2,
+          "TextureName": "FadeGradient_01"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

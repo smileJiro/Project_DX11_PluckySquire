@@ -1,15 +1,15 @@
 #include "stdafx.h"
-#include "Level_Map_Tool.h"
+#include "Level_3D_Map_Tool.h"
 #include "GameInstance.h"
 #include "Camera_Free.h"
-#include "Map_Tool_Manager.h"
+#include "3DMap_Tool_Manager.h"
 
-CLevel_Map_Tool::CLevel_Map_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CLevel_3D_Map_Tool::CLevel_3D_Map_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
 }
 
-HRESULT CLevel_Map_Tool::Initialize(CImguiLogger* _pLogger)
+HRESULT CLevel_3D_Map_Tool::Initialize(CImguiLogger* _pLogger)
 {
 
 	m_pLogger = _pLogger;
@@ -19,7 +19,7 @@ HRESULT CLevel_Map_Tool::Initialize(CImguiLogger* _pLogger)
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
-	m_pToolManager = CMap_Tool_Manager::Create(m_pDevice, m_pContext, m_pLogger);
+	m_pToolManager = C3DMap_Tool_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pToolManager)
 		return E_FAIL;
 
@@ -28,12 +28,12 @@ HRESULT CLevel_Map_Tool::Initialize(CImguiLogger* _pLogger)
 	return S_OK;
 }
 
-void CLevel_Map_Tool::Update(_float _fTimeDelta)
+void CLevel_3D_Map_Tool::Update(_float _fTimeDelta)
 {
 	m_pToolManager->Update_Tool();
 }
 
-HRESULT CLevel_Map_Tool::Render()
+HRESULT CLevel_3D_Map_Tool::Render()
 {
 #ifdef _DEBUG
 	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
@@ -42,7 +42,7 @@ HRESULT CLevel_Map_Tool::Render()
 	return S_OK;
 }
 
-HRESULT CLevel_Map_Tool::Ready_Lights()
+HRESULT CLevel_3D_Map_Tool::Ready_Lights()
 {
 	LIGHT_DESC LightDesc{};
 
@@ -62,7 +62,7 @@ HRESULT CLevel_Map_Tool::Ready_Lights()
 }
 
 
-HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
+HRESULT CLevel_3D_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
 	CCamera_Free::CAMERA_FREE_DESC		Desc{};
 	Desc.fMouseSensor = 0.2f;
@@ -75,40 +75,40 @@ HRESULT CLevel_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.eMode = CCamera_Free::INPUT_MODE_WASD;
 	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_TOOL_MAP, _strLayerTag, &pGameObject, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+		LEVEL_TOOL_3D_MAP, _strLayerTag, &pGameObject, &Desc)))
 		return E_FAIL;
 	else
 		pGameObject->Get_ControllerTransform()->Set_SpeedPerSec(100.f);
 	return S_OK;
 }
 
-HRESULT CLevel_Map_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
+HRESULT CLevel_3D_Map_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
 
 	return S_OK;
 }
 
-HRESULT CLevel_Map_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
+HRESULT CLevel_3D_Map_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 {
 	return S_OK;
 }
 
 
-CLevel_Map_Tool* CLevel_Map_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger)
+CLevel_3D_Map_Tool* CLevel_3D_Map_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger)
 {
-	CLevel_Map_Tool* pInstance = new CLevel_Map_Tool(_pDevice, _pContext);
+	CLevel_3D_Map_Tool* pInstance = new CLevel_3D_Map_Tool(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize(_pLogger)))
 	{
-		MSG_BOX("Failed to Created : CLevel_Map_Tool");
+		MSG_BOX("Failed to Created : CLevel_3D_Map_Tool");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CLevel_Map_Tool::Free()
+void CLevel_3D_Map_Tool::Free()
 {
 	Safe_Release(m_pToolManager);
 	Safe_Release(m_pLogger);

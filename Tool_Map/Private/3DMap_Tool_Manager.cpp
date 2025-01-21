@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Map_Tool_Manager.h"
+#include "3DMap_Tool_Manager.h"
 #include "GameInstance.h"
 #include "Layer.h"
 #include "Transform.h"
@@ -21,7 +21,7 @@ using namespace std::filesystem;
 
 
 
-CMap_Tool_Manager::CMap_Tool_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext) :
+C3DMap_Tool_Manager::C3DMap_Tool_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext) :
 	m_pDevice(_pDevice),
 	m_pContext(_pContext), m_pGameInstance(Engine::CGameInstance::GetInstance())
 {
@@ -30,7 +30,7 @@ CMap_Tool_Manager::CMap_Tool_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext
 	Safe_AddRef(m_pContext);
 }
 
-HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
+HRESULT C3DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 {
 	// Logger 등록
 	m_pLogger = _pLogger;
@@ -54,8 +54,8 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 
 	// 셀 관리 컨테이너 생성
 	CGameObject* pGameObject = nullptr;
-	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_CellContainor"),
-		LEVEL_TOOL_MAP, L"Layer_Cell", &pGameObject, nullptr);
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_CellContainor"),
+		LEVEL_TOOL_3D_MAP, L"Layer_Cell", &pGameObject, nullptr);
 	if (pGameObject)
 	{
 		m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
@@ -70,12 +70,12 @@ HRESULT CMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	if (nullptr == m_pMapParsingManager)
 		return E_FAIL;
 
-	m_pMapParsingManager->Register_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Room_Environment");
+	//m_pMapParsingManager->Register_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Room_Environment");
 
 	return S_OK;
 }
 
-void CMap_Tool_Manager::Update_Tool()
+void C3DMap_Tool_Manager::Update_Tool()
 {
 	// 입력 설정 Navigation Tool Mode - Obejct Tool Mode 전환하여. 나중에 씬 분리할것
 	if (!m_bNaviMode)
@@ -91,7 +91,7 @@ void CMap_Tool_Manager::Update_Tool()
 }
 
 
-void CMap_Tool_Manager::Update_Imgui_Logic()
+void C3DMap_Tool_Manager::Update_Imgui_Logic()
 {
 	// 참 조 정 리 
 	for (_uint i = 0 ; i < (_uint)OBJECT_END; ++i)
@@ -109,7 +109,7 @@ void CMap_Tool_Manager::Update_Imgui_Logic()
 
 
 
-void CMap_Tool_Manager::Input_Object_Tool_Mode()
+void C3DMap_Tool_Manager::Input_Object_Tool_Mode()
 {
 	HWND hWnd = GetFocus();
 	auto& io = ImGui::GetIO();
@@ -174,7 +174,7 @@ void CMap_Tool_Manager::Input_Object_Tool_Mode()
 
 }
 
-void CMap_Tool_Manager::Input_Navigation_Tool_Mode()
+void C3DMap_Tool_Manager::Input_Navigation_Tool_Mode()
 {
 	HWND hWnd = GetFocus();
 	auto& io = ImGui::GetIO();
@@ -184,8 +184,8 @@ void CMap_Tool_Manager::Input_Navigation_Tool_Mode()
 		{
 			switch (m_eNaviMode)
 			{
-			case Map_Tool::CMap_Tool_Manager::NAV_CREATE:
-			case Map_Tool::CMap_Tool_Manager::NAV_EDIT:
+			case Map_Tool::C3DMap_Tool_Manager::NAV_CREATE:
+			case Map_Tool::C3DMap_Tool_Manager::NAV_EDIT:
 				if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
 				{
 					_float3 fPos = {};
@@ -264,7 +264,7 @@ void CMap_Tool_Manager::Input_Navigation_Tool_Mode()
 	}
 }
 
-void CMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
+void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 {
 	ImGui::Begin("Object");
 	{
@@ -358,7 +358,7 @@ void CMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 			vector<wstring> strSaveLayerTags;
 
 			ImGui::SeparatorText("Clear Layers");
-			for (auto& Pair : pLayerMaps[LEVEL_TOOL_MAP])
+			for (auto& Pair : pLayerMaps[LEVEL_TOOL_3D_MAP])
 			{
 				wstring strLayerTag = Pair.first;
 				auto iter = find_if(m_DefaultEgnoreLayerTags.begin(), m_DefaultEgnoreLayerTags.end(), [&strLayerTag]
@@ -447,7 +447,7 @@ void CMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		End_Draw_ColorButton();
 
 
-		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_MAP, L"Layer_Camera", 0);
+		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_3D_MAP, L"Layer_Camera", 0);
 		if (pGameObject)
 		{
 			ImGui::SeparatorText("Camera Setting");
@@ -476,7 +476,7 @@ void CMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 			auto pLayerMaps = m_pGameInstance->Get_Layers_Ptr();
 
 			vector<wstring> strSaveLayerTags;
-			for (auto& Pair : pLayerMaps[LEVEL_TOOL_MAP])
+			for (auto& Pair : pLayerMaps[LEVEL_TOOL_3D_MAP])
 			{
 				wstring strLayerTag = Pair.first;
 				auto iter = find_if(m_DefaultEgnoreLayerTags.begin(), m_DefaultEgnoreLayerTags.end(), [&strLayerTag]
@@ -546,7 +546,7 @@ void CMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 	ImGui::End();
 }
 
-void CMap_Tool_Manager::Navigation_Imgui(_bool _bLock)
+void C3DMap_Tool_Manager::Navigation_Imgui(_bool _bLock)
 {
 	ImGui::Begin("Navigation");
 	ImGui::BulletText("Navigation Mode");
@@ -707,7 +707,7 @@ void CMap_Tool_Manager::Navigation_Imgui(_bool _bLock)
 
 }
 
-void CMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
+void C3DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 {
 	// Always center this window when appearing
 	//ImVec2 center = ImGui::GetMainViewport()->GetCenter();
@@ -748,7 +748,7 @@ void CMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 			vector<wstring> strSaveLayerTags;
 
 			ImGui::SeparatorText("Save Layers");
-			for (auto& Pair : pLayerMaps[LEVEL_TOOL_MAP])
+			for (auto& Pair : pLayerMaps[LEVEL_TOOL_3D_MAP])
 			{
 				wstring strLayerTag = Pair.first;
 				auto iter = find_if(m_DefaultEgnoreLayerTags.begin(), m_DefaultEgnoreLayerTags.end(), [&strLayerTag]
@@ -839,7 +839,7 @@ void CMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 }
 
 
-void CMap_Tool_Manager::Model_Imgui(_bool _bLock) 
+void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock) 
 {
 #ifdef _DEBUG
 
@@ -990,7 +990,12 @@ void CMap_Tool_Manager::Model_Imgui(_bool _bLock)
 											_wstring strNameAndExt = PairResult.first + L"."+PairResult.second;
 
 											lstrcpy(tAddInfo.szTextureName, strNameAndExt.c_str());
-											pTargetObj->Add_Textures(tAddInfo, iTextureType);
+											if (FAILED(pTargetObj->Add_Textures(tAddInfo, iTextureType)))
+											{
+												LOG_TYPE("Add Texture Failed... -> "+ WstringToString(strModelName), LOG_ERROR);
+												Safe_Release(pSRV);
+												return;
+											}
 										}
 
 									}
@@ -1044,7 +1049,7 @@ void CMap_Tool_Manager::Model_Imgui(_bool _bLock)
 }
 
 
-void CMap_Tool_Manager::Save(_bool _bSelected)
+void C3DMap_Tool_Manager::Save(_bool _bSelected)
 {
 	string filename = m_szSaveFileName;
 	string log = "";
@@ -1083,7 +1088,7 @@ void CMap_Tool_Manager::Save(_bool _bSelected)
 	if (!_bSelected)
 		strFullFilePath = m_strCacheFilePath;
 	else
-		strFullFilePath = (m_strMapBinaryPath  + m_pGameInstance->StringToWString(filename) + L".mchc");
+		strFullFilePath = (STATIC_3D_MAP_SAVE_FILE_PATH + m_pGameInstance->StringToWString(filename) + L".mchc");
 	log = "Save Start... File Name : ";
 	log += filename;
 	LOG_TYPE(log, LOG_SAVE);
@@ -1232,7 +1237,7 @@ void CMap_Tool_Manager::Save(_bool _bSelected)
 	Load_SaveFileList();
 }
 
-void CMap_Tool_Manager::Init_Egnore_Layer()
+void C3DMap_Tool_Manager::Init_Egnore_Layer()
 {
 
 	m_EgnoreLayerTags.clear();
@@ -1240,7 +1245,7 @@ void CMap_Tool_Manager::Init_Egnore_Layer()
 }
 
 
-HRESULT CMap_Tool_Manager::Setting_Action_Layer(vector<pair<wstring, CLayer*>>& _TargetLayerPairs)
+HRESULT C3DMap_Tool_Manager::Setting_Action_Layer(vector<pair<wstring, CLayer*>>& _TargetLayerPairs)
 {
 	_TargetLayerPairs.clear();
 
@@ -1249,7 +1254,7 @@ HRESULT CMap_Tool_Manager::Setting_Action_Layer(vector<pair<wstring, CLayer*>>& 
 	if (nullptr == pLayerMaps)
 		return E_FAIL;
 
-	for (auto& Pair : pLayerMaps[LEVEL_TOOL_MAP])
+	for (auto& Pair : pLayerMaps[LEVEL_TOOL_3D_MAP])
 	{
 		wstring strLayerTag = Pair.first;
 		auto iter = find_if(m_EgnoreLayerTags.begin(), m_EgnoreLayerTags.end(), [&strLayerTag]
@@ -1260,14 +1265,14 @@ HRESULT CMap_Tool_Manager::Setting_Action_Layer(vector<pair<wstring, CLayer*>>& 
 			continue;
 		else
 		{
-			CLayer* arrLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, strLayerTag);
+			CLayer* arrLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, strLayerTag);
 			_TargetLayerPairs.push_back(make_pair(strLayerTag, arrLayer));
 		}
 	}
 	return S_OK;
 }
 
-void CMap_Tool_Manager::Load(_bool _bSelected)
+void C3DMap_Tool_Manager::Load(_bool _bSelected)
 {
 	//Object_Clear(false);
 	
@@ -1276,7 +1281,8 @@ void CMap_Tool_Manager::Load(_bool _bSelected)
 
 	log = "Load Start... File Name : ";
 	log += filename;
-	_wstring strFullFilePath = (m_strMapBinaryPath + L"/" + m_arrSelectName[SAVE_LIST] + L".mchc");
+	_wstring strFullFilePath = STATIC_3D_MAP_SAVE_FILE_PATH; 
+	strFullFilePath += L"/" + m_arrSelectName[SAVE_LIST] + L".mchc";
 
 	if (!_bSelected)
 		strFullFilePath = m_strCacheFilePath;
@@ -1352,8 +1358,8 @@ void CMap_Tool_Manager::Load(_bool _bSelected)
 
 
 			CGameObject* pGameObject = nullptr;
-			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
-				LEVEL_TOOL_MAP,
+			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
+				LEVEL_TOOL_3D_MAP,
 				strLayerTag,
 				&pGameObject,
 				(void*)&NormalDesc);
@@ -1389,7 +1395,7 @@ void CMap_Tool_Manager::Load(_bool _bSelected)
 }
 
 
-void CMap_Tool_Manager::Object_Clear(_bool _bSelected)
+void C3DMap_Tool_Manager::Object_Clear(_bool _bSelected)
 {
 	Object_Clear_PickingMode();
 	Object_Close_PreviewMode();
@@ -1403,7 +1409,7 @@ void CMap_Tool_Manager::Object_Clear(_bool _bSelected)
 	if (_bSelected)
 		LOG_TYPE("Object Clear", LOG_DELETE);
 
-	CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_MapObject");
+	CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, L"Layer_MapObject");
 	DWORD	dwByte(0);
 	for (auto LayerPair : vecSaveLayerPairs)
 	{
@@ -1421,7 +1427,7 @@ void CMap_Tool_Manager::Object_Clear(_bool _bSelected)
 }
 
 
-void CMap_Tool_Manager::Save_Popup()
+void C3DMap_Tool_Manager::Save_Popup()
 {
 	Init_Egnore_Layer();
 	// default EgnoreLayerTag 구성 !
@@ -1431,7 +1437,7 @@ void CMap_Tool_Manager::Save_Popup()
 }
 
 
-HRESULT CMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject** ppMap)
+HRESULT C3DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject** ppMap)
 {
 	_float3			vRayPos, vRayDir;
 
@@ -1442,7 +1448,7 @@ HRESULT CMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject**
 	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
 	Compute_World_PickingLay(&vRayPos, &vRayDir);
 
-	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, L"Layer_Environment");
+	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, L"Layer_Environment");
 	if (!pLayer)
 		return E_FAIL;
 	auto List = pLayer->Get_GameObjects();
@@ -1485,7 +1491,7 @@ HRESULT CMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject**
 
 }
 
-HRESULT CMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos)
+HRESULT C3DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos)
 {
 	HRESULT hr = {};
 	CMapObject* pToolObj = nullptr;
@@ -1496,7 +1502,7 @@ HRESULT CMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos)
 		return E_FAIL;
 }
 
-CMapObject* CMap_Tool_Manager::Picking_On_Object()
+CMapObject* C3DMap_Tool_Manager::Picking_On_Object()
 {
 	POINT		ptMouse{};
 
@@ -1504,7 +1510,7 @@ CMapObject* CMap_Tool_Manager::Picking_On_Object()
 	ScreenToClient(g_hWnd, &ptMouse);
 	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
 
-	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, m_strPickingLayerTag);
+	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, m_strPickingLayerTag);
 	if (!pLayer)
 		return nullptr;
 
@@ -1518,7 +1524,7 @@ CMapObject* CMap_Tool_Manager::Picking_On_Object()
 			if (pMapObject)
 			{
 				bool bRange = pMapObject->Is_PickingCursor_Model(fCursorPos, fNewDist);
-				//bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnPos, &fNewDist);
+				//bool bRange = pMapObject->Check_Pick785/ing(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnPos, &fNewDist);
 				if (bRange && (fNewDist < fDist || fDist == 0.f))
 				{
 					pReturnObject = pMapObject;
@@ -1530,7 +1536,7 @@ CMapObject* CMap_Tool_Manager::Picking_On_Object()
 	return pReturnObject;
 }
 
-CNavigationVertex* CMap_Tool_Manager::Picking_On_Vertex()
+CNavigationVertex* C3DMap_Tool_Manager::Picking_On_Vertex()
 {
 	_float3			vRayPos, vRayDir;
 
@@ -1539,7 +1545,7 @@ CNavigationVertex* CMap_Tool_Manager::Picking_On_Vertex()
 
 }
 
-HRESULT CMap_Tool_Manager::Create_Cell()
+HRESULT C3DMap_Tool_Manager::Create_Cell()
 {
 	_float3 vFirst = m_vecVertexStack[0]->Get_Pos();
 	_float3 vSecond = m_vecVertexStack[1]->Get_Pos();
@@ -1581,7 +1587,7 @@ HRESULT CMap_Tool_Manager::Create_Cell()
 	return E_FAIL;
 }
 
-HRESULT CMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3* pLayDir)
+HRESULT C3DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3* pLayDir)
 {
 	POINT		ptMouse{};
 
@@ -1623,7 +1629,7 @@ HRESULT CMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3* p
 	return S_OK;
 }
 
-void CMap_Tool_Manager::Clear_StackVertex()
+void C3DMap_Tool_Manager::Clear_StackVertex()
 {
 	if (!m_vecVertexStack.empty())
 	{
@@ -1633,7 +1639,7 @@ void CMap_Tool_Manager::Clear_StackVertex()
 	}
 }
 
-void CMap_Tool_Manager::Clear_SelectCell()
+void C3DMap_Tool_Manager::Clear_SelectCell()
 {
 	if (m_iSelectCellIndex != -1)
 	{
@@ -1647,7 +1653,7 @@ void CMap_Tool_Manager::Clear_SelectCell()
 	}
 }
 
-bool CMap_Tool_Manager::Check_VertexSelect()
+bool C3DMap_Tool_Manager::Check_VertexSelect()
 {
 	if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft) && !ImGuizmo::IsUsing())
 	{
@@ -1677,12 +1683,11 @@ bool CMap_Tool_Manager::Check_VertexSelect()
 	return false;
 }
 
-void CMap_Tool_Manager::Load_ModelList()
+void C3DMap_Tool_Manager::Load_ModelList()
 {
 	m_ObjectFileLists.clear();
 	_wstring strPath 
-		//= TEXT("../../Client/Bin/Resources/TestModels/");
-		= TEXT("../../Client/Bin/resources/Models/");
+		= STATIC_3D_MODEL_FILE_PATH;
 
 	for (const auto& entry : ::recursive_directory_iterator(strPath))
 	{
@@ -1701,10 +1706,10 @@ void CMap_Tool_Manager::Load_ModelList()
 	}
 }
 
-void CMap_Tool_Manager::Load_SaveFileList()
+void C3DMap_Tool_Manager::Load_SaveFileList()
 {
 	m_SaveFileLists.clear();
-	for (const auto& entry : ::recursive_directory_iterator(m_strMapBinaryPath))
+	for (const auto& entry : ::recursive_directory_iterator(STATIC_3D_MAP_SAVE_FILE_PATH))
 	{
 			if (entry.path().extension() == ".mchc")
 			{
@@ -1714,7 +1719,7 @@ void CMap_Tool_Manager::Load_SaveFileList()
 	}
 }
 
-void CMap_Tool_Manager::Object_Open_PickingMode()
+void C3DMap_Tool_Manager::Object_Open_PickingMode()
 {
 	CMapObject* pGameObj = Picking_On_Object();
 	if (pGameObj)
@@ -1730,7 +1735,7 @@ void CMap_Tool_Manager::Object_Open_PickingMode()
 	}
 }
 
-void CMap_Tool_Manager::Object_Clear_PickingMode()
+void C3DMap_Tool_Manager::Object_Clear_PickingMode()
 {
 	if (m_arrObjects[OBJECT_PICKING])
 	{
@@ -1740,7 +1745,7 @@ void CMap_Tool_Manager::Object_Clear_PickingMode()
 
 }
 
-void CMap_Tool_Manager::Object_Open_PreviewMode()
+void C3DMap_Tool_Manager::Object_Open_PreviewMode()
 {
 	Object_Clear_PickingMode();
 
@@ -1753,8 +1758,8 @@ void CMap_Tool_Manager::Object_Open_PreviewMode()
 
 		CGameObject* pGameObject = nullptr;
 
-		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
-			LEVEL_TOOL_MAP, L"Layer_MapObject", &pGameObject, (void*)&NormalDesc);
+		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
+			LEVEL_TOOL_3D_MAP, L"Layer_MapObject", &pGameObject, (void*)&NormalDesc);
 		
 		if (nullptr != pGameObject)
 		{
@@ -1765,7 +1770,7 @@ void CMap_Tool_Manager::Object_Open_PreviewMode()
 	}
 }
 
-void CMap_Tool_Manager::Object_Close_PreviewMode()
+void C3DMap_Tool_Manager::Object_Close_PreviewMode()
 {
 	if (m_arrObjects[OBJECT_PREVIEW])
 	{
@@ -1776,20 +1781,20 @@ void CMap_Tool_Manager::Object_Close_PreviewMode()
 
 
 
-CMap_Tool_Manager* CMap_Tool_Manager::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger)
+C3DMap_Tool_Manager* C3DMap_Tool_Manager::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger)
 {
-	CMap_Tool_Manager* pInstance = new CMap_Tool_Manager(_pDevice, _pContext);
+	C3DMap_Tool_Manager* pInstance = new C3DMap_Tool_Manager(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize(_pLogger)))
 	{
-		MSG_BOX("Failed to Created : CMap_Tool_Manager");
+		MSG_BOX("Failed to Created : C3DMap_Tool_Manager");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CMap_Tool_Manager::Free()
+void C3DMap_Tool_Manager::Free()
 {
 	//Save(false);
 

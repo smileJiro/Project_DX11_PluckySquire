@@ -6,11 +6,11 @@ BEGIN(Map_Tool)
 
 class CImguiLogger;
 
-class CLevel_Map_Tool final : public CLevel
+class CLevel_3D_Map_Tool final : public CLevel
 {
 private:
-	CLevel_Map_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual ~CLevel_Map_Tool() = default;
+	CLevel_3D_Map_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual ~CLevel_3D_Map_Tool() = default;
 
 public:
 	virtual HRESULT			Initialize(CImguiLogger* _pLogger);
@@ -23,12 +23,12 @@ public:
 	HRESULT					Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 private :
-	class CMap_Tool_Manager* m_pToolManager = { nullptr };
+	class C3DMap_Tool_Manager* m_pToolManager = { nullptr };
 	CImguiLogger* m_pLogger = { nullptr };
 
 public:
 
-	static CLevel_Map_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger);
+	static CLevel_3D_Map_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger);
 	virtual void			Free() override;
 };
 

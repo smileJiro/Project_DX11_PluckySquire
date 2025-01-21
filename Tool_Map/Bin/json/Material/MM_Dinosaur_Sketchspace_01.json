@@ -1,0 +1,417 @@
+[
+  {
+    "Type": "Material",
+    "Name": "MM_Dinosaur_Sketchspace_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_3",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "EmissiveColor": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionMaterialFunctionCall_2",
+        "UseConstant": false,
+        "Constant": {
+          "B": 0,
+          "G": 0,
+          "R": 0,
+          "A": 0,
+          "Hex": "000000"
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "39B021ED-48E92E4F-52B3E2B7-2137912E",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              1495049932758649158,
+              3775951208358729996,
+              15736863385404221231,
+              17540982545227824442
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "GrungeAmount_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Emissive",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "EdgeHighlightAmount_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "DirtAmount_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "798D3A82-4AB5BCA5-3A1307B0-9260AC39",
+              "AD79AB25-4D75E1C0-0F3B008E-22179E00",
+              "F4F194B6-4E5E057F-0FA266BA-5DAD9A73",
+              "C9F54E03-40AAECF1-2022C69B-A182C50B"
+            ]
+          },
+          "RuntimeEntries[1]": {
+            "NameHashes": [
+              3544355854619701547,
+              11022391549182249676,
+              14266953819100504034
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "DirtColour_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "PortalEmissiveColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "GrungeColour_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "81C9265A-4086DE3A-10DFC483-8F01D5AC",
+              "321517DF-4ABE783B-FA695386-D71B20F7",
+              "780F3F90-489BB2BD-D236ECA5-72904EFD"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              17266218725269620845
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "SpecularMaskRenderTarget",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "F7381EA3-45A9F3E3-99C7778E-3C108249"
+            ]
+          },
+          "ScalarValues": [
+            0.24,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "VectorValues": [
+            {
+              "R": 0.0,
+              "G": 0.0,
+              "B": 0.0,
+              "A": 1.0,
+              "Hex": "000000"
+            },
+            {
+              "R": 0.162122,
+              "G": 1.0,
+              "B": 0.0,
+              "A": 1.0,
+              "Hex": "70FF00"
+            },
+            {
+              "R": 0.0,
+              "G": 0.0,
+              "B": 0.0,
+              "A": 1.0,
+              "Hex": "000000"
+            }
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "TextureRenderTarget2D'RenderTarget2D_Page1'",
+              "ObjectPath": "/Game/Materials/_LegacyRenderTargets/RenderTarget2D_Page1.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'6144x6144_Grid_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/6144x6144_Grid_01.0"
+          },
+          {
+            "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_roughness'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_roughness.0"
+          },
+          {
+            "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_normal'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wood_Plywood_Front_001_basecolor'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/Wood_Plywood_Front_001_basecolor.0"
+          },
+          {
+            "ObjectName": "Texture2D'LargeSketchspaceDinosaur_BaseColour_01_copy'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/LargeSketchspaceDinosaur_01/LargeSketchspaceDinosaur_BaseColour_01_copy.0"
+          },
+          {
+            "ObjectName": "Texture2D'LargeSketchspaceDinosaur_01_Masks'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/LargeSketchspaceDinosaur_01/LargeSketchspaceDinosaur_01_Masks.0"
+          },
+          {
+            "ObjectName": "TextureRenderTarget2D'RenderTarget2D_Page1'",
+            "ObjectPath": "/Game/Materials/_LegacyRenderTargets/RenderTarget2D_Page1.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "5B938C50-440B6892-955AD79F-CD1A8337",
+            "Function": {
+              "ObjectName": "MaterialFunction'BreakOutFloat3Components'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/BreakOutFloat3Components.0"
+            }
+          },
+          {
+            "StateId": "3BC6975B-45DA4F7D-9A996498-6A0AF5C7",
+            "Function": {
+              "ObjectName": "MaterialFunction'MF_SpecularMask_GetValue'",
+              "ObjectPath": "/Game/Materials/MF_SpecularMask_GetValue.0"
+            }
+          },
+          {
+            "StateId": "040D5FE6-42BFF260-661F63AA-94F87C75",
+            "Function": {
+              "ObjectName": "MaterialFunction'MF_PortalEmissive'",
+              "ObjectPath": "/Game/Materials/MF_PortalEmissive.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_Rough_1K_normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_Rough_1K_roughness"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            1495049932758649158,
+            3775951208358729996,
+            15736863385404221231,
+            17540982545227824442
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "GrungeAmount_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Emissive",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "EdgeHighlightAmount_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "DirtAmount_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "798D3A82-4AB5BCA5-3A1307B0-9260AC39",
+            "AD79AB25-4D75E1C0-0F3B008E-22179E00",
+            "F4F194B6-4E5E057F-0FA266BA-5DAD9A73",
+            "C9F54E03-40AAECF1-2022C69B-A182C50B"
+          ]
+        },
+        "RuntimeEntries[1]": {
+          "NameHashes": [
+            3544355854619701547,
+            11022391549182249676,
+            14266953819100504034
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "DirtColour_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "PortalEmissiveColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "GrungeColour_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "81C9265A-4086DE3A-10DFC483-8F01D5AC",
+            "321517DF-4ABE783B-FA695386-D71B20F7",
+            "780F3F90-489BB2BD-D236ECA5-72904EFD"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            17266218725269620845
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "SpecularMaskRenderTarget",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "F7381EA3-45A9F3E3-99C7778E-3C108249"
+          ]
+        },
+        "ScalarValues": [
+          0.24,
+          0.0,
+          0.5,
+          0.5
+        ],
+        "VectorValues": [
+          {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          },
+          {
+            "R": 0.162122,
+            "G": 1.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "70FF00"
+          },
+          {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          }
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "TextureRenderTarget2D'RenderTarget2D_Page1'",
+            "ObjectPath": "/Game/Materials/_LegacyRenderTargets/RenderTarget2D_Page1.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'6144x6144_Grid_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/6144x6144_Grid_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_roughness'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_roughness.0"
+        },
+        {
+          "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wood_Plywood_Front_001_basecolor'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/Wood_Plywood_Front_001_basecolor.0"
+        },
+        {
+          "ObjectName": "Texture2D'LargeSketchspaceDinosaur_BaseColour_01_copy'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/LargeSketchspaceDinosaur_01/LargeSketchspaceDinosaur_BaseColour_01_copy.0"
+        },
+        {
+          "ObjectName": "Texture2D'LargeSketchspaceDinosaur_01_Masks'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/LargeSketchspaceDinosaur_01/LargeSketchspaceDinosaur_01_Masks.0"
+        },
+        {
+          "ObjectName": "TextureRenderTarget2D'RenderTarget2D_Page1'",
+          "ObjectPath": "/Game/Materials/_LegacyRenderTargets/RenderTarget2D_Page1.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "5B938C50-440B6892-955AD79F-CD1A8337",
+          "Function": {
+            "ObjectName": "MaterialFunction'BreakOutFloat3Components'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/BreakOutFloat3Components.0"
+          }
+        },
+        {
+          "StateId": "3BC6975B-45DA4F7D-9A996498-6A0AF5C7",
+          "Function": {
+            "ObjectName": "MaterialFunction'MF_SpecularMask_GetValue'",
+            "ObjectPath": "/Game/Materials/MF_SpecularMask_GetValue.0"
+          }
+        },
+        {
+          "StateId": "040D5FE6-42BFF260-661F63AA-94F87C75",
+          "Function": {
+            "ObjectName": "MaterialFunction'MF_PortalEmissive'",
+            "ObjectPath": "/Game/Materials/MF_PortalEmissive.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]
