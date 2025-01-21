@@ -75,7 +75,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pProjDesc->eStartCoord = COORDINATE_3D;
     pProjDesc->isCoordChangeEnable = false;
     pProjDesc->iNumPartObjects = PART_LAST;
-    pProjDesc->iCurLevelID = LEVEL_GAMEPLAY;
+    pProjDesc->iCurLevelID = m_iCurLevelID;
 
     pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
@@ -148,7 +148,7 @@ void CButterGrump::Change_Animation()
 {
     if(m_eState != m_ePreState)
     {
-        switch (m_eState)
+        switch ((MONSTER_STATE)m_eState)
         {
         case MONSTER_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);

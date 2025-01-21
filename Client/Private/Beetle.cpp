@@ -93,7 +93,7 @@ void CBeetle::Change_Animation()
 {
     if(m_eState != m_ePreState)
     {
-        switch (m_eState)
+        switch (MONSTER_STATE(m_eState))
         {
         case MONSTER_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
