@@ -36,6 +36,40 @@ HRESULT CPlayer::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720);
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
 
+    /* Create Test Actor */
+    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+    CActor::ACTOR_DESC ActorDesc;
+
+    ActorDesc.FreezeRotation_XYZ[0] = true;
+    ActorDesc.FreezeRotation_XYZ[1] = false;
+    ActorDesc.FreezeRotation_XYZ[2] = true;
+    ActorDesc.pOwner = this;
+
+    SHAPE_DATA ShapeData;
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+    ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;
+    ShapeData.isShapeMaterial = false;
+    ShapeData.isTrigger = false;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f));
+   
+    SHAPE_CAPSULE_DESC ShapeDesc = {};
+    ShapeDesc.fHalfHeight = 0.5f;
+    ShapeDesc.fRadius = 0.5f;
+    ShapeData.pShapeDesc = &ShapeDesc;
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+    
+    ShapeData.eShapeType = SHAPE_TYPE::BOX;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity());
+    SHAPE_BOX_DESC BoxDesc = {};
+    BoxDesc.vHalfExtents = { 1.0f, 1.0f, 1.0f };
+    ShapeData.pShapeDesc = &BoxDesc;
+
+
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+
+
+
+    pDesc->pActorDesc = &ActorDesc;
     if (FAILED(__super::Initialize(pDesc)))
     {
         MSG_BOX("CPlayer super Initialize Failed");
@@ -49,8 +83,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
-    // TODO ::임시 위치
-    Set_Position(XMVectorSet(-3.f, 0.35f, -19.3f,1.f));
+
     return S_OK;
 }
 
@@ -147,11 +180,17 @@ void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
     m_pStateMachine->Update(_fTimeDelta);
+
+
+
+    CGameObject::Update_Component(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
+
+    CGameObject::Late_Update_Component(_fTimeDelta);
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -190,16 +229,35 @@ void CPlayer::On_CoordinateChange()
 
 void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 {
-    if (Get_CurCoord() == COORDINATE_3D)
+    ACTOR_TYPE eActorType = Get_ActorType();
+    if (ACTOR_TYPE::KINEMATIC == eActorType)
     {
-        m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
-        m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+        if (Get_CurCoord() == COORDINATE_3D)
+        {
+            m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
+            m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+        }
+        else
+        {
+
+        }
+        m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
     }
-    else
+    else if (ACTOR_TYPE::DYNAMIC == eActorType)
     {
-        
+        if (Get_CurCoord() == COORDINATE_3D)
+        {
+            m_pActorCom->Turn_TargetDirection(_vDir);
+        }
+        else
+        {
+
+        }
+        _vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+        m_pActorCom->Set_LinearVelocity(vLook, 5.f);
     }
-	m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
+
+	
 
 }
 
@@ -286,6 +344,7 @@ void CPlayer::Attack(_uint _iCombo)
 }
 
 
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
@@ -347,6 +406,14 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
+    if (KEY_DOWN(KEY::SPACE))
+    {
+        /* Test Jump */
+        m_pActorCom->Add_Impulse(_float3(0.0f, 12.0f, 0.0f));
+    }
+
+
+
     if (KEY_DOWN(KEY::F1))
     {
         _int iCurCoord = (_int)Get_CurCoord();

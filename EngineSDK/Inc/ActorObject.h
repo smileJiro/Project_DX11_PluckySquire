@@ -21,7 +21,11 @@ public:
 	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
 
 
-private:
+public:
+	// Get 
+	ACTOR_TYPE					Get_ActorType() const { return m_pActorCom->Get_ActorType(); }
+	// Set
+protected:
 	CActor*						m_pActorCom = nullptr;
 
 private:

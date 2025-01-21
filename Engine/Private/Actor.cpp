@@ -59,7 +59,6 @@ void CActor::Late_Update(_float _fTimeDelta)
 }
 
 
-
 HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
 {
     PxPhysics* pPhysic = m_pGameInstance->Get_Physics();
@@ -78,8 +77,13 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
     {
     case Engine::ACTOR_TYPE::STATIC:
         m_pActor = pPhysic->createRigidStatic(Transform);
+        static_cast<PxRigidStatic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
         break;
     case Engine::ACTOR_TYPE::KINEMATIC:
+        m_pActor = pPhysic->createRigidDynamic(Transform);
+        static_cast<PxRigidDynamic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+        static_cast<PxRigidDynamic*>(m_pActor)->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+        break;
     case Engine::ACTOR_TYPE::DYNAMIC:
         m_pActor = pPhysic->createRigidDynamic(Transform);
         static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, _pActorDesc->FreezeRotation_XYZ[0]);
@@ -88,13 +92,26 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
         static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X,  _pActorDesc->FreezePosition_XYZ[0]);
         static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y,  _pActorDesc->FreezePosition_XYZ[1]);
         static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z,  _pActorDesc->FreezePosition_XYZ[2]);
+        static_cast<PxRigidDynamic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, false);
         break;
     default:
         return E_FAIL;
     }
 
-    if(ACTOR_TYPE::KINEMATIC == m_eActorType)
-        static_cast<PxRigidDynamic*>(m_pActor)->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+
+    if (true == m_isActive)
+    {
+        for (auto& pShape : m_pShapes)
+        {
+            m_pActor->attachShape(*pShape);
+        }
+
+
+        PxScene* pScene = m_pGameInstance->Get_Physx_Scene();
+        pScene->addActor(*m_pActor);
+    }
+        
+
 
     return S_OK;
 }
@@ -133,7 +150,7 @@ HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs)
         case Engine::SHAPE_TYPE::BOX:
         {
             SHAPE_BOX_DESC* pDesc = static_cast<SHAPE_BOX_DESC*>(ShapeDescs[i].pShapeDesc);
-            PxGeometry BoxGeometry = PxBoxGeometry(PxVec3(pDesc->vHalfExtents.x, pDesc->vHalfExtents.y, pDesc->vHalfExtents.z));
+            PxBoxGeometry BoxGeometry = PxBoxGeometry(PxVec3(pDesc->vHalfExtents.x, pDesc->vHalfExtents.y, pDesc->vHalfExtents.z));
             pShape = pPhysics->createShape(BoxGeometry, *pShapeMaterial, ShapeFlags);
         }
             break;
@@ -154,6 +171,12 @@ HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs)
         default:
             return E_FAIL;
         }
+
+        if (nullptr == pShape)
+        {
+            MSG_BOX("Failed Create pShape (CActor::Ready_Shape)");
+            return E_FAIL;
+        }
         pShape->setLocalPose(PxTransform(PxMat44((_float*)(&ShapeDescs[i].LocalOffsetMatrix))));
         m_pShapes.push_back(pShape);
     }
@@ -167,7 +190,7 @@ void CActor::Free()
     m_pOwner = nullptr;
 
     // PhysX Release
-    PHYSX_RELEASE(m_pActor);
+    //PHYSX_RELEASE(m_pActor);
 
     __super::Free();
 }

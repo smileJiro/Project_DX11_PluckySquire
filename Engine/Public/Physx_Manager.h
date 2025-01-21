@@ -19,9 +19,8 @@ public:
 	HRESULT						Render();
 public:
 	PxPhysics*					Get_Physics() const { return m_pPxPhysics; }
+	PxScene*					Get_Scene() const { return m_pPxScene; }
 	PxMaterial*					Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
-
-
 
 private:
 	ID3D11Device*				m_pDevice = nullptr;
@@ -49,6 +48,7 @@ private:
 
 private: /* Test Object */
 	PxRigidStatic*				m_pGroundPlane = nullptr;
+	PxRigidStatic*				m_pTestDesk = nullptr;
 	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
 	CShader*					m_pShader = nullptr;
 

@@ -3,6 +3,7 @@
 
 typedef struct tagShapeData
 {
+	tagShapeData() { XMStoreFloat4x4(&LocalOffsetMatrix, XMMatrixIdentity()); }
 	SHAPE_TYPE	eShapeType = SHAPE_TYPE::LAST;
 	SHAPE_DESC* pShapeDesc = {};
 	_float3		vLocalOffset = { 0.0f, 0.0f, 0.0f };
@@ -24,8 +25,8 @@ public:
 		CActorObject*			pOwner = nullptr;
 		vector<SHAPE_DATA>		ShapeDatas;
 		_float4x4				OffsetMatrix = {};
-		_bool					FreezeRotation_XYZ[3];
-		_bool					FreezePosition_XYZ[3];
+		_bool					FreezeRotation_XYZ[3] = { false, true, false };
+		_bool					FreezePosition_XYZ[3] = { false, false, false };
 	}ACTOR_DESC;
 protected:
 	CActor(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ACTOR_TYPE _eActorType);
@@ -39,6 +40,19 @@ public:
 	void						Update(_float _fTimeDelta)  override;
 	void						Late_Update(_float _fTimeDelta)  override;
 
+public:/* Default PhysX */
+	virtual void				Set_LinearVelocity(_vector _vDirection, _float _fVelocity) { return; }
+	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity) { return; }
+	virtual void				Add_Force(const _float3& _vForce) { return; };// ÀÏ¹ÝÀûÀÎ Èû
+	virtual void				Add_Impulse(const _float3& _vForce) { return; }; // °­ÇÑ Èû
+
+public:
+	virtual void				Turn_TargetDirection(_vector _vDirection) { return; }
+
+public:
+	// Get
+	ACTOR_TYPE					Get_ActorType() const { return m_eActorType; }
+	// Set 
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;

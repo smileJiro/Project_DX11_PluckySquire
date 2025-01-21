@@ -377,7 +377,6 @@ public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
 	void Move(_vector _vDir,_float _fTimeDelta);
 	void Attack(_uint _iCombo);
-
 	//Get
 	F_DIRECTION Get_2DDirection() { return m_e2DDirection; }
 	//Set

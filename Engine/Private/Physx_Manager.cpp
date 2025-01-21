@@ -38,15 +38,14 @@ HRESULT CPhysx_Manager::Initialize()
 	_float4x4 matTest = {};
 	PxMat44 matPx;
 	XMStoreFloat4x4(&matTest, XMMatrixIdentity());
-	PxTransform transform(PxVec3(0.0f, 0.0f, 0.0f)); // 위치: (0, 0, 0)
+	PxTransform transform(PxVec3(0.0f, -10.0f, 0.0f)); // 위치: (0, 0, 0)
 
-	//// PxRigidStatic 객체 생성
-	//PxRigidDynamic* rigidStatic = m_pPxPhysics->createRigidDynamic(transform);
-	//PxBoxGeometry boxGeometry(PxVec3(10.0f, 10.0f, 10.0f));
-	//m_pPxshape = PxRigidActorExt::createExclusiveShape(*rigidStatic, boxGeometry, *m_pPxMaterial);
-	//rigidStatic->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
-	//rigidStatic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
-	//m_pPxScene->addActor(*rigidStatic);
+	// PxRigidStatic 객체 생성
+	m_pTestDesk = m_pPxPhysics->createRigidStatic(transform);
+	PxBoxGeometry boxGeometry(PxVec3(100.0f, 10.0f, 100.0f));
+	PxRigidActorExt::createExclusiveShape(*m_pTestDesk, boxGeometry, *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
+	m_pTestDesk->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+	m_pPxScene->addActor(*m_pTestDesk);
 
 	//m_pRigidDynamic = m_pPxPhysics->createRigidDynamic(transform);
 	//PxCapsuleGeometry CapsuleGeometry2(0.5f, 0.2f);
@@ -93,7 +92,7 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 	//	XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
 	//	m_pPlayer->Set_WorldMatrix(WorldMatrix);*/
 
-
+	
 	//	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 	//	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
 	//	//m_pRigidDynamic->setKinematicTarget();
@@ -282,6 +281,7 @@ void CPhysx_Manager::Free()
 	/////////////////////////////////
 
 	PHYSX_RELEASE(m_pGroundPlane); /* Scene 삭제 전 정리*/
+	PHYSX_RELEASE(m_pTestDesk); /* Scene 삭제 전 정리*/
 	PHYSX_RELEASE(m_pPxScene);
 	PHYSX_RELEASE(m_pPxDefaultCpuDispatcher);/* Scene 삭제후 곧바로 정리*/
 	for(_uint i =0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)

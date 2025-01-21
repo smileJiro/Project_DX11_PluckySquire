@@ -980,6 +980,14 @@ PxPhysics* CGameInstance::Get_Physics() const
 	return m_pPhysx_Manager->Get_Physics();
 }
 
+PxScene* CGameInstance::Get_Physx_Scene() const
+{
+	if (nullptr == m_pPhysx_Manager)
+		return nullptr;
+
+	return m_pPhysx_Manager->Get_Scene();
+}
+
 PxMaterial* CGameInstance::Get_Material(ACTOR_MATERIAL _eType) const
 {
 	if (nullptr == m_pPhysx_Manager)
