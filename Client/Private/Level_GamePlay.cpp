@@ -130,12 +130,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 
 	Desc.fMouseSensor = 0.1f;
 
-	Desc.fFovy = XMConvertToRadians(30.f);
+	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.fNear = 0.1f;
 	Desc.fFar = 1000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Desc.eZoomLevel = CCamera::LEVEL_6;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Desc)))

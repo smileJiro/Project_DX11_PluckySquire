@@ -17,9 +17,24 @@ public:
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_MODE				eCameraMode;
+		ZOOM_LEVEL				eZoomLevel = CCamera::LEVEL_6;
 		_float3					vAtOffset;
 		_float					fSmoothSpeed;
 	}CAMERA_TARGET_DESC;
+
+	enum ZOOM_LEVEL
+	{
+		LEVEL_1,
+		LEVEL_2,
+		LEVEL_3,
+		LEVEL_4,
+		LEVEL_5,
+		LEVEL_6,
+		LEVEL_7,
+		LEVEL_8,
+		LEVEL_9,
+		LEVEL_10,
+	};
 
 private:
 	CCamera_Target(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -50,16 +65,23 @@ private:
 	_int						m_iNextCameraMode = { -1 };
 
 	_float						m_fSmoothSpeed = {};
-	_float3						m_vAtOffset = {};
 
 	// Arm
 	CCameraArm*					m_pArm = { nullptr };
 
+	//// Change AtOffset
+	//_float3						m_vAtOffset = {};
+	//_float3						m_vStartAtOffset = {};
+	//_float3						m_vNextAtOffset = {};
+	//_bool						m_isChangingAtOffset = { false };
+	//_float2						m_fAtOffsetTime = {};
+	//_uint						m_iOffsetRatioType = {};
+	
 private:
-	void						Action_Mode(_float fTimeDelta);
-	void						Defualt_Move(_float fTimeDelta);
-	void						Move_To_NextArm(_float fTimeDelta);
-	void						Look_Target(_float fTimeDelta);
+	void						Action_Mode(_float _fTimeDelta);
+	void						Defualt_Move(_float _fTimeDelta);
+	void						Move_To_NextArm(_float _fTimeDelta);
+	void						Look_Target(_float _fTimeDelta);
 
 public:
 	static CCamera_Target*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

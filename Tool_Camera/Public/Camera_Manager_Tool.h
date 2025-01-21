@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Camera_Tool_Defines.h"
-#include "Transform.h"
 #include "Base.h"
+
+#include "Transform.h"
+#include "Camera.h"
 
 BEGIN(Engine)
 class CGameInstance;
-class CCamera;
 class CCameraArm;
 END
 
@@ -43,6 +44,10 @@ public:
 	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix);
 
 	void				Set_NextArmData(_wstring _wszNextArmName);
+	void				Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType);
+	void				Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType);
+	void				Start_Shake_ByTime(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime = 0.05f, _uint _iShakeType = CCamera::SHAKE_XY, _float _fDelayTime = 0.f);
+	void				Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _uint _iShakeCount, _uint _iShakeType = CCamera::SHAKE_XY, _float _fDelayTime = 0.f);
 
 	// Tool 작업 관련
 public:
