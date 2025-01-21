@@ -1,6 +1,6 @@
 {
  "IsStatic": [
-  true
+  false
  ],
  "data": [
   "alphabet_blocks_a_mesh",
@@ -17,7 +17,6 @@
   "papermate_01",
   "penpot_01",
   "Rocket_02",
-  "room_mesh_01",
   "scotch_01",
   "SM_Air_Outlet",
   "SM_Another_Magnifier",
