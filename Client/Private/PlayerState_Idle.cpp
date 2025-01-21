@@ -82,6 +82,7 @@ void CPlayerState_Idle::Enter()
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_01_GT);
 
 
+
 }
 
 void CPlayerState_Idle::Exit()
