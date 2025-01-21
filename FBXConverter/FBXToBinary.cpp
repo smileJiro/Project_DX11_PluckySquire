@@ -29,7 +29,7 @@ HRESULT CFbxToBinary::FbxToBinary(const string& inFilePath)
 		m_pAIScene = m_Importer.ReadFile(inFilePath, iFlag);
 	}
 
-	//Mimic ëª¨ë¸ì˜ ê²½ìš° ë¬´ì¡°ê±´ m_bAnimì„ trueë¡œ í•  ê²ƒ.
+	//Mimic ëª¨ë¸??ê²½ìš° ë¬´ì¡°ê±?m_bAnim??trueë¡???ê²?
 	//m_bAnim = true;
 
 	if (0 == m_pAIScene)
@@ -46,7 +46,7 @@ HRESULT CFbxToBinary::FbxToBinary(const string& inFilePath)
 	strcat_s(szNewFileName, ".model");
 	std::ofstream outFile(szNewFileName, std::ios::binary);
 	if (!outFile) {
-		std::cerr << "íŒŒì¼ì„ ì—´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤." << std::endl;
+		std::cerr << "ÆÄÀÏ ¿­±â ½ÇÆĞ." << std::endl;
 	}
 	outFile.write(reinterpret_cast<const char*>(&m_bAnim), 1);
 

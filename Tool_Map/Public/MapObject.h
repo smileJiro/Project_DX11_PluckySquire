@@ -37,6 +37,22 @@ public:
 
 	}MAPOBJ_DESC;
 
+public :
+	typedef struct tagDiffuseInfo
+	{
+		_uint	iMaterialIndex;
+		_uint	iDiffuseIIndex;
+		_tchar	szTextureName[MAX_PATH];
+		ID3D11ShaderResourceView* pSRV;
+	}DIFFUSE_INFO;
+
+	typedef struct tagOverride
+	{
+		_uint iMaterialIndex;
+		_uint iTexTypeIndex;
+		_uint iTexIndex;
+	}OVERRIDE_MATERIAL_INFO;
+
 private:
 	CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CMapObject(const CMapObject& _Prototype);
@@ -60,7 +76,16 @@ public:
 
 	const wstring&			Get_ModelName() { return m_strModelName; }
 
+#ifdef _DEBUG
+	HRESULT					Get_Textures(vector<DIFFUSE_INFO>& _Diffuses,_uint _eTextureType = aiTextureType_DIFFUSE);
+	HRESULT					Add_Textures(DIFFUSE_INFO& _tDiffuseInfo,_uint _eTextureType = aiTextureType_DIFFUSE);
+	CController_Model*		Get_ModelController() { return m_pControllerModel; }
+	HRESULT					Save_Override_Material(HANDLE _hFile);
+	HRESULT					Load_Override_Material(HANDLE _hFile);
+#endif // _DEBUG
 
+	void					Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
+	_uint					Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
 
 private :
 	OPERATION				m_CurrentGizmoOperation = TRANSLATE;
@@ -69,7 +94,7 @@ private :
 	wstring					m_strModelName;
 	_float4x4				m_matWorld;
 
-
+	_uint					m_iDiffuseIndex = 0;
 public:
 	static CMapObject*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

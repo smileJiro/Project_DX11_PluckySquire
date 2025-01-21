@@ -10,6 +10,7 @@ CUIObject::CUIObject(const CUIObject& Prototype)
 {
 }
 
+
 HRESULT CUIObject::Initialize_Prototype()
 {
 

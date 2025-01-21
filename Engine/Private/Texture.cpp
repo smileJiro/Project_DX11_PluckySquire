@@ -136,6 +136,11 @@ CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
     return pInstance;
 }
 
+CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+    return new CTexture(_pDevice, _pContext);
+
+}
 CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures)
 {
     CTexture* pInstance = new CTexture(_pDevice, _pContext);

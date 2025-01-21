@@ -10,12 +10,12 @@
 #include "PlayerState_Attack.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    :CContainerObject(_pDevice, _pContext)
+    :CCharacter(_pDevice, _pContext)
 {
 }
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
-    :CContainerObject(_Prototype)
+    :CCharacter(_Prototype)
 {
 }
 
@@ -37,10 +37,15 @@ HRESULT CPlayer::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
 
     if (FAILED(__super::Initialize(pDesc)))
+    {
+        MSG_BOX("CPlayer super Initialize Failed");
         return E_FAIL;
+    }
 
     if (FAILED(Ready_PartObjects()))
+    {
         return E_FAIL;
+    }
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
@@ -71,7 +76,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_player2DAnimation");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("buttergrump_Rig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
     BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
@@ -84,7 +89,10 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
+    {
+        MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
+    }
 
 	//Part Sword
 	BodyDesc.isCoordChangeEnable = false;
@@ -96,7 +104,10 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_SWORD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
+    {
+        MSG_BOX("CPlayer Sword Creation Failed");
         return E_FAIL;
+    }
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));    
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_SWORD])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r")); /**/
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
@@ -107,20 +118,23 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_GLOVE] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
+    {
+        MSG_BOX("CPlayer Glove Creation Failed");
         return E_FAIL;
+    }
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
 	m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
 	Set_PartActive(PLAYER_PART_GLOVE, false);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_DOWN, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_RIGHT, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_UP, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_DOWN, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_PICKUP_IDLE_GT, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT, true);
+   //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
+   //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
+   //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_DOWN, true);
+   //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_RIGHT, true);
+   //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_UP, true);
+   //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_DOWN, true);
+   //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_PICKUP_IDLE_GT, true);
+   //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT, true);
     return S_OK;
 }
 void CPlayer::Priority_Update(_float _fTimeDelta)
@@ -274,7 +288,8 @@ void CPlayer::Attack(_uint _iCombo)
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
+	//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(0);
 }
 
 void CPlayer::Set_State(STATE _eState)
