@@ -80,7 +80,7 @@ public: /* For.Renderer */
 public: /* For. Key_Manager */
 	const KEY_STATE&	GetKeyState(KEY _eKEY); // 키입력 동기화 o 
 	const KEY_STATE&	GetMouseKeyState(MOUSE_KEY _eMouse);
-	_long				GetDIMouseMove(MOUSE_MOVE eMouseMove);
+	_long				GetDIMouseMove(MOUSE_AXIS eMouseMove);
 
 public: /* For. PipeLine */
 	void				Set_Transform(CPipeLine::D3DTRANSFORMSTATE _eState, _fmatrix _TransformMatrix);
@@ -193,8 +193,10 @@ public: /* For. Camera_Manager */
 
 public: /* For. Physx_Manager*/
 	void				Physx_Update(_float _fTimeDelta);
+	HRESULT				Physx_Render();
 	PxPhysics*			Get_Physics() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
+	void				Set_Player(CGameObject* _pPlayer);
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;

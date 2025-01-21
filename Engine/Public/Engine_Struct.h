@@ -76,6 +76,15 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXPOSTEX;
 
+	typedef struct ENGINE_DLL tagVtxPosition_Color
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT4		vColor;
+
+		static const unsigned int					iNumElements = { 2 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
+	}VTXPOSCOLOR;
+
 	typedef struct ENGINE_DLL tagVtxPosition_Cube
 	{
 		XMFLOAT3		vPosition;

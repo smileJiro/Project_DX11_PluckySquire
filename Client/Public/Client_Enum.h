@@ -8,6 +8,7 @@ namespace Client
 		LEVEL_STATIC,
 		LEVEL_LOGO,
 		LEVEL_GAMEPLAY,
+		LEVEL_PHYSX,
 
 		LEVEL_END
 	};

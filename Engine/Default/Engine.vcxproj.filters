@@ -235,6 +235,9 @@
     <Filter Include="01.Utility\04.Components\Actor\Static">
       <UniqueIdentifier>{58acf950-db1a-435e-b0f5-49eda4a1207c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Debug">
+      <UniqueIdentifier>{25b150ad-e1a7-46c1-b997-67bc43f78144}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -465,6 +468,9 @@
     <ClInclude Include="..\public\Actor_Dynamic.h">
       <Filter>01.Utility\04.Components\Actor\Dynamic</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_PxDebug.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -683,12 +689,18 @@
     <ClCompile Include="..\private\Actor_Dynamic.cpp">
       <Filter>01.Utility\04.Components\Actor\Dynamic</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_PxDebug.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
       <Filter>98.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>98.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Debug.hlsl">
       <Filter>98.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -17,7 +17,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	HRESULT Bind_BufferDesc();
+	virtual HRESULT Bind_BufferDesc();
 public:
 	// Get
 	const vector<_float3>& Get_VerticesPos() { return m_vecVerticesPos; };

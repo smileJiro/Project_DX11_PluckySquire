@@ -1,9 +1,9 @@
 #pragma once
-
 #include "Level.h"
-BEGIN(ENGINE)
+BEGIN(Engine)
 class CGameObject;
 END
+
 BEGIN(Client)
 class CLevel_GamePlay final : public CLevel
 {

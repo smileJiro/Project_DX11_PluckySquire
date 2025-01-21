@@ -15,8 +15,6 @@ CController_Model::CController_Model(ID3D11Device* _pDevice, ID3D11DeviceContext
 
 HRESULT CController_Model::Initialize(CON_MODEL_DESC* _pDesc)
 {
-
-
     m_eCurCoord = _pDesc->eStartCoord;
     m_isCoordChangeEnable = _pDesc->isCoordChangeEnable;
 

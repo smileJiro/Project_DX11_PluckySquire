@@ -64,10 +64,6 @@ HRESULT CPooling_Manager::Register_PoolingObject(const _wstring& _strPoolingTag,
 	
 	Pooling_DESC tPoolingDesc = _tPoolingDesc;
 
-	tPoolingDesc.iPrototypeLevelID;
-	tPoolingDesc.strLayerTag;
-	tPoolingDesc.strPrototypeTag;
-
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tPoolingDesc.iPrototypeLevelID, tPoolingDesc.strPrototypeTag, m_iCurLevelID, tPoolingDesc.strLayerTag, &pGameObject, _pDesc)))
 		return E_FAIL;

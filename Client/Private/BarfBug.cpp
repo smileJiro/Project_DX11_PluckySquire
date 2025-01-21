@@ -209,7 +209,7 @@ HRESULT CBarfBug::Ready_Components()
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
 
-    if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
         return E_FAIL;
     m_pFSM->Set_Owner(this);
@@ -232,7 +232,7 @@ HRESULT CBarfBug::Ready_PartObjects()
     //BodyDesc.strModelPrototypeTag_2D = TEXT("barfBug_Rig");
     BodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
 	//BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
-	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
    //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 

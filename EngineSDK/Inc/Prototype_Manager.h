@@ -13,6 +13,7 @@
 #include "Mesh.h"
 #include "Actor_Dynamic.h"
 #include "Actor_Static.h"
+#include "VIBuffer_PxDebug.h"
 
 /* Etc */
 #include "Transform_2D.h"
