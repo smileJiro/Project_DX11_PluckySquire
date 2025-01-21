@@ -242,7 +242,11 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 			}
 		}
 	}
-
+	//for (_uint i = 0; i < m_iNumVertices; i++)
+	//{
+	//	std::cout << "x:" << pVertices[i].vBlendWeights.x << " y:" << pVertices[i].vBlendWeights.y << " z:" << pVertices[i].vBlendWeights.z << " w:" << pVertices[i].vBlendWeights.w << std::endl;
+	//	std::cout << "sum" << pVertices[i].vBlendWeights.x + pVertices[i].vBlendWeights.y + pVertices[i].vBlendWeights.z + pVertices[i].vBlendWeights.w << std::endl;
+	//}
 	if (0 == m_iNumBones)
 	{
 		m_iNumBones = 1;
