@@ -1,0 +1,722 @@
+[
+  {
+    "Type": "Material",
+    "Name": "MM_WoodenDeskObjects_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionMaterialFunctionCall_0",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "BlendMode": "BLEND_Masked",
+      "bUsedWithStaticLighting": true,
+      "StateId": "D3838C2E-43CADD97-E7B75ABF-9D64A379",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              6114086971577603553,
+              6238134600471980535,
+              8224640037258724385,
+              9319159315744901230,
+              9995563756106655147,
+              16678518508348196171,
+              17035420494045392513,
+              17830933328945584460
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "HighlightAmount",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "EdgeHighlightAmount_02",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "CloudsAmount",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "UniqeNormalStrength",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "ProceduralColourVariationAmount",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "HueShiftAmount-01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "GrungeAmount",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "CameraBlend",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "4C4AE3CA-40355DA6-927C3A96-365F88A1",
+              "580237A6-4559F349-64C87788-9B5FD2ED",
+              "5B6C56F8-4BB3070C-16C8059C-4D709AA8",
+              "0A3ADE97-4A2F649F-73132192-8FFBE8FB",
+              "29FAA0DD-4C92EEBE-3C498ABB-F61AC4EB",
+              "B425968C-47D6C336-257FA7BF-90CF7E62",
+              "8774D922-44621190-2B0C49B1-979D598A",
+              "8A6F72F9-4109517C-D82E72AF-CE1B255D"
+            ]
+          },
+          "RuntimeEntries[1]": {
+            "NameHashes": [
+              689059235944245372,
+              5717312084156411589,
+              14965569405058758141,
+              15805936944680676314
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "BaseColour_Vector3",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "CloudsTint",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "EdgeHighlightTint",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "GrungeTint",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "9CA243A8-482F51FD-BECDF5B5-DB13612E",
+              "F8F29141-4E7B1F4B-5A0F6BBF-B2866236",
+              "267E09AF-4CB9AFB2-C39C719D-D0331049",
+              "1BF4F6FC-4D240AA3-8B0BA98D-EF6AED9A"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              440574345582452634,
+              5071287356642726135,
+              5201348363532053956,
+              6340279855419622990,
+              9937518833951754503,
+              12241367727707337503,
+              14261402333221070247,
+              15837357842387435496
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "Roughness",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "EdgeHighlights_RoughnessMap",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "TilingNormal_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "BaseColour_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "BaseColour_02",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "GradientTexture",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "RGBA_Mask",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "UniqueNormal",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "442B9C2C-45A395A0-FB5A13B4-14BBBA86",
+              "E3702BF4-47C0B140-ACBBE990-569D4D44",
+              "DD68C057-4E06D61E-6D5FE5BF-49170B2A",
+              "6CE4E48F-46BFD7AC-8A8823A5-769270CA",
+              "F454C3A0-41808925-F86D08BC-B0416F6E",
+              "4CFE75A7-4B2A9BC6-B6FAD689-7E346703",
+              "37341A6E-4187E654-5F5FC793-1D978B3A",
+              "89BE1E09-41034AA6-96B2B593-42A89F82"
+            ]
+          },
+          "ScalarValues": [
+            0.042,
+            0.42,
+            0.12,
+            0.42,
+            0.0,
+            0.0,
+            0.24,
+            1.0
+          ],
+          "VectorValues": [
+            {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            },
+            {
+              "R": 0.869792,
+              "G": 0.800037,
+              "B": 0.656875,
+              "A": 1.0,
+              "Hex": "F0E8D4"
+            },
+            {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            },
+            {
+              "R": 0.0,
+              "G": 0.0,
+              "B": 0.0,
+              "A": 1.0,
+              "Hex": "000000"
+            }
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "Texture2D'Cardboard_01_2K_Roughness'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Roughness.0"
+            },
+            {
+              "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_roughness'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_roughness.0"
+            },
+            {
+              "ObjectName": "Texture2D'Cardboard_01_2K_Normal'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Normal.0"
+            },
+            {
+              "ObjectName": "Texture2D'Cardboard_01_2K_Albedo'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Albedo.0"
+            },
+            {
+              "ObjectName": "Texture2D'cardboard_side_42_16_diffuse'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/cardboard_side_42_16_diffuse.0"
+            },
+            {
+              "ObjectName": "Texture2D'FadeGradient_01'",
+              "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+            },
+            {
+              "ObjectName": "Texture2D'CardboardBox_01_Masks'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Masks.0"
+            },
+            {
+              "ObjectName": "Texture2D'CardboardBox_01_Normal'",
+              "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Normal.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+            "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+          },
+          {
+            "ObjectName": "Texture2D'FadeGradient_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+          },
+          {
+            "ObjectName": "Texture2D'CardboardBox_01_Masks'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Masks.0"
+          },
+          {
+            "ObjectName": "Texture2D'CardboardBox_01_Normal'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Cardboard_01_2K_Albedo'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Albedo.0"
+          },
+          {
+            "ObjectName": "Texture2D'cardboard_side_42_16_diffuse'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/cardboard_side_42_16_diffuse.0"
+          },
+          {
+            "ObjectName": "Texture2D'Cardboard_01_2K_Normal'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Cardboard_01_2K_Roughness'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Roughness.0"
+          },
+          {
+            "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_roughness'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_roughness.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+            "Function": {
+              "ObjectName": "MaterialFunction'HueShift'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+            }
+          },
+          {
+            "StateId": "F5C2D477-4BA63455-E32B4B96-0D7674B6",
+            "Function": {
+              "ObjectName": "MaterialFunction'BlendAngleCorrectedNormals'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/BlendAngleCorrectedNormals.0"
+            }
+          },
+          {
+            "StateId": "71028A8D-47BF4037-3A3A0B8A-D7B60E53",
+            "Function": {
+              "ObjectName": "MaterialFunction'ScreenAlignedPixelToPixelUVs'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/ScreenAlignedPixelToPixelUVs.0"
+            }
+          },
+          {
+            "StateId": "22D58D0F-45CC84AB-89A3628B-351D83C8",
+            "Function": {
+              "ObjectName": "MaterialFunction'DitherTemporalAA'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/DitherTemporalAA.0"
+            }
+          },
+          {
+            "StateId": "DE013164-436F5AD7-BA0886B7-DFFD7F63",
+            "Function": {
+              "ObjectName": "MaterialFunction'MF_FX_CameraAlphaFade'",
+              "ObjectPath": "/Game/FX/Material/Function/MF_FX_CameraAlphaFade.0"
+            }
+          },
+          {
+            "StateId": "4D53BF2C-4611FCC2-E70915B0-C9DF17B9",
+            "Function": {
+              "ObjectName": "MaterialFunction'SpeedTreeColorVariation'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/SpeedTree/SpeedTreeColorVariation.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "Cardboard_01_2K_Albedo"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "Cardboard_01_2K_Normal"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "Cardboard_01_2K_Roughness"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "CardboardBox_01_Masks"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "CardboardBox_01_Normal"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 1,
+          "TextureName": "TexturesCom_Wood_Rough_1K_roughness"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            6114086971577603553,
+            6238134600471980535,
+            8224640037258724385,
+            9319159315744901230,
+            9995563756106655147,
+            16678518508348196171,
+            17035420494045392513,
+            17830933328945584460
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "HighlightAmount",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "EdgeHighlightAmount_02",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "CloudsAmount",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "UniqeNormalStrength",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "ProceduralColourVariationAmount",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "HueShiftAmount-01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "GrungeAmount",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "CameraBlend",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "4C4AE3CA-40355DA6-927C3A96-365F88A1",
+            "580237A6-4559F349-64C87788-9B5FD2ED",
+            "5B6C56F8-4BB3070C-16C8059C-4D709AA8",
+            "0A3ADE97-4A2F649F-73132192-8FFBE8FB",
+            "29FAA0DD-4C92EEBE-3C498ABB-F61AC4EB",
+            "B425968C-47D6C336-257FA7BF-90CF7E62",
+            "8774D922-44621190-2B0C49B1-979D598A",
+            "8A6F72F9-4109517C-D82E72AF-CE1B255D"
+          ]
+        },
+        "RuntimeEntries[1]": {
+          "NameHashes": [
+            689059235944245372,
+            5717312084156411589,
+            14965569405058758141,
+            15805936944680676314
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "BaseColour_Vector3",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "CloudsTint",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "EdgeHighlightTint",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "GrungeTint",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "9CA243A8-482F51FD-BECDF5B5-DB13612E",
+            "F8F29141-4E7B1F4B-5A0F6BBF-B2866236",
+            "267E09AF-4CB9AFB2-C39C719D-D0331049",
+            "1BF4F6FC-4D240AA3-8B0BA98D-EF6AED9A"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            440574345582452634,
+            5071287356642726135,
+            5201348363532053956,
+            6340279855419622990,
+            9937518833951754503,
+            12241367727707337503,
+            14261402333221070247,
+            15837357842387435496
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "Roughness",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "EdgeHighlights_RoughnessMap",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "TilingNormal_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "BaseColour_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "BaseColour_02",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "GradientTexture",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "RGBA_Mask",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "UniqueNormal",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "442B9C2C-45A395A0-FB5A13B4-14BBBA86",
+            "E3702BF4-47C0B140-ACBBE990-569D4D44",
+            "DD68C057-4E06D61E-6D5FE5BF-49170B2A",
+            "6CE4E48F-46BFD7AC-8A8823A5-769270CA",
+            "F454C3A0-41808925-F86D08BC-B0416F6E",
+            "4CFE75A7-4B2A9BC6-B6FAD689-7E346703",
+            "37341A6E-4187E654-5F5FC793-1D978B3A",
+            "89BE1E09-41034AA6-96B2B593-42A89F82"
+          ]
+        },
+        "ScalarValues": [
+          0.042,
+          0.42,
+          0.12,
+          0.42,
+          0.0,
+          0.0,
+          0.24,
+          1.0
+        ],
+        "VectorValues": [
+          {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          {
+            "R": 0.869792,
+            "G": 0.800037,
+            "B": 0.656875,
+            "A": 1.0,
+            "Hex": "F0E8D4"
+          },
+          {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          }
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "Texture2D'Cardboard_01_2K_Roughness'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Roughness.0"
+          },
+          {
+            "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_roughness'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_roughness.0"
+          },
+          {
+            "ObjectName": "Texture2D'Cardboard_01_2K_Normal'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Cardboard_01_2K_Albedo'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Albedo.0"
+          },
+          {
+            "ObjectName": "Texture2D'cardboard_side_42_16_diffuse'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/cardboard_side_42_16_diffuse.0"
+          },
+          {
+            "ObjectName": "Texture2D'FadeGradient_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+          },
+          {
+            "ObjectName": "Texture2D'CardboardBox_01_Masks'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Masks.0"
+          },
+          {
+            "ObjectName": "Texture2D'CardboardBox_01_Normal'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Normal.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'CardboardBox_01_Masks'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Masks.0"
+        },
+        {
+          "ObjectName": "Texture2D'CardboardBox_01_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/CardboardBox_01_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Albedo'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Albedo.0"
+        },
+        {
+          "ObjectName": "Texture2D'cardboard_side_42_16_diffuse'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/cardboard_side_42_16_diffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Cardboard_01_2K_Roughness'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/CardboardBoxes_01/Cardboard_01_2K_Roughness.0"
+        },
+        {
+          "ObjectName": "Texture2D'TexturesCom_Wood_Rough_1K_roughness'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/WoodenPlatforms_01/TexturesCom_Wood_Rough_1K_roughness.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+          "Function": {
+            "ObjectName": "MaterialFunction'HueShift'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+          }
+        },
+        {
+          "StateId": "F5C2D477-4BA63455-E32B4B96-0D7674B6",
+          "Function": {
+            "ObjectName": "MaterialFunction'BlendAngleCorrectedNormals'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/BlendAngleCorrectedNormals.0"
+          }
+        },
+        {
+          "StateId": "71028A8D-47BF4037-3A3A0B8A-D7B60E53",
+          "Function": {
+            "ObjectName": "MaterialFunction'ScreenAlignedPixelToPixelUVs'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/ScreenAlignedPixelToPixelUVs.0"
+          }
+        },
+        {
+          "StateId": "22D58D0F-45CC84AB-89A3628B-351D83C8",
+          "Function": {
+            "ObjectName": "MaterialFunction'DitherTemporalAA'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/DitherTemporalAA.0"
+          }
+        },
+        {
+          "StateId": "DE013164-436F5AD7-BA0886B7-DFFD7F63",
+          "Function": {
+            "ObjectName": "MaterialFunction'MF_FX_CameraAlphaFade'",
+            "ObjectPath": "/Game/FX/Material/Function/MF_FX_CameraAlphaFade.0"
+          }
+        },
+        {
+          "StateId": "4D53BF2C-4611FCC2-E70915B0-C9DF17B9",
+          "Function": {
+            "ObjectName": "MaterialFunction'SpeedTreeColorVariation'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/SpeedTree/SpeedTreeColorVariation.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

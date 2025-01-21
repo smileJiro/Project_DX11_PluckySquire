@@ -100,11 +100,11 @@ public: /* For. Light_Manager */
 	HRESULT				Render_Lights(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
 
 public: /* For. Collision_Manager */
-	void				Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData);	/* 충돌 검사 수행 대상 정보 수집. */
-
-	_bool				Intersect_RayCollision(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, const CGameObject* _pThis, _int _iOtherPartIndex = -1);
-	_bool				Intersect_RayCollision_Nearest(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, CGameObject** _ppOutNearestObj, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex = -1);
-	_bool				Intersect_RayCollision_NearestDistance(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex = -1);
+	//void				Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData);	/* 충돌 검사 수행 대상 정보 수집. */
+	//
+	//_bool				Intersect_RayCollision(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, const CGameObject* _pThis, _int _iOtherPartIndex = -1);
+	//_bool				Intersect_RayCollision_Nearest(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, CGameObject** _ppOutNearestObj, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex = -1);
+	//_bool				Intersect_RayCollision_NearestDistance(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex = -1);
 
 
 public: /* For. Font_Manager s*/
@@ -179,6 +179,7 @@ public: /* For. GlobalFunction_Manager */
 	_float				Nomalize_Angle(_float _fAngle);	// 0-360 사이로 각도 변환
 	_float				Lerp(_float _fLeft, _float _fRight, _float _fRatio);
 	_fvector			Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio);
+	_bool				MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix);
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();
@@ -192,8 +193,8 @@ public: /* For. Camera_Manager */
 
 public: /* For. Physx_Manager*/
 	void				Physx_Update(_float _fTimeDelta);
-	HRESULT				Physx_Render();
-	void				Set_Player(CGameObject* _pPlayer);
+	PxPhysics*			Get_Physics() const;
+	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;

@@ -5,7 +5,6 @@ BEGIN(Engine)
 class CGameInstance;
 class CController_Transform;
 class CRay;
-class CCollider;
 class ENGINE_DLL CGameObject abstract : public CBase
 {
 public:
@@ -14,30 +13,31 @@ public:
 		// 객체의 레벨 아이디
 		_uint iCurLevelID;
 	}GAMEOBJECT_DESC;
+
 protected:
 	CGameObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CGameObject(const CGameObject& Prototype);
 	virtual ~CGameObject() = default;
 
 public:
-	virtual HRESULT				Initialize_Prototype(); // 프로토 타입 전용 Initialize
-	virtual HRESULT				Initialize(void* _pArg); // 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
-	virtual void				Priority_Update(_float _fTimeDelta); // 특정개체에 대한 참조가 빈번한 객체들이나, 등등의 우선 업데이트 되어야하는 녀석들.
+	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
+	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+	virtual void				Priority_Update(_float _fTimeDelta);				// 특정개체에 대한 참조가 빈번한 객체들이나, 등등의 우선 업데이트 되어야하는 녀석들.
 	virtual void				Update(_float _fTimeDelta);
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
 
-public:
-	virtual void				OnContains(CGameObject* _pContainObject, CCollider* _pContainCollider);
-	virtual void				OnCollision_Enter(CCollider* _pMyCollider, CGameObject* _pOtherObject, CCollider* _pOtherCollider);
-	virtual void				OnCollision(CCollider* _pMyCollider, CGameObject* _pOtherObject, CCollider* _pOtherCollider);
-	virtual void				OnCollision_Exit(CCollider* _pMyCollider, CGameObject* _pOtherObject, CCollider* _pOtherCollider);
+private:/* Component Update */
+	void						Priority_Update_Component(_float _fTimeDelta);
+	void						Update_Component(_float _fTimeDelta);
+	void						Late_Update_Component(_float _fTimeDelta);
 
 public:
 	CComponent*					Find_Component(const _wstring& _strComponentTag);
 	
 public: /* 모드 전환 */
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition);
+	virtual void                On_CoordinateChange() {}
 
 public:
 	// Get
@@ -47,8 +47,6 @@ public:
 	_matrix						Get_WorldMatrix()								{ return m_pControllerTransform->Get_WorldMatrix(); }
  	_vector						Get_Position() const							{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
 	_float3						Get_Scale() const								{ return m_pControllerTransform->Get_Scale(); }
-	const vector<CCollider*>&	Get_Colliders()									{ return m_Colliders; }
-	CCollider*					Get_Collider(_uint _iCollIndex);				
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_bool						Is_Pooling() const								{ return m_isPooling; }
@@ -71,7 +69,6 @@ protected:
 	CGameInstance*				m_pGameInstance = nullptr;
 	CController_Transform*		m_pControllerTransform = nullptr; 
 	CRay*						m_pRayCom = nullptr;
-	vector<CCollider*>			m_Colliders;
 
 private:
 	static _uint				g_iInstanceIDCount;

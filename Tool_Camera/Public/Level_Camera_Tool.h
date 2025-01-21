@@ -23,9 +23,9 @@ public:
 private:
 	_float				m_fRotationValue = { 0.5f };
 	_float				m_fLengthValue = { 0.5f };
-	_bool				m_isCopyArm = { false };
 
 	_char				m_szCopyArmName[MAX_PATH] = { "" };
+	_char				m_szSelectedArmName[MAX_PATH] = { "" };
 	vector<_wstring>	m_ArmNames;
 	_uint				m_iSelectedArmNum = {};
 	_wstring			m_wszSelectedArm = {};
@@ -34,8 +34,33 @@ private:
 	_float				m_fMoveTimeAxisY = {};
 	_float				m_fMoveTimeAxisRight = {};
 	_float				m_fLengthTime = {};
-	_uint				m_iRotateType = { 2 };
-	_uint				m_iTimeRateType = { 3 };
+	_float2				m_fRotationPerSecAxisY{};
+	_float2				m_fRotationPerSecAxisRight{};
+	_float				m_fLength = {};
+
+
+	_float3				m_vResetArmPos = {};
+
+	// Zoom
+	_int				m_iZoomLevel = {};
+	_float				m_fFovys[10] = {};
+	_uint				m_iRatioType = {};
+	_float				m_fZoomTime = {};
+
+	// Change AtOffset
+	_float3				m_vNextAtOffset = {};
+	_float				m_fAtOffsetTime = {};
+	_uint				m_iAtOffsetRatioType = {};
+
+	// Shake
+	_float				m_fShakeForce = {};
+	_float				m_fShakeTime = {};
+	_float				m_fShakeCycleTime = { 0.05f };
+	_float				m_fShakeDelayTime = { 0.f };
+	_uint				m_iShakeType = {};
+	_int				m_iShakeCount = {};
+
+	_uint				m_iCycleType = {};
 
 private:
 	void				Show_CameraTool();
@@ -43,15 +68,21 @@ private:
 
 	void				Create_Arms();
 	void				Show_ComboBox();
+	void				Show_SelectedArmData();
+	void				Show_CameraZoomInfo();
 
 private:
 	// Tool
-	void				Rotate_Arm(_bool _isCopyArm);
-	void				Change_ArmLength(_bool _isCopyArm);
-	void				Add_CopyArm();
+	void				Rotate_Arm();
+	void				Change_ArmLength();
+	void				Input_NextArm_Info();
 	void				Edit_CopyArm();
 	void				Set_MovementInfo();
 	void				Play_Movement();
+	void				Reset_CurrentArmPos();
+	void				Set_Zoom();
+	void				Set_AtOffsetInfo();
+	void				Set_ShakeInfo();
 
 public:
 	static CLevel_Camera_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

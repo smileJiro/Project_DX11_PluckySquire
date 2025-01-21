@@ -2,13 +2,13 @@
 #include "GameInstance.h"
 
 CContainerObject::CContainerObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    : CGameObject(_pDevice, _pContext)
+    : CActorObject(_pDevice, _pContext)
     , m_PartObjects{}
 {
 }
 
 CContainerObject::CContainerObject(const CContainerObject& _Prototype)
-    : CGameObject(_Prototype)
+    : CActorObject(_Prototype)
     , m_PartObjects{ _Prototype.m_PartObjects }
 {
     for (CGameObject* pPartObject : m_PartObjects)
@@ -85,6 +85,12 @@ HRESULT CContainerObject::Add_PartObject(CGameObject* _pPartObject)
     return S_OK;
 }
 
+void CContainerObject::Set_PartActive(_uint _iPartID, _bool _bValue)
+{
+    if(m_PartObjects[_iPartID])
+       m_PartObjects[_iPartID]->Set_Active(_bValue);
+}
+
 CGameObject* CContainerObject::Get_PartObject(_int _iPartObjectIndex)
 {
     if (_iPartObjectIndex >= m_PartObjects.size())
@@ -113,6 +119,10 @@ HRESULT CContainerObject::Cleanup_DeadReferences()
             Safe_Release(pPartObject);
         }
     }
+
+
+    if (FAILED(__super::Cleanup_DeadReferences()))
+        return E_FAIL;
 
 
     return S_OK;

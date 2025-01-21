@@ -9,16 +9,15 @@
 
 /* For. UI*/
 #include "Pick_Bulb.h"
-#include "SettingPanel.h"
+#include "SettingPanelBG.h"
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "ArrowForStamp.h"
 #include "ESC_HeartPoint.h"
-#include "ESC_Bulb.h"
-#include "ESC_Back.h"
-#include "ESC_BackArrow.h"
-#include "ESC_Enter.h"
 #include "UI_Interaction_Book.h"
+#include "ShopPanel_BG.h"
+
+
 
 /* For. UI*/
 
@@ -26,15 +25,19 @@
 #include "Player.h"
 #include "TestTerrain.h"
 
-#include "Beetle.h"
-#include "BarfBug.h"
-#include "Projectile_BarfBug.h"
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
+
+/* For. Monster */
+#include "Beetle.h"
+#include "BarfBug.h"
+#include "Projectile_BarfBug.h"
+#include "ButterGrump.h"
+
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -115,6 +118,7 @@ void CLoader::Show_Debug()
 
 HRESULT CLoader::Loading_Level_Static()
 {
+
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom.dds"), 1))))
@@ -133,6 +137,9 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCEnter"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBulb"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_icon_bulb.dds"), 1))))
 		return E_FAIL;
 
 
@@ -186,15 +193,31 @@ HRESULT CLoader::Loading_Level_Static()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
+
+    lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
+    /* For. Prototype_Component_Actor_Dynamic */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Dynamic"),
+        CActor_Dynamic::Create(m_pDevice, m_pContext, false))))
         return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Back"), CESC_Back::Create(m_pDevice, m_pContext))))
+
+    /* For. Prototype_Component_Actor_Kinematic */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Kinematic"),
+        CActor_Dynamic::Create(m_pDevice, m_pContext, true))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Actor_Static */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Static"),
+        CActor_Static::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+    lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ParentSettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanelBG::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_BackArrow"), CESC_BackArrow::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Enter"), CESC_Enter::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
@@ -204,6 +227,22 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
 
+    /* Monster */
+
+     /* For. Prototype_GameObject_Beetle */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"),
+        CBeetle::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"),
+        CBarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Projectile_BarfBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Projectile_BarfBug"),
+        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -257,16 +296,29 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_HeartPoint"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/HPBar/HUD_Heart_%d.dds"), 13))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ESCBulb"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_icon_bulb.dds"), 1))))
-		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_KEYQ"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Q.dds"), 1))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ShopBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/T_Panel_BG.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ShopDialogue"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_text.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ShopChooseBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/T_panel_YesNo.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ShopBulb"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_bulb.dds"), 1))))
+		return E_FAIL;
 
 
-
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_BACK"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_backspace.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Enter"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
+		return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -278,7 +330,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/")))))
         return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -291,7 +343,12 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/Anim/"), matPretransform)))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("latch_glove"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/latch_glove/latch_glove.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("latch_sword"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/latch_sword/latch_sword.model", matPretransform))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("WoodenPlatform_01"),
     C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
          return E_FAIL;
@@ -338,29 +395,27 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"),
 		ESC_HeartPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCBulb"),
-		ESC_Bulb::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Book"),
 		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+    // TEST
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ParentShopPannel"),
+		CShopPanel::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ShopPannelBG"),
+		CShopPanel_BG::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
-    /* Monster */
+    ///////////////////////////////// UI /////////////////////////////////
 
-    /* For. Prototype_GameObject_Beetle */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"),
-        CBeetle::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
 
-    /* For. Prototype_GameObject_BarfBug */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"),
-        CBarfBug::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+    /* Boss */
 
-    /* For. Prototype_GameObject_Projectile_BarfBug */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Projectile_BarfBug"),
-        CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_ButterGrump */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"),
+        CButterGrump::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
@@ -525,7 +580,12 @@ HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _
 
         if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
             C3DModel::Create(m_pDevice, m_pContext, str.c_str(), _PreTransformMatrix))))
+        {
+            wstring str = TEXT("Failed to Create 3DModel");
+            str += filename;
+            MessageBoxW(NULL, str.c_str(), TEXT("에러"), MB_OK);
             return E_FAIL;
+        }
 
     } while (FindNextFile(hFind, &FindFileData));
 
@@ -573,7 +633,12 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
 
         if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
             C2DModel::Create(m_pDevice, m_pContext, str.c_str()))))
+        {
+            wstring str = TEXT("Failed to Create 2DModel");
+            str += filename;
+            MessageBoxW(NULL, str.c_str(), TEXT("에러"), MB_OK);
             return E_FAIL;
+        }
 
     } while (FindNextFile(hFind, &FindFileData));
 
@@ -592,7 +657,12 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
 
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+            {
+                string str = "Failed to Create 3DModel";
+                str += entry.path().filename().replace_extension().string();
+                MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
                 return E_FAIL;
+            }
         }
     }
     return S_OK;
@@ -704,6 +774,23 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 
             if (pGameObject)
             {
+                DWORD	dwByte(0);
+                _uint iOverrideCount = 0;
+
+                ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
+                if (0 < iOverrideCount)
+                {
+                    CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
+                    for (_uint i = 0; i < iOverrideCount; i++)
+                    {
+                        _uint iMaterialIndex, iTexTypeIndex, iTexIndex;
+                        ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+                        ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
+                        ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
+
+                        pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
+                    }
+                }
                 pGameObject->Set_WorldMatrix(vWorld);
             }
         }

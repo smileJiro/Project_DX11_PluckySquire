@@ -1,0 +1,77 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MM_WC_Roof_02",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_WC_Roof_01'",
+        "ObjectPath": "/Game/Map/3D/Objects/blocks/materials/MM_WC_Roof_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "HueShift",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": -10.280243,
+          "ExpressionGUID": "409B691B-473D3BE6-789CCFB1-50E42F79"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_Roof_1_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Roof_1/Wooden_Cube_Roof_1_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_Roof_1_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Roof_1/Wooden_Cube_Roof_1_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_Roof_1_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Roof_1/Wooden_Cube_Roof_1_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Roof_Color_Mask'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Roof_1/Roof_Color_Mask.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Roof_Color_Mask"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_Roof_1_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_Roof_1_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_Roof_1_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

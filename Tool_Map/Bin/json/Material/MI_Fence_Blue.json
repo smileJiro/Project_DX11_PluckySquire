@@ -1,0 +1,100 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Fence_Blue",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_Fence'",
+        "ObjectPath": "/Game/Map/3D/Desk_C06/Materials/M_Fence.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Dust_Strength",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.08,
+          "ExpressionGUID": "0F5F73C2-4F3D4DC6-E4ACB7A3-BB465443"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.036458,
+            "G": 0.339842,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "359EFF"
+          },
+          "ExpressionGUID": "A8711058-4A113239-A418758A-DD451359"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Color_Dust",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.75,
+            "G": 0.75,
+            "B": 0.75,
+            "A": 1.0,
+            "Hex": "E1E1E1"
+          },
+          "ExpressionGUID": "BCBA4544-4446CE34-6CBA7097-360E9068"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Fence_FT_1_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/Fence/Fence_FT_1_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Fence_FT_1_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/Fence/Fence_FT_1_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Fence_Dust_Mask'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/Fence/Fence_Dust_Mask.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Fence_Dust_Mask"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Fence_FT_1_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Fence_FT_1_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

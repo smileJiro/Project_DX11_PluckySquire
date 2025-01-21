@@ -36,15 +36,24 @@ HRESULT CCameraArm::Initialize(void* pArg)
     m_fLength = pDesc->fLength;
     m_wszArmTag = pDesc->wszArmTag;
     m_eArmType = pDesc->eArmType;
-
+    
     m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
+
+    m_pTransform = CTransform_3D::Create(m_pDevice, m_pContext);
+    if (nullptr == m_pTransform)
+        return E_FAIL;
+
+    if (FAILED(m_pTransform->Initialize(&pDesc)))
+        return E_FAIL;
+
+    Set_WorldMatrix();
 
 #ifdef _DEBUG
     Set_PrimitiveBatch();
 #endif // _DEBUG
 
-    Turn_ArmX(m_vRotation.x);
-    Turn_ArmY(m_vRotation.y);
+  /*  Turn_ArmX(m_vRotation.x);
+    Turn_ArmY(m_vRotation.y);*/
 
     return S_OK;
 }
@@ -144,6 +153,24 @@ HRESULT CCameraArm::Set_PrimitiveBatch()
 }
 #endif
 
+void CCameraArm::Set_WorldMatrix()
+{
+    _vector vLook = XMLoadFloat3(&m_vArm);
+    _vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
+    _vector vUp = XMVector3Cross(vLook, vRight);
+
+    m_pTransform->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
+    m_pTransform->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
+    m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
+
+    // 초기 회전
+    _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
+    m_pTransform->TurnAngle(m_vRotation.x, vCrossX);
+    m_pTransform->TurnAngle(m_vRotation.y);
+
+    XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
+}
+
 _vector CCameraArm::Calculate_CameraPos(_float fTimeDelta)
 {
     _vector vTargetPos;
@@ -160,8 +187,25 @@ _vector CCameraArm::Calculate_CameraPos(_float fTimeDelta)
 void CCameraArm::Set_Rotation(_vector _vRotation)
 {
     XMStoreFloat3(&m_vRotation, _vRotation);
-    Turn_ArmX(m_vRotation.x);
-    Turn_ArmY(m_vRotation.y);
+    
+    _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
+    m_pTransform->TurnAngle(m_vRotation.x, vCrossX);
+    m_pTransform->TurnAngle(m_vRotation.y);
+
+    XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
+}
+
+void CCameraArm::Set_ArmVector(_vector _vArm)
+{
+    XMStoreFloat3(&m_vArm, _vArm);
+
+    _vector vLook = XMLoadFloat3(&m_vArm);
+    _vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
+    _vector vUp = XMVector3Cross(vLook, vRight);
+
+    m_pTransform->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
+    m_pTransform->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
+    m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 }
 
 void CCameraArm::Turn_ArmX(_float fAngle)
@@ -170,13 +214,19 @@ void CCameraArm::Turn_ArmX(_float fAngle)
     _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
     _matrix RotationMatrix;
 
-    if (0 < XMVectorGetY(vCrossX))
-        RotationMatrix = XMMatrixRotationAxis(vCrossX, fAngle);
-    else
+    if (0 < XMVectorGetY(vCrossX)) {
         RotationMatrix = XMMatrixRotationAxis(vCrossX, -fAngle);
+        cout << "fAngle+++++++++++++++" << endl;
+    }
+    else {
+        RotationMatrix = XMMatrixRotationAxis(vCrossX, +fAngle);
+        cout << "fAngle----------------" << endl;
+    }
 
     _vector vRoatateArm = XMVector3TransformNormal(XMLoadFloat3(&m_vArm), RotationMatrix);
     XMStoreFloat3(&m_vArm, vRoatateArm);
+
+
 }
 
 void CCameraArm::Turn_ArmY(_float fAngle)
@@ -188,84 +238,77 @@ void CCameraArm::Turn_ArmY(_float fAngle)
     XMStoreFloat3(&m_vArm, vRoatateArm);
 }
 
-_float CCameraArm::Calculate_Ratio()
+_float CCameraArm::Calculate_Ratio(_uint _iTimeRate, _float2* _fTime, _float _fTimeDelta)
 {
-    return _float();
+    _float fRatio = {};
+
+    //_fTime->y += _fTimeDelta;
+    //fRatio = _fTime->y / _fTime->x;
+
+    //switch (_iTimeRate) {
+    //case EASE_IN:
+    //    fRatio = (fRatio + pow(fRatio, 2)) * 0.5f;
+    //    break;
+    //case EASE_OUT:
+    //    fRatio = 1.0f - ((1.0f - fRatio) + pow(1.0f - fRatio, 2)) * 0.5f;
+    //    break;
+    //case LERP:
+    //    break;
+    //}
+
+    return fRatio;
 }
 
-_bool CCameraArm::Move_To_NextArm_Cross(_float _fTimeDelta)
+_bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
 {
-    _vector vArm = XMLoadFloat3(&m_vArm);
-    _vector vNextArm = XMLoadFloat3(&m_pNextArmData->vArm);
+    // Y축 회전
+    if (!(m_iRoateFlags & DONE_Y_ROTATE)) { // 안 끝났을 때
+       
+        m_pNextArmData->fMoveTimeAxisY.y += _fTimeDelta;
+        _float fRatio = m_pNextArmData->fMoveTimeAxisY.y / m_pNextArmData->fMoveTimeAxisY.x;
 
-    _vector vCross = XMVector3Cross(vArm, vNextArm);
+        if (m_pNextArmData->fMoveTimeAxisY.y >= m_pNextArmData->fMoveTimeAxisY.x) {
+            m_pNextArmData->fMoveTimeAxisY.y = 0.f;
+            m_iRoateFlags |= DONE_Y_ROTATE;
+        }
+        else {
+            _float fRotationPerSec = m_pGameInstance->Lerp(m_pNextArmData->fRotationPerSecAxisY.x, m_pNextArmData->fRotationPerSecAxisY.y, fRatio);
+            m_pTransform->Set_RotationPerSec(fRotationPerSec);
 
-    if (false == m_bSave) {
-        _vector vDot = XMVector3Dot(XMVector3Normalize(vArm), XMVector3Normalize(vNextArm));
-        m_fSavedAngle = acos(XMVectorGetX(vDot));
-        m_bSave = true;
+            m_pTransform->Turn(_fTimeDelta, XMVectorSet(0.0f, 1.f, 0.f, 0.f));
+
+            _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+            XMStoreFloat3(&m_vArm, vLook);
+        }
     }
 
-    _vector vResultArm;
+    if (!(m_iRoateFlags & DONE_RIGHT_ROTATE)) {
 
-    m_pNextArmData->fMoveTimeAxisY.y += _fTimeDelta;
-    _float fRatio = m_pNextArmData->fMoveTimeAxisY.y / m_pNextArmData->fMoveTimeAxisY.x;
+        m_pNextArmData->fMoveTimeAxisRight.y += _fTimeDelta;
+        _float fRatio = m_pNextArmData->fMoveTimeAxisRight.y / m_pNextArmData->fMoveTimeAxisRight.x;
 
-    if (fRatio > 1.f) {
-        m_vArm = m_pNextArmData->vArm;
-        m_pNextArmData->fMoveTimeAxisY.y = 0.f;
-        m_bSave = false;
-        m_fPreAngle = 0.f;
+        if (m_pNextArmData->fMoveTimeAxisRight.y >= m_pNextArmData->fMoveTimeAxisRight.x) {
+            m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
+            m_iRoateFlags |= DONE_RIGHT_ROTATE;
+        }
+        else {
+            _float fRotationPerSec = m_pGameInstance->Lerp(m_pNextArmData->fRotationPerSecAxisRight.x, m_pNextArmData->fRotationPerSecAxisRight.y, fRatio);
+            m_pTransform->Set_RotationPerSec(fRotationPerSec);
+
+            _vector vCross = XMVector3Cross(XMLoadFloat3(&m_vArm), XMVectorSet(0.f, 1.f, 0.f, 0.f));
+
+            m_pTransform->Turn(_fTimeDelta, vCross);
+
+            _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+            XMStoreFloat3(&m_vArm, vLook);
+        }
+    }
+
+    if (ALL_DONE_ROTATE == (m_iRoateFlags & ALL_DONE_ROTATE)) {
+        m_iRoateFlags = RESET_FLAG;
+
         return true;
     }
-
-    _float fTotalAngle = m_pGameInstance->Lerp(0.f, m_fSavedAngle, fRatio);
-
-    _float fResultAngle = fTotalAngle - m_fPreAngle;
-
-    m_fPreAngle = fTotalAngle;
-
-    _vector quat = {};
-
-    if (XMVectorGetY(vCross) >= 0) {
-        quat = XMQuaternionRotationAxis(XMVector3Normalize(vCross), fResultAngle);
-    }
-    else {
-        quat = XMQuaternionRotationAxis(XMVector3Normalize(vCross), -fResultAngle);
-    }
-
-    _matrix RotationMatrix = XMMatrixRotationQuaternion(quat);
-
-    vArm = XMVector3TransformNormal(vArm, RotationMatrix);
-
-    XMStoreFloat3(&m_vArm, vArm);
-
-    return false;
-}
-
-_bool CCameraArm::Move_To_NextArm_NotCross(_float _fTimeDelta)
-{
-   /* if (false == m_bSave) {
-        m_SavedArm = m_vArm;
-        m_bSave = true;
-    }
-
-    _vector vArm = XMLoadFloat3(&m_SavedArm);
-    _vector vNextArm = XMLoadFloat3(&m_pNextArmData->vArm);
-
-    m_pNextArmData->fMoveTime.y += _fTimeDelta;
-    _float fRatio = m_pNextArmData->fMoveTime.y / m_pNextArmData->fMoveTime.x;
-
-    if (fRatio > 1.f) {
-        m_vArm = m_pNextArmData->vArm;
-        m_pNextArmData->fMoveTime.y = 0.f;
-        m_SavedArm = {};
-        return true;
-    }
-
-    _vector vResultArm = XMVectorLerp(XMVector3Normalize(vArm), XMVector3Normalize(vNextArm), fRatio);
-
-    XMStoreFloat3(&m_vArm, vResultArm);*/
 
     return false;
 }
@@ -301,6 +344,7 @@ void CCameraArm::Free()
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
     Safe_Release(m_pGameInstance);
+    Safe_Release(m_pTransform);
 
 #ifdef _DEBUG
     Safe_Delete(m_pBatch);

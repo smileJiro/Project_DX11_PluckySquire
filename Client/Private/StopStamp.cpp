@@ -17,11 +17,6 @@ CStopStamp::CStopStamp(const CStopStamp& _Prototype)
 
 HRESULT CStopStamp::Initialize_Prototype()
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-	
-
 	return S_OK;
 }
 
@@ -31,6 +26,11 @@ HRESULT CStopStamp::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+
 
 	m_ePreStamp = CUI_Manager::GetInstance()->Get_StampIndex();
 
@@ -121,8 +121,8 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 		if (eStamp == CUI_Manager::STAMP_BOMB)
 		{
 			//위치 변경이 필요한가요?
-			m_fX = g_iWinSizeX / 7.5;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
+			m_fX = g_iWinSizeX / 7.5f;
+			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 
 			m_isSmall = true;
 			m_isScaling = true;
@@ -130,8 +130,8 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 		else if (eStamp == CUI_Manager::STAMP_STOP)
 		{
 			//위치 변경이 필요한가요?
-			m_fX = g_iWinSizeX / 7.5;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10;
+			m_fX = g_iWinSizeX / 7.5f;
+			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 
 			m_isBig = true;
 			m_isScaling = true;
@@ -146,8 +146,8 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 		{
 			if (m_fSizeX <= 96)
 			{
-				m_fSizeX += _fTimeDelta * 100;
-				m_fSizeY += (_fTimeDelta * 1.54) * 100;
+				m_fSizeX += _fTimeDelta * 100.f;
+				m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
 
 				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
@@ -162,8 +162,8 @@ void CStopStamp::ChangeStamp(_float _fTimeDelta)
 		{
 			if (m_fSizeX > 72)
 			{
-				m_fSizeX -= _fTimeDelta * 100;
-				m_fSizeY -= (_fTimeDelta * 1.54) * 100;
+				m_fSizeX -= _fTimeDelta * 100.f;
+				m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;
 
 				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
@@ -190,7 +190,7 @@ HRESULT CStopStamp::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_StopStamp"),
+	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_StopStamp"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

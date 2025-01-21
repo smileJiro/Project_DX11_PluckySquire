@@ -186,10 +186,9 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\DetectionField.h" />
-    <ClInclude Include="..\Public\ESC_Back.h" />
-    <ClInclude Include="..\Public\ESC_BackArrow.h" />
-    <ClInclude Include="..\Public\ESC_Bulb.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\ChaseWalkState.h" />
@@ -199,12 +198,15 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CriticalSectionGuard.h" />
-    <ClInclude Include="..\Public\ESC_Enter.h" />
     <ClInclude Include="..\Public\ESC_HeartPoint.h" />
     <ClInclude Include="..\public\FSM.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\public\IdleState.h" />
+    <ClInclude Include="..\Public\SettingPanel.h" />
+    <ClInclude Include="..\Public\ShopPanel.h" />
+    <ClInclude Include="..\Public\PlayerState_Attack.h" />
+    <ClInclude Include="..\Public\ShopPanel_BG.h" />
     <ClInclude Include="..\Public\Level_Physx.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
@@ -215,7 +217,7 @@
     <ClInclude Include="..\Public\Pooling_Manager.h" />
     <ClInclude Include="..\public\Projectile_BarfBug.h" />
     <ClInclude Include="..\Public\RangedAttackState.h" />
-    <ClInclude Include="..\public\SettingPanel.h" />
+    <ClInclude Include="..\public\SettingPanelBG.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -242,22 +244,24 @@
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
-    <ClCompile Include="..\Private\ESC_Back.cpp" />
-    <ClCompile Include="..\Private\ESC_BackArrow.cpp" />
-    <ClCompile Include="..\Private\ESC_Bulb.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\ChaseWalkState.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
     <ClCompile Include="..\Private\Condition.cpp" />
     <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
-    <ClCompile Include="..\Private\ESC_Enter.cpp" />
     <ClCompile Include="..\Private\ESC_HeartPoint.cpp" />
     <ClCompile Include="..\private\FSM.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\IdleState.cpp" />
+    <ClCompile Include="..\Private\SettingPanel.cpp" />
+    <ClCompile Include="..\Private\ShopPanel.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_BG.cpp" />
     <ClCompile Include="..\Private\Level_Physx.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
@@ -269,7 +273,7 @@
     <ClCompile Include="..\Private\Pooling_Manager.cpp" />
     <ClCompile Include="..\private\Projectile_BarfBug.cpp" />
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
-    <ClCompile Include="..\private\SettingPanel.cpp" />
+    <ClCompile Include="..\private\SettingPanelBG.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />

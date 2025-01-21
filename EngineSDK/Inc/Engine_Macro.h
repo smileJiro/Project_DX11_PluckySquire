@@ -3,6 +3,7 @@
 
 #define			PI 3.1415926f
 #define			MATERIAL_TEXTURE_MAX	25
+#define			COLLIDER_DEFAULT_DENSITY 10.f
 
 
 namespace Engine // Engine NameSpace를 사용하는 클래스의 기능을 호출하는 것이 아닌 상수 정의와 같은 Define은 namespace 안에 넣을 필요없다.

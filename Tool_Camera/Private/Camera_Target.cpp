@@ -37,17 +37,19 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CCamera_Target::Priority_Update(_float fTimeDelta)
+void CCamera_Target::Priority_Update(_float _fTimeDelta)
 {
 	
 }
 
-void CCamera_Target::Update(_float fTimeDelta)
+void CCamera_Target::Update(_float _fTimeDelta)
 {
-	Action_Mode(fTimeDelta);
+	Action_Mode(_fTimeDelta);
+
+	m_pArm->Get_ArmVector();
 }
 
-void CCamera_Target::Late_Update(_float fTimeDelta)
+void CCamera_Target::Late_Update(_float _fTimeDelta)
 {
 	__super::Compute_PipeLineMatrices();
 }
@@ -83,49 +85,48 @@ void CCamera_Target::Set_NextArmData(ARM_DATA* _pData)
 	m_pArm->Set_NextArmData(_pData);
 }
 
-void CCamera_Target::Action_Mode(_float fTimeDelta)
+void CCamera_Target::Action_Mode(_float _fTimeDelta)
 {
+	Action_Zoom(_fTimeDelta);
+	Action_Shake(_fTimeDelta);
+	Change_AtOffset(_fTimeDelta);
+
 	switch (m_eCameraMode) {
 	case DEFAULT:
-		Defualt_Move(fTimeDelta);
+		Defualt_Move(_fTimeDelta);
 		break;
 	case MOVE_TO_NEXTARM:
-		Move_To_NextArm(fTimeDelta);
+		Move_To_NextArm(_fTimeDelta);
 		break;
 	}
 }
 
-void CCamera_Target::Defualt_Move(_float fTimeDelta)
+void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 {
-	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
+	_vector vCameraPos = m_pArm->Calculate_CameraPos(_fTimeDelta);
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	Look_Target(fTimeDelta);
+	Look_Target(_fTimeDelta);
 }
 
-void CCamera_Target::Move_To_NextArm(_float fTimeDelta)
+void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
-	//_uint iRotateType = m_pArm->GEt
-	//switch(m)
-
-
-	if (true == m_pArm->Move_To_NextArm_Cross(fTimeDelta)) {
+	if (true == m_pArm->Move_To_NextArm(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
-
 		return;
 	}
 
-	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
+	_vector vCameraPos = m_pArm->Calculate_CameraPos(_fTimeDelta);
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	Look_Target(fTimeDelta);
+	Look_Target(_fTimeDelta);
 }
 
-void CCamera_Target::Look_Target(_float fTimeDelta)
+void CCamera_Target::Look_Target(_float _fTimeDelta)
 {
 	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
-
-	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
+	
+	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 

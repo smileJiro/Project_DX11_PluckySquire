@@ -1,0 +1,36 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_PlasticDinosaurToy_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_DinosaurToyPlaceholder_01'",
+        "ObjectPath": "/Game/Map/3D/Desk_C07/Materials/MM_DinosaurToyPlaceholder_01.0"
+      },
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Brachiosaurus_d'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_d.0"
+        },
+        {
+          "ObjectName": "Texture2D'Brachiosaurus_normal_map'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/DinosaurToys/Brachiosaurus_normal_map.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

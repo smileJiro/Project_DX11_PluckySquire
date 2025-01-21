@@ -20,9 +20,15 @@ namespace Map_Tool
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& _wstr); 
 
+	pair<_wstring, _wstring> Get_FileName_From_Path(const _wstring& filePath);
 
 	_bool Path_String_Validation_Check(const _string _strText);
 	_bool Path_String_Validation_Check(const _wstring _strText);
+
+
+
+	_bool ContainString(const _string _strSourceText, const _string _strDestText);
+	_bool EndString(const _string _strSourceText, const _string _strDestText);
 
 
 }

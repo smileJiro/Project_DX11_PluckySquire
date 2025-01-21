@@ -80,7 +80,11 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
 		}
 		else if (entry.path().extension() == ".png") 
 		{
-			m_AnimTextures.insert({ entry.path().filename().replace_extension().string(), CTexture::Create(m_pDevice, m_pContext, entry.path().c_str()) });
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, entry.path().c_str());
+		
+			auto result = m_AnimTextures.insert({ entry.path().filename().replace_extension().string(), pTexture });
+			if (result.second == false)
+				Safe_Release(pTexture);
 		}
 	}
 
@@ -133,11 +137,17 @@ void C2DModel::Set_Animation(_uint _iIdx)
 void C2DModel::Switch_Animation(_uint _iIdx)
 {
 	m_iCurAnimIdx = _iIdx;
+	m_Animation2Ds[m_iCurAnimIdx]->Reset_CurrentTrackPosition();
 }
 
 void C2DModel::To_NextAnimation()
 {
 	Switch_Animation((m_iCurAnimIdx + 1) % m_Animation2Ds.size());
+}
+
+const _matrix* C2DModel::Get_CurrentSpriteTransform()
+{
+	return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();
 }
 
 _uint C2DModel::Get_AnimCount()

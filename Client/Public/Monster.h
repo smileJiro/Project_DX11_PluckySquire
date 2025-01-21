@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "ContainerObject.h"
+#include "Character.h"
 
 BEGIN(Client)
 class CFSM;
-class CMonster abstract : public CContainerObject
+class CMonster abstract : public CCharacter
 {
 public:
 	enum MONSTERPART { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
 
-	typedef struct tagMonsterDesc : public CContainerObject::CONTAINEROBJ_DESC
+	typedef struct tagMonsterDesc : public CCharacter::CHARACTER_DESC
 	{
 		_float fAlertRange;
 		_float fChaseRange;

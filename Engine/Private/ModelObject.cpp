@@ -74,10 +74,12 @@ void CModelObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CModelObject::Render()
 {
+    int a = 0;
 #ifdef _DEBUG
-    if (m_iInstanceID == 1)
+    if (m_iInstanceID == 668)
     {
-        int a = 0;
+        a = 1;
+        cout << a << endl;
     }
 #endif // _DEBUG
 
@@ -155,9 +157,14 @@ HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& 
     return	m_pControllerModel->Change_Coordinate(_eCoordinate);
 }
 
-void CModelObject::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
+CModel* CModelObject::Get_Model(COORDINATE _eCoord)
 {
-    m_pControllerModel->Set_AnimationLoop(iIdx, bIsLoop);
+    return m_pControllerModel->Get_Model(_eCoord);
+}
+
+void CModelObject::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop)
+{
+    m_pControllerModel->Set_AnimationLoop(_eCoord,iIdx, bIsLoop);
 }
 
 void CModelObject::Set_Animation(_uint iIdx)
@@ -237,7 +244,11 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
     switch (m_pControllerTransform->Get_CurCoord())
     {
     case Engine::COORDINATE_2D:
-        if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_2D])))
+        _matrix matLocal = *static_cast<C2DModel*>(m_pControllerModel->Get_Model(COORDINATE_2D))->Get_CurrentSpriteTransform();
+		_matrix matWorld = matLocal*XMLoadFloat4x4( &m_WorldMatrices[COORDINATE_2D]) ;
+        _float4x4 matWorld4x4;
+        XMStoreFloat4x4(&matWorld4x4 ,matWorld);
+        if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
             return E_FAIL;
 
         if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
@@ -266,6 +277,22 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
 
     return S_OK;
 }
+
+
+
+_uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
+{
+    if (m_pControllerModel)
+        return m_pControllerModel->Get_TextureIndex_To_3D(_eTextureType, _iMaterialIndex);
+    return 0;
+}
+void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
+{
+    if (m_pControllerModel)
+        m_pControllerModel->Binding_TextureIndex_To_3D(_iIndex, _eTextureType, _iMaterialIndex);
+}
+
+
 
 
 CModelObject* CModelObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

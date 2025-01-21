@@ -30,8 +30,7 @@ HRESULT CPick_Bulb::Initialize(void* _pArg)
 		return E_FAIL;
 
 
-	//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(g_iWinSizeX/ 2, g_iWinSizeY / 2, 1.f, 1.f));
-	//m_pControllerTransform->Set_Scale(50.f, 50.f, 1.f);
+
 	return S_OK;
 }
 

@@ -6,12 +6,13 @@
 
 //#include "Camera_Target.h"
 #include "Test_Player.h"
-#include "Test_Body_Player.h"
 #include "Test_Terrain.h"
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "2DModel.h"
+
+#include "StateMachine.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -144,6 +145,10 @@ HRESULT CLoader::Loading_Level_Static()
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
+        CStateMachine::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -162,18 +167,30 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
+
     /* For. Prototype_Component_VIBuffer_Rect */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_VIBuffer_Rect"),
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/TestModels/2DAnim/Player/player2DAnimation.json")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Player/")))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
+    //    TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
+    //    return E_FAIL;
+
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
-        TEXT("../Bin/Resources/TestModels/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/Models/Anim/Latch_SkelMesh_NewRig/"), matPretransform)))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("latch_glove"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/latch_glove/latch_glove.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("WoodenPlatform_01"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
@@ -184,9 +201,9 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     /* For. Prototype_GameObject_TestBody */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Body_Player"),
-        CTest_Body_Player::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Body_Player"),
+    //    CTest_Body_Player::Create(m_pDevice, m_pContext))))
+    //    return E_FAIL;
 
     /* For. Prototype_GameObject_TestTerrain */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Terrain"),

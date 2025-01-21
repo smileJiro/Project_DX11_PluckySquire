@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "UI.h"
-#include "GameInstance.h"
+//#include "UI_Manager.h"
+
+
 
 
 CUI::CUI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
 {
+	
 }
 
 CUI::CUI(const CUI& Prototype)
@@ -23,8 +26,8 @@ HRESULT CUI::Initialize(void* pArg)
 	if(FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
+	//if (FAILED(Ready_Components()))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -107,9 +110,12 @@ HRESULT CUI::Bind_ShaderResources()
 
 void CUI::Free()
 {
-	__super::Free();
-
 	Safe_Release(m_pShaderComs[COORDINATE_2D]);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
+
+	__super::Free();
+	
+
+
 }

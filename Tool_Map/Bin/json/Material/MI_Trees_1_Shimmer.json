@@ -1,0 +1,114 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Trees_1_Shimmer",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_SimpleProps_Shimmer_01'",
+        "ObjectPath": "/Game/Materials/ModelUpdates/MM_SimpleProps_Shimmer_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Trees_01_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Trees_01/Trees_01_BaseColor.0"
+          },
+          "ExpressionGUID": "A81585F2-40BEC55A-085987A9-395834C6"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Trees_01_Normal'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Trees_01/Trees_01_Normal.0"
+          },
+          "ExpressionGUID": "5AF985A0-4E48F51B-94D6C080-143F5635"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "ORMH",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Trees_01_ORMH'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Trees_01/Trees_01_ORMH.0"
+          },
+          "ExpressionGUID": "3FB6A6BF-490D2B00-1A3CD5BA-EF197027"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Bed_L_FT_lambert1_Normal_1001'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_Normal_1001.0"
+        },
+        null,
+        {
+          "ObjectName": "Texture2D'DefaultDiffuse'",
+          "ObjectPath": "/Engine/EngineMaterials/DefaultDiffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'GradientTest_01'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/ShimmerMaterial/GradientTest_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001.0"
+        },
+        {
+          "ObjectName": "Texture2D'Bed_L_FT_lambert1_BaseColor_1001'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_BaseColor_1001.0"
+        },
+        {
+          "ObjectName": "Texture2D'1_rough_1002'",
+          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+        },
+        {
+          "ObjectName": "Texture2D'1_metal_1002'",
+          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Trees_01_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Trees_01_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Trees_01_ORMH"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

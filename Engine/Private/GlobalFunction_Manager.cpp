@@ -116,6 +116,22 @@ _fvector CGlobalFunction_Manager::Get_BezierCurve(_fvector vStartPoint, _fvector
 	return vResult;
 }
 
+_bool CGlobalFunction_Manager::MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix)
+{
+	_vector vScale, vRotation, vPosition;
+	if (false == XMMatrixDecompose(&vScale, &vRotation, &vPosition, _Matrix))
+		return false;
+
+	if (nullptr != _vScale)
+		XMStoreFloat3(_vScale, vScale);
+	if (nullptr != _vQuaternion)
+		XMStoreFloat4(_vQuaternion, vRotation);
+	if (nullptr != _vPosition)
+		XMStoreFloat3(_vPosition, vPosition);
+
+	return true;
+}
+
 _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 {
 	POINT ptCursorPos;

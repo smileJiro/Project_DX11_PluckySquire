@@ -1,13 +1,13 @@
 #pragma once
 
-#include "GameObject.h"
+#include "ActorObject.h"
 
 BEGIN(Engine)
 
-class ENGINE_DLL CPartObject abstract : public CGameObject
+class ENGINE_DLL CPartObject abstract : public CActorObject
 {
 public:
-	typedef struct tagPartObjectDesc : public CGameObject::GAMEOBJECT_DESC
+	typedef struct tagPartObjectDesc : public CActorObject::ACTOROBJECT_DESC
 	{
 		// 2D, 3D 개별적인 부모 매트릭스
 		const _float4x4* pParentMatrices[COORDINATE_LAST] = {};
@@ -27,11 +27,12 @@ public:
 
 public:
 	const _float4x4*		Get_FinalWorldMatrix_Ptr(COORDINATE _eCoord) { return &m_WorldMatrices[_eCoord]; }
+	void Set_SocketMatrix(const _float4x4* _pSocketMatrix) { m_pSocketMatrix = _pSocketMatrix; }
 
 protected:
 	const _float4x4*		m_pParentMatrices[COORDINATE_LAST] = {}; // 부모의 월드 행렬의 주소
 	_float4x4				m_WorldMatrices[COORDINATE_LAST] = {}; // 자기자신의 최종 행렬 
-
+	const _float4x4* m_pSocketMatrix = nullptr ;
 public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override; 

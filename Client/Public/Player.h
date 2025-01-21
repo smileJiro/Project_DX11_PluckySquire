@@ -1,12 +1,18 @@
 #pragma once
-#include "ContainerObject.h"
+#include "Character.h"
 
 BEGIN(Client)
 class CStateMachine;
-class CPlayer final : public CContainerObject
+class CPlayer final : public CCharacter
 {
 public:
-	
+	enum PLAYER_PART
+	{
+		PLAYER_PART_SWORD= 1,
+		PLAYER_PART_GLOVE,
+		PLAYER_PART_STAMP,
+		PLAYER_PART_LAST
+	};
 	enum STATE
 	{
 		IDLE,
@@ -27,7 +33,7 @@ public:
 		,LATCHSWORDSTUCK_FLIPBOOK
 		,LATCHSWORD_
 		,PLAYER_C06_END
-		,PLAYER_C06_IDLE01
+		,PLAYER_C06_IDLE01 = 10
 		,PLAYER_C06_IDLE01TRANSITION
 		,PLAYER_C06_IDLE01_INTO
 		,PLAYER_C06_IDLE02
@@ -85,7 +91,7 @@ public:
 		,JUMP_OUT_PLAYER_ZIPOUT_UP_EDIT
 		,PLAYER_FX_FLASH
 		,PLAYER_FX_POP
-		,PLAYER_ATTACK_DOWN
+		,PLAYER_ATTACK_DOWN = 68 
 		,PLAYER_ATTACK_RIGHT
 		,PLAYER_ATTACK_UP
 		,PLAYER_ATTACKCOMBO_01_SS
@@ -217,7 +223,7 @@ public:
 		,PLAYER_ROLL_INTO
 		,PLAYER_ROLL_LOOP
 		,PLAYER_ROLL_OUT
-		,PLAYER_RUN_DOWN
+		,PLAYER_RUN_DOWN = 200
 		,PLAYER_RUN_OBJECT_DOWN
 		,PLAYER_RUN_OBJECT_RIGHT
 		,PLAYER_RUN_OBJECT_UP
@@ -366,13 +372,20 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+	void									On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+	virtual void                     On_CoordinateChange() override;
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
 	void Move(_vector _vDir,_float _fTimeDelta);
+	void Attack(_uint _iCombo);
+
+	//Get
+	F_DIRECTION Get_2DDirection() { return m_e2DDirection; }
+	//Set
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
-
-	F_DIRECTION Get_2DDirection() { return m_e2DDirection; }
 	void Set_2DDirection(F_DIRECTION _eFDir);
+	void Equip_Part(PLAYER_PART _ePartId);
+	void UnEquip_Part(PLAYER_PART _ePartId);
 private:
 	void					Key_Input(_float _fTimeDelta);
 
@@ -383,6 +396,7 @@ private:
 private:
 	CStateMachine* m_pStateMachine = nullptr;
 	F_DIRECTION m_e2DDirection = F_DIRECTION::F_DIR_LAST;
+	
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

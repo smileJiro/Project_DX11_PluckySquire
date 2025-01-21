@@ -55,8 +55,8 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     m_pFSM->Add_State(MONSTER_STATE::ATTACK);
     m_pFSM->Set_State(MONSTER_STATE::IDLE);
 
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(IDLE, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(WALK, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(BARF, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
 
@@ -66,7 +66,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 
     /*  Projectile  */
     Pooling_DESC Pooling_Desc;
-    Pooling_Desc.iPrototypeLevelID = m_iCurLevelID;
+    Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
     Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
 
@@ -120,11 +120,6 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::F3))
-    {
-        Event_DeleteObject(this);
-    }
-
     m_pFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -179,12 +174,12 @@ void CBarfBug::Attack(_float _fTimeDelta)
 {
     if (false == m_isDelay && false == m_isCool)
     {
-        _float3 vPosition;
+        _float3 vScale, vPosition;
         _float4 vRotation;
-        _vector vvScale, vvRotation, vvPosition;
-        XMMatrixDecompose(&vvScale, &vvRotation, &vvPosition, m_pControllerTransform->Get_WorldMatrix());
-		XMStoreFloat3(&vPosition, vvPosition + XMVectorSet(0.f, vvScale.m128_f32[1] * 0.5f, 0.f, 1.f));
-        XMStoreFloat4(&vRotation, vvRotation);
+        if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+            return;
+
+        vPosition.y += vScale.y * 0.5f;
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"),&vPosition, &vRotation);
         Delay_On();

@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CPartObject::CPartObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    : CGameObject(_pDevice, _pContext)
+    : CActorObject(_pDevice, _pContext)
 {
 }
 
 CPartObject::CPartObject(const CPartObject& _Prototype)
-    : CGameObject(_Prototype)
+    : CActorObject(_Prototype)
 {
 }
 
@@ -47,7 +47,25 @@ void CPartObject::Update(_float _fTimeDelta)
         break;
     case Engine::COORDINATE_3D:
         if(nullptr != m_pParentMatrices[COORDINATE_3D])
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+        {
+            if (m_pSocketMatrix)
+            {
+                _matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
+
+           /*     for (size_t i = 0; i < 3; i++)
+                    SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);*/
+                XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], 
+                    m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) 
+                    * SocketMatrix 
+                    * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+
+            }
+            else
+            {
+				XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+            }
+
+        }
         else
             XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
         break;
@@ -68,7 +86,22 @@ void CPartObject::Late_Update(_float _fTimeDelta)
         break;
     case Engine::COORDINATE_3D:
         if (nullptr != m_pParentMatrices[COORDINATE_3D])
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+        {
+            if (m_pSocketMatrix)
+            {
+                _matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
+                for (size_t i = 0; i < 3; i++)
+                    SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);
+                XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D],
+                    m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D)
+                    * SocketMatrix
+                    * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+            }
+            else
+            {
+                XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+            }
+        }
         else
             XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
         break;
@@ -92,6 +125,8 @@ void CPartObject::Free()
 
 HRESULT CPartObject::Cleanup_DeadReferences()
 {
+    if (FAILED(__super::Cleanup_DeadReferences()))
+        return E_FAIL;
 
     return S_OK;
 }

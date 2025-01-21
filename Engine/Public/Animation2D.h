@@ -13,10 +13,13 @@ private:
 
 public:
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
-
+	const _matrix* Get_Transform() const { 
+		return &matSpriteTransform; 
+	}
 private:
 	_float2 vSpriteStartUV = { 0,0};
 	_float2 vSpriteEndUV= { 0,0};
+	_matrix matSpriteTransform ;
 	CTexture* pTexture = { nullptr };
 	_float fPixelsPerUnrealUnit = { 1.0f };
 	vector<_float4> fBakedRenderData ;
@@ -37,10 +40,14 @@ private:
 public:
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
 	_bool Play_Animation(_float _fTimeDelta);
-	const CSpriteFrame* GetCurrentSprite() { return SpriteFrames[iCurrentFrame].first; }
-	void Set_Loop(_bool bIsLoop) { bLoop = bIsLoop; }
 
 	void Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun);
+	void Reset_CurrentTrackPosition();
+
+	const CSpriteFrame* GetCurrentSprite() { return SpriteFrames[iCurrentFrame].first; }
+	const _matrix* Get_CurrentSpriteTransform() ;
+
+	void Set_Loop(_bool bIsLoop) { bLoop = bIsLoop; }
 private:
 	string strName;
 	_float fFramesPerSecond = 60;
@@ -48,7 +55,7 @@ private:
 	_uint iCurrentFrame = { 0};
 	_uint iCurrentSubFrame = { 0};
 	_uint iFrameCount = 0;
-	_bool bLoop = true;
+	_bool bLoop = false;
 
 	vector<pair<CSpriteFrame*,_uint>> SpriteFrames;
 

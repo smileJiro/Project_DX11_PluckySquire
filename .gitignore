@@ -14,7 +14,7 @@
 #Compiled Dynamic libraries
 *.so
 *.dylib
-#*.dll
+*.dll
 
 #Fortran module files
 *.mod
@@ -24,7 +24,7 @@
 *.lai
 *.la
 *.a
-#*.lib
+*.lib
 
 #Executables
 *.exe
@@ -49,3 +49,32 @@
 /Tool_Effect/Bin/Engine.dll
 /Tool_Map/Bin/Engine.dll
 /Client/Default/imgui.ini
+/Engine/Bin/Engine.dll
+/Tool_Camera/Bin/Engine.dll
+/Tool_Effect/Bin/Engine.dll
+/Tool_Map/Bin/Engine.dll
+/Client/Default/imgui.ini
+/Client/Bin/Engine.dll
+/Client/Bin/Debug/Engine.dll
+/Client/Bin/Release/Engine.dll
+/Engine/Bin/Engine.dll
+/Engine/Bin/Engine.lib
+/EngineSDK/Lib/Engine.lib
+/Tool_Camera/Bin/Engine.dll
+/Tool_Effect/Bin/Engine.dll
+/Tool_Map/Bin/Engine.dll
+/Tool_Camera/Bin/Debug/Engine.dll
+/Tool_Camera/Bin/Release/Engine.dll
+/Tool_Effect/Default/x64/Debug/Tool_Effect.res
+/Tool_Map/Bin/Debug/Engine.dll
+/Tool_Map/Bin/Release/Engine.dll
+/Tool_Map/Default/x64/Debug/Map_Tool.res
+/Engine/Bin/Engine.dll
+/Engine/Bin/Engine.lib
+/EngineSDK/Lib/Engine.lib
+/Tool_Camera/Bin/Debug/Engine.dll
+/Tool_Camera/Bin/Release/Engine.dll
+/Tool_Effect/Bin/Engine.dll
+/Tool_Map/Bin/Debug/Engine.dll
+/Tool_Map/Bin/Release/Engine.dll
+/Client/Bin/Release/Engine.dll

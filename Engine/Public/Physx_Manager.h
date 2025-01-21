@@ -12,17 +12,15 @@ private:
 	virtual ~CPhysx_Manager() = default;
 
 private:
-	HRESULT Initialize(); /* PhysX 초기화 */
-	
+	HRESULT						Initialize(); /* PhysX 초기화 */
 public:
+	void						Update(_float _fTimeDelta);
+public:
+	PxPhysics*					Get_Physics() const { return m_pPxPhysics; }
+	PxMaterial* Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
 	void Update(_float _fTimeDelta);
 	HRESULT Render();
-private:
-	HRESULT Initialize_Foundation();
-	HRESULT Initialize_Physics();
-	HRESULT Initialize_Scene();
-	HRESULT Initialize_Material();
-	HRESULT Initialize_PVD();
+
 
 private:
 	ID3D11Device*				m_pDevice = nullptr;
@@ -36,7 +34,7 @@ private: /* Core PhysX */
 
 private:/* Scene (추후 분리 예정)*/
 	PxScene*					m_pPxScene = nullptr;
-	PxMaterial*					m_pPxMaterial = nullptr;
+	PxMaterial*					m_pPxMaterial[(_uint)ACTOR_MATERIAL::CUSTOM] = {};
 
 private: /* Visual Debugger */
 	PxPvd*						m_pPxPvd = nullptr;
@@ -48,7 +46,15 @@ private:
 	PxDefaultAllocator			m_Allocator = {};
 	PxDefaultErrorCallback		m_ErrorCallback = {};
 
+private: /* Test Object */
+	PxRigidStatic*				m_pGroundPlane = nullptr;
 
+private:
+	HRESULT						Initialize_Foundation();
+	HRESULT						Initialize_Physics();
+	HRESULT						Initialize_Scene();
+	HRESULT						Initialize_Material();
+	HRESULT						Initialize_PVD();
 
 private: /* Test Object */
 	PxRigidStatic*				m_pGroundPlane = nullptr;

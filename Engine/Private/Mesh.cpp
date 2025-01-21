@@ -220,29 +220,34 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 			inFile.read(reinterpret_cast<char*>(&fWeight), sizeof(_float));
 			//하나의 정점이 영향받을 수 있는 본의 갯수가 최대 4개라고 정함.
 			//아무 정보도 들어가지 않으면 0이므로, x부터 0임을 확인하고 순서대로 채워넣는다.
-			if (0 == pVertices[iVertexIdx].vBlendWeights.x)
+
+			if (0.f == pVertices[iVertexIdx].vBlendWeights.x)
 			{
 				pVertices[iVertexIdx].vBlendIndices.x = curMeshBoneIdx;
 				pVertices[iVertexIdx].vBlendWeights.x = fWeight;
 			}
-			else if (0 == pVertices[iVertexIdx].vBlendWeights.y)
+			else if (0.f == pVertices[iVertexIdx].vBlendWeights.y)
 			{
 				pVertices[iVertexIdx].vBlendIndices.y = curMeshBoneIdx;
 				pVertices[iVertexIdx].vBlendWeights.y = fWeight;
 			}
-			else if (0 == pVertices[iVertexIdx].vBlendWeights.z)
+			else if (0.f == pVertices[iVertexIdx].vBlendWeights.z)
 			{
 				pVertices[iVertexIdx].vBlendIndices.z = curMeshBoneIdx;
 				pVertices[iVertexIdx].vBlendWeights.z = fWeight;
 			}
-			else if (0 == pVertices[iVertexIdx].vBlendWeights.z)
+			else if (0.f == pVertices[iVertexIdx].vBlendWeights.z)
 			{
 				pVertices[iVertexIdx].vBlendIndices.w = curMeshBoneIdx;
 				pVertices[iVertexIdx].vBlendWeights.w = fWeight;
 			}
 		}
 	}
-
+	//for (_uint i = 0; i < m_iNumVertices; i++)
+	//{
+	//	std::cout << "x:" << pVertices[i].vBlendWeights.x << " y:" << pVertices[i].vBlendWeights.y << " z:" << pVertices[i].vBlendWeights.z << " w:" << pVertices[i].vBlendWeights.w << std::endl;
+	//	std::cout << "sum" << pVertices[i].vBlendWeights.x + pVertices[i].vBlendWeights.y + pVertices[i].vBlendWeights.z + pVertices[i].vBlendWeights.w << std::endl;
+	//}
 	if (0 == m_iNumBones)
 	{
 		m_iNumBones = 1;
