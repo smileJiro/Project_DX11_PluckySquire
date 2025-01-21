@@ -24,7 +24,7 @@ public:
 
 
 private:
-	CRigidBody* m_pRigidBody = nullptr;
+
 public:	
 	virtual void Free() override;
 };

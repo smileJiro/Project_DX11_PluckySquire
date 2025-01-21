@@ -66,6 +66,8 @@ protected:
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};
 	_wstring				m_strModelPrototypeTag[COORDINATE_LAST];
+
+
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

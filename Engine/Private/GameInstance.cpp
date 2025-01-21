@@ -425,7 +425,7 @@ const KEY_STATE& CGameInstance::GetMouseKeyState(MOUSE_KEY _eMouse)
 	return m_pKey_Manager->GetMouseKeyState(_eMouse);
 }
 
-_long CGameInstance::GetDIMouseMove(MOUSE_MOVE eMouseMove)
+_long CGameInstance::GetDIMouseMove(MOUSE_AXIS eMouseMove)
 {
 	if (nullptr == m_pKey_Manager)
 		return 0;

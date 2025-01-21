@@ -80,7 +80,7 @@ public: /* For.Renderer */
 public: /* For. Key_Manager */
 	const KEY_STATE&	GetKeyState(KEY _eKEY); // 키입력 동기화 o 
 	const KEY_STATE&	GetMouseKeyState(MOUSE_KEY _eMouse);
-	_long				GetDIMouseMove(MOUSE_MOVE eMouseMove);
+	_long				GetDIMouseMove(MOUSE_AXIS eMouseMove);
 
 public: /* For. PipeLine */
 	void				Set_Transform(CPipeLine::D3DTRANSFORMSTATE _eState, _fmatrix _TransformMatrix);

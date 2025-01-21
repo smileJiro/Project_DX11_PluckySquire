@@ -32,7 +32,7 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 
 
 
-HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
+HRESULT C2DModel::Initialize_Prototype(const _char* _pRawDataDirPath)
 {
 	//모든 json파일 순회하면서 읽음. 
 	//Type이 PaperSprite인 경우와 PaperFlipBook인 경우로 컨테이너를 나눠서 저장.
@@ -44,7 +44,7 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _pModelDirectoryPath)
 
 
 	std::filesystem::path path;
-	path = _pModelDirectoryPath;
+	path = _pRawDataDirPath;
 	json jFile;
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
 		if (entry.path().extension() == ".json") 
@@ -189,6 +189,8 @@ HRESULT C2DModel::Render(CShader* _pShader, _uint _iShaderPass)
 		m_pVIBufferCom->Bind_BufferDesc();
 		m_pVIBufferCom->Render();
 	}
+	else
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -207,7 +209,7 @@ C2DModel* C2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,
 
 	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath)))
 	{
-		MSG_BOX("Failed to Created : C2DModel");
+		MSG_BOX("Failed to Created : 2DModel");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
@@ -219,7 +221,7 @@ CComponent* C2DModel::Clone(void* _pArg)
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Failed to Cloned : C2DModel");
+		MSG_BOX("Failed to Cloned : 2DModel");
 		Safe_Release(pInstance);
 	}
 
