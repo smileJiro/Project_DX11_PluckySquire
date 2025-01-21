@@ -33,8 +33,6 @@ HRESULT CShopPanel_BG::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	
-
 	return S_OK;
 }
 
@@ -147,14 +145,8 @@ HRESULT CShopPanel_BG::Ready_Components()
 
 	}
 	break;
-
-
-		
 	}
 	
-
-
-
 	return S_OK;
 }
 
@@ -189,8 +181,6 @@ CGameObject* CShopPanel_BG::Clone(void* _pArg)
 
 void CShopPanel_BG::Free()
 {
-
-
 	__super::Free();
 }
 

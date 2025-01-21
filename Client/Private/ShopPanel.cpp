@@ -34,20 +34,20 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::I) && SHOP_END == m_eShopPanel)
-	{
-		isRender();
-	}
-	else if (KEY_DOWN(KEY::I) && SHOP_END != m_eShopPanel)
-	{
-		for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
-		{
-			if (SHOP_END != iter.second->Get_ShopPanel())
-			{
-				iter.second->Child_Update(_fTimeDelta);
-			}
-		}
-	}
+	//if (KEY_DOWN(KEY::I) && SHOP_END == m_eShopPanel)
+	//{
+	//	isRender();
+	//}
+	//else if (KEY_DOWN(KEY::I) && SHOP_END != m_eShopPanel)
+	//{
+	//	for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
+	//	{
+	//		if (SHOP_END != iter.second->Get_ShopPanel())
+	//		{
+	//			iter.second->Child_Update(_fTimeDelta);
+	//		}
+	//	}
+	//}
 }
 
 void CShopPanel::Late_Update(_float _fTimeDelta)
@@ -55,17 +55,17 @@ void CShopPanel::Late_Update(_float _fTimeDelta)
 	//m_pGameInstance->Find_Layer(LEVEL_GAMEPLAY, 
 
 
-	if (m_eShopPanel != SHOP_END)
-	{
-		for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
-		{
-			iter.second->Child_LateUpdate(_fTimeDelta);
-		}
-	}
-	else
-	{
-		__super::Late_Update(_fTimeDelta);
-	}
+	//if (m_eShopPanel != SHOP_END)
+	//{
+	//	for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
+	//	{
+	//		iter.second->Child_LateUpdate(_fTimeDelta);
+	//	}
+	//}
+	//else
+	//{
+	//	__super::Late_Update(_fTimeDelta);
+	//}
 }
 
 HRESULT CShopPanel::Render(_int _index)
@@ -125,7 +125,6 @@ CGameObject* CShopPanel::Clone(void* _pArg)
 
 void CShopPanel::Free()
 {
-	//Safe_Release(m_pUISettingPanelImage); 
 
 	__super::Free();
 }

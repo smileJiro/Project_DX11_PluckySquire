@@ -295,7 +295,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 		switch (i)
 		{
-		case CUI::SHOPPANEL::SHOP_BG :
+		case CUI::SHOPPANEL::SHOP_BG:
 		{
 			pShopDescs[CUI::SHOPPANEL::SHOP_BG].fX = g_iWinSizeX / 2.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BG].fY = g_iWinSizeY / 2.5f;
@@ -304,7 +304,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 			pShopDescs[CUI::SHOPPANEL::SHOP_BG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BG;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BG].eShopPanelKind = CUI::SHOPPANEL::SHOP_BG;
 
- 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_BG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_BG])))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_BG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_BG])))
 				return E_FAIL;
 
 			CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BG].iTextureCount, dynamic_cast<CShopPanel_BG*>(pShopPanel));
@@ -345,7 +345,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 			Safe_Release(pShopPanel);
 		}
 		break;
-		
+
 		case CUI::SHOPPANEL::SHOP_BULB:
 		{
 			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fX = g_iWinSizeX - g_iWinSizeX / 4.f;
@@ -353,16 +353,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fSizeX = 320.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fSizeY = 136.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BULB;
-			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].eShopPanelKind =CUI::SHOPPANEL::SHOP_BULB;
-		
+			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].eShopPanelKind = CUI::SHOPPANEL::SHOP_BULB;
+
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_BULB])))
 				return E_FAIL;
-		
+
 			CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iTextureCount, dynamic_cast<CShopPanel_BG*>(pShopPanel));
 			Safe_Release(pShopPanel);
 		}
 		break;
-		
+
 		case CUI::SHOPPANEL::SHOP_BACKESC:
 		{
 
@@ -371,14 +371,14 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fSizeX = 72.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fSizeY = 72.f;
-			
+
 			*/
 
 
 
 
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fX = g_iWinSizeX / 2.75f;
-			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fY = g_iWinSizeY- g_iWinSizeY / 13.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fY = g_iWinSizeY - g_iWinSizeY / 13.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fSizeX = 72.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fSizeY = 72.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BACKESC;
@@ -395,22 +395,22 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		case CUI::SHOPPANEL::SHOP_BACKARROW:
 		{
 
-		 
+
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fX = g_iWinSizeX / 3.5f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fY = g_iWinSizeY - g_iWinSizeY / 13.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fSizeX = 72.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fSizeY = 72.f;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BACKARROW;
 			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].eShopPanelKind = CUI::SHOPPANEL::SHOP_BACKARROW;
-		
+
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW])))
 				return E_FAIL;
-		
+
 			CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iTextureCount, dynamic_cast<CShopPanel_BG*>(pShopPanel));
 			Safe_Release(pShopPanel);
 		}
 		break;
-		
+
 
 		case CUI::SHOPPANEL::SHOP_ENTER:
 		{
@@ -432,7 +432,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		default:
 			break;
 		}
-		
+
 	}
 
 #pragma endregion ShopPanel UI
@@ -442,21 +442,21 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ParentSettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BG].iCurLevelID, _strLayerTag, &pDesc)))
 			return E_FAIL;
-
+	
 		for (size_t i = 0; i < CUI::SETTINGPANEL::SETTING_END; ++i)
 		{
 			pDescs[i].iCurLevelID = LEVEL_GAMEPLAY;
 		}
-
-
+	
+	
 		for (size_t i = 0; i < CUI::SETTINGPANEL::SETTING_END; ++i)
 		{
 			CGameObject* pSettingPanel = { nullptr };
 			CUI::UIOBJDESC pSettingPanelDesc{};
-
-
-
-
+	
+	
+	
+	
 			switch (i)
 			{
 			case CUI::SETTINGPANEL::SETTING_BG:
@@ -467,13 +467,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 				pDescs[CUI::SETTINGPANEL::SETTING_BG].fSizeY = 772.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BG].iTextureCount = CUI::SETTINGPANEL::SETTING_BG;
 				pDescs[CUI::SETTINGPANEL::SETTING_BG].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BG;
-
+	
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BG].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BG])))
 					return E_FAIL;
-
+	
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BG].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
 				Safe_Release(pSettingPanel);
-
+	
 			}
 			break;
 			case CUI::SETTINGPANEL::SETTING_BULB:
@@ -484,44 +484,44 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 				pDescs[CUI::SETTINGPANEL::SETTING_BULB].fSizeY = 82.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BULB].iTextureCount = CUI::SETTINGPANEL::SETTING_BULB;
 				pDescs[CUI::SETTINGPANEL::SETTING_BULB].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BULB;
-
+	
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BULB].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BULB])))
 					return E_FAIL;
-
+	
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BULB].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
 				Safe_Release(pSettingPanel);
 			}
 			break;
 			case CUI::SETTINGPANEL::SETTING_BACKESC:
 			{
-
+	
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fX = g_iWinSizeX / 14.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fY = g_iWinSizeY - g_iWinSizeY / 18.f;;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fSizeX = 72;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fSizeY = 72.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iTextureCount = CUI::SETTINGPANEL::SETTING_BACKESC;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BACKESC;
-
+	
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BACKESC])))
 					return E_FAIL;
-
+	
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
 				Safe_Release(pSettingPanel);
 			}
 			break;
 			case CUI::SETTINGPANEL::SETTING_BACKARROW:
 			{
-
+	
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fX = g_iWinSizeX / 30.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fSizeX = 72.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fSizeY = 72.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iTextureCount = CUI::SETTINGPANEL::SETTING_BACKARROW;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BACKARROW;
-
+	
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW])))
 					return E_FAIL;
-
+	
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
 				Safe_Release(pSettingPanel);
 			}
@@ -534,10 +534,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fSizeY = 72.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iTextureCount = CUI::SETTINGPANEL::SETTING_ESCENTER;
 				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCENTER;
-
+	
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER])))
 					return E_FAIL;
-
+	
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
 				Safe_Release(pSettingPanel);
 			}
@@ -550,15 +550,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 				pDesc.fSizeX = 128.f;
 				pDesc.fSizeY = 128.f;
 				pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_HEART;
-
+	
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
 					return E_FAIL;
-
+	
 			}
 			}
-
+	
 		}
-
+	
 
 
 #pragma endregion SettingPanel UI

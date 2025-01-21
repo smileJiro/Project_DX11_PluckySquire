@@ -11,8 +11,6 @@ BEGIN(Client)
 
 class CSettingPanel : public CUI
 {
-
-
 protected:
 	explicit CSettingPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	explicit CSettingPanel(const CSettingPanel& _Prototype);
@@ -47,12 +45,6 @@ public:
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() { return S_OK; };
-				
-private:
-	
-
-
-
 };
 
 END

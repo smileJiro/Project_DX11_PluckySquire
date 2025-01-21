@@ -113,13 +113,6 @@ void CUI::Free()
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
 
-	//for (auto iter : m_SettingPannels)
-	//{
-	//	Safe_Release(iter.second);
-	//}
-
-	
-
 	__super::Free();
 	
 
