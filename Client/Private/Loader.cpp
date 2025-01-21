@@ -37,6 +37,7 @@
 #include "BarfBug.h"
 #include "Projectile_BarfBug.h"
 #include "ButterGrump.h"
+#include "Boss_HomingBall.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -414,6 +415,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* For. Prototype_GameObject_ButterGrump */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"),
         CButterGrump::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_HomingBall"),
+        CBoss_HomingBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 

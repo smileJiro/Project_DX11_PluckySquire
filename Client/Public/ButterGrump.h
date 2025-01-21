@@ -15,7 +15,7 @@ public:
 		EXPLOSION_OUT,
 		FIREBALL_SPIT_BIG,
 		FIREBALL_SPIT_LOOP,
-		FIREBALL_SPIT_SMALL_02,
+		FIREBALL_SPIT_SMALL,
 		IDLE,
 		IDLE_CINE,
 		RECEIVE_DAMAGE,
@@ -23,11 +23,11 @@ public:
 		ROAR_CINE,
 		TRANSITION_PHASE2,
 		WINGSHIELD_BREAKOUT,
-		WINGSHIELD_BREAKOUT_02,
+		WINGSHIELD_BREAKOUT_2,
 		WINGSHIELD_INTO,
-		WINGSHIELD_INTO_02,
+		WINGSHIELD_INTO_2,
 		WINGSHIELD_LOOP,
-		WINGSHIELD_LOOP_02,
+		WINGSHIELD_LOOP_2,
 		WINGSHIELD_ROCK_VOLLEY_INTO,
 		WINGSHIELD_ROCK_VOLLEY_LOOP,
 		WINGSHIELD_ROCK_VOLLEY_OUT,
@@ -50,6 +50,16 @@ private:
 	virtual ~CButterGrump() = default;
 
 public:
+	virtual void Set_State(BOSS_STATE _eState)
+	{
+		m_eBossState = _eState;
+	}
+	virtual void Set_PreState(BOSS_STATE _eState)
+	{
+		m_ePreBossState = _eState;
+	}
+
+public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual void			Priority_Update(_float _fTimeDelta) override;
@@ -62,10 +72,17 @@ public:
 	virtual void Attack(_float _fTimeDelta) override;
 	void Alert_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void	Attack_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Intro_First_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Intro_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
+
+private:
+	BOSS_STATE		m_eBossState = {};
+	BOSS_STATE		m_ePreBossState = {};
 
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

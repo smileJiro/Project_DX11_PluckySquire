@@ -33,6 +33,14 @@ namespace Client
 
 		LAST,
 	};
+
+	enum class BOSS_STATE
+	{
+		HOMINGBALL,
+
+		LAST,
+	};
+
 	enum class F_DIRECTION
 	{
 		LEFT,

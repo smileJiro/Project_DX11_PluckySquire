@@ -7,7 +7,7 @@ BEGIN(Client)
 class CState;
 class CMonster;
 
-class CFSM final : public CComponent
+class CFSM : public CComponent
 {
 public:
 	typedef struct tagFSMDesc
@@ -18,7 +18,7 @@ public:
 		_float fAttackRange;
 	}FSMDESC;
 
-private:
+protected:
 	CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CFSM(const CFSM& _Prototype);
 	virtual ~CFSM() = default;
@@ -37,11 +37,14 @@ public:
 	HRESULT Change_State(MONSTER_STATE _eState);
 	HRESULT Set_State(MONSTER_STATE _eState);
 
+
+protected:
+	CState* m_CurState = { nullptr };
+	CMonster* m_pOwner = { nullptr };
+
 private:
 	map<MONSTER_STATE, CState*> m_States;
 	MONSTER_STATE		m_eCurState = { MONSTER_STATE::LAST };
-	CState* m_CurState = { nullptr };
-	CMonster* m_pOwner = { nullptr };
 
 	_bool	m_isMelee = { true };
 	_float	m_fAlertRange = {};

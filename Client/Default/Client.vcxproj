@@ -186,6 +186,8 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\BossAttackState.h" />
+    <ClInclude Include="..\Public\Boss_HomingBall.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\DetectionField.h" />
@@ -202,6 +204,9 @@
     <ClInclude Include="..\public\FSM.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\FSM_Boss.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\public\IdleState.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
     <ClInclude Include="..\Public\ShopPanel.h" />
@@ -209,7 +214,9 @@
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
-    <ClInclude Include="..\public\Monster.h" />
+    <ClInclude Include="..\public\Monster.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
     <ClInclude Include="..\Public\PlayerState_Jump.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
@@ -243,6 +250,8 @@
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\BossAttackState.cpp" />
+    <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
@@ -255,6 +264,9 @@
     <ClCompile Include="..\Private\ESC_HeartPoint.cpp" />
     <ClCompile Include="..\private\FSM.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\FSM_Boss.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\IdleState.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
