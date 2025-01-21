@@ -19,7 +19,7 @@ class CNavigationVertex;
 class CModelFile_Manager;
 class CImguiLogger;
 class CCellContainor;
-class CMapParsing_Manager;
+class CTask_Manager;
 
 
 class CMap_Tool_Manager final : public CBase
@@ -86,6 +86,8 @@ private:
 	void				Object_Create_Imgui(_bool _isLock = false);
 	void				Navigation_Imgui(_bool _isLock = false);
 	void				SaveLoad_Imgui(_bool _isLock = false);
+
+	void				Model_Imgui(_bool _isLock = false);
 #pragma endregion
 
 #pragma region Object Tool Method
@@ -143,13 +145,14 @@ private:
 	ID3D11DeviceContext*			m_pContext;
 	CGameInstance*					m_pGameInstance = { nullptr };
 	CImguiLogger*					m_pLogger = nullptr;
-	CMapParsing_Manager*			m_pMapParsingManager;
+	CTask_Manager*			m_pMapParsingManager;
 
 	CMapObject*						m_arrObjects[OBJECT_END] = { nullptr, };
 	_wstring						m_arrSelectName[LIST_END];
 
 	vector<_wstring>				m_SaveFileLists;
-	vector<_wstring>				m_ObjectFileLists;
+	// ModelName - ModelPath
+	vector<pair<_wstring, _wstring>>m_ObjectFileLists;
 	vector<MAP_OBJ>					m_MapObjLists;
 
 

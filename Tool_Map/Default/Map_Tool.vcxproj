@@ -72,7 +72,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>..\Bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\Bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,7 +118,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine.lib;ImguiDX11.lib;ImguiNode.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;ImguiDX11.lib;ImguiNode.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -151,7 +154,7 @@
     <ClInclude Include="..\Public\ImguiLogger.h" />
     <ClInclude Include="..\Public\ImGuiStyle_MapTool_Function.h" />
     <ClInclude Include="..\Public\Level_Map_Tool.h" />
-    <ClInclude Include="..\Public\MapParsing_Manager.h" />
+    <ClInclude Include="..\Public\Task_Manager.h" />
     <ClInclude Include="..\Public\Map_Tool_Manager.h" />
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Map_Tool_Function.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\Map_Tool_Defines.h" />
     <ClInclude Include="..\Public\Map_Tool_MainApp.h" />
+    <ClInclude Include="..\Public\Model_PackagingObject.h" />
     <ClInclude Include="..\Public\NavigationVertex.h" />
     <ClInclude Include="..\Public\VIBuffer_CellLine.h" />
     <ClInclude Include="framework.h" />
@@ -181,7 +185,7 @@
     <ClCompile Include="..\Private\ImguiLogger.cpp" />
     <ClCompile Include="..\Private\ImGuiStyle_MapTool_Function.cpp" />
     <ClCompile Include="..\Private\Level_Map_Tool.cpp" />
-    <ClCompile Include="..\Private\MapParsing_Manager.cpp" />
+    <ClCompile Include="..\Private\Task_Manager.cpp" />
     <ClCompile Include="..\Private\Map_Tool_Manager.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Map_Tool_Function.cpp" />
@@ -190,6 +194,7 @@
     <ClCompile Include="..\Private\Level_Static.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\Map_Tool_MainApp.cpp" />
+    <ClCompile Include="..\Private\Model_PackagingObject.cpp" />
     <ClCompile Include="..\Private\NavigationVertex.cpp" />
     <ClCompile Include="..\Private\VIBuffer_CellLine.cpp" />
     <ClCompile Include="Map_Tool.cpp" />

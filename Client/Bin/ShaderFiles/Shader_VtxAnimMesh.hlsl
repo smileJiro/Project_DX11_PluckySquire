@@ -48,7 +48,7 @@ VS_OUT VS_MAIN(VS_IN In)
     matrix matBones = mul(g_BoneMatrices[In.vBlendIndicse.x], In.vBlendWeights.x) +
                       mul(g_BoneMatrices[In.vBlendIndicse.y], In.vBlendWeights.y) +
                       mul(g_BoneMatrices[In.vBlendIndicse.z], In.vBlendWeights.z) +
-                      mul(g_BoneMatrices[In.vBlendIndicse.w], In.vBlendIndicse.w);
+                      mul(g_BoneMatrices[In.vBlendIndicse.w], In.vBlendWeights.w);
     
     vector vPosition = mul(float4(In.vPosition, 1.0), matBones);
     vector vNormal = mul(float4(In.vNormal, 0.0), matBones);

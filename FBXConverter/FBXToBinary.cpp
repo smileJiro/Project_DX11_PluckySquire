@@ -29,7 +29,7 @@ HRESULT CFbxToBinary::FbxToBinary(const string& inFilePath)
 		m_pAIScene = m_Importer.ReadFile(inFilePath, iFlag);
 	}
 
-	//Mimic Î™®Îç∏Ïùò Í≤ΩÏö∞ Î¨¥Ï°∞Í±¥ m_bAnimÏùÑ trueÎ°ú Ìï† Í≤É.
+	//Mimic Î™®Îç∏??Í≤ΩÏö∞ Î¨¥Ï°∞Í±?m_bAnim??trueÎ°???Í≤?
 	//m_bAnim = true;
 
 	if (0 == m_pAIScene)
@@ -46,7 +46,7 @@ HRESULT CFbxToBinary::FbxToBinary(const string& inFilePath)
 	strcat_s(szNewFileName, ".model");
 	std::ofstream outFile(szNewFileName, std::ios::binary);
 	if (!outFile) {
-		std::cerr << "ÌååÏùºÏùÑ Ïó¥ Ïàò ÏóÜÏäµÎãàÎã§." << std::endl;
+		std::cerr << "∆ƒ¿œ ø≠±‚ Ω«∆–." << std::endl;
 	}
 	outFile.write(reinterpret_cast<const char*>(&m_bAnim), 1);
 
@@ -122,9 +122,9 @@ HRESULT CFbxToBinary::Write_Meshe(const aiMesh* pAIMesh, ofstream& outFile)
 			aiBone* pAIBone = pAIMesh->mBones[i];
 
 			outFile.write(reinterpret_cast<const char*>(&pAIBone->mName.length), sizeof(_uint));
-			//cout << pAIBone->mName.length << endl;
+			cout << pAIBone->mName.length << endl;
 			outFile.write(pAIBone->mName.data, pAIBone->mName.length);
-			//cout << pAIBone->mName.data << endl;
+			cout << pAIBone->mName.data << endl;
 
 			outFile.write(reinterpret_cast<const char*>(&pAIBone->mOffsetMatrix), sizeof(_float4x4));
 			//cout << pAIBone->mOffsetMatrix.a1 << " " << pAIBone->mOffsetMatrix.a2 << " " << pAIBone->mOffsetMatrix.a3 << " " << pAIBone->mOffsetMatrix.a4 << endl;
@@ -137,10 +137,11 @@ HRESULT CFbxToBinary::Write_Meshe(const aiMesh* pAIMesh, ofstream& outFile)
 			for (size_t j = 0; j < pAIBone->mNumWeights; j++)
 			{
 				outFile.write(reinterpret_cast<const char*>(&pAIBone->mWeights[j].mVertexId), sizeof(_uint));
-				//cout << pAIBone->mWeights[j].mVerte xId << endl;
+				//cout << pAIBone->mWeights[j].mVertexId << endl;
 				outFile.write(reinterpret_cast<const char*>(&pAIBone->mWeights[j].mWeight), sizeof(_float));
 				//cout << pAIBone->mWeights[j].mWeight << endl;
 			}
+
 		}
 
 	}
