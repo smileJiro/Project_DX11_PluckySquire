@@ -35,22 +35,22 @@ void CSettingPanel::Priority_Update(_float _fTimeDelta)
 
 void CSettingPanel::Update(_float _fTimeDelta)
 {
-	//if (KEY_DOWN(KEY::ESC) && SETTING_HEART == m_eSettingPanel)
-	//{
-	//	isRender();
-	//}
-	//else if (KEY_DOWN(KEY::ESC) && SETTING_HEART != m_eSettingPanel)
-	//{
-	//	for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
-	//	{
-	//		if (SETTING_HEART != iter.second->Get_SettingPanel())
-	//		{
-	//			iter.second->Child_Update(_fTimeDelta);
-	//		}
-	//	}
-	//
-	//	
-	//}
+	if (KEY_DOWN(KEY::ESC) && SETTING_HEART == m_eSettingPanel)
+	{
+		isRender();
+	}
+	else if (KEY_DOWN(KEY::ESC) && SETTING_HEART != m_eSettingPanel)
+	{
+		for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
+		{
+			if (SETTING_HEART != iter.second->Get_SettingPanel())
+			{
+				iter.second->Child_Update(_fTimeDelta);
+			}
+		}
+
+
+	}
 	
 }
 
