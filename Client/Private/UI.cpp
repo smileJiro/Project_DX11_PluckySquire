@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "UI.h"
-#include "GameInstance.h"
+//#include "UI_Manager.h"
+
+
 
 
 CUI::CUI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
 {
+	
 }
 
 CUI::CUI(const CUI& Prototype)
@@ -106,9 +109,19 @@ HRESULT CUI::Bind_ShaderResources()
 
 void CUI::Free()
 {
-	__super::Free();
-
 	Safe_Release(m_pShaderComs[COORDINATE_2D]);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
+
+	//for (auto iter : m_SettingPannels)
+	//{
+	//	Safe_Release(iter.second);
+	//}
+
+	
+
+	__super::Free();
+	
+
+
 }

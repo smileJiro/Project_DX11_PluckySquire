@@ -100,9 +100,6 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay">
       <UniqueIdentifier>{24b60c7c-5811-4eb8-96fb-48372c932372}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\00. GamePlay\00.Pick_Bulb">
-      <UniqueIdentifier>{22c8afcc-494e-4251-943c-def5afcdc486}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp">
       <UniqueIdentifier>{e0741c40-b025-4a53-9df1-76a1a3d7f7cc}</UniqueIdentifier>
     </Filter>
@@ -124,23 +121,11 @@
     <Filter Include="02.GameObjects\UI\01. SettingPanel\00. HeartPoint">
       <UniqueIdentifier>{5bece5e8-a2e3-4fd6-a3c9-8d34fc011de9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\01. SettingPanel\01. Bulb">
-      <UniqueIdentifier>{fc32b66e-702e-4e5b-9098-847f53c2a8e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UI\01. SettingPanel\02. BackESC">
-      <UniqueIdentifier>{a0394450-3fab-4f6c-9cc1-05167d7da795}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UI\01. SettingPanel\03. BackArrow">
-      <UniqueIdentifier>{ec3e6f0f-6fce-4868-b12d-3ba61012290a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Monster\BarfBug\Projectile">
       <UniqueIdentifier>{0e711259-b9ff-46d3-9f43-43b0f7522312}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.Components\PlayerState">
       <UniqueIdentifier>{2c11b0f4-d2f1-4207-914c-46e11d497546}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UI\01. SettingPanel\04. ESC_Enter">
-      <UniqueIdentifier>{56ebc843-098b-4d7a-b2a2-ef827f9e231b}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction">
       <UniqueIdentifier>{7da9691a-06aa-4f08-826a-3dea2aff39b6}</UniqueIdentifier>
@@ -156,6 +141,12 @@
     </Filter>
     <Filter Include="03.Components\DetectionField">
       <UniqueIdentifier>{04adcb91-4582-41ba-903b-8a861fe8a29f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG">
+      <UniqueIdentifier>{23b13d1c-1d27-4372-a67c-debee7267517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\00. Pick_Bulb">
+      <UniqueIdentifier>{22c8afcc-494e-4251-943c-def5afcdc486}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +217,7 @@
       <Filter>02.GameObjects\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Pick_Bulb.h">
-      <Filter>02.GameObjects\UI\00. GamePlay\00.Pick_Bulb</Filter>
+      <Filter>02.GameObjects\UI\00. GamePlay\00. Pick_Bulb</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster.h">
       <Filter>02.GameObjects\Monster</Filter>
@@ -284,18 +275,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
-    <ClInclude Include="..\Public\ESC_Bulb.h">
-      <Filter>02.GameObjects\UI\01. SettingPanel\01. Bulb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ESC_Back.h">
-      <Filter>02.GameObjects\UI\01. SettingPanel\02. BackESC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ESC_BackArrow.h">
-      <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ESC_Enter.h">
-      <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_Interaction_Book.h">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
     </ClInclude>
@@ -319,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="..\public\DetectionField.h">
       <Filter>03.Components\DetectionField</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel_BG.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -368,7 +350,7 @@
       <Filter>02.GameObjects\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Pick_Bulb.cpp">
-      <Filter>02.GameObjects\UI\00. GamePlay\00.Pick_Bulb</Filter>
+      <Filter>02.GameObjects\UI\00. GamePlay\00. Pick_Bulb</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.GameObjects\Monster</Filter>
@@ -438,18 +420,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Run.cpp" />
-    <ClCompile Include="..\Private\ESC_Bulb.cpp">
-      <Filter>02.GameObjects\UI\01. SettingPanel\01. Bulb</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ESC_Back.cpp">
-      <Filter>02.GameObjects\UI\01. SettingPanel\02. BackESC</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ESC_BackArrow.cpp">
-      <Filter>02.GameObjects\UI\01. SettingPanel\03. BackArrow</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ESC_Enter.cpp">
-      <Filter>02.GameObjects\UI\01. SettingPanel\04. ESC_Enter</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
     </ClCompile>
@@ -473,6 +443,9 @@
     </ClCompile>
     <ClCompile Include="..\private\DetectionField.cpp">
       <Filter>03.Components\DetectionField</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel_BG.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

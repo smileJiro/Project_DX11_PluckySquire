@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "SettingPanel.h"
+#include "UI_Manager.h"
+#include "SettingPanelBG.h"
 
 CSettingPanel::CSettingPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
@@ -23,6 +25,7 @@ HRESULT CSettingPanel::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
+
 	return S_OK;
 }
 
@@ -32,23 +35,48 @@ void CSettingPanel::Priority_Update(_float _fTimeDelta)
 
 void CSettingPanel::Update(_float _fTimeDelta)
 {
-
-	if (KEY_DOWN(KEY::ESC))
+	if (KEY_DOWN(KEY::ESC) && SETTING_HEART == m_eSettingPanel)
 	{
 		isRender();
 	}
+	else if (KEY_DOWN(KEY::ESC) && SETTING_HEART != m_eSettingPanel)
+	{
+		for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
+		{
+			if (SETTING_HEART != iter.second->Get_SettingPanel())
+			{
+				iter.second->Child_Update(_fTimeDelta);
+			}
+		}
 
+		
+	}
+	
 }
 
 void CSettingPanel::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	if (m_eSettingPanel != SETTING_HEART)
+	{
+		for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
+		{
+			iter.second->Child_LateUpdate(_fTimeDelta);
+		}
+	}
+	else
+	{
+		__super::Late_Update(_fTimeDelta);
+	}
+
 }
+
+
 
 HRESULT CSettingPanel::Render(_int _index)
 {
 	if (true == m_isRender)
 		__super::Render(_index);
+
 
 	return S_OK;
 }
@@ -67,7 +95,6 @@ void CSettingPanel::isRender()
 
 HRESULT CSettingPanel::Ready_Components()
 {
-
 	return S_OK;
 }
 
@@ -102,13 +129,13 @@ CGameObject* CSettingPanel::Clone(void* _pArg)
 
 void CSettingPanel::Free()
 {
-
+	//Safe_Release(m_pUISettingPanelImage); 
 
 	__super::Free();
 }
 
-HRESULT CSettingPanel::Cleanup_DeadReferences()
-{
-	return S_OK;
-}
+
+
+
+
 

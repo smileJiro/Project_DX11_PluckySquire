@@ -1,6 +1,7 @@
 #pragma once
 #include "UI.h"
 #include "Client_Defines.h"
+#include "UI_Manager.h"
 
 BEGIN(Engine)
 class CShader;

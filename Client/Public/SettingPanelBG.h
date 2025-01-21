@@ -1,5 +1,4 @@
 #pragma once
-#include "UI.h"
 #include "SettingPanel.h"
 
 BEGIN(Engine)
@@ -8,10 +7,8 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
-class CSettingPanelBG : public CSettingPanel
+class CSettingPanelBG final : public CSettingPanel
 {
-
-
 protected:
 	explicit CSettingPanelBG(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	explicit CSettingPanelBG(const CSettingPanelBG& _Prototype);
@@ -23,14 +20,19 @@ public:
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
-	virtual HRESULT			Render(_int _index = 0) override;
+	virtual HRESULT			Render() override;
+
+	virtual void			Child_Update(_float _fTimeDelta) override;
+	virtual void			Child_LateUpdate(_float _fTimeDelta) override;
 
 
 private:
-	void					isRender();
+	
+	_uint					m_iTextureCount = { 0 };
 
 protected:
 	virtual HRESULT			Ready_Components() override;
+	void					isRender();
 
 public:
 	static CSettingPanelBG*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

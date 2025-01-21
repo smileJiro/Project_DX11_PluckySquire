@@ -24,6 +24,9 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+	//virtual void			Child_Update(_float _fTimeDelta) override;
+	//virtual void			Child_LateUpdate(_float _fTimeDelta) override;
+
 private:
 	_int					m_PlayerHP = { 4 };
 

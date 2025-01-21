@@ -25,6 +25,9 @@ HRESULT ESC_HeartPoint::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
+	m_eSettingPanel = pDesc->eSettingPanelKind;
+	m_isRender = false;
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
@@ -35,25 +38,17 @@ HRESULT ESC_HeartPoint::Initialize(void* _pArg)
 
 void ESC_HeartPoint::Priority_Update(_float _fTimeDelta)
 {
+
 }
 
 void ESC_HeartPoint::Update(_float _fTimeDelta)
 {
-	if (true == m_isActive)
-	{
-		// 플레이어 체력 동기화 진행.
-
-
-		__super::Update(_fTimeDelta);
-	}
-	
-	
+	__super::Update(_fTimeDelta);
 }
 
 void ESC_HeartPoint::Late_Update(_float _fTimeDelta)
 {
-	if (true == m_isRender)
-		__super::Late_Update(_fTimeDelta);
+	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT ESC_HeartPoint::Render()
@@ -121,6 +116,9 @@ void ESC_HeartPoint::Free()
 
 	__super::Free();
 }
+
+
+
 
 //HRESULT ESC_HeartPoint::Cleanup_DeadReferences()
 //{
