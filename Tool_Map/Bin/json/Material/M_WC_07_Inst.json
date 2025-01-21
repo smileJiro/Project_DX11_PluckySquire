@@ -1,0 +1,83 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "M_WC_07_Inst",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_WC_07'",
+        "ObjectPath": "/Game/Map/3D/Objects/blocks/materials/M_WC_07.0"
+      },
+      "bHasStaticPermutationResource": true,
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "StaticParameters": {
+        "StaticSwitchParameters": [
+          {
+            "Value": false,
+            "ParameterInfo": {
+              "Name": "UseGradient?",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            "bOverride": true,
+            "ExpressionGUID": "585C3BE7-41A26E76-CC5E0EB8-86D01357"
+          }
+        ]
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_7_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_7/Wooden_Cube_7_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_7_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_7/Wooden_Cube_7_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_7_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_7/Wooden_Cube_7_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_7_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_7_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_7_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

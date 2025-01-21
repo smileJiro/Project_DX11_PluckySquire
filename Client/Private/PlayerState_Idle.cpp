@@ -13,6 +13,12 @@ CPlayerState_Idle::CPlayerState_Idle(CPlayer* _pOwner)
 
 void CPlayerState_Idle::Update(_float _fTimeDelta)
 {
+	if (MOUSE_DOWN(MOUSE_KEY::LB))
+	{
+		m_pOwner->Set_State(CPlayer::ATTACK);
+		return;
+	}
+
 	_bool bMove = false;
 	_bool bJump = false;
 	/* Test Move Code */

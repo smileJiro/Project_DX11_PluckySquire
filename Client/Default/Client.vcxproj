@@ -186,6 +186,8 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
@@ -203,6 +205,7 @@
     <ClInclude Include="..\public\IdleState.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
     <ClInclude Include="..\Public\ShopPanel.h" />
+    <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
@@ -240,6 +243,8 @@
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp" />
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
@@ -254,6 +259,7 @@
     <ClCompile Include="..\private\IdleState.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\ShopPanel.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_BG.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />

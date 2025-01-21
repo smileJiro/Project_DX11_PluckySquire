@@ -1,0 +1,77 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_WC_11_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_WC_11'",
+        "ObjectPath": "/Game/Map/3D/Objects/blocks/materials/M_WC_11.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "HueShift",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 3.486281,
+          "ExpressionGUID": "409B691B-473D3BE6-789CCFB1-50E42F79"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_11_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_11/Wooden_Cube_11_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_11_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_11/Wooden_Cube_11_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Cube_11_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_11/Wooden_Cube_11_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'11_Color_Mask'",
+          "ObjectPath": "/Game/Map/3D/Objects/blocks/textures/Wood_11/11_Color_Mask.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "11_Color_Mask"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_11_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_11_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Cube_11_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

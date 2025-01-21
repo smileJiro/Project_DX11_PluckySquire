@@ -179,6 +179,7 @@ public: /* For. GlobalFunction_Manager */
 	_float				Nomalize_Angle(_float _fAngle);	// 0-360 사이로 각도 변환
 	_float				Lerp(_float _fLeft, _float _fRight, _float _fRatio);
 	_fvector			Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio);
+	_bool				MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix);
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();

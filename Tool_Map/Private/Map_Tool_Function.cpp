@@ -97,6 +97,27 @@ namespace Map_Tool
 	}
 
 
+	pair<_wstring, _wstring> Get_FileName_From_Path(const _wstring& filePath)
+	{
+		size_t iPathPosIndex = filePath.rfind(L'\\');
+		pair<_wstring, _wstring> pair = { L"",L"" };
+
+		if (iPathPosIndex == _wstring::npos)
+		{
+			iPathPosIndex = filePath.rfind(L'/');
+		}
+
+		_wstring fileName = (iPathPosIndex != _wstring::npos) ? filePath.substr(iPathPosIndex + 1) : filePath;
+
+		size_t iDotPos = fileName.rfind(L'.');
+		if (iDotPos != _wstring::npos)
+		{
+			pair.first = fileName.substr(0, iDotPos);
+			pair.second = fileName.substr(iDotPos + 1);
+		}
+
+		return pair; // 확장자가 없으면 빈 문자열 반환
+	}
 	_bool Path_String_Validation_Check(const _string _strText)
 	{
 		if (_strText.empty() ||

@@ -26,13 +26,24 @@ CSpriteFrame::CSpriteFrame(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 	json& jBakedRenderData = jProperties["BakedRenderData"];
 	vSpriteStartUV = { 1,1 };
 	vSpriteEndUV = { 0,0 };
+	_float fMinX = D3D11_FLOAT32_MAX, fMinY = D3D11_FLOAT32_MAX;
+	_float fMaxX = -D3D11_FLOAT32_MAX, fMaxY = -D3D11_FLOAT32_MAX;
 	for (json& j : jBakedRenderData)
 	{
 		fBakedRenderData.push_back(_float4{j["X"],j["Y"] ,j["Z"] ,j["W"] });
 		vSpriteStartUV = _float2(min(fBakedRenderData.back().z, vSpriteStartUV.x), min(fBakedRenderData.back().w, vSpriteStartUV.y));
 		vSpriteEndUV = _float2(max(fBakedRenderData.back().z, vSpriteEndUV.x), max(fBakedRenderData.back().w, vSpriteEndUV.y));
+		fMinX = min(fMinX, fBakedRenderData.back().x);
+		fMinY = min(fMinY, fBakedRenderData.back().y);
+		fMaxX = max(fMaxX, fBakedRenderData.back().x);
+		fMaxY = max(fMaxY, fBakedRenderData.back().y);
 	}
-
+	_float fWidth= abs(fMaxX - fMinX);
+	_float fHeight = abs(fMaxY - fMinY);
+	_float fXOffset = fMinX + fWidth / 2;
+	_float fYOffset = fMinY + fHeight / 2;
+	matSpriteTransform = XMMatrixScaling(fWidth, fHeight, 1);
+	matSpriteTransform *= XMMatrixTranslation(fXOffset, fYOffset, 0);
 }
 CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
 	: vSpriteStartUV(_Prototype.vSpriteStartUV)
@@ -40,7 +51,7 @@ CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
 	, pTexture(_Prototype.pTexture)
 	, fPixelsPerUnrealUnit(_Prototype.fPixelsPerUnrealUnit)
 	, fBakedRenderData(_Prototype.fBakedRenderData)
-
+	, matSpriteTransform(_Prototype.matSpriteTransform)
 {
 
 }
@@ -157,6 +168,19 @@ void CAnimation2D::Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun
 {
 	SpriteFrames.push_back({ _pSpriteFrame ,_iFrameRun});
 }
+
+void CAnimation2D::Reset_CurrentTrackPosition()
+{
+	iCurrentFrame = 0;
+	iCurrentSubFrame = 0;
+	fCurrentFrameTime = 0;
+}
+
+const _matrix* CAnimation2D::Get_CurrentSpriteTransform() 
+{
+	return GetCurrentSprite()->Get_Transform();
+}
+
 
 
 

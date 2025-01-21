@@ -43,8 +43,6 @@ HRESULT CPhysx_Manager::Initialize_Foundation()
 	m_pPxFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
 	if (nullptr == m_pPxFoundation)
 		return E_FAIL;
-
-
 	return S_OK;
 }
 

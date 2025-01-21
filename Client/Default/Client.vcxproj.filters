@@ -142,6 +142,9 @@
     <Filter Include="03.Components\DetectionField">
       <UniqueIdentifier>{04adcb91-4582-41ba-903b-8a861fe8a29f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss">
+      <UniqueIdentifier>{48b2cfb8-e859-4efb-9630-ac2adc201dbc}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG">
       <UniqueIdentifier>{23b13d1c-1d27-4372-a67c-debee7267517}</UniqueIdentifier>
     </Filter>
@@ -299,6 +302,13 @@
     <ClInclude Include="..\public\DetectionField.h">
       <Filter>03.Components\DetectionField</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Attack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\ButterGrump.h">
+      <Filter>02.GameObjects\Monster\Boss</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\ShopPanel_BG.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>
     </ClInclude>
@@ -443,6 +453,13 @@
     </ClCompile>
     <ClCompile Include="..\private\DetectionField.cpp">
       <Filter>03.Components\DetectionField</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Attack.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\ButterGrump.cpp">
+      <Filter>02.GameObjects\Monster\Boss</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ShopPanel_BG.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>

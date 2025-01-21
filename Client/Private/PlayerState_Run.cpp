@@ -14,9 +14,15 @@ CPlayerState_Run::CPlayerState_Run(CPlayer* _pOwner)
 void CPlayerState_Run::Update(_float _fTimeDelta)
 {
 	COORDINATE eCoord =  m_pOwner->Get_CurCoord();
+
+	if (MOUSE_DOWN(MOUSE_KEY::LB))
+	{
+		m_pOwner->Set_State(CPlayer::ATTACK);
+		return;
+	}
+
 	_vector vMoveDir = XMVectorZero();
 	_bool bMove = false;
-
 	if (KEY_PRESSING(KEY::W))
 	{
 		if (eCoord == COORDINATE_3D)

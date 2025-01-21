@@ -39,7 +39,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
 	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
 	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
@@ -574,7 +574,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	//Monster_Desc.tTransform3DDesc.vPosition = _float3(10.0f, 1.0f, 10.0f);
 	//Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
 
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;*/
 
 	CBarfBug::MONSTER_DESC Monster_Desc;
@@ -583,8 +583,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -19.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
+
+	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;*/
 
 	return S_OK;
 }

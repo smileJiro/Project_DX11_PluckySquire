@@ -927,6 +927,11 @@ _fvector CGameInstance::Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuideP
 	return m_pGlobalFunction_Manager->Get_BezierCurve(_vStartPoint, _vGuidePoint, _vEndPoint, _fRatio);
 }
 
+_bool CGameInstance::MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix)
+{
+	return m_pGlobalFunction_Manager->MatrixDecompose(_vScale, _vQuaternion, _vPosition, _Matrix);
+}
+
 CCamera* CGameInstance::Get_CurrentCamera()
 {
 	return m_pCamera_Manager->Get_CurrentCamera();
