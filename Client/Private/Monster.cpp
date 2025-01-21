@@ -73,8 +73,6 @@ _float CMonster::Calculate_Distance()
 
 void CMonster::Attack(_float _fTimeDelta)
 {
-	//if (m_PartObjects[PART_WEAPON] != nullptr && m_PartObjects[PART_WEAPON]->Get_UseColl())
-	//	m_PartObjects[PART_WEAPON]->Set_Collider_Enable(true);
 }
 
 HRESULT CMonster::Cleanup_DeadReferences()

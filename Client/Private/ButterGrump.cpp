@@ -5,6 +5,7 @@
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "Projectile_BarfBug.h"
+#include "Boss_HomingBall.h"
 
 CButterGrump::CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -31,9 +32,9 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fAlertRange = 5.f;
-    pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 10.f;
+    pDesc->fAlertRange = 80.f;
+    pDesc->fChaseRange = 120.f;
+    pDesc->fAttackRange = 100.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
@@ -58,15 +59,18 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Alert_End, this, COORDINATE_3D, ALERT));
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Attack_End, this, COORDINATE_3D, BARF));
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_First_End, this, COORDINATE_3D, LB_INTRO_SH01));
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_Second_End, this, COORDINATE_3D, LB_ENGAGE_IDLE_SH02));
 
+    m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
     /*  Projectile  */
-   /* Pooling_DESC Pooling_Desc;
+    Pooling_DESC Pooling_Desc;
     Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
     Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_ButterGrump");
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
 
-    CProjectile_ButterGrump::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_ButterGrump::PROJECTILE_BARFBUG_DESC;
+    CBoss_HomingBall::BOSS_HOMINGBALL_DESC* pProjDesc = new CBoss_HomingBall::BOSS_HOMINGBALL_DESC;
     pProjDesc->fLifeTime = 5.f;
     pProjDesc->eStartCoord = COORDINATE_3D;
     pProjDesc->isCoordChangeEnable = false;
@@ -76,7 +80,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_ButterGrump"), Pooling_Desc, pProjDesc);*/
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_HomingBall"), Pooling_Desc, pProjDesc);
 
     return S_OK;
 }
@@ -113,6 +117,11 @@ void CButterGrump::Priority_Update(_float _fTimeDelta)
 
 void CButterGrump::Update(_float _fTimeDelta)
 {
+    if ((KEY_DOWN(KEY::F3)))
+    {
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
+    }
+
     m_pFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -165,19 +174,19 @@ void CButterGrump::Change_Animation()
 
 void CButterGrump::Attack(_float _fTimeDelta)
 {
-  //  if (false == m_isDelay && false == m_isCool)
-  //  {
-  //      _float3 vPosition;
-  //      _float4 vRotation;
-  //      _vector vvScale, vvRotation, vvPosition;
-  //      XMMatrixDecompose(&vvScale, &vvRotation, &vvPosition, m_pControllerTransform->Get_WorldMatrix());
-		//XMStoreFloat3(&vPosition, vvPosition + XMVectorSet(0.f, vvScale.m128_f32[1] * 0.5f, 0.f, 1.f));
-  //      XMStoreFloat4(&vRotation, vvRotation);
+    if (false == m_isDelay && false == m_isCool)
+    {
+        _float3 vScale, vPosition;
+        _float4 vRotation;
+        if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+            return;
 
-  //      CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_ButterGrump"),&vPosition, &vRotation);
-  //      Delay_On();
-  //      ++m_iAttackCount;
-  //  }
+        vPosition.y += vScale.y * 0.5f;
+
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"),&vPosition, &vRotation);
+        Delay_On();
+        ++m_iAttackCount;
+    }
 }
 
 void CButterGrump::Alert_End(COORDINATE _eCoord, _uint iAnimIdx)
@@ -192,6 +201,21 @@ void CButterGrump::Attack_End(COORDINATE _eCoord, _uint iAnimIdx)
     {
         Set_AnimChangeable(true);
     }
+}
+
+void CButterGrump::Intro_First_End(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
+}
+
+void CButterGrump::Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
+}
+
+void CButterGrump::Intro_End(COORDINATE _eCoord, _uint iAnimIdx)
+{
+
 }
 
 HRESULT CButterGrump::Ready_Components()

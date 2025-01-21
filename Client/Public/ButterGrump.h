@@ -15,7 +15,7 @@ public:
 		EXPLOSION_OUT,
 		FIREBALL_SPIT_BIG,
 		FIREBALL_SPIT_LOOP,
-		FIREBALL_SPIT_SMALL_02,
+		FIREBALL_SPIT_SMALL,
 		IDLE,
 		IDLE_CINE,
 		RECEIVE_DAMAGE,
@@ -23,11 +23,11 @@ public:
 		ROAR_CINE,
 		TRANSITION_PHASE2,
 		WINGSHIELD_BREAKOUT,
-		WINGSHIELD_BREAKOUT_02,
+		WINGSHIELD_BREAKOUT_2,
 		WINGSHIELD_INTO,
-		WINGSHIELD_INTO_02,
+		WINGSHIELD_INTO_2,
 		WINGSHIELD_LOOP,
-		WINGSHIELD_LOOP_02,
+		WINGSHIELD_LOOP_2,
 		WINGSHIELD_ROCK_VOLLEY_INTO,
 		WINGSHIELD_ROCK_VOLLEY_LOOP,
 		WINGSHIELD_ROCK_VOLLEY_OUT,
@@ -62,6 +62,9 @@ public:
 	virtual void Attack(_float _fTimeDelta) override;
 	void Alert_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void	Attack_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Intro_First_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Intro_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
 	virtual HRESULT					Ready_Components();

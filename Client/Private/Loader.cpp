@@ -37,6 +37,7 @@
 #include "BarfBug.h"
 #include "Projectile_BarfBug.h"
 #include "ButterGrump.h"
+#include "Boss_HomingBall.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -399,9 +400,13 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CButterGrump::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_HomingBall"),
+        CBoss_HomingBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
-    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Desk.mchc");
-    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
+
+    //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Desk.mchc");
+    //Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
