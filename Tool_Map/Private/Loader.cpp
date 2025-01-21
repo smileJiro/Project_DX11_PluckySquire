@@ -185,20 +185,11 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
     
-
-        // TEST~~~~~~~~~~~~~~~~~~~~~
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("TEST"),
-    //    C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/Anim/buttergrump_Rig/buttergrump_Rig.model", matPretransform))))
-    //    return E_FAIL;
-    // TEST END~~~~~~~~~~~~
-
-
-
-    //XMMATRIX matPretransform = XMMatrixIdentity();
+    ////XMMATRIX matPretransform = XMMatrixIdentity();
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,
-        //TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
+    //    //TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
         TEXT("../../Client/Bin/Resources/Models/"), matPretransform)))
-        //TEXT("../../Client/Bin/Resources/sibal/"), matPretransform)))
+    //    //TEXT("../../Client/Bin/Resources/sibal/"), matPretransform)))
         return E_FAIL;
 
 

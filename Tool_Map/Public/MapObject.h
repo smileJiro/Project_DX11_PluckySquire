@@ -84,9 +84,6 @@ public:
 	HRESULT					Load_Override_Material(HANDLE _hFile);
 #endif // _DEBUG
 
-	void					Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
-	_uint					Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
-
 private :
 	OPERATION				m_CurrentGizmoOperation = TRANSLATE;
 	MODE					m_eMode = NORMAL;

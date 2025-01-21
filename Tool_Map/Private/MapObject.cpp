@@ -247,19 +247,6 @@ HRESULT CMapObject::Load_Override_Material(HANDLE _hFile)
 #endif // _DEBUG
 
 
-
-_uint CMapObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
-{
-    if (m_pControllerModel)
-        return m_pControllerModel->Get_TextureIndex_To_3D( _eTextureType, _iMaterialIndex);
-    return 0;
-}
-void CMapObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
-{
-    if (m_pControllerModel)
-        m_pControllerModel->Binding_TextureIndex_To_3D(_iIndex, _eTextureType, _iMaterialIndex);
-}
-
 void CMapObject::Create_Complete()
 {
     m_eMode = NORMAL; 
