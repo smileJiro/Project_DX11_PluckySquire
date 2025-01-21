@@ -139,6 +139,15 @@ namespace Map_Tool
 	{
 		return Path_String_Validation_Check(WstringToString(_strText));
 	}
+	_bool ContainString(const _string _strSourceText, const _string _strDestText)
+	{
+		return string::npos != _strSourceText.find(_strDestText);
+	}
+	_bool EndString(const _string _strSourceText, const _string _strDestText)
+	{
+		return _strSourceText.rfind(_strDestText) == _strSourceText.size() - _strDestText.size();
+
+	}
 
 }
 

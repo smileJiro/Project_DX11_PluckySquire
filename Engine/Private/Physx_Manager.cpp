@@ -23,10 +23,12 @@ HRESULT CPhysx_Manager::Initialize()
 
 
 	/* Test Code */
-	m_pGroundPlane = PxCreatePlane(*m_pPxPhysics, PxPlane(0, 1, 0, 99), *m_pPxMaterial);
+	m_pGroundPlane = PxCreatePlane(*m_pPxPhysics, PxPlane(0, 1, 0, 99), *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
 	
 	m_pPxScene->addActor(*m_pGroundPlane);
 
+
+	PxSimulationEventCallback;
 	return S_OK;
 }
 
@@ -107,9 +109,31 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 
 HRESULT CPhysx_Manager::Initialize_Material()
 {
-	m_pPxMaterial = m_pPxPhysics->createMaterial(0.5f, 0.5f, 0.5f);
-	if (nullptr == m_pPxMaterial)
-		return E_FAIL;
+	/* Actor_Enum에 있는 Material들을 생성한다. */
+
+	for (_uint i = 0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
+	{
+		_float3 vMaterialDesc = {};
+		switch ((ACTOR_MATERIAL)i)
+		{
+		case Engine::ACTOR_MATERIAL::DEFAULT: // 일반 오브젝트 
+			vMaterialDesc = {0.5f, 0.4f, 0.2f};
+			break;
+		case Engine::ACTOR_MATERIAL::SLIPPERY: // 미끄러운
+			vMaterialDesc = { 0.05f, 0.05f, 0.1f };
+			break;
+		case Engine::ACTOR_MATERIAL::BOUNCY: // 잘 튕기는
+			vMaterialDesc = { 0.3f, 0.3f, 1.0f };
+			break;
+		case Engine::ACTOR_MATERIAL::STICKY: // 질퍽한
+			vMaterialDesc = { 0.8f, 0.7f, 0.1f };
+			break;
+		default:
+			break;
+		}
+
+		m_pPxMaterial[i] = m_pPxPhysics->createMaterial(vMaterialDesc.x, vMaterialDesc.y, vMaterialDesc.z);
+	}
 
 	return S_OK;
 }
@@ -156,7 +180,8 @@ void CPhysx_Manager::Free()
 	PHYSX_RELEASE(m_pGroundPlane); /* Scene 삭제 전 정리*/
 	PHYSX_RELEASE(m_pPxScene);
 	PHYSX_RELEASE(m_pPxDefaultCpuDispatcher);/* Scene 삭제후 곧바로 정리*/
-	PHYSX_RELEASE(m_pPxMaterial); /* Scene 삭제 후 정리 해야함. */
+	for(_uint i =0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
+		PHYSX_RELEASE(m_pPxMaterial[i]); /* Scene 삭제 후 정리 해야함. */
 	PHYSX_RELEASE(m_pPxPhysics); /* Pvd보다 반드시 먼저 삭제되어야함. */
 	if (nullptr != m_pPxPvd)
 	{

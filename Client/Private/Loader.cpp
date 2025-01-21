@@ -646,6 +646,23 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 
             if (pGameObject)
             {
+                DWORD	dwByte(0);
+                _uint iOverrideCount = 0;
+
+                ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
+                if (0 < iOverrideCount)
+                {
+                    CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
+                    for (_uint i = 0; i < iOverrideCount; i++)
+                    {
+                        _uint iMaterialIndex, iTexTypeIndex, iTexIndex;
+                        ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+                        ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
+                        ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
+
+                        pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
+                    }
+                }
                 pGameObject->Set_WorldMatrix(vWorld);
             }
         }

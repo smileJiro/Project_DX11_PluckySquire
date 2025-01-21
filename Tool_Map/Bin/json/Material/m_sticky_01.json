@@ -1,0 +1,29 @@
+[
+  {
+    "Type": "Material",
+    "Name": "m_sticky_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "6D476804-4D908FB2-D4F09AB5-5AD49DE5",
+      "CachedExpressionData": {
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]
