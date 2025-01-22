@@ -213,6 +213,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\CustomFont.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\public\Particle_Emitter.h" />
+    <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
     <ClInclude Include="..\public\Particle_System.h" />
     <ClInclude Include="..\public\Particle_Sprite_Emitter.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
@@ -265,6 +266,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
     <ClInclude Include="..\public\VIBuffer_Cube.h" />
     <ClInclude Include="..\public\VIBuffer_Instance.h" />
+    <ClInclude Include="..\Public\VIBuffer_Mesh_Particle.h" />
     <ClInclude Include="..\public\VIBuffer_Point_Particle.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect_Vertical.h" />
@@ -294,6 +296,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\CustomFont.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\private\Particle_Emitter.cpp" />
+    <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />
     <ClCompile Include="..\private\Particle_System.cpp" />
     <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp" />
     <ClCompile Include="..\Private\Engine_Function.cpp" />
@@ -341,6 +344,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cube.cpp" />
     <ClCompile Include="..\private\VIBuffer_Instance.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Mesh_Particle.cpp" />
     <ClCompile Include="..\private\VIBuffer_Point_Particle.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect_Vertical.cpp" />
