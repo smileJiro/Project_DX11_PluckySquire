@@ -48,9 +48,9 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 	ImGui::SameLine();
 	if (ImGui::Button("Open Raw 2DModel Data")) {
 		wstrSelectedPath = OpenDirectoryDialog(); // 폴더 다이얼로그 호출
-		wstrSelectedPath += L"\\";
 		if (false == wstrSelectedPath.empty())
 		{
+			wstrSelectedPath += L"\\";
 			eLoadModelTYpe = LOAD_RAW2D;
 		}
 	}

@@ -483,16 +483,14 @@
     <ClInclude Include="..\public\Physx_EventCallBack.h">
       <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="..\Public\Animation2D.h">
-      <Filter>01.Utility\04.Components\Model\Animation</Filter>
-=======
     <ClInclude Include="..\Public\VIBuffer_Mesh_Particle.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
->>>>>>> ec05918697b75bee813b96d0a2e8ca447c0b2d23
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation2D.h">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -718,16 +716,14 @@
     <ClCompile Include="..\private\Physx_EventCallBack.cpp">
       <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="..\Private\Animation2D.cpp">
-      <Filter>01.Utility\04.Components\Model\Animation</Filter>
-=======
     <ClCompile Include="..\Private\VIBuffer_Mesh_Particle.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
->>>>>>> ec05918697b75bee813b96d0a2e8ca447c0b2d23
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation2D.cpp">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
