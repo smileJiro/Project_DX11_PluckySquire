@@ -210,12 +210,15 @@ HRESULT CRenderer::Draw_RenderObject()
     }
 
 #ifdef _DEBUG
-    if(true == m_isDebugRender)
+    if (true == m_isDebugRender)
+    {
         if (FAILED(Render_Debug()))
         {
             MSG_BOX("Render Failed Render_Debug");
             return E_FAIL;
         }
+        m_pGameInstance->Physx_Render();
+    }
 
     if (KEY_DOWN(KEY::F6))
         m_isDebugRender ^= 1;

@@ -46,5 +46,8 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 	if (bMove)
 	{
 		m_pOwner->Move(vMoveDir, _fTimeDelta);
+
+		/* Test */
+		
 	}
 }

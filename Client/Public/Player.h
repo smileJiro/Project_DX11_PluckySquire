@@ -377,7 +377,6 @@ public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
 	void Move(_vector _vDir,_float _fTimeDelta);
 	void Attack(_uint _iCombo);
-
 	//Get
 	F_DIRECTION Get_2DDirection() { return m_e2DDirection; }
 	//Set
@@ -392,7 +391,7 @@ private:
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
-
+	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
 	CStateMachine* m_pStateMachine = nullptr;
 	F_DIRECTION m_e2DDirection = F_DIRECTION::F_DIR_LAST;

@@ -12,6 +12,9 @@ CActor_Static::CActor_Static(const CActor_Static& _Prototype)
 
 HRESULT CActor_Static::Initialize_Prototype()
 {
+	if (FAILED(__super::Initialize_Prototype()))
+		return E_FAIL;
+
     return S_OK;
 }
 

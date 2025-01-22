@@ -244,6 +244,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\Animation2D.h" />
     <ClInclude Include="..\Public\PartObject.h" />
+    <ClInclude Include="..\public\Physx_EventCallBack.h" />
     <ClInclude Include="..\Public\Physx_Manager.h" />
     <ClInclude Include="..\public\PipeLine.h" />
     <ClInclude Include="..\Public\Prototype_Manager.h" />
@@ -323,6 +324,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\Object_Manager.cpp" />
     <ClCompile Include="..\Private\Animation2D.cpp" />
     <ClCompile Include="..\Private\PartObject.cpp" />
+    <ClCompile Include="..\private\Physx_EventCallBack.cpp" />
     <ClCompile Include="..\Private\Physx_Manager.cpp" />
     <ClCompile Include="..\private\PipeLine.cpp" />
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />

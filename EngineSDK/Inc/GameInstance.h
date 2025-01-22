@@ -195,6 +195,7 @@ public: /* For. Physx_Manager*/
 	void				Physx_Update(_float _fTimeDelta);
 	HRESULT				Physx_Render();
 	PxPhysics*			Get_Physics() const;
+	PxScene*			Get_Physx_Scene() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
 	void				Set_Player(CGameObject* _pPlayer);
 private:

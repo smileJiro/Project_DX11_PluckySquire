@@ -27,7 +27,7 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
 
-private:/* Component Update */
+protected:/* Component Update */
 	void						Priority_Update_Component(_float _fTimeDelta);
 	void						Update_Component(_float _fTimeDelta);
 	void						Late_Update_Component(_float _fTimeDelta);

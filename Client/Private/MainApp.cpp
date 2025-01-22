@@ -85,7 +85,6 @@ HRESULT CMainApp::Render()
 		return E_FAIL;
 
 	m_pGameInstance->Draw();
-	m_pGameInstance->Physx_Render();
 	m_pGameInstance->Render_DrawData_Imgui();
 
 	if (FAILED(m_pGameInstance->Render_End()))
