@@ -32,7 +32,7 @@ void CFSM_Boss::Update(_float _fTimeDelta)
 
 }
 
-HRESULT CFSM_Boss::Add_State(_uint _eState)
+HRESULT CFSM_Boss::Add_State(_uint _iState)
 {
 	if (nullptr == m_pOwner)
 		return E_FAIL;
@@ -40,7 +40,7 @@ HRESULT CFSM_Boss::Add_State(_uint _eState)
 	CState* pState = nullptr;
 	CState::STATEDESC Desc = {};
 
-	switch ((BOSS_STATE)_eState)
+	switch ((BOSS_STATE)_iState)
 	{
 	case Client::BOSS_STATE::HOMINGBALL:
 		pState = CBossAttackState::Create(&Desc);
@@ -60,7 +60,7 @@ HRESULT CFSM_Boss::Add_State(_uint _eState)
 	return S_OK;
 }
 
-HRESULT CFSM_Boss::Change_State(_uint _eState)
+HRESULT CFSM_Boss::Change_State(_uint _iState)
 {
 	if (nullptr == m_CurState)
 		return E_FAIL;
@@ -74,25 +74,26 @@ HRESULT CFSM_Boss::Change_State(_uint _eState)
 	m_CurState->State_Exit();
 	m_pOwner->Set_PreState((_uint)m_eCurState);
 
-	Set_State(_eState);
+	Set_State(_iState);
 
 	m_pOwner->Change_Animation();
 
 	return S_OK;
 }
 
-HRESULT CFSM_Boss::Set_State(_uint _eState)
+HRESULT CFSM_Boss::Set_State(_uint _iState)
 {
-	if (nullptr == m_States[_eState])
+	BOSS_STATE eState = (BOSS_STATE)_iState;
+	if (nullptr == m_States[eState])
 		return E_FAIL;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
-	m_CurState = m_States[_eState];
-	m_eCurState = _eState;
+	m_CurState = m_States[eState];
+	m_eCurState = eState;
 
 	m_CurState->State_Enter();
-	m_pOwner->Set_State((_uint)_eState);
+	m_pOwner->Set_State(_iState);
 
 	return S_OK;
 }

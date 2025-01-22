@@ -26,9 +26,9 @@ public:
 	void Update(_float _fTimeDelta);
 
 public:
-	HRESULT Add_State(_uint _eState);
-	HRESULT Change_State(_uint _eState);
-	HRESULT Set_State(_uint _eState);
+	HRESULT Add_State(_uint _iState);
+	HRESULT Change_State(_uint _iState);
+	HRESULT Set_State(_uint _iState);
 
 private:
 	map<BOSS_STATE, CState*> m_States;

@@ -6,6 +6,7 @@
 #include "Pooling_Manager.h"
 #include "Projectile_BarfBug.h"
 #include "Boss_HomingBall.h"
+#include "FSM_Boss.h"
 
 CButterGrump::CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -47,11 +48,11 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State(MONSTER_STATE::IDLE);
-    m_pFSM->Add_State(MONSTER_STATE::ALERT);
-    m_pFSM->Add_State(MONSTER_STATE::CHASE);
-    m_pFSM->Add_State(MONSTER_STATE::ATTACK);
-    m_pFSM->Set_State(MONSTER_STATE::IDLE);
+    m_pBossFSM->Add_State(MONSTER_STATE::IDLE);
+    m_pBossFSM->Add_State(MONSTER_STATE::ALERT);
+    m_pBossFSM->Add_State(MONSTER_STATE::CHASE);
+    m_pBossFSM->Add_State(MONSTER_STATE::ATTACK);
+    m_pBossFSM->Set_State(MONSTER_STATE::IDLE);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
@@ -122,7 +123,7 @@ void CButterGrump::Update(_float _fTimeDelta)
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
     }
 
-    m_pFSM->Update(_fTimeDelta);
+    m_pBossFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -146,9 +147,9 @@ HRESULT CButterGrump::Render()
 
 void CButterGrump::Change_Animation()
 {
-    if(m_eState != m_ePreState)
+    if(m_iState != m_iPreState)
     {
-        switch ((MONSTER_STATE)m_eState)
+        switch ((MONSTER_STATE)m_iState)
         {
         case MONSTER_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
@@ -221,15 +222,12 @@ void CButterGrump::Intro_End(COORDINATE _eCoord, _uint iAnimIdx)
 HRESULT CButterGrump::Ready_Components()
 {
     /* Com_FSM */
-    CFSM::FSMDESC Desc;
-    Desc.fAlertRange = m_fAlertRange;
-    Desc.fChaseRange = m_fChaseRange;
-    Desc.fAttackRange = m_fAttackRange;
+    CFSM_Boss::FSMBOSSDESC Desc;
 
-    if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
-        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
+    if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM_Boss"),
+        TEXT("Com_FSM_Boss"), reinterpret_cast<CComponent**>(&m_pBossFSM), &Desc)))
         return E_FAIL;
-    m_pFSM->Set_Owner(this);
+    m_pBossFSM->Set_Owner(this);
 
 
     return S_OK;

@@ -327,6 +327,7 @@
     <ClInclude Include="..\Public\FSM_Boss.h">
       <Filter>03.Components\FSM</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Physx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -488,6 +489,7 @@
     <ClCompile Include="..\Private\FSM_Boss.cpp">
       <Filter>03.Components\FSM</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Level_Physx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
