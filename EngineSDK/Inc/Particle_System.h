@@ -48,6 +48,7 @@ public:
 private:
 	_char						m_szInputTexturePath[MAX_PATH] = "../Bin/Resources/Textures/Effects/";
 	_int						m_iInputNumInstances = { 0 };
+	CParticle_Emitter*			m_pNowItem = { nullptr };
 private:
 	void						Tool_Make();
 	void						Tool_ShowList();

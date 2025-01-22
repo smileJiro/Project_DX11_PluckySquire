@@ -251,6 +251,7 @@ void CParticle_System::Tool_Make()
 		ImGui::TreePop();
 	}
 }
+
 void CParticle_System::Tool_ShowList()
 {
 	if (ImGui::TreeNode("Emitter List"))
@@ -271,7 +272,7 @@ void CParticle_System::Tool_ShowList()
 					{
 						m_pNowItem->Set_Active(false);
 					}
-					m_pNowItem = m_ParticleSystems[iNowIndex];
+					//m_pNowItem = m_ParticleSystems[iNowIndex];
 					m_pNowItem->Set_Active(true);
 				}
 				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -282,11 +283,12 @@ void CParticle_System::Tool_ShowList()
 			ImGui::EndListBox();
 
 
-
+		}
 		ImGui::TreePop();
 	}
 
 }
+
 void CParticle_System::Tool_Update(_float _fTimeDelta)
 {
 	Tool_Make();
