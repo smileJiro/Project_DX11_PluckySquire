@@ -1,0 +1,775 @@
+[
+  {
+    "Type": "CameraActor",
+    "Name": "BookCameraLeft",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.BookCameraLeft.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.10"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.23"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.23"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "BookCameraRight",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.BookCameraRight.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.11"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.24"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.24"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "BookCameraWholeBook",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.BookCameraWholeBook.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.12"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraWholeBook.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.25"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraWholeBook.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.25"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "DeskCameraLeft",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.DeskCameraLeft.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.13"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.26"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.26"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "DeskCameraLeftToRight",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.DeskCameraLeftToRight.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.14"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraLeftToRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.27"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraLeftToRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.27"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "DeskCameraMiddle",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.DeskCameraMiddle.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.15"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraMiddle.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.28"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraMiddle.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.28"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "DeskCameraRight",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.DeskCameraRight.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.16"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.29"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.29"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "DeskCameraRightToLeft",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.DeskCameraRightToLeft.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.17"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraRightToLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.30"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraRightToLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.30"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "DeskCameraWindow",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.DeskCameraWindow.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.18"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraWindow.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.31"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraWindow.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.31"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraActor",
+    "Name": "DoorViewCamera",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'ProfilingCameras:PersistentLevel.DoorViewCamera.CameraComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.19"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DoorViewCamera.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.32"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DoorViewCamera.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.32"
+      },
+      "Tags": [
+        "ProfilingCamera"
+      ]
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "BookCameraLeft",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.23"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "BookCameraRight",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.24"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "BookCameraWholeBook",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.BookCameraWholeBook.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.25"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "DeskCameraLeft",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "FieldOfView": 70.0,
+      "PostProcessSettings": {
+        "bOverride_DepthOfFieldFocalDistance": true,
+        "bOverride_DepthOfFieldFstop": true,
+        "bOverride_DepthOfFieldMinFstop": true,
+        "DepthOfFieldFstop": 1.0,
+        "DepthOfFieldMinFstop": 0.0,
+        "DepthOfFieldFocalDistance": 2000.0
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.26"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "DeskCameraLeftToRight",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "FieldOfView": 70.0,
+      "PostProcessSettings": {
+        "bOverride_DepthOfFieldFocalDistance": true,
+        "bOverride_DepthOfFieldFstop": true,
+        "bOverride_DepthOfFieldMinFstop": true,
+        "DepthOfFieldFstop": 1.0,
+        "DepthOfFieldMinFstop": 0.0,
+        "DepthOfFieldFocalDistance": 2000.0
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraLeftToRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.27"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "DeskCameraMiddle",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "FieldOfView": 70.0,
+      "PostProcessSettings": {
+        "bOverride_DepthOfFieldFocalDistance": true,
+        "bOverride_DepthOfFieldFstop": true,
+        "bOverride_DepthOfFieldMinFstop": true,
+        "DepthOfFieldFstop": 1.0,
+        "DepthOfFieldMinFstop": 0.0,
+        "DepthOfFieldFocalDistance": 2000.0
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraMiddle.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.28"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "DeskCameraRight",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "FieldOfView": 70.0,
+      "PostProcessSettings": {
+        "bOverride_DepthOfFieldFocalDistance": true,
+        "bOverride_DepthOfFieldFstop": true,
+        "bOverride_DepthOfFieldMinFstop": true,
+        "DepthOfFieldFstop": 1.0,
+        "DepthOfFieldMinFstop": 0.0,
+        "DepthOfFieldFocalDistance": 2000.0
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraRight.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.29"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "DeskCameraRightToLeft",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "FieldOfView": 70.0,
+      "PostProcessSettings": {
+        "bOverride_DepthOfFieldFocalDistance": true,
+        "bOverride_DepthOfFieldFstop": true,
+        "bOverride_DepthOfFieldMinFstop": true,
+        "DepthOfFieldFstop": 1.0,
+        "DepthOfFieldMinFstop": 0.0,
+        "DepthOfFieldFocalDistance": 2000.0
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraRightToLeft.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.30"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "DeskCameraWindow",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "FieldOfView": 70.0,
+      "PostProcessSettings": {
+        "bOverride_DepthOfFieldFocalDistance": true,
+        "bOverride_DepthOfFieldFstop": true,
+        "bOverride_DepthOfFieldMinFstop": true,
+        "DepthOfFieldFstop": 1.0,
+        "DepthOfFieldMinFstop": 0.0,
+        "DepthOfFieldFocalDistance": 2000.0
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DeskCameraWindow.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.31"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "DoorViewCamera",
+    "Class": "UScriptClass'CameraComponent'",
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'ProfilingCameras:PersistentLevel.DoorViewCamera.SceneComponent'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.32"
+      }
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "ProfilingCameras",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'ProfilingCameras:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.21"
+      },
+      "LevelBuildDataId": "3A16EDAA-41D7D12C-84831599-86FBDBA2",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'ProfilingCameras:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.34"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'ProfilingCameras:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.34"
+      },
+      null,
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.BookCameraLeft'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.0"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.BookCameraRight'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.1"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.BookCameraWholeBook'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.2"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.DeskCameraMiddle'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.5"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.DeskCameraLeft'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.3"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.DeskCameraRight'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.6"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.DeskCameraWindow'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.8"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.DeskCameraLeftToRight'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.4"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.DeskCameraRightToLeft'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.7"
+      },
+      {
+        "ObjectName": "CameraActor'ProfilingCameras:PersistentLevel.DoorViewCamera'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.9"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/StartMap",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'ProfilingCameras:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/ProfilingCameras.21"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "12A43E34-4AD1B5F5-5FFA699D-38BCCFF2",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "BookCameraLeft",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": -1253.256,
+        "Y": 3445.6125,
+        "Z": 1907.8481
+      },
+      "RelativeRotation": {
+        "Pitch": -69.99949,
+        "Yaw": -89.99985,
+        "Roll": 1.0245141E-05
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "BookCameraRight",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 1759.17,
+        "Y": 3445.6157,
+        "Z": 1907.8345
+      },
+      "RelativeRotation": {
+        "Pitch": -69.99949,
+        "Yaw": -89.99985,
+        "Roll": 1E-05
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "BookCameraWholeBook",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 299.0609,
+        "Y": 3725.168,
+        "Z": 3346.937
+      },
+      "RelativeRotation": {
+        "Pitch": -69.99949,
+        "Yaw": -89.99985,
+        "Roll": 1E-05
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "DeskCameraLeft",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": -6065.255,
+        "Y": 5148.6445,
+        "Z": 2394.898
+      },
+      "RelativeRotation": {
+        "Pitch": -19.998978,
+        "Yaw": -89.99936,
+        "Roll": 5.8E-05
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "DeskCameraLeftToRight",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": -12947.047,
+        "Y": -136.3681,
+        "Z": 3400.0
+      },
+      "RelativeRotation": {
+        "Pitch": 0.0002936981,
+        "Yaw": -19.998734,
+        "Roll": 0.0010380228
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "DeskCameraMiddle",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 298.9756,
+        "Y": 4865.305,
+        "Z": 1215.6898
+      },
+      "RelativeRotation": {
+        "Pitch": -19.998978,
+        "Yaw": -89.99936,
+        "Roll": 5.814793E-05
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "DeskCameraRight",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 5644.6562,
+        "Y": 5148.629,
+        "Z": 2394.8345
+      },
+      "RelativeRotation": {
+        "Pitch": -19.998978,
+        "Yaw": -89.99936,
+        "Roll": 5.8E-05
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "DeskCameraRightToLeft",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 12710.37,
+        "Y": -136.3681,
+        "Z": 3400.0
+      },
+      "RelativeRotation": {
+        "Pitch": 0.000294,
+        "Yaw": -160.0,
+        "Roll": 0.001038
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "DeskCameraWindow",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 299.0128,
+        "Y": 365.3297,
+        "Z": 6327.2495
+      },
+      "RelativeRotation": {
+        "Pitch": -9.998913,
+        "Yaw": -89.99898,
+        "Roll": 5.8147896E-05
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "DoorViewCamera",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 32875.906,
+        "Y": 24488.21,
+        "Z": 6369.825
+      },
+      "RelativeRotation": {
+        "Pitch": 0.000294,
+        "Yaw": -156.00058,
+        "Roll": 0.0010380008
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "ProfilingCameras",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'ProfilingCameras:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/ProfilingCameras.20"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'ProfilingCameras:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/ProfilingCameras.22"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

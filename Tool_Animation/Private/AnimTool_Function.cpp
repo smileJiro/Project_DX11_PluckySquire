@@ -159,6 +159,31 @@ namespace AnimTool
 		return TEXT(""); // 취소 시 빈 문자열 반환
 	}
 
+	std::wstring SaveFileDialog(LPCWSTR szFilter, const std::wstring& defaultName)
+	{
+		_tchar filename[MAX_PATH] = L""; // 파일 경로를 저장할 버퍼
+		if (!defaultName.empty()) {
+			lstrcpyW(filename, defaultName.c_str()); // 기본 파일 이름 설정
+		}
+
+		OPENFILENAME ofn; // 파일 대화 상자 구조체 초기화
+		ZeroMemory(&ofn, sizeof(ofn));
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = NULL; // 소유 윈도우 핸들 (NULL 가능)
+		ofn.lpstrFilter = szFilter; // 필터 설정
+		ofn.lpstrFile = filename;
+		ofn.nMaxFile = MAX_PATH;
+		ofn.Flags = OFN_OVERWRITEPROMPT; // 덮어쓰기 경고 표시
+
+		if (GetSaveFileName(&ofn)) {
+			return std::wstring(filename); // 선택된 파일 경로 반환
+		}
+
+		return L""; // 취소 시 빈 문자열 반환
+	}
+
+
+
 	F_DIRECTION To_FDirection(_vector _vDir)
 	{
 		//가로축이 더 클 때

@@ -1,0 +1,200 @@
+[
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "QQQ_Persistent_Streets_Switch",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'QQQ_Persistent_Streets_Switch:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.1"
+      },
+      "LevelBuildDataId": "88A77B00-4E99FBB2-FD5C16B3-36D9C0C7",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'QQQ_Persistent_Streets_Switch:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.6"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'QQQ_Persistent_Streets_Switch:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.6"
+      },
+      null,
+      {
+        "ObjectName": "StaticMeshActor'QQQ_Persistent_Streets_Switch:PersistentLevel.Floor_Switch'",
+        "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.3"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/StartMap",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'QQQ_Persistent_Streets_Switch:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.1"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "0D0513A6-44B88EC5-32814D86-9DCE290D",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "Floor_Switch",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'QQQ_Persistent_Streets_Switch:PersistentLevel.Floor_Switch.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.4"
+      },
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'QQQ_Persistent_Streets_Switch:PersistentLevel.Floor_Switch.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.4"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "Floor_Switch",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bOverrideLightMapRes": true,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "Material'BasicShapeMaterial'",
+          "ObjectPath": "/Engine/BasicShapes/BasicShapeMaterial.0"
+        }
+      ],
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": -1500.0
+      },
+      "RelativeScale3D": {
+        "X": 500.0,
+        "Y": 300.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "QQQ_Persistent_Streets_Switch",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'QQQ_Persistent_Streets_Switch:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.0"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'QQQ_Persistent_Streets_Switch:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/_Persistent/QQQ_Persistent_Streets_Switch.2"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

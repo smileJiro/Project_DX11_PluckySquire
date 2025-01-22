@@ -16,6 +16,8 @@ CLevel_AnimTool::CLevel_AnimTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 HRESULT CLevel_AnimTool::Initialize()
 {
+	m_fDefault2DCamSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
+
 	Ready_Lights();
 	//Ready_Layer_TestTerrain(TEXT("Terrain"));
 	//Create_Camera(TEXT("Camera"));
@@ -27,43 +29,81 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 {
 	ImGui::Begin("Animation Tool");
 	LOADMODEL_TYPE	eLoadModelTYpe = LOADMODEL_TYPE::LOAD_LAST;
-	std::wstring wstrSelectedPath;
+	std::wstring wstrSelectedPath = TEXT("");
 
+	//IMPORT
 	if (ImGui::Button("Open Model File")) {
 		wstrSelectedPath = OpenFileDialog(TEXT("Model3D Files\0 * .model\0Model2D Files\0 * .model2d")); // 파일 다이얼로그 호출
-		if (!wstrSelectedPath.empty()) {
-			if (wstrSelectedPath.find(L".model") != std::wstring::npos)
-			{
-				eLoadModelTYpe = LOAD_3D;
-			}
-			else if (wstrSelectedPath.find(L".model2d") != std::wstring::npos)
+		if (false == wstrSelectedPath.empty()) {
+			if (wstrSelectedPath.find(L".model2d") != std::wstring::npos)
 			{
 				eLoadModelTYpe = LOAD_2D;
 			}
+			else if (wstrSelectedPath.find(L".model") != std::wstring::npos)
+			{
+				eLoadModelTYpe = LOAD_3D;
+			}
 		}
 	}
+	ImGui::SameLine();
 	if (ImGui::Button("Open Raw 2DModel Data")) {
 		wstrSelectedPath = OpenDirectoryDialog(); // 폴더 다이얼로그 호출
-		if (!wstrSelectedPath.empty())
+		if (false == wstrSelectedPath.empty())
 		{
+			wstrSelectedPath += L"\\";
 			eLoadModelTYpe = LOAD_RAW2D;
 		}
 	}
-	ImGui::End();
-
-	if(LOAD_LAST != eLoadModelTYpe)
+	if (LOAD_LAST != eLoadModelTYpe)
 	{
 		if (SUCCEEDED(Load_Model(eLoadModelTYpe, wstrSelectedPath)))
 		{
-			lstrcpyW(m_szLoadingText, wstrSelectedPath.c_str());
+			m_szLoadedPath = wstrSelectedPath;
 			Create_Camera(TEXT("Camera"), m_pTestModelObj);
 			Set_Animation(0);
 		}
 	}
+
+	//EXPORT
+	if (nullptr != m_pTestModelObj)
+	{
+		wstrSelectedPath = TEXT("");
+		if (ImGui::Button("Export")) {
+			wstring wstrFilter = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? TEXT("Model2D Files\0 * .model2d") : TEXT("Model3D Files\0 * .model");
+			wstrSelectedPath = SaveFileDialog(wstrFilter.c_str()); // 파일 다이얼로그 호출
+		}
+		ImGui::SameLine();
+		ImGui::Checkbox("Copy Textures", &m_bExportTextures);
+
+		if (false == wstrSelectedPath.empty())
+		{
+			Export_Model(wstrSelectedPath);
+			if(m_bExportTextures)
+			{
+				std::filesystem::path pathDstPath = wstrSelectedPath;
+				Copy_Textures(m_pTestModelObj, m_szLoadedPath.remove_filename(), pathDstPath.remove_filename());
+			}
+		}
+	}
+
+	ImGui::End();
+
+	//CONTROLL
 	if (m_pTestModelObj)
 	{
-		m_fCamFovY += (_float)MOUSE_MOVE(MOUSE_AXIS::Z) * m_fCamFovYSpeed;
-		m_pTargetCam->Set_Fovy(m_fCamFovY);
+		_float fMove = (_float)MOUSE_MOVE(MOUSE_AXIS::Z) / 100.f;
+		if (COORDINATE_3D == m_pTestModelObj->Get_CurCoord())
+		{
+			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
+			m_pTargetCam->Set_Fovy(m_fDefault3DCamFovY * m_fZoomMultiplier);
+		}
+		else
+		{
+			m_fZoomMultiplier += fMove * m_f2DZoomSpeed * _fTimeDelta;
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
+			m_pTestModelObj->Set_2DProjMatrix(XMMatrixOrthographicLH((_float)m_fDefault2DCamSize.x * m_fZoomMultiplier, (_float)m_fDefault2DCamSize.y * m_fZoomMultiplier, 0.0f, 1.0f));
+		}
 	}
 }
 
@@ -71,7 +111,7 @@ HRESULT CLevel_AnimTool::Render()
 {
 #ifdef _DEBUG
 	if (m_pTestModelObj)
-		SetWindowText(g_hWnd, m_szLoadingText);
+		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
 #endif
 
 	return S_OK;
@@ -135,28 +175,6 @@ HRESULT CLevel_AnimTool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 
 HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
-
-	//CGameObject* pCamera = nullptr;
-
-	// Free Camera
-	/*CCamera_Free::CAMERA_FREE_DESC Desc{};
-
-	Desc.fMouseSensor = 0.1f;
-
-	Desc.fFovy = XMConvertToRadians(60.f);
-	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Desc.fNear = 0.1f;
-	Desc.fFar = 1000.f;
-	Desc.vEye = _float3(0.f, 10.f, -7.f);
-	Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Desc.eZoomLevel = CCamera::LEVEL_6;*/
-
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_Camera_Free"),
-	//	LEVEL_ANIMTOOL, _strLayerTag, &pCamera, &Desc)))
-	//	return E_FAIL;
-	//	
-
 	// Target Camera
 	assert(nullptr != m_pTestModelObj);
 	if(m_pTargetCam)
@@ -274,6 +292,54 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 	}
 	else
 		return E_FAIL;
+}
+
+HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
+{
+	assert(m_pTestModelObj);
+	wstring wstrExt = COORDINATE_2D == m_pTestModelObj->Get_CurCoord()  ? L".model2d" : L".model";
+	std::filesystem::path path = _wstrPath;
+	if (path.extension().wstring() != wstrExt)
+	{
+		path.replace_extension(wstrExt);
+	}
+	std::ofstream outFile(path, std::ios::binary);
+	if (!outFile) 
+	{
+		MSG_BOX("파일 열기 실패.");
+	}
+
+	if (FAILED(m_pTestModelObj->Export_Model(outFile, path.remove_filename().string().c_str(), m_bExportTextures)))
+	{
+		MSG_BOX("내보내기 실패.");
+		return E_FAIL;
+	}
+	outFile.close();
+	return S_OK;
+}
+
+HRESULT CLevel_AnimTool::Copy_Textures(CTestModelObject* _pModel, std::filesystem::path& _wstrSrcPath, std::filesystem::path& _wstrDstPath)
+{
+	assert(_pModel);
+	assert(!_wstrSrcPath.empty());
+	assert(!_wstrDstPath.empty());
+	set<wstring> TextureNames;
+	_pModel->Get_TextureNames(TextureNames);
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(_wstrSrcPath)) {
+		if (entry.path().extension() == ".png" ) 
+		{
+			if (TextureNames.find(entry.path().filename().replace_extension()) != TextureNames.end())
+			{
+				std::filesystem::path dstPath = _wstrDstPath;
+				dstPath += entry.path().filename();
+				std::filesystem::copy(entry.path(), dstPath, std::filesystem::copy_options::overwrite_existing);
+			}
+		}
+	}
+
+
+	return S_OK;
 }
 
 CLevel_AnimTool* CLevel_AnimTool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -209,6 +209,7 @@
     </ClInclude>
     <ClInclude Include="..\public\IdleState.h" />
     <ClInclude Include="..\Public\Logo_BG.h" />
+    <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
     <ClInclude Include="..\Public\ShopPanel.h" />
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
@@ -271,6 +272,7 @@
     </ClCompile>
     <ClCompile Include="..\private\IdleState.cpp" />
     <ClCompile Include="..\Private\Logo_BG.cpp" />
+    <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\ShopPanel.cpp" />
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />

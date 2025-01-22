@@ -1,0 +1,308 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_0",
+    "Outer": "PlayingCard_Box_Closed",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "ConvexElems": [
+          {
+            "VertexData": [
+              {
+                "X": 249.5,
+                "Y": 363.99994,
+                "Z": 131.62503
+              },
+              {
+                "X": -249.06573,
+                "Y": 363.56586,
+                "Z": 132.05928
+              },
+              {
+                "X": -249.06573,
+                "Y": -363.5656,
+                "Z": 132.05928
+              },
+              {
+                "X": 249.06577,
+                "Y": -363.56567,
+                "Z": 132.05928
+              },
+              {
+                "X": -249.98294,
+                "Y": -362.8921,
+                "Z": 1.1420364
+              },
+              {
+                "X": -249.0249,
+                "Y": -361.65002,
+                "Z": -0.10004425
+              },
+              {
+                "X": 249.025,
+                "Y": -361.6499,
+                "Z": -0.10004425
+              },
+              {
+                "X": 249.98294,
+                "Y": -362.89197,
+                "Z": 1.1419983
+              },
+              {
+                "X": 248.41373,
+                "Y": -364.46118,
+                "Z": 2.711258
+              },
+              {
+                "X": -248.41385,
+                "Y": -364.46118,
+                "Z": 2.711155
+              },
+              {
+                "X": 249.98294,
+                "Y": 363.51703,
+                "Z": 0.8579712
+              },
+              {
+                "X": 249.02493,
+                "Y": 363.5249,
+                "Z": -0.10004425
+              },
+              {
+                "X": -249.98294,
+                "Y": 363.51703,
+                "Z": 0.8580017
+              },
+              {
+                "X": -249.02493,
+                "Y": 363.5249,
+                "Z": -0.10004425
+              },
+              {
+                "X": -249.03888,
+                "Y": 364.46106,
+                "Z": 0.8361511
+              },
+              {
+                "X": 249.03891,
+                "Y": 364.46106,
+                "Z": 0.83613586
+              },
+              {
+                "X": -249.98294,
+                "Y": 363.51703,
+                "Z": 131.14201
+              },
+              {
+                "X": -249.98294,
+                "Y": -362.89203,
+                "Z": 131.14201
+              },
+              {
+                "X": -248.41379,
+                "Y": -364.46118,
+                "Z": 131.16368
+              },
+              {
+                "X": 248.41373,
+                "Y": -364.46118,
+                "Z": 131.16373
+              },
+              {
+                "X": 249.98294,
+                "Y": -362.89197,
+                "Z": 131.14207
+              },
+              {
+                "X": -249.12488,
+                "Y": 364.37506,
+                "Z": 131.2499
+              },
+              {
+                "X": 249.98294,
+                "Y": 363.51703,
+                "Z": 131.14207
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -249.98294,
+                "Y": -364.46118,
+                "Z": -0.10004425
+              },
+              "Max": {
+                "X": 249.98294,
+                "Y": 364.46106,
+                "Z": 132.05928
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldStatic",
+        "CollisionProfileName": "BlockAll"
+      }
+    },
+    "BodySetupGuid": "3F13AAB942F67EC7B7507B916023837D",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 56221,
+        "SizeOnDisk": 56221,
+        "OffsetInFile": "0x30138"
+      }
+    }
+  },
+  {
+    "Type": "NavCollision",
+    "Name": "NavCollision_1",
+    "Outer": "PlayingCard_Box_Closed",
+    "Class": "UScriptClass'NavCollision'",
+    "CookedFormatData": {
+      "NavCollision_X": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 1633,
+        "SizeOnDisk": 1633,
+        "OffsetInFile": "0x3DD1D"
+      }
+    }
+  },
+  {
+    "Type": "StaticMesh",
+    "Name": "PlayingCard_Box_Closed",
+    "Class": "UScriptClass'StaticMesh'",
+    "Properties": {
+      "StaticMaterials": [
+        {
+          "MaterialInterface": {
+            "ObjectName": "MaterialInstanceConstant'MI_Cards_New_Cardbox_01'",
+            "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/MI_Cards_New_Cardbox_01.0"
+          },
+          "MaterialSlotName": "MI_PlayingCards_Red4",
+          "ImportedMaterialSlotName": "MI_PlayingCards_Red4",
+          "UVChannelData": {
+            "bInitialized": true,
+            "bOverrideDensities": false,
+            "LocalUVDensities": 1290.2722,
+            "LocalUVDensities[1]": 2147.7825,
+            "LocalUVDensities[2]": 2148.4915,
+            "LocalUVDensities[3]": 0.0
+          }
+        }
+      ],
+      "LightmapUVDensity": 2148.4915,
+      "LightMapResolution": 64,
+      "LightMapCoordinateIndex": 2,
+      "ExtendedBounds": {
+        "Origin": {
+          "X": 1.5258789E-05,
+          "Y": -3.0517578E-05,
+          "Z": 65.979614
+        },
+        "BoxExtent": {
+          "X": 249.88297,
+          "Y": 364.36115,
+          "Z": 65.97966
+        },
+        "SphereRadius": 445.74942
+      }
+    },
+    "BodySetup": {
+      "ObjectName": "BodySetup'PlayingCard_Box_Closed:BodySetup_0'",
+      "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/PlayingCard_Box_Closed.0"
+    },
+    "NavCollision": {
+      "ObjectName": "NavCollision'PlayingCard_Box_Closed:NavCollision_1'",
+      "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/PlayingCard_Box_Closed.1"
+    },
+    "LightingGuid": "39C3B742-4315AD94-0386EC90-D4F8FA9F",
+    "RenderData": {
+      "LODs": [
+        {
+          "Sections": [
+            {
+              "MaterialIndex": 0,
+              "FirstIndex": 0,
+              "NumTriangles": 1976,
+              "MinVertexIndex": 0,
+              "MaxVertexIndex": 1117,
+              "bEnableCollision": true,
+              "bCastShadow": true,
+              "bForceOpaque": false,
+              "bVisibleInRayTracing": true
+            }
+          ],
+          "MaxDeviation": 0.0,
+          "PositionVertexBuffer": {
+            "Stride": 12,
+            "NumVertices": 1118
+          },
+          "VertexBuffer": {
+            "NumTexCoords": 3,
+            "NumVertices": 1118,
+            "Strides": -1,
+            "UseHighPrecisionTangentBasis": false,
+            "UseFullPrecisionUVs": false
+          },
+          "ColorVertexBuffer": {
+            "Stride": 0,
+            "NumVertices": 0
+          }
+        }
+      ],
+      "Bounds": {
+        "Origin": {
+          "X": 1.5258789E-05,
+          "Y": -3.0517578E-05,
+          "Z": 65.979614
+        },
+        "BoxExtent": {
+          "X": 249.88297,
+          "Y": 364.36115,
+          "Z": 65.97966
+        },
+        "SphereRadius": 445.74942
+      },
+      "bLODsShareStaticLighting": true,
+      "ScreenSize": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+]

@@ -1,0 +1,500 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Desk_C05_Sketchspace_Tape_Section_03",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "ConvexElems": [
+          {
+            "VertexData": [
+              {
+                "X": 235.6138,
+                "Y": 6.2612414,
+                "Z": -857.7611
+              },
+              {
+                "X": 235.6138,
+                "Y": -6.3861594,
+                "Z": -857.7611
+              },
+              {
+                "X": 235.6138,
+                "Y": -6.386142,
+                "Z": 873.7612
+              },
+              {
+                "X": 235.6138,
+                "Y": 2.8610287,
+                "Z": 873.7611
+              },
+              {
+                "X": 235.6138,
+                "Y": 6.261239,
+                "Z": 870.3632
+              },
+              {
+                "X": -235.6138,
+                "Y": -6.38621,
+                "Z": -873.761
+              },
+              {
+                "X": -235.6138,
+                "Y": 2.8638916,
+                "Z": -873.7611
+              },
+              {
+                "X": -235.6138,
+                "Y": 6.26122,
+                "Z": -870.3638
+              },
+              {
+                "X": -235.6138,
+                "Y": 6.261213,
+                "Z": 857.76086
+              },
+              {
+                "X": -235.6138,
+                "Y": -6.3861933,
+                "Z": 857.76105
+              },
+              {
+                "X": -234.85538,
+                "Y": 7.0196166,
+                "Z": -869.60547
+              },
+              {
+                "X": 223.76938,
+                "Y": 7.0196166,
+                "Z": -869.6054
+              },
+              {
+                "X": 234.85541,
+                "Y": 7.0196166,
+                "Z": -858.5195
+              },
+              {
+                "X": 234.85542,
+                "Y": 7.0196166,
+                "Z": 869.625
+              },
+              {
+                "X": -223.74985,
+                "Y": 7.0196166,
+                "Z": 869.625
+              },
+              {
+                "X": -234.8554,
+                "Y": 7.0196166,
+                "Z": 858.5195
+              },
+              {
+                "X": 234.98032,
+                "Y": -7.0196166,
+                "Z": -858.39453
+              },
+              {
+                "X": 211.1401,
+                "Y": -7.0196166,
+                "Z": -882.23474
+              },
+              {
+                "X": -227.06387,
+                "Y": -7.0196166,
+                "Z": -882.31104
+              },
+              {
+                "X": -234.9804,
+                "Y": -7.0196166,
+                "Z": -874.3944
+              },
+              {
+                "X": -234.9804,
+                "Y": -7.0196166,
+                "Z": 858.3945
+              },
+              {
+                "X": -211.14438,
+                "Y": -7.0196166,
+                "Z": 882.23047
+              },
+              {
+                "X": 227.14449,
+                "Y": -7.0196166,
+                "Z": 882.2304
+              },
+              {
+                "X": 234.98032,
+                "Y": -7.0196166,
+                "Z": 874.39453
+              },
+              {
+                "X": 226.43744,
+                "Y": -6.312514,
+                "Z": 882.9375
+              },
+              {
+                "X": -210.43738,
+                "Y": -6.3125296,
+                "Z": 882.9375
+              },
+              {
+                "X": -227.14412,
+                "Y": -7.019264,
+                "Z": -882.23083
+              },
+              {
+                "X": 210.43735,
+                "Y": -6.31249,
+                "Z": -882.9375
+              },
+              {
+                "X": -226.43735,
+                "Y": -6.312543,
+                "Z": -882.93756
+              },
+              {
+                "X": 235.65622,
+                "Y": 6.2187757,
+                "Z": 870.5
+              }
+            ],
+            "IndexData": [
+              0,
+              1,
+              2,
+              0,
+              2,
+              3,
+              0,
+              3,
+              4,
+              5,
+              6,
+              7,
+              5,
+              7,
+              8,
+              5,
+              8,
+              9,
+              10,
+              11,
+              12,
+              10,
+              12,
+              13,
+              10,
+              13,
+              14,
+              10,
+              14,
+              15,
+              16,
+              17,
+              18,
+              16,
+              18,
+              19,
+              16,
+              19,
+              20,
+              16,
+              20,
+              21,
+              16,
+              21,
+              22,
+              16,
+              22,
+              23,
+              14,
+              13,
+              4,
+              14,
+              4,
+              3,
+              14,
+              3,
+              24,
+              14,
+              24,
+              25,
+              26,
+              17,
+              27,
+              26,
+              27,
+              28,
+              28,
+              27,
+              11,
+              28,
+              11,
+              10,
+              28,
+              10,
+              7,
+              28,
+              7,
+              6,
+              25,
+              24,
+              22,
+              25,
+              22,
+              21,
+              23,
+              22,
+              24,
+              23,
+              24,
+              3,
+              23,
+              3,
+              2,
+              19,
+              26,
+              28,
+              19,
+              28,
+              6,
+              19,
+              6,
+              5,
+              27,
+              17,
+              16,
+              27,
+              16,
+              1,
+              27,
+              1,
+              0,
+              27,
+              0,
+              12,
+              27,
+              12,
+              11,
+              15,
+              14,
+              25,
+              15,
+              25,
+              21,
+              15,
+              21,
+              20,
+              15,
+              20,
+              9,
+              15,
+              9,
+              8,
+              0,
+              29,
+              13,
+              0,
+              13,
+              12,
+              5,
+              9,
+              20,
+              5,
+              20,
+              19,
+              16,
+              23,
+              2,
+              16,
+              2,
+              1,
+              10,
+              15,
+              8,
+              10,
+              8,
+              7
+            ],
+            "ElemBox": {
+              "Min": {
+                "X": -235.6138,
+                "Y": -7.0196166,
+                "Z": -882.93756
+              },
+              "Max": {
+                "X": 235.65622,
+                "Y": 7.0196166,
+                "Z": 882.9375
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldStatic",
+        "CollisionProfileName": "BlockAll"
+      }
+    },
+    "BodySetupGuid": "396C798C4D4A1070D11437AA4B2435B7",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 10795,
+        "SizeOnDisk": 10795,
+        "OffsetInFile": "0xA9E4"
+      }
+    }
+  },
+  {
+    "Type": "NavCollision",
+    "Name": "NavCollision_2",
+    "Outer": "Desk_C05_Sketchspace_Tape_Section_03",
+    "Class": "UScriptClass'NavCollision'",
+    "CookedFormatData": {
+      "NavCollision_X": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 1033,
+        "SizeOnDisk": 1033,
+        "OffsetInFile": "0xD457"
+      }
+    }
+  },
+  {
+    "Type": "StaticMesh",
+    "Name": "Desk_C05_Sketchspace_Tape_Section_03",
+    "Class": "UScriptClass'StaticMesh'",
+    "Properties": {
+      "StaticMaterials": [
+        {
+          "MaterialInterface": {
+            "ObjectName": "Material'Desk_C05_Sketchspace_Tape_1024x3072_01'",
+            "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Materials/Desk_C05_Sketchspace_Tape_1024x3072_01.0"
+          },
+          "MaterialSlotName": "Grid_1024x3072_01",
+          "ImportedMaterialSlotName": "Grid_1024x3072_01",
+          "UVChannelData": {
+            "bInitialized": true,
+            "bOverrideDensities": false,
+            "LocalUVDensities": 1183.2202,
+            "LocalUVDensities[1]": 800.71564,
+            "LocalUVDensities[2]": 967.4693,
+            "LocalUVDensities[3]": 0.0
+          }
+        }
+      ],
+      "LightmapUVDensity": 967.4693,
+      "LightMapResolution": 64,
+      "LightMapCoordinateIndex": 2,
+      "ExtendedBounds": {
+        "Origin": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": -6.1035156E-05
+        },
+        "BoxExtent": {
+          "X": 235.5138,
+          "Y": 6.9196167,
+          "Z": 882.8121
+        },
+        "SphereRadius": 911.4229
+      }
+    },
+    "BodySetup": {
+      "ObjectName": "BodySetup'Desk_C05_Sketchspace_Tape_Section_03:BodySetup_1'",
+      "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Mesh/Desk_C05_Sketchspace_Tape_Section_03.0"
+    },
+    "NavCollision": {
+      "ObjectName": "NavCollision'Desk_C05_Sketchspace_Tape_Section_03:NavCollision_2'",
+      "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Mesh/Desk_C05_Sketchspace_Tape_Section_03.1"
+    },
+    "LightingGuid": "300E4EA1-4B806C08-6229E1AD-90B8B665",
+    "RenderData": {
+      "LODs": [
+        {
+          "Sections": [
+            {
+              "MaterialIndex": 0,
+              "FirstIndex": 0,
+              "NumTriangles": 320,
+              "MinVertexIndex": 0,
+              "MaxVertexIndex": 197,
+              "bEnableCollision": true,
+              "bCastShadow": true,
+              "bForceOpaque": false,
+              "bVisibleInRayTracing": true
+            }
+          ],
+          "MaxDeviation": 0.0,
+          "PositionVertexBuffer": {
+            "Stride": 12,
+            "NumVertices": 198
+          },
+          "VertexBuffer": {
+            "NumTexCoords": 3,
+            "NumVertices": 198,
+            "Strides": -1,
+            "UseHighPrecisionTangentBasis": false,
+            "UseFullPrecisionUVs": false
+          },
+          "ColorVertexBuffer": {
+            "Stride": 0,
+            "NumVertices": 0
+          }
+        }
+      ],
+      "Bounds": {
+        "Origin": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": -6.1035156E-05
+        },
+        "BoxExtent": {
+          "X": 235.5138,
+          "Y": 6.9196167,
+          "Z": 882.8121
+        },
+        "SphereRadius": 911.4229
+      },
+      "bLODsShareStaticLighting": true,
+      "ScreenSize": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+]

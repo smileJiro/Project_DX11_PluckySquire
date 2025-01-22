@@ -64,7 +64,6 @@ public :
 
 	void					Register_RePackaging(const wstring& _strParsingFileName, CMapObject* pMapObject);
 	HRESULT					RePackaging();
-	void					Bone_Packaging(vector<CBone*>& _Bones, _uint _iBoneIdx, ofstream& _outFile);
 
 
 	HRESULT					Export_SaveResult_ToJson(const _wstring _strFIlePath, const vector<_string>& _SaveModelProtoNames, _bool isStatic = false);
@@ -87,7 +86,8 @@ private :
 	void					Open_Parsing();
 	void					Open_RePackaging();
 	HRESULT					Parsing(json _jsonObj);
-	HRESULT					Find_Override_Material(CMapObject* _pMapObject, json _jsonObj);
+	HRESULT					Find_Override_Material_Texture(CMapObject* _pMapObject, json _jsonObj);
+	HRESULT					Find_Override_Material_Color(CMapObject* _pMapObject, json _jsonObj);
 
 	_bool					Check_EgnoreObject(_string _strModelName);
 private :
@@ -103,8 +103,10 @@ private :
 	CRITICAL_SECTION							m_Critical_Section = { nullptr };
 	HANDLE										m_hThread = {};
 
-	vector<string>								m_MapObjectNames;
-	vector<string>								m_EgnoreObjectNames;
+	vector<_string>								m_MapObjectNames;
+	vector<_string>								m_EgnoreObjectNames;
+	vector<_string>								m_RePackaging;
+	vector<pair<_wstring,CMapObject*>>			m_RepackNeededModels;
 
 	_wstring									m_strUmapJsonPath = L"..\\Bin\\json\\";
 

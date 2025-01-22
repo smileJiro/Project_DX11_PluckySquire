@@ -186,7 +186,7 @@ HRESULT CTask_Manager::Parsing(json _jsonObj)
 							}
 							else
 								tMapData.fScale = { 1.f,1.f,1.f };
-							
+
 							// override material 정보가 있는가?
 							if (!jsonObj.value()["Properties"]["OverrideMaterials"].is_null())
 							{
@@ -219,6 +219,7 @@ HRESULT CTask_Manager::Parsing()
 {
 	m_Models.clear();
 	m_MapObjectNames.clear();
+	m_RepackNeededModels.clear();
 	string strFileFullPath = m_LoadTasks.front().strFilePath;
 	string strFileName = strFileFullPath.substr(strFileFullPath.rfind("\\") + 1, strFileFullPath.size() - strFileFullPath.rfind("\\") - 1);
 	string strFilePath = strFileFullPath.substr(0, strFileFullPath.rfind("\\"));
@@ -282,7 +283,7 @@ HRESULT CTask_Manager::Parsing()
 		lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(pair.first).c_str());
 
 		CGameObject* pGameObject = nullptr;
-		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
+		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
 			LEVEL_TOOL_3D_MAP, strLayerTag, &pGameObject, (void*)&NormalDesc);
 		if (pGameObject)
 		{
@@ -299,6 +300,44 @@ HRESULT CTask_Manager::Parsing()
 				_string strMaterialKey = pair.second.szMaterialKey;
 				// override material 목록 출력용 벡터 삽입
 
+				_wstring strModelName = pMapObject->Get_ModelName();
+
+
+				//TODO :: 페이퍼클립의 경우, 마테리얼에 색상정보가 없어서!!!!!!
+				// 일단 파일이름 보고 걍 대충 디폴트색상만 지정해둠... .orz
+				if (ContainString(WSTRINGTOSTRING(strModelName), "paperclip_01"))
+				{
+					_float4 fColor = {};
+
+					if (ContainString(pair.second.szMaterialKey, "blue"))
+					{
+						fColor = _float4(0.608f, 0.796f, 0.906f, 1.f);
+
+					}
+					else if (ContainString(pair.second.szMaterialKey, "green"))
+					{
+						fColor = _float4(0.663f, 0.922f, 0.647f, 1.f);
+					}
+					else if (ContainString(pair.second.szMaterialKey, "red"))
+					{
+						fColor = _float4(0.949f, 0.063f, 0.561f, 1.f);
+					}
+					else if (ContainString(pair.second.szMaterialKey, "metal"))
+					{
+						fColor = _float4(0.682f, 0.663f, 0.675f, 1.f);
+					}
+					else if (ContainString(pair.second.szMaterialKey, "yellow"))
+					{
+						fColor = _float4(0.961f, 0.773f, 0.369f, 1.f);
+					}
+					if (fColor.x != 0.f)
+					{
+						pMapObject->Set_Diffuse_Color(fColor);
+						pMapObject->Set_Color_Shader_Mode(C3DModel::COLOR_DEFAULT);
+					}
+
+					continue;
+				}
 
 				std::string filePathDialog = WstringToString(strMaterialPath);
 				filePathDialog += pair.second.szMaterialKey;
@@ -306,7 +345,7 @@ HRESULT CTask_Manager::Parsing()
 				std::ifstream inputFile(filePathDialog);
 				if (!inputFile.is_open())
 				{
-					LOG_TYPE("ERROR!!!!!!!!!!!!!!!! material name wa arukedo JSON GA up su yo", LOG_ERROR);
+					LOG_TYPE("ERROR!!!!!!!!!!!!!!!! material name wa arukedo JSON GA up su yo -> " + filePathDialog, LOG_ERROR);
 
 				}
 				else
@@ -314,9 +353,14 @@ HRESULT CTask_Manager::Parsing()
 					json jsonDialogs;
 					inputFile >> jsonDialogs;
 
-					if (FAILED(Find_Override_Material(pMapObject, jsonDialogs)))
+					// 1차.
+					if (FAILED(Find_Override_Material_Texture(pMapObject, jsonDialogs)))
 					{
-						LOG_TYPE("ERROR!!!!!!!!!!!!!!!!!!! material and json wa arukedo DATA GA up su yo", LOG_ERROR);
+						LOG_TYPE("ERROR!!!!!!!!!!!!!!!!!!! material and json wa arukedo DATA GA up su yo -> " + filePathDialog, LOG_ERROR);
+					}
+					if (FAILED(Find_Override_Material_Color(pMapObject, jsonDialogs)))
+					{
+						LOG_TYPE("ERROR!!!!!!!!!!!!!!!!!!! material and json wa arukedo DATA GA up su yo -> " + filePathDialog, LOG_ERROR);
 					}
 					inputFile.close();
 				}
@@ -329,6 +373,22 @@ HRESULT CTask_Manager::Parsing()
 		{
 			LOG_TYPE("Model Parsing Failed - [ " + pair.first + " ]", LOG_ERROR);
 			iFailedCnt++;
+		}
+	}
+
+
+
+	if (!m_RepackNeededModels.empty())
+	{
+		for (auto& PackPair : m_RepackNeededModels)
+		{
+			_wstring strFilePath = STATIC_3D_MODEL_FILE_PATH;
+			strFilePath += L"NonAnim/";
+			strFilePath += PackPair.first;
+			strFilePath += L"/";
+			strFilePath += PackPair.first;
+			strFilePath += L".model";
+			Register_RePackaging(strFilePath, PackPair.second);
 		}
 	}
 
@@ -373,18 +433,17 @@ HRESULT CTask_Manager::Parsing()
 	return S_OK;
 }
 
-HRESULT CTask_Manager::Find_Override_Material(CMapObject* _pMapObject, json _jsonObj)
+HRESULT CTask_Manager::Find_Override_Material_Texture(CMapObject* _pMapObject, json _jsonObj)
 {
-	_uint iTextureType[4];
+	//_uint iTextureType[4];
 	const _string strTextureTag = "ReferencedTextures";
-	if (_jsonObj.is_object()) 
+	if (_jsonObj.is_object())
 	{
-		if (_jsonObj.contains(strTextureTag)) 
+		if (_jsonObj.contains(strTextureTag))
 		{
-			LOG_TYPE("Material mitsuketa", LOG_SAVE);
+			LOG_TYPE("Material Texture On", LOG_SAVE);
 
-			int a = 1;
-			if(_jsonObj[strTextureTag].is_array())
+			if (_jsonObj[strTextureTag].is_array())
 			{
 				vector<_string> vecNames;
 				for (const auto& item : _jsonObj[strTextureTag])
@@ -431,7 +490,7 @@ HRESULT CTask_Manager::Find_Override_Material(CMapObject* _pMapObject, json _jso
 					}
 					else if (ContainString(strCheckTextureName, "_a"))
 					{
-						LOG_TYPE("Ab Contect",LOG_SAVE);
+						LOG_TYPE("Ab Contect", LOG_SAVE);
 						iTexIdx = aiTextureType_AMBIENT;
 					}
 
@@ -442,53 +501,139 @@ HRESULT CTask_Manager::Find_Override_Material(CMapObject* _pMapObject, json _jso
 
 						if (SUCCEEDED(_pMapObject->Push_Texture(strTextureName, iTexIdx)))
 						{
-						
+							_wstring strModelName = _pMapObject->Get_ModelName();
+
+							auto iter = find_if(m_RepackNeededModels.begin(), m_RepackNeededModels.end(),
+								[&strModelName](const pair<_wstring, CMapObject*> RepackNeededModelPair)->_bool {
+
+									return RepackNeededModelPair.first == strModelName;
+								});
+
+							if (iter == m_RepackNeededModels.end())
+							{
+								m_RepackNeededModels.push_back(make_pair(strModelName, _pMapObject));
+							}
 						}
-						//	case 1
-						//	case 2
-						//	case 3
 					}
 
 				}
 			}
-			//
-			return S_OK; 
+			return S_OK;
 		}
-		for (const auto& [key, value] : _jsonObj.items()) 
-			if (SUCCEEDED(Find_Override_Material(_pMapObject, value))) 
-				return S_OK;
+		else
+			for (const auto& [key, value] : _jsonObj.items())
+				if (SUCCEEDED(Find_Override_Material_Texture(_pMapObject, value)))
+					return S_OK;
 	}
-	else if (_jsonObj.is_array()) 
-		for (const auto& item : _jsonObj) 
-			if (SUCCEEDED(Find_Override_Material(_pMapObject,item))) 
+	else if (_jsonObj.is_array())
+		for (const auto& item : _jsonObj)
+			if (SUCCEEDED(Find_Override_Material_Texture(_pMapObject, item)))
 				return S_OK;
 
-	//for (auto jsonObj : _jsonObj.items())
-	//{
-	//	if (jsonObj.value().is_object())
-	//	{
-	//		auto test = jsonObj.value()["Properties"];
-	//		if (jsonObj.value()["Properties"].contains("CachedExpressionData"))
-	//		{
-	//			int a = 1;
-	//			auto jTextureData = jsonObj.value()["Properties"]["CachedExpressionData"];
-	//			//["TextureStreamingData"]
-	//			
-	//		}
-	//		else if (jsonObj.value()["Properties"].contains("CachedReferencedTextures"))
-	//		{
-	//			int a = 1;
-	//			auto jTextureData = jsonObj.value()["Properties"]["CachedReferencedTextures"];
-	//			//["TextureStreamingData"]
+	return S_OK;
 
-	//		}
-	//		else
-	//		{
-	//			LOG_TYPE("Material Override Texture Info X", LOG_SAVE);
-	//		}
-	//		
-	//	}
-	//}
+}
+
+HRESULT CTask_Manager::Find_Override_Material_Color(CMapObject* _pMapObject, json _jsonObj)
+{
+	string arrColorKey[4] = { "R","G","B","A" };
+	const _string strColorTag = "VectorParameterValues";
+	/*if (_jsonObj.is_array())
+	{
+		if (_jsonObj.contains("Properties") || _jsonObj.contains(strColorTag))
+		{
+			if (_jsonObj.contains(strColorTag))
+			{
+				LOG_TYPE("Material On", LOG_SAVE);
+
+				if (_jsonObj[strColorTag].is_array())
+				{
+					vector<_string> vecNames;
+					for (const auto& item : _jsonObj[strColorTag])
+					{
+						if (item.is_object() == item.contains("ParameterInfo"))
+						{
+							if (item["ParameterInfo"]["Name"] == "BaseColour_Vector3")
+							{
+
+								if (item["ParameterInfo"].contains("ParameterValue"))
+								{
+									LOG_TYPE("Material Override Color Contect! ", LOG_SAVE);
+									auto ParameterValue = item["ParameterInfo"]["ParameterValue"];
+									_float4 fColor = {};
+									for (_uint i = 0; i < 4; i++)
+									{
+										_float fValue = ParameterValue[arrColorKey[i]];
+
+										fValue /= 150.f;
+										memcpy(((&fColor.x) + i), &fValue, sizeof(_float));
+									}
+									_pMapObject->Set_Diffuse_Color(fColor);
+									_pMapObject->Set_Color_Shader_Mode(CMapObject::MIX_DIFFUSE);
+								}
+							}
+						}
+					}
+					return S_OK;
+				}
+			}
+			else
+			for (const auto& [key, value] : _jsonObj.items())
+				if (SUCCEEDED(Find_Override_Material_Color(_pMapObject, value)))
+					return S_OK;
+		}
+		else
+			for (const auto& [key, value] : _jsonObj.items())
+				if (SUCCEEDED(Find_Override_Material_Color(_pMapObject, value)))
+					return S_OK;
+	}
+	else if (_jsonObj.is_array())
+		for (const auto& item : _jsonObj)
+			if (SUCCEEDED(Find_Override_Material_Color(_pMapObject, item)))
+				return S_OK;*/
+
+	if (_jsonObj.is_object()) 
+	{
+		if (_jsonObj.contains(strColorTag)) 
+		{
+			const auto& vectorParams = _jsonObj[strColorTag];
+			if (vectorParams.is_array()) 
+			{
+				for (const auto& param : vectorParams) 
+				{
+					if (param.contains("ParameterInfo") && param["ParameterInfo"].contains("Name")) 
+					{
+						std::string name = param["ParameterInfo"]["Name"];
+						if (name == "BaseColour_Vector3" && param.contains("ParameterValue")) 
+						{
+							LOG_TYPE("Material Override Color Contect! ", LOG_SAVE);
+							auto ParameterValue = param["ParameterValue"];
+							_float4 fColor = {};
+							for (_uint i = 0; i < 4; i++)
+							{
+								_float fValue = ParameterValue[arrColorKey[i]];
+
+								memcpy(((&fColor.x) + i), &fValue, sizeof(_float));
+							}
+							_pMapObject->Set_Diffuse_Color(fColor);
+							_pMapObject->Set_Color_Shader_Mode(C3DModel::COLOR_DEFAULT);
+						}
+					}
+				}
+			}
+		}
+
+		for (const auto& [key, value] : _jsonObj.items()) {
+			Find_Override_Material_Color(_pMapObject, value);
+		}
+	}
+	else if (_jsonObj.is_array())
+	{
+		for (const auto& element : _jsonObj) {
+			Find_Override_Material_Color(_pMapObject, element);
+		}
+	}
+
 
 	return S_OK;
 
@@ -503,11 +648,11 @@ HRESULT CTask_Manager::RePackaging()
 	CMapObject* pTargetObject = m_LoadTasks.front().pTargetObject;
 
 
-	LOG_TYPE("Model RePackaging Start... ",LOG_SAVE);
+	LOG_TYPE("Model RePackaging Start... ", LOG_SAVE);
 
 
 	CModel_PackagingObject* pObj = CModel_PackagingObject::Create(strFilePath);
-		
+
 	if (pObj == nullptr)
 	{
 		LOG_TYPE("Model Re-Packaging Fail... ", LOG_ERROR);
@@ -529,7 +674,7 @@ HRESULT CTask_Manager::RePackaging()
 		LOG_TYPE("Error Type : Packaging Object Export Failed", LOG_ERROR);
 		return E_FAIL;
 	}
-	
+
 
 
 	Safe_Release(pObj);
@@ -658,6 +803,6 @@ void CTask_Manager::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
-	
+
 	__super::Free();
 }

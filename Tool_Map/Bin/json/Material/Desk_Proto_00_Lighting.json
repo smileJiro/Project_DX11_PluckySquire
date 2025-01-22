@@ -1,0 +1,2856 @@
+[
+  {
+    "Type": "DirectionalLightComponent",
+    "Name": "DirectionalLight",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'DirectionalLightComponent'",
+    "Template": {
+      "ObjectName": "DirectionalLightComponent'Weather_Controller_RealTime_C:DirectionalLight_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.13"
+    },
+    "Properties": {
+      "Intensity": 3.4999993,
+      "LightColor": {
+        "B": 214,
+        "G": 238,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFEED6"
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeRotation": {
+        "Pitch": -43.750008,
+        "Yaw": 97.49999,
+        "Roll": 2.3638327E-06
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'LightComponentBase'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "Intensity",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "MemberParent": {
+            "ObjectName": "Class'LightComponentBase'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "LightColor",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "MemberParent": {
+            "ObjectName": "Class'SceneComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "RelativeRotation",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "ExponentialHeightFogComponent",
+    "Name": "ExponentialHeightFog",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'ExponentialHeightFogComponent'",
+    "Template": {
+      "ObjectName": "ExponentialHeightFogComponent'Weather_Controller_RealTime_C:ExponentialHeightFog_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.14"
+    },
+    "Properties": {
+      "FogDensity": 2.499996E-05,
+      "FogHeightFalloff": 0.01,
+      "FogInscatteringColor": {
+        "R": 0.053057663,
+        "G": 0.40473875,
+        "B": 0.88643116,
+        "A": 1.0,
+        "Hex": "41ABF2"
+      },
+      "StartDistance": 755000.25,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'ExponentialHeightFogComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "FogDensity",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "MemberParent": {
+            "ObjectName": "Class'ExponentialHeightFogComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "FogHeightFalloff",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "MemberParent": {
+            "ObjectName": "Class'ExponentialHeightFogComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "FogInscatteringColor",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "MemberParent": {
+            "ObjectName": "Class'ExponentialHeightFogComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "StartDistance",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "Desk_Proto_00_Lighting",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'Desk_Proto_00_Lighting:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.13"
+      },
+      "StreamingTextureGuids": [
+        "B7E66DC2-4F29A64B-38A15BA7-4FBEFA5D",
+        "99C063DE-45ACD695-4E523A94-E62973A4",
+        "719817FD-41121E32-A82E1F9D-E42CD2C3",
+        "30871145-498816C4-CE907282-8B9B3D5F"
+      ],
+      "LevelBuildDataId": "E2498E43-49A7D730-E8791AA2-BE39E7AE",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'Desk_Proto_00_Lighting:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.61"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'Desk_Proto_00_Lighting:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.61"
+      },
+      null,
+      {
+        "ObjectName": "NiagaraActor'Desk_Proto_00_Lighting:PersistentLevel.rain_2'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.15"
+      },
+      {
+        "ObjectName": "RectLight'Desk_Proto_00_Lighting:PersistentLevel.RectLight_1'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.42"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.filllight'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.17"
+      },
+      {
+        "ObjectName": "Weather_Controller_RealTime_C'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.59"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight_1'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.28"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight2'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.20"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight3'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.21"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight4'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.22"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight5'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.23"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight6'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.24"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight7'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.25"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight8'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.26"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight9'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.27"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight10'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.18"
+      },
+      {
+        "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight11'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.19"
+      },
+      {
+        "ObjectName": "SpotLight'Desk_Proto_00_Lighting:PersistentLevel.SpotLight_1'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.47"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'Desk_Proto_00_Lighting:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.13"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_1",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'm_SimpleVolumetricCloud_Inst_8'",
+        "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/Materials/m_SimpleVolumetricCloud_Inst_8.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BaseNoiseExp",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 28.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "WindVector",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Extinction",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 0.0,
+            "Hex": "FFFFFF"
+          },
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'CloudWeatherTexture'",
+          "ObjectPath": "/Engine/EngineSky/VolumetricClouds/CloudWeatherTexture.0"
+        },
+        {
+          "ObjectName": "Texture2D'CloudGradientTexture'",
+          "ObjectPath": "/Engine/EngineSky/VolumetricClouds/CloudGradientTexture.0"
+        },
+        {
+          "ObjectName": "VolumeTexture'T_VolumeNoiseShape64'",
+          "ObjectPath": "/Engine/EngineSky/VolumetricClouds/T_VolumeNoiseShape64.0"
+        },
+        {
+          "ObjectName": "VolumeTexture'T_VolumeNoiseErosion32'",
+          "ObjectPath": "/Engine/EngineSky/VolumetricClouds/T_VolumeNoiseErosion32.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_2",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'HDRSky'",
+        "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/Materials/HDRSky.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Opacity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 4.25,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Alpha",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.6666667,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "DayOrNight",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 1.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "TextureCube'Dutch-Sky_0171_4k'",
+          "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/Materials/textures/Dutch-Sky_0171_4k.0"
+        },
+        {
+          "ObjectName": "TextureCube'Dutch-Sky_0157_4k'",
+          "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/Materials/textures/Dutch-Sky_0157_4k.0"
+        },
+        {
+          "ObjectName": "TextureCube'Dutch-Sky_0166_4k'",
+          "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/Materials/textures/Dutch-Sky_0166_4k.0"
+        },
+        {
+          "ObjectName": "TextureCube'Dutch-Sky_0014_4k_night'",
+          "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/Materials/textures/Dutch-Sky_0014_4k_night.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SM_StreetLamp",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Booth_light'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MaterialInstance/Ext/MI_Booth_light.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveIntensity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.02,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Stars_Mask'",
+          "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_Stars_Mask.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SM_StreetLamp1",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Booth_light'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MaterialInstance/Ext/MI_Booth_light.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveIntensity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.02,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Stars_Mask'",
+          "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_Stars_Mask.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SM_StreetLamp2",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Booth_light'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MaterialInstance/Ext/MI_Booth_light.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveIntensity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.02,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Stars_Mask'",
+          "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_Stars_Mask.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SM_StreetLamp3",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Booth_light'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MaterialInstance/Ext/MI_Booth_light.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveIntensity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.02,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Stars_Mask'",
+          "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_Stars_Mask.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SM_StreetLamp4",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Booth_light'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MaterialInstance/Ext/MI_Booth_light.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveIntensity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.02,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Stars_Mask'",
+          "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_Stars_Mask.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SM_StreetLamp5",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Booth_light'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MaterialInstance/Ext/MI_Booth_light.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveIntensity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.02,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Stars_Mask'",
+          "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_Stars_Mask.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SM_StreetLamp6",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Booth_light'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MaterialInstance/Ext/MI_Booth_light.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveIntensity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.02,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Stars_Mask'",
+          "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_Stars_Mask.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SM_StreetLamp7",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Booth_light'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MaterialInstance/Ext/MI_Booth_light.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveIntensity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.02,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Stars_Mask'",
+          "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_Stars_Mask.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "5C01A537-4A7B0949-CB250991-7068AF72",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "NiagaraActor",
+    "Name": "rain_2",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'NiagaraActor'",
+    "Properties": {
+      "NiagaraComponent": {
+        "ObjectName": "NiagaraComponent'Desk_Proto_00_Lighting:PersistentLevel.rain_2.NiagaraComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.16"
+      },
+      "RootComponent": {
+        "ObjectName": "NiagaraComponent'Desk_Proto_00_Lighting:PersistentLevel.rain_2.NiagaraComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.16"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "NiagaraComponent0",
+    "Outer": "rain_2",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Properties": {
+      "Asset": {
+        "ObjectName": "NiagaraSystem'rain'",
+        "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/niagara/rain.17"
+      },
+      "OverrideParameters": {
+        "UserParameterRedirects": [
+          {
+            "Key": {
+              "VarData": "",
+              "Name": "Gravity",
+              "TypeDef": {
+                "ClassStructOrEnum": {
+                  "ObjectName": "Class'Vector'",
+                  "ObjectPath": "/Script/CoreUObject"
+                },
+                "UnderlyingType": 2
+              }
+            },
+            "Value": {
+              "VarData": "",
+              "Name": "User.Gravity",
+              "TypeDef": {
+                "ClassStructOrEnum": {
+                  "ObjectName": "Class'Vector'",
+                  "ObjectPath": "/Script/CoreUObject"
+                },
+                "UnderlyingType": 2
+              }
+            }
+          },
+          {
+            "Key": {
+              "VarData": "",
+              "Name": "SpawnRate",
+              "TypeDef": {
+                "ClassStructOrEnum": {
+                  "ObjectName": "Class'NiagaraFloat'",
+                  "ObjectPath": "/Script/Niagara"
+                },
+                "UnderlyingType": 2
+              }
+            },
+            "Value": {
+              "VarData": "",
+              "Name": "User.SpawnRate",
+              "TypeDef": {
+                "ClassStructOrEnum": {
+                  "ObjectName": "Class'NiagaraFloat'",
+                  "ObjectPath": "/Script/Niagara"
+                },
+                "UnderlyingType": 2
+              }
+            }
+          }
+        ],
+        "SortedParameterOffsets": [
+          {
+            "Offset": 0,
+            "Name": "User.Gravity",
+            "TypeDef": {
+              "ClassStructOrEnum": {
+                "ObjectName": "Class'Vector'",
+                "ObjectPath": "/Script/CoreUObject"
+              },
+              "UnderlyingType": 2
+            }
+          },
+          {
+            "Offset": 12,
+            "Name": "User.SpawnRate",
+            "TypeDef": {
+              "ClassStructOrEnum": {
+                "ObjectName": "Class'NiagaraFloat'",
+                "ObjectPath": "/Script/Niagara"
+              },
+              "UnderlyingType": 2
+            }
+          }
+        ],
+        "ParameterData": [
+          0,
+          0,
+          0,
+          128,
+          0,
+          0,
+          0,
+          0,
+          0,
+          64,
+          28,
+          199,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "OnSystemFinished": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "NiagaraActor'Desk_Proto_00_Lighting:PersistentLevel.rain_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.15"
+            },
+            "FunctionName": "OnNiagaraSystemFinished"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": -494.25244,
+        "Y": -8503.145,
+        "Z": 16397.75
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "filllight",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.filllight.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.29"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.filllight.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.29"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.filllight.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.29"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight10",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight10.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.30"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight10.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.30"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight10.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.30"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight11",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight11.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.31"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight11.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.31"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight11.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.31"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight2",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight2.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.32"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight2.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.32"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight2.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.32"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight3",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight3.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.33"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight3.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.33"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight3.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.33"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight4",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight4.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.34"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight4.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.34"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight4.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.34"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight5",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight5.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.35"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight5.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.35"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight5.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.35"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight6",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight6.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.36"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight6.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.36"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight6.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.36"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight7",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight7.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.37"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight7.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.37"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight7.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.37"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight8",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight8.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.38"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight8.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.38"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight8.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.38"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight9",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight9.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.39"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight9.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.39"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight9.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.39"
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight_1",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.40"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.40"
+      },
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'Desk_Proto_00_Lighting:PersistentLevel.PointLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.40"
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "filllight",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "bUseInverseSquaredFalloff": false,
+      "LightFalloffExponent": 2.0,
+      "SoftSourceRadius": 40677.066,
+      "AttenuationRadius": 100000.0,
+      "SpecularScale": 0.0,
+      "LightGuid": "FE8BF177-471549D5-7C432AB4-1A980C7A",
+      "Intensity": 0.3,
+      "CastShadows": false,
+      "CastStaticShadows": false,
+      "CastDynamicShadows": false,
+      "bAffectTranslucentLighting": false,
+      "RelativeLocation": {
+        "X": -3997.1238,
+        "Y": 16660.576,
+        "Z": 2869.184
+      },
+      "Mobility": "EComponentMobility::Static"
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight10",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "Intensity": 0.0,
+      "LightColor": {
+        "B": 171,
+        "G": 216,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFD8AB"
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": -178578.31,
+        "Y": -447778.44,
+        "Z": -6823.7305
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight11",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "Intensity": 0.0,
+      "LightColor": {
+        "B": 171,
+        "G": 216,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFD8AB"
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": 230433.6,
+        "Y": -232639.39,
+        "Z": -39988.453
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight2",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "3BEC9C6F-4ADED135-D56B8699-C47AAC3B",
+      "Intensity": 0.0,
+      "CastShadows": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": -129721.83,
+        "Y": 106753.08,
+        "Z": -7098.587
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight3",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "F75D569C-4BA2CCAE-0DF26C80-8A2F4F80",
+      "Intensity": 0.0,
+      "CastShadows": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": -133910.4,
+        "Y": -100022.734,
+        "Z": -9735.706
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight4",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "8E7125FE-4DFC320D-D3EFFEB3-24F1488F",
+      "Intensity": 0.0,
+      "CastShadows": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": -75352.89,
+        "Y": -89207.83,
+        "Z": -9735.708
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight5",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "66D0C26C-4C3AADD8-70D78F8B-F2565E4F",
+      "Intensity": 0.0,
+      "CastShadows": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": -52029.992,
+        "Y": -256212.02,
+        "Z": -9735.712
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight6",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "860BA3A1-4EC449ED-9279E28B-87897785",
+      "Intensity": 0.0,
+      "CastShadows": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": -8377.608,
+        "Y": -239310.83,
+        "Z": -12703.539
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight7",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "F7CDDC6F-4D945AAE-4C7E2590-571A957E",
+      "Intensity": 0.0,
+      "CastShadows": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": 119927.9,
+        "Y": -411550.22,
+        "Z": -18288.016
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight8",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "31822C6F-4B583CC3-FDB3E697-BD43856C",
+      "Intensity": 0.0,
+      "CastShadows": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": 119967.16,
+        "Y": -350919.47,
+        "Z": -18288.016
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight9",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "Intensity": 0.0,
+      "LightColor": {
+        "B": 171,
+        "G": 216,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFD8AB"
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": 105968.11,
+        "Y": -457317.2,
+        "Z": -22763.854
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight_1",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 80000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "8712C5BD-4FA02A82-19498D86-31410AD9",
+      "Intensity": 0.0,
+      "CastShadows": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": -83382.125,
+        "Y": 119235.516,
+        "Z": -9260.209
+      }
+    }
+  },
+  {
+    "Type": "PostProcessComponent",
+    "Name": "PostProcess",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'PostProcessComponent'",
+    "Template": {
+      "ObjectName": "PostProcessComponent'Weather_Controller_RealTime_C:PostProcess_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "RectLight",
+    "Name": "RectLight_1",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'RectLight'",
+    "Properties": {
+      "RectLightComponent": {
+        "ObjectName": "RectLightComponent'Desk_Proto_00_Lighting:PersistentLevel.RectLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.43"
+      },
+      "LightComponent": {
+        "ObjectName": "RectLightComponent'Desk_Proto_00_Lighting:PersistentLevel.RectLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.43"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "RectLightComponent'Desk_Proto_00_Lighting:PersistentLevel.RectLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.43"
+      }
+    }
+  },
+  {
+    "Type": "RectLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "RectLight_1",
+    "Class": "UScriptClass'RectLightComponent'",
+    "Properties": {
+      "SourceWidth": 15000.0,
+      "SourceHeight": 10000.0,
+      "BarnDoorAngle": 79.71429,
+      "BarnDoorLength": 2014.7544,
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 2000000.0,
+      "ShadowBias": 1.0,
+      "ShadowSlopeBias": 20.0,
+      "LightGuid": "142699C7-462E631C-C3154B87-8D5D5CFD",
+      "Intensity": 600.0,
+      "LightColor": {
+        "B": 216,
+        "G": 238,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFEED8"
+      },
+      "RelativeLocation": {
+        "X": -139.08173,
+        "Y": -4512.712,
+        "Z": 8831.086
+      },
+      "RelativeRotation": {
+        "Pitch": 0.0,
+        "Yaw": -270.0,
+        "Roll": 0.0
+      },
+      "Mobility": "EComponentMobility::Static"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "DefaultSceneRoot",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Weather_Controller_RealTime_C:DefaultSceneRoot_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.16"
+    },
+    "Properties": {
+      "Mobility": "EComponentMobility::Static",
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "SkyAtmosphereComponent",
+    "Name": "SkyAtmosphere",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'SkyAtmosphereComponent'",
+    "Template": {
+      "ObjectName": "SkyAtmosphereComponent'Weather_Controller_RealTime_C:SkyAtmosphere_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.34"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "VolumetricCloudComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.VolumetricCloud'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.58"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    },
+    "bStaticLightingBuiltGUID": "35FC1B3D-4629FE2B-8F23E582-A8274741"
+  },
+  {
+    "Type": "SkyLightComponent",
+    "Name": "SkyLight",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'SkyLightComponent'",
+    "Template": {
+      "ObjectName": "SkyLightComponent'Weather_Controller_RealTime_C:SkyLight_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.35"
+    },
+    "Properties": {
+      "Intensity": 2.2500012,
+      "LightColor": {
+        "B": 252,
+        "G": 218,
+        "R": 209,
+        "A": 255,
+        "Hex": "D1DAFC"
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'LightComponentBase'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "Intensity",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "MemberParent": {
+            "ObjectName": "Class'LightComponentBase'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "LightColor",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpotLight",
+    "Name": "SpotLight_1",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SpotLight'",
+    "Properties": {
+      "SpotLightComponent": {
+        "ObjectName": "SpotLightComponent'Desk_Proto_00_Lighting:PersistentLevel.SpotLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.48"
+      },
+      "LightComponent": {
+        "ObjectName": "SpotLightComponent'Desk_Proto_00_Lighting:PersistentLevel.SpotLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.48"
+      },
+      "RootComponent": {
+        "ObjectName": "SpotLightComponent'Desk_Proto_00_Lighting:PersistentLevel.SpotLight_1.LightComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.48"
+      }
+    }
+  },
+  {
+    "Type": "SpotLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "SpotLight_1",
+    "Class": "UScriptClass'SpotLightComponent'",
+    "Properties": {
+      "OuterConeAngle": 70.0,
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 300000.0,
+      "Temperature": 5000.0,
+      "bUseTemperature": true,
+      "LightGuid": "E27F7585-483AC832-EFE136AF-74BF4B5C",
+      "Intensity": 0.0,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "RelativeLocation": {
+        "X": -2397.2983,
+        "Y": -12341.8125,
+        "Z": -23843.467
+      },
+      "RelativeRotation": {
+        "Pitch": -8.012848,
+        "Yaw": -89.99884,
+        "Roll": 89.99864
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SM_StreetLamp",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:SM_StreetLamp_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.43"
+    },
+    "Properties": {
+      "StreamingTextureData": [
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 0,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4022325347,
+          "TextureLevelIndex": 1,
+          "TexelFactor": 434.38162
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 2,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 3,
+          "TexelFactor": 533.87054
+        }
+      ],
+      "OverrideMaterials": [
+        null,
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.5"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SM_StreetLamp1",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:SM_StreetLamp1_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.36"
+    },
+    "Properties": {
+      "StreamingTextureData": [
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 0,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4022259810,
+          "TextureLevelIndex": 1,
+          "TexelFactor": 434.38162
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 2,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 3,
+          "TexelFactor": 533.87054
+        }
+      ],
+      "OverrideMaterials": [
+        null,
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp1.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.6"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SM_StreetLamp2",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:SM_StreetLamp2_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.37"
+    },
+    "Properties": {
+      "StreamingTextureData": [
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 0,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4022325347,
+          "TextureLevelIndex": 1,
+          "TexelFactor": 434.38162
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 2,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 3,
+          "TexelFactor": 533.87054
+        }
+      ],
+      "OverrideMaterials": [
+        null,
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp2.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.7"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SM_StreetLamp3",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:SM_StreetLamp3_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.38"
+    },
+    "Properties": {
+      "StreamingTextureData": [
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 0,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4022259810,
+          "TextureLevelIndex": 1,
+          "TexelFactor": 434.38162
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 2,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 3,
+          "TexelFactor": 533.87054
+        }
+      ],
+      "OverrideMaterials": [
+        null,
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp3.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.8"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SM_StreetLamp4",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:SM_StreetLamp4_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.39"
+    },
+    "Properties": {
+      "StreamingTextureData": [
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 0,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4024422466,
+          "TextureLevelIndex": 1,
+          "TexelFactor": 434.38162
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 2,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 3,
+          "TexelFactor": 533.87054
+        }
+      ],
+      "OverrideMaterials": [
+        null,
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp4.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.9"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SM_StreetLamp5",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:SM_StreetLamp5_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.40"
+    },
+    "Properties": {
+      "StreamingTextureData": [
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 0,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4024356930,
+          "TextureLevelIndex": 1,
+          "TexelFactor": 434.38162
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 2,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 3,
+          "TexelFactor": 533.87054
+        }
+      ],
+      "OverrideMaterials": [
+        null,
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp5.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.10"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SM_StreetLamp6",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:SM_StreetLamp6_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.41"
+    },
+    "Properties": {
+      "StreamingTextureData": [
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 0,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4024422499,
+          "TextureLevelIndex": 1,
+          "TexelFactor": 434.38162
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 2,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 3,
+          "TexelFactor": 533.87054
+        }
+      ],
+      "OverrideMaterials": [
+        null,
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp6.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.11"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SM_StreetLamp7",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:SM_StreetLamp7_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.42"
+    },
+    "Properties": {
+      "StreamingTextureData": [
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 0,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4024422499,
+          "TextureLevelIndex": 1,
+          "TexelFactor": 434.38162
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 2,
+          "TexelFactor": 533.87054
+        },
+        {
+          "PackedRelativeBox": 4294901760,
+          "TextureLevelIndex": 3,
+          "TexelFactor": 533.87054
+        }
+      ],
+      "OverrideMaterials": [
+        null,
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp7.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.12"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Sphere",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Weather_Controller_RealTime_C:Sphere_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.44"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.MaterialInstanceDynamic_2'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.4"
+        }
+      ],
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "VolumetricCloudComponent",
+    "Name": "VolumetricCloud",
+    "Outer": "Weather_Controller_7",
+    "Class": "UScriptClass'VolumetricCloudComponent'",
+    "Template": {
+      "ObjectName": "VolumetricCloudComponent'Weather_Controller_RealTime_C:VolumetricCloud_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.45"
+    },
+    "Properties": {
+      "LayerHeight": 0.2,
+      "Material": {
+        "ObjectName": "MaterialInstanceDynamic'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.MaterialInstanceDynamic_1'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.3"
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'VolumetricCloudComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "LayerHeight",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "MemberParent": {
+            "ObjectName": "Class'VolumetricCloudComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "Material",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "Weather_Controller_RealTime_C",
+    "Name": "Weather_Controller_7",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.Weather_Controller_RealTime_C'",
+    "Template": {
+      "ObjectName": "Weather_Controller_RealTime_C'Default__Weather_Controller_RealTime_C'",
+      "ObjectPath": "/Game/Map/3D/Adia/WeatherSystem/BluePrint/Weather_Controller_RealTime.12"
+    },
+    "Properties": {
+      "SM_StreetLamp7": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp7'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.56"
+      },
+      "SM_StreetLamp6": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp6'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.55"
+      },
+      "SM_StreetLamp5": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp5'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.54"
+      },
+      "SM_StreetLamp4": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp4'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.53"
+      },
+      "SM_StreetLamp3": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp3'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.52"
+      },
+      "SM_StreetLamp2": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp2'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.51"
+      },
+      "SM_StreetLamp1": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp1'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.50"
+      },
+      "SM_StreetLamp": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.49"
+      },
+      "Sphere": {
+        "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.Sphere'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.57"
+      },
+      "SkyAtmosphere": {
+        "ObjectName": "SkyAtmosphereComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SkyAtmosphere'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.45"
+      },
+      "DirectionalLight": {
+        "ObjectName": "DirectionalLightComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DirectionalLight'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.0"
+      },
+      "VolumetricCloud": {
+        "ObjectName": "VolumetricCloudComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.VolumetricCloud'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.58"
+      },
+      "SkyLight": {
+        "ObjectName": "SkyLightComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SkyLight'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.46"
+      },
+      "ExponentialHeightFog": {
+        "ObjectName": "ExponentialHeightFogComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.ExponentialHeightFog'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.1"
+      },
+      "PostProcess": {
+        "ObjectName": "PostProcessComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.PostProcess'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.41"
+      },
+      "DefaultSceneRoot": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "light": [
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight_1'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.28"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight2'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.20"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight3'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.21"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight4'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.22"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight5'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.23"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight6'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.24"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight7'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.25"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight8'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.26"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight9'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.27"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight10'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.18"
+        },
+        {
+          "ObjectName": "PointLight'Desk_Proto_00_Lighting:PersistentLevel.PointLight11'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.19"
+        },
+        {
+          "ObjectName": "SpotLight'Desk_Proto_00_Lighting:PersistentLevel.SpotLight_1'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.47"
+        }
+      ],
+      "NiagaraRain": {
+        "ObjectName": "NiagaraActor'Desk_Proto_00_Lighting:PersistentLevel.rain_2'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.15"
+      },
+      "FTime": 14.0,
+      "STimeParams": [
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": -140.0,
+            "Z": 30.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 0.246201,
+            "G": 0.371238,
+            "B": 0.527115,
+            "A": 1.0,
+            "Hex": "88A4C0"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 0.2,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 0.097587,
+            "G": 0.168269,
+            "B": 0.234551,
+            "A": 1.0,
+            "Hex": "587285"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 0.2,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 1.0,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.0,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 0.0,
+            "Hex": "FFFFFF"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 600000.0
+        },
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": -10.0,
+            "Z": 15.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 0.508881,
+            "G": 0.371238,
+            "B": 0.23074,
+            "A": 1.0,
+            "Hex": "BDA484"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 0.2,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 1.0,
+            "G": 0.715693,
+            "B": 0.473531,
+            "A": 1.0,
+            "Hex": "FFDCB7"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 1.0,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 1.0,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.1,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 0.020833,
+            "G": 0.020833,
+            "B": 0.020833,
+            "A": 1.0,
+            "Hex": "272727"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 700000.0
+        },
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": -10.0,
+            "Z": 40.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 1.0,
+            "G": 0.658375,
+            "B": 0.381326,
+            "A": 1.0,
+            "Hex": "FFD4A6"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 1.0,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 1.0,
+            "G": 0.637597,
+            "B": 0.462077,
+            "A": 1.0,
+            "Hex": "FFD1B5"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 5.0,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 1.0,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.0,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 1.0,
+            "G": 0.47932,
+            "B": 0.313989,
+            "A": 1.0,
+            "Hex": "FFB898"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 900000.0
+        },
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": -25.0,
+            "Z": 60.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 1.0,
+            "G": 0.887923,
+            "B": 0.791298,
+            "A": 1.0,
+            "Hex": "FFF2E6"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 5.0,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 1.0,
+            "G": 0.637597,
+            "B": 0.462077,
+            "A": 1.0,
+            "Hex": "FFD1B5"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 3.0,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 1.0,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0001,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.01,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 0.439657,
+            "G": 0.768151,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "B1E3FF"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 900000.0
+        },
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": -50.0,
+            "Z": 90.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 1.0,
+            "G": 0.83077,
+            "B": 0.597202,
+            "A": 1.0,
+            "Hex": "FFEBCB"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 3.0,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 0.514918,
+            "G": 0.62396,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "BECFFF"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 3.0,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 1.0,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.01,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 0.0,
+            "G": 0.412543,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "00ACFF"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 900000.0
+        },
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": -25.0,
+            "Z": 120.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 1.0,
+            "G": 0.928848,
+            "B": 0.895833,
+            "A": 1.0,
+            "Hex": "FFF7F3"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 5.0,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 1.0,
+            "G": 0.915159,
+            "B": 0.875,
+            "A": 1.0,
+            "Hex": "FFF6F1"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 0.0,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 1.0,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0001,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.01,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 0.212231,
+            "G": 0.381326,
+            "B": 0.545724,
+            "A": 1.0,
+            "Hex": "7FA6C3"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 320000.0
+        },
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": -5.0,
+            "Z": 140.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 1.0,
+            "G": 0.467784,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "FFB600"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 1.0,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 1.0,
+            "G": 0.2406,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "FF8700"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 0.2,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 1.0,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.01,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 1.0,
+            "G": 0.47932,
+            "B": 0.313989,
+            "A": 1.0,
+            "Hex": "FFB898"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 900000.0
+        },
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": 240.0,
+            "Z": 150.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 0.246201,
+            "G": 0.371238,
+            "B": 0.527115,
+            "A": 1.0,
+            "Hex": "88A4C0"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 0.2,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 0.097587,
+            "G": 0.168269,
+            "B": 0.234551,
+            "A": 1.0,
+            "Hex": "587285"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 0.2,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 0.5,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.0,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 0.0,
+            "Hex": "FFFFFF"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 600000.0
+        },
+        {
+          "DirectionalLightRot_4_882287764C2F9311A429BA94EFDDDFB6": {
+            "X": 0.0,
+            "Y": 300.0,
+            "Z": 150.0
+          },
+          "DirectionalLightCol_10_1B42CB6E45FD44A4846E13B959CCD9E5": {
+            "R": 0.246201,
+            "G": 0.371238,
+            "B": 0.527115,
+            "A": 1.0,
+            "Hex": "88A4C0"
+          },
+          "DirectionalLightIntensity_13_C913AF82411B2C0DFC07E695920EEA1C": 0.2,
+          "SkyLightColor_31_F21BE7B84D9995DBB782D183CDD8AC9B": {
+            "R": 0.097587,
+            "G": 0.168269,
+            "B": 0.234551,
+            "A": 1.0,
+            "Hex": "587285"
+          },
+          "SkyLightIntensity_28_D0B3377949E1A1BE8F6BF9927051E8CF": 0.2,
+          "ShadowAmount_18_5B4DDEA04282BA628F8D818CCC5DB349": 0.5,
+          "FogDensity_21_5B55CF6A4689D5971F8FF9BBD04F45E6": 0.0,
+          "FogHeightFalloff_24_A4FA51AB450DC5412CB39B8A7823516A": 0.0,
+          "FogInscatteringColor_37_EC8142604F02EEBBEE24B19171ECB96B": {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 0.0,
+            "Hex": "FFFFFF"
+          },
+          "FogViewDistance_40_7C0C2A6F41C5A25312F474ADBD4718C4": 600000.0
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "SceneComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DefaultSceneRoot'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.44"
+        },
+        {
+          "ObjectName": "PostProcessComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.PostProcess'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.41"
+        },
+        {
+          "ObjectName": "ExponentialHeightFogComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.ExponentialHeightFog'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.1"
+        },
+        {
+          "ObjectName": "SkyLightComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SkyLight'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.46"
+        },
+        {
+          "ObjectName": "VolumetricCloudComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.VolumetricCloud'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.58"
+        },
+        {
+          "ObjectName": "SkyAtmosphereComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SkyAtmosphere'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.45"
+        },
+        {
+          "ObjectName": "DirectionalLightComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.DirectionalLight'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.0"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.Sphere'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.57"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.49"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp1'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.50"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp2'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.51"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp3'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.52"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp4'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.53"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp5'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.54"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp6'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.55"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_Proto_00_Lighting:PersistentLevel.Weather_Controller_7.SM_StreetLamp7'",
+          "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.56"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "Desk_Proto_00_Lighting",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'Desk_Proto_00_Lighting:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.2"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'Desk_Proto_00_Lighting:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/Desk_Proto_00_Lighting.14"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

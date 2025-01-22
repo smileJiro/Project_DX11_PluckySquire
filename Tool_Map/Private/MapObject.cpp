@@ -113,6 +113,26 @@ HRESULT CMapObject::Render()
     if (FAILED(CModelObject::Bind_ShaderResources_WVP()))
         return E_FAIL;
 
+    switch (m_eColorShaderMode)
+    {
+        case Engine::C3DModel::COLOR_DEFAULT:
+            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
+                return E_FAIL;
+            m_iShaderPasses[COORDINATE_3D] = 3;
+            break;
+        case Engine::C3DModel::MIX_DIFFUSE:
+            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
+                return E_FAIL;
+                m_iShaderPasses[COORDINATE_3D] = 4;
+            break;
+        default:
+                m_iShaderPasses[COORDINATE_3D] = 0;
+            break;
+    }
+
+
+
+
     CModelObject::Render();
     return S_OK;
 }
@@ -219,14 +239,20 @@ HRESULT	CMapObject::Push_Texture(const _string _strTextureName, _uint _eTextureT
                     
                     if (FAILED(Add_Textures(tAddInfo, _eTextureType)))
                         return E_FAIL;
+                    else
+                    {
+                        Change_TextureIdx(iTextureIdx, _eTextureType, 0);
+                        return S_OK;
+                    }
                 }
             }
-            Change_TextureIdx(iTextureIdx,_eTextureType,0);
+            else 
+                Change_TextureIdx(iTextureIdx,_eTextureType,0);
             
 
         }
     }
-    return S_OK;
+    return E_FAIL;
 }
 
 HRESULT CMapObject::Save_Override_Material(HANDLE _hFile)
@@ -270,14 +296,34 @@ HRESULT CMapObject::Save_Override_Material(HANDLE _hFile)
 }
 
 
+HRESULT CMapObject::Save_Override_Color(HANDLE _hFile)
+{
+    DWORD	dwByte(0);
+    WriteFile(_hFile, &m_eColorShaderMode, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+
+    switch (m_eColorShaderMode)
+    {
+        case Engine::C3DModel::COLOR_DEFAULT:
+        case Engine::C3DModel::MIX_DIFFUSE:
+            WriteFile(_hFile, &m_fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+            break;
+        default:
+            break;
+    }
+    return S_OK;
+}
+
+
+
 HRESULT CMapObject::Load_Override_Material(HANDLE _hFile)
 {
+
     DWORD	dwByte(0);
     _uint iOverrideCount = 0;
 
     ReadFile(_hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
-    if(0 < iOverrideCount)
-    { 
+    if (0 < iOverrideCount)
+    {
         for (_uint i = 0; i < iOverrideCount; i++)
         {
             OVERRIDE_MATERIAL_INFO tInfo = {};
@@ -290,6 +336,25 @@ HRESULT CMapObject::Load_Override_Material(HANDLE _hFile)
     }
     return S_OK;
 }
+
+
+HRESULT CMapObject::Load_Override_Color(HANDLE _hFile)
+{
+    DWORD	dwByte(0);
+    ReadFile(_hFile, &m_eColorShaderMode, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+    switch (m_eColorShaderMode)
+    {
+    case Engine::C3DModel::COLOR_DEFAULT:
+    case Engine::C3DModel::MIX_DIFFUSE:
+        ReadFile(_hFile, &m_fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+        break;
+    default:
+        break;
+    }
+    return S_OK;
+}
+
+
 
 #endif // _DEBUG
 

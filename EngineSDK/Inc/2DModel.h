@@ -14,7 +14,7 @@ protected:
     C2DModel(const C2DModel& _Prototype);
     virtual ~C2DModel() = default;
 public:
-    HRESULT			Initialize_Prototype(const _char* _pRawDataDirPath);
+    virtual HRESULT			Initialize_Prototype(const _char* _szModel2DFilePath);
     HRESULT			Initialize(void* _pDesc);
 
     virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)override;
@@ -30,15 +30,16 @@ public:
     virtual void To_NextAnimation()override;
     const _matrix* Get_CurrentSpriteTransform();
 
-private:
+protected:
     CVIBuffer_Rect* m_pVIBufferCom = nullptr;
+
+    map<string, CTexture*> m_Textures;
+    vector<CAnimation2D* >m_Animation2Ds ;
 
 	vector<CTexture*> m_NonAnimTextures ;
     _float2 m_vNonAnimSpriteStartUV = { 0,0 };
     _float2 m_vNonAnimSpriteEndUV = { 1,1 };
 
-	map<string ,CTexture*> m_AnimTextures ;
-    vector<CAnimation2D* >m_Animation2Ds ;
 	_uint m_iCurAnimIdx = 0;
 public:
     static C2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath);
