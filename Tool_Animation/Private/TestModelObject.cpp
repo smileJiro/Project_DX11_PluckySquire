@@ -99,6 +99,12 @@ void CTestModelObject::Set_2DProjMatrix(_fmatrix _vProjMatrix)
     XMStoreFloat4x4(&m_ProjMatrix, _vProjMatrix);
 }
 
+HRESULT CTestModelObject::Export_Model(const wstring& _wstrPath)
+{
+	
+    return S_OK;
+}
+
 
 CTestModelObject* CTestModelObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

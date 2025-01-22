@@ -35,6 +35,8 @@ private:
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 	HRESULT					Create_Camera(const _wstring& _strLayerTag,CGameObject* _pTarget);
 	HRESULT					Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath);
+
+	HRESULT					Export_Model(const wstring& _wstrPath);
 private:
 	//모델 로딩 관련
 	CTestTerrain* m_pTestTerrain = nullptr;
@@ -46,7 +48,7 @@ private:
 
 	_float m_fDefault3DCamFovY = XMConvertToRadians(60.f);
 	_float2 m_fDefault2DCamSize = {};
-	_float m_f3DZoomSpeed = 3.f;
+	_float m_f3DZoomSpeed = 5.f;
 	_float m_f2DZoomSpeed = 10.f;
 	_float m_fZoomMultiplier = 1.f;
 

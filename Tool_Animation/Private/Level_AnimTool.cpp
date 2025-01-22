@@ -287,6 +287,20 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 		return E_FAIL;
 }
 
+HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
+{
+	if (nullptr == m_pTestModelObj)
+	{
+		MSG_BOX("모델이 로드되지 않았습니다.");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pTestModelObj->Export_Model(_wstrPath)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CLevel_AnimTool* CLevel_AnimTool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CLevel_AnimTool* pInstance = new CLevel_AnimTool(_pDevice, _pContext);

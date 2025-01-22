@@ -12,6 +12,8 @@ protected:
 
 public:
     HRESULT			Initialize_Prototype_FromModelFile(const _char* _pModelFilePath);
+
+    HRESULT				Export_Model(const wstring& _wstrPath);
 public:
     static CTest2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* pPath);
     virtual CComponent* Clone(void* _pArg) override;

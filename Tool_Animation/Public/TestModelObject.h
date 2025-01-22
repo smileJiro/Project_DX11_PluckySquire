@@ -20,7 +20,10 @@ protected:
 public:
 	virtual HRESULT Initialize(void* _pArg); 
 	virtual void			Late_Update(_float _fTimeDelta) override;
+
 	void						Set_2DProjMatrix(_fmatrix _vProjMatrix);
+
+	HRESULT				Export_Model(const wstring& _wstrPath);
 private:
 	HRESULT					Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc);
 public:
