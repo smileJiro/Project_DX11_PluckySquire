@@ -238,6 +238,9 @@
     <Filter Include="00.System\03.Physx">
       <UniqueIdentifier>{07b9728a-0ce5-4ee1-a194-7f177c43d688}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Objects\Camera\CutScene_Sector">
+      <UniqueIdentifier>{cba30df6-e1fa-4802-a037-b3c7f69f9b94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -471,6 +474,9 @@
     <ClInclude Include="..\Public\Physx_Manager.h">
       <Filter>00.System\03.Physx</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CutScene_Sector.h">
+      <Filter>01.Utility\03.Objects\Camera\CutScene_Sector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -691,6 +697,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Physx_Manager.cpp">
       <Filter>00.System\03.Physx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CutScene_Sector.cpp">
+      <Filter>01.Utility\03.Objects\Camera\CutScene_Sector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

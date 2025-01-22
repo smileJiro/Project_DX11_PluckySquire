@@ -22,6 +22,7 @@
 #include "CustomFont.h"
 #include "RenderTarget.h"
 #include "CameraArm.h"
+#include "CutScene_Sector.h"
 
 /* Camera */
 #include "Camera_Free.h"

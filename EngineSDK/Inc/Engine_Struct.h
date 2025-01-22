@@ -143,6 +143,19 @@ namespace Engine
 		_uint				iTimeRateAxisRight = {};
 		_uint				iTimeRateAt = {};*/
 	} ARM_DATA;
+
+	typedef struct tagCutSceneKeyFrameDesc
+	{
+		_vector				vPosition = {};
+		_float				fTimeStamp = {};
+		
+		_uint				iZoomLevel = {};
+		_uint				iZoomRatioType = {};
+		
+		_vector				vAt = {};
+		_bool				bLookAt = {};
+		_uint				iAtRatioType = {};
+	} CUTSCENE_KEYFRAME;
 #pragma endregion
 
 #pragma region Binary ฐüทร
