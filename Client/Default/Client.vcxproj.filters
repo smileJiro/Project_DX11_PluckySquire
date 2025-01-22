@@ -151,6 +151,12 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\00. Pick_Bulb">
       <UniqueIdentifier>{22c8afcc-494e-4251-943c-def5afcdc486}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo">
+      <UniqueIdentifier>{3600cf84-02bf-4c6a-8b64-2fdea4cb32ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG">
+      <UniqueIdentifier>{3201528a-c170-487d-9d02-4f72ad1ea9e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -312,6 +318,9 @@
     <ClInclude Include="..\Public\ShopPanel_BG.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Logo_BG.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -463,6 +472,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ShopPanel_BG.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Logo_BG.cpp">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
