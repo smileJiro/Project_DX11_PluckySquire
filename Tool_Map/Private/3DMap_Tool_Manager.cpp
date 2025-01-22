@@ -45,32 +45,14 @@ HRESULT C3DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	// 모델 리스트 불러오기
 	Load_ModelList();
 	Load_SaveFileList();
-	// 캐시파일 불러오기
-	//Load(false);
 
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Cell");
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Camera");
 
-
-	// 셀 관리 컨테이너 생성
-	//CGameObject* pGameObject = nullptr;
-	//m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_CellContainor"),
-	//	LEVEL_TOOL_3D_MAP, L"Layer_Cell", &pGameObject, nullptr);
-	//if (pGameObject)
-	//{
-	//	m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
-	//	Safe_AddRef(m_pCellContainor);
-	//}
-	
-
-	//lstrcpy(NormalDesc.szModelName, L"SM_desk_split_topboard_02");
-	////lstrcpy(NormalDesc.szModelName, L"WoodenPlatform_01");
 	
 	m_pMapParsingManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pMapParsingManager)
 		return E_FAIL;
-
-	//m_pMapParsingManager->Register_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Room_Environment");
 
 	return S_OK;
 }
@@ -78,10 +60,7 @@ HRESULT C3DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 void C3DMap_Tool_Manager::Update_Tool()
 {
 	// 입력 설정 Navigation Tool Mode - Obejct Tool Mode 전환하여. 나중에 씬 분리할것
-	if (!m_bNaviMode)
-		Input_Object_Tool_Mode();
-	else
-		Input_Navigation_Tool_Mode();
+	Input_Object_Tool_Mode();
 
 	// 임구이 화면 구성
 	Update_Imgui_Logic();
@@ -102,7 +81,7 @@ void C3DMap_Tool_Manager::Update_Imgui_Logic()
 	
 	
 	Navigation_Imgui(m_arrObjects[OBJECT_PREVIEW]);
-	Object_Create_Imgui(m_bNaviMode);
+	Object_Create_Imgui();
 	SaveLoad_Imgui();
 	Model_Imgui();
 }
@@ -172,96 +151,6 @@ void C3DMap_Tool_Manager::Input_Object_Tool_Mode()
 
 	}
 
-}
-
-void C3DMap_Tool_Manager::Input_Navigation_Tool_Mode()
-{
-	/*HWND hWnd = GetFocus();
-	auto& io = ImGui::GetIO();
-	if (m_bNaviMode)
-	{
-		if (nullptr != hWnd && !io.WantCaptureMouse)
-		{
-			switch (m_eNaviMode)
-			{
-			case Map_Tool::C3DMap_Tool_Manager::NAV_CREATE:
-			case Map_Tool::C3DMap_Tool_Manager::NAV_EDIT:
-				if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
-				{
-					_float3 fPos = {};
-					bool bDuple = false;
-
-					CNavigationVertex* pVertex = Picking_On_Vertex();
-					if (pVertex)
-					{
-						for (auto iter = m_vecVertexStack.begin(); iter != m_vecVertexStack.end();)
-						{
-							if (bDuple = pVertex == (*iter))
-							{
-								pVertex->Set_Mode(CNavigationVertex::NORMAL);
-								m_vecVertexStack.erase(iter);
-
-								break;
-							}
-							else
-								iter++;
-						}
-						if (!bDuple)
-							pVertex->Set_Mode(CNavigationVertex::SET);
-					}
-					else if (SUCCEEDED(Picking_On_Terrain(&fPos)))
-					{
-						pVertex = CNavigationVertex::Create(m_pDevice, m_pContext, fPos);
-						m_pCellContainor->Add_Vertex(pVertex);
-						pVertex->Set_Mode(CNavigationVertex::SET);
-					}
-
-					if (pVertex && !bDuple)
-					{
-						m_vecVertexStack.push_back(pVertex);
-						if (m_vecVertexStack.size() == 3)
-						{
-							Create_Cell();
-						}
-					}
-				}
-				else if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft))
-				{
-					if (!Check_VertexSelect())
-					{
-						int a = 1;
-					}
-				}
-				if (ImGui::IsKeyPressed(ImGuiKey_Delete))
-				{
-					if (m_pPickingVertex)
-					{
-						m_pPickingVertex->Delete_Vertex();
-						m_pPickingVertex = nullptr;
-					}
-				}
-				if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_Z))
-				{
-					if (!m_vecVertexStack.empty())
-					{
-						if (0 >= m_vecVertexStack.back()->Get_IncludeCellCount())
-						{
-							m_vecVertexStack.back()->Delete_Vertex();
-						}
-						else
-						{
-							m_vecVertexStack.back()->Set_Mode(CNavigationVertex::NORMAL);
-						}
-						m_vecVertexStack.pop_back();
-					}
-				}
-
-				break;
-			default:
-				break;
-			}
-		}
-	}*/
 }
 
 void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
@@ -1379,7 +1268,7 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 
 
 			CGameObject* pGameObject = nullptr;
-			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
+			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
 				LEVEL_TOOL_3D_MAP,
 				strLayerTag,
 				&pGameObject,

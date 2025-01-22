@@ -283,7 +283,7 @@ HRESULT CTask_Manager::Parsing()
 		lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(pair.first).c_str());
 
 		CGameObject* pGameObject = nullptr;
-		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
+		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
 			LEVEL_TOOL_3D_MAP, strLayerTag, &pGameObject, (void*)&NormalDesc);
 		if (pGameObject)
 		{
