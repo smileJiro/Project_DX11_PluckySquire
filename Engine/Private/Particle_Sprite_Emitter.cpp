@@ -5,13 +5,16 @@
 CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CParticle_Emitter(_pDevice, _pContext)
 {
+    m_eType = SPRITE;
 }
 
 CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitter& _Prototype)
 	: CParticle_Emitter(_Prototype)
 {
-    m_pTextureCom = static_cast<CTexture*>(_Prototype.m_pTextureCom->Clone(nullptr));
-    m_pParticleBufferCom = static_cast<CVIBuffer_Point_Particle*>(_Prototype.m_pParticleBufferCom->Clone(nullptr));
+    if (nullptr != _Prototype.m_pTextureCom)
+        m_pTextureCom = static_cast<CTexture*>(_Prototype.m_pTextureCom->Clone(nullptr));
+    if (nullptr != _Prototype.m_pParticleBufferCom)
+        m_pParticleBufferCom = static_cast<CVIBuffer_Point_Particle*>(_Prototype.m_pParticleBufferCom->Clone(nullptr));
 }
 
 
@@ -22,10 +25,6 @@ CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitte
 HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const _tchar* _szFilePath)
 {
     json jsonEffectInfo;
-    if (FAILED(m_pGameInstance->Load_Json(_szFilePath, &jsonEffectInfo)))
-        return E_FAIL;
-
- 
     if (false == jsonEffectInfo.contains("Texture"))
         return E_FAIL;
 
@@ -45,13 +44,39 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const _tchar* _szFilePath
     return S_OK;
 }
 
+HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
+{
+    if (false == _jsonInfo.contains("Texture"))
+        return E_FAIL;
+
+    _string strTexturePath = _jsonInfo["Texture"];
+    m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+    if (nullptr == m_pTextureCom)
+        return E_FAIL;
+
+    if (false == _jsonInfo.contains("Buffer"))
+        return E_FAIL;
+
+    m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, _jsonInfo["Buffer"]);
+    if (nullptr == m_pParticleBufferCom)
+        return E_FAIL;
+
+
+
+    return S_OK;
+}
+
+
+
 HRESULT CParticle_Sprite_Emitter::Initialize(void* _pArg)
 {
-    // Desc에 대한 내용 ?
     PARTICLE_EMITTER_DESC* pDesc = static_cast<PARTICLE_EMITTER_DESC*>(_pArg);
 
     if (nullptr == pDesc)
         return E_FAIL;
+
+    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->isCoordChangeEnable = false;
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -72,11 +97,15 @@ void CParticle_Sprite_Emitter::Update(_float _fTimeDelta)
 
 void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
 {
+
     m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
 }
 
 HRESULT CParticle_Sprite_Emitter::Render()
 {
+    if (nullptr == m_pTextureCom || nullptr == m_pParticleBufferCom || nullptr == m_pShaderCom)
+        return S_OK;
+
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
@@ -118,6 +147,13 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
     if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
         return E_FAIL;
 
+    _float4 vLook;
+    XMStoreFloat4(&vLook, -1.f * m_pGameInstance->Get_CameraVector(CTransform::STATE_LOOK));
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_vLook", &vLook, sizeof(_float4))))
+        return E_FAIL;
+
+
+
     return S_OK;
 }
 
@@ -126,9 +162,11 @@ HRESULT CParticle_Sprite_Emitter::Ready_Components(const PARTICLE_EMITTER_DESC* 
     if (FAILED(__super::Ready_Components(_pDesc)))
         return E_FAIL;
 
-    m_Components.emplace(L"Com_Texture", m_pTextureCom);
+    if (nullptr != m_pTextureCom)
+        m_Components.emplace(L"Com_Texture", m_pTextureCom);
 
-    m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
+    if (nullptr != m_pParticleBufferCom)
+        m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
 
     return S_OK;
 }
@@ -146,13 +184,26 @@ CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevic
     return pInstance;
 }
 
+CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonInfo)
+{
+    CParticle_Sprite_Emitter* pInstance = new CParticle_Sprite_Emitter(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype(_jsonInfo)))
+    {
+        MSG_BOX("Failed to Cloned : CParticle_Sprite_Emitter");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
 CGameObject* CParticle_Sprite_Emitter::Clone(void* _pArg)
 {
     CParticle_Sprite_Emitter* pInstance = new CParticle_Sprite_Emitter(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CEffect");
+        MSG_BOX("Failed to Cloned : CParticle_Sprite_Emitter");
         Safe_Release(pInstance);
     }
 
@@ -171,3 +222,18 @@ HRESULT CParticle_Sprite_Emitter::Cleanup_DeadReferences()
 {
 	return S_OK;
 }
+
+#ifdef _DEBUG
+CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg)
+{
+    CParticle_Sprite_Emitter* pInstance = new CParticle_Sprite_Emitter(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize(_pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CParticle_Sprite_Emitter");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+#endif

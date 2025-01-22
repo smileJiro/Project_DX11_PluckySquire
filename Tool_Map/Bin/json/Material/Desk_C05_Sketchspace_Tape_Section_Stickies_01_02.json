@@ -1,0 +1,146 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_0",
+    "Outer": "Desk_C05_Sketchspace_Tape_Section_Stickies_01_02",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldStatic",
+        "CollisionProfileName": "BlockAll"
+      }
+    },
+    "BodySetupGuid": "5A99B4B043BEB8497AA5DDA98CDB5BD8",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 8833,
+        "SizeOnDisk": 8833,
+        "OffsetInFile": "0x948F"
+      }
+    }
+  },
+  {
+    "Type": "NavCollision",
+    "Name": "NavCollision_0",
+    "Outer": "Desk_C05_Sketchspace_Tape_Section_Stickies_01_02",
+    "Class": "UScriptClass'NavCollision'",
+    "CookedFormatData": {
+      "NavCollision_X": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 21,
+        "SizeOnDisk": 21,
+        "OffsetInFile": "0xB758"
+      }
+    }
+  },
+  {
+    "Type": "StaticMesh",
+    "Name": "Desk_C05_Sketchspace_Tape_Section_Stickies_01_02",
+    "Class": "UScriptClass'StaticMesh'",
+    "Properties": {
+      "StaticMaterials": [
+        {
+          "MaterialInterface": {
+            "ObjectName": "Material'Desk_C05_Sketchspace_Tape_1536x1536_01'",
+            "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Materials/Desk_C05_Sketchspace_Tape_1536x1536_01.0"
+          },
+          "MaterialSlotName": "MI_sticky_notes1",
+          "ImportedMaterialSlotName": "MI_sticky_notes1",
+          "UVChannelData": {
+            "bInitialized": true,
+            "bOverrideDensities": false,
+            "LocalUVDensities": 1039.204,
+            "LocalUVDensities[1]": 1011.3648,
+            "LocalUVDensities[2]": 0.0,
+            "LocalUVDensities[3]": 0.0
+          }
+        }
+      ],
+      "LightmapUVDensity": 1011.3648,
+      "LightMapResolution": 64,
+      "LightMapCoordinateIndex": 1,
+      "ExtendedBounds": {
+        "Origin": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": -6.1035156E-05
+        },
+        "BoxExtent": {
+          "X": 239.40625,
+          "Y": 47.917847,
+          "Z": 239.16864
+        },
+        "SphereRadius": 341.75995
+      }
+    },
+    "BodySetup": {
+      "ObjectName": "BodySetup'Desk_C05_Sketchspace_Tape_Section_Stickies_01_02:BodySetup_0'",
+      "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Mesh/Desk_C05_Sketchspace_Tape_Section_Stickies_01_02.0"
+    },
+    "NavCollision": {
+      "ObjectName": "NavCollision'Desk_C05_Sketchspace_Tape_Section_Stickies_01_02:NavCollision_0'",
+      "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Mesh/Desk_C05_Sketchspace_Tape_Section_Stickies_01_02.1"
+    },
+    "LightingGuid": "65400F34-475A124F-572E93A6-DA549711",
+    "RenderData": {
+      "LODs": [
+        {
+          "Sections": [
+            {
+              "MaterialIndex": 0,
+              "FirstIndex": 0,
+              "NumTriangles": 336,
+              "MinVertexIndex": 0,
+              "MaxVertexIndex": 257,
+              "bEnableCollision": true,
+              "bCastShadow": true,
+              "bForceOpaque": false,
+              "bVisibleInRayTracing": true
+            }
+          ],
+          "MaxDeviation": 0.0,
+          "PositionVertexBuffer": {
+            "Stride": 12,
+            "NumVertices": 258
+          },
+          "VertexBuffer": {
+            "NumTexCoords": 2,
+            "NumVertices": 258,
+            "Strides": -1,
+            "UseHighPrecisionTangentBasis": false,
+            "UseFullPrecisionUVs": false
+          },
+          "ColorVertexBuffer": {
+            "Stride": 0,
+            "NumVertices": 0
+          }
+        }
+      ],
+      "Bounds": {
+        "Origin": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": -6.1035156E-05
+        },
+        "BoxExtent": {
+          "X": 239.40625,
+          "Y": 47.917847,
+          "Z": 239.16864
+        },
+        "SphereRadius": 341.75995
+      },
+      "bLODsShareStaticLighting": true,
+      "ScreenSize": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+]

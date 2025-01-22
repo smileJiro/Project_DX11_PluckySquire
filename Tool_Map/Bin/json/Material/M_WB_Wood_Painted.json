@@ -1,0 +1,519 @@
+[
+  {
+    "Type": "Material",
+    "Name": "M_WB_Wood_Painted",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Metallic": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionClamp_1",
+        "UseConstant": false,
+        "Constant": 0.0
+      },
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionMultiply_8",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "F445064D-4BA6A67A-0C8BD1A0-EDE56772",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              2518702411683263199,
+              2940338155968913820,
+              3812536663713583683,
+              6964237498110869695,
+              9182530695430448975,
+              9719478634668093304,
+              15226141415331002854,
+              15291863838976150349,
+              18281669006262735047
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "UV_Rotate",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Natural_Wood",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Roughness_Combine",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Peeling_Mask",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Invert_Roughness(1/0)",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Wood_Rotation",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "UV_V",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "UV_U",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Roughness_Mult",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "C2E9F655-4728BD96-5B06F5B4-3F30B392",
+              "DB48263E-4DA3D544-C599028B-2B8416E3",
+              "3938768D-44348C73-1D9CA3AC-7A612515",
+              "CB98B3EF-4FA70E1F-CC7FFEA3-EBBAD611",
+              "022D7E0A-4D29ACD0-1FE3E6A2-A6D7174B",
+              "F804C185-4C613A49-D8B00F96-E941C641",
+              "A602145E-4D760332-4E7DCA95-CF5253C2",
+              "55D3A416-4EACCB1A-6868CD92-7B270A94",
+              "0E042F81-484DE5E1-A0436186-3CD03DA1"
+            ]
+          },
+          "RuntimeEntries[1]": {
+            "NameHashes": [
+              1534580092854434212,
+              9218194907637930360
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "Normal_Intensity",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Wood_Color",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "AD98D1B7-479F4DBD-FE833CBF-086B0C37",
+              "EA87DB95-4BCE4CBD-94FCC7A8-2B2D9E45"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              12076515603125919684,
+              12857728995038144037,
+              15598017496208151812
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "Normal Map",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Roughness Map",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Metallic Map",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "E9A930C0-49E06288-AB1A3AA9-858045E9",
+              "34BA1149-4219DEA9-4F4C09BD-3D0D3DF0",
+              "3F4C6A9E-45E961D8-D8BD2F9F-9AD7301B"
+            ]
+          },
+          "ScalarValues": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            0.6
+          ],
+          "VectorValues": [
+            {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            },
+            {
+              "R": 0.23555489,
+              "G": 0.27083334,
+              "B": 0.043728296,
+              "A": 1.0,
+              "Hex": "858E3B"
+            }
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "Texture2D'Wooden_Structure_1_Mask_Normal'",
+              "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_Normal.0"
+            },
+            {
+              "ObjectName": "Texture2D'Wooden_Structure_1_Mask_OcclusionRoughnessMetallic'",
+              "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_OcclusionRoughnessMetallic.0"
+            },
+            {
+              "ObjectName": "Texture2D'Wooden_Structure_1_Mask_OcclusionRoughnessMetallic'",
+              "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_OcclusionRoughnessMetallic.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'plane_divided_DefaultMaterial_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_White_Tiling/plane_divided_DefaultMaterial_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'plane_divided_DefaultMaterial_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_White_Tiling/plane_divided_DefaultMaterial_BaseColor.0"
+          },
+          {
+            "ObjectName": "Texture2D'plane_divided_DefaultMaterial_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_Tiling/plane_divided_DefaultMaterial_BaseColor.0"
+          },
+          {
+            "ObjectName": "Texture2D'plane_divided_DefaultMaterial_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_Tiling/plane_divided_DefaultMaterial_OcclusionRoughnessMetallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Structure_1_Mask_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_OcclusionRoughnessMetallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Structure_1_Mask_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_Normal.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "E572D701-496E6D38-CC53A5BD-C450B0ED",
+            "Function": {
+              "ObjectName": "MaterialFunction'CustomRotator'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/CustomRotator.0"
+            }
+          },
+          {
+            "StateId": "E572D701-496E6D38-CC53A5BD-C450B0ED",
+            "Function": {
+              "ObjectName": "MaterialFunction'CustomRotator'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/CustomRotator.0"
+            }
+          },
+          {
+            "StateId": "F5C2D477-4BA63455-E32B4B96-0D7674B6",
+            "Function": {
+              "ObjectName": "MaterialFunction'BlendAngleCorrectedNormals'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/BlendAngleCorrectedNormals.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "plane_divided_DefaultMaterial_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "plane_divided_DefaultMaterial_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "plane_divided_DefaultMaterial_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "plane_divided_DefaultMaterial_OcclusionRoughnessMetallic"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Structure_1_Mask_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Structure_1_Mask_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            2518702411683263199,
+            2940338155968913820,
+            3812536663713583683,
+            6964237498110869695,
+            9182530695430448975,
+            9719478634668093304,
+            15226141415331002854,
+            15291863838976150349,
+            18281669006262735047
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "UV_Rotate",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Natural_Wood",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Roughness_Combine",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Peeling_Mask",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Invert_Roughness(1/0)",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Wood_Rotation",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "UV_V",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "UV_U",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Roughness_Mult",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "C2E9F655-4728BD96-5B06F5B4-3F30B392",
+            "DB48263E-4DA3D544-C599028B-2B8416E3",
+            "3938768D-44348C73-1D9CA3AC-7A612515",
+            "CB98B3EF-4FA70E1F-CC7FFEA3-EBBAD611",
+            "022D7E0A-4D29ACD0-1FE3E6A2-A6D7174B",
+            "F804C185-4C613A49-D8B00F96-E941C641",
+            "A602145E-4D760332-4E7DCA95-CF5253C2",
+            "55D3A416-4EACCB1A-6868CD92-7B270A94",
+            "0E042F81-484DE5E1-A0436186-3CD03DA1"
+          ]
+        },
+        "RuntimeEntries[1]": {
+          "NameHashes": [
+            1534580092854434212,
+            9218194907637930360
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "Normal_Intensity",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Wood_Color",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "AD98D1B7-479F4DBD-FE833CBF-086B0C37",
+            "EA87DB95-4BCE4CBD-94FCC7A8-2B2D9E45"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            12076515603125919684,
+            12857728995038144037,
+            15598017496208151812
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "Normal Map",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Roughness Map",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Metallic Map",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "E9A930C0-49E06288-AB1A3AA9-858045E9",
+            "34BA1149-4219DEA9-4F4C09BD-3D0D3DF0",
+            "3F4C6A9E-45E961D8-D8BD2F9F-9AD7301B"
+          ]
+        },
+        "ScalarValues": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          1.0,
+          0.6
+        ],
+        "VectorValues": [
+          {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          {
+            "R": 0.23555489,
+            "G": 0.27083334,
+            "B": 0.043728296,
+            "A": 1.0,
+            "Hex": "858E3B"
+          }
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "Texture2D'Wooden_Structure_1_Mask_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Structure_1_Mask_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_OcclusionRoughnessMetallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Wooden_Structure_1_Mask_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_OcclusionRoughnessMetallic.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'plane_divided_DefaultMaterial_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_White_Tiling/plane_divided_DefaultMaterial_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'plane_divided_DefaultMaterial_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_White_Tiling/plane_divided_DefaultMaterial_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'plane_divided_DefaultMaterial_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_Tiling/plane_divided_DefaultMaterial_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'plane_divided_DefaultMaterial_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_Tiling/plane_divided_DefaultMaterial_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Structure_1_Mask_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Structure_1_Mask_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_Normal.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "E572D701-496E6D38-CC53A5BD-C450B0ED",
+          "Function": {
+            "ObjectName": "MaterialFunction'CustomRotator'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/CustomRotator.0"
+          }
+        },
+        {
+          "StateId": "E572D701-496E6D38-CC53A5BD-C450B0ED",
+          "Function": {
+            "ObjectName": "MaterialFunction'CustomRotator'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/CustomRotator.0"
+          }
+        },
+        {
+          "StateId": "F5C2D477-4BA63455-E32B4B96-0D7674B6",
+          "Function": {
+            "ObjectName": "MaterialFunction'BlendAngleCorrectedNormals'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/BlendAngleCorrectedNormals.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

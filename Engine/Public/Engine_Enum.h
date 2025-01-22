@@ -54,13 +54,6 @@ enum class PASS_DEFERRED
 	LAST
 };
 
-enum class CAMERA_TYPE 
-{ 
-	FREE, 
-	TARGET, 
-	LAST
-};
-
 enum class PASS_VTXPOINTINSTANCE
 {
 	LOOP,

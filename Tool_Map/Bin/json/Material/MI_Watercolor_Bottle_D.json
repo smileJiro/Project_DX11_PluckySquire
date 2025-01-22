@@ -1,133 +1,35 @@
-[
-  {
-    "Type": "MaterialInstanceConstant",
-    "Name": "MI_Watercolor_Bottle_D",
-    "Class": "UScriptClass'MaterialInstanceConstant'",
+{
+  "Textures": {
+    "BaseColour": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_albedo.water_color_bottle_d_albedo",
+    "PM_Diffuse": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_albedo.water_color_bottle_d_albedo",
+    "water_color_bottle_d_albedo": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_albedo.water_color_bottle_d_albedo",
+    "PM_Normals": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_normal.water_color_bottle_d_normal",
+    "Normal": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_normal.water_color_bottle_d_normal",
+    "PM_SpecularMasks": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_orm.water_color_bottle_d_orm",
+    "ORMH": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_orm.water_color_bottle_d_orm"
+  },
+  "Parameters": {
+    "BlendMode": 1,
+    "ShadingModel": 0,
+    "Colors": {},
+    "Scalars": {
+      "RefractionDepthBias": 0.0
+    },
+    "Switches": {
+      "UseGradient?": false
+    },
     "Properties": {
-      "Parent": {
-        "ObjectName": "Material'MM_SimpleProps_01'",
-        "ObjectPath": "/Game/Materials/ModelUpdates/MM_SimpleProps_01.0"
-      },
       "bHasStaticPermutationResource": true,
-      "ScalarParameterValues": [
-        {
-          "ParameterInfo": {
-            "Name": "RefractionDepthBias",
-            "Association": "GlobalParameter",
-            "Index": -1
-          },
-          "ParameterValue": 0.0,
-          "ExpressionGUID": "00000000-00000000-00000000-00000000"
-        }
-      ],
-      "TextureParameterValues": [
-        {
-          "ParameterInfo": {
-            "Name": "BaseColour",
-            "Association": "GlobalParameter",
-            "Index": -1
-          },
-          "ParameterValue": {
-            "ObjectName": "Texture2D'water_color_bottle_d_albedo'",
-            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_albedo.0"
-          },
-          "ExpressionGUID": "A81585F2-40BEC55A-085987A9-395834C6"
-        },
-        {
-          "ParameterInfo": {
-            "Name": "Normal",
-            "Association": "GlobalParameter",
-            "Index": -1
-          },
-          "ParameterValue": {
-            "ObjectName": "Texture2D'water_color_bottle_d_normal'",
-            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_normal.0"
-          },
-          "ExpressionGUID": "5AF985A0-4E48F51B-94D6C080-143F5635"
-        },
-        {
-          "ParameterInfo": {
-            "Name": "ORMH",
-            "Association": "GlobalParameter",
-            "Index": -1
-          },
-          "ParameterValue": {
-            "ObjectName": "Texture2D'water_color_bottle_d_orm'",
-            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_d_orm.0"
-          },
-          "ExpressionGUID": "3FB6A6BF-490D2B00-1A3CD5BA-EF197027"
-        }
-      ],
       "BasePropertyOverrides": {
         "BlendMode": "BLEND_Masked",
         "OpacityMaskClipValue": 0.3333
-      },
-      "StaticParameters": {
-        "StaticSwitchParameters": [
-          {
-            "Value": false,
-            "ParameterInfo": {
-              "Name": "UseGradient?",
-              "Association": "GlobalParameter",
-              "Index": -1
-            },
-            "bOverride": true,
-            "ExpressionGUID": "585C3BE7-41A26E76-CC5E0EB8-86D01357"
-          }
-        ]
-      },
-      "CachedReferencedTextures": [
-        {
-          "ObjectName": "Texture2D'Torch_01_Normal'",
-          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Normal.0"
-        },
-        {
-          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
-          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
-        },
-        {
-          "ObjectName": "Texture2D'FadeGradient_01'",
-          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
-        },
-        {
-          "ObjectName": "Texture2D'Torch_01_ORMH'",
-          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_ORMH.0"
-        },
-        {
-          "ObjectName": "Texture2D'Torch_01_BaseColour'",
-          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_BaseColour.0"
-        },
-        {
-          "ObjectName": "Texture2D'Torch_01_Emissive'",
-          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Emissive.0"
-        },
-        {
-          "ObjectName": "Texture2D'1_rough_1002'",
-          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
-        },
-        {
-          "ObjectName": "Texture2D'1_metal_1002'",
-          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
-        }
-      ],
-      "TextureStreamingData": [
-        {
-          "SamplingScale": 1.0,
-          "UVChannelIndex": 0,
-          "TextureName": "water_color_bottle_d_albedo"
-        },
-        {
-          "SamplingScale": 1.0,
-          "UVChannelIndex": 0,
-          "TextureName": "water_color_bottle_d_normal"
-        },
-        {
-          "SamplingScale": 1.0,
-          "UVChannelIndex": 0,
-          "TextureName": "water_color_bottle_d_orm"
-        }
-      ]
+      }
     },
-    "LoadedMaterialResources": []
+    "HasTopDiffuse": false,
+    "HasTopNormals": true,
+    "HasTopSpecularMasks": false,
+    "HasTopEmissive": false,
+    "IsTranslucent": false,
+    "IsNull": false
   }
-]
+}

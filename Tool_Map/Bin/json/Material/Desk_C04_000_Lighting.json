@@ -1,0 +1,3507 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_0",
+    "Outer": "BrushComponent0",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "ConvexElems": [
+          {
+            "VertexData": [
+              {
+                "X": -100.0,
+                "Y": 100.0,
+                "Z": -100.0
+              },
+              {
+                "X": -100.0,
+                "Y": 100.0,
+                "Z": 100.0
+              },
+              {
+                "X": -100.0,
+                "Y": -100.0,
+                "Z": 100.0
+              },
+              {
+                "X": -100.0,
+                "Y": -100.0,
+                "Z": -100.0
+              },
+              {
+                "X": 100.0,
+                "Y": 100.0,
+                "Z": -100.0
+              },
+              {
+                "X": 100.0,
+                "Y": 100.0,
+                "Z": 100.0
+              },
+              {
+                "X": 100.0,
+                "Y": -100.0,
+                "Z": -100.0
+              },
+              {
+                "X": 100.0,
+                "Y": -100.0,
+                "Z": 100.0
+              }
+            ],
+            "IndexData": [
+              0,
+              1,
+              2,
+              0,
+              2,
+              3,
+              4,
+              5,
+              1,
+              4,
+              1,
+              0,
+              6,
+              7,
+              5,
+              6,
+              5,
+              4,
+              3,
+              2,
+              7,
+              3,
+              7,
+              6,
+              5,
+              7,
+              2,
+              5,
+              2,
+              1,
+              6,
+              4,
+              0,
+              6,
+              0,
+              3
+            ],
+            "ElemBox": {
+              "Min": {
+                "X": -100.0,
+                "Y": -100.0,
+                "Z": -100.0
+              },
+              "Max": {
+                "X": 100.0,
+                "Y": 100.0,
+                "Z": 100.0
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "bGenerateMirroredCollision": false,
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "592B4FA64CDDCCACD4F99F89B7D5C24B",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 470,
+        "SizeOnDisk": 470,
+        "OffsetInFile": "0x135E3"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "DrawBox0",
+    "Outer": "BoxReflectionCapture2_0",
+    "Class": "UScriptClass'BoxComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture2_0.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.7"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "DrawBox1",
+    "Outer": "BoxReflectionCapture2_0",
+    "Class": "UScriptClass'BoxComponent'",
+    "Properties": {
+      "BoxExtent": {
+        "X": 0.98888886,
+        "Y": 0.95007217,
+        "Z": 0.9875
+      },
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture2_0.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.7"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "DrawBox0",
+    "Outer": "BoxReflectionCapture4",
+    "Class": "UScriptClass'BoxComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture4.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.8"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "DrawBox1",
+    "Outer": "BoxReflectionCapture4",
+    "Class": "UScriptClass'BoxComponent'",
+    "Properties": {
+      "BoxExtent": {
+        "X": 0.9861111,
+        "Y": 0.98333335,
+        "Z": 0.9722222
+      },
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture4.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.8"
+      }
+    }
+  },
+  {
+    "Type": "BoxReflectionCapture",
+    "Name": "BoxReflectionCapture2_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'BoxReflectionCapture'",
+    "Properties": {
+      "CaptureComponent": {
+        "ObjectName": "BoxReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture2_0.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.7"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture2_0.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.7"
+      }
+    }
+  },
+  {
+    "Type": "BoxReflectionCapture",
+    "Name": "BoxReflectionCapture4",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'BoxReflectionCapture'",
+    "Properties": {
+      "CaptureComponent": {
+        "ObjectName": "BoxReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture4.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.8"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture4.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.8"
+      }
+    }
+  },
+  {
+    "Type": "BoxReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "BoxReflectionCapture2_0",
+    "Class": "UScriptClass'BoxReflectionCaptureComponent'",
+    "Properties": {
+      "PreviewInfluenceBox": {
+        "ObjectName": "BoxComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture2_0.DrawBox0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.1"
+      },
+      "PreviewCaptureBox": {
+        "ObjectName": "BoxComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture2_0.DrawBox1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.2"
+      },
+      "CaptureOffsetComponent": null,
+      "Brightness": 0.3,
+      "MaxValueRGBM": 2.0531251,
+      "MapBuildDataId": "623CD807-4E739CEB-54C00A9E-D1B8C901",
+      "RelativeLocation": {
+        "X": -586.0342,
+        "Y": -7713.259,
+        "Z": 6537.542
+      },
+      "RelativeScale3D": {
+        "X": 9000.0,
+        "Y": 2002.8907,
+        "Z": 8000.0
+      }
+    }
+  },
+  {
+    "Type": "BoxReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "BoxReflectionCapture4",
+    "Class": "UScriptClass'BoxReflectionCaptureComponent'",
+    "Properties": {
+      "BoxTransitionDistance": 500.0,
+      "PreviewInfluenceBox": {
+        "ObjectName": "BoxComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture4.DrawBox0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.3"
+      },
+      "PreviewCaptureBox": {
+        "ObjectName": "BoxComponent'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture4.DrawBox1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.4"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 6.1289062,
+      "MapBuildDataId": "6B952D40-4727957F-92877EA3-2E36BE34",
+      "RelativeLocation": {
+        "X": -1966.0,
+        "Y": 16442.469,
+        "Z": 6554.8037
+      },
+      "RelativeScale3D": {
+        "X": 36000.0,
+        "Y": 30000.0,
+        "Z": 18000.0
+      }
+    }
+  },
+  {
+    "Type": "BP_Sky_Sphere_C",
+    "Name": "BP_Sky_Sphere_0",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Engine/EngineSky/BP_Sky_Sphere.BP_Sky_Sphere_C'",
+    "Template": {
+      "ObjectName": "BP_Sky_Sphere_C'Default__BP_Sky_Sphere_C'",
+      "ObjectPath": "/Engine/EngineSky/BP_Sky_Sphere.4"
+    },
+    "Properties": {
+      "SkySphereMesh": {
+        "ObjectName": "StaticMeshComponent'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0.SkySphereMesh'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.122"
+      },
+      "Base": {
+        "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0.Base'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.73"
+      },
+      "Sky material": {
+        "ObjectName": "MaterialInstanceDynamic'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0.SkySphereMesh.MaterialInstanceDynamic_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.67"
+      },
+      "Directional light actor": {
+        "ObjectName": "DirectionalLight'Desk_C04_000_Lighting:PersistentLevel.DirectionalLight_SkySun2_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.15"
+      },
+      "Colors determined by sun position": false,
+      "Sun height": 0.04444442,
+      "Sun brightness": 1000.0,
+      "Horizon Falloff": 8.0,
+      "Horizon color": {
+        "R": 1.0,
+        "G": 0.444296,
+        "B": 0.25,
+        "A": 1.0,
+        "Hex": "FFB289"
+      },
+      "Cloud speed": 0.0,
+      "Cloud opacity": 0.8,
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0.Base'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.73"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0.Base'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.73"
+        },
+        {
+          "ObjectName": "StaticMeshComponent'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0.SkySphereMesh'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.122"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "BrushComponent",
+    "Name": "BrushComponent0",
+    "Outer": "LightmassImportanceVolume3_0",
+    "Class": "UScriptClass'BrushComponent'",
+    "Properties": {
+      "Brush": {
+        "ObjectName": "Model'Desk_C04_000_Lighting:PersistentLevel.LightmassImportanceVolume3_0.Model_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.68"
+      },
+      "BrushBodySetup": {
+        "ObjectName": "BodySetup'Desk_C04_000_Lighting:PersistentLevel.LightmassImportanceVolume3_0.BrushComponent0.BodySetup_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.0"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": -1917.0898,
+        "Z": 3280.3604
+      },
+      "RelativeScale3D": {
+        "X": 129.11003,
+        "Y": 72.33052,
+        "Z": 39.72996
+      }
+    }
+  },
+  {
+    "Type": "CineCameraActor",
+    "Name": "cam_cutscene_trailer_outro_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'CineCameraActor'",
+    "Properties": {
+      "CameraComponent": {
+        "ObjectName": "CineCameraComponent'Desk_C04_000_Lighting:PersistentLevel.cam_cutscene_trailer_outro_0.CameraComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.12"
+      },
+      "SceneComponent": {
+        "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.cam_cutscene_trailer_outro_0.SceneComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.74"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.cam_cutscene_trailer_outro_0.SceneComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.74"
+      }
+    }
+  },
+  {
+    "Type": "CineCameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "cam_cutscene_trailer_outro_0",
+    "Class": "UScriptClass'CineCameraComponent'",
+    "Properties": {
+      "CurrentFocusDistance": 100000.0,
+      "FieldOfView": 37.497356,
+      "AspectRatio": 1.7777778,
+      "bConstrainAspectRatio": false,
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.cam_cutscene_trailer_outro_0.SceneComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.74"
+      }
+    }
+  },
+  {
+    "Type": "DefaultLevelSequenceInstanceData",
+    "Name": "InstanceData",
+    "Outer": "Cutscene_Trailer_Outro",
+    "Class": "UScriptClass'DefaultLevelSequenceInstanceData'"
+  },
+  {
+    "Type": "DefaultLevelSequenceInstanceData",
+    "Name": "InstanceData",
+    "Outer": "Cutscene_Trailer_Outro2",
+    "Class": "UScriptClass'DefaultLevelSequenceInstanceData'"
+  },
+  {
+    "Type": "DirectionalLight",
+    "Name": "DirectionalLight_SkySun2_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'DirectionalLight'",
+    "Properties": {
+      "LightComponent": {
+        "ObjectName": "DirectionalLightComponent'Desk_C04_000_Lighting:PersistentLevel.DirectionalLight_SkySun2_0.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.16"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "DirectionalLightComponent'Desk_C04_000_Lighting:PersistentLevel.DirectionalLight_SkySun2_0.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.16"
+      }
+    }
+  },
+  {
+    "Type": "DirectionalLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "DirectionalLight_SkySun2_0",
+    "Class": "UScriptClass'DirectionalLightComponent'",
+    "Properties": {
+      "LightSourceAngle": 15.0,
+      "bUsedAsAtmosphereSunLight": true,
+      "Temperature": 2800.0,
+      "bUseTemperature": true,
+      "ContactShadowLength": 0.05,
+      "bEnableLightShaftBloom": true,
+      "BloomScale": 0.01,
+      "BloomMaxBrightness": 20.0,
+      "BloomTint": {
+        "B": 140,
+        "G": 197,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFC58C"
+      },
+      "LightGuid": "E3C54F80-49E3ECAE-BC78A086-C5175B3F",
+      "Intensity": 4.0,
+      "LightColor": {
+        "B": 187,
+        "G": 220,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFDCBB"
+      },
+      "bCastVolumetricShadow": false,
+      "IndirectLightingIntensity": 2.0,
+      "RelativeRotation": {
+        "Pitch": -4.0,
+        "Yaw": 120.00001,
+        "Roll": 6.5E-05
+      },
+      "Mobility": "EComponentMobility::Static"
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture10",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture10.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.100"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture10",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture10.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.100"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture11",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture11.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.101"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture11",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture11.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.101"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture12",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture12.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.102"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture12",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture12.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.102"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture13",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture13.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.103"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture13",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture13.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.103"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture14",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture14.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.104"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture14",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture14.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.104"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture15",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 2000.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture15.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.105"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture15",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture15.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.105"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture16",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture16.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.106"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture16",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture16.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.106"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture17",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture17.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.107"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture17",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture17.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.107"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture18",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture18.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.108"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture18",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture18.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.108"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture19",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture19.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.109"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture19",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture19.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.109"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture20",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture20.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.110"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture20",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture20.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.110"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture21",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture21.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.111"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture21",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture21.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.111"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture2_1",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 3000.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture2_1.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.112"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture2_1",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture2_1.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.112"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture3_2",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 3000.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture3_2.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.113"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture3_2",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture3_2.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.113"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture4_3",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 3000.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture4_3.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.114"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture4_3",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture4_3.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.114"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture5_4",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 4500.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture5_4.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.115"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture5_4",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture5_4.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.115"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture6",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture6.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.116"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture6",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture6.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.116"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture7",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 2000.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture7.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.117"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture7",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture7.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.117"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture8",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture8.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.118"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture8",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture8.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.118"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture9",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 1200.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture9.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.119"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture9",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture9.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.119"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius0",
+    "Outer": "SphereReflectionCapture_0",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "SphereRadius": 3000.0,
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture_0.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.120"
+      }
+    }
+  },
+  {
+    "Type": "DrawSphereComponent",
+    "Name": "DrawRadius1",
+    "Outer": "SphereReflectionCapture_0",
+    "Class": "UScriptClass'DrawSphereComponent'",
+    "Properties": {
+      "AreaClass": {
+        "ObjectName": "Class'NavArea_Obstacle'",
+        "ObjectPath": "/Script/NavigationSystem"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture_0.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.120"
+      }
+    }
+  },
+  {
+    "Type": "ExponentialHeightFog",
+    "Name": "ExponentialHeightFog2_1",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'ExponentialHeightFog'",
+    "Properties": {
+      "Component": {
+        "ObjectName": "ExponentialHeightFogComponent'Desk_C04_000_Lighting:PersistentLevel.ExponentialHeightFog2_1.HeightFogComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.60"
+      },
+      "RootComponent": {
+        "ObjectName": "ExponentialHeightFogComponent'Desk_C04_000_Lighting:PersistentLevel.ExponentialHeightFog2_1.HeightFogComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.60"
+      }
+    }
+  },
+  {
+    "Type": "ExponentialHeightFogComponent",
+    "Name": "HeightFogComponent0",
+    "Outer": "ExponentialHeightFog2_1",
+    "Class": "UScriptClass'ExponentialHeightFogComponent'",
+    "Properties": {
+      "FogDensity": 0.0001,
+      "FogHeightFalloff": 0.064,
+      "SecondFogData": {
+        "FogDensity": 1E-06,
+        "FogHeightFalloff": 0.15
+      },
+      "FogInscatteringColor": {
+        "R": 0.174709,
+        "G": 0.215104,
+        "B": 0.291667,
+        "A": 1.0,
+        "Hex": "748093"
+      },
+      "DirectionalInscatteringColor": {
+        "R": 0.144128,
+        "G": 0.06301,
+        "B": 0.015996,
+        "A": 1.0,
+        "Hex": "6A4722"
+      },
+      "FogMaxOpacity": 0.042
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "Desk_C04_000_Lighting",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'Desk_C04_000_Lighting:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.69"
+      },
+      "StreamingTextureGuids": [
+        "176EE41E-465BFAB6-AEB85FBB-C9FCAD8F",
+        "9C995DBB-453D9568-054E658F-761F0E1F",
+        "DE7F91FA-4D57CF4C-A115CABE-2AF1225E"
+      ],
+      "LevelBuildDataId": "5B8A869D-4BBEA2A4-3F87619B-13194446",
+      "MapBuildData": {
+        "ObjectName": "MapBuildDataRegistry'Desk_C04_000_Lighting_BuiltData'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting_BuiltData.492"
+      },
+      "bIsLightingScenario": true,
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'Desk_C04_000_Lighting:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.125"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'Desk_C04_000_Lighting:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.125"
+      },
+      null,
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture6'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.95"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture7'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.96"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture8'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.97"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture9'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.98"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture10'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.79"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture11'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.80"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture12'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.81"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture13'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.82"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.99"
+      },
+      {
+        "ObjectName": "BoxReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture2_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.5"
+      },
+      {
+        "ObjectName": "CineCameraActor'Desk_C04_000_Lighting:PersistentLevel.cam_cutscene_trailer_outro_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.11"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture2_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.91"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture3_2'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.92"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture4_3'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.93"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture5_4'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.94"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture14'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.83"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture15'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.84"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture16'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.85"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture17'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.86"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture18'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.87"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture19'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.88"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture20'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.89"
+      },
+      {
+        "ObjectName": "SphereReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture21'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.90"
+      },
+      {
+        "ObjectName": "BoxReflectionCapture'Desk_C04_000_Lighting:PersistentLevel.BoxReflectionCapture4'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.6"
+      },
+      {
+        "ObjectName": "DirectionalLight'Desk_C04_000_Lighting:PersistentLevel.DirectionalLight_SkySun2_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.15"
+      },
+      {
+        "ObjectName": "SkyLight'Desk_C04_000_Lighting:PersistentLevel.SkyLight2_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.77"
+      },
+      {
+        "ObjectName": "ExponentialHeightFog'Desk_C04_000_Lighting:PersistentLevel.ExponentialHeightFog2_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.59"
+      },
+      {
+        "ObjectName": "BP_Sky_Sphere_C'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.9"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Desk_C04_000_Lighting:PersistentLevel.CloudSphere_01_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.121"
+      },
+      {
+        "ObjectName": "LightmassImportanceVolume'Desk_C04_000_Lighting:PersistentLevel.LightmassImportanceVolume3_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.66"
+      },
+      {
+        "ObjectName": "LevelSequenceActor'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.62"
+      },
+      {
+        "ObjectName": "LevelSequenceActor'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro2'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.63"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'Desk_C04_000_Lighting:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.69"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LevelSequenceActor",
+    "Name": "Cutscene_Trailer_Outro",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'LevelSequenceActor'",
+    "Properties": {
+      "LevelSequence": {
+        "AssetPathName": "/Game/Cinematics/Trailer/Cutscene_Trailer_Outro.Cutscene_Trailer_Outro",
+        "SubPathString": ""
+      },
+      "BurnInOptions": {
+        "ObjectName": "LevelSequenceBurnInOptions'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro.BurnInOptions'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.64"
+      },
+      "BindingOverrides": {
+        "ObjectName": "MovieSceneBindingOverrides'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro.BindingOverrides'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.70"
+      },
+      "DefaultInstanceData": {
+        "ObjectName": "DefaultLevelSequenceInstanceData'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro.InstanceData'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.13"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro.SceneComp'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.75"
+      }
+    }
+  },
+  {
+    "Type": "LevelSequenceActor",
+    "Name": "Cutscene_Trailer_Outro2",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'LevelSequenceActor'",
+    "Properties": {
+      "LevelSequence": {
+        "AssetPathName": "/Game/Cinematics/Trailer/Cutscene_Trailer_Outro.Cutscene_Trailer_Outro",
+        "SubPathString": ""
+      },
+      "BurnInOptions": {
+        "ObjectName": "LevelSequenceBurnInOptions'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro2.BurnInOptions'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.65"
+      },
+      "BindingOverrides": {
+        "ObjectName": "MovieSceneBindingOverrides'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro2.BindingOverrides'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.71"
+      },
+      "DefaultInstanceData": {
+        "ObjectName": "DefaultLevelSequenceInstanceData'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro2.InstanceData'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.14"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.Cutscene_Trailer_Outro2.SceneComp'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.76"
+      }
+    }
+  },
+  {
+    "Type": "LevelSequenceBurnInOptions",
+    "Name": "BurnInOptions",
+    "Outer": "Cutscene_Trailer_Outro",
+    "Class": "UScriptClass'LevelSequenceBurnInOptions'"
+  },
+  {
+    "Type": "LevelSequenceBurnInOptions",
+    "Name": "BurnInOptions",
+    "Outer": "Cutscene_Trailer_Outro2",
+    "Class": "UScriptClass'LevelSequenceBurnInOptions'"
+  },
+  {
+    "Type": "LightmassImportanceVolume",
+    "Name": "LightmassImportanceVolume3_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'LightmassImportanceVolume'",
+    "Properties": {
+      "BrushType": "Brush_Add",
+      "Brush": {
+        "ObjectName": "Model'Desk_C04_000_Lighting:PersistentLevel.LightmassImportanceVolume3_0.Model_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.68"
+      },
+      "BrushComponent": {
+        "ObjectName": "BrushComponent'Desk_C04_000_Lighting:PersistentLevel.LightmassImportanceVolume3_0.BrushComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.10"
+      },
+      "bHidden": false,
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "BrushComponent'Desk_C04_000_Lighting:PersistentLevel.LightmassImportanceVolume3_0.BrushComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.10"
+      }
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "SkySphereMesh",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_Sky_Panning_Clouds2'",
+        "ObjectPath": "/Engine/EngineSky/M_Sky_Panning_Clouds2.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Horizon falloff",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 8.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Cloud speed",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Sun brightness",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 1000.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Sun height",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Cloud opacity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.8,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Stars brightness",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.1,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Light direction",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": -0.49878198,
+            "G": 0.86391586,
+            "B": -0.069756426,
+            "A": 1.0,
+            "Hex": "00F000"
+          },
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Sun color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.0,
+            "G": 0.7156935,
+            "B": 0.49693298,
+            "A": 1.0,
+            "Hex": "FFDCBB"
+          },
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Horizon color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.0,
+            "G": 0.444296,
+            "B": 0.25,
+            "A": 1.0,
+            "Hex": "FFB289"
+          },
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Zenith color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.034046,
+            "G": 0.109247,
+            "B": 0.295,
+            "A": 1.0,
+            "Hex": "335D94"
+          },
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Overall color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Cloud color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.855778,
+            "G": 0.91902,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "EFF6FF"
+          },
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Sky_Clouds_M'",
+          "ObjectPath": "/Engine/EngineSky/T_Sky_Clouds_M.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Sky_Stars'",
+          "ObjectPath": "/Engine/EngineSky/T_Sky_Stars.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Sky_Blue'",
+          "ObjectPath": "/Engine/EngineSky/T_Sky_Blue.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "LightmassImportanceVolume3_0",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 100.0,
+        "Y": 100.0,
+        "Z": 100.0
+      },
+      "SphereRadius": 173.20508
+    },
+    "Vectors": [
+      {
+        "X": -1.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      {
+        "X": 0.0,
+        "Y": 1.0,
+        "Z": 0.0
+      },
+      {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": -1.0
+      },
+      {
+        "X": 1.0,
+        "Y": -0.0,
+        "Z": 0.0
+      },
+      {
+        "X": 0.0,
+        "Y": -1.0,
+        "Z": 0.0
+      },
+      {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 1.0
+      }
+    ],
+    "Points": [
+      {
+        "X": -100.0,
+        "Y": -100.0,
+        "Z": -100.0
+      },
+      {
+        "X": -100.0,
+        "Y": -100.0,
+        "Z": 100.0
+      },
+      {
+        "X": -100.0,
+        "Y": 100.0,
+        "Z": 100.0
+      },
+      {
+        "X": -100.0,
+        "Y": 100.0,
+        "Z": -100.0
+      },
+      {
+        "X": 100.0,
+        "Y": 100.0,
+        "Z": 100.0
+      },
+      {
+        "X": 100.0,
+        "Y": 100.0,
+        "Z": -100.0
+      },
+      {
+        "X": 100.0,
+        "Y": -100.0,
+        "Z": 100.0
+      },
+      {
+        "X": 100.0,
+        "Y": -100.0,
+        "Z": -100.0
+      }
+    ],
+    "Nodes": [
+      {
+        "Plane": {
+          "Vector": {
+            "X": -1.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": -1.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "iVertPool": 0,
+        "iSurf": 0,
+        "iVertexIndex": 0,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 1,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 1.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 1.0,
+          "Z": 0.0
+        },
+        "iVertPool": 4,
+        "iSurf": 1,
+        "iVertexIndex": 4,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 2,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 1.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 1.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "iVertPool": 8,
+        "iSurf": 2,
+        "iVertexIndex": 8,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 3,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": -1.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": -1.0,
+          "Z": 0.0
+        },
+        "iVertPool": 12,
+        "iSurf": 3,
+        "iVertexIndex": 12,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 4,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 1.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 1.0
+        },
+        "iVertPool": 16,
+        "iSurf": 4,
+        "iVertexIndex": 16,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 5,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": -1.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": -1.0
+        },
+        "iVertPool": 20,
+        "iSurf": 5,
+        "iVertexIndex": 20,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": -1,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": 0,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      }
+    ],
+    "Surfs": [
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 0,
+        "vNormal": 0,
+        "vTextureU": 1,
+        "vTextureV": 2,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": -1.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": -1.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 3,
+        "vNormal": 1,
+        "vTextureU": 3,
+        "vTextureV": 2,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 1.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 1.0,
+          "Z": 0.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 5,
+        "vNormal": 3,
+        "vTextureU": 4,
+        "vTextureV": 2,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 1.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 1.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 7,
+        "vNormal": 4,
+        "vTextureU": 0,
+        "vTextureV": 2,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": -1.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": -1.0,
+          "Z": 0.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 2,
+        "vNormal": 5,
+        "vTextureU": 3,
+        "vTextureV": 1,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 1.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 1.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 0,
+        "vNormal": 2,
+        "vTextureU": 3,
+        "vTextureV": 4,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": -1.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": -1.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      }
+    ],
+    "NumSharedSides": 4,
+    "VertexBuffer": null,
+    "LightingGuid": "C257E4FC-4F0C68C1-1847F8A3-6B34F9A7",
+    "LightmassSettings": [
+      {
+        "bUseTwoSidedLighting": false,
+        "bShadowIndirectOnly": false,
+        "bUseEmissiveForStaticLighting": false,
+        "bUseVertexNormalForHemisphereGather": false,
+        "EmissiveLightFalloffExponent": 8.0,
+        "EmissiveLightExplicitInfluenceRadius": 0.0,
+        "EmissiveBoost": 1.0,
+        "DiffuseBoost": 1.0,
+        "FullyOccludedSamplesFraction": 1.0
+      }
+    ]
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "600F2C6C-47C306AF-521C9CBF-EABF933D",
+    "LightmassSettings": [
+      {
+        "bUseTwoSidedLighting": false,
+        "bShadowIndirectOnly": false,
+        "bUseEmissiveForStaticLighting": false,
+        "bUseVertexNormalForHemisphereGather": false,
+        "EmissiveLightFalloffExponent": 8.0,
+        "EmissiveLightExplicitInfluenceRadius": 0.0,
+        "EmissiveBoost": 1.0,
+        "DiffuseBoost": 1.0,
+        "FullyOccludedSamplesFraction": 1.0
+      }
+    ]
+  },
+  {
+    "Type": "MovieSceneBindingOverrides",
+    "Name": "BindingOverrides",
+    "Outer": "Cutscene_Trailer_Outro",
+    "Class": "UScriptClass'MovieSceneBindingOverrides'"
+  },
+  {
+    "Type": "MovieSceneBindingOverrides",
+    "Name": "BindingOverrides",
+    "Outer": "Cutscene_Trailer_Outro2",
+    "Class": "UScriptClass'MovieSceneBindingOverrides'"
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "Base",
+    "Outer": "BP_Sky_Sphere_0",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'BP_Sky_Sphere_C:SceneComponent_1'",
+      "ObjectPath": "/Engine/EngineSky/BP_Sky_Sphere.6"
+    },
+    "Properties": {
+      "RelativeScale3D": {
+        "X": 20.0,
+        "Y": 20.0,
+        "Z": 20.0
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'SceneComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "RelativeScale3D",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComponent",
+    "Outer": "cam_cutscene_trailer_outro_0",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 1397.2195,
+        "Y": 424.07715,
+        "Z": 50.00049
+      },
+      "ComponentVelocity": {
+        "X": -118942.875,
+        "Y": -437594.1,
+        "Z": -132181.14
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComp",
+    "Outer": "Cutscene_Trailer_Outro",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 2219.7415,
+        "Y": 5658.3022,
+        "Z": 1444.1427
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "SceneComp",
+    "Outer": "Cutscene_Trailer_Outro2",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 2219.7415,
+        "Y": 5658.3022,
+        "Z": 1444.1427
+      }
+    }
+  },
+  {
+    "Type": "SkyLight",
+    "Name": "SkyLight2_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SkyLight'",
+    "Properties": {
+      "LightComponent": {
+        "ObjectName": "SkyLightComponent'Desk_C04_000_Lighting:PersistentLevel.SkyLight2_0.SkyLightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.78"
+      },
+      "RootComponent": {
+        "ObjectName": "SkyLightComponent'Desk_C04_000_Lighting:PersistentLevel.SkyLight2_0.SkyLightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.78"
+      }
+    }
+  },
+  {
+    "Type": "SkyLightComponent",
+    "Name": "SkyLightComponent0",
+    "Outer": "SkyLight2_0",
+    "Class": "UScriptClass'SkyLightComponent'",
+    "Properties": {
+      "Cubemap": {
+        "ObjectName": "TextureCube'Flat_Clear'",
+        "ObjectPath": "/Game/UltraDynamicSky/Textures/Flat_Cubemaps/Flat_Clear.0"
+      },
+      "CubemapResolution": 256,
+      "LightGuid": "B44ABD96-43316695-53EFCA83-2807F663",
+      "Intensity": 2.0,
+      "LightColor": {
+        "B": 188,
+        "G": 218,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFDABC"
+      },
+      "IndirectLightingIntensity": 4.0
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture10",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture10.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.18"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture10.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.100"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture10.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.100"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture11",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture11.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.20"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture11.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.101"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture11.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.101"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture12",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture12.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.22"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture12.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.102"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture12.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.102"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture13",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture13.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.24"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture13.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.103"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture13.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.103"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture14",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture14.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.26"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture14.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.104"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture14.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.104"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture15",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture15.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.28"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture15.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.105"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture15.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.105"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture16",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture16.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.30"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture16.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.106"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture16.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.106"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture17",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture17.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.32"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture17.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.107"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture17.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.107"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture18",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture18.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.34"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture18.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.108"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture18.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.108"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture19",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture19.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.36"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture19.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.109"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture19.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.109"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture20",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture20.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.38"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture20.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.110"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture20.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.110"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture21",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture21.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.40"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture21.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.111"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture21.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.111"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture2_1",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture2_1.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.42"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture2_1.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.112"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture2_1.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.112"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture3_2",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture3_2.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.44"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture3_2.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.113"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture3_2.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.113"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture4_3",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture4_3.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.46"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture4_3.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.114"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture4_3.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.114"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture5_4",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture5_4.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.48"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture5_4.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.115"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture5_4.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.115"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture6",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture6.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.50"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture6.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.116"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture6.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.116"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture7",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture7.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.52"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture7.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.117"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture7.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.117"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture8",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture8.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.54"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture8.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.118"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture8.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.118"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture9",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture9.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.56"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture9.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.119"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture9.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.119"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCapture",
+    "Name": "SphereReflectionCapture_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SphereReflectionCapture'",
+    "Properties": {
+      "DrawCaptureRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture_0.DrawRadius1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.58"
+      },
+      "CaptureComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture_0.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.120"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereReflectionCaptureComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture_0.NewReflectionComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.120"
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture10",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture10.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.17"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 6.9648438,
+      "MapBuildDataId": "5095CE75-458375DF-39AA7FAB-4DDBEA4C",
+      "RelativeLocation": {
+        "X": -6308.5522,
+        "Y": -3011.5027,
+        "Z": 2600.006
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture11",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture11.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.19"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 6.9296875,
+      "MapBuildDataId": "B31C1F63-4660FEC4-38E4A487-89003E3F",
+      "RelativeLocation": {
+        "X": -8800.9795,
+        "Y": -979.62775,
+        "Z": 2008.4814
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture12",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture12.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.21"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.109375,
+      "MapBuildDataId": "7FBF1A6B-496995D9-DF230A9A-4F4DA125",
+      "RelativeLocation": {
+        "X": 3306.4148,
+        "Y": 155.6076,
+        "Z": 1079.3469
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture13",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture13.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.23"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 6.75,
+      "MapBuildDataId": "4892FED8-4460EC9C-623548BA-031F1396",
+      "RelativeLocation": {
+        "X": 4776.5996,
+        "Y": 2198.073,
+        "Z": 360.3698
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture14",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture14.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.25"
+      },
+      "CaptureOffsetComponent": null,
+      "Brightness": 1.5,
+      "MaxValueRGBM": 2.166504,
+      "MapBuildDataId": "48C41FD3-461CCFD7-5B447DB1-80B28AF6",
+      "RelativeLocation": {
+        "X": 6952.2896,
+        "Y": -1552.868,
+        "Z": 1024.0813
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture15",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 2000.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture15.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.27"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.6367188,
+      "MapBuildDataId": "40545564-4D7CC1FC-F312478D-C403B5D6",
+      "RelativeLocation": {
+        "X": 5143.392,
+        "Y": -1703.3765,
+        "Z": 3879.3398
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture16",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture16.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.29"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.6210938,
+      "MapBuildDataId": "0381925A-426A77E7-661E4297-6363CD37",
+      "RelativeLocation": {
+        "X": 1074.4254,
+        "Y": 275.48175,
+        "Z": 276.69122
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture17",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture17.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.31"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.59375,
+      "MapBuildDataId": "29DBD093-4775B68D-4DD0928E-83E59ED4",
+      "RelativeLocation": {
+        "X": 589.0424,
+        "Y": -996.6576,
+        "Z": 487.90485
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture18",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture18.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.33"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.5664062,
+      "MapBuildDataId": "2B81AE1D-4CE9F673-331016B9-4CE28370",
+      "RelativeLocation": {
+        "X": -6308.5522,
+        "Y": -3011.5027,
+        "Z": 2600.006
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture19",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture19.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.35"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.4609375,
+      "MapBuildDataId": "E9D5F32B-403E3D0C-85F4B2A6-1373F73A",
+      "RelativeLocation": {
+        "X": -8800.9795,
+        "Y": -979.62775,
+        "Z": 2008.4814
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture20",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture20.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.37"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.6484375,
+      "MapBuildDataId": "7E3F37AA-44FAF7A4-604128BE-41A29407",
+      "RelativeLocation": {
+        "X": 3306.4148,
+        "Y": 155.6076,
+        "Z": 1079.3469
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture21",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture21.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.39"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.4765625,
+      "MapBuildDataId": "A0B5AEA4-4CEAB837-48BFA4AC-F6137441",
+      "RelativeLocation": {
+        "X": 4776.5996,
+        "Y": 2198.073,
+        "Z": 360.3698
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture2_1",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture2_1.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.41"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 12.578125,
+      "MapBuildDataId": "D9D3A248-4D6F90C6-D9024193-662B4A14",
+      "RelativeLocation": {
+        "X": -6005.5967,
+        "Y": -6641.5464,
+        "Z": 4427.4087
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture3_2",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture3_2.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.43"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 11.3828125,
+      "MapBuildDataId": "2A72325E-40E537CA-9B998D86-AE68DDC6",
+      "RelativeLocation": {
+        "X": -2219.314,
+        "Y": -6317.6616,
+        "Z": 4121.6465
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture4_3",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture4_3.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.45"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 8.3828125,
+      "MapBuildDataId": "15D138D9-4FAFE73B-C8A76395-BF33ED39",
+      "RelativeLocation": {
+        "X": 3350.1719,
+        "Y": -6317.665,
+        "Z": 4121.6465
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture5_4",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 4500.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture5_4.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.47"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 8.046875,
+      "MapBuildDataId": "D06E7801-4516865A-D82BBA88-36697CEC",
+      "RelativeLocation": {
+        "X": 6174.3916,
+        "Y": -6317.665,
+        "Z": 4121.6465
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture6",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture6.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.49"
+      },
+      "CaptureOffsetComponent": null,
+      "Brightness": 1.5,
+      "MaxValueRGBM": 1.0,
+      "MapBuildDataId": "00026659-4F542659-7E63C6B6-064B70CA",
+      "RelativeLocation": {
+        "X": 6952.2896,
+        "Y": -1552.868,
+        "Z": 1024.0813
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture7",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 2000.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture7.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.51"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 386.75,
+      "MapBuildDataId": "E8CF9A6D-4B8D36BD-ABF8D0AD-3499C8D7",
+      "RelativeLocation": {
+        "X": 5143.392,
+        "Y": -1703.3765,
+        "Z": 3879.3398
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture8",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture8.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.53"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.0625,
+      "MapBuildDataId": "5AE8BDA5-4D313738-A14464B2-7F5237F6",
+      "RelativeLocation": {
+        "X": 1074.4254,
+        "Y": 275.48175,
+        "Z": 276.69122
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture9",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "InfluenceRadius": 1200.0,
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture9.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.55"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.0195312,
+      "MapBuildDataId": "B30842DE-4273D07A-9ADBB599-232706D1",
+      "RelativeLocation": {
+        "X": 589.0424,
+        "Y": -996.6576,
+        "Z": 487.90485
+      }
+    }
+  },
+  {
+    "Type": "SphereReflectionCaptureComponent",
+    "Name": "NewReflectionComponent",
+    "Outer": "SphereReflectionCapture_0",
+    "Class": "UScriptClass'SphereReflectionCaptureComponent'",
+    "Properties": {
+      "PreviewInfluenceRadius": {
+        "ObjectName": "DrawSphereComponent'Desk_C04_000_Lighting:PersistentLevel.SphereReflectionCapture_0.DrawRadius0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.57"
+      },
+      "CaptureOffsetComponent": null,
+      "MaxValueRGBM": 7.9726562,
+      "MapBuildDataId": "12EBB825-49499785-342BB39D-20DDD10B",
+      "RelativeLocation": {
+        "X": -1689.6626,
+        "Y": 235.59004,
+        "Z": 649.57275
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "CloudSphere_01_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Desk_C04_000_Lighting:PersistentLevel.CloudSphere_01_0.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.123"
+      },
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Desk_C04_000_Lighting:PersistentLevel.CloudSphere_01_0.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.123"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "SkySphereMesh",
+    "Outer": "BP_Sky_Sphere_0",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'BP_Sky_Sphere_C:SkySphereMesh_GEN_VARIABLE'",
+      "ObjectPath": "/Engine/EngineSky/BP_Sky_Sphere.11"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0.SkySphereMesh.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.67"
+        }
+      ],
+      "VisibilityId": 992,
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C04_000_Lighting:PersistentLevel.BP_Sky_Sphere_0.Base'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.73"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'MeshComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "OverrideMaterials",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    },
+    "LODData": [
+      {
+        "MapBuildDataId": "89B023CB42E01793A914968102C471CE"
+      }
+    ]
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "CloudSphere_01_0",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'CloudSphere_01'",
+        "ObjectPath": "/Game/Map/3D/CloudSphere/CloudSphere_01.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_SkyClouds_Desk_C04'",
+          "ObjectPath": "/Game/Map/3D/CloudSphere/MI_SkyClouds_Desk_C04.0"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 23.375,
+        "Y": 595825.0,
+        "Z": 0.0
+      },
+      "RelativeRotation": {
+        "Pitch": 0.0,
+        "Yaw": 90.0,
+        "Roll": 0.0
+      },
+      "RelativeScale3D": {
+        "X": 500.0,
+        "Y": 666.6668,
+        "Z": 400.0
+      },
+      "Mobility": "EComponentMobility::Stationary"
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "Desk_C04_000_Lighting",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'Desk_C04_000_Lighting:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.61"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'Desk_C04_000_Lighting:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C04/Desk_C04_000_Lighting.72"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

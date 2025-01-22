@@ -1,0 +1,277 @@
+[
+  {
+    "Type": "DirectionalLight",
+    "Name": "LightSource",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'DirectionalLight'",
+    "Properties": {
+      "LightComponent": {
+        "ObjectName": "DirectionalLightComponent'DeskBlend_005_000:PersistentLevel.LightSource.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.2"
+      },
+      "bHidden": true,
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "DirectionalLightComponent'DeskBlend_005_000:PersistentLevel.LightSource.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.2"
+      }
+    }
+  },
+  {
+    "Type": "DirectionalLight",
+    "Name": "NightLight",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'DirectionalLight'",
+    "Properties": {
+      "LightComponent": {
+        "ObjectName": "DirectionalLightComponent'DeskBlend_005_000:PersistentLevel.NightLight.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.3"
+      },
+      "bHidden": true,
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "DirectionalLightComponent'DeskBlend_005_000:PersistentLevel.NightLight.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.3"
+      }
+    }
+  },
+  {
+    "Type": "DirectionalLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "LightSource",
+    "Class": "UScriptClass'DirectionalLightComponent'",
+    "Properties": {
+      "bUsedAsAtmosphereSunLight": true,
+      "LightmassSettings": {
+        "bUseAreaShadowsForStationaryLight": true
+      },
+      "Temperature": 3500.0,
+      "bUseTemperature": true,
+      "LightGuid": "1E908DF6-47E16333-D3A6B69C-D2D65951",
+      "Intensity": 5.0,
+      "LightColor": {
+        "B": 207,
+        "G": 236,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFECCF"
+      },
+      "bCastVolumetricShadow": false,
+      "bCastRaytracedShadow": false,
+      "bAffectReflection": false,
+      "bAffectGlobalIllumination": false,
+      "IndirectLightingIntensity": 0.5,
+      "RelativeRotation": {
+        "Pitch": -41.719204,
+        "Yaw": 109.45004,
+        "Roll": -3.899817
+      }
+    }
+  },
+  {
+    "Type": "DirectionalLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "NightLight",
+    "Class": "UScriptClass'DirectionalLightComponent'",
+    "Properties": {
+      "ShadowCascadeBiasDistribution": 0.457143,
+      "DynamicShadowDistanceStationaryLight": 90000.0,
+      "DynamicShadowCascades": 4,
+      "CascadeDistributionExponent": 4.0,
+      "CascadeTransitionFraction": 0.3,
+      "ShadowDistanceFadeoutFraction": 1.0,
+      "FarShadowCascadeCount": 1,
+      "FarShadowDistance": 600000.0,
+      "bUsedAsAtmosphereSunLight": true,
+      "LightmassSettings": {
+        "bUseAreaShadowsForStationaryLight": true
+      },
+      "Temperature": 3800.0,
+      "bUseTemperature": true,
+      "ShadowBias": 0.18,
+      "BloomScale": 0.0025,
+      "LightGuid": "9031244C-408C4B31-BBCAF48C-94103BD2",
+      "Intensity": 0.0,
+      "LightColor": {
+        "B": 251,
+        "G": 255,
+        "R": 230,
+        "A": 255,
+        "Hex": "E6FFFB"
+      },
+      "bAffectsWorld": false,
+      "bCastVolumetricShadow": false,
+      "bCastRaytracedShadow": false,
+      "bAffectReflection": false,
+      "bAffectGlobalIllumination": false,
+      "IndirectLightingIntensity": 2.0,
+      "RelativeLocation": {
+        "X": 10.0,
+        "Y": 10.0,
+        "Z": 3586.5
+      },
+      "RelativeRotation": {
+        "Pitch": -31.563955,
+        "Yaw": 107.92514,
+        "Roll": -1.704446
+      }
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "DeskBlend_005_000",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'DeskBlend_005_000:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.5"
+      },
+      "LevelBuildDataId": "68195D40-484784B6-4DBE28A6-827E4F50",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'DeskBlend_005_000:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.8"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'DeskBlend_005_000:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.8"
+      },
+      null,
+      {
+        "ObjectName": "DirectionalLight'DeskBlend_005_000:PersistentLevel.LightSource'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.0"
+      },
+      {
+        "ObjectName": "DirectionalLight'DeskBlend_005_000:PersistentLevel.NightLight'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.1"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'DeskBlend_005_000:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.5"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "37A14821-42DC426D-87E69FBB-F63BBFB7",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "DeskBlend_005_000",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'DeskBlend_005_000:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.4"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'DeskBlend_005_000:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/Desk/LightingBase/DeskBlend_005_000.6"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

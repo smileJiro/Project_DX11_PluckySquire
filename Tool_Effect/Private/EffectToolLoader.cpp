@@ -41,29 +41,29 @@ HRESULT CEffectToolLoader::Initialize(LEVEL_ID _eNextLevelID)
 
 HRESULT CEffectToolLoader::Loading()
 {
-	EnterCriticalSection(&m_Critical_Section);
+    EnterCriticalSection(&m_Critical_Section);
 
-	CoInitializeEx(nullptr, 0);
+    CoInitializeEx(nullptr, 0);
 
-	HRESULT hr = {};
+    HRESULT hr = {};
 
-	switch (m_eNextLevelID)
-	{
+    switch (m_eNextLevelID)
+    {
     case EffectTool::LEVEL_STATIC:
         break;
     case EffectTool::LEVEL_TOOL:
         hr = Loading_Level_Tool();
         break;
-	}
+    }
 
 
-	LeaveCriticalSection(&m_Critical_Section);
+    LeaveCriticalSection(&m_Critical_Section);
 
 
-	if (FAILED(hr))
-		return E_FAIL;
+    if (FAILED(hr))
+        return E_FAIL;
 
-	return S_OK;
+    return S_OK;
 }
 
 void CEffectToolLoader::Show_Debug()
@@ -75,8 +75,20 @@ void CEffectToolLoader::Show_Debug()
 
 HRESULT CEffectToolLoader::Loading_Level_Tool()
 {
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
+    //    CParticle_Sprite_Emitter::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestEffect.json")))))
+    //    return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
-        CParticle_Sprite_Emitter::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestEffect.json")))))
+        CParticle_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestParticleSystem.json")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_MeshEffect_Temp"),
+        CParticle_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestMesh.json")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_ForNew"),
+        CParticle_System::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 

@@ -41,7 +41,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
     Out.vNormal = normalize(mul(float4(In.vNormal, 0), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
+    Out.vWorldPos = mul(float4(In.vPosition, 1.0), g_WorldMatrix);
     Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
     return Out;
 }

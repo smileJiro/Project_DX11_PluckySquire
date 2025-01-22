@@ -37,16 +37,16 @@ public:
 	};
 
 private:
-	CCamera_Target(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CCamera_Target(const CCamera_Target& Prototype);
+	CCamera_Target(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CCamera_Target(const CCamera_Target& _Prototype);
 	virtual ~CCamera_Target() = default;
 
 public:
 	virtual HRESULT				Initialize_Prototype() override;
-	virtual HRESULT				Initialize(void* pArg) override;
-	virtual void				Priority_Update(_float fTimeDelta) override;
-	virtual void				Update(_float fTimeDelta) override;
-	virtual void				Late_Update(_float fTimeDelta) override;
+	virtual HRESULT				Initialize(void* _pArg) override;
+	virtual void				Priority_Update(_float _fTimeDelta) override;
+	virtual void				Update(_float _fTimeDelta) override;
+	virtual void				Late_Update(_float _fTimeDelta) override;
 
 #ifdef _DEBUG
 	_float3						Get_ArmRotation();
@@ -54,7 +54,7 @@ public:
 
 public:
 	void						Add_Arm(CCameraArm* _pCameraArm);
-	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
+	void						Set_CameraMode(_uint _iCameraMode, _int _iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = _iNextCameraMode; }
 	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
 public:
@@ -84,8 +84,8 @@ private:
 	void						Look_Target(_float _fTimeDelta);
 
 public:
-	static CCamera_Target*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject*		Clone(void* pArg);
+	static CCamera_Target*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject*		Clone(void* _pArg);
 	virtual void				Free() override;
 };
 

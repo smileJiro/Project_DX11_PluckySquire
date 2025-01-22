@@ -1,0 +1,166 @@
+[
+  {
+    "Type": "Material",
+    "Name": "Desk_C05_Sketchspace_Tape_1024x3072_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Metallic": {
+        "Expression": null,
+        "OutputIndex": 3,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_3",
+        "UseConstant": false,
+        "Constant": 0.0
+      },
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_2",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "A0273A90-426FEE1D-CC5EB68E-C95A1239",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              1305014157859255331
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "RenderTarget",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "5B161864-4B0B587F-3C803BAF-C15C0A3E"
+            ]
+          },
+          "TextureValues": [
+            {
+              "ObjectName": "TextureRenderTarget2D'RenderTarget2D_Page1'",
+              "ObjectPath": "/Game/Materials/_LegacyRenderTargets/RenderTarget2D_Page1.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'MaskingTape_Material_01_ORMH'",
+            "ObjectPath": "/Game/Map/3D/Sketchspace/MaskingTape/Textures/MaskingTape_Material_01_ORMH.0"
+          },
+          {
+            "ObjectName": "Texture2D'MaskingTape_Material_01_normal'",
+            "ObjectPath": "/Game/Map/3D/Sketchspace/MaskingTape/Textures/MaskingTape_Material_01_normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'6x18_Grid_1024x3072'",
+            "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Textures/6x18_Grid_1024x3072.0"
+          },
+          {
+            "ObjectName": "Texture2D'MaskingTape_Material_01_GrungeOverlay_basecolor'",
+            "ObjectPath": "/Game/Map/3D/Sketchspace/MaskingTape/Textures/MaskingTape_Material_01_GrungeOverlay_basecolor.0"
+          },
+          {
+            "ObjectName": "TextureRenderTarget2D'RenderTarget2D_Page1'",
+            "ObjectPath": "/Game/Materials/_LegacyRenderTargets/RenderTarget2D_Page1.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "MaskingTape_Material_01_GrungeOverlay_basecolor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "MaskingTape_Material_01_normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "MaskingTape_Material_01_ORMH"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            1305014157859255331
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "RenderTarget",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "5B161864-4B0B587F-3C803BAF-C15C0A3E"
+          ]
+        },
+        "TextureValues": [
+          {
+            "ObjectName": "TextureRenderTarget2D'RenderTarget2D_Page1'",
+            "ObjectPath": "/Game/Materials/_LegacyRenderTargets/RenderTarget2D_Page1.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'MaskingTape_Material_01_ORMH'",
+          "ObjectPath": "/Game/Map/3D/Sketchspace/MaskingTape/Textures/MaskingTape_Material_01_ORMH.0"
+        },
+        {
+          "ObjectName": "Texture2D'MaskingTape_Material_01_normal'",
+          "ObjectPath": "/Game/Map/3D/Sketchspace/MaskingTape/Textures/MaskingTape_Material_01_normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'6x18_Grid_1024x3072'",
+          "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Textures/6x18_Grid_1024x3072.0"
+        },
+        {
+          "ObjectName": "Texture2D'MaskingTape_Material_01_GrungeOverlay_basecolor'",
+          "ObjectPath": "/Game/Map/3D/Sketchspace/MaskingTape/Textures/MaskingTape_Material_01_GrungeOverlay_basecolor.0"
+        },
+        {
+          "ObjectName": "TextureRenderTarget2D'RenderTarget2D_Page1'",
+          "ObjectPath": "/Game/Materials/_LegacyRenderTargets/RenderTarget2D_Page1.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

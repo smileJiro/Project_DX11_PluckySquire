@@ -1,0 +1,100 @@
+{
+  "Textures": {
+    "PM_Diffuse": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_g_albedo.water_color_bottle_g_albedo",
+    "Albedo Map": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_g_albedo.water_color_bottle_g_albedo",
+    "PM_Normals": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_g_normal.water_color_bottle_g_normal",
+    "Normal Map": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_g_normal.water_color_bottle_g_normal",
+    "PM_SpecularMasks": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_g_orm.water_color_bottle_g_orm",
+    "ORM Map": "/Game/Map/3D/NvidiaAssets/Textures/SM_watercolor_bottles/textures/paint_container/container_4/water_color_bottle_g_orm.water_color_bottle_g_orm"
+  },
+  "Parameters": {
+    "BlendMode": 1,
+    "ShadingModel": 0,
+    "Colors": {
+      "Base Color": {
+        "R": 0.2,
+        "G": 0.2,
+        "B": 0.2,
+        "A": 1.0,
+        "Hex": "7C7C7C"
+      },
+      "Color Tint": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "Emissive Color": {
+        "R": 1.0,
+        "G": 0.1,
+        "B": 0.1,
+        "A": 1.0,
+        "Hex": "FF5959"
+      },
+      "Detail Texture Scale": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "Detail Texture Translate": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "0000FF"
+      },
+      "Texture Scale": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "Texture Translate": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "0000FF"
+      }
+    },
+    "Scalars": {
+      "Albedo Add": 0.0,
+      "Albedo Brightness": 1.0,
+      "Albedo Desaturation": 0.0,
+      "AO to Diffuse": 0.0,
+      "Emissive Intensity": 40.0,
+      "Enable Emission": 0.0,
+      "Detail Normal Strength": 0.3,
+      "Normal Map Strength": 1.0,
+      "Enable ORM Texture": 1.0,
+      "Metallic Amount": 0.0,
+      "Metallic Map Influence": 1.0,
+      "Roughness Amount": 0.5,
+      "Roughness Map Influence": 1.0,
+      "Specular": 0.5,
+      "Detail Texture Rotate": 0.0,
+      "Enable Project UVW Coordinates": 0.0,
+      "Enable World Space": 0.0,
+      "Texture Rotate": 0.0,
+      "UV Space Index": 0.0
+    },
+    "Switches": {},
+    "Properties": {
+      "BasePropertyOverrides": {
+        "TwoSided": true,
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "HasTopDiffuse": false,
+    "HasTopNormals": false,
+    "HasTopSpecularMasks": false,
+    "HasTopEmissive": false,
+    "IsTranslucent": false,
+    "IsNull": false
+  }
+}

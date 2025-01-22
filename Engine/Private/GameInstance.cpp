@@ -192,6 +192,8 @@ _float CGameInstance::Compute_Random_Normal()
 
 _float CGameInstance::Compute_Random(_float _fMin, _float _fMax)
 {
+	if (_fMin > _fMax)
+		return _fMax + (_fMin - _fMax) * Compute_Random_Normal();
 	return _fMin + (_fMax - _fMin) * Compute_Random_Normal();
 }
 

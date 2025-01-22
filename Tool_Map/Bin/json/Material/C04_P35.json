@@ -1,0 +1,544 @@
+[
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P35:PersistentLevel.MGC_C04_P35_Blank'",
+              "ObjectPath": "/Game/Levels/C04/C04_P35.4"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P35:PersistentLevel.MGC_C04_P35_Blank'",
+              "ObjectPath": "/Game/Levels/C04/C04_P35.4"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P35:PersistentLevel.MGC_C04_P35_Blank'",
+              "ObjectPath": "/Game/Levels/C04/C04_P35.4"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P35:PersistentLevel.MGC_C04_P35_Blank'",
+              "ObjectPath": "/Game/Levels/C04/C04_P35.4"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "C04_P35",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'C04_P35:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.5"
+      },
+      "LevelBuildDataId": "9C76E9B5-48036B2F-D1E1ABAC-70AD8AC3",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'C04_P35:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.20"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'C04_P35:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.20"
+      },
+      null,
+      {
+        "ObjectName": "MinigameController_BP_C'C04_P35:PersistentLevel.MGC_C04_P35_Blank'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.4"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'C04_P35:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/C04/C04_P35.5"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_3",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Colour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 0.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "00CD460C-495C6B8B-38DCA081-E90F425E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_C04_P35_Blank",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/_Persistent/MainLevel.MainLevel",
+        "SubPathString": "PersistentLevel.Book_MAIN"
+      },
+      "BookID": 0,
+      "bSavesToFileWhenSerialised": false,
+      "bSavesDeskData": false,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.GameVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.0"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.18"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.15"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.16"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.17"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.KillVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.1"
+      },
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.GameBackground'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.14"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.7"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.13"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.8"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.11"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.10"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.9"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "D83A3640-4D93C516-635A91A7-6DE9EB62",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": -24315.0,
+        "Y": 21065.0,
+        "Z": 21500.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'C04_P35:PersistentLevel.MGC_C04_P35_Blank.MaterialInstanceDynamic_3'",
+          "ObjectPath": "/Game/Levels/C04/C04_P35.3"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_C04_P35_Blank",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P35:PersistentLevel.MGC_C04_P35_Blank.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.12"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "C04_P35",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'C04_P35:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/C04/C04_P35.2"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'C04_P35:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/C04/C04_P35.6"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]
