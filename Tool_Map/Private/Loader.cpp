@@ -5,7 +5,7 @@
 #include "CriticalSectionGuard.h"
 
 #include "Camera_Free.h"
-#include "CellContainor.h"
+//#include "CellContainor.h"
 #include "MapObject.h"
 #include "Ray.h"
 
@@ -207,9 +207,9 @@ HRESULT CLoader::Loading_Level_3D_Map_Tool()
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
 
     /* For.Prototype_Component_Collider_Sphere */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MAP, TEXT("Prototype_Component_Collider_Sphere"),
-        CCollider::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MAP, TEXT("Prototype_Component_Collider_Sphere"),
+    //    CCollider::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
+    //    return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
@@ -234,9 +234,9 @@ HRESULT CLoader::Loading_Level_3D_Map_Tool()
         CMapObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_CellContainor"),
-        CCellContainor::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_CellContainor"),
+    //    CCellContainor::Create(m_pDevice, m_pContext))))
+    //    return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

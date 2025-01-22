@@ -1,0 +1,294 @@
+[
+  {
+    "Type": "DirectionalLight",
+    "Name": "DirectionalLight3_switch",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'DirectionalLight'",
+    "Properties": {
+      "LightComponent": {
+        "ObjectName": "DirectionalLightComponent'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.DirectionalLight3_switch.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.1"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "DirectionalLightComponent'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.DirectionalLight3_switch.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.1"
+      }
+    }
+  },
+  {
+    "Type": "DirectionalLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "DirectionalLight3_switch",
+    "Class": "UScriptClass'DirectionalLightComponent'",
+    "Properties": {
+      "LightGuid": "71BCB043-42300931-DEC2F0B6-97693B33",
+      "LightColor": {
+        "B": 219,
+        "G": 234,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFEADB"
+      },
+      "RelativeLocation": {
+        "X": -1758.6147,
+        "Y": -2369.6343,
+        "Z": 50.000973
+      },
+      "RelativeRotation": {
+        "Pitch": -45.999775,
+        "Yaw": 59.999847,
+        "Roll": 0.000111
+      },
+      "Mobility": "EComponentMobility::Static"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "QQQ_Desk_C03_Lighting_Switch",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.3"
+      },
+      "LevelBuildDataId": "02C1B49B-40218FE5-14ED45A1-1AD29891",
+      "MapBuildData": {
+        "ObjectName": "MapBuildDataRegistry'QQQ_Desk_C03_Lighting_Switch_BuiltData'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch_BuiltData.14"
+      },
+      "bIsLightingScenario": true,
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.10"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.10"
+      },
+      null,
+      {
+        "ObjectName": "DirectionalLight'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.DirectionalLight3_switch'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.0"
+      },
+      {
+        "ObjectName": "SkyLight'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.SkyLight3_switch'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.7"
+      },
+      {
+        "ObjectName": "PointLight'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.PointLight3_switch'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.5"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/StartMap",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.3"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "C7B3673A-4181EE5C-195C55A6-06ED3B9A",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PointLight",
+    "Name": "PointLight3_switch",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'PointLight'",
+    "Properties": {
+      "PointLightComponent": {
+        "ObjectName": "PointLightComponent'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.PointLight3_switch.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.6"
+      },
+      "LightComponent": {
+        "ObjectName": "PointLightComponent'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.PointLight3_switch.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.6"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "PointLightComponent'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.PointLight3_switch.LightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.6"
+      }
+    }
+  },
+  {
+    "Type": "PointLightComponent",
+    "Name": "LightComponent0",
+    "Outer": "PointLight3_switch",
+    "Class": "UScriptClass'PointLightComponent'",
+    "Properties": {
+      "IntensityUnits": "ELightUnits::Candelas",
+      "AttenuationRadius": 3000.0,
+      "LightGuid": "84FEB509-4E268892-0ABD7EBA-C051E334",
+      "Intensity": 350.0,
+      "LightColor": {
+        "B": 255,
+        "G": 75,
+        "R": 182,
+        "A": 255,
+        "Hex": "B64BFF"
+      },
+      "RelativeLocation": {
+        "X": 3531.6565,
+        "Y": -73.67615,
+        "Z": 767.4717
+      },
+      "Mobility": "EComponentMobility::Static"
+    }
+  },
+  {
+    "Type": "SkyLight",
+    "Name": "SkyLight3_switch",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'SkyLight'",
+    "Properties": {
+      "LightComponent": {
+        "ObjectName": "SkyLightComponent'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.SkyLight3_switch.SkyLightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.8"
+      },
+      "RootComponent": {
+        "ObjectName": "SkyLightComponent'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.SkyLight3_switch.SkyLightComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.8"
+      }
+    }
+  },
+  {
+    "Type": "SkyLightComponent",
+    "Name": "SkyLightComponent0",
+    "Outer": "SkyLight3_switch",
+    "Class": "UScriptClass'SkyLightComponent'",
+    "Properties": {
+      "SourceType": "SLS_SpecifiedCubemap",
+      "Cubemap": {
+        "ObjectName": "TextureCube'DaylightAmbientCubemap'",
+        "ObjectPath": "/Engine/MapTemplates/Sky/DaylightAmbientCubemap.0"
+      },
+      "LightGuid": "4CB6407B-4F3845C0-60B14185-9929DFC2",
+      "RelativeLocation": {
+        "X": -1273.332,
+        "Y": -1085.6357,
+        "Z": 670.14795
+      },
+      "Mobility": "EComponentMobility::Static"
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "QQQ_Desk_C03_Lighting_Switch",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'QQQ_Desk_C03_Lighting_Switch:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.2"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'QQQ_Desk_C03_Lighting_Switch:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C03/QQQ_Desk_C03_Lighting_Switch.4"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

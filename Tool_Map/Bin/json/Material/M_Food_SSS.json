@@ -1,0 +1,298 @@
+[
+  {
+    "Type": "Material",
+    "Name": "M_Food_SSS",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Specular": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionScalarParameter_0",
+        "UseConstant": false,
+        "Constant": 0.5
+      },
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSampleParameter2D_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "ShadingModel": "MSM_Subsurface",
+      "ShadingModels": {
+        "ShadingModelField": 4
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "8AD42993-4A611029-9B72CD9F-06B4FA7C",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              7933842740086680578,
+              15684328969772911168
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "Spec",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Opacity",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "423335AE-418E06AF-B5DEE1A4-22FA75DC",
+              "C47BEDB7-47779346-ED4F31B4-7FDF7411"
+            ]
+          },
+          "RuntimeEntries[1]": {
+            "NameHashes": [
+              16640096992329124897
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "SSS Color",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "11FE6958-41113DC5-C6741292-4802B816"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              480595172717258488,
+              4708953410708818575,
+              18385565147847181578
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "ARM",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Normal",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "BC",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "088EE62D-4C5DD932-D33F8BAA-143742BB",
+              "D7CFFDC6-479C3B5C-9DF8A49A-E06B4C6E",
+              "9700DC84-457DB361-354060A6-33D08F1D"
+            ]
+          },
+          "ScalarValues": [
+            0.15,
+            0.6
+          ],
+          "VectorValues": [
+            {
+              "R": 0.8177083,
+              "G": 0.3586751,
+              "B": 0.0,
+              "A": 1.0,
+              "Hex": "EAA200"
+            }
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "Texture2D'Carrot_01_1_OcclusionRoughnessMetallic'",
+              "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_OcclusionRoughnessMetallic.0"
+            },
+            {
+              "ObjectName": "Texture2D'Carrot_01_1_Normal'",
+              "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_Normal.0"
+            },
+            {
+              "ObjectName": "Texture2D'Carrot_01_1_BaseColor'",
+              "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_BaseColor.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Carrot_01_1_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_BaseColor.0"
+          },
+          {
+            "ObjectName": "Texture2D'Carrot_01_1_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_OcclusionRoughnessMetallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Carrot_01_1_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_Normal.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Carrot_01_1_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Carrot_01_1_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Carrot_01_1_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            7933842740086680578,
+            15684328969772911168
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "Spec",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Opacity",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "423335AE-418E06AF-B5DEE1A4-22FA75DC",
+            "C47BEDB7-47779346-ED4F31B4-7FDF7411"
+          ]
+        },
+        "RuntimeEntries[1]": {
+          "NameHashes": [
+            16640096992329124897
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "SSS Color",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "11FE6958-41113DC5-C6741292-4802B816"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            480595172717258488,
+            4708953410708818575,
+            18385565147847181578
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "ARM",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Normal",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "BC",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "088EE62D-4C5DD932-D33F8BAA-143742BB",
+            "D7CFFDC6-479C3B5C-9DF8A49A-E06B4C6E",
+            "9700DC84-457DB361-354060A6-33D08F1D"
+          ]
+        },
+        "ScalarValues": [
+          0.15,
+          0.6
+        ],
+        "VectorValues": [
+          {
+            "R": 0.8177083,
+            "G": 0.3586751,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "EAA200"
+          }
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "Texture2D'Carrot_01_1_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_OcclusionRoughnessMetallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Carrot_01_1_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Carrot_01_1_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_BaseColor.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_Normal.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

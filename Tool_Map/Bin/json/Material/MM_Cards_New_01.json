@@ -1,0 +1,143 @@
+[
+  {
+    "Type": "Material",
+    "Name": "MM_Cards_New_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "B323F5A2-492BA822-42ABE3A9-7DE64F8F",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              14941526943948721302
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "RoughnessAdjustment_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "F5A88ED6-4CDC73A9-F4171BA6-51D8F3B8"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              5144476314915595866
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "BaseColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "09F67B9A-4AD9B6D8-988B1AA4-4CC920C7"
+            ]
+          },
+          "ScalarValues": [
+            0.5
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "Texture2D'Card_01'",
+              "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/Card_01.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'T_Noise_2'",
+            "ObjectPath": "/Game/Map/3D/Carriable_Items/Gem/Textures/T_Noise_2.0"
+          },
+          {
+            "ObjectName": "Texture2D'Card_01'",
+            "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/Card_01.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Card_01"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Noise_2"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            14941526943948721302
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "RoughnessAdjustment_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "F5A88ED6-4CDC73A9-F4171BA6-51D8F3B8"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            5144476314915595866
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "BaseColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "09F67B9A-4AD9B6D8-988B1AA4-4CC920C7"
+          ]
+        },
+        "ScalarValues": [
+          0.5
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "Texture2D'Card_01'",
+            "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/Card_01.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Noise_2'",
+          "ObjectPath": "/Game/Map/3D/Carriable_Items/Gem/Textures/T_Noise_2.0"
+        },
+        {
+          "ObjectName": "Texture2D'Card_01'",
+          "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/Card_01.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

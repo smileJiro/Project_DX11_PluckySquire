@@ -1,0 +1,64 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Cards_New_04",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_Cards_New_01'",
+        "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/MM_Cards_New_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Card_01'",
+            "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/Card_01.0"
+          },
+          "ExpressionGUID": "09F67B9A-4AD9B6D8-988B1AA4-4CC920C7"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Noise_2'",
+          "ObjectPath": "/Game/Map/3D/Carriable_Items/Gem/Textures/T_Noise_2.0"
+        },
+        {
+          "ObjectName": "Texture2D'Card_01'",
+          "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/Card_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Card_01"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Noise_2"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

@@ -339,6 +339,7 @@
     <ClInclude Include="..\Public\Logo_BG.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -506,6 +507,7 @@
     <ClCompile Include="..\Private\Logo_BG.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

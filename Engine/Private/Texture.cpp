@@ -78,7 +78,7 @@ HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _i
 
         _tchar wszFullPath[MAX_PATH] = L"";
 
-        MultiByteToWideChar(CP_ACP, 0, szTextureFullPath, strlen(szTextureFullPath), wszFullPath, MAX_PATH);
+        MultiByteToWideChar(CP_ACP, 0, szTextureFullPath, (_uint)strlen(szTextureFullPath), wszFullPath, MAX_PATH);
 
         HRESULT hr = {};
 

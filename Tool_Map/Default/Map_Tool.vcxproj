@@ -143,8 +143,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\2DMap_Tool_Manager.h" />
-    <ClInclude Include="..\Public\CellContainor.h" />
-    <ClInclude Include="..\Public\EditableCell.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\gizmo\GraphEditor.h" />
     <ClInclude Include="..\Public\gizmo\ImCurveEdit.h" />
@@ -167,8 +165,6 @@
     <ClInclude Include="..\Public\Map_Tool_Defines.h" />
     <ClInclude Include="..\Public\Map_Tool_MainApp.h" />
     <ClInclude Include="..\Public\Model_PackagingObject.h" />
-    <ClInclude Include="..\Public\NavigationVertex.h" />
-    <ClInclude Include="..\Public\VIBuffer_CellLine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Map_Tool.h" />
     <ClInclude Include="Resource.h" />
@@ -177,8 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\2DMap_Tool_Manager.cpp" />
-    <ClCompile Include="..\Private\CellContainor.cpp" />
-    <ClCompile Include="..\Private\EditableCell.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\gizmo\GraphEditor.cpp" />
     <ClCompile Include="..\Private\gizmo\ImCurveEdit.cpp" />
@@ -199,8 +193,6 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\Map_Tool_MainApp.cpp" />
     <ClCompile Include="..\Private\Model_PackagingObject.cpp" />
-    <ClCompile Include="..\Private\NavigationVertex.cpp" />
-    <ClCompile Include="..\Private\VIBuffer_CellLine.cpp" />
     <ClCompile Include="Map_Tool.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

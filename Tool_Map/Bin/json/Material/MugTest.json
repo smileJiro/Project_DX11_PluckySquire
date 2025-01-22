@@ -1,0 +1,3842 @@
+[
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.95"
+      }
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__ButterflyBlue_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.2"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__ButterflyBlue_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.2"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__ButterflyOrange_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.2"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TD_Tree_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.2"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyBlue_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyBlue_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyBlue_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyBlue_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyOrange_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyOrange_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 2020.0,
+        "Y": 800.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'MugTest:PersistentLevel.MGC_SimpleSIngle4'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.42"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'MugTest:PersistentLevel.MGC_SimpleSIngle4'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.42"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'MugTest:PersistentLevel.MGC_SimpleSIngle4'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.42"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'MugTest:PersistentLevel.MGC_SimpleSIngle4'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.42"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 182.28522,
+        "Y": 75.0,
+        "Z": 100.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'MugTest:PersistentLevel.Portal_SingleTDBtm5'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.85"
+            },
+            "FunctionName": "TriggerBeginOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'MugTest:PersistentLevel.Portal_SingleTDBtm5'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.85"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'MugTest:PersistentLevel.Portal_SingleTDBtm5'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.85"
+            },
+            "FunctionName": "TriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeLocation": {
+        "X": -1736.0,
+        "Y": 703.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TD_Tree_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TD_Tree_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "ButterflyBlue_BP_C",
+    "Name": "ButterflyBlue_BP8",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.ButterflyBlue_BP_C'",
+    "Template": {
+      "ObjectName": "ButterflyBlue_BP_C'Default__ButterflyBlue_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.9"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.SphereComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.88"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.58"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.57"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.52"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.101"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.SlideCollider'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.10"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.118"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.116"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.117"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.38"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.97"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.5"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.56"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.44"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.28"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.33"
+      },
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.56"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.58"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.57"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.52"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.114"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.115"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.112"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.78"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.72"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.19512162
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      }
+    }
+  },
+  {
+    "Type": "ButterflyBlue_BP_C",
+    "Name": "ButterflyBlue_BP9",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.ButterflyBlue_BP_C'",
+    "Template": {
+      "ObjectName": "ButterflyBlue_BP_C'Default__ButterflyBlue_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.11"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.SphereComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.89"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.61"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.60"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.53"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.102"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.SlideCollider'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.12"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.125"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.123"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.124"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.39"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.98"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.6"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.59"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.45"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.29"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.34"
+      },
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.59"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.61"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.60"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.53"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.121"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.122"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.119"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.79"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.73"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.21274605
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      }
+    }
+  },
+  {
+    "Type": "ButterflyOrange_BP_C",
+    "Name": "ButterflyOrange_BP6",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.ButterflyOrange_BP_C'",
+    "Template": {
+      "ObjectName": "ButterflyOrange_BP_C'Default__ButterflyOrange_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.13"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.SphereComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.90"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.64"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.63"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.54"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.103"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.SlideCollider'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.14"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.132"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.130"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.131"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.40"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.99"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.7"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.62"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.46"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.30"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.35"
+      },
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.62"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.64"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.63"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.54"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.128"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.129"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.126"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.80"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.74"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.24079257
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__ButterflyBlue_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.5"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeLocation": {
+        "X": -880.0,
+        "Y": 30.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__ButterflyBlue_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.5"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeLocation": {
+        "X": -439.0,
+        "Y": 364.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__ButterflyOrange_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.5"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeLocation": {
+        "X": 1090.0,
+        "Y": -140.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TD_Tree_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeLocation": {
+        "X": -10.0,
+        "Y": 120.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__ButterflyBlue_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.6"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__ButterflyBlue_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.6"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__ButterflyOrange_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.6"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TD_Tree_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.6"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "MugTest",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'MugTest:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.43"
+      },
+      "LevelBuildDataId": "E6800C70-4955A568-185D49B7-16C97941",
+      "MapBuildData": {
+        "ObjectName": "MapBuildDataRegistry'MugTest_BuiltData'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest_BuiltData.0"
+      },
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'MugTest:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.141"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'MugTest:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.141"
+      },
+      null,
+      {
+        "ObjectName": "MinigameController_BP_C'MugTest:PersistentLevel.MGC_SimpleSIngle4'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.42"
+      },
+      {
+        "ObjectName": "Portal_BP_C'MugTest:PersistentLevel.Portal_SingleTDBtm5'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.85"
+      },
+      {
+        "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+      },
+      {
+        "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+      },
+      {
+        "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+      },
+      {
+        "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'MugTest:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/xPrototype/MugTest.43"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__ButterflyBlue_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__ButterflyBlue_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__ButterflyOrange_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TD_Tree_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.7"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_1",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__ButterflyBlue_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.113"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__ButterflyBlue_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.120"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__ButterflyOrange_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.127"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TD_Tree_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.TD_Tree_BP9.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.134"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_SimpleSIngle4",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "BookID": 3,
+      "RenderResolution": {
+        "X": 3840.0,
+        "Y": 1400.0
+      },
+      "BookCameraType": "EBookCameraType::Orbit",
+      "ScrollType": "EScrollType::Orbit",
+      "BackgroundColour": {
+        "R": 0.963542,
+        "G": 0.8066,
+        "B": 0.0,
+        "A": 1.0,
+        "Hex": "FBE800"
+      },
+      "OrbitPageSizeScalar": 0.175,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.GameVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.15"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.109"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.106"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.107"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.108"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.KillVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.16"
+      },
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.GameBackground'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.105"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.65"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.104"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.69"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.84"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.81"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.75"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "3B7117F4-4DA2FD87-8449EA85-571716D5",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__ButterflyBlue_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__ButterflyBlue_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__ButterflyOrange_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TD_Tree_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.9"
+    }
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {}
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__ButterflyBlue_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.10"
+    },
+    "Properties": {
+      "AccumulatedTime": 0.13280754,
+      "CachedFrameIndex": 1,
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 80.0
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__ButterflyBlue_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.10"
+    },
+    "Properties": {
+      "AccumulatedTime": 0.13280754,
+      "CachedFrameIndex": 1,
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 80.0
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__ButterflyOrange_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.10"
+    },
+    "Properties": {
+      "AccumulatedTime": 0.13280754,
+      "CachedFrameIndex": 1,
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 80.0
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TD_Tree_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.10"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.13"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.13"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyOrange_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyOrange_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyOrange_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.13"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TD_Tree_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TD_Tree_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TD_Tree_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.13"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.1"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "OldPosition": {
+        "X": 18168.615,
+        "Y": 21865.0,
+        "Z": 24588.0
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__ButterflyBlue_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__ButterflyBlue_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__ButterflyOrange_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TD_Tree_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.14"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__ButterflyBlue_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__ButterflyBlue_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__ButterflyOrange_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    },
+    "Properties": {
+      "InteractivePriority": 0.0,
+      "SpriteInteractiveIcon_BP": null,
+      "DeskInteractiveIcon_BP": null
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TD_Tree_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.15"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "Portal_SingleTDBtm5",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.2"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Billboard'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.4"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.71"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.51"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.94"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.95"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.0"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.1"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.70"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.49"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.50"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Audio Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.3"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.91"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.87"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.92"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.93"
+      },
+      "PortalDirection": "EPortalDirection::Down",
+      "TriggerSize": {
+        "X": 182.28522,
+        "Y": 75.0,
+        "Z": 100.0
+      },
+      "BookCameraType": "EBookCameraType::Orbit",
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.27"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.82"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.76"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Billboard'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.4"
+        },
+        {
+          "ObjectName": "AudioComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.2"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 19904.615,
+        "Y": -12206.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.1"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__ButterflyBlue_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP8'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.20"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__ButterflyBlue_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'MugTest:PersistentLevel.ButterflyBlue_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.21"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__ButterflyOrange_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'MugTest:PersistentLevel.ButterflyOrange_BP6'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.22"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'MugTest:PersistentLevel.Portal_SingleTDBtm5'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.85"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'MugTest:PersistentLevel.Portal_SingleTDBtm5'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.85"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.95"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "Portal_SingleTDBtm5",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.Portal_SingleTDBtm5.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.17"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TD_Tree_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'MugTest:PersistentLevel.TD_Tree_BP9'",
+              "ObjectPath": "/Game/Levels/xPrototype/MugTest.111"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__ButterflyBlue_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.56"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.58"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.57"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.52"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__ButterflyBlue_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.59"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.61"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.60"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.53"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__ButterflyOrange_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.62"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.64"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.63"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.54"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TD_Tree_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.66"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.68"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.67"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.TD_Tree_BP9.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.55"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__ButterflyBlue_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP8.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.23"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__ButterflyBlue_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyBlue_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.24"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__ButterflyOrange_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.ButterflyOrange_BP6.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.25"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeScale3D": {
+        "X": 44.399998,
+        "Y": 20.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'MugTest:PersistentLevel.MGC_SimpleSIngle4.MaterialInstanceDynamic_1'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.37"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeScale3D": {
+        "X": 44.399998,
+        "Y": 20.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 750.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 14.0,
+        "Z": 5.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 14.0,
+        "Z": 5.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_SimpleSIngle4",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'MugTest:PersistentLevel.MGC_SimpleSIngle4.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.86"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": -750.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TD_Tree_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "TD_Tree_BP_C",
+    "Name": "TD_Tree_BP9",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.TD_Tree_BP_C'",
+    "Template": {
+      "ObjectName": "TD_Tree_BP_C'Default__TD_Tree_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.TD_Tree_BP9.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.18"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'MugTest:PersistentLevel.TD_Tree_BP9.SphereComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.96"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.68"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.67"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.TD_Tree_BP9.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.55"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'MugTest:PersistentLevel.TD_Tree_BP9.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.110"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'MugTest:PersistentLevel.TD_Tree_BP9.SlideCollider'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.19"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.TD_Tree_BP9.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.139"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.TD_Tree_BP9.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.137"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.TD_Tree_BP9.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.138"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'MugTest:PersistentLevel.TD_Tree_BP9.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.41"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'MugTest:PersistentLevel.TD_Tree_BP9.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.100"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'MugTest:PersistentLevel.TD_Tree_BP9.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.8"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.66"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'MugTest:PersistentLevel.TD_Tree_BP9.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.47"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'MugTest:PersistentLevel.TD_Tree_BP9.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.31"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'MugTest:PersistentLevel.TD_Tree_BP9.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.36"
+      },
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.66"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.68"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'MugTest:PersistentLevel.TD_Tree_BP9.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.67"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'MugTest:PersistentLevel.TD_Tree_BP9.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/MugTest.55"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.TD_Tree_BP9.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.135"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.TD_Tree_BP9.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.136"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'MugTest:PersistentLevel.TD_Tree_BP9.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.133"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'MugTest:PersistentLevel.TD_Tree_BP9.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.83"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'MugTest:PersistentLevel.TD_Tree_BP9.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.77"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.37032074
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'MugTest:PersistentLevel.TD_Tree_BP9.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.26"
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "ButterflyBlue_BP8",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "ButterflyBlue_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "ButterflyOrange_BP6",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "TD_Tree_BP9",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.28"
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "MugTest",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'MugTest:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/xPrototype/MugTest.32"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'MugTest:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/MugTest.48"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]
