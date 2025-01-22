@@ -1,5 +1,5 @@
 #pragma once
-#include "D:\Workbench\Portfolio\CopyMojam\EngineSDK\Inc\ModelObject.h"
+#include "ModelObject.h"
 BEGIN(Engine)
 
 END

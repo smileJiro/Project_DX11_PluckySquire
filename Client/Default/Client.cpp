@@ -59,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
 
-    srand(time(nullptr));
+    srand((_uint)time(nullptr));
     pMainApp = CMainApp::Create();
     if (nullptr == pMainApp)
         return FALSE;

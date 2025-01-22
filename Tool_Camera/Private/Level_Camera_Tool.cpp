@@ -257,7 +257,7 @@ void CLevel_Camera_Tool::Show_CutSceneTool()
 
 	if (ImGui::Checkbox("Create Point", &m_isCreatePoint))
 		m_isCreatePoint != m_isCreatePoint;
-
+	
 	ImGui::SameLine(150);
 
 	if (ImGui::Checkbox("Edit Cell", &m_isEditPoint))

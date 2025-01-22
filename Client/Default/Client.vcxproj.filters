@@ -163,6 +163,9 @@
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG">
       <UniqueIdentifier>{3201528a-c170-487d-9d02-4f72ad1ea9e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MapObject">
+      <UniqueIdentifier>{27eeead8-8f6e-4d69-8a4b-703b1b9d2cc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -336,7 +339,9 @@
     <ClInclude Include="..\Public\Logo_BG.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MapObject.h" />
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -501,7 +506,9 @@
     <ClCompile Include="..\Private\Logo_BG.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MapObject.cpp" />
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
