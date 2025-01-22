@@ -1,0 +1,578 @@
+[
+  {
+    "Type": "Material",
+    "Name": "MM_SimpleProps_Shimmer_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Metallic": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionStaticSwitchParameter_2",
+        "UseConstant": false,
+        "Constant": 0.0
+      },
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSampleParameter2D_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "EmissiveColor": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionMaterialFunctionCall_1",
+        "UseConstant": false,
+        "Constant": {
+          "B": 0,
+          "G": 0,
+          "R": 0,
+          "A": 0,
+          "Hex": "000000"
+        }
+      },
+      "bUsedWithSkeletalMesh": true,
+      "bUsedWithStaticLighting": true,
+      "bUsedWithMorphTargets": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "1E98A2F2-4B600E8A-6C3C0A95-B06791CB",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              589064200133783099,
+              7263687476833048044,
+              8055815488845330372,
+              11272728478665494104,
+              12341852466479745151,
+              14974999948735251248
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "FresnelExponent",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "FresnelStrength_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "FresnelStrength_02",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Speed_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Shimmer_Value",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "FresnelBaseReflectFraction",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "0A6CCD6F-4469A77F-428361B9-128DE8D3",
+              "9EC9B802-4913BBB3-04083390-0D75E947",
+              "E79CA018-4C83BDEB-06C80694-D7AD6B6D",
+              "EC25B376-41EB4385-462DCC95-57269FE7",
+              "71F1A857-445F458B-7D541482-6C9B7E19",
+              "60B0F0D4-4963DD84-05635592-C60A2D97"
+            ]
+          },
+          "RuntimeEntries[1]": {
+            "NameHashes": [
+              1841245866823017241,
+              4072592210062700945
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "ShimmerColour_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "TintColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "7826DBAC-4C3216CA-55F8888F-0C61337B",
+              "1D349544-41256126-795BAAA1-5E5A5EDA"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              2125695486460109255,
+              4708953410708818575,
+              5144476314915595866,
+              11575223130781524738,
+              14916143969260853936
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "NonORMH_Roughness",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Normal",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "BaseColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "ORMH",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "NonORMH_Metallic",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "7847E6EC-4D9DCA62-D8E3B2B5-CF81E9A9",
+              "5AF985A0-4E48F51B-94D6C080-143F5635",
+              "A81585F2-40BEC55A-085987A9-395834C6",
+              "3FB6A6BF-490D2B00-1A3CD5BA-EF197027",
+              "0FDE2423-4B273045-A5673F93-3C36896C"
+            ]
+          },
+          "ScalarValues": [
+            8.0,
+            0.0,
+            5.0,
+            -3000.0,
+            1.0,
+            0.0005
+          ],
+          "VectorValues": [
+            {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 0.0,
+              "Hex": "FFFFFF"
+            },
+            {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            }
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "Texture2D'1_rough_1002'",
+              "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+            },
+            {
+              "ObjectName": "Texture2D'Bed_L_FT_lambert1_Normal_1001'",
+              "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_Normal_1001.0"
+            },
+            {
+              "ObjectName": "Texture2D'Bed_L_FT_lambert1_BaseColor_1001'",
+              "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_BaseColor_1001.0"
+            },
+            {
+              "ObjectName": "Texture2D'Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001'",
+              "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001.0"
+            },
+            {
+              "ObjectName": "Texture2D'1_metal_1002'",
+              "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Bed_L_FT_lambert1_Normal_1001'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_Normal_1001.0"
+          },
+          null,
+          {
+            "ObjectName": "Texture2D'DefaultDiffuse'",
+            "ObjectPath": "/Engine/EngineMaterials/DefaultDiffuse.0"
+          },
+          {
+            "ObjectName": "Texture2D'GradientTest_01'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/ShimmerMaterial/GradientTest_01.0"
+          },
+          {
+            "ObjectName": "Texture2D'Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001.0"
+          },
+          {
+            "ObjectName": "Texture2D'Bed_L_FT_lambert1_BaseColor_1001'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_BaseColor_1001.0"
+          },
+          {
+            "ObjectName": "Texture2D'1_rough_1002'",
+            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+          },
+          {
+            "ObjectName": "Texture2D'1_metal_1002'",
+            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "B7C71B91-4E2BB667-772D6CBE-2AB55665",
+            "Function": {
+              "ObjectName": "MaterialFunction'LinearGradient'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/Gradient/LinearGradient.0"
+            }
+          },
+          {
+            "StateId": "1F3C7ECC-4653CAFB-2A6AEE82-B1F2F3A5",
+            "Function": {
+              "ObjectName": "MaterialFunction'CheapContrast'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/ImageAdjustment/CheapContrast.0"
+            }
+          },
+          {
+            "StateId": "B7C71B91-4E2BB667-772D6CBE-2AB55665",
+            "Function": {
+              "ObjectName": "MaterialFunction'LinearGradient'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/Gradient/LinearGradient.0"
+            }
+          },
+          {
+            "StateId": "1F3C7ECC-4653CAFB-2A6AEE82-B1F2F3A5",
+            "Function": {
+              "ObjectName": "MaterialFunction'CheapContrast'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/ImageAdjustment/CheapContrast.0"
+            }
+          },
+          {
+            "StateId": "BDC7AB9C-418E30AC-5815BFB0-1EF022E9",
+            "Function": {
+              "ObjectName": "MaterialFunction'WorldAlignedTexture'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/Texturing/WorldAlignedTexture.0"
+            }
+          },
+          {
+            "StateId": "658FB050-43D949A4-51C4768B-0F71D7ED",
+            "Function": {
+              "ObjectName": "MaterialFunction'MF_ObjectShimmerGlow_01'",
+              "ObjectPath": "/Game/Map/3D/Objects/toy_house/material/MF_ObjectShimmerGlow_01.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Bed_L_FT_lambert1_BaseColor_1001"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Bed_L_FT_lambert1_Normal_1001"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001"
+        },
+        {
+          "SamplingScale": 0.015625,
+          "UVChannelIndex": 0,
+          "TextureName": "GradientTest_01"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            589064200133783099,
+            7263687476833048044,
+            8055815488845330372,
+            11272728478665494104,
+            12341852466479745151,
+            14974999948735251248
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "FresnelExponent",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "FresnelStrength_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "FresnelStrength_02",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Speed_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Shimmer_Value",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "FresnelBaseReflectFraction",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "0A6CCD6F-4469A77F-428361B9-128DE8D3",
+            "9EC9B802-4913BBB3-04083390-0D75E947",
+            "E79CA018-4C83BDEB-06C80694-D7AD6B6D",
+            "EC25B376-41EB4385-462DCC95-57269FE7",
+            "71F1A857-445F458B-7D541482-6C9B7E19",
+            "60B0F0D4-4963DD84-05635592-C60A2D97"
+          ]
+        },
+        "RuntimeEntries[1]": {
+          "NameHashes": [
+            1841245866823017241,
+            4072592210062700945
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "ShimmerColour_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "TintColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "7826DBAC-4C3216CA-55F8888F-0C61337B",
+            "1D349544-41256126-795BAAA1-5E5A5EDA"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            2125695486460109255,
+            4708953410708818575,
+            5144476314915595866,
+            11575223130781524738,
+            14916143969260853936
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "NonORMH_Roughness",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Normal",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "BaseColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "ORMH",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "NonORMH_Metallic",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "7847E6EC-4D9DCA62-D8E3B2B5-CF81E9A9",
+            "5AF985A0-4E48F51B-94D6C080-143F5635",
+            "A81585F2-40BEC55A-085987A9-395834C6",
+            "3FB6A6BF-490D2B00-1A3CD5BA-EF197027",
+            "0FDE2423-4B273045-A5673F93-3C36896C"
+          ]
+        },
+        "ScalarValues": [
+          8.0,
+          0.0,
+          5.0,
+          -3000.0,
+          1.0,
+          0.0005
+        ],
+        "VectorValues": [
+          {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 0.0,
+            "Hex": "FFFFFF"
+          },
+          {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          }
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "Texture2D'1_rough_1002'",
+            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+          },
+          {
+            "ObjectName": "Texture2D'Bed_L_FT_lambert1_Normal_1001'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_Normal_1001.0"
+          },
+          {
+            "ObjectName": "Texture2D'Bed_L_FT_lambert1_BaseColor_1001'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_BaseColor_1001.0"
+          },
+          {
+            "ObjectName": "Texture2D'Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001.0"
+          },
+          {
+            "ObjectName": "Texture2D'1_metal_1002'",
+            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Bed_L_FT_lambert1_Normal_1001'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_Normal_1001.0"
+        },
+        null,
+        {
+          "ObjectName": "Texture2D'DefaultDiffuse'",
+          "ObjectPath": "/Engine/EngineMaterials/DefaultDiffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'GradientTest_01'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/ShimmerMaterial/GradientTest_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_OcclusionRoughnessMetallic_1001.0"
+        },
+        {
+          "ObjectName": "Texture2D'Bed_L_FT_lambert1_BaseColor_1001'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Bed_L/Bed_L_FT_lambert1_BaseColor_1001.0"
+        },
+        {
+          "ObjectName": "Texture2D'1_rough_1002'",
+          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+        },
+        {
+          "ObjectName": "Texture2D'1_metal_1002'",
+          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "B7C71B91-4E2BB667-772D6CBE-2AB55665",
+          "Function": {
+            "ObjectName": "MaterialFunction'LinearGradient'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/Gradient/LinearGradient.0"
+          }
+        },
+        {
+          "StateId": "1F3C7ECC-4653CAFB-2A6AEE82-B1F2F3A5",
+          "Function": {
+            "ObjectName": "MaterialFunction'CheapContrast'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/ImageAdjustment/CheapContrast.0"
+          }
+        },
+        {
+          "StateId": "B7C71B91-4E2BB667-772D6CBE-2AB55665",
+          "Function": {
+            "ObjectName": "MaterialFunction'LinearGradient'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/Gradient/LinearGradient.0"
+          }
+        },
+        {
+          "StateId": "1F3C7ECC-4653CAFB-2A6AEE82-B1F2F3A5",
+          "Function": {
+            "ObjectName": "MaterialFunction'CheapContrast'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/ImageAdjustment/CheapContrast.0"
+          }
+        },
+        {
+          "StateId": "BDC7AB9C-418E30AC-5815BFB0-1EF022E9",
+          "Function": {
+            "ObjectName": "MaterialFunction'WorldAlignedTexture'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions01/Texturing/WorldAlignedTexture.0"
+          }
+        },
+        {
+          "StateId": "658FB050-43D949A4-51C4768B-0F71D7ED",
+          "Function": {
+            "ObjectName": "MaterialFunction'MF_ObjectShimmerGlow_01'",
+            "ObjectPath": "/Game/Map/3D/Objects/toy_house/material/MF_ObjectShimmerGlow_01.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

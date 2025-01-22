@@ -9,6 +9,7 @@
 C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModel(_pDevice, _pContext)
 {
+	ZeroMemory(m_arrTextureBindingIndex, sizeof m_arrTextureBindingIndex);
 }
 
 C3DModel::C3DModel(const C3DModel& _Prototype)
@@ -21,6 +22,13 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_PreTransformMatrix{ _Prototype.m_PreTransformMatrix }
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
 {
+	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
+	{
+		for (_uint j= 0; j< AI_TEXTURE_TYPE_MAX; j++)
+		{
+			m_arrTextureBindingIndex[i][j] = _Prototype.m_arrTextureBindingIndex[i][j];
+		}
+	}
 	for (auto& pPrototypeBone : _Prototype.m_Bones)
 	{
 		m_Bones.push_back(pPrototypeBone->Clone());
@@ -35,6 +43,7 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 
 	for (auto& pMesh : m_Meshes)
 		Safe_AddRef(pMesh);
+
 
 }
 
@@ -73,16 +82,17 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 
 HRESULT C3DModel::Initialize(void* _pArg)
 {
+
 	return S_OK;
 }
 
 HRESULT C3DModel::Render(CShader* _Shader, _uint _iShaderPass)
 {
-
 	/* Mesh ¥‹¿ß ∑ª¥ı. */
 	for (_uint i = 0; i < m_iNumMeshes; ++i)
 	{
-		if (FAILED(Bind_Material(_Shader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+		_uint iMaterialIndex = m_Meshes[i]->Get_MaterialIndex();
+		if (FAILED(Bind_Material(_Shader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
 		{
 			//continue;
 		}
@@ -295,7 +305,6 @@ HRESULT C3DModel::Ready_Bones(ifstream& inFile, _uint iParentBoneIndex)
 	iParentBoneIndex = (_uint)m_Bones.size() - 1;
 	_uint iNumChildren = 0;
 	inFile.read(reinterpret_cast<char*>(&iNumChildren), sizeof(_uint));
-	//cout << iNumChildren << endl;
 	for (_uint i = 0; i < iNumChildren; ++i)
 	{
 		Ready_Bones(inFile, iParentBoneIndex);
@@ -342,7 +351,6 @@ HRESULT C3DModel::Ready_Materials(ifstream& inFile, const _char* pModelFilePath)
 
 HRESULT C3DModel::Ready_Animations(ifstream& inFile)
 {
-
 	inFile.read(reinterpret_cast<char*>(&m_iNumAnimations), sizeof(_uint));
 	m_Animations.reserve(m_iNumAnimations);
 	for (_uint i = 0; i < m_iNumAnimations; i++)
@@ -356,14 +364,14 @@ HRESULT C3DModel::Ready_Animations(ifstream& inFile)
 
 	return S_OK;
 }
-
+						   
 C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {
 	C3DModel* pInstance = new C3DModel(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix)))
 	{
-		MSG_BOX("Failed to Created : CModel");
+		MSG_BOX("Failed to Created : 3DModel");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
@@ -375,7 +383,7 @@ CComponent* C3DModel::Clone(void* _pArg)
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CModel");
+		MSG_BOX("Failed to Cloned : 3DModel");
 		Safe_Release(pInstance);
 	}
 

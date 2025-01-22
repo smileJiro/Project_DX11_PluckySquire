@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "UI_Manager.h"
-#include "GameInstance.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager)
 
@@ -10,9 +9,36 @@ CUI_Manager::CUI_Manager()
 	Safe_AddRef(m_pGameInstance);
 }
 
+void CUI_Manager::Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel)
+{
+	m_pSettingPanels.emplace(_ePanel, _pPanel);
+	Safe_AddRef(_pPanel);
+}
+
+void CUI_Manager::Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel)
+{
+	m_pShopPanels.emplace(_ePanel, _pPanel);
+	Safe_AddRef(_pPanel);
+}
+
 void CUI_Manager::Free()
 {
 	Safe_Release(m_pGameInstance);
+
+	for (auto iter : m_pSettingPanels)
+	{
+		Safe_Release(iter.second);
+	}
+	m_pSettingPanels.clear();
+
+	for (auto iter : m_pShopPanels)
+	{
+		Safe_Release(iter.second);
+	}
+	m_pShopPanels.clear();
+	
+	Safe_Release(m_pPlayer);
+
 	__super::Free();
 }
 

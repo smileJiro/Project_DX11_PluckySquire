@@ -37,9 +37,30 @@ private:
 	_float2				m_fRotationPerSecAxisY{};
 	_float2				m_fRotationPerSecAxisRight{};
 	_float				m_fLength = {};
-	
+
 
 	_float3				m_vResetArmPos = {};
+
+	// Zoom
+	_int				m_iZoomLevel = {};
+	_float				m_fFovys[10] = {};
+	_uint				m_iRatioType = {};
+	_float				m_fZoomTime = {};
+
+	// Change AtOffset
+	_float3				m_vNextAtOffset = {};
+	_float				m_fAtOffsetTime = {};
+	_uint				m_iAtOffsetRatioType = {};
+
+	// Shake
+	_float				m_fShakeForce = {};
+	_float				m_fShakeTime = {};
+	_float				m_fShakeCycleTime = { 0.05f };
+	_float				m_fShakeDelayTime = { 0.f };
+	_uint				m_iShakeType = {};
+	_int				m_iShakeCount = {};
+
+	_uint				m_iCycleType = {};
 
 private:
 	void				Show_CameraTool();
@@ -48,6 +69,7 @@ private:
 	void				Create_Arms();
 	void				Show_ComboBox();
 	void				Show_SelectedArmData();
+	void				Show_CameraZoomInfo();
 
 private:
 	// Tool
@@ -58,6 +80,9 @@ private:
 	void				Set_MovementInfo();
 	void				Play_Movement();
 	void				Reset_CurrentArmPos();
+	void				Set_Zoom();
+	void				Set_AtOffsetInfo();
+	void				Set_ShakeInfo();
 
 public:
 	static CLevel_Camera_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

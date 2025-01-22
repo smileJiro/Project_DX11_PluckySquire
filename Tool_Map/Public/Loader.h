@@ -53,7 +53,8 @@ private:
 private:
 	HRESULT Loading_Level_Static();
 	HRESULT Loading_Level_Logo();
-	HRESULT Loading_Level_Map_Tool();
+	HRESULT Loading_Level_2D_Map_Tool();
+	HRESULT Loading_Level_3D_Map_Tool();
 	HRESULT Loading_Level_Trigger();
 
 	HRESULT Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);

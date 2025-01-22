@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "ContainerObject.h"
+#include "Character.h"
 
 BEGIN(Client)
 class CFSM;
-class CMonster abstract : public CContainerObject
+class CMonster abstract : public CCharacter
 {
 public:
 	enum MONSTERPART { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
 
-	typedef struct tagMonsterDesc : public CContainerObject::CONTAINEROBJ_DESC
+	typedef struct tagMonsterDesc : public CCharacter::CHARACTER_DESC
 	{
 		_float fAlertRange;
 		_float fChaseRange;
@@ -25,11 +25,11 @@ protected:
 	virtual ~CMonster() = default;
 
 public:
-	virtual void Set_State(MONSTER_STATE _eState)
+	virtual void Set_State(_uint _eState)
 	{
 		m_eState = _eState;
 	}
-	virtual void Set_PreState(MONSTER_STATE _eState)
+	virtual void Set_PreState(_uint _eState)
 	{
 		m_ePreState = _eState;
 	}
@@ -81,8 +81,8 @@ protected:
 	}
 
 protected:
-	MONSTER_STATE		m_eState = {};
-	MONSTER_STATE		m_ePreState = {};
+	_uint		m_eState = {};
+	_uint		m_ePreState = {};
 	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
 	_float m_fAlertRange = { 0.f };

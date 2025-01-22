@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ShopPanel.h"
+#include "UI_Manager.h"
 
 CShopPanel::CShopPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
@@ -23,10 +24,6 @@ HRESULT CShopPanel::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-	
 
 	return S_OK;
 }
@@ -37,23 +34,45 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-
-	if (KEY_DOWN(KEY::ESC))
+	if (KEY_DOWN(KEY::I) && SHOP_END == m_eShopPanel)
 	{
 		isRender();
 	}
-
+	else if (KEY_DOWN(KEY::I) && SHOP_END != m_eShopPanel)
+	{
+		for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
+		{
+			if (SHOP_END != iter.second->Get_ShopPanel())
+			{
+				iter.second->Child_Update(_fTimeDelta);
+			}
+		}
+	}
 }
 
 void CShopPanel::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	//m_pGameInstance->Find_Layer(LEVEL_GAMEPLAY, 
+
+
+	//if (m_eShopPanel != SHOP_END)
+	//{
+	//	for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
+	//	{
+	//		iter.second->Child_LateUpdate(_fTimeDelta);
+	//	}
+	//}
+	//else
+	//{
+	//	__super::Late_Update(_fTimeDelta);
+	//}
 }
 
 HRESULT CShopPanel::Render(_int _index)
 {
 	if (true == m_isRender)
 		__super::Render(_index);
+
 
 	return S_OK;
 }
@@ -72,21 +91,6 @@ void CShopPanel::isRender()
 
 HRESULT CShopPanel::Ready_Components()
 {
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-		return E_FAIL;
-
-	/* Com_VIBuffer */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-		return E_FAIL;
-
-	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_OptionBG"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
-
-
 	return S_OK;
 }
 
@@ -122,12 +126,11 @@ CGameObject* CShopPanel::Clone(void* _pArg)
 void CShopPanel::Free()
 {
 
-
 	__super::Free();
 }
 
-HRESULT CShopPanel::Cleanup_DeadReferences()
-{
-	return S_OK;
-}
+
+
+
+
 

@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CPartObject::CPartObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    : CGameObject(_pDevice, _pContext)
+    : CActorObject(_pDevice, _pContext)
 {
 }
 
 CPartObject::CPartObject(const CPartObject& _Prototype)
-    : CGameObject(_Prototype)
+    : CActorObject(_Prototype)
 {
 }
 
@@ -125,6 +125,8 @@ void CPartObject::Free()
 
 HRESULT CPartObject::Cleanup_DeadReferences()
 {
+    if (FAILED(__super::Cleanup_DeadReferences()))
+        return E_FAIL;
 
     return S_OK;
 }

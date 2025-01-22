@@ -66,7 +66,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 
     /*  Projectile  */
     Pooling_DESC Pooling_Desc;
-    Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+    Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
     Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
 
@@ -75,7 +75,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pProjDesc->eStartCoord = COORDINATE_3D;
     pProjDesc->isCoordChangeEnable = false;
     pProjDesc->iNumPartObjects = PART_LAST;
-    pProjDesc->iCurLevelID = LEVEL_GAMEPLAY;
+    pProjDesc->iCurLevelID = m_iCurLevelID;
 
     //pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     //pProjDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
@@ -120,11 +120,6 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::F3))
-    {
-        Event_DeleteObject(this);
-    }
-
     m_pFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -151,7 +146,7 @@ void CBarfBug::Change_Animation()
 {
     if(m_eState != m_ePreState)
     {
-        switch (m_eState)
+        switch (MONSTER_STATE(m_eState))
         {
         case MONSTER_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
@@ -179,12 +174,12 @@ void CBarfBug::Attack(_float _fTimeDelta)
 {
     if (false == m_isDelay && false == m_isCool)
     {
-        _float3 vPosition;
+        _float3 vScale, vPosition;
         _float4 vRotation;
-        _vector vvScale, vvRotation, vvPosition;
-        XMMatrixDecompose(&vvScale, &vvRotation, &vvPosition, m_pControllerTransform->Get_WorldMatrix());
-		XMStoreFloat3(&vPosition, vvPosition + XMVectorSet(0.f, vvScale.m128_f32[1] * 0.5f, 0.f, 1.f));
-        XMStoreFloat4(&vRotation, vvRotation);
+        if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+            return;
+
+        vPosition.y += vScale.y * 0.5f;
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"),&vPosition, &vRotation);
         Delay_On();
@@ -214,7 +209,7 @@ HRESULT CBarfBug::Ready_Components()
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
 
-    if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM"),
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
         return E_FAIL;
     m_pFSM->Set_Owner(this);
@@ -237,7 +232,7 @@ HRESULT CBarfBug::Ready_PartObjects()
     //BodyDesc.strModelPrototypeTag_2D = TEXT("barfBug_Rig");
     BodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
 	//BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
-	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
    //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 

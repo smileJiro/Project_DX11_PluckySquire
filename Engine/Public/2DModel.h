@@ -9,12 +9,12 @@ class CTexture;
 class ENGINE_DLL C2DModel :
     public CModel
 {
-private:
+protected:
     C2DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
     C2DModel(const C2DModel& _Prototype);
     virtual ~C2DModel() = default;
 public:
-    HRESULT			Initialize_Prototype(const _char* _pModelDirectoryPath);
+    HRESULT			Initialize_Prototype(const _char* _pRawDataDirPath);
     HRESULT			Initialize(void* _pDesc);
 
     virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)override;

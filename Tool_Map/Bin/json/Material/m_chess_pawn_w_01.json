@@ -1,0 +1,91 @@
+[
+  {
+    "Type": "Material",
+    "Name": "m_chess_pawn_w_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_2",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "1CD7AE50-402A99DA-68F17C95-8D21CBDD",
+      "CachedExpressionData": {
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Pawn_white_Diffuse'",
+            "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Pawn_white_Diffuse.0"
+          },
+          {
+            "ObjectName": "Texture2D'Pawn_black_Roughness'",
+            "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Pawn_black_Roughness.0"
+          },
+          {
+            "ObjectName": "Texture2D'Pawn_black_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Pawn_black_Normal.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Pawn_black_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Pawn_black_Roughness"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Pawn_white_Diffuse"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Pawn_white_Diffuse'",
+          "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Pawn_white_Diffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'Pawn_black_Roughness'",
+          "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Pawn_black_Roughness.0"
+        },
+        {
+          "ObjectName": "Texture2D'Pawn_black_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Pawn_black_Normal.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

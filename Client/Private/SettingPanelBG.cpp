@@ -4,6 +4,7 @@
 
 
 
+
 CSettingPanelBG::CSettingPanelBG(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CSettingPanel(_pDevice, _pContext)
 {
@@ -26,10 +27,13 @@ HRESULT CSettingPanelBG::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
+	m_iTextureCount = pDesc->iTextureCount;
+	m_eSettingPanel = pDesc->eSettingPanelKind;
+	m_isRender = false;
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	
 
 	return S_OK;
 }
@@ -38,30 +42,23 @@ void CSettingPanelBG::Priority_Update(_float _fTimeDelta)
 {
 }
 
-void CSettingPanelBG::Update(_float _fTimeDelta)
+void CSettingPanelBG::Child_Update(_float _fTimeDelta)
 {
-
-	if (KEY_DOWN(KEY::ESC))
-	{
-		isRender();
-	}
-
+	isRender();
 }
 
-void CSettingPanelBG::Late_Update(_float _fTimeDelta)
+void CSettingPanelBG::Child_LateUpdate(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 }
 
-HRESULT CSettingPanelBG::Render(_int _index)
+HRESULT CSettingPanelBG::Render()
 {
 	if (true == m_isRender)
-		__super::Render(_index);
+		__super::Render();
 
 	return S_OK;
 }
-
-
 
 void CSettingPanelBG::isRender()
 {
@@ -85,9 +82,46 @@ HRESULT CSettingPanelBG::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_OptionBG"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
+
+	switch ((CUI::SETTINGPANEL)m_iTextureCount)
+	{
+	case SETTING_BG :
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+	break;
+	case SETTING_BULB:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBulb"),
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+	break;
+	case SETTING_BACKESC:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBack"),
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+	break;
+	case SETTING_BACKARROW:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBackArrow"),
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+	break;
+	case SETTING_ESCENTER:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCEnter"),
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+	break;
+
+	}
 
 
 	return S_OK;
@@ -127,6 +161,15 @@ void CSettingPanelBG::Free()
 
 
 	__super::Free();
+}
+
+void CSettingPanelBG::Update(_float _fTimeDelta)
+{
+}
+
+void CSettingPanelBG::Late_Update(_float _fTimeDelta)
+{
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 }
 
 HRESULT CSettingPanelBG::Cleanup_DeadReferences()

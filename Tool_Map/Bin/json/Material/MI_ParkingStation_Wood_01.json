@@ -1,0 +1,187 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_ParkingStation_Wood_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_Dinorama_Wood_01'",
+        "ObjectPath": "/Game/Map/3D/Desk_C07/Materials/Dinorama_01/M_Dinorama_Wood_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Mask_01_Amount",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.82,
+          "ExpressionGUID": "FB7C2339-4F8B3A23-283A4DB0-3D6CCEE5"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Mask_02_Amount",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 1.0,
+          "ExpressionGUID": "408B1632-45925A0A-B85EE5B7-72D9455D"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Mask_03_Amount",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.24,
+          "ExpressionGUID": "82CE4FB7-47B5EDDD-781A25B1-8B3BB4D0"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Mask_04_Amount",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.24,
+          "ExpressionGUID": "D643F82C-46177B96-C48A739D-DDA10CB4"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "TexCoord_1_Rotation",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.25,
+          "ExpressionGUID": "56A7B498-4AB51DCA-E0E2C3B3-B68BA26C"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Masks",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'ParkingStation_Masks_01_Masks'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/ParkingStation/ParkingStation_Masks_01_Masks.0"
+          },
+          "ExpressionGUID": "45F11606-4673DBA0-9544DAB9-169AD4F9"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "PaintingBaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'ParkingStation_Illustration_BaseColour_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/ParkingStation/ParkingStation_Illustration_BaseColour_01.0"
+          },
+          "ExpressionGUID": "81B8BF66-469C6DAF-476F05AC-C7F27D9E"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "PaintingMask",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'ParkingStation_Illustration_Mask_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/ParkingStation/ParkingStation_Illustration_Mask_01.0"
+          },
+          "ExpressionGUID": "9DFD33A8-4B772BBE-7AE4A99D-F6BFF6AB"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'desk_wood_R'",
+          "ObjectPath": "/Game/Map/3D/Room_Layout/Textures/desk_wood_R.0"
+        },
+        {
+          "ObjectName": "Texture2D'desk_wood_N'",
+          "ObjectPath": "/Game/Map/3D/Room_Layout/Textures/desk_wood_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'Dinorama_ShelfIllustrations_Mask_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/Dinorama_ShelfIllustrations_Mask_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'Dinorama_ShelfIllustrations_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/Dinorama_ShelfIllustrations_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'Dinorama_Masks_01_Masks'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/Dinorama_Masks_01_Masks.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wood_Plywood_Front_001_basecolor'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/Wood_Plywood_Front_001_basecolor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wood_Plywood_Front_001_basecolor_2'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/Wood_Plywood_Front_001_basecolor_2.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wood_Plywood_Side_001_basecolor_02'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Dinorama/Wood_Plywood_Side_001_basecolor_02.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "desk_wood_N"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "desk_wood_R"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 2,
+          "TextureName": "ParkingStation_Illustration_BaseColour_01"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 2,
+          "TextureName": "ParkingStation_Illustration_Mask_01"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "ParkingStation_Masks_01_Masks"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "Wood_Plywood_Front_001_basecolor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "Wood_Plywood_Front_001_basecolor_2"
+        },
+        {
+          "SamplingScale": 5.0,
+          "UVChannelIndex": 1,
+          "TextureName": "Wood_Plywood_Side_001_basecolor_02"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

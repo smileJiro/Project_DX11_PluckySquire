@@ -45,14 +45,20 @@ public:
 
 public:
 	// Get
-	_uint Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
-	CModel* Get_Model(COORDINATE _eCoord);
+	_uint					Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
+	CModel*					Get_Model(COORDINATE _eCoord);
 
 	// Set
-	void Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
-	void Set_Animation(_uint iIdx);
-	void Switch_Animation(_uint iIdx);
-	void To_NextAnimation();
+	void					Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
+	void					Set_Animation(_uint iIdx);
+	void					Switch_Animation(_uint iIdx);
+	void					To_NextAnimation();
+
+	void					Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
+	_uint					Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
+
+
+
 protected:
 	CController_Model*		m_pControllerModel = nullptr;
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D ·»´õ¸µ Àü¿ë VP */
@@ -60,6 +66,8 @@ protected:
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};
 	_wstring				m_strModelPrototypeTag[COORDINATE_LAST];
+
+
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

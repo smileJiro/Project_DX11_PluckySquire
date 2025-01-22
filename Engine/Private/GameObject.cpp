@@ -19,11 +19,8 @@ CGameObject::CGameObject(const CGameObject& Prototype)
     , m_pContext(Prototype.m_pContext)
     , m_pGameInstance(Prototype.m_pGameInstance)
     , m_iCurLevelID(Prototype.m_iCurLevelID)
-    , m_Colliders(Prototype.m_Colliders)
     , m_iInstanceID(g_iInstanceIDCount++)
 {
-    for (auto& pCollider : m_Colliders)
-        Safe_AddRef(pCollider);
 
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
@@ -72,20 +69,31 @@ HRESULT CGameObject::Render()
     return S_OK;
 }
 
-void CGameObject::OnContains(CGameObject* _pContainObject, CCollider* _pContainCollider)
+void CGameObject::Priority_Update_Component(_float _fTimeDelta)
 {
+    for (auto& iter : m_Components)
+    {
+        if(true == iter.second->Is_Active())
+            iter.second->Priority_Update(_fTimeDelta);
+    }
 }
 
-void CGameObject::OnCollision_Enter(CCollider* _pMyCollider, CGameObject* _pOtherObject, CCollider* _pOtherCollider)
+void CGameObject::Update_Component(_float _fTimeDelta)
 {
+    for (auto& iter : m_Components)
+    {
+        if (true == iter.second->Is_Active())
+            iter.second->Update(_fTimeDelta);
+    }
 }
 
-void CGameObject::OnCollision(CCollider* _pMyCollider, CGameObject* _pOtherObject, CCollider* _pOtherCollider)
+void CGameObject::Late_Update_Component(_float _fTimeDelta)
 {
-}
-
-void CGameObject::OnCollision_Exit(CCollider* _pMyCollider, CGameObject* _pOtherObject, CCollider* _pOtherCollider)
-{
+    for (auto& iter : m_Components)
+    {
+        if (true == iter.second->Is_Active())
+            iter.second->Late_Update(_fTimeDelta);
+    }
 }
 
 CComponent* CGameObject::Find_Component(const _wstring& _strComponentTag)
@@ -107,14 +115,6 @@ HRESULT CGameObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _
 }
 
 
-
-CCollider* CGameObject::Get_Collider(_uint _iCollIndex)
-{
-    if (m_Colliders.size() <= _iCollIndex)
-        return nullptr;
-
-    return m_Colliders[_iCollIndex];
-}
 HRESULT CGameObject::Add_Component(_uint _iPrototypeLevelID, const _wstring& _strPrototypeTag, const _wstring& _strComponentTag, CComponent** _ppOut, void* _pArg)
 {
     /* Prototype Manager에서 Component를 Clone 후 map Container에 Insert , 추가로 파라미터로 들어온 _ppOut에 해당 컴포넌트 포인터 참조 */
@@ -156,10 +156,6 @@ void CGameObject::Free()
     for (auto& Pair : m_Components)
         Safe_Release(Pair.second);
     m_Components.clear();
-
-    for (auto& pCollider : m_Colliders)
-        Safe_Release(pCollider);
-    m_Colliders.clear();
 
     Safe_Release(m_pControllerTransform);
     Safe_Release(m_pRayCom);

@@ -2,6 +2,7 @@
 #include "Client_Function.h"
 #include "Event_Manager.h"
 #include "GameObject.h"
+#include "Actor.h"
 
 /* 함수 구현부 */
 namespace Client
@@ -52,6 +53,19 @@ namespace Client
 		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
 		tEvent.Parameters[1] = (DWORD_PTR)_isActive;
 		tEvent.Parameters[2] = (DWORD_PTR)_isDelay;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	void Event_Setup_SimulationFilter(Engine::CActor* _pActor, _uint _MyGroup, _uint _OtherGroupMask)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::SETUP_SIMULATION_FILTER;
+		tEvent.Parameters.resize(3); // NumParameters
+
+		tEvent.Parameters[0] = (DWORD_PTR)_pActor;
+		tEvent.Parameters[1] = (DWORD_PTR)_MyGroup;
+		tEvent.Parameters[2] = (DWORD_PTR)_OtherGroupMask;
 
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}

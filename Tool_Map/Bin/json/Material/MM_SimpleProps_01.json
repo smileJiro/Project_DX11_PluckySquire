@@ -1,0 +1,648 @@
+[
+  {
+    "Type": "Material",
+    "Name": "MM_SimpleProps_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Metallic": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionStaticSwitchParameter_2",
+        "UseConstant": false,
+        "Constant": 0.0
+      },
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSampleParameter2D_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "EmissiveColor": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 0,
+        "MaskR": 0,
+        "MaskG": 0,
+        "MaskB": 0,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionAdd_0",
+        "UseConstant": false,
+        "Constant": {
+          "B": 0,
+          "G": 0,
+          "R": 0,
+          "A": 0,
+          "Hex": "000000"
+        }
+      },
+      "BlendMode": "BLEND_Masked",
+      "bUsedWithSkeletalMesh": true,
+      "bUsedWithStaticLighting": true,
+      "bUsedWithMorphTargets": true,
+      "StateId": "A9B91733-4DA89A77-BEB640B3-2C6C73FD",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              2889508655854117197,
+              4864730390626556866,
+              5703025673730558724,
+              8420348982899916259,
+              12782487964443239695,
+              14176539606835865309,
+              16753779035206471542,
+              17830933328945584460,
+              17993863505509050278
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "FlashDamage",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "FresnelBaseReflectionFractionIn_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "FresnelEmissive_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "EmissiveStrength_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Roughness_Adjustment_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "FresnelExponentIn_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "FresnelEmissive_02",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "CameraBlend",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "HueShift_Percentage",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "5BBF1EC4-4F10E53C-DC7E379A-DBD827F3",
+              "68521BEE-40E081FC-16116E9A-75B67D44",
+              "732236DB-414B4807-61DDFD98-3E7237C7",
+              "7C2915E6-42A7618F-EA00D791-E5E688C6",
+              "3796C5F8-418BD283-0053FCA8-9C6637CB",
+              "B6A2D9D8-404AD0F0-07F144B8-ADBE63A1",
+              "F549BDEE-47909857-C07238A7-7A6AB398",
+              "8A6F72F9-4109517C-D82E72AF-CE1B255D",
+              "C7D1E3E1-466AE0AA-1BF5F398-0B26D40F"
+            ]
+          },
+          "RuntimeEntries[1]": {
+            "NameHashes": [
+              1261347716265283681,
+              4072592210062700945
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "EmissiveColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "TintColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "4A61023A-4B08C8F7-46A0479E-33E0A628",
+              "1D349544-41256126-795BAAA1-5E5A5EDA"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              2125695486460109255,
+              4708953410708818575,
+              5144476314915595866,
+              11575223130781524738,
+              12241367727707337503,
+              14916143969260853936,
+              15986085663346470705
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "NonORMH_Roughness",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Normal",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "BaseColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "ORMH",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "GradientTexture",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "NonORMH_Metallic",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "EmissiveMap",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "7847E6EC-4D9DCA62-D8E3B2B5-CF81E9A9",
+              "5AF985A0-4E48F51B-94D6C080-143F5635",
+              "A81585F2-40BEC55A-085987A9-395834C6",
+              "3FB6A6BF-490D2B00-1A3CD5BA-EF197027",
+              "4CFE75A7-4B2A9BC6-B6FAD689-7E346703",
+              "0FDE2423-4B273045-A5673F93-3C36896C",
+              "370653B5-4CFBA51C-E3E71AAD-DC7A4444"
+            ]
+          },
+          "ScalarValues": [
+            0.0,
+            0.0,
+            0.1,
+            1.0,
+            0.0,
+            4.0,
+            10.0,
+            1.0,
+            0.0
+          ],
+          "VectorValues": [
+            {
+              "R": 1.0,
+              "G": 0.81537,
+              "B": 0.402243,
+              "A": 1.0,
+              "Hex": "FFE9AA"
+            },
+            {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            }
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "Texture2D'1_rough_1002'",
+              "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+            },
+            {
+              "ObjectName": "Texture2D'Torch_01_Normal'",
+              "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Normal.0"
+            },
+            {
+              "ObjectName": "Texture2D'Torch_01_BaseColour'",
+              "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_BaseColour.0"
+            },
+            {
+              "ObjectName": "Texture2D'Torch_01_ORMH'",
+              "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_ORMH.0"
+            },
+            {
+              "ObjectName": "Texture2D'FadeGradient_01'",
+              "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+            },
+            {
+              "ObjectName": "Texture2D'1_metal_1002'",
+              "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+            },
+            {
+              "ObjectName": "Texture2D'Torch_01_Emissive'",
+              "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Emissive.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Torch_01_Normal'",
+            "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+            "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+          },
+          {
+            "ObjectName": "Texture2D'FadeGradient_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+          },
+          {
+            "ObjectName": "Texture2D'Torch_01_ORMH'",
+            "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_ORMH.0"
+          },
+          {
+            "ObjectName": "Texture2D'Torch_01_BaseColour'",
+            "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_BaseColour.0"
+          },
+          {
+            "ObjectName": "Texture2D'Torch_01_Emissive'",
+            "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Emissive.0"
+          },
+          {
+            "ObjectName": "Texture2D'1_rough_1002'",
+            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+          },
+          {
+            "ObjectName": "Texture2D'1_metal_1002'",
+            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+            "Function": {
+              "ObjectName": "MaterialFunction'HueShift'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+            }
+          },
+          {
+            "StateId": "71028A8D-47BF4037-3A3A0B8A-D7B60E53",
+            "Function": {
+              "ObjectName": "MaterialFunction'ScreenAlignedPixelToPixelUVs'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/ScreenAlignedPixelToPixelUVs.0"
+            }
+          },
+          {
+            "StateId": "22D58D0F-45CC84AB-89A3628B-351D83C8",
+            "Function": {
+              "ObjectName": "MaterialFunction'DitherTemporalAA'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/DitherTemporalAA.0"
+            }
+          },
+          {
+            "StateId": "DE013164-436F5AD7-BA0886B7-DFFD7F63",
+            "Function": {
+              "ObjectName": "MaterialFunction'MF_FX_CameraAlphaFade'",
+              "ObjectPath": "/Game/FX/Material/Function/MF_FX_CameraAlphaFade.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 2,
+          "TextureName": "FadeGradient_01"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Torch_01_BaseColour"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Torch_01_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Torch_01_ORMH"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            2889508655854117197,
+            4864730390626556866,
+            5703025673730558724,
+            8420348982899916259,
+            12782487964443239695,
+            14176539606835865309,
+            16753779035206471542,
+            17830933328945584460,
+            17993863505509050278
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "FlashDamage",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "FresnelBaseReflectionFractionIn_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "FresnelEmissive_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "EmissiveStrength_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Roughness_Adjustment_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "FresnelExponentIn_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "FresnelEmissive_02",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "CameraBlend",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "HueShift_Percentage",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "5BBF1EC4-4F10E53C-DC7E379A-DBD827F3",
+            "68521BEE-40E081FC-16116E9A-75B67D44",
+            "732236DB-414B4807-61DDFD98-3E7237C7",
+            "7C2915E6-42A7618F-EA00D791-E5E688C6",
+            "3796C5F8-418BD283-0053FCA8-9C6637CB",
+            "B6A2D9D8-404AD0F0-07F144B8-ADBE63A1",
+            "F549BDEE-47909857-C07238A7-7A6AB398",
+            "8A6F72F9-4109517C-D82E72AF-CE1B255D",
+            "C7D1E3E1-466AE0AA-1BF5F398-0B26D40F"
+          ]
+        },
+        "RuntimeEntries[1]": {
+          "NameHashes": [
+            1261347716265283681,
+            4072592210062700945
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "EmissiveColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "TintColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "4A61023A-4B08C8F7-46A0479E-33E0A628",
+            "1D349544-41256126-795BAAA1-5E5A5EDA"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            2125695486460109255,
+            4708953410708818575,
+            5144476314915595866,
+            11575223130781524738,
+            12241367727707337503,
+            14916143969260853936,
+            15986085663346470705
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "NonORMH_Roughness",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Normal",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "BaseColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "ORMH",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "GradientTexture",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "NonORMH_Metallic",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "EmissiveMap",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "7847E6EC-4D9DCA62-D8E3B2B5-CF81E9A9",
+            "5AF985A0-4E48F51B-94D6C080-143F5635",
+            "A81585F2-40BEC55A-085987A9-395834C6",
+            "3FB6A6BF-490D2B00-1A3CD5BA-EF197027",
+            "4CFE75A7-4B2A9BC6-B6FAD689-7E346703",
+            "0FDE2423-4B273045-A5673F93-3C36896C",
+            "370653B5-4CFBA51C-E3E71AAD-DC7A4444"
+          ]
+        },
+        "ScalarValues": [
+          0.0,
+          0.0,
+          0.1,
+          1.0,
+          0.0,
+          4.0,
+          10.0,
+          1.0,
+          0.0
+        ],
+        "VectorValues": [
+          {
+            "R": 1.0,
+            "G": 0.81537,
+            "B": 0.402243,
+            "A": 1.0,
+            "Hex": "FFE9AA"
+          },
+          {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          }
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "Texture2D'1_rough_1002'",
+            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+          },
+          {
+            "ObjectName": "Texture2D'Torch_01_Normal'",
+            "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Torch_01_BaseColour'",
+            "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_BaseColour.0"
+          },
+          {
+            "ObjectName": "Texture2D'Torch_01_ORMH'",
+            "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_ORMH.0"
+          },
+          {
+            "ObjectName": "Texture2D'FadeGradient_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+          },
+          {
+            "ObjectName": "Texture2D'1_metal_1002'",
+            "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+          },
+          {
+            "ObjectName": "Texture2D'Torch_01_Emissive'",
+            "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Emissive.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Torch_01_Normal'",
+          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'Torch_01_ORMH'",
+          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_ORMH.0"
+        },
+        {
+          "ObjectName": "Texture2D'Torch_01_BaseColour'",
+          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_BaseColour.0"
+        },
+        {
+          "ObjectName": "Texture2D'Torch_01_Emissive'",
+          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Emissive.0"
+        },
+        {
+          "ObjectName": "Texture2D'1_rough_1002'",
+          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+        },
+        {
+          "ObjectName": "Texture2D'1_metal_1002'",
+          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+          "Function": {
+            "ObjectName": "MaterialFunction'HueShift'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+          }
+        },
+        {
+          "StateId": "71028A8D-47BF4037-3A3A0B8A-D7B60E53",
+          "Function": {
+            "ObjectName": "MaterialFunction'ScreenAlignedPixelToPixelUVs'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/ScreenAlignedPixelToPixelUVs.0"
+          }
+        },
+        {
+          "StateId": "22D58D0F-45CC84AB-89A3628B-351D83C8",
+          "Function": {
+            "ObjectName": "MaterialFunction'DitherTemporalAA'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/DitherTemporalAA.0"
+          }
+        },
+        {
+          "StateId": "DE013164-436F5AD7-BA0886B7-DFFD7F63",
+          "Function": {
+            "ObjectName": "MaterialFunction'MF_FX_CameraAlphaFade'",
+            "ObjectPath": "/Game/FX/Material/Function/MF_FX_CameraAlphaFade.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]
