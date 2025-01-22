@@ -26,7 +26,7 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual void			Child_Update(_float _fTimeDelta) {}
 	virtual void			Child_LateUpdate(_float _fTimeDelta) {}
-	virtual HRESULT			Render(_int _index = 0) override;
+	virtual HRESULT			Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT) override;
 
 
 private:
@@ -34,6 +34,7 @@ private:
 
 private:
 	void					isRender();
+	void					isFontPrint();
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -47,10 +48,14 @@ public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() { return S_OK; };
 
+
+
+
 protected:
 	CUI::SHOPPANEL		m_eShopPanel = CUI::SHOPPANEL::SHOP_DEFAULT;
 
-
+private:
+	_bool				m_isOpenPanel = { false };
 
 
 };

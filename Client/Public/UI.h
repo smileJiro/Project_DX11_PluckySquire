@@ -22,8 +22,10 @@ public:
 		SETTING_BG,
 		SETTING_HEART,
 		SETTING_BULB,
+		SETTING_ESCBG,
 		SETTING_BACKESC,
 		SETTING_BACKARROW,
+		SETTING_ENTERBG,
 		SETTING_ESCENTER,
 		SETTING_END
 	};
@@ -33,8 +35,10 @@ public:
 		SHOP_DIALOGUEBG,
 		SHOP_CHOOSEBG,
 		SHOP_BULB,
+		SHOP_ESCBG,
 		SHOP_BACKESC,
 		SHOP_BACKARROW,
+		SHOP_ENTERBG,
 		SHOP_ENTER,
 		SHOP_DEFAULT,
 		SHOP_END
@@ -67,7 +71,7 @@ public:
 	virtual void Priority_Update(_float fTimeDelta);
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
-	virtual HRESULT Render(_int _index = 0);
+	virtual HRESULT Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT);
 
 public:
 
@@ -95,7 +99,7 @@ protected:
 	_float			m_fRed = { 0.f };
 	_float			m_fGreen = { 0.f };
 	_float			m_fBlue = { 0.f };
-
+	_tchar			m_tFont[MAX_PATH] = {};
 
 
 

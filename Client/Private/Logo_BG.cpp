@@ -51,21 +51,6 @@ void CLogo_BG::Late_Update(_float _fTimeDelta)
 
 HRESULT CLogo_BG::Render()
 {	
-
-
-
-
-	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
-		return E_FAIL;
-	
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
-	
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
-	
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture")))
-		return E_FAIL;
 	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_fRed", &m_vColor.x, sizeof(_float))))
 		return E_FAIL;
 	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_fGreen", &m_vColor.y, sizeof(_float))))
@@ -75,10 +60,12 @@ HRESULT CLogo_BG::Render()
 	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_fOpaque", &m_vColor.w, sizeof(_float))))
 		return E_FAIL;
 
+	__super::Render(0, PASS_VTXPOSTEX::COLOR_ALPHA);
+
+
 	
-	m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::COLOR_ALPHA);
-	m_pVIBufferCom->Bind_BufferDesc();
-	m_pVIBufferCom->Render();
+
+	
 
 #pragma region 테스트폰트노출
 	wsprintf(m_tTest, TEXT("Font18 : 배고파요"));
@@ -93,8 +80,10 @@ HRESULT CLogo_BG::Render()
 	m_pGameInstance->Render_Font(TEXT("Font30"), m_tTest, _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 4.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	wsprintf(m_tTest, TEXT("Font35 : 배고파요"));
 	m_pGameInstance->Render_Font(TEXT("Font35"), m_tTest, _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 3.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+	wsprintf(m_tTest, TEXT("Font38 : 배고파요"));
+	m_pGameInstance->Render_Font(TEXT("Font38"), m_tTest, _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.5f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	wsprintf(m_tTest, TEXT("Font40 : 배고파요"));
-	m_pGameInstance->Render_Font(TEXT("Font40"), m_tTest, _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.5f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+	m_pGameInstance->Render_Font(TEXT("Font40"), m_tTest, _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.2f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	wsprintf(m_tTest, TEXT("Font43 : 배고파요"));
 	m_pGameInstance->Render_Font(TEXT("Font43"), m_tTest, _float2(g_iWinSizeX / 1.f, g_iWinSizeY / 2.5f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	wsprintf(m_tTest, TEXT("Font54 : 배고파요"));

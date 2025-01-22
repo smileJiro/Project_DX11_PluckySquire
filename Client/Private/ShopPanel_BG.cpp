@@ -53,7 +53,7 @@ void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 HRESULT CShopPanel_BG::Render()
 {
 	if (true == m_isRender)
-		__super::Render();
+		__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
 
 	return S_OK;
 }
@@ -82,7 +82,6 @@ HRESULT CShopPanel_BG::Ready_Components()
 	/* Com_Texture */
 	switch ((CUI::SHOPPANEL)m_iTextureCount)
 	{
-		
 	case SHOP_BG:
 	{
 		if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_ShopBG"),
@@ -145,6 +144,25 @@ HRESULT CShopPanel_BG::Ready_Components()
 
 	}
 	break;
+	case SHOP_ESCBG:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_IconBG"),
+			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+
+	}
+	break;
+	case SHOP_ENTERBG:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_IconBG"),
+			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+
+	}
+	break;
+
+
+
 	}
 	
 	return S_OK;
