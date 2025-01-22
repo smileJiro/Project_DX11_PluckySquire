@@ -27,8 +27,6 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 
 }
 
-
-
 HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 {
 	std::ifstream inFile(_szModel2DFilePath, std::ios::binary);
@@ -43,13 +41,36 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 	_splitpath_s(_szModel2DFilePath, szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
 	strcat_s(szDrive, szDirectory);
 
+	//AllTextures
+	_uint iCount = 0;//TextureCount
+	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+	for (_uint i = 0; i < iCount; i++)
+	{
+		//TextureName Length
+		_uint iLength = 0;
+		inFile.read(reinterpret_cast<char*>(&iLength), sizeof(_uint));
+		_char szTextureName[MAX_PATH] = "";
+		inFile.read(szTextureName, iLength);
+		szTextureName[iLength] = '\0';
+		if (m_Textures.find(szTextureName) != m_Textures.end())
+			continue;
+		ID3D11ShaderResourceView* pSRV = { nullptr };
+		std::filesystem::path path = szDrive;
+		path += szTextureName;
+		path += ".png";
+		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str());
+		if (nullptr == pTexture)
+			return E_FAIL;
+		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
+		m_Textures.insert({ szTextureName,pTexture });
+	}
+
 	//Animation2Ds
-	_uint iCount = 0;
 	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
 	m_Animation2Ds.reserve(iCount);
 	for (_uint i = 0; i < iCount; i++)
 	{
-		CAnimation2D* pAnimation = CAnimation2D::Create(m_pDevice, m_pContext, szDrive,inFile);
+		CAnimation2D* pAnimation = CAnimation2D::Create(m_pDevice, m_pContext, szDrive,inFile, m_Textures);
 		if (nullptr == pAnimation)
 			return E_FAIL;
 		m_Animation2Ds.push_back(pAnimation);
@@ -62,7 +83,7 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 	{
 		_uint iLength = 0;
 		inFile.read(reinterpret_cast<char*>(&iLength), sizeof(_uint));
-		_char* pTextureName = new char[iLength + 1];
+		_char pTextureName[MAX_PATH];
 		inFile.read(pTextureName, iLength);
 		pTextureName[iLength] = '\0';
 		string strTexturePath = szDrive;

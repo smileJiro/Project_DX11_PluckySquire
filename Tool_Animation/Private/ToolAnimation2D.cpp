@@ -53,45 +53,15 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	return S_OK;
 }
 
-HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _inFile)
-{
-	//StartUV
-	_inFile.read(reinterpret_cast<char*>(&vSpriteStartUV), sizeof(_float2));
-	//EndUV
-	_inFile.read(reinterpret_cast<char*>(&vSpriteEndUV), sizeof(_float2));
-	//PixelsPerUnrealUnit
-	_inFile.read(reinterpret_cast<char*>(&fPixelsPerUnrealUnit), sizeof(_float));
-	//Texture
-	_uint iCount = 0;
-	_inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
-	_char* pTextureName = new char[iCount + 1];
-	_inFile.read(pTextureName, iCount);
-	pTextureName[iCount] = '\0';
-	ID3D11ShaderResourceView* pSRV = { nullptr };
-	std::filesystem::path path = szDirPath;
-	path += pTextureName;
-	path += ".png";
-	delete[] pTextureName;
-	HRESULT hr = DirectX::CreateWICTextureFromFile(_pDevice, path.c_str(), nullptr, &pSRV);
-	if (FAILED(hr))
-		return E_FAIL;
-	pTexture = CTexture::Create(_pDevice, _pContext);
-	if (nullptr == pTexture)
-		return E_FAIL;
-	pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
-	_inFile.read(reinterpret_cast<char*>(&matSpriteTransform), sizeof(_matrix));
-	return S_OK;
-}
-
 HRESULT CToolSpriteFrame::Export(ofstream& _outfile)
 {
 	_outfile.write(reinterpret_cast<const char*>(&vSpriteStartUV), sizeof(_float2));
 	_outfile.write(reinterpret_cast<const char*>(&vSpriteEndUV), sizeof(_float2));
 	_outfile.write(reinterpret_cast<const char*>(&fPixelsPerUnrealUnit), sizeof(_float));
 	_uint iCount = 0;
-	iCount = pTexture->Get_SRVName(0)->length();
-	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	string strTextureName = WstringToString(*pTexture->Get_SRVName(0));
+	iCount = strTextureName.length();
+	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	_outfile.write(strTextureName.c_str(), iCount);
 	_outfile.write(reinterpret_cast<const char*>(&matSpriteTransform), sizeof(_matrix));
 	return S_OK;
@@ -110,11 +80,11 @@ CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceC
 	return pInstance;
 }
 
-CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle)
+CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)
 {
 	CToolSpriteFrame* pInstance = new CToolSpriteFrame();
 
-	if (FAILED(static_cast<CSpriteFrame*>(pInstance)->Initialize(_pDevice, _pContext,_szDirPath, _infIle)))
+	if (FAILED(static_cast<CSpriteFrame*>(pInstance)->Initialize(_pDevice, _pContext,_szDirPath, _infIle,_Textures)))
 	{
 		MSG_BOX("SpriteFrame Create Failed");
 		Safe_Release(pInstance);
@@ -203,11 +173,11 @@ CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceC
 	return pInstance;
 }
 
-CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle)
+CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)
 {
 	CToolAnimation2D* pInstance = new CToolAnimation2D();
 
-	if (FAILED(static_cast<CAnimation2D*>(pInstance)->Initialize(_pDevice, _pContext, _szDirPath, _infIle)))
+	if (FAILED(static_cast<CAnimation2D*>(pInstance)->Initialize(_pDevice, _pContext, _szDirPath, _infIle, _Textures)))
 	{
 		MSG_BOX("Animation2D Create Failed");
 		Safe_Release(pInstance);

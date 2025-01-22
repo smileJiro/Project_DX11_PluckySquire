@@ -64,6 +64,8 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 		}
 		else if (entry.path().extension() == ".png")
 		{
+			if (m_Textures.find(entry.path().filename().replace_extension().string()) != m_Textures.end())
+				continue;
 			ID3D11ShaderResourceView* pSRV = { nullptr };
 			HRESULT hr = DirectX::CreateWICTextureFromFile(m_pDevice, entry.path().c_str(), nullptr, &pSRV);
 			if (FAILED(hr))
@@ -74,7 +76,7 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 			string strTextureName = entry.path().filename().replace_extension().string();
 			wstring wstrTextureName = StringToWstring(strTextureName);
 			pTexture->Add_Texture(pSRV, wstrTextureName.c_str());
-			auto result = m_AnimTextures.insert({ strTextureName, pTexture });
+			auto result = m_Textures.insert({ strTextureName, pTexture });
 			if (result.second == false)
 				Safe_Release(pTexture);
 		}
@@ -89,12 +91,12 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 		{
 			string strName = j.second["Name"];
 
-			m_Animation2Ds.push_back(CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, jPaperSprites, m_AnimTextures));
+			m_Animation2Ds.push_back(CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, jPaperSprites, m_Textures));
 		}
 	}
 	else
 	{
-		for (auto& pTex : m_AnimTextures)
+		for (auto& pTex : m_Textures)
 		{
 			m_NonAnimTextures.push_back(pTex.second);
 		}
@@ -104,7 +106,6 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 
 HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 {
-
 	std::ifstream inFile(_szModel2DFilePath, std::ios::binary);
 	if (!inFile) {
 		string str = "파일을 열 수 없습니다.";
@@ -117,13 +118,40 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 	_splitpath_s(_szModel2DFilePath, szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
 	strcat_s(szDrive, szDirectory);
 
-	//Animation2Ds
+	//AllTextures
 	_uint iCount = 0;
+	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+	for (_uint i = 0; i < iCount; i++)
+	{
+		//TextureName Length
+		_uint iLength = 0;
+		inFile.read(reinterpret_cast<char*>(&iLength), sizeof(_uint));
+		_char szTextureName[MAX_PATH] = "";
+		inFile.read(szTextureName, iLength);
+		szTextureName[iLength] = '\0';
+		if (m_Textures.find(szTextureName) != m_Textures.end())
+			continue;
+		ID3D11ShaderResourceView* pSRV = { nullptr };
+		std::filesystem::path path = szDrive;
+		path += szTextureName;
+		path += ".png";
+		if (FAILED(DirectX::CreateWICTextureFromFile(m_pDevice, path.c_str(), nullptr, &pSRV)))
+			return E_FAIL;
+		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext);
+		if (nullptr == pTexture)
+			return E_FAIL;
+		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
+		m_Textures.insert({ szTextureName,pTexture });
+	}
+
+	
+
+	//Animation2Ds
 	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
 	m_Animation2Ds.reserve(iCount);
 	for (_uint i = 0; i < iCount; i++)
 	{
-		CAnimation2D* pAnimation = CAnimation2D::Create(m_pDevice, m_pContext, szDrive, inFile);
+		CToolAnimation2D* pAnimation = CToolAnimation2D::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
 		if (nullptr == pAnimation)
 			return E_FAIL;
 		m_Animation2Ds.push_back(pAnimation);
@@ -139,20 +167,12 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		_char* pTextureName = new char[iLength + 1];
 		inFile.read(pTextureName, iLength);
 		pTextureName[iLength] = '\0';
-		ID3D11ShaderResourceView* pSRV = { nullptr };
-		std::filesystem::path path = szDrive;
-		path += pTextureName;
-		path += ".png";
-		delete[] pTextureName;
-		HRESULT hr = DirectX::CreateWICTextureFromFile(m_pDevice, path.c_str(), nullptr, &pSRV);
-		if (FAILED(hr))
-			return E_FAIL;
-		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext);
-		if (nullptr == pTexture)
-			return E_FAIL;
-		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
-		delete[] pTextureName;
-		m_NonAnimTextures.push_back(pTexture);
+		const auto& pairTexture =m_Textures.find(pTextureName);
+		if (pairTexture != m_Textures.end())
+		{
+			m_NonAnimTextures.push_back(pairTexture->second);
+		}
+
 	}
 	//NonAnimSpriteStartUV
 	inFile.read(reinterpret_cast<char*>(&m_vNonAnimSpriteStartUV), sizeof(_float2));
@@ -163,18 +183,29 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 
 HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 {
-	//Animation Count
-	_uint iCount = m_Animation2Ds.size();
+	_uint iCount = 0;
+	//AllTextures
+	iCount = m_Textures.size();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
+	for (auto& pTexture : m_Textures)
+	{
+		string strTextureName = pTexture.first;
+		iCount = strTextureName.length();
+		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
+		_outfile.write(strTextureName.c_str(), iCount);
+	}
+
 	//Animations
+	iCount = m_Animation2Ds.size();
+	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	for (auto& pAnimation : m_Animation2Ds)
 	{
 		static_cast<CToolAnimation2D*>(pAnimation)->Export(_outfile);
 	}
-	//NonAnimTexture Count
+
+	//NonAnimTextures
 	iCount = m_NonAnimTextures.size();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
-	//NonAnimTextures
 	for (auto& pTexture : m_NonAnimTextures)
 	{
 		const wstring* pTextureName = pTexture->Get_SRVName(0);
@@ -183,6 +214,7 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 		_outfile.write(strTextureName.c_str(), iCount);
 	}
+
 	//NonAnimSpriteStartUV
 	_outfile.write(reinterpret_cast<const char*>(&m_vNonAnimSpriteStartUV), sizeof(_float2));
 	//NonAnimSpriteEndUV
@@ -191,11 +223,11 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	return S_OK;
 }
 
-void CTest2DModel::Get_TextureNames(list<wstring>& _outTextureNames)
+void CTest2DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 {
-	for (auto& pTexture : m_AnimTextures)
+	for (auto& pTexture : m_Textures)
 	{
-		_outTextureNames.push_back(pTexture.second->Get_SRVName(0));
+		_outTextureNames.insert(*pTexture.second->Get_SRVName(0));
 	}
 }
 

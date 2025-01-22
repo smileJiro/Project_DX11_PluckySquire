@@ -1,5 +1,5 @@
 #pragma once
-#include "D:\Workbench\Portfolio\CopyMojam\EngineSDK\Inc\ModelObject.h"
+#include "ModelObject.h"
 BEGIN(Engine)
 
 END
@@ -25,7 +25,7 @@ public:
 	//Set
 	void						Set_2DProjMatrix(_fmatrix _vProjMatrix);
 	//Get
-	void						Get_TextureNames(list<wstring>& _outTextureNames);
+	void						Get_TextureNames(set<wstring>& _outTextureNames);
 private:
 	HRESULT					Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc);
 

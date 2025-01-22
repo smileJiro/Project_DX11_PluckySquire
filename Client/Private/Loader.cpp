@@ -328,7 +328,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/player.model2D")))))
         return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);

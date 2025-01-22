@@ -19,9 +19,9 @@ public:
     HRESULT				Export_Model(ofstream& _outfile);
 
     //Get
-    void						Get_TextureNames(list<wstring>& _outTextureNames);
+    void						Get_TextureNames(set<wstring>& _outTextureNames);
 private:
-    map<string, CTexture*> m_AnimTextures;
+
 public:
     static CTest2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* pPath);
     virtual CComponent* Clone(void* _pArg) override;

@@ -16,10 +16,11 @@ HRESULT CTest3DModel::Export_Model(ofstream& _outfile)
 	return S_OK;
 }
 
-void CTest3DModel::Get_TextureNames(list<string>& _outTextureNames)
+void CTest3DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 {
 
 }
+
 
 CTest3DModel* CTest3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
 {

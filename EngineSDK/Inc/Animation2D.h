@@ -11,7 +11,7 @@ protected:
 	~CSpriteFrame();
 
 public:
-	virtual HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath,ifstream& _infIle);
+	virtual HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath,ifstream& _infIle, map<string, CTexture*>& _Textures);
 
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
 	const _matrix* Get_Transform() const { 
@@ -24,7 +24,7 @@ protected:
 	_matrix matSpriteTransform;
 	CTexture* pTexture = { nullptr };
 public:
-	static CSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle);
+	static CSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 	virtual CSpriteFrame* Clone();
 	virtual void Free() override;
 };
@@ -36,7 +36,7 @@ protected:
 	CAnimation2D();
 	CAnimation2D(const CAnimation2D& _Prototype);
 public:
-	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle);
+	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 
 
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
@@ -61,7 +61,7 @@ protected:
 	_uint iCurrentSubFrame = { 0};
 
 public:
-	static CAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle);
+	static CAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 	virtual CAnimation2D* Clone();
 	virtual void Free() override;
 };

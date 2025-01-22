@@ -12,14 +12,13 @@ private:
 
 public:
 	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, CTexture*>& _Textures);
-	virtual HRESULT	 Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle) override;
 
 	HRESULT				Export(ofstream& _outfile);
 private:
 	vector<_float4> vBakedRenderDatas;
 public:
 	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, CTexture*>& _Textures);
-	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle);
+	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 	virtual CToolSpriteFrame* Clone();
 	virtual void Free() override;
 
@@ -42,7 +41,7 @@ private:
 
 public:
 	static CToolAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, map<string, CTexture*>& _Textures);
-	static CToolAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle);
+	static CToolAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 	virtual CToolAnimation2D* Clone();
 	virtual void Free() override;
 };

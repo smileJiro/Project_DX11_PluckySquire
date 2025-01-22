@@ -19,7 +19,7 @@ CSpriteFrame::~CSpriteFrame()
 {
 
 }
-HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath,ifstream& _inFile)
+HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath,ifstream& _inFile, map<string, CTexture*>& _Textures)
 {
 	//StartUV
 	_inFile.read(reinterpret_cast<char*>(&vSpriteStartUV), sizeof(_float2));
@@ -30,13 +30,13 @@ HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 	//Texture
 	_uint iCount = 0;
 	_inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
-	_char* pTextureName = new char[iCount + 1];
-	_inFile.read(pTextureName, iCount);
-	pTextureName[iCount] = '\0';
-	std::filesystem::path path = szDirPath;
-	path += pTextureName;
-	path += ".png";
-	pTexture = CTexture::Create(_pDevice, _pContext, path.c_str());
+	_char szTextureName[MAX_PATH] = "";
+	_inFile.read(szTextureName, iCount);
+	szTextureName[iCount] = '\0';
+	auto& pairTexture = _Textures.find(szTextureName);
+	if (pairTexture == _Textures.end())
+		return E_FAIL;
+	pTexture = pairTexture->second;
 	if (nullptr == pTexture)
 		return E_FAIL;
 	_inFile.read(reinterpret_cast<char*>(&matSpriteTransform), sizeof(_matrix));
@@ -55,11 +55,11 @@ HRESULT CSpriteFrame::Bind_ShaderResource(CShader* _pShader)
 	return S_OK;
 }
 
-CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle)
+CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)
 {
 	CSpriteFrame* pInstance = new CSpriteFrame();
 
-	if (FAILED(pInstance->Initialize(_pDevice, _pContext, szDirPath,_infIle)))
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, szDirPath,_infIle,_Textures)))
 	{
 		MSG_BOX("SpriteFrame Create Failed");
 		Safe_Release(pInstance);
@@ -94,7 +94,7 @@ CAnimation2D::CAnimation2D(const CAnimation2D& _Prototype)
 	}
 }
 
-HRESULT CAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle)
+HRESULT CAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)
 {
 	_uint iCount = 0;
 	//Name
@@ -112,7 +112,7 @@ HRESULT CAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 	SpriteFrames.reserve(iCount);
 	for (_uint i = 0; i < iCount; i++)
 	{
-		CSpriteFrame* pSpriteFrame = CSpriteFrame::Create(_pDevice, _pContext, szDirPath,_infIle);
+		CSpriteFrame* pSpriteFrame = CSpriteFrame::Create(_pDevice, _pContext, szDirPath,_infIle, _Textures);
 		if (nullptr == pSpriteFrame)
 			return E_FAIL;
 		_uint iFrameRun = 0;
@@ -185,11 +185,11 @@ const _matrix* CAnimation2D::Get_CurrentSpriteTransform()
 
 
 
-CAnimation2D* CAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle)
+CAnimation2D* CAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)
 {
 	CAnimation2D* pInstance = new CAnimation2D();
 
-	if (FAILED(pInstance->Initialize(_pDevice, _pContext, szDirPath,_infIle)))
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, szDirPath,_infIle,_Textures)))
 	{
 		MSG_BOX("Animation2D Create Failed");
 		Safe_Release(pInstance);

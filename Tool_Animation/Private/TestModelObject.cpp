@@ -99,20 +99,21 @@ void CTestModelObject::Set_2DProjMatrix(_fmatrix _vProjMatrix)
     XMStoreFloat4x4(&m_ProjMatrix, _vProjMatrix);
 }
 
-void CTestModelObject::Get_TextureNames(list<wstring>& _outTextureNames)
+void CTestModelObject::Get_TextureNames(set<wstring>& _outTextureNames)
 {
-	assert(m_pControllerModel);
+    assert(m_pControllerModel);
     assert(COORDINATE_LAST != m_eCurCoord);
-	switch (m_eCurCoord)
-	{
-	case Engine::COORDINATE_2D:
-		static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TextureNames(_outTextureNames);
-		break;
-	case Engine::COORDINATE_3D:
-		static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TextureNames(_outTextureNames);
-		break;
-	}
+    switch (m_eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TextureNames(_outTextureNames);
+        break;
+    case Engine::COORDINATE_3D:
+        static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TextureNames(_outTextureNames);
+        break;
+    }
 }
+
 
 HRESULT CTestModelObject::Export_Model(ofstream& _outfile, const _char* _szDirPath, _bool _bExportTextures)
 {

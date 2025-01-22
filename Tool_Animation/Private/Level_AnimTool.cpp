@@ -29,8 +29,9 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 {
 	ImGui::Begin("Animation Tool");
 	LOADMODEL_TYPE	eLoadModelTYpe = LOADMODEL_TYPE::LOAD_LAST;
-	std::wstring wstrSelectedPath;
+	std::wstring wstrSelectedPath = TEXT("");
 
+	//IMPORT
 	if (ImGui::Button("Open Model File")) {
 		wstrSelectedPath = OpenFileDialog(TEXT("Model3D Files\0 * .model\0Model2D Files\0 * .model2d")); // 파일 다이얼로그 호출
 		if (false == wstrSelectedPath.empty()) {
@@ -47,13 +48,26 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 	ImGui::SameLine();
 	if (ImGui::Button("Open Raw 2DModel Data")) {
 		wstrSelectedPath = OpenDirectoryDialog(); // 폴더 다이얼로그 호출
+		wstrSelectedPath += L"\\";
 		if (false == wstrSelectedPath.empty())
 		{
 			eLoadModelTYpe = LOAD_RAW2D;
 		}
 	}
+	if (LOAD_LAST != eLoadModelTYpe)
+	{
+		if (SUCCEEDED(Load_Model(eLoadModelTYpe, wstrSelectedPath)))
+		{
+			m_szLoadedPath = wstrSelectedPath;
+			Create_Camera(TEXT("Camera"), m_pTestModelObj);
+			Set_Animation(0);
+		}
+	}
+
+	//EXPORT
 	if (nullptr != m_pTestModelObj)
 	{
+		wstrSelectedPath = TEXT("");
 		if (ImGui::Button("Export")) {
 			wstring wstrFilter = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? TEXT("Model2D Files\0 * .model2d") : TEXT("Model3D Files\0 * .model");
 			wstrSelectedPath = SaveFileDialog(wstrFilter.c_str()); // 파일 다이얼로그 호출
@@ -67,25 +81,14 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 			if(m_bExportTextures)
 			{
 				std::filesystem::path pathDstPath = wstrSelectedPath;
-				Copy_Textures(m_pTestModelObj, m_szLoadedPath.remove_filename(), pathDstPath);
+				Copy_Textures(m_pTestModelObj, m_szLoadedPath.remove_filename(), pathDstPath.remove_filename());
 			}
 		}
 	}
 
 	ImGui::End();
 
-	//모델 로딩
-	if(LOAD_LAST != eLoadModelTYpe)
-	{
-		if (SUCCEEDED(Load_Model(eLoadModelTYpe, wstrSelectedPath)))
-		{
-			m_szLoadedPath = wstrSelectedPath;
-			Create_Camera(TEXT("Camera"), m_pTestModelObj);
-			Set_Animation(0);
-		}
-	}
-
-
+	//CONTROLL
 	if (m_pTestModelObj)
 	{
 		_float fMove = (_float)MOUSE_MOVE(MOUSE_AXIS::Z) / 100.f;
@@ -172,28 +175,6 @@ HRESULT CLevel_AnimTool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 
 HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
-
-	//CGameObject* pCamera = nullptr;
-
-	// Free Camera
-	/*CCamera_Free::CAMERA_FREE_DESC Desc{};
-
-	Desc.fMouseSensor = 0.1f;
-
-	Desc.fFovy = XMConvertToRadians(60.f);
-	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Desc.fNear = 0.1f;
-	Desc.fFar = 1000.f;
-	Desc.vEye = _float3(0.f, 10.f, -7.f);
-	Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Desc.eZoomLevel = CCamera::LEVEL_6;*/
-
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_Camera_Free"),
-	//	LEVEL_ANIMTOOL, _strLayerTag, &pCamera, &Desc)))
-	//	return E_FAIL;
-	//	
-
 	// Target Camera
 	assert(nullptr != m_pTestModelObj);
 	if(m_pTargetCam)
@@ -342,20 +323,21 @@ HRESULT CLevel_AnimTool::Copy_Textures(CTestModelObject* _pModel, std::filesyste
 	assert(_pModel);
 	assert(!_wstrSrcPath.empty());
 	assert(!_wstrDstPath.empty());
-	list<wstring> TextureNames;
+	set<wstring> TextureNames;
 	_pModel->Get_TextureNames(TextureNames);
-	for (auto& wstrTextureName : TextureNames)
-	{
-		std::filesystem::path srcPath = _wstrSrcPath;
-		std::filesystem::path dstPath = _wstrDstPath;
-		dstPath += wstrTextureName;
-		if (!std::filesystem::exists(srcPath))
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(_wstrSrcPath)) {
+		if (entry.path().extension() == ".png" ) 
 		{
-			MSG_BOX("복사할 파일이 없습니다.");
-			return E_FAIL;
+			if (TextureNames.find(entry.path().filename().replace_extension()) != TextureNames.end())
+			{
+				std::filesystem::path dstPath = _wstrDstPath;
+				dstPath += entry.path().filename();
+				std::filesystem::copy(entry.path(), dstPath, std::filesystem::copy_options::overwrite_existing);
+			}
 		}
-		std::filesystem::copy(srcPath, dstPath, std::filesystem::copy_options::overwrite_existing);
 	}
+
 
 	return S_OK;
 }
