@@ -44,6 +44,10 @@ public:
 	virtual void		 Free() override;
 	virtual HRESULT		 Cleanup_DeadReferences() = 0;
 
+#ifdef _DEBUG
+	
+#endif
+
 };
 
 END

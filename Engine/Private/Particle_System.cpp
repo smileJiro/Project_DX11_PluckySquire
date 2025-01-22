@@ -268,12 +268,7 @@ void CParticle_System::Tool_ShowList()
 				if (ImGui::Selectable(_szNumber, is_selected))
 				{
 					iNowIndex = n;
-					if (m_pNowItem)
-					{
-						m_pNowItem->Set_Active(false);
-					}
-					//m_pNowItem = m_ParticleSystems[iNowIndex];
-					m_pNowItem->Set_Active(true);
+					m_pNowItem = m_ParticleEmitters[n];
 				}
 				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 				if (is_selected)
