@@ -16,6 +16,7 @@
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
 #include "Physx_Manager.h"
+#include "Physx_EventCallBack.h"
 #include "Layer.h"
 #include "ModelObject.h"
 #include "ContainerObject.h"
@@ -41,6 +42,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pPhysx_Manager = CPhysx_Manager::Create(*ppDevice, *ppContext); /* PhysX 역시 PxPhysics* 를 Object 생성 시 전달할 예정. (유사 Device, Context 개념.)*/
 	if (nullptr == m_pPhysx_Manager)
 		return E_FAIL;
+
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pLight_Manager)
@@ -70,9 +72,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
 
-	m_pCollision_Manager = CCollision_Manager::Create();
-	if (nullptr == m_pCollision_Manager)
-		return E_FAIL;
+	//m_pCollision_Manager = CCollision_Manager::Create();
+	//if (nullptr == m_pCollision_Manager)
+	//	return E_FAIL;
 
 	m_pTimer_Manager = CTimer_Manager::Create();
 	if (nullptr == m_pTimer_Manager)
@@ -135,6 +137,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	추후 콜리전 매니저 설계시 scene 관리방식 변경.*/
 	m_pPhysx_Manager->Update(fTimeDelta);
 	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
+
+	
 }
 
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
@@ -194,7 +198,7 @@ _float CGameInstance::Compute_Random(_float _fMin, _float _fMax)
 HRESULT CGameInstance::Engine_Level_Enter(_int _iChangeLevelID)
 {
 	/* Engine Manager 의 Level Enter 시점. 이벤트 매니저에서 새로운 레벨을 생성한 후, 호출된다. */
-	m_pCollision_Manager->Level_Enter(_iChangeLevelID);
+	//m_pCollision_Manager->Level_Enter(_iChangeLevelID);
 	return S_OK;
 }
 
@@ -211,7 +215,7 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	m_pObject_Manager->Level_Exit((_uint)iCurLevelID);
 	m_pPrototype_Manager->Level_Exit((_uint)iCurLevelID);
 	m_pLight_Manager->Level_Exit();
-	m_pCollision_Manager->Level_Exit();
+	//m_pCollision_Manager->Level_Exit();
 
 	return S_OK;
 }
@@ -425,7 +429,7 @@ const KEY_STATE& CGameInstance::GetMouseKeyState(MOUSE_KEY _eMouse)
 	return m_pKey_Manager->GetMouseKeyState(_eMouse);
 }
 
-_long CGameInstance::GetDIMouseMove(MOUSE_MOVE eMouseMove)
+_long CGameInstance::GetDIMouseMove(MOUSE_AXIS eMouseMove)
 {
 	if (nullptr == m_pKey_Manager)
 		return 0;
@@ -550,37 +554,37 @@ HRESULT CGameInstance::Render_Lights(CShader* _pShader, CVIBuffer_Rect* _pVIBuff
 }
 
 
-void CGameInstance::Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData)
-{
-	if (nullptr == m_pCollision_Manager)
-		assert(nullptr);
-
-	return m_pCollision_Manager->Add_CollisionLayerCheckInfo(_pCollCheckLayerData);
-}
-
-_bool CGameInstance::Intersect_RayCollision(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, const CGameObject* _pThis, _int _iOtherPartIndex)
-{
-	if (nullptr == m_pCollision_Manager)
-		assert(nullptr);
-
-	return m_pCollision_Manager->Intersect_RayCollision(_vRayStart, _vRayDir, _strLayerTag, _iOtherPartIndex, _pThis);
-}
-
-_bool CGameInstance::Intersect_RayCollision_Nearest(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, CGameObject** _ppOutNearestObj, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex)
-{
-	if (nullptr == m_pCollision_Manager)
-		assert(nullptr);
-
-	return m_pCollision_Manager->Intersect_RayCollision_Nearest(_vRayStart, _vRayDir, _strLayerTag, _pOutDst, _ppOutNearestObj, _pThis, _iCollidersIndex, _iOtherPartIndex );
-}
-
-_bool CGameInstance::Intersect_RayCollision_NearestDistance(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex)
-{
-	if (nullptr == m_pCollision_Manager)
-		assert(nullptr);
-
-	return m_pCollision_Manager->Intersect_RayCollision_NearestDistance(_vRayStart, _vRayDir, _strLayerTag, _pOutDst,  _pThis, _iCollidersIndex, _iOtherPartIndex);
-}
+//void CGameInstance::Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData)
+//{
+//	if (nullptr == m_pCollision_Manager)
+//		assert(nullptr);
+//
+//	return m_pCollision_Manager->Add_CollisionLayerCheckInfo(_pCollCheckLayerData);
+//}
+//
+//_bool CGameInstance::Intersect_RayCollision(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, const CGameObject* _pThis, _int _iOtherPartIndex)
+//{
+//	if (nullptr == m_pCollision_Manager)
+//		assert(nullptr);
+//
+//	return m_pCollision_Manager->Intersect_RayCollision(_vRayStart, _vRayDir, _strLayerTag, _iOtherPartIndex, _pThis);
+//}
+//
+//_bool CGameInstance::Intersect_RayCollision_Nearest(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, CGameObject** _ppOutNearestObj, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex)
+//{
+//	if (nullptr == m_pCollision_Manager)
+//		assert(nullptr);
+//
+//	return m_pCollision_Manager->Intersect_RayCollision_Nearest(_vRayStart, _vRayDir, _strLayerTag, _pOutDst, _ppOutNearestObj, _pThis, _iCollidersIndex, _iOtherPartIndex );
+//}
+//
+//_bool CGameInstance::Intersect_RayCollision_NearestDistance(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex)
+//{
+//	if (nullptr == m_pCollision_Manager)
+//		assert(nullptr);
+//
+//	return m_pCollision_Manager->Intersect_RayCollision_NearestDistance(_vRayStart, _vRayDir, _strLayerTag, _pOutDst,  _pThis, _iCollidersIndex, _iOtherPartIndex);
+//}
 
 
 HRESULT CGameInstance::Add_Font(const _wstring& _strFontTag, const _tchar* _pFontFilePath)
@@ -968,6 +972,46 @@ void CGameInstance::Physx_Update(_float _fTimeDelta)
 		return;
 
 	m_pPhysx_Manager->Update(_fTimeDelta);
+}
+
+PxPhysics* CGameInstance::Get_Physics() const
+{
+	if (nullptr == m_pPhysx_Manager)
+		return nullptr;
+
+	return m_pPhysx_Manager->Get_Physics();
+}
+
+PxScene* CGameInstance::Get_Physx_Scene() const
+{
+	if (nullptr == m_pPhysx_Manager)
+		return nullptr;
+
+	return m_pPhysx_Manager->Get_Scene();
+}
+
+PxMaterial* CGameInstance::Get_Material(ACTOR_MATERIAL _eType) const
+{
+	if (nullptr == m_pPhysx_Manager)
+		return nullptr;
+
+	return m_pPhysx_Manager->Get_Material(_eType);
+}
+
+HRESULT CGameInstance::Physx_Render()
+{
+	if (nullptr == m_pPhysx_Manager)
+		return E_FAIL;
+
+	return m_pPhysx_Manager->Render();
+}
+
+void CGameInstance::Set_Player(CGameObject* _pPlayer)
+{
+	if (nullptr == m_pPhysx_Manager)
+		return;
+
+	return m_pPhysx_Manager->Set_Player(_pPlayer);
 }
 
 #ifdef _DEBUG

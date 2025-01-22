@@ -14,7 +14,7 @@
 #Compiled Dynamic libraries
 *.so
 *.dylib
-#*.dll
+*.dll
 
 #Fortran module files
 *.mod
@@ -24,7 +24,7 @@
 *.lai
 *.la
 *.a
-#*.lib
+*.lib
 
 #Executables
 *.exe
@@ -78,3 +78,15 @@
 /Tool_Map/Bin/Debug/Engine.dll
 /Tool_Map/Bin/Release/Engine.dll
 /Client/Bin/Release/Engine.dll
+/Client/Bin/Debug/Engine.dll
+/Client/Bin/Release/Engine.dll
+/Engine/Bin/Engine.dll
+/Engine/Bin/Engine.lib
+/EngineSDK/Lib/Engine.lib
+/Tool_Animation/Bin/Debug/Engine.dll
+/Tool_Animation/Bin/Release/Engine.dll
+/Tool_Camera/Bin/Debug/Engine.dll
+/Tool_Camera/Bin/Release/Engine.dll
+/Tool_Effect/Bin/Engine.dll
+/Tool_Map/Bin/Debug/Engine.dll
+/Tool_Map/Bin/Release/Engine.dll

@@ -26,4 +26,9 @@ namespace Map_Tool
 	_bool Path_String_Validation_Check(const _wstring _strText);
 
 
+
+	_bool ContainString(const _string _strSourceText, const _string _strDestText);
+	_bool EndString(const _string _strSourceText, const _string _strDestText);
+
+
 }

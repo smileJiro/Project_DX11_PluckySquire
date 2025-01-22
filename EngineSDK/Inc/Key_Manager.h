@@ -11,7 +11,7 @@ enum class KEY_STATE
 };
 
 enum class MOUSE_KEY { LB, RB, MB, LAST, };
-enum class MOUSE_MOVE { X, Y, Z, LAST, };
+enum class MOUSE_AXIS { X, Y, Z, LAST, };
 
 enum class KEY // 자체적으로 지원 할 키 종류
 {
@@ -108,7 +108,7 @@ public:
 	{
 		return m_arrMouseKey[(int)_eMouse].eState;
 	}
-	_long	GetDIMouseMove(MOUSE_MOVE eMouseMove)
+	_long	GetDIMouseMove(MOUSE_AXIS eMouseMove)
 	{
 		return *(((_long*)&m_tMouseState) + (int)eMouseMove);
 	}

@@ -124,6 +124,29 @@ HRESULT CTexture::Bind_ShaderResource(CShader* _pShader, const _char* _pConstant
     return S_OK;
 }
 
+ID3D11ShaderResourceView* CTexture::Get_SRV(const _wstring _strTextureName, _uint* _pIndex)
+{
+    ID3D11ShaderResourceView* pReturnTexture = nullptr;
+    
+    _uint iLoopCnt = 0;
+    for (auto& strTextureName : m_SRVNames)
+    {
+        if (_strTextureName == strTextureName &&
+            iLoopCnt < m_iNumSRVs &&
+            iLoopCnt < (_uint)m_SRVs.size()
+            )
+            pReturnTexture = m_SRVs[iLoopCnt];
+        if (nullptr != pReturnTexture)
+            break;
+        iLoopCnt++;
+    }
+
+    if (nullptr != _pIndex)
+        *_pIndex = iLoopCnt;
+
+    return pReturnTexture;
+}
+
 CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures)
 {
     CTexture* pInstance = new CTexture(_pDevice, _pContext);

@@ -13,6 +13,9 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* _pArg);
+	virtual void	Priority_Update(_float _fTimeDelta) { return; }
+	virtual void	Update(_float _fTimeDelta) { return; }
+	virtual void	Late_Update(_float _fTimeDelta) { return; }
 #ifdef _DEBUG
 public:
 	virtual HRESULT Render() { return S_OK; }

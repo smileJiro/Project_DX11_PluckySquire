@@ -109,12 +109,12 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 
 
 	if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
-		if (MouseMove = MOUSE_MOVE(MOUSE_MOVE::X))
+		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
 		{
 			m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, XMVectorSet(0.f, 1.f, 0.f, 0.f));
 		}
 
-		if (MouseMove = MOUSE_MOVE(MOUSE_MOVE::Y))
+		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
 		{
 			m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
 		}

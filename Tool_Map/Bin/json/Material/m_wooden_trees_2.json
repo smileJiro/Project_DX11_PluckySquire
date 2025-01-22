@@ -1,0 +1,149 @@
+[
+  {
+    "Type": "Material",
+    "Name": "m_wooden_trees_2",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "9AB105D2-4172E10B-05ADFA8A-87F7E523",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              785943367490848883
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "HueShiftAmount_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "F4A21870-4423D6C7-ECC5F686-041DE344"
+            ]
+          },
+          "ScalarValues": [
+            0.12
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'wooden_platforms_trees_01_d'",
+            "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_trees_01_d.0"
+          },
+          {
+            "ObjectName": "Texture2D'wooden_platforms_01_r'",
+            "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_01_r.0"
+          },
+          {
+            "ObjectName": "Texture2D'wooden_platforms_01_n'",
+            "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_01_n.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+            "Function": {
+              "ObjectName": "MaterialFunction'HueShift'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "wooden_platforms_01_n"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "wooden_platforms_01_r"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "wooden_platforms_trees_01_d"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            785943367490848883
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "HueShiftAmount_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "F4A21870-4423D6C7-ECC5F686-041DE344"
+          ]
+        },
+        "ScalarValues": [
+          0.12
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'wooden_platforms_trees_01_d'",
+          "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_trees_01_d.0"
+        },
+        {
+          "ObjectName": "Texture2D'wooden_platforms_01_r'",
+          "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_01_r.0"
+        },
+        {
+          "ObjectName": "Texture2D'wooden_platforms_01_n'",
+          "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_01_n.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+          "Function": {
+            "ObjectName": "MaterialFunction'HueShift'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

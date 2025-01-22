@@ -1,15 +1,15 @@
 #pragma once
-#include "GameObject.h"
+#include "ActorObject.h"
 
 BEGIN(Engine)
 class CPartObject;
 class CComponent;
-class ENGINE_DLL CContainerObject abstract : public CGameObject
+class ENGINE_DLL CContainerObject abstract : public CActorObject
 {
 public:
 	enum PART { PART_BODY, PART_LAST };
 public:
-	typedef struct tagContainerObjectDesc : public CGameObject::GAMEOBJECT_DESC
+	typedef struct tagContainerObjectDesc : public CActorObject::ACTOROBJECT_DESC
 	{
 		// 파트 오브젝트의 개수
 		_uint			iNumPartObjects; 
@@ -45,7 +45,7 @@ protected:
 	vector<CGameObject*> m_PartObjects;
 
 public:
-	virtual void Free() override;
+	void Free() override;
 	HRESULT Cleanup_DeadReferences() override;
 
 #ifdef _DEBUG
