@@ -15,6 +15,12 @@ public:
 	HRESULT Initialize( const _char* szDirPath, ifstream& inFile);
 
 public:
+	ID3D11ShaderResourceView* Find_Texture(aiTextureType _eTextureType, const _wstring _strTextureName, _uint* _pIndex = nullptr)
+	{
+		ID3D11ShaderResourceView* pReturnTexture = nullptr;
+		pReturnTexture = m_MaterialTextures[_eTextureType]->Get_SRV(_strTextureName, _pIndex);
+		return pReturnTexture;
+	}
 	ID3D11ShaderResourceView* Find_Texture(aiTextureType _eTextureType, _uint _iIndex)
 	{
 		if (nullptr == m_MaterialTextures[_eTextureType] || 

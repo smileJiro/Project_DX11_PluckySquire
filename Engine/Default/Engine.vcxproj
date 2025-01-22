@@ -191,19 +191,21 @@ call UpdateLib.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\2DModel.h" />
+    <ClInclude Include="..\public\ActorObject.h" />
+    <ClInclude Include="..\public\Actor_Dynamic.h" />
+    <ClInclude Include="..\public\Actor_Static.h" />
     <ClInclude Include="..\public\Animation.h" />
     <ClInclude Include="..\public\Base.h" />
     <ClInclude Include="..\public\Bone.h" />
-    <ClInclude Include="..\public\Bounding.h" />
-    <ClInclude Include="..\Public\Bounding_OBB.h" />
-    <ClInclude Include="..\public\Bounding_AABB.h" />
-    <ClInclude Include="..\Public\Bounding_Sphere.h" />
     <ClInclude Include="..\public\Camera.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Manager_Engine.h" />
     <ClInclude Include="..\public\Channel.h" />
-    <ClInclude Include="..\public\Collider.h" />
-    <ClInclude Include="..\public\Collision_Manager.h" />
+    <ClInclude Include="..\public\Actor.h" />
+    <ClInclude Include="..\public\Collision_Manager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\ContainerObject.h" />
     <ClInclude Include="..\public\Controller_Model.h">
@@ -242,6 +244,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\Animation2D.h" />
     <ClInclude Include="..\Public\PartObject.h" />
+    <ClInclude Include="..\public\Physx_EventCallBack.h" />
     <ClInclude Include="..\Public\Physx_Manager.h" />
     <ClInclude Include="..\public\PipeLine.h" />
     <ClInclude Include="..\Public\Prototype_Manager.h" />
@@ -264,6 +267,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
     <ClInclude Include="..\public\VIBuffer_Cube.h" />
+    <ClInclude Include="..\Public\VIBuffer_PxDebug.h" />
     <ClInclude Include="..\public\VIBuffer_Instance.h" />
     <ClInclude Include="..\public\VIBuffer_Point_Particle.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
@@ -272,19 +276,21 @@ call UpdateLib.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\2DModel.cpp" />
+    <ClCompile Include="..\private\ActorObject.cpp" />
+    <ClCompile Include="..\private\Actor_Dynamic.cpp" />
+    <ClCompile Include="..\private\Actor_Static.cpp" />
     <ClCompile Include="..\private\Animation.cpp" />
     <ClCompile Include="..\private\Base.cpp" />
     <ClCompile Include="..\private\Bone.cpp" />
-    <ClCompile Include="..\private\Bounding.cpp" />
-    <ClCompile Include="..\private\Bounding_AABB.cpp" />
-    <ClCompile Include="..\Private\Bounding_OBB.cpp" />
-    <ClCompile Include="..\Private\Bounding_Sphere.cpp" />
     <ClCompile Include="..\private\Camera.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Manager_Engine.cpp" />
     <ClCompile Include="..\private\Channel.cpp" />
-    <ClCompile Include="..\private\Collider.cpp" />
-    <ClCompile Include="..\private\Collision_Manager.cpp" />
+    <ClCompile Include="..\private\Actor.cpp" />
+    <ClCompile Include="..\private\Collision_Manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\ContainerObject.cpp" />
     <ClCompile Include="..\private\Controller_Model.cpp">
@@ -318,6 +324,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\Object_Manager.cpp" />
     <ClCompile Include="..\Private\Animation2D.cpp" />
     <ClCompile Include="..\Private\PartObject.cpp" />
+    <ClCompile Include="..\private\Physx_EventCallBack.cpp" />
     <ClCompile Include="..\Private\Physx_Manager.cpp" />
     <ClCompile Include="..\private\PipeLine.cpp" />
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />
@@ -340,6 +347,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cube.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_PxDebug.cpp" />
     <ClCompile Include="..\private\VIBuffer_Instance.cpp" />
     <ClCompile Include="..\private\VIBuffer_Point_Particle.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
@@ -349,6 +357,7 @@ call UpdateLib.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Debug.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>

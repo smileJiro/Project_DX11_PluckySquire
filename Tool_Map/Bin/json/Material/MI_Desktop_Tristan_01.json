@@ -1,0 +1,447 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Desktop_Tristan_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_Desktop_Tristan_01'",
+        "ObjectPath": "/Game/Map/3D/Adia/Room/Materials/MM_Desktop_Tristan_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Layer_01_DetailNormal_Tiling",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 80.0,
+          "ExpressionGUID": "05C8CFF7-4BC80F0E-59D5209F-77097002"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_01_Roughness_Contrast",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 2.0,
+          "ExpressionGUID": "8ABA714A-4F531114-ACFB30A2-7E2422FC"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_01_RoughnessMultiplier",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 1.0,
+          "ExpressionGUID": "EB0E38C4-45FF9184-59BCA59E-EF129D3A"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_01_Tiling",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 8.0,
+          "ExpressionGUID": "B60E6A5E-435815EF-6298639B-9BEA8603"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_02_DetailNormal_Tiling",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 60.0,
+          "ExpressionGUID": "DA64F2E0-47D92E65-92C04AA6-E446D674"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_02_Roughness_Contrast",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 2.5,
+          "ExpressionGUID": "C8247708-496EC666-8DDF3DAF-528F81BD"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_02_Tiling",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 8.0,
+          "ExpressionGUID": "4700AB84-4F3B27B0-5161D294-41B76FDC"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_03_RoughnessMultiplier",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 1.0,
+          "ExpressionGUID": "89C740DA-4D5CA369-E48FB3A1-8C02321F"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_03_Tiling",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 8.0,
+          "ExpressionGUID": "A975FEF4-4049D854-06D48C99-F1607AD0"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_04_Tiling",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 5.0,
+          "ExpressionGUID": "B5345AA2-427E2F32-BEED799E-9681FBE6"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "NoiseMask_Tiling_01",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 5.0,
+          "ExpressionGUID": "C2467271-4AB8DD15-2078218C-5CC362E2"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Layer_01_BaseColourTint",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          "ExpressionGUID": "11C7746D-4140088C-FE62738E-29FDE0B0"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_02_BaseColourTint",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.64,
+            "G": 1.64,
+            "B": 1.64,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          "ExpressionGUID": "CC731B73-4CF7ECA2-E4D53F8B-A188BCDA"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_03_BaseColourTint",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.5,
+            "G": 1.5,
+            "B": 1.5,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          "ExpressionGUID": "D2BD6DB9-4CCB6D1A-56F0A898-B41AABAD"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_04_BaseColourTint",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.24,
+            "G": 1.24,
+            "B": 1.24,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          "ExpressionGUID": "8B729047-4E969B5E-20DEA388-DCA1C588"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Overall_Colour_Tint",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          },
+          "ExpressionGUID": "4ED7288B-409060C7-7540EFAB-806160FE"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Layer_01_BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'desk_wood_bidds_D'",
+            "ObjectPath": "/Game/Map/3D/Room_Layout/Textures/desk_wood_bidds_D.0"
+          },
+          "ExpressionGUID": "25C4E25D-4A602561-F8FAA1BA-9F3BE52C"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_01_Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'desk_wood_N'",
+            "ObjectPath": "/Game/Map/3D/Room_Layout/Textures/desk_wood_N.0"
+          },
+          "ExpressionGUID": "427696C3-4F80DADB-4A03F6B3-D6FC6A4D"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_01_ORM",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_Wood_OMR'",
+            "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_OMR.0"
+          },
+          "ExpressionGUID": "BA0ED3C3-4CB032F7-33D306B9-FA8F8DE5"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_02_BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": null,
+          "ExpressionGUID": "6E2A871D-4DF6AEFA-DF26A88E-1B733C4D"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_02_ORM",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_Wood_OMR'",
+            "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_OMR.0"
+          },
+          "ExpressionGUID": "3EC38A65-44C4E79D-6A7BB1A4-4C4FCB31"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_03_BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_Wood_dirt_D'",
+            "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_dirt_D.0"
+          },
+          "ExpressionGUID": "CC40716D-476CBD13-5AC1AAB9-CD1BCD97"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_03_Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_Wood_dirt_N'",
+            "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_dirt_N.0"
+          },
+          "ExpressionGUID": "D29D7D16-43BB7F6B-6E63C68C-8B3C4643"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_03_ORM",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_Wood_damaged_ORM'",
+            "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_damaged_ORM.0"
+          },
+          "ExpressionGUID": "4AE5BAFF-43F9BF01-FF7F8CAE-F91A278C"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_04_BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_Wood_color_D'",
+            "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_color_D.0"
+          },
+          "ExpressionGUID": "13E71ABA-4741DDFD-22F550B2-0ED581DB"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Layer_04_Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_Wood_damaged_N'",
+            "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_damaged_N.0"
+          },
+          "ExpressionGUID": "52E46EA1-4CB7EEF5-ACE9F3A7-4DD9FF92"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Default01_NX_2'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_NX_2.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Dirt03_M'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Dirt03_M.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Masks_01'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Masks_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'desk_wood_bidds_D'",
+          "ObjectPath": "/Game/Map/3D/Room_Layout/Textures/desk_wood_bidds_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Wood_color_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_color_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Wood_damaged_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_damaged_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Wood_damaged_ORM'",
+          "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_damaged_ORM.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Wood_OMR'",
+          "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_OMR.0"
+        },
+        {
+          "ObjectName": "Texture2D'desk_wood_N'",
+          "ObjectPath": "/Game/Map/3D/Room_Layout/Textures/desk_wood_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Wood_damaged_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_damaged_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Wood_dirt_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_dirt_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Wood_color_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_color_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'desk_wood_R'",
+          "ObjectPath": "/Game/Map/3D/Room_Layout/Textures/desk_wood_R.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Wood_dirt_ORM'",
+          "ObjectPath": "/Game/Map/3D/Adia/Room/Textures/T_Wood_dirt_ORM.0"
+        },
+        {
+          "ObjectName": "Texture2D'desk_wood_bidds_D_PaintMask_01'",
+          "ObjectPath": "/Game/Map/3D/Room_Layout/Textures/desk_wood_bidds_D_PaintMask_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 8.0,
+          "UVChannelIndex": 0,
+          "TextureName": "desk_wood_bidds_D"
+        },
+        {
+          "SamplingScale": 8.0,
+          "UVChannelIndex": 0,
+          "TextureName": "desk_wood_N"
+        },
+        {
+          "SamplingScale": 60.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Default01_NX_2"
+        },
+        {
+          "SamplingScale": 5.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Dirt03_M"
+        },
+        {
+          "SamplingScale": 5.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Masks_01"
+        },
+        {
+          "SamplingScale": 5.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Wood_color_D"
+        },
+        {
+          "SamplingScale": 8.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Wood_damaged_N"
+        },
+        {
+          "SamplingScale": 5.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Wood_damaged_N"
+        },
+        {
+          "SamplingScale": 8.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Wood_damaged_ORM"
+        },
+        {
+          "SamplingScale": 8.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Wood_dirt_D"
+        },
+        {
+          "SamplingScale": 8.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Wood_dirt_N"
+        },
+        {
+          "SamplingScale": 8.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Wood_OMR"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

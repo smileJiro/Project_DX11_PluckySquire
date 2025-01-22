@@ -1,0 +1,124 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_WoodTileable_Sides_02",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_WoodTileable_01'",
+        "ObjectPath": "/Game/Map/3D/Desk_C04/Material/MM_WoodTileable_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'WoodenBlock_Original_BaseColour_01_Sides_02'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/WoodenBlock_Original_BaseColour_01_Sides_02.0"
+          },
+          "ExpressionGUID": "5BB5176E-45880685-C3B37BA5-F525F4F9"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'WoodenBlock_Original_Normal_01_Sides_02'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/WoodenBlock_Original_Normal_01_Sides_02.0"
+          },
+          "ExpressionGUID": "00A8A027-44072FF3-89072A89-C00FED82"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Roughness",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'WoodenBlock_Original_Roughness_01_Sides_02'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/WoodenBlock_Original_Roughness_01_Sides_02.0"
+          },
+          "ExpressionGUID": "C6C3EF53-43A6551B-1115EEAD-2A57585D"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_normal_02'",
+          "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_normal_02.0"
+        },
+        {
+          "ObjectName": "Texture2D'TilingNoise05'",
+          "ObjectPath": "/Engine/MapTemplates/TilingNoise05.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Noise01'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Noise01.0"
+        },
+        {
+          "ObjectName": "Texture2D'WoodenBlock_Original_BaseColour_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/WoodenBlock_Original_BaseColour_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_roughness_02'",
+          "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_roughness_02.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Noise01"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 0,
+          "TextureName": "TilingNoise05"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "WoodenBlock_Original_BaseColour_01_Sides_02"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "WoodenBlock_Original_Normal_01_Sides_02"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "WoodenBlock_Original_Roughness_01_Sides_02"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

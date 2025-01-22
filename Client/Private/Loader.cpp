@@ -37,6 +37,7 @@
 #include "BarfBug.h"
 #include "Projectile_BarfBug.h"
 #include "ButterGrump.h"
+#include "Boss_HomingBall.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -140,8 +141,6 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 
 
-              
-
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
@@ -191,6 +190,24 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+
+    lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
+    /* For. Prototype_Component_Actor_Dynamic */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Dynamic"),
+        CActor_Dynamic::Create(m_pDevice, m_pContext, false))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Actor_Kinematic */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Kinematic"),
+        CActor_Dynamic::Create(m_pDevice, m_pContext, true))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Actor_Static */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Static"),
+        CActor_Static::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ParentSettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
@@ -398,6 +415,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* For. Prototype_GameObject_ButterGrump */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"),
         CButterGrump::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_HomingBall"),
+        CBoss_HomingBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
@@ -642,6 +663,23 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 
             if (pGameObject)
             {
+                DWORD	dwByte(0);
+                _uint iOverrideCount = 0;
+
+                ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
+                if (0 < iOverrideCount)
+                {
+                    CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
+                    for (_uint i = 0; i < iOverrideCount; i++)
+                    {
+                        _uint iMaterialIndex, iTexTypeIndex, iTexIndex;
+                        ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+                        ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
+                        ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
+
+                        pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
+                    }
+                }
                 pGameObject->Set_WorldMatrix(vWorld);
             }
         }

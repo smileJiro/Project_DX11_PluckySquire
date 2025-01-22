@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\2DMap_Tool_Manager.h" />
     <ClInclude Include="..\Public\CellContainor.h" />
     <ClInclude Include="..\Public\EditableCell.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
@@ -153,9 +154,10 @@
     <ClInclude Include="..\Public\gizmo\ImZoomSlider.h" />
     <ClInclude Include="..\Public\ImguiLogger.h" />
     <ClInclude Include="..\Public\ImGuiStyle_MapTool_Function.h" />
-    <ClInclude Include="..\Public\Level_Map_Tool.h" />
+    <ClInclude Include="..\Public\Level_2D_Map_Tool.h" />
+    <ClInclude Include="..\Public\Level_3D_Map_Tool.h" />
     <ClInclude Include="..\Public\Task_Manager.h" />
-    <ClInclude Include="..\Public\Map_Tool_Manager.h" />
+    <ClInclude Include="..\Public\3DMap_Tool_Manager.h" />
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Map_Tool_Function.h" />
     <ClInclude Include="..\Public\CriticalSectionGuard.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\2DMap_Tool_Manager.cpp" />
     <ClCompile Include="..\Private\CellContainor.cpp" />
     <ClCompile Include="..\Private\EditableCell.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
@@ -184,9 +187,10 @@
     <ClCompile Include="..\Private\gizmo\ImSequencer.cpp" />
     <ClCompile Include="..\Private\ImguiLogger.cpp" />
     <ClCompile Include="..\Private\ImGuiStyle_MapTool_Function.cpp" />
-    <ClCompile Include="..\Private\Level_Map_Tool.cpp" />
+    <ClCompile Include="..\Private\Level_2D_Map_Tool .cpp" />
+    <ClCompile Include="..\Private\Level_3D_Map_Tool.cpp" />
     <ClCompile Include="..\Private\Task_Manager.cpp" />
-    <ClCompile Include="..\Private\Map_Tool_Manager.cpp" />
+    <ClCompile Include="..\Private\3DMap_Tool_Manager.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Map_Tool_Function.cpp" />
     <ClCompile Include="..\Private\CriticalSectionGuard.cpp" />

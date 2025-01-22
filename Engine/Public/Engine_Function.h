@@ -55,12 +55,14 @@ namespace Engine
 		return iRefCnt;
 	}
 
-
-	string MatrixToString(_float4x4 vMatrix);
-
-
 	//HRESULT ReadJsonFile(const _char* strJsonFilePath, json* pOut);
 	//HRESULT SaveJsonFile(const _char* strJsonFilePath, const json& pJson);
 }
+
+
+PxFilterFlags TWFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+							 PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+							 PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize
+);
 
 #endif // Engine_Function_h__

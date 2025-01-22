@@ -100,11 +100,11 @@ public: /* For. Light_Manager */
 	HRESULT				Render_Lights(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
 
 public: /* For. Collision_Manager */
-	void				Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData);	/* 충돌 검사 수행 대상 정보 수집. */
-
-	_bool				Intersect_RayCollision(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, const CGameObject* _pThis, _int _iOtherPartIndex = -1);
-	_bool				Intersect_RayCollision_Nearest(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, CGameObject** _ppOutNearestObj, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex = -1);
-	_bool				Intersect_RayCollision_NearestDistance(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex = -1);
+	//void				Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData);	/* 충돌 검사 수행 대상 정보 수집. */
+	//
+	//_bool				Intersect_RayCollision(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, const CGameObject* _pThis, _int _iOtherPartIndex = -1);
+	//_bool				Intersect_RayCollision_Nearest(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, CGameObject** _ppOutNearestObj, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex = -1);
+	//_bool				Intersect_RayCollision_NearestDistance(_fvector _vRayStart, _fvector _vRayDir, const _wstring& _strLayerTag, _float* _pOutDst, const CGameObject* _pThis, _uint _iCollidersIndex, _int _iOtherPartIndex = -1);
 
 
 public: /* For. Font_Manager s*/
@@ -191,8 +191,13 @@ public: /* For. Camera_Manager */
 	void				Change_CameraType(_uint _iCurrentCameraType);
 
 
-	public: /* For. Physx_Manager*/
-		void			Physx_Update(_float _fTimeDelta);
+public: /* For. Physx_Manager*/
+	void				Physx_Update(_float _fTimeDelta);
+	HRESULT				Physx_Render();
+	PxPhysics*			Get_Physics() const;
+	PxScene*			Get_Physx_Scene() const;
+	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
+	void				Set_Player(CGameObject* _pPlayer);
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;

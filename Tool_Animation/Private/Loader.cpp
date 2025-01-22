@@ -171,9 +171,6 @@ HRESULT CLoader::Loading_Level_AnimTool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ANIMTOOL, TEXT("WoodenPlatform_01"),
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ANIMTOOL, TEXT("Latch_SkelMesh_NewRig"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/Anim/Latch_SkelMesh_NewRig/Latch_SkelMesh_NewRig.model", matPretransform))))
-        return E_FAIL;
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
 

@@ -107,6 +107,7 @@ HRESULT CTask_Manager::Open_ParsingDialog(const wstring& _strLayerName)
 
 	return S_OK;
 }
+
 HRESULT CTask_Manager::Parsing(json _jsonObj)
 {
 	if (_jsonObj.is_array())
@@ -130,19 +131,20 @@ HRESULT CTask_Manager::Parsing(json _jsonObj)
 							!jsonObj.value()["Properties"]["StaticMesh"]["ObjectName"].is_null()
 							)
 						{
+							// 유효성 체크 END
+
+
 							string strModelKey = jsonObj.value()["Properties"]["StaticMesh"].at("ObjectName");
 							strModelKey = strModelKey.substr(strModelKey.find("'") + 1, strModelKey.size() - strModelKey.find("'") - 2);
 
-
-							if (strModelKey == "ToyBrick_23")
-								int a = 1;
-
+							// 필요없는 오브젝트 거르기
 							if (Check_EgnoreObject(strModelKey))
 								continue;
 
 							MAP_DATA tMapData = {};
 							ZeroMemory(&tMapData, sizeof tMapData);
 
+							// 위치 정보가 있는가?
 							if (!jsonObj.value()["Properties"]["RelativeLocation"].is_null())
 							{
 								for (_uint i = 0; i < 3; i++)
@@ -156,6 +158,7 @@ HRESULT CTask_Manager::Parsing(json _jsonObj)
 								}
 							}
 
+							// 회전 정보가 있는가?
 							if (!jsonObj.value()["Properties"]["RelativeRotation"].is_null())
 							{
 								for (_uint i = 0; i < 3; i++)
@@ -171,6 +174,7 @@ HRESULT CTask_Manager::Parsing(json _jsonObj)
 								}
 							}
 
+							// 크기 정보가 있는가?
 							if (!jsonObj.value()["Properties"]["RelativeScale3D"].is_null())
 							{
 								for (_uint i = 0; i < 3; i++)
@@ -181,9 +185,9 @@ HRESULT CTask_Manager::Parsing(json _jsonObj)
 								}
 							}
 							else
-							{
 								tMapData.fScale = { 1.f,1.f,1.f };
-							}
+							
+							// override material 정보가 있는가?
 							if (!jsonObj.value()["Properties"]["OverrideMaterials"].is_null())
 							{
 								if (jsonObj.value()["Properties"]["OverrideMaterials"].is_array())
@@ -223,7 +227,7 @@ HRESULT CTask_Manager::Parsing()
 
 	if (m_LoadTasks.front().isLayerClear)
 	{
-		CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_MAP, strLayerTag);
+		CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, strLayerTag);
 
 		if (pLayer)
 		{
@@ -262,20 +266,15 @@ HRESULT CTask_Manager::Parsing()
 	string strLog = std::to_string(m_Models.size());
 	LOG_TYPE("Model Parsing End - [ count : " + strLog + " ]", LOG_LOAD);
 
-	vector<pair<string, MAP_DATA>> OverrideMaterialModels;
+	vector<pair<_string, MAP_DATA>> OverrideMaterialModels;
 	LOG_TYPE("Model Create Start", LOG_LOAD);
 	_uint iCompCnt = 0;
 	_uint iFailedCnt = 0;
+
+	_wstring strMaterialPath = m_strUmapJsonPath + L"Material\\";
+
 	for (auto pair : m_Models)
 	{
-		if (pair.second.isOverrideMaterial)
-		{
-			OverrideMaterialModels.push_back(pair);
-		}
-		//auto iter = find_if(m_MapObjectNames.begin(), m_MapObjectNames.end(), [&pair](const string& _strName)->_bool {
-		//	return _strName == pair.first; });
-		//if (iter == m_MapObjectNames.end())
-		//	m_MapObjectNames.push_back(pair.first);
 
 		CMapObject::MAPOBJ_DESC NormalDesc = {};
 
@@ -283,15 +282,48 @@ HRESULT CTask_Manager::Parsing()
 		lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(pair.first).c_str());
 
 		CGameObject* pGameObject = nullptr;
-		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
-			LEVEL_TOOL_MAP, strLayerTag, &pGameObject, (void*)&NormalDesc);
+		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
+			LEVEL_TOOL_3D_MAP, strLayerTag, &pGameObject, (void*)&NormalDesc);
 		if (pGameObject)
 		{
 			iCompCnt++;
 			pGameObject->Get_ControllerTransform()->RotationXYZ(pair.second.fRotate);
 			pGameObject->Set_Position(XMLoadFloat3(&pair.second.fPos));
 			pGameObject->Set_Scale(pair.second.fScale.x, pair.second.fScale.y, pair.second.fScale.z);
-			static_cast<CMapObject*>(pGameObject)->Create_Complete();
+			CMapObject* pMapObject = static_cast<CMapObject*>(pGameObject);
+			pMapObject->Create_Complete();
+
+			if (pair.second.isOverrideMaterial)
+			{
+				OverrideMaterialModels.push_back(pair);
+				_string strMaterialKey = pair.second.szMaterialKey;
+				// override material 목록 출력용 벡터 삽입
+
+
+				std::string filePathDialog = WstringToString(strMaterialPath);
+				filePathDialog += pair.second.szMaterialKey;
+				filePathDialog += ".json";
+				std::ifstream inputFile(filePathDialog);
+				if (!inputFile.is_open())
+				{
+					LOG_TYPE("ERROR!!!!!!!!!!!!!!!! material name wa arukedo JSON GA up su yo", LOG_ERROR);
+
+				}
+				else
+				{
+					json jsonDialogs;
+					inputFile >> jsonDialogs;
+
+					if (FAILED(Find_Override_Material(pMapObject, jsonDialogs)))
+					{
+						LOG_TYPE("ERROR!!!!!!!!!!!!!!!!!!! material and json wa arukedo DATA GA up su yo", LOG_ERROR);
+					}
+					inputFile.close();
+				}
+			}
+
+
+
 		}
 		else
 		{
@@ -339,6 +371,127 @@ HRESULT CTask_Manager::Parsing()
 	m_LoadTasks.pop();
 
 	return S_OK;
+}
+
+HRESULT CTask_Manager::Find_Override_Material(CMapObject* _pMapObject, json _jsonObj)
+{
+	_uint iTextureType[4];
+	const _string strTextureTag = "ReferencedTextures";
+	if (_jsonObj.is_object()) 
+	{
+		if (_jsonObj.contains(strTextureTag)) 
+		{
+			LOG_TYPE("Material mitsuketa", LOG_SAVE);
+
+			int a = 1;
+			if(_jsonObj[strTextureTag].is_array())
+			{
+				vector<_string> vecNames;
+				for (const auto& item : _jsonObj[strTextureTag])
+				{
+					if (item.is_object() == item.contains("ObjectName"))
+					{
+						vecNames.push_back(item["ObjectName"]);
+					}
+				}
+
+
+				for (_string strTextureFullName : vecNames)
+				{
+					_int iTexIdx = -1;
+
+					// 지우고, 
+					_string strTextureName =
+						strTextureFullName.substr(strTextureFullName.find("'") + 1, strTextureFullName.size() - strTextureFullName.find("'") - 2);
+					// 내리고
+					_string strCheckTextureName = strTextureFullName;
+
+					std::transform(strCheckTextureName.begin(), strCheckTextureName.end(), strCheckTextureName.begin(), [](unsigned char c) {
+						return std::tolower(c);
+						});
+
+					if (ContainString(strCheckTextureName, "basecolor") ||
+						ContainString(strCheckTextureName, "albedo'") ||
+						EndString(strCheckTextureName, "_d\'")
+						)
+					{
+						LOG_TYPE("diffuse Contect", LOG_SAVE);
+						iTexIdx = aiTextureType_DIFFUSE;
+					}
+					else if (ContainString(strCheckTextureName, "normal") || EndString(strCheckTextureName, "_n'"))
+					{
+						LOG_TYPE("normal Contect", LOG_SAVE);
+						iTexIdx = aiTextureType_NORMALS;
+
+					}
+					else if (ContainString(strCheckTextureName, "occlusionroughnessmetallic") || ContainString(strCheckTextureName, "orm"))
+					{
+						LOG_TYPE("ORM Contect", LOG_SAVE);
+						iTexIdx = aiTextureType_BASE_COLOR;
+					}
+					else if (ContainString(strCheckTextureName, "_a"))
+					{
+						LOG_TYPE("Ab Contect",LOG_SAVE);
+						iTexIdx = aiTextureType_AMBIENT;
+					}
+
+
+					if (-1 != iTexIdx && string::npos != strCheckTextureName.find("'"))
+					{
+
+
+						if (SUCCEEDED(_pMapObject->Push_Texture(strTextureName, iTexIdx)))
+						{
+						
+						}
+						//	case 1
+						//	case 2
+						//	case 3
+					}
+
+				}
+			}
+			//
+			return S_OK; 
+		}
+		for (const auto& [key, value] : _jsonObj.items()) 
+			if (SUCCEEDED(Find_Override_Material(_pMapObject, value))) 
+				return S_OK;
+	}
+	else if (_jsonObj.is_array()) 
+		for (const auto& item : _jsonObj) 
+			if (SUCCEEDED(Find_Override_Material(_pMapObject,item))) 
+				return S_OK;
+
+	//for (auto jsonObj : _jsonObj.items())
+	//{
+	//	if (jsonObj.value().is_object())
+	//	{
+	//		auto test = jsonObj.value()["Properties"];
+	//		if (jsonObj.value()["Properties"].contains("CachedExpressionData"))
+	//		{
+	//			int a = 1;
+	//			auto jTextureData = jsonObj.value()["Properties"]["CachedExpressionData"];
+	//			//["TextureStreamingData"]
+	//			
+	//		}
+	//		else if (jsonObj.value()["Properties"].contains("CachedReferencedTextures"))
+	//		{
+	//			int a = 1;
+	//			auto jTextureData = jsonObj.value()["Properties"]["CachedReferencedTextures"];
+	//			//["TextureStreamingData"]
+
+	//		}
+	//		else
+	//		{
+	//			LOG_TYPE("Material Override Texture Info X", LOG_SAVE);
+	//		}
+	//		
+	//	}
+	//}
+
+	return S_OK;
+
 }
 
 HRESULT CTask_Manager::RePackaging()

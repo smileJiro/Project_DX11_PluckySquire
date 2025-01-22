@@ -278,6 +278,22 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
 }
 
 
+
+_uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
+{
+    if (m_pControllerModel)
+        return m_pControllerModel->Get_TextureIndex_To_3D(_eTextureType, _iMaterialIndex);
+    return 0;
+}
+void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
+{
+    if (m_pControllerModel)
+        m_pControllerModel->Binding_TextureIndex_To_3D(_iIndex, _eTextureType, _iMaterialIndex);
+}
+
+
+
+
 CModelObject* CModelObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CModelObject* pInstance = new CModelObject(_pDevice, _pContext);

@@ -26,6 +26,7 @@
     <ClInclude Include="..\Public\TestController_Model.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
     <ClInclude Include="..\Public\TestTerrain.h" />
+    <ClInclude Include="..\Public\ToolAnimation2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -44,6 +45,7 @@
     <ClCompile Include="..\Private\TestController_Model.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\TestTerrain.cpp" />
+    <ClCompile Include="..\Private\ToolAnimation2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool_Animation.rc">

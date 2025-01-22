@@ -1,0 +1,314 @@
+#include "Actor.h"
+#include "GameInstance.h"
+#include "ActorObject.h"
+
+#include "DebugDraw.h"
+CActor::CActor(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ACTOR_TYPE _eActorType)
+	: CComponent(_pDevice, _pContext)
+    , m_eActorType(_eActorType)
+{
+    XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
+}
+
+CActor::CActor(const CActor& _Prototype)
+	: CComponent(_Prototype)
+    , m_OffsetMatrix(_Prototype.m_OffsetMatrix)
+    , m_eActorType(_Prototype.m_eActorType)
+{
+#ifdef _DEBUG
+    m_pInputLayout = _Prototype.m_pInputLayout;
+    m_pBatch = _Prototype.m_pBatch;
+    m_pEffect = _Prototype.m_pEffect;
+    Safe_AddRef(m_pInputLayout);
+#endif // _DEBUG
+}
+
+HRESULT CActor::Initialize_Prototype()
+{
+#ifdef _DEBUG
+    m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
+    m_pEffect = new BasicEffect(m_pDevice);
+
+    const void* pShaderByteCode = nullptr;
+    size_t iShaderByteCodeLength = 0;
+
+    /* m_pEffect 쉐이더의 옵션 자체를 Color 타입으로 변경해주어야 정상적인 동작을 한다. (기본 값은 Texture )*/
+    m_pEffect->SetVertexColorEnabled(true);
+    m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iShaderByteCodeLength);
+
+    if (FAILED(m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCode, iShaderByteCodeLength, &m_pInputLayout)))
+        return E_FAIL;
+#endif // _DEBUG
+	return S_OK;
+}
+
+HRESULT CActor::Initialize(void* _pArg)
+{
+    ACTOR_DESC* pDesc = static_cast<ACTOR_DESC*>(_pArg);
+    if (nullptr == pDesc->pOwner)
+        return E_FAIL;
+
+    // Save Desc 
+    m_pOwner = pDesc->pOwner;                       // 순환 참조로 인해 RefCount 관리 X
+    if (pDesc->OffsetMatrix._44 != 0)                       // m_OffsetMatrix은 항등행렬로 초기화 된 상태임 Desc에 값을 채운경우에만, Offset 적용.
+        m_OffsetMatrix = pDesc->OffsetMatrix;
+
+    // Add Desc
+
+    if (FAILED(__super::Initialize(pDesc)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Actor(pDesc)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Shapes(pDesc->ShapeDatas)))
+        return E_FAIL;
+
+    Setup_SimulationFiltering(pDesc->tFilterData.MyGroup, pDesc->tFilterData.OtherGroupMask, false);
+
+    // Scene에 등록. (추후 곧바로 등록하지 않고 싶다면, 별도의 Desc 변수를 추가할 예정.)
+    PxScene* pScene = m_pGameInstance->Get_Physx_Scene();
+    pScene->addActor(*m_pActor);
+
+	return S_OK;
+}
+
+void CActor::Priority_Update(_float _fTimeDelta)
+{
+}
+
+void CActor::Update(_float _fTimeDelta)
+{
+}
+
+void CActor::Late_Update(_float _fTimeDelta)
+{
+#ifdef _DEBUG
+    m_pGameInstance->Add_DebugComponent(this);
+#endif // _DEBUG
+
+}
+#ifdef _DEBUG
+HRESULT CActor::Render()
+{
+    if (false == m_isActive)
+        return S_OK;
+
+    if (nullptr == m_pOwner)
+        return S_OK;
+    /* dx9 처럼 W,V,P 행렬을 던져준다. */
+
+        /* World Matrix를 Indentity로 던지는 이유 : 이미 각각의 CBounding* 가 소유한 BoundingDesc의 정점 자체를 이미 World까지 변환 할 것임. */
+    m_pEffect->SetWorld(XMMatrixIdentity());
+    m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
+    m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
+    m_pEffect->Apply(m_pContext);
+    m_pContext->IASetInputLayout(m_pInputLayout);
+    m_pBatch->Begin();
+    for (auto& pShape : m_pTriggerShapes)
+    {
+        PxGeometryType::Enum eType = pShape->getGeometryType();
+
+        switch (eType)
+        {
+        case physx::PxGeometryType::eSPHERE:
+        {
+            _float fRadius = pShape->getGeometry().sphere().radius;
+            _float3 vPosition = {};
+            XMStoreFloat3(&vPosition, m_pOwner->Get_Position());
+            BoundingSphere BoundingSphere(vPosition, fRadius);
+            DX::Draw(m_pBatch, BoundingSphere, XMLoadFloat4(&m_vDebugColor));
+        }
+            break;
+        case physx::PxGeometryType::ePLANE:
+            break;
+        case physx::PxGeometryType::eCAPSULE:
+            break;
+        case physx::PxGeometryType::eBOX:
+        {
+            PxVec3 vHalfExtents = pShape->getGeometry().box().halfExtents;
+            _float3 vPosition = {};
+            XMStoreFloat3(&vPosition, m_pOwner->Get_Position());
+            BoundingBox BoundingBox(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z));
+            DX::Draw(m_pBatch, BoundingBox, XMLoadFloat4(&m_vDebugColor));
+        }
+            break;
+        default:
+            break;
+        }
+    }
+
+    m_pBatch->End();
+    return S_OK;
+}
+#endif // _DEBUG
+
+
+
+
+HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
+{
+    PxPhysics* pPhysic = m_pGameInstance->Get_Physics();
+    PxTransform Transform = PxTransform();
+    _vector vOwnerPos = m_pOwner->Get_Position();
+
+    _vector vScale = {};
+    _vector vPosition = {};
+    _vector vQuat = {};
+    XMMatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&m_OffsetMatrix));
+    vPosition += vOwnerPos;
+    Transform.p = PxVec3(XMVectorGetX(vPosition), XMVectorGetY(vPosition), XMVectorGetZ(vPosition));
+    Transform.q = PxQuat(XMVectorGetX(vQuat), XMVectorGetY(vQuat), XMVectorGetZ(vQuat), XMVectorGetW(vQuat));
+    /* 1. RigidBody Type Check */
+    switch (m_eActorType)
+    {
+    case Engine::ACTOR_TYPE::STATIC:
+        m_pActor = pPhysic->createRigidStatic(Transform);
+        static_cast<PxRigidStatic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+        break;
+    case Engine::ACTOR_TYPE::KINEMATIC:
+        m_pActor = pPhysic->createRigidDynamic(Transform);
+        static_cast<PxRigidDynamic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+        static_cast<PxRigidDynamic*>(m_pActor)->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+        break;
+    case Engine::ACTOR_TYPE::DYNAMIC:
+        m_pActor = pPhysic->createRigidDynamic(Transform);
+        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, _pActorDesc->FreezeRotation_XYZ[0]);
+        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, _pActorDesc->FreezeRotation_XYZ[1]);
+        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, _pActorDesc->FreezeRotation_XYZ[2]);
+        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X,  _pActorDesc->FreezePosition_XYZ[0]);
+        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y,  _pActorDesc->FreezePosition_XYZ[1]);
+        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z,  _pActorDesc->FreezePosition_XYZ[2]);
+        static_cast<PxRigidDynamic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, false);
+        break;
+    default:
+        return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime)
+{
+    PxScene* pScene = m_pGameInstance->Get_Physx_Scene(); // scene의 시뮬레이션 데이터를 reset해줘야함. 그래서 Scene 객체가 없다면 무의미.
+    if (nullptr == pScene)
+        return;
+
+    PxFilterData FilterData;
+    FilterData.word0 = _iMyGroup;
+    FilterData.word1 = _iOtherGroupMask; // OhterGroupMask는 비트연산자를 통해 여러 그룹을 포함 가능.
+    //FilterData.word2; // 필터셰이딩을 할때 필요한 데이터를 추가 저장이 가능.
+    //FilterData.word3;
+    PxU32 iNumShapes = m_pActor->getNbShapes();
+    
+    vector<PxShape*> pShapes;
+    pShapes.resize(iNumShapes);
+    m_pActor->getShapes(pShapes.data(), iNumShapes);
+   
+    for (auto& pShape : pShapes)
+    {
+        pShape->setSimulationFilterData(FilterData);
+    }
+
+    if(true ==_isRunTime)
+        pScene->resetFiltering(*m_pActor);
+}
+
+HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs)
+{
+    PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
+    if (nullptr == pPhysics)
+        return E_FAIL;
+
+    /* Shape 생성 코드 시작. */
+    PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(ACTOR_MATERIAL::DEFAULT);
+    for (_uint i = 0; i < ShapeDescs.size(); ++i)
+    {
+        PxShapeFlags ShapeFlags = (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
+
+        /* IsTrigger Check */
+        if (true == ShapeDescs[i].isTrigger)
+        {
+            ShapeFlags.clear(PxShapeFlag::eSIMULATION_SHAPE);
+            ShapeFlags.set(PxShapeFlag::eTRIGGER_SHAPE);
+        }
+
+        /* Material 생성 */
+        if (true == ShapeDescs[i].isShapeMaterial)
+        {
+            PHYSX_RELEASE(pShapeMaterial);
+            pShapeMaterial = m_pGameInstance->Get_Material(ShapeDescs[i].eMaterial);
+        }
+
+
+        /* 세부 Shape Geometry 생성 */
+        PxShape* pShape = nullptr;
+        switch (ShapeDescs[i].eShapeType)
+        {
+        case Engine::SHAPE_TYPE::BOX:
+        {
+            SHAPE_BOX_DESC* pDesc = static_cast<SHAPE_BOX_DESC*>(ShapeDescs[i].pShapeDesc);
+            PxBoxGeometry BoxGeometry = PxBoxGeometry(PxVec3(pDesc->vHalfExtents.x, pDesc->vHalfExtents.y, pDesc->vHalfExtents.z));
+            pShape = pPhysics->createShape(BoxGeometry, *pShapeMaterial, true, ShapeFlags);
+        }
+            break;
+        case Engine::SHAPE_TYPE::SPHERE:
+        {
+            SHAPE_SPHERE_DESC* pDesc = static_cast<SHAPE_SPHERE_DESC*>(ShapeDescs[i].pShapeDesc);
+            PxSphereGeometry SphereGeometry = PxSphereGeometry(pDesc->fRadius);
+            pShape = pPhysics->createShape(SphereGeometry, *pShapeMaterial, true, ShapeFlags);
+        }
+            break;
+        case Engine::SHAPE_TYPE::CAPSULE:
+        {
+            SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(ShapeDescs[i].pShapeDesc);
+            PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius, pDesc->fHalfHeight);
+            pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
+        }
+            break;
+        default:
+            return E_FAIL;
+        }
+
+        if (nullptr == pShape)
+        {
+            MSG_BOX("Failed Create pShape (CActor::Ready_Shape)");
+            return E_FAIL;
+        }
+        pShape->setLocalPose(PxTransform(PxMat44((_float*)(&ShapeDescs[i].LocalOffsetMatrix))));
+        m_pActor->attachShape(*pShape);
+
+#ifdef _DEBUG
+        if (true == ShapeDescs[i].isTrigger)
+        {
+            m_pTriggerShapes.push_back(pShape);
+        }
+#endif // _DEBUG
+
+    }
+
+    return S_OK;
+}
+
+void CActor::Free()
+{
+#ifdef _DEBUG
+
+    Safe_Release(m_pInputLayout);
+
+    if (false == m_isCloned)
+    {
+        Safe_Delete(m_pBatch);
+        Safe_Delete(m_pEffect);
+    }
+
+#endif // _DEBUG
+
+    // 순환 참조로 인해 RefCount 관리하지 않는다.
+    m_pOwner = nullptr;
+
+    // PhysX Release
+    //PHYSX_RELEASE(m_pActor);
+
+    __super::Free();
+}

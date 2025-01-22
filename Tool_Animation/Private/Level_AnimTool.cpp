@@ -33,46 +33,72 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 
 	if (ImGui::Button("Open Model File")) {
 		wstrSelectedPath = OpenFileDialog(TEXT("Model3D Files\0 * .model\0Model2D Files\0 * .model2d")); // 파일 다이얼로그 호출
-		if (!wstrSelectedPath.empty()) {
-			if (wstrSelectedPath.find(L".model") != std::wstring::npos)
-			{
-				eLoadModelTYpe = LOAD_3D;
-			}
-			else if (wstrSelectedPath.find(L".model2d") != std::wstring::npos)
+		if (false == wstrSelectedPath.empty()) {
+			if (wstrSelectedPath.find(L".model2d") != std::wstring::npos)
 			{
 				eLoadModelTYpe = LOAD_2D;
 			}
+			else if (wstrSelectedPath.find(L".model") != std::wstring::npos)
+			{
+				eLoadModelTYpe = LOAD_3D;
+			}
 		}
 	}
+	ImGui::SameLine();
 	if (ImGui::Button("Open Raw 2DModel Data")) {
 		wstrSelectedPath = OpenDirectoryDialog(); // 폴더 다이얼로그 호출
-		if (!wstrSelectedPath.empty())
+		if (false == wstrSelectedPath.empty())
 		{
 			eLoadModelTYpe = LOAD_RAW2D;
 		}
 	}
+	if (nullptr != m_pTestModelObj)
+	{
+		if (ImGui::Button("Export")) {
+			wstring wstrFilter = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? TEXT("Model2D Files\0 * .model2d") : TEXT("Model3D Files\0 * .model");
+			wstrSelectedPath = SaveFileDialog(wstrFilter.c_str()); // 파일 다이얼로그 호출
+		}
+		ImGui::SameLine();
+		ImGui::Checkbox("Copy Textures", &m_bExportTextures);
+
+		if (false == wstrSelectedPath.empty())
+		{
+			Export_Model(wstrSelectedPath);
+			if(m_bExportTextures)
+			{
+				std::filesystem::path pathDstPath = wstrSelectedPath;
+				Copy_Textures(m_pTestModelObj, m_szLoadedPath.remove_filename(), pathDstPath);
+			}
+		}
+	}
+
 	ImGui::End();
 
+	//모델 로딩
 	if(LOAD_LAST != eLoadModelTYpe)
 	{
 		if (SUCCEEDED(Load_Model(eLoadModelTYpe, wstrSelectedPath)))
 		{
-			lstrcpyW(m_szLoadingText, wstrSelectedPath.c_str());
+			m_szLoadedPath = wstrSelectedPath;
 			Create_Camera(TEXT("Camera"), m_pTestModelObj);
 			Set_Animation(0);
 		}
 	}
+
+
 	if (m_pTestModelObj)
 	{
 		_float fMove = (_float)MOUSE_MOVE(MOUSE_AXIS::Z) / 100.f;
 		if (COORDINATE_3D == m_pTestModelObj->Get_CurCoord())
 		{
 			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
 			m_pTargetCam->Set_Fovy(m_fDefault3DCamFovY * m_fZoomMultiplier);
 		}
 		else
 		{
 			m_fZoomMultiplier += fMove * m_f2DZoomSpeed * _fTimeDelta;
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
 			m_pTestModelObj->Set_2DProjMatrix(XMMatrixOrthographicLH((_float)m_fDefault2DCamSize.x * m_fZoomMultiplier, (_float)m_fDefault2DCamSize.y * m_fZoomMultiplier, 0.0f, 1.0f));
 		}
 	}
@@ -82,7 +108,7 @@ HRESULT CLevel_AnimTool::Render()
 {
 #ifdef _DEBUG
 	if (m_pTestModelObj)
-		SetWindowText(g_hWnd, m_szLoadingText);
+		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
 #endif
 
 	return S_OK;
@@ -289,14 +315,47 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 
 HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
 {
-	if (nullptr == m_pTestModelObj)
+	assert(m_pTestModelObj);
+	wstring wstrExt = COORDINATE_2D == m_pTestModelObj->Get_CurCoord()  ? L".model2d" : L".model";
+	std::filesystem::path path = _wstrPath;
+	if (path.extension().wstring() != wstrExt)
 	{
-		MSG_BOX("모델이 로드되지 않았습니다.");
-		return E_FAIL;
+		path.replace_extension(wstrExt);
+	}
+	std::ofstream outFile(path, std::ios::binary);
+	if (!outFile) 
+	{
+		MSG_BOX("파일 열기 실패.");
 	}
 
-	if (FAILED(m_pTestModelObj->Export_Model(_wstrPath)))
+	if (FAILED(m_pTestModelObj->Export_Model(outFile, path.remove_filename().string().c_str(), m_bExportTextures)))
+	{
+		MSG_BOX("내보내기 실패.");
 		return E_FAIL;
+	}
+	outFile.close();
+	return S_OK;
+}
+
+HRESULT CLevel_AnimTool::Copy_Textures(CTestModelObject* _pModel, std::filesystem::path& _wstrSrcPath, std::filesystem::path& _wstrDstPath)
+{
+	assert(_pModel);
+	assert(!_wstrSrcPath.empty());
+	assert(!_wstrDstPath.empty());
+	list<wstring> TextureNames;
+	_pModel->Get_TextureNames(TextureNames);
+	for (auto& wstrTextureName : TextureNames)
+	{
+		std::filesystem::path srcPath = _wstrSrcPath;
+		std::filesystem::path dstPath = _wstrDstPath;
+		dstPath += wstrTextureName;
+		if (!std::filesystem::exists(srcPath))
+		{
+			MSG_BOX("복사할 파일이 없습니다.");
+			return E_FAIL;
+		}
+		std::filesystem::copy(srcPath, dstPath, std::filesystem::copy_options::overwrite_existing);
+	}
 
 	return S_OK;
 }

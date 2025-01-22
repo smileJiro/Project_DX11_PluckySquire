@@ -43,9 +43,6 @@
     <Filter Include="01.Utility\02.Prototypes\Manager">
       <UniqueIdentifier>{7884b0b1-215d-4665-b537-b64e5f91e863}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Objects\Layer">
-      <UniqueIdentifier>{14f95ffe-9d09-46ad-a1a9-954609e4208c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\05.Renderer">
       <UniqueIdentifier>{4f4765a5-8e21-4227-bb41-00dbe355c2a4}</UniqueIdentifier>
     </Filter>
@@ -112,24 +109,6 @@
     <Filter Include="01.Utility\04.Components\Model\Animation\Channel">
       <UniqueIdentifier>{8d0ff789-6110-4958-89e5-26ab14923984}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\Collider">
-      <UniqueIdentifier>{017c2a5b-5b1e-4777-8e4a-6250cf3d46e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\04.Components\Collider\Bounding">
-      <UniqueIdentifier>{9016b6c3-8cff-45e1-bd7b-536aacf19150}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\04.Components\Collider\Bounding\Sphere">
-      <UniqueIdentifier>{3308d01d-fc3e-47fc-ae73-9fef9e2f6791}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\04.Components\Collider\Bounding\AABB">
-      <UniqueIdentifier>{20f1832c-364f-4f12-acbb-17f69f5c61cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\04.Components\Collider\Bounding\OBB">
-      <UniqueIdentifier>{7a17233c-3e5f-4beb-b61d-fce2fdd654ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\04.Components\Collider\Manager">
-      <UniqueIdentifier>{ffe31121-6718-4f4d-8c26-22c3bce6d6a2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Cell">
       <UniqueIdentifier>{a044b4c4-57e7-4eae-81b3-5ccf004a1efb}</UniqueIdentifier>
     </Filter>
@@ -184,15 +163,6 @@
     <Filter Include="01.Utility\98.Imgui">
       <UniqueIdentifier>{14d60ef8-a66e-4053-a3f0-e8374b7d2133}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Objects\Part">
-      <UniqueIdentifier>{b77ac738-80da-4033-9fa9-094ab03a8c71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03.Objects\Container">
-      <UniqueIdentifier>{d855d402-49cb-421a-958d-c0f777a1afd8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03.Objects\Part\ModelObject">
-      <UniqueIdentifier>{14594ee4-8a75-4b94-9bae-3f6db4546d76}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Components\Transform\Transform_3D">
       <UniqueIdentifier>{e0466387-9548-4dfc-ba5c-f11973504946}</UniqueIdentifier>
     </Filter>
@@ -237,6 +207,39 @@
     </Filter>
     <Filter Include="00.System\03.Physx">
       <UniqueIdentifier>{07b9728a-0ce5-4ee1-a194-7f177c43d688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Actor">
+      <UniqueIdentifier>{017c2a5b-5b1e-4777-8e4a-6250cf3d46e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Actor\Manager">
+      <UniqueIdentifier>{ffe31121-6718-4f4d-8c26-22c3bce6d6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Actor">
+      <UniqueIdentifier>{1687dc9f-6b4d-460f-a6c7-5bd71b784e30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Actor\Part">
+      <UniqueIdentifier>{b77ac738-80da-4033-9fa9-094ab03a8c71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Actor\Part\ModelObject">
+      <UniqueIdentifier>{14594ee4-8a75-4b94-9bae-3f6db4546d76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Actor\Container">
+      <UniqueIdentifier>{d855d402-49cb-421a-958d-c0f777a1afd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Manager\Layer">
+      <UniqueIdentifier>{14f95ffe-9d09-46ad-a1a9-954609e4208c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Actor\Dynamic">
+      <UniqueIdentifier>{41c030ee-d71c-4f64-8cee-99f6d51539bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Actor\Static">
+      <UniqueIdentifier>{58acf950-db1a-435e-b0f5-49eda4a1207c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Debug">
+      <UniqueIdentifier>{25b150ad-e1a7-46c1-b997-67bc43f78144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\03.Physx\EventCallBack">
+      <UniqueIdentifier>{e50015aa-fe43-413b-a4bd-e7a60c293656}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -289,7 +292,7 @@
       <Filter>01.Utility\03.Objects\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Layer.h">
-      <Filter>01.Utility\03.Objects\Layer</Filter>
+      <Filter>01.Utility\03.Objects\Manager\Layer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Renderer.h">
       <Filter>01.Utility\05.Renderer</Filter>
@@ -331,7 +334,7 @@
       <Filter>01.Utility\07.Lights</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ModelObject.h">
-      <Filter>01.Utility\03.Objects\Part\ModelObject</Filter>
+      <Filter>01.Utility\03.Objects\Actor\Part\ModelObject</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Mesh.h">
       <Filter>01.Utility\04.Components\Model\Mesh</Filter>
@@ -351,26 +354,11 @@
     <ClInclude Include="..\public\Channel.h">
       <Filter>01.Utility\04.Components\Model\Animation\Channel</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Bounding.h">
-      <Filter>01.Utility\04.Components\Collider\Bounding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Collider.h">
-      <Filter>01.Utility\04.Components\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\DebugDraw.h">
-      <Filter>01.Utility\04.Components\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Bounding_AABB.h">
-      <Filter>01.Utility\04.Components\Collider\Bounding\AABB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Bounding_OBB.h">
-      <Filter>01.Utility\04.Components\Collider\Bounding\OBB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Bounding_Sphere.h">
-      <Filter>01.Utility\04.Components\Collider\Bounding\Sphere</Filter>
+      <Filter>01.Utility\04.Components\Actor</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Collision_Manager.h">
-      <Filter>01.Utility\04.Components\Collider\Manager</Filter>
+      <Filter>01.Utility\04.Components\Actor\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Cell.h">
       <Filter>01.Utility\04.Components\VIBuffer\Cell</Filter>
@@ -406,10 +394,10 @@
       <Filter>01.Utility\98.Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PartObject.h">
-      <Filter>01.Utility\03.Objects\Part</Filter>
+      <Filter>01.Utility\03.Objects\Actor\Part</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ContainerObject.h">
-      <Filter>01.Utility\03.Objects\Container</Filter>
+      <Filter>01.Utility\03.Objects\Actor\Container</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Transform_3D.h">
       <Filter>01.Utility\04.Components\Transform\Transform_3D</Filter>
@@ -447,9 +435,6 @@
     <ClInclude Include="..\Public\Model.h">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Animation2D.h">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Json_Manager.h">
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClInclude>
@@ -470,6 +455,27 @@
     </ClInclude>
     <ClInclude Include="..\Public\Physx_Manager.h">
       <Filter>00.System\03.Physx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Actor.h">
+      <Filter>01.Utility\04.Components\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ActorObject.h">
+      <Filter>01.Utility\03.Objects\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Actor_Static.h">
+      <Filter>01.Utility\04.Components\Actor\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Actor_Dynamic.h">
+      <Filter>01.Utility\04.Components\Actor\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_PxDebug.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Physx_EventCallBack.h">
+      <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation2D.h">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -507,7 +513,7 @@
       <Filter>01.Utility\03.Objects\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Layer.cpp">
-      <Filter>01.Utility\03.Objects\Layer</Filter>
+      <Filter>01.Utility\03.Objects\Manager\Layer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Renderer.cpp">
       <Filter>01.Utility\05.Renderer</Filter>
@@ -552,7 +558,7 @@
       <Filter>01.Utility\07.Lights</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ModelObject.cpp">
-      <Filter>01.Utility\03.Objects\Part\ModelObject</Filter>
+      <Filter>01.Utility\03.Objects\Actor\Part\ModelObject</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Mesh.cpp">
       <Filter>01.Utility\04.Components\Model\Mesh</Filter>
@@ -572,26 +578,11 @@
     <ClCompile Include="..\private\Channel.cpp">
       <Filter>01.Utility\04.Components\Model\Animation\Channel</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Bounding.cpp">
-      <Filter>01.Utility\04.Components\Collider\Bounding</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Collider.cpp">
-      <Filter>01.Utility\04.Components\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\DebugDraw.cpp">
-      <Filter>01.Utility\04.Components\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Bounding_AABB.cpp">
-      <Filter>01.Utility\04.Components\Collider\Bounding\AABB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Bounding_OBB.cpp">
-      <Filter>01.Utility\04.Components\Collider\Bounding\OBB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Bounding_Sphere.cpp">
-      <Filter>01.Utility\04.Components\Collider\Bounding\Sphere</Filter>
+      <Filter>01.Utility\04.Components\Actor</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Collision_Manager.cpp">
-      <Filter>01.Utility\04.Components\Collider\Manager</Filter>
+      <Filter>01.Utility\04.Components\Actor\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Cell.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Cell</Filter>
@@ -627,10 +618,10 @@
       <Filter>01.Utility\98.Imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PartObject.cpp">
-      <Filter>01.Utility\03.Objects\Part</Filter>
+      <Filter>01.Utility\03.Objects\Actor\Part</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ContainerObject.cpp">
-      <Filter>01.Utility\03.Objects\Container</Filter>
+      <Filter>01.Utility\03.Objects\Actor\Container</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Transform_3D.cpp">
       <Filter>01.Utility\04.Components\Transform\Transform_3D</Filter>
@@ -668,9 +659,6 @@
     <ClCompile Include="..\Private\Model.cpp">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Animation2D.cpp">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Json_Manager.cpp">
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClCompile>
@@ -692,12 +680,36 @@
     <ClCompile Include="..\Private\Physx_Manager.cpp">
       <Filter>00.System\03.Physx</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Actor.cpp">
+      <Filter>01.Utility\04.Components\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ActorObject.cpp">
+      <Filter>01.Utility\03.Objects\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Actor_Static.cpp">
+      <Filter>01.Utility\04.Components\Actor\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Actor_Dynamic.cpp">
+      <Filter>01.Utility\04.Components\Actor\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_PxDebug.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Physx_EventCallBack.cpp">
+      <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation2D.cpp">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
       <Filter>98.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>98.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Debug.hlsl">
       <Filter>98.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

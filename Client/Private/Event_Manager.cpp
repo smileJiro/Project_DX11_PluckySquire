@@ -82,11 +82,16 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 		Excute_ChangeMonsterState(_tEvent);
 	}
 		break;
+	case Client::EVENT_TYPE::SETUP_SIMULATION_FILTER:
+	{
+		Excute_Setup_SimulationFilter(_tEvent);
+	}
+	break;
 	default:
 		break;
 	}
 
-
+	
 	return S_OK;
 }
 
@@ -209,6 +214,22 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 	}
 	else
 		pBase->Set_Active(isActive);
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Excute_Setup_SimulationFilter(const EVENT& _tEvent)
+{
+	/* Parameter_0 : CActor Address*/
+	/* Parameter_1 : MyGroup */
+	/* Parameter_2 : OtherGroupMask */
+	CActor* pActor = (CActor*)(_tEvent.Parameters[0]);
+	if (nullptr == pActor)
+		return E_FAIL;
+
+	_uint iMyGroup = (_uint)_tEvent.Parameters[1];
+	_uint iOtherGroupMask = (_uint)_tEvent.Parameters[2];
+	pActor->Setup_SimulationFiltering(iMyGroup, iOtherGroupMask, true);
 
 	return S_OK;
 }

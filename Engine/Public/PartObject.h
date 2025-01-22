@@ -1,13 +1,13 @@
 #pragma once
 
-#include "GameObject.h"
+#include "ActorObject.h"
 
 BEGIN(Engine)
 
-class ENGINE_DLL CPartObject abstract : public CGameObject
+class ENGINE_DLL CPartObject abstract : public CActorObject
 {
 public:
-	typedef struct tagPartObjectDesc : public CGameObject::GAMEOBJECT_DESC
+	typedef struct tagPartObjectDesc : public CActorObject::ACTOROBJECT_DESC
 	{
 		// 2D, 3D 개별적인 부모 매트릭스
 		const _float4x4* pParentMatrices[COORDINATE_LAST] = {};

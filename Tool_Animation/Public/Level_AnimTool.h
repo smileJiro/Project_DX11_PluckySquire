@@ -37,11 +37,12 @@ private:
 	HRESULT					Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath);
 
 	HRESULT					Export_Model(const wstring& _wstrPath);
+	HRESULT					Copy_Textures(CTestModelObject* _pModel, std::filesystem::path& _wstrSrcPath, std::filesystem::path& _wstrDstPath);
 private:
 	//모델 로딩 관련
 	CTestTerrain* m_pTestTerrain = nullptr;
 
-	_tchar					m_szLoadingText[MAX_PATH] = {};
+	std::filesystem::path					m_szLoadedPath;
 	CTestModelObject* m_pTestModelObj = nullptr;
 	CCamera_Target* m_pTargetCam = nullptr;
 
@@ -52,7 +53,7 @@ private:
 	_float m_f2DZoomSpeed = 10.f;
 	_float m_fZoomMultiplier = 1.f;
 
-
+	_bool m_bExportTextures = false;
 
 public:
 	static CLevel_AnimTool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

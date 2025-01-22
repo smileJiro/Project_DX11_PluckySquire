@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "TestModelObject.h"
 #include "GameInstance.h"
-#include "3DModel.h"
-#include "2DModel.h"
+#include "Test3DModel.h"
+#include "Test2DModel.h"
 #include "Controller_Model.h"
 #include "TestController_Model.h"
+#include "Engine_Defines.h"
 
 CTestModelObject::CTestModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -16,12 +17,13 @@ CTestModelObject::CTestModelObject(const CTestModelObject& _Prototype)
 {
 }
 
+
 HRESULT CTestModelObject::Initialize(void* _pArg)
 {
 	TESTMODELOBJ_DESC* pDesc = (TESTMODELOBJ_DESC*)_pArg;
     m_iShaderPasses[COORDINATE_2D] = pDesc->iShaderPass_2D;
     m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
-
+	m_eCurCoord = pDesc->eStartCoord;
     if (FAILED(CPartObject::Initialize(_pArg)))
         return E_FAIL;
 
@@ -52,8 +54,6 @@ void CTestModelObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CTestModelObject::Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc)
 {
-
-
     _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
 
     switch (_pDesc->eStartCoord)
@@ -99,9 +99,32 @@ void CTestModelObject::Set_2DProjMatrix(_fmatrix _vProjMatrix)
     XMStoreFloat4x4(&m_ProjMatrix, _vProjMatrix);
 }
 
-HRESULT CTestModelObject::Export_Model(const wstring& _wstrPath)
+void CTestModelObject::Get_TextureNames(list<wstring>& _outTextureNames)
 {
-	
+	assert(m_pControllerModel);
+    assert(COORDINATE_LAST != m_eCurCoord);
+	switch (m_eCurCoord)
+	{
+	case Engine::COORDINATE_2D:
+		static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TextureNames(_outTextureNames);
+		break;
+	case Engine::COORDINATE_3D:
+		static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TextureNames(_outTextureNames);
+		break;
+	}
+}
+
+HRESULT CTestModelObject::Export_Model(ofstream& _outfile, const _char* _szDirPath, _bool _bExportTextures)
+{
+	assert(m_pControllerModel); 
+	assert(COORDINATE_LAST != m_eCurCoord);
+    switch (m_eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+	    return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Export_Model(_outfile);
+    case Engine::COORDINATE_3D:
+	    return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Export_Model(_outfile);
+    }
     return S_OK;
 }
 

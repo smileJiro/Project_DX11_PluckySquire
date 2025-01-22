@@ -12,6 +12,10 @@ protected:
 
 public:
 
+	HRESULT				Export_Model(ofstream& _outfile);
+
+	//Get
+	void						Get_TextureNames(list<string>& _outTextureNames);
 public:
 	static CTest3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;

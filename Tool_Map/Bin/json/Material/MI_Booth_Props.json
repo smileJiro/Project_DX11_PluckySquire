@@ -1,0 +1,31 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Booth_Props",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_Booth_Props'",
+        "ObjectPath": "/Game/Map/3D/Desk_C07/Materials/M_Booth_Props.0"
+      },
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Booth_Props_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Props_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Booth_Props_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Props_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Booth_Props_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Props_OcclusionRoughnessMetallic.0"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]
