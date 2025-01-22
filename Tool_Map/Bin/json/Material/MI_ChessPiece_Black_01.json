@@ -1,0 +1,83 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_ChessPiece_Black_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_ChessPiece_Base_01'",
+        "ObjectPath": "/Game/Map/3D/Objects/chess/Materials/MM_ChessPiece_Base_01.0"
+      },
+      "bHasStaticPermutationResource": true,
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "StaticParameters": {
+        "StaticSwitchParameters": [
+          {
+            "Value": false,
+            "ParameterInfo": {
+              "Name": "White_OR_Black",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            "bOverride": true,
+            "ExpressionGUID": "D5122ED1-454603B8-2B6DEAA4-EE61C7D3"
+          }
+        ]
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'TexturesCom_Plastic_Polyethylene_1K_roughness'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Tracks_01/TexturesCom_Plastic_Polyethylene_1K_roughness.0"
+        },
+        {
+          "ObjectName": "Texture2D'TexturesCom_Plastic_Polyethylene_1K_normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Tracks_01/TexturesCom_Plastic_Polyethylene_1K_normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'TexturesCom_Plastic_Polyethylene_1K_albedo_3'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Tracks_01/TexturesCom_Plastic_Polyethylene_1K_albedo_3.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "TexturesCom_Plastic_Polyethylene_1K_albedo_3"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "TexturesCom_Plastic_Polyethylene_1K_normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "TexturesCom_Plastic_Polyethylene_1K_roughness"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

@@ -31,7 +31,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 		return E_FAIL;
 
 	//플레이어 위치 가져오기
-	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
 	if (nullptr == m_pTarget)
 	{
 	#ifdef _DEBUG
@@ -73,8 +73,6 @@ _float CMonster::Calculate_Distance()
 
 void CMonster::Attack(_float _fTimeDelta)
 {
-	//if (m_PartObjects[PART_WEAPON] != nullptr && m_PartObjects[PART_WEAPON]->Get_UseColl())
-	//	m_PartObjects[PART_WEAPON]->Set_Collider_Enable(true);
 }
 
 HRESULT CMonster::Cleanup_DeadReferences()

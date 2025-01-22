@@ -7,7 +7,7 @@ CParticle_Emitter::CParticle_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext
 }
 
 CParticle_Emitter::CParticle_Emitter(const CParticle_Emitter& _Prototype)
-	: CGameObject(_Prototype)
+	: CGameObject(_Prototype), m_eType(_Prototype.m_eType)
 {
 }
 

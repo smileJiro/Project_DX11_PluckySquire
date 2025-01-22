@@ -1,0 +1,91 @@
+[
+  {
+    "Type": "Material",
+    "Name": "m_wooden_zigzags_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "2729EADB-4C0EAF24-1A968CBF-C4FE8C96",
+      "CachedExpressionData": {
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'wooden_platforms_zigzags_01_d'",
+            "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_zigzags_01_d.0"
+          },
+          {
+            "ObjectName": "Texture2D'wooden_platforms_01_r'",
+            "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_01_r.0"
+          },
+          {
+            "ObjectName": "Texture2D'wooden_platforms_01_n'",
+            "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_01_n.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "wooden_platforms_01_n"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "wooden_platforms_01_r"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "wooden_platforms_zigzags_01_d"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'wooden_platforms_zigzags_01_d'",
+          "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_zigzags_01_d.0"
+        },
+        {
+          "ObjectName": "Texture2D'wooden_platforms_01_r'",
+          "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_01_r.0"
+        },
+        {
+          "ObjectName": "Texture2D'wooden_platforms_01_n'",
+          "ObjectPath": "/Game/Map/3D/Objects/wooden_platforms/Textures/wooden_platforms_01_n.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

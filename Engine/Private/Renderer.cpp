@@ -60,8 +60,7 @@ HRESULT CRenderer::Initialize()
     /* Target_EffectRevealage */
     if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectRevealage"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R16_FLOAT, _float4(1.0f, 0.f, 0.0f, 0.0f))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectAdd"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_R16G16_FLOAT, _float4(0.f, 0.f, 0.0f, 0.0f))))
-        return E_FAIL;
+
 
     /* RTV를 모아두는 MRT를 세팅 */
 
@@ -96,8 +95,7 @@ HRESULT CRenderer::Initialize()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_EffectRevealage"))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_EffectAdd"))))
-        return E_FAIL;
+
 
     /* 직교 투영으로 그리기 위한 Shader, VIBuffer, Matrix Init */
     m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../../EngineSDK/Hlsl/Shader_Deferred.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements);
@@ -127,7 +125,8 @@ HRESULT CRenderer::Initialize()
     m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"),       fX, fY + fSizeY * 2.0f, ViewportDesc.Width * 0.2f, ViewportDesc.Height * 0.2f);
     m_pGameInstance->Ready_RT_Debug(TEXT("Target_Book_2D"),      fX, fY + fSizeY * 3.0f, ViewportDesc.Width * 0.2f, ViewportDesc.Height * 0.2f);
     m_pGameInstance->Ready_RT_Debug(TEXT("Target_LightDepth"),  fX, fY + fSizeY * 4.0f, ViewportDesc.Width * 0.2f, ViewportDesc.Height * 0.2f);
-    
+    m_pGameInstance->Ready_RT_Debug(TEXT("Target_EffectAccumulate"), fX, fY, ViewportDesc.Width * 0.2f, ViewportDesc.Height * 0.2f);
+
 #endif // _DEBUG
 
     return S_OK;
@@ -210,12 +209,15 @@ HRESULT CRenderer::Draw_RenderObject()
     }
 
 #ifdef _DEBUG
-    if(true == m_isDebugRender)
+    if (true == m_isDebugRender)
+    {
         if (FAILED(Render_Debug()))
         {
             MSG_BOX("Render Failed Render_Debug");
             return E_FAIL;
         }
+        m_pGameInstance->Physx_Render();
+    }
 
     if (KEY_DOWN(KEY::F6))
         m_isDebugRender ^= 1;
@@ -463,8 +465,6 @@ HRESULT CRenderer::Render_After_Effect()
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_RevealageTexture", TEXT("Target_EffectRevealage"))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_AddTexture", TEXT("Target_EffectAdd"))))
-        return E_FAIL;
 
 
     /* Final Pass */
@@ -510,7 +510,8 @@ HRESULT CRenderer::Render_Debug()
     //    return E_FAIL;
     //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Final"), m_pShader, m_pVIBuffer)))
     //    return E_FAIL;
-
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Weighted_Blended"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
     return S_OK;
 }
 

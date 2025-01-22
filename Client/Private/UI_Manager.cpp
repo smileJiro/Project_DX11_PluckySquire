@@ -37,6 +37,7 @@ void CUI_Manager::Free()
 	}
 	m_pShopPanels.clear();
 	
+	Safe_Release(m_pPlayer);
 
 	__super::Free();
 }

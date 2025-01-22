@@ -87,6 +87,7 @@ private :
 	void					Open_Parsing();
 	void					Open_RePackaging();
 	HRESULT					Parsing(json _jsonObj);
+	HRESULT					Find_Override_Material(CMapObject* _pMapObject, json _jsonObj);
 
 	_bool					Check_EgnoreObject(_string _strModelName);
 private :

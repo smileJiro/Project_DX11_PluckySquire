@@ -6,9 +6,9 @@ class CMesh;
 class CMaterial;
 class CBone;
 class CAnimation;
-class ENGINE_DLL C3DModel final : public CModel
+class ENGINE_DLL C3DModel : public CModel
 {
-private:
+protected:
 	C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C3DModel(const C3DModel& _Prototype);
 	virtual ~C3DModel() = default;

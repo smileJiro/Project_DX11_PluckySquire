@@ -11,14 +11,13 @@
 #include "Ray.h"
 #include "3DModel.h"
 #include "Mesh.h"
-#include "Collider.h"
+#include "Actor_Dynamic.h"
+#include "Actor_Static.h"
+#include "VIBuffer_PxDebug.h"
 
 /* Etc */
 #include "Transform_2D.h"
 #include "Transform_3D.h"
-#include "Bounding_AABB.h"
-#include "Bounding_OBB.h"
-#include "Bounding_Sphere.h"
 #include "CustomFont.h"
 #include "RenderTarget.h"
 #include "CameraArm.h"
@@ -29,6 +28,8 @@
 
 /* Object */
 #include "Particle_Sprite_Emitter.h"
+#include "Particle_Mesh_Emitter.h"
+#include "Particle_System.h"
 
 /* 원형객체들을 레벨별로 관리하겠다. */
 /* 특정 레벨에서 복제할 필요가 없는 원형들은 삭제하겠다 */

@@ -20,6 +20,8 @@ public:
 public:
 	// Get
 	_uint Get_NumSRVs() const { return m_iNumSRVs; }
+
+	ID3D11ShaderResourceView* Get_SRV(const _wstring _strTextureName, _uint* _pIndex = nullptr);
 	ID3D11ShaderResourceView* Get_SRV(_uint _iSRVIndex)
 	{
 		if (_iSRVIndex >= m_SRVNames.size())
@@ -28,6 +30,7 @@ public:
 			return nullptr;
 		return m_SRVs[_iSRVIndex];
 	}
+
 	const _wstring* Get_SRVName(_uint _iSRVIndex) 
 	{
 			if (_iSRVIndex >= m_SRVNames.size())

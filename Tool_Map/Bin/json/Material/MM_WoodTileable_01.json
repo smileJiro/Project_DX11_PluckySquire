@@ -1,0 +1,469 @@
+[
+  {
+    "Type": "Material",
+    "Name": "MM_WoodTileable_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSampleParameter2D_2",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "BlendMode": "BLEND_Masked",
+      "bUsedWithStaticLighting": true,
+      "StateId": "985E320A-42A1C3E2-32F45593-3E7763D4",
+      "CachedExpressionData": {
+        "Parameters": {
+          "RuntimeEntries": {
+            "NameHashes": [
+              1868445761857640113,
+              9424262931620737328,
+              12261049273318028538,
+              14712526430734074818,
+              17149770000495961825,
+              17830933328945584460
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "RoughnessMultiplier_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Tiling_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "HueShiftAmount",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "NoiseOverlayIntensity_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "DesaturationAmount",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "CameraBlend",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "454495AC-45CA0EFF-192276BE-2628534B",
+              "F2B79881-45CFB9E6-922250A5-74CE33EC",
+              "A7AF7269-4ABBF190-70A575AC-4D6E5E8D",
+              "3A1507A3-47D6AB6D-D253C69F-03BFBB8D",
+              "7D2BE691-48A42FA0-4BCE7189-5ADC9712",
+              "8A6F72F9-4109517C-D82E72AF-CE1B255D"
+            ]
+          },
+          "RuntimeEntries[1]": {
+            "NameHashes": [
+              12170866735890590140
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "BaseColour_Tint_01",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "A1AD63A0-4A09B05D-B707A2A8-4E5BBEAB"
+            ]
+          },
+          "RuntimeEntries[2]": {
+            "NameHashes": [
+              440574345582452634,
+              4708953410708818575,
+              5144476314915595866,
+              12241367727707337503
+            ],
+            "ParameterInfos": [
+              {
+                "Name": "Roughness",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "Normal",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "BaseColour",
+                "Association": "GlobalParameter",
+                "Index": -1
+              },
+              {
+                "Name": "GradientTexture",
+                "Association": "GlobalParameter",
+                "Index": -1
+              }
+            ],
+            "ExpressionGuids": [
+              "C6C3EF53-43A6551B-1115EEAD-2A57585D",
+              "00A8A027-44072FF3-89072A89-C00FED82",
+              "5BB5176E-45880685-C3B37BA5-F525F4F9",
+              "4CFE75A7-4B2A9BC6-B6FAD689-7E346703"
+            ]
+          },
+          "ScalarValues": [
+            0.82,
+            1.0,
+            0.0,
+            0.05,
+            0.0,
+            1.0
+          ],
+          "VectorValues": [
+            {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            }
+          ],
+          "TextureValues": [
+            {
+              "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_roughness_02'",
+              "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_roughness_02.0"
+            },
+            {
+              "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_normal_02'",
+              "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_normal_02.0"
+            },
+            {
+              "ObjectName": "Texture2D'WoodenBlock_Original_BaseColour_01'",
+              "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/WoodenBlock_Original_BaseColour_01.0"
+            },
+            {
+              "ObjectName": "Texture2D'FadeGradient_01'",
+              "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+            }
+          ]
+        },
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_normal_02'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_normal_02.0"
+          },
+          {
+            "ObjectName": "Texture2D'TilingNoise05'",
+            "ObjectPath": "/Engine/MapTemplates/TilingNoise05.0"
+          },
+          {
+            "ObjectName": "Texture2D'T_Noise01'",
+            "ObjectPath": "/Game/Map/3D/Adia/Common/T_Noise01.0"
+          },
+          {
+            "ObjectName": "Texture2D'WoodenBlock_Original_BaseColour_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/WoodenBlock_Original_BaseColour_01.0"
+          },
+          {
+            "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_roughness_02'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_roughness_02.0"
+          },
+          {
+            "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+            "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+          },
+          {
+            "ObjectName": "Texture2D'FadeGradient_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+          }
+        ],
+        "FunctionInfos": [
+          {
+            "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+            "Function": {
+              "ObjectName": "MaterialFunction'HueShift'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+            }
+          },
+          {
+            "StateId": "71028A8D-47BF4037-3A3A0B8A-D7B60E53",
+            "Function": {
+              "ObjectName": "MaterialFunction'ScreenAlignedPixelToPixelUVs'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/ScreenAlignedPixelToPixelUVs.0"
+            }
+          },
+          {
+            "StateId": "22D58D0F-45CC84AB-89A3628B-351D83C8",
+            "Function": {
+              "ObjectName": "MaterialFunction'DitherTemporalAA'",
+              "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/DitherTemporalAA.0"
+            }
+          },
+          {
+            "StateId": "DE013164-436F5AD7-BA0886B7-DFFD7F63",
+            "Function": {
+              "ObjectName": "MaterialFunction'MF_FX_CameraAlphaFade'",
+              "ObjectPath": "/Game/FX/Material/Function/MF_FX_CameraAlphaFade.0"
+            }
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 0,
+          "TextureName": "T_Noise01"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "TexturesCom_Wood_GluLamBeam_1K_normal_02"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "TexturesCom_Wood_GluLamBeam_1K_roughness_02"
+        },
+        {
+          "SamplingScale": 0.25,
+          "UVChannelIndex": 0,
+          "TextureName": "TilingNoise05"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "WoodenBlock_Original_BaseColour_01"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "Parameters": {
+        "RuntimeEntries": {
+          "NameHashes": [
+            1868445761857640113,
+            9424262931620737328,
+            12261049273318028538,
+            14712526430734074818,
+            17149770000495961825,
+            17830933328945584460
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "RoughnessMultiplier_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Tiling_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "HueShiftAmount",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "NoiseOverlayIntensity_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "DesaturationAmount",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "CameraBlend",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "454495AC-45CA0EFF-192276BE-2628534B",
+            "F2B79881-45CFB9E6-922250A5-74CE33EC",
+            "A7AF7269-4ABBF190-70A575AC-4D6E5E8D",
+            "3A1507A3-47D6AB6D-D253C69F-03BFBB8D",
+            "7D2BE691-48A42FA0-4BCE7189-5ADC9712",
+            "8A6F72F9-4109517C-D82E72AF-CE1B255D"
+          ]
+        },
+        "RuntimeEntries[1]": {
+          "NameHashes": [
+            12170866735890590140
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "BaseColour_Tint_01",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "A1AD63A0-4A09B05D-B707A2A8-4E5BBEAB"
+          ]
+        },
+        "RuntimeEntries[2]": {
+          "NameHashes": [
+            440574345582452634,
+            4708953410708818575,
+            5144476314915595866,
+            12241367727707337503
+          ],
+          "ParameterInfos": [
+            {
+              "Name": "Roughness",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "Normal",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "BaseColour",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            {
+              "Name": "GradientTexture",
+              "Association": "GlobalParameter",
+              "Index": -1
+            }
+          ],
+          "ExpressionGuids": [
+            "C6C3EF53-43A6551B-1115EEAD-2A57585D",
+            "00A8A027-44072FF3-89072A89-C00FED82",
+            "5BB5176E-45880685-C3B37BA5-F525F4F9",
+            "4CFE75A7-4B2A9BC6-B6FAD689-7E346703"
+          ]
+        },
+        "ScalarValues": [
+          0.82,
+          1.0,
+          0.0,
+          0.05,
+          0.0,
+          1.0
+        ],
+        "VectorValues": [
+          {
+            "R": 1.0,
+            "G": 1.0,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "FFFFFF"
+          }
+        ],
+        "TextureValues": [
+          {
+            "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_roughness_02'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_roughness_02.0"
+          },
+          {
+            "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_normal_02'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_normal_02.0"
+          },
+          {
+            "ObjectName": "Texture2D'WoodenBlock_Original_BaseColour_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/WoodenBlock_Original_BaseColour_01.0"
+          },
+          {
+            "ObjectName": "Texture2D'FadeGradient_01'",
+            "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+          }
+        ]
+      },
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_normal_02'",
+          "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_normal_02.0"
+        },
+        {
+          "ObjectName": "Texture2D'TilingNoise05'",
+          "ObjectPath": "/Engine/MapTemplates/TilingNoise05.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Noise01'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Noise01.0"
+        },
+        {
+          "ObjectName": "Texture2D'WoodenBlock_Original_BaseColour_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/WoodenBlock_Original_BaseColour_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'TexturesCom_Wood_GluLamBeam_1K_roughness_02'",
+          "ObjectPath": "/Game/Map/3D/Desk_C04/Textures/TexturesCom_Wood_GluLamBeam_1K_roughness_02.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "FunctionInfos": [
+        {
+          "StateId": "B6067F67-4AC0092A-9D7DF581-EBEEE180",
+          "Function": {
+            "ObjectName": "MaterialFunction'HueShift'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.0"
+          }
+        },
+        {
+          "StateId": "71028A8D-47BF4037-3A3A0B8A-D7B60E53",
+          "Function": {
+            "ObjectName": "MaterialFunction'ScreenAlignedPixelToPixelUVs'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Texturing/ScreenAlignedPixelToPixelUVs.0"
+          }
+        },
+        {
+          "StateId": "22D58D0F-45CC84AB-89A3628B-351D83C8",
+          "Function": {
+            "ObjectName": "MaterialFunction'DitherTemporalAA'",
+            "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/Utility/DitherTemporalAA.0"
+          }
+        },
+        {
+          "StateId": "DE013164-436F5AD7-BA0886B7-DFFD7F63",
+          "Function": {
+            "ObjectName": "MaterialFunction'MF_FX_CameraAlphaFade'",
+            "ObjectPath": "/Game/FX/Material/Function/MF_FX_CameraAlphaFade.0"
+          }
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

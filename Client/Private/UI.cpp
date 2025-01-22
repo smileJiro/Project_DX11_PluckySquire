@@ -23,7 +23,8 @@ HRESULT CUI::Initialize_Prototype()
 
 HRESULT CUI::Initialize(void* pArg)
 {
-	__super::Initialize(pArg);
+	if(FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
 
 	//if (FAILED(Ready_Components()))
 	//	return E_FAIL;
@@ -58,7 +59,6 @@ HRESULT CUI::Render(_int _index)
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture", _index)))
 		return E_FAIL;
-
 
 	m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
 	m_pVIBufferCom->Bind_BufferDesc();

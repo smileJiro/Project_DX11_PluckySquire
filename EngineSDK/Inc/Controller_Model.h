@@ -26,7 +26,7 @@ public:
 		wstring wstr3DModelPrototypeTag;
 	}CON_MODEL_DESC;
 
-private:
+protected:
 	CController_Model(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CController_Model() = default;
 
@@ -58,7 +58,7 @@ private:
 	ID3D11DeviceContext* m_pContext = nullptr;
 	CGameInstance* m_pGameInstance = nullptr;
 
-private:
+protected:
 
 	CModel* m_ModelComs[COORDINATE_LAST] = {};
 	COORDINATE				m_eCurCoord = COORDINATE_LAST;

@@ -118,7 +118,7 @@ HRESULT CFSM::Change_State(MONSTER_STATE _eState)
 		return S_OK;
 
 	m_CurState->State_Exit();
-	m_pOwner->Set_PreState(m_eCurState);
+	m_pOwner->Set_PreState((_uint)m_eCurState);
 
 	Set_State(_eState);
 
@@ -138,7 +138,7 @@ HRESULT CFSM::Set_State(MONSTER_STATE _eState)
 	m_eCurState = _eState;
 
 	m_CurState->State_Enter();
-	m_pOwner->Set_State(_eState);
+	m_pOwner->Set_State((_uint)_eState);
 
 	return S_OK;
 }

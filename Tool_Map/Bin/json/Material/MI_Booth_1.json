@@ -1,0 +1,139 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Booth_1",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_Booth'",
+        "ObjectPath": "/Game/Map/3D/Desk_C07/Materials/M_Booth.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Dirt_Roughness",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.727985,
+          "ExpressionGUID": "A6CB590D-434251DF-DAAF9980-4908FD41"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Dirt_Strength",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.82381,
+          "ExpressionGUID": "9DB68C97-40DA2120-4D5A48BF-975E26BB"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Dirt_Color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "71C6346D-483F6FF1-7B924A9C-96959B76"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Plastic_Color_1",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.927083,
+            "G": 0.728411,
+            "B": 0.080225,
+            "A": 1.0,
+            "Hex": "F7DE50"
+          },
+          "ExpressionGUID": "93771246-4ACD7B17-66A2F3B5-6BA7374A"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Plastic_Color_2",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.817708,
+            "G": 0.817708,
+            "B": 0.817708,
+            "A": 1.0,
+            "Hex": "EAEAEA"
+          },
+          "ExpressionGUID": "67593705-487F34EF-25C7A086-3D995D33"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Plastic_Color_4",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.494792,
+            "G": 0.494792,
+            "B": 0.494792,
+            "A": 1.0,
+            "Hex": "BBBBBB"
+          },
+          "ExpressionGUID": "2BD7C3A0-428E2F05-46BF28AA-5966CF55"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Booth_Plastic_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Plastic_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Booth_Plastic_Normal'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Plastic_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Booth_Masks'",
+          "ObjectPath": "/Game/Map/3D/Desk_C07/Textures/Booth/Booth_Masks.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Booth_Masks"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "Booth_Plastic_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "Booth_Plastic_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

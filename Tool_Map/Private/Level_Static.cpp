@@ -15,9 +15,7 @@ HRESULT CLevel_Static::Initialize()
 
 void CLevel_Static::Update(_float _fTimeDelta)
 {
-	//if (KEY_DOWN(KEY::ENTER))
-		Event_LevelChange(LEVEL_LOADING, LEVEL_TOOL_MAP);
-
+	Event_LevelChange(LEVEL_LOADING, LEVEL_TOOL_3D_MAP);
 }
 
 HRESULT CLevel_Static::Render()

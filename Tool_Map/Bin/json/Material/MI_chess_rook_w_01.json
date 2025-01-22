@@ -1,0 +1,97 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_chess_rook_w_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'm_chess_rook_b_01'",
+        "ObjectPath": "/Game/Map/3D/Objects/chess/Materials/m_chess_rook_b_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BC",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Rook_white_Diffuse'",
+            "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Rook_white_Diffuse.0"
+          },
+          "ExpressionGUID": "29D79830-4DABF4A5-46C04580-3770A2D7"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "N",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Rook_white_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Rook_white_Normal.0"
+          },
+          "ExpressionGUID": "5C5B1F2C-4E93460E-9F96EE86-9006CE25"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RH",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Rook_white_Roughness'",
+            "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Rook_white_Roughness.0"
+          },
+          "ExpressionGUID": "27CBA4EB-4EC2F2E9-1A76A1BD-1DB464FA"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Rook_black_Diffuse'",
+          "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Rook_black_Diffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'Rook_black_Roughness'",
+          "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Rook_black_Roughness.0"
+        },
+        {
+          "ObjectName": "Texture2D'Rook_black_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/chess/Textures/Rook_black_Normal.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Rook_white_Diffuse"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Rook_white_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Rook_white_Roughness"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

@@ -63,10 +63,16 @@ HRESULT CLoader::Loading()
     case Map_Tool::LEVEL_STATIC:
         hr = Loading_Level_Static();
          break;
-    case Map_Tool::LEVEL_TOOL_MAP:
-        hr = Loading_Level_Map_Tool();
+
+    case Map_Tool::LEVEL_TOOL_2D_MAP:
+        hr = Loading_Level_2D_Map_Tool();
+        break;
+
+    case Map_Tool::LEVEL_TOOL_3D_MAP:
+        hr = Loading_Level_3D_Map_Tool();
         break;
     case Map_Tool::LEVEL_TOOL_TRIGGER:
+        hr = Loading_Level_Trigger();
         hr = S_OK;
         break;
     }
@@ -93,6 +99,11 @@ HRESULT CLoader::Loading_Level_Static()
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Ray"),
+        CRay::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
@@ -127,7 +138,10 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
+    /* For. Prototype_GameObject_Camera_Target */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+        CCamera_Free::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -155,24 +169,13 @@ HRESULT CLoader::Loading_Level_Logo()
 
 HRESULT CLoader::Loading_Level_Trigger()
 {
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 
-HRESULT CLoader::Loading_Level_Map_Tool()
+HRESULT CLoader::Loading_Level_2D_Map_Tool()
 {
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
-
-    /* For. Prototype_Component_VIBuffer_Rect */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Ray"),
-        CRay::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-    /* For.Prototype_Component_Collider_Sphere */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_Collider_Sphere"),
-        CCollider::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
-        return E_FAIL;
-
-
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
@@ -183,46 +186,55 @@ HRESULT CLoader::Loading_Level_Map_Tool()
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
-    
 
-        // TEST~~~~~~~~~~~~~~~~~~~~~
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("TEST"),
-    //    C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/Anim/buttergrump_Rig/buttergrump_Rig.model", matPretransform))))
+    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_3D_MAP,
+    //    TEXT("../../Client/Bin/Resources/Models/AnimModel"), matPretransform)))
+    //        //TEXT("../../Client/Bin/Resources/TESTPATH/"), matPretransform)))
     //    return E_FAIL;
-    // TEST END~~~~~~~~~~~~
-
-
-
-    //XMMATRIX matPretransform = XMMatrixIdentity();
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_MAP,
-        //TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
-        TEXT("../../Client/Bin/Resources/Models/"), matPretransform)))
-        //TEXT("../../Client/Bin/Resources/sibal/"), matPretransform)))
-        return E_FAIL;
-
-
-
-
-    /* For. Prototype_Component_VIBuffer_Rect */    
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_Component_VIBuffer_Rect"),
-        CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-    
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
-    /* For. Prototype_GameObject_Camera_Target */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_Camera_Free"),
-        CCamera_Free::Create(m_pDevice, m_pContext))))
+
+    lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+    m_isFinished = true;
+
+    return S_OK;
+}
+
+
+HRESULT CLoader::Loading_Level_3D_Map_Tool()
+{
+    lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+
+    /* For.Prototype_Component_Collider_Sphere */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MAP, TEXT("Prototype_Component_Collider_Sphere"),
+        CCollider::Create(m_pDevice, m_pContext, CCollider::SPHERE))))
         return E_FAIL;
+
+    lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_3D_MAP,
+        TEXT("../../Client/Bin/Resources/Models"), matPretransform)))
+            //TEXT("../../Client/Bin/Resources/TESTPATH/"), matPretransform)))
+        return E_FAIL;
+
+
+    lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
     /* For. Prototype_GameObject_MapObject */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_MapObject"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
         CMapObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_MAP, TEXT("Prototype_GameObject_CellContainor"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_CellContainor"),
         CCellContainor::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 

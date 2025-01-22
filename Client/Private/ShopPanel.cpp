@@ -34,20 +34,20 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-	//if (KEY_DOWN(KEY::I) && SHOP_END == m_eShopPanel)
-	//{
-	//	isRender();
-	//}
-	//else if (KEY_DOWN(KEY::I) && SHOP_END != m_eShopPanel)
-	//{
-	//	for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
-	//	{
-	//		if (SHOP_END != iter.second->Get_ShopPanel())
-	//		{
-	//			iter.second->Child_Update(_fTimeDelta);
-	//		}
-	//	}
-	//}
+	if (KEY_DOWN(KEY::I) && SHOP_END == m_eShopPanel)
+	{
+		isRender();
+	}
+	else if (KEY_DOWN(KEY::I) && SHOP_END != m_eShopPanel)
+	{
+		for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
+		{
+			if (SHOP_END != iter.second->Get_ShopPanel())
+			{
+				iter.second->Child_Update(_fTimeDelta);
+			}
+		}
+	}
 }
 
 void CShopPanel::Late_Update(_float _fTimeDelta)

@@ -35,14 +35,18 @@ HRESULT CShader::Initialize_Prototype(const _tchar* _pShaderFilePath, const D3D1
     ID3DBlob* pBlobBuffer = nullptr;
     /* 셰이더 컴파일 */
     if (FAILED(D3DX11CompileEffectFromFile(_pShaderFilePath, 0, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHlslFlag, 0, m_pDevice, &m_pEffect, &pBlobBuffer)))
+    {
         return E_FAIL;
+    }
 
     /* technique desc >> pass desc >> shader desc 진입 하여 InputSignatue, InputSignaturesize 를 가져온다. */
     
     // 1. technique desc 에 접근하여 pass의 개수를 가져와 멤버에 채운다.
     ID3DX11EffectTechnique* pTechnique = m_pEffect->GetTechniqueByIndex(0);
     if (nullptr == pTechnique)
+    {
         return E_FAIL;
+    }
 
     D3DX11_TECHNIQUE_DESC TechniqueDesc = {};
     pTechnique->GetDesc(&TechniqueDesc);
@@ -53,7 +57,9 @@ HRESULT CShader::Initialize_Prototype(const _tchar* _pShaderFilePath, const D3D1
     {
         ID3DX11EffectPass* pPass = pTechnique->GetPassByIndex(i);
         if (nullptr == pPass)
+        {
             return E_FAIL;
+        }
 
         D3DX11_PASS_DESC PassDesc = {};
         pPass->GetDesc(&PassDesc);
@@ -61,7 +67,9 @@ HRESULT CShader::Initialize_Prototype(const _tchar* _pShaderFilePath, const D3D1
         ID3D11InputLayout* pInputLayout = nullptr;
         
         if (FAILED(m_pDevice->CreateInputLayout(_pElementsDesc, _iNumElements, PassDesc.pIAInputSignature, PassDesc.IAInputSignatureSize, &pInputLayout)))
+        {
             return E_FAIL;
+        }
 
         // 3. InputLayout 벡터에 담는다. >>> 추후 해당 InputLayout은 지정한 pass와 연동하여 CShader::Begin() 함수에서 사용 된다.
         m_InputLayouts.push_back(pInputLayout);

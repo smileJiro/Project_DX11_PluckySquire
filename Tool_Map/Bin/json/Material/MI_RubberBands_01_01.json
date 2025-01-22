@@ -1,0 +1,118 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_RubberBands_01_01",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_SimpleProps_01'",
+        "ObjectPath": "/Game/Materials/ModelUpdates/MM_SimpleProps_01.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BaseColour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'RubberBands_01_01_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/Misc_DeskObjects_01/Textures/V2/RubberBands_01_01_BaseColor.0"
+          },
+          "ExpressionGUID": "A81585F2-40BEC55A-085987A9-395834C6"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'RubberBands_01_01_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/Misc_DeskObjects_01/Textures/V2/RubberBands_01_01_Normal.0"
+          },
+          "ExpressionGUID": "5AF985A0-4E48F51B-94D6C080-143F5635"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "ORMH",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'RubberBands_01_01_ORMH'",
+            "ObjectPath": "/Game/Map/3D/Objects/Misc_DeskObjects_01/Textures/V2/RubberBands_01_01_ORMH.0"
+          },
+          "ExpressionGUID": "3FB6A6BF-490D2B00-1A3CD5BA-EF197027"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Torch_01_Normal'",
+          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        },
+        {
+          "ObjectName": "Texture2D'Torch_01_ORMH'",
+          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_ORMH.0"
+        },
+        {
+          "ObjectName": "Texture2D'Torch_01_BaseColour'",
+          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_BaseColour.0"
+        },
+        {
+          "ObjectName": "Texture2D'Torch_01_Emissive'",
+          "ObjectPath": "/Game/Items/3D/Torch/textures/Torch_01_Emissive.0"
+        },
+        {
+          "ObjectName": "Texture2D'1_rough_1002'",
+          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_rough_1002.0"
+        },
+        {
+          "ObjectName": "Texture2D'1_metal_1002'",
+          "ObjectPath": "/Game/Map/3D/NvidiaAssets/Textures/SM_books_pile/textures/books_pile_horizontal/set1/1_metal_1002.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "RubberBands_01_01_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "RubberBands_01_01_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "RubberBands_01_01_ORMH"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

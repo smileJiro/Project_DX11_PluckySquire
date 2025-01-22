@@ -1,3 +1,5 @@
+#include "../../../EngineSDK/hlsl/Engine_Shader_Define.hlsli"
+#include "../../../EngineSDK/hlsl/Engine_Shader_Function.hlsli"
 /* 상수 테이블 */
 float4x4 g_WorldMatrix;
 float4x4 g_ViewMatrix;
