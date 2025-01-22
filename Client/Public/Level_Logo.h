@@ -10,9 +10,10 @@ private:
 	virtual ~CLevel_Logo() = default;
 
 public:
-	virtual HRESULT Initialize() override;
-	virtual void Update(_float _fTimeDelta) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT			Initialize() override;
+	virtual void			Update(_float _fTimeDelta) override;
+	virtual HRESULT			Render() override;
+	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
 
 
 

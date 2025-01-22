@@ -1,0 +1,3347 @@
+[
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.86"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.91"
+      }
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      }
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_0",
+    "Outer": "BrushComponent0",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "ConvexElems": [
+          {
+            "VertexData": [
+              {
+                "X": -2052.2676,
+                "Y": 100.0,
+                "Z": -100.0
+              },
+              {
+                "X": -2052.2676,
+                "Y": 100.0,
+                "Z": 100.0
+              },
+              {
+                "X": -2052.2676,
+                "Y": -100.0,
+                "Z": 100.0
+              },
+              {
+                "X": -2052.2676,
+                "Y": -100.0,
+                "Z": -100.0
+              },
+              {
+                "X": 2052.2588,
+                "Y": 100.0,
+                "Z": -100.0
+              },
+              {
+                "X": 2052.2588,
+                "Y": 100.0,
+                "Z": 100.0
+              },
+              {
+                "X": 2052.2676,
+                "Y": -100.0,
+                "Z": -100.0
+              },
+              {
+                "X": 2052.2676,
+                "Y": -100.0,
+                "Z": 100.0
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": -2052.2676,
+                "Y": -100.0,
+                "Z": -100.0
+              },
+              "Max": {
+                "X": 2052.2676,
+                "Y": 100.0,
+                "Z": 100.0
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "bGenerateMirroredCollision": false,
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "6EE95CAF4CCF016247AD50A75A7FB222",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 470,
+        "SizeOnDisk": 470,
+        "OffsetInFile": "0x11022"
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__SideScrollerMoveableBlock_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.2"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 2020.0,
+        "Y": 1.0,
+        "Z": 1180.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.36"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.36"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 2020.0,
+        "Y": 400.0,
+        "Z": 100.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.36"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.36"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": -1580.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 375.8825,
+        "Y": 200.0,
+        "Z": 75.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.74"
+            },
+            "FunctionName": "TriggerBeginOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.74"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.74"
+            },
+            "FunctionName": "TriggerEndOverlap"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 17490.0,
+        "Y": -32157.0,
+        "Z": 23388.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 1715.6869,
+        "Y": 200.0,
+        "Z": 75.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.75"
+            },
+            "FunctionName": "TriggerBeginOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.75"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.75"
+            },
+            "FunctionName": "TriggerEndOverlap"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 17450.0,
+        "Y": -32157.0,
+        "Z": 25528.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScrollerMoveableBlock_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GrabbedCollisionComponentBottom",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScrollerMoveableBlock_BP_C:GrabbedCollisionComponentBottom'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+            },
+            "FunctionName": "GrabbedCollisionBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+            },
+            "FunctionName": "GrabbedCollisionEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GrabbedCollisionComponentLeft",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScrollerMoveableBlock_BP_C:GrabbedCollisionComponentLeft'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+            },
+            "FunctionName": "GrabbedCollisionBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+            },
+            "FunctionName": "GrabbedCollisionEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GrabbedCollisionComponentRight",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScrollerMoveableBlock_BP_C:GrabbedCollisionComponentRight'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.6"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+            },
+            "FunctionName": "GrabbedCollisionBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+            },
+            "FunctionName": "GrabbedCollisionEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GrabbedCollisionComponentTop",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScrollerMoveableBlock_BP_C:GrabbedCollisionComponentTop'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.7"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+            },
+            "FunctionName": "GrabbedCollisionBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+            },
+            "FunctionName": "GrabbedCollisionEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "PlayerPositionExtents",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScrollerMoveableBlock_BP_C:PlayerPositionExtents'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.8"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "BreadcrumbComponent",
+    "Name": "BreadcrumbComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'BreadcrumbComponent'",
+    "Template": {
+      "ObjectName": "BreadcrumbComponent'Default__SidescrollerNPC_BP_C:BreadcrumbComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.2"
+    }
+  },
+  {
+    "Type": "BrushComponent",
+    "Name": "BrushComponent0",
+    "Outer": "NavMeshBoundsVolume3_2",
+    "Class": "UScriptClass'BrushComponent'",
+    "Properties": {
+      "Brush": {
+        "ObjectName": "Model'SideScrollerSinglePage:PersistentLevel.NavMeshBoundsVolume3_2.Model_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.38"
+      },
+      "BrushBodySetup": {
+        "ObjectName": "BodySetup'SideScrollerSinglePage:PersistentLevel.NavMeshBoundsVolume3_2.BrushComponent0.BodySetup_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.10"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 17490.0,
+        "Y": -32198.0,
+        "Z": 23430.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "Character Detection Collider",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__SidescrollerNPC_BP_C:Character Detection Collider'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SidescrollerNPC_BP_C'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.78"
+            },
+            "FunctionName": "CharacterDetectionColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SidescrollerNPC_BP_C'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.78"
+            },
+            "FunctionName": "CharacterDetectionColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CollisionCylinder",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__SidescrollerNPC_BP_C:CollisionCylinder'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": []
+      },
+      "RelativeLocation": {
+        "X": 17030.0,
+        "Y": -32167.0,
+        "Z": 23800.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "Inter-Character Collider",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__SidescrollerNPC_BP_C:Inter-Character Collider'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SidescrollerNPC_BP_C'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.78"
+            },
+            "FunctionName": "InterCharacterColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SidescrollerNPC_BP_C'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.78"
+            },
+            "FunctionName": "InterCharacterColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__SideScrollerMoveableBlock_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.9"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "SideScrollerSinglePage",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'SideScrollerSinglePage:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.37"
+      },
+      "LevelBuildDataId": "ACC051D5-4680B51A-6396A1A2-EB80C053",
+      "MapBuildData": {
+        "ObjectName": "MapBuildDataRegistry'SideScrollerSinglePage_BuiltData'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage_BuiltData.0"
+      },
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'SideScrollerSinglePage:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.113"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'SideScrollerSinglePage:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.113"
+      },
+      null,
+      {
+        "ObjectName": "NavMeshBoundsVolume'SideScrollerSinglePage:PersistentLevel.NavMeshBoundsVolume3_2'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.42"
+      },
+      {
+        "ObjectName": "SideScrollerMoveableBlock_BP_C'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.77"
+      },
+      {
+        "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.74"
+      },
+      {
+        "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.75"
+      },
+      {
+        "ObjectName": "MinigameController_BP_C'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.36"
+      },
+      {
+        "ObjectName": "SidescrollerNPC_BP_C'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.78"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'SideScrollerSinglePage:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.37"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__SideScrollerMoveableBlock_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.10"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__SidescrollerNPC_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.6"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_0",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__SideScrollerMoveableBlock_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.11"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.106"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__SidescrollerNPC_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.7"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.109"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_SingleSidescroller",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "GameType": "EGameType::SideScroller",
+      "PageAxes": "EPageCoordinates::XZ",
+      "BackgroundColour": {
+        "R": 1.0,
+        "G": 0.169167,
+        "B": 0.413746,
+        "A": 1.0,
+        "Hex": "FF72AC"
+      },
+      "GameVolume": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.GameVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.12"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.102"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.99"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.100"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.101"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.KillVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.13"
+      },
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.GameBackground'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.98"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.52"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.97"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.58"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.73"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.68"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.63"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "787B91D1-4C5C8F12-551B5C81-B7DE0E7C",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "NavMeshBoundsVolume3_2",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 2052.2676,
+        "Y": 100.0,
+        "Z": 100.0
+      },
+      "SphereRadius": 2057.1345
+    },
+    "Vectors": [
+      {
+        "X": -1.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      {
+        "X": 0.0,
+        "Y": 1.0,
+        "Z": 0.0
+      },
+      {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": -1.0
+      },
+      {
+        "X": 1.0,
+        "Y": -0.0,
+        "Z": 0.0
+      },
+      {
+        "X": 0.0,
+        "Y": -1.0,
+        "Z": 0.0
+      },
+      {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 1.0
+      }
+    ],
+    "Points": [
+      {
+        "X": -2052.2676,
+        "Y": -100.0,
+        "Z": -100.0
+      },
+      {
+        "X": -2052.2676,
+        "Y": -100.0,
+        "Z": 100.0
+      },
+      {
+        "X": -2052.2676,
+        "Y": 100.0,
+        "Z": 100.0
+      },
+      {
+        "X": -2052.2676,
+        "Y": 100.0,
+        "Z": -100.0
+      },
+      {
+        "X": 2052.2676,
+        "Y": 100.0,
+        "Z": 100.0
+      },
+      {
+        "X": 2052.2676,
+        "Y": 100.0,
+        "Z": -100.0
+      },
+      {
+        "X": 2052.2676,
+        "Y": -100.0,
+        "Z": 100.0
+      },
+      {
+        "X": 2052.2676,
+        "Y": -100.0,
+        "Z": -100.0
+      }
+    ],
+    "Nodes": [
+      {
+        "Plane": {
+          "Vector": {
+            "X": -1.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "W": 2052.2676,
+          "X": -1.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "iVertPool": 0,
+        "iSurf": 0,
+        "iVertexIndex": 0,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 1,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 1.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 1.0,
+          "Z": 0.0
+        },
+        "iVertPool": 4,
+        "iSurf": 1,
+        "iVertexIndex": 4,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 2,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 1.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "W": 2052.2676,
+          "X": 1.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "iVertPool": 8,
+        "iSurf": 2,
+        "iVertexIndex": 8,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 3,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": -1.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": -1.0,
+          "Z": 0.0
+        },
+        "iVertPool": 12,
+        "iSurf": 3,
+        "iVertexIndex": 12,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 4,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 1.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 1.0
+        },
+        "iVertPool": 16,
+        "iSurf": 4,
+        "iVertexIndex": 16,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": 5,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": -1,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      },
+      {
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": -1.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": -1.0
+        },
+        "iVertPool": 20,
+        "iSurf": 5,
+        "iVertexIndex": 20,
+        "ComponentIndex": 0,
+        "ComponentNodeIndex": 0,
+        "ComponentElementIndex": 0,
+        "iBack": -1,
+        "iFront": -1,
+        "iPlane": -1,
+        "iCollisionBound": 0,
+        "iZone0": 0,
+        "iZone1": 0,
+        "NumVertices": 4,
+        "NodeFlags": 0,
+        "iLeaf0": -1,
+        "iLeaf1": -1
+      }
+    ],
+    "Surfs": [
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 0,
+        "vNormal": 0,
+        "vTextureU": 1,
+        "vTextureV": 2,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": -1.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "W": 2052.2676,
+          "X": -1.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 3,
+        "vNormal": 1,
+        "vTextureU": 3,
+        "vTextureV": 2,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 1.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 1.0,
+          "Z": 0.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 5,
+        "vNormal": 3,
+        "vTextureU": 4,
+        "vTextureV": 2,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 1.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "W": 2052.2676,
+          "X": 1.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 7,
+        "vNormal": 4,
+        "vTextureU": 0,
+        "vTextureV": 2,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": -1.0,
+            "Z": 0.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": -1.0,
+          "Z": 0.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 2,
+        "vNormal": 5,
+        "vTextureU": 3,
+        "vTextureV": 1,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 1.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 1.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      },
+      {
+        "Material": null,
+        "PolyFlags": 0,
+        "pBase": 0,
+        "vNormal": 2,
+        "vTextureU": 3,
+        "vTextureV": 4,
+        "iBrushPoly": -1,
+        "Actor": null,
+        "Plane": {
+          "Vector": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": -1.0
+          },
+          "W": 100.0,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": -1.0
+        },
+        "LightMapScale": 32.0,
+        "iLightmassIndex": 0
+      }
+    ],
+    "NumSharedSides": 4,
+    "VertexBuffer": null,
+    "LightingGuid": "E4EFC2DD-40FA67D4-8335D5A8-BE95CC5F",
+    "LightmassSettings": [
+      {
+        "bUseTwoSidedLighting": false,
+        "bShadowIndirectOnly": false,
+        "bUseEmissiveForStaticLighting": false,
+        "bUseVertexNormalForHemisphereGather": false,
+        "EmissiveLightFalloffExponent": 8.0,
+        "EmissiveLightExplicitInfluenceRadius": 0.0,
+        "EmissiveBoost": 1.0,
+        "DiffuseBoost": 1.0,
+        "FullyOccludedSamplesFraction": 1.0
+      }
+    ]
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__SideScrollerMoveableBlock_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.12"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__SidescrollerNPC_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.8"
+    }
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "NavMeshBoundsVolume",
+    "Name": "NavMeshBoundsVolume3_2",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'NavMeshBoundsVolume'",
+    "Properties": {
+      "BrushType": "Brush_Add",
+      "Brush": {
+        "ObjectName": "Model'SideScrollerSinglePage:PersistentLevel.NavMeshBoundsVolume3_2.Model_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.38"
+      },
+      "BrushComponent": {
+        "ObjectName": "BrushComponent'SideScrollerSinglePage:PersistentLevel.NavMeshBoundsVolume3_2.BrushComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.23"
+      },
+      "bHidden": false,
+      "RootComponent": {
+        "ObjectName": "BrushComponent'SideScrollerSinglePage:PersistentLevel.NavMeshBoundsVolume3_2.BrushComponent0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.23"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {}
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.3"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.3"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {}
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__SideScrollerMoveableBlock_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.13"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "OverlayFlipbookComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__SidescrollerNPC_BP_C:OverlayFlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "Sprite0",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__SidescrollerNPC_BP_C:Sprite0'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.10"
+    },
+    "Properties": {
+      "AccumulatedTime": 0.13047504,
+      "OnComponentBeginOverlap": {
+        "InvocationList": []
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScrollerMoveableBlock_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.14"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScrollerMoveableBlock_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScrollerMoveableBlock_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.16"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SidescrollerNPC_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSpriteComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SidescrollerNPC_BP_C:ShadowSpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.1"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "OldPosition": {
+        "X": 17490.0,
+        "Y": 1211.0,
+        "Z": 23508.0
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.3"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "OldPosition": {
+        "X": 17450.0,
+        "Y": 1211.0,
+        "Z": 25648.0
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__SideScrollerMoveableBlock_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.17"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__SidescrollerNPC_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.13"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    },
+    "Properties": {
+      "InteractivePriority": 0.0,
+      "SpriteInteractiveIcon_BP": null,
+      "DeskInteractiveIcon_BP": null
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    },
+    "Properties": {
+      "InteractivePriority": 0.0,
+      "SpriteInteractiveIcon_BP": null,
+      "DeskInteractiveIcon_BP": null
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__SideScrollerMoveableBlock_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.18"
+    },
+    "Properties": {
+      "bIsInteractive": false,
+      "HUDHeight": 300.0,
+      "SpriteInteractiveIcon_BP": null
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__SidescrollerNPC_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.14"
+    },
+    "Properties": {
+      "bIsInteractive": false,
+      "HUDHeight": 300.0,
+      "SpriteInteractiveIcon_BP": null
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "Portal_SingleSSBtm",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.4"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Billboard'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.8"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.60"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.45"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.85"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.86"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.0"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.1"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.59"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.43"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.44"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Audio Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.5"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.82"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.79"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.83"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.84"
+      },
+      "PortalDirection": "EPortalDirection::Down",
+      "TriggerSize": {
+        "X": 375.8825,
+        "Y": 200.0,
+        "Z": 75.0
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.27"
+      },
+      "GameType": "EGameType::SideScroller",
+      "PageAxes": "EPageCoordinates::XZ",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.69"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.64"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Billboard'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.8"
+        },
+        {
+          "ObjectName": "AudioComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.4"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "Portal_SingleSSTop",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.6"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Billboard'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.9"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.62"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.48"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.90"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.91"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.2"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.3"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.61"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.46"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.47"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Audio Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.7"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.87"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.80"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.88"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.89"
+      },
+      "PortalDirection": "EPortalDirection::Up",
+      "TriggerSize": {
+        "X": 1715.6869,
+        "Y": 200.0,
+        "Z": 75.0
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.28"
+      },
+      "GameType": "EGameType::SideScroller",
+      "PageAxes": "EPageCoordinates::XZ",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.70"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.65"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Billboard'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.9"
+        },
+        {
+          "ObjectName": "AudioComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.6"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 17370.0,
+        "Y": -32257.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "SideScrollerMoveableBlock_BP_C",
+    "Name": "SideScrollerMoveableBlock_BP_2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.SideScrollerMoveableBlock_BP_C'",
+    "Template": {
+      "ObjectName": "SideScrollerMoveableBlock_BP_C'Default__SideScrollerMoveableBlock_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.1"
+    },
+    "Properties": {
+      "Root": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.16"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.55"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.54"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.49"
+      },
+      "PlayerPositionExtents": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.PlayerPositionExtents'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.21"
+      },
+      "GrabbedCollisionComponentTop": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.GrabbedCollisionComponentTop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.20"
+      },
+      "GrabbedCollisionComponentBottom": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.GrabbedCollisionComponentBottom'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.17"
+      },
+      "GrabbedCollisionComponentLeft": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.GrabbedCollisionComponentLeft'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.18"
+      },
+      "GrabbedCollisionComponentRight": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.GrabbedCollisionComponentRight'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.19"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.34"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.95"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.11"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.53"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.39"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.29"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.31"
+      },
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.55"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.54"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.54"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.49"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.107"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.108"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.105"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.71"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.66"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.92"
+      }
+    }
+  },
+  {
+    "Type": "SidescrollerNPC_BP_C",
+    "Name": "SidescrollerNPC_BP3",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.SidescrollerNPC_BP_C'",
+    "Template": {
+      "ObjectName": "SidescrollerNPC_BP_C'Default__SidescrollerNPC_BP_C'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.1"
+    },
+    "Properties": {
+      "InteractionOffsetSphere": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.Interaction Offset Sphere'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.93"
+      },
+      "BreadcrumbComponent": {
+        "ObjectName": "BreadcrumbComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.BreadcrumbComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.22"
+      },
+      "NPCName": {
+        "TableId": "/Game/Data/Storybook_NPCStrings.Storybook_NPCStrings",
+        "Key": "NPC_NAME_TEST",
+        "SourceString": "TARQUIN",
+        "LocalizedString": "TARQUIN"
+      },
+      "NPCDialogue": {
+        "TableId": "/Game/Data/Storybook_NPCStrings.Storybook_NPCStrings",
+        "Key": "NPC_DIALOGUE_TEST",
+        "SourceString": "HEY, LATCH!#JUST HANGIN' HERE AS A TEST.@HAVE YOU CHANGED YOUR HAIR? IT BOILS QUITE NICELY NOW!@UGH, PRESS THE B BUTTON TO SHUT ME UP.",
+        "LocalizedString": "HEY, LATCH!#JUST HANGIN' HERE AS A TEST.@HAVE YOU CHANGED YOUR HAIR? IT BOILS QUITE NICELY NOW!@UGH, PRESS THE B BUTTON TO SHUT ME UP."
+      },
+      "Sprite": {
+        "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.Sprite0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.51"
+      },
+      "ShadowSpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.ShadowSpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.57"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.35"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.96"
+      },
+      "OverlayFlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.OverlayFlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.50"
+      },
+      "BounceHat": {
+        "ObjectName": "StaticMeshComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.BounceHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.103"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.104"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.56"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.40"
+      },
+      "InterCharacterCollider": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.Inter-Character Collider'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.26"
+      },
+      "CharacterDetectionCollider": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.Character Detection Collider'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.24"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.32"
+      },
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.ShadowSpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.57"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.56"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.Sprite0'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.51"
+        },
+        {
+          "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.OverlayFlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.50"
+        }
+      ],
+      "TranslationTimeline": {
+        "ObjectName": "TimelineComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.TranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.111"
+      },
+      "ScaleTimeline": {
+        "ObjectName": "TimelineComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.ScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.110"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.72"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.67"
+      },
+      "Mesh": {
+        "ObjectName": "SkeletalMeshComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CharacterMesh0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.81"
+      },
+      "CharacterMovement": {
+        "ObjectName": "SpriteAIMovementComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CharMoveComp'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.94"
+      },
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      },
+      "SpawnCollisionHandlingMethod": "ESpawnActorCollisionHandlingMethod::AlwaysSpawn",
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.1"
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.3"
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "CharacterMesh0",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__SidescrollerNPC_BP_C:CharacterMesh0'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.18"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      },
+      "PrimaryComponentTick": {
+        "EndTickGroup": "TG_PostPhysics"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.74"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.74"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.86"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "Portal_SingleSSBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.14"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.75"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.75"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.91"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "Portal_SingleSSTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SideScrollerSinglePage:PersistentLevel.Portal_SingleSSTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.15"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__SideScrollerMoveableBlock_BP_C:Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 17044.0,
+        "Y": -32147.0,
+        "Z": 23389.006
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Interaction Offset Sphere",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__SidescrollerNPC_BP_C:Interaction Offset Sphere'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "SpriteAIMovementComponent",
+    "Name": "CharMoveComp",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'SpriteAIMovementComponent'",
+    "Template": {
+      "ObjectName": "SpriteAIMovementComponent'Default__SidescrollerNPC_BP_C:CharMoveComp'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.20"
+    },
+    "Properties": {
+      "WalkableFloorZ": 0.71000004,
+      "NavAgentProps": {
+        "AgentRadius": 50.0,
+        "AgentHeight": 200.0
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__SideScrollerMoveableBlock_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.55"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.54"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.54"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SideScrollerMoveableBlock_BP_2.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.49"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__SidescrollerNPC_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.21"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.ShadowSpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.57"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.56"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.Sprite0'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.51"
+        },
+        {
+          "ObjectName": "PaperFlipbookComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.OverlayFlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.50"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      },
+      "RelativeRotation": {
+        "Pitch": 0.0,
+        "Yaw": 0.0,
+        "Roll": 89.99999
+      },
+      "RelativeScale3D": {
+        "X": 38.6,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.MaterialInstanceDynamic_0'",
+          "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.33"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "RelativeRotation": {
+        "Pitch": 0.0,
+        "Yaw": 0.0,
+        "Roll": 89.99999
+      },
+      "RelativeScale3D": {
+        "X": 38.6,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Pawn",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "WorldDynamic",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": -1130.0
+      },
+      "RelativeScale3D": {
+        "X": 40.399998,
+        "Y": 5.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      },
+      "RelativeLocation": {
+        "X": -1970.0,
+        "Y": 250.0,
+        "Z": 500.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 5.0,
+        "Z": 31.599998
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      },
+      "RelativeLocation": {
+        "X": 1970.0,
+        "Y": 250.0,
+        "Z": 500.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 5.0,
+        "Z": 31.599998
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_SingleSidescroller",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Pawn",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SideScrollerSinglePage:PersistentLevel.MGC_SingleSidescroller.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.76"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": 1130.0
+      },
+      "RelativeScale3D": {
+        "X": 40.399998,
+        "Y": 5.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "BounceHat",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__SidescrollerNPC_BP_C:BounceHat'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.22"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__SidescrollerNPC_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.23"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SideScrollerSinglePage:PersistentLevel.SidescrollerNPC_BP3.CollisionCylinder'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.25"
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScrollerMoveableBlock_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScrollerMoveableBlock_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScrollerMoveableBlock_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "SideScrollerMoveableBlock_BP_2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScrollerMoveableBlock_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/SideScrollerMoveableBlock_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SidescrollerNPC_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "ScaleTimeline",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SidescrollerNPC_BP_C:ScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "TranslationTimeline",
+    "Outer": "SidescrollerNPC_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SidescrollerNPC_BP_C:TranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/AI/NPCs/SidescrollerNPC_BP.26"
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "SideScrollerSinglePage",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'SideScrollerSinglePage:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.30"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'SideScrollerSinglePage:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SideScrollerSinglePage.41"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

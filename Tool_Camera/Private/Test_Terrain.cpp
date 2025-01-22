@@ -28,6 +28,13 @@ HRESULT CTest_Terrain::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+    CRay::RAY_DESC RayDesc = {};
+    RayDesc.fViewportWidth = (_float)g_iWinSizeX;
+    RayDesc.fViewportHeight = (_float)g_iWinSizeY;
+    if (FAILED(Add_Component(LEVEL_STATIC, L"Prototype_Component_Ray",
+        TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom), &RayDesc)))
+        return E_FAIL;
+
     return S_OK;
 }
 

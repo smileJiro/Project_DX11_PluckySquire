@@ -17,7 +17,7 @@ class CCamera_Manager_Tool : public CBase
 	DECLARE_SINGLETON(CCamera_Manager_Tool)
 
 public:
-	enum CAMERA_TYPE { FREE, TARGET, CAMERA_TYPE_END };
+	enum CAMERA_TYPE { FREE, TARGET, CUTSCENE, CAMERA_TYPE_END };
 
 private:
 	CCamera_Manager_Tool();

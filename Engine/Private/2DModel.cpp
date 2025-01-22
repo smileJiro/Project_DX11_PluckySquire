@@ -29,12 +29,67 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 
 HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 {
+<<<<<<< HEAD
 	std::ifstream inFile(_szModel2DFilePath, std::ios::binary);
 	if (!inFile) {
 		string str = "파일을 열 수 없습니다.";
 		str += _szModel2DFilePath;
 		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
 		return E_FAIL;
+=======
+	//모든 json파일 순회하면서 읽음. 
+	//Type이 PaperSprite인 경우와 PaperFlipBook인 경우로 컨테이너를 나눠서 저장.
+	//	PaperFlipBook 컨테이너를 순회하면서	Animation2D를 생성.
+	//    Animation2D를 생성할 때 PaperSprite 컨테이너에서 LookUp해서 CSpriteFrame생성.
+
+	map<string,json> jPaperFlipBooks;
+	map<string, json> jPaperSprites;
+
+
+	std::filesystem::path path;
+	path = _pRawDataDirPath;
+	json jFile;
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+		if (entry.path().extension() == ".json") 
+		{
+			cout << entry.path().string() << endl;
+			std::ifstream input_file(entry.path());
+			if (!input_file.is_open())
+				return E_FAIL;
+			input_file >> jFile;
+			input_file.close();
+
+			for (auto& jObj : jFile)
+			{
+				string strType = jObj["Type"];
+				if (strType._Equal("PaperSprite"))
+				{
+					string strName = jObj["Name"];
+
+					jPaperSprites.insert({ strName, jObj });
+				}
+				else if (strType._Equal("PaperFlipbook"))
+				{
+					string strName = jObj["Name"];
+
+					jPaperFlipBooks.insert({ strName,jObj });
+				}
+				else
+				{
+					continue;
+				}
+			}
+
+		}
+		else if (entry.path().extension() == ".png") 
+		{
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, entry.path().c_str());
+		
+			auto result = m_AnimTextures.insert({ entry.path().filename().replace_extension().string(), pTexture });
+			if (result.second == false)
+				Safe_Release(pTexture);
+		}
+>>>>>>> ec05918697b75bee813b96d0a2e8ca447c0b2d23
 	}
 	_char		szDrive[MAX_PATH] = "";
 	_char		szDirectory[MAX_PATH] = "";

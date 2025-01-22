@@ -1,0 +1,3355 @@
+[
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.55"
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.60"
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      }
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__CameraVolume_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "Sprite": {
+        "ObjectName": "Texture2D'S_AudioComponent_AutoActivate'",
+        "ObjectPath": "/Engine/EditorResources/AudioIcons/S_AudioComponent_AutoActivate.0"
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "Sprite": {
+        "ObjectName": "Texture2D'S_AudioComponent_AutoActivate'",
+        "ObjectPath": "/Engine/EditorResources/AudioIcons/S_AudioComponent_AutoActivate.0"
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 2404.0,
+        "Y": 868.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.22"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.22"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 868.0,
+        "Y": 400.0,
+        "Z": 100.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.22"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.22"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": -3104.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxTrigger",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__CameraVolume_BP_C:BoxTrigger'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.3"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 2347.5918,
+        "Y": 643.6446,
+        "Z": 600.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.16"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.16"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 58278.0,
+        "Y": 108795.23,
+        "Z": 28024.12
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 150.0,
+        "Y": 150.0,
+        "Z": 600.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.46"
+            },
+            "FunctionName": "TriggerVolumeBeginOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.46"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": []
+      },
+      "RelativeLocation": {
+        "X": 59820.758,
+        "Y": 109035.57,
+        "Z": 28024.12
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 150.0,
+        "Y": 150.0,
+        "Z": 600.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.47"
+            },
+            "FunctionName": "TriggerVolumeBeginOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.47"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": []
+      },
+      "RelativeLocation": {
+        "X": 56727.57,
+        "Y": 109027.42,
+        "Z": 28024.12
+      }
+    }
+  },
+  {
+    "Type": "CameraVolume_BP_C",
+    "Name": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/CameraVolume_BP.CameraVolume_BP_C'",
+    "Template": {
+      "ObjectName": "CameraVolume_BP_C'Default__CameraVolume_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.1"
+    },
+    "Properties": {
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      },
+      "CapsuleTrigger": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.CapsuleTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.17"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.8"
+      },
+      "BoxVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.Box Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.67"
+      },
+      "LeftLimitVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.Left Limit Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.70"
+      },
+      "RightLimitVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.Right Limit Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.72"
+      },
+      "FrontLimitVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.Front Limit Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.69"
+      },
+      "RearLimitVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.Rear Limit Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.71"
+      },
+      "FloorHeightVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.Floor Height Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.68"
+      },
+      "bIsDeskVolume": false,
+      "bDebugRefreshCamera": true,
+      "BoxTriggerSize": {
+        "X": 2347.5918,
+        "Y": 643.6446,
+        "Z": 600.0
+      },
+      "bBlendToCameraActor": true,
+      "CameraActor": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.SKSP_04c_DeskCamera"
+      },
+      "CameraActorBlendInTime": 1.2,
+      "CameraActorBlendOutTime": 1.2,
+      "bSetDepthOfFieldTarget": true,
+      "TiltShiftDOFTarget": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.SKSP_04c_CameraTarget"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.18"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.42"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.38"
+      },
+      "GroupName": "SKSP_04c",
+      "PrevGroupName": "SKSP_04c",
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.22"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.8"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleTrigger",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__CameraVolume_BP_C:CapsuleTrigger'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.16"
+            },
+            "FunctionName": "CapsuleTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.16"
+            },
+            "FunctionName": "CapsuleTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__CameraVolume_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.5"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'Desk_C09_Sketchspace_04c:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.23"
+      },
+      "LevelBuildDataId": "9485E319-49FD986B-4FF3AEBF-06CC6AA4",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'Desk_C09_Sketchspace_04c:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.74"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'Desk_C09_Sketchspace_04c:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.74"
+      },
+      null,
+      {
+        "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.16"
+      },
+      {
+        "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.22"
+      },
+      {
+        "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.46"
+      },
+      {
+        "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.47"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'Desk_C09_Sketchspace_04c:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.23"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_Desk_C09_Sketchspace_04c",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "AssignedBookIDs": [
+        9043
+      ],
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.BOOK_SKSP_4c"
+      },
+      "RenderResolution": {
+        "X": 3072.0,
+        "Y": 1024.0
+      },
+      "LevelSizePixels": {
+        "X": 4608.0,
+        "Y": 1536.0
+      },
+      "PageRenderScale": "EPageRenderScale::MidZoom",
+      "ScrollType": "EScrollType::ZoomedPan",
+      "BackgroundColour": {
+        "R": 1.0,
+        "G": 0.444964,
+        "B": 0.226948,
+        "A": 1.0,
+        "Hex": "FFB283"
+      },
+      "LevelWidth": 1.5,
+      "LevelHeight": 1.5,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.GameVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.11"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.66"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.63"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.64"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.65"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.KillVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.12"
+      },
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.GameBackground'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.62"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.31"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.61"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.32"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.45"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Textures/FX_bookportal_v02-0.FX_bookportal_v02-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0001.FX_BookPortalV02_0001",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0002.FX_BookPortalV02_0002",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0003.FX_BookPortalV02_0003",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0004.FX_BookPortalV02_0004",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0005.FX_BookPortalV02_0005",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0006.FX_BookPortalV02_0006",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0007.FX_BookPortalV02_0007",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0008.FX_BookPortalV02_0008",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0009.FX_BookPortalV02_0009",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0010.FX_BookPortalV02_0010",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0011.FX_BookPortalV02_0011",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0012.FX_BookPortalV02_0012",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0013.FX_BookPortalV02_0013",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0014.FX_BookPortalV02_0014",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0015.FX_BookPortalV02_0015",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0016.FX_BookPortalV02_0016",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0017.FX_BookPortalV02_0017",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0018.FX_BookPortalV02_0018",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0019.FX_BookPortalV02_0019",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0020.FX_BookPortalV02_0020",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0021.FX_BookPortalV02_0021",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0022.FX_BookPortalV02_0022",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0023.FX_BookPortalV02_0023",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0024.FX_BookPortalV02_0024",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0025.FX_BookPortalV02_0025",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0026.FX_BookPortalV02_0026",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0027.FX_BookPortalV02_0027",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0028.FX_BookPortalV02_0028",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0029.FX_BookPortalV02_0029",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0030.FX_BookPortalV02_0030",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0031.FX_BookPortalV02_0031",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0032.FX_BookPortalV02_0032",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0033.FX_BookPortalV02_0033",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0034.FX_BookPortalV02_0034",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0035.FX_BookPortalV02_0035",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0036.FX_BookPortalV02_0036",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0037.FX_BookPortalV02_0037",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0038.FX_BookPortalV02_0038",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0039.FX_BookPortalV02_0039",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0040.FX_BookPortalV02_0040",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0041.FX_BookPortalV02_0041",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0042.FX_BookPortalV02_0042",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0043.FX_BookPortalV02_0043",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0044.FX_BookPortalV02_0044",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0045.FX_BookPortalV02_0045",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0046.FX_BookPortalV02_0046",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0047.FX_BookPortalV02_0047",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0048.FX_BookPortalV02_0048",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0049.FX_BookPortalV02_0049",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0050.FX_BookPortalV02_0050",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02.FX_BookPortalV02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/SketchspaceConfigurations/SketchSpace_Configuration_B_02/6x12_Grid_1024x2048_01.6x12_Grid_1024x2048_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/SketchspaceConfigurations/SketchSpace_Configuration_B_02/6x12_Grid_1024x2048_01_Sprite.6x12_Grid_1024x2048_01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Textures/genericexplosion-0.genericexplosion-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0001_X02.genericexplosion_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0002_X01.genericexplosion_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0003_X01.genericexplosion_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0004_X01.genericexplosion_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0005_X02.genericexplosion_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0006_X02.genericexplosion_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0007_X02.genericexplosion_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0008_X02.genericexplosion_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0009_X03.genericexplosion_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0010_X03.genericexplosion_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0011_X03.genericexplosion_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0012_X03.genericexplosion_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/generic_explosion.generic_explosion",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/Desk_C09/Textures/6x18_Grid_1024x3072.6x18_Grid_1024x3072",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/Desk_C09/Textures/6x18_Grid_1024x3072_Sprite.6x18_Grid_1024x3072_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Textures/bookportalactive-0.bookportalactive-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0001_X03.FX_BookPortalActive_0001_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0002_X03.FX_BookPortalActive_0002_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0003_X03.FX_BookPortalActive_0003_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0004_X03.FX_BookPortalActive_0004_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0005_X03.FX_BookPortalActive_0005_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0006_X03.FX_BookPortalActive_0006_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0007_X03.FX_BookPortalActive_0007_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0008_X03.FX_BookPortalActive_0008_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0009_X03.FX_BookPortalActive_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0010_X03.FX_BookPortalActive_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0011_X03.FX_BookPortalActive_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0012_X03.FX_BookPortalActive_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0013_X03.FX_BookPortalActive_0013_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0014_X03.FX_BookPortalActive_0014_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0015_X03.FX_BookPortalActive_0015_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0016_X03.FX_BookPortalActive_0016_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0017_X03.FX_BookPortalActive_0017_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0018_X03.FX_BookPortalActive_0018_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0019_X03.FX_BookPortalActive_0019_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0020_X03.FX_BookPortalActive_0020_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0021_X03.FX_BookPortalActive_0021_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0022_X03.FX_BookPortalActive_0022_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0023_X03.FX_BookPortalActive_0023_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0024_X03.FX_BookPortalActive_0024_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0025_X03.FX_BookPortalActive_0025_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0026_X03.FX_BookPortalActive_0026_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0027_X03.FX_BookPortalActive_0027_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0028_X03.FX_BookPortalActive_0028_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0029_X03.FX_BookPortalActive_0029_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0030_X03.FX_BookPortalActive_0030_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0031_X03.FX_BookPortalActive_0031_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0032_X03.FX_BookPortalActive_0032_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0033_X03.FX_BookPortalActive_0033_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0034_X03.FX_BookPortalActive_0034_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0035_X03.FX_BookPortalActive_0035_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0036_X03.FX_BookPortalActive_0036_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0037_X03.FX_BookPortalActive_0037_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0038_X03.FX_BookPortalActive_0038_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0039_X03.FX_BookPortalActive_0039_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0040_X03.FX_BookPortalActive_0040_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0041_X03.FX_BookPortalActive_0041_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0042_X03.FX_BookPortalActive_0042_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0043_X03.FX_BookPortalActive_0043_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0044_X03.FX_BookPortalActive_0044_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0045_X03.FX_BookPortalActive_0045_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0046_X03.FX_BookPortalActive_0046_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0047_X03.FX_BookPortalActive_0047_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0048_X03.FX_BookPortalActive_0048_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0049_X03.FX_BookPortalActive_0049_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive_0050_X03.FX_BookPortalActive_0050_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortalActive/Frames/FX_BookPortalActive.FX_BookPortalActive",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Textures/fx_bookportal_drop-0.fx_bookportal_drop-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0001_X03.FX_BookPortal_Drop_0001_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0002_X03.FX_BookPortal_Drop_0002_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0003_X03.FX_BookPortal_Drop_0003_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0004_X03.FX_BookPortal_Drop_0004_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0005_X03.FX_BookPortal_Drop_0005_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0006_X03.FX_BookPortal_Drop_0006_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0007_X03.FX_BookPortal_Drop_0007_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0008_X03.FX_BookPortal_Drop_0008_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0009_X03.FX_BookPortal_Drop_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0010_X03.FX_BookPortal_Drop_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0011_X03.FX_BookPortal_Drop_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0012_X03.FX_BookPortal_Drop_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0013_X03.FX_BookPortal_Drop_0013_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0014_X03.FX_BookPortal_Drop_0014_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0015_X03.FX_BookPortal_Drop_0015_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop_0016_X03.FX_BookPortal_Drop_0016_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Drop/Frames/FX_BookPortal_Drop.FX_BookPortal_Drop",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Textures/cannon_portal-1.cannon_portal-1",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0001_X02.CannonPortal_Idle_Loop_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0002_X02.CannonPortal_Idle_Loop_0002_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0003_X02.CannonPortal_Idle_Loop_0003_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0004_X02.CannonPortal_Idle_Loop_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0005_X02.CannonPortal_Idle_Loop_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0006_X02.CannonPortal_Idle_Loop_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Textures/cannon_portal-0.cannon_portal-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0007_X02.CannonPortal_Idle_Loop_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0008_X02.CannonPortal_Idle_Loop_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0009_X02.CannonPortal_Idle_Loop_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0010_X02.CannonPortal_Idle_Loop_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0011_X02.CannonPortal_Idle_Loop_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0012_X02.CannonPortal_Idle_Loop_0012_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0013_X02.CannonPortal_Idle_Loop_0013_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0014_X02.CannonPortal_Idle_Loop_0014_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0015_X02.CannonPortal_Idle_Loop_0015_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0016_X02.CannonPortal_Idle_Loop_0016_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0017_X02.CannonPortal_Idle_Loop_0017_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0018_X02.CannonPortal_Idle_Loop_0018_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0019_X02.CannonPortal_Idle_Loop_0019_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0020_X02.CannonPortal_Idle_Loop_0020_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0021_X02.CannonPortal_Idle_Loop_0021_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0022_X02.CannonPortal_Idle_Loop_0022_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0023_X02.CannonPortal_Idle_Loop_0023_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0024_X02.CannonPortal_Idle_Loop_0024_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0025_X02.CannonPortal_Idle_Loop_0025_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0026_X02.CannonPortal_Idle_Loop_0026_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0027_X02.CannonPortal_Idle_Loop_0027_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0028_X02.CannonPortal_Idle_Loop_0028_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0029_X02.CannonPortal_Idle_Loop_0029_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop_0030_X02.CannonPortal_Idle_Loop_0030_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Idle_Loop.CannonPortal_Idle_Loop",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active_0001_X01.CannonPortal_Into_Active_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active_0002_X01.CannonPortal_Into_Active_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active_0003_X01.CannonPortal_Into_Active_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active_0004_X01.CannonPortal_Into_Active_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active_0005_X02.CannonPortal_Into_Active_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active_0006_X01.CannonPortal_Into_Active_0006_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active_0007_X02.CannonPortal_Into_Active_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active_0008_X02.CannonPortal_Into_Active_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Active.CannonPortal_Into_Active",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0001_X02.CannonPortal_Active_Loop_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0002_X02.CannonPortal_Active_Loop_0002_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0003_X02.CannonPortal_Active_Loop_0003_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0004_X02.CannonPortal_Active_Loop_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0005_X02.CannonPortal_Active_Loop_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0006_X02.CannonPortal_Active_Loop_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0007_X02.CannonPortal_Active_Loop_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0008_X02.CannonPortal_Active_Loop_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0009_X02.CannonPortal_Active_Loop_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0010_X02.CannonPortal_Active_Loop_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0011_X02.CannonPortal_Active_Loop_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0012_X02.CannonPortal_Active_Loop_0012_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0013_X02.CannonPortal_Active_Loop_0013_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0014_X02.CannonPortal_Active_Loop_0014_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop_0015_X02.CannonPortal_Active_Loop_0015_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Active_Loop.CannonPortal_Active_Loop",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0001_X01.CannonPortal_Launch_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0002_X01.CannonPortal_Launch_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0003_X01.CannonPortal_Launch_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0004_X01.CannonPortal_Launch_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0005_X01.CannonPortal_Launch_0005_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0006_X01.CannonPortal_Launch_0006_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0007_X01.CannonPortal_Launch_0007_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0008_X01.CannonPortal_Launch_0008_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0009_X02.CannonPortal_Launch_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0010_X02.CannonPortal_Launch_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0011_X02.CannonPortal_Launch_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch_0012_X02.CannonPortal_Launch_0012_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Launch.CannonPortal_Launch",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0001_X01.CannonPortal_Into_Idle_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0002_X01.CannonPortal_Into_Idle_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0003_X01.CannonPortal_Into_Idle_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0004_X02.CannonPortal_Into_Idle_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0005_X02.CannonPortal_Into_Idle_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0006_X01.CannonPortal_Into_Idle_0006_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0007_X01.CannonPortal_Into_Idle_0007_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0008_X01.CannonPortal_Into_Idle_0008_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0009_X02.CannonPortal_Into_Idle_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle_0010_X02.CannonPortal_Into_Idle_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/CannonPortal_Into_Idle.CannonPortal_Into_Idle",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0001_X02.LandingPortal_Loop_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0002_X02.LandingPortal_Loop_0002_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0003_X02.LandingPortal_Loop_0003_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0004_X02.LandingPortal_Loop_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0005_X02.LandingPortal_Loop_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0006_X02.LandingPortal_Loop_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0007_X02.LandingPortal_Loop_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0008_X02.LandingPortal_Loop_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0009_X02.LandingPortal_Loop_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0010_X02.LandingPortal_Loop_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0011_X02.LandingPortal_Loop_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0012_X02.LandingPortal_Loop_0012_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0013_X02.LandingPortal_Loop_0013_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0014_X02.LandingPortal_Loop_0014_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0015_X02.LandingPortal_Loop_0015_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0016_X02.LandingPortal_Loop_0016_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0017_X02.LandingPortal_Loop_0017_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0018_X02.LandingPortal_Loop_0018_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0019_X02.LandingPortal_Loop_0019_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0020_X02.LandingPortal_Loop_0020_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0021_X02.LandingPortal_Loop_0021_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0022_X02.LandingPortal_Loop_0022_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0023_X02.LandingPortal_Loop_0023_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0024_X02.LandingPortal_Loop_0024_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0025_X02.LandingPortal_Loop_0025_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0026_X02.LandingPortal_Loop_0026_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0027_X02.LandingPortal_Loop_0027_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0028_X02.LandingPortal_Loop_0028_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0029_X02.LandingPortal_Loop_0029_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop_0030_X02.LandingPortal_Loop_0030_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Loop.LandingPortal_Loop",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0001_X01.LandingPortal_Jiggle_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0002_X01.LandingPortal_Jiggle_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0003_X01.LandingPortal_Jiggle_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0004_X02.LandingPortal_Jiggle_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0005_X02.LandingPortal_Jiggle_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0006_X02.LandingPortal_Jiggle_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0007_X02.LandingPortal_Jiggle_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0008_X02.LandingPortal_Jiggle_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0009_X02.LandingPortal_Jiggle_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0010_X02.LandingPortal_Jiggle_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle_0011_X02.LandingPortal_Jiggle_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Cannon_Portal/Frames/LandingPortal_Jiggle.LandingPortal_Jiggle",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Textures/bookportal_arrows-0.bookportal_arrows-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0001_X03.FX_BookPortal_Arrow_Down_0001_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0002_X03.FX_BookPortal_Arrow_Down_0002_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0003_X03.FX_BookPortal_Arrow_Down_0003_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0004_X03.FX_BookPortal_Arrow_Down_0004_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0005_X03.FX_BookPortal_Arrow_Down_0005_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0006_X03.FX_BookPortal_Arrow_Down_0006_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0007_X03.FX_BookPortal_Arrow_Down_0007_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0008_X03.FX_BookPortal_Arrow_Down_0008_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0009_X03.FX_BookPortal_Arrow_Down_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0010_X03.FX_BookPortal_Arrow_Down_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0011_X03.FX_BookPortal_Arrow_Down_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0012_X03.FX_BookPortal_Arrow_Down_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0013_X03.FX_BookPortal_Arrow_Down_0013_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0014_X03.FX_BookPortal_Arrow_Down_0014_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0015_X03.FX_BookPortal_Arrow_Down_0015_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0016_X03.FX_BookPortal_Arrow_Down_0016_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down_0017_X03.FX_BookPortal_Arrow_Down_0017_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Down.FX_BookPortal_Arrow_Down",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0001_X03.FX_BookPortal_Arrow_Up_0001_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0002_X03.FX_BookPortal_Arrow_Up_0002_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0003_X03.FX_BookPortal_Arrow_Up_0003_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0004_X03.FX_BookPortal_Arrow_Up_0004_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0005_X03.FX_BookPortal_Arrow_Up_0005_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0006_X03.FX_BookPortal_Arrow_Up_0006_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0007_X03.FX_BookPortal_Arrow_Up_0007_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0008_X03.FX_BookPortal_Arrow_Up_0008_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0009_X03.FX_BookPortal_Arrow_Up_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0010_X03.FX_BookPortal_Arrow_Up_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0011_X03.FX_BookPortal_Arrow_Up_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0012_X03.FX_BookPortal_Arrow_Up_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0013_X03.FX_BookPortal_Arrow_Up_0013_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0014_X03.FX_BookPortal_Arrow_Up_0014_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0015_X03.FX_BookPortal_Arrow_Up_0015_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0016_X03.FX_BookPortal_Arrow_Up_0016_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up_0017_X03.FX_BookPortal_Arrow_Up_0017_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/BookPortal_Arrows/Frames/FX_BookPortal_Arrow_Up.FX_BookPortal_Arrow_Up",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/Desk_C09/Textures/3072x1024_Grid_New_01.3072x1024_Grid_New_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/Desk_C09/Textures/3072x1024_Grid_New_01_Sprite.3072x1024_Grid_New_01_Sprite",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.41"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.37"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.0166666
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "C839424E-4DCC32D0-4F9B4BA2-774585C6",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.3"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.3"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "SpriteColor": {
+        "R": 1.0,
+        "G": 0.444964,
+        "B": 0.226948,
+        "A": 1.0,
+        "Hex": "FFB283"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      },
+      "RelativeScale3D": {
+        "X": 34.425,
+        "Y": 26.47826,
+        "Z": 26.47826
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.1"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.3"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__CameraVolume_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.6"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__CameraVolume_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.7"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    },
+    "Properties": {
+      "InteractiveColliderType": "EInterativeColliderType::PlayerOnTop"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    },
+    "Properties": {
+      "InteractiveColliderType": "EInterativeColliderType::PlayerOnTop"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.4"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.9"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.34"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.27"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.54"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.55"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.0"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.1"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.33"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.25"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.26"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Audio Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.5"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.51"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.49"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.52"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.53"
+      },
+      "TriggerSize": {
+        "X": 150.0,
+        "Y": 150.0,
+        "Z": 600.0
+      },
+      "PortalVisibility": "EPortalVisibility::AlwaysVisible",
+      "bOverridePortalTarget": true,
+      "TargetPortalOverride": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.SKSP_04c_Portal_DeskEntry"
+      },
+      "BookOverrideTargetLocation": {
+        "X": 59820.758,
+        "Y": 109035.57,
+        "Z": 28024.12
+      },
+      "DeskOverrideStartLocation": {
+        "X": -9077.202,
+        "Y": -2281.9187,
+        "Z": 454.3808
+      },
+      "DeskOverrideTargetLocation": {
+        "X": 2111.0586,
+        "Y": -853.481,
+        "Z": 3251.9062
+      },
+      "PortalVectors": null,
+      "bOverridePortalEdgeLocation": true,
+      "PortalLocation_OnBook": "EPortalLocation::MidPage",
+      "PortalLocation_OnDesk": "EPortalLocation::MidPage",
+      "bShowDeskPFX": false,
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.19"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.43"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.39"
+      },
+      "GroupName": "SKSP_04c",
+      "PrevGroupName": "SKSP_04c",
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": {
+            "ObjectName": "Texture2D'S_AudioComponent_AutoActivate'",
+            "ObjectPath": "/Engine/EditorResources/AudioIcons/S_AudioComponent_AutoActivate.0"
+          }
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Billboard'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.9"
+        },
+        {
+          "ObjectName": "AudioComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.4"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.6"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.10"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.36"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.30"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.59"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.60"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.2"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.3"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.35"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.28"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.29"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Audio Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.7"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.56"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.50"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.57"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.58"
+      },
+      "TriggerSize": {
+        "X": 150.0,
+        "Y": 150.0,
+        "Z": 600.0
+      },
+      "PortalVisibility": "EPortalVisibility::AlwaysVisible",
+      "bOverridePortalTarget": true,
+      "TargetPortalOverride": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.SKSP_04c_Portal_DeskExit"
+      },
+      "BookOverrideTargetLocation": {
+        "X": 56727.57,
+        "Y": 109027.42,
+        "Z": 28024.12
+      },
+      "DeskOverrideStartLocation": {
+        "X": 60144.57,
+        "Y": 109027.42,
+        "Z": 28126.62
+      },
+      "DeskOverrideTargetLocation": {
+        "X": 752.54504,
+        "Y": -869.4078,
+        "Z": 3243.0312
+      },
+      "SocketAttachComponentName": "NOT FOUND",
+      "PortalVectors": null,
+      "bOverridePortalEdgeLocation": true,
+      "PortalLocation_OnBook": "EPortalLocation::MidPage",
+      "PortalLocation_OnDesk": "EPortalLocation::MidPage",
+      "bShowDeskPFX": false,
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.20"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.44"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.40"
+      },
+      "GroupName": "SKSP_04c",
+      "PrevGroupName": "SKSP_04c",
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": {
+            "ObjectName": "Texture2D'S_AudioComponent_AutoActivate'",
+            "ObjectPath": "/Engine/EditorResources/AudioIcons/S_AudioComponent_AutoActivate.0"
+          }
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Billboard'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.10"
+        },
+        {
+          "ObjectName": "AudioComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.6"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 58293.727,
+        "Y": 108799.914,
+        "Z": 28024.12
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "SkeletalMesh": null,
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.1"
+      },
+      "PrimaryComponentTick": {
+        "EndTickGroup": "TG_PostPhysics"
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "SkeletalMesh": null,
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.3"
+      },
+      "PrimaryComponentTick": {
+        "EndTickGroup": "TG_PostPhysics"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.46"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.46"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.55"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookEntry",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookEntry.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.14"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.47"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.47"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.60"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      },
+      "RelativeLocation": {
+        "X": 300.0,
+        "Y": 0.0,
+        "Z": 102.5
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "SKSP_04c_Portal_Sketchspace_02_BookExit",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_Portal_Sketchspace_02_BookExit.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.15"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      },
+      "RelativeScale3D": {
+        "X": 55.079998,
+        "Y": 24.36,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      },
+      "RelativeScale3D": {
+        "X": 55.079998,
+        "Y": 24.36,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 818.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 48.079998,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      },
+      "RelativeLocation": {
+        "X": -2354.0,
+        "Y": 0.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 15.36,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      },
+      "RelativeLocation": {
+        "X": 2354.0,
+        "Y": 0.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 15.36,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_04c:PersistentLevel.MGC_Desk_C09_Sketchspace_04c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.48"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": -818.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 48.079998,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Box Visualiser",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Box Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.11"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Floor Height Visualiser",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Floor Height Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.12"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Front Limit Visualiser",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Front Limit Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.13"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Left Limit Visualiser",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Left Limit Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.14"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Rear Limit Visualiser",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Rear Limit Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.15"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Right Limit Visualiser",
+    "Outer": "SKSP_04c_CameraVolume_Sketchspace_Bottom",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Right Limit Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.16"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_04c:PersistentLevel.SKSP_04c_CameraVolume_Sketchspace_Bottom.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.13"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "Desk_C09_Sketchspace_04c",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'Desk_C09_Sketchspace_04c:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.21"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'Desk_C09_Sketchspace_04c:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_04c.24"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

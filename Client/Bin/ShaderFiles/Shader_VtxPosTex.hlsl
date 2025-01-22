@@ -38,6 +38,13 @@ Texture2D g_MaskTexture;
 float2 g_vSpriteStartUV;
 float2 g_vSpriteEndUV;
 float g_fPixelsPerUnrealUnit;
+
+// Color
+float g_fRed;
+float g_fGreen;
+float g_fBlue;
+float g_fOpaque;        // 투명도 설정
+
 /* 구조체 */
 struct VS_IN
 {
@@ -121,7 +128,7 @@ PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
+    Out.vColor = float4(g_fRed, g_fGreen, g_fBlue, g_fOpaque);
     
     if (Out.vColor.a < 0.01f)
         discard;

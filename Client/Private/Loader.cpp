@@ -16,7 +16,7 @@
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
 #include "ShopPanel_BG.h"
-
+#include "Logo_BG.h"
 
 
 /* For. UI*/
@@ -31,6 +31,7 @@
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
+#include "MapObject.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -220,6 +221,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+        CMapObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -252,7 +258,9 @@ HRESULT CLoader::Loading_Level_Static()
 HRESULT CLoader::Loading_Level_Logo()
 {
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_BG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/_BACK_T_TitleBG.dds"), 1))))
+		return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
@@ -261,7 +269,8 @@ HRESULT CLoader::Loading_Level_Logo()
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_LogoBG"), CLogo_BG::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -333,7 +342,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     
-    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Desk.json"), matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
         return E_FAIL;
 
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
@@ -422,7 +431,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
 
 
-    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Desk.mchc");
+    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -655,7 +664,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
             NormalDesc.eStartCoord = COORDINATE_3D;
             CGameObject* pGameObject = nullptr;
-            m_pGameInstance->Add_GameObject_ToLayer(_eObjectLevelId, TEXT("Prototype_GameObject_MapObject"),
+            m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
                 _eObjectLevelId,
                 strLayerTag,
                 &pGameObject,
@@ -665,6 +674,25 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             {
                 DWORD	dwByte(0);
                 _uint iOverrideCount = 0;
+                C3DModel::COLOR_SHADER_MODE eTextureType;
+                _float4 fDefaultDiffuseColor;
+                
+
+                ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+                static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
+
+                switch (eTextureType)
+                {
+                    case Engine::C3DModel::COLOR_DEFAULT:
+                    case Engine::C3DModel::MIX_DIFFUSE:
+                    {
+                        ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+                        static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
+                    }
+                        break;
+                    default:
+                        break;
+                }
 
                 ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
                 if (0 < iOverrideCount)

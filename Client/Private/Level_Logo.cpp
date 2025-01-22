@@ -13,7 +13,7 @@ CLevel_Logo::CLevel_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 HRESULT CLevel_Logo::Initialize()
 {
-	
+	Ready_Layer_UI(TEXT("Layer_UI"));
 
  	return S_OK;
 }
@@ -31,6 +31,25 @@ HRESULT CLevel_Logo::Render()
 	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
 	SetWindowText(g_hWnd, TEXT("로고레벨입니다."));
 #endif
+	return S_OK;
+}
+
+HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& _strLayerTag)
+{
+	CUI::UIOBJDESC pDesc = {};
+
+	pDesc.iCurLevelID = LEVEL_LOGO;
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.f;
+	pDesc.fY = g_iWinSizeY / 2.f;
+	pDesc.fSizeX = g_iWinSizeX;
+	pDesc.fSizeY = g_iWinSizeY;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_LOGO, TEXT("Prototype_UIObejct_LogoBG"), LEVEL_LOGO, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+
+
 	return S_OK;
 }
 

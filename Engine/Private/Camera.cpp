@@ -46,7 +46,7 @@ HRESULT CCamera::Initialize(void* _pArg)
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&pDesc->vAt), 1.f));
 	
 	/* 투영 행렬 구성 시 필요한 데이터를 저장. */
-	m_eCameraType = pDesc->eCameraType;
+	m_eCameraType = pDesc->iCameraType;
 	m_iCurZoomLevel = (_uint)pDesc->eZoomLevel;
 	m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
 	m_fAspect = pDesc->fAspect;
@@ -398,10 +398,10 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 
 	switch (_iRatioType) {
 	case EASE_IN:
-		fRatio = (fRatio + pow(fRatio, 2)) * 0.5f;
+		fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
 		break;
 	case EASE_OUT:
-		fRatio = 1.0f - ((1.0f - fRatio) + pow(1.0f - fRatio, 2)) * 0.5f;
+		fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
 		break;
 	case LERP:
 		break;

@@ -1,7 +1,7 @@
 #pragma once
 
 #pragma warning (disable : 4251) // 4251 경고는 비활성한다.
-
+#pragma warning (disable : 4099)
 #include <d3d11.h>
 
 #define DIRECTINPUT_VERSION	0x0800

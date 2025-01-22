@@ -8,7 +8,8 @@ xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Map\Bin\Debug
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Map\Bin\Release
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Animation\Bin\Debug
 xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Animation\Bin\Release
-xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Effect\Bin\
+xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Effect\Bin\Debug
+xcopy			/y			.\Engine\Bin\Engine.dll			.\Tool_Effect\Bin\Release
 xcopy			/y			.\Engine\Bin\Engine.lib			.\EngineSDK\Lib\
 xcopy			/y			.\Engine\ThirdPartyLib\*.lib		.\EngineSDK\Lib\
 

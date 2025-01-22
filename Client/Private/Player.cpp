@@ -374,7 +374,7 @@ void CPlayer::Switch_Animation(_uint _iAnimIndex)
 
 void CPlayer::Set_State(STATE _eState)
 {
-    _uint iAnimIdx;
+    //_uint iAnimIdx;
     switch (_eState)
     {
     case Client::CPlayer::IDLE:

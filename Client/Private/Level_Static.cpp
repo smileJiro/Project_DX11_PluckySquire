@@ -12,12 +12,14 @@ CLevel_Static::CLevel_Static(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCont
 HRESULT CLevel_Static::Initialize()
 {
 
+
+
  	return S_OK;
 }
 
 void CLevel_Static::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::ENTER))
+	//if (KEY_DOWN(KEY::ENTER))
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
 
 }

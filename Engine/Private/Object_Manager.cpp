@@ -193,45 +193,45 @@ HRESULT CObject_Manager::Add_GameObject_ToLayer(_uint _iLevelID, const _wstring&
 
 CGameObject* CObject_Manager::Get_PickingModelObjectByCursor(_uint _iLevelID, const _wstring& _strLayerTag, _float2 _fCursorPos)
 {
-    //if (_iLevelID > m_iNumLevels)
-    //    assert(nullptr);
+    if (_iLevelID > m_iNumLevels)
+        assert(nullptr);
 
-    //CLayer* pLayer = Find_Layer(_iLevelID, _strLayerTag);
-    //if (nullptr == pLayer)
-    //    return nullptr;
+    CLayer* pLayer = Find_Layer(_iLevelID, _strLayerTag);
+    if (nullptr == pLayer)
+        return nullptr;
 
-    //const list<CGameObject*>& GameObjectsList = pLayer->Get_GameObjects();
-    //CGameObject* pPickingObject = nullptr;
-    //for (auto& pGameObject : GameObjectsList)
-    //{
-    //    CModelObject* pModelObject = dynamic_cast<CModelObject*>(pGameObject);
-    //    _float fMinDst = 9999.f;
-    //    if (nullptr == pModelObject)
-    //        continue;
-    //    else
-    //    {
-    //        // MeshObject 인 경우,
-    //        _bool bResult = false;
-    //        _float fDst = 10000.0f;
-    //        bResult = pModelObject->Is_PickingCursor_Model(_fCursorPos, fDst);
-    //        if (bResult)
-    //        {
-    //            if (fMinDst > fDst)
-    //            {
-    //                // Dst가 더 짧은 Object가 등장한 경우.
-    //                fMinDst = fDst;
-    //                pPickingObject = pModelObject;
-    //            }
-    //        }
-    //    }
-    //}
-
-
-    //return pPickingObject;
+    const list<CGameObject*>& GameObjectsList = pLayer->Get_GameObjects();
+    CGameObject* pPickingObject = nullptr;
+    for (auto& pGameObject : GameObjectsList)
+    {
+        CModelObject* pModelObject = dynamic_cast<CModelObject*>(pGameObject);
+        _float fMinDst = 9999.f;
+        if (nullptr == pModelObject)
+            continue;
+        else
+        {
+            // MeshObject 인 경우,
+            _bool bResult = false;
+            _float fDst = 10000.0f;
+            bResult = pModelObject->Is_PickingCursor_Model_Test(_fCursorPos, fDst);
+            if (bResult)
+            {
+                if (fMinDst > fDst)
+                {
+                    // Dst가 더 짧은 Object가 등장한 경우.
+                    fMinDst = fDst;
+                    pPickingObject = pModelObject;
+                }
+            }
+        }
+    }
 
 
+    return pPickingObject;
 
-    return nullptr;
+
+
+    //return nullptr;
 }
 
 CGameObject* CObject_Manager::Find_NearestObject_Scaled(_uint _iLevelID, const _wstring& _strLayerTag, CController_Transform* const _pConTransform, CGameObject* pExceptionObject)
