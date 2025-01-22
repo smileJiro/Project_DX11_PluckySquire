@@ -70,16 +70,19 @@ private:
 	// CutScene
 	_bool								m_isCreatePoint = { false };
 	_bool								m_isEditPoint = { false };
+	_bool								m_isCreateSector = { false };
 	
-	//<pair<CGameObject*, >> m_KeyFrames;
 	list<pair<CUTSCENE_KEYFRAME, CGameObject*>>		m_KeyFrames;
 	pair<CUTSCENE_KEYFRAME, CGameObject*>*			m_pCurKeyFrame = { nullptr };
 
-	vector<CUTSCENE_KEYFRAME*>				m_SelectedKeyFrame;
-	vector<CCutScene_Sector*>				m_CutSceneSectors;
+	vector<CCutScene_Sector*>				m_CurCutScene;
+	vector<CUTSCENE_KEYFRAME>				m_SelectedKeyFrame;
+	_uint									m_iSectorType = {};
+	_uint									m_iSectorNum = {};
 
+	// Frame Info
 	_float3									m_vKeyFramePos = {};
-	_float									m_fTimeStame = {};
+	_float									m_fTimeStamp = {};
 	_int									m_iKeyFrameZoomLevel = {};
 	_uint									m_iKeyFrameZoomRatio = {};
 	_float3									m_vKeyFrameAt = {};
@@ -120,6 +123,9 @@ private:
 	void				Edit_KeyFrame();
 	void				Delete_KeyFrame();
 	void				Set_CurrentKeyFrame();
+
+	void				Create_Sector();
+	
 	void				Picking();
 	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
 

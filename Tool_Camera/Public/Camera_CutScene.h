@@ -25,7 +25,7 @@ public:
 
 public:
 	void						Set_NextCutScene(_wstring _wszCutSceneName);
-	//void						Add_CutScene();
+	void						Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene);
 
 private:
 	map<_wstring, vector<CCutScene_Sector*>>	m_CutScenes;

@@ -9,6 +9,7 @@
 BEGIN(Engine)
 class CGameInstance;
 class CCameraArm;
+class CCutScene_Sector;
 END
 
 BEGIN(Camera_Tool)
@@ -38,6 +39,8 @@ public:
 
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
+	void				Add_ArmData(_wstring wszArmTag, ARM_DATA _pData);
+	void				Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene);
 
 	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);		// 카메라 모드 전환(아마 Target Camera만 적용)							
 	void				Change_CameraType(_uint _iCurrentCameraType);
@@ -51,8 +54,7 @@ public:
 
 	// Tool 작업 관련
 public:
-	void				Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData);
-	void				Add_ArmData(_wstring wszArmTag, ARM_DATA _pData);
+	//void				Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData);
 	void				Edit_ArmInfo(_wstring _wszArmTag);			// Copy Arm에 넣어서 초록색인 상태로 수정
 	void				Reset_CurrentArmPos(_vector vArm, _float fLength);
 
@@ -79,7 +81,7 @@ private:
 private:
 	//CCameraArm*		Find_Arm(_wstring _wszArmTag);
 	ARM_DATA*			Find_ArmData(_wstring _wszArmTag);
-
+	
 public:
 	virtual void		Free() override;
 };
