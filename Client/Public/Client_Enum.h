@@ -38,6 +38,7 @@ namespace Client
 		SET_ACTIVE,
 		SETUP_SIMULATION_FILTER,
 		CHANGE_MONSTERSTATE,
+		CHANGE_BOSSSTATE,
 		
 
 		LAST,
@@ -55,6 +56,7 @@ namespace Client
 
 	enum class BOSS_STATE
 	{
+		SCENE,
 		HOMINGBALL,
 
 		LAST,

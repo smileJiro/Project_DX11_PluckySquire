@@ -25,12 +25,15 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	HRESULT Cleanup_DeadReferences() override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
 private:
 	_float m_fLifeTime = { 5.f };
 	_float m_fAccTime = { 0.f };
+	_float m_fOriginSpeed = { 0.f };
+	CGameObject* m_pTarget = { nullptr };
 
 private:
 	virtual HRESULT					Ready_Components();

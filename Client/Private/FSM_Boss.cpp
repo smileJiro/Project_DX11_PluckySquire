@@ -2,6 +2,7 @@
 #include "FSM_Boss.h"
 #include "Monster.h"
 
+#include "BossSceneState.h"
 #include "BossAttackState.h"
 
 CFSM_Boss::CFSM_Boss(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -32,7 +33,7 @@ void CFSM_Boss::Update(_float _fTimeDelta)
 
 }
 
-HRESULT CFSM_Boss::Add_State(_uint _iState)
+HRESULT CFSM_Boss::Add_State(BOSS_STATE _eState)
 {
 	if (nullptr == m_pOwner)
 		return E_FAIL;
@@ -40,8 +41,33 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 	CState* pState = nullptr;
 	CState::STATEDESC Desc = {};
 
-	switch ((BOSS_STATE)_iState)
+	switch (_eState)
 	{
+	case Client::BOSS_STATE::SCENE:
+	{
+		pState = CBossSceneState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_BossStates.emplace(BOSS_STATE::SCENE, pState);
+
+		//이미 있다면 씬 인덱스만 바꿔줌
+		/*auto iter = m_BossStates.find(BOSS_STATE::SCENE);
+		if (m_BossStates.end() != iter)
+			iter->second->
+		else
+		{
+			pState = CBossSceneState::Create(&Desc);
+			if (nullptr == pState)
+				return E_FAIL;
+			pState->Set_Owner(m_pOwner);
+			pState->Set_FSM(this);
+			m_BossStates.emplace(BOSS_STATE::SCENE, pState);
+		}*/
+		break;
+	}
+
 	case Client::BOSS_STATE::HOMINGBALL:
 		pState = CBossAttackState::Create(&Desc);
 
@@ -49,8 +75,9 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
-		m_States.emplace(BOSS_STATE::HOMINGBALL, pState);
+		m_BossStates.emplace(BOSS_STATE::HOMINGBALL, pState);
 		break;
+
 	case Client::BOSS_STATE::LAST:
 		break;
 	default:
@@ -60,47 +87,48 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 	return S_OK;
 }
 
-HRESULT CFSM_Boss::Change_State(_uint _iState)
+HRESULT CFSM_Boss::Change_State(BOSS_STATE _eState)
 {
 	if (nullptr == m_CurState)
 		return E_FAIL;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
+	if(_eState == m_eCurBossState)
+		return S_OK;
 
 	//몬스터가 애니메이션 전환 가능하지 않으면 상태 전환 안함
 	if (false == m_pOwner->Get_AnimChangeable())
 		return S_OK;
 
 	m_CurState->State_Exit();
-	m_pOwner->Set_PreState((_uint)m_eCurState);
+	m_pOwner->Set_PreState((_uint)m_eCurBossState);
 
-	Set_State(_iState);
+	Set_State(_eState);
 
 	m_pOwner->Change_Animation();
 
 	return S_OK;
 }
 
-HRESULT CFSM_Boss::Set_State(_uint _iState)
+HRESULT CFSM_Boss::Set_State(BOSS_STATE _eState)
 {
-	BOSS_STATE eState = (BOSS_STATE)_iState;
-	if (nullptr == m_States[eState])
+	if (nullptr == m_BossStates[_eState])
 		return E_FAIL;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
-	m_CurState = m_States[eState];
-	m_eCurState = eState;
+	m_CurState = m_BossStates[_eState];
+	m_eCurBossState = _eState;
 
 	m_CurState->State_Enter();
-	m_pOwner->Set_State(_iState);
+	m_pOwner->Set_State((_uint)_eState);
 
 	return S_OK;
 }
 
 HRESULT CFSM_Boss::CleanUp()
 {
-	for (auto& Pair : m_States)
+	for (auto& Pair : m_BossStates)
 	{
 		Pair.second->CleanUp();
 	}
@@ -136,5 +164,9 @@ CFSM_Boss* CFSM_Boss::Clone(void* _pArg)
 
 void CFSM_Boss::Free()
 {
+	for (auto& pState : m_BossStates)
+		Safe_Release(pState.second);
+
+	m_BossStates.clear();
 	__super::Free();
 }

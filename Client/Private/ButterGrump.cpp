@@ -33,9 +33,6 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fAlertRange = 80.f;
-    pDesc->fChaseRange = 120.f;
-    pDesc->fAttackRange = 100.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
@@ -48,40 +45,38 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pBossFSM->Add_State(MONSTER_STATE::IDLE);
-    m_pBossFSM->Add_State(MONSTER_STATE::ALERT);
-    m_pBossFSM->Add_State(MONSTER_STATE::CHASE);
-    m_pBossFSM->Add_State(MONSTER_STATE::ATTACK);
-    m_pBossFSM->Set_State(MONSTER_STATE::IDLE);
+    m_pBossFSM->Add_State(BOSS_STATE::SCENE);
+    m_pBossFSM->Add_State(BOSS_STATE::HOMINGBALL);
+    m_pBossFSM->Set_State(BOSS_STATE::SCENE);
 
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
+    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
 
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Alert_End, this, COORDINATE_3D, ALERT));
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Attack_End, this, COORDINATE_3D, BARF));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_First_End, this, COORDINATE_3D, LB_INTRO_SH01));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_Second_End, this, COORDINATE_3D, LB_ENGAGE_IDLE_SH02));
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_End, this, COORDINATE_3D, LB_INTRO_SH04));
 
     m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
     /*  Projectile  */
-    Pooling_DESC Pooling_Desc;
-    Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
-    Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
+    //Pooling_DESC Pooling_Desc;
+    //Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+    //Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+    //Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
 
-    CBoss_HomingBall::BOSS_HOMINGBALL_DESC* pProjDesc = new CBoss_HomingBall::BOSS_HOMINGBALL_DESC;
-    pProjDesc->fLifeTime = 5.f;
-    pProjDesc->eStartCoord = COORDINATE_3D;
-    pProjDesc->isCoordChangeEnable = false;
-    pProjDesc->iNumPartObjects = PART_LAST;
-    pProjDesc->iCurLevelID = m_iCurLevelID;
+    //CBoss_HomingBall::BOSS_HOMINGBALL_DESC* pProjDesc = new CBoss_HomingBall::BOSS_HOMINGBALL_DESC;
+    //pProjDesc->fLifeTime = 5.f;
+    //pProjDesc->eStartCoord = COORDINATE_3D;
+    //pProjDesc->isCoordChangeEnable = false;
+    //pProjDesc->iNumPartObjects = PART_LAST;
+    //pProjDesc->iCurLevelID = m_iCurLevelID;
 
-    pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    //pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    //pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_HomingBall"), Pooling_Desc, pProjDesc);
+    //CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_HomingBall"), Pooling_Desc, pProjDesc);
 
     return S_OK;
 }
@@ -149,21 +144,23 @@ void CButterGrump::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
-        switch ((MONSTER_STATE)m_iState)
+        switch ((BOSS_STATE)m_iState)
         {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+        case BOSS_STATE::SCENE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
             break;
 
-        /*case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+        case BOSS_STATE::HOMINGBALL:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
             break;
 
-        case MONSTER_STATE::CHASE:
+        /*
+
+        case BOSS_STATE::CHASE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
             break;
 
-        case MONSTER_STATE::ATTACK:
+        case BOSS_STATE::ATTACK:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
             break;*/
 
@@ -216,7 +213,11 @@ void CButterGrump::Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CButterGrump::Intro_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
+    Event_ChangeBossState(BOSS_STATE::HOMINGBALL, m_pBossFSM);
+}
 
+void CButterGrump::Play_Intro()
+{
 }
 
 HRESULT CButterGrump::Ready_Components()

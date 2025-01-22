@@ -70,6 +70,7 @@ public:
 	void	Intro_First_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void	Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void	Intro_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void Play_Intro();
 
 private:
 	virtual HRESULT					Ready_Components();

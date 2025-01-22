@@ -26,8 +26,8 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;

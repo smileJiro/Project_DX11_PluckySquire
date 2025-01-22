@@ -11,6 +11,7 @@
 #include "Pooling_Manager.h"
 
 #include "FSM.h"
+#include "FSM_Boss.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -82,6 +83,11 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 		Excute_ChangeMonsterState(_tEvent);
 	}
 		break;
+	case Client::EVENT_TYPE::CHANGE_BOSSSTATE:
+	{
+		Excute_ChangeBossState(_tEvent);
+	}
+	break;
 	case Client::EVENT_TYPE::SETUP_SIMULATION_FILTER:
 	{
 		Excute_Setup_SimulationFilter(_tEvent);
@@ -244,6 +250,25 @@ HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
 
 	/* Parameter_1 : FSM Address */
 	CFSM* pFSM=(CFSM*)_tEvent.Parameters[1];
+
+	if (nullptr == pFSM)
+		return E_FAIL;
+
+	pFSM->Change_State(eState);
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Excute_ChangeBossState(const EVENT& _tEvent)
+{
+	/* Parameter_0 : Changing State */
+	BOSS_STATE eState = (BOSS_STATE)_tEvent.Parameters[0];
+
+	if (BOSS_STATE::LAST == eState)
+		return E_FAIL;
+
+	/* Parameter_1 : FSM Address */
+	CFSM_Boss* pFSM = (CFSM_Boss*)_tEvent.Parameters[1];
 
 	if (nullptr == pFSM)
 		return E_FAIL;

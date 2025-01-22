@@ -4,7 +4,6 @@
 BEGIN(Client)
 
 
-//공격 범위가 인식 범위보다 큰 원거리 공격 상태
 class CBossAttackState final : public CState
 {
 private:

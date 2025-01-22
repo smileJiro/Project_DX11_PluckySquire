@@ -327,7 +327,9 @@
     <ClInclude Include="..\Public\FSM_Boss.h">
       <Filter>03.Components\FSM</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Physx.h" />
+    <ClInclude Include="..\Public\BossSceneState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -489,7 +491,9 @@
     <ClCompile Include="..\Private\FSM_Boss.cpp">
       <Filter>03.Components\FSM</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_Physx.cpp" />
+    <ClCompile Include="..\Private\BossSceneState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

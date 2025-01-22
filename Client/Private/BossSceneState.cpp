@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "BossAttackState.h"
+#include "BossSceneState.h"
 #include "Monster.h"
 #include "FSM.h"
 
-CBossAttackState::CBossAttackState()
+CBossSceneState::CBossSceneState()
 {
 }
 
-HRESULT CBossAttackState::Initialize(void* _pArg)
+HRESULT CBossSceneState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 
@@ -20,11 +20,11 @@ HRESULT CBossAttackState::Initialize(void* _pArg)
 }
 
 
-void CBossAttackState::State_Enter()
+void CBossSceneState::State_Enter()
 {
 }
 
-void CBossAttackState::State_Update(_float _fTimeDelta)
+void CBossSceneState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pTarget)
 		return;
@@ -32,31 +32,39 @@ void CBossAttackState::State_Update(_float _fTimeDelta)
 		return;
 
 	m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_Position() - m_pOwner->Get_Position());
-	//공격
 	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
-	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
-	m_pOwner->Attack(_fTimeDelta);
-	
+	//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
+	//애니메이션 재생
+	switch (m_iSceneIdx)
+	{
+	case FIRST:
+
+		break;
+
+	default:
+		break;
+	}
+
 }
 
-void CBossAttackState::State_Exit()
+void CBossSceneState::State_Exit()
 {
 }
 
-CBossAttackState* CBossAttackState::Create(void* _pArg)
+CBossSceneState* CBossSceneState::Create(void* _pArg)
 {
-	CBossAttackState* pInstance = new CBossAttackState();
+	CBossSceneState* pInstance = new CBossSceneState();
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Failed to Created : CBossAttackState");
+		MSG_BOX("Failed to Created : CBossSceneState");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CBossAttackState::Free()
+void CBossSceneState::Free()
 {
 	__super::Free();
 }

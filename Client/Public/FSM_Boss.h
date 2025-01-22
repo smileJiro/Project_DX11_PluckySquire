@@ -26,15 +26,13 @@ public:
 	void Update(_float _fTimeDelta);
 
 public:
-	HRESULT Add_State(_uint _iState);
-	HRESULT Change_State(_uint _iState);
-	HRESULT Set_State(_uint _iState);
+	HRESULT Add_State(BOSS_STATE _eState);
+	HRESULT Change_State(BOSS_STATE _eState);
+	HRESULT Set_State(BOSS_STATE _eState);
 
 private:
-	map<BOSS_STATE, CState*> m_States;
-	BOSS_STATE		m_eCurState = { BOSS_STATE::LAST };
-	CState* m_CurState = { nullptr };
-	CMonster* m_pOwner = { nullptr };
+	map<BOSS_STATE, CState*> m_BossStates;
+	BOSS_STATE		m_eCurBossState = { BOSS_STATE::LAST };
 
 public:
 	HRESULT CleanUp();

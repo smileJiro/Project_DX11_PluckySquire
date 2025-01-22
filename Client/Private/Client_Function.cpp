@@ -82,6 +82,18 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_ChangeBossState(BOSS_STATE _eState, CFSM_Boss* _pFSM)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::CHANGE_BOSSSTATE;
+		tEvent.Parameters.resize(2); // NumParameters
+
+		tEvent.Parameters[0] = (DWORD_PTR)_eState;
+		tEvent.Parameters[1] = (DWORD_PTR)_pFSM;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 
 	std::wstring StringToWstring(const std::string& _str)
 	{
