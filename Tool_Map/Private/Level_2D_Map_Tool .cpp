@@ -14,16 +14,13 @@ HRESULT CLevel_2D_Map_Tool::Initialize(CImguiLogger* _pLogger)
 
 	m_pLogger = _pLogger;
 	Safe_AddRef(m_pLogger);
+
 	Ready_Lights();
-	CGameObject* pCameraTarget = nullptr;
-	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
-	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	Ready_Layer_Camera(TEXT("Layer_Camera"));
+
 	m_pToolManager = C2DMap_Tool_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pToolManager)
 		return E_FAIL;
-
-
 
 	return S_OK;
 }
@@ -36,9 +33,8 @@ void CLevel_2D_Map_Tool::Update(_float _fTimeDelta)
 HRESULT CLevel_2D_Map_Tool::Render()
 {
 #ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	SetWindowText(g_hWnd, TEXT("Mojam 2D Map Tool"));
 #endif
-
 	return S_OK;
 }
 
@@ -62,7 +58,7 @@ HRESULT CLevel_2D_Map_Tool::Ready_Lights()
 }
 
 
-HRESULT CLevel_2D_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
+HRESULT CLevel_2D_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 {
 	CCamera_Free::CAMERA_FREE_DESC		Desc{};
 	Desc.fMouseSensor = 0.2f;
@@ -80,17 +76,6 @@ HRESULT CLevel_2D_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 	else
 		pGameObject->Get_ControllerTransform()->Set_SpeedPerSec(100.f);
-	return S_OK;
-}
-
-HRESULT CLevel_2D_Map_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
-{
-
-	return S_OK;
-}
-
-HRESULT CLevel_2D_Map_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
-{
 	return S_OK;
 }
 
