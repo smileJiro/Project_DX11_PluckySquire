@@ -435,9 +435,6 @@
     <ClInclude Include="..\Public\Model.h">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Animation2D.h">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Json_Manager.h">
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClInclude>
@@ -476,6 +473,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Physx_EventCallBack.h">
       <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation2D.h">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -659,9 +659,6 @@
     <ClCompile Include="..\Private\Model.cpp">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Animation2D.cpp">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Json_Manager.cpp">
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClCompile>
@@ -700,6 +697,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Physx_EventCallBack.cpp">
       <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation2D.cpp">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

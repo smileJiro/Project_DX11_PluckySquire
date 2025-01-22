@@ -49,8 +49,10 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 			eLoadModelTYpe = LOAD_RAW2D;
 		}
 	}
+
 	ImGui::End();
 
+	//¸ðµ¨ ·Îµù
 	if(LOAD_LAST != eLoadModelTYpe)
 	{
 		if (SUCCEEDED(Load_Model(eLoadModelTYpe, wstrSelectedPath)))
@@ -60,6 +62,8 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 			Set_Animation(0);
 		}
 	}
+
+
 	if (m_pTestModelObj)
 	{
 		m_fCamFovY += (_float)MOUSE_MOVE(MOUSE_AXIS::Z) * m_fCamFovYSpeed;
