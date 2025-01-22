@@ -1,0 +1,83 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_PlasticTilable_Fade_01_NoGradient",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_PlasticTilable_Fade_01'",
+        "ObjectPath": "/Game/Map/3D/Sketchspace/CardboardTubes/Materials/MM_PlasticTilable_Fade_01.0"
+      },
+      "bHasStaticPermutationResource": true,
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "BlendMode": "BLEND_Masked",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "StaticParameters": {
+        "StaticSwitchParameters": [
+          {
+            "Value": false,
+            "ParameterInfo": {
+              "Name": "UseGradient?",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            "bOverride": true,
+            "ExpressionGUID": "585C3BE7-41A26E76-CC5E0EB8-86D01357"
+          }
+        ]
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'CardboardTubes_01_Plastic_basecolor'",
+          "ObjectPath": "/Game/Map/3D/Sketchspace/CardboardTubes/Textures/CardboardTubes_01_Plastic_basecolor.0"
+        },
+        {
+          "ObjectName": "Texture2D'CardboardTubes_01_Plastic_ORMH'",
+          "ObjectPath": "/Game/Map/3D/Sketchspace/CardboardTubes/Textures/CardboardTubes_01_Plastic_ORMH.0"
+        },
+        {
+          "ObjectName": "Texture2D'CardboardTubes_01_Plastic_normal'",
+          "ObjectPath": "/Game/Map/3D/Sketchspace/CardboardTubes/Textures/CardboardTubes_01_Plastic_normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "CardboardTubes_01_Plastic_basecolor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "CardboardTubes_01_Plastic_normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "CardboardTubes_01_Plastic_ORMH"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

@@ -1,0 +1,4894 @@
+[
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "EventSequence_PlayPage_Enter",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'EventSequence_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.15"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "EventSequence_PlayPage_Exit",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'EventSequence_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.16"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "EventSequence_PlayPage_Idle",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'EventSequence_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.17"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "EventSequence_PlayPage_Talk_1",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'EventSequence_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.18"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "EventSequence_PlayPage_Talk_2",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'EventSequence_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.19"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Switch_PlayPage_Enter",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__Switch_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.80"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Switch_PlayPage_Exit",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__Switch_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.81"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Switch_PlayPage_Idle",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__Switch_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.82"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Switch_PlayPage_Talk_1",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__Switch_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.83"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Switch_PlayPage_Talk_2",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__Switch_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.84"
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.2"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 2148.0,
+        "Y": 1124.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "Capsule Component",
+    "Outer": "EventSequence_PlayPage_Enter",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__EventSequence_BP_C:Capsule Component'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 67992.76,
+        "Y": 30837.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "Capsule Component",
+    "Outer": "EventSequence_PlayPage_Exit",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__EventSequence_BP_C:Capsule Component'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 68837.76,
+        "Y": 30837.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "Capsule Component",
+    "Outer": "EventSequence_PlayPage_Idle",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__EventSequence_BP_C:Capsule Component'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 68427.76,
+        "Y": 31527.457,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "Capsule Component",
+    "Outer": "EventSequence_PlayPage_Talk_1",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__EventSequence_BP_C:Capsule Component'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 68497.76,
+        "Y": 30837.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "Capsule Component",
+    "Outer": "EventSequence_PlayPage_Talk_2",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__EventSequence_BP_C:Capsule Component'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 68357.76,
+        "Y": 30837.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 68427.76,
+        "Y": 31332.46,
+        "Z": 23223.719
+      },
+      "RelativeScale3D": {
+        "X": 2.0,
+        "Y": 2.0,
+        "Z": 2.0
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "EventSequence_PlayPage_Enter",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__EventSequence_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.4"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "EventSequence_PlayPage_Exit",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__EventSequence_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.4"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "EventSequence_PlayPage_Idle",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__EventSequence_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.4"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "EventSequence_PlayPage_Talk_1",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__EventSequence_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.4"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "EventSequence_PlayPage_Talk_2",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__EventSequence_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.4"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Switch_PlayPage_Enter",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Switch_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.3"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Switch_PlayPage_Exit",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Switch_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.3"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Switch_PlayPage_Idle",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Switch_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.3"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Switch_PlayPage_Talk_1",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Switch_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.3"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Switch_PlayPage_Talk_2",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Switch_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.3"
+    }
+  },
+  {
+    "Type": "EventSequence_BP_C",
+    "Name": "EventSequence_PlayPage_Enter",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/EventSequence_BP.EventSequence_BP_C'",
+    "Template": {
+      "ObjectName": "EventSequence_BP_C'Default__EventSequence_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.1"
+    },
+    "Properties": {
+      "Billboard": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.0"
+      },
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.15"
+      },
+      "bIsNonInteractiveSequence": false,
+      "bIsDeskSequence": false,
+      "bIsBookSequenceCalledFromDesk": true,
+      "bOneShot": false,
+      "Sequence": [
+        {
+          "DeveloperComment": "[ 0.0 ] Play Page Appear",
+          "PreviousDeveloperComment": "[ 0.0 ] Play Page Appear",
+          "CurrentTimestamp": "[ 0.0 ] ",
+          "Time": 0.0,
+          "bCleanlyDeleteEntry": false,
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "SwitchActor": null,
+          "bSaveGame": false,
+          "bSaveBook": true,
+          "bSaveDesk": true,
+          "bSaveSketchSpace": false,
+          "SketchspaceSaveList": [],
+          "SavingReferenceName": "None",
+          "bShow_Target": false,
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "bUseTargetOverride": false,
+          "SpecificFollowingNPCClass": null,
+          "BookNPC": null,
+          "DeskNPC": null,
+          "SpriteActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "DeskActor": null,
+          "bShow_Switch": false,
+          "bTriggerSwitchOnTarget": false,
+          "QuickSwitchTargets": [],
+          "SwitchParameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bShow_Dialogue": false,
+          "bDialogueWithoutNPC": false,
+          "DialogueBoxPositioner": null,
+          "SpriteDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "Offset": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "DialogueSFX": null
+          },
+          "DeskDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "DialogueSFX": null,
+            "LeftHandTexture": null,
+            "RighHandTexture": null,
+            "LineCount": 2
+          },
+          "NPCDialogueOffset": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "bAutomatedDialogue": false,
+          "AutomationTime": 1.0,
+          "TypewriterTickRateOverride": 0.0,
+          "NPCNameOverride": {
+            "CultureInvariantString": null
+          },
+          "NPCDialogue": {
+            "CultureInvariantString": null
+          },
+          "bShow_Flipbooks": true,
+          "ActionToPerform": "EStorySequenceAction::PlayOnce",
+          "bSetBookNPCFlipbook": true,
+          "BookNPCFlipbook": {
+            "ObjectName": "PaperFlipbook'Page_Appear'",
+            "ObjectPath": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear.0"
+          },
+          "bLoopBookNPCFlipbook": false,
+          "bForcePlayerFlipbookOverride": false,
+          "bWaitForPreviousFlipbook": false,
+          "FlipbookToLoopAfterNewFlipbook": {
+            "ObjectName": "PaperFlipbook'Page_Note_Idle_down'",
+            "ObjectPath": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Idle_down.0"
+          },
+          "bSetFlipbookXScale": false,
+          "FlipbookXScale": 1.0,
+          "bChangeSprite": false,
+          "NewSprite": null,
+          "bShow_MusicSFX": true,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "bFadeMusicOnSFX": false,
+          "FadeMusicDownForPeriod": 0.0,
+          "SFXToPlay": {
+            "ObjectName": "SoundWave'A_sfx_C2DESK_page_sticky_note'",
+            "ObjectPath": "/Game/NokNok/Audio/Allister/desk/A_sfx_C2DESK_page_sticky_note.0"
+          },
+          "bShow_Camera": false,
+          "bSetCameraZoom": false,
+          "CameraZoom": 0.0,
+          "bSetCameraTarget": false,
+          "bCameraTracksAffectedCharacter": false,
+          "bUseTimeBlendedCamera": false,
+          "CameraTarget": null,
+          "CameraSpeedMultiplier": 1.0,
+          "CameraBlendType": "ECameraBlendType::EaseInOut",
+          "CameraBlendTime": 1.5,
+          "bChangeOrbitConversationCamera": false,
+          "bUseOrbitConversationCamera": true,
+          "bSetDepthOfFieldTarget": false,
+          "bSetPlayerAsDepthOfFieldTarget": false,
+          "TiltShiftDOFTarget": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bSetDepthOfFieldFStop": false,
+          "TiltShiftDOF_FStop": 0.5,
+          "bResetDeskPlayerCamera": false,
+          "DeskPlayerCameraBlendTime": 0.0,
+          "CancelDeskPlayerLookAtPoint": false,
+          "bStartCameraTranslationCurve": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 0.0,
+          "bResetCameraTranslation": true,
+          "HandheldCameraShake": "EStatusSetting::DoNotChange",
+          "CameraShakeStrength": 0.0,
+          "CustomCameraShake_BP": null,
+          "bShow_AdditionalEvents": false,
+          "bRestorePlayerHealth": false,
+          "TopDownLedge": null,
+          "NPCDirection": "EAnimDirectionChange::DoNotChange",
+          "PlayerDirection": "EAnimDirectionChange::DoNotChange",
+          "PositionTimelineToRun": null,
+          "PositionTimelineLength": 1.0,
+          "bTimelineDisablesGravity": false,
+          "ScaleTimelineToRun": null,
+          "ScaleTimelineLength": 1.0,
+          "bDoColourBlend": false,
+          "ColourBlend": {
+            "TargetColour": {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            },
+            "BlendTime": 0.0
+          },
+          "bHasColourSequence": false,
+          "bEndColourSequence": false,
+          "AdditionalColourSequenceProps": [],
+          "ColourSequenceSlot0": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot1": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot2": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "bPlayLevelSequence": false,
+          "bShowAlternativeSequenceOnSwitch": false,
+          "Sequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "CineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchSequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchCineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "LevelSequenceBlendTime": 1.0,
+          "bPausesEventTimer": false,
+          "bRestoreCameraOnSequenceEnd": true,
+          "bRestorePlayerCameraOnSequenceEnd": true,
+          "ActorToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "ActorContainingCameraComponentToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bEnableMasterCameraTick": false,
+          "bIsNoCameraSequence": false,
+          "bWaitForSequenceToFinish": false,
+          "bSetPlayerNotInCutsceneAfterSequence": true,
+          "bSkipMusicVolumeChanges": false,
+          "bShowQuickFade": false,
+          "bShowQuickFadeAfterLevelSequence": false,
+          "BookControlEvent": {
+            "bSetTiltAngle": false,
+            "TiltAngle": 0.0,
+            "TiltSpeed": 4.0,
+            "bOpenBookAfterTiltedClosed": false,
+            "bAllowPlayerExit": false,
+            "bPreventPlayerExit": false,
+            "bChangePlayerControl": false,
+            "bPlayerCanControlBook": true,
+            "bChangeHasTurnGauntlets": false,
+            "bPlayerHasTurnGauntlets": false,
+            "bChangeCanTurnPages": false,
+            "bPlayerCanTurnPages": false,
+            "bChangeCanTiltBook": false,
+            "bPlayerCanTiltBook": false,
+            "bCancelBookControl": false,
+            "bForceDeskPlayerCameraOnExit": false,
+            "bDisableVFX": false
+          },
+          "bSetDeskPlayerFacialExpression": false,
+          "DeskPlayerFacialExpression": "EDeskPlayerFacialExpression::Idle",
+          "bQuitGame": false,
+          "bNoCredits": false,
+          "bPlayCreditsSequence": false,
+          "bChangeUIVisibilty": false,
+          "bSetUIVisibility": false,
+          "CandleChallenge": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bShow_VibroEffects": false,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": ""
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.21"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.64"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.52"
+      },
+      "bSerialisesPosition": true,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.15"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter.Billboard'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.0"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "EventSequence_BP_C",
+    "Name": "EventSequence_PlayPage_Exit",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/EventSequence_BP.EventSequence_BP_C'",
+    "Template": {
+      "ObjectName": "EventSequence_BP_C'Default__EventSequence_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.1"
+    },
+    "Properties": {
+      "Billboard": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.1"
+      },
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.16"
+      },
+      "bIsNonInteractiveSequence": false,
+      "bIsDeskSequence": false,
+      "bIsBookSequenceCalledFromDesk": true,
+      "bOneShot": false,
+      "Sequence": [
+        {
+          "DeveloperComment": "[ 0.0 ] Play Page Appear",
+          "PreviousDeveloperComment": "[ 0.0 ] Play Page Appear",
+          "CurrentTimestamp": "[ 0.0 ] ",
+          "Time": 0.0,
+          "bCleanlyDeleteEntry": false,
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "SwitchActor": null,
+          "bSaveGame": false,
+          "bSaveBook": true,
+          "bSaveDesk": true,
+          "bSaveSketchSpace": false,
+          "SketchspaceSaveList": [],
+          "SavingReferenceName": "None",
+          "bShow_Target": false,
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "bUseTargetOverride": false,
+          "SpecificFollowingNPCClass": null,
+          "BookNPC": null,
+          "DeskNPC": null,
+          "SpriteActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "DeskActor": null,
+          "bShow_Switch": false,
+          "bTriggerSwitchOnTarget": false,
+          "QuickSwitchTargets": [],
+          "SwitchParameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bShow_Dialogue": false,
+          "bDialogueWithoutNPC": false,
+          "DialogueBoxPositioner": null,
+          "SpriteDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "Offset": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "DialogueSFX": null
+          },
+          "DeskDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "DialogueSFX": null,
+            "LeftHandTexture": null,
+            "RighHandTexture": null,
+            "LineCount": 2
+          },
+          "NPCDialogueOffset": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "bAutomatedDialogue": false,
+          "AutomationTime": 1.0,
+          "TypewriterTickRateOverride": 0.0,
+          "NPCNameOverride": {
+            "CultureInvariantString": null
+          },
+          "NPCDialogue": {
+            "CultureInvariantString": null
+          },
+          "bShow_Flipbooks": true,
+          "ActionToPerform": "EStorySequenceAction::PlayOnce",
+          "bSetBookNPCFlipbook": true,
+          "BookNPCFlipbook": {
+            "ObjectName": "PaperFlipbook'Page_Disappear'",
+            "ObjectPath": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear.0"
+          },
+          "bLoopBookNPCFlipbook": false,
+          "bForcePlayerFlipbookOverride": false,
+          "bWaitForPreviousFlipbook": false,
+          "FlipbookToLoopAfterNewFlipbook": null,
+          "bSetFlipbookXScale": false,
+          "FlipbookXScale": 1.0,
+          "bChangeSprite": false,
+          "NewSprite": null,
+          "bShow_MusicSFX": true,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "bFadeMusicOnSFX": false,
+          "FadeMusicDownForPeriod": 0.0,
+          "SFXToPlay": {
+            "ObjectName": "SoundWave'A_sfx_page_disappear'",
+            "ObjectPath": "/Game/NokNok/Audio/Allister/desk/A_sfx_page_disappear.0"
+          },
+          "bShow_Camera": false,
+          "bSetCameraZoom": false,
+          "CameraZoom": 0.0,
+          "bSetCameraTarget": false,
+          "bCameraTracksAffectedCharacter": false,
+          "bUseTimeBlendedCamera": false,
+          "CameraTarget": null,
+          "CameraSpeedMultiplier": 1.0,
+          "CameraBlendType": "ECameraBlendType::EaseInOut",
+          "CameraBlendTime": 1.5,
+          "bChangeOrbitConversationCamera": false,
+          "bUseOrbitConversationCamera": true,
+          "bSetDepthOfFieldTarget": false,
+          "bSetPlayerAsDepthOfFieldTarget": false,
+          "TiltShiftDOFTarget": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bSetDepthOfFieldFStop": false,
+          "TiltShiftDOF_FStop": 0.5,
+          "bResetDeskPlayerCamera": false,
+          "DeskPlayerCameraBlendTime": 0.0,
+          "CancelDeskPlayerLookAtPoint": false,
+          "bStartCameraTranslationCurve": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 0.0,
+          "bResetCameraTranslation": true,
+          "HandheldCameraShake": "EStatusSetting::DoNotChange",
+          "CameraShakeStrength": 0.0,
+          "CustomCameraShake_BP": null,
+          "bShow_AdditionalEvents": false,
+          "bRestorePlayerHealth": false,
+          "TopDownLedge": null,
+          "NPCDirection": "EAnimDirectionChange::DoNotChange",
+          "PlayerDirection": "EAnimDirectionChange::DoNotChange",
+          "PositionTimelineToRun": null,
+          "PositionTimelineLength": 1.0,
+          "bTimelineDisablesGravity": false,
+          "ScaleTimelineToRun": null,
+          "ScaleTimelineLength": 1.0,
+          "bDoColourBlend": false,
+          "ColourBlend": {
+            "TargetColour": {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            },
+            "BlendTime": 0.0
+          },
+          "bHasColourSequence": false,
+          "bEndColourSequence": false,
+          "AdditionalColourSequenceProps": [],
+          "ColourSequenceSlot0": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot1": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot2": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "bPlayLevelSequence": false,
+          "bShowAlternativeSequenceOnSwitch": false,
+          "Sequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "CineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchSequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchCineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "LevelSequenceBlendTime": 1.0,
+          "bPausesEventTimer": false,
+          "bRestoreCameraOnSequenceEnd": true,
+          "bRestorePlayerCameraOnSequenceEnd": true,
+          "ActorToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "ActorContainingCameraComponentToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bEnableMasterCameraTick": false,
+          "bIsNoCameraSequence": false,
+          "bWaitForSequenceToFinish": false,
+          "bSetPlayerNotInCutsceneAfterSequence": true,
+          "bSkipMusicVolumeChanges": false,
+          "bShowQuickFade": false,
+          "bShowQuickFadeAfterLevelSequence": false,
+          "BookControlEvent": {
+            "bSetTiltAngle": false,
+            "TiltAngle": 0.0,
+            "TiltSpeed": 4.0,
+            "bOpenBookAfterTiltedClosed": false,
+            "bAllowPlayerExit": false,
+            "bPreventPlayerExit": false,
+            "bChangePlayerControl": false,
+            "bPlayerCanControlBook": true,
+            "bChangeHasTurnGauntlets": false,
+            "bPlayerHasTurnGauntlets": false,
+            "bChangeCanTurnPages": false,
+            "bPlayerCanTurnPages": false,
+            "bChangeCanTiltBook": false,
+            "bPlayerCanTiltBook": false,
+            "bCancelBookControl": false,
+            "bForceDeskPlayerCameraOnExit": false,
+            "bDisableVFX": false
+          },
+          "bSetDeskPlayerFacialExpression": false,
+          "DeskPlayerFacialExpression": "EDeskPlayerFacialExpression::Idle",
+          "bQuitGame": false,
+          "bNoCredits": false,
+          "bPlayCreditsSequence": false,
+          "bChangeUIVisibilty": false,
+          "bSetUIVisibility": false,
+          "CandleChallenge": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bShow_VibroEffects": false,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": ""
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.22"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.65"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.53"
+      },
+      "bSerialisesPosition": true,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.16"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit.Billboard'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.1"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "EventSequence_BP_C",
+    "Name": "EventSequence_PlayPage_Idle",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/EventSequence_BP.EventSequence_BP_C'",
+    "Template": {
+      "ObjectName": "EventSequence_BP_C'Default__EventSequence_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.1"
+    },
+    "Properties": {
+      "Billboard": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.2"
+      },
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.17"
+      },
+      "bIsNonInteractiveSequence": false,
+      "bIsDeskSequence": false,
+      "bIsBookSequenceCalledFromDesk": true,
+      "bOneShot": false,
+      "Sequence": [
+        {
+          "DeveloperComment": "[ 0.0 ] Play Page Idle",
+          "PreviousDeveloperComment": "[ 0.0 ] Play Page Idle",
+          "CurrentTimestamp": "[ 0.0 ] ",
+          "Time": 0.0,
+          "bCleanlyDeleteEntry": false,
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "SwitchActor": null,
+          "bSaveGame": false,
+          "bSaveBook": true,
+          "bSaveDesk": true,
+          "bSaveSketchSpace": false,
+          "SketchspaceSaveList": [],
+          "SavingReferenceName": "None",
+          "bShow_Target": false,
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "bUseTargetOverride": false,
+          "SpecificFollowingNPCClass": null,
+          "BookNPC": null,
+          "DeskNPC": null,
+          "SpriteActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "DeskActor": null,
+          "bShow_Switch": false,
+          "bTriggerSwitchOnTarget": false,
+          "QuickSwitchTargets": [],
+          "SwitchParameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bShow_Dialogue": false,
+          "bDialogueWithoutNPC": false,
+          "DialogueBoxPositioner": null,
+          "SpriteDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "Offset": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "DialogueSFX": null
+          },
+          "DeskDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "DialogueSFX": null,
+            "LeftHandTexture": null,
+            "RighHandTexture": null,
+            "LineCount": 2
+          },
+          "NPCDialogueOffset": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "bAutomatedDialogue": false,
+          "AutomationTime": 1.0,
+          "TypewriterTickRateOverride": 0.0,
+          "NPCNameOverride": {
+            "CultureInvariantString": null
+          },
+          "NPCDialogue": {
+            "CultureInvariantString": null
+          },
+          "bShow_Flipbooks": true,
+          "ActionToPerform": "EStorySequenceAction::PlayOnce",
+          "bSetBookNPCFlipbook": true,
+          "BookNPCFlipbook": {
+            "ObjectName": "PaperFlipbook'Page_Note_Idle_down'",
+            "ObjectPath": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Idle_down.0"
+          },
+          "bLoopBookNPCFlipbook": true,
+          "bForcePlayerFlipbookOverride": false,
+          "bWaitForPreviousFlipbook": false,
+          "FlipbookToLoopAfterNewFlipbook": null,
+          "bSetFlipbookXScale": false,
+          "FlipbookXScale": 1.0,
+          "bChangeSprite": false,
+          "NewSprite": null,
+          "bShow_MusicSFX": false,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "bFadeMusicOnSFX": false,
+          "FadeMusicDownForPeriod": 0.0,
+          "SFXToPlay": null,
+          "bShow_Camera": false,
+          "bSetCameraZoom": false,
+          "CameraZoom": 0.0,
+          "bSetCameraTarget": false,
+          "bCameraTracksAffectedCharacter": false,
+          "bUseTimeBlendedCamera": false,
+          "CameraTarget": null,
+          "CameraSpeedMultiplier": 1.0,
+          "CameraBlendType": "ECameraBlendType::EaseInOut",
+          "CameraBlendTime": 1.5,
+          "bChangeOrbitConversationCamera": false,
+          "bUseOrbitConversationCamera": true,
+          "bSetDepthOfFieldTarget": false,
+          "bSetPlayerAsDepthOfFieldTarget": false,
+          "TiltShiftDOFTarget": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bSetDepthOfFieldFStop": false,
+          "TiltShiftDOF_FStop": 0.5,
+          "bResetDeskPlayerCamera": false,
+          "DeskPlayerCameraBlendTime": 0.0,
+          "CancelDeskPlayerLookAtPoint": false,
+          "bStartCameraTranslationCurve": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 0.0,
+          "bResetCameraTranslation": true,
+          "HandheldCameraShake": "EStatusSetting::DoNotChange",
+          "CameraShakeStrength": 0.0,
+          "CustomCameraShake_BP": null,
+          "bShow_AdditionalEvents": false,
+          "bRestorePlayerHealth": false,
+          "TopDownLedge": null,
+          "NPCDirection": "EAnimDirectionChange::DoNotChange",
+          "PlayerDirection": "EAnimDirectionChange::DoNotChange",
+          "PositionTimelineToRun": null,
+          "PositionTimelineLength": 1.0,
+          "bTimelineDisablesGravity": false,
+          "ScaleTimelineToRun": null,
+          "ScaleTimelineLength": 1.0,
+          "bDoColourBlend": false,
+          "ColourBlend": {
+            "TargetColour": {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            },
+            "BlendTime": 0.0
+          },
+          "bHasColourSequence": false,
+          "bEndColourSequence": false,
+          "AdditionalColourSequenceProps": [],
+          "ColourSequenceSlot0": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot1": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot2": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "bPlayLevelSequence": false,
+          "bShowAlternativeSequenceOnSwitch": false,
+          "Sequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "CineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchSequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchCineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "LevelSequenceBlendTime": 1.0,
+          "bPausesEventTimer": false,
+          "bRestoreCameraOnSequenceEnd": true,
+          "bRestorePlayerCameraOnSequenceEnd": true,
+          "ActorToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "ActorContainingCameraComponentToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bEnableMasterCameraTick": false,
+          "bIsNoCameraSequence": false,
+          "bWaitForSequenceToFinish": false,
+          "bSetPlayerNotInCutsceneAfterSequence": true,
+          "bSkipMusicVolumeChanges": false,
+          "bShowQuickFade": false,
+          "bShowQuickFadeAfterLevelSequence": false,
+          "BookControlEvent": {
+            "bSetTiltAngle": false,
+            "TiltAngle": 0.0,
+            "TiltSpeed": 4.0,
+            "bOpenBookAfterTiltedClosed": false,
+            "bAllowPlayerExit": false,
+            "bPreventPlayerExit": false,
+            "bChangePlayerControl": false,
+            "bPlayerCanControlBook": true,
+            "bChangeHasTurnGauntlets": false,
+            "bPlayerHasTurnGauntlets": false,
+            "bChangeCanTurnPages": false,
+            "bPlayerCanTurnPages": false,
+            "bChangeCanTiltBook": false,
+            "bPlayerCanTiltBook": false,
+            "bCancelBookControl": false,
+            "bForceDeskPlayerCameraOnExit": false,
+            "bDisableVFX": false
+          },
+          "bSetDeskPlayerFacialExpression": false,
+          "DeskPlayerFacialExpression": "EDeskPlayerFacialExpression::Idle",
+          "bQuitGame": false,
+          "bNoCredits": false,
+          "bPlayCreditsSequence": false,
+          "bChangeUIVisibilty": false,
+          "bSetUIVisibility": false,
+          "CandleChallenge": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bShow_VibroEffects": false,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": ""
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.23"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.66"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.54"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.17"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle.Billboard'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.2"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "EventSequence_BP_C",
+    "Name": "EventSequence_PlayPage_Talk_1",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/EventSequence_BP.EventSequence_BP_C'",
+    "Template": {
+      "ObjectName": "EventSequence_BP_C'Default__EventSequence_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.1"
+    },
+    "Properties": {
+      "Billboard": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.3"
+      },
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.18"
+      },
+      "bIsNonInteractiveSequence": false,
+      "bIsDeskSequence": false,
+      "bIsBookSequenceCalledFromDesk": true,
+      "bOneShot": false,
+      "Sequence": [
+        {
+          "DeveloperComment": "[ 0.0 ] Play Page Appear",
+          "PreviousDeveloperComment": "[ 0.0 ] Play Page Appear",
+          "CurrentTimestamp": "[ 0.0 ] ",
+          "Time": 0.0,
+          "bCleanlyDeleteEntry": false,
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "SwitchActor": null,
+          "bSaveGame": false,
+          "bSaveBook": true,
+          "bSaveDesk": true,
+          "bSaveSketchSpace": false,
+          "SketchspaceSaveList": [],
+          "SavingReferenceName": "None",
+          "bShow_Target": false,
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "bUseTargetOverride": false,
+          "SpecificFollowingNPCClass": null,
+          "BookNPC": null,
+          "DeskNPC": null,
+          "SpriteActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "DeskActor": null,
+          "bShow_Switch": false,
+          "bTriggerSwitchOnTarget": false,
+          "QuickSwitchTargets": [],
+          "SwitchParameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bShow_Dialogue": false,
+          "bDialogueWithoutNPC": false,
+          "DialogueBoxPositioner": null,
+          "SpriteDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "Offset": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "DialogueSFX": null
+          },
+          "DeskDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "DialogueSFX": null,
+            "LeftHandTexture": null,
+            "RighHandTexture": null,
+            "LineCount": 2
+          },
+          "NPCDialogueOffset": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "bAutomatedDialogue": false,
+          "AutomationTime": 1.0,
+          "TypewriterTickRateOverride": 0.0,
+          "NPCNameOverride": {
+            "CultureInvariantString": null
+          },
+          "NPCDialogue": {
+            "CultureInvariantString": null
+          },
+          "bShow_Flipbooks": true,
+          "ActionToPerform": "EStorySequenceAction::PlayOnce",
+          "bSetBookNPCFlipbook": true,
+          "BookNPCFlipbook": {
+            "ObjectName": "PaperFlipbook'Page_Note_Talk01_Down'",
+            "ObjectPath": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down.0"
+          },
+          "bLoopBookNPCFlipbook": true,
+          "bForcePlayerFlipbookOverride": false,
+          "bWaitForPreviousFlipbook": false,
+          "FlipbookToLoopAfterNewFlipbook": null,
+          "bSetFlipbookXScale": false,
+          "FlipbookXScale": 1.0,
+          "bChangeSprite": false,
+          "NewSprite": null,
+          "bShow_MusicSFX": false,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "bFadeMusicOnSFX": false,
+          "FadeMusicDownForPeriod": 0.0,
+          "SFXToPlay": null,
+          "bShow_Camera": false,
+          "bSetCameraZoom": false,
+          "CameraZoom": 0.0,
+          "bSetCameraTarget": false,
+          "bCameraTracksAffectedCharacter": false,
+          "bUseTimeBlendedCamera": false,
+          "CameraTarget": null,
+          "CameraSpeedMultiplier": 1.0,
+          "CameraBlendType": "ECameraBlendType::EaseInOut",
+          "CameraBlendTime": 1.5,
+          "bChangeOrbitConversationCamera": false,
+          "bUseOrbitConversationCamera": true,
+          "bSetDepthOfFieldTarget": false,
+          "bSetPlayerAsDepthOfFieldTarget": false,
+          "TiltShiftDOFTarget": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bSetDepthOfFieldFStop": false,
+          "TiltShiftDOF_FStop": 0.5,
+          "bResetDeskPlayerCamera": false,
+          "DeskPlayerCameraBlendTime": 0.0,
+          "CancelDeskPlayerLookAtPoint": false,
+          "bStartCameraTranslationCurve": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 0.0,
+          "bResetCameraTranslation": true,
+          "HandheldCameraShake": "EStatusSetting::DoNotChange",
+          "CameraShakeStrength": 0.0,
+          "CustomCameraShake_BP": null,
+          "bShow_AdditionalEvents": false,
+          "bRestorePlayerHealth": false,
+          "TopDownLedge": null,
+          "NPCDirection": "EAnimDirectionChange::DoNotChange",
+          "PlayerDirection": "EAnimDirectionChange::DoNotChange",
+          "PositionTimelineToRun": null,
+          "PositionTimelineLength": 1.0,
+          "bTimelineDisablesGravity": false,
+          "ScaleTimelineToRun": null,
+          "ScaleTimelineLength": 1.0,
+          "bDoColourBlend": false,
+          "ColourBlend": {
+            "TargetColour": {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            },
+            "BlendTime": 0.0
+          },
+          "bHasColourSequence": false,
+          "bEndColourSequence": false,
+          "AdditionalColourSequenceProps": [],
+          "ColourSequenceSlot0": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot1": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot2": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "bPlayLevelSequence": false,
+          "bShowAlternativeSequenceOnSwitch": false,
+          "Sequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "CineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchSequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchCineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "LevelSequenceBlendTime": 1.0,
+          "bPausesEventTimer": false,
+          "bRestoreCameraOnSequenceEnd": true,
+          "bRestorePlayerCameraOnSequenceEnd": true,
+          "ActorToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "ActorContainingCameraComponentToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bEnableMasterCameraTick": false,
+          "bIsNoCameraSequence": false,
+          "bWaitForSequenceToFinish": false,
+          "bSetPlayerNotInCutsceneAfterSequence": true,
+          "bSkipMusicVolumeChanges": false,
+          "bShowQuickFade": false,
+          "bShowQuickFadeAfterLevelSequence": false,
+          "BookControlEvent": {
+            "bSetTiltAngle": false,
+            "TiltAngle": 0.0,
+            "TiltSpeed": 4.0,
+            "bOpenBookAfterTiltedClosed": false,
+            "bAllowPlayerExit": false,
+            "bPreventPlayerExit": false,
+            "bChangePlayerControl": false,
+            "bPlayerCanControlBook": true,
+            "bChangeHasTurnGauntlets": false,
+            "bPlayerHasTurnGauntlets": false,
+            "bChangeCanTurnPages": false,
+            "bPlayerCanTurnPages": false,
+            "bChangeCanTiltBook": false,
+            "bPlayerCanTiltBook": false,
+            "bCancelBookControl": false,
+            "bForceDeskPlayerCameraOnExit": false,
+            "bDisableVFX": false
+          },
+          "bSetDeskPlayerFacialExpression": false,
+          "DeskPlayerFacialExpression": "EDeskPlayerFacialExpression::Idle",
+          "bQuitGame": false,
+          "bNoCredits": false,
+          "bPlayCreditsSequence": false,
+          "bChangeUIVisibilty": false,
+          "bSetUIVisibility": false,
+          "CandleChallenge": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bShow_VibroEffects": false,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": ""
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.24"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.67"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.55"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.18"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1.Billboard'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.3"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "EventSequence_BP_C",
+    "Name": "EventSequence_PlayPage_Talk_2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/EventSequence_BP.EventSequence_BP_C'",
+    "Template": {
+      "ObjectName": "EventSequence_BP_C'Default__EventSequence_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.1"
+    },
+    "Properties": {
+      "Billboard": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.4"
+      },
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.19"
+      },
+      "bIsNonInteractiveSequence": false,
+      "bIsDeskSequence": false,
+      "bIsBookSequenceCalledFromDesk": true,
+      "bOneShot": false,
+      "Sequence": [
+        {
+          "DeveloperComment": "[ 0.0 ] Play Page Appear",
+          "PreviousDeveloperComment": "[ 0.0 ] Play Page Appear",
+          "CurrentTimestamp": "[ 0.0 ] ",
+          "Time": 0.0,
+          "bCleanlyDeleteEntry": false,
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "SwitchActor": null,
+          "bSaveGame": false,
+          "bSaveBook": true,
+          "bSaveDesk": true,
+          "bSaveSketchSpace": false,
+          "SketchspaceSaveList": [],
+          "SavingReferenceName": "None",
+          "bShow_Target": false,
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "bUseTargetOverride": false,
+          "SpecificFollowingNPCClass": null,
+          "BookNPC": null,
+          "DeskNPC": null,
+          "SpriteActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "DeskActor": null,
+          "bShow_Switch": false,
+          "bTriggerSwitchOnTarget": false,
+          "QuickSwitchTargets": [],
+          "SwitchParameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bShow_Dialogue": false,
+          "bDialogueWithoutNPC": false,
+          "DialogueBoxPositioner": null,
+          "SpriteDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "Offset": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "DialogueSFX": null
+          },
+          "DeskDialogueSettings": {
+            "DialogueBox_BP": null,
+            "SpeakingActor": null,
+            "DialogueSFX": null,
+            "LeftHandTexture": null,
+            "RighHandTexture": null,
+            "LineCount": 2
+          },
+          "NPCDialogueOffset": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "bAutomatedDialogue": false,
+          "AutomationTime": 1.0,
+          "TypewriterTickRateOverride": 0.0,
+          "NPCNameOverride": {
+            "CultureInvariantString": null
+          },
+          "NPCDialogue": {
+            "CultureInvariantString": null
+          },
+          "bShow_Flipbooks": true,
+          "ActionToPerform": "EStorySequenceAction::PlayOnce",
+          "bSetBookNPCFlipbook": true,
+          "BookNPCFlipbook": {
+            "ObjectName": "PaperFlipbook'Page_Note_Talk02_Down'",
+            "ObjectPath": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down.0"
+          },
+          "bLoopBookNPCFlipbook": true,
+          "bForcePlayerFlipbookOverride": false,
+          "bWaitForPreviousFlipbook": false,
+          "FlipbookToLoopAfterNewFlipbook": null,
+          "bSetFlipbookXScale": false,
+          "FlipbookXScale": 1.0,
+          "bChangeSprite": false,
+          "NewSprite": null,
+          "bShow_MusicSFX": false,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "bFadeMusicOnSFX": false,
+          "FadeMusicDownForPeriod": 0.0,
+          "SFXToPlay": null,
+          "bShow_Camera": false,
+          "bSetCameraZoom": false,
+          "CameraZoom": 0.0,
+          "bSetCameraTarget": false,
+          "bCameraTracksAffectedCharacter": false,
+          "bUseTimeBlendedCamera": false,
+          "CameraTarget": null,
+          "CameraSpeedMultiplier": 1.0,
+          "CameraBlendType": "ECameraBlendType::EaseInOut",
+          "CameraBlendTime": 1.5,
+          "bChangeOrbitConversationCamera": false,
+          "bUseOrbitConversationCamera": true,
+          "bSetDepthOfFieldTarget": false,
+          "bSetPlayerAsDepthOfFieldTarget": false,
+          "TiltShiftDOFTarget": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bSetDepthOfFieldFStop": false,
+          "TiltShiftDOF_FStop": 0.5,
+          "bResetDeskPlayerCamera": false,
+          "DeskPlayerCameraBlendTime": 0.0,
+          "CancelDeskPlayerLookAtPoint": false,
+          "bStartCameraTranslationCurve": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 0.0,
+          "bResetCameraTranslation": true,
+          "HandheldCameraShake": "EStatusSetting::DoNotChange",
+          "CameraShakeStrength": 0.0,
+          "CustomCameraShake_BP": null,
+          "bShow_AdditionalEvents": false,
+          "bRestorePlayerHealth": false,
+          "TopDownLedge": null,
+          "NPCDirection": "EAnimDirectionChange::DoNotChange",
+          "PlayerDirection": "EAnimDirectionChange::DoNotChange",
+          "PositionTimelineToRun": null,
+          "PositionTimelineLength": 1.0,
+          "bTimelineDisablesGravity": false,
+          "ScaleTimelineToRun": null,
+          "ScaleTimelineLength": 1.0,
+          "bDoColourBlend": false,
+          "ColourBlend": {
+            "TargetColour": {
+              "R": 1.0,
+              "G": 1.0,
+              "B": 1.0,
+              "A": 1.0,
+              "Hex": "FFFFFF"
+            },
+            "BlendTime": 0.0
+          },
+          "bHasColourSequence": false,
+          "bEndColourSequence": false,
+          "AdditionalColourSequenceProps": [],
+          "ColourSequenceSlot0": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot1": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "ColourSequenceSlot2": {
+            "FromColour": {
+              "B": 0,
+              "G": 0,
+              "R": 0,
+              "A": 0,
+              "Hex": "000000"
+            },
+            "ColourSequence": [],
+            "SequenceDuration": 1.0,
+            "bSequenceLoops": false,
+            "bBlendBetweenColours": true,
+            "bRevertAtEnd": false
+          },
+          "bPlayLevelSequence": false,
+          "bShowAlternativeSequenceOnSwitch": false,
+          "Sequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "CineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchSequence": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "SwitchCineCameraActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "LevelSequenceBlendTime": 1.0,
+          "bPausesEventTimer": false,
+          "bRestoreCameraOnSequenceEnd": true,
+          "bRestorePlayerCameraOnSequenceEnd": true,
+          "ActorToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "ActorContainingCameraComponentToBlendToOnSequenceEnd": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bEnableMasterCameraTick": false,
+          "bIsNoCameraSequence": false,
+          "bWaitForSequenceToFinish": false,
+          "bSetPlayerNotInCutsceneAfterSequence": true,
+          "bSkipMusicVolumeChanges": false,
+          "bShowQuickFade": false,
+          "bShowQuickFadeAfterLevelSequence": false,
+          "BookControlEvent": {
+            "bSetTiltAngle": false,
+            "TiltAngle": 0.0,
+            "TiltSpeed": 4.0,
+            "bOpenBookAfterTiltedClosed": false,
+            "bAllowPlayerExit": false,
+            "bPreventPlayerExit": false,
+            "bChangePlayerControl": false,
+            "bPlayerCanControlBook": true,
+            "bChangeHasTurnGauntlets": false,
+            "bPlayerHasTurnGauntlets": false,
+            "bChangeCanTurnPages": false,
+            "bPlayerCanTurnPages": false,
+            "bChangeCanTiltBook": false,
+            "bPlayerCanTiltBook": false,
+            "bCancelBookControl": false,
+            "bForceDeskPlayerCameraOnExit": false,
+            "bDisableVFX": false
+          },
+          "bSetDeskPlayerFacialExpression": false,
+          "DeskPlayerFacialExpression": "EDeskPlayerFacialExpression::Idle",
+          "bQuitGame": false,
+          "bNoCredits": false,
+          "bPlayCreditsSequence": false,
+          "bChangeUIVisibilty": false,
+          "bSetUIVisibility": false,
+          "CandleChallenge": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bShow_VibroEffects": false,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": ""
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.25"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.68"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.56"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2.Capsule Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.19"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2.Billboard'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.4"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.6"
+    },
+    "Properties": {
+      "bActive": false
+    }
+  },
+  {
+    "Type": "InstancedFoliageActor",
+    "Name": "InstancedFoliageActor_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'InstancedFoliageActor'",
+    "Properties": {
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.InstancedFoliageActor_0.RootComponent0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.77"
+      }
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "Desk_C02_Page_03",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'Desk_C02_Page_03:PersistentLevel.Model_3'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.43"
+      },
+      "StreamingTextureGuids": [
+        "D5F387A5-475254AB-A5269586-19542C26",
+        "6AFA5825-4991AEE3-ECDD3B8B-D5345888",
+        "176EE41E-465BFAB6-AEB85FBB-C9FCAD8F",
+        "9C995DBB-453D9568-054E658F-761F0E1F",
+        "DE7F91FA-4D57CF4C-A115CABE-2AF1225E"
+      ],
+      "LevelBuildDataId": "89E9F90E-4C7BEA69-A1FFD5A3-FA72DFD8",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'Desk_C02_Page_03:PersistentLevel.WorldSettings_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.107"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'Desk_C02_Page_03:PersistentLevel.WorldSettings_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.107"
+      },
+      null,
+      {
+        "ObjectName": "InstancedFoliageActor'Desk_C02_Page_03:PersistentLevel.InstancedFoliageActor_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.37"
+      },
+      {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      {
+        "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.31"
+      },
+      {
+        "ObjectName": "Switch_BP_C'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.93"
+      },
+      {
+        "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.32"
+      },
+      {
+        "ObjectName": "Switch_BP_C'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.94"
+      },
+      {
+        "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.35"
+      },
+      {
+        "ObjectName": "Switch_BP_C'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.97"
+      },
+      {
+        "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.34"
+      },
+      {
+        "ObjectName": "Switch_BP_C'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.96"
+      },
+      {
+        "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.33"
+      },
+      {
+        "ObjectName": "Switch_BP_C'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.95"
+      },
+      {
+        "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Engine/Maps/Entry",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'Desk_C02_Page_03:PersistentLevel.Model_3'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.43"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.7"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_3",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Colour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 1.0,
+            "G": 0.944927,
+            "B": 0.185267,
+            "A": 0.0,
+            "Hex": "FFF977"
+          },
+          "ExpressionGUID": "00CD460C-495C6B8B-38DCA081-E90F425E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.99"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_C02_DeskPage_03",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "AssignedBookIDs": [
+        203
+      ],
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C02/Desk_C02.Desk_C02",
+        "SubPathString": "PersistentLevel.BOOK_Desk_Page3_DPAGE_03"
+      },
+      "BookID": 203,
+      "RenderResolution": {
+        "X": 4096.0,
+        "Y": 2048.0
+      },
+      "LevelSizePixels": {
+        "X": 4096.0,
+        "Y": 2048.0
+      },
+      "BackgroundColour": {
+        "R": 1.0,
+        "G": 0.944927,
+        "B": 0.185267,
+        "A": 0.0,
+        "Hex": "FFF977"
+      },
+      "bSavesDeskData": false,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.GameVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.11"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.91"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.88"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.89"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.90"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.KillVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.12"
+      },
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.GameBackground'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.87"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.47"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.86"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.51"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.76"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/Map/Objects/Placeholder/stickynote-bg.stickynote-bg",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Placeholder/stickynote-bg_Sprite.stickynote-bg_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0001_X01.fx_teleport_in_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0001_X01_Sprite.fx_teleport_in_0001_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0002_X01.fx_teleport_in_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0002_X01_Sprite.fx_teleport_in_0002_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0003_X01.fx_teleport_in_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0003_X01_Sprite.fx_teleport_in_0003_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0004_X01.fx_teleport_in_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0004_X01_Sprite.fx_teleport_in_0004_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0005_X01.fx_teleport_in_0005_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0005_X01_Sprite.fx_teleport_in_0005_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0006_X02.fx_teleport_in_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0006_X02_Sprite.fx_teleport_in_0006_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0007_X02.fx_teleport_in_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0007_X02_Sprite.fx_teleport_in_0007_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0008_X02.fx_teleport_in_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0008_X02_Sprite.fx_teleport_in_0008_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0009_X02.fx_teleport_in_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0009_X02_Sprite.fx_teleport_in_0009_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0010_X03.fx_teleport_in_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0010_X03_Sprite.fx_teleport_in_0010_X03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0011_X03.fx_teleport_in_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0011_X03_Sprite.fx_teleport_in_0011_X03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0012_X03.fx_teleport_in_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in_0012_X03_Sprite.fx_teleport_in_0012_X03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport_In/fx_teleport_in.fx_teleport_in",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0001_X01.fx_teleport_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0001_X01_Sprite.fx_teleport_0001_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0002_X01.fx_teleport_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0002_X01_Sprite.fx_teleport_0002_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0003_X01.fx_teleport_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0003_X01_Sprite.fx_teleport_0003_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0004_X01.fx_teleport_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0004_X01_Sprite.fx_teleport_0004_X01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0005_X02.fx_teleport_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0005_X02_Sprite.fx_teleport_0005_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0006_X02.fx_teleport_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0006_X02_Sprite.fx_teleport_0006_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0007_X02.fx_teleport_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0007_X02_Sprite.fx_teleport_0007_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0008_X02.fx_teleport_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0008_X02_Sprite.fx_teleport_0008_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0009_X02.fx_teleport_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0009_X02_Sprite.fx_teleport_0009_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0010_X02.fx_teleport_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0010_X02_Sprite.fx_teleport_0010_X02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0011_X03.fx_teleport_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0011_X03_Sprite.fx_teleport_0011_X03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0012_X03.fx_teleport_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0012_X03_Sprite.fx_teleport_0012_X03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0013_X03.fx_teleport_0013_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0013_X03_Sprite.fx_teleport_0013_X03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0014_X03.fx_teleport_0014_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0014_X03_Sprite.fx_teleport_0014_X03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0015_X03.fx_teleport_0015_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport_0015_X03_Sprite.fx_teleport_0015_X03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Teleport/fx_teleport.fx_teleport",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_panel_01.dialogue_panel_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_panel_01_Sprite.dialogue_panel_01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_storybook_arrow_black_01.dialogue_storybook_arrow_black_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_storybook_arrow_black_01_Sprite.dialogue_storybook_arrow_black_01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_storybook_arrow_black_02.dialogue_storybook_arrow_black_02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_storybook_arrow_black_02_Sprite.dialogue_storybook_arrow_black_02_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_storybook_arrow_black_03.dialogue_storybook_arrow_black_03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_storybook_arrow_black_03_Sprite.dialogue_storybook_arrow_black_03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Dialogue/textures/dialogue_storybook_arrow_black.dialogue_storybook_arrow_black",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Textures/page_V02-0.page_V02-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0001_X01.Page_Appear_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0002_X01.Page_Appear_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0003_X01.Page_Appear_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0004_X02.Page_Appear_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0005_X01.Page_Appear_0005_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Textures/page_V02-1.page_V02-1",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0006_X01.Page_Appear_0006_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0007_X01.Page_Appear_0007_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0008_X01.Page_Appear_0008_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0009_X01.Page_Appear_0009_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0010_X01.Page_Appear_0010_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0011_X01.Page_Appear_0011_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0012_X01.Page_Appear_0012_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0013_X01.Page_Appear_0013_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0014_X01.Page_Appear_0014_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0015_X01.Page_Appear_0015_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0016_X01.Page_Appear_0016_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0017_X01.Page_Appear_0017_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0018_X01.Page_Appear_0018_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0019_X01.Page_Appear_0019_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0020_X01.Page_Appear_0020_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0021_X01.Page_Appear_0021_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0022_X01.Page_Appear_0022_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0023_X01.Page_Appear_0023_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear_0024_X01.Page_Appear_0024_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Appear.Page_Appear",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Idle_down_0001_X04.Page_Note_Idle_down_0001_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Idle_down_0002_X04.Page_Note_Idle_down_0002_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Idle_down_0003_X04.Page_Note_Idle_down_0003_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Idle_down_0004_X04.Page_Note_Idle_down_0004_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Idle_down.Page_Note_Idle_down",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0001_X03.Page_Note_Talk02_Down_0001_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0002_X02.Page_Note_Talk02_Down_0002_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0003_X02.Page_Note_Talk02_Down_0003_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0004_X02.Page_Note_Talk02_Down_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0005_X02.Page_Note_Talk02_Down_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0006_X02.Page_Note_Talk02_Down_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0007_X02.Page_Note_Talk02_Down_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0008_X02.Page_Note_Talk02_Down_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0009_X03.Page_Note_Talk02_Down_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0010_X03.Page_Note_Talk02_Down_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0011_X02.Page_Note_Talk02_Down_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0012_X02.Page_Note_Talk02_Down_0012_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0013_X02.Page_Note_Talk02_Down_0013_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0014_X02.Page_Note_Talk02_Down_0014_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0015_X02.Page_Note_Talk02_Down_0015_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0016_X02.Page_Note_Talk02_Down_0016_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0017_X02.Page_Note_Talk02_Down_0017_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0018_X02.Page_Note_Talk02_Down_0018_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0019_X02.Page_Note_Talk02_Down_0019_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down_0020_X03.Page_Note_Talk02_Down_0020_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk02_Down.Page_Note_Talk02_Down",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0001_X02.Page_Note_Talk01_Down_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0002_X02.Page_Note_Talk01_Down_0002_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0003_X02.Page_Note_Talk01_Down_0003_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0004_X02.Page_Note_Talk01_Down_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0005_X02.Page_Note_Talk01_Down_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0006_X02.Page_Note_Talk01_Down_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0007_X02.Page_Note_Talk01_Down_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0008_X02.Page_Note_Talk01_Down_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0009_X02.Page_Note_Talk01_Down_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0010_X02.Page_Note_Talk01_Down_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0011_X02.Page_Note_Talk01_Down_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0012_X02.Page_Note_Talk01_Down_0012_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0013_X02.Page_Note_Talk01_Down_0013_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0014_X02.Page_Note_Talk01_Down_0014_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0015_X02.Page_Note_Talk01_Down_0015_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0016_X02.Page_Note_Talk01_Down_0016_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down_0017_X02.Page_Note_Talk01_Down_0017_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Note_Talk01_Down.Page_Note_Talk01_Down",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0001_X01.Page_Disappear_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0002_X01.Page_Disappear_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0003_X01.Page_Disappear_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0004_X02.Page_Disappear_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0005_X01.Page_Disappear_0005_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0006_X01.Page_Disappear_0006_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0007_X01.Page_Disappear_0007_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0008_X01.Page_Disappear_0008_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0009_X01.Page_Disappear_0009_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0010_X01.Page_Disappear_0010_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0011_X01.Page_Disappear_0011_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0012_X01.Page_Disappear_0012_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0013_X01.Page_Disappear_0013_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0014_X01.Page_Disappear_0014_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0015_X01.Page_Disappear_0015_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0016_X01.Page_Disappear_0016_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0017_X01.Page_Disappear_0017_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0018_X01.Page_Disappear_0018_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0019_X01.Page_Disappear_0019_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0020_X01.Page_Disappear_0020_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0021_X01.Page_Disappear_0021_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0022_X01.Page_Disappear_0022_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0023_X01.Page_Disappear_0023_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0024_X01.Page_Disappear_0024_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0025_X01.Page_Disappear_0025_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear_0026_X01.Page_Disappear_0026_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Page_V02/Frames/Page_Disappear.Page_Disappear",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.69"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.57"
+      },
+      "bIsSerialised": false,
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_3",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "922F79BF-4CD32625-D1801495-0156C18A",
+    "LightmassSettings": [
+      {
+        "bUseTwoSidedLighting": false,
+        "bShadowIndirectOnly": false,
+        "bUseEmissiveForStaticLighting": false,
+        "bUseVertexNormalForHemisphereGather": false,
+        "EmissiveLightFalloffExponent": 8.0,
+        "EmissiveLightExplicitInfluenceRadius": 0.0,
+        "EmissiveBoost": 1.0,
+        "DiffuseBoost": 1.0,
+        "FullyOccludedSamplesFraction": 1.0
+      }
+    ]
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.9"
+    }
+  },
+  {
+    "Type": "NavigationSystemConfig",
+    "Name": "NavigationSystemConfig_0",
+    "Outer": "WorldSettings_1",
+    "Class": "UScriptClass'NavigationSystemConfig'",
+    "Properties": {
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "SpriteColor": {
+        "R": 1.0,
+        "G": 0.944927,
+        "B": 0.185267,
+        "A": 0.0,
+        "Hex": "FFF977"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      },
+      "RelativeScale3D": {
+        "X": 29.35,
+        "Y": 28.782608,
+        "Z": 28.782608
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.13"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "EventSequence_PlayPage_Enter",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__EventSequence_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.5"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "EventSequence_PlayPage_Exit",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__EventSequence_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.5"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "EventSequence_PlayPage_Idle",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__EventSequence_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.5"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "EventSequence_PlayPage_Talk_1",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__EventSequence_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.5"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "EventSequence_PlayPage_Talk_2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__EventSequence_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.5"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Switch_PlayPage_Enter",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Switch_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Switch_PlayPage_Exit",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Switch_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Switch_PlayPage_Idle",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Switch_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Switch_PlayPage_Talk_1",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Switch_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Switch_PlayPage_Talk_2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Switch_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.4"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "EventSequence_PlayPage_Enter",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__EventSequence_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.6"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "EventSequence_PlayPage_Exit",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__EventSequence_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.6"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "EventSequence_PlayPage_Idle",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__EventSequence_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.6"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "EventSequence_PlayPage_Talk_1",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__EventSequence_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.6"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "EventSequence_PlayPage_Talk_2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__EventSequence_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/EventSequence_BP.6"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Switch_PlayPage_Enter",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Switch_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Switch_PlayPage_Exit",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Switch_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Switch_PlayPage_Idle",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Switch_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Switch_PlayPage_Talk_1",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Switch_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Switch_PlayPage_Talk_2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Switch_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.5"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "RootComponent0",
+    "Outer": "InstancedFoliageActor_0",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "RelativeLocation": {
+        "X": 83667.77,
+        "Y": 45627.44,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 66879.766,
+        "Y": 30613.457,
+        "Z": 23228.0
+      },
+      "Mobility": "EComponentMobility::Static"
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Collider",
+    "Outer": "Switch_PlayPage_Enter",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Switch_BP_C:Collider'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.9"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 67992.76,
+        "Y": 30707.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Collider",
+    "Outer": "Switch_PlayPage_Exit",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Switch_BP_C:Collider'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.9"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 68837.76,
+        "Y": 30707.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Collider",
+    "Outer": "Switch_PlayPage_Idle",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Switch_BP_C:Collider'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.9"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 68427.76,
+        "Y": 31397.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Collider",
+    "Outer": "Switch_PlayPage_Talk_1",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Switch_BP_C:Collider'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.9"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 68497.76,
+        "Y": 30707.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Collider",
+    "Outer": "Switch_PlayPage_Talk_2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Switch_BP_C:Collider'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.9"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": 68357.76,
+        "Y": 30707.46,
+        "Z": 23228.0
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.48"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.50"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.49"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.46"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      },
+      "RelativeScale3D": {
+        "X": 46.96,
+        "Y": 26.48,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.MaterialInstanceDynamic_3'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.40"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      },
+      "RelativeScale3D": {
+        "X": 46.96,
+        "Y": 26.48,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 1074.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 42.96,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      },
+      "RelativeLocation": {
+        "X": -2098.0,
+        "Y": 0.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 20.48,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      },
+      "RelativeLocation": {
+        "X": 2098.0,
+        "Y": 0.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 20.48,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_C02_DeskPage_03",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.78"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": -1074.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 42.96,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "Switch_BP_C",
+    "Name": "Switch_PlayPage_Enter",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Switch_BP.Switch_BP_C'",
+    "Template": {
+      "ObjectName": "Switch_BP_C'Default__Switch_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.1"
+    },
+    "Properties": {
+      "Links": [
+        {
+          "DeveloperComment": "Turn Page On",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::TurnOn",
+          "bOneShot": false,
+          "Delay": 0.0
+        },
+        {
+          "DeveloperComment": "Play Page Enter Anim",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.31"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Enter'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.31"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bOneShot": false,
+          "Delay": 0.0
+        }
+      ],
+      "SphereComp": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.80"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.5"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.26"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.71"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.59"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.5"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Enter.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.80"
+      }
+    }
+  },
+  {
+    "Type": "Switch_BP_C",
+    "Name": "Switch_PlayPage_Exit",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Switch_BP.Switch_BP_C'",
+    "Template": {
+      "ObjectName": "Switch_BP_C'Default__Switch_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.1"
+    },
+    "Properties": {
+      "Links": [
+        {
+          "DeveloperComment": "Play Page Enter Anim",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.32"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Exit'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.32"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bOneShot": false,
+          "Delay": 0.0
+        },
+        {
+          "DeveloperComment": "Turn Page Off",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.105"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::TurnOff",
+          "bOneShot": false,
+          "Delay": 0.8
+        }
+      ],
+      "SphereComp": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.81"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.6"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.27"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.72"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.60"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.6"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Exit.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.81"
+      }
+    }
+  },
+  {
+    "Type": "Switch_BP_C",
+    "Name": "Switch_PlayPage_Idle",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Switch_BP.Switch_BP_C'",
+    "Template": {
+      "ObjectName": "Switch_BP_C'Default__Switch_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.1"
+    },
+    "Properties": {
+      "Links": [
+        {
+          "DeveloperComment": "Play Page Talk 2",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.33"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Idle'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.33"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bOneShot": false,
+          "Delay": 0.0
+        }
+      ],
+      "SphereComp": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.82"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.7"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.28"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.73"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.61"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.7"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Idle.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.82"
+      }
+    }
+  },
+  {
+    "Type": "Switch_BP_C",
+    "Name": "Switch_PlayPage_Talk_1",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Switch_BP.Switch_BP_C'",
+    "Template": {
+      "ObjectName": "Switch_BP_C'Default__Switch_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.1"
+    },
+    "Properties": {
+      "Links": [
+        {
+          "DeveloperComment": "Play Page Talk 1",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.34"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_1'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.34"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bOneShot": false,
+          "Delay": 0.0
+        }
+      ],
+      "SphereComp": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.83"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.8"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.29"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.74"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.62"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.8"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_1.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.83"
+      }
+    }
+  },
+  {
+    "Type": "Switch_BP_C",
+    "Name": "Switch_PlayPage_Talk_2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Switch_BP.Switch_BP_C'",
+    "Template": {
+      "ObjectName": "Switch_BP_C'Default__Switch_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.1"
+    },
+    "Properties": {
+      "Links": [
+        {
+          "DeveloperComment": "Play Page Talk 2",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.35"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "EventSequence_BP_C'Desk_C02_Page_03:PersistentLevel.EventSequence_PlayPage_Talk_2'",
+            "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.35"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bOneShot": false,
+          "Delay": 0.0
+        }
+      ],
+      "SphereComp": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.84"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.9"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.30"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.75"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.63"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.9"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Switch_PlayPage_Talk_2.Collider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.84"
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "Page_Note_Sprite",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.28"
+    }
+  },
+  {
+    "Type": "TopDownRealTimeDecal_BP_IgnoreAmbient_C",
+    "Name": "Page_Note_Sprite",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.TopDownRealTimeDecal_BP_IgnoreAmbient_C'",
+    "Template": {
+      "ObjectName": "TopDownRealTimeDecal_BP_IgnoreAmbient_C'Default__TopDownRealTimeDecal_BP_IgnoreAmbient_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP_IgnoreAmbient.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.BoxComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.13"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.SphereComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.79"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.50"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.49"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.46"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.StampHat'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.92"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.SlideCollider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.14"
+      },
+      "Scale": 2.0,
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.104"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.102"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.103"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.41"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.85"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.10"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.48"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.44"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.36"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.39"
+      },
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.48"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.50"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.49"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.46"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.100"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.101"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.98"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.70"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.58"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C02_Page_03:PersistentLevel.MGC_C02_DeskPage_03'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.42"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.2770867
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C02_Page_03:PersistentLevel.Page_Note_Sprite.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.20"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "Desk_C02_Page_03",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'Desk_C02_Page_03:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.38"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings_1",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "bEnableNavigationSystem": false,
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemConfig'Desk_C02_Page_03:PersistentLevel.WorldSettings_1.NavigationSystemConfig_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C02/Page/Desk_C02_Page_03.45"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

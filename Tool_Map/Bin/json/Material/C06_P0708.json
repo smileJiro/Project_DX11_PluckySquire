@@ -1,0 +1,5519 @@
+[
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'ScaledSprite_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.106"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Switch_LerpLighting_C06_000_5",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__Switch_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5.Collider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.113"
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__ScaledSprite_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.3"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Text_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.9"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Text_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.9"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Text_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.9"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Text_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.9"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TopDownRealTimeDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.2"
+    },
+    "Properties": {
+      "TiltSwapOffset": {
+        "X": 2509.0,
+        "Y": 3240.0
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TopDownDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.2"
+    },
+    "Properties": {
+      "PropOwner": {
+        "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+      },
+      "TiltSwapOffset": {
+        "X": 1508.0,
+        "Y": 0.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 3940.0,
+        "Y": 1180.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerBox",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Text_BP_C:TriggerBox'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P07Text'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.132"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P07Text'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.132"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P07Text.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.107"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerBox",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Text_BP_C:TriggerBox'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text1'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.133"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text1'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.133"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text1.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.108"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerBox",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Text_BP_C:TriggerBox'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text2'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.134"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text2'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.134"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text2.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.109"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerBox",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Text_BP_C:TriggerBox'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text3'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.135"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text3'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.135"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text3.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.110"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "StoryPanel_BP6_3",
+    "Class": "UScriptClass'CameraComponent'",
+    "Template": {
+      "ObjectName": "CameraComponent'Default__StoryPanel_BP_C:CameraComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.Camera Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.105"
+      },
+      "RelativeLocation": {
+        "X": -1899.9999,
+        "Y": -0.0005493164,
+        "Z": 0.00036621094
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TopDownRealTimeDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "WorldStatic",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "WorldDynamic",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "Pawn",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "PhysicsBody",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "Vehicle",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "Destructible",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "EngineTraceChannel1",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "EngineTraceChannel2",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "EngineTraceChannel3",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "EngineTraceChannel4",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "EngineTraceChannel5",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "EngineTraceChannel6",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "CapsuleAsshats",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "MinigameControllers",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "Bounceable",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "MovingPlatforms",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "InterCharacterContact",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "WalkableWallTrace",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "LightInDarkness",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "GameTraceChannel17",
+              "Response": "ECR_Overlap"
+            },
+            {
+              "Channel": "GameTraceChannel18",
+              "Response": "ECR_Overlap"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": -6063.0,
+        "Y": 49127.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TopDownDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": -5850.0,
+        "Y": 49210.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "DeskLightingLerpSetting_BP_C",
+    "Name": "DeskLightingLerpSetting_C06_000_5",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Logic/DeskLightingLerpSetting_BP.DeskLightingLerpSetting_BP_C'",
+    "Template": {
+      "ObjectName": "DeskLightingLerpSetting_BP_C'Default__DeskLightingLerpSetting_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Logic/DeskLightingLerpSetting_BP.1"
+    },
+    "Properties": {
+      "DefaultSceneRoot": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.103"
+      },
+      "TimeToTargetInMS": 23500.0,
+      "LerpStartValue": 0.74,
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.23"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.91"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.80"
+      },
+      "bIsSerialised": false,
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": {
+            "ObjectName": "Texture2D'EmptyActor'",
+            "ObjectPath": "/Engine/EditorResources/EmptyActor.0"
+          }
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.103"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5.DefaultSceneRoot'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.103"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "DeskLightingLerpSetting_C06_000_5",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__DeskLightingLerpSetting_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Logic/DeskLightingLerpSetting_BP.2"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "StoryPanel_BP6_3",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__StoryPanel_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.3"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Switch_LerpLighting_C06_000_5",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Switch_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.3"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__ScaledSprite_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.4"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Text_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.11"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Text_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.11"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Text_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.11"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Text_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.11"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TopDownRealTimeDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.6"
+    },
+    "Properties": {
+      "bActive": false
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TopDownDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.6"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "C06_P0708",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'C06_P0708:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.50"
+      },
+      "LevelBuildDataId": "6916B6F3-4F31314D-DD1D49BA-7C4211B1",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'C06_P0708:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.177"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'C06_P0708:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.177"
+      },
+      null,
+      {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      {
+        "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P07Text'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.132"
+      },
+      {
+        "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text1'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.133"
+      },
+      {
+        "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text2'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.134"
+      },
+      {
+        "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text3'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.135"
+      },
+      {
+        "ObjectName": "DeskLightingLerpSetting_BP_C'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.22"
+      },
+      {
+        "ObjectName": "Switch_BP_C'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.131"
+      },
+      {
+        "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+      },
+      {
+        "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+      },
+      {
+        "ObjectName": "StoryPanel_BP_C'C06_P0708:PersistentLevel.StoryPanel_BP6_3'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.130"
+      },
+      {
+        "ObjectName": "ScaledSprite_BP_C'C06_P0708:PersistentLevel.BackgroundGradient11'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.102"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'C06_P0708:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/C06/C06_P0708.50"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__ScaledSprite_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.5"
+    },
+    "Properties": {
+      "SpriteComponentName": "LightInDarknessComponent",
+      "ShadowSpriteComponentName": "Sprite Component"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Text_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.12"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Text_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.12"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Text_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.12"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Text_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.12"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TopDownRealTimeDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TopDownDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.7"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_3",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Colour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.73791,
+            "G": 0.262251,
+            "B": 0.401978,
+            "A": 1.0,
+            "Hex": "DF8CAA"
+          },
+          "ExpressionGUID": "00CD460C-495C6B8B-38DCA081-E90F425E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__ScaledSprite_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.6"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.BackgroundGradient11.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.141"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Text_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.13"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P07Text.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.145"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Text_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.13"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text1.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.149"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Text_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.13"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text2.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.153"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Text_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.13"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text3.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.157"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TopDownRealTimeDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.161"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TopDownDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.168"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_C06_P0708_scaleSlopes",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/_Persistent/MainLevel.MainLevel",
+        "SubPathString": "PersistentLevel.Book_MAIN"
+      },
+      "BookID": 0,
+      "LevelSizePixels": {
+        "X": 7680.0,
+        "Y": 2160.0
+      },
+      "GameType": "EGameType::Story",
+      "SpreadType": "EPageSpreadType::Double",
+      "ScrollType": "EScrollType::DoublePagePan",
+      "BackgroundColour": {
+        "R": 0.73791,
+        "G": 0.262251,
+        "B": 0.401978,
+        "A": 1.0,
+        "Hex": "DF8CAA"
+      },
+      "LevelWidth": 2.0,
+      "bSavesToFileWhenSerialised": false,
+      "bSavesDeskData": false,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.GameVolume'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.9"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.127"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.124"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.125"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.126"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.KillVolume'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.10"
+      },
+      "StoryPanels": [
+        {
+          "OrderInSequence": 0,
+          "StoryPanel": {
+            "ObjectName": "StoryPanel_BP_C'C06_P0708:PersistentLevel.StoryPanel_BP6_3'",
+            "ObjectPath": "/Game/Levels/C06/C06_P0708.130"
+          }
+        }
+      ],
+      "CameraPanTime": [
+        0.5
+      ],
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.GameBackground'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.123"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.63"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.122"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.78"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.101"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/Map/Objects/White_16_9.White_16_9",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/White_16_9_Sprite.White_16_9_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Textures/genericexplosion-0.genericexplosion-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0001_X02.genericexplosion_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0002_X01.genericexplosion_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0003_X01.genericexplosion_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0004_X01.genericexplosion_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0005_X02.genericexplosion_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0006_X02.genericexplosion_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0007_X02.genericexplosion_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0008_X02.genericexplosion_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0009_X03.genericexplosion_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0010_X03.genericexplosion_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0011_X03.genericexplosion_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0012_X03.genericexplosion_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/generic_explosion.generic_explosion",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Textures/C06_P0708-2.C06_P0708-2",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0001_X02.C06_P0708_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Textures/C06_P0708-1.C06_P0708-1",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0002_X02.C06_P0708_0002_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0003_X02.C06_P0708_0003_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0004_X02.C06_P0708_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0005_X02.C06_P0708_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0006_X02.C06_P0708_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0007_X02.C06_P0708_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0008_X02.C06_P0708_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0009_X01.C06_P0708_0009_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Textures/C06_P0708-0.C06_P0708-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0010_X01.C06_P0708_0010_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0011_X02.C06_P0708_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0012_X02.C06_P0708_0012_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0013_X02.C06_P0708_0013_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0014_X02.C06_P0708_0014_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0015_X02.C06_P0708_0015_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0016_X02.C06_P0708_0016_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0017_X02.C06_P0708_0017_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0018_X03.C06_P0708_0018_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0019_X03.C06_P0708_0019_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0020_X04.C06_P0708_0020_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0021_X04.C06_P0708_0021_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708_0022_X04.C06_P0708_0022_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708.C06_P0708",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Background/Textures/C06_Background-0.C06_Background-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Background/Frames/C06_Sky_01_png.C06_Sky_01_png",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P8384/C06_P8384_CLIFF.C06_P8384_CLIFF",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P8384/C06_P8384_CLIFF_Sprite.C06_P8384_CLIFF_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/C06_P0708_CLIFF.C06_P0708_CLIFF",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/C06_P0708_CLIFF_Sprite.C06_P0708_CLIFF_Sprite",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.92"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.81"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "85175B19-4AB2B13D-8FC9F3A7-FE3B1B18",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__ScaledSprite_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.7"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Text_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.14"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Text_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.14"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Text_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.14"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Text_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.14"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TopDownRealTimeDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TopDownDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.9"
+    }
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TopDownRealTimeDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.10"
+    },
+    "Properties": {
+      "SourceFlipbook": {
+        "ObjectName": "PaperFlipbook'C06_P0708'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708.0"
+      },
+      "AccumulatedTime": 1.2922344,
+      "CachedFrameIndex": 19,
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TopDownDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.10"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ScaledSprite_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.106"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Sprite Component",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ScaledSprite_BP_C:Sprite Component'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.9"
+    },
+    "Properties": {
+      "SourceSprite": {
+        "ObjectName": "PaperSprite'C06_Sky_01_png'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_06/Background/Frames/C06_Sky_01_png.1"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.106"
+      },
+      "RelativeScale3D": {
+        "X": 43.636364,
+        "Y": 1.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "SpriteColor": {
+        "R": 0.73791,
+        "G": 0.262251,
+        "B": 0.401978,
+        "A": 1.0,
+        "Hex": "DF8CAA"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      },
+      "RelativeScale3D": {
+        "X": 51.75,
+        "Y": 30.0,
+        "Z": 30.0
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P07Text.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.107"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Panel Sprite",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:Panel Sprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P07Text.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.107"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text1.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.108"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Panel Sprite",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:Panel Sprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text1.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.108"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text2.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.109"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Panel Sprite",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:Panel Sprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text2.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.109"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text3.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.110"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Panel Sprite",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:Panel Sprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text3.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.110"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.13"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.13"
+    },
+    "Properties": {
+      "SourceSprite": {
+        "ObjectName": "PaperSprite'C06_P0708_CLIFF_Sprite'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/C06_P0708_CLIFF_Sprite.1"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__ScaledSprite_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.10"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "DeskLightingLerpSetting_C06_000_5",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__DeskLightingLerpSetting_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Logic/DeskLightingLerpSetting_BP.3"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Text_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.17"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Text_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.17"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Text_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.17"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Text_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.17"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TopDownRealTimeDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "StoryPanel_BP6_3",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__StoryPanel_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Switch_LerpLighting_C06_000_5",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Switch_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TopDownDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__ScaledSprite_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.11"
+    },
+    "Properties": {
+      "PlayerCollisionHeightAdjust": 0.0
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "DeskLightingLerpSetting_C06_000_5",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__DeskLightingLerpSetting_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Logic/DeskLightingLerpSetting_BP.4"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Text_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.18"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Text_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.18"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Text_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.18"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Text_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.18"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TopDownRealTimeDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "StoryPanel_BP6_3",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__StoryPanel_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Switch_LerpLighting_C06_000_5",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Switch_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TopDownDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "ScaledSprite_BP_C",
+    "Name": "BackgroundGradient11",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/ScaledSprite_BP.ScaledSprite_BP_C'",
+    "Template": {
+      "ObjectName": "ScaledSprite_BP_C'Default__ScaledSprite_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.1"
+    },
+    "Properties": {
+      "Billboard": {
+        "ObjectName": "BillboardComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Billboard'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.0"
+      },
+      "Root": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.106"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Sprite Component'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.62"
+      },
+      "Size": {
+        "X": 7680.0,
+        "Y": 2160.0
+      },
+      "DepthAdjust": -200.0,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C06_P0708:PersistentLevel.BackgroundGradient11.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.42"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C06_P0708:PersistentLevel.BackgroundGradient11.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.115"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C06_P0708:PersistentLevel.BackgroundGradient11.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.2"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.BackgroundGradient11.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.61"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C06_P0708:PersistentLevel.BackgroundGradient11.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.51"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C06_P0708:PersistentLevel.BackgroundGradient11.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.26"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C06_P0708:PersistentLevel.BackgroundGradient11.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.34"
+      },
+      "GameType": "EGameType::Story",
+      "LayerDepth": "ELayerDepth::Background",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.BackgroundGradient11.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.61"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Sprite Component'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.62"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.BackgroundGradient11.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.142"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.BackgroundGradient11.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.143"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.BackgroundGradient11.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.140"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.BackgroundGradient11.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.90"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.BackgroundGradient11.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.79"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": {
+            "ObjectName": "Texture2D'EditorScaledSprite'",
+            "ObjectPath": "/Game/Editor/EditorScaledSprite.0"
+          }
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.106"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Billboard'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.0"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "DefaultSceneRoot",
+    "Outer": "DeskLightingLerpSetting_C06_000_5",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'DeskLightingLerpSetting_BP_C:DefaultSceneRoot_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Logic/DeskLightingLerpSetting_BP.5"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": -9716.0,
+        "Y": 47950.0,
+        "Z": 21000.0
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'SceneComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "RelativeLocation",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": -5850.0,
+        "Y": 49210.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "Camera Root",
+    "Outer": "StoryPanel_BP6_3",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__StoryPanel_BP_C:Camera Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.6"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.112"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__ScaledSprite_BP_C:Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.16"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereCollider",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Text_BP_C:SphereCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": -7616.0,
+        "Y": 49190.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereCollider",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Text_BP_C:SphereCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": -4240.0,
+        "Y": 48670.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereCollider",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Text_BP_C:SphereCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": -3520.0,
+        "Y": 49300.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereCollider",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Text_BP_C:SphereCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": -2720.0,
+        "Y": 49840.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TopDownRealTimeDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.175"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "StoryPanel_BP6_3",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__StoryPanel_BP_C:Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      },
+      "RelativeLocation": {
+        "X": -1920.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Collider",
+    "Outer": "Switch_LerpLighting_C06_000_5",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Switch_BP_C:Collider'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.9"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": -9563.0,
+        "Y": 47947.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TopDownDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'C06_P0708:PersistentLevel.TopDownDecal_Cliff'",
+              "ObjectPath": "/Game/Levels/C06/C06_P0708.174"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__ScaledSprite_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.17"
+    },
+    "Properties": {
+      "SpriteComponentDepthAdjust": [
+        {
+          "Key": "Sprite Component",
+          "Value": -200.0
+        }
+      ],
+      "SpriteComponentUseAmbient": [
+        {
+          "Key": "LightInDarknessComponent",
+          "Value": false
+        },
+        {
+          "Key": "Sprite Component",
+          "Value": false
+        }
+      ],
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.BackgroundGradient11.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.61"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.BackgroundGradient11.Sprite Component'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.62"
+        }
+      ],
+      "SpritesConfigVersion": 325
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Text_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P07Text.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.64"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P07Text.Panel Sprite'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.65"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Text_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text1.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.66"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text1.Panel Sprite'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.67"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Text_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text2.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.68"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text2.Panel Sprite'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.69"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Text_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text3.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.70"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text3.Panel Sprite'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.71"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TopDownRealTimeDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponentDepthAdjust": [
+        {
+          "Key": "SpriteComponent",
+          "Value": -100.0
+        }
+      ],
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.72"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.74"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.73"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.59"
+        }
+      ],
+      "SpritesConfigVersion": 249
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TopDownDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponentDepthAdjust": [
+        {
+          "Key": "SpriteComponent",
+          "Value": -100.0
+        }
+      ],
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.75"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.77"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.76"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.60"
+        }
+      ],
+      "SpritesConfigVersion": 235
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      },
+      "RelativeScale3D": {
+        "X": 76.99999,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.MaterialInstanceDynamic_3'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.41"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      },
+      "RelativeScale3D": {
+        "X": 76.99999,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      },
+      "RelativeScale3D": {
+        "X": 78.799995,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      },
+      "RelativeLocation": {
+        "X": -3890.0,
+        "Y": 0.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      },
+      "RelativeLocation": {
+        "X": 3890.0,
+        "Y": 0.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_C06_P0708_scaleSlopes",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes.ROOT '",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.104"
+      },
+      "RelativeScale3D": {
+        "X": 78.799995,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TopDownRealTimeDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TopDownDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "StoryPanel_BP_C",
+    "Name": "StoryPanel_BP6_3",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.StoryPanel_BP_C'",
+    "Template": {
+      "ObjectName": "StoryPanel_BP_C'Default__StoryPanel_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.1"
+    },
+    "Properties": {
+      "Root": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.112"
+      },
+      "CameraRoot": {
+        "ObjectName": "SceneComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.Camera Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.105"
+      },
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.CameraComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.19"
+      },
+      "StorySequence": [
+        {
+          "DeveloperComment": "P07 Text Enter",
+          "Time": 0.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "None",
+                "SubPathString": ""
+              },
+              "TextObject": {
+                "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P07Text'",
+                "ObjectPath": "/Game/Levels/C06/C06_P0708.132"
+              },
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "DeveloperComment": "",
+          "Time": 2.5,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": true,
+          "CameraTranslationCurve": {
+            "ObjectName": "CurveVector'04_0708_StoryPanelCamera'",
+            "ObjectPath": "/Game/Curves/C06/04_0708_StoryPanelCamera.0"
+          },
+          "CameraTranslationDuration": 7.0,
+          "Items": []
+        },
+        {
+          "DeveloperComment": "Activate Imagery",
+          "Time": 3.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "/Game/Levels/C06/C06_P0708.C06_P0708",
+                "SubPathString": "PersistentLevel.RealTimeDecal_ClimbAnim"
+              },
+              "TextObject": null,
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "DeveloperComment": "Ascending Text Enter",
+          "Time": 5.5,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "None",
+                "SubPathString": ""
+              },
+              "TextObject": {
+                "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text1'",
+                "ObjectPath": "/Game/Levels/C06/C06_P0708.133"
+              },
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "DeveloperComment": "Bottom Text Enter",
+          "Time": 7.5,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "None",
+                "SubPathString": ""
+              },
+              "TextObject": {
+                "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text2'",
+                "ObjectPath": "/Game/Levels/C06/C06_P0708.134"
+              },
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "DeveloperComment": "Bother Text Enter",
+          "Time": 9.5,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "None",
+                "SubPathString": ""
+              },
+              "TextObject": {
+                "ObjectName": "Text_BP_C'C06_P0708:PersistentLevel.P08Text3'",
+                "ObjectPath": "/Game/Levels/C06/C06_P0708.135"
+              },
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        }
+      ],
+      "EntryOffsets": {
+        "StartEntry": 3,
+        "EndEntry": 5
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.24"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.98"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.87"
+      },
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.StoryPanel_BP6_3.Root'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.112"
+      }
+    }
+  },
+  {
+    "Type": "Switch_BP_C",
+    "Name": "Switch_LerpLighting_C06_000_5",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Switch_BP.Switch_BP_C'",
+    "Template": {
+      "ObjectName": "Switch_BP_C'Default__Switch_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.1"
+    },
+    "Properties": {
+      "Links": [
+        {
+          "DeveloperComment": "",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "DeskLightingLerpSetting_BP_C'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5'",
+            "ObjectPath": "/Game/Levels/C06/C06_P0708.22"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "DeskLightingLerpSetting_BP_C'C06_P0708:PersistentLevel.DeskLightingLerpSetting_C06_000_5'",
+            "ObjectPath": "/Game/Levels/C06/C06_P0708.22"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::Toggle",
+          "bOneShot": true,
+          "Delay": 0.0
+        }
+      ],
+      "SphereComp": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5.Collider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.113"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5.Billboard'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.1"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.25"
+      },
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.99"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.88"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5.Billboard'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.1"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.Switch_LerpLighting_C06_000_5.Collider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.113"
+      }
+    }
+  },
+  {
+    "Type": "Text_BP_C",
+    "Name": "P07Text",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Text_BP.Text_BP_C'",
+    "Template": {
+      "ObjectName": "Text_BP_C'Default__Text_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.7"
+    },
+    "Properties": {
+      "VO_Chapter_DataTable": {
+        "ObjectName": "DataTable'ThePluckySquire-VOStringDoc-C06_Strings'",
+        "ObjectPath": "/Game/NokNok/Narration/VoStringDocs/ThePluckySquire-VOStringDoc-C06_Strings.0"
+      },
+      "RowNames": [
+        "0102_ChapterNumber",
+        "0102_ChapterTitle",
+        "0304_ExplosiveDevelopment",
+        "0304_Investigate",
+        "0506_BracingTrek",
+        "0506_TrarrgMountain",
+        "0708_Ascending",
+        "0708_Bother",
+        "0708_Bottom",
+        "0708_ScaleSlopes",
+        "0910_AfterAGoodClimb",
+        "2526a_Narration_1",
+        "2526a_Narration_2",
+        "2526a_Narration_3",
+        "2526a_Narration_4",
+        "3940_Narration_LookedDangerous",
+        "4950a_Narration_1",
+        "4950a_Narration_2",
+        "4950a_Narration_3",
+        "4950a_Narration_4",
+        "4950a_Narration_5",
+        "4950a_Narration_6",
+        "4950c_Narration_1",
+        "4950c_Narration_2",
+        "5152_Narration_1",
+        "5152_Narration_2",
+        "5556_Narration",
+        "5960b_Story_1",
+        "5960B_Story_2",
+        "6566_SuddenHalt",
+        "6566_Tracks",
+        "6566_TrarrgVillage",
+        "6566_Wrecked",
+        "6768_Machine",
+        "7778_Exploded",
+        "7778_MachineFell",
+        "7778_Pieces",
+        "8182_Convoy",
+        "8182_Distance",
+        "8182_LookDown",
+        "8384_Cavalcade",
+        "8384_SetOff",
+        "2324_Narration_1",
+        "2324_Narration_2",
+        "4748_Narration_1",
+        "4748_Narration_2"
+      ],
+      "SelectedRow": "0708_ScaleSlopes",
+      "Language": "E_Vo_Languages::NewEnumerator1",
+      "ResolvedSoundWave": {
+        "ObjectName": "SoundWave'P0708_TheyProceededToScale_EN'",
+        "ObjectPath": "/Game/NokNok/Audio/Allister/StoryVocals/EN/Chapter6/P0708_TheyProceededToScale_EN.0"
+      },
+      "TextRenderComponent": {
+        "ObjectName": "TextRenderComponent'C06_P0708:PersistentLevel.P07Text.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.136"
+      },
+      "PanelSprite": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P07Text.Panel Sprite'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.65"
+      },
+      "Collider": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P07Text.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.107"
+      },
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.P07Text.TriggerBox'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.11"
+      },
+      "CharacterWrapWidth": 14,
+      "WrappedText": [
+        "THEY ",
+        "PROCEEDED TO ",
+        "SCALE ",
+        "ITS ",
+        "SLOPES "
+      ],
+      "PageAccumulatedCharCount": [
+        35
+      ],
+      "DisplayedText": {
+        "Namespace": "C06_Strings_SB",
+        "Key": "0708_ScaleSlopes",
+        "SourceString": "0708_ScaleSlopes",
+        "LocalizedString": "THEY PROCEEDED TO {200}SCALE {100}ITS {200}SLOPES"
+      },
+      "TextScale": 1.875,
+      "LocalisedOverrides": [
+        {
+          "Language": "ELocalisationLanguage::Chinese_Simplified",
+          "TextScale": 1.6,
+          "LineSpacing": 0.0,
+          "KerningAdjustment": 0.0,
+          "CharacterWrapWidth": 0,
+          "Offset": {
+            "X": -300.0,
+            "Y": 0.0
+          },
+          "FontOverride": null
+        },
+        {
+          "Language": "ELocalisationLanguage::Japanese",
+          "TextScale": 1.6,
+          "LineSpacing": 0.0,
+          "KerningAdjustment": 0.0,
+          "CharacterWrapWidth": 0,
+          "Offset": {
+            "X": 0.0,
+            "Y": 0.0
+          },
+          "FontOverride": null
+        },
+        {
+          "Language": "ELocalisationLanguage::Chinese_Traditional",
+          "TextScale": 1.6,
+          "LineSpacing": 0.0,
+          "KerningAdjustment": 0.0,
+          "CharacterWrapWidth": 0,
+          "Offset": {
+            "X": -300.0,
+            "Y": 0.0
+          },
+          "FontOverride": null
+        }
+      ],
+      "bTypewriter": true,
+      "bCanBeSkipped": false,
+      "bFadeIn": false,
+      "bFadeOut": false,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C06_P0708:PersistentLevel.P07Text.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.43"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C06_P0708:PersistentLevel.P07Text.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.116"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C06_P0708:PersistentLevel.P07Text.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.3"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P07Text.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.64"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C06_P0708:PersistentLevel.P07Text.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.52"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C06_P0708:PersistentLevel.P07Text.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.27"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C06_P0708:PersistentLevel.P07Text.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.35"
+      },
+      "GameType": "EGameType::Story",
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P07Text.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.146"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P07Text.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.147"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P07Text.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.144"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.P07Text.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.93"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.P07Text.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.82"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P07Text.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.107"
+      }
+    }
+  },
+  {
+    "Type": "Text_BP_C",
+    "Name": "P08Text1",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Text_BP.Text_BP_C'",
+    "Template": {
+      "ObjectName": "Text_BP_C'Default__Text_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.7"
+    },
+    "Properties": {
+      "VO_Chapter_DataTable": {
+        "ObjectName": "DataTable'ThePluckySquire-VOStringDoc-C06_Strings'",
+        "ObjectPath": "/Game/NokNok/Narration/VoStringDocs/ThePluckySquire-VOStringDoc-C06_Strings.0"
+      },
+      "RowNames": [
+        "0102_ChapterNumber",
+        "0102_ChapterTitle",
+        "0304_ExplosiveDevelopment",
+        "0304_Investigate",
+        "0506_BracingTrek",
+        "0506_TrarrgMountain",
+        "0708_Ascending",
+        "0708_Bother",
+        "0708_Bottom",
+        "0708_ScaleSlopes",
+        "0910_AfterAGoodClimb",
+        "2526a_Narration_1",
+        "2526a_Narration_2",
+        "2526a_Narration_3",
+        "2526a_Narration_4",
+        "3940_Narration_LookedDangerous",
+        "4950a_Narration_1",
+        "4950a_Narration_2",
+        "4950a_Narration_3",
+        "4950a_Narration_4",
+        "4950a_Narration_5",
+        "4950a_Narration_6",
+        "4950c_Narration_1",
+        "4950c_Narration_2",
+        "5152_Narration_1",
+        "5152_Narration_2",
+        "5556_Narration",
+        "5960b_Story_1",
+        "5960B_Story_2",
+        "6566_SuddenHalt",
+        "6566_Tracks",
+        "6566_TrarrgVillage",
+        "6566_Wrecked",
+        "6768_Machine",
+        "7778_Exploded",
+        "7778_MachineFell",
+        "7778_Pieces",
+        "8182_Convoy",
+        "8182_Distance",
+        "8182_LookDown",
+        "8384_Cavalcade",
+        "8384_SetOff",
+        "2324_Narration_1",
+        "2324_Narration_2",
+        "4748_Narration_1",
+        "4748_Narration_2"
+      ],
+      "SelectedRow": "0708_Ascending",
+      "Language": "E_Vo_Languages::NewEnumerator1",
+      "ResolvedSoundWave": {
+        "ObjectName": "SoundWave'P0708_AscendingToTheTop_EN'",
+        "ObjectPath": "/Game/NokNok/Audio/Allister/StoryVocals/EN/Chapter6/P0708_AscendingToTheTop_EN.0"
+      },
+      "TextRenderComponent": {
+        "ObjectName": "TextRenderComponent'C06_P0708:PersistentLevel.P08Text1.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.137"
+      },
+      "PanelSprite": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text1.Panel Sprite'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.67"
+      },
+      "Collider": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text1.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.108"
+      },
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.P08Text1.TriggerBox'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.12"
+      },
+      "TextColour": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "CharacterWrapWidth": 10,
+      "WrappedText": [
+        "ASCENDING ",
+        "TO THE ",
+        "TOP "
+      ],
+      "PageAccumulatedCharCount": [
+        21
+      ],
+      "DisplayedText": {
+        "Namespace": "C06_Strings_SB",
+        "Key": "0708_Ascending",
+        "SourceString": "0708_Ascending",
+        "LocalizedString": "ASCENDING TO THE {175}TOP"
+      },
+      "TextScale": 1.398743,
+      "bTypewriter": true,
+      "bCanBeSkipped": false,
+      "bFadeIn": false,
+      "bFadeOut": false,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C06_P0708:PersistentLevel.P08Text1.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.44"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C06_P0708:PersistentLevel.P08Text1.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.117"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C06_P0708:PersistentLevel.P08Text1.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.4"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text1.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.66"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C06_P0708:PersistentLevel.P08Text1.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.53"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C06_P0708:PersistentLevel.P08Text1.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.28"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C06_P0708:PersistentLevel.P08Text1.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.36"
+      },
+      "GameType": "EGameType::Story",
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text1.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.150"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text1.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.151"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text1.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.148"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.P08Text1.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.94"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.P08Text1.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.83"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text1.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.108"
+      }
+    }
+  },
+  {
+    "Type": "Text_BP_C",
+    "Name": "P08Text2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Text_BP.Text_BP_C'",
+    "Template": {
+      "ObjectName": "Text_BP_C'Default__Text_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.7"
+    },
+    "Properties": {
+      "VO_Chapter_DataTable": {
+        "ObjectName": "DataTable'ThePluckySquire-VOStringDoc-C06_Strings'",
+        "ObjectPath": "/Game/NokNok/Narration/VoStringDocs/ThePluckySquire-VOStringDoc-C06_Strings.0"
+      },
+      "RowNames": [
+        "0102_ChapterNumber",
+        "0102_ChapterTitle",
+        "0304_ExplosiveDevelopment",
+        "0304_Investigate",
+        "0506_BracingTrek",
+        "0506_TrarrgMountain",
+        "0708_Ascending",
+        "0708_Bother",
+        "0708_Bottom",
+        "0708_ScaleSlopes",
+        "0910_AfterAGoodClimb",
+        "2526a_Narration_1",
+        "2526a_Narration_2",
+        "2526a_Narration_3",
+        "2526a_Narration_4",
+        "3940_Narration_LookedDangerous",
+        "4950a_Narration_1",
+        "4950a_Narration_2",
+        "4950a_Narration_3",
+        "4950a_Narration_4",
+        "4950a_Narration_5",
+        "4950a_Narration_6",
+        "4950c_Narration_1",
+        "4950c_Narration_2",
+        "5152_Narration_1",
+        "5152_Narration_2",
+        "5556_Narration",
+        "5960b_Story_1",
+        "5960B_Story_2",
+        "6566_SuddenHalt",
+        "6566_Tracks",
+        "6566_TrarrgVillage",
+        "6566_Wrecked",
+        "6768_Machine",
+        "7778_Exploded",
+        "7778_MachineFell",
+        "7778_Pieces",
+        "8182_Convoy",
+        "8182_Distance",
+        "8182_LookDown",
+        "8384_Cavalcade",
+        "8384_SetOff",
+        "2324_Narration_1",
+        "2324_Narration_2",
+        "4748_Narration_1",
+        "4748_Narration_2"
+      ],
+      "SelectedRow": "0708_Bottom",
+      "Language": "E_Vo_Languages::NewEnumerator1",
+      "ResolvedSoundWave": {
+        "ObjectName": "SoundWave'P0708_ToGetToTheBottom_EN'",
+        "ObjectPath": "/Game/NokNok/Audio/Allister/StoryVocals/EN/Chapter6/P0708_ToGetToTheBottom_EN.0"
+      },
+      "TextRenderComponent": {
+        "ObjectName": "TextRenderComponent'C06_P0708:PersistentLevel.P08Text2.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.138"
+      },
+      "PanelSprite": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text2.Panel Sprite'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.69"
+      },
+      "Collider": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text2.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.109"
+      },
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.P08Text2.TriggerBox'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.13"
+      },
+      "TextColour": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "CharacterWrapWidth": 15,
+      "WrappedText": [
+        "TO GET TO THE ",
+        "BOTTOM "
+      ],
+      "PageAccumulatedCharCount": [
+        21
+      ],
+      "DisplayedText": {
+        "Namespace": "C06_Strings_SB",
+        "Key": "0708_Bottom",
+        "SourceString": "0708_Bottom",
+        "LocalizedString": "TO GET TO THE {175}BOTTOM"
+      },
+      "TextScale": 1.398743,
+      "bTypewriter": true,
+      "bCanBeSkipped": false,
+      "bFadeIn": false,
+      "bFadeOut": false,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C06_P0708:PersistentLevel.P08Text2.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.45"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C06_P0708:PersistentLevel.P08Text2.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.118"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C06_P0708:PersistentLevel.P08Text2.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.5"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text2.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.68"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C06_P0708:PersistentLevel.P08Text2.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.54"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C06_P0708:PersistentLevel.P08Text2.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.29"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C06_P0708:PersistentLevel.P08Text2.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.37"
+      },
+      "GameType": "EGameType::Story",
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text2.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.154"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text2.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.155"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text2.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.152"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.P08Text2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.95"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.P08Text2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.84"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text2.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.109"
+      }
+    }
+  },
+  {
+    "Type": "Text_BP_C",
+    "Name": "P08Text3",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Text_BP.Text_BP_C'",
+    "Template": {
+      "ObjectName": "Text_BP_C'Default__Text_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.7"
+    },
+    "Properties": {
+      "VO_Chapter_DataTable": {
+        "ObjectName": "DataTable'ThePluckySquire-VOStringDoc-C06_Strings'",
+        "ObjectPath": "/Game/NokNok/Narration/VoStringDocs/ThePluckySquire-VOStringDoc-C06_Strings.0"
+      },
+      "RowNames": [
+        "0102_ChapterNumber",
+        "0102_ChapterTitle",
+        "0304_ExplosiveDevelopment",
+        "0304_Investigate",
+        "0506_BracingTrek",
+        "0506_TrarrgMountain",
+        "0708_Ascending",
+        "0708_Bother",
+        "0708_Bottom",
+        "0708_ScaleSlopes",
+        "0910_AfterAGoodClimb",
+        "2526a_Narration_1",
+        "2526a_Narration_2",
+        "2526a_Narration_3",
+        "2526a_Narration_4",
+        "3940_Narration_LookedDangerous",
+        "4950a_Narration_1",
+        "4950a_Narration_2",
+        "4950a_Narration_3",
+        "4950a_Narration_4",
+        "4950a_Narration_5",
+        "4950a_Narration_6",
+        "4950c_Narration_1",
+        "4950c_Narration_2",
+        "5152_Narration_1",
+        "5152_Narration_2",
+        "5556_Narration",
+        "5960b_Story_1",
+        "5960B_Story_2",
+        "6566_SuddenHalt",
+        "6566_Tracks",
+        "6566_TrarrgVillage",
+        "6566_Wrecked",
+        "6768_Machine",
+        "7778_Exploded",
+        "7778_MachineFell",
+        "7778_Pieces",
+        "8182_Convoy",
+        "8182_Distance",
+        "8182_LookDown",
+        "8384_Cavalcade",
+        "8384_SetOff",
+        "2324_Narration_1",
+        "2324_Narration_2",
+        "4748_Narration_1",
+        "4748_Narration_2"
+      ],
+      "SelectedRow": "0708_Bother",
+      "Language": "E_Vo_Languages::NewEnumerator1",
+      "ResolvedSoundWave": {
+        "ObjectName": "SoundWave'P0708_OfAllThisBother_EN'",
+        "ObjectPath": "/Game/NokNok/Audio/Allister/StoryVocals/EN/Chapter6/P0708_OfAllThisBother_EN.0"
+      },
+      "TextRenderComponent": {
+        "ObjectName": "TextRenderComponent'C06_P0708:PersistentLevel.P08Text3.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.139"
+      },
+      "PanelSprite": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text3.Panel Sprite'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.71"
+      },
+      "Collider": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text3.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.110"
+      },
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.P08Text3.TriggerBox'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.14"
+      },
+      "TextColour": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "CharacterWrapWidth": 15,
+      "WrappedText": [
+        "OF ALL THIS ",
+        "BOTHER. "
+      ],
+      "PageAccumulatedCharCount": [
+        20
+      ],
+      "DisplayedText": {
+        "Namespace": "C06_Strings_SB",
+        "Key": "0708_Bother",
+        "SourceString": "0708_Bother",
+        "LocalizedString": "OF ALL THIS BOTHER."
+      },
+      "TextScale": 1.398743,
+      "bTypewriter": true,
+      "bCanBeSkipped": false,
+      "bFadeIn": false,
+      "bFadeOut": false,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C06_P0708:PersistentLevel.P08Text3.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.46"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C06_P0708:PersistentLevel.P08Text3.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.119"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C06_P0708:PersistentLevel.P08Text3.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.6"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.P08Text3.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.70"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C06_P0708:PersistentLevel.P08Text3.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.55"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C06_P0708:PersistentLevel.P08Text3.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.30"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C06_P0708:PersistentLevel.P08Text3.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.38"
+      },
+      "GameType": "EGameType::Story",
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text3.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.158"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text3.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.159"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.P08Text3.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.156"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.P08Text3.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.96"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.P08Text3.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.85"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text3.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.110"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Template": {
+      "ObjectName": "TextRenderComponent'Default__Text_BP_C:NewTextRenderComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.24"
+    },
+    "Properties": {
+      "Text": {
+        "CultureInvariantString": "THEY \r\nPROCEEDED TO \r\nSCALE \r\nITS \r\nSLOPES "
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P07Text.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.107"
+      },
+      "RelativeScale3D": {
+        "X": 1.875,
+        "Y": 1.875,
+        "Z": 1.875
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Template": {
+      "ObjectName": "TextRenderComponent'Default__Text_BP_C:NewTextRenderComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.24"
+    },
+    "Properties": {
+      "Text": {
+        "CultureInvariantString": "ASCENDING \r\nTO THE \r\nTOP "
+      },
+      "TextRenderColor": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFFFFF"
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text1.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.108"
+      },
+      "RelativeScale3D": {
+        "X": 1.398743,
+        "Y": 1.398743,
+        "Z": 1.398743
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Template": {
+      "ObjectName": "TextRenderComponent'Default__Text_BP_C:NewTextRenderComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.24"
+    },
+    "Properties": {
+      "Text": {
+        "CultureInvariantString": "TO GET TO THE \r\nBOTTOM "
+      },
+      "TextRenderColor": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFFFFF"
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text2.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.109"
+      },
+      "RelativeScale3D": {
+        "X": 1.398743,
+        "Y": 1.398743,
+        "Z": 1.398743
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Template": {
+      "ObjectName": "TextRenderComponent'Default__Text_BP_C:NewTextRenderComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.24"
+    },
+    "Properties": {
+      "Text": {
+        "CultureInvariantString": "OF ALL THIS \r\nBOTHER. "
+      },
+      "TextRenderColor": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFFFFF"
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.P08Text3.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.110"
+      },
+      "RelativeScale3D": {
+        "X": 1.398743,
+        "Y": 1.398743,
+        "Z": 1.398743
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ScaledSprite_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.18"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ScaledSprite_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.19"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ScaledSprite_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.20"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "BackgroundGradient11",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ScaledSprite_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/ScaledSprite_BP.21"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "P07Text",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "P08Text1",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "P08Text2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "P08Text3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "RealTimeDecal_ClimbAnim",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "TopDownDecal_Cliff",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.28"
+    }
+  },
+  {
+    "Type": "TopDownDecal_BP_C",
+    "Name": "TopDownDecal_Cliff",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.TopDownDecal_BP_C'",
+    "Template": {
+      "ObjectName": "TopDownDecal_BP_C'Default__TopDownDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.BoxComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.17"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.SphereComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.114"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.77"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.76"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.60"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.StampHat'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.129"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.SlideCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.18"
+      },
+      "SpriteRelativeDepth": -100.0,
+      "PageSwap_UprightSprite": {
+        "ObjectName": "PaperSprite'C06_P8384_CLIFF_Sprite'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_06/Story_Sequences/P8384/C06_P8384_CLIFF_Sprite.1"
+      },
+      "PageSwap_FlippedSprite": {
+        "ObjectName": "PaperSprite'C06_P8384_CLIFF_Sprite'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_06/Story_Sequences/P8384/C06_P8384_CLIFF_Sprite.1"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.173"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.171"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.172"
+      },
+      "SpriteCollisionBoundsOrigin": {
+        "X": -2332.0,
+        "Y": -1080.0
+      },
+      "SpriteCollisionBoundsExtents": {
+        "X": 2332.0,
+        "Y": 1080.0
+      },
+      "SpriteCollisionOffset": {
+        "X": 1508.0,
+        "Y": 0.0
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.48"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.121"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.8"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.75"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.57"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.32"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.40"
+      },
+      "GameType": "EGameType::Story",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.75"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.77"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.76"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.60"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.169"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.170"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.167"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.100"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.89"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.19606006
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.TopDownDecal_Cliff.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.21"
+      }
+    }
+  },
+  {
+    "Type": "TopDownRealTimeDecal_BP_C",
+    "Name": "RealTimeDecal_ClimbAnim",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.TopDownRealTimeDecal_BP_C'",
+    "Template": {
+      "ObjectName": "TopDownRealTimeDecal_BP_C'Default__TopDownRealTimeDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.BoxComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.15"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.SphereComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.111"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.74"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.73"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.59"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.StampHat'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.128"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.SlideCollider'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.16"
+      },
+      "SpriteRelativeDepth": -100.0,
+      "bLoopFlipbook": false,
+      "bFadeIn": true,
+      "PageSwap_UprightFlipbook": {
+        "ObjectName": "PaperFlipbook'C06_P0708'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708.0"
+      },
+      "PageSwap_FlippedFlipbook": {
+        "ObjectName": "PaperFlipbook'C06_P0708'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_06/Story_Sequences/P0708/Frames/C06_P0708.0"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.166"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.164"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.165"
+      },
+      "SpriteCollisionOffset": {
+        "X": 2509.0,
+        "Y": 3240.0
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.47"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.120"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.7"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.72"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.56"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.31"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.39"
+      },
+      "GameType": "EGameType::Story",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.72"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.74"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.73"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C06/C06_P0708.59"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.162"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.163"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.160"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.97"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.86"
+      },
+      "bActive": false,
+      "bIsSerialised": true,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C06_P0708:PersistentLevel.MGC_C06_P0708_scaleSlopes'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.49"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.26347545
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'C06_P0708:PersistentLevel.RealTimeDecal_ClimbAnim.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.20"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "C06_P0708",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'C06_P0708:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/C06/C06_P0708.33"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'C06_P0708:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/C06/C06_P0708.58"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

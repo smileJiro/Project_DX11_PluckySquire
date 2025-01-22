@@ -1,0 +1,133 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Grapes_Purple_SSS",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_Food_SSS'",
+        "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Materials/M_Food_SSS.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Opacity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.6,
+          "ExpressionGUID": "C47BEDB7-47779346-ED4F31B4-7FDF7411"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Spec",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.15,
+          "ExpressionGUID": "423335AE-418E06AF-B5DEE1A4-22FA75DC"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "SSS Color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.817708,
+            "G": 0.0,
+            "B": 0.241833,
+            "A": 1.0,
+            "Hex": "EA0087"
+          },
+          "ExpressionGUID": "11FE6958-41113DC5-C6741292-4802B816"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "ARM",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Grape_01_1_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Grape_01_1_OcclusionRoughnessMetallic.0"
+          },
+          "ExpressionGUID": "088EE62D-4C5DD932-D33F8BAA-143742BB"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "BC",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Grape_01_1_BaseColor'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Grape_01_1_BaseColor.0"
+          },
+          "ExpressionGUID": "9700DC84-457DB361-354060A6-33D08F1D"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Grape_01_1_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Grape_01_1_Normal.0"
+          },
+          "ExpressionGUID": "D7CFFDC6-479C3B5C-9DF8A49A-E06B4C6E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Subsurface",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_Normal.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Grape_01_1_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Grape_01_1_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Grape_01_1_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

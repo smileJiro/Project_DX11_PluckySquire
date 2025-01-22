@@ -1,6 +1,6 @@
 {
  "IsStatic": [
-  false
+  true
  ],
  "data": [
   "alphabet_blocks_a_mesh",
@@ -133,13 +133,12 @@
   "SM_stickers_05",
   "SM_stickers_04",
   "SM_stickers_06",
-  "SM_stickers_07",
-  "SM_stickers_08",
   "SM_stickers_09",
   "SM_stickers_10",
   "SM_stickers_11",
   "SM_stickers_12",
   "SM_stickers_03",
+  "SM_stickers_07",
   "SM_storage_box",
   "SM_Storage_Box_01",
   "SM_Switch_02",

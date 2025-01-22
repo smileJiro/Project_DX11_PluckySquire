@@ -1,0 +1,78 @@
+[
+  {
+    "Type": "Material",
+    "Name": "m_stickers_banana_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_1",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "E2A2D328-4AA1484C-A364A0A9-3DC0A038",
+      "CachedExpressionData": {
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'sticker_banana_01_d'",
+            "ObjectPath": "/Game/Map/3D/Objects/stickers/Textures/sticker_banana_01_d.0"
+          },
+          {
+            "ObjectName": "Texture2D'sticker_round_01_n'",
+            "ObjectPath": "/Game/Map/3D/Objects/stickers/Textures/sticker_round_01_n.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "sticker_banana_01_d"
+        },
+        {
+          "SamplingScale": 0.5,
+          "UVChannelIndex": 0,
+          "TextureName": "sticker_round_01_n"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'sticker_banana_01_d'",
+          "ObjectPath": "/Game/Map/3D/Objects/stickers/Textures/sticker_banana_01_d.0"
+        },
+        {
+          "ObjectName": "Texture2D'sticker_round_01_n'",
+          "ObjectPath": "/Game/Map/3D/Objects/stickers/Textures/sticker_round_01_n.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]
