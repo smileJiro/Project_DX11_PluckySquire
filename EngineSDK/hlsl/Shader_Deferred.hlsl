@@ -10,7 +10,7 @@ float4x4 g_LightViewMatrix, g_LightProjMatrix;
 Texture2D g_Texture, g_NormalTexture, g_DiffuseTexture, g_ShadeTexture, g_DepthTexture, g_SpecularTexture, g_LightDepthTexture, g_FinalTexture;
 
 // Weighted Blended
-Texture2D g_AccumulateTexture, g_RevealageTexture, g_AddTexture;
+Texture2D g_AccumulateTexture, g_RevealageTexture;
 
 //Texture2D g_EffectTexture, g_Effect_BrightnessTexture, g_Effect_Blur_XTeuxture, g_Effect_Blur_YTeuxture, g_Effect_DistortionTeuxture;
 
@@ -213,26 +213,61 @@ PS_OUT PS_MAIN_FINAL(PS_IN In)
 
 PS_OUT PS_AFTER_EFFECT(PS_IN In)
 {
+    //PS_OUT Out = (PS_OUT) 0;
+    //
+    //vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
+    //
+    //vector vAccumulate = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
+    //float fRevealage = saturate(g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r);
+    //vector vCount = g_AddTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    
+    //float3 vEffectColor = vAccumulate.rgb / max(vAccumulate.a, 1e-3) * (1.f - fRevealage);
+    //float3 vColor = vFinal * fRevealage;
+    //Out.vColor = float4(vEffectColor + vColor, 1.f);
+    //Out.vColor.rgb = vEffectColor.rgb;
+    //Out.vColor.a = 1.f;
+    //{
+    //  //PS_OUT Out = (PS_OUT) 0;
+    
+    //vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    //vector vAccumulate = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
+    //float fRevealage = g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r;
+    //vector vCount = g_AddTexture.Sample(LinearSampler, In.vTexcoord);
+    
+    
+    //float4 vEffectColor = float4(vAccumulate.rgb / max(vAccumulate.a, 1e-5), fRevealage) /*/ max(1e-2, vCount.r)*/;
+    ////float3 vEffectColor = vAccumulate.rgb / max(vAccumulate.a, 1e-3) * (1.f - fRevealage) /*/ max(1e-2, vCount.r)*/;
+    ////float3 vColor = vFinal * fRevealage;
+    //Out.vColor = vEffectColor * (1 - vEffectColor.a) + vFinal * (vEffectColor.a);
+    ////vEffectColor.a = 1.0f - fRevealage    ;
+    ////Out.vColor.rgb = vColor.rgb * (1.f - vEffectColor.a) + vEffectColor.rgb * vEffectColor.a;
+    
+    ////float fCoverage = max(1e-4, 1.0f - fRevealage);
+    ////float4 vEffectColor;
+    ////vEffectColor.rgb = vAccumulate.rgb / fCoverage;
+   
+    
     PS_OUT Out = (PS_OUT) 0;
     
     vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
-    
     vector vAccumulate = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
-    float fRevealage = saturate(g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r);
-    vector vCount = g_AddTexture.Sample(LinearSampler, In.vTexcoord);
+    float fRevealage = g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r;
+
+    // 투명도 계산
+    float alpha = 1.0 - fRevealage;
     
+    // 가중치 정규화된 컬러 계산
+    float3 transparentColor = vAccumulate.rgb / max(0.001, vAccumulate.a);
     
-    float3 vEffectColor = vAccumulate.rgb / max(vAccumulate.a, 1e-3) * (1.f - fRevealage) / max(1e-2, vCount.r);
-    float3 vColor = vFinal * fRevealage;
-    Out.vColor = float4(vEffectColor + vColor, 1.f);
-    //vEffectColor.a = 1.0f - fRevealage;
-    //Out.vColor.rgb = vColor.rgb * (1.f - vEffectColor.a) + vEffectColor.rgb * vEffectColor.a;
-    
-    //float fCoverage = max(1e-4, 1.0f - fRevealage);
-    //float4 vEffectColor;
-    //vEffectColor.rgb = vAccumulate.rgb / fCoverage;
-   
+    // 최종 블렌딩
+    Out.vColor.rgb = lerp(vFinal.rgb, transparentColor, alpha);
+    //Out.vColor.rgb = vAccumulate.rgb;
+    Out.vColor.a = 1.0;   
+    //}
  
+   
     
         
     return Out;

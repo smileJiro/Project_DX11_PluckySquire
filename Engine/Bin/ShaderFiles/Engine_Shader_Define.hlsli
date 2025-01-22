@@ -127,19 +127,18 @@ BlendState BS_WeightAccumulate
 {
     BlendEnable[0] = true;
     BlendEnable[1] = true;
-    BlendEnable[2] = true;
 
     SrcBlend[0] = ONE;
     DestBlend[0] = ONE;
     BlendOp[0] = Add;
+    SrcBlendAlpha[0] = ONE;
+    DestBlendAlpha[0] = ONE;
+    BlendOpAlpha[0] = Add;
 
     SrcBlend[1] = ZERO;
     DestBlend[1] = INV_SRC_COLOR;
     BlendOp[1] = Add;
 
-    SrcBlend[2] = ONE;
-    DestBlend[2] = ONE;
-    BlendOp[2] = Add;
 
     
 };

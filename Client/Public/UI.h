@@ -91,6 +91,12 @@ protected:
 
 	_bool			m_isRender = { true };
 	
+	_float4			m_vColor = { 0.f, 0.f, 0.f, 1.f };
+	_float			m_fRed = { 0.f };
+	_float			m_fGreen = { 0.f };
+	_float			m_fBlue = { 0.f };
+
+
 
 
 
