@@ -49,7 +49,7 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _pRawDataDirPath)
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
 		if (entry.path().extension() == ".json") 
 		{
-			//cout << entry.path().string() << endl;
+			cout << entry.path().string() << endl;
 			std::ifstream input_file(entry.path());
 			if (!input_file.is_open())
 				return E_FAIL;

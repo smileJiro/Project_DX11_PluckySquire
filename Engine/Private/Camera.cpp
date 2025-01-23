@@ -46,7 +46,7 @@ HRESULT CCamera::Initialize(void* _pArg)
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&pDesc->vAt), 1.f));
 	
 	/* 투영 행렬 구성 시 필요한 데이터를 저장. */
-	m_eCameraType = pDesc->eCameraType;
+	m_eCameraType = pDesc->iCameraType;
 	m_iCurZoomLevel = (_uint)pDesc->eZoomLevel;
 	m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
 	m_fAspect = pDesc->fAspect;

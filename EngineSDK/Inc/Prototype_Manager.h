@@ -21,12 +21,15 @@
 #include "CustomFont.h"
 #include "RenderTarget.h"
 #include "CameraArm.h"
+#include "CutScene_Sector.h"
 
 /* Camera */
 #include "Camera_Free.h"
 
 /* Object */
 #include "Particle_Sprite_Emitter.h"
+#include "Particle_Mesh_Emitter.h"
+#include "Particle_System.h"
 
 /* 원형객체들을 레벨별로 관리하겠다. */
 /* 특정 레벨에서 복제할 필요가 없는 원형들은 삭제하겠다 */

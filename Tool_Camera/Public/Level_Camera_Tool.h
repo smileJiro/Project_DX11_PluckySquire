@@ -1,6 +1,11 @@
 #pragma once
 #include "Level.h"
 
+BEGIN(Engine)
+class CGameObject;
+class CCutScene_Sector;
+END
+
 BEGIN(Camera_Tool)
 
 class CLevel_Camera_Tool final : public CLevel
@@ -62,14 +67,39 @@ private:
 
 	_uint				m_iCycleType = {};
 
+	// CutScene
+	_bool								m_isCreatePoint = { false };
+	_bool								m_isEditPoint = { false };
+	
+	//<pair<CGameObject*, >> m_KeyFrames;
+	list<pair<CUTSCENE_KEYFRAME, CGameObject*>>		m_KeyFrames;
+	pair<CUTSCENE_KEYFRAME, CGameObject*>*			m_pCurKeyFrame = { nullptr };
+
+	vector<CUTSCENE_KEYFRAME*>				m_SelectedKeyFrame;
+	vector<CCutScene_Sector*>				m_CutSceneSectors;
+
+	_float3									m_vKeyFramePos = {};
+	_float									m_fTimeStame = {};
+	_int									m_iKeyFrameZoomLevel = {};
+	_uint									m_iKeyFrameZoomRatio = {};
+	_float3									m_vKeyFrameAt = {};
+	_bool									m_isKeyFrameLookAt = { true };
+	_uint									m_iKeyFrameAtRatio = {};
+
 private:
 	void				Show_CameraTool();
+	void				Show_CutSceneTool();
 	void				Show_ArmInfo();
+	void				Show_CutSceneInfo();
 
 	void				Create_Arms();
 	void				Show_ComboBox();
 	void				Show_SelectedArmData();
 	void				Show_CameraZoomInfo();
+
+	//CutScene
+	void				Set_KeyFrameInfo();
+	void				Show_KeyFrameInfo();
 
 private:
 	// Tool
@@ -83,6 +113,18 @@ private:
 	void				Set_Zoom();
 	void				Set_AtOffsetInfo();
 	void				Set_ShakeInfo();
+
+	// CutScene
+	void				Create_KeyFrame();
+	CGameObject*		Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame);
+	void				Edit_KeyFrame();
+	void				Delete_KeyFrame();
+	void				Set_CurrentKeyFrame();
+	void				Picking();
+	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
+
+private:
+	void				Key_Input();
 
 public:
 	static CLevel_Camera_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

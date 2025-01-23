@@ -3,13 +3,13 @@
 
 #include "GameInstance.h"
 
-CCamera_Target::CCamera_Target(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CCamera{ pDevice, pContext }
+CCamera_Target::CCamera_Target(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CCamera{ _pDevice, _pContext }
 {
 }
 
-CCamera_Target::CCamera_Target(const CCamera_Target& Prototype)
-	: CCamera{ Prototype }
+CCamera_Target::CCamera_Target(const CCamera_Target& _Prototype)
+	: CCamera{ _Prototype }
 {
 }
 
@@ -18,9 +18,9 @@ HRESULT CCamera_Target::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CCamera_Target::Initialize(void* pArg)
+HRESULT CCamera_Target::Initialize(void* _pArg)
 {
-	CAMERA_TARGET_DESC* pDesc = static_cast<CAMERA_TARGET_DESC*>(pArg);
+	CAMERA_TARGET_DESC* pDesc = static_cast<CAMERA_TARGET_DESC*>(_pArg);
 
 	pDesc->eStartCoord = COORDINATE_3D;
 	pDesc->isCoordChangeEnable = false;
@@ -31,7 +31,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	m_eCameraMode = pDesc->eCameraMode;
 	m_vAtOffset = pDesc->vAtOffset;
 
-	if (FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
 	return S_OK;
@@ -130,9 +130,9 @@ void CCamera_Target::Look_Target(_float _fTimeDelta)
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 
-CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CCamera_Target* CCamera_Target::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CCamera_Target* pInstance = new CCamera_Target(pDevice, pContext);
+	CCamera_Target* pInstance = new CCamera_Target(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -143,11 +143,11 @@ CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 	return pInstance;
 }
 
-CGameObject* CCamera_Target::Clone(void* pArg)
+CGameObject* CCamera_Target::Clone(void* _pArg)
 {
 	CCamera_Target* pInstance = new CCamera_Target(*this);
 
-	if (FAILED(pInstance->Initialize(pArg)))
+	if (FAILED(pInstance->Initialize(_pArg)))
 	{
 		MSG_BOX("Failed to Cloned : CCamera_Target");
 		Safe_Release(pInstance);
