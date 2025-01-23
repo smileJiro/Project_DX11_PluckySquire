@@ -62,7 +62,7 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 			}
 
 		}
-		else if (entry.path().extension() == ".png")
+		else if (entry.path().extension() == ".png" || entry.path().extension() == ".dds")
 		{
 			if (m_Textures.find(entry.path().filename().replace_extension().string()) != m_Textures.end())
 				continue;
@@ -136,7 +136,13 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		path += szTextureName;
 		path += ".png";
 		if (FAILED(DirectX::CreateWICTextureFromFile(m_pDevice, path.c_str(), nullptr, &pSRV)))
-			return E_FAIL;
+		{
+			path.replace_extension(".dds");
+			if (FAILED(DirectX::CreateWICTextureFromFile(m_pDevice, path.c_str(), nullptr, &pSRV)))
+			{
+				return E_FAIL;
+			}
+		}
 		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext);
 		if (nullptr == pTexture)
 			return E_FAIL;

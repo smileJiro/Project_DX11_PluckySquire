@@ -60,7 +60,12 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		path += ".png";
 		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str());
 		if (nullptr == pTexture)
-			return E_FAIL;
+		{
+			path.replace_extension(".dds");
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str());
+			if (nullptr == pTexture)
+				return E_FAIL;
+		}
 		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
 		m_Textures.insert({ szTextureName,pTexture });
 	}
