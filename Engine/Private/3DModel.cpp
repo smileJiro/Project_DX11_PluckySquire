@@ -258,11 +258,23 @@ CBone* C3DModel::Get_Bone(const _char* pBoneName) const
 
 void C3DModel::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
 {
+	_int iTemp = m_Animations.size() - 1;
+	if (iTemp < (_int)iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_Animations[iIdx]->Set_Loop(bIsLoop);
 }
 
 void C3DModel::Set_Animation(_uint iIdx)
 {
+	_int iTemp = m_Animations.size() - 1;
+	if (iTemp < (_int)iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_iCurrentAnimIndex = iIdx;
 	m_iPrevAnimIndex = iIdx;
 	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
@@ -272,9 +284,16 @@ void C3DModel::Set_Animation(_uint iIdx)
 
 void C3DModel::Switch_Animation(_uint iIdx)
 {
+	_int iTemp = m_Animations.size() - 1;
+	if(iTemp < (_int)iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_iPrevAnimIndex = m_iCurrentAnimIndex;
 	m_iCurrentAnimIndex = iIdx;
 	m_mapAnimTransLeftFrame.clear();
+
 	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
 	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
 

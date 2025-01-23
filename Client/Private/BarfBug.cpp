@@ -93,11 +93,11 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State(MONSTER_STATE::IDLE);
-    m_pFSM->Add_State(MONSTER_STATE::ALERT);
-    m_pFSM->Add_State(MONSTER_STATE::CHASE);
-    m_pFSM->Add_State(MONSTER_STATE::ATTACK);
-    m_pFSM->Set_State(MONSTER_STATE::IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
@@ -209,9 +209,9 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CBarfBug::Change_Animation()
 {
-    if(m_eState != m_ePreState)
+    if(m_iState != m_iPreState)
     {
-        switch (MONSTER_STATE(m_eState))
+        switch (MONSTER_STATE(m_iState))
         {
         case MONSTER_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);

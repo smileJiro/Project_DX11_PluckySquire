@@ -26,8 +26,8 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
@@ -42,11 +42,11 @@ HRESULT CBeetle::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State(MONSTER_STATE::IDLE);
-    m_pFSM->Add_State(MONSTER_STATE::ALERT);
-    m_pFSM->Add_State(MONSTER_STATE::CHASE);
-    m_pFSM->Add_State(MONSTER_STATE::ATTACK);
-    m_pFSM->Set_State(MONSTER_STATE::IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
@@ -91,9 +91,9 @@ HRESULT CBeetle::Render()
 
 void CBeetle::Change_Animation()
 {
-    if(m_eState != m_ePreState)
+    if(m_iState != m_iPreState)
     {
-        switch (MONSTER_STATE(m_eState))
+        switch (MONSTER_STATE(m_iState))
         {
         case MONSTER_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);

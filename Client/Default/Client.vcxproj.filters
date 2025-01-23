@@ -339,11 +339,11 @@
     <ClInclude Include="..\Public\Boss_HomingBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossAttackState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\FSM_Boss.h">
       <Filter>03.Components\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossSceneState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Logo_BG.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
@@ -353,6 +353,19 @@
     </ClInclude>
     <ClInclude Include="..\Public\ShopItemBG.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h" />
+    <ClInclude Include="..\Public\Boss_EnergyBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossIdleState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossHomingBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossEnergyBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,11 +522,11 @@
     <ClCompile Include="..\Private\Boss_HomingBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossAttackState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\FSM_Boss.cpp">
       <Filter>03.Components\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossSceneState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Logo_BG.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
@@ -523,6 +536,19 @@
     </ClCompile>
     <ClCompile Include="..\Private\ShopItemBG.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp" />
+    <ClCompile Include="..\Private\Boss_EnergyBall.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossIdleState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossHomingBallState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossEnergyBallState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

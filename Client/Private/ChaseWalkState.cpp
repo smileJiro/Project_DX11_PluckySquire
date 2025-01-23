@@ -33,7 +33,8 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
+	_vector dir = m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+	_float dis = XMVectorGetX(XMVector3Length((dir)));
 	if (dis <= m_fAttackRange)
 	{
 		//공격 전환
@@ -48,7 +49,10 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	}
 	else
 	{
-		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+		//추적
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+		m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(dir);
+		m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta*2.f);
 		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
 	}
 }

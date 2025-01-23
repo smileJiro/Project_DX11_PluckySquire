@@ -40,6 +40,8 @@
 #include "Projectile_BarfBug.h"
 #include "ButterGrump.h"
 #include "Boss_HomingBall.h"
+#include "Boss_EnergyBall.h"
+#include "FSM_Boss.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -284,6 +286,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CFSM::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM_Boss"),
+        CFSM_Boss::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_PickBulb"),
@@ -392,6 +398,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     
+    //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Room_Free_Enviroment.json"), matPretransform)))
+    //    return E_FAIL;    
     //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
     //    return E_FAIL;
 
@@ -471,6 +479,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_HomingBall"),
         CBoss_HomingBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_EnergyBall"),
+        CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 

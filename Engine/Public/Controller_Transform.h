@@ -46,6 +46,7 @@ public: /* 2D, 3D */
 	void					RotationQuaternionW(const _float4& _vQuaternion);	//쿼터니언으로 회전
 
 	void					Turn(_float _fRadian, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 기존 회전을 기준으로 추가로 정해진 속도로 회전한다.
+	void					TurnAngle(_float _fRadian, _fvector _vAxis = { 0.0f, 1.0f, 0.0f, 0.0f });	// 기존 회전을 기준으로 정해진 각도만큼 회전한다
 	_float					Compute_Distance(_fvector _vTargetPos); // 거리 계산 함수.
 	HRESULT					Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 
