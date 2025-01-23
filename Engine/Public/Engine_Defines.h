@@ -88,8 +88,10 @@ using namespace physx;
  
 
 
+
 namespace Engine
 {
+
 	enum class PROTOTYPE { PROTO_GAMEOBJ, PROTO_COMPONENT };
 
 	const unsigned int g_iShadowWidth = 8192;
