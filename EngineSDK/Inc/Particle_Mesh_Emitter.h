@@ -1,0 +1,60 @@
+#pragma once
+#include "Particle_Emitter.h"
+
+
+BEGIN(Engine)
+
+class CVIBuffer_Mesh_Particle;
+class CMaterial;
+class CBone;
+
+class ENGINE_DLL CParticle_Mesh_Emitter : public CParticle_Emitter
+{
+private:
+	CParticle_Mesh_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Prototype);
+	virtual ~CParticle_Mesh_Emitter() = default;
+
+public:
+	HRESULT						Initialize_Prototype(const _char* _szModelPath, const _tchar* _szInfoPath);
+	HRESULT						Initialize_Prototype(const json& _jsonInfo);
+	virtual HRESULT				Initialize(void* _pArg) override;
+	virtual void				Priority_Update(_float _fTimeDelta) override;
+	virtual void				Update(_float _fTimeDelta) override;
+	virtual void				Late_Update(_float _fTimeDelta) override;
+	virtual HRESULT				Render() override;
+
+private:
+	_uint									m_iNumMeshes = 0;
+	vector<CVIBuffer_Mesh_Particle*>		m_Meshes;
+
+	_uint				m_iNumMaterials = 0;
+	vector<CMaterial*>	m_Materials;
+
+	vector<CBone*>		m_Bones;
+	_float4x4			m_PreTransformMatrix = {};
+
+private:
+	HRESULT					Bind_ShaderResources();
+	HRESULT					Bind_Material(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
+
+	virtual HRESULT					Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc) override;
+
+private:
+	HRESULT Ready_Bones(ifstream& _inFile, _uint _iParentBoneIndex);
+	HRESULT Ready_Meshes(ifstream& _inFile, const json& _jsonBufferInfo);
+	HRESULT Ready_Materials(ifstream& _inFile, const _char*_szpModelFilePath);
+
+
+
+public:
+	static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szModelPath, const _tchar* _szInfoPath);
+	static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonInfo);
+
+	virtual CGameObject* Clone(void* _pArg) override;
+	virtual void		 Free() override;
+	virtual HRESULT		 Cleanup_DeadReferences() override;
+
+};
+
+END

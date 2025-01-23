@@ -49,13 +49,14 @@ void CSettingPanelBG::Child_Update(_float _fTimeDelta)
 
 void CSettingPanelBG::Child_LateUpdate(_float _fTimeDelta)
 {
-	//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	if (true == m_isRender)
+		m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 }
 
 HRESULT CSettingPanelBG::Render()
 {
 	if (true == m_isRender)
-		__super::Render();
+		__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
 
 	return S_OK;
 }
@@ -121,6 +122,21 @@ HRESULT CSettingPanelBG::Ready_Components()
 	}
 	break;
 
+	case SETTING_ENTERBG:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_IconBG"),
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+	break;
+	case SETTING_ESCBG:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_IconBG"),
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+	
+	break;
 	}
 
 

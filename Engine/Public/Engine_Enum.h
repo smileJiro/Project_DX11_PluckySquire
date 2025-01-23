@@ -19,6 +19,7 @@ enum class PASS_VTXPOSTEX
 	ALPHA_ZWRITENONE,
 	COLOR_ALPHA,
 	SPRITE_ANIM,
+	UI_POINTSAMPLE,
 
 	LAST
 };
@@ -51,13 +52,6 @@ enum class PASS_DEFERRED
 	FINAL,
 	AFTER_EFFECT,
 	
-	LAST
-};
-
-enum class CAMERA_TYPE 
-{ 
-	FREE, 
-	TARGET, 
 	LAST
 };
 

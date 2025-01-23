@@ -1,0 +1,4307 @@
+[
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.111"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.116"
+      }
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      }
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__ButterflyBlue_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.2"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__ButterflyBlue_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.2"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__ButterflyOrange_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.2"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TD_Tree_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.2"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyBlue_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyBlue_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyBlue_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyBlue_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyOrange_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__ButterflyOrange_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.49"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.49"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.49"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.49"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 1644.6755,
+        "Y": 75.0,
+        "Z": 100.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.99"
+            },
+            "FunctionName": "TriggerBeginOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.99"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.99"
+            },
+            "FunctionName": "TriggerEndOverlap"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 22290.0,
+        "Y": -31787.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 1644.6755,
+        "Y": 75.0,
+        "Z": 100.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.100"
+            },
+            "FunctionName": "TriggerBeginOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.100"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.100"
+            },
+            "FunctionName": "TriggerEndOverlap"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 22290.0,
+        "Y": -33947.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TD_Tree_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TD_Tree_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "ButterflyBlue_BP_C",
+    "Name": "ButterflyBlue_BP2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.ButterflyBlue_BP_C'",
+    "Template": {
+      "ObjectName": "ButterflyBlue_BP_C'Default__ButterflyBlue_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.14"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.SphereComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.104"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.68"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.67"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.62"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.122"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.SlideCollider'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.15"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.139"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.137"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.138"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.45"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.118"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.10"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.66"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.51"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.35"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.40"
+      },
+      "GameType": "EGameType::SideDown",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.66"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.68"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.67"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.62"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.135"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.136"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.133"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.91"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.84"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.19113895
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      }
+    }
+  },
+  {
+    "Type": "ButterflyBlue_BP_C",
+    "Name": "ButterflyBlue_BP3",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.ButterflyBlue_BP_C'",
+    "Template": {
+      "ObjectName": "ButterflyBlue_BP_C'Default__ButterflyBlue_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.16"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.SphereComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.105"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.71"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.70"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.63"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.123"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.SlideCollider'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.17"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.146"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.144"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.145"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.46"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.119"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.11"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.69"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.52"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.36"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.41"
+      },
+      "GameType": "EGameType::SideDown",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.69"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.71"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.70"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.63"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.142"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.143"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.140"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.92"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.85"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.1647557
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      }
+    }
+  },
+  {
+    "Type": "ButterflyOrange_BP_C",
+    "Name": "ButterflyOrange_BP3",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.ButterflyOrange_BP_C'",
+    "Template": {
+      "ObjectName": "ButterflyOrange_BP_C'Default__ButterflyOrange_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.18"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.SphereComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.106"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.74"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.73"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.64"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.124"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.SlideCollider'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.19"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.153"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.151"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.152"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.47"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.120"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.12"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.72"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.53"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.37"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.42"
+      },
+      "GameType": "EGameType::SideDown",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.72"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.74"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.73"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.64"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.149"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.150"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.147"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.93"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.86"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.34788203
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__ButterflyBlue_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.5"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 21420.0,
+        "Y": -32837.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__ButterflyBlue_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.5"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 20660.0,
+        "Y": -32497.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__ButterflyOrange_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.5"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 23390.0,
+        "Y": -33007.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TD_Tree_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 22290.0,
+        "Y": -32747.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__ButterflyBlue_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.6"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__ButterflyBlue_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.6"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__ButterflyOrange_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.6"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TD_Tree_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.6"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "SimpleSingleTD",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'SimpleSingleTD:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.50"
+      },
+      "LevelBuildDataId": "975A7365-42F38DBB-7CDB1BB9-C48576CE",
+      "MapBuildData": {
+        "ObjectName": "MapBuildDataRegistry'SimpleSingleTD_BuiltData'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD_BuiltData.0"
+      },
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'SimpleSingleTD:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.162"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'SimpleSingleTD:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.162"
+      },
+      null,
+      {
+        "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.99"
+      },
+      {
+        "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.100"
+      },
+      {
+        "ObjectName": "MinigameController_BP_C'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.49"
+      },
+      {
+        "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+      },
+      {
+        "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+      },
+      {
+        "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+      },
+      {
+        "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'SimpleSingleTD:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.50"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__ButterflyBlue_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__ButterflyBlue_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__ButterflyOrange_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TD_Tree_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.7"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_1",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__ButterflyBlue_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.134"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__ButterflyBlue_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.141"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__ButterflyOrange_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.148"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TD_Tree_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.155"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_SimpleSIngle",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "GameType": "EGameType::SideDown",
+      "BackgroundColour": {
+        "R": 0.963542,
+        "G": 0.240557,
+        "B": 0.080495,
+        "A": 1.0,
+        "Hex": "FB8750"
+      },
+      "GameVolume": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.GameVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.20"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.130"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.127"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.128"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.129"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.KillVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.21"
+      },
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.GameBackground'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.126"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.75"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.125"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.79"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.98"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.94"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.87"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "873F46CC-4A13B7DD-0E0C3F88-CEEE07CD",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__ButterflyBlue_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__ButterflyBlue_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__ButterflyOrange_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TD_Tree_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.9"
+    }
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {}
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.3"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.3"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {}
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__ButterflyBlue_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.10"
+    },
+    "Properties": {
+      "AccumulatedTime": 0.0862478,
+      "CachedFrameIndex": 1,
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 80.0
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__ButterflyBlue_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.10"
+    },
+    "Properties": {
+      "AccumulatedTime": 0.0862484,
+      "CachedFrameIndex": 1,
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 80.0
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__ButterflyOrange_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.10"
+    },
+    "Properties": {
+      "AccumulatedTime": 0.0862478,
+      "CachedFrameIndex": 1,
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 80.0
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TD_Tree_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.10"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.13"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyBlue_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.13"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyOrange_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyOrange_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__ButterflyOrange_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.13"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TD_Tree_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TD_Tree_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TD_Tree_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.13"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.1"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "OldPosition": {
+        "X": 22290.0,
+        "Y": 1581.0,
+        "Z": 24588.0
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.3"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "OldPosition": {
+        "X": 22290.0,
+        "Y": -579.0,
+        "Z": 24588.0
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__ButterflyBlue_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__ButterflyBlue_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__ButterflyOrange_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TD_Tree_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.14"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__ButterflyBlue_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__ButterflyBlue_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__ButterflyOrange_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    },
+    "Properties": {
+      "InteractivePriority": 0.0,
+      "SpriteInteractiveIcon_BP": null,
+      "DeskInteractiveIcon_BP": null
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    },
+    "Properties": {
+      "InteractivePriority": 0.0,
+      "SpriteInteractiveIcon_BP": null,
+      "DeskInteractiveIcon_BP": null
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TD_Tree_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.15"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "Portal_SingleTDBtm",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.4"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Billboard'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.8"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.81"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.58"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.110"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.111"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.0"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.1"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.80"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.56"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.57"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Audio Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.5"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.107"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.102"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.108"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.109"
+      },
+      "PortalDirection": "EPortalDirection::Down",
+      "TriggerSize": {
+        "X": 1644.6755,
+        "Y": 75.0,
+        "Z": 100.0
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.33"
+      },
+      "GameType": "EGameType::SideDown",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.95"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.88"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Billboard'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.8"
+        },
+        {
+          "ObjectName": "AudioComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.4"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "Portal_SingleTDTop",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.6"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Billboard'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.9"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.83"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.61"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.115"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.116"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.2"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.3"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.82"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.59"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.60"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Audio Component'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.7"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.112"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.103"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.113"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.114"
+      },
+      "PortalDirection": "EPortalDirection::Up",
+      "TriggerSize": {
+        "X": 1644.6755,
+        "Y": 75.0,
+        "Z": 100.0
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.34"
+      },
+      "GameType": "EGameType::SideDown",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.96"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.89"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Billboard'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.9"
+        },
+        {
+          "ObjectName": "AudioComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.6"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 22300.0,
+        "Y": -32867.0,
+        "Z": 24468.0
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.1"
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.3"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__ButterflyBlue_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.26"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__ButterflyBlue_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyBlue_BP_C'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.27"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__ButterflyOrange_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "ButterflyOrange_BP_C'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.28"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.99"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.99"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.111"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "Portal_SingleTDBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.22"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.100"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.100"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.116"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "Portal_SingleTDTop",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.Portal_SingleTDTop.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.23"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TD_Tree_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TD_Tree_BP_C'SimpleSingleTD:PersistentLevel.TD_Tree_BP2'",
+              "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.132"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__ButterflyBlue_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.66"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.68"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.67"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.62"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__ButterflyBlue_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.69"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.71"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.70"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.63"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__ButterflyOrange_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.72"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.74"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.73"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.64"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TD_Tree_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.76"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.78"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.77"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.65"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__ButterflyBlue_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.29"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__ButterflyBlue_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyBlue_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.30"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__ButterflyOrange_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.ButterflyOrange_BP3.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.31"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      },
+      "RelativeScale3D": {
+        "X": 38.6,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.MaterialInstanceDynamic_1'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.44"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      },
+      "RelativeScale3D": {
+        "X": 38.6,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_SimpleSIngle",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'SimpleSingleTD:PersistentLevel.MGC_SimpleSIngle.ROOT '",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.101"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TD_Tree_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "TD_Tree_BP_C",
+    "Name": "TD_Tree_BP2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.TD_Tree_BP_C'",
+    "Template": {
+      "ObjectName": "TD_Tree_BP_C'Default__TD_Tree_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.BoxComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.24"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.SphereComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.117"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.78"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.77"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.65"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.StampHat'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.131"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.SlideCollider'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.25"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.160"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.158"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.159"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.48"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.121"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.13"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.76"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.54"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.38"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.43"
+      },
+      "GameType": "EGameType::SideDown",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.76"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.78"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.77"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.65"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.156"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.157"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.154"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.97"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.90"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.18474533
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'SimpleSingleTD:PersistentLevel.TD_Tree_BP2.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.32"
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "ButterflyBlue_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "ButterflyBlue_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyBlue_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyBlue_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "ButterflyOrange_BP3",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__ButterflyOrange_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/ButterflyOrange_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "TD_Tree_BP2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TD_Tree_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/Environment/TD_Tree_BP.28"
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "SimpleSingleTD",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'SimpleSingleTD:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.39"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'SimpleSingleTD:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/xPrototype/SimpleSingleTD.55"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

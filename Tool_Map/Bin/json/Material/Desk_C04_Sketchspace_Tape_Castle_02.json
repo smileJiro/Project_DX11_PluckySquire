@@ -1,0 +1,534 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_0",
+    "Outer": "Desk_C04_Sketchspace_Tape_Castle_02",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "ConvexElems": [
+          {
+            "VertexData": [
+              {
+                "X": 183.8511,
+                "Y": 34.77388,
+                "Z": 6.4761505
+              },
+              {
+                "X": 183.8511,
+                "Y": -34.023903,
+                "Z": 6.476146
+              },
+              {
+                "X": 183.8511,
+                "Y": -34.023903,
+                "Z": 745.39886
+              },
+              {
+                "X": 183.8511,
+                "Y": 34.773888,
+                "Z": 745.39905
+              },
+              {
+                "X": -183.8511,
+                "Y": -46.648903,
+                "Z": 10.02395
+              },
+              {
+                "X": -183.8511,
+                "Y": -44.476074,
+                "Z": 7.8511124
+              },
+              {
+                "X": -183.8511,
+                "Y": 37.39892,
+                "Z": 7.851114
+              },
+              {
+                "X": -183.8511,
+                "Y": 37.39892,
+                "Z": 737.02386
+              },
+              {
+                "X": -183.8511,
+                "Y": -46.648895,
+                "Z": 737.02386
+              },
+              {
+                "X": -173.90701,
+                "Y": 47.342987,
+                "Z": 10.718017
+              },
+              {
+                "X": 171.282,
+                "Y": 47.342987,
+                "Z": 10.717989
+              },
+              {
+                "X": 171.28201,
+                "Y": 47.342987,
+                "Z": 757.968
+              },
+              {
+                "X": 166.593,
+                "Y": 47.342987,
+                "Z": 762.65704
+              },
+              {
+                "X": -158.21785,
+                "Y": 47.342987,
+                "Z": 762.65704
+              },
+              {
+                "X": -173.90703,
+                "Y": 47.342987,
+                "Z": 746.9679
+              },
+              {
+                "X": 170.53172,
+                "Y": -47.343285,
+                "Z": 10.718322
+              },
+              {
+                "X": -183.15671,
+                "Y": -47.343285,
+                "Z": 10.718285
+              },
+              {
+                "X": -183.15672,
+                "Y": -47.343285,
+                "Z": 737.7182
+              },
+              {
+                "X": -156.84315,
+                "Y": -47.343285,
+                "Z": 764.03174
+              },
+              {
+                "X": 165.21826,
+                "Y": -47.343285,
+                "Z": 764.0318
+              },
+              {
+                "X": 170.53171,
+                "Y": -47.343285,
+                "Z": 758.7184
+              },
+              {
+                "X": -144.23529,
+                "Y": 33.36035,
+                "Z": 776.63965
+              },
+              {
+                "X": 152.61043,
+                "Y": 33.360424,
+                "Z": 776.63965
+              },
+              {
+                "X": 152.61047,
+                "Y": -34.735394,
+                "Z": 776.63965
+              },
+              {
+                "X": -144.23529,
+                "Y": -34.735382,
+                "Z": 776.63965
+              },
+              {
+                "X": -174.1224,
+                "Y": -34.747406,
+                "Z": -1.8775879
+              },
+              {
+                "X": 175.49738,
+                "Y": -34.747406,
+                "Z": -1.8775879
+              },
+              {
+                "X": 175.49738,
+                "Y": 34.747414,
+                "Z": -1.8775879
+              },
+              {
+                "X": -174.1224,
+                "Y": 34.74741,
+                "Z": -1.8775879
+              },
+              {
+                "X": 179.31248,
+                "Y": -38.56253,
+                "Z": 1.9375291
+              },
+              {
+                "X": -180.3125,
+                "Y": 40.93751,
+                "Z": 4.3125095
+              },
+              {
+                "X": 179.68745,
+                "Y": 38.93751,
+                "Z": 2.312512
+              }
+            ],
+            "IndexData": [
+              0,
+              1,
+              2,
+              0,
+              2,
+              3,
+              4,
+              5,
+              6,
+              4,
+              6,
+              7,
+              4,
+              7,
+              8,
+              9,
+              10,
+              11,
+              9,
+              11,
+              12,
+              9,
+              12,
+              13,
+              9,
+              13,
+              14,
+              15,
+              16,
+              17,
+              15,
+              17,
+              18,
+              15,
+              18,
+              19,
+              15,
+              19,
+              20,
+              21,
+              22,
+              23,
+              21,
+              23,
+              24,
+              25,
+              26,
+              27,
+              25,
+              27,
+              28,
+              13,
+              12,
+              22,
+              13,
+              22,
+              21,
+              29,
+              26,
+              25,
+              29,
+              25,
+              5,
+              29,
+              5,
+              4,
+              29,
+              4,
+              16,
+              29,
+              16,
+              15,
+              30,
+              28,
+              27,
+              30,
+              27,
+              31,
+              30,
+              31,
+              10,
+              30,
+              10,
+              9,
+              19,
+              18,
+              24,
+              19,
+              24,
+              23,
+              23,
+              22,
+              12,
+              23,
+              12,
+              11,
+              23,
+              11,
+              3,
+              23,
+              3,
+              2,
+              23,
+              2,
+              20,
+              23,
+              20,
+              19,
+              25,
+              28,
+              30,
+              25,
+              30,
+              6,
+              25,
+              6,
+              5,
+              31,
+              27,
+              26,
+              31,
+              26,
+              29,
+              31,
+              29,
+              1,
+              31,
+              1,
+              0,
+              14,
+              13,
+              21,
+              14,
+              21,
+              24,
+              14,
+              24,
+              18,
+              14,
+              18,
+              17,
+              14,
+              17,
+              8,
+              14,
+              8,
+              7,
+              31,
+              0,
+              3,
+              31,
+              3,
+              11,
+              31,
+              11,
+              10,
+              4,
+              8,
+              17,
+              4,
+              17,
+              16,
+              29,
+              15,
+              20,
+              29,
+              20,
+              2,
+              29,
+              2,
+              1,
+              30,
+              9,
+              14,
+              30,
+              14,
+              7,
+              30,
+              7,
+              6
+            ],
+            "ElemBox": {
+              "Min": {
+                "X": -183.8511,
+                "Y": -47.343285,
+                "Z": -1.8775879
+              },
+              "Max": {
+                "X": 183.8511,
+                "Y": 47.342987,
+                "Z": 776.63965
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldStatic",
+        "CollisionProfileName": "BlockAll"
+      }
+    },
+    "BodySetupGuid": "0E87103442E025AB6CD2CE8B3043BF94",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 10555,
+        "SizeOnDisk": 10555,
+        "OffsetInFile": "0xA31A"
+      }
+    }
+  },
+  {
+    "Type": "NavCollision",
+    "Name": "NavCollision_1",
+    "Outer": "Desk_C04_Sketchspace_Tape_Castle_02",
+    "Class": "UScriptClass'NavCollision'",
+    "CookedFormatData": {
+      "NavCollision_X": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 1897,
+        "SizeOnDisk": 1897,
+        "OffsetInFile": "0xCC9D"
+      }
+    }
+  },
+  {
+    "Type": "StaticMesh",
+    "Name": "Desk_C04_Sketchspace_Tape_Castle_02",
+    "Class": "UScriptClass'StaticMesh'",
+    "Properties": {
+      "StaticMaterials": [
+        {
+          "MaterialInterface": {
+            "ObjectName": "Material'Sketchspace_CastleTape_Section_01_3584x2048_01'",
+            "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C04/Materials/Sketchspace_CastleTape_Section_01_3584x2048_01.0"
+          },
+          "MaterialSlotName": "pasted__lambert71",
+          "ImportedMaterialSlotName": "pasted__lambert71",
+          "UVChannelData": {
+            "bInitialized": true,
+            "bOverrideDensities": false,
+            "LocalUVDensities": 1809.1637,
+            "LocalUVDensities[1]": 801.0263,
+            "LocalUVDensities[2]": 772.9684,
+            "LocalUVDensities[3]": 0.0
+          }
+        }
+      ],
+      "LightmapUVDensity": 772.9684,
+      "LightMapResolution": 64,
+      "LightMapCoordinateIndex": 2,
+      "ExtendedBounds": {
+        "Origin": {
+          "X": 0.0,
+          "Y": -0.00015258789,
+          "Z": 387.3811
+        },
+        "BoxExtent": {
+          "X": 183.7511,
+          "Y": 47.243134,
+          "Z": 389.1587
+        },
+        "SphereRadius": 425.3711
+      }
+    },
+    "BodySetup": {
+      "ObjectName": "BodySetup'Desk_C04_Sketchspace_Tape_Castle_02:BodySetup_0'",
+      "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C04/Mesh/Desk_C04_Sketchspace_Tape_Castle_02.0"
+    },
+    "NavCollision": {
+      "ObjectName": "NavCollision'Desk_C04_Sketchspace_Tape_Castle_02:NavCollision_1'",
+      "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C04/Mesh/Desk_C04_Sketchspace_Tape_Castle_02.1"
+    },
+    "LightingGuid": "18D5577C-4BA8C4B6-BBA23EA3-45E60589",
+    "RenderData": {
+      "LODs": [
+        {
+          "Sections": [
+            {
+              "MaterialIndex": 0,
+              "FirstIndex": 0,
+              "NumTriangles": 280,
+              "MinVertexIndex": 0,
+              "MaxVertexIndex": 175,
+              "bEnableCollision": true,
+              "bCastShadow": true,
+              "bForceOpaque": false,
+              "bVisibleInRayTracing": true
+            }
+          ],
+          "MaxDeviation": 0.0,
+          "PositionVertexBuffer": {
+            "Stride": 12,
+            "NumVertices": 176
+          },
+          "VertexBuffer": {
+            "NumTexCoords": 3,
+            "NumVertices": 176,
+            "Strides": -1,
+            "UseHighPrecisionTangentBasis": false,
+            "UseFullPrecisionUVs": false
+          },
+          "ColorVertexBuffer": {
+            "Stride": 0,
+            "NumVertices": 0
+          }
+        }
+      ],
+      "Bounds": {
+        "Origin": {
+          "X": 0.0,
+          "Y": -0.00015258789,
+          "Z": 387.3811
+        },
+        "BoxExtent": {
+          "X": 183.7511,
+          "Y": 47.243134,
+          "Z": 389.1587
+        },
+        "SphereRadius": 425.3711
+      },
+      "bLODsShareStaticLighting": true,
+      "ScreenSize": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+]

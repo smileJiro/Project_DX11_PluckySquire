@@ -94,6 +94,9 @@ HRESULT CLoader::Loading_Level_Static()
 
     lstrcpy(m_szLoadingText, TEXT("Collider를 로딩중입니다."));
     
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Ray"),
+        CRay::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
@@ -118,16 +121,6 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
         return E_FAIL;
-
-    /* For. Prototype_Component_Shader_VtxRectInstance */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxRectInstance"),
-    //    CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectInstance.hlsl"), VTXRECTINSTANCE::Elements, VTXRECTINSTANCE::iNumElements))))
-    //    return E_FAIL;
-
-    ///* For. Prototype_Component_Shader_VtxPointInstance */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPointInstance"),
-    //    CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"), VTXPOINTINSTANCE::Elements, VTXPOINTINSTANCE::iNumElements))))
-    //    return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
@@ -179,14 +172,17 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
     //    return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
-        TEXT("../../Client/Bin/Resources/Models/Anim/Latch_SkelMesh_NewRig/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/"), matPretransform)))
+        return E_FAIL;
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("latch_glove"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/latch_glove/latch_glove.model", matPretransform))))
-        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("WoodenPlatform_01"),
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("alphabet_blocks_d_mesh"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_d_mesh/alphabet_blocks_d_mesh.model", matPretransform))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

@@ -130,9 +130,6 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle">
       <UniqueIdentifier>{2bccbdcc-f487-4cc0-ac5f-2f61ef4de991}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Rect">
-      <UniqueIdentifier>{3b7ee815-2282-437c-ba49-55f21b643ea5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Point">
       <UniqueIdentifier>{1943b2ce-e47d-4ba7-94b0-25c928efb2b4}</UniqueIdentifier>
     </Filter>
@@ -240,6 +237,15 @@
     </Filter>
     <Filter Include="00.System\03.Physx\EventCallBack">
       <UniqueIdentifier>{e50015aa-fe43-413b-a4bd-e7a60c293656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect\Emitter\Mesh">
+      <UniqueIdentifier>{4e29ca39-e287-4460-82aa-ca6105e1e3cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh">
+      <UniqueIdentifier>{c4dbee5e-b0ec-4fea-bcd9-f258a7028cd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Camera\CutScene_Sector">
+      <UniqueIdentifier>{cba30df6-e1fa-4802-a037-b3c7f69f9b94}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -435,9 +441,6 @@
     <ClInclude Include="..\Public\Model.h">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Animation2D.h">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Json_Manager.h">
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClInclude>
@@ -459,6 +462,9 @@
     <ClInclude Include="..\Public\Physx_Manager.h">
       <Filter>00.System\03.Physx</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CutScene_Sector.h">
+      <Filter>01.Utility\03.Objects\Camera\CutScene_Sector</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\Actor.h">
       <Filter>01.Utility\04.Components\Actor</Filter>
     </ClInclude>
@@ -476,6 +482,15 @@
     </ClInclude>
     <ClInclude Include="..\public\Physx_EventCallBack.h">
       <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Mesh_Particle.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Mesh_Emitter.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation2D.h">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -659,9 +674,6 @@
     <ClCompile Include="..\Private\Model.cpp">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Animation2D.cpp">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Json_Manager.cpp">
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClCompile>
@@ -683,6 +695,9 @@
     <ClCompile Include="..\Private\Physx_Manager.cpp">
       <Filter>00.System\03.Physx</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CutScene_Sector.cpp">
+      <Filter>01.Utility\03.Objects\Camera\CutScene_Sector</Filter>
+    </ClCompile>
     <ClCompile Include="..\private\Actor.cpp">
       <Filter>01.Utility\04.Components\Actor</Filter>
     </ClCompile>
@@ -700,6 +715,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Physx_EventCallBack.cpp">
       <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Mesh_Particle.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation2D.cpp">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

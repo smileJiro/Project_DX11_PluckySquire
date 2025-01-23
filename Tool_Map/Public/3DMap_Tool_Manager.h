@@ -14,11 +14,11 @@ BEGIN(Map_Tool)
 
 
 class CMapObject;
-class CEditableCell;
-class CNavigationVertex;
+//class CEditableCell;
+//class CNavigationVertex;
 class CModelFile_Manager;
 class CImguiLogger;
-class CCellContainor;
+//class CCellContainor;
 class CTask_Manager;
 
 
@@ -79,7 +79,6 @@ private:
 private:
 	// 인풋 로직 
 	void				Input_Object_Tool_Mode();
-	void				Input_Navigation_Tool_Mode();
 
 	// Imgui 메인 로직
 	void				Update_Imgui_Logic();
@@ -122,17 +121,7 @@ private:
 
 #pragma endregion
 
-#pragma region Navigation Tool Method
-
-	CNavigationVertex*	Picking_On_Vertex();
-	HRESULT				Create_Cell();
 	HRESULT				Compute_World_PickingLay(_float3* _fLayPos, _float3* _fLayDir);
-
-
-	void				Clear_StackVertex();
-	void				Clear_SelectCell();
-	bool				Check_VertexSelect();
-#pragma endregion
 
 
 	void				Init_Egnore_Layer();
@@ -170,16 +159,6 @@ private:
 
 	_float3							m_fPickingPos = _float3();
 	_float3							m_fPreviewPos = _float3();
-
-
-	_bool							m_bNaviMode = false;
-	NAVIGATION_MODE					m_eNaviMode = NAV_CREATE;
-
-	CCellContainor*					m_pCellContainor;
-	vector<CNavigationVertex*>		m_vecVertexStack;
-	_int							m_iSelectCellIndex = { -1 };
-	CNavigationVertex*				m_pPickingVertex = { nullptr };
-
 
 
 	vector<wstring>					m_DefaultEgnoreLayerTags;

@@ -1,0 +1,309 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Desk_C05_Sketchspace_Tape_Section_02",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "ConvexElems": [
+          {
+            "VertexData": [
+              {
+                "X": 6.7223744,
+                "Y": 213.8399,
+                "Z": -808.3474
+              },
+              {
+                "X": 6.7223744,
+                "Y": -230.81837,
+                "Z": -808.34735
+              },
+              {
+                "X": 6.7223744,
+                "Y": -230.81836,
+                "Z": 791.4315
+              },
+              {
+                "X": 6.7223744,
+                "Y": -213.90034,
+                "Z": 808.3472
+              },
+              {
+                "X": 6.7223744,
+                "Y": 230.8125,
+                "Z": 808.3473
+              },
+              {
+                "X": 6.7223744,
+                "Y": 230.8125,
+                "Z": -791.375
+              },
+              {
+                "X": -6.7223744,
+                "Y": 227.34682,
+                "Z": -794.90265
+              },
+              {
+                "X": -6.7223744,
+                "Y": 230.8125,
+                "Z": -791.4375
+              },
+              {
+                "X": -6.7223744,
+                "Y": 230.8125,
+                "Z": 794.9026
+              },
+              {
+                "X": -6.7223744,
+                "Y": -227.35324,
+                "Z": 794.9026
+              },
+              {
+                "X": -6.7223744,
+                "Y": -230.81839,
+                "Z": 791.4375
+              },
+              {
+                "X": -6.7223744,
+                "Y": -230.81837,
+                "Z": -794.9027
+              }
+            ],
+            "IndexData": [
+              0,
+              1,
+              2,
+              0,
+              2,
+              3,
+              0,
+              3,
+              4,
+              0,
+              4,
+              5,
+              6,
+              7,
+              8,
+              6,
+              8,
+              9,
+              6,
+              9,
+              10,
+              6,
+              10,
+              11,
+              5,
+              4,
+              8,
+              5,
+              8,
+              7,
+              11,
+              10,
+              2,
+              11,
+              2,
+              1,
+              0,
+              5,
+              7,
+              0,
+              7,
+              6,
+              3,
+              2,
+              10,
+              3,
+              10,
+              9,
+              6,
+              11,
+              1,
+              6,
+              1,
+              0,
+              4,
+              3,
+              9,
+              4,
+              9,
+              8
+            ],
+            "ElemBox": {
+              "Min": {
+                "X": -6.7223744,
+                "Y": -230.81839,
+                "Z": -808.3474
+              },
+              "Max": {
+                "X": 6.7223744,
+                "Y": 230.8125,
+                "Z": 808.3473
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldStatic",
+        "CollisionProfileName": "BlockAll"
+      }
+    },
+    "BodySetupGuid": "8371B4C449D68FB51CD56281DB37C0B1",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 5675,
+        "SizeOnDisk": 5675,
+        "OffsetInFile": "0x663E"
+      }
+    }
+  },
+  {
+    "Type": "NavCollision",
+    "Name": "NavCollision_2",
+    "Outer": "Desk_C05_Sketchspace_Tape_Section_02",
+    "Class": "UScriptClass'NavCollision'",
+    "CookedFormatData": {
+      "NavCollision_X": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 697,
+        "SizeOnDisk": 697,
+        "OffsetInFile": "0x7CB1"
+      }
+    }
+  },
+  {
+    "Type": "StaticMesh",
+    "Name": "Desk_C05_Sketchspace_Tape_Section_02",
+    "Class": "UScriptClass'StaticMesh'",
+    "Properties": {
+      "StaticMaterials": [
+        {
+          "MaterialInterface": {
+            "ObjectName": "Material'Desk_C05_Sketchspace_Tape_768x2048_01'",
+            "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Materials/Desk_C05_Sketchspace_Tape_768x2048_01.0"
+          },
+          "MaterialSlotName": "Grid_1024x1536_01",
+          "ImportedMaterialSlotName": "Grid_1024x1536_01",
+          "UVChannelData": {
+            "bInitialized": true,
+            "bOverrideDensities": false,
+            "LocalUVDensities": 836.6826,
+            "LocalUVDensities[1]": 800.78424,
+            "LocalUVDensities[2]": 930.98193,
+            "LocalUVDensities[3]": 0.0
+          }
+        }
+      ],
+      "LightmapUVDensity": 930.98193,
+      "LightMapResolution": 64,
+      "LightMapCoordinateIndex": 2,
+      "ExtendedBounds": {
+        "BoxExtent": {
+          "X": 6.6223755,
+          "Y": 230.72424,
+          "Z": 808.04565
+        },
+        "SphereRadius": 840.36615
+      }
+    },
+    "BodySetup": {
+      "ObjectName": "BodySetup'Desk_C05_Sketchspace_Tape_Section_02:BodySetup_1'",
+      "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Mesh/Desk_C05_Sketchspace_Tape_Section_02.0"
+    },
+    "NavCollision": {
+      "ObjectName": "NavCollision'Desk_C05_Sketchspace_Tape_Section_02:NavCollision_2'",
+      "ObjectPath": "/Game/Map/3D/Sketchspace/Desk_C05/Mesh/Desk_C05_Sketchspace_Tape_Section_02.1"
+    },
+    "LightingGuid": "B21A071F-456B8731-C73BF1A7-D7B22074",
+    "RenderData": {
+      "LODs": [
+        {
+          "Sections": [
+            {
+              "MaterialIndex": 0,
+              "FirstIndex": 0,
+              "NumTriangles": 160,
+              "MinVertexIndex": 0,
+              "MaxVertexIndex": 107,
+              "bEnableCollision": true,
+              "bCastShadow": true,
+              "bForceOpaque": false,
+              "bVisibleInRayTracing": true
+            }
+          ],
+          "MaxDeviation": 0.0,
+          "PositionVertexBuffer": {
+            "Stride": 12,
+            "NumVertices": 108
+          },
+          "VertexBuffer": {
+            "NumTexCoords": 3,
+            "NumVertices": 108,
+            "Strides": -1,
+            "UseHighPrecisionTangentBasis": false,
+            "UseFullPrecisionUVs": false
+          },
+          "ColorVertexBuffer": {
+            "Stride": 0,
+            "NumVertices": 0
+          }
+        }
+      ],
+      "Bounds": {
+        "Origin": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "BoxExtent": {
+          "X": 6.6223755,
+          "Y": 230.72424,
+          "Z": 808.04565
+        },
+        "SphereRadius": 840.36615
+      },
+      "bLODsShareStaticLighting": true,
+      "ScreenSize": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+]

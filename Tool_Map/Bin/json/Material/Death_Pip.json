@@ -1,0 +1,2530 @@
+[
+  {
+    "Type": "BillboardComponent",
+    "Name": "Sprite",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "TextRenderComponent'Death_Pip:PersistentLevel.Text_Right.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.57"
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TopDownRealTimeDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.2"
+    },
+    "Properties": {
+      "PropOwner": {
+        "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+      },
+      "TiltSwapOffset": {
+        "X": 1073.0,
+        "Y": 1956.0
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Text_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.9"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 3940.0,
+        "Y": 1180.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Death_Pip:PersistentLevel.MGC_Death_Pip'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.19"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Death_Pip:PersistentLevel.MGC_Death_Pip'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.19"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Death_Pip:PersistentLevel.MGC_Death_Pip'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.19"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Death_Pip:PersistentLevel.MGC_Death_Pip'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.19"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerBox",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Text_BP_C:TriggerBox'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'Death_Pip:PersistentLevel.Text_Right'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.56"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'Death_Pip:PersistentLevel.Text_Right'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.56"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.45"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'CameraComponent'",
+    "Template": {
+      "ObjectName": "CameraComponent'Default__StoryPanel_BP_C:CameraComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.StoryPanel.Camera Root'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.42"
+      },
+      "RelativeLocation": {
+        "X": -1699.9999,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TopDownRealTimeDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.44"
+      },
+      "RelativeLocation": {
+        "X": -466.0,
+        "Y": 522.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__StoryPanel_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.3"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TopDownRealTimeDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.6"
+    },
+    "Properties": {
+      "bActive": false
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Text_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.11"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "Death_Pip",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'Death_Pip:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.20"
+      },
+      "LevelBuildDataId": "841C352A-4401A2B8-2A21F18B-EAF4FEF7",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'Death_Pip:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.71"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'Death_Pip:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.71"
+      },
+      null,
+      {
+        "ObjectName": "MinigameController_BP_C'Death_Pip:PersistentLevel.MGC_Death_Pip'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.19"
+      },
+      {
+        "ObjectName": "StoryPanel_BP_C'Death_Pip:PersistentLevel.StoryPanel'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.55"
+      },
+      {
+        "ObjectName": "Text_BP_C'Death_Pip:PersistentLevel.Text_Right'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.56"
+      },
+      {
+        "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'Death_Pip:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/_Shared/Death_Pip.20"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TopDownRealTimeDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Text_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.12"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_1",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Colour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "00CD460C-495C6B8B-38DCA081-E90F425E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TopDownRealTimeDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Latch_PoseRight.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.59"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Text_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.13"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Text_Right.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.66"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_Death_Pip",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/_Persistent/MainLevel.MainLevel",
+        "SubPathString": "PersistentLevel.Book_MAIN"
+      },
+      "BookID": 0,
+      "LevelSizePixels": {
+        "X": 7680.0,
+        "Y": 2160.0
+      },
+      "GameType": "EGameType::Story",
+      "SpreadType": "EPageSpreadType::Double",
+      "ScrollType": "EScrollType::DoublePagePan",
+      "BackgroundColour": {
+        "R": 0.838799,
+        "G": 0.030713,
+        "B": 0.135633,
+        "A": 1.0,
+        "Hex": "EC3167"
+      },
+      "LevelWidth": 2.0,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.GameVolume'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.5"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.54"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.51"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.52"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.53"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.KillVolume'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.6"
+      },
+      "StoryPanels": [
+        {
+          "OrderInSequence": 1,
+          "StoryPanel": {
+            "ObjectName": "StoryPanel_BP_C'Death_Pip:PersistentLevel.StoryPanel'",
+            "ObjectPath": "/Game/Levels/_Shared/Death_Pip.55"
+          }
+        }
+      ],
+      "CameraPanTime": [
+        0.5
+      ],
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.GameBackground'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.50"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.28"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.49"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.31"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.40"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Textures/gameover_pip-0.gameover_pip-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0001_X02.GameOver_Pip_Recover_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0002_X02.GameOver_Pip_Recover_0002_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0003_X04.GameOver_Pip_Recover_0003_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0004_X02.GameOver_Pip_Recover_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0005_X01.GameOver_Pip_Recover_0005_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0006_X01.GameOver_Pip_Recover_0006_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0007_X02.GameOver_Pip_Recover_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0008_X02.GameOver_Pip_Recover_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0009_X02.GameOver_Pip_Recover_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0010_X02.GameOver_Pip_Recover_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0011_X03.GameOver_Pip_Recover_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0012_X03.GameOver_Pip_Recover_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0013_X02.GameOver_Pip_Recover_0013_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0014_X01.GameOver_Pip_Recover_0014_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0015_X01.GameOver_Pip_Recover_0015_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0016_X02.GameOver_Pip_Recover_0016_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0017_X03.GameOver_Pip_Recover_0017_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0018_X03.GameOver_Pip_Recover_0018_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0019_X03.GameOver_Pip_Recover_0019_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover_0020_X04.GameOver_Pip_Recover_0020_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover.GameOver_Pip_Recover",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Idle_0001_X04.GameOver_Pip_Idle_0001_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Idle_0002_X04.GameOver_Pip_Idle_0002_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Idle_0003_X04.GameOver_Pip_Idle_0003_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Idle_0004_X04.GameOver_Pip_Idle_0004_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Idle.GameOver_Pip_Idle",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Textures/jot_gameover-1.jot_gameover-1",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0001_X02.jot_gameover_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0002_X03.jot_gameover_0002_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0003_X02.jot_gameover_0003_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Textures/jot_gameover-0.jot_gameover-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0004_X01.jot_gameover_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0005_X02.jot_gameover_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0006_X02.jot_gameover_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0007_X02.jot_gameover_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0008_X02.jot_gameover_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0009_X01.jot_gameover_0009_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0010_X02.jot_gameover_0010_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0011_X02.jot_gameover_0011_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0012_X02.jot_gameover_0012_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0013_X02.jot_gameover_0013_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0014_X02.jot_gameover_0014_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0015_X02.jot_gameover_0015_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0016_X02.jot_gameover_0016_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0017_X02.jot_gameover_0017_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0018_X02.jot_gameover_0018_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover_0019_X02.jot_gameover_0019_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Player/GameOver/Frames/jot_gameover.jot_gameover",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Death/Textures/death_latch_revive_01.death_latch_revive_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Death/Textures/death_latch_revive_01_Sprite.death_latch_revive_01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Textures/genericexplosion-0.genericexplosion-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0001_X02.genericexplosion_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0002_X01.genericexplosion_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0003_X01.genericexplosion_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0004_X01.genericexplosion_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0005_X02.genericexplosion_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0006_X02.genericexplosion_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0007_X02.genericexplosion_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0008_X02.genericexplosion_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0009_X03.genericexplosion_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0010_X03.genericexplosion_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0011_X03.genericexplosion_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0012_X03.genericexplosion_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/generic_explosion.generic_explosion",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.37"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.33"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "361CB1A9-4C9C567F-DCE3CB84-BC3FCCBE",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TopDownRealTimeDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Text_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.14"
+    }
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TopDownRealTimeDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.10"
+    },
+    "Properties": {
+      "SourceFlipbook": {
+        "ObjectName": "PaperFlipbook'GameOver_Pip_Idle'",
+        "ObjectPath": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Idle.0"
+      },
+      "AccumulatedTime": 0.22868736,
+      "CachedFrameIndex": 1,
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.13"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "SpriteColor": {
+        "R": 0.838799,
+        "G": 0.030713,
+        "B": 0.135633,
+        "A": 1.0,
+        "Hex": "EC3167"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      },
+      "RelativeScale3D": {
+        "X": 51.75,
+        "Y": 30.0,
+        "Z": 30.0
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.45"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Panel Sprite",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:Panel Sprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.45"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TopDownRealTimeDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__StoryPanel_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Text_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.17"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TopDownRealTimeDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__StoryPanel_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Text_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.18"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 77929.01,
+        "Y": 37956.72,
+        "Z": 24667.332
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "Camera Root",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__StoryPanel_BP_C:Camera Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.6"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.44"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TopDownRealTimeDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'Death_Pip:PersistentLevel.Latch_PoseRight'",
+              "ObjectPath": "/Game/Levels/_Shared/Death_Pip.69"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__StoryPanel_BP_C:Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      },
+      "RelativeLocation": {
+        "X": -1920.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereCollider",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Text_BP_C:SphereCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.44"
+      },
+      "RelativeLocation": {
+        "X": 281.0,
+        "Y": 32.94922,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TopDownRealTimeDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponentDepthType": [
+        {
+          "Key": "SpriteComponent",
+          "Value": "ESpriteDepthType::YSorted"
+        }
+      ],
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.25"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.27"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.26"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'Death_Pip:PersistentLevel.Latch_PoseRight.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.24"
+        }
+      ],
+      "SpritesConfigVersion": 48
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Text_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Text_Right.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.29"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Text_Right.Panel Sprite'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.30"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TopDownRealTimeDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      },
+      "RelativeScale3D": {
+        "X": 76.99999,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'Death_Pip:PersistentLevel.MGC_Death_Pip.MaterialInstanceDynamic_1'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.16"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      },
+      "RelativeScale3D": {
+        "X": 76.99999,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      },
+      "RelativeScale3D": {
+        "X": 78.799995,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      },
+      "RelativeLocation": {
+        "X": -3890.0,
+        "Y": 0.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      },
+      "RelativeLocation": {
+        "X": 3890.0,
+        "Y": 0.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_Death_Pip",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.MGC_Death_Pip.ROOT '",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.41"
+      },
+      "RelativeScale3D": {
+        "X": 78.799995,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StoryPanel_BP_C",
+    "Name": "StoryPanel",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.StoryPanel_BP_C'",
+    "Template": {
+      "ObjectName": "StoryPanel_BP_C'Default__StoryPanel_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.1"
+    },
+    "Properties": {
+      "Root": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.44"
+      },
+      "CameraRoot": {
+        "ObjectName": "SceneComponent'Death_Pip:PersistentLevel.StoryPanel.Camera Root'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.42"
+      },
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'Death_Pip:PersistentLevel.StoryPanel.CameraComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.8"
+      },
+      "CameraDistance": 1700.0,
+      "StorySequenceNumber": 1,
+      "SequenceDelay": 0.5,
+      "DelayBeforeNextPage": 1.5,
+      "bCanBeSkipped": false,
+      "bWaitForInput": true,
+      "StorySequence": [
+        {
+          "DeveloperComment": "Image Appears",
+          "Time": 0.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": {
+            "ObjectName": "SoundWave'A_sfx_gameover_potionpop_violet'",
+            "ObjectPath": "/Game/NokNok/Audio/Allister/Cinematics/Generic/A_sfx_gameover_potionpop_violet.0"
+          },
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "/Game/Levels/_Shared/Death_Pip.Death_Pip",
+                "SubPathString": "PersistentLevel.Latch_PoseRight"
+              },
+              "TextObject": null,
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::StartLoop",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "DeveloperComment": "Text Appears",
+          "Time": 0.5,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "None",
+                "SubPathString": ""
+              },
+              "TextObject": {
+                "ObjectName": "Text_BP_C'Death_Pip:PersistentLevel.Text_Right'",
+                "ObjectPath": "/Game/Levels/_Shared/Death_Pip.56"
+              },
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "DeveloperComment": "Run Anim",
+          "Time": 2.5,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "/Game/Levels/_Shared/Death_Pip.Death_Pip",
+                "SubPathString": "PersistentLevel.Latch_PoseRight"
+              },
+              "TextObject": null,
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": {
+                "ObjectName": "PaperFlipbook'GameOver_Pip_Recover'",
+                "ObjectPath": "/Game/Characters/Friends/Pip/GameOver/Frames/GameOver_Pip_Recover.0"
+              },
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Death_Pip:PersistentLevel.StoryPanel.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.10"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Death_Pip:PersistentLevel.StoryPanel.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.38"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Death_Pip:PersistentLevel.StoryPanel.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.34"
+      },
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Death_Pip:PersistentLevel.MGC_Death_Pip'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.19"
+      },
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.44"
+      }
+    }
+  },
+  {
+    "Type": "Text_BP_C",
+    "Name": "Text_Right",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Text_BP.Text_BP_C'",
+    "Template": {
+      "ObjectName": "Text_BP_C'Default__Text_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.7"
+    },
+    "Properties": {
+      "VO_Chapter_DataTable": {
+        "ObjectName": "DataTable'ThePluckySquire-VOStringDoc-MiscVocals'",
+        "ObjectPath": "/Game/NokNok/Narration/VoStringDocs/ThePluckySquire-VOStringDoc-MiscVocals.0"
+      },
+      "RowNames": [
+        "BookTitle_Humgrump",
+        "BookTitle_Plucky",
+        "BookTitle_Mojo",
+        "Credits_ThankYou",
+        "Credits_GameByAPF",
+        "Credits_PluckyReturn",
+        "GameOver_Jot",
+        "GameOver_Pip",
+        "GameOver_Thrash",
+        "GameOver_Violet",
+        "Martina_Intro1",
+        "Martina_Intro2",
+        "WorldMap_Artia",
+        "WorldMap_Boogie",
+        "WorldMap_Honey",
+        "WorldMap_Inkwood",
+        "WorldMap_Swamps",
+        "WorldMap_LandOfMojo",
+        "WorldMap_TomeTower",
+        "WorldMap_Trarrg"
+      ],
+      "Language": "E_Vo_Languages::NewEnumerator1",
+      "ResolvedSoundWave": {
+        "ObjectName": "SoundWave'VioletDustedHerselfOff_EN'",
+        "ObjectPath": "/Game/NokNok/Audio/Allister/StoryVocals/EN/Misc/Game_Over/VioletDustedHerselfOff_EN.0"
+      },
+      "TextRenderComponent": {
+        "ObjectName": "TextRenderComponent'Death_Pip:PersistentLevel.Text_Right.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.57"
+      },
+      "PanelSprite": {
+        "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Text_Right.Panel Sprite'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.30"
+      },
+      "BillboardComponent": {
+        "ObjectName": "BillboardComponent'Death_Pip:PersistentLevel.Text_Right.Sprite'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.0"
+      },
+      "Collider": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.45"
+      },
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'Death_Pip:PersistentLevel.Text_Right.TriggerBox'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.7"
+      },
+      "TextColour": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "CharacterWrapWidth": 60,
+      "WrappedText": [
+        "PIP DUSTED  ",
+        "HIMSELF OFF  ",
+        "AND AROSE TO  ",
+        "FIGHT  ",
+        "ONCE MORE "
+      ],
+      "PageAccumulatedCharCount": [
+        56
+      ],
+      "DisplayedText": {
+        "TableId": "/Game/Data/Storybook_PlayerStrings.Storybook_PlayerStrings",
+        "Key": "DEATH_MESSAGE_PIP",
+        "SourceString": "PIP DUSTED #HIMSELF OFF #AND AROSE TO #{200}FIGHT{100} #ONCE MORE",
+        "LocalizedString": "PIP DUSTED #HIMSELF OFF #AND AROSE TO #{200}FIGHT{100} #ONCE MORE"
+      },
+      "TextAlignment": "ETextJustification::Left",
+      "TextScale": 1.2,
+      "bTypewriter": true,
+      "TypeDelay": 0.035,
+      "bFadeIn": false,
+      "bFadeOut": false,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'Death_Pip:PersistentLevel.Text_Right.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.18"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'Death_Pip:PersistentLevel.Text_Right.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.47"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'Death_Pip:PersistentLevel.Text_Right.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.2"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Text_Right.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.29"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'Death_Pip:PersistentLevel.Text_Right.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.22"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'Death_Pip:PersistentLevel.Text_Right.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.12"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'Death_Pip:PersistentLevel.Text_Right.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.15"
+      },
+      "GameType": "EGameType::Story",
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Text_Right.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.67"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Text_Right.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.68"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Text_Right.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.65"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Death_Pip:PersistentLevel.Text_Right.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.39"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Death_Pip:PersistentLevel.Text_Right.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.35"
+      },
+      "bActive": false,
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Death_Pip:PersistentLevel.MGC_Death_Pip'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.19"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.45"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Template": {
+      "ObjectName": "TextRenderComponent'Default__Text_BP_C:NewTextRenderComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.24"
+    },
+    "Properties": {
+      "Text": {
+        "CultureInvariantString": "PIP DUSTED  \r\nHIMSELF OFF  \r\nAND AROSE TO  \r\nFIGHT  \r\nONCE MORE "
+      },
+      "HorizontalAlignment": "EHTA_Left",
+      "TextRenderColor": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFFFFF"
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.45"
+      },
+      "RelativeScale3D": {
+        "X": 1.2,
+        "Y": 1.2,
+        "Z": 1.2
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "Latch_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.28"
+    }
+  },
+  {
+    "Type": "TopDownRealTimeDecal_BP_C",
+    "Name": "Latch_PoseRight",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.TopDownRealTimeDecal_BP_C'",
+    "Template": {
+      "ObjectName": "TopDownRealTimeDecal_BP_C'Default__TopDownRealTimeDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'Death_Pip:PersistentLevel.Latch_PoseRight.BoxComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.3"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'Death_Pip:PersistentLevel.Latch_PoseRight.SphereComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.43"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.27"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.26"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'Death_Pip:PersistentLevel.Latch_PoseRight.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.24"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'Death_Pip:PersistentLevel.Latch_PoseRight.StampHat'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.48"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'Death_Pip:PersistentLevel.Latch_PoseRight.SlideCollider'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.4"
+      },
+      "bFadeIn": true,
+      "PageSwap_UprightFlipbook": {
+        "ObjectName": "PaperFlipbook'jot_gameover'",
+        "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover.0"
+      },
+      "PageSwap_FlippedFlipbook": {
+        "ObjectName": "PaperFlipbook'jot_gameover'",
+        "ObjectPath": "/Game/Characters/Player/GameOver/Frames/jot_gameover.0"
+      },
+      "PageSwap_UprightSprite": {
+        "ObjectName": "PaperSprite'death_latch_revive_01_Sprite'",
+        "ObjectPath": "/Game/UI/Death/Textures/death_latch_revive_01_Sprite.1"
+      },
+      "PageSwap_FlippedSprite": {
+        "ObjectName": "PaperSprite'death_latch_revive_01_Sprite'",
+        "ObjectPath": "/Game/UI/Death/Textures/death_latch_revive_01_Sprite.1"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Latch_PoseRight.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.64"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Latch_PoseRight.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.62"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Latch_PoseRight.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.63"
+      },
+      "SpriteCollisionOffset": {
+        "X": 1073.0,
+        "Y": 1956.0
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'Death_Pip:PersistentLevel.Latch_PoseRight.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.17"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'Death_Pip:PersistentLevel.Latch_PoseRight.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.46"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'Death_Pip:PersistentLevel.Latch_PoseRight.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.1"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.25"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'Death_Pip:PersistentLevel.Latch_PoseRight.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.21"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'Death_Pip:PersistentLevel.Latch_PoseRight.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.11"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'Death_Pip:PersistentLevel.Latch_PoseRight.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.14"
+      },
+      "GameType": "EGameType::Story",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.25"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.27"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Death_Pip:PersistentLevel.Latch_PoseRight.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.26"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'Death_Pip:PersistentLevel.Latch_PoseRight.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/_Shared/Death_Pip.24"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Latch_PoseRight.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.60"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Latch_PoseRight.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.61"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'Death_Pip:PersistentLevel.Latch_PoseRight.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.58"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Death_Pip:PersistentLevel.Latch_PoseRight.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.36"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Death_Pip:PersistentLevel.Latch_PoseRight.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.32"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Death_Pip:PersistentLevel.MGC_Death_Pip'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.19"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.15408185
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Death_Pip:PersistentLevel.Latch_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.9"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "Death_Pip",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'Death_Pip:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/_Shared/Death_Pip.13"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'Death_Pip:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/_Shared/Death_Pip.23"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

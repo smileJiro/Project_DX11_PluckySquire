@@ -1,0 +1,2269 @@
+[
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "Persistent_MinigameBounds",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'Persistent_MinigameBounds:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.1"
+      },
+      "LevelBuildDataId": "0CE19E5A-42F6A043-BB766FBD-62ECF796",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'Persistent_MinigameBounds:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.72"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'Persistent_MinigameBounds:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.72"
+      },
+      null,
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.Desk_C02_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.13"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.Desk_C02_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.47"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C02_Bounds_5'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.4"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C02_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.38"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C01_Bounds_7'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.3"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C01_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.37"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C04_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.6"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C04_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.40"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C03_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.5"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C03_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.39"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C05_Bounds_11'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.7"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C05_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.41"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C06_Bounds_13'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.8"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C06_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.42"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C07_Bounds_15'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.9"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C07_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.43"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.Desk_C04_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.14"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.Desk_C04_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.48"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.Desk_C06_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.16"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.Desk_C06_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.50"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.PrototypeBounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.19"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.PrototypeLabel'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.53"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.Desk_C05_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.15"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.Desk_C05_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.49"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C08_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.10"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C08_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.44"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C09_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.11"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C09_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.45"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.Desk_C09_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.18"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.Desk_C09_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.52"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.C10_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.12"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.C10_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.46"
+      },
+      {
+        "ObjectName": "StaticMeshActor'Persistent_MinigameBounds:PersistentLevel.Desk_C07_Bounds'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.17"
+      },
+      {
+        "ObjectName": "TextRenderActor'Persistent_MinigameBounds:PersistentLevel.Desk_C07_Label'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.51"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'Persistent_MinigameBounds:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.1"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "343E1555-44A24AE2-D15B849E-5A1D29C6",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C01_Bounds_7",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C01_Bounds_7.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.20"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C01_Bounds_7.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.20"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C02_Bounds_5",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C02_Bounds_5.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.21"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C02_Bounds_5.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.21"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C03_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C03_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.22"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C03_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.22"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C04_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C04_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.23"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C04_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.23"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C05_Bounds_11",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C05_Bounds_11.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.24"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C05_Bounds_11.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.24"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C06_Bounds_13",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C06_Bounds_13.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.25"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C06_Bounds_13.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.25"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C07_Bounds_15",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C07_Bounds_15.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.26"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C07_Bounds_15.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.26"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C08_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C08_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.27"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C08_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.27"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C09_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C09_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.28"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C09_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.28"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "C10_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C10_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.29"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.C10_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.29"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "Desk_C02_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C02_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.30"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C02_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.30"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "Desk_C04_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C04_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.31"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C04_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.31"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "Desk_C05_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C05_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.32"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C05_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.32"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "Desk_C06_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C06_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.33"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C06_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.33"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "Desk_C07_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C07_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.34"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C07_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.34"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "Desk_C09_Bounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C09_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.35"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C09_Bounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.35"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshActor",
+    "Name": "PrototypeBounds",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'StaticMeshActor'",
+    "Properties": {
+      "StaticMeshComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.PrototypeBounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.36"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "StaticMeshComponent'Persistent_MinigameBounds:PersistentLevel.PrototypeBounds.StaticMeshComponent0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.36"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C01_Bounds_7",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC01'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC01.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8678.0,
+        "Y": -1000.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 108.9275,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C02_Bounds_5",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC02'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC02.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8678.0,
+        "Y": 29000.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 128.0,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C03_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC03'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC03.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8678.0,
+        "Y": 38000.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 49.195,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C04_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC04'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC04.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8678.0,
+        "Y": 13530.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 177.70999,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C05_Bounds_11",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC05'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC05.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8678.0,
+        "Y": 44000.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 69.5525,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C06_Bounds_13",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC06'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC06.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8678.0,
+        "Y": 57500.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 198.14749,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C07_Bounds_15",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC07'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC07.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8680.0,
+        "Y": 77500.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 198.14749,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C08_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC08'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC08.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8678.0,
+        "Y": 91100.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 69.5525,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C09_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC09'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC09.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8681.0,
+        "Y": 113868.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 380.125,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "C10_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_DeskC03'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_DeskC03.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8678.0,
+        "Y": 137867.0,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 93.009995,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "Desk_C02_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_Desk'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_Desk.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 72572.83,
+        "Y": 29090.3,
+        "Z": 25038.586
+      },
+      "RelativeScale3D": {
+        "X": 365.57248,
+        "Y": 128.16,
+        "Z": 42.892498
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "Desk_C04_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_Desk'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_Desk.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 72572.83,
+        "Y": 11142.613,
+        "Z": 25038.586
+      },
+      "RelativeScale3D": {
+        "X": 365.57248,
+        "Y": 128.16,
+        "Z": 42.892498
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "Desk_C05_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_Desk'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_Desk.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 72573.83,
+        "Y": 43990.188,
+        "Z": 25038.61
+      },
+      "RelativeScale3D": {
+        "X": 365.57248,
+        "Y": 67.8425,
+        "Z": 56.442497
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "Desk_C06_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_Desk'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_Desk.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 72572.83,
+        "Y": 53973.188,
+        "Z": 25038.61
+      },
+      "RelativeScale3D": {
+        "X": 365.57248,
+        "Y": 128.16,
+        "Z": 56.442497
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "Desk_C07_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_Desk'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_Desk.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 72582.83,
+        "Y": 73993.19,
+        "Z": 25038.61
+      },
+      "RelativeScale3D": {
+        "X": 365.57248,
+        "Y": 128.16,
+        "Z": 56.442497
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "Desk_C09_Bounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceConstant'MI_MinigameBounds_Desk'",
+          "ObjectPath": "/Game/Editor/Materials/MI_MinigameBounds_Desk.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 86222.83,
+        "Y": 113763.19,
+        "Z": 25038.61
+      },
+      "RelativeScale3D": {
+        "X": 620.75,
+        "Y": 383.5,
+        "Z": 56.442497
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StaticMeshComponent0",
+    "Outer": "PrototypeBounds",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Properties": {
+      "StaticMesh": {
+        "ObjectName": "StaticMesh'Cube'",
+        "ObjectPath": "/Engine/BasicShapes/Cube.2"
+      },
+      "bUseDefaultCollision": false,
+      "OverrideMaterials": [
+        {
+          "ObjectName": "Material'M_MinigameBounds'",
+          "ObjectPath": "/Game/Editor/Materials/M_MinigameBounds.0"
+        }
+      ],
+      "CastShadow": false,
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionProfileName": "NoCollision",
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "RelativeLocation": {
+        "X": 8933.234,
+        "Y": -26267.506,
+        "Z": 21000.0
+      },
+      "RelativeScale3D": {
+        "X": 910.0,
+        "Y": 319.57248,
+        "Z": 62.0
+      },
+      "Mobility": "EComponentMobility::Movable"
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C01_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C01_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.54"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C01_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.54"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C02_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C02_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.55"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C02_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.55"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C03_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C03_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.56"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C03_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.56"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C04_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C04_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.57"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C04_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.57"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C05_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C05_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.58"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C05_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.58"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C06_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C06_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.59"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C06_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.59"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C07_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C07_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.60"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C07_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.60"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C08_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C08_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.61"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C08_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.61"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C09_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C09_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.62"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C09_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.62"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "C10_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C10_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.63"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.C10_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.63"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "Desk_C02_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C02_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.64"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C02_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.64"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "Desk_C04_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C04_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.65"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C04_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.65"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "Desk_C05_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C05_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.66"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C05_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.66"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "Desk_C06_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C06_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.67"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C06_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.67"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "Desk_C07_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C07_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.68"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C07_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.68"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "Desk_C09_Label",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C09_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.69"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.Desk_C09_Label.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.69"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderActor",
+    "Name": "PrototypeLabel",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'TextRenderActor'",
+    "Properties": {
+      "TextRender": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.PrototypeLabel.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.70"
+      },
+      "bHidden": true,
+      "RootComponent": {
+        "ObjectName": "TextRenderComponent'Persistent_MinigameBounds:PersistentLevel.PrototypeLabel.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.70"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C01_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "654CAD3644D7F4B6170C92BFD45969A9",
+        "SourceString": "Chapter 01",
+        "LocalizedString": "Chapter 01"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36270.695,
+        "Y": -6143.467,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 0.0,
+        "Roll": -90.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C02_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "79FA1198462C4B76E0D561B46CEFF491",
+        "SourceString": "Chapter 02",
+        "LocalizedString": "Chapter 02"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36270.695,
+        "Y": 22955.945,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": -4.7636437,
+        "Roll": -94.76364
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C03_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "85A43D8E43B69925A2DCF4A09D8F9680",
+        "SourceString": "Chapter 03",
+        "LocalizedString": "Chapter 03"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36270.695,
+        "Y": 35677.05,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 0.0,
+        "Roll": -90.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C04_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "E0AED7BC4D83FAC61BC09A9D7C4DB5CF",
+        "SourceString": "Chapter 04",
+        "LocalizedString": "Chapter 04"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36270.695,
+        "Y": 5138.6807,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 90.0,
+        "Roll": 0.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C05_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "E1AD4D96426C8B9355695FBAC9D4632E",
+        "SourceString": "Chapter 05",
+        "LocalizedString": "Chapter 05"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36270.695,
+        "Y": 41001.07,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": -4.7636437,
+        "Roll": -94.76364
+      },
+      "RelativeScale3D": {
+        "X": 0.99999994,
+        "Y": 1.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C06_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "26EEFA3A41DBC467363FDFB55E6B38D5",
+        "SourceString": "Chapter 06",
+        "LocalizedString": "Chapter 06"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36270.695,
+        "Y": 48956.375,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": -4.7636437,
+        "Roll": -94.76364
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C07_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "8F6BC1074D5EE0B5483406AC6F66C3F4",
+        "SourceString": "Chapter 07",
+        "LocalizedString": "Chapter 07"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36268.695,
+        "Y": 68956.375,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 26.565033,
+        "Roll": -63.434967
+      },
+      "RelativeScale3D": {
+        "X": 0.9999998,
+        "Y": 1.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C08_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "697697E045AE2747980157A173BD7B15",
+        "SourceString": "Chapter 08",
+        "LocalizedString": "Chapter 08"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36268.695,
+        "Y": 88086.375,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 90.0,
+        "Roll": 0.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C09_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "8F9E07ED4402CA880BF488AFF9B68E63",
+        "SourceString": "Chapter 09",
+        "LocalizedString": "Chapter 09"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36267.695,
+        "Y": 96215.375,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 90.0,
+        "Roll": 0.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "C10_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "C2EFBE3A4A71CF031C3DD89B6463FD40",
+        "SourceString": "Chapter 10",
+        "LocalizedString": "Chapter 10"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36268.695,
+        "Y": 133654.38,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": -90.0,
+        "Roll": 180.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Desk_C02_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "9AD358884177F0BD707BDD967DD164F6",
+        "SourceString": "Desk C02",
+        "LocalizedString": "Desk C02"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": 54515.633,
+        "Y": 22936.785,
+        "Z": 27207.61
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 90.0,
+        "Roll": 0.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Desk_C04_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "B0F29F2148058F96655CDD872ED2E6CD",
+        "SourceString": "Desk C04",
+        "LocalizedString": "Desk C04"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": 54515.633,
+        "Y": 4989.0977,
+        "Z": 27207.61
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": -90.0,
+        "Roll": 180.0
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Desk_C05_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "CCBF685F4432D81B605C96AEA100D3A8",
+        "SourceString": "Desk C05",
+        "LocalizedString": "Desk C05"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": 54516.633,
+        "Y": 40942.67,
+        "Z": 27880.84
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 90.0,
+        "Roll": 7.6293945E-06
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Desk_C06_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "BA6132D4471E6D424679D0A8E690DD96",
+        "SourceString": "Desk C06",
+        "LocalizedString": "Desk C06"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": 54515.633,
+        "Y": 47819.67,
+        "Z": 27880.84
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 180.0,
+        "Roll": 90.000015
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Desk_C07_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "83A77ABE450C75C6FF309C9F12870211",
+        "SourceString": "Desk C07",
+        "LocalizedString": "Desk C07"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": 54525.633,
+        "Y": 67699.67,
+        "Z": 27880.84
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 90.0,
+        "Roll": 7.6293945E-06
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Desk_C09_Label",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "3AD2018849F6C0BA2C89DDB8B9779436",
+        "SourceString": "Desk C09",
+        "LocalizedString": "Desk C09"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": 56105.633,
+        "Y": 95759.67,
+        "Z": 27880.84
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 90.0,
+        "Roll": 7.6293945E-06
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "PrototypeLabel",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Properties": {
+      "Text": {
+        "Namespace": "",
+        "Key": "D73A37E345EBD72216BB478CA120E149",
+        "SourceString": "PROTOTYPE",
+        "LocalizedString": "PROTOTYPE"
+      },
+      "VerticalAlignment": "EVRTA_TextTop",
+      "TextRenderColor": {
+        "B": 0,
+        "G": 0,
+        "R": 0,
+        "A": 255,
+        "Hex": "000000"
+      },
+      "WorldSize": 2000.0,
+      "RelativeLocation": {
+        "X": -36015.46,
+        "Y": -41357.453,
+        "Z": 24135.27
+      },
+      "RelativeRotation": {
+        "Pitch": 90.0,
+        "Yaw": 0.0,
+        "Roll": -90.0
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "Persistent_MinigameBounds",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'Persistent_MinigameBounds:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.0"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'Persistent_MinigameBounds:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/_Persistent/Persistent_MinigameBounds.2"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

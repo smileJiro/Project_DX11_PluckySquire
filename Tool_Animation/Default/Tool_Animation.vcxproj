@@ -120,7 +120,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,6 +158,7 @@
     <ClInclude Include="..\Public\TestController_Model.h" />
     <ClInclude Include="..\Public\TestModelObject.h" />
     <ClInclude Include="..\Public\TestTerrain.h" />
+    <ClInclude Include="..\Public\ToolAnimation2D.h" />
     <ClInclude Include="AnimTool_Function.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="..\Private\TestController_Model.cpp" />
     <ClCompile Include="..\Private\TestModelObject.cpp" />
     <ClCompile Include="..\Private\TestTerrain.cpp" />
+    <ClCompile Include="..\Private\ToolAnimation2D.cpp" />
     <ClCompile Include="..\Private\Tool_Animation.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

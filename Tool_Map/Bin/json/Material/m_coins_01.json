@@ -1,0 +1,112 @@
+[
+  {
+    "Type": "Material",
+    "Name": "m_coins_01",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "Metallic": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_1",
+        "UseConstant": false,
+        "Constant": 0.0
+      },
+      "Normal": {
+        "Expression": null,
+        "OutputIndex": 0,
+        "InputName": "None",
+        "Mask": 1,
+        "MaskR": 1,
+        "MaskG": 1,
+        "MaskB": 1,
+        "MaskA": 0,
+        "ExpressionName": "MaterialExpressionTextureSample_2",
+        "UseConstant": false,
+        "Constant": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        }
+      },
+      "bUsedWithStaticLighting": true,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "176AF16C-47F59F01-2081A3B6-FA35E455",
+      "CachedExpressionData": {
+        "ReferencedTextures": [
+          {
+            "ObjectName": "Texture2D'Coins_Diffuse'",
+            "ObjectPath": "/Game/Map/3D/Objects/coins/Textures/Coins_Diffuse.0"
+          },
+          {
+            "ObjectName": "Texture2D'Coins_Metallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/coins/Textures/Coins_Metallic.0"
+          },
+          {
+            "ObjectName": "Texture2D'Coins_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/coins/Textures/Coins_Normal.0"
+          },
+          {
+            "ObjectName": "Texture2D'Coins_Roughness'",
+            "ObjectPath": "/Game/Map/3D/Objects/coins/Textures/Coins_Roughness.0"
+          }
+        ],
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Coins_Diffuse"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Coins_Metallic"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Coins_Normal"
+        }
+      ]
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "ReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Coins_Diffuse'",
+          "ObjectPath": "/Game/Map/3D/Objects/coins/Textures/Coins_Diffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'Coins_Metallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/coins/Textures/Coins_Metallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Coins_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/coins/Textures/Coins_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'Coins_Roughness'",
+          "ObjectPath": "/Game/Map/3D/Objects/coins/Textures/Coins_Roughness.0"
+        }
+      ],
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

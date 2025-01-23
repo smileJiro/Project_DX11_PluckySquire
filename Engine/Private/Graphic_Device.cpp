@@ -9,13 +9,14 @@ CGraphic_Device::CGraphic_Device()
 HRESULT CGraphic_Device::Initialize(HWND _hWnd, _bool _isWindowed, _uint _iWinSizeX, _uint _iWinSizeY, _Inout_ ID3D11Device** _ppDevice, _Inout_ ID3D11DeviceContext** _ppContext)
 {
 	_uint iFlag = 0;
-
 #ifdef _DEBUG
 	iFlag = D3D11_CREATE_DEVICE_DEBUG;
 #endif
+	
+	
 	// 장치와 dx 버전간의 호환 정보를 저장.
 	D3D_FEATURE_LEVEL FeatureLV;
-
+	
 	// dx9 : 장치 초기화를 하기위한 설정을 쭈욱 하고나서 최종 장치 객체 생성.
 	// dx11 : 우선적으로 장치 객체를 생성하고 장치 객체를 통해서 기타 초기화 작업 및 설정을 해나간다.
 

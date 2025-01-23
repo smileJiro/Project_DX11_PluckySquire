@@ -1,0 +1,177 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_WP_4",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_WB_Wood_Painted'",
+        "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Materials/M_WB_Wood_Painted.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Peeling_Mask",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 1.0,
+          "ExpressionGUID": "CB98B3EF-4FA70E1F-CC7FFEA3-EBBAD611"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Roughness_Combine",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.5,
+          "ExpressionGUID": "3938768D-44348C73-1D9CA3AC-7A612515"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "UV_Rotate",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.25,
+          "ExpressionGUID": "C2E9F655-4728BD96-5B06F5B4-3F30B392"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Wood_Rotation",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "F804C185-4C613A49-D8B00F96-E941C641"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Wood_Color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.327778,
+            "G": 0.701102,
+            "B": 1.0,
+            "A": 0.0,
+            "Hex": "9BDAFF"
+          },
+          "ExpressionGUID": "EA87DB95-4BCE4CBD-94FCC7A8-2B2D9E45"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Metallic Map",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Wooden_Structure_4_Mask_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_04_Masks/Wooden_Structure_4_Mask_OcclusionRoughnessMetallic.0"
+          },
+          "ExpressionGUID": "3F4C6A9E-45E961D8-D8BD2F9F-9AD7301B"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Normal Map",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Wooden_Structure_4_Mask_Normal'",
+            "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_04_Masks/Wooden_Structure_4_Mask_Normal.0"
+          },
+          "ExpressionGUID": "E9A930C0-49E06288-AB1A3AA9-858045E9"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Roughness Map",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Wooden_Structure_4_Mask_OcclusionRoughnessMetallic'",
+            "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_04_Masks/Wooden_Structure_4_Mask_OcclusionRoughnessMetallic.0"
+          },
+          "ExpressionGUID": "34BA1149-4219DEA9-4F4C09BD-3D0D3DF0"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'plane_divided_DefaultMaterial_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_White_Tiling/plane_divided_DefaultMaterial_Normal.0"
+        },
+        {
+          "ObjectName": "Texture2D'plane_divided_DefaultMaterial_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_White_Tiling/plane_divided_DefaultMaterial_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'plane_divided_DefaultMaterial_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_Tiling/plane_divided_DefaultMaterial_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'plane_divided_DefaultMaterial_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/toy_house/texture/Wood_Tiling/plane_divided_DefaultMaterial_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Structure_1_Mask_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Wooden_Structure_1_Mask_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/platform_structures/Wood/Textures/WP_01_Masks/Wooden_Structure_1_Mask_Normal.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "plane_divided_DefaultMaterial_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "plane_divided_DefaultMaterial_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "plane_divided_DefaultMaterial_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 1,
+          "TextureName": "plane_divided_DefaultMaterial_OcclusionRoughnessMetallic"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Structure_4_Mask_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Wooden_Structure_4_Mask_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

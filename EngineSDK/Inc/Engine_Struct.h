@@ -163,11 +163,25 @@ namespace Engine
 	}VTXPOINTINSTANCE;
 
 
+	typedef struct tagVtxMeshInstance
+	{
+		XMFLOAT4		vRight, vUp, vLook, vTranslation;
+		XMFLOAT2		vLifeTime;
+		XMFLOAT4		vColor;
+	}VTXMESHINSTANCE;
+
 	typedef struct ENGINE_DLL tagPointParticle
 	{
 		static const unsigned int iNumElements = { 9 };		// Position + Size + VTXPOINTINSTANCE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXPOINTPARTICLE;
+
+	typedef struct ENGINE_DLL tagMeshParticle
+	{
+		static const unsigned int iNumElements = { 10 };		// Mesh + VTXMESHINSTACNE
+		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
+	}VTXMESHPARTICLE;
+
 
 #pragma endregion // Vertex
 
@@ -193,6 +207,19 @@ namespace Engine
 		_uint				iTimeRateAxisRight = {};
 		_uint				iTimeRateAt = {};*/
 	} ARM_DATA;
+
+	typedef struct tagCutSceneKeyFrameDesc
+	{
+		_vector				vPosition = {};
+		_float				fTimeStamp = {};
+		
+		_uint				iZoomLevel = {};
+		_uint				iZoomRatioType = {};
+		
+		_vector				vAt = {};
+		_bool				bLookAt = {};
+		_uint				iAtRatioType = {};
+	} CUTSCENE_KEYFRAME;
 #pragma endregion
 
 #pragma region Binary ฐüทร

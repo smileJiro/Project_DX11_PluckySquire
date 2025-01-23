@@ -10,6 +10,11 @@
 #include "Camera_Target.h"
 #include "Camera_Manager_Tool.h"
 
+#include "ModelObject.h"
+
+#include "Layer.h"
+#include "Collider.h"
+
 CLevel_Camera_Tool::CLevel_Camera_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
@@ -54,8 +59,12 @@ void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 		CCamera_Manager_Tool::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
+	Key_Input();
+
 	Show_CameraTool();
+	Show_CutSceneTool();
 	Show_ArmInfo();
+	Show_CutSceneInfo();
 }
 
 HRESULT CLevel_Camera_Tool::Render()
@@ -101,6 +110,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.eZoomLevel = CCamera::LEVEL_6;
+	Desc.iCameraType = CCamera_Manager_Tool::FREE;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &Desc)))
@@ -121,7 +131,8 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
-	Desc.eZoomLevel = CCamera::LEVEL_6;
+	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
+	TargetDesc.iCameraType = CCamera_Manager_Tool::TARGET;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
@@ -176,7 +187,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 
 void CLevel_Camera_Tool::Show_CameraTool()
 {
-	ImGui::Begin("Test");
+	ImGui::Begin("Camera Basic Tool");
 	
 	// Roteate
 	Rotate_Arm();
@@ -186,14 +197,6 @@ void CLevel_Camera_Tool::Show_CameraTool()
 
 	// CheckBox
 	ImGui::NewLine();
-
-	//ImGui::Checkbox("Rotate CopyArm", &m_isCopyArm);
-	//ImGui::SameLine(155.f);
-
-	// Copy
-	//if (ImGui::Button("Create CopyArm")) {
-	//	CCamera_Manager_Tool::GetInstance()->Copy_Arm();
-	//}
 
 	// Add CopyArm
 	Input_NextArm_Info();
@@ -207,7 +210,7 @@ void CLevel_Camera_Tool::Show_CameraTool()
 		tData.fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x), XMConvertToRadians(m_fRotationPerSecAxisY.y) };
 		tData.fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x), XMConvertToRadians(m_fRotationPerSecAxisRight.y)};
 
-		CCamera_Manager_Tool::GetInstance()->Add_NextArm_Info(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
+		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
 		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
 	}
 
@@ -236,12 +239,53 @@ void CLevel_Camera_Tool::Show_CameraTool()
 	ImGui::End();
 }
 
+void CLevel_Camera_Tool::Show_CutSceneTool()
+{
+	ImGui::Begin("CutScene Tool");
+
+	Picking();
+
+	Set_KeyFrameInfo();
+
+	ImGui::Checkbox("Create Point", &m_isCreatePoint);
+
+	ImGui::SameLine(150);
+
+	ImGui::Checkbox("Edit Cell", &m_isEditPoint);
+
+	Set_CurrentKeyFrame();
+
+	if (true == m_isCreatePoint && false == m_isEditPoint) {
+		Create_KeyFrame();
+		Delete_KeyFrame();
+	}
+	if (false == m_isCreatePoint && true == m_isEditPoint) {
+		Edit_KeyFrame();
+	}
+
+	ImGui::Checkbox("Create Sector", &m_isCreateSector);
+
+	if(true == m_isCreateSector && false == m_isCreatePoint && false == m_isEditPoint)
+		Create_Sector();
+
+	ImGui::End();
+}
+
 void CLevel_Camera_Tool::Show_ArmInfo()
 {
 	ImGui::Begin("Arm Info");
 
 	Show_SelectedArmData();
 	Show_CameraZoomInfo();
+
+	ImGui::End();
+}
+
+void CLevel_Camera_Tool::Show_CutSceneInfo()
+{
+	ImGui::Begin("CutScene Info");
+
+	Show_KeyFrameInfo();
 
 	ImGui::End();
 }
@@ -358,6 +402,142 @@ void CLevel_Camera_Tool::Show_CameraZoomInfo()
 
 	ImGui::Text("Cur Fovy: %.2f", fFovy);
 
+}
+
+void CLevel_Camera_Tool::Set_KeyFrameInfo()
+{
+	ImGui::Text("Position: %.2f, %.2f, %.2f", m_vKeyFramePos.x, m_vKeyFramePos.y, m_vKeyFramePos.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##KeyFramePosX", &m_vKeyFramePos.x, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##KeyFramePosY", &m_vKeyFramePos.y, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##KeyFramePosZ", &m_vKeyFramePos.z, 0.1f);
+
+	ImGui::NewLine();
+
+	ImGui::Text("TimeStamp: %.2f\t\t   ", m_fTimeStamp);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::DragFloat("##TimeStamp", &m_fTimeStamp, 0.05f, 0.f, 30.f);
+
+	ImGui::NewLine();
+
+	ImGui::Text("Frame Zoom Level: %d\t   ", m_iKeyFrameZoomLevel);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::InputInt("##Frame Zoom Level   ", &m_iKeyFrameZoomLevel);
+	ImGui::Text("Frame Fovy: %.2f", m_fFovys[m_iKeyFrameZoomLevel - 1]);
+
+	switch (m_iKeyFrameZoomRatio) {
+	case CCamera::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN       ");
+		break;
+
+	case CCamera::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT      ");
+		break;
+
+	case CCamera::LERP:
+		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("FRAME EASE IN")) {
+		m_iKeyFrameZoomRatio = CCamera::EASE_IN;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("FRAME EASE OUT")) {
+		m_iKeyFrameZoomRatio = CCamera::EASE_OUT;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("FRAME LERP")) {
+		m_iKeyFrameZoomRatio = CCamera::LERP;
+	}
+
+	ImGui::NewLine();
+
+	ImGui::Text("At: %.2f, %.2f, %.2f      ", m_vKeyFrameAt.x, m_vKeyFrameAt.y, m_vKeyFrameAt.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##KeyFrameAtX", &m_vKeyFrameAt.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##KeyFrameAtY", &m_vKeyFrameAt.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##KeyFrameAtZ", &m_vKeyFrameAt.z);
+
+	if(true == m_isKeyFrameLookAt)
+		ImGui::Text("Loot At: TRUE             ");
+	else
+		ImGui::Text("Loot At: FALSE            ");
+
+	ImGui::SameLine();
+	if (ImGui::Button("TRUE")) {
+		m_isKeyFrameLookAt = true;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("FALSE")) {
+		m_isKeyFrameLookAt = false;
+	}
+
+	switch (m_iKeyFrameAtRatio) {
+	case CCamera::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN       ");
+		break;
+
+	case CCamera::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT      ");
+		break;
+
+	case CCamera::LERP:
+		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("AT EASE IN")) {
+		m_iKeyFrameAtRatio = CCamera::EASE_IN;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("AT EASE OUT")) {
+		m_iKeyFrameAtRatio = CCamera::EASE_OUT;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("AT LERP")) {
+		m_iKeyFrameAtRatio = CCamera::LERP;
+	}
+
+	ImGui::NewLine();
+}
+
+void CLevel_Camera_Tool::Show_KeyFrameInfo()
+{
+	// Cur KeyFrame Info
+	if (nullptr == m_pCurKeyFrame)
+		return;
+
+	ImGui::Text("Cur KeyFrame Position: %.2f, %.2f, %.2f", XMVectorGetX(m_pCurKeyFrame->first.vPosition), XMVectorGetY(m_pCurKeyFrame->first.vPosition), XMVectorGetZ(m_pCurKeyFrame->first.vPosition));
+
+	// Selected Frame Info
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Selected Frame Info");
+	ImGui::Separator();
+
+	for (auto& Frame : m_SelectedKeyFrame) {
+		ImGui::Text("Cur KeyFrame Position: %.2f, %.2f, %.2f", XMVectorGetX(Frame.vPosition), XMVectorGetY(Frame.vPosition), XMVectorGetZ(Frame.vPosition));
+	}
 }
 
 void CLevel_Camera_Tool::Rotate_Arm()
@@ -754,6 +934,253 @@ void CLevel_Camera_Tool::Set_ShakeInfo()
 	}
 }
 
+void CLevel_Camera_Tool::Create_KeyFrame()
+{
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			if (false == m_isCreatePoint)
+				return;
+
+			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+
+			if (0 > fMousePos.x || g_iWinSizeX < fMousePos.x || 0 > fMousePos.y || g_iWinSizeY < fMousePos.y)
+				return;
+
+			_vector vRayPos, vRayDir;
+
+			Get_RayInfo(&vRayPos, &vRayDir);
+
+			_float fDist = {};
+
+			for (auto& Point : m_KeyFrames) {
+				CModelObject* pModelObject = dynamic_cast<CModelObject*>(Point.second);
+
+				if (true == pModelObject->Is_PickingCursor_Model(fMousePos, fDist)) {
+					return;
+				}
+			}
+
+			CUTSCENE_KEYFRAME tFrame;
+			CGameObject* pCube = Create_Cube(&tFrame);
+
+			if (nullptr == pCube)
+				return;
+
+			m_KeyFrames.push_back({ tFrame, pCube });
+		}
+	}
+}
+
+CGameObject* CLevel_Camera_Tool::Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame)
+{
+	/* Test Terrain */
+	CTest_Terrain::MODELOBJECT_DESC TerrainDesc{};
+
+	TerrainDesc.eStartCoord = COORDINATE_3D;
+	TerrainDesc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	TerrainDesc.isCoordChangeEnable = false;
+	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+
+	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+	TerrainDesc.strModelPrototypeTag_3D = TEXT("alphabet_blocks_d_mesh");
+
+	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+
+	TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(m_vKeyFramePos.x, m_vKeyFramePos.y, m_vKeyFramePos.z);
+	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(0.1f, 0.1f, 0.1f);
+	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
+
+	CGameObject* pCube;
+
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Terrain"), LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), &pCube, &TerrainDesc);
+	Safe_AddRef(pCube);
+	
+	_tKeyFrame->vPosition = XMLoadFloat3(&m_vKeyFramePos);
+	_tKeyFrame->fTimeStamp = m_fTimeStamp;
+	_tKeyFrame->iZoomLevel = m_iKeyFrameZoomLevel;
+	_tKeyFrame->iZoomRatioType = m_iKeyFrameZoomRatio;
+	_tKeyFrame->vAt = XMLoadFloat3(&m_vKeyFrameAt);
+	_tKeyFrame->bLookAt = m_isKeyFrameLookAt;
+	_tKeyFrame->iAtRatioType = m_iKeyFrameAtRatio;
+
+	return pCube;
+}
+
+void CLevel_Camera_Tool::Edit_KeyFrame()
+{
+	if (KEY_PRESSING(KEY::SPACE)) {
+		if (nullptr == m_pCurKeyFrame)
+			return;
+
+		CController_Transform* pController = m_pCurKeyFrame->second->Get_ControllerTransform();
+
+		pController->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_vKeyFramePos), 1.f));
+	}
+}
+
+void CLevel_Camera_Tool::Delete_KeyFrame()
+{
+	if (KEY_PRESSING(KEY::LSHIFT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+
+			CGameObject* pCube = m_pGameInstance->Get_PickingModelObjectByCursor(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), fMousePos);
+
+			if (nullptr == pCube)
+				return;
+
+			for (auto iter = m_KeyFrames.begin(); iter != m_KeyFrames.end();) {
+
+				if (pCube == (*iter).second) {
+					Safe_Release((*iter).second);
+					Event_DeleteObject((*iter).second);
+					iter = m_KeyFrames.erase(iter);
+				}
+				else
+					++iter;
+			}
+			
+			if (nullptr != m_pCurKeyFrame) {
+				if (pCube == m_pCurKeyFrame->second) {
+					Safe_Release(m_pCurKeyFrame->second);
+					m_pCurKeyFrame = nullptr;
+				}
+			}
+
+		}
+	}
+}
+
+void CLevel_Camera_Tool::Set_CurrentKeyFrame()
+{
+	if (KEY_PRESSING(KEY::ALT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+
+			CGameObject* pCube = m_pGameInstance->Get_PickingModelObjectByCursor(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), fMousePos);
+
+			if (nullptr == pCube)
+				return;
+
+			for (auto& KeyFrame : m_KeyFrames) {
+				if (KeyFrame.second == pCube) {
+					if (m_pCurKeyFrame != nullptr)
+						Safe_Release(m_pCurKeyFrame->second);
+					m_pCurKeyFrame = &KeyFrame;
+					Safe_AddRef(m_pCurKeyFrame->second);
+				}
+			}
+		}
+	}
+}
+
+void CLevel_Camera_Tool::Create_Sector()
+{
+	if (nullptr == m_pCurKeyFrame)
+		return;
+
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+
+			CGameObject* pCube = m_pGameInstance->Get_PickingModelObjectByCursor(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), fMousePos);
+
+			if (nullptr == pCube)
+				return;
+
+			for (auto& KeyFrame : m_KeyFrames) {
+				if (KeyFrame.second == pCube) {
+
+					for (auto& SelectedFrame : m_SelectedKeyFrame) {
+						if (true == XMVector3Equal(SelectedFrame.vPosition, KeyFrame.first.vPosition))
+							return;
+					}
+
+					m_SelectedKeyFrame.push_back(KeyFrame.first);
+				}
+			}
+		}
+	}
+}
+
+void CLevel_Camera_Tool::Picking()
+{
+	if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+		_vector vRayPos, vRayDir;
+
+		Get_RayInfo(&vRayPos, &vRayDir);
+
+		_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+		_float fDist = {};
+
+		if (0 > fMousePos.x || g_iWinSizeX < fMousePos.x || 0 > fMousePos.y || g_iWinSizeY < fMousePos.y)
+			return;
+
+		CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Terrain"));
+		list<CGameObject*> Objects = pLayer->Get_GameObjects();
+
+		CGameObject* pGameObject;
+
+		for (auto& GameObject : Objects) {
+			CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
+			_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fDist);
+
+			if (true == isPicked) {
+				_vector vClickedPos = vRayPos + (vRayDir * fDist);
+
+				XMStoreFloat3(&m_vKeyFramePos, vClickedPos);
+			}
+		}
+	}
+}
+
+void CLevel_Camera_Tool::Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir)
+{
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+
+	_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+
+	_uint		iNumViewports = { 1 };
+	D3D11_VIEWPORT		ViewportDesc{};
+
+	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+	// 마우스 -> 투영
+	vMousePos = XMVectorSet(pt.x / (ViewportDesc.Width * 0.5f) - 1.f,
+		pt.y / -(ViewportDesc.Height * 0.5f) + 1.f,
+		0.f,
+		1.f);
+
+	// 투영 -> 뷰 스페이스
+	_matrix matProj = m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_PROJ);
+	vMousePos = XMVector3TransformCoord(vMousePos, matProj);
+
+	_vector vRayPos, vRayDir;
+
+	vRayPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vRayDir = vMousePos - vRayPos;
+
+	_matrix matView = m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW);
+	vRayPos = XMVector3TransformCoord(vRayPos, matView);
+	vRayDir = XMVector3TransformNormal(vRayDir, matView);
+	vRayDir = XMVectorSetW(vRayDir, 0.f);
+	vRayDir = XMVector3Normalize(vRayDir);
+
+	*_pRayPos = vRayPos;
+	*_pRayDir = vRayDir;
+}
+
+void CLevel_Camera_Tool::Key_Input()
+{
+}
+
 CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CLevel_Camera_Tool* pInstance = new CLevel_Camera_Tool(_pDevice, _pContext);
@@ -769,5 +1196,13 @@ CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11Dev
 
 void CLevel_Camera_Tool::Free()
 {
+	for (auto& Point : m_KeyFrames) 
+		Safe_Release(Point.second);
+
+	if(nullptr != m_pCurKeyFrame)
+		Safe_Release(m_pCurKeyFrame->second);
+
+	m_KeyFrames.clear();
+
 	__super::Free();
 }

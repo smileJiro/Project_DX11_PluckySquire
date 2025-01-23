@@ -1,0 +1,2369 @@
+[
+  {
+    "Type": "Actor",
+    "Name": "C09_DINO_02_Floor2Ref",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Actor'",
+    "Properties": {
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Floor2Ref.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.43"
+      },
+      "InstanceComponents": [
+        {
+          "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Floor2Ref.DefaultSceneRoot'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.43"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__SideScroller_BackgroundDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.2"
+    },
+    "Properties": {
+      "TiltSwapOffset": {
+        "X": 595.5,
+        "Y": 183.0
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__SideScroller_BackgroundDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.2"
+    },
+    "Properties": {
+      "TiltSwapOffset": {
+        "X": 594.5,
+        "Y": 183.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScroller_BackgroundDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScroller_BackgroundDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScroller_BackgroundDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__SideScroller_BackgroundDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 8792.0,
+        "Y": 400.0,
+        "Z": 1965.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.19"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.19"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 200.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 8292.0,
+        "Y": 400.0,
+        "Z": 100.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.19"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.19"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": -2165.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__SideScroller_BackgroundDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.5"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": -4096.0,
+        "Y": 88.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__SideScroller_BackgroundDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.5"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": 4096.0,
+        "Y": 88.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "DinoramaMinigameSubController_BP_C",
+    "Name": "C09_DINO_02_DinoramaMinigameSubController_BP2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Minigames/Dinorama/DinoramaMinigameSubController_BP.DinoramaMinigameSubController_BP_C'",
+    "Template": {
+      "ObjectName": "DinoramaMinigameSubController_BP_C'Default__DinoramaMinigameSubController_BP_C'",
+      "ObjectPath": "/Game/Minigames/Dinorama/DinoramaMinigameSubController_BP.1"
+    },
+    "Properties": {
+      "DinoramaGroundPlanes": [
+        32562.0
+      ],
+      "DinoramaGroundPlaneReferenceObjects": [
+        {
+          "ObjectName": "Actor'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Floor2Ref'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.0"
+        }
+      ],
+      "MeteorDelay": 0.55,
+      "Checkpoints": [
+        {
+          "SpawnPointTriggerVolume": null,
+          "SpawnLinker": null,
+          "ResetTriggers": [],
+          "SpawnPointObject": null,
+          "CheckpointIndex": 0
+        }
+      ],
+      "Root": {
+        "ObjectName": "SphereComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_DinoramaMinigameSubController_BP2.Root'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.49"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_DinoramaMinigameSubController_BP2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.40"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_DinoramaMinigameSubController_BP2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.36"
+      },
+      "GroupName": "C09_DINO_02",
+      "PrevGroupName": "C09_DINO_02",
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.19"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_DinoramaMinigameSubController_BP2.Root'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.49"
+      }
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.6"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.6"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "Desk_C09_Dinorama_Floor_02",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'Desk_C09_Dinorama_Floor_02:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.20"
+      },
+      "LevelBuildDataId": "C7AEE313-4514E02B-43E2E996-61F14A0A",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'Desk_C09_Dinorama_Floor_02:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.75"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'Desk_C09_Dinorama_Floor_02:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.75"
+      },
+      null,
+      {
+        "ObjectName": "MinigameController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.19"
+      },
+      {
+        "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+      },
+      {
+        "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+      },
+      {
+        "ObjectName": "DinoramaMinigameSubController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_DinoramaMinigameSubController_BP2'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.11"
+      },
+      {
+        "ObjectName": "Actor'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Floor2Ref'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.0"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'Desk_C09_Dinorama_Floor_02:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.20"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__SideScroller_BackgroundDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__SideScroller_BackgroundDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.7"
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__SideScroller_BackgroundDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.61"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__SideScroller_BackgroundDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.68"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "AssignedBookIDs": [
+        7009
+      ],
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_003.Desk_C09_003",
+        "SubPathString": "PersistentLevel.BOOK_DINO2"
+      },
+      "BookID": 7009,
+      "RenderResolution": {
+        "X": 8192.0,
+        "Y": 2730.0
+      },
+      "LevelSizePixels": {
+        "X": 16384.0,
+        "Y": 2730.0
+      },
+      "GameType": "EGameType::Dinorama",
+      "PageAxes": "EPageCoordinates::XZ",
+      "CustomPageRenderScale": 2.0,
+      "SpreadType": "EPageSpreadType::Double",
+      "ScrollType": "EScrollType::ZoomedPan",
+      "bIsBottomlessSidescrollerLevel": false,
+      "BackgroundColour": {
+        "R": 1.0,
+        "G": 0.0,
+        "B": 0.366518,
+        "A": 1.0,
+        "Hex": "FF00A3"
+      },
+      "bAutoPostitionTileMap": false,
+      "LevelWidth": 2.0,
+      "SSPlayer_BP": {
+        "ObjectName": "BlueprintGeneratedClass'DinoramaPlayer_BP_C'",
+        "ObjectPath": "/Game/Minigames/Dinorama/DinoramaPlayer_BP.13"
+      },
+      "GameVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.GameVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.7"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.59"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.56"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.57"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.58"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.KillVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.8"
+      },
+      "CameraLocationCurve": null,
+      "CameraRotationCurve": null,
+      "CameraPanYOffset": 0.0,
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.GameBackground'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.55"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.32"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.54"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.33"
+      },
+      "TileMapComponentOffset": {
+        "X": -8083.0,
+        "Y": 105.0
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.42"
+      },
+      "SubController": {
+        "ObjectName": "DinoramaMinigameSubController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_DinoramaMinigameSubController_BP2'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.11"
+      },
+      "LevelBools": [
+        {
+          "VariableName": "HasAxe",
+          "bIsSet": true
+        },
+        {
+          "VariableName": "SpawningMeteors",
+          "bIsSet": false
+        }
+      ],
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_03.Dinorama_V2_8192x2730_BG_Art_03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_03_Sprite.Dinorama_V2_8192x2730_BG_Art_03_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Textures/genericexplosion-0.genericexplosion-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0001_X02.genericexplosion_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0002_X01.genericexplosion_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0003_X01.genericexplosion_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0004_X01.genericexplosion_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0005_X02.genericexplosion_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0006_X02.genericexplosion_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0007_X02.genericexplosion_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0008_X02.genericexplosion_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0009_X03.genericexplosion_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0010_X03.genericexplosion_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0011_X03.genericexplosion_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0012_X03.genericexplosion_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/generic_explosion.generic_explosion",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_04.Dinorama_V2_8192x2730_BG_Art_04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_04_Sprite.Dinorama_V2_8192x2730_BG_Art_04_Sprite",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.41"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.37"
+      },
+      "GroupName": "C09_DINO_02",
+      "PrevGroupName": "C09_DINO_02",
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "DCAEDE17-41983EB6-B068D4BC-DA6FDBB6",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__SideScroller_BackgroundDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__SideScroller_BackgroundDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.9"
+    }
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__SideScroller_BackgroundDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.10"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__SideScroller_BackgroundDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.10"
+    },
+    "Properties": {
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScroller_BackgroundDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScroller_BackgroundDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScroller_BackgroundDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.13"
+    },
+    "Properties": {
+      "SourceSprite": {
+        "ObjectName": "PaperSprite'Dinorama_V2_8192x2730_BG_Art_03_Sprite'",
+        "ObjectPath": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_03_Sprite.1"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScroller_BackgroundDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScroller_BackgroundDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__SideScroller_BackgroundDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.13"
+    },
+    "Properties": {
+      "SourceSprite": {
+        "ObjectName": "PaperSprite'Dinorama_V2_8192x2730_BG_Art_04_Sprite'",
+        "ObjectPath": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_04_Sprite.1"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "SpriteColor": {
+        "R": 1.0,
+        "G": 0.0,
+        "B": 0.366518,
+        "A": 1.0,
+        "Hex": "FF00A3"
+      },
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "RelativeRotation": {
+        "Pitch": 0.0,
+        "Yaw": 0.0,
+        "Roll": 0.0
+      },
+      "RelativeScale3D": {
+        "X": 106.15,
+        "Y": 36.195652,
+        "Z": 36.195652
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": -8083.0,
+        "Y": 105.0,
+        "Z": 1291.0
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__SideScroller_BackgroundDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__SideScroller_BackgroundDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "C09_DINO_02_DinoramaMinigameSubController_BP2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__DinoramaMinigameSubController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Minigames/Dinorama/DinoramaMinigameSubController_BP.2"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__SideScroller_BackgroundDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__SideScroller_BackgroundDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "C09_DINO_02_DinoramaMinigameSubController_BP2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__DinoramaMinigameSubController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Minigames/Dinorama/DinoramaMinigameSubController_BP.3"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "DefaultSceneRoot",
+    "Outer": "C09_DINO_02_Floor2Ref",
+    "Class": "UScriptClass'SceneComponent'",
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_DinoramaMinigameSubController_BP2.Root'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.49"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": -1038.0
+      },
+      "CreationMethod": "EComponentCreationMethod::Instance"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 73113.0,
+        "Y": 127164.0,
+        "Z": 33600.0
+      }
+    }
+  },
+  {
+    "Type": "SideScroller_BackgroundDecal_BP_C",
+    "Name": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.SideScroller_BackgroundDecal_BP_C'",
+    "Template": {
+      "ObjectName": "SideScroller_BackgroundDecal_BP_C'Default__SideScroller_BackgroundDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.BoxComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.3"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.SphereComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.47"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.28"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.27"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.24"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.StampHat'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.52"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.SlideCollider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.4"
+      },
+      "PageSwap_UprightSprite": {
+        "ObjectName": "PaperSprite'Dinorama_V2_8192x2730_BG_Art_03_Sprite'",
+        "ObjectPath": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_03_Sprite.1"
+      },
+      "PageSwap_FlippedSprite": {
+        "ObjectName": "PaperSprite'Dinorama_V2_8192x2730_BG_Art_03_Sprite'",
+        "ObjectPath": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_03_Sprite.1"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.66"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.64"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.65"
+      },
+      "SpriteCollisionBoundsOrigin": {
+        "X": -3500.5,
+        "Y": -1182.0
+      },
+      "SpriteCollisionBoundsExtents": {
+        "X": 3500.5,
+        "Y": 1182.0
+      },
+      "SpriteCollisionOffset": {
+        "X": 595.5,
+        "Y": 183.0
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.17"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.50"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.1"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.26"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.21"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.12"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.15"
+      },
+      "bForceAddToMGC": true,
+      "GameType": "EGameType::Dinorama",
+      "LayerDepth": "ELayerDepth::Background",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.26"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.28"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.27"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.24"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.62"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.63"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.60"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.38"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.34"
+      },
+      "GroupName": "C09_DINO_02",
+      "PrevGroupName": "C09_DINO_02",
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.19"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.35401624
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "SideScroller_BackgroundDecal_BP_C",
+    "Name": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.SideScroller_BackgroundDecal_BP_C'",
+    "Template": {
+      "ObjectName": "SideScroller_BackgroundDecal_BP_C'Default__SideScroller_BackgroundDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.BoxComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.5"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.SphereComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.48"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.31"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.30"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.25"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.StampHat'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.53"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.SlideCollider'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.6"
+      },
+      "PageSwap_UprightSprite": {
+        "ObjectName": "PaperSprite'Dinorama_V2_8192x2730_BG_Art_04_Sprite'",
+        "ObjectPath": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_04_Sprite.1"
+      },
+      "PageSwap_FlippedSprite": {
+        "ObjectName": "PaperSprite'Dinorama_V2_8192x2730_BG_Art_04_Sprite'",
+        "ObjectPath": "/Game/Map/TileMaps/Dinorama/Dinorama_V2_8192x2730_BG_Art_04_Sprite.1"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.73"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.71"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.72"
+      },
+      "SpriteCollisionBoundsOrigin": {
+        "X": -3501.5,
+        "Y": -1182.0
+      },
+      "SpriteCollisionBoundsExtents": {
+        "X": 3501.5,
+        "Y": 1182.0
+      },
+      "SpriteCollisionOffset": {
+        "X": 594.5,
+        "Y": 183.0
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.18"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.51"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.2"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.29"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.22"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.13"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.16"
+      },
+      "bForceAddToMGC": true,
+      "GameType": "EGameType::Dinorama",
+      "LayerDepth": "ELayerDepth::Background",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.29"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.31"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.30"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.25"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.69"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.70"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.67"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.39"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.35"
+      },
+      "GroupName": "C09_DINO_02",
+      "PrevGroupName": "C09_DINO_02",
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.19"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.19364911
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__SideScroller_BackgroundDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.45"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__SideScroller_BackgroundDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "SideScroller_BackgroundDecal_BP_C'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.46"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "C09_DINO_02_DinoramaMinigameSubController_BP2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__DinoramaMinigameSubController_BP_C:Root'",
+      "ObjectPath": "/Game/Minigames/Dinorama/DinoramaMinigameSubController_BP.7"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": -15.0,
+        "Y": 100.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__SideScroller_BackgroundDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.26"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.28"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.27"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.24"
+        }
+      ],
+      "SpritesConfigVersion": 36
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__SideScroller_BackgroundDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.29"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.31"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.30"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.25"
+        }
+      ],
+      "SpritesConfigVersion": 36
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__SideScroller_BackgroundDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Left.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.9"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__SideScroller_BackgroundDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_Dinorama_Temp_BG_Right.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.10"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::QueryOnly",
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeRotation": {
+        "Pitch": 0.0,
+        "Yaw": 0.0,
+        "Roll": 89.99999
+      },
+      "RelativeScale3D": {
+        "X": 164.04,
+        "Y": 27.5,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionEnabled": "ECollisionEnabled::NoCollision",
+        "bInterpolateWhenSubStepping": false,
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "MinigameControllers",
+              "Response": "ECR_Block"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Block"
+            },
+            {
+              "Channel": "Pawn",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "WorldDynamic",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "WorldStatic",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "CapsuleAsshats",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "RelativeRotation": {
+        "Pitch": 0.0,
+        "Yaw": 0.0,
+        "Roll": 89.99999
+      },
+      "RelativeScale3D": {
+        "X": 164.04,
+        "Y": 27.5,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": -1415.0
+      },
+      "RelativeScale3D": {
+        "X": 165.84,
+        "Y": 5.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": -8242.0,
+        "Y": 250.0,
+        "Z": 500.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 5.0,
+        "Z": 37.3
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": 8242.0,
+        "Y": 250.0,
+        "Z": 500.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 5.0,
+        "Z": 37.3
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Dinorama_Floor_02:PersistentLevel.C09_DINO_02_MGC_Desk_C07_SKSP_01_Dino_1.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.44"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": 1415.0
+      },
+      "RelativeScale3D": {
+        "X": 165.84,
+        "Y": 5.0,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Left",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "C09_DINO_02_Dinorama_Temp_BG_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__SideScroller_BackgroundDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Sidescroller/_Generic/SideScroller_BackgroundDecal_BP.28"
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "Desk_C09_Dinorama_Floor_02",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'Desk_C09_Dinorama_Floor_02:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.14"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'Desk_C09_Dinorama_Floor_02:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Dinorama/Desk_C09_Dinorama_Floor_02.23"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

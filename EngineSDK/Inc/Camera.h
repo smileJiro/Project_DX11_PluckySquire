@@ -4,8 +4,6 @@ BEGIN(Engine)
 class ENGINE_DLL CCamera abstract : public CGameObject
 {
 public:
-	//enum STATE { STATE_NONE, STATE_ZOOM_IN, STATE_ZOOM_OUT, STATE_LAST };
-	enum TYPE { TARGET, FREE, LAST };
 	enum ZOOM_LEVEL { LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, LEVEL_10, ZOOM_LAST,};
 	enum RATIO_TYPE { EASE_IN, EASE_OUT, LERP, RATIO_TYPE_LAST};
 	enum SHAKE_TYPE { SHAKE_XY, SHAKE_X, SHAKE_Y, SHAKE_LAST };
@@ -14,7 +12,7 @@ public:
 	typedef struct tagCameraDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		// 카메라 타입
-		TYPE			eCameraType;
+		_uint			iCameraType;
 
 		_float3			vEye = {};
 		_float3			vAt = {};
@@ -57,7 +55,7 @@ public:
 #endif
 
 	// Get
-	TYPE Get_CamType() const { return m_eCameraType; }
+	_uint Get_CamType() const { return m_eCameraType; }
 	_float Get_Fovy() const { return m_fFovy; }
 	_float Get_Aspect() const { return m_fAspect; }
 	_float Get_NearZ() const { return m_fNear; }
@@ -85,7 +83,7 @@ protected:
 	/* 만들어 낸 뷰, 투영 행렬을 PipeLine Class 에 저장. */
 	/* 뷰 행렬은 Transform으로 대체 */
 	/* 투영 -> 별도로 만들어주어야한다. */
-	TYPE			m_eCameraType = TYPE::LAST;
+	_uint			m_eCameraType = {};
 	_float			m_fFovy = { 0.f };
 	_float			m_fAspect = { 0.f };
 	_float			m_fNear = { 0.f };
@@ -111,7 +109,7 @@ protected:
 	_float		Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 protected: /* Zoom */
-	_float		m_ZoomLevels[(_uint)ZOOM_LAST];
+	_float		m_ZoomLevels[(_uint)ZOOM_LAST] = {};
 	_bool		m_isZoomOn = false;
 
 	RATIO_TYPE	m_eRatioType = RATIO_TYPE_LAST;

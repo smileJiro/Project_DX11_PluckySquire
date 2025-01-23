@@ -46,7 +46,7 @@ void CUI::Late_Update(_float fTimeDelta)
 	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 }
 
-HRESULT CUI::Render(_int _index)
+HRESULT CUI::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 {
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
 		return E_FAIL;
@@ -57,11 +57,10 @@ HRESULT CUI::Render(_int _index)
 	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture", _index)))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture", _iTextureindex)))
 		return E_FAIL;
 
-
-	m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
+	m_pShaderComs[COORDINATE_2D]->Begin((_uint)_eShaderPass);
 	m_pVIBufferCom->Bind_BufferDesc();
 	m_pVIBufferCom->Render();
 

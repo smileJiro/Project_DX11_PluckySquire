@@ -1,0 +1,520 @@
+[
+  {
+    "Type": "Function",
+    "Name": "ExecuteUbergraph_StartMap",
+    "Outer": "StartMap_C",
+    "Class": "UScriptClass'Function'",
+    "ChildProperties": [
+      {
+        "Type": "IntProperty",
+        "Name": "EntryPoint",
+        "Flags": "RF_Public",
+        "ElementSize": 4,
+        "PropertyFlags": "BlueprintVisible | BlueprintReadOnly | Parm"
+      },
+      {
+        "Type": "ObjectProperty",
+        "Name": "CallFunc_GetPlayerController_ReturnValue",
+        "Flags": "RF_Public",
+        "ElementSize": 8,
+        "PropertyClass": {
+          "ObjectName": "Class'PlayerController'",
+          "ObjectPath": "/Script/Engine"
+        }
+      },
+      {
+        "Type": "ObjectProperty",
+        "Name": "CallFunc_Create_ReturnValue",
+        "Flags": "RF_Public",
+        "ElementSize": 8,
+        "PropertyFlags": "InstancedReference",
+        "PropertyClass": {
+          "ObjectName": "WidgetBlueprintGeneratedClass'MainMenuContainerWidgetBP_C'",
+          "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Main/MainMenuContainerWidgetBP.28"
+        }
+      }
+    ],
+    "FunctionFlags": "FUNC_Final | FUNC_UbergraphFunction"
+  },
+  {
+    "Type": "Function",
+    "Name": "ReceiveBeginPlay",
+    "Outer": "StartMap_C",
+    "Class": "UScriptClass'Function'",
+    "SuperStruct": {
+      "ObjectName": "Class'Actor:ReceiveBeginPlay'",
+      "ObjectPath": "/Script/Engine"
+    },
+    "FunctionFlags": "FUNC_Event | FUNC_Protected | FUNC_BlueprintEvent"
+  },
+  {
+    "Type": "BlueprintGeneratedClass",
+    "Name": "StartMap_C",
+    "Class": "UScriptClass'BlueprintGeneratedClass'",
+    "Properties": {
+      "UberGraphFunction": {
+        "ObjectName": "Function'StartMap_C:ExecuteUbergraph_StartMap'",
+        "ObjectPath": "/Game/Levels/StartMap.0"
+      }
+    },
+    "SuperStruct": {
+      "ObjectName": "Class'LevelScriptActor'",
+      "ObjectPath": "/Script/Engine"
+    },
+    "Children": [
+      {
+        "ObjectName": "Function'StartMap_C:ReceiveBeginPlay'",
+        "ObjectPath": "/Game/Levels/StartMap.1"
+      },
+      {
+        "ObjectName": "Function'StartMap_C:ExecuteUbergraph_StartMap'",
+        "ObjectPath": "/Game/Levels/StartMap.0"
+      }
+    ],
+    "ChildProperties": [
+      {
+        "Type": "StructProperty",
+        "Name": "UberGraphFrame",
+        "Flags": "RF_Public | RF_LoadCompleted",
+        "ElementSize": 16,
+        "PropertyFlags": "Transient | DuplicateTransient",
+        "Struct": {
+          "ObjectName": "Class'PointerToUberGraphFrame'",
+          "ObjectPath": "/Script/Engine"
+        }
+      }
+    ],
+    "FuncMap": {
+      "ExecuteUbergraph_StartMap": {
+        "ObjectName": "Function'StartMap_C:ExecuteUbergraph_StartMap'",
+        "ObjectPath": "/Game/Levels/StartMap.0"
+      },
+      "ReceiveBeginPlay": {
+        "ObjectName": "Function'StartMap_C:ReceiveBeginPlay'",
+        "ObjectPath": "/Game/Levels/StartMap.1"
+      }
+    },
+    "ClassFlags": "CLASS_Config | CLASS_Optional | CLASS_NotPlaceable | CLASS_ReplicationDataIsSetUp | CLASS_CompiledFromBlueprint | CLASS_HasInstancedReference",
+    "ClassWithin": {
+      "ObjectName": "Class'Object'",
+      "ObjectPath": "/Script/CoreUObject"
+    },
+    "ClassConfigName": "Engine",
+    "bCooked": true,
+    "ClassDefaultObject": {
+      "ObjectName": "StartMap_C'Default__StartMap_C'",
+      "ObjectPath": "/Game/Levels/StartMap.3"
+    }
+  },
+  {
+    "Type": "StartMap_C",
+    "Name": "Default__StartMap_C",
+    "Class": "BlueprintGeneratedClass'/Game/Levels/StartMap.StartMap_C'",
+    "Properties": {
+      "UberGraphFrame": {}
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "BP_GlitchController_2",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'BP_GlitchController_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.10"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 1770.0,
+        "Y": 4400.0,
+        "Z": -48010.0
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'SceneComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "RelativeLocation",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "BP_GlitchController_C",
+    "Name": "BP_GlitchController_2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.BP_GlitchController_C'",
+    "Template": {
+      "ObjectName": "BP_GlitchController_C'Default__BP_GlitchController_C'",
+      "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.9"
+    },
+    "Properties": {
+      "Billboard": {
+        "ObjectName": "BillboardComponent'StartMap:PersistentLevel.BP_GlitchController_2.Billboard'",
+        "ObjectPath": "/Game/Levels/StartMap.4"
+      },
+      "Glitched_Intro_TL": {
+        "ObjectName": "TimelineComponent'StartMap:PersistentLevel.BP_GlitchController_2.Glitched_Intro_TL'",
+        "ObjectPath": "/Game/Levels/StartMap.10"
+      },
+      "RootComponent": {
+        "ObjectName": "BillboardComponent'StartMap:PersistentLevel.BP_GlitchController_2.Billboard'",
+        "ObjectPath": "/Game/Levels/StartMap.4"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'StartMap:PersistentLevel.BP_GlitchController_2.Billboard'",
+          "ObjectPath": "/Game/Levels/StartMap.4"
+        },
+        {
+          "ObjectName": "TimelineComponent'StartMap:PersistentLevel.BP_GlitchController_2.Glitched_Intro_TL'",
+          "ObjectPath": "/Game/Levels/StartMap.10"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "StartMap",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'StartMap:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/StartMap.7"
+      },
+      "LevelScriptActor": {
+        "ObjectName": "StartMap_C'StartMap:PersistentLevel.StartMap_C_2'",
+        "ObjectPath": "/Game/Levels/StartMap.9"
+      },
+      "LevelBuildDataId": "EA3B9725-4E3197D3-4AC30284-8BF49167",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'StartMap:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/StartMap.12"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'StartMap:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/StartMap.12"
+      },
+      null,
+      {
+        "ObjectName": "BP_GlitchController_C'StartMap:PersistentLevel.BP_GlitchController_2'",
+        "ObjectPath": "/Game/Levels/StartMap.5"
+      },
+      {
+        "ObjectName": "StartMap_C'StartMap:PersistentLevel.StartMap_C_2'",
+        "ObjectPath": "/Game/Levels/StartMap.9"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'StartMap:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/StartMap.7"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": {
+      "ObjectName": "StartMap_C'StartMap:PersistentLevel.StartMap_C_2'",
+      "ObjectPath": "/Game/Levels/StartMap.9"
+    },
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "CAEAE28D-4B74FF09-F24AAB87-7E871611",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "StartMap_C",
+    "Name": "StartMap_C_2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Levels/StartMap.StartMap_C'",
+    "Template": {
+      "ObjectName": "StartMap_C'Default__StartMap_C'",
+      "ObjectPath": "/Game/Levels/StartMap.3"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "Glitched_Intro_TL",
+    "Outer": "BP_GlitchController_2",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Properties": {
+      "TheTimeline": {
+        "LengthMode": "TL_TimelineLength",
+        "Length": 1.0,
+        "InterpFloats": [
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_0'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.11"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "MainGlitchEffect",
+            "FloatPropertyName": "Glitched_Intro_TL_MainGlitchEffect_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_1'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.12"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "APF_Logo_Visibility",
+            "FloatPropertyName": "Glitched_Intro_TL_APF_Logo_Visibility_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_2'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.14"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "OPF_Logo_Visibility",
+            "FloatPropertyName": "Glitched_Intro_TL_OPF_Logo_Visibility_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_3'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.15"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "APF_Logo_Glitch",
+            "FloatPropertyName": "Glitched_Intro_TL_APF_Logo_Glitch_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_4'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.16"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "Devolver_Logo_Glitch",
+            "FloatPropertyName": "Glitched_Intro_TL_Devolver_Logo_Glitch_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_5'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.17"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "Devolver_Texture_Visibility",
+            "FloatPropertyName": "Glitched_Intro_TL_Devolver_Texture_Visibility_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_6'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.18"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "Dethroner_Texture_Visibility",
+            "FloatPropertyName": "Glitched_Intro_TL_Dethroner_Texture_Visibility_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_7'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.19"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "APF_MainVisibility",
+            "FloatPropertyName": "Glitched_Intro_TL_APF_MainVisibility_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_9'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.21"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "OPF_Logo_Glitch",
+            "FloatPropertyName": "Glitched_Intro_TL_OPF_Logo_Glitch_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_8'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.20"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "DevolverMainVisibility",
+            "FloatPropertyName": "Glitched_Intro_TL_DevolverMainVisibility_DF3F473240838900BDDFD8843FEC48A0"
+          },
+          {
+            "FloatCurve": {
+              "ObjectName": "CurveFloat'BP_GlitchController_C:CurveFloat_11'",
+              "ObjectPath": "/MenuSystemPro/Blueprints/UI/Menus/Misc/BP_GlitchController.13"
+            },
+            "InterpFunc": {
+              "Num": 0,
+              "Name": "None"
+            },
+            "TrackName": "Dethroner_GlitchEffect",
+            "FloatPropertyName": "Glitched_Intro_TL_Dethroner_GlitchEffect_DF3F473240838900BDDFD8843FEC48A0"
+          }
+        ],
+        "TimelinePostUpdateFunc": {
+          "Num": 6,
+          "Name": "Glitched_Intro_TL__UpdateFunc"
+        },
+        "TimelineFinishedFunc": {
+          "Num": 6,
+          "Name": "Glitched_Intro_TL__FinishedFunc"
+        },
+        "PropertySetObject": {
+          "ObjectName": "BP_GlitchController_C'StartMap:PersistentLevel.BP_GlitchController_2'",
+          "ObjectPath": "/Game/Levels/StartMap.5"
+        },
+        "DirectionPropertyName": "Glitched_Intro_TL__Direction_DF3F473240838900BDDFD8843FEC48A0"
+      },
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::UserConstructionScript"
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "StartMap",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'StartMap:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/StartMap.6"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'StartMap:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/StartMap.8"
+      },
+      "DefaultGameMode": {
+        "ObjectName": "BlueprintGeneratedClass'GameMode_BP_C'",
+        "ObjectPath": "/Game/Blueprints/GameMode_BP.29"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

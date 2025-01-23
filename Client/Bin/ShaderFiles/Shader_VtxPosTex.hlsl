@@ -38,6 +38,13 @@ Texture2D g_MaskTexture;
 float2 g_vSpriteStartUV;
 float2 g_vSpriteEndUV;
 float g_fPixelsPerUnrealUnit;
+
+// Color
+float g_fRed;
+float g_fGreen;
+float g_fBlue;
+float g_fOpaque;        // 투명도 설정
+
 /* 구조체 */
 struct VS_IN
 {
@@ -121,13 +128,26 @@ PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
+    Out.vColor = float4(g_fRed, g_fGreen, g_fBlue, g_fOpaque);
     
     if (Out.vColor.a < 0.01f)
         discard;
     
     return Out;
 }
+
+PS_OUT PS_UIPOINTSAMPLE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+    
+    if (Out.vColor.a < 0.01f)
+        discard;
+    
+    return Out;
+}
+
 
 
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
@@ -185,4 +205,15 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
+
+    pass UI_POINTSAMPLE
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_UIPOINTSAMPLE();
+    }
+
 }

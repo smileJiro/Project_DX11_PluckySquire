@@ -157,6 +157,24 @@
     <Filter Include="02.GameObjects\Monster\Boss\State">
       <UniqueIdentifier>{61b6526e-7a8f-4e3c-b1ca-00031b8ab953}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo">
+      <UniqueIdentifier>{3600cf84-02bf-4c6a-8b64-2fdea4cb32ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG">
+      <UniqueIdentifier>{3201528a-c170-487d-9d02-4f72ad1ea9e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject">
+      <UniqueIdentifier>{27eeead8-8f6e-4d69-8a4b-703b1b9d2cc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel\01. ShopItem">
+      <UniqueIdentifier>{a838413b-c5d4-4178-a1a5-f58c7a424696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG">
+      <UniqueIdentifier>{a77bb249-6b86-41f0-80e7-d13216bfb195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel\01. ShopItem\ShopItem">
+      <UniqueIdentifier>{f9cecc49-f4ff-40d8-9329-5ade28ab001d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -327,6 +345,15 @@
     <ClInclude Include="..\Public\FSM_Boss.h">
       <Filter>03.Components\FSM</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Logo_BG.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopItemBG.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -487,6 +514,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\FSM_Boss.cpp">
       <Filter>03.Components\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Logo_BG.cpp">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopItemBG.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
