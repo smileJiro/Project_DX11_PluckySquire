@@ -13,7 +13,7 @@ private:
 public:
 	HRESULT Initialize_Prototype(const json& _jsonBufferInfo);
 	virtual HRESULT Initialize(void* _pArg) override;
-
+	virtual void	Update(_float _fTimeDelta) override;
 
 private:
 	VTXPOINTINSTANCE* m_pInstanceVertices = { nullptr };
@@ -30,10 +30,26 @@ private:
 
 private:
 	void			  Set_UV(_Out_ _float4* _pOutUV, _float _fIndex);
+	void			  Set_Position(_int _iIndex);
+	void			  Set_Instance(_int _iIndex);
+
+	void			 Init_Particle(_int _iIndex, _float4* _pPosition, _float4* _pColor);
 
 public:
 	static CVIBuffer_Point_Particle* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonBufferInfo);
 	virtual CComponent* Clone(void* _pArg);
 	virtual void Free() override;
+
+#ifdef _DEBUG
+	virtual void		 Tool_Setting();
+	virtual void		 Tool_Reset_Instance() override;
+	virtual void		 Tool_Reset_Buffers() override; // Count 자체가 바뀌어버린 경우
+
+
+	
+	virtual void Tool_Update(_float _fTimeDelta);
+
+#endif
+
 };
 END

@@ -4,10 +4,12 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Instance : public CVIBuffer
 {
+private:
 public:
 	enum SHAPE_TYPE { SPHERE, CYLINDER, BOX, TORUS, RING, CONE, SHAPE_NONE };
 	enum SETTING_TYPE { UNSET, DIRECTSET, RANDOMLINEAR, RANDOMRANGE  };
 	enum PARTICLE_DATA { P_SCALE, P_ROTATION, P_POSITION, P_LIFETIME, P_COLOR, DATAEND };
+	
 
 protected:
 	CVIBuffer_Instance(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -17,6 +19,7 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* _pArg);
+	virtual void	Update(_float _fTimeDelta) = 0;
 	virtual HRESULT Render();
 
 	virtual HRESULT Bind_BufferDesc();
@@ -35,7 +38,9 @@ protected:
 protected:
 	SHAPE_TYPE							m_eShapeType = SHAPE_NONE; // 초기 스폰 모양
 	map<const _string, _float>			m_ShapeDatas;
-	_float4x4							m_ShapeMatrix = {};
+	_float3 m_vShapeScale;
+	_float3 m_vShapeRotation;
+	_float3 m_vShapePosition;
 
 protected:
 	vector<SETTING_TYPE> m_SetDatas;			// 세팅 정보들
@@ -46,6 +51,12 @@ protected:
 	_float*	 m_pSetLifeTimes = { nullptr };		// 세팅 수명 시간
 	_float4* m_pSetColors = { nullptr };		// 세팅 색깔
 	
+protected:
+	_float3* m_pSpeeds = { nullptr }; // 각 파티클의 속도
+	_float3* m_pForces = { nullptr }; // 각 파티클의 힘
+
+protected:
+	vector<class CParticle_Module*> m_Modules;
 
 protected:
 	/*
@@ -61,20 +72,26 @@ protected:
 	_vector		Get_Ring_Pos(_float _fRadius, _float _fCoverage, _float _fU);
 	_vector		Get_Cone_Pos(_float _fFlatten, _float _fLength, const _float3& _vAngle, _float _fSurface);
 
-protected:
-	_float		Compute_FloatValue(SETTING_TYPE _eType, _float _fArg1, _float _fArg2);
-	_float2		Compute_Float2Value(SETTING_TYPE _eType, const _float2& _vArg1, const _float2& _vArg2);
-	_float3		Compute_Float3Value(SETTING_TYPE _eType, const _float3& _vArg1, const _float3& _vArg2);
-	_float4		Compute_Float4Value(SETTING_TYPE _eType, const _float4& _vArg1, const _float4& _vArg2);
-	
-	HRESULT		Set_FloatData(_Out_ _float* _pSetData, PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float* _pSaveDatas);
-	HRESULT		Set_Float2Data(_Out_ _float2* _pSetData, PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float2* _pSaveDatas);
-	HRESULT		Set_Float3Data(_Out_ _float3* _pSetData, PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float3* _pSaveDatas);
-	HRESULT		Set_Float4Data(_Out_ _float4* _pSetData, PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float4* _pSaveDatas);
-
 
 protected:
-	_bool		Is_Data(const _string& _strTag)
+	/* 기본으로 설정되는 데이터들 */	
+	_float3		Compute_ScaleValue();
+	_float3		Compute_RotationValue();
+	_float3		Compute_PositionValue();
+	_float		Compute_LifeTime();
+	_float4		Compute_ColorValue();
+
+protected:
+	HRESULT		Set_FloatData(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float* _pSaveDatas);
+	HRESULT		Set_Float2Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float2* _pSaveDatas);
+	HRESULT		Set_Float3Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float3* _pSaveDatas);
+	HRESULT		Set_Float4Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float4* _pSaveDatas);
+
+protected:
+	HRESULT		Ready_Modules(const json _jsonInfo);
+
+protected:
+	_bool		Is_ShapeData(const _string& _strTag)
 	{
 		auto iter = m_ShapeDatas.find(_strTag);
 		if (iter == m_ShapeDatas.end())
@@ -85,6 +102,47 @@ protected:
 public:
 	virtual CComponent* Clone(void* _pArg) = 0;
 	virtual void Free() override;
+
+#ifdef _DEBUG
+public:
+	virtual void Tool_Setting();
+	virtual void Tool_Update(_float _fTimeDelta);
+
+protected:
+	_bool								m_isToolReset = { false };
+	map<const _string, _float>			m_ToolShapeDatas;
+
+protected:
+	void				 Tool_Adjust_DefaultData();
+	void				 Tool_Adjust_Shape();
+	void				 Tool_Create_ShapeData();
+
+	virtual void		 Tool_Reset_Instance() {}
+	virtual void		 Tool_Reset_Buffers() {} // Count 자체가 바뀌어버린 경우
+
+	_bool		Is_ToolData(const _string& _strTag)
+	{
+		auto iter = m_ToolShapeDatas.find(_strTag);
+		if (iter == m_ToolShapeDatas.end())
+			return false;
+		return true;
+	}
+
+	void		Tool_InsertData(const _string& _strTag, _float _fData)
+	{
+		auto iter = m_ToolShapeDatas.find(_strTag);
+		if (iter == m_ToolShapeDatas.end())
+		{
+			m_ShapeDatas.emplace(_strTag, _fData);
+			return;
+		}
+
+		m_ShapeDatas.emplace(_strTag, iter->second);
+	}
+
+	static _bool s_isShapeChange;
+	static _int s_iShapeFlags;
+#endif
 
 };
 
@@ -110,5 +168,6 @@ NLOHMANN_JSON_SERIALIZE_ENUM(CVIBuffer_Instance::SETTING_TYPE, {
 {CVIBuffer_Instance::SETTING_TYPE::RANDOMRANGE, "RANDOMRANGE"},
 
 	});
+
 
 END

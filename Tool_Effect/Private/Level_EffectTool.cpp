@@ -83,6 +83,11 @@ HRESULT CLevel_EffectTool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 
 HRESULT CLevel_EffectTool::Ready_Layer_Effect(const _wstring& _strLayerTag)
 {
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_GameObject_EffectReference"),
+		LEVEL_TOOL, _strLayerTag)))
+		return E_FAIL;
+	
+
 	//CParticle_Sprite_Emitter::PARTICLE_EMITTER_DESC TempDesc = {};
 	//TempDesc.eStartCoord = COORDINATE_3D;
 	//TempDesc.iCurLevelID = LEVEL_TOOL;

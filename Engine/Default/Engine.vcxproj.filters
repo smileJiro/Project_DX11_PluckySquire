@@ -244,6 +244,9 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh">
       <UniqueIdentifier>{c4dbee5e-b0ec-4fea-bcd9-f258a7028cd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Module">
+      <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -486,6 +489,9 @@
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Particle_Module.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -715,6 +721,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Particle_Module.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -176,7 +176,11 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     Out[3].vLifeTime = In[0].vLifeTime;
     //Out[3].vDepth = Out[3].vPosition.w;
     
-    float fWeight = clamp(10.f / (1e-5 + pow(mul(In[0].vPosition, matVP).w / 5.f, 2.0f) + pow(mul(In[0].vPosition, matVP).w / 200.f, 6.f)), 1e-2, 3e3);
+    //float fdZ = (g_Near * g_Far) / (mul(In[0].vPosition, matVP).w - g_Far) / (g_Near - g_Far);
+    //float fWeight = clamp(pow(1 - fdZ, 3.f), 1e-2, 3e3);
+    
+    float fWeight = clamp(10.f / (1e-5 + pow(mul(In[0].vPosition, matVP).w / 10.f, 3.0f) + pow(mul(In[0].vPosition, matVP).w / 200.f, 6.f)), 1e-2, 3e3);
+    //float fWeight = clamp(10.f / (1e-5 + pow(mul(In[0].vPosition, matVP).w / 5.f, 2.0f) + pow(mul(In[0].vPosition, matVP).w / 200.f, 6.f)), 1e-2, 3e3);
     Out[0].vDepth = fWeight;
     Out[1].vDepth = fWeight;
     Out[2].vDepth = fWeight;
@@ -330,12 +334,14 @@ PS_OUT_WEIGHTEDBLENDED PS_WEIGHT_BLENDED(PS_IN In)
     // 아래 식 추가 선택
     /*max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a)*/
     // Weight 식 선택 후 적용, 혹은 1.0
-    float fWeight = In.vDepth * vColor.a;  
+    float fWeight = In.vDepth * max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a);
+    //float fWeight = In.vDepth * max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a) * vColor.a;
+    //float fWeight = In.vDepth * vColor.a;
     
     
     Out.vAccumulate.rgb = vColor.rgb * vColor.a * fWeight;
     Out.vAccumulate.a = vColor.a * fWeight;
-    Out.vRevealage.r = vColor.a;
+    Out.vRevealage.r = vColor.a * clamp(log(0.6f + vColor.a), 0.25f, 0.6f);
     return Out;
 }
 

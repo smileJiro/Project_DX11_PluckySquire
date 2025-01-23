@@ -11,9 +11,9 @@ private:
 	virtual ~CVIBuffer_Mesh_Particle() = default;
 
 public:
-	// TEMP
 	HRESULT Initialize_Prototype(ifstream& _inFile, const json& _jsonBufferInfo, _fmatrix _PreTransformMatrix);
 	virtual HRESULT Initialize(void* _pArg) override;
+	virtual void	Update(_float _fTimeDelta) override;
 
 public:
 	// Get

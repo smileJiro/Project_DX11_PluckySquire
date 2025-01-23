@@ -93,6 +93,7 @@ void CParticle_Sprite_Emitter::Priority_Update(_float _fTimeDelta)
 
 void CParticle_Sprite_Emitter::Update(_float _fTimeDelta)
 {
+    Update_Component(_fTimeDelta);
 }
 
 void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
@@ -224,6 +225,21 @@ HRESULT CParticle_Sprite_Emitter::Cleanup_DeadReferences()
 }
 
 #ifdef _DEBUG
+void CParticle_Sprite_Emitter::Tool_Setting()
+{
+    m_pParticleBufferCom->Tool_Setting();
+}
+void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
+{
+    ImGui::Begin("Adjust_Sprite_Emitter");
+
+    m_pParticleBufferCom->Tool_Update(_fTimeDelta);
+
+
+
+    ImGui::End();
+
+}
 CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg)
 {
     CParticle_Sprite_Emitter* pInstance = new CParticle_Sprite_Emitter(_pDevice, _pContext);
@@ -236,4 +252,5 @@ CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevic
 
     return pInstance;
 }
+
 #endif

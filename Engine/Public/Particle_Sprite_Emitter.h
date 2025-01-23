@@ -40,8 +40,12 @@ public:
 	
 #ifdef _DEBUG 
 public:
+	virtual void				Tool_Setting() override;
+	virtual void				Tool_Update(_float _fTimeDelta);
+public:
 	// DEBUG용 처음 만든 Sprite
 	static	CParticle_Sprite_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg);
+
 #endif
 };
 

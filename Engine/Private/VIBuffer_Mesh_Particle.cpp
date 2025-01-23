@@ -131,6 +131,10 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize(void* _pArg)
 	return S_OK;
 }
 
+void CVIBuffer_Mesh_Particle::Update(_float _fTimeDelta)
+{
+}
+
 HRESULT CVIBuffer_Mesh_Particle::Ready_VertexBuffer(ifstream& _inFile, _fmatrix _PreTransformMatrix)
 {
 	m_iVertexStride = sizeof(VTXMESH);

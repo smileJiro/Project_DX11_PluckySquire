@@ -269,6 +269,7 @@ void CParticle_System::Tool_ShowList()
 				{
 					iNowIndex = n;
 					m_pNowItem = m_ParticleEmitters[n];
+					m_pNowItem->Tool_Setting();
 				}
 				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 				if (is_selected)
@@ -288,7 +289,11 @@ void CParticle_System::Tool_Update(_float _fTimeDelta)
 {
 	Tool_Make();
 	Tool_ShowList();
-
+	
+	if (m_pNowItem)
+	{
+		m_pNowItem->Tool_Update(_fTimeDelta);
+	}
 
 
 }
