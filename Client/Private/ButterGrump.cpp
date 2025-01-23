@@ -50,14 +50,16 @@ HRESULT CButterGrump::Initialize(void* _pArg)
         return E_FAIL;
 
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    m_pBossFSM->Set_State((_uint)BOSS_STATE::SCENE);
+    m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
 
-    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
 
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Alert_End, this, COORDINATE_3D, ALERT));
-    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Attack_End, this, COORDINATE_3D, BARF));
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Attack_End, this, COORDINATE_3D, FIREBALL_SPIT_SMALL));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_First_End, this, COORDINATE_3D, LB_INTRO_SH01));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_Second_End, this, COORDINATE_3D, LB_ENGAGE_IDLE_SH02));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_End, this, COORDINATE_3D, LB_INTRO_SH04));
@@ -69,30 +71,30 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
 void CButterGrump::Priority_Update(_float _fTimeDelta)
 {
-    if (true == m_isDelay)
-    {
-        m_fAccTime += _fTimeDelta;
+    //if (true == m_isDelay)
+    //{
+    //    m_fAccTime += _fTimeDelta;
 
-        if (m_fDelayTime <= m_fAccTime)
-        {
-            Delay_Off();
-            if (3 <= m_iAttackCount)
-            {
-                CoolTime_On();
-            }
-        }
-    }
+    //    if (m_fDelayTime <= m_fAccTime)
+    //    {
+    //        Delay_Off();
+    //        if (3 <= m_iAttackCount)
+    //        {
+    //            CoolTime_On();
+    //        }
+    //    }
+    //}
 
-    if (true == m_isCool)
-    {
-        m_fAccTime += _fTimeDelta;
+    //if (true == m_isCool)
+    //{
+    //    m_fAccTime += _fTimeDelta;
 
-        if (m_fCoolTime <= m_fAccTime)
-        {
-            CoolTime_Off();
-            m_iAttackCount = 0;
-        }
-    }
+    //    if (m_fCoolTime <= m_fAccTime)
+    //    {
+    //        CoolTime_Off();
+    //        m_iAttackCount = 0;
+    //    }
+    //}
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -136,6 +138,10 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
             break;
 
+        case BOSS_STATE::IDLE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
         case BOSS_STATE::ENERGYBALL:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
             break;
@@ -162,39 +168,37 @@ void CButterGrump::Change_Animation()
 
 void CButterGrump::Attack(_float _fTimeDelta)
 {
-    if (false == m_isDelay && false == m_isCool)
+    _float3 vScale, vPosition;
+    _float4 vRotation;
+    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+        return;
+    switch ((BOSS_STATE)m_iState)
     {
-        _float3 vScale, vPosition;
-        _float4 vRotation;
-        if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
-            return;
-        switch ((BOSS_STATE)m_iState)
-        {
-        case BOSS_STATE::ENERGYBALL:
-            vPosition.y += vScale.y * 0.5f;
-            vPosition.x += m_pGameInstance->Compute_Random(-15.f, 15.f);
-            vPosition.y += m_pGameInstance->Compute_Random(-15.f, 15.f);
-            vPosition.z += m_pGameInstance->Compute_Random(-15.f, 15.f);
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), &vPosition, &vRotation);
-            Delay_On();
-            ++m_iAttackCount;
-            break;
-        case BOSS_STATE::HOMINGBALL:
-        {
-            _vector Rot = XMLoadFloat4(&vRotation);
+    case BOSS_STATE::ENERGYBALL:
+        vPosition.y += vScale.y * 0.5f;
+        vPosition.x += m_pGameInstance->Compute_Random(-15.f, 15.f);
+        vPosition.y += m_pGameInstance->Compute_Random(-15.f, 15.f);
+        vPosition.z += m_pGameInstance->Compute_Random(-15.f, 15.f);
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), &vPosition, &vRotation);
+        Delay_On();
+        ++m_iAttackCount;
+        break;
 
-            Rot = XMQuaternionMultiply(Rot, XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f)));
-            XMStoreFloat4(&vRotation, Rot);
-            vPosition.y += vScale.y * 0.5f;
+    case BOSS_STATE::HOMINGBALL:
+    {
+        _vector Rot = XMLoadFloat4(&vRotation);
 
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), &vPosition, &vRotation);
-            Delay_On();
-            ++m_iAttackCount;
-            break;
-        }
-        default:
-            break;
-        }
+        Rot = XMQuaternionMultiply(Rot, XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f)));
+        XMStoreFloat4(&vRotation, Rot);
+        vPosition.y += vScale.y * 0.5f;
+
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), &vPosition, &vRotation);
+        Delay_On();
+        ++m_iAttackCount;
+        break;
+    }
+    default:
+        break;
     }
 }
 
@@ -206,15 +210,12 @@ void CButterGrump::Alert_End(COORDINATE _eCoord, _uint iAnimIdx)
 void CButterGrump::Attack_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     //딜레이 동안은 애니 전환 안됨. 따라서 상태 전환도 불가
-    if (false == m_isDelay)
-    {
-        Set_AnimChangeable(true);
-    }
+    Set_AnimChangeable(true);
 }
 
 void CButterGrump::Intro_First_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
+    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
 }
 
 void CButterGrump::Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx)
@@ -224,7 +225,7 @@ void CButterGrump::Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CButterGrump::Intro_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
-    Event_ChangeBossState(BOSS_STATE::HOMINGBALL, m_pBossFSM);
+    //Event_ChangeBossState(BOSS_STATE::HOMINGBALL, m_pBossFSM);
 }
 
 void CButterGrump::Play_Intro()
