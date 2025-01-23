@@ -43,6 +43,8 @@ void CShopPanel::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::I) /* && SHOP_END != m_eShopPanel*/)
 	{
+		if (true == CUI_Manager::GetInstance()->Get_isESC())
+			return;
 
 		isFontPrint();
 
@@ -53,6 +55,19 @@ void CShopPanel::Update(_float _fTimeDelta)
 				iter.second->Child_Update(_fTimeDelta);
 			}
 		}
+
+
+		for (auto iter : CUI_Manager::GetInstance()->Get_ShopItems())
+		{
+			for (size_t i = 0; i < 3; ++i)
+			{
+				iter.second[i]->Child_Update(_fTimeDelta);
+			}
+
+
+		}
+
+
 	}
 }
 
@@ -60,9 +75,20 @@ void CShopPanel::Late_Update(_float _fTimeDelta)
 {
 	if (true == m_isRender && SHOP_CHOOSEBG != m_eShopPanel)
 	{
-		for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels()) 
+		for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
 		{
 			iter.second->Child_LateUpdate(_fTimeDelta);
+		}
+
+
+		for (auto iter : CUI_Manager::GetInstance()->Get_ShopItems())
+		{
+			for (size_t i = 0; i < 3; ++i)
+			{
+				iter.second[i]->Child_LateUpdate(_fTimeDelta);
+			}
+
+
 		}
 	}
 	else
@@ -71,7 +97,7 @@ void CShopPanel::Late_Update(_float _fTimeDelta)
 	}
 }
 
-HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass )
+HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 {
 	if (true == m_isRender)
 	{
@@ -84,7 +110,7 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass )
 		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 3.2f, g_iWinSizeY - g_iWinSizeY / 9.4f - 2.5f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 3.2f, g_iWinSizeY - g_iWinSizeY / 9.4f + 2.5f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 3.2f, g_iWinSizeY - g_iWinSizeY / 9.4f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-		
+
 
 		wsprintf(m_tFont, TEXT("Ãë¼Ò"));
 		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX / 3.345f - 2.5f, g_iWinSizeY - g_iWinSizeY / 9.4f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
@@ -100,7 +126,7 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass )
 		//g_iWinSizeY - g_iWinSizeY / 13.f
 
 	}
-	
+
 
 
 

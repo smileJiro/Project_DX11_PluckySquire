@@ -71,15 +71,7 @@ void CSettingPanel::Update(_float _fTimeDelta)
 			isRender();
 			isFontPrint();
 		}
-		
-		
-		
-
-		
-
 	}
-
-
 }
 
 void CSettingPanel::Late_Update(_float _fTimeDelta)

@@ -43,8 +43,8 @@ protected:
 	CUI::SHOPPANEL			Get_ShopPanel() { return m_eShopPanel; }
 
 public:
-	static CShopPanel*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CGameObject*	Clone(void* _pArg);
+	static CShopPanel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject* Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() { return S_OK; };
 
@@ -53,6 +53,7 @@ public:
 
 protected:
 	CUI::SHOPPANEL		m_eShopPanel = CUI::SHOPPANEL::SHOP_DEFAULT;
+	SKILLSHOP			m_eSkillShopIcon = SKILLSHOP_END;
 
 private:
 	_bool				m_isOpenPanel = { false };

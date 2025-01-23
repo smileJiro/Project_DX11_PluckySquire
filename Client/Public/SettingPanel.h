@@ -32,6 +32,7 @@ protected:
 
 private:
 	_bool					m_isOpenPanel = { false };
+	
 
 protected:
 	CUI::SETTINGPANEL		Get_SettingPanel() { return m_eSettingPanel; }
@@ -41,6 +42,7 @@ private:
 	void					isRender();
 	void					isFontPrint();
 	void					isOpenPanel() { false == m_isOpenPanel ? m_isOpenPanel = true : m_isOpenPanel = false; }
+	//void					isESCUse() { false == CUI_Manager::GetInstance()->Get_isESC() ? CUI_Manager::GetInstance()->Set_isEsc(true) : CUI_Manager::GetInstance()->Set_isEsc(false);}
 
 protected:
 	virtual HRESULT			Ready_Components() override;
