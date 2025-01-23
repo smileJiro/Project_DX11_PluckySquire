@@ -197,7 +197,8 @@ public: /* For. Physx_Manager*/
 	PxPhysics*			Get_Physics() const;
 	PxScene*			Get_Physx_Scene() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
-	void				Set_Player(CGameObject* _pPlayer);
+	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
+	_uint				Create_ShapeID();
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;

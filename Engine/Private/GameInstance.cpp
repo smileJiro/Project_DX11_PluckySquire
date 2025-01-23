@@ -39,7 +39,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 
-	m_pPhysx_Manager = CPhysx_Manager::Create(*ppDevice, *ppContext); /* PhysX 역시 PxPhysics* 를 Object 생성 시 전달할 예정. (유사 Device, Context 개념.)*/
+	m_pPhysx_Manager = CPhysx_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pPhysx_Manager)
 		return E_FAIL;
 
@@ -998,6 +998,22 @@ PxMaterial* CGameInstance::Get_Material(ACTOR_MATERIAL _eType) const
 	return m_pPhysx_Manager->Get_Material(_eType);
 }
 
+void CGameInstance::Add_ShapeUserData(SHAPE_USERDATA* _pUserData)
+{
+	if (nullptr == m_pPhysx_Manager)
+		return;
+
+	return m_pPhysx_Manager->Add_ShapeUserData(_pUserData);
+}
+
+_uint CGameInstance::Create_ShapeID()
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->Create_ShapeID();
+}
+
 HRESULT CGameInstance::Physx_Render()
 {
 	if (nullptr == m_pPhysx_Manager)
@@ -1006,13 +1022,6 @@ HRESULT CGameInstance::Physx_Render()
 	return m_pPhysx_Manager->Render();
 }
 
-void CGameInstance::Set_Player(CGameObject* _pPlayer)
-{
-	if (nullptr == m_pPhysx_Manager)
-		return;
-
-	return m_pPhysx_Manager->Set_Player(_pPlayer);
-}
 
 #ifdef _DEBUG
 
@@ -1058,7 +1067,6 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	// Engine Manager Class Release
 	// 여기서 Manger Class->Free() 호출 >>> 참조 중이던 CGameInstance에 대한 Safe_Release() 호출 됌.
 
-	Safe_Release(m_pPhysx_Manager); /* 태웅 : 물리적인 처리를하는 rigid 객체를 생성하기 위해 PxPhysics 객체를 오브젝트에 device처럼 포인터를 던질 예정. */
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);
 	Safe_Release(m_pImgui_Manager);
@@ -1075,6 +1083,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);
+	Safe_Release(m_pPhysx_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
 

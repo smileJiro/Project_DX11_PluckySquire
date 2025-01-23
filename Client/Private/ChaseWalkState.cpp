@@ -48,7 +48,6 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	}
 	else
 	{
-		//ÃßÀû
 		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
 	}

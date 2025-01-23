@@ -12,7 +12,8 @@ PxFilterFlags TWFilterShader(PxFilterObjectAttributes Attribute_0, PxFilterData 
 	// 사용자 정의 조건에 따른 충돌 활성화
 	if ((FilterData_0.word0 & FilterData_1.word1) && (FilterData_1.word0 & FilterData_0.word1))
 	{
-		PairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
+		PairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST
+				 |= PxPairFlag::eNOTIFY_CONTACT_POINTS | PxPairFlag::eSOLVE_CONTACT; ;
 		return PxFilterFlag::eDEFAULT;
 	}
 
