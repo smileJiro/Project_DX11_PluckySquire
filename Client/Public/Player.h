@@ -372,6 +372,15 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+public:
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
+
 	void									On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual void                     On_CoordinateChange() override;
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;

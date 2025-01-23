@@ -40,6 +40,50 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
+
+    /* 너무 길어서 함수로 묶고싶다 하시는분들은 주소값 사용하는 데이터들 동적할당 하셔야합니다. 아래처럼 지역변수로 하시면 날라가니 */
+    /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
+    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    CActor::ACTOR_DESC ActorDesc;
+
+    /* Actor의 주인 오브젝트 포인터 */
+    ActorDesc.pOwner = this;
+
+    /* Actor의 회전축을 고정하는 파라미터 */
+    ActorDesc.FreezeRotation_XYZ[0] = true;
+    ActorDesc.FreezeRotation_XYZ[1] = false;
+    ActorDesc.FreezeRotation_XYZ[2] = true;
+
+    /* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
+    ActorDesc.FreezePosition_XYZ[0] = false;
+    ActorDesc.FreezePosition_XYZ[1] = false;
+    ActorDesc.FreezePosition_XYZ[2] = false;
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_CAPSULE_DESC ShapeDesc = {};
+    ShapeDesc.fHalfHeight = 0.5f;
+    ShapeDesc.fRadius = 0.5f;
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    SHAPE_DATA ShapeData;
+    ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    ShapeData.isShapeMaterial = true;               // Material을 별도로 지정할 것인지, Default Material을 사용할 것인지.
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+
+    /* 충돌 필터에 대한 세팅 ()*/
+    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
+
+    /* Actor Component Finished */
+    pDesc->pActorDesc = &ActorDesc;
+
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -121,11 +165,16 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 void CBarfBug::Update(_float _fTimeDelta)
 {
     m_pFSM->Update(_fTimeDelta);
+
+    CGameObject::Update_Component(_fTimeDelta); // 컴포넌트 업데이트
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CBarfBug::Late_Update(_float _fTimeDelta)
 {
+
+
+    CGameObject::Late_Update_Component(_fTimeDelta); // 컴포넌트 업데이트
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -140,6 +189,22 @@ HRESULT CBarfBug::Render()
     /* Font Render */
 
     return S_OK;
+}
+
+void CBarfBug::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    int a = 0;
+}
+
+void CBarfBug::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+
+    int a = 0;
+}
+
+void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    int a = 0;
 }
 
 void CBarfBug::Change_Animation()
