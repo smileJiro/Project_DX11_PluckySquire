@@ -24,11 +24,15 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual void			Child_Update(_float _fTimeDelta) {}
 	virtual void			Child_LateUpdate(_float _fTimeDelta) {}
-	virtual HRESULT			Render(_int _index = 0) override;
+	virtual HRESULT			Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT) override;
 
 
 protected:
 	CUI::SETTINGPANEL		m_eSettingPanel = CUI::SETTINGPANEL::SETTING_END;
+
+private:
+	_bool					m_isOpenPanel = { false };
+	
 
 protected:
 	CUI::SETTINGPANEL		Get_SettingPanel() { return m_eSettingPanel; }
@@ -36,6 +40,9 @@ protected:
 
 private:
 	void					isRender();
+	void					isFontPrint();
+	void					isOpenPanel() { false == m_isOpenPanel ? m_isOpenPanel = true : m_isOpenPanel = false; }
+	//void					isESCUse() { false == CUI_Manager::GetInstance()->Get_isESC() ? CUI_Manager::GetInstance()->Set_isEsc(true) : CUI_Manager::GetInstance()->Set_isEsc(false);}
 
 protected:
 	virtual HRESULT			Ready_Components() override;

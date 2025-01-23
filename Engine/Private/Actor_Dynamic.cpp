@@ -79,7 +79,10 @@ void CActor_Dynamic::Set_LinearVelocity(_vector _vDirection, _float _fVelocity)
 
 void CActor_Dynamic::Set_AngularVelocity(const _float3& _vAngularVelocity)
 {
-	static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z), true);
+	PxVec3 vAngularVelocity = PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z);
+	
+	if(true == vAngularVelocity.isFinite())
+		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z), true);
 }
 
 void CActor_Dynamic::Add_Force(const _float3& _vForce)

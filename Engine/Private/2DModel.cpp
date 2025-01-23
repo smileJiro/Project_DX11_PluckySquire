@@ -83,16 +83,13 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 	{
 		_uint iLength = 0;
 		inFile.read(reinterpret_cast<char*>(&iLength), sizeof(_uint));
-		_char pTextureName[MAX_PATH];
-		inFile.read(pTextureName, iLength);
-		pTextureName[iLength] = '\0';
-		string strTexturePath = szDrive;
-		strTexturePath += pTextureName;
-		strTexturePath += ".png";
-		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, pTextureName,1);
-		if (nullptr == pTexture)
+		_char szTextureName[MAX_PATH];
+		inFile.read(szTextureName, iLength);
+		szTextureName[iLength] = '\0';
+		auto& pairTexture = m_Textures.find(szTextureName);
+		if (pairTexture == m_Textures.end())
 			return E_FAIL;
-		m_NonAnimTextures.push_back(pTexture);
+		m_NonAnimTextures.push_back(pairTexture->second);
 	}
 	//NonAnimSpriteStartUV
 	inFile.read(reinterpret_cast<char*>(&m_vNonAnimSpriteStartUV), sizeof(_float2));
@@ -225,8 +222,8 @@ void C2DModel::Free()
 	for (auto& pAnimation : m_Animation2Ds)
 		Safe_Release(pAnimation);
 	m_Animation2Ds.clear();
-	for (auto& pTex : m_NonAnimTextures)
-		Safe_Release(pTex);
-	m_NonAnimTextures.clear();
+	for (auto& pTex : m_Textures)
+		Safe_Release(pTex.second);
+	m_Textures.clear();
 	__super::Free();
 }

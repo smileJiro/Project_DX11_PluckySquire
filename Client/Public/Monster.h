@@ -25,13 +25,13 @@ protected:
 	virtual ~CMonster() = default;
 
 public:
-	virtual void Set_State(_uint _eState)
+	virtual void Set_State(_uint _iState)
 	{
-		m_eState = _eState;
+		m_iState = _iState;
 	}
-	virtual void Set_PreState(_uint _eState)
+	virtual void Set_PreState(_uint _iState)
 	{
-		m_ePreState = _eState;
+		m_iPreState = _iState;
 	}
 
 	void Set_AnimChangeable(_bool _isChangeable)
@@ -81,8 +81,8 @@ protected:
 	}
 
 protected:
-	_uint		m_eState = {};
-	_uint		m_ePreState = {};
+	_uint		m_iState = {};
+	_uint		m_iPreState = {};
 	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
 	_float m_fAlertRange = { 0.f };

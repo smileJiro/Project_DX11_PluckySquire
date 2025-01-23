@@ -122,6 +122,11 @@ void CController_Transform::Turn(_float _fRadian, _fvector _vAxis)
 	m_pTransforms[m_eCurCoord]->Turn(_fRadian, _vAxis);
 }
 
+void CController_Transform::TurnAngle(_float _fRadian, _fvector _vAxis)
+{
+	m_pTransforms[m_eCurCoord]->TurnAngle(_fRadian, _vAxis);
+}
+
 _float CController_Transform::Compute_Distance(_fvector _vTargetPos)
 {
 	return 	m_pTransforms[m_eCurCoord]->Compute_Distance(_vTargetPos);

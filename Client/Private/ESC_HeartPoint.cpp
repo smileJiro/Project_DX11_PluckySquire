@@ -43,6 +43,9 @@ void ESC_HeartPoint::Priority_Update(_float _fTimeDelta)
 
 void ESC_HeartPoint::Update(_float _fTimeDelta)
 {
+	
+	
+	
 	__super::Update(_fTimeDelta);
 }
 

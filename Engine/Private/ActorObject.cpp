@@ -73,5 +73,5 @@ void CActorObject::Free()
 
 HRESULT CActorObject::Cleanup_DeadReferences()
 {
-    return E_NOTIMPL;
+    return S_OK;
 }

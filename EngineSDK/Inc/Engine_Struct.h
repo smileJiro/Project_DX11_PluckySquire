@@ -1,10 +1,30 @@
 #ifndef Engine_Struct_h__
 #define Engine_Struct_h__
-
 #include "Engine_Typedef.h"
 
 namespace Engine
 {
+	class CActorObject;
+	class CActor;
+
+	typedef struct tagActorUserData
+	{
+		CActorObject*				pOwner = nullptr;
+		_uint						iObjectGroup = 0;
+	}ACTOR_USERDATA;
+
+	typedef struct tagShapeUserData
+	{
+		_uint						iShapeInstanceID = 0;
+		_uint						iShapeUse = 0;
+	}SHAPE_USERDATA;
+
+	typedef struct tagCollisionInfo
+	{
+		ACTOR_USERDATA* pActorUserData;
+		SHAPE_USERDATA* pShapeUserData;
+	}COLL_INFO;
+
 	typedef struct tagShapeDesc
 	{
 
