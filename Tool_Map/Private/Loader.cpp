@@ -9,6 +9,7 @@
 #include "MapObject.h"
 #include "Ray.h"
 #include "2DDefault_RenderObject.h"
+#include "2DTile_RenderObject.h"
 
 #include <filesystem>
 #include <iostream>
@@ -195,6 +196,9 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     /* For. Prototype_GameObject_MapObject */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
         C2DDefault_RenderObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTile_RenderObject"),
+        C2DTile_RenderObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
