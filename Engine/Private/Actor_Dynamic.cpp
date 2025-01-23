@@ -108,7 +108,12 @@ void CActor_Dynamic::Turn_TargetDirection(_vector _vDirection)
 
 	PxVec3 vAngularVelocity = vRotationAxis.getNormalized() * fAngleDiff * 4.0f;
 
-	static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(vAngularVelocity, true);
+	if (true == vAngularVelocity.isFinite())
+		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(vAngularVelocity, true);
+	else
+	{
+		int a = 0;
+	}
 }
 
 

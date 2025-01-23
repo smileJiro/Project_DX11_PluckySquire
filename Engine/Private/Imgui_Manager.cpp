@@ -70,7 +70,6 @@ HRESULT CImgui_Manager::Start_Imgui()
 
 HRESULT CImgui_Manager::End_Imgui()
 {
-
 	ImGui::Render(); // 임구이 데이터 조작 끝! 드로우데이터 만들게~  이때 dx11기준 버텍스를 생성함
 
 	return S_OK;

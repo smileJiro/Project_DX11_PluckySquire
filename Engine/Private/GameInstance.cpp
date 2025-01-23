@@ -125,6 +125,10 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 	m_pSound_Manager->Update(fTimeDelta);
 
 	m_pPipeLine->Update(); 
+
+	ImGui::Begin("FPS");
+
+	ImGui::End();
 }
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
@@ -246,6 +250,14 @@ _int CGameInstance::Get_FPS()
 		return 0;
 
 	return m_pTimer_Manager->Get_FPS();
+}
+
+_uint CGameInstance::Get_FPS(const _wstring& _strTimerTag)
+{
+	if (nullptr == m_pTimer_Manager)
+		return 0;
+
+	return m_pTimer_Manager->Get_FPS(_strTimerTag);
 }
 
 HRESULT CGameInstance::Add_Timer(const _wstring& _strTimerTag)
