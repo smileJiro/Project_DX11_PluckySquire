@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 
 #include "Camera_Target.h"
+#include "Camera_CutScene.h"
 
 IMPLEMENT_SINGLETON(CCamera_Manager_Tool)
 
@@ -149,11 +150,11 @@ void CCamera_Manager_Tool::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float 
 
 	m_Cameras[_eCameraType]->Start_Shake_ByCount(_fShakeTime, _fShakeForce, _iShakeCount, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
 }
-
-void CCamera_Manager_Tool::Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData)
-{
-	Add_ArmData(_wszArmTag, _pData);
-}
+//
+//void CCamera_Manager_Tool::Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData)
+//{
+//	Add_ArmData(_wszArmTag, _pData);
+//}
 
 void CCamera_Manager_Tool::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
 {
@@ -169,6 +170,14 @@ void CCamera_Manager_Tool::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
 
 		m_ArmDatas.emplace(_wszArmTag, pArmData);
 	}
+}
+
+void CCamera_Manager_Tool::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene)
+{
+	if (nullptr == m_Cameras[CUTSCENE])
+		return;
+
+	dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Add_CutScene(_wszCutSceneTag, _vecCutScene);
 }
 
 void CCamera_Manager_Tool::Edit_ArmInfo(_wstring _wszArmTag)

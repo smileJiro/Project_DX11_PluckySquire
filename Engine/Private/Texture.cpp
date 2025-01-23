@@ -36,7 +36,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
         _wsplitpath_s(szTextureFilePath, nullptr, 0, nullptr, 0, nullptr, 0, szEXT, MAX_PATH);
 
         HRESULT hr = {};
-
+            
         ID3D11ShaderResourceView* pSRV = { nullptr };
 
         if (false == lstrcmpW(szEXT, TEXT(".dds")))

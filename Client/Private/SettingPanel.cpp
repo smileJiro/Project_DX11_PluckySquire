@@ -35,47 +35,89 @@ void CSettingPanel::Priority_Update(_float _fTimeDelta)
 
 void CSettingPanel::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::ESC) && SETTING_HEART == m_eSettingPanel)
+	//if (KEY_DOWN(KEY::ESC) && SETTING_HEART == m_eSettingPanel)
+	//{
+	//	isRender();
+	//}
+	//else if (KEY_DOWN(KEY::ESC) && SETTING_HEART != m_eSettingPanel)
+	//{
+	//	for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
+	//	{
+	//		if (SETTING_HEART != iter.second->Get_SettingPanel())
+	//		{
+	//			iter.second->Child_Update(_fTimeDelta);
+	//		}
+	//	}
+	//
+	//
+	//}
+
+
+	if (KEY_DOWN(KEY::ESC))
 	{
-		isRender();
-	}
-	else if (KEY_DOWN(KEY::ESC) && SETTING_HEART != m_eSettingPanel)
-	{
-		for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
+
+		if (SETTING_HEART != m_eSettingPanel)
 		{
-			if (SETTING_HEART != iter.second->Get_SettingPanel())
+			for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
 			{
-				iter.second->Child_Update(_fTimeDelta);
+				//if (iter.second->Get_SettingPanel())
+				//{
+					iter.second->Child_Update(_fTimeDelta);
+				//}
 			}
 		}
-
-
+		else if (SETTING_HEART == m_eSettingPanel)
+		{
+			isRender();
+			isFontPrint();
+		}
 	}
-	
 }
 
 void CSettingPanel::Late_Update(_float _fTimeDelta)
 {
-	//if (m_eSettingPanel != SETTING_HEART)
-	//{
-	//	for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
-	//	{
-	//		iter.second->Child_LateUpdate(_fTimeDelta);
-	//	}
-	//}
-	//else
-	//{
-	//	__super::Late_Update(_fTimeDelta);
-	//}
+	if (true == m_isRender &&  SETTING_HEART != m_eSettingPanel)
+	{
+		for (auto iter : CUI_Manager::GetInstance()->Get_SettingPanels())
+		{
+			iter.second->Child_LateUpdate(_fTimeDelta);
+		}
+	}
+	else if (true == m_isRender && SETTING_HEART == m_eSettingPanel)
+	{
+		__super::Late_Update(_fTimeDelta);
+	}
 
 }
 
 
 
-HRESULT CSettingPanel::Render(_int _index)
+HRESULT CSettingPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 {
 	if (true == m_isRender)
-		__super::Render(_index);
+	{
+		wsprintf(m_tFont, TEXT("È®ÀÎ"));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 12.f - 2.5f, g_iWinSizeY - g_iWinSizeY / 11.8f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 12.f + 2.5f, g_iWinSizeY - g_iWinSizeY / 11.8f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 12.f, g_iWinSizeY - g_iWinSizeY / 11.8f - 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 12.f, g_iWinSizeY - g_iWinSizeY / 11.8f + 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+
+
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 12.f, g_iWinSizeY - g_iWinSizeY / 11.8f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		__super::Render(_iTextureindex, _eShaderPass);
+	}
+		
+
+
+	/*
+
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX / 3.345f - 2.5f, g_iWinSizeY - g_iWinSizeY / 9.4f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX / 3.345f + 2.5f, g_iWinSizeY - g_iWinSizeY / 9.4f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX / 3.345f, g_iWinSizeY - g_iWinSizeY / 9.4f - 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX / 3.345f, g_iWinSizeY - g_iWinSizeY / 9.4f + 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	
+	*/
+
 
 
 	return S_OK;
@@ -92,6 +134,20 @@ void CSettingPanel::isRender()
 	else if (m_isRender == true)
 		m_isRender = false;
 }
+
+void CSettingPanel::isFontPrint()
+{
+
+	if (false == m_isOpenPanel)
+	{
+		m_isOpenPanel = true;
+	}
+	else if (true == m_isOpenPanel)
+	{
+		m_isOpenPanel = false;
+	}
+}
+
 
 HRESULT CSettingPanel::Ready_Components()
 {

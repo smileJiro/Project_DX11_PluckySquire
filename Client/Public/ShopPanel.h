@@ -26,7 +26,7 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual void			Child_Update(_float _fTimeDelta) {}
 	virtual void			Child_LateUpdate(_float _fTimeDelta) {}
-	virtual HRESULT			Render(_int _index = 0) override;
+	virtual HRESULT			Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT) override;
 
 
 private:
@@ -34,6 +34,7 @@ private:
 
 private:
 	void					isRender();
+	void					isFontPrint();
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -42,15 +43,20 @@ protected:
 	CUI::SHOPPANEL			Get_ShopPanel() { return m_eShopPanel; }
 
 public:
-	static CShopPanel*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CGameObject*	Clone(void* _pArg);
+	static CShopPanel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject* Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() { return S_OK; };
 
+
+
+
 protected:
 	CUI::SHOPPANEL		m_eShopPanel = CUI::SHOPPANEL::SHOP_DEFAULT;
+	SKILLSHOP			m_eSkillShopIcon = SKILLSHOP_END;
 
-
+private:
+	_bool				m_isOpenPanel = { false };
 
 
 };

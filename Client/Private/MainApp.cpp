@@ -58,6 +58,8 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font35"), TEXT("../Bin/Resources/Fonts/YangRound35.spritefont"))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font38"), TEXT("../Bin/Resources/Fonts/YangRound38.spritefont"))))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font40"), TEXT("../Bin/Resources/Fonts/YangRound40.spritefont"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font54"), TEXT("../Bin/Resources/Fonts/YangRound54.spritefont"))))

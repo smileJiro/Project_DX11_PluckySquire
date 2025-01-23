@@ -29,7 +29,7 @@ HRESULT CPick_Bulb::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
+	m_isRender = true;
 
 	return S_OK;
 }
@@ -50,25 +50,36 @@ void CPick_Bulb::Late_Update(_float _fTimeDelta)
 HRESULT CPick_Bulb::Render()
 {
 	
-	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
-		return E_FAIL;
+	//if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture")))
+	//	return E_FAIL;
+	//
+	//
+	//m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
+	//m_pVIBufferCom->Bind_BufferDesc();
+	//m_pVIBufferCom->Render();
+	if (true == m_isRender)
+	{
+		__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
 
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture")))
-		return E_FAIL;
-
-
-	m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
-	m_pVIBufferCom->Bind_BufferDesc();
-	m_pVIBufferCom->Render();
-
-	//__super::Render();
+		wsprintf(m_tFont, TEXT("999"));
+		m_pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 11.5f, g_iWinSizeY / 14.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+	}
 	
+
+
+	/*
+		pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12.f;
+	pDesc.fY = g_iWinSizeY / 10.f;
+	*/
 
 	return S_OK;
 }

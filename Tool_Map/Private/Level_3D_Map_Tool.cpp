@@ -15,10 +15,7 @@ HRESULT CLevel_3D_Map_Tool::Initialize(CImguiLogger* _pLogger)
 	m_pLogger = _pLogger;
 	Safe_AddRef(m_pLogger);
 	Ready_Lights();
-	CGameObject* pCameraTarget = nullptr;
-	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
-	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	Ready_Layer_Camera(L"Layer_Camera");
 	m_pToolManager = C3DMap_Tool_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pToolManager)
 		return E_FAIL;
@@ -62,7 +59,7 @@ HRESULT CLevel_3D_Map_Tool::Ready_Lights()
 }
 
 
-HRESULT CLevel_3D_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
+HRESULT CLevel_3D_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 {
 	CCamera_Free::CAMERA_FREE_DESC		Desc{};
 	Desc.fMouseSensor = 0.2f;
@@ -83,16 +80,6 @@ HRESULT CLevel_3D_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 	return S_OK;
 }
 
-HRESULT CLevel_3D_Map_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
-{
-
-	return S_OK;
-}
-
-HRESULT CLevel_3D_Map_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
-{
-	return S_OK;
-}
 
 
 CLevel_3D_Map_Tool* CLevel_3D_Map_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger)

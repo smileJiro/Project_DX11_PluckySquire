@@ -48,12 +48,19 @@ _bool CCutScene_Sector::Play_Sector(_float _fTimeDelta, _vector* _pOutPos)
 		return true;
 	}
 
-	*_pOutPos = Calculate_Position(fRatio);
+	switch (m_eSectorType) {
+	case SPLINE:
+		*_pOutPos = Calculate_Position_Spline(fRatio);
+		break;
+	case LINEAR:
+		*_pOutPos = Calculate_Position_Linear(fRatio);
+		break;
+	}
 
 	return false;
 }
 
-_vector CCutScene_Sector::Calculate_Position(_float _fRatio)
+_vector CCutScene_Sector::Calculate_Position_Spline(_float _fRatio)
 {
 	_uint iSegment = (_uint)(_fRatio * (m_KeyFrames.size() - 3));
 	_float fRatio = _fRatio * (m_KeyFrames.size() - 3) - iSegment;
@@ -73,6 +80,30 @@ _vector CCutScene_Sector::Calculate_Position(_float _fRatio)
 	_vector vResult = XMVectorLerp(vLerp0_Second, vLerp1_Second, fRatio);
 
 	return vResult;
+}
+
+_vector CCutScene_Sector::Calculate_Position_Linear(_float _fRatio)
+{
+	return _vector();
+}
+
+void CCutScene_Sector::Sort_Sector()
+{
+	sort(m_KeyFrames.begin(), m_KeyFrames.end(), [](CUTSCENE_KEYFRAME _src, CUTSCENE_KEYFRAME _dst) {
+
+		if (_src.fTimeStamp < _dst.fTimeStamp)
+			return true;
+		});
+}
+
+void CCutScene_Sector::Add_KeyFrame(CUTSCENE_KEYFRAME _tKeyFrame)
+{
+	for (auto& Frame : m_KeyFrames) {
+		if (true == XMVector3Equal(Frame.vPosition, _tKeyFrame.vPosition))
+			return;
+	}
+
+	m_KeyFrames.push_back(_tKeyFrame);
 }
 
 CCutScene_Sector* CCutScene_Sector::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg)

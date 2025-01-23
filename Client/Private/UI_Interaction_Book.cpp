@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UI_Interaction_Book.h"
 #include "GameInstance.h"
+#include "UI_Manager.h"
 
 
 
@@ -55,13 +56,13 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 
 void CUI_Interaction_Book::Late_Update(_float _fTimeDelta)
 {
-	if (true == m_isRender)
+	if (true == m_isRender && false == CUI_Manager::GetInstance()->Get_isESC())
 		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CUI_Interaction_Book::Render()
 {
-	if (true == m_isRender)
+	if (true == m_isRender && false == CUI_Manager::GetInstance()->Get_isESC())
 		__super::Render();
 
 	return S_OK;

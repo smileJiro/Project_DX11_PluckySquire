@@ -1474,10 +1474,8 @@ HRESULT C2DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject
 		*ppMap = pReturnObject;
 
 		_vector vWorldRayPos = XMLoadFloat3(&vRayPos) + (XMLoadFloat3(&vRayDir) * fDist);
-		//vLocalRayPos = XMVector3TransformCoord(vLocalRayPos, m_pTransformCom->Get_WorldMatrix());
 		XMStoreFloat3(fPickingPos, vWorldRayPos);
 
-		//*fPickingPos = vRayPos * fDist;
 		return S_OK;
 	}
 	else
@@ -1530,57 +1528,6 @@ CMapObject* C2DMap_Tool_Manager::Picking_On_Object()
 	return pReturnObject;
 }
 
-////CNavigationVertex* C2DMap_Tool_Manager::Picking_On_Vertex()
-////{
-////	//_float3			vRayPos, vRayDir;
-////
-////	//Compute_World_PickingLay(&vRayPos, &vRayDir);
-////	//return m_pCellContainor->Picking_On_Vertex(vRayPos, vRayDir);
-////
-////}
-//
-//HRESULT C2DMap_Tool_Manager::Create_Cell()
-//{
-//	//_float3 vFirst = m_vecVertexStack[0]->Get_Pos();
-//	//_float3 vSecond = m_vecVertexStack[1]->Get_Pos();
-//	//_float3 vThird = m_vecVertexStack[2]->Get_Pos();
-//
-//	//_float2 vCross1 = { vSecond.x - vFirst.x, vSecond.z - vFirst.z };
-//	//_float2 vCross2 = { vThird.x - vSecond.x, vThird.z - vSecond.z };
-//
-//
-//	//_float fCross = {};
-//
-//	//XMStoreFloat(&fCross, XMVector2Cross(XMLoadFloat2(&vCross1), XMLoadFloat2(&vCross2)));
-//
-//	//if (fCross > 0.f)
-//	//{
-//	//	swap(m_vecVertexStack[2], m_vecVertexStack[1]);
-//	//}
-//
-//	//if (m_pCellContainor->Is_ContainCell(m_vecVertexStack.data()))
-//	//{
-//	//	LOG_TYPE("Cell Create Fail ! already contain cell...", LOG_ERROR);
-//	//	m_vecVertexStack.clear();
-//	//	return E_FAIL;
-//	//}
-//	//CEditableCell* pCell = CEditableCell::Create(m_pDevice, m_pContext, m_vecVertexStack.data(),
-//	//	m_pCellContainor->Get_CellSize());
-//	//if (pCell)
-//	//{
-//	//	for (auto& pVertex : m_vecVertexStack)
-//	//	{
-//	//		pVertex->Add_Cell(pCell);
-//	//		pVertex->Set_Mode(CNavigationVertex::NORMAL);
-//	//	}
-//	//	m_vecVertexStack.clear();
-//	//	m_pCellContainor->Add_Cell(pCell);
-//	//	return S_OK;
-//	//}
-//
-//	//return E_FAIL;
-//}
-//
 HRESULT C2DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3* pLayDir)
 {
 	POINT		ptMouse{};
@@ -1622,66 +1569,11 @@ HRESULT C2DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3*
 
 	return S_OK;
 }
-//
-//void C2DMap_Tool_Manager::Clear_StackVertex()
-//{
-//	if (!m_vecVertexStack.empty())
-//	{
-//		for (auto& pVertex : m_vecVertexStack)
-//			OBJECT_DESTROY(pVertex);
-//		m_vecVertexStack.clear();
-//	}
-//}
-//
-//void C2DMap_Tool_Manager::Clear_SelectCell()
-//{
-//	//if (m_iSelectCellIndex != -1)
-//	//{
-//	//	for (_uint i = 0; i < CEditableCell::POINT_END; i++)
-//	//	{
-//	//		m_pCellContainor->Get_CellList()[m_iSelectCellIndex]
-//	//			->Get_Point(CEditableCell::POINT(i))->Set_Mode(CNavigationVertex::NORMAL);
-//	//	}
-//	//	m_pCellContainor->Get_CellList()[m_iSelectCellIndex]->Set_Picking(false);
-//	//	m_iSelectCellIndex = -1;
-//	//}
-//}
-//
-//bool C2DMap_Tool_Manager::Check_VertexSelect()
-//{
-//	//if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft) && !ImGuizmo::IsUsing())
-//	//{
-//	//	// ¼¿·ºÆ®µÈ ¼¿ Å¬¸®¾î
-//	//	Clear_SelectCell();
-//
-//	//	if (m_pPickingVertex)
-//	//	{
-//	//		m_pPickingVertex->Set_Mode(CNavigationVertex::NORMAL);
-//	//		m_pPickingVertex = nullptr;
-//	//	}
-//
-//	//	_float3 fPos = {};
-//	//	CNavigationVertex* pVertex = Picking_On_Vertex();
-//	//	if (pVertex)
-//	//	{
-//	//		for (auto pStack : m_vecVertexStack)
-//	//			if (pStack == pVertex)
-//	//				return false;
-//	//		m_eNaviMode = NAV_EDIT;
-//	//		m_pPickingVertex = pVertex;
-//	//		pVertex->Set_Mode(CNavigationVertex::PICKING_VERTEX);
-//	//		return true;
-//	//	}
-//
-//	//}
-//	//return false;
-//}
 
 void C2DMap_Tool_Manager::Load_ModelList()
 {
 	m_ObjectFileLists.clear();
 	_wstring strPath 
-		//= TEXT("../../Client/Bin/Resources/TestModels/");
 		= TEXT("../../Client/Bin/resources/Models/");
 
 	for (const auto& entry : ::recursive_directory_iterator(strPath))

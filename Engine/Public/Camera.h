@@ -109,7 +109,7 @@ protected:
 	_float		Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 protected: /* Zoom */
-	_float		m_ZoomLevels[(_uint)ZOOM_LAST];
+	_float		m_ZoomLevels[(_uint)ZOOM_LAST] = {};
 	_bool		m_isZoomOn = false;
 
 	RATIO_TYPE	m_eRatioType = RATIO_TYPE_LAST;
