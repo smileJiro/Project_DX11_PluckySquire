@@ -74,7 +74,9 @@ public: /* For. Object_Manager */
 public: /* For.Renderer */
 	HRESULT				Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, class CGameObject* _pRenderObject);
 #ifdef _DEBUG
-	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);
+	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);	
+	void				Set_DebugRender(_bool _isBool);
+
 #endif
 
 public: /* For. Key_Manager */

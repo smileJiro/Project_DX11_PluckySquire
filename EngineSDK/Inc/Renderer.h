@@ -30,6 +30,8 @@ public: /* component에 대한 렌더링을 별도로 수행시키기 위해 >>> diferred shader�
 		return S_OK;
 	}
 
+
+	void Set_DebugRender(_bool _isBool) { m_isDebugRender = _isBool; }
 #endif
 
 private:

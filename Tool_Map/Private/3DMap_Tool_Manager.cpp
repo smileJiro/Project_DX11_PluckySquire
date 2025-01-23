@@ -39,6 +39,9 @@ HRESULT C3DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	ZeroMemory(m_szSaveFileName,sizeof(m_szSaveFileName));
 	ZeroMemory(m_szImportLayerTag,sizeof(m_szSaveFileName));
 
+
+	m_pGameInstance->Set_DebugRender(true);
+
 	// 임구이 크기 설정
 	ImGui::SetNextWindowSizeConstraints(ImVec2(600, 1200), ImVec2(FLT_MAX, FLT_MAX));
 
