@@ -190,13 +190,13 @@ namespace Engine
 
 	typedef struct tagCutSceneKeyFrameDesc
 	{
-		_vector				vPosition = {};
+		_float3				vPosition = {};
 		_float				fTimeStamp = {};
 		
 		_uint				iZoomLevel = {};
 		_uint				iZoomRatioType = {};
 		
-		_vector				vAt = {};
+		_float3				vAt = {};
 		_bool				bLookAt = {};
 		_uint				iAtRatioType = {};
 	} CUTSCENE_KEYFRAME;

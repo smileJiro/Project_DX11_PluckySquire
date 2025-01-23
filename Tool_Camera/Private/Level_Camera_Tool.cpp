@@ -255,18 +255,30 @@ void CLevel_Camera_Tool::Show_CutSceneTool()
 
 	Set_CurrentKeyFrame();
 
-	if (true == m_isCreatePoint && false == m_isEditPoint) {
+	if (true == m_isCreatePoint && false == m_isEditPoint && false == m_isEditSector && false == m_isCreateSector) {
 		Create_KeyFrame();
 		Delete_KeyFrame();
 	}
-	if (false == m_isCreatePoint && true == m_isEditPoint) {
+	if (false == m_isCreatePoint && true == m_isEditPoint && false == m_isEditSector && false == m_isCreateSector) {
 		Edit_KeyFrame();
 	}
 
-	ImGui::Checkbox("Create Sector", &m_isCreateSector);
 
-	if(true == m_isCreateSector && false == m_isCreatePoint && false == m_isEditPoint)
+	// CutScene
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.3f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("             CutScene");
+	ImGui::Separator();
+
+	ImGui::Checkbox("Add Sector", &m_isCreateSector);
+	ImGui::SameLine();
+	ImGui::Checkbox("Edit Sector Frame", &m_isEditSector);
+
+	if (true == m_isCreateSector && false == m_isCreatePoint && false == m_isEditPoint)
 		Create_Sector();
+
+	if (true == m_isEditSector && false == m_isCreatePoint && false == m_isEditPoint)
+		Edit_Sector();
 
 	ImGui::End();
 }
@@ -406,35 +418,42 @@ void CLevel_Camera_Tool::Show_CameraZoomInfo()
 
 void CLevel_Camera_Tool::Set_KeyFrameInfo()
 {
-	ImGui::Text("Position: %.2f, %.2f, %.2f", m_vKeyFramePos.x, m_vKeyFramePos.y, m_vKeyFramePos.z);
+	ImGui::Text("Position: %.2f, %.2f, %.2f", m_tKeyFrameInfo.vPosition.x, m_tKeyFrameInfo.vPosition.y, m_tKeyFrameInfo.vPosition.z);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFramePosX", &m_vKeyFramePos.x, 0.1f);
+	ImGui::DragFloat("##KeyFramePosX", &m_tKeyFrameInfo.vPosition.x, 0.1f);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFramePosY", &m_vKeyFramePos.y, 0.1f);
+	ImGui::DragFloat("##KeyFramePosY", &m_tKeyFrameInfo.vPosition.y, 0.1f);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFramePosZ", &m_vKeyFramePos.z, 0.1f);
+	ImGui::DragFloat("##KeyFramePosZ", &m_tKeyFrameInfo.vPosition.z, 0.1f);
 
 	ImGui::NewLine();
 
-	ImGui::Text("TimeStamp: %.2f\t\t   ", m_fTimeStamp);
+	ImGui::Text("TimeStamp: %.2f\t\t   ", m_tKeyFrameInfo.fTimeStamp);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(200.0f);
-	ImGui::DragFloat("##TimeStamp", &m_fTimeStamp, 0.05f, 0.f, 30.f);
+	ImGui::DragFloat("##TimeStamp", &m_tKeyFrameInfo.fTimeStamp, 0.05f, 0.f, 30.f);
 
 	ImGui::NewLine();
 
-	ImGui::Text("Frame Zoom Level: %d\t   ", m_iKeyFrameZoomLevel);
+	ImGui::Text("Frame Zoom Level: %d\t   ", m_tKeyFrameInfo.iZoomLevel);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(200.0f);
-	ImGui::InputInt("##Frame Zoom Level   ", &m_iKeyFrameZoomLevel);
-	ImGui::Text("Frame Fovy: %.2f", m_fFovys[m_iKeyFrameZoomLevel - 1]);
+	_int iZoomLevel = m_tKeyFrameInfo.iZoomLevel;
+	ImGui::InputInt("##Frame Zoom Level   ", &iZoomLevel);
+	m_tKeyFrameInfo.iZoomLevel = iZoomLevel;
 
-	switch (m_iKeyFrameZoomRatio) {
+	if (m_tKeyFrameInfo.iZoomLevel <= 0)
+		ImGui::Text("Frame Fovy: %.2f", 0.f);
+	else
+		ImGui::Text("Frame Fovy: %.2f", m_fFovys[m_tKeyFrameInfo.iZoomLevel - 1]);
+
+
+	switch (m_tKeyFrameInfo.iZoomRatioType) {
 	case CCamera::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN       ");
 		break;
@@ -450,47 +469,47 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 
 	ImGui::SameLine();
 	if (ImGui::Button("FRAME EASE IN")) {
-		m_iKeyFrameZoomRatio = CCamera::EASE_IN;
+		m_tKeyFrameInfo.iZoomRatioType = CCamera::EASE_IN;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("FRAME EASE OUT")) {
-		m_iKeyFrameZoomRatio = CCamera::EASE_OUT;
+		m_tKeyFrameInfo.iZoomRatioType = CCamera::EASE_OUT;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("FRAME LERP")) {
-		m_iKeyFrameZoomRatio = CCamera::LERP;
+		m_tKeyFrameInfo.iZoomRatioType = CCamera::LERP;
 	}
 
 	ImGui::NewLine();
 
-	ImGui::Text("At: %.2f, %.2f, %.2f      ", m_vKeyFrameAt.x, m_vKeyFrameAt.y, m_vKeyFrameAt.z);
+	ImGui::Text("At: %.2f, %.2f, %.2f      ", m_tKeyFrameInfo.vAt.x, m_tKeyFrameInfo.vAt.y, m_tKeyFrameInfo.vAt.z);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtX", &m_vKeyFrameAt.x);
+	ImGui::DragFloat("##KeyFrameAtX", &m_tKeyFrameInfo.vAt.x);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtY", &m_vKeyFrameAt.y);
+	ImGui::DragFloat("##KeyFrameAtY", &m_tKeyFrameInfo.vAt.y);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtZ", &m_vKeyFrameAt.z);
+	ImGui::DragFloat("##KeyFrameAtZ", &m_tKeyFrameInfo.vAt.z);
 
-	if(true == m_isKeyFrameLookAt)
+	if(true == m_tKeyFrameInfo.bLookAt)
 		ImGui::Text("Loot At: TRUE             ");
 	else
 		ImGui::Text("Loot At: FALSE            ");
 
 	ImGui::SameLine();
 	if (ImGui::Button("TRUE")) {
-		m_isKeyFrameLookAt = true;
+		m_tKeyFrameInfo.bLookAt = true;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("FALSE")) {
-		m_isKeyFrameLookAt = false;
+		m_tKeyFrameInfo.bLookAt = false;
 	}
 
-	switch (m_iKeyFrameAtRatio) {
+	switch (m_tKeyFrameInfo.iAtRatioType) {
 	case CCamera::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN       ");
 		break;
@@ -506,27 +525,69 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 
 	ImGui::SameLine();
 	if (ImGui::Button("AT EASE IN")) {
-		m_iKeyFrameAtRatio = CCamera::EASE_IN;
+		m_tKeyFrameInfo.iAtRatioType = CCamera::EASE_IN;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("AT EASE OUT")) {
-		m_iKeyFrameAtRatio = CCamera::EASE_OUT;
+		m_tKeyFrameInfo.iAtRatioType = CCamera::EASE_OUT;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("AT LERP")) {
-		m_iKeyFrameAtRatio = CCamera::LERP;
+		m_tKeyFrameInfo.iAtRatioType = CCamera::LERP;
 	}
 
 	ImGui::NewLine();
+
 }
 
 void CLevel_Camera_Tool::Show_KeyFrameInfo()
 {
 	// Cur KeyFrame Info
-	if (nullptr == m_pCurKeyFrame)
-		return;
+	if (nullptr != m_pCurKeyFrame) {
+		ImGui::Text("Cur KeyFrame Position: %.2f, %.2f, %.2f", m_pCurKeyFrame->first.vPosition.x, m_pCurKeyFrame->first.vPosition.y, m_pCurKeyFrame->first.vPosition.z);
+		ImGui::Text("TimeStamp: %.2f", m_pCurKeyFrame->first.fTimeStamp);
+		ImGui::Text("Frame Zoom Level: %d\t   ", m_pCurKeyFrame->first.iZoomLevel);
 
-	ImGui::Text("Cur KeyFrame Position: %.2f, %.2f, %.2f", XMVectorGetX(m_pCurKeyFrame->first.vPosition), XMVectorGetY(m_pCurKeyFrame->first.vPosition), XMVectorGetZ(m_pCurKeyFrame->first.vPosition));
+		if (m_pCurKeyFrame->first.iZoomLevel <= 0)
+			ImGui::Text("Frame Fovy: %.2f", 0.f);
+		else
+			ImGui::Text("Frame Fovy: %.2f", m_fFovys[m_pCurKeyFrame->first.iZoomLevel - 1]);
+
+		switch (m_pCurKeyFrame->first.iZoomRatioType) {
+		case CCamera::EASE_IN:
+			ImGui::Text("Ratio Type: EASE_IN       ");
+			break;
+
+		case CCamera::EASE_OUT:
+			ImGui::Text("Ratio Type: EASE_OUT      ");
+			break;
+
+		case CCamera::LERP:
+			ImGui::Text("Ratio Type: LERP          ");
+			break;
+		}
+		ImGui::Text("At: %.2f, %.2f, %.2f      ", m_pCurKeyFrame->first.vAt.x, m_pCurKeyFrame->first.vAt.y, m_pCurKeyFrame->first.vAt.z);
+
+		if (true == m_pCurKeyFrame->first.bLookAt)
+			ImGui::Text("Loot At: TRUE             ");
+		else
+			ImGui::Text("Loot At: FALSE            ");
+
+		switch (m_pCurKeyFrame->first.iAtRatioType) {
+		case CCamera::EASE_IN:
+			ImGui::Text("Ratio Type: EASE_IN       ");
+			break;
+
+		case CCamera::EASE_OUT:
+			ImGui::Text("Ratio Type: EASE_OUT      ");
+			break;
+
+		case CCamera::LERP:
+			ImGui::Text("Ratio Type: LERP          ");
+			break;
+		}
+		ImGui::NewLine();
+	}
 
 	// Selected Frame Info
 	ImGui::NewLine();
@@ -534,56 +595,110 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 	ImGui::SameLine();
 	ImGui::Text("Selected Frame Info");
 	ImGui::Separator();
-
+	
 	for (auto& Frame : m_SelectedKeyFrame) {
-		ImGui::Text("Cur KeyFrame Position: %.2f, %.2f, %.2f", XMVectorGetX(Frame.vPosition), XMVectorGetY(Frame.vPosition), XMVectorGetZ(Frame.vPosition));
+		ImGui::Text("Selected Position: %.2f, %.2f, %.2f", Frame.vPosition.x, Frame.vPosition.y, Frame.vPosition.z);
+	}
+
+	// Cur Scene Info
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Current Scene Info");
+	ImGui::Separator();
+
+	_int iSectorNum = {};
+	for (auto& CutScene : m_CutScenes) {
+		if (CutScene.first == m_CutSceneTags[m_iSelectedCutSceneNum]) {
+
+			_string Name = m_pGameInstance->WStringToString(m_CutSceneTags[m_iSelectedCutSceneNum]);
+			ImGui::Text("Current CutScene Tag: %s  ", Name.c_str());
+			ImGui::NewLine();
+
+			for (auto& Sector : CutScene.second) {
+
+				vector<CUTSCENE_KEYFRAME>* pKeyFrames = Sector->Get_KeyFrames();
+
+				for (_uint i = 0; i < pKeyFrames->size(); ++i) {
+					ImGui::Text("Sector Num: %d", iSectorNum);
+
+					ImGui::Text("Position: %.2f, %.2f, %.2f", (*pKeyFrames)[i].vPosition.x, (*pKeyFrames)[i].vPosition.y, (*pKeyFrames)[i].vPosition.z);
+					ImGui::Text("TimeStamp: %.2f", (*pKeyFrames)[i].fTimeStamp);
+					ImGui::Text("Frame Zoom Level: %d\t   ", (*pKeyFrames)[i].iZoomLevel + 1);
+
+					if ((*pKeyFrames)[i].iZoomLevel + 1 <= 0)
+						ImGui::Text("Frame Fovy: %.2f", 0.f);
+					else
+						ImGui::Text("Frame Fovy: %.2f", m_fFovys[(*pKeyFrames)[i].iZoomLevel]);
+
+					switch ((*pKeyFrames)[i].iZoomRatioType) {
+					case CCamera::EASE_IN:
+						ImGui::Text("Ratio Type: EASE_IN       ");
+						break;
+
+					case CCamera::EASE_OUT:
+						ImGui::Text("Ratio Type: EASE_OUT      ");
+						break;
+
+					case CCamera::LERP:
+						ImGui::Text("Ratio Type: LERP          ");
+						break;
+					}
+					ImGui::Text("At: %.2f, %.2f, %.2f      ", (*pKeyFrames)[i].vAt.x, (*pKeyFrames)[i].vAt.y, (*pKeyFrames)[i].vAt.z);
+					
+					if (true == (*pKeyFrames)[i].bLookAt)
+						ImGui::Text("Loot At: TRUE             ");
+					else
+						ImGui::Text("Loot At: FALSE            ");
+
+					switch ((*pKeyFrames)[i].iAtRatioType) {
+					case CCamera::EASE_IN:
+						ImGui::Text("Ratio Type: EASE_IN       ");
+						break;
+
+					case CCamera::EASE_OUT:
+						ImGui::Text("Ratio Type: EASE_OUT      ");
+						break;
+
+					case CCamera::LERP:
+						ImGui::Text("Ratio Type: LERP          ");
+						break;
+					}
+					
+					ImGui::NewLine();
+				}
+				ImGui::Text("======================================");
+				iSectorNum++;
+			}
+		}
+	}
+}
+
+void CLevel_Camera_Tool::Show_CutSceneComboBox()
+{
+	if (m_CutScenes.size() <= 0)
+		return;
+
+	_string Name = m_pGameInstance->WStringToString(m_CutSceneTags[m_iSelectedCutSceneNum]);
+
+	if (ImGui::BeginCombo("Label", Name.c_str())) {
+		for (_int i = 0; i < m_CutSceneTags.size(); ++i) {
+			_bool bSelected = (m_iSelectedCutSceneNum == i);
+
+			if (ImGui::Selectable(m_pGameInstance->WStringToString(m_CutSceneTags[i]).c_str(), bSelected))
+				m_iSelectedCutSceneNum = i;
+
+			if (bSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndCombo();
 	}
 }
 
 void CLevel_Camera_Tool::Rotate_Arm()
 {
-	//ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.4f, 0.0f));
-	//ImGui::SameLine();
-	//ImGui::Text("Change Value of Arm");
-	//ImGui::Separator();
 
-	//_vector vCamPos = XMLoadFloat4((m_pGameInstance->Get_CamPosition()));
-	//_vector vArmRotation = {};
-
-	//ImGui::Text("Camera Position: %.2f, %.2f, %.2f", XMVectorGetX(vCamPos), XMVectorGetY(vCamPos), XMVectorGetZ(vCamPos));
-	//ImGui::NewLine();
-
-	//ImGui::Text("Ratation Value: %.2f", m_fRotationValue);
-	//ImGui::SameLine();
-	//ImGui::DragFloat("##Rotate", &m_fRotationValue, 0.1f, 0.f, 10.f);
-
-	//ImGui::Text("RotationValueX: %.2f", m_fRotationValue);
-	//ImGui::SameLine();
-	//if (ImGui::Button("-X Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
-	//	vArmRotation = XMVectorSetX(vArmRotation, -m_fRotationValue);
-	//ImGui::SameLine();
-	//if (ImGui::Button("+X Angle") || ImGui::IsItemActive())
-	//	vArmRotation = XMVectorSetX(vArmRotation, m_fRotationValue);
-
-	//ImGui::Text("RotationValueY: %.2f", m_fRotationValue);
-	//ImGui::SameLine();
-	//if (ImGui::Button("-Y Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
-	//	vArmRotation = XMVectorSetY(vArmRotation, -m_fRotationValue);
-	//ImGui::SameLine();
-	//if (ImGui::Button("+Y Angle") || ImGui::IsItemActive())
-	//	vArmRotation = XMVectorSetY(vArmRotation, m_fRotationValue);
-
-	//ImGui::Text("RotationValueZ: %.2f", m_fRotationValue);
-	//ImGui::SameLine();
-	//if (ImGui::Button("-Z Angle") || ImGui::IsItemActive()) // 누르고 있는 동안 계속 동작
-	//	vArmRotation = XMVectorSetZ(vArmRotation, -m_fRotationValue);
-	//ImGui::SameLine();
-	//if (ImGui::Button("+Z Angle") || ImGui::IsItemActive())
-	//	vArmRotation = XMVectorSetZ(vArmRotation, m_fRotationValue);
-
-	//_vector vRadianRotation = XMVectorSet(XMConvertToRadians(XMVectorGetX(vArmRotation)), XMConvertToRadians(XMVectorGetY(vArmRotation)), XMConvertToRadians(XMVectorGetZ(vArmRotation)), 0.f);
-
-	//CCamera_Manager_Tool::GetInstance()->Set_ArmRotation(vRadianRotation);
 }
 
 void CLevel_Camera_Tool::Change_ArmLength()
@@ -729,7 +844,11 @@ void CLevel_Camera_Tool::Set_Zoom()
 	ImGui::Text("Next Zoom Level: %d    ", m_iZoomLevel);
 	ImGui::SameLine();
 	ImGui::InputInt("##Zoom Level", &m_iZoomLevel);
-	ImGui::Text("Next Fovy: %.2f", m_fFovys[m_iZoomLevel - 1]);
+
+	if(m_iZoomLevel <= 0)
+		ImGui::Text("Next Fovy: %.2f", 0.f);
+	else
+		ImGui::Text("Next Fovy: %.2f", m_fFovys[m_iZoomLevel - 1]);
 
 	ImGui::Text("Zoom Time: %.2f       ", m_fZoomTime);
 	ImGui::SameLine();
@@ -987,7 +1106,7 @@ CGameObject* CLevel_Camera_Tool::Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame)
 
 	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-	TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(m_vKeyFramePos.x, m_vKeyFramePos.y, m_vKeyFramePos.z);
+	TerrainDesc.tTransform3DDesc.vInitialPosition = m_tKeyFrameInfo.vPosition;
 	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(0.1f, 0.1f, 0.1f);
 	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
@@ -997,13 +1116,7 @@ CGameObject* CLevel_Camera_Tool::Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame)
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Terrain"), LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), &pCube, &TerrainDesc);
 	Safe_AddRef(pCube);
 	
-	_tKeyFrame->vPosition = XMLoadFloat3(&m_vKeyFramePos);
-	_tKeyFrame->fTimeStamp = m_fTimeStamp;
-	_tKeyFrame->iZoomLevel = m_iKeyFrameZoomLevel;
-	_tKeyFrame->iZoomRatioType = m_iKeyFrameZoomRatio;
-	_tKeyFrame->vAt = XMLoadFloat3(&m_vKeyFrameAt);
-	_tKeyFrame->bLookAt = m_isKeyFrameLookAt;
-	_tKeyFrame->iAtRatioType = m_iKeyFrameAtRatio;
+	*_tKeyFrame = m_tKeyFrameInfo;
 
 	return pCube;
 }
@@ -1016,7 +1129,23 @@ void CLevel_Camera_Tool::Edit_KeyFrame()
 
 		CController_Transform* pController = m_pCurKeyFrame->second->Get_ControllerTransform();
 
-		pController->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_vKeyFramePos), 1.f));
+		pController->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tKeyFrameInfo.vPosition), 1.f));
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Edit Cur FrameInfo")) {
+
+		if (nullptr == m_pCurKeyFrame)
+			return;
+
+		m_pCurKeyFrame->first.vPosition = m_tKeyFrameInfo.vPosition;
+		m_pCurKeyFrame->first.fTimeStamp = m_tKeyFrameInfo.fTimeStamp;
+		m_pCurKeyFrame->first.iZoomLevel = m_tKeyFrameInfo.iZoomLevel;
+		m_pCurKeyFrame->first.iZoomRatioType = m_tKeyFrameInfo.iZoomRatioType;
+		m_pCurKeyFrame->first.vAt = m_tKeyFrameInfo.vAt;
+		m_pCurKeyFrame->first.bLookAt = m_tKeyFrameInfo.bLookAt;
+		m_pCurKeyFrame->first.iAtRatioType = m_tKeyFrameInfo.iAtRatioType;
 	}
 }
 
@@ -1035,6 +1164,15 @@ void CLevel_Camera_Tool::Delete_KeyFrame()
 			for (auto iter = m_KeyFrames.begin(); iter != m_KeyFrames.end();) {
 
 				if (pCube == (*iter).second) {
+					
+					// Cur 없애기
+					if (nullptr != m_pCurKeyFrame) {
+						if (pCube == m_pCurKeyFrame->second) {
+							Safe_Release(m_pCurKeyFrame->second);
+							m_pCurKeyFrame = nullptr;
+						}
+					}
+				
 					Safe_Release((*iter).second);
 					Event_DeleteObject((*iter).second);
 					iter = m_KeyFrames.erase(iter);
@@ -1042,14 +1180,6 @@ void CLevel_Camera_Tool::Delete_KeyFrame()
 				else
 					++iter;
 			}
-			
-			if (nullptr != m_pCurKeyFrame) {
-				if (pCube == m_pCurKeyFrame->second) {
-					Safe_Release(m_pCurKeyFrame->second);
-					m_pCurKeyFrame = nullptr;
-				}
-			}
-
 		}
 	}
 }
@@ -1080,9 +1210,6 @@ void CLevel_Camera_Tool::Set_CurrentKeyFrame()
 
 void CLevel_Camera_Tool::Create_Sector()
 {
-	if (nullptr == m_pCurKeyFrame)
-		return;
-
 	if (KEY_PRESSING(KEY::CTRL)) {
 		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
 
@@ -1097,7 +1224,13 @@ void CLevel_Camera_Tool::Create_Sector()
 				if (KeyFrame.second == pCube) {
 
 					for (auto& SelectedFrame : m_SelectedKeyFrame) {
-						if (true == XMVector3Equal(SelectedFrame.vPosition, KeyFrame.first.vPosition))
+						if (true == XMVector3Equal(XMLoadFloat3(&SelectedFrame.vPosition), XMLoadFloat3(&KeyFrame.first.vPosition)))
+							return;
+
+						_float fEpsilon = 0.01;
+
+						if (KeyFrame.first.fTimeStamp < SelectedFrame.fTimeStamp + fEpsilon &&
+							KeyFrame.first.fTimeStamp > SelectedFrame.fTimeStamp - fEpsilon)
 							return;
 					}
 
@@ -1106,6 +1239,146 @@ void CLevel_Camera_Tool::Create_Sector()
 			}
 		}
 	}
+
+	switch (m_iSectorType) {
+	case CCutScene_Sector::SPLINE:
+		ImGui::Text("Sector Type: SPLINE       ");
+		break;
+
+	case CCutScene_Sector::LINEAR:
+		ImGui::Text("Sector Type: LINEAR      ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("SPLINE")) {
+		m_iSectorType = CCutScene_Sector::SPLINE;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("LINEAR")) {
+		m_iSectorType = CCutScene_Sector::LINEAR;
+	}
+	
+	ImGui::Text("Delete Sector Num:   %d    ", m_iDeleteSectorNum);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::InputInt("##Delete Sector Num   ", &m_iDeleteSectorNum);
+
+	ImGui::Text("CutScene Tag Input:       ");
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(-1);
+	ImGui::InputText("##CutScene Tag", m_szCutSceneTag, MAX_PATH);
+
+	ImGui::NewLine();
+
+	if (m_CutScenes.size() > 0) {
+		_string Name = m_pGameInstance->WStringToString(m_CutSceneTags[m_iSelectedCutSceneNum]);
+		ImGui::Text("CutScene Tag: %s  ", Name.c_str());
+	}
+
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(200.0f);
+	Show_CutSceneComboBox();
+	
+	ImGui::NewLine();
+
+	if (ImGui::Button("Create Sector")) {
+
+		if (m_SelectedKeyFrame.size() <= 0)
+			return;
+
+		CCutScene_Sector::CUTSCENE_SECTOR_DESC Desc{};
+
+		Desc.iSectorType = m_iSectorType;
+
+		CCutScene_Sector* pSector = CCutScene_Sector::Create(m_pDevice, m_pContext, &Desc);
+
+		if (nullptr == pSector)
+			return;
+
+		for (auto& KeyFrame : m_SelectedKeyFrame) {
+			KeyFrame.iZoomLevel -= 1;
+			pSector->Add_KeyFrame(KeyFrame);
+		}
+
+		pSector->Sort_Sector();
+
+		_bool isSameTag = false;
+
+		for (auto& CutScene : m_CutScenes) {
+			if (CutScene.first == m_pGameInstance->StringToWString(m_szCutSceneTag)) {
+				isSameTag = true;
+			}
+		}
+
+		if (true == isSameTag) {
+			auto iter = m_CutScenes.find(m_pGameInstance->StringToWString(m_szCutSceneTag));
+			iter->second.push_back(pSector);
+		}
+		else {
+			vector<CCutScene_Sector*> vecSector;
+			vecSector.push_back(pSector);
+
+			m_CutScenes.emplace(m_pGameInstance->StringToWString(m_szCutSceneTag), vecSector);
+			m_CutSceneTags.push_back(m_pGameInstance->StringToWString(m_szCutSceneTag));
+		}
+
+		m_SelectedKeyFrame.clear();
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Button("Delete Sector")) {
+		
+		if (m_CutSceneTags.size() <= 0)
+			return;
+
+		for (auto& CutScene : m_CutScenes) {
+			if (CutScene.first == m_CutSceneTags[m_iSelectedCutSceneNum]) {
+				
+				if (m_iDeleteSectorNum >= CutScene.second.size())
+					return;
+
+				Safe_Release(CutScene.second[m_iDeleteSectorNum]);
+				CutScene.second.erase(CutScene.second.begin() + m_iDeleteSectorNum);
+
+				return;
+			}
+		}
+
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Delete Selected Frames")) {
+		m_SelectedKeyFrame.clear();
+	}
+}
+
+void CLevel_Camera_Tool::Edit_Sector()
+{
+	ImGui::NewLine();
+
+	ImGui::Text("Edit Sector Num:   %d      ", m_iEditSectorNum);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::InputInt("##Edit Sector Num   ", &m_iEditSectorNum);
+
+	ImGui::Text("Edit Frame Num:   %d       ", m_iEditFrameNum);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::InputInt("##Edit Frame Num   ", &m_iEditFrameNum);
+
+	if (ImGui::Button("Edit Sector Frames")) {
+		for (auto& CutScene : m_CutScenes) {
+			if (CutScene.first == m_CutSceneTags[m_iSelectedCutSceneNum]) {
+
+				// (CutScene.second)[m_iEditSectorNum] -> 수정하기로 한 Sector
+				vector<CUTSCENE_KEYFRAME>* pKeyFrames = (CutScene.second)[m_iEditSectorNum]->Get_KeyFrames();
+
+				(*pKeyFrames)[m_iEditFrameNum] = m_tKeyFrameInfo;
+			}
+		}
+	}	
 }
 
 void CLevel_Camera_Tool::Picking()
@@ -1124,7 +1397,7 @@ void CLevel_Camera_Tool::Picking()
 		CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Terrain"));
 		list<CGameObject*> Objects = pLayer->Get_GameObjects();
 
-		CGameObject* pGameObject;
+		CGameObject* pGameObject = nullptr;
 
 		for (auto& GameObject : Objects) {
 			CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
@@ -1133,7 +1406,7 @@ void CLevel_Camera_Tool::Picking()
 			if (true == isPicked) {
 				_vector vClickedPos = vRayPos + (vRayDir * fDist);
 
-				XMStoreFloat3(&m_vKeyFramePos, vClickedPos);
+				XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
 			}
 		}
 	}
