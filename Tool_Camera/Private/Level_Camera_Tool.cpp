@@ -1475,6 +1475,12 @@ void CLevel_Camera_Tool::Free()
 	if(nullptr != m_pCurKeyFrame)
 		Safe_Release(m_pCurKeyFrame->second);
 
+	for (auto& CutScene : m_CutScenes) {
+		for (auto& Sector : CutScene.second) {
+			Safe_Release(Sector);
+		}
+	}
+
 	m_KeyFrames.clear();
 
 	__super::Free();
