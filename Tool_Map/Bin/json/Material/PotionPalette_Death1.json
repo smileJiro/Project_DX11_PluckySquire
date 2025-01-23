@@ -1,0 +1,2978 @@
+[
+  {
+    "Type": "BillboardComponent",
+    "Name": "Sprite",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "TextRenderComponent'PotionPalette_Death1:PersistentLevel.Text_Right.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.74"
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Text_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.9"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TopDownDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.2"
+    },
+    "Properties": {
+      "TiltSwapOffset": {
+        "X": 0.5,
+        "Y": 0.0
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TopDownDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.2"
+    },
+    "Properties": {
+      "TiltSwapOffset": {
+        "X": 602.5,
+        "Y": 1023.5
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 3940.0,
+        "Y": 1180.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerBox",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Text_BP_C:TriggerBox'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'PotionPalette_Death1:PersistentLevel.Text_Right'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.73"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'PotionPalette_Death1:PersistentLevel.Text_Right'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.73"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.58"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'CameraComponent'",
+    "Template": {
+      "ObjectName": "CameraComponent'Default__StoryPanel_BP_C:CameraComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.Camera Root'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.56"
+      },
+      "RelativeLocation": {
+        "X": -1699.9999,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TopDownDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.57"
+      },
+      "RelativeScale3D": {
+        "X": 0.5,
+        "Y": 0.5,
+        "Z": 0.5
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TopDownDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.57"
+      },
+      "RelativeLocation": {
+        "X": -15.0,
+        "Y": 136.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__StoryPanel_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.3"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Text_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.11"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TopDownDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.6"
+    },
+    "Properties": {
+      "bActive": false
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TopDownDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.6"
+    },
+    "Properties": {
+      "bActive": false
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "PotionPalette_Death1",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'PotionPalette_Death1:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.27"
+      },
+      "LevelBuildDataId": "DE907A1C-4A9055D7-B5EB5286-2227FC56",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'PotionPalette_Death1:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.96"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'PotionPalette_Death1:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.96"
+      },
+      null,
+      {
+        "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+      },
+      {
+        "ObjectName": "StoryPanel_BP_C'PotionPalette_Death1:PersistentLevel.StoryPanel'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.72"
+      },
+      {
+        "ObjectName": "Text_BP_C'PotionPalette_Death1:PersistentLevel.Text_Right'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.73"
+      },
+      {
+        "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+      },
+      {
+        "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'PotionPalette_Death1:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.27"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Text_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.12"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TopDownDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TopDownDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.7"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_1",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Colour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "00CD460C-495C6B8B-38DCA081-E90F425E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Text_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.13"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Text_Right.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.76"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TopDownDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.80"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TopDownDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.87"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_PotionPalette_Death1",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/_Persistent/MainLevel.MainLevel",
+        "SubPathString": "PersistentLevel.Book_MAIN"
+      },
+      "BookID": 0,
+      "LevelSizePixels": {
+        "X": 7680.0,
+        "Y": 2160.0
+      },
+      "GameType": "EGameType::Story",
+      "SpreadType": "EPageSpreadType::Double",
+      "ScrollType": "EScrollType::DoublePagePan",
+      "DefaultMusicData": {
+        "MusicToPlay": {
+          "AssetPathName": "/Game/Audio/Music/Shared/MUS_GameOver_Jot.MUS_GameOver_Jot",
+          "SubPathString": ""
+        }
+      },
+      "BackgroundColour": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 0.0,
+        "A": 1.0,
+        "Hex": "000000"
+      },
+      "LevelWidth": 2.0,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.GameVolume'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.4"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.69"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.66"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.67"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.68"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.KillVolume'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.5"
+      },
+      "StoryPanels": [
+        {
+          "OrderInSequence": 1,
+          "StoryPanel": {
+            "ObjectName": "StoryPanel_BP_C'PotionPalette_Death1:PersistentLevel.StoryPanel'",
+            "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.72"
+          }
+        }
+      ],
+      "CameraPanTime": [
+        0.5
+      ],
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.GameBackground'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.65"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.34"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.64"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.43"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.54"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/UI/Death/Textures/death_glow_01.death_glow_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/UI/Death/Textures/death_glow_01_Sprite.death_glow_01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Textures/Thrash_0.Thrash_0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_backflip_right_0023_X02.Thrash_backflip_right_0023_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Textures/genericexplosion-0.genericexplosion-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0001_X02.genericexplosion_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0002_X01.genericexplosion_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0003_X01.genericexplosion_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0004_X01.genericexplosion_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0005_X02.genericexplosion_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0006_X02.genericexplosion_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0007_X02.genericexplosion_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0008_X02.genericexplosion_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0009_X03.genericexplosion_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0010_X03.genericexplosion_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0011_X03.genericexplosion_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0012_X03.genericexplosion_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/generic_explosion.generic_explosion",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Violet/SpriteSheet/Textures/violet_01-0.violet_01-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Violet/SpriteSheet/Frames/violet_talk_holyguacamole_loop_0004_X02.violet_talk_holyguacamole_loop_0004_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Violet/Mojam/Textures/violet_mojam_0.violet_mojam_0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Characters/Friends/Violet/Mojam/Frames/violet_mojam_into_0029_X02.violet_mojam_into_0029_X02",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.49"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.44"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "935CC5DC-44B8CAAE-67A47887-43F64862",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Text_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.14"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TopDownDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TopDownDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.9"
+    }
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TopDownDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TopDownDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "SpriteColor": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 0.0,
+        "A": 1.0,
+        "Hex": "000000"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      },
+      "RelativeScale3D": {
+        "X": 51.75,
+        "Y": 30.0,
+        "Z": 30.0
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.58"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Panel Sprite",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:Panel Sprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.58"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.13"
+    },
+    "Properties": {
+      "SourceSprite": {
+        "ObjectName": "PaperSprite'death_glow_01_Sprite'",
+        "ObjectPath": "/Game/UI/Death/Textures/death_glow_01_Sprite.1"
+      },
+      "SpriteColor": {
+        "R": 0.414258,
+        "G": 0.067969,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "AC4AFF"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.13"
+    },
+    "Properties": {
+      "SourceSprite": {
+        "ObjectName": "PaperSprite'violet_mojam_into_0029_X02'",
+        "ObjectPath": "/Game/Characters/Friends/Violet/Mojam/Frames/violet_mojam_into_0029_X02.1"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__StoryPanel_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Text_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.17"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TopDownDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TopDownDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__StoryPanel_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Text_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.18"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TopDownDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TopDownDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 25832.008,
+        "Y": 129959.72,
+        "Z": 21678.332
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "Camera Root",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__StoryPanel_BP_C:Camera Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.6"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.57"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "StoryPanel",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__StoryPanel_BP_C:Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereCollider",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Text_BP_C:SphereCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.57"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": -538.0508,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TopDownDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_GlowRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.93"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TopDownDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownDecal_BP_C'PotionPalette_Death1:PersistentLevel.Violet_PoseRight'",
+              "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.94"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Text_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Text_Right.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.35"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Text_Right.Panel Sprite'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.36"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TopDownDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponentDepthType": [
+        {
+          "Key": "SpriteComponent",
+          "Value": "ESpriteDepthType::YSorted"
+        }
+      ],
+      "SpriteComponentDepthAdjust": [
+        {
+          "Key": "SpriteComponent",
+          "Value": -5.0
+        }
+      ],
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.37"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.39"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.38"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.32"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TopDownDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponentDepthType": [
+        {
+          "Key": "SpriteComponent",
+          "Value": "ESpriteDepthType::YSorted"
+        }
+      ],
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.40"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.42"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.41"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.33"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      },
+      "RelativeScale3D": {
+        "X": 76.99999,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.MaterialInstanceDynamic_1'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.22"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      },
+      "RelativeScale3D": {
+        "X": 76.99999,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      },
+      "RelativeScale3D": {
+        "X": 78.799995,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      },
+      "RelativeLocation": {
+        "X": -3890.0,
+        "Y": 0.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      },
+      "RelativeLocation": {
+        "X": 3890.0,
+        "Y": 0.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_PotionPalette_Death1",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.55"
+      },
+      "RelativeScale3D": {
+        "X": 78.799995,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TopDownDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TopDownDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "StoryPanel_BP_C",
+    "Name": "StoryPanel",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.StoryPanel_BP_C'",
+    "Template": {
+      "ObjectName": "StoryPanel_BP_C'Default__StoryPanel_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.1"
+    },
+    "Properties": {
+      "Root": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.57"
+      },
+      "CameraRoot": {
+        "ObjectName": "SceneComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.Camera Root'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.56"
+      },
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.CameraComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.11"
+      },
+      "CameraDistance": 1700.0,
+      "StorySequenceNumber": 1,
+      "SequenceDelay": 0.25,
+      "DelayBeforeNextPage": 0.5,
+      "bWaitForInput": true,
+      "StorySequence": [
+        {
+          "DeveloperComment": "BACK ON FEET",
+          "Time": 0.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "/Game/Levels/C09/PotionPalette_Death1.PotionPalette_Death1",
+                "SubPathString": "PersistentLevel.Violet_GlowRight"
+              },
+              "TextObject": {
+                "ObjectName": "Text_BP_C'PotionPalette_Death1:PersistentLevel.Text_Right'",
+                "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.73"
+              },
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            },
+            {
+              "SpriteActor": {
+                "AssetPathName": "/Game/Levels/C09/PotionPalette_Death1.PotionPalette_Death1",
+                "SubPathString": "PersistentLevel.Violet_PoseRight"
+              },
+              "TextObject": null,
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.14"
+      },
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.50"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.45"
+      },
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+      },
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.StoryPanel.Root'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.57"
+      }
+    }
+  },
+  {
+    "Type": "Text_BP_C",
+    "Name": "Text_Right",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Text_BP.Text_BP_C'",
+    "Template": {
+      "ObjectName": "Text_BP_C'Default__Text_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.7"
+    },
+    "Properties": {
+      "VO_Chapter_DataTable": {
+        "ObjectName": "DataTable'ThePluckySquire-VOStringDoc-MiscVocals'",
+        "ObjectPath": "/Game/NokNok/Narration/VoStringDocs/ThePluckySquire-VOStringDoc-MiscVocals.0"
+      },
+      "RowNames": [
+        "BookTitle_Humgrump",
+        "BookTitle_Plucky",
+        "BookTitle_Mojo",
+        "Credits_ThankYou",
+        "Credits_GameByAPF",
+        "Credits_PluckyReturn",
+        "GameOver_Jot",
+        "GameOver_Pip",
+        "GameOver_Thrash",
+        "GameOver_Violet",
+        "Martina_Intro1",
+        "Martina_Intro2",
+        "WorldMap_Artia",
+        "WorldMap_Boogie",
+        "WorldMap_Honey",
+        "WorldMap_Inkwood",
+        "WorldMap_Swamps",
+        "WorldMap_LandOfMojo",
+        "WorldMap_TomeTower",
+        "WorldMap_Trarrg"
+      ],
+      "SelectedRow": "GameOver_Violet",
+      "TextRenderComponent": {
+        "ObjectName": "TextRenderComponent'PotionPalette_Death1:PersistentLevel.Text_Right.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.74"
+      },
+      "PanelSprite": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Text_Right.Panel Sprite'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.36"
+      },
+      "BillboardComponent": {
+        "ObjectName": "BillboardComponent'PotionPalette_Death1:PersistentLevel.Text_Right.Sprite'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.0"
+      },
+      "Collider": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.58"
+      },
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'PotionPalette_Death1:PersistentLevel.Text_Right.TriggerBox'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.6"
+      },
+      "TextColour": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "CharacterWrapWidth": 60,
+      "WrappedText": [
+        "VIOLET GOT BACK ON HER FEET, ",
+        "A LOOK OF STEELY DETERMINATION IN HER EYES. "
+      ],
+      "PageAccumulatedCharCount": [
+        73
+      ],
+      "DisplayedText": {
+        "TableId": "/Game/Data/C09_Strings.C09_Strings",
+        "Key": "PotionPalette_Violet_Death",
+        "SourceString": "VIOLET GOT BACK ON HER FEET,#A LOOK OF STEELY DETERMINATION IN HER EYES.",
+        "LocalizedString": "VIOLET GOT BACK ON HER FEET,#A LOOK OF STEELY DETERMINATION IN HER EYES."
+      },
+      "bTypewriter": true,
+      "TypeDelay": 0.035,
+      "bFadeIn": false,
+      "bFadeOut": false,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'PotionPalette_Death1:PersistentLevel.Text_Right.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.23"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'PotionPalette_Death1:PersistentLevel.Text_Right.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.61"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'PotionPalette_Death1:PersistentLevel.Text_Right.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.1"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Text_Right.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.35"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'PotionPalette_Death1:PersistentLevel.Text_Right.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.28"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'PotionPalette_Death1:PersistentLevel.Text_Right.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.15"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'PotionPalette_Death1:PersistentLevel.Text_Right.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.19"
+      },
+      "GameType": "EGameType::Story",
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Text_Right.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.77"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Text_Right.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.78"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Text_Right.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.75"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'PotionPalette_Death1:PersistentLevel.Text_Right.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.51"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'PotionPalette_Death1:PersistentLevel.Text_Right.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.46"
+      },
+      "bActive": false,
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.58"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Template": {
+      "ObjectName": "TextRenderComponent'Default__Text_BP_C:NewTextRenderComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.24"
+    },
+    "Properties": {
+      "Text": {
+        "CultureInvariantString": "VIOLET GOT BACK ON HER FEET, \r\nA LOOK OF STEELY DETERMINATION IN HER EYES. "
+      },
+      "TextRenderColor": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFFFFF"
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.Text_Right.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.58"
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Text_Right",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "Violet_GlowRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "Violet_PoseRight",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.28"
+    }
+  },
+  {
+    "Type": "TopDownDecal_BP_C",
+    "Name": "Violet_GlowRight",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.TopDownDecal_BP_C'",
+    "Template": {
+      "ObjectName": "TopDownDecal_BP_C'Default__TopDownDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.BoxComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.7"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.SphereComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.59"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.39"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.38"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.32"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.StampHat'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.70"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.SlideCollider'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.8"
+      },
+      "Scale": 0.5,
+      "SpriteRelativeDepth": -5.0,
+      "bFadeIn": true,
+      "PageSwap_UprightSprite": {
+        "ObjectName": "PaperSprite'death_glow_01_Sprite'",
+        "ObjectPath": "/Game/UI/Death/Textures/death_glow_01_Sprite.1"
+      },
+      "PageSwap_FlippedSprite": {
+        "ObjectName": "PaperSprite'death_glow_01_Sprite'",
+        "ObjectPath": "/Game/UI/Death/Textures/death_glow_01_Sprite.1"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.85"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.83"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.84"
+      },
+      "SpriteCollisionBoundsOrigin": {
+        "X": -698.5,
+        "Y": -539.0
+      },
+      "SpriteCollisionBoundsExtents": {
+        "X": 698.5,
+        "Y": 539.0
+      },
+      "SpriteCollisionOffset": {
+        "X": 0.5,
+        "Y": 0.0
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.24"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.62"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.2"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.37"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.29"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.16"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.20"
+      },
+      "GameType": "EGameType::Story",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.37"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.39"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.38"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.32"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.81"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.82"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.79"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.52"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.47"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.22258064
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_GlowRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.12"
+      }
+    }
+  },
+  {
+    "Type": "TopDownDecal_BP_C",
+    "Name": "Violet_PoseRight",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.TopDownDecal_BP_C'",
+    "Template": {
+      "ObjectName": "TopDownDecal_BP_C'Default__TopDownDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.BoxComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.9"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.SphereComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.60"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.42"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.41"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.33"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.StampHat'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.71"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.SlideCollider'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.10"
+      },
+      "bFadeIn": true,
+      "PageSwap_UprightSprite": {
+        "ObjectName": "PaperSprite'violet_talk_holyguacamole_loop_0004_X02'",
+        "ObjectPath": "/Game/Characters/Friends/Violet/SpriteSheet/Frames/violet_talk_holyguacamole_loop_0004_X02.1"
+      },
+      "PageSwap_FlippedSprite": {
+        "ObjectName": "PaperSprite'violet_talk_holyguacamole_loop_0004_X02'",
+        "ObjectPath": "/Game/Characters/Friends/Violet/SpriteSheet/Frames/violet_talk_holyguacamole_loop_0004_X02.1"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.92"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.90"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.91"
+      },
+      "SpriteCollisionBoundsOrigin": {
+        "X": -165.5,
+        "Y": -204.5
+      },
+      "SpriteCollisionBoundsExtents": {
+        "X": 165.5,
+        "Y": 204.5
+      },
+      "SpriteCollisionOffset": {
+        "X": 602.5,
+        "Y": 1023.5
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.25"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.63"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.3"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.40"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.30"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.17"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.21"
+      },
+      "GameType": "EGameType::Story",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.40"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.42"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.41"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.33"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.88"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.89"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.86"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.53"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.48"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'PotionPalette_Death1:PersistentLevel.MGC_PotionPalette_Death1'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.26"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.24978027
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'PotionPalette_Death1:PersistentLevel.Violet_PoseRight.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.13"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "PotionPalette_Death1",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'PotionPalette_Death1:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.18"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'PotionPalette_Death1:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/C09/PotionPalette_Death1.31"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

@@ -1,6 +1,11 @@
 #pragma once
 #include "Level.h"
 
+BEGIN(Engine)
+class CGameObject;
+class CCutScene_Sector;
+END
+
 BEGIN(Camera_Tool)
 
 class CLevel_Camera_Tool final : public CLevel
@@ -62,15 +67,46 @@ private:
 
 	_uint				m_iCycleType = {};
 
+	// CutScene
+	_bool								m_isCreatePoint = { false };
+	_bool								m_isEditPoint = { false };
+	_bool								m_isCreateSector = { false };
+	_bool								m_isEditSector = {};
+
+	list<pair<CUTSCENE_KEYFRAME, CGameObject*>>		m_KeyFrames;
+	pair<CUTSCENE_KEYFRAME, CGameObject*>*			m_pCurKeyFrame = { nullptr };
+
+	map<_wstring, vector<CCutScene_Sector*>>		m_CutScenes;
+	vector<CUTSCENE_KEYFRAME>				m_SelectedKeyFrame;
+	_uint									m_iSectorType = {};
+	_int									m_iDeleteSectorNum = {};
+
+	// Sector와 CutScene에 들어간 것들을 수정하기 위한 변수
+	_int									m_iEditSectorNum = {};
+	_int									m_iEditFrameNum = {};
+
+	_char									m_szCutSceneTag[MAX_PATH] = { "" };
+	vector<_wstring>						m_CutSceneTags;
+	_uint									m_iSelectedCutSceneNum = {};
+
+	// Frame Info
+	CUTSCENE_KEYFRAME						m_tKeyFrameInfo = {};
+
 private:
 	void				Show_CameraTool();
+	void				Show_CutSceneTool();
 	void				Show_ArmInfo();
+	void				Show_CutSceneInfo();
 
 	void				Create_Arms();
 	void				Show_ComboBox();
 	void				Show_SelectedArmData();
 	void				Show_CameraZoomInfo();
 
+	//CutScene
+
+	void				Show_KeyFrameInfo();
+	void				Show_CutSceneComboBox();
 private:
 	// Tool
 	void				Rotate_Arm();
@@ -83,6 +119,23 @@ private:
 	void				Set_Zoom();
 	void				Set_AtOffsetInfo();
 	void				Set_ShakeInfo();
+
+	// CutScene
+	void				Set_KeyFrameInfo();
+	void				Create_KeyFrame();
+	CGameObject*		Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame);
+	void				Edit_KeyFrame();
+	void				Delete_KeyFrame();
+	void				Set_CurrentKeyFrame();
+
+	void				Create_Sector();
+	void				Edit_Sector();
+	
+	void				Picking();
+	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
+
+private:
+	void				Key_Input();
 
 public:
 	static CLevel_Camera_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

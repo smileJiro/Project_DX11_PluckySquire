@@ -73,14 +73,16 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 
 void CActor_Dynamic::Set_LinearVelocity(_vector _vDirection, _float _fVelocity)
 {
-
 	// true : 객체가 물리공간상에서 수면상태인 경우 깨운다는 파라미터임 >>> false면 수면상태인 경우 깨우지 않음.
 	static_cast<PxRigidDynamic*>(m_pActor)->setLinearVelocity(PxVec3(XMVectorGetX(_vDirection) * _fVelocity, XMVectorGetY(_vDirection) * _fVelocity, XMVectorGetZ(_vDirection) * _fVelocity), true);
 }
 
 void CActor_Dynamic::Set_AngularVelocity(const _float3& _vAngularVelocity)
 {
-	static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z), true);
+	PxVec3 vAngularVelocity = PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z);
+	
+	if(true == vAngularVelocity.isFinite())
+		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z), true);
 }
 
 void CActor_Dynamic::Add_Force(const _float3& _vForce)

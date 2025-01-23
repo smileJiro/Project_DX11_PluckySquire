@@ -132,9 +132,6 @@
     <ClInclude Include="..\Public\gizmo\ImZoomSlider.h">
       <Filter>97. gizmo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VIBuffer_CellLine.h">
-      <Filter>04. Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Event_Manager.h">
       <Filter>01. ToolApp_Managers\Event</Filter>
     </ClInclude>
@@ -146,15 +143,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\ImGuiStyle_MapTool_Function.h">
       <Filter>99. Defines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CellContainor.h">
-      <Filter>03. GameObject\NaviObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\EditableCell.h">
-      <Filter>03. GameObject\NaviObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\NavigationVertex.h">
-      <Filter>03. GameObject\NaviObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Model_PackagingObject.h">
       <Filter>03. GameObject\Re_PackagingObject</Filter>
@@ -223,9 +211,6 @@
     <ClCompile Include="..\Private\gizmo\ImSequencer.cpp">
       <Filter>97. gizmo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\VIBuffer_CellLine.cpp">
-      <Filter>04. Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Event_Manager.cpp">
       <Filter>01. ToolApp_Managers\Event</Filter>
     </ClCompile>
@@ -237,15 +222,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGuiStyle_MapTool_Function.cpp">
       <Filter>99. Defines</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CellContainor.cpp">
-      <Filter>03. GameObject\NaviObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\EditableCell.cpp">
-      <Filter>03. GameObject\NaviObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\NavigationVertex.cpp">
-      <Filter>03. GameObject\NaviObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Model_PackagingObject.cpp">
       <Filter>03. GameObject\Re_PackagingObject</Filter>

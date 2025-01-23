@@ -9,7 +9,7 @@ float g_fFarZ = 1000.f;
 int g_iFlag = 0;
 
 float4 g_vCamPosition;
-
+float4 g_vDefaultDiffuseColor;
 /* ±¸Á¶Ã¼ */
 struct VS_IN
 {
@@ -70,7 +70,7 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
 
     float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
-    if (vMtrlDiffuse.a < 0.01f)
+    if (vMtrlDiffuse.a < 0.1f)
         discard;
     
     Out.vDiffuse = vMtrlDiffuse;
@@ -108,7 +108,8 @@ PS_OUT PS_COLOR(PS_IN In)
 
     float4 vMtrlDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
     
-    Out.vDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
+    //Out.vDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
+    Out.vDiffuse = g_vDefaultDiffuseColor;
     Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     
     float fFlag = g_iFlag;
@@ -117,6 +118,40 @@ PS_OUT PS_COLOR(PS_IN In)
     return Out;
 }
 
+
+PS_OUT PS_MIX_COLOR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    if (vMtrlDiffuse.a < 0.1f)
+        discard;
+    
+    //Out.vDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
+    Out.vDiffuse = saturate(vMtrlDiffuse * g_vDefaultDiffuseColor);
+    Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    
+    float fFlag = g_iFlag;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
+    
+    return Out;
+}
+
+PS_OUT PS_TEST_PROJECTILE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vMtrlDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
+    
+    Out.vDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
+    //Out.vDiffuse = g_vDefaultDiffuseColor;
+    Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    
+    float fFlag = g_iFlag;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
+    
+    return Out;
+}
 
 
 technique11 DefaultTechnique
@@ -162,6 +197,28 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_COLOR();
+    }
+
+    pass MixColor // 4
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MIX_COLOR();
+    }
+
+    pass TestProjectile // 5
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_TEST_PROJECTILE();
     }
 }
 

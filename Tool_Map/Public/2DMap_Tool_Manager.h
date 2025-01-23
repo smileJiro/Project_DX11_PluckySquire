@@ -14,11 +14,11 @@ BEGIN(Map_Tool)
 
 
 class CMapObject;
-class CEditableCell;
-class CNavigationVertex;
+//class CEditableCell;
+//class CNavigationVertex;
 class CModelFile_Manager;
 class CImguiLogger;
-class CCellContainor;
+//class CCellContainor;
 class CTask_Manager;
 
 
@@ -124,14 +124,14 @@ private:
 
 #pragma region Navigation Tool Method
 
-	CNavigationVertex*	Picking_On_Vertex();
-	HRESULT				Create_Cell();
+	//CNavigationVertex*	Picking_On_Vertex();
+	//HRESULT				Create_Cell();
 	HRESULT				Compute_World_PickingLay(_float3* _fLayPos, _float3* _fLayDir);
 
 
-	void				Clear_StackVertex();
-	void				Clear_SelectCell();
-	bool				Check_VertexSelect();
+	//void				Clear_StackVertex();
+	//void				Clear_SelectCell();
+	//bool				Check_VertexSelect();
 #pragma endregion
 
 
@@ -176,10 +176,10 @@ private:
 	_bool							m_bNaviMode = false;
 	NAVIGATION_MODE					m_eNaviMode = NAV_CREATE;
 
-	CCellContainor*					m_pCellContainor;
-	vector<CNavigationVertex*>		m_vecVertexStack;
-	_int							m_iSelectCellIndex = { -1 };
-	CNavigationVertex*				m_pPickingVertex = { nullptr };
+	//CCellContainor*					m_pCellContainor;
+	//vector<CNavigationVertex*>		m_vecVertexStack;
+	//_int							m_iSelectCellIndex = { -1 };
+	//CNavigationVertex*				m_pPickingVertex = { nullptr };
 
 
 

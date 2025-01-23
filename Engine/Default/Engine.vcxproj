@@ -115,12 +115,14 @@ call UpdateLib.bat</Command>
       <AdditionalIncludeDirectories>../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/wd4717 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;Effects11d.lib;DirectXTKd.lib;%(AdditionalDependencies);dinput8.lib;dxguid.lib;assimp-vc143-mtd.lib;imguidll.lib;LowLevel_static_64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;PhysX_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../ThirdPartyLib/physx/debug/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/IGNORE:4099 /IGNORE:4717 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>cd /d $(SolutionDir)
@@ -169,6 +171,7 @@ call UpdateLib.bat</Command>
       <AdditionalIncludeDirectories>../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/wd4717 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -177,6 +180,7 @@ call UpdateLib.bat</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;Effects11.lib;DirectXTK.lib;%(AdditionalDependencies);dinput8.lib;dxguid.lib;assimp-vc143-mt.lib;LowLevel_static_64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;PhysX_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../ThirdPartyLib/physx/release/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/IGNORE:4099 /IGNORE:4717 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>cd /d $(SolutionDir)
@@ -213,6 +217,7 @@ call UpdateLib.bat</Command>
     </ClInclude>
     <ClInclude Include="..\public\Controller_Transform.h" />
     <ClInclude Include="..\public\CustomFont.h" />
+    <ClInclude Include="..\Public\CutScene_Sector.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\public\Particle_Emitter.h" />
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
@@ -301,6 +306,7 @@ call UpdateLib.bat</Command>
     </ClCompile>
     <ClCompile Include="..\private\Controller_Transform.cpp" />
     <ClCompile Include="..\private\CustomFont.cpp" />
+    <ClCompile Include="..\Private\CutScene_Sector.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\private\Particle_Emitter.cpp" />
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />

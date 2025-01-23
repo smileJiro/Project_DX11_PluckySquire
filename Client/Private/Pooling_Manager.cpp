@@ -86,7 +86,7 @@ HRESULT CPooling_Manager::Register_PoolingObject(const _wstring& _strPoolingTag,
 
 HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
 {
-	for(int i = 0; i < iNumPoolingObjects; ++i)
+	for(_uint i = 0; i < iNumPoolingObjects; ++i)
 	{
 		if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
 			return E_FAIL;

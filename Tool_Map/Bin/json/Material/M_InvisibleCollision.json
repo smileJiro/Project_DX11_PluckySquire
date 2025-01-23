@@ -1,0 +1,30 @@
+[
+  {
+    "Type": "Material",
+    "Name": "M_InvisibleCollision",
+    "Class": "UScriptClass'Material'",
+    "Properties": {
+      "BlendMode": "BLEND_Translucent",
+      "bAutomaticallySetUsageInEditor": false,
+      "bCanMaskedBeAssumedOpaque": true,
+      "StateId": "85252566-4B0BDE3A-53E532A4-D981605E",
+      "CachedExpressionData": {
+        "QualityLevelsUsed": [
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "LoadedMaterialResources": [],
+    "CachedExpressionData": {
+      "QualityLevelsUsed": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  }
+]

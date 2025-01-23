@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 
 #include "Camera_Target.h"
+#include "Camera_CutScene.h"
 
 IMPLEMENT_SINGLETON(CCamera_Manager_Tool)
 
@@ -15,6 +16,10 @@ CCamera_Manager_Tool::CCamera_Manager_Tool()
 
 HRESULT CCamera_Manager_Tool::Initialize()
 {
+	for (auto& Camera : m_Cameras) {
+		Camera = nullptr;
+	}
+
 	return S_OK;
 }
 
@@ -24,12 +29,6 @@ void CCamera_Manager_Tool::Update()
 
 void CCamera_Manager_Tool::Render()
 {
-	//for (auto& Arm : m_Arms) 
-	//	Arm.second->Render_Arm();
-	//
-	//if (nullptr != m_pCopyArm)
-	//	m_pCopyArm->Render_Arm();
-
 	if (nullptr != m_pCurrentArm)
 		m_pCurrentArm->Render_Arm();
 }
@@ -82,24 +81,26 @@ void CCamera_Manager_Tool::Change_CameraMode(_uint _iCameraMode, _int _iNextMode
 
 void CCamera_Manager_Tool::Change_CameraType(_uint _iCurrentCameraType)
 {
-	m_eCurrentCameraType = _iCurrentCameraType;
+	if (nullptr == m_Cameras[_iCurrentCameraType])
+		return;
 
-	CController_Transform* pTargetConTrans = m_Cameras[TARGET]->Get_ControllerTransform();
-	CController_Transform* pFreeConTrans = m_Cameras[FREE]->Get_ControllerTransform();
+	for (auto& Camera : m_Cameras) {
+		if (nullptr == Camera)
+			continue;
 
-	switch (m_eCurrentCameraType) {
-	case FREE:
-		m_Cameras[FREE]->Set_Active(true);
-		m_Cameras[TARGET]->Set_Active(false);
+		if (_iCurrentCameraType == Camera->Get_CamType())
+			Camera->Set_Active(true);
+		else
+			Camera->Set_Active(false);
 
-		pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());
-		break;
-
-	case TARGET:
-		m_Cameras[FREE]->Set_Active(false);
-		m_Cameras[TARGET]->Set_Active(true);
-		break;
+		if (FREE == _iCurrentCameraType) {
+			CController_Transform* pTargetConTrans = m_Cameras[TARGET]->Get_ControllerTransform();
+			CController_Transform* pFreeConTrans = m_Cameras[FREE]->Get_ControllerTransform();
+			pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());
+		}
 	}
+
+	m_eCurrentCameraType = _iCurrentCameraType;
 }
 
 void CCamera_Manager_Tool::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
@@ -149,11 +150,11 @@ void CCamera_Manager_Tool::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float 
 
 	m_Cameras[_eCameraType]->Start_Shake_ByCount(_fShakeTime, _fShakeForce, _iShakeCount, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
 }
-
-void CCamera_Manager_Tool::Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData)
-{
-	Add_ArmData(_wszArmTag, _pData);
-}
+//
+//void CCamera_Manager_Tool::Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData)
+//{
+//	Add_ArmData(_wszArmTag, _pData);
+//}
 
 void CCamera_Manager_Tool::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
 {
@@ -169,6 +170,14 @@ void CCamera_Manager_Tool::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
 
 		m_ArmDatas.emplace(_wszArmTag, pArmData);
 	}
+}
+
+void CCamera_Manager_Tool::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene)
+{
+	if (nullptr == m_Cameras[CUTSCENE])
+		return;
+
+	dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Add_CutScene(_wszCutSceneTag, _vecCutScene);
 }
 
 void CCamera_Manager_Tool::Edit_ArmInfo(_wstring _wszArmTag)

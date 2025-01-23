@@ -227,6 +227,36 @@ HRESULT CPlayer::Render()
     return S_OK;
 }
 
+void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    int a = 0;
+}
+
+void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    int a = 0;
+}
+
+void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    int a = 0;
+}
+
+void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    int a = 0;
+}
+
+void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    int a = 0;
+}
+
+void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    int a = 0;
+}
+
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
@@ -374,7 +404,7 @@ void CPlayer::Switch_Animation(_uint _iAnimIndex)
 
 void CPlayer::Set_State(STATE _eState)
 {
-    _uint iAnimIdx;
+    //_uint iAnimIdx;
     switch (_eState)
     {
     case Client::CPlayer::IDLE:

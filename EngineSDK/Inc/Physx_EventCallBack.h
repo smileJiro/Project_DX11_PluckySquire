@@ -1,12 +1,26 @@
 #pragma once
 #include "Base.h"
 BEGIN(Engine)
+#pragma region TRIGGER_ID(Union)
+union TRIGGER_ID
+{
+	struct
+	{
+		_uint iLeft_ID;
+		_uint iRight_ID;
+	};
+	_ulonglong ID;
+};
+#pragma endregion // TRIGGER_ID(Union)
+
 class CPhysx_EventCallBack final : public PxSimulationEventCallback, public CBase
 {
 private:
 	CPhysx_EventCallBack();
 	virtual ~CPhysx_EventCallBack() = default;
 
+public:
+	void Update(); // 물리시뮬이 다 끝난경우 호출.
 private:
 	// 충돌 이벤트가 발생했을 때 호출된다.
 	void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) override;
@@ -23,6 +37,15 @@ private:
 	// 시뮬레이션 도중 강체의 위치를 미리 확인할 수 있는 콜백함수이다.(디버깅용으로도 사용가능하겠지.)
 	void onAdvance(const PxRigidBody* const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count) override;
 
+private:
+	_bool IsOwnerObjectValid(CActorObject* pOwner);
+
+private:
+
+	void Add_StayTrigger(_ulonglong _ID, const COLL_INFO& _TriggerInfo, const COLL_INFO& _OtherInfo);
+	void Erase_StayTrigger(_ulonglong _ID, _bool* _isEmpty = nullptr);
+private:
+	map<_ulonglong, pair<COLL_INFO, COLL_INFO>> m_StayTrigger;
 public:
 	static CPhysx_EventCallBack* Create();
 	void Free() override;

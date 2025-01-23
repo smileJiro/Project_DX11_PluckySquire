@@ -1,0 +1,203 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_book_04",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'MI_Standard'",
+        "ObjectPath": "/Game/Map/3D/Adia/Props/MasterMaterials/MI_Standard.0"
+      },
+      "bHasStaticPermutationResource": true,
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "TileNumber",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 1.0,
+          "ExpressionGUID": "C06548BF-484BFD1B-32E6FA8D-73027335"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveScale",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "DDEF1761-40C8184F-E95601B4-39B5922B"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "EmissiveColor",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.567708,
+            "G": 0.567708,
+            "B": 0.567708,
+            "A": 0.0,
+            "Hex": "C7C7C7"
+          },
+          "ExpressionGUID": "A7AC1B64-4D41A823-7F0DAF95-52228F17"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "BaseColor",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_book_04_D'",
+            "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_book_04_D.0"
+          },
+          "ExpressionGUID": "2A18F377-46766FBC-D8BDB8A7-06696EEC"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "Normal",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_book_04_N'",
+            "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_book_04_N.0"
+          },
+          "ExpressionGUID": "80C97931-4C636CAF-7B498D9C-4A8970AF"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "SurfaceData_ORM",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'T_book_04_ORM'",
+            "ObjectPath": "/Game/Map/3D/Adia/Props/Textures/T_book_04_ORM.0"
+          },
+          "ExpressionGUID": "634B6DD0-41FF3F3D-538EF1A2-6ADE1794"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "DetailNormal_1",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": null,
+          "ExpressionGUID": "D52F382D-4223424B-E4C06280-714E3D92"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "bOverride_BlendMode": true,
+        "bOverride_ShadingModel": true,
+        "bOverride_TwoSided": true,
+        "TwoSided": true,
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'T_Noise01'",
+          "ObjectPath": "/Engine/MaterialTemplates/Textures/T_Noise01.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_S'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_S.0"
+        },
+        null,
+        {
+          "ObjectName": "Texture2D'DefaultDiffuse'",
+          "ObjectPath": "/Engine/EngineMaterials/DefaultDiffuse.0"
+        },
+        {
+          "ObjectName": "Texture2D'DebugNumberStrip'",
+          "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/ExampleContent/DebugNumberStrip.0"
+        },
+        {
+          "ObjectName": "Texture2D'DebugNumberPeriod'",
+          "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/ExampleContent/Textures/DebugNumberPeriod.0"
+        },
+        {
+          "ObjectName": "Texture2D'DefaultNormal_Uncompressed'",
+          "ObjectPath": "/Engine/EngineMaterials/DefaultNormal_Uncompressed.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBlend'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBlend.0"
+        },
+        {
+          "ObjectName": "Texture2D'BlendFunc_DefBase'",
+          "ObjectPath": "/Engine/EngineMaterials/BlendFunc_DefBase.0"
+        },
+        {
+          "ObjectName": "Texture2D'water_n'",
+          "ObjectPath": "/Engine/Functions/Engine_MaterialFunctions02/ExampleContent/Textures/water_n.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Leak01_M'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Leak01_M.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_D'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_D.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_N'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_N.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_DefaultGrey01'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_DefaultGrey01.0"
+        },
+        {
+          "ObjectName": "Texture2D'T_Default01_DN'",
+          "ObjectPath": "/Game/Map/3D/Adia/Common/T_Default01_DN.0"
+        },
+        {
+          "ObjectName": "Texture2D'127grey'",
+          "ObjectPath": "/Engine/ArtTools/RenderToTexture/Textures/127grey.0"
+        },
+        {
+          "ObjectName": "Texture2D'Good64x64TilingNoiseHighFreq'",
+          "ObjectPath": "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.0"
+        },
+        {
+          "ObjectName": "Texture2D'FadeGradient_01'",
+          "ObjectPath": "/Game/Map/3D/Desk_C06/Textures/FadeGradient_01.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_book_04_D"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_book_04_N"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "T_book_04_ORM"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

@@ -41,9 +41,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-
-
-
     // TODO: 여기에 코드를 입력합니다.
     CMainApp* pMainApp = nullptr;
 
@@ -59,7 +56,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
 
-    srand(time(nullptr));
+    srand((_uint)time(nullptr));
     pMainApp = CMainApp::Create();
     if (nullptr == pMainApp)
         return FALSE;

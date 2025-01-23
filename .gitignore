@@ -90,3 +90,14 @@
 /Tool_Effect/Bin/Engine.dll
 /Tool_Map/Bin/Debug/Engine.dll
 /Tool_Map/Bin/Release/Engine.dll
+/Engine/Bin/Engine.dll
+/Engine/Bin/Engine.lib
+/EngineSDK/Lib/Engine.lib
+/Tool_Camera/Bin/Debug/Engine.dll
+/Tool_Camera/Bin/Release/Engine.dll
+/Tool_Effect/Bin/Debug/Engine.dll
+/Tool_Effect/Bin/Release/Engine.dll
+/Tool_Map/Bin/Debug/Engine.dll
+/Tool_Map/Bin/Release/Engine.dll
+/Client/Bin/Debug/Engine.dll
+/Client/Bin/Release/Engine.dll

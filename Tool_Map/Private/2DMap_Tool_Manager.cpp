@@ -11,7 +11,7 @@
 #include "Imgui_Manager.h"
 #include "NavigationVertex.h"
 #include "EditableCell.h"
-#include "CellContainor.h"
+//#include "CellContainor.h"
 #include "Event_Manager.h"
 #include "Task_Manager.h"
 #include "Engine_Defines.h"
@@ -53,14 +53,14 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 
 
 	// 셀 관리 컨테이너 생성
-	CGameObject* pGameObject = nullptr;
-	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_CellContainor"),
-		LEVEL_TOOL_3D_MAP, L"Layer_Cell", &pGameObject, nullptr);
-	if (pGameObject)
-	{
-		m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
-		Safe_AddRef(m_pCellContainor);
-	}
+	//CGameObject* pGameObject = nullptr;
+	//m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_CellContainor"),
+	//	LEVEL_TOOL_3D_MAP, L"Layer_Cell", &pGameObject, nullptr);
+	//if (pGameObject)
+	//{
+	//	m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
+	//	Safe_AddRef(m_pCellContainor);
+	//}
 	
 
 	//lstrcpy(NormalDesc.szModelName, L"SM_desk_split_topboard_02");
@@ -176,92 +176,92 @@ void C2DMap_Tool_Manager::Input_Object_Tool_Mode()
 
 void C2DMap_Tool_Manager::Input_Navigation_Tool_Mode()
 {
-	HWND hWnd = GetFocus();
-	auto& io = ImGui::GetIO();
-	if (m_bNaviMode)
-	{
-		if (nullptr != hWnd && !io.WantCaptureMouse)
-		{
-			switch (m_eNaviMode)
-			{
-			case Map_Tool::C2DMap_Tool_Manager::NAV_CREATE:
-			case Map_Tool::C2DMap_Tool_Manager::NAV_EDIT:
-				if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
-				{
-					_float3 fPos = {};
-					bool bDuple = false;
+	//HWND hWnd = GetFocus();
+	//auto& io = ImGui::GetIO();
+	//if (m_bNaviMode)
+	//{
+	//	if (nullptr != hWnd && !io.WantCaptureMouse)
+	//	{
+	//		switch (m_eNaviMode)
+	//		{
+	//		case Map_Tool::C2DMap_Tool_Manager::NAV_CREATE:
+	//		case Map_Tool::C2DMap_Tool_Manager::NAV_EDIT:
+	//			if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
+	//			{
+	//				_float3 fPos = {};
+	//				bool bDuple = false;
 
-					CNavigationVertex* pVertex = Picking_On_Vertex();
-					if (pVertex)
-					{
-						for (auto iter = m_vecVertexStack.begin(); iter != m_vecVertexStack.end();)
-						{
-							if (bDuple = pVertex == (*iter))
-							{
-								pVertex->Set_Mode(CNavigationVertex::NORMAL);
-								m_vecVertexStack.erase(iter);
+	//				CNavigationVertex* pVertex = Picking_On_Vertex();
+	//				if (pVertex)
+	//				{
+	//					for (auto iter = m_vecVertexStack.begin(); iter != m_vecVertexStack.end();)
+	//					{
+	//						if (bDuple = pVertex == (*iter))
+	//						{
+	//							pVertex->Set_Mode(CNavigationVertex::NORMAL);
+	//							m_vecVertexStack.erase(iter);
 
-								break;
-							}
-							else
-								iter++;
-						}
-						if (!bDuple)
-							pVertex->Set_Mode(CNavigationVertex::SET);
-					}
-					else if (SUCCEEDED(Picking_On_Terrain(&fPos)))
-					{
-						pVertex = CNavigationVertex::Create(m_pDevice, m_pContext, fPos);
-						m_pCellContainor->Add_Vertex(pVertex);
-						pVertex->Set_Mode(CNavigationVertex::SET);
-					}
+	//							break;
+	//						}
+	//						else
+	//							iter++;
+	//					}
+	//					if (!bDuple)
+	//						pVertex->Set_Mode(CNavigationVertex::SET);
+	//				}
+	//				else if (SUCCEEDED(Picking_On_Terrain(&fPos)))
+	//				{
+	//					pVertex = CNavigationVertex::Create(m_pDevice, m_pContext, fPos);
+	//					m_pCellContainor->Add_Vertex(pVertex);
+	//					pVertex->Set_Mode(CNavigationVertex::SET);
+	//				}
 
-					if (pVertex && !bDuple)
-					{
-						m_vecVertexStack.push_back(pVertex);
-						if (m_vecVertexStack.size() == 3)
-						{
-							Create_Cell();
-						}
-					}
-				}
-				else if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft))
-				{
-					if (!Check_VertexSelect())
-					{
-						int a = 1;
-					}
-				}
-				if (ImGui::IsKeyPressed(ImGuiKey_Delete))
-				{
-					if (m_pPickingVertex)
-					{
-						m_pPickingVertex->Delete_Vertex();
-						m_pPickingVertex = nullptr;
-					}
-				}
-				if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_Z))
-				{
-					if (!m_vecVertexStack.empty())
-					{
-						if (0 >= m_vecVertexStack.back()->Get_IncludeCellCount())
-						{
-							m_vecVertexStack.back()->Delete_Vertex();
-						}
-						else
-						{
-							m_vecVertexStack.back()->Set_Mode(CNavigationVertex::NORMAL);
-						}
-						m_vecVertexStack.pop_back();
-					}
-				}
+	//				if (pVertex && !bDuple)
+	//				{
+	//					m_vecVertexStack.push_back(pVertex);
+	//					if (m_vecVertexStack.size() == 3)
+	//					{
+	//						Create_Cell();
+	//					}
+	//				}
+	//			}
+	//			else if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft))
+	//			{
+	//				if (!Check_VertexSelect())
+	//				{
+	//					int a = 1;
+	//				}
+	//			}
+	//			if (ImGui::IsKeyPressed(ImGuiKey_Delete))
+	//			{
+	//				if (m_pPickingVertex)
+	//				{
+	//					m_pPickingVertex->Delete_Vertex();
+	//					m_pPickingVertex = nullptr;
+	//				}
+	//			}
+	//			if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_Z))
+	//			{
+	//				if (!m_vecVertexStack.empty())
+	//				{
+	//					if (0 >= m_vecVertexStack.back()->Get_IncludeCellCount())
+	//					{
+	//						m_vecVertexStack.back()->Delete_Vertex();
+	//					}
+	//					else
+	//					{
+	//						m_vecVertexStack.back()->Set_Mode(CNavigationVertex::NORMAL);
+	//					}
+	//					m_vecVertexStack.pop_back();
+	//				}
+	//			}
 
-				break;
-			default:
-				break;
-			}
-		}
-	}
+	//			break;
+	//		default:
+	//			break;
+	//		}
+	//	}
+	//}
 }
 
 void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
@@ -548,162 +548,162 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 
 void C2DMap_Tool_Manager::Navigation_Imgui(_bool _bLock)
 {
-	ImGui::Begin("Navigation");
-	ImGui::BulletText("Navigation Mode");
-	ImGui::SameLine();
-	if (ImGui::Checkbox("##NaviMode", &m_bNaviMode))
-	{
-		if (_bLock)
-			m_bNaviMode = false;
-	}
+	//ImGui::Begin("Navigation");
+	//ImGui::BulletText("Navigation Mode");
+	//ImGui::SameLine();
+	//if (ImGui::Checkbox("##NaviMode", &m_bNaviMode))
+	//{
+	//	if (_bLock)
+	//		m_bNaviMode = false;
+	//}
 
-	if (m_bNaviMode)
-	{
-		NAVIGATION_MODE eMode = m_eNaviMode;
+	//if (m_bNaviMode)
+	//{
+	//	NAVIGATION_MODE eMode = m_eNaviMode;
 
-		ImGui::SeparatorText("Mode");
-		if (ImGui::RadioButton("Vertect - Cell Create", eMode == NAV_CREATE))
-			m_eNaviMode = NAV_CREATE;
-		if (ImGui::RadioButton("Vertex - Cell Edit", eMode == NAV_EDIT))
-			m_eNaviMode = NAV_EDIT;
+	//	ImGui::SeparatorText("Mode");
+	//	if (ImGui::RadioButton("Vertect - Cell Create", eMode == NAV_CREATE))
+	//		m_eNaviMode = NAV_CREATE;
+	//	if (ImGui::RadioButton("Vertex - Cell Edit", eMode == NAV_EDIT))
+	//		m_eNaviMode = NAV_EDIT;
 
-		ImGui::SeparatorText("Cell List");
-		if (ImGui::BeginListBox("##Cell_List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-		{
-			auto CellList = m_pCellContainor->Get_CellList();
-			_uint iLoop = 0;
-			for (const auto& pCell : CellList)
-			{
-				string strCellName = "Cell_";
-				strCellName += to_string(iLoop);
-				if (ImGui::Selectable(strCellName.c_str(), iLoop == m_iSelectCellIndex)) {
-					if (iLoop == m_iSelectCellIndex)
-					{
-						for (_uint i = 0; i < CEditableCell::POINT_END; i++)
-						{
-							pCell->Get_Point(CEditableCell::POINT(i))->Set_Mode(CNavigationVertex::NORMAL);
-						}
-						pCell->Set_Picking(false);
-						m_iSelectCellIndex = -1;
-					}
-					else if (iLoop != m_iSelectCellIndex)
-					{
-						Clear_SelectCell();
+	//	ImGui::SeparatorText("Cell List");
+	//	if (ImGui::BeginListBox("##Cell_List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+	//	{
+	//		auto CellList = m_pCellContainor->Get_CellList();
+	//		_uint iLoop = 0;
+	//		for (const auto& pCell : CellList)
+	//		{
+	//			string strCellName = "Cell_";
+	//			strCellName += to_string(iLoop);
+	//			if (ImGui::Selectable(strCellName.c_str(), iLoop == m_iSelectCellIndex)) {
+	//				if (iLoop == m_iSelectCellIndex)
+	//				{
+	//					for (_uint i = 0; i < CEditableCell::POINT_END; i++)
+	//					{
+	//						pCell->Get_Point(CEditableCell::POINT(i))->Set_Mode(CNavigationVertex::NORMAL);
+	//					}
+	//					pCell->Set_Picking(false);
+	//					m_iSelectCellIndex = -1;
+	//				}
+	//				else if (iLoop != m_iSelectCellIndex)
+	//				{
+	//					Clear_SelectCell();
 
-						m_iSelectCellIndex = iLoop;
-						m_eNaviMode = NAV_EDIT;
-						pCell->Get_Point(CEditableCell::POINT_A)->Set_Mode(CNavigationVertex::PICKING_FIRST);
-						pCell->Get_Point(CEditableCell::POINT_B)->Set_Mode(CNavigationVertex::PICKING_SECOND);
-						pCell->Get_Point(CEditableCell::POINT_C)->Set_Mode(CNavigationVertex::PICKING_THIRD);
-						pCell->Set_Picking(true);
-					}
-				}
-				iLoop++;
-			}
-			ImGui::EndListBox();
-		}
-		_bool bRender = m_pCellContainor->Is_WireRender();
-		ImGui::BulletText("Wire Render");
-		ImGui::SameLine();
-		if (ImGui::Checkbox("##WireRender", &bRender))
-		{
-			m_pCellContainor->Set_WireRender(bRender);
-		}
+	//					m_iSelectCellIndex = iLoop;
+	//					m_eNaviMode = NAV_EDIT;
+	//					pCell->Get_Point(CEditableCell::POINT_A)->Set_Mode(CNavigationVertex::PICKING_FIRST);
+	//					pCell->Get_Point(CEditableCell::POINT_B)->Set_Mode(CNavigationVertex::PICKING_SECOND);
+	//					pCell->Get_Point(CEditableCell::POINT_C)->Set_Mode(CNavigationVertex::PICKING_THIRD);
+	//					pCell->Set_Picking(true);
+	//				}
+	//			}
+	//			iLoop++;
+	//		}
+	//		ImGui::EndListBox();
+	//	}
+	//	_bool bRender = m_pCellContainor->Is_WireRender();
+	//	ImGui::BulletText("Wire Render");
+	//	ImGui::SameLine();
+	//	if (ImGui::Checkbox("##WireRender", &bRender))
+	//	{
+	//		m_pCellContainor->Set_WireRender(bRender);
+	//	}
 
-		if (!m_vecVertexStack.empty())
-		{
-			ImGui::SeparatorText("Create Cell");
-			string strTextArr[CEditableCell::POINT_END] = { "First  : %.2f %.2f %.2f","Second : %.2f %.2f %.2f","Third  : %.2f %.2f %.2f" };
-			_float4 vColors[CEditableCell::POINT_END] = {};
-			XMStoreFloat4(&vColors[CEditableCell::POINT_A], DirectX::Colors::Red);
-			XMStoreFloat4(&vColors[CEditableCell::POINT_B], DirectX::Colors::Green);
-			XMStoreFloat4(&vColors[CEditableCell::POINT_C], DirectX::Colors::Blue);
+	//	if (!m_vecVertexStack.empty())
+	//	{
+	//		ImGui::SeparatorText("Create Cell");
+	//		string strTextArr[CEditableCell::POINT_END] = { "First  : %.2f %.2f %.2f","Second : %.2f %.2f %.2f","Third  : %.2f %.2f %.2f" };
+	//		_float4 vColors[CEditableCell::POINT_END] = {};
+	//		XMStoreFloat4(&vColors[CEditableCell::POINT_A], DirectX::Colors::Red);
+	//		XMStoreFloat4(&vColors[CEditableCell::POINT_B], DirectX::Colors::Green);
+	//		XMStoreFloat4(&vColors[CEditableCell::POINT_C], DirectX::Colors::Blue);
 
-			for (_uint i = 0; i < m_vecVertexStack.size(); i++)
-			{
-				ImGui::TextColored(ImVec4(vColors[i].x, vColors[i].y, vColors[i].z, vColors[i].w), strTextArr[i].c_str(), m_vecVertexStack[i]->Get_Pos().x,
-					m_vecVertexStack[i]->Get_Pos().y,
-					m_vecVertexStack[i]->Get_Pos().z);
-			}
-		}
-
-
-
-		if (m_iSelectCellIndex != -1)
-		{
-			ImGui::SeparatorText("Picking Cell");
-			string strTextArr[CEditableCell::POINT_END] = { "First  : %.2f %.2f %.2f","Second : %.2f %.2f %.2f","Third  : %.2f %.2f %.2f" };
-			_float4 vColors[CEditableCell::POINT_END] = {};
-			XMStoreFloat4(&vColors[CEditableCell::POINT_A], DirectX::Colors::Red);
-			XMStoreFloat4(&vColors[CEditableCell::POINT_B], DirectX::Colors::Green);
-			XMStoreFloat4(&vColors[CEditableCell::POINT_C], DirectX::Colors::Blue);
-
-			auto pCell = m_pCellContainor->Get_CellList()[m_iSelectCellIndex];
-			for (_uint i = 0; i < CEditableCell::POINT_END; i++)
-			{
-				ImGui::TextColored(ImVec4(vColors[i].x, vColors[i].y, vColors[i].z, vColors[i].w), strTextArr[i].c_str(), pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().x,
-					pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().y,
-					pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().z);
-			}
-
-			ImGui::SeparatorText("Cell State");
-			if (ImGui::BeginListBox("##Cell_State_List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-			{
-				_uint iLoop = 0;
-				for (const auto& strName : m_arrCellStateName)
-				{
-					if (ImGui::Selectable(strName.c_str(), iLoop == pCell->Get_State())) {
-						if (iLoop != pCell->Get_State())
-						{
-							pCell->Set_State(iLoop);
-						}
-					}
-					iLoop++;
-				}
-				ImGui::EndListBox();
-			}
-
-
-		}
-
-
-		if (m_pPickingVertex)
-		{
-			ImGui::SeparatorText("Picking Vertex");
-			ImGui::Text("X : %.2f Y : %.2f Z : %.2f", m_pPickingVertex->Get_Pos().x,
-				m_pPickingVertex->Get_Pos().y,
-				m_pPickingVertex->Get_Pos().z);
-
-		}
+	//		for (_uint i = 0; i < m_vecVertexStack.size(); i++)
+	//		{
+	//			ImGui::TextColored(ImVec4(vColors[i].x, vColors[i].y, vColors[i].z, vColors[i].w), strTextArr[i].c_str(), m_vecVertexStack[i]->Get_Pos().x,
+	//				m_vecVertexStack[i]->Get_Pos().y,
+	//				m_vecVertexStack[i]->Get_Pos().z);
+	//		}
+	//	}
 
 
 
-		Begin_Draw_ColorButton("##ExportNav", (ImVec4)ImColor::HSV(0.3f, 0.6f, 0.6f));
-		if (ImGui::Button("Export Navigation File"))
-		{
-			if (SUCCEEDED(m_pCellContainor->Export(L"../../Client/Bin/SettingFile/", L"Nav")))
-				LOG_TYPE("Navigation file Export Success!!!", LOG_SAVE);
-			else
-				LOG_TYPE("Navigation file Export Error...", LOG_ERROR);
-		}
-		End_Draw_ColorButton();
+	//	if (m_iSelectCellIndex != -1)
+	//	{
+	//		ImGui::SeparatorText("Picking Cell");
+	//		string strTextArr[CEditableCell::POINT_END] = { "First  : %.2f %.2f %.2f","Second : %.2f %.2f %.2f","Third  : %.2f %.2f %.2f" };
+	//		_float4 vColors[CEditableCell::POINT_END] = {};
+	//		XMStoreFloat4(&vColors[CEditableCell::POINT_A], DirectX::Colors::Red);
+	//		XMStoreFloat4(&vColors[CEditableCell::POINT_B], DirectX::Colors::Green);
+	//		XMStoreFloat4(&vColors[CEditableCell::POINT_C], DirectX::Colors::Blue);
 
-		ImGui::SameLine();
-		Begin_Draw_ColorButton("##ImportNav", (ImVec4)ImColor::HSV(0.7f, 0.6f, 0.6f));
-		if (ImGui::Button("Import Navigation File"))
-		{
-			if (SUCCEEDED(m_pCellContainor->Import(L"../../Client/Bin/SettingFile/", L"Nav")))
-				LOG_TYPE("Navigation file Import Success!!!", LOG_SAVE);
-			else
-				LOG_TYPE("Navigation file Import Error...", LOG_ERROR);
+	//		auto pCell = m_pCellContainor->Get_CellList()[m_iSelectCellIndex];
+	//		for (_uint i = 0; i < CEditableCell::POINT_END; i++)
+	//		{
+	//			ImGui::TextColored(ImVec4(vColors[i].x, vColors[i].y, vColors[i].z, vColors[i].w), strTextArr[i].c_str(), pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().x,
+	//				pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().y,
+	//				pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().z);
+	//		}
 
-		}
-		End_Draw_ColorButton();
+	//		ImGui::SeparatorText("Cell State");
+	//		if (ImGui::BeginListBox("##Cell_State_List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+	//		{
+	//			_uint iLoop = 0;
+	//			for (const auto& strName : m_arrCellStateName)
+	//			{
+	//				if (ImGui::Selectable(strName.c_str(), iLoop == pCell->Get_State())) {
+	//					if (iLoop != pCell->Get_State())
+	//					{
+	//						pCell->Set_State(iLoop);
+	//					}
+	//				}
+	//				iLoop++;
+	//			}
+	//			ImGui::EndListBox();
+	//		}
 
 
-	}
+	//	}
 
-	ImGui::End();
+
+	//	if (m_pPickingVertex)
+	//	{
+	//		ImGui::SeparatorText("Picking Vertex");
+	//		ImGui::Text("X : %.2f Y : %.2f Z : %.2f", m_pPickingVertex->Get_Pos().x,
+	//			m_pPickingVertex->Get_Pos().y,
+	//			m_pPickingVertex->Get_Pos().z);
+
+	//	}
+
+
+
+	//	Begin_Draw_ColorButton("##ExportNav", (ImVec4)ImColor::HSV(0.3f, 0.6f, 0.6f));
+	//	if (ImGui::Button("Export Navigation File"))
+	//	{
+	//		if (SUCCEEDED(m_pCellContainor->Export(L"../../Client/Bin/SettingFile/", L"Nav")))
+	//			LOG_TYPE("Navigation file Export Success!!!", LOG_SAVE);
+	//		else
+	//			LOG_TYPE("Navigation file Export Error...", LOG_ERROR);
+	//	}
+	//	End_Draw_ColorButton();
+
+	//	ImGui::SameLine();
+	//	Begin_Draw_ColorButton("##ImportNav", (ImVec4)ImColor::HSV(0.7f, 0.6f, 0.6f));
+	//	if (ImGui::Button("Import Navigation File"))
+	//	{
+	//		if (SUCCEEDED(m_pCellContainor->Import(L"../../Client/Bin/SettingFile/", L"Nav")))
+	//			LOG_TYPE("Navigation file Import Success!!!", LOG_SAVE);
+	//		else
+	//			LOG_TYPE("Navigation file Import Error...", LOG_ERROR);
+
+	//	}
+	//	End_Draw_ColorButton();
+
+
+	//}
+
+	//ImGui::End();
 
 }
 
@@ -1474,10 +1474,8 @@ HRESULT C2DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject
 		*ppMap = pReturnObject;
 
 		_vector vWorldRayPos = XMLoadFloat3(&vRayPos) + (XMLoadFloat3(&vRayDir) * fDist);
-		//vLocalRayPos = XMVector3TransformCoord(vLocalRayPos, m_pTransformCom->Get_WorldMatrix());
 		XMStoreFloat3(fPickingPos, vWorldRayPos);
 
-		//*fPickingPos = vRayPos * fDist;
 		return S_OK;
 	}
 	else
@@ -1530,57 +1528,6 @@ CMapObject* C2DMap_Tool_Manager::Picking_On_Object()
 	return pReturnObject;
 }
 
-CNavigationVertex* C2DMap_Tool_Manager::Picking_On_Vertex()
-{
-	_float3			vRayPos, vRayDir;
-
-	Compute_World_PickingLay(&vRayPos, &vRayDir);
-	return m_pCellContainor->Picking_On_Vertex(vRayPos, vRayDir);
-
-}
-
-HRESULT C2DMap_Tool_Manager::Create_Cell()
-{
-	_float3 vFirst = m_vecVertexStack[0]->Get_Pos();
-	_float3 vSecond = m_vecVertexStack[1]->Get_Pos();
-	_float3 vThird = m_vecVertexStack[2]->Get_Pos();
-
-	_float2 vCross1 = { vSecond.x - vFirst.x, vSecond.z - vFirst.z };
-	_float2 vCross2 = { vThird.x - vSecond.x, vThird.z - vSecond.z };
-
-
-	_float fCross = {};
-
-	XMStoreFloat(&fCross, XMVector2Cross(XMLoadFloat2(&vCross1), XMLoadFloat2(&vCross2)));
-
-	if (fCross > 0.f)
-	{
-		swap(m_vecVertexStack[2], m_vecVertexStack[1]);
-	}
-
-	if (m_pCellContainor->Is_ContainCell(m_vecVertexStack.data()))
-	{
-		LOG_TYPE("Cell Create Fail ! already contain cell...", LOG_ERROR);
-		m_vecVertexStack.clear();
-		return E_FAIL;
-	}
-	CEditableCell* pCell = CEditableCell::Create(m_pDevice, m_pContext, m_vecVertexStack.data(),
-		m_pCellContainor->Get_CellSize());
-	if (pCell)
-	{
-		for (auto& pVertex : m_vecVertexStack)
-		{
-			pVertex->Add_Cell(pCell);
-			pVertex->Set_Mode(CNavigationVertex::NORMAL);
-		}
-		m_vecVertexStack.clear();
-		m_pCellContainor->Add_Cell(pCell);
-		return S_OK;
-	}
-
-	return E_FAIL;
-}
-
 HRESULT C2DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3* pLayDir)
 {
 	POINT		ptMouse{};
@@ -1623,65 +1570,10 @@ HRESULT C2DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3*
 	return S_OK;
 }
 
-void C2DMap_Tool_Manager::Clear_StackVertex()
-{
-	if (!m_vecVertexStack.empty())
-	{
-		for (auto& pVertex : m_vecVertexStack)
-			OBJECT_DESTROY(pVertex);
-		m_vecVertexStack.clear();
-	}
-}
-
-void C2DMap_Tool_Manager::Clear_SelectCell()
-{
-	if (m_iSelectCellIndex != -1)
-	{
-		for (_uint i = 0; i < CEditableCell::POINT_END; i++)
-		{
-			m_pCellContainor->Get_CellList()[m_iSelectCellIndex]
-				->Get_Point(CEditableCell::POINT(i))->Set_Mode(CNavigationVertex::NORMAL);
-		}
-		m_pCellContainor->Get_CellList()[m_iSelectCellIndex]->Set_Picking(false);
-		m_iSelectCellIndex = -1;
-	}
-}
-
-bool C2DMap_Tool_Manager::Check_VertexSelect()
-{
-	if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft) && !ImGuizmo::IsUsing())
-	{
-		// 셀렉트된 셀 클리어
-		Clear_SelectCell();
-
-		if (m_pPickingVertex)
-		{
-			m_pPickingVertex->Set_Mode(CNavigationVertex::NORMAL);
-			m_pPickingVertex = nullptr;
-		}
-
-		_float3 fPos = {};
-		CNavigationVertex* pVertex = Picking_On_Vertex();
-		if (pVertex)
-		{
-			for (auto pStack : m_vecVertexStack)
-				if (pStack == pVertex)
-					return false;
-			m_eNaviMode = NAV_EDIT;
-			m_pPickingVertex = pVertex;
-			pVertex->Set_Mode(CNavigationVertex::PICKING_VERTEX);
-			return true;
-		}
-
-	}
-	return false;
-}
-
 void C2DMap_Tool_Manager::Load_ModelList()
 {
 	m_ObjectFileLists.clear();
 	_wstring strPath 
-		//= TEXT("../../Client/Bin/Resources/TestModels/");
 		= TEXT("../../Client/Bin/resources/Models/");
 
 	for (const auto& entry : ::recursive_directory_iterator(strPath))
@@ -1793,7 +1685,7 @@ void C2DMap_Tool_Manager::Free()
 {
 	//Save(false);
 
-	Safe_Release(m_pCellContainor);
+	//Safe_Release(m_pCellContainor);
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);

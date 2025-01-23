@@ -186,7 +186,11 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
-    <ClInclude Include="..\Public\BossAttackState.h" />
+    <ClInclude Include="..\Public\BossEnergyBallState.h" />
+    <ClInclude Include="..\Public\BossHomingBallState.h" />
+    <ClInclude Include="..\Public\BossIdleState.h" />
+    <ClInclude Include="..\Public\BossSceneState.h" />
+    <ClInclude Include="..\Public\Boss_EnergyBall.h" />
     <ClInclude Include="..\Public\Boss_HomingBall.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
@@ -205,11 +209,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\FSM_Boss.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\public\IdleState.h" />
     <ClInclude Include="..\Public\Logo_BG.h" />
+    <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
+    <ClInclude Include="..\Public\ShopItemBG.h" />
     <ClInclude Include="..\Public\ShopPanel.h" />
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
@@ -249,9 +255,15 @@
   <ItemGroup>
     <ClCompile Include="..\Private\AlertState.cpp" />
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
-    <ClCompile Include="..\Private\BarfBug.cpp" />
+    <ClCompile Include="..\Private\BarfBug.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\private\Beetle.cpp" />
-    <ClCompile Include="..\Private\BossAttackState.cpp" />
+    <ClCompile Include="..\Private\BossEnergyBallState.cpp" />
+    <ClCompile Include="..\Private\BossHomingBallState.cpp" />
+    <ClCompile Include="..\Private\BossIdleState.cpp" />
+    <ClCompile Include="..\Private\BossSceneState.cpp" />
+    <ClCompile Include="..\Private\Boss_EnergyBall.cpp" />
     <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
@@ -267,11 +279,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\FSM_Boss.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\IdleState.cpp" />
     <ClCompile Include="..\Private\Logo_BG.cpp" />
+    <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
+    <ClCompile Include="..\Private\ShopItemBG.cpp" />
     <ClCompile Include="..\Private\ShopPanel.cpp" />
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_BG.cpp" />

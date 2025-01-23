@@ -101,7 +101,7 @@ HRESULT CProjectile_BarfBug::Ready_PartObjects()
     //BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::COLOR;
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::TEST_PROJECTILE;
 
     //BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);

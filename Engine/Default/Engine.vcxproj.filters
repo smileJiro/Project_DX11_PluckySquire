@@ -244,6 +244,9 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh">
       <UniqueIdentifier>{c4dbee5e-b0ec-4fea-bcd9-f258a7028cd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Objects\Camera\CutScene_Sector">
+      <UniqueIdentifier>{cba30df6-e1fa-4802-a037-b3c7f69f9b94}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Module">
       <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
     </Filter>
@@ -441,9 +444,6 @@
     <ClInclude Include="..\Public\Model.h">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Animation2D.h">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Json_Manager.h">
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClInclude>
@@ -464,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Physx_Manager.h">
       <Filter>00.System\03.Physx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CutScene_Sector.h">
+      <Filter>01.Utility\03.Objects\Camera\CutScene_Sector</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Actor.h">
       <Filter>01.Utility\04.Components\Actor</Filter>
@@ -488,6 +491,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation2D.h">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Particle_Module.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
@@ -674,9 +680,6 @@
     <ClCompile Include="..\Private\Model.cpp">
       <Filter>01.Utility\04.Components\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Animation2D.cpp">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Json_Manager.cpp">
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClCompile>
@@ -697,6 +700,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Physx_Manager.cpp">
       <Filter>00.System\03.Physx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CutScene_Sector.cpp">
+      <Filter>01.Utility\03.Objects\Camera\CutScene_Sector</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Actor.cpp">
       <Filter>01.Utility\04.Components\Actor</Filter>
@@ -721,6 +727,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation2D.cpp">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Particle_Module.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>

@@ -1,0 +1,1833 @@
+[
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.39"
+      }
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__CameraVolume_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "Sprite": {
+        "ObjectName": "Texture2D'S_AudioComponent_AutoActivate'",
+        "ObjectPath": "/Engine/EditorResources/AudioIcons/S_AudioComponent_AutoActivate.0"
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 868.0,
+        "Y": 868.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.15"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.15"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 868.0,
+        "Y": 400.0,
+        "Z": 100.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.15"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.15"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": -2336.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxTrigger",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__CameraVolume_BP_C:BoxTrigger'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.3"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 1128.7074,
+        "Y": 1005.08325,
+        "Z": 600.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.10"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.10"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": 76632.19,
+        "Y": 110126.0,
+        "Z": 27961.691
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 150.0,
+        "Y": 150.0,
+        "Z": 600.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.32"
+            },
+            "FunctionName": "TriggerVolumeBeginOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.32"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": []
+      },
+      "RelativeLocation": {
+        "X": 76830.81,
+        "Y": 110177.88,
+        "Z": 27961.691
+      }
+    }
+  },
+  {
+    "Type": "CameraVolume_BP_C",
+    "Name": "SKSP_05c_CameraVolume",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/CameraVolume_BP.CameraVolume_BP_C'",
+    "Template": {
+      "ObjectName": "CameraVolume_BP_C'Default__CameraVolume_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.1"
+    },
+    "Properties": {
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      },
+      "CapsuleTrigger": {
+        "ObjectName": "CapsuleComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.CapsuleTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.11"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.4"
+      },
+      "BoxVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.Box Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.46"
+      },
+      "LeftLimitVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.Left Limit Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.49"
+      },
+      "RightLimitVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.Right Limit Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.51"
+      },
+      "FrontLimitVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.Front Limit Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.48"
+      },
+      "RearLimitVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.Rear Limit Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.50"
+      },
+      "FloorHeightVisualiser": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.Floor Height Visualiser'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.47"
+      },
+      "bIsDeskVolume": false,
+      "bDebugRefreshCamera": true,
+      "BoxTriggerSize": {
+        "X": 1128.7074,
+        "Y": 1005.08325,
+        "Z": 600.0
+      },
+      "bBlendToCameraActor": true,
+      "CameraActor": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.SKSP_05c_DeskCamera"
+      },
+      "CameraActorBlendInTime": 1.2,
+      "CameraActorBlendOutTime": 1.2,
+      "bCameraActorTracksPlayer": false,
+      "bSetDepthOfFieldTarget": true,
+      "TiltShiftDOFTarget": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.SKSP_05c_CameraTarget"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.12"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.29"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.26"
+      },
+      "GroupName": "SKSP_05c",
+      "PrevGroupName": "SKSP_05c",
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.15"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.4"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleTrigger",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__CameraVolume_BP_C:CapsuleTrigger'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.10"
+            },
+            "FunctionName": "CapsuleTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.10"
+            },
+            "FunctionName": "CapsuleTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__CameraVolume_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.5"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "Desk_C09_Sketchspace_05c",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'Desk_C09_Sketchspace_05c:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.16"
+      },
+      "LevelBuildDataId": "9485E319-49FD986B-4FF3AEBF-06CC6AA4",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'Desk_C09_Sketchspace_05c:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.53"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'Desk_C09_Sketchspace_05c:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.53"
+      },
+      null,
+      {
+        "ObjectName": "CameraVolume_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.10"
+      },
+      {
+        "ObjectName": "MinigameController_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.15"
+      },
+      {
+        "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.32"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'Desk_C09_Sketchspace_05c:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.16"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_Desk_C09_SKSP_05c",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "AssignedBookIDs": [
+        9053
+      ],
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.BOOK_SKSP_5c"
+      },
+      "RenderResolution": {
+        "X": 1024.0,
+        "Y": 1024.0
+      },
+      "LevelSizePixels": {
+        "X": 1536.0,
+        "Y": 1536.0
+      },
+      "PageRenderScale": "EPageRenderScale::MidZoom",
+      "ScrollType": "EScrollType::ZoomedPan",
+      "BackgroundColour": {
+        "R": 0.27589,
+        "G": 0.375,
+        "B": 0.046027,
+        "A": 1.0,
+        "Hex": "8FA53C"
+      },
+      "LevelWidth": 1.5,
+      "LevelHeight": 1.5,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.GameVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.6"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.45"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.42"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.43"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.44"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.KillVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.7"
+      },
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.GameBackground'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.41"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.21"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.40"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.22"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.31"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Textures/FX_bookportal_v02-0.FX_bookportal_v02-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0001.FX_BookPortalV02_0001",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0002.FX_BookPortalV02_0002",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0003.FX_BookPortalV02_0003",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0004.FX_BookPortalV02_0004",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0005.FX_BookPortalV02_0005",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0006.FX_BookPortalV02_0006",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0007.FX_BookPortalV02_0007",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0008.FX_BookPortalV02_0008",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0009.FX_BookPortalV02_0009",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0010.FX_BookPortalV02_0010",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0011.FX_BookPortalV02_0011",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0012.FX_BookPortalV02_0012",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0013.FX_BookPortalV02_0013",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0014.FX_BookPortalV02_0014",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0015.FX_BookPortalV02_0015",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0016.FX_BookPortalV02_0016",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0017.FX_BookPortalV02_0017",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0018.FX_BookPortalV02_0018",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0019.FX_BookPortalV02_0019",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0020.FX_BookPortalV02_0020",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0021.FX_BookPortalV02_0021",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0022.FX_BookPortalV02_0022",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0023.FX_BookPortalV02_0023",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0024.FX_BookPortalV02_0024",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0025.FX_BookPortalV02_0025",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0026.FX_BookPortalV02_0026",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0027.FX_BookPortalV02_0027",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0028.FX_BookPortalV02_0028",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0029.FX_BookPortalV02_0029",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0030.FX_BookPortalV02_0030",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0031.FX_BookPortalV02_0031",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0032.FX_BookPortalV02_0032",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0033.FX_BookPortalV02_0033",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0034.FX_BookPortalV02_0034",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0035.FX_BookPortalV02_0035",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0036.FX_BookPortalV02_0036",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0037.FX_BookPortalV02_0037",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0038.FX_BookPortalV02_0038",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0039.FX_BookPortalV02_0039",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0040.FX_BookPortalV02_0040",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0041.FX_BookPortalV02_0041",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0042.FX_BookPortalV02_0042",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0043.FX_BookPortalV02_0043",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0044.FX_BookPortalV02_0044",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0045.FX_BookPortalV02_0045",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0046.FX_BookPortalV02_0046",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0047.FX_BookPortalV02_0047",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0048.FX_BookPortalV02_0048",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0049.FX_BookPortalV02_0049",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0050.FX_BookPortalV02_0050",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02.FX_BookPortalV02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/Desk_C05/Textures/6x9_Grid_1024x1536_01.6x9_Grid_1024x1536_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/Desk_C05/Textures/6x9_Grid_1024x1536_01_Sprite.6x9_Grid_1024x1536_01_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Textures/genericexplosion-0.genericexplosion-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0001_X02.genericexplosion_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0002_X01.genericexplosion_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0003_X01.genericexplosion_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0004_X01.genericexplosion_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0005_X02.genericexplosion_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0006_X02.genericexplosion_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0007_X02.genericexplosion_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0008_X02.genericexplosion_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0009_X03.genericexplosion_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0010_X03.genericexplosion_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0011_X03.genericexplosion_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0012_X03.genericexplosion_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/generic_explosion.generic_explosion",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/Desk_C09/Textures/6x6_Grid_1024x1024_01.6x6_Grid_1024x1024_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/3D/Sketchspace/Desk_C09/Textures/6x6_Grid_1024x1024_01_Sprite.6x6_Grid_1024x1024_01_Sprite",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.28"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.25"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.0166666
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "B7FF3D3E-46C85500-766AB9B4-989D635F",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "SpriteColor": {
+        "R": 0.27589,
+        "G": 0.375,
+        "B": 0.046027,
+        "A": 1.0,
+        "Hex": "8FA53C"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      },
+      "RelativeScale3D": {
+        "X": 15.225,
+        "Y": 26.47826,
+        "Z": 26.47826
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.1"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__CameraVolume_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.6"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__CameraVolume_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.7"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    },
+    "Properties": {
+      "InteractiveColliderType": "EInterativeColliderType::PlayerOnTop"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "SKSP_05c_Portal_BookBtm",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.2"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Billboard'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.5"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.24"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.20"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.38"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.39"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.0"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.1"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.23"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.18"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.19"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Audio Component'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.3"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.35"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.34"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.36"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.37"
+      },
+      "TriggerSize": {
+        "X": 150.0,
+        "Y": 150.0,
+        "Z": 600.0
+      },
+      "PortalVisibility": "EPortalVisibility::AlwaysVisible",
+      "bOverridePortalTarget": true,
+      "TargetPortalOverride": {
+        "AssetPathName": "/Game/Levels/Desk/Desk_C09/Desk_C09_002.Desk_C09_002",
+        "SubPathString": "PersistentLevel.SKSP_05c_Portal_DeskEntry"
+      },
+      "BookOverrideTargetLocation": {
+        "X": 76830.81,
+        "Y": 110177.88,
+        "Z": 27961.691
+      },
+      "DeskOverrideStartLocation": {
+        "X": -9077.202,
+        "Y": -2281.9187,
+        "Z": 454.3808
+      },
+      "DeskOverrideTargetLocation": {
+        "X": 4383.3267,
+        "Y": -413.46997,
+        "Z": 1955.5385
+      },
+      "PortalVectors": null,
+      "bOverridePortalEdgeLocation": true,
+      "PortalLocation_OnBook": "EPortalLocation::MidPage",
+      "PortalLocation_OnDesk": "EPortalLocation::MidPage",
+      "bShowDeskPFX": false,
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.13"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.30"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.27"
+      },
+      "GroupName": "SKSP_05c",
+      "PrevGroupName": "SKSP_05c",
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": {
+            "ObjectName": "Texture2D'S_AudioComponent_AutoActivate'",
+            "ObjectPath": "/Engine/EditorResources/AudioIcons/S_AudioComponent_AutoActivate.0"
+          }
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Billboard'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.5"
+        },
+        {
+          "ObjectName": "AudioComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.2"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 76653.11,
+        "Y": 110132.21,
+        "Z": 27961.691
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.1"
+      },
+      "PrimaryComponentTick": {
+        "EndTickGroup": "TG_PostPhysics"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.32"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm'",
+              "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.32"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.39"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      },
+      "bVisible": false
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "SKSP_05c_Portal_BookBtm",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_Portal_BookBtm.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.9"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      },
+      "RelativeScale3D": {
+        "X": 24.36,
+        "Y": 24.36,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      },
+      "RelativeScale3D": {
+        "X": 24.36,
+        "Y": 24.36,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 818.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 17.36,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      },
+      "RelativeLocation": {
+        "X": -818.0,
+        "Y": 0.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 15.36,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      },
+      "RelativeLocation": {
+        "X": 818.0,
+        "Y": 0.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 15.36,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_Desk_C09_SKSP_05c",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'Desk_C09_Sketchspace_05c:PersistentLevel.MGC_Desk_C09_SKSP_05c.ROOT '",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.33"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": -818.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 17.36,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Box Visualiser",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Box Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.11"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Floor Height Visualiser",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Floor Height Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.12"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Front Limit Visualiser",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Front Limit Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.13"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Left Limit Visualiser",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Left Limit Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.14"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Rear Limit Visualiser",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Rear Limit Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.15"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "Right Limit Visualiser",
+    "Outer": "SKSP_05c_CameraVolume",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__CameraVolume_BP_C:Right Limit Visualiser'",
+      "ObjectPath": "/Game/Blueprints/Level/CameraVolume_BP.16"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'Desk_C09_Sketchspace_05c:PersistentLevel.SKSP_05c_CameraVolume.BoxTrigger'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.8"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "Desk_C09_Sketchspace_05c",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'Desk_C09_Sketchspace_05c:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.14"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'Desk_C09_Sketchspace_05c:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/Desk/Desk_C09/Sketchspace/Desk_C09_Sketchspace_05c.17"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

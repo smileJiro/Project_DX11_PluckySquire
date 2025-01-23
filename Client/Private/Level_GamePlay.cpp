@@ -21,9 +21,10 @@
 #include "SettingPanelBG.h"
 #include "SettingPanel.h"
 #include "ESC_HeartPoint.h"
+#include "ShopItemBG.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    : CLevel(_pDevice, _pContext)
+	: CLevel(_pDevice, _pContext)
 {
 }
 
@@ -47,7 +48,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
 	//
-    return S_OK;
+	return S_OK;
 }
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
@@ -58,7 +59,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	{
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
 	}
-	
+
 	if (KEY_DOWN(KEY::NUM6))
 	{
 		/* Pooling Test */
@@ -101,7 +102,7 @@ HRESULT CLevel_GamePlay::Render()
 	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
-    return S_OK;
+	return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Lights()
@@ -159,7 +160,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
-	
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
@@ -237,7 +238,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 #pragma region STAMP UI
 	pDesc.fX = g_iWinSizeX / 20.f;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-	
+
 	// 원래 크기
 	pDesc.fSizeX = 96.f;
 	pDesc.fSizeY = 148.f;
@@ -253,7 +254,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 	pDesc.fSizeX = 72.f;
 	pDesc.fSizeY = 111.f;
-	
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_BombStamp"), LEVEL_GAMEPLAY, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
@@ -277,10 +278,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 
 #pragma endregion InterAction UI
-	
+
 #pragma region ShopPanel UI
 
-	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END - 1 };
+	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
 
 	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
 	{
@@ -288,15 +289,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 			return E_FAIL;
 	}
 
-	
-	
+
+
 
 
 	for (size_t i = 0; i < CUI::SHOPPANEL::SHOP_END; ++i)
 	{
 		pShopDescs[i].iCurLevelID = LEVEL_GAMEPLAY;
 	}
-	
+
 	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
 	{
 		for (size_t i = 0; i < CUI::SHOPPANEL::SHOP_END; ++i)
@@ -386,7 +387,18 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 				*/
 
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fX = g_iWinSizeX / 2.75f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fY = g_iWinSizeY - g_iWinSizeY / 13.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fSizeX = 40.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fSizeY = 40.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ESCBG;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].eShopPanelKind = CUI::SHOPPANEL::SHOP_ESCBG;
 
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG])))
+					return E_FAIL;
+
+				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount, dynamic_cast<CShopPanel_BG*>(pShopPanel));
+				Safe_Release(pShopPanel);
 
 
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fX = g_iWinSizeX / 2.75f;
@@ -426,6 +438,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 			case CUI::SHOPPANEL::SHOP_ENTER:
 			{
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fX = g_iWinSizeX - g_iWinSizeX / 3.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fY = g_iWinSizeY - g_iWinSizeY / 13.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fSizeX = 40.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fSizeY = 40.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ENTERBG;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].eShopPanelKind = CUI::SHOPPANEL::SHOP_ENTERBG;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG])))
+					return E_FAIL;
+
+				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount, dynamic_cast<CShopPanel_BG*>(pShopPanel));
+				Safe_Release(pShopPanel);
+
+
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fX = g_iWinSizeX - g_iWinSizeX / 3.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fY = g_iWinSizeY - g_iWinSizeY / 13.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fSizeX = 72.f;
@@ -447,146 +473,346 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 		}
 	}
-	
+
+
+
+	if (5 != CUI_Manager::GetInstance()->Get_ShopItems().size())
+	{
+		_uint iCurLevel = LEVEL_GAMEPLAY;
+
+
+		for (size_t i = 0; i < 5; ++i)
+		{
+			CGameObject* pShopItem = { nullptr };
+			CUI::UIOBJDESC eShopDesc;
+
+
+			switch (i)
+			{
+			case 0:
+			{
+				vector<CShopItemBG*> _vItemBG;
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = g_iWinSizeX / 2;
+				eShopDesc.fY = g_iWinSizeY / 4;
+				eShopDesc.fSizeX = 860.f;
+				eShopDesc.fSizeY = 110.f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				CShopItemBG* pItemBG = dynamic_cast<CShopItemBG*>(pShopItem);
+
+				_vItemBG.push_back(pItemBG);
+
+
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = g_iWinSizeX / 3.5;
+				eShopDesc.fY = g_iWinSizeY / 4;
+				eShopDesc.fSizeX = 128.f;
+				eShopDesc.fSizeY = 128.f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_SCROLLITEM;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				pItemBG = dynamic_cast<CShopItemBG*>(pShopItem);
+
+				_vItemBG.push_back(pItemBG);
+
+
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = g_iWinSizeX - g_iWinSizeX / 3;
+				eShopDesc.fY = g_iWinSizeY / 4;
+				eShopDesc.fSizeX = 60;
+				eShopDesc.fSizeY = 72.f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				pItemBG = dynamic_cast<CShopItemBG*>(pShopItem);
+
+				_vItemBG.push_back(pItemBG);
+				CUI_Manager::GetInstance()->Emplace_ShopItem(i, _vItemBG);
+
+			}
+			break;
+
+			case 1:
+			{
+				vector<CShopItemBG*> _vItemBG;
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = g_iWinSizeX / 2;
+				eShopDesc.fY = g_iWinSizeY / 2.5;
+				eShopDesc.fSizeX = 860.f;
+				eShopDesc.fSizeY = 110.f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				CShopItemBG* pItemBG = dynamic_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+
+
+
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = g_iWinSizeX / 3.5;
+				eShopDesc.fY = g_iWinSizeY / 2.5;
+				eShopDesc.fSizeX = 128.f;
+				eShopDesc.fSizeY = 128.f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 2;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				pItemBG = dynamic_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+
+
+
+
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = g_iWinSizeX - g_iWinSizeX / 3;
+				eShopDesc.fY = g_iWinSizeY / 2.5;
+				eShopDesc.fSizeX = 60;
+				eShopDesc.fSizeY = 72.f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				pItemBG = dynamic_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+
+
+				CUI_Manager::GetInstance()->Emplace_ShopItem(i, _vItemBG);
+
+			}
+			break;
+
+			case 2:
+			{
+				vector<CShopItemBG*> _vItemBG;
+
+			}
+			break;
+
+			case 3:
+			{
+				vector<CShopItemBG*> _vItemBG;
+
+			}
+			break;
+
+			case 4:
+			{
+				vector<CShopItemBG*> _vItemBG;
+
+			}
+			break;
+
+
+			}
+
+
+
+
+		}
+	}
+
+
 
 #pragma endregion ShopPanel UI
 
 #pragma region SettingPanel UI
 
-	_uint SettingPanelUICount = CUI::SETTINGPANEL::SETTING_END - 1;
+	_uint SettingPanelUICount = CUI::SETTINGPANEL::SETTING_END;
 
-	if (5 != CUI_Manager::GetInstance()->Get_SettingPanels().size())
+	if (SettingPanelUICount != CUI_Manager::GetInstance()->Get_SettingPanels().size())
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ParentSettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BG].iCurLevelID, _strLayerTag, &pDesc)))
 			return E_FAIL;
 	}
-	
+
+	for (size_t i = 0; i < CUI::SETTINGPANEL::SETTING_END; ++i)
+	{
+		pDescs[i].iCurLevelID = LEVEL_GAMEPLAY;
+	}
+
+
+	if (5 != CUI_Manager::GetInstance()->Get_SettingPanels().size())
+	{
 		for (size_t i = 0; i < CUI::SETTINGPANEL::SETTING_END; ++i)
 		{
-			pDescs[i].iCurLevelID = LEVEL_GAMEPLAY;
-		}
-		
-		
-		if (5 != CUI_Manager::GetInstance()->Get_SettingPanels().size())
-		{
-			for (size_t i = 0; i < CUI::SETTINGPANEL::SETTING_END; ++i)
+			CGameObject* pSettingPanel = { nullptr };
+			CUI::UIOBJDESC pSettingPanelDesc{};
+
+
+
+
+			switch (i)
 			{
-				CGameObject* pSettingPanel = { nullptr };
-				CUI::UIOBJDESC pSettingPanelDesc{};
+			case CUI::SETTINGPANEL::SETTING_BG:
+			{
+				pDescs[CUI::SETTINGPANEL::SETTING_BG].fX = g_iWinSizeX / 2.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BG].fY = g_iWinSizeY / 2.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BG].fSizeX = 1172.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BG].fSizeY = 772.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BG].iTextureCount = CUI::SETTINGPANEL::SETTING_BG;
+				pDescs[CUI::SETTINGPANEL::SETTING_BG].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BG;
 
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BG].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BG])))
+					return E_FAIL;
 
-
-
-				switch (i)
-				{
-				case CUI::SETTINGPANEL::SETTING_BG:
-				{
-					pDescs[CUI::SETTINGPANEL::SETTING_BG].fX = g_iWinSizeX / 2.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BG].fY = g_iWinSizeY / 2.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BG].fSizeX = 1172.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BG].fSizeY = 772.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BG].iTextureCount = CUI::SETTINGPANEL::SETTING_BG;
-					pDescs[CUI::SETTINGPANEL::SETTING_BG].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BG;
-
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BG].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BG])))
-						return E_FAIL;
-
-					CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BG].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
-					Safe_Release(pSettingPanel);
-
-				}
-				break;
-				case CUI::SETTINGPANEL::SETTING_BULB:
-				{
-					pDescs[CUI::SETTINGPANEL::SETTING_BULB].fX = g_iWinSizeX - g_iWinSizeX / 9.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BULB].fY = g_iWinSizeY / 10.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BULB].fSizeX = 60.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BULB].fSizeY = 82.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BULB].iTextureCount = CUI::SETTINGPANEL::SETTING_BULB;
-					pDescs[CUI::SETTINGPANEL::SETTING_BULB].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BULB;
-
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BULB].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BULB])))
-						return E_FAIL;
-
-					CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BULB].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
-					Safe_Release(pSettingPanel);
-				}
-				break;
-				case CUI::SETTINGPANEL::SETTING_BACKESC:
-				{
-
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fX = g_iWinSizeX / 14.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fY = g_iWinSizeY - g_iWinSizeY / 18.f;;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fSizeX = 72;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fSizeY = 72.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iTextureCount = CUI::SETTINGPANEL::SETTING_BACKESC;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BACKESC;
-
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BACKESC])))
-						return E_FAIL;
-
-					CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
-					Safe_Release(pSettingPanel);
-				}
-				break;
-				case CUI::SETTINGPANEL::SETTING_BACKARROW:
-				{
-
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fX = g_iWinSizeX / 30.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fSizeX = 72.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fSizeY = 72.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iTextureCount = CUI::SETTINGPANEL::SETTING_BACKARROW;
-					pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BACKARROW;
-
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW])))
-						return E_FAIL;
-
-					CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
-					Safe_Release(pSettingPanel);
-				}
-				break;
-				case CUI::SETTINGPANEL::SETTING_ESCENTER:
-				{
-					pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fX = g_iWinSizeX - g_iWinSizeX / 10.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fSizeX = 72.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fSizeY = 72.f;
-					pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iTextureCount = CUI::SETTINGPANEL::SETTING_ESCENTER;
-					pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCENTER;
-
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER])))
-						return E_FAIL;
-
-					CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
-					Safe_Release(pSettingPanel);
-				}
-				break;
-				case CUI::SETTINGPANEL::SETTING_HEART:
-				{
-					CGameObject* pSettingPanel = { nullptr };
-					pDesc.fX = g_iWinSizeX - g_iWinSizeX / 4.f;
-					pDesc.fY = g_iWinSizeY / 10.f;
-					pDesc.fSizeX = 128.f;
-					pDesc.fSizeY = 128.f;
-					pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_HEART;
-
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
-						return E_FAIL;
-
-				}
-				}
+				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BG].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
+				Safe_Release(pSettingPanel);
 
 			}
+			break;
+			case CUI::SETTINGPANEL::SETTING_BULB:
+			{
+				pDescs[CUI::SETTINGPANEL::SETTING_BULB].fX = g_iWinSizeX - g_iWinSizeX / 9.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BULB].fY = g_iWinSizeY / 10.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BULB].fSizeX = 60.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BULB].fSizeY = 82.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BULB].iTextureCount = CUI::SETTINGPANEL::SETTING_BULB;
+				pDescs[CUI::SETTINGPANEL::SETTING_BULB].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BULB;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BULB].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BULB])))
+					return E_FAIL;
+
+				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BULB].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
+				Safe_Release(pSettingPanel);
+			}
+			break;
+			case CUI::SETTINGPANEL::SETTING_BACKESC:
+			{
+
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].fX = g_iWinSizeX / 14.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].fSizeX = 40;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].fSizeY = 40.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].iTextureCount = CUI::SETTINGPANEL::SETTING_ESCBG;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCBG;
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_ESCBG])))
+					return E_FAIL;
+
+				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
+				Safe_Release(pSettingPanel);
+
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fX = g_iWinSizeX / 14.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fSizeX = 72;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fSizeY = 72.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iTextureCount = CUI::SETTINGPANEL::SETTING_BACKESC;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BACKESC;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BACKESC])))
+					return E_FAIL;
+
+				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
+				Safe_Release(pSettingPanel);
+
+
+
+
+
+
+			}
+			break;
+			case CUI::SETTINGPANEL::SETTING_BACKARROW:
+			{
+
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fX = g_iWinSizeX / 30.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fSizeX = 72.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].fSizeY = 72.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iTextureCount = CUI::SETTINGPANEL::SETTING_BACKARROW;
+				pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_BACKARROW;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW])))
+					return E_FAIL;
+
+				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
+				Safe_Release(pSettingPanel);
+			}
+			break;
+			case CUI::SETTINGPANEL::SETTING_ESCENTER:
+			{
+				pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].fX = g_iWinSizeX - g_iWinSizeX / 10.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].fSizeX = 40.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].fSizeY = 40.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].iTextureCount = CUI::SETTINGPANEL::SETTING_ENTERBG;
+				pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ENTERBG;
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG])))
+					return E_FAIL;
+
+				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
+				Safe_Release(pSettingPanel);
+
+
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fX = g_iWinSizeX - g_iWinSizeX / 10.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fSizeX = 72.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fSizeY = 72.f;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iTextureCount = CUI::SETTINGPANEL::SETTING_ESCENTER;
+				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCENTER;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iCurLevelID, _strLayerTag, &pSettingPanel, &pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER])))
+					return E_FAIL;
+
+				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iTextureCount, dynamic_cast<CSettingPanelBG*>(pSettingPanel));
+				Safe_Release(pSettingPanel);
+
+
+
+
+
+
+
+			}
+			break;
+			case CUI::SETTINGPANEL::SETTING_HEART:
+			{
+				CGameObject* pSettingPanel = { nullptr };
+				pDesc.fX = g_iWinSizeX - g_iWinSizeX / 4.f;
+				pDesc.fY = g_iWinSizeY / 10.f;
+				pDesc.fSizeX = 128.f;
+				pDesc.fSizeY = 128.f;
+				pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_HEART;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ESCHeartPoint"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
+					return E_FAIL;
+
+			}
+			}
+
 		}
-	
-		
-	
+	}
+
+
+
 
 
 #pragma endregion SettingPanel UI
 
-		return S_OK;
+	return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
@@ -606,7 +832,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -19.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
+
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;*/
 
 	CButterGrump::MONSTER_DESC Boss_Desc;
@@ -615,8 +847,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 20.35f, 90.0f);
 	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
-		return E_FAIL;
+	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
+		return E_FAIL;*/
 
 	return S_OK;
 }

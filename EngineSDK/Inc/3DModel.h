@@ -8,6 +8,18 @@ class CBone;
 class CAnimation;
 class ENGINE_DLL C3DModel : public CModel
 {
+public:
+	// 20250122 박예슬 : 셰이더에서 디퓨즈 색상값을 결정하는 enum
+	enum COLOR_SHADER_MODE {
+		// 디퓨즈 색상 그대로 렌더
+		COLOR_NONE,
+		// 주어진 색상 그대로 렌더
+		COLOR_DEFAULT,
+		// 디퓨즈와 주어진 색상 섞어서 렌더
+		MIX_DIFFUSE,
+		COLOR_SHADER_MODE_LAST
+	};
+
 protected:
 	C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C3DModel(const C3DModel& _Prototype);

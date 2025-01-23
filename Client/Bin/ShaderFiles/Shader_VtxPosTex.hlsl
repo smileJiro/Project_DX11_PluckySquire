@@ -136,6 +136,19 @@ PS_OUT PS_COLOR(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_UIPOINTSAMPLE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+    
+    if (Out.vColor.a < 0.01f)
+        discard;
+    
+    return Out;
+}
+
+
 
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
@@ -192,4 +205,15 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
+
+    pass UI_POINTSAMPLE
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_UIPOINTSAMPLE();
+    }
+
 }

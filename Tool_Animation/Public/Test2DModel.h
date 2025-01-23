@@ -2,6 +2,8 @@
 #include "2DModel.h"
 
 BEGIN(AnimTool)
+// C2DModel에서 JsonRawData를 읽어서 생성하는 기능과 
+// //model2D 파일로 Export하는 기능 추가됨.
 class CTest2DModel :
     public C2DModel
 {
@@ -11,7 +13,15 @@ protected:
 	virtual ~CTest2DModel() = default;
 
 public:
-    HRESULT			Initialize_Prototype_FromModelFile(const _char* _pModelFilePath);
+    HRESULT	 Initialize_Prototype_FromJsonFile(const _char* _szRawDataDirPath);
+    virtual HRESULT	Initialize_Prototype(const _char* _szModel2DFilePath);
+
+    HRESULT				Export_Model(ofstream& _outfile);
+
+    //Get
+    void						Get_TextureNames(set<wstring>& _outTextureNames);
+private:
+
 public:
     static CTest2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* pPath);
     virtual CComponent* Clone(void* _pArg) override;
