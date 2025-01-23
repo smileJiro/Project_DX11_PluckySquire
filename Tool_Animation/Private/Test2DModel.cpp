@@ -80,6 +80,24 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 			if (result.second == false)
 				Safe_Release(pTexture);
 		}
+		/*else if (entry.path().extension() == ".dds")
+		{
+			if (m_Textures.find(entry.path().filename().replace_extension().string()) != m_Textures.end())
+				continue;
+			ID3D11ShaderResourceView* pSRV = { nullptr };
+			HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pDevice, entry.path().c_str(), nullptr, &pSRV);
+			if (FAILED(hr))
+				return E_FAIL;
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext);
+			if (nullptr == pTexture)
+				return E_FAIL;
+			string strTextureName = entry.path().filename().replace_extension().string();
+			wstring wstrTextureName = StringToWstring(strTextureName);
+			pTexture->Add_Texture(pSRV, wstrTextureName.c_str());
+			auto result = m_Textures.insert({ strTextureName, pTexture });
+			if (result.second == false)
+				Safe_Release(pTexture);
+		}*/
 	}
 
 
