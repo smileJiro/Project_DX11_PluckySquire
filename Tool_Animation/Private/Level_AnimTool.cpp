@@ -219,33 +219,6 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 
 	SetWindowText(g_hWnd, TEXT("모델(을)를 로딩중입니다."));
 
-	CTestModelObject::TESTMODELOBJ_DESC tModelObjDesc{};
-	tModelObjDesc.isCoordChangeEnable = false;
-	tModelObjDesc.iCurLevelID = LEVEL_ANIMTOOL;
-	switch (_eType)
-	{
-	case AnimTool::CLevel_AnimTool::LOAD_3D:
-		tModelObjDesc.tTransform3DDesc.vInitialPosition = _float3(0, 0, 0);
-		tModelObjDesc.tTransform3DDesc.vInitialScaling = _float3(1, 1, 1);
-		tModelObjDesc.eStartCoord = COORDINATE_3D;
-		tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-		tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-		break;
-	case AnimTool::CLevel_AnimTool::LOAD_2D:
-	case AnimTool::CLevel_AnimTool::LOAD_RAW2D:
-		tModelObjDesc.tTransform2DDesc.vInitialPosition = _float3(0, 0, 0);
-		tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-		tModelObjDesc.eStartCoord = COORDINATE_2D;
-		tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
-		break;
-	case AnimTool::CLevel_AnimTool::LOAD_LAST:
-		break;
-	default:
-		break;
-	}
-
-
 	CModel* pTmpModel = nullptr;
 	switch (_eType)
 	{
@@ -270,6 +243,43 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 	default:
 		break;
 	}
+
+	CTestModelObject::TESTMODELOBJ_DESC tModelObjDesc{};
+	tModelObjDesc.isCoordChangeEnable = false;
+	tModelObjDesc.iCurLevelID = LEVEL_ANIMTOOL;
+	switch (_eType)
+	{
+	case AnimTool::CLevel_AnimTool::LOAD_3D:
+		if(pTmpModel->Is_AnimModel())
+		{
+			tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+			tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
+		}
+		else
+		{
+			tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+			tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+		}
+		tModelObjDesc.tTransform3DDesc.vInitialPosition = _float3(0, 0, 0);
+		tModelObjDesc.tTransform3DDesc.vInitialScaling = _float3(1, 1, 1);
+		tModelObjDesc.eStartCoord = COORDINATE_3D;
+		break;
+	case AnimTool::CLevel_AnimTool::LOAD_2D:
+	case AnimTool::CLevel_AnimTool::LOAD_RAW2D:
+		tModelObjDesc.tTransform2DDesc.vInitialPosition = _float3(0, 0, 0);
+		tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+		tModelObjDesc.eStartCoord = COORDINATE_2D;
+		tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+		break;
+	case AnimTool::CLevel_AnimTool::LOAD_LAST:
+		break;
+	default:
+		break;
+	}
+
+
+	
 	if (pTmpModel)
 	{
 		if(FAILED(pTmpModel->Initialize(nullptr)))

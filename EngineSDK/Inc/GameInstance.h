@@ -43,6 +43,7 @@ public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	void				Render_FPS(const _wstring& _strTimerTag);
 	_int				Get_FPS();
+	_uint				Get_FPS(const _wstring& _strTimerTag);
 	HRESULT				Add_Timer(const _wstring& _strTimerTag);
 	void				Update_TimeDelta(const _wstring& _strTimerTag);
 	HRESULT				Set_TimeScale(_float _fTimeScale, const _wstring& _strTimeTag);

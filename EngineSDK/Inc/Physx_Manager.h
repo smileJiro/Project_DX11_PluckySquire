@@ -56,6 +56,7 @@ private: /* Event CallBack Class */
 public:
 	void Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	void Delete_ShapeUserData();
+
 private: /* SHAPE_USERDATA : 메모리 해제용 */
 	vector<SHAPE_USERDATA*> m_pShapeUserDatas;
 
@@ -65,6 +66,8 @@ private: /* Test Object */
 	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
 	CShader*					m_pShader = nullptr;
 
+private:
+	float						m_fTimeAcc = 0.0f;
 private:
 	HRESULT						Initialize_Foundation();
 	HRESULT						Initialize_Physics();
