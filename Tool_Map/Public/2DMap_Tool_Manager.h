@@ -18,6 +18,7 @@ class CModelFile_Manager;
 class CImguiLogger;
 class CTask_Manager;
 class C2DDefault_RenderObject;
+class C2DTile_RenderObject;
 
 
 class C2DMap_Tool_Manager final : public CBase
@@ -102,7 +103,7 @@ private:
 	CGameInstance*					m_pGameInstance = { nullptr };
 	CImguiLogger*					m_pLogger = nullptr;
 	CTask_Manager*					m_pMapParsingManager;
-	
+	C2DTile_RenderObject*			m_pTileRenderObject = nullptr;
 	
 	_wstring						m_arrSelectName[LIST_END];
 

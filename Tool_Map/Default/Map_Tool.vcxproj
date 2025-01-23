@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\2DDefault_RenderObject.h" />
     <ClInclude Include="..\Public\2DMap_Tool_Manager.h" />
+    <ClInclude Include="..\Public\2DTile_RenderObject.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\gizmo\GraphEditor.h" />
     <ClInclude Include="..\Public\gizmo\ImCurveEdit.h" />
@@ -175,6 +176,7 @@
   <ItemGroup>
     <ClCompile Include="..\Private\2DDefault_RenderObject.cpp" />
     <ClCompile Include="..\Private\2DMap_Tool_Manager.cpp" />
+    <ClCompile Include="..\Private\2DTile_RenderObject.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\gizmo\GraphEditor.cpp" />
     <ClCompile Include="..\Private\gizmo\ImCurveEdit.cpp" />
