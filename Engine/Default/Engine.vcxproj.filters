@@ -495,7 +495,9 @@
     <ClInclude Include="..\Public\Animation2D.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Frustum.h" />
+    <ClInclude Include="..\public\Frustum.h">
+      <Filter>01.Utility\13.Frustum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -729,7 +731,9 @@
     <ClCompile Include="..\Private\Animation2D.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Frustum.cpp" />
+    <ClCompile Include="..\private\Frustum.cpp">
+      <Filter>01.Utility\13.Frustum</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
