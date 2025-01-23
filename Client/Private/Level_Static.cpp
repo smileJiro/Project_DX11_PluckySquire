@@ -19,7 +19,7 @@ HRESULT CLevel_Static::Initialize()
 
 void CLevel_Static::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::ENTER))
+	//if (KEY_DOWN(KEY::ENTER))
 		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
 
 }

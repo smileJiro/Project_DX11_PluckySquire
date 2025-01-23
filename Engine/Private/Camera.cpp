@@ -398,10 +398,10 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 
 	switch (_iRatioType) {
 	case EASE_IN:
-		fRatio = (fRatio + pow(fRatio, 2)) * 0.5f;
+		fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
 		break;
 	case EASE_OUT:
-		fRatio = 1.0f - ((1.0f - fRatio) + pow(1.0f - fRatio, 2)) * 0.5f;
+		fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
 		break;
 	case LERP:
 		break;

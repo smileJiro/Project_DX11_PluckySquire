@@ -357,7 +357,6 @@ HRESULT CModel_PackagingObject::Export_Animations(ofstream& _OutFile)
 		_OutFile.write((char*)&tAnim.iNameSize, sizeof(_uint));
 		_OutFile.write((char*)&tAnim.szName, tAnim.iNameSize);
 
-
 		_double dValue = 0.0;
 		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(double));
 		tAnim.fDuration = (_float)dValue;

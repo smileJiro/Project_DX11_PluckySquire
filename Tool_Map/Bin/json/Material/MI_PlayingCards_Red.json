@@ -1,0 +1,118 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_PlayingCards_Red",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'MM_SpaceAssets'",
+        "ObjectPath": "/Game/Map/3D/Objects/SpaceAssets/MM_SpaceAssets.0"
+      },
+      "bHasStaticPermutationResource": true,
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "RoughnessPower",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.49205,
+          "ExpressionGUID": "6345B63E-495712C5-41A8A3A5-32672A3A"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "TextureParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "AlbedoMap",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'Card_04'",
+            "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/Card_04.0"
+          },
+          "ExpressionGUID": "C88E0418-4DB18D0E-796F00A1-F03A6DC2"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RMA Map",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "ObjectName": "Texture2D'PlayingCards_RMA'",
+            "ObjectPath": "/Game/Map/3D/Objects/PlayingCards/PlayingCards_RMA.0"
+          },
+          "ExpressionGUID": "B3045107-4F4F1AD9-3EF460BD-6865356E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "OpacityMaskClipValue": 0.3333
+      },
+      "StaticParameters": {
+        "StaticSwitchParameters": [
+          {
+            "Value": true,
+            "ParameterInfo": {
+              "Name": "UseFlatNormal",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            "bOverride": true,
+            "ExpressionGUID": "3E556116-4DA06C31-91C3CC82-DC56B59B"
+          },
+          {
+            "Value": true,
+            "ParameterInfo": {
+              "Name": "UseFlatRoughness",
+              "Association": "GlobalParameter",
+              "Index": -1
+            },
+            "bOverride": true,
+            "ExpressionGUID": "4AD85EF1-495D9FEF-7CD2EE8A-7BC8B315"
+          }
+        ]
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'objects_icon_style_rocket_1_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/SpaceAssets/Rocket_01/objects_icon_style_rocket_1_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'objects_icon_style_rocket_1_Roughness'",
+          "ObjectPath": "/Game/Map/3D/Objects/SpaceAssets/Rocket_01/objects_icon_style_rocket_1_Roughness.0"
+        },
+        {
+          "ObjectName": "Texture2D'TX_Planets_Toy_01a_NRM'",
+          "ObjectPath": "/Game/Map/3D/Objects/SpaceAssets/PlanetToy/TX_Planets_Toy_01a_NRM.0"
+        },
+        {
+          "ObjectName": "Texture2D'Rocket_01_AlbedoMask'",
+          "ObjectPath": "/Game/Map/3D/Objects/SpaceAssets/Rocket_01/Rocket_01_AlbedoMask.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Card_04"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "PlayingCards_RMA"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

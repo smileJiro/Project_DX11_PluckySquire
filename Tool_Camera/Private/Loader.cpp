@@ -172,15 +172,12 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
     //    return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
-        TEXT("../../Client/Bin/Resources/Models/Anim/Latch_SkelMesh_NewRig/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/"), matPretransform)))
+        return E_FAIL;
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("latch_glove"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/latch_glove/latch_glove.model", matPretransform))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("latch_sword"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/latch_sword/latch_sword.model", matPretransform))))
-        return E_FAIL;  
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("WoodenPlatform_01"),
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
         return E_FAIL;

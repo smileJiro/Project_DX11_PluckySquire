@@ -48,6 +48,19 @@ void CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName)
 	m_isStartCutScene = true;
 }
 
+void CCamera_CutScene::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene)
+{
+	vector<CCutScene_Sector*>* pCutScene = Find_CutScene(_wszCutSceneTag);
+
+	if (nullptr == pCutScene)
+		return;
+
+	for (auto& Sector : _vecCutScene)
+		Sector->Sort_Sector();
+	
+	m_CutScenes.emplace(_wszCutSceneTag, _vecCutScene);
+}
+
 void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 {
 	if (nullptr == m_pCurCutScene || true == m_isStartCutScene || true == m_isFinishCutScene)
@@ -62,7 +75,7 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 
 		if (m_iCurSectorCount >= m_iCurSectorNum) {
 			m_iCurSectorCount = 0;
-			m_isFinishCutScene == true;
+			m_isFinishCutScene = true;
 		}
 		else {
 			Change_Sector();
@@ -77,6 +90,7 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 
 void CCamera_CutScene::Change_Sector()
 {
+	// 이거 필요한가? 어차ㅠ피 바로 ++로 바꾸는데 아무튼
 }
 
 vector<CCutScene_Sector*>* CCamera_CutScene::Find_CutScene(_wstring _wszCutSceneName)

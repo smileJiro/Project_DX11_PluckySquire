@@ -1,0 +1,86 @@
+[
+  {
+    "Type": "MaterialInstanceConstant",
+    "Name": "MI_Carrots_SSS",
+    "Class": "UScriptClass'MaterialInstanceConstant'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "Material'M_Food_SSS'",
+        "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Materials/M_Food_SSS.0"
+      },
+      "ScalarParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Opacity",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.9,
+          "ExpressionGUID": "C47BEDB7-47779346-ED4F31B4-7FDF7411"
+        },
+        {
+          "ParameterInfo": {
+            "Name": "RefractionDepthBias",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": 0.0,
+          "ExpressionGUID": "00000000-00000000-00000000-00000000"
+        }
+      ],
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "SSS Color",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.817708,
+            "G": 0.189473,
+            "B": 0.0,
+            "A": 1.0,
+            "Hex": "EA7800"
+          },
+          "ExpressionGUID": "11FE6958-41113DC5-C6741292-4802B816"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Subsurface",
+        "OpacityMaskClipValue": 0.3333
+      },
+      "CachedReferencedTextures": [
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_BaseColor'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_BaseColor.0"
+        },
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_OcclusionRoughnessMetallic'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_OcclusionRoughnessMetallic.0"
+        },
+        {
+          "ObjectName": "Texture2D'Carrot_01_1_Normal'",
+          "ObjectPath": "/Game/Map/3D/Objects/Lunch_Box/Snacks/Textures/Carrot_01_1_Normal.0"
+        }
+      ],
+      "TextureStreamingData": [
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Carrot_01_1_BaseColor"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Carrot_01_1_Normal"
+        },
+        {
+          "SamplingScale": 1.0,
+          "UVChannelIndex": 0,
+          "TextureName": "Carrot_01_1_OcclusionRoughnessMetallic"
+        }
+      ]
+    },
+    "LoadedMaterialResources": []
+  }
+]

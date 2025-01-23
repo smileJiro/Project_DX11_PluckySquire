@@ -32,6 +32,7 @@
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
+#include "MapObject.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -171,12 +172,6 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
         return E_FAIL;
-
-    ///* For. Prototype_Component_Shader_VtxRectInstance */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxRectInstance"),
-    //    CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxRectInstance.hlsl"), VTXRECTINSTANCE::Elements, VTXRECTINSTANCE::iNumElements))))
-    //    return E_FAIL;
-
     /* For. Prototype_Component_Shader_VtxPointInstance */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPointInstance"),
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"), VTXPOINTPARTICLE::Elements, VTXPOINTPARTICLE::iNumElements))))
@@ -186,10 +181,9 @@ HRESULT CLoader::Loading_Level_Static()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/MapSaveFiles/Room_Enviroment.json"), matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/MapSaveFiles/Room_Free_Enviroment.json"), matPretransform)))
         return E_FAIL;
-    //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/Resources/Json/Persistent_Streets.json"), matPretransform)))
-    //    return E_FAIL;
+
 
     /* For. Prototype_Component_VIBuffer_Rect */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
@@ -225,6 +219,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+        CMapObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -388,37 +387,27 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/player.model2D")))))
         return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     
-    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Desk.json"), matPretransform)))
-        return E_FAIL;
+    //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
+    //    return E_FAIL;
 
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
-        TEXT("../Bin/Resources/Models/Anim/"), matPretransform)))
+        TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("latch_glove"),
-        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/latch_glove/latch_glove.model", matPretransform))))
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
+        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("latch_sword"),
-        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/latch_sword/latch_sword.model", matPretransform))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("WoodenPlatform_01"),
-    C3DModel::Create(m_pDevice, m_pContext,  "../Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
-         return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
         CPlayer::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-    /* For. Prototype_GameObject_TestTerrain */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestTerrain"),
-        CTestTerrain::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Camera_Free */
@@ -431,7 +420,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Camera_Target */
+    /* For. Prototype_GameObject_MapObject */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -485,8 +474,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
 
 
-    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Desk.mchc");
-    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
+    //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
+    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Free_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -644,7 +633,6 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
     string strFileName;
 	_uint iLoadedCount = 0;
     _uint iLoadCount = (_uint)strModelNames.size();
-	//cout << "LoadStart : " << iLoadCount << endl;
     for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
         if (entry.path().extension() != ".model") continue; 
         strFileName = entry.path().filename().replace_extension().string();
@@ -654,10 +642,8 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
                 return E_FAIL;
 			iLoadedCount++;
-            //cout << iLoadedCount << endl;
 			if (iLoadedCount >= iLoadCount)
             {
-				//cout << iLoadedCount << "Models Loaded" << endl;
                 break;
             }
         }
@@ -718,7 +704,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
             NormalDesc.eStartCoord = COORDINATE_3D;
             CGameObject* pGameObject = nullptr;
-            m_pGameInstance->Add_GameObject_ToLayer(_eObjectLevelId, TEXT("Prototype_GameObject_MapObject"),
+            m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
                 _eObjectLevelId,
                 strLayerTag,
                 &pGameObject,
@@ -728,6 +714,25 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             {
                 DWORD	dwByte(0);
                 _uint iOverrideCount = 0;
+                C3DModel::COLOR_SHADER_MODE eTextureType;
+                _float4 fDefaultDiffuseColor;
+                
+
+                ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+                static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
+
+                switch (eTextureType)
+                {
+                    case Engine::C3DModel::COLOR_DEFAULT:
+                    case Engine::C3DModel::MIX_DIFFUSE:
+                    {
+                        ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+                        static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
+                    }
+                        break;
+                    default:
+                        break;
+                }
 
                 ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
                 if (0 < iOverrideCount)

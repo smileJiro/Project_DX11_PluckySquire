@@ -29,7 +29,6 @@ HRESULT CFbxToBinary::FbxToBinary(const string& inFilePath)
 		m_pAIScene = m_Importer.ReadFile(inFilePath, iFlag);
 	}
 
-	//Mimic 모델??경우 무조�?m_bAnim??true�???�?
 	//m_bAnim = true;
 
 	if (0 == m_pAIScene)
@@ -161,12 +160,12 @@ HRESULT CFbxToBinary::Write_Meshe(const aiMesh* pAIMesh, ofstream& outFile)
 //55, 44
 HRESULT CFbxToBinary::Write_Material(const aiMaterial* pAIMaterial, ofstream& outFile)
 {
-	for (size_t texTypeIdx = 1; texTypeIdx < AI_TEXTURE_TYPE_MAX; texTypeIdx++)
+	for (_uint texTypeIdx = 1; texTypeIdx < AI_TEXTURE_TYPE_MAX; texTypeIdx++)
 	{
 		_uint numTextures = pAIMaterial->GetTextureCount(aiTextureType(texTypeIdx));
 		outFile.write(reinterpret_cast<const char*>(&numTextures), sizeof(_uint));
 		//cout << numTextures << endl;
-		for (size_t i = 0; i < numTextures; i++)
+		for (_uint i = 0; i < numTextures; i++)
 		{
 			aiString strPath;
 			pAIMaterial->GetTexture(aiTextureType(texTypeIdx), i, &strPath);

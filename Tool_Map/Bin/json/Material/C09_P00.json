@@ -1,0 +1,1420 @@
+[
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "BookPageSetter_ResetFurthestPage8",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'BookPageSetter_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/DESK/BookPageSetter_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.25"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Switch_ResetFurthestPage8",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Default__Switch_BP_C:Billboard'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C09_P00:PersistentLevel.Switch_ResetFurthestPage8.Collider'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.29"
+      }
+    }
+  },
+  {
+    "Type": "BookPageSetter_BP_C",
+    "Name": "BookPageSetter_ResetFurthestPage8",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/DESK/BookPageSetter_BP.BookPageSetter_BP_C'",
+    "Template": {
+      "ObjectName": "BookPageSetter_BP_C'Default__BookPageSetter_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/DESK/BookPageSetter_BP.1"
+    },
+    "Properties": {
+      "Billboard": {
+        "ObjectName": "BillboardComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.Billboard'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.0"
+      },
+      "DefaultSceneRoot": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.25"
+      },
+      "BookToSet": {
+        "AssetPathName": "/Game/Levels/_Persistent/MainLevel.MainLevel",
+        "SubPathString": "PersistentLevel.Book_MAIN"
+      },
+      "bChangeCurrentPage": false,
+      "bChangeFurthestPage": true,
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.6"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.20"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.16"
+      },
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.11"
+      },
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": {
+            "ObjectName": "Texture2D'EmptyActor'",
+            "ObjectPath": "/Engine/EditorResources/EmptyActor.0"
+          }
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.DefaultSceneRoot'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.25"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "SceneComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.DefaultSceneRoot'",
+          "ObjectPath": "/Game/Levels/C09/C09_P00.25"
+        },
+        {
+          "ObjectName": "BillboardComponent'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8.Billboard'",
+          "ObjectPath": "/Game/Levels/C09/C09_P00.0"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 3940.0,
+        "Y": 1180.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": []
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": []
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 3940.0,
+        "Y": 400.0,
+        "Z": 100.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage'",
+              "ObjectPath": "/Game/Levels/C09/C09_P00.11"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 250.0,
+        "Z": -1880.0
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "StoryPanel_BP_2",
+    "Class": "UScriptClass'CameraComponent'",
+    "Template": {
+      "ObjectName": "CameraComponent'Default__StoryPanel_BP_C:CameraComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.Camera Root'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.27"
+      },
+      "RelativeLocation": {
+        "X": -3458.9985,
+        "Y": -0.0021972656,
+        "Z": 0.00048828125
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "BookPageSetter_ResetFurthestPage8",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__BookPageSetter_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/DESK/BookPageSetter_BP.3"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "StoryPanel_BP_2",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__StoryPanel_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.3"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Switch_ResetFurthestPage8",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Switch_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.3"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "C09_P00",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'C09_P00:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.12"
+      },
+      "LevelBuildDataId": "023558CF-477CC663-1457DC91-1C515DE9",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'C09_P00:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.39"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'C09_P00:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.39"
+      },
+      null,
+      {
+        "ObjectName": "MinigameController_BP_C'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.11"
+      },
+      {
+        "ObjectName": "Switch_BP_C'C09_P00:PersistentLevel.Switch_ResetFurthestPage8'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.37"
+      },
+      {
+        "ObjectName": "BookPageSetter_BP_C'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.2"
+      },
+      {
+        "ObjectName": "StoryPanel_BP_C'C09_P00:PersistentLevel.StoryPanel_BP_2'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.36"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/_Persistent/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'C09_P00:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/C09/C09_P00.12"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_3",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Colour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.564712,
+            "G": 0.219526,
+            "B": 0.64448,
+            "A": 1.0,
+            "Hex": "C681D2"
+          },
+          "ExpressionGUID": "00CD460C-495C6B8B-38DCA081-E90F425E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_C09_P00_BlankPage",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/_Persistent/MainLevel.MainLevel",
+        "SubPathString": "PersistentLevel.Book_MAIN"
+      },
+      "BookID": 0,
+      "LevelSizePixels": {
+        "X": 7680.0,
+        "Y": 2160.0
+      },
+      "GameType": "EGameType::Story",
+      "SpreadType": "EPageSpreadType::Double",
+      "ScrollType": "EScrollType::DoublePagePan",
+      "BackgroundColour": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 0.0,
+        "A": 1.0,
+        "Hex": "000000"
+      },
+      "LevelWidth": 2.0,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.GameVolume'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.3"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.35"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.32"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.33"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.34"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.KillVolume'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.4"
+      },
+      "StoryPanels": [
+        {
+          "OrderInSequence": 0,
+          "StoryPanel": {
+            "ObjectName": "StoryPanel_BP_C'C09_P00:PersistentLevel.StoryPanel_BP_2'",
+            "ObjectPath": "/Game/Levels/C09/C09_P00.36"
+          }
+        }
+      ],
+      "CameraPanTime": [
+        0.5
+      ],
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.GameBackground'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.31"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.14"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.30"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.15"
+      },
+      "SwitchToTriggerOnMinigameStart": {
+        "AssetPathName": "/Game/Levels/C09/C09_P00.C09_P00",
+        "SubPathString": "PersistentLevel.Switch_ResetFurthestPage8"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.24"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/Map/Objects/White_16_9.White_16_9",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/White_16_9_Sprite.White_16_9_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Textures/C09_P02-0.C09_P02-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0001_X01.C09_P02_Into_0001_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0002_X01.C09_P02_Into_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0003_X01.C09_P02_Into_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Textures/C09_P02-4.C09_P02-4",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0004_X01.C09_P02_Into_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0005_X01.C09_P02_Into_0005_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Textures/C09_P02-5.C09_P02-5",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0006_X01.C09_P02_Into_0006_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0007_X01.C09_P02_Into_0007_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0008_X01.C09_P02_Into_0008_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0009_X02.C09_P02_Into_0009_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0010_X03.C09_P02_Into_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Textures/C09_P02-6.C09_P02-6",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0011_X03.C09_P02_Into_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0012_X04.C09_P02_Into_0012_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0013_X04.C09_P02_Into_0013_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0014_X04.C09_P02_Into_0014_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0015_X04.C09_P02_Into_0015_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0016_X02.C09_P02_Into_0016_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Textures/C09_P02-1.C09_P02-1",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0017_X01.C09_P02_Into_0017_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Textures/C09_P02-2.C09_P02-2",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0018_X02.C09_P02_Into_0018_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0019_X02.C09_P02_Into_0019_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0020_X03.C09_P02_Into_0020_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0021_X04.C09_P02_Into_0021_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Textures/C09_P02-3.C09_P02-3",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0022_X04.C09_P02_Into_0022_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0023_X04.C09_P02_Into_0023_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into_0024_X04.C09_P02_Into_0024_X04",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Into.C09_P02_Into",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0001_X03.C09_P02_Loop_0001_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0002_X03.C09_P02_Loop_0002_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0003_X03.C09_P02_Loop_0003_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0004_X03.C09_P02_Loop_0004_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0005_X03.C09_P02_Loop_0005_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0006_X03.C09_P02_Loop_0006_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0007_X03.C09_P02_Loop_0007_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0008_X03.C09_P02_Loop_0008_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0009_X03.C09_P02_Loop_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop_0010_X03.C09_P02_Loop_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/P02/Frames/C09_P02_Loop.C09_P02_Loop",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Textures/genericexplosion-0.genericexplosion-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0001_X02.genericexplosion_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0002_X01.genericexplosion_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0003_X01.genericexplosion_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0004_X01.genericexplosion_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0005_X02.genericexplosion_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0006_X02.genericexplosion_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0007_X02.genericexplosion_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0008_X02.genericexplosion_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0009_X03.genericexplosion_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0010_X03.genericexplosion_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0011_X03.genericexplosion_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0012_X03.genericexplosion_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/generic_explosion.generic_explosion",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/StorySequences/P88/Textures/C09_P88-0.C09_P88-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/StorySequences/P88/Frames/C09_P88_0020_X20.C09_P88_0020_X20",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/C09_01.C09_01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_09/Story_Sequences/C09_01_Sprite.C09_01_Sprite",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.21"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.17"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "C36F0594-4D094013-97F83FA5-1C75EBA8",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "SpriteColor": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 0.0,
+        "A": 1.0,
+        "Hex": "000000"
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      },
+      "RelativeScale3D": {
+        "X": 51.75,
+        "Y": 30.0,
+        "Z": 30.0
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "BookPageSetter_ResetFurthestPage8",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__BookPageSetter_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/DESK/BookPageSetter_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "StoryPanel_BP_2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__StoryPanel_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Switch_ResetFurthestPage8",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Switch_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.4"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "BookPageSetter_ResetFurthestPage8",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__BookPageSetter_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/DESK/BookPageSetter_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "StoryPanel_BP_2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__StoryPanel_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Switch_ResetFurthestPage8",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Switch_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.5"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "DefaultSceneRoot",
+    "Outer": "BookPageSetter_ResetFurthestPage8",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'BookPageSetter_BP_C:DefaultSceneRoot_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/DESK/BookPageSetter_BP.6"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": -40424.0,
+        "Y": 96077.0,
+        "Z": 21000.0
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript",
+      "UCSModifiedProperties": [
+        {
+          "MemberParent": {
+            "ObjectName": "Class'SceneComponent'",
+            "ObjectPath": "/Script/Engine"
+          },
+          "MemberName": "RelativeLocation",
+          "MemberGuid": "00000000-00000000-00000000-00000000"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": -40703.0,
+        "Y": 97051.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "Camera Root",
+    "Outer": "StoryPanel_BP_2",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__StoryPanel_BP_C:Camera Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.6"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.28"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "StoryPanel_BP_2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__StoryPanel_BP_C:Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Collider",
+    "Outer": "Switch_ResetFurthestPage8",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Switch_BP_C:Collider'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.9"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": -40569.0,
+        "Y": 96077.0,
+        "Z": 21000.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      },
+      "RelativeScale3D": {
+        "X": 76.99999,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.MaterialInstanceDynamic_3'",
+          "ObjectPath": "/Game/Levels/C09/C09_P00.10"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      },
+      "RelativeScale3D": {
+        "X": 76.99999,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      },
+      "RelativeScale3D": {
+        "X": 78.799995,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      },
+      "RelativeLocation": {
+        "X": -3890.0,
+        "Y": 0.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      },
+      "RelativeLocation": {
+        "X": 3890.0,
+        "Y": 0.0,
+        "Z": 50.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_C09_P00_BlankPage",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage.ROOT '",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.26"
+      },
+      "RelativeScale3D": {
+        "X": 78.799995,
+        "Y": 1.0,
+        "Z": 20.0
+      }
+    }
+  },
+  {
+    "Type": "StoryPanel_BP_C",
+    "Name": "StoryPanel_BP_2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.StoryPanel_BP_C'",
+    "Template": {
+      "ObjectName": "StoryPanel_BP_C'Default__StoryPanel_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.1"
+    },
+    "Properties": {
+      "Root": {
+        "ObjectName": "SphereComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.28"
+      },
+      "CameraRoot": {
+        "ObjectName": "SceneComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.Camera Root'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.27"
+      },
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.CameraComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.5"
+      },
+      "CameraDistance": 3459.0,
+      "DelayBeforeNextPage": 0.1,
+      "StorySequence": [
+        {
+          "DeveloperComment": "Nothing",
+          "Time": 0.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": []
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.7"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.22"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.18"
+      },
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.11"
+      },
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C09_P00:PersistentLevel.StoryPanel_BP_2.Root'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.28"
+      }
+    }
+  },
+  {
+    "Type": "Switch_BP_C",
+    "Name": "Switch_ResetFurthestPage8",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Switch_BP.Switch_BP_C'",
+    "Template": {
+      "ObjectName": "Switch_BP_C'Default__Switch_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Switch_BP.1"
+    },
+    "Properties": {
+      "Links": [
+        {
+          "DeveloperComment": "Set page to 0",
+          "OnlyRunsOnFlags": 0,
+          "NeverRunsOnFlags": 0,
+          "TargetActor": {
+            "ObjectName": "BookPageSetter_BP_C'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8'",
+            "ObjectPath": "/Game/Levels/C09/C09_P00.2"
+          },
+          "AdditionalTargets": [],
+          "PersistentLevelTargetActor": {
+            "AssetPathName": "None",
+            "SubPathString": ""
+          },
+          "bReportActivation": false,
+          "bAddSelectedObjectsAsAdditionalTargets": false,
+          "PreviousTargetActor": {
+            "ObjectName": "BookPageSetter_BP_C'C09_P00:PersistentLevel.BookPageSetter_ResetFurthestPage8'",
+            "ObjectPath": "/Game/Levels/C09/C09_P00.2"
+          },
+          "bAffectPlayer": false,
+          "bAffectFollowingNPC": false,
+          "SpecificFollowingNPCClass": null,
+          "bTargetTriggerActorClass": false,
+          "Parameter": "ESwitchParameter::None",
+          "SwitchType": "ESwitchType::TurnOn",
+          "bOneShot": true,
+          "Delay": 0.0
+        }
+      ],
+      "SphereComp": {
+        "ObjectName": "SphereComponent'C09_P00:PersistentLevel.Switch_ResetFurthestPage8.Collider'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.29"
+      },
+      "BillboardComp": {
+        "ObjectName": "BillboardComponent'C09_P00:PersistentLevel.Switch_ResetFurthestPage8.Billboard'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.1"
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C09_P00:PersistentLevel.Switch_ResetFurthestPage8.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.8"
+      },
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C09_P00:PersistentLevel.Switch_ResetFurthestPage8.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.23"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C09_P00:PersistentLevel.Switch_ResetFurthestPage8.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.19"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C09_P00:PersistentLevel.MGC_C09_P00_BlankPage'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.11"
+      },
+      "ColouredBillboardComponent": {
+        "ObjectName": "BillboardComponent'C09_P00:PersistentLevel.Switch_ResetFurthestPage8.Billboard'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.1"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C09_P00:PersistentLevel.Switch_ResetFurthestPage8.Collider'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.29"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "C09_P00",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'C09_P00:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/C09/C09_P00.9"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'C09_P00:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/C09/C09_P00.13"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

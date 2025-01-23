@@ -20,4 +20,5 @@ namespace AnimTool
 	std::string MatrixToString(_float4x4 vMatrix);
 	std::wstring OpenFileDialog(LPCWSTR szFilter);
 	std::wstring OpenDirectoryDialog();
+	std::wstring SaveFileDialog(LPCWSTR szFilter,const std::wstring& defaultName = L"");
 }

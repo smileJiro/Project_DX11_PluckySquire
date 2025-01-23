@@ -23,6 +23,8 @@ public:
 
 public:
 	_bool						Play_Sector(_float _fTimeDelta, _vector* _pOutPos);
+	void						Sort_Sector();
+	void						Add_KeyFrame(CUTSCENE_KEYFRAME _tKeyFrame);
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };
@@ -35,8 +37,9 @@ private:
 	SECTOR_TYPE					m_eSectorType = { SECTOR_TYPE_END };
 
 private:
-	_vector						Calculate_Position(_float _fRatio);
-
+	_vector						Calculate_Position_Spline(_float _fRatio);
+	_vector						Calculate_Position_Linear(_float _fRatio);
+	
 public:
 	static CCutScene_Sector*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg);
 	CCutScene_Sector*			Clone();
