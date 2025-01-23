@@ -71,23 +71,26 @@ private:
 	_bool								m_isCreatePoint = { false };
 	_bool								m_isEditPoint = { false };
 	_bool								m_isCreateSector = { false };
-	
+	_bool								m_isEditSector = {};
+
 	list<pair<CUTSCENE_KEYFRAME, CGameObject*>>		m_KeyFrames;
 	pair<CUTSCENE_KEYFRAME, CGameObject*>*			m_pCurKeyFrame = { nullptr };
 
-	vector<CCutScene_Sector*>				m_CurCutScene;
+	map<_wstring, vector<CCutScene_Sector*>>		m_CutScenes;
 	vector<CUTSCENE_KEYFRAME>				m_SelectedKeyFrame;
 	_uint									m_iSectorType = {};
-	_uint									m_iSectorNum = {};
+	_int									m_iDeleteSectorNum = {};
+
+	// Sector와 CutScene에 들어간 것들을 수정하기 위한 변수
+	_int									m_iEditSectorNum = {};
+	_int									m_iEditFrameNum = {};
+
+	_char									m_szCutSceneTag[MAX_PATH] = { "" };
+	vector<_wstring>						m_CutSceneTags;
+	_uint									m_iSelectedCutSceneNum = {};
 
 	// Frame Info
-	_float3									m_vKeyFramePos = {};
-	_float									m_fTimeStamp = {};
-	_int									m_iKeyFrameZoomLevel = {};
-	_uint									m_iKeyFrameZoomRatio = {};
-	_float3									m_vKeyFrameAt = {};
-	_bool									m_isKeyFrameLookAt = { true };
-	_uint									m_iKeyFrameAtRatio = {};
+	CUTSCENE_KEYFRAME						m_tKeyFrameInfo = {};
 
 private:
 	void				Show_CameraTool();
@@ -101,9 +104,9 @@ private:
 	void				Show_CameraZoomInfo();
 
 	//CutScene
-	void				Set_KeyFrameInfo();
-	void				Show_KeyFrameInfo();
 
+	void				Show_KeyFrameInfo();
+	void				Show_CutSceneComboBox();
 private:
 	// Tool
 	void				Rotate_Arm();
@@ -118,6 +121,7 @@ private:
 	void				Set_ShakeInfo();
 
 	// CutScene
+	void				Set_KeyFrameInfo();
 	void				Create_KeyFrame();
 	CGameObject*		Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame);
 	void				Edit_KeyFrame();
@@ -125,6 +129,7 @@ private:
 	void				Set_CurrentKeyFrame();
 
 	void				Create_Sector();
+	void				Edit_Sector();
 	
 	void				Picking();
 	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
