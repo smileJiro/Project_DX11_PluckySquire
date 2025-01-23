@@ -340,6 +340,12 @@
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapObject.h" />
+    <ClInclude Include="..\Public\Boss_EnergyBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossIdleState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -508,6 +514,12 @@
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp" />
+    <ClCompile Include="..\Private\Boss_EnergyBall.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossIdleState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

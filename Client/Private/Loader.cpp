@@ -39,6 +39,7 @@
 #include "Projectile_BarfBug.h"
 #include "ButterGrump.h"
 #include "Boss_HomingBall.h"
+#include "Boss_EnergyBall.h"
 #include "FSM_Boss.h"
 
 
@@ -435,9 +436,13 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CBoss_HomingBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_EnergyBall"),
+        CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
-    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
-    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
+
+    //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
+    //Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

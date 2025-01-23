@@ -254,7 +254,7 @@ HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
 	if (nullptr == pFSM)
 		return E_FAIL;
 
-	pFSM->Change_State(eState);
+	pFSM->Change_State((_uint)eState);
 
 	return S_OK;
 }
@@ -273,7 +273,7 @@ HRESULT CEvent_Manager::Excute_ChangeBossState(const EVENT& _tEvent)
 	if (nullptr == pFSM)
 		return E_FAIL;
 
-	pFSM->Change_State(eState);
+	pFSM->Change_State((_uint)eState);
 
 	return S_OK;
 }

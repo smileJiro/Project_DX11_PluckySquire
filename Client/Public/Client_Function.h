@@ -20,7 +20,7 @@ namespace Client
 	void Event_SetActive(CBase* _pObject, _bool _isActive, _bool _isDelay = false);
 	void Event_Setup_SimulationFiltering(_uint _MyGroup, _uint _OtherGroupMask);
 	void Event_ChangeMonsterState(MONSTER_STATE _eState, CFSM* _pFSM);
-	void Event_ChangeBossState(BOSS_STATE _eState, CFSM_Boss* _pFSM);
+	void Event_ChangeBossState(BOSS_STATE _eState, CFSM* _pFSM);
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 

@@ -4,11 +4,11 @@
 BEGIN(Client)
 
 
-class CBossAttackState final : public CState
+class CBossIdleState final : public CState
 {
 private:
-	CBossAttackState();
-	virtual ~CBossAttackState() = default;
+	CBossIdleState();
+	virtual ~CBossIdleState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -19,11 +19,11 @@ public:
 	virtual void State_Exit() override;
 
 private:
-	_float m_fDelay = {};
+	_float m_fCoolTime = { 0.f };
 	_float m_fAccTime = { 0.f };
 
 public:
-	static CBossAttackState* Create(void* _pArg);
+	static CBossIdleState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

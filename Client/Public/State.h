@@ -38,6 +38,9 @@ public:
 	//state 전환시 빠져나가면서 불림
 	virtual void State_Exit() = 0;
 
+	//FSM에 상태가 끝나고 전환가능한지 알려줌
+	_bool IsTransition_Ready() {};
+
 public:
 	HRESULT CleanUp();
 

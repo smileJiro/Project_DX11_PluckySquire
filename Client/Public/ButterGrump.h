@@ -75,6 +75,7 @@ public:
 private:
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
+	HRESULT								Ready_Projectiles();
 
 private:
 	CFSM_Boss* m_pBossFSM = { nullptr };

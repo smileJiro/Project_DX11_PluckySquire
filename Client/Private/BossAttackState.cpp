@@ -15,6 +15,8 @@ HRESULT CBossAttackState::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	m_fDelay = 0.5f;
 		
 	return S_OK;
 }
@@ -22,10 +24,12 @@ HRESULT CBossAttackState::Initialize(void* _pArg)
 
 void CBossAttackState::State_Enter()
 {
+	m_fAccTime = 0.f;
 }
 
 void CBossAttackState::State_Update(_float _fTimeDelta)
 {
+	m_fAccTime += _fTimeDelta;
 	if (nullptr == m_pTarget)
 		return;
 	if (nullptr == m_pOwner)
@@ -41,6 +45,7 @@ void CBossAttackState::State_Update(_float _fTimeDelta)
 
 void CBossAttackState::State_Exit()
 {
+	m_fAccTime = 0.f;
 }
 
 CBossAttackState* CBossAttackState::Create(void* _pArg)

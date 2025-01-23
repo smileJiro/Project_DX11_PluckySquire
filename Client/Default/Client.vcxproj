@@ -187,7 +187,9 @@
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
     <ClInclude Include="..\Public\BossAttackState.h" />
+    <ClInclude Include="..\Public\BossIdleState.h" />
     <ClInclude Include="..\Public\BossSceneState.h" />
+    <ClInclude Include="..\Public\Boss_EnergyBall.h" />
     <ClInclude Include="..\Public\Boss_HomingBall.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
@@ -256,7 +258,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Beetle.cpp" />
     <ClCompile Include="..\Private\BossAttackState.cpp" />
+    <ClCompile Include="..\Private\BossIdleState.cpp" />
     <ClCompile Include="..\Private\BossSceneState.cpp" />
+    <ClCompile Include="..\Private\Boss_EnergyBall.cpp" />
     <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />

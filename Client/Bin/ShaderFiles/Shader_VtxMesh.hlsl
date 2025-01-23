@@ -108,8 +108,8 @@ PS_OUT PS_COLOR(PS_IN In)
 
     float4 vMtrlDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
     
-    //Out.vDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
-    Out.vDiffuse = g_vDefaultDiffuseColor;
+    Out.vDiffuse = float4(0.0f, 1.0f, 0.0f, 1.0f);
+    //Out.vDiffuse = g_vDefaultDiffuseColor;
     Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     
     float fFlag = g_iFlag;

@@ -26,13 +26,16 @@ public:
 	void Update(_float _fTimeDelta);
 
 public:
-	HRESULT Add_State(BOSS_STATE _eState);
-	HRESULT Change_State(BOSS_STATE _eState);
-	HRESULT Set_State(BOSS_STATE _eState);
+	virtual HRESULT Add_State(_uint _iState) override;
+	virtual HRESULT Change_State(_uint _iState) override;
+	virtual HRESULT Set_State(_uint _iState) override;
 
 private:
-	map<BOSS_STATE, CState*> m_BossStates;
-	BOSS_STATE		m_eCurBossState = { BOSS_STATE::LAST };
+	_uint Get_NextAttack();
+
+private:
+	//일단 순서대로 패턴 돌도록 설정
+	_uint m_iAttackIdx = { 0 };
 
 public:
 	HRESULT CleanUp();

@@ -49,11 +49,11 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State(MONSTER_STATE::IDLE);
-    m_pFSM->Add_State(MONSTER_STATE::ALERT);
-    m_pFSM->Add_State(MONSTER_STATE::CHASE);
-    m_pFSM->Add_State(MONSTER_STATE::ATTACK);
-    m_pFSM->Set_State(MONSTER_STATE::IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);

@@ -82,7 +82,7 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Event_ChangeBossState(BOSS_STATE _eState, CFSM_Boss* _pFSM)
+	void Event_ChangeBossState(BOSS_STATE _eState, CFSM* _pFSM)
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::CHANGE_BOSSSTATE;

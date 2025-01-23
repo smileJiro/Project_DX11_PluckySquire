@@ -6,6 +6,7 @@
 #include "Pooling_Manager.h"
 #include "Projectile_BarfBug.h"
 #include "Boss_HomingBall.h"
+#include "Boss_EnergyBall.h"
 #include "FSM_Boss.h"
 
 CButterGrump::CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -33,7 +34,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fDelayTime = 1.f;
+    pDesc->fDelayTime = 0.5f;
     pDesc->fCoolTime = 3.f;
 
     if (FAILED(__super::Initialize(pDesc)))
@@ -45,9 +46,12 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pBossFSM->Add_State(BOSS_STATE::SCENE);
-    m_pBossFSM->Add_State(BOSS_STATE::HOMINGBALL);
-    m_pBossFSM->Set_State(BOSS_STATE::SCENE);
+    if (FAILED(Ready_Projectiles()))
+        return E_FAIL;
+
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
+    m_pBossFSM->Set_State((_uint)BOSS_STATE::SCENE);
 
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
@@ -59,24 +63,6 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CButterGrump::Intro_End, this, COORDINATE_3D, LB_INTRO_SH04));
 
     m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
-
-    /*  Projectile  */
-    //Pooling_DESC Pooling_Desc;
-    //Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
-    //Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-    //Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
-
-    //CBoss_HomingBall::BOSS_HOMINGBALL_DESC* pProjDesc = new CBoss_HomingBall::BOSS_HOMINGBALL_DESC;
-    //pProjDesc->fLifeTime = 5.f;
-    //pProjDesc->eStartCoord = COORDINATE_3D;
-    //pProjDesc->isCoordChangeEnable = false;
-    //pProjDesc->iNumPartObjects = PART_LAST;
-    //pProjDesc->iCurLevelID = m_iCurLevelID;
-
-    //pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    //pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
-
-    //CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_HomingBall"), Pooling_Desc, pProjDesc);
 
     return S_OK;
 }
@@ -150,6 +136,10 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
             break;
 
+        case BOSS_STATE::ENERGYBALL:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
+            break;
+
         case BOSS_STATE::HOMINGBALL:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
             break;
@@ -178,12 +168,33 @@ void CButterGrump::Attack(_float _fTimeDelta)
         _float4 vRotation;
         if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
             return;
+        switch ((BOSS_STATE)m_iState)
+        {
+        case BOSS_STATE::ENERGYBALL:
+            vPosition.y += vScale.y * 0.5f;
+            vPosition.x += m_pGameInstance->Compute_Random(-15.f, 15.f);
+            vPosition.y += m_pGameInstance->Compute_Random(-15.f, 15.f);
+            vPosition.z += m_pGameInstance->Compute_Random(-15.f, 15.f);
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), &vPosition, &vRotation);
+            Delay_On();
+            ++m_iAttackCount;
+            break;
+        case BOSS_STATE::HOMINGBALL:
+        {
+            _vector Rot = XMLoadFloat4(&vRotation);
 
-        vPosition.y += vScale.y * 0.5f;
+            Rot = XMQuaternionMultiply(Rot, XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f)));
+            XMStoreFloat4(&vRotation, Rot);
+            vPosition.y += vScale.y * 0.5f;
 
-        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"),&vPosition, &vRotation);
-        Delay_On();
-        ++m_iAttackCount;
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), &vPosition, &vRotation);
+            Delay_On();
+            ++m_iAttackCount;
+            break;
+        }
+        default:
+            break;
+        }
     }
 }
 
@@ -262,6 +273,43 @@ HRESULT CButterGrump::Ready_PartObjects()
     return S_OK;
 }
 
+HRESULT CButterGrump::Ready_Projectiles()
+{
+    Pooling_DESC Pooling_Desc;
+    Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+    Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
+
+    CBoss_HomingBall::BOSS_HOMINGBALL_DESC* pHomingBallDesc = new CBoss_HomingBall::BOSS_HOMINGBALL_DESC;
+    pHomingBallDesc->fLifeTime = 5.f;
+    pHomingBallDesc->eStartCoord = COORDINATE_3D;
+    pHomingBallDesc->isCoordChangeEnable = false;
+    pHomingBallDesc->iNumPartObjects = PART_LAST;
+    pHomingBallDesc->iCurLevelID = m_iCurLevelID;
+
+    pHomingBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pHomingBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_HomingBall"), Pooling_Desc, pHomingBallDesc);
+
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_EnergyBall");
+
+    CBoss_EnergyBall::BOSS_ENERGYBALL_DESC* pEnergyBallDesc = new CBoss_EnergyBall::BOSS_ENERGYBALL_DESC;
+    pEnergyBallDesc->fLifeTime = 5.f;
+    pEnergyBallDesc->eStartCoord = COORDINATE_3D;
+    pEnergyBallDesc->isCoordChangeEnable = false;
+    pEnergyBallDesc->iNumPartObjects = PART_LAST;
+    pEnergyBallDesc->iCurLevelID = m_iCurLevelID;
+
+    pEnergyBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pEnergyBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_EnergyBall"), Pooling_Desc, pEnergyBallDesc);
+
+    return S_OK;
+}
+
 CButterGrump* CButterGrump::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CButterGrump* pInstance = new CButterGrump(_pDevice, _pContext);
@@ -290,6 +338,7 @@ CGameObject* CButterGrump::Clone(void* _pArg)
 
 void CButterGrump::Free()
 {
-
+    Safe_Release(m_pBossFSM);
+    
     __super::Free();
 }

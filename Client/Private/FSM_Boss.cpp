@@ -33,7 +33,7 @@ void CFSM_Boss::Update(_float _fTimeDelta)
 
 }
 
-HRESULT CFSM_Boss::Add_State(BOSS_STATE _eState)
+HRESULT CFSM_Boss::Add_State(_uint _iState)
 {
 	if (nullptr == m_pOwner)
 		return E_FAIL;
@@ -41,7 +41,7 @@ HRESULT CFSM_Boss::Add_State(BOSS_STATE _eState)
 	CState* pState = nullptr;
 	CState::STATEDESC Desc = {};
 
-	switch (_eState)
+	switch ((BOSS_STATE)_iState)
 	{
 	case Client::BOSS_STATE::SCENE:
 	{
@@ -50,11 +50,11 @@ HRESULT CFSM_Boss::Add_State(BOSS_STATE _eState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
-		m_BossStates.emplace(BOSS_STATE::SCENE, pState);
+		m_States.emplace((_uint)BOSS_STATE::SCENE, pState);
 
 		//이미 있다면 씬 인덱스만 바꿔줌
-		/*auto iter = m_BossStates.find(BOSS_STATE::SCENE);
-		if (m_BossStates.end() != iter)
+		/*auto iter = m_States.find(BOSS_STATE::SCENE);
+		if (m_States.end() != iter)
 			iter->second->
 		else
 		{
@@ -63,7 +63,7 @@ HRESULT CFSM_Boss::Add_State(BOSS_STATE _eState)
 				return E_FAIL;
 			pState->Set_Owner(m_pOwner);
 			pState->Set_FSM(this);
-			m_BossStates.emplace(BOSS_STATE::SCENE, pState);
+			m_States.emplace(BOSS_STATE::SCENE, pState);
 		}*/
 		break;
 	}
@@ -75,7 +75,7 @@ HRESULT CFSM_Boss::Add_State(BOSS_STATE _eState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
-		m_BossStates.emplace(BOSS_STATE::HOMINGBALL, pState);
+		m_States.emplace((_uint)BOSS_STATE::HOMINGBALL, pState);
 		break;
 
 	case Client::BOSS_STATE::LAST:
@@ -87,48 +87,63 @@ HRESULT CFSM_Boss::Add_State(BOSS_STATE _eState)
 	return S_OK;
 }
 
-HRESULT CFSM_Boss::Change_State(BOSS_STATE _eState)
+HRESULT CFSM_Boss::Change_State(_uint _iState)
 {
 	if (nullptr == m_CurState)
 		return E_FAIL;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
-	if(_eState == m_eCurBossState)
+	if(_iState == m_iCurState)
 		return S_OK;
 
 	//몬스터가 애니메이션 전환 가능하지 않으면 상태 전환 안함
 	if (false == m_pOwner->Get_AnimChangeable())
 		return S_OK;
 
-	m_CurState->State_Exit();
-	m_pOwner->Set_PreState((_uint)m_eCurBossState);
+	if (BOSS_STATE::ATTACK == (BOSS_STATE)_iState)
+	{
+		_iState = Get_NextAttack();
+	}
 
-	Set_State(_eState);
+	m_CurState->State_Exit();
+	m_pOwner->Set_PreState(m_iCurState);
+
+	Set_State(_iState);
 
 	m_pOwner->Change_Animation();
 
 	return S_OK;
 }
 
-HRESULT CFSM_Boss::Set_State(BOSS_STATE _eState)
+HRESULT CFSM_Boss::Set_State(_uint _iState)
 {
-	if (nullptr == m_BossStates[_eState])
+	if (nullptr == m_States[_iState])
 		return E_FAIL;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
-	m_CurState = m_BossStates[_eState];
-	m_eCurBossState = _eState;
+	m_CurState = m_States[_iState];
+	m_iCurState = _iState;
 
 	m_CurState->State_Enter();
-	m_pOwner->Set_State((_uint)_eState);
+	m_pOwner->Set_State(_iState);
 
 	return S_OK;
 }
 
+_uint CFSM_Boss::Get_NextAttack()
+{
+	++m_iAttackIdx;
+	_uint iState = m_iAttackIdx;
+	if ((_uint)BOSS_STATE::LAST <= m_iAttackIdx || (_uint)BOSS_STATE::ATTACK >= m_iAttackIdx)
+		return 0;
+
+	return m_iAttackIdx;
+}
+
 HRESULT CFSM_Boss::CleanUp()
 {
-	for (auto& Pair : m_BossStates)
+	for (auto& Pair : m_States)
 	{
 		Pair.second->CleanUp();
 	}
@@ -164,9 +179,9 @@ CFSM_Boss* CFSM_Boss::Clone(void* _pArg)
 
 void CFSM_Boss::Free()
 {
-	for (auto& pState : m_BossStates)
+	for (auto& pState : m_States)
 		Safe_Release(pState.second);
 
-	m_BossStates.clear();
+	m_States.clear();
 	__super::Free();
 }

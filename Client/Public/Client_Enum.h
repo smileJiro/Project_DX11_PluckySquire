@@ -57,6 +57,8 @@ namespace Client
 	enum class BOSS_STATE
 	{
 		SCENE,
+		ATTACK,
+		ENERGYBALL,
 		HOMINGBALL,
 
 		LAST,
