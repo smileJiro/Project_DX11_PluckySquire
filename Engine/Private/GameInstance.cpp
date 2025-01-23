@@ -424,6 +424,13 @@ HRESULT CGameInstance::Add_DebugComponent(CComponent* _pDebugCom)
 
 	return m_pRenderer->Add_DebugComponent(_pDebugCom);
 }
+void CGameInstance::Set_DebugRender(_bool _isBool)
+{
+	if (nullptr == m_pRenderer)
+		return;
+
+	return m_pRenderer->Set_DebugRender(_isBool);
+}
 
 #endif // _DEBUG
 

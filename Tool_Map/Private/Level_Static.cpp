@@ -15,13 +15,17 @@ HRESULT CLevel_Static::Initialize()
 
 void CLevel_Static::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::F1))
 	Event_LevelChange(LEVEL_LOADING, LEVEL_TOOL_3D_MAP);
+	else if (KEY_DOWN(KEY::F2))
+	Event_LevelChange(LEVEL_LOADING, LEVEL_TOOL_2D_MAP);
+	
 }
 
 HRESULT CLevel_Static::Render()
 {
 #ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("스태틱 레벨입니다."));
+	SetWindowText(g_hWnd, TEXT("F1-> 3D Tool F1-> 2D Tool"));
 #endif
 	return S_OK;
 }

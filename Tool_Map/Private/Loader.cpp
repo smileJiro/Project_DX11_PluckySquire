@@ -8,6 +8,7 @@
 //#include "CellContainor.h"
 #include "MapObject.h"
 #include "Ray.h"
+#include "2DDefault_RenderObject.h"
 
 #include <filesystem>
 #include <iostream>
@@ -63,11 +64,9 @@ HRESULT CLoader::Loading()
     case Map_Tool::LEVEL_STATIC:
         hr = Loading_Level_Static();
          break;
-
     case Map_Tool::LEVEL_TOOL_2D_MAP:
         hr = Loading_Level_2D_Map_Tool();
         break;
-
     case Map_Tool::LEVEL_TOOL_3D_MAP:
         hr = Loading_Level_3D_Map_Tool();
         break;
@@ -193,7 +192,10 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
+    /* For. Prototype_GameObject_MapObject */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
+        C2DDefault_RenderObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

@@ -1,0 +1,3856 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_2",
+    "Outer": "C01_P21_SS_Tilemap",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 3072.0,
+              "Y": -10.0,
+              "Z": -1024.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3328.0,
+              "Y": -10.0,
+              "Z": -1024.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3584.0,
+              "Y": -10.0,
+              "Z": -1024.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2048.0,
+              "Y": -10.0,
+              "Z": -1280.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2304.0,
+              "Y": -10.0,
+              "Z": -1280.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2560.0,
+              "Y": -10.0,
+              "Z": -1280.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2816.0,
+              "Y": -10.0,
+              "Z": -1280.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3072.0,
+              "Y": -10.0,
+              "Z": -1280.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3328.0,
+              "Y": -10.0,
+              "Z": -1280.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3584.0,
+              "Y": -10.0,
+              "Z": -1280.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1280.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1536.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1792.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2048.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2304.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2560.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2816.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3072.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3328.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3584.0,
+              "Y": -10.0,
+              "Z": -1536.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 0.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 256.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 512.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 768.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1024.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1280.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1536.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1792.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2048.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2304.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2560.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2816.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3072.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3328.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3584.0,
+              "Y": -10.0,
+              "Z": -1792.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 0.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 256.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 512.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 768.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1024.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1280.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1536.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 1792.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2048.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2304.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2560.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 2816.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3072.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3328.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "Center": {
+              "X": 3584.0,
+              "Y": -10.0,
+              "Z": -2048.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 256.0,
+            "Y": 400.0,
+            "Z": 256.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ],
+        "ConvexElems": [
+          {
+            "VertexData": [
+              {
+                "X": 2736.0,
+                "Y": 190.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 2736.0,
+                "Y": -210.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 2736.0,
+                "Y": 190.0,
+                "Z": -896.0
+              },
+              {
+                "X": 2736.0,
+                "Y": -210.0,
+                "Z": -896.0
+              },
+              {
+                "X": 2944.0,
+                "Y": 190.0,
+                "Z": -896.0
+              },
+              {
+                "X": 2944.0,
+                "Y": -210.0,
+                "Z": -896.0
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": 2736.0,
+                "Y": -210.0,
+                "Z": -1152.0
+              },
+              "Max": {
+                "X": 2944.0,
+                "Y": 190.0,
+                "Z": -896.0
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": 2736.0,
+                "Y": 190.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 2736.0,
+                "Y": -210.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 2944.0,
+                "Y": 190.0,
+                "Z": -896.0
+              },
+              {
+                "X": 2944.0,
+                "Y": -210.0,
+                "Z": -896.0
+              },
+              {
+                "X": 2944.0,
+                "Y": 190.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 2944.0,
+                "Y": -210.0,
+                "Z": -1152.0
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": 2736.0,
+                "Y": -210.0,
+                "Z": -1152.0
+              },
+              "Max": {
+                "X": 2944.0,
+                "Y": 190.0,
+                "Z": -896.0
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": 1712.0,
+                "Y": 190.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1712.0,
+                "Y": -210.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1712.0,
+                "Y": 190.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 1712.0,
+                "Y": -210.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 1920.0,
+                "Y": 190.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 1920.0,
+                "Y": -210.0,
+                "Z": -1152.0
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": 1712.0,
+                "Y": -210.0,
+                "Z": -1408.0
+              },
+              "Max": {
+                "X": 1920.0,
+                "Y": 190.0,
+                "Z": -1152.0
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": 1712.0,
+                "Y": 190.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1712.0,
+                "Y": -210.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1920.0,
+                "Y": 190.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 1920.0,
+                "Y": -210.0,
+                "Z": -1152.0
+              },
+              {
+                "X": 1920.0,
+                "Y": 190.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1920.0,
+                "Y": -210.0,
+                "Z": -1408.0
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": 1712.0,
+                "Y": -210.0,
+                "Z": -1408.0
+              },
+              "Max": {
+                "X": 1920.0,
+                "Y": 190.0,
+                "Z": -1152.0
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": 944.0,
+                "Y": 190.0,
+                "Z": -1664.0
+              },
+              {
+                "X": 944.0,
+                "Y": -210.0,
+                "Z": -1664.0
+              },
+              {
+                "X": 944.0,
+                "Y": 190.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 944.0,
+                "Y": -210.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1152.0,
+                "Y": 190.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1152.0,
+                "Y": -210.0,
+                "Z": -1408.0
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": 944.0,
+                "Y": -210.0,
+                "Z": -1664.0
+              },
+              "Max": {
+                "X": 1152.0,
+                "Y": 190.0,
+                "Z": -1408.0
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          },
+          {
+            "VertexData": [
+              {
+                "X": 944.0,
+                "Y": 190.0,
+                "Z": -1664.0
+              },
+              {
+                "X": 944.0,
+                "Y": -210.0,
+                "Z": -1664.0
+              },
+              {
+                "X": 1152.0,
+                "Y": 190.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1152.0,
+                "Y": -210.0,
+                "Z": -1408.0
+              },
+              {
+                "X": 1152.0,
+                "Y": 190.0,
+                "Z": -1664.0
+              },
+              {
+                "X": 1152.0,
+                "Y": -210.0,
+                "Z": -1664.0
+              }
+            ],
+            "IndexData": [],
+            "ElemBox": {
+              "Min": {
+                "X": 944.0,
+                "Y": -210.0,
+                "Z": -1664.0
+              },
+              "Max": {
+                "X": 1152.0,
+                "Y": 190.0,
+                "Z": -1408.0
+              },
+              "IsValid": 1
+            },
+            "Transform": {
+              "Rotation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0,
+                "IsNormalized": true,
+                "Size": 1.0,
+                "SizeSquared": 1.0
+              },
+              "Translation": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+              },
+              "Scale3D": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+              }
+            },
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "C985EB0D4D432F63555CF1809108E1D1",
+    "CookedFormatData": {
+      "PhysXPC": {
+        "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+        "ElementCount": 4621,
+        "SizeOnDisk": 4621,
+        "OffsetInFile": "0x1618C"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileLayer",
+    "Name": "PaperTileLayer_0",
+    "Outer": "C01_P21_SS_Tilemap",
+    "Class": "UScriptClass'PaperTileLayer'",
+    "Properties": {
+      "LayerName": {
+        "Namespace": "",
+        "Key": "34242E504D63288A347D6F8785E7509B",
+        "SourceString": "PlayableFront",
+        "LocalizedString": "PlayableFront"
+      },
+      "LayerWidth": 15,
+      "LayerHeight": 9,
+      "AllocatedWidth": 15,
+      "AllocatedHeight": 9,
+      "AllocatedCells": [
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 0
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 4
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 1
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 2
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 0
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 1
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 3
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 4
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 40
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 0
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 4
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 4
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 40
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 4
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 1
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 2
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 3
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 40
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        },
+        {
+          "TileSet": {
+            "ObjectName": "PaperTileSet'tileset_platforms_01_TileSet'",
+            "ObjectPath": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.0"
+          },
+          "PackedTileIndex": 12
+        }
+      ]
+    }
+  },
+  {
+    "Type": "PaperTileLayer",
+    "Name": "PaperTileLayer_1",
+    "Outer": "C01_P21_SS_Tilemap",
+    "Class": "UScriptClass'PaperTileLayer'",
+    "Properties": {
+      "LayerName": {
+        "Namespace": "",
+        "Key": "3204A27046A7583D3A7B60B1151530B1",
+        "SourceString": "BackgroundDecal",
+        "LocalizedString": "BackgroundDecal"
+      },
+      "LayerWidth": 15,
+      "LayerHeight": 9,
+      "bLayerCollides": false,
+      "AllocatedWidth": 15,
+      "AllocatedHeight": 9,
+      "AllocatedCells": [
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        }
+      ]
+    }
+  },
+  {
+    "Type": "PaperTileLayer",
+    "Name": "PaperTileLayer_4",
+    "Outer": "C01_P21_SS_Tilemap",
+    "Class": "UScriptClass'PaperTileLayer'",
+    "Properties": {
+      "LayerName": {
+        "Namespace": "",
+        "Key": "C8E183494E3E9681FCBBA1B91FFACA1E",
+        "SourceString": "Foreground",
+        "LocalizedString": "Foreground"
+      },
+      "LayerWidth": 15,
+      "LayerHeight": 9,
+      "bLayerCollides": false,
+      "AllocatedWidth": 15,
+      "AllocatedHeight": 9,
+      "AllocatedCells": [
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        }
+      ]
+    }
+  },
+  {
+    "Type": "PaperTileLayer",
+    "Name": "PaperTileLayer_6",
+    "Outer": "C01_P21_SS_Tilemap",
+    "Class": "UScriptClass'PaperTileLayer'",
+    "Properties": {
+      "LayerName": {
+        "Namespace": "",
+        "Key": "3BEF9AAB4EEF4D9C6690609D317885B3",
+        "SourceString": "Background",
+        "LocalizedString": "Background"
+      },
+      "LayerWidth": 15,
+      "LayerHeight": 9,
+      "bLayerCollides": false,
+      "AllocatedWidth": 15,
+      "AllocatedHeight": 9,
+      "AllocatedCells": [
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        },
+        {
+          "TileSet": null,
+          "PackedTileIndex": -1
+        }
+      ]
+    }
+  },
+  {
+    "Type": "PaperTileMap",
+    "Name": "C01_P21_SS_Tilemap",
+    "Class": "UScriptClass'PaperTileMap'",
+    "Properties": {
+      "MapWidth": 15,
+      "MapHeight": 9,
+      "TileWidth": 256,
+      "TileHeight": 256,
+      "SeparationPerLayer": 10.0,
+      "SelectedTileSet": {
+        "AssetPathName": "/Game/Map/TileMaps/C01/tileset_platforms_01_TileSet.tileset_platforms_01_TileSet",
+        "SubPathString": ""
+      },
+      "TileLayers": [
+        {
+          "ObjectName": "PaperTileLayer'C01_P21_SS_Tilemap:PaperTileLayer_4'",
+          "ObjectPath": "/Game/Map/TileMaps/C01/C01_P21_SS_Tilemap.3"
+        },
+        {
+          "ObjectName": "PaperTileLayer'C01_P21_SS_Tilemap:PaperTileLayer_0'",
+          "ObjectPath": "/Game/Map/TileMaps/C01/C01_P21_SS_Tilemap.1"
+        },
+        {
+          "ObjectName": "PaperTileLayer'C01_P21_SS_Tilemap:PaperTileLayer_1'",
+          "ObjectPath": "/Game/Map/TileMaps/C01/C01_P21_SS_Tilemap.2"
+        },
+        {
+          "ObjectName": "PaperTileLayer'C01_P21_SS_Tilemap:PaperTileLayer_6'",
+          "ObjectPath": "/Game/Map/TileMaps/C01/C01_P21_SS_Tilemap.4"
+        }
+      ],
+      "CollisionThickness": 400.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'C01_P21_SS_Tilemap:BodySetup_2'",
+        "ObjectPath": "/Game/Map/TileMaps/C01/C01_P21_SS_Tilemap.0"
+      },
+      "LayerNameIndex": 8
+    }
+  }
+]
