@@ -11,7 +11,7 @@ class CRenderer : public CBase
 {
 public:
 	enum RENDERGROUP { RG_BOOK_2D, RG_PRIORITY, RG_SHADOW, RG_NONBLEND, RG_TRAIL, RG_EFFECT, RG_BLEND, RG_UI, RG_END };
-	enum DSVTYPE { DSV_SHADOW, DSV_LAST };
+	enum DSVTYPE { DSV_SHADOW, DSV_BOOK2D, DSV_LAST };
 private:
 	CRenderer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CRenderer() = default;
@@ -44,6 +44,7 @@ private: /* 직교 투영으로 그리기 위한 */
 	_float4x4 m_WorldMatrix{}, m_ViewMatrix{}, m_ProjMatrix{};
 	_uint m_iOriginViewportWidth{}, m_iOriginViewportHeight{}; // 그림자 셰이딩을 위해선 고해상도의 RTV를 사용할 것이다. 이로인해 기존의 RTV의 size를 저장해두어야한다.
 	ID3D11DepthStencilView* m_pShadowDepthStencilView = nullptr;
+	ID3D11DepthStencilView* m_pBook2DDepthStencilView = nullptr;
 
 #ifdef _DEBUG
 private:
