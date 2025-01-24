@@ -644,6 +644,7 @@ void CRenderer::Free()
     Safe_Release(m_pVIBuffer);
 
     Safe_Release(m_pShadowDepthStencilView);
+    Safe_Release(m_pBook2DDepthStencilView);
 
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);

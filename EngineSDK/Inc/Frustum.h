@@ -2,6 +2,7 @@
 #include "Base.h"
 
 BEGIN(Engine)
+class CGameInstance;
 class CFrustum : public CBase
 {
 private:
@@ -14,7 +15,7 @@ public:
 	_bool			isIn_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);
 
 private:
-	class CGameInstance*				m_pGameInstance = nullptr;
+	CGameInstance*				m_pGameInstance = nullptr;
 
 	_float3								m_vPoints[8] = {};
 	_float3								m_vPoints_InWorld[8] = {};
