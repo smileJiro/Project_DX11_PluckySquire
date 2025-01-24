@@ -4,11 +4,11 @@
 BEGIN(Client)
 
 
-class CBossHomingBallState final : public CBossState
+class CBossPurpleBallState final : public CBossState
 {
 private:
-	CBossHomingBallState();
-	virtual ~CBossHomingBallState() = default;
+	CBossPurpleBallState();
+	virtual ~CBossPurpleBallState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -19,7 +19,7 @@ public:
 	virtual void State_Exit() override;
 
 public:
-	static CBossHomingBallState* Create(void* _pArg);
+	static CBossPurpleBallState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

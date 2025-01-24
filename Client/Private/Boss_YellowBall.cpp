@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "Boss_EnergyBall.h"
+#include "Boss_YellowBall.h"
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
 
-CBoss_EnergyBall::CBoss_EnergyBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CBoss_YellowBall::CBoss_YellowBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
 {
 }
 
-CBoss_EnergyBall::CBoss_EnergyBall(const CBoss_EnergyBall& _Prototype)
+CBoss_YellowBall::CBoss_YellowBall(const CBoss_YellowBall& _Prototype)
 	: CContainerObject(_Prototype)
 {
 }
 
-HRESULT CBoss_EnergyBall::Initialize_Prototype()
+HRESULT CBoss_YellowBall::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CBoss_EnergyBall::Initialize(void* _pArg)
+HRESULT CBoss_YellowBall::Initialize(void* _pArg)
 {
-    BOSS_ENERGYBALL_DESC* pDesc = static_cast<BOSS_ENERGYBALL_DESC*>(_pArg);
+    BOSS_YELLOWBALL_DESC* pDesc = static_cast<BOSS_YELLOWBALL_DESC*>(_pArg);
 
     m_fLifeTime = pDesc->fLifeTime;
 
@@ -41,7 +41,7 @@ HRESULT CBoss_EnergyBall::Initialize(void* _pArg)
     if (nullptr == m_pTarget)
     {
 #ifdef _DEBUG
-        cout << "ENERGYBALL_INIT : NO PLAYER" << endl;
+        cout << "YELLOWBALL_INIT : NO PLAYER" << endl;
 #endif // _DEBUG
         return S_OK;
     }
@@ -51,14 +51,14 @@ HRESULT CBoss_EnergyBall::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CBoss_EnergyBall::Priority_Update(_float _fTimeDelta)
+void CBoss_YellowBall::Priority_Update(_float _fTimeDelta)
 {
     m_fAccTime += _fTimeDelta;
 
     __super::Priority_Update(_fTimeDelta);
 }
 
-void CBoss_EnergyBall::Update(_float _fTimeDelta)
+void CBoss_YellowBall::Update(_float _fTimeDelta)
 {
 	if (false == Is_Dead() && m_fLifeTime <= m_fAccTime)
     {
@@ -73,19 +73,19 @@ void CBoss_EnergyBall::Update(_float _fTimeDelta)
     __super::Update(_fTimeDelta);
 }
 
-void CBoss_EnergyBall::Late_Update(_float _fTimeDelta)
+void CBoss_YellowBall::Late_Update(_float _fTimeDelta)
 {
 
 	__super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CBoss_EnergyBall::Render()
+HRESULT CBoss_YellowBall::Render()
 {
     __super::Render();
     return S_OK;
 }
 
-HRESULT CBoss_EnergyBall::Cleanup_DeadReferences()
+HRESULT CBoss_YellowBall::Cleanup_DeadReferences()
 {
     if (FAILED(__super::Cleanup_DeadReferences()))
         return E_FAIL;
@@ -93,7 +93,7 @@ HRESULT CBoss_EnergyBall::Cleanup_DeadReferences()
     if (nullptr == m_pTarget)
     {
 #ifdef _DEBUG
-        cout << "ENERGYBALL_Cleanup : NO PLAYER" << endl;
+        cout << "YELLOWBALL_Cleanup : NO PLAYER" << endl;
 #endif // _DEBUG
         return S_OK;
     }
@@ -107,11 +107,11 @@ HRESULT CBoss_EnergyBall::Cleanup_DeadReferences()
     return S_OK;
 }
 
-void CBoss_EnergyBall::Active_OnEnable()
+void CBoss_YellowBall::Active_OnEnable()
 {
 }
 
-void CBoss_EnergyBall::Active_OnDisable()
+void CBoss_YellowBall::Active_OnDisable()
 {
     //m_pControllerTransform->Set_State(CTransform_3D::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
     _float4x4 matWorld;
@@ -120,12 +120,12 @@ void CBoss_EnergyBall::Active_OnDisable()
     m_fAccTime = 0.f;
 }
 
-HRESULT CBoss_EnergyBall::Ready_Components()
+HRESULT CBoss_YellowBall::Ready_Components()
 {
     return S_OK;
 }
 
-HRESULT CBoss_EnergyBall::Ready_PartObjects()
+HRESULT CBoss_YellowBall::Ready_PartObjects()
 {
     CModelObject::MODELOBJECT_DESC BodyDesc{};
 
@@ -162,33 +162,33 @@ HRESULT CBoss_EnergyBall::Ready_PartObjects()
     return S_OK;
 }
 
-CBoss_EnergyBall* CBoss_EnergyBall::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CBoss_YellowBall* CBoss_YellowBall::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CBoss_EnergyBall* pInstance = new CBoss_EnergyBall(_pDevice, _pContext);
+    CBoss_YellowBall* pInstance = new CBoss_YellowBall(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBoss_EnergyBall");
+        MSG_BOX("Failed to Created : CBoss_YellowBall");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBoss_EnergyBall::Clone(void* _pArg)
+CGameObject* CBoss_YellowBall::Clone(void* _pArg)
 {
-    CBoss_EnergyBall* pInstance = new CBoss_EnergyBall(*this);
+    CBoss_YellowBall* pInstance = new CBoss_YellowBall(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CBoss_EnergyBall");
+        MSG_BOX("Failed to Cloned : CBoss_YellowBall");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBoss_EnergyBall::Free()
+void CBoss_YellowBall::Free()
 {
 	if (nullptr != m_pTarget)
         Safe_Release(m_pTarget);

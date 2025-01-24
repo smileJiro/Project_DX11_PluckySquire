@@ -16,6 +16,8 @@ HRESULT CBossIdleState::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
+	m_fCoolTime = 3.f;
+
 	return S_OK;
 }
 

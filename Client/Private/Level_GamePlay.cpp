@@ -844,7 +844,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	CButterGrump::MONSTER_DESC Boss_Desc;
 	Boss_Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 20.35f, 90.0f);
+	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 20.35f, 40.0f);
 	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))

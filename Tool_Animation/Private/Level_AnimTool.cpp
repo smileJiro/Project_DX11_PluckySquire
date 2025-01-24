@@ -202,7 +202,7 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 	XMStoreFloat3(&Desc.vArm, vTargetLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.vRotation = { XMConvertToRadians(30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 10.f;
+	Desc.fLength = 100.f;
 	Desc.wszArmTag = TEXT("Cam_Arm");
 	Desc.pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
