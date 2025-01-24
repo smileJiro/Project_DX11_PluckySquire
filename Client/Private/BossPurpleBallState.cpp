@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "BossEnergyBallState.h"
+#include "BossPurpleBallState.h"
 #include "Monster.h"
 #include "FSM.h"
 
-CBossEnergyBallState::CBossEnergyBallState()
+CBossPurpleBallState::CBossPurpleBallState()
 {
 }
 
-HRESULT CBossEnergyBallState::Initialize(void* _pArg)
+HRESULT CBossPurpleBallState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 
@@ -17,20 +17,19 @@ HRESULT CBossEnergyBallState::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_fDelayTime = 0.3f;
-	m_iNumAttack = 10;
-		
+	
 	return S_OK;
 }
 
 
-void CBossEnergyBallState::State_Enter()
+void CBossPurpleBallState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
 	Delay_Off();
 	m_iAttackCount = 0;
 }
 
-void CBossEnergyBallState::State_Update(_float _fTimeDelta)
+void CBossPurpleBallState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pTarget)
 		return;
@@ -51,7 +50,7 @@ void CBossEnergyBallState::State_Update(_float _fTimeDelta)
 	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
 	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
-	//10개 뿜고 공격 종료
+	//3번 뿜고 공격 종료
 	if (m_iNumAttack <= m_iAttackCount)
 	{
 		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
@@ -68,26 +67,26 @@ void CBossEnergyBallState::State_Update(_float _fTimeDelta)
 	
 }
 
-void CBossEnergyBallState::State_Exit()
+void CBossPurpleBallState::State_Exit()
 {
 	Delay_Off();
 	m_iAttackCount = 0;
 }
 
-CBossEnergyBallState* CBossEnergyBallState::Create(void* _pArg)
+CBossPurpleBallState* CBossPurpleBallState::Create(void* _pArg)
 {
-	CBossEnergyBallState* pInstance = new CBossEnergyBallState();
+	CBossPurpleBallState* pInstance = new CBossPurpleBallState();
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Failed to Created : CBossEnergyBallState");
+		MSG_BOX("Failed to Created : CBossPurpleBallState");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CBossEnergyBallState::Free()
+void CBossPurpleBallState::Free()
 {
 	__super::Free();
 }

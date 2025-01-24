@@ -39,8 +39,10 @@
 #include "BarfBug.h"
 #include "Projectile_BarfBug.h"
 #include "ButterGrump.h"
-#include "Boss_HomingBall.h"
 #include "Boss_EnergyBall.h"
+#include "Boss_HomingBall.h"
+#include "Boss_YellowBall.h"
+#include "Boss_PurpleBall.h"
 #include "FSM_Boss.h"
 
 
@@ -485,6 +487,13 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_YellowBall"),
+        CBoss_YellowBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_PurpleBall"),
+        CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Free_Enviroment.mchc");
