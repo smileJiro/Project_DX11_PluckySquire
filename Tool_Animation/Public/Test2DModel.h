@@ -18,8 +18,11 @@ public:
 
     HRESULT				Export_Model(ofstream& _outfile);
 
+    //Set
+    void						Set_CurrentFrame(_int _iFrameIndex);
     //Get
     void						Get_TextureNames(set<wstring>& _outTextureNames);
+    _uint					    Get_CurrentFrame();
 private:
 
 public:

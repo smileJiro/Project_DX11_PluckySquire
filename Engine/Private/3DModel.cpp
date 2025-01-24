@@ -22,6 +22,7 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_PreTransformMatrix{ _Prototype.m_PreTransformMatrix }
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
 {
+
 	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
 	{
 		for (_uint j= 0; j< AI_TEXTURE_TYPE_MAX; j++)

@@ -36,6 +36,10 @@ public:
 
     HRESULT			Export(ofstream& _outfile);
 
+	//Set
+	void						Set_CurrentFrame(_uint _iFrameIndex);
+	//Get
+	_uint						Get_CurrentFrame();
 private:
 	map<string, CTexture*> m_AnimTextures;
 

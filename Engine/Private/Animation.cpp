@@ -49,7 +49,7 @@ HRESULT CAnimation::Initialize(ifstream& inFile, const C3DModel* pModel)
 	m_fDuration = (_float)dValue;
 	inFile.read(reinterpret_cast<char*>(&dValue), sizeof(double));
 	m_fTickPerSecond = (_float)dValue;
-
+	
 	inFile.read(reinterpret_cast<char*>(&m_iNumChannels), sizeof(_uint));
 
 	m_CurrentKeyFrameIndices.resize(m_iNumChannels);

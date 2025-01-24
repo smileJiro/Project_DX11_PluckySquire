@@ -43,6 +43,7 @@ public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	void				Render_FPS(const _wstring& _strTimerTag);
 	_int				Get_FPS();
+	_uint				Get_FPS(const _wstring& _strTimerTag);
 	HRESULT				Add_Timer(const _wstring& _strTimerTag);
 	void				Update_TimeDelta(const _wstring& _strTimerTag);
 	HRESULT				Set_TimeScale(_float _fTimeScale, const _wstring& _strTimeTag);
@@ -74,7 +75,9 @@ public: /* For. Object_Manager */
 public: /* For.Renderer */
 	HRESULT				Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, class CGameObject* _pRenderObject);
 #ifdef _DEBUG
-	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);
+	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);	
+	void				Set_DebugRender(_bool _isBool);
+
 #endif
 
 public: /* For. Key_Manager */

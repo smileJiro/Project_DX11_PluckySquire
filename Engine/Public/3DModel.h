@@ -91,14 +91,10 @@ protected:
 	map<_uint, KEYFRAME>		m_mapAnimTransLeftFrame;
 
 protected:
-	HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);
-	HRESULT Ready_Meshes(ifstream& inFile);
-	HRESULT Ready_Materials(ifstream& inFile, const _char* pModelFilePath);
-	HRESULT Ready_Animations(ifstream& inFile);
-
-
-
-	
+	virtual HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);
+	virtual HRESULT Ready_Meshes(ifstream& inFile);
+	virtual HRESULT Ready_Materials(ifstream& inFile, const _char* pModelFilePath);
+	virtual HRESULT Ready_Animations(ifstream& inFile);
 
 public:
 	static C3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);

@@ -99,6 +99,20 @@ void CTestModelObject::Set_2DProjMatrix(_fmatrix _vProjMatrix)
     XMStoreFloat4x4(&m_ProjMatrix, _vProjMatrix);
 }
 
+void CTestModelObject::Set_TrackPosition(_float _fTrackPos)
+{
+    assert(m_pControllerModel);
+    assert(COORDINATE_3D == m_eCurCoord);
+    static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_TrackPosition(_fTrackPos);
+}
+
+void CTestModelObject::Set_CurrentFrame(_float _fTrackPos)
+{
+    assert(m_pControllerModel);
+    assert(COORDINATE_2D == m_eCurCoord);
+    static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_CurrentFrame(_fTrackPos);
+}
+
 void CTestModelObject::Get_TextureNames(set<wstring>& _outTextureNames)
 {
     assert(m_pControllerModel);
@@ -112,6 +126,26 @@ void CTestModelObject::Get_TextureNames(set<wstring>& _outTextureNames)
         static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TextureNames(_outTextureNames);
         break;
     }
+}
+
+_uint CTestModelObject::Get_AnimationCount()
+{
+    return m_pControllerModel->Get_Model(m_eCurCoord)->Get_AnimCount();
+}
+
+const _float CTestModelObject::Get_Duration()
+{
+    return  static_cast<C3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_AnimTime();
+}
+
+_float CTestModelObject::Get_TrackPosition()
+{
+    return  static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TrackPosition();
+}
+
+_float CTestModelObject::Get_CurrentFrame()
+{
+    return  static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_CurrentFrame();
 }
 
 

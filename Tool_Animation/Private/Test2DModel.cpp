@@ -247,12 +247,25 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	return S_OK;
 }
 
+void CTest2DModel::Set_CurrentFrame(_int _iFrameIndex)
+{
+	if (m_Animation2Ds.empty())
+		return;
+	static_cast<CToolAnimation2D*> (m_Animation2Ds[m_iCurAnimIdx])->Set_CurrentFrame(_iFrameIndex);
+
+}
+
 void CTest2DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 {
 	for (auto& pTexture : m_Textures)
 	{
 		_outTextureNames.insert(*pTexture.second->Get_SRVName(0));
 	}
+}
+
+_uint CTest2DModel::Get_CurrentFrame()
+{
+	return static_cast<CToolAnimation2D*>( m_Animation2Ds[m_iCurAnimIdx])->Get_CurrentFrame();
 }
 
 CTest2DModel* CTest2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* _pPath)

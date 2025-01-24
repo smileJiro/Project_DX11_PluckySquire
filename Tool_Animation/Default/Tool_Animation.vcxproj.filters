@@ -77,6 +77,10 @@
     <ClInclude Include="..\Public\ToolAnimation2D.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ToolAnimation3D.h" />
+    <ClInclude Include="..\Public\ToolMaterial.h" />
+    <ClInclude Include="..\Public\ToolBone.h" />
+    <ClInclude Include="..\Public\ToolMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\TestTerrain.cpp" />
@@ -128,6 +132,10 @@
     <ClCompile Include="..\Private\ToolAnimation2D.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\ToolAnimation3D.cpp" />
+    <ClCompile Include="..\Private\ToolMaterial.cpp" />
+    <ClCompile Include="..\Private\ToolBone.cpp" />
+    <ClCompile Include="..\Private\ToolMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool_Animation.rc">

@@ -160,6 +160,18 @@ HRESULT CToolAnimation2D::Export(ofstream& _outfile)
     return S_OK;
 }
 
+void CToolAnimation2D::Set_CurrentFrame(_uint _iFrameIndex)
+{
+	iCurrentFrame = _iFrameIndex;
+}
+
+_uint CToolAnimation2D::Get_CurrentFrame()
+{
+	return iCurrentFrame;
+}
+
+
+
 CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, map<string, CTexture*>& _Textures)
 {
 	CToolAnimation2D* pInstance = new CToolAnimation2D();

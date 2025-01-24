@@ -28,8 +28,11 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 
 	virtual HRESULT			Render() override;
-	void Update_Imgui();
+	void Update_ImportImgui();
+	void Update_ExportImgui();
+	void Update_AnimationEditImgui();
 	void Set_Animation(_uint _iAnimIdx, _bool _bLoop = true);
+
 private:
 	HRESULT					Ready_Lights();
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
@@ -38,6 +41,7 @@ private:
 
 	HRESULT					Export_Model(const wstring& _wstrPath);
 	HRESULT					Copy_Textures(CTestModelObject* _pModel, std::filesystem::path& _wstrSrcPath, std::filesystem::path& _wstrDstPath);
+
 private:
 	//모델 로딩 관련
 	CTestTerrain* m_pTestTerrain = nullptr;
@@ -50,11 +54,15 @@ private:
 	_float m_fDefault3DCamFovY = XMConvertToRadians(60.f);
 	_float2 m_fDefault2DCamSize = {};
 	_float m_f3DZoomSpeed = 5.f;
-	_float m_f2DZoomSpeed = 10.f;
+	_float m_f2DZoomSpeed = 14.f;
 	_float m_fZoomMultiplier = 1.f;
 
 	_bool m_bExportTextures = false;
 
+	_int m_iCurrentAnimIndex = 0;
+	_bool m_bLoop = false;
+	_float m_fCurrentTrackPosition = 0;
+	_uint m_fCurrentFrame= 0;
 public:
 	static CLevel_AnimTool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void			Free() override;

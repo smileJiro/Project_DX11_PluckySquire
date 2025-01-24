@@ -35,6 +35,10 @@ HRESULT CLevel_2D_Map_Tool::Render()
 #ifdef _DEBUG
 	SetWindowText(g_hWnd, TEXT("Mojam 2D Map Tool"));
 #endif
+
+	m_pToolManager->Render();
+
+
 	return S_OK;
 }
 

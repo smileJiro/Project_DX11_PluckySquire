@@ -70,7 +70,6 @@ HRESULT CImgui_Manager::Start_Imgui()
 
 HRESULT CImgui_Manager::End_Imgui()
 {
-
 	ImGui::Render(); // 임구이 데이터 조작 끝! 드로우데이터 만들게~  이때 dx11기준 버텍스를 생성함
 
 	return S_OK;
@@ -182,6 +181,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_RT()
 		if (nullptr != pSelectImage)
 		{
 			_string strRTName = m_pGameInstance->WStringToString(Pair.first);
+
 			ImGui::Text(strRTName.c_str());
 			ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
 		}
@@ -229,6 +229,10 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_RT_FullScreen()
 						{
 
 							pSelectImage = m_pGameInstance->Get_RT_SRV(pRenderTarget->Get_Name());
+							if (0 == strcmp(strRTName.c_str(), "Target_Book_2D"))
+								imageSize = { 768.f, 216.f };
+							else
+								imageSize = { 800.f, 450.f };
 
 							if (nullptr != pSelectImage)
 								ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);

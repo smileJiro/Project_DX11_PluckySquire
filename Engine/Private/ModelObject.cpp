@@ -309,10 +309,10 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
             return E_FAIL;
 
         /* 추후 우리 그리고자하는 렌더 타겟 사이즈로 projectionMatrix 를 변경해줘야함. */
-        // m_pGameInstance->Get_RT_Size(TEXT("")); // 렌더타겟 사이즈 받아오는 함수는 만들어뒀음. 2D 3D 공간
+        _float2 vSize = m_pGameInstance->Get_RT_Size(TEXT("Target_Book_2D")); // 렌더타겟 사이즈 받아오는 함수는 만들어뒀음. 2D 3D 공간
+        XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)vSize.x, (_float)vSize.y, 0.0f, 1.0f));
         if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
             return E_FAIL;
-
         break;
     case Engine::COORDINATE_3D:
         if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))

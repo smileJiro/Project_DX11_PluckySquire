@@ -17,6 +17,7 @@ public:
 public:
 	_float Get_TimeDelta(const _wstring& strTimerTag);
 	_uint Get_FPS() const { return m_iFPS; }
+	_uint Get_FPS(const _wstring& _strTimerTag);
 
 public:
 	HRESULT Add_Timer(const _wstring& _strTimerTag);

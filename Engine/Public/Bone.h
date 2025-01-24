@@ -4,16 +4,16 @@
 BEGIN(Engine)
 class CTransform;
 
-class ENGINE_DLL CBone final : public CBase
+class ENGINE_DLL CBone : public CBase
 {
-private:
+protected:
 	CBone();
 	virtual ~CBone() = default;
 public:
 	const _char* Get_Name() const { return m_szName; }
 
 public:
-	HRESULT Initialize(ifstream& _inFile, _int iParentBoneIndex);
+	virtual HRESULT Initialize(ifstream& _inFile, _int iParentBoneIndex);
 	virtual void Update_CombinedTransformationMatrix(const vector<CBone*>& Bones, _fmatrix PreTransformMatrix);
 
 public:
@@ -29,7 +29,7 @@ public:
 		XMStoreFloat4x4(&m_TransformationMatrix, _TransformationMatrix); 
 	}
 
-private:
+protected:
 	/* 추후 이름을 기반으로 검색하는 경우가 빈번함. */
 	_char m_szName[MAX_PATH] = {};
 
