@@ -96,6 +96,10 @@ private:
 	HRESULT				Setting_Action_Layer(vector<pair<wstring, CLayer*>>& _TargetLayerPairs);
 
 
+	
+	HRESULT				Setting_TileMap(const _string _strFileMapJsonName);
+
+
 
 private:
 	ID3D11Device*					m_pDevice;

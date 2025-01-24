@@ -281,7 +281,8 @@ HRESULT CTask_Manager::Parsing()
 
 		NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
 		lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(pair.first).c_str());
-
+		NormalDesc.iCurLevelID = LEVEL_TOOL_3D_MAP;
+		NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
 		CGameObject* pGameObject = nullptr;
 		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
 			LEVEL_TOOL_3D_MAP, strLayerTag, &pGameObject, (void*)&NormalDesc);
@@ -345,7 +346,7 @@ HRESULT CTask_Manager::Parsing()
 				std::ifstream inputFile(filePathDialog);
 				if (!inputFile.is_open())
 				{
-					LOG_TYPE("ERROR!!!!!!!!!!!!!!!! material name wa arukedo JSON GA up su yo -> " + filePathDialog, LOG_ERROR);
+					LOG_TYPE("json file not exist-> " + filePathDialog, LOG_ERROR);
 
 				}
 				else
@@ -356,11 +357,11 @@ HRESULT CTask_Manager::Parsing()
 					// 1Â÷.
 					if (FAILED(Find_Override_Material_Texture(pMapObject, jsonDialogs)))
 					{
-						LOG_TYPE("ERROR!!!!!!!!!!!!!!!!!!! material and json wa arukedo DATA GA up su yo -> " + filePathDialog, LOG_ERROR);
+						LOG_TYPE("data not exist -> " + filePathDialog, LOG_ERROR);
 					}
 					if (FAILED(Find_Override_Material_Color(pMapObject, jsonDialogs)))
 					{
-						LOG_TYPE("ERROR!!!!!!!!!!!!!!!!!!! material and json wa arukedo DATA GA up su yo -> " + filePathDialog, LOG_ERROR);
+						LOG_TYPE("data not exist -> " + filePathDialog, LOG_ERROR);
 					}
 					inputFile.close();
 				}

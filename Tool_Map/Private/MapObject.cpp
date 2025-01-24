@@ -30,9 +30,9 @@ HRESULT CMapObject::Initialize(void* _pArg)
     m_matWorld = pDesc->matWorld;
 
     pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->iCurLevelID = LEVEL_TOOL_3D_MAP;
+    //pDesc->iCurLevelID = LEVEL_TOOL_3D_MAP;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
+    //pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     pDesc->strModelPrototypeTag_3D = m_strModelName;
 

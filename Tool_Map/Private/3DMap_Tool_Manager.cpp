@@ -1267,6 +1267,8 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 			lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(szSaveMeshName).c_str());
 			NormalDesc.eCreateType = CMapObject::OBJ_LOAD;
 			NormalDesc.matWorld = vWorld;
+			NormalDesc.iCurLevelID = LEVEL_TOOL_3D_MAP;
+			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
 
 
 
@@ -1667,6 +1669,8 @@ void C3DMap_Tool_Manager::Object_Open_PreviewMode()
 	{
 		CMapObject::MAPOBJ_DESC NormalDesc = {};
 		NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
+		NormalDesc.iCurLevelID = LEVEL_TOOL_3D_MAP;
+		NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
 
 		lstrcpy(NormalDesc.szModelName, m_arrSelectName[CREATE_OBJECT].c_str());
 

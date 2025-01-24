@@ -147,6 +147,31 @@ ID3D11ShaderResourceView* CTexture::Get_SRV(const _wstring _strTextureName, _uin
     return pReturnTexture;
 }
 
+const _float2 CTexture::Get_Size(_uint _iSRVIndex)
+{
+    _float2 fReturn = _float2(-1.f, -1.f);
+    if (_iSRVIndex >= m_iNumSRVs)
+        return fReturn;
+    ID3D11Resource* pResource = nullptr;
+
+    m_SRVs[_iSRVIndex]->GetResource(&pResource);
+    if (pResource)
+    {
+        ID3D11Texture2D* pTexture2D = nullptr;
+        HRESULT hr = pResource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&pTexture2D));
+        pResource->Release();
+
+        if (SUCCEEDED(hr) && pTexture2D)
+        {
+            D3D11_TEXTURE2D_DESC desc;
+            pTexture2D->GetDesc(&desc);
+            fReturn.x = desc.Width;
+            fReturn.y = desc.Height;
+        }
+    }
+    return fReturn;
+}
+
 CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures)
 {
     CTexture* pInstance = new CTexture(_pDevice, _pContext);
