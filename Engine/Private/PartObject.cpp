@@ -115,6 +115,20 @@ HRESULT CPartObject::Render()
     return S_OK;
 }
 
+_vector CPartObject::Get_Position() const
+{
+    COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+    return XMLoadFloat4((_float4*)&m_WorldMatrices[eCurCoord].m[3]);
+}
+
+const _float3& CPartObject::Get_Scale() const
+{
+    COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+    return _float3( XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[eCurCoord].m[0]))),
+                    XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[eCurCoord].m[1]))),
+                    XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[eCurCoord].m[2]))));
+}
+
 void CPartObject::Free()
 {
     for (_int i = 0; i < COORDINATE_LAST; ++i)

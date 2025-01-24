@@ -15,6 +15,7 @@
 #include "Event_Manager.h"
 #include "Task_Manager.h"
 #include "Engine_Defines.h"
+#include "2DTile_RenderObject.h"
 #include <commdlg.h>
 using namespace std::filesystem;
 
@@ -209,7 +210,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		_uint iTileHeightInTiles = 0;
 		string arrAxisKey[2] = { "X","Y" };
 
-		const std::string filePathDialog = "../Bin/json/2DMapTestJson/Tile/CO1_P0910_TD_Tilemap_TileSet.json";
+		const std::string filePathDialog = "../Bin/json/2DMapTestJson/Tile/C01_P1718_TD_Tilemap.json";
 		std::ifstream inputFile(filePathDialog);
 		if (!inputFile.is_open()) {
 			throw std::runtime_error("json Error :  " + filePathDialog);
@@ -302,7 +303,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		_uint iTileHeightInTiles = 0;
 		string arrAxisKey[2] = { "X","Y" };
 
-		const std::string filePathDialog = "../Bin/json/2DMapTestJson/Tile/C01_P2526_SS_Tilemap.json";
+		const std::string filePathDialog = "../Bin/json/2DMapTestJson/Tile/C01_P1718_TD_Tilemap.json";
 		std::ifstream inputFile(filePathDialog);
 		if (!inputFile.is_open()) {
 			throw std::runtime_error("json Error :  " + filePathDialog);
@@ -321,9 +322,31 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 					ChildJson.is_object() &&
 					ChildJson.contains("Type") &&
 					ChildJson.contains("Properties") &&
+					ChildJson["Type"] == "PaperTileMap")
+				{
+					auto PropertiesJson = ChildJson["Properties"];
+
+					if (PropertiesJson.contains("TileWidth"))
+					{
+						iTileXSize = PropertiesJson["TileWidth"];
+						iTileYSize = PropertiesJson["TileHeight"];
+					}
+
+					if (PropertiesJson.contains("MapWidth"))
+						iTileWidthInTiles = PropertiesJson["MapWidth"];
+					if (PropertiesJson.contains("MapHeight"))
+						iTileHeightInTiles = PropertiesJson["MapHeight"];
+
+				}
+				if (
+					ChildJson.is_object() &&
+					ChildJson.contains("Type") &&
+					ChildJson.contains("Properties") &&
 					ChildJson["Type"] == "PaperTileLayer")
 				{
 					auto PropertiesJson = ChildJson["Properties"];
+
+					
 					if (
 						PropertiesJson.contains("LayerName")
 						&&
@@ -371,7 +394,35 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 
 		if (!testVector2.empty())
 		{
-			int a = 1;
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTile_RenderObject"),
+				LEVEL_TOOL_2D_MAP, L"Layer_TileObject", &pGameObject, nullptr)))
+				return;
+
+			if (pGameObject)
+				m_pTileRenderObject = static_cast<C2DTile_RenderObject*>(pGameObject);
+
+
+			C2DTile_RenderObject::TILE_INFO tInfo;
+			tInfo.iWidthSIze = iTileXSize;
+			tInfo.iHeightSIze = iTileYSize;
+			tInfo.iWidthCount = iTileWidthInTiles;
+			tInfo.iHeightCount = iTileHeightInTiles;
+			ID3D11ShaderResourceView* pSRV = { nullptr };
+			HRESULT		hr = E_FAIL;
+			hr = CreateDDSTextureFromFile(m_pDevice, L"../Bin/json/2DMapTestJson/Tile/CO1_P0910_TD_Tilemap.dds", nullptr, &pSRV);
+
+			if (SUCCEEDED(hr))
+			{
+				tInfo.pTexture = pSRV;
+				tInfo.strTextureName = L"CO1_P0910_TD_Tilemap.dds";
+				m_pTileRenderObject->Set_TileTexture(tInfo);
+
+				for (_uint i = 0 ; i < (_uint)testVector2.size(); ++i)
+				{
+					m_pTileRenderObject->Set_Index(i, testVector2[i].second);
+				}
+			}
 
 		}
 

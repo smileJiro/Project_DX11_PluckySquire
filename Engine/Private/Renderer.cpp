@@ -22,7 +22,7 @@ HRESULT CRenderer::Initialize()
     m_iOriginViewportHeight = (_uint)ViewportDesc.Height;
 
     /* Target Book2D */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 0.0f, 1.0f, 1.f))))
         return E_FAIL;
 
     /* Target Diffuse */
@@ -644,6 +644,7 @@ void CRenderer::Free()
     Safe_Release(m_pVIBuffer);
 
     Safe_Release(m_pShadowDepthStencilView);
+    Safe_Release(m_pBook2DDepthStencilView);
 
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);

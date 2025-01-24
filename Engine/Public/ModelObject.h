@@ -21,6 +21,7 @@ public:
 		_uint iShaderPass_2D = {};
 		// 3D ShaderPass
 		_uint iShaderPass_3D = {};
+		_float fFrustumCullingRange = 2.0f;
 	}MODELOBJECT_DESC;
 
 protected:
@@ -68,6 +69,7 @@ protected:
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};
 	_wstring				m_strModelPrototypeTag[COORDINATE_LAST];
 
+	_float					m_fFrustumCullingRange = 0.0f;
 
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();

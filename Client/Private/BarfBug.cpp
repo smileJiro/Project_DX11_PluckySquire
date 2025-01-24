@@ -99,13 +99,14 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
-    //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(BARF, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBarfBug::Alert_End, this, COORDINATE_3D, ALERT));
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBarfBug::Attack_End, this, COORDINATE_3D, BARF));
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
+    //pModelObject->Set_AnimationLoop(BARF, true);
+    pModelObject->Set_Animation(IDLE);
+
+    pModelObject->Register_OnAnimEndCallBack(bind(&CBarfBug::Animation_End, this, placeholders::_1, placeholders::_2));
 
 
     /*  Projectile  */
@@ -252,17 +253,25 @@ void CBarfBug::Attack(_float _fTimeDelta)
     }
 }
 
-void CBarfBug::Alert_End(COORDINATE _eCoord, _uint iAnimIdx)
+void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
-    Set_AnimChangeable(true);
-}
-
-void CBarfBug::Attack_End(COORDINATE _eCoord, _uint iAnimIdx)
-{
-    //딜레이 동안은 애니 전환 안됨. 따라서 상태 전환도 불가
-    if (false == m_isDelay)
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+    switch ((CBarfBug::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
+    case ALERT:
         Set_AnimChangeable(true);
+        break;
+
+    case BARF:
+        //딜레이 동안은 애니 전환 안됨. 따라서 상태 전환도 불가
+        if (false == m_isDelay)
+        {
+            Set_AnimChangeable(true);
+        }
+        break;
+
+    default:
+        break;
     }
 }
 

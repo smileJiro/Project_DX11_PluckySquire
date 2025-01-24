@@ -22,6 +22,7 @@ HRESULT CBossSceneState::Initialize(void* _pArg)
 
 void CBossSceneState::State_Enter()
 {
+	m_pOwner->Set_AnimChangeable(false);
 }
 
 void CBossSceneState::State_Update(_float _fTimeDelta)
@@ -45,6 +46,8 @@ void CBossSceneState::State_Update(_float _fTimeDelta)
 		break;
 	}
 
+	//임시 코드
+	Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
 }
 
 void CBossSceneState::State_Exit()

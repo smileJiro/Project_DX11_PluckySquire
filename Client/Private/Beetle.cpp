@@ -48,13 +48,13 @@ HRESULT CBeetle::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(IDLE);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Alert_End, this, COORDINATE_3D, ALERT));
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Attack_End, this, COORDINATE_3D, ATTACKSTRIKE));
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CBeetle::Attack_Recovery_End, this, COORDINATE_3D, ATTACKRECOVERY));
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
+    pModelObject->Set_Animation(IDLE);
+
+    pModelObject->Register_OnAnimEndCallBack(bind(&CBeetle::Animation_End, this, placeholders::_1, placeholders::_2));
 
     return S_OK;
 }
@@ -117,20 +117,26 @@ void CBeetle::Change_Animation()
     }
 }
 
-void CBeetle::Alert_End(COORDINATE _eCoord, _uint iAnimIdx)
+void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
-    Set_AnimChangeable(true);
-}
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+    switch ((CBeetle::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    {
+    case ALERT:
+        Set_AnimChangeable(true);
+        break;
+        
+    case ATTACKSTRIKE:
+        pModelObject->Switch_Animation(ATTACKRECOVERY);
+        break;
 
-void CBeetle::Attack_End(COORDINATE _eCoord, _uint iAnimIdx)
-{
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKRECOVERY);
-}
+    case ATTACKRECOVERY:
+        pModelObject->Switch_Animation(ATTACKSTRIKE);
+        break;
 
-void CBeetle::Attack_Recovery_End(COORDINATE _eCoord, _uint iAnimIdx)
-{
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKSTRIKE);
-    Set_AnimChangeable(true);
+    default:
+        break;
+    }
 }
 
 HRESULT CBeetle::Ready_Components()

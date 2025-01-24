@@ -61,6 +61,8 @@ namespace Client
 		ATTACK,
 		ENERGYBALL,
 		HOMINGBALL,
+		YELLOWBALL,
+		PURPLEBALL,
 
 		LAST,
 	};

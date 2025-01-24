@@ -30,6 +30,7 @@ HRESULT CModelObject::Initialize(void* _pArg)
     m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
     m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
     m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
+    m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
     // Add
 
 
@@ -62,7 +63,12 @@ void CModelObject::Priority_Update(_float _fTimeDelta)
 void CModelObject::Late_Update(_float _fTimeDelta)
 {    /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+    {
+        if(m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
         m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+        
+    }
+        
     else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
         m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 
