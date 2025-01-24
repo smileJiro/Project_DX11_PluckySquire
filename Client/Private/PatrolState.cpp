@@ -62,11 +62,15 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	{
 		while (true)
 		{
+			//8 방향 중 랜덤 방향 지정
 			iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
-			if (iDir != m_iPrevDir || 0 > m_iPrevDir)	//이거 고쳐야댐
+			if (iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
+			{
+				m_iPrevDir = iDir;
+				m_fMoveTime = m_pGameInstance->Compute_Random(0.5f, 1.5f);
+				m_isMove = true;
 				break;
-			m_iPrevDir = iDir;
-			m_fMoveTime = m_pGameInstance->Compute_Random(0.5f, 1.5f);
+			}
 		}
 	}
 	
@@ -93,7 +97,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		return;
 	}
 
-	if (false == m_isMove || -1 == _iDir)
+	if (true == m_isMove)
 	{
 		switch (_iDir)
 		{
@@ -124,9 +128,9 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		default:
 			break;
 		}
+
+		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
 	}
-	m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
-	m_isMove = true;
 }
 
 CPatrolState* CPatrolState::Create(void* _pArg)
