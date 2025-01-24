@@ -168,8 +168,6 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		m_Textures.insert({ szTextureName,pTexture });
 	}
 
-	
-
 	//Animation2Ds
 	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
 	m_Animation2Ds.reserve(iCount);
@@ -247,6 +245,14 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	return S_OK;
 }
 
+void CTest2DModel::Set_Progerss(_float _fTrackPos)
+{
+	if (m_Animation2Ds.empty())
+		return;
+	static_cast<CToolAnimation2D*> (m_Animation2Ds[m_iCurAnimIdx])->Set_Progerss(_fTrackPos);
+
+}
+
 void CTest2DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 {
 	for (auto& pTexture : m_Textures)
@@ -254,6 +260,15 @@ void CTest2DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 		_outTextureNames.insert(*pTexture.second->Get_SRVName(0));
 	}
 }
+
+_float CTest2DModel::Get_Progerss()
+{
+	if (m_Animation2Ds.empty())
+		return 0;
+	return static_cast<CToolAnimation2D*>(m_Animation2Ds[m_iCurAnimIdx])->Get_Progerss();
+}
+
+
 
 CTest2DModel* CTest2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* _pPath)
 {

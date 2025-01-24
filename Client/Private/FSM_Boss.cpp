@@ -6,6 +6,7 @@
 #include "BossIdleState.h"
 #include "BossHomingBallState.h"
 #include "BossEnergyBallState.h"
+#include "BossYellowBallState.h"
 
 CFSM_Boss::CFSM_Boss(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CFSM(_pDevice, _pContext)
@@ -25,6 +26,7 @@ HRESULT CFSM_Boss::Initialize_Prototype()
 HRESULT CFSM_Boss::Initialize(void* _pArg)
 {
 	FSMBOSSDESC* pDesc = static_cast<FSMBOSSDESC*>(_pArg);
+
 	m_iAttackIdx = (_uint)(BOSS_STATE::ATTACK);
 	return S_OK;
 }
@@ -98,6 +100,16 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)BOSS_STATE::ENERGYBALL, pState);
+		break;
+
+	case Client::BOSS_STATE::YELLOWBALL:
+		pState = CBossYellowBallState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::YELLOWBALL, pState);
 		break;
 
 	case Client::BOSS_STATE::LAST:

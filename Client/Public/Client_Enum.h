@@ -47,6 +47,7 @@ namespace Client
 	enum class MONSTER_STATE
 	{
 		IDLE,
+		PATROL,
 		ALERT,
 		CHASE,
 		ATTACK,
@@ -61,6 +62,8 @@ namespace Client
 		ATTACK,
 		ENERGYBALL,
 		HOMINGBALL,
+		YELLOWBALL,
+		PURPLEBALL,
 
 		LAST,
 	};

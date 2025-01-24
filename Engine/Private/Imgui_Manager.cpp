@@ -454,9 +454,9 @@ void CImgui_Manager::Free()
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
-	Safe_Release(m_pDevice);
-	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 	__super::Free();
 
 }

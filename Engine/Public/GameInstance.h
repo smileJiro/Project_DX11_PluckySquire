@@ -202,6 +202,10 @@ public: /* For. Physx_Manager*/
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
+
+public: /* For. Frustum */
+	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);
+
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -222,7 +226,7 @@ private:
 	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
 	class CCamera_Manager_Engine* m_pCamera_Manager = nullptr;
 	class CPhysx_Manager* m_pPhysx_Manager = nullptr;
-
+	class CFrustum* m_pFrustum = nullptr;
 private:
 	HWND m_hWnd = nullptr;
 	HINSTANCE m_hInstance = nullptr;

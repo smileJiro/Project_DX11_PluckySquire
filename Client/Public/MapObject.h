@@ -2,6 +2,7 @@
 #include "ModelObject.h"
 #include "3DModel.h"
 
+
 BEGIN(Client)
 
 class CMapObject final :  public CModelObject

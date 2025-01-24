@@ -22,6 +22,7 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_PreTransformMatrix{ _Prototype.m_PreTransformMatrix }
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
 {
+
 	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
 	{
 		for (_uint j= 0; j< AI_TEXTURE_TYPE_MAX; j++)
@@ -75,7 +76,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	if (FAILED(Ready_Animations(inFile)))
 		return E_FAIL;
 	inFile.close();
-	std::cout << pModelFilePath << endl;
+	//std::cout << pModelFilePath << endl;
 	return S_OK;
 }
 
