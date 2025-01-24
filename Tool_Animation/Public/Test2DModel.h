@@ -19,7 +19,7 @@ public:
     HRESULT				Export_Model(ofstream& _outfile);
 
     //Set
-    void						Set_Progerss(_float _fTrackPos);
+    void						Set_Progerss(_float _fProgerss);
     //Get
     void						Get_TextureNames(set<wstring>& _outTextureNames);
     _float					Get_Progerss();

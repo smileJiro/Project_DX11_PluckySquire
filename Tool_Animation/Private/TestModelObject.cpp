@@ -108,7 +108,7 @@ void CTestModelObject::Set_Progerss(_float _fTrackPos)
     case Engine::COORDINATE_2D:
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progerss(_fTrackPos);
     case Engine::COORDINATE_3D:
-        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progerss(_fTrackPos);
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progress(_fTrackPos);
     }
 }
 
@@ -142,7 +142,7 @@ _float CTestModelObject::Get_Progress()
     case Engine::COORDINATE_2D:
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_Progerss();
     case Engine::COORDINATE_3D:
-        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_Progerss();
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_Progress();
     }
    
 }

@@ -16,10 +16,10 @@ public:
 	HRESULT				Export_Model(ofstream& _outfile);
 
 	//Set
-	void						Set_Progerss(_float _fTrackPos);
+	void						Set_Progress(_float _fTrackPos);
 	//Get
 	void						Get_TextureNames(set<wstring>& _outTextureNames);
-	_float					Get_Progerss();
+	_float					Get_Progress();
 
 protected:
 	virtual HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);

@@ -148,15 +148,10 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 			m_iCurrentAnimIndex = min(m_iCurrentAnimIndex, (_int)m_pTestModelObj->Get_AnimationCount()-1);
 			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
 		}
-		if (m_pTestModelObj->Get_CurCoord() == COORDINATE_3D)
-		{
-			if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
-				m_pTestModelObj->Set_Progerss(m_fCurrentProgerss);
-			else
-				m_fCurrentProgerss = m_pTestModelObj->Get_Progress();
-		}
-
-
+		if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
+			m_pTestModelObj->Set_Progerss(m_fCurrentProgerss);
+		else
+			m_fCurrentProgerss = m_pTestModelObj->Get_Progress();
 	}
 }
 

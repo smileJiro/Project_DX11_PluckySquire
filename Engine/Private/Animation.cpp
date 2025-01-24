@@ -149,6 +149,7 @@ bool CAnimation::Is_AnimChangeable()
 
 void CAnimation::Set_Progress(_float _fProgerss)
 {
+	m_fCurrentTrackPosition = _fProgerss * m_fDuration;
 }
 
 void CAnimation::Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const

@@ -39,11 +39,11 @@ HRESULT CTest3DModel::Export_Model(ofstream& _outfile)
 	return S_OK;
 }
 
-void CTest3DModel::Set_Progerss(_float _fTrackPos)
+void CTest3DModel::Set_Progress(_float _fTrackPos)
 {
 	if (m_Animations.empty())
 		return;
-	static_cast<CToolAnimation3D*> (m_Animations[m_iCurrentAnimIndex])->Set_TrackPosition(_fTrackPos);
+	static_cast<CToolAnimation3D*> (m_Animations[m_iCurrentAnimIndex])->Set_Progress(_fTrackPos);
 }
 
 void CTest3DModel::Get_TextureNames(set<wstring>& _outTextureNames)
@@ -55,11 +55,11 @@ void CTest3DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 
 }
 
-_float CTest3DModel::Get_Progerss()
+_float CTest3DModel::Get_Progress()
 {
 	if (m_Animations.empty())
 		return 0;
-	return static_cast<CToolAnimation3D*> (m_Animations[m_iCurrentAnimIndex])->Get_TrackPosition();
+	return static_cast<CToolAnimation3D*> (m_Animations[m_iCurrentAnimIndex])->Get_Progress();
 }
 
 
