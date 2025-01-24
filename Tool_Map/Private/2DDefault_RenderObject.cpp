@@ -29,11 +29,11 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 	if (pArg != nullptr)
 		pDesc = static_cast<DEFAULT_RENDER_OBJECT_DESC*>(pArg);
 	
-	_float fTest = RTSIZE_BOOK2D_Y * ((_float)g_iWinSizeX / (_float)RTSIZE_BOOK2D_X);
+	_float fBookY = RTSIZE_BOOK2D_Y * ((_float)g_iWinSizeX / (_float)RTSIZE_BOOK2D_X);
 	pDesc->fX = g_iWinSizeX >> 1;
-	pDesc->fY = (_uint)fTest >> 1;
+	pDesc->fY = fBookY * 0.5f;
 	pDesc->fSizeX = g_iWinSizeX;
-	pDesc->fSizeY = fTest;
+	pDesc->fSizeY = fBookY;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;

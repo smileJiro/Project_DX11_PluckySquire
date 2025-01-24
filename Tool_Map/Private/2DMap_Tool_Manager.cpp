@@ -141,7 +141,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		_tchar originalDir[MAX_PATH];
 		GetCurrentDirectory(MAX_PATH, originalDir);
 
-		_wstring strModelPath = L"..\\Bin\\json\\2DMapTestJson\\";
+		_wstring strModelPath = L"..\\Bin\\json\\2DMapJson\\";
 
 		OPENFILENAME ofn = {};
 		_tchar szName[MAX_PATH] = {};
@@ -165,8 +165,8 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 			string arrAxisKey[3] = { "X","Y","Z" };
 			string arrColorKey[4] = { "R","G","B","A" };
 			_string strTileMapName = "";
-			//const std::string filePathDialog = "../Bin/json/2DMapTestJson/C01_P1718.json";
-			//const std::string filePathDialog = "../Bin/json/2DMapTestJson/C01_P1112.json";
+			//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1718.json";
+			//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1112.json";
 			const std::string filePathDialog = WstringToString(szName);
 			std::ifstream inputFile(filePathDialog);
 			if (!inputFile.is_open()) {
@@ -306,10 +306,10 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 				std::sort(MapObjectInfos.begin(), MapObjectInfos.end(), [](pair<_string, _float3>& FirstPair, pair<_string, _float3>& SecoundPair) {
 					return FirstPair.second.x > SecoundPair.second.x;
 					});
-				_float2 Test = { (fMin.x + fMax.x) * 0.5f,(fMin.y + fMax.y) * 0.5f };
-				for_each(MapObjectInfos.begin(), MapObjectInfos.end(), [&Test](pair<_string, _float3>& Pair) {
-					Pair.second.x -= Test.x;
-					Pair.second.y -= Test.y;
+				_float2 fMapCenterOffset = { (fMin.x + fMax.x) * 0.5f,(fMin.y + fMax.y) * 0.5f };
+				for_each(MapObjectInfos.begin(), MapObjectInfos.end(), [&fMapCenterOffset](pair<_string, _float3>& Pair) {
+					Pair.second.x -= fMapCenterOffset.x;
+					Pair.second.y -= fMapCenterOffset.y;
 					});
 				int a = 1;
 				//Flower
@@ -416,7 +416,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		}
 	}
 
-	if (ImGui::Button("Test SampleBook"))
+	if (ImGui::Button("SampleBook Mode Toggle"))
 	{
 		_bool is2DMode = m_DefaultRenderObject->Toggle_Mode();
 		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_2D_MAP,L"Layer_Camera",0);
@@ -425,7 +425,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 	}
 
 
-
+	// 2D Tile Collider Export Sample
 	/*if (ImGui::Button("Go2"))
 	{
 		_uint iTileXSize = 0;
@@ -434,7 +434,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		_uint iTileHeightInTiles = 0;
 		string arrAxisKey[2] = { "X","Y" };
 
-		const std::string filePathDialog = "../Bin/json/2DMapTestJson/Tile/C01_P1718_TD_Tilemap.json";
+		const std::string filePathDialog = "../Bin/json/2DMapJson/Tile/C01_P1718_TD_Tilemap.json";
 		std::ifstream inputFile(filePathDialog);
 		if (!inputFile.is_open()) {
 			throw std::runtime_error("json Error :  " + filePathDialog);
@@ -483,7 +483,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 
 									if (Shape.contains("Vertices"))
 									{
-										vector<_float2> test;
+										vector<_float2> Vertices;
 										for (auto Vertices : Shape["Vertices"])
 										{
 											_float2 fTarget = {};
@@ -493,9 +493,9 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 												_float fValue = Vertices.at(arrAxisKey[i]);
 												memcpy((&fTarget.x) + i, &fValue, sizeof(_float));
 											}
-											test.push_back(fTarget);
+											Vertices.push_back(fTarget);
 										}
-										MapObjectInfos.push_back(test);
+										MapObjectInfos.push_back(Vertices);
 									}
 
 								}
@@ -880,7 +880,7 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 	_uint iTileHeightInTiles = 0;
 	string arrAxisKey[2] = { "X","Y" };
 
-	std::string filePathDialog = "../Bin/json/2DMapTestJson/Tile/";
+	std::string filePathDialog = "../Bin/json/2DMapJson/Tile/";
 	filePathDialog += _strFileMapJsonName + ".json";
 	std::ifstream inputFile(filePathDialog);
 	if (!inputFile.is_open()) {

@@ -165,8 +165,8 @@ const _float2 CTexture::Get_Size(_uint _iSRVIndex)
         {
             D3D11_TEXTURE2D_DESC desc;
             pTexture2D->GetDesc(&desc);
-            fReturn.x = desc.Width;
-            fReturn.y = desc.Height;
+            fReturn.x = (_float)desc.Width;
+            fReturn.y = (_float)desc.Height;
         }
     }
     return fReturn;

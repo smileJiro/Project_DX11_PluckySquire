@@ -125,7 +125,6 @@ HRESULT CTask_Manager::Parsing(json _jsonObj)
 					string strComponentKey = jsonObj.value()["Class"];
 					if (strComponentKey == "UScriptClass'StaticMeshComponent'")
 					{
-						auto test = jsonObj.value()["Properties"];
 						if (!jsonObj.value()["Properties"]["StaticMesh"].is_null()
 							&&
 							!jsonObj.value()["Properties"]["StaticMesh"]["ObjectName"].is_null()
@@ -406,11 +405,11 @@ HRESULT CTask_Manager::Parsing()
 	strResultFileFath += L"_Result.json";
 
 	json jAddFile;
-	for (auto strModelName : OverrideMaterialModels)
+	for (auto ModelInfoPair : OverrideMaterialModels)
 	{
-		_string test1 = strModelName.first;
-		_string test2 = strModelName.second.szMaterialKey;
-		jAddFile[test1].push_back(test2);
+		_string strModelName = ModelInfoPair.first;
+		_string strModelTextureName = ModelInfoPair.second.szMaterialKey;
+		jAddFile[strModelName].push_back(strModelTextureName);
 	}
 
 
@@ -668,7 +667,6 @@ HRESULT CTask_Manager::RePackaging()
 		return E_FAIL;
 	}
 
-	//strFilePath += ".Test.model";
 	if (FAILED(pObj->Export(strFilePath)))
 	{
 		LOG_TYPE("Model Re-Packaging Fail... ", LOG_ERROR);

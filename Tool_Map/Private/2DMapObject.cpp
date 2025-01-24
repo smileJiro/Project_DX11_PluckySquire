@@ -98,7 +98,8 @@ HRESULT C2DMapObject::Ready_Components(MAPOBJ_2D_DESC* Desc)
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
-	_wstring ProtoTag = Desc->strProtoTag;
+	_wstring strProtoTag = Desc->strProtoTag;
+	// TODO :: 텍스쳐 매핑방식 구조 구성후 추후 수정, 0125 박예슬
 	_wstring TestTag[] = {
 		L"Flower",
 		L"bush",
@@ -116,7 +117,7 @@ HRESULT C2DMapObject::Ready_Components(MAPOBJ_2D_DESC* Desc)
 
 	for (_uint i = 0; i < (_uint)size(TestTag); i++)
 	{
-		if (ContainWstring(ProtoTag, TestTag[i]))
+		if (ContainWstring(strProtoTag, TestTag[i]))
 		{
 			iTagIndex = i;
 			break;
