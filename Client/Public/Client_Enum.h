@@ -62,6 +62,7 @@ namespace Client
 		ENERGYBALL,
 		HOMINGBALL,
 		YELLOWBALL,
+		PURPLEBALL,
 
 		LAST,
 	};

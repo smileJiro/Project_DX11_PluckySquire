@@ -174,6 +174,9 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
             break;
 
+        case BOSS_STATE::PURPLEBALL:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
+            break;
 
         default:
             break;
@@ -235,6 +238,28 @@ void CButterGrump::Attack(_float _fTimeDelta)
 
         break;
     }
+
+    case BOSS_STATE::PURPLEBALL:
+    {
+        _vector Rot;
+
+        vPosition.y += vScale.y * 0.5f;
+
+        float Array[8] = { 1,0,-1,0,1,1,-1,-1 };
+        float Array2[8] = { 0,1,0,-1,1,-1,1,-1 };
+        for (_uint i = 0; i < 8; i++)
+        {
+            _float4 vRot;
+            _float3 vPos = vPosition;
+            Rot = XMQuaternionMultiply(XMLoadFloat4(&vRotation), XMQuaternionRotationAxis(XMVectorSet(Array[i], Array2[i], 0.f, 0.f), XMConvertToRadians(20.f)));
+            XMStoreFloat4(&vRot, Rot);
+            /*vPos.x += 2.f * Array[i];
+            vPos.y += 2.f * Array2[i];*/
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"), &vPos, &vRot);
+        }
+        break;
+    }
+
     default:
         break;
     }
