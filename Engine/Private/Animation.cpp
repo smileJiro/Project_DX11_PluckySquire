@@ -49,7 +49,7 @@ HRESULT CAnimation::Initialize(ifstream& inFile, const C3DModel* pModel)
 	m_fDuration = (_float)dValue;
 	inFile.read(reinterpret_cast<char*>(&dValue), sizeof(double));
 	m_fTickPerSecond = (_float)dValue;
-
+	
 	inFile.read(reinterpret_cast<char*>(&m_iNumChannels), sizeof(_uint));
 
 	m_CurrentKeyFrameIndices.resize(m_iNumChannels);
@@ -145,6 +145,11 @@ _float CAnimation::Get_Progress()
 bool CAnimation::Is_AnimChangeable()
 {
 	return m_fDuration * m_fPostDelayPercentage <= m_fCurrentTrackPosition;
+}
+
+void CAnimation::Set_Progress(_float _fProgerss)
+{
+	m_fCurrentTrackPosition = _fProgerss * m_fDuration;
 }
 
 void CAnimation::Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const

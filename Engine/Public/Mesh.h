@@ -6,9 +6,9 @@
 /* 2. VIBuffer의 VB, IB, 및 Render 관련 함수들을 사용하기 위해 상속 받았다. */
 
 BEGIN(Engine)
-class ENGINE_DLL CMesh final : public CVIBuffer
+class ENGINE_DLL CMesh : public CVIBuffer
 {
-private:
+protected:
 	CMesh(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CMesh() = default;
 
@@ -20,8 +20,8 @@ public:
 	HRESULT Bind_BoneMatrices(class CShader* _pShader, const _char* _pConstantName, const vector<CBone*>& _Bones);
 	void ReSet_OffsetMarix();
 public:
-	HRESULT Ready_VertexBuffer_For_NonAnim(ifstream& _inFile, _fmatrix _PreTransformMatrix);
-	HRESULT Ready_VertexBuffer_For_Anim(ifstream& _inFile,  C3DModel* _pModel);
+	virtual HRESULT Ready_VertexBuffer_For_NonAnim(ifstream& _inFile, _fmatrix _PreTransformMatrix);
+	virtual HRESULT Ready_VertexBuffer_For_Anim(ifstream& _inFile,  C3DModel* _pModel);
 public:
 	// Get
 	_char* Get_Name()  { return m_szName; }
@@ -30,7 +30,7 @@ public:
 
 	// Set
 	void Set_Name(string _strName) { strcpy_s(m_szName, _strName.c_str()); }
-private:
+protected:
 	/* Mesh Data */
 	_char m_szName[MAX_PATH] = ""; // Mesh의 이름은 추후 중요하게 사용 된다.
 	_uint m_iMaterialIndex = 0; // 내가 렌더링에 사용하고자하는 Material Index;
