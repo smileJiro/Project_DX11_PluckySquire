@@ -300,7 +300,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
         {
             m_pActorCom->Turn_TargetDirection(_vDir);
             _vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
-            m_pActorCom->Set_LinearVelocity(vLook, 4.f);
+            m_pActorCom->Set_LinearVelocity(vLook, 500.0f * _fTimeDelta);
         }
         else
         {

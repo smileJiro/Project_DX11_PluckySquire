@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "MapObject.h"
 #include "GameInstance.h"
-#include "Controller_Model.h"
-#include "Material.h"
-#include "Bone.h"
+
 
 CMapObject::CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -41,7 +39,20 @@ void CMapObject::Update(_float _fTimeDelta)
 
 void CMapObject::Late_Update(_float _fTimeDelta)
 {
-    CModelObject::Late_Update(_fTimeDelta);
+    /* Add Render Group */
+    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+    {
+        if(true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), 5.0f))
+              m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+       
+    }
+        
+    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+        m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+
+
+    /* Update Parent Matrix */
+    CPartObject::Late_Update(_fTimeDelta);
 }
 
 HRESULT CMapObject::Render()

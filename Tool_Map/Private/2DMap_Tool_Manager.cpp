@@ -15,6 +15,7 @@
 #include "Event_Manager.h"
 #include "Task_Manager.h"
 #include "Engine_Defines.h"
+#include "2DTile_RenderObject.h"
 #include <commdlg.h>
 using namespace std::filesystem;
 
@@ -43,68 +44,47 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	ImGui::SetNextWindowSizeConstraints(ImVec2(600, 1200), ImVec2(FLT_MAX, FLT_MAX));
 
 	// 모델 리스트 불러오기
-	Load_ModelList();
 	Load_SaveFileList();
-	// 캐시파일 불러오기
-	//Load(false);
 
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Cell");
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Camera");
 
-
-	// 셀 관리 컨테이너 생성
-	//CGameObject* pGameObject = nullptr;
-	//m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_CellContainor"),
-	//	LEVEL_TOOL_3D_MAP, L"Layer_Cell", &pGameObject, nullptr);
-	//if (pGameObject)
-	//{
-	//	m_pCellContainor = static_cast<CCellContainor*>(pGameObject);
-	//	Safe_AddRef(m_pCellContainor);
-	//}
-	
-
-	//lstrcpy(NormalDesc.szModelName, L"SM_desk_split_topboard_02");
-	////lstrcpy(NormalDesc.szModelName, L"WoodenPlatform_01");
+	m_pGameInstance->Set_DebugRender(false);
 	
 	m_pMapParsingManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pMapParsingManager)
 		return E_FAIL;
 
 	m_pMapParsingManager->Register_Parsing("..\\Bin\\json\\Persistent_Room.json",L"Layer_Room_Environment");
+	
+	
+	CGameObject* pGameObject = nullptr;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
+		LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, nullptr)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT C2DMap_Tool_Manager::Render()
+{
 	return S_OK;
 }
 
 void C2DMap_Tool_Manager::Update_Tool()
 {
-	// 입력 설정 Navigation Tool Mode - Obejct Tool Mode 전환하여. 나중에 씬 분리할것
-	if (!m_bNaviMode)
-		Input_Object_Tool_Mode();
-	else
-		Input_Navigation_Tool_Mode();
-
 	// 임구이 화면 구성
 	Update_Imgui_Logic();
 
 	m_pMapParsingManager->Update();
-
 }
 
 
 void C2DMap_Tool_Manager::Update_Imgui_Logic()
 {
-	// 참 조 정 리 
-	for (_uint i = 0 ; i < (_uint)OBJECT_END; ++i)
-	{
-		if (m_arrObjects[i] && m_arrObjects[i]->Is_Dead())
-			m_arrObjects[i] = nullptr;
-	}
-	
-	
-	Navigation_Imgui(m_arrObjects[OBJECT_PREVIEW]);
-	Object_Create_Imgui(m_bNaviMode);
+	Object_Create_Imgui();
 	SaveLoad_Imgui();
-	Model_Imgui();
 }
 
 
@@ -116,595 +96,339 @@ void C2DMap_Tool_Manager::Input_Object_Tool_Mode()
 
 	if (nullptr != hWnd)
 	{
-		if (ImGui::IsKeyPressed(ImGuiKey_Delete))
-		{
-			if (m_arrObjects[OBJECT_PICKING])
-			{
-				OBJECT_DESTROY(m_arrObjects[OBJECT_PICKING]);
-				m_arrObjects[OBJECT_PICKING] = nullptr;
-			}
-		}
-
-		if (ImGui::IsKeyPressed(ImGuiKey_C))
-		{
-			if (!m_arrObjects[OBJECT_PREVIEW])
-				Object_Open_PreviewMode();
-		}
-
-
 	}
 
 
 	if (nullptr != hWnd && !io.WantCaptureMouse)
 	{
-		// ESC -> 모든 모드 해제.
-		if (KEY_DOWN(KEY::ESC))
-		{
-			Object_Clear_PickingMode();
-			Object_Close_PreviewMode();
-		}
-
-
-		//if (FAILED(hrTerrainPicking))
-		//	return;
-		if (!m_arrObjects[OBJECT_PREVIEW])
-		{
-			if (MOUSE_DOWN(MOUSE_KEY::LB) && !ImGuizmo::IsUsing())
-				Object_Open_PickingMode();
-		}
-		else
-		{
-			HRESULT hrTerrainPicking = Picking_On_Terrain(&m_fPickingPos);
-
-			// 프리뷰 모드 코드.
-			_float3 fPos = m_fPickingPos;
-			fPos.y += 0.5f;
-			m_arrObjects[OBJECT_PREVIEW]->Set_Position(XMVectorSetW(XMLoadFloat3(&fPos), 1.f));
-			m_fPreviewPos = fPos;
-			if (MOUSE_DOWN(MOUSE_KEY::LB))
-			{
-				// 실제 설치.
-				m_arrObjects[OBJECT_PREVIEW]->Create_Complete();
-				m_arrObjects[OBJECT_PREVIEW] = nullptr;
-			}
-
-		}
+		
 
 	}
 
-}
-
-void C2DMap_Tool_Manager::Input_Navigation_Tool_Mode()
-{
-	//HWND hWnd = GetFocus();
-	//auto& io = ImGui::GetIO();
-	//if (m_bNaviMode)
-	//{
-	//	if (nullptr != hWnd && !io.WantCaptureMouse)
-	//	{
-	//		switch (m_eNaviMode)
-	//		{
-	//		case Map_Tool::C2DMap_Tool_Manager::NAV_CREATE:
-	//		case Map_Tool::C2DMap_Tool_Manager::NAV_EDIT:
-	//			if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
-	//			{
-	//				_float3 fPos = {};
-	//				bool bDuple = false;
-
-	//				CNavigationVertex* pVertex = Picking_On_Vertex();
-	//				if (pVertex)
-	//				{
-	//					for (auto iter = m_vecVertexStack.begin(); iter != m_vecVertexStack.end();)
-	//					{
-	//						if (bDuple = pVertex == (*iter))
-	//						{
-	//							pVertex->Set_Mode(CNavigationVertex::NORMAL);
-	//							m_vecVertexStack.erase(iter);
-
-	//							break;
-	//						}
-	//						else
-	//							iter++;
-	//					}
-	//					if (!bDuple)
-	//						pVertex->Set_Mode(CNavigationVertex::SET);
-	//				}
-	//				else if (SUCCEEDED(Picking_On_Terrain(&fPos)))
-	//				{
-	//					pVertex = CNavigationVertex::Create(m_pDevice, m_pContext, fPos);
-	//					m_pCellContainor->Add_Vertex(pVertex);
-	//					pVertex->Set_Mode(CNavigationVertex::SET);
-	//				}
-
-	//				if (pVertex && !bDuple)
-	//				{
-	//					m_vecVertexStack.push_back(pVertex);
-	//					if (m_vecVertexStack.size() == 3)
-	//					{
-	//						Create_Cell();
-	//					}
-	//				}
-	//			}
-	//			else if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft))
-	//			{
-	//				if (!Check_VertexSelect())
-	//				{
-	//					int a = 1;
-	//				}
-	//			}
-	//			if (ImGui::IsKeyPressed(ImGuiKey_Delete))
-	//			{
-	//				if (m_pPickingVertex)
-	//				{
-	//					m_pPickingVertex->Delete_Vertex();
-	//					m_pPickingVertex = nullptr;
-	//				}
-	//			}
-	//			if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_Z))
-	//			{
-	//				if (!m_vecVertexStack.empty())
-	//				{
-	//					if (0 >= m_vecVertexStack.back()->Get_IncludeCellCount())
-	//					{
-	//						m_vecVertexStack.back()->Delete_Vertex();
-	//					}
-	//					else
-	//					{
-	//						m_vecVertexStack.back()->Set_Mode(CNavigationVertex::NORMAL);
-	//					}
-	//					m_vecVertexStack.pop_back();
-	//				}
-	//			}
-
-	//			break;
-	//		default:
-	//			break;
-	//		}
-	//	}
-	//}
 }
 
 void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 {
 	ImGui::Begin("Object");
+	
+	if(ImGui::Button("GO"))
 	{
-		ImGui::SeparatorText("Object List");
-		if (ImGui::BeginListBox("##Object List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+		string arrAxisKey[3] = { "X","Y","Z" };
+		string arrColorKey[4] = { "R","G","B","A"};
+
+		const std::string filePathDialog = "../Bin/json/2DMapTestJson/C01_P1718.json";
+		std::ifstream inputFile(filePathDialog);
+		if (!inputFile.is_open()) {
+			throw std::runtime_error("json Error :  " + filePathDialog);
+			return;
+		}
+
+		vector<pair<_string, _float3>> testVector;
+		vector<pair<_string, _float4>> testVector2;
+		json jsonDialogs;
+		inputFile >> jsonDialogs;
+		if (jsonDialogs.is_array())
 		{
-			for (const auto& PairFileInfo : m_ObjectFileLists) 
+			for (auto ChildJson : jsonDialogs)
 			{
-				_char szName[MAX_PATH] = {};
-
-				WideCharToMultiByte(CP_ACP, 0, PairFileInfo.first.c_str(), -1, szName, (_int)(lstrlen(PairFileInfo.first.c_str())), NULL, NULL);
-
-				if (ImGui::Selectable(szName, PairFileInfo.first == m_arrSelectName[CREATE_OBJECT])) {
-					if (m_arrSelectName[CREATE_OBJECT] == PairFileInfo.first)
-						m_arrSelectName[CREATE_OBJECT] = L"";
-					else
+				if (
+					ChildJson.is_object() &&
+					ChildJson.contains("Type") &&
+					ChildJson.contains("Properties") &&
+					ChildJson.contains("Outer") &&
+					ChildJson["Type"] == "CapsuleComponent")
+				{
+					if (ChildJson["Properties"].contains("RelativeLocation"))
 					{
-						m_arrSelectName[CREATE_OBJECT] = PairFileInfo.first;
+						_string strText = ChildJson["Outer"];
+						auto TargetJson = ChildJson["Properties"];
+						_float3 fValuePos = {};
+						for (_uint i = 0; i < 3; i++)
+						{
+
+							_float fValue = TargetJson["RelativeLocation"].at(arrAxisKey[i]);
+							memcpy((&fValuePos.x) + i, &fValue, sizeof(_float));
+						}
+
+							testVector.push_back(make_pair(strText, fValuePos));
 					}
-				}
-				_bool isClicked = false;
-				if (ImGui::IsItemHovered() && ImGui::IsItemClicked(ImGuiMouseButton_Right))
-				{
-					ImGui::OpenPopup("##ModelPreviewPopup");
-
-					isClicked = true;
-				}
-
-				if (isClicked)
-				{
-					_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
-					ImGui::SetNextWindowPos({ fCursorPos.x, fCursorPos.y });
-				}
 				
-
-			}
-			if (ImGui::BeginPopup("##ModelPreviewPopup"))
-			{
-
-				ImGui::Text("All those Object will be deleted.");
-				ImGui::Text("Do you want to proceed?");
-
-				Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
-				if (ImGui::Button("OK"))
-				{
-					ImGui::CloseCurrentPopup();
 				}
-				End_Draw_ColorButton();
-
-				Begin_Draw_ColorButton("NO_Style", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-				if (ImGui::Button("NO"))
+				else if (
+					ChildJson.is_object() &&
+					ChildJson.contains("Type") &&
+					ChildJson.contains("Properties") &&
+					ChildJson.contains("Outer") &&
+					ChildJson["Type"] == "MaterialInstanceDynamic")
 				{
-					ImGui::CloseCurrentPopup();
-				}
-				End_Draw_ColorButton();
-
-				ImGui::EndPopup();
-			}
-			ImGui::EndListBox();
-		}
-
-
-		Begin_Draw_ColorButton("Create_Obj_Mode", (ImVec4)ImColor::HSV(0.3f, 0.6f, 0.6f));
-		if (!_bLock &&
-			ActiveButton(ALIGN_SQUARE, m_arrObjects[OBJECT_PREVIEW], "Create Object Mode On", "Create Object Mode Off"))
-		{
-			if (!m_arrObjects[OBJECT_PREVIEW])
-				Object_Open_PreviewMode();
-			else
-				Object_Close_PreviewMode();
-		}
-		End_Draw_ColorButton();
-
-
-		Begin_Draw_ColorButton("Clear_All_ObjectStyle", (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));
-
-		if (!_bLock
-			&&
-			StyleButton(ALIGN_SQUARE, "Clear Layer Object")
-			)
-		{
-			ImGui::OpenPopup("Clear_Popup");
-			Init_Egnore_Layer();
-
-		}
-		if(ImGui::BeginPopup("Clear_Popup"))
-		{
-			auto pLayerMaps = m_pGameInstance->Get_Layers_Ptr();
-
-
-			vector<wstring> strSaveLayerTags;
-
-			ImGui::SeparatorText("Clear Layers");
-			for (auto& Pair : pLayerMaps[LEVEL_TOOL_3D_MAP])
-			{
-				wstring strLayerTag = Pair.first;
-				auto iter = find_if(m_DefaultEgnoreLayerTags.begin(), m_DefaultEgnoreLayerTags.end(), [&strLayerTag]
-				(const wstring& strEgnoreLayerTag)->_bool {
-						return strEgnoreLayerTag == strLayerTag;
-					});
-				if (iter != m_DefaultEgnoreLayerTags.end())
-					continue;
-				else
-					strSaveLayerTags.push_back(strLayerTag);
-			}
-
-			if (strSaveLayerTags.empty())
-				ImGui::CloseCurrentPopup();
-			else
-			{
-				for (auto& strSaveLayerTag : strSaveLayerTags)
-				{
-					auto iter = find_if(m_EgnoreLayerTags.begin(), m_EgnoreLayerTags.end(), [&strSaveLayerTag](const wstring& strAlreadyEgnoreTag)->_bool {
-						return strAlreadyEgnoreTag == strSaveLayerTag;
-						});
-					_bool isEgnored = iter != m_EgnoreLayerTags.end();
-					if (ImGui::Selectable(m_pGameInstance->WStringToString(strSaveLayerTag).c_str(), !isEgnored, ImGuiSelectableFlags_DontClosePopups))
+					if (ChildJson["Properties"].contains("VectorParameterValues"))
 					{
-						if (!isEgnored)
-							m_EgnoreLayerTags.push_back(strSaveLayerTag);
-						else
-							m_EgnoreLayerTags.erase(iter);
+						auto TargetJson = ChildJson["Properties"];
+						if (TargetJson["VectorParameterValues"].is_array())
+						{
+							for (auto& values : TargetJson["VectorParameterValues"])
+							{
+								if (values.contains("ParameterValue"))
+								{
+									_string strText = ChildJson["Outer"];
+
+									_float4 fValueColor = {};
+									for (_uint i = 0; i < 4; i++)
+									{
+										_float fValue = values["ParameterValue"].at(arrColorKey[i]);
+										memcpy((&fValueColor.x) + i, &fValue, sizeof(_float));
+									}
+									testVector2.push_back(make_pair(strText, fValueColor));
+								}
+							}
+						}
+
 					}
+
 				}
 			}
-
-			ImGui::Text("All Selected Layer will be deleted.");
-			ImGui::Text("Do you want to proceed?");
-
-			Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
-			if (ImGui::Button("Clear"))
-			{
-				Object_Clear();
-				ImGui::CloseCurrentPopup();
-			}
-			End_Draw_ColorButton();
-
-			Begin_Draw_ColorButton("NO_Style", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Close"))
-			{
-				ImGui::CloseCurrentPopup();
-			}
-			End_Draw_ColorButton();
-
-			ImGui::EndPopup();
-		}
-		End_Draw_ColorButton();
-
-
-
-		Begin_Draw_ColorButton("##File Parsing", (ImVec4)ImColor::HSV(0.8f, 0.6f, 0.6f));
-		if (!_bLock
-			&&
-			StartPopupButton(ALIGN_SQUARE, ".umap File Parsing"))
-		{
-			_int iCurrent = 1;
-			string strLayerName[] = { "Layer_MapObject", "Layer_Room_Environment", "Layer_Outside_Environment", };
-			if (ImGui::BeginListBox("##LayerNameList", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-			{
-				for (const auto& fileName : strLayerName)
-				{
-					if (ImGui::Selectable(fileName.c_str(), false))
-						strcpy_s(m_szSaveFileName, fileName.c_str());
-				}
-				ImGui::EndListBox();
-			}
-
-			ImGui::InputText("Layer Tag", m_szSaveFileName, MAX_PATH);
-			ImGui::SameLine();
-			Begin_Draw_ColorButton("##Import", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
-			if (ImGui::Button("Import"))
-			{
-				const wstring strLayerTag = m_pGameInstance->StringToWString(m_szSaveFileName);
-				m_pMapParsingManager->Open_ParsingDialog(strLayerTag);
-			}
-			End_Draw_ColorButton();
-
-			ImGui::EndPopup();
-		}
-		End_Draw_ColorButton();
-
-
-		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_3D_MAP, L"Layer_Camera", 0);
-		if (pGameObject)
-		{
-			ImGui::SeparatorText("Camera Setting");
-
-			CCamera_Free* pCamera = static_cast<CCamera_Free*>(pGameObject);
-			_float fCameraSpeed = pCamera->Get_CameraMoveSpeed();
-			_float fCameraSensor = pCamera->Get_MouseSensor();
-			ImGui::BulletText("Camera Sensor : ");
-			ImGui::SameLine();
-			pCamera->Get_MouseSensor();
-			if (ImGui::InputFloat("##CameraSensor", (_float*)&fCameraSensor, 0.f, 0.f, " %.1f", ImGuiInputTextFlags_EnterReturnsTrue))
-				pCamera->Set_MouseSensor(fCameraSensor);
-			ImGui::BulletText("Camera Speed  : ");
-			ImGui::SameLine();
-			if (ImGui::InputFloat("##CameraSpeed", (_float*)&fCameraSpeed, 0.f, 0.f, " %.1f", ImGuiInputTextFlags_EnterReturnsTrue))
-				pCamera->Set_CameraMoveSpeed(fCameraSpeed);
 		}
 
+		inputFile.close();
+	
 
-		ImGui::SeparatorText("Object Mode");
-		ImGui::BulletText("Picking Layer");
-		ImGui::SameLine();
-		if (ImGui::BeginCombo("##combo 1", WstringToString(m_strPickingLayerTag).c_str(), 0))
+
+		if (!testVector.empty())
 		{
-			_uint iLoop = 0;
-			auto pLayerMaps = m_pGameInstance->Get_Layers_Ptr();
-
-			vector<wstring> strSaveLayerTags;
-			for (auto& Pair : pLayerMaps[LEVEL_TOOL_3D_MAP])
-			{
-				wstring strLayerTag = Pair.first;
-				auto iter = find_if(m_DefaultEgnoreLayerTags.begin(), m_DefaultEgnoreLayerTags.end(), [&strLayerTag]
-				(const wstring& strEgnoreLayerTag)->_bool {
-						return strEgnoreLayerTag == strLayerTag;
-					});
-				if (iter != m_DefaultEgnoreLayerTags.end())
-					continue;
-				else
-					strSaveLayerTags.push_back(strLayerTag);
-			}
-
-			for (const auto& pLayerName : strSaveLayerTags) 
-			{
-				string strLayerName = WstringToString(pLayerName);
-				if (ImGui::Selectable(strLayerName.c_str(), pLayerName == m_strPickingLayerTag)) 
-				{
-					m_strPickingLayerTag = pLayerName;
-				}
-
-				if (m_strPickingLayerTag == pLayerName)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-
-		}
-
-
-		ImGui::BulletText("Preview Mode  :  %s", m_arrObjects[OBJECT_PREVIEW] ? "On" : "Off");
-		if (m_arrObjects[OBJECT_PREVIEW])
-		{
-			ImGui::Text("Object Pos  :");
-			ImGui::Text("X : %.2f", m_fPreviewPos.x);
-			ImGui::Text("Y : %.2f", m_fPreviewPos.y);
-			ImGui::Text("Z : %.2f", m_fPreviewPos.z);
-		}
-
-
-		_float3 vPos = {};
-		CMapObject::OPERATION eOper = CMapObject::TRANSLATE;
-		CMapObject* pPickingObj = m_arrObjects[OBJECT_PICKING] ? m_arrObjects[OBJECT_PICKING] : nullptr;
-		ImGui::BulletText("Picking Mode  :  %s", m_arrObjects[OBJECT_PICKING] ? "On" : "Off");
-		if (pPickingObj)
-		{
-			XMStoreFloat3(&vPos, pPickingObj->Get_Position());
-			eOper = pPickingObj->Get_Operation();
-			ImGui::SeparatorText("Gizmo Mode");
-			if (ImGui::RadioButton("Translate", eOper == ImGuizmo::TRANSLATE))
-				pPickingObj->Set_Operation(CMapObject::TRANSLATE);
-			ImGui::SameLine();
-			if (ImGui::RadioButton("Rotate", eOper == ImGuizmo::ROTATE))
-				pPickingObj->Set_Operation(CMapObject::ROTATE);
-			ImGui::SameLine();
-			if (ImGui::RadioButton("Scale", eOper == ImGuizmo::SCALE))
-				pPickingObj->Set_Operation(CMapObject::SCALE);
-			if (ImGui::IsKeyPressed(ImGuiKey_F1))
-				pPickingObj->Set_Operation(CMapObject::TRANSLATE);
-			if (ImGui::IsKeyPressed(ImGuiKey_F2))
-				pPickingObj->Set_Operation(CMapObject::ROTATE);
-			if (ImGui::IsKeyPressed(ImGuiKey_F3))
-				pPickingObj->Set_Operation(CMapObject::SCALE);
+			int a = 1;
+		
 		}
 
 	}
 
 
+	if (ImGui::Button("Go2"))
+	{
+		_uint iTileXSize = 0;
+		_uint iTileYSize = 0;
+		_uint iTileWidthInTiles = 0;
+		_uint iTileHeightInTiles = 0;
+		string arrAxisKey[2] = { "X","Y" };
+
+		const std::string filePathDialog = "../Bin/json/2DMapTestJson/Tile/C01_P1718_TD_Tilemap.json";
+		std::ifstream inputFile(filePathDialog);
+		if (!inputFile.is_open()) {
+			throw std::runtime_error("json Error :  " + filePathDialog);
+			return;
+		}
+
+		vector<vector<_float2>> testVector;
+		vector<pair<_string, _float4>> testVector2;
+		json jsonDialogs;
+		inputFile >> jsonDialogs;
+		if (jsonDialogs.is_array())
+		{
+			for (auto& ChildJson : jsonDialogs)
+			{
+				if (
+					ChildJson.is_object() &&
+					ChildJson.contains("Type") &&
+					ChildJson.contains("Properties") &&
+					ChildJson["Type"] == "PaperTileSet")
+				{
+					auto PropertiesJson = ChildJson["Properties"];
+					if (PropertiesJson.contains("TileSize"))
+					{
+						iTileXSize = PropertiesJson["TileSize"]["X"];
+						iTileYSize = PropertiesJson["TileSize"]["Y"];
+					}
+
+					if (PropertiesJson.contains("WidthInTiles"))
+						iTileWidthInTiles = PropertiesJson["WidthInTiles"];
+					if (PropertiesJson.contains("HeightInTiles"))
+						iTileHeightInTiles = PropertiesJson["HeightInTiles"];
+					if (PropertiesJson.contains("PerTileData"))
+					{
+
+						for (auto& MapData : PropertiesJson["PerTileData"])
+						{
+							if (MapData.contains("CollisionData")
+								&&
+								MapData["CollisionData"].contains("Shapes")
+								&&
+								MapData["CollisionData"]["Shapes"].is_array()
+								)
+							{
+								for (auto& Shape : MapData["CollisionData"]["Shapes"])
+								{
+								
+									if (Shape.contains("Vertices"))
+									{
+										vector<_float2> test;
+										for (auto Vertices : Shape["Vertices"])
+										{
+											_float2 fTarget = {};
+
+											for (size_t i = 0; i < 2; i++)
+											{
+												_float fValue = Vertices.at(arrAxisKey[i]);
+												memcpy((&fTarget.x) + i, &fValue, sizeof(_float));
+											}
+												test.push_back(fTarget);
+										}
+										testVector.push_back(test);
+									}
+
+								}
+
+							}
+						}
+					}
+
+				}
+			}
+		}
+
+		inputFile.close();
+
+
+
+		if (!testVector.empty())
+		{
+			int a = 1;
+
+		}
+
+	}
+	if (ImGui::Button("Go3"))
+	{
+		_uint iTileXSize = 0;
+		_uint iTileYSize = 0;
+		_uint iTileWidthInTiles = 0;
+		_uint iTileHeightInTiles = 0;
+		string arrAxisKey[2] = { "X","Y" };
+
+		const std::string filePathDialog = "../Bin/json/2DMapTestJson/Tile/C01_P1718_TD_Tilemap.json";
+		std::ifstream inputFile(filePathDialog);
+		if (!inputFile.is_open()) {
+			throw std::runtime_error("json Error :  " + filePathDialog);
+			return;
+		}
+
+		vector<vector<_float2>> testVector;
+		vector<pair<_string, _int>> testVector2;
+		json jsonDialogs;
+		inputFile >> jsonDialogs;
+		if (jsonDialogs.is_array())
+		{
+			for (auto& ChildJson : jsonDialogs)
+			{
+				if (
+					ChildJson.is_object() &&
+					ChildJson.contains("Type") &&
+					ChildJson.contains("Properties") &&
+					ChildJson["Type"] == "PaperTileMap")
+				{
+					auto PropertiesJson = ChildJson["Properties"];
+
+					if (PropertiesJson.contains("TileWidth"))
+					{
+						iTileXSize = PropertiesJson["TileWidth"];
+						iTileYSize = PropertiesJson["TileHeight"];
+					}
+
+					if (PropertiesJson.contains("MapWidth"))
+						iTileWidthInTiles = PropertiesJson["MapWidth"];
+					if (PropertiesJson.contains("MapHeight"))
+						iTileHeightInTiles = PropertiesJson["MapHeight"];
+
+				}
+				if (
+					ChildJson.is_object() &&
+					ChildJson.contains("Type") &&
+					ChildJson.contains("Properties") &&
+					ChildJson["Type"] == "PaperTileLayer")
+				{
+					auto PropertiesJson = ChildJson["Properties"];
+
+					
+					if (
+						PropertiesJson.contains("LayerName")
+						&&
+						PropertiesJson["LayerName"].contains("SourceString")
+						)
+					{
+						if (!(PropertiesJson["LayerName"]["SourceString"] == "CollidingLayer" || 
+							PropertiesJson["LayerName"]["SourceString"] == "PlayableFront"
+							))
+							continue;
+					if (PropertiesJson.contains("AllocatedCells")
+						&&
+						PropertiesJson["AllocatedCells"].is_array()
+						)
+					{
+						for (auto& IndexData : PropertiesJson["AllocatedCells"])
+						{
+							if (
+								IndexData.contains("PackedTileIndex")
+								&&
+								IndexData.contains("TileSet")
+								)
+							{
+								if (IndexData["TileSet"].is_null())
+								{
+									testVector2.push_back(make_pair("", -1));
+								}
+								else
+								{
+									_string txt = IndexData["TileSet"]["ObjectName"];
+									_uint iIndex = IndexData["PackedTileIndex"];
+									testVector2.push_back(make_pair(txt, iIndex));
+								}
+							}
+						}
+					}
+				}
+				}
+			}
+		}
+
+		inputFile.close();
+
+
+
+		if (!testVector2.empty())
+		{
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTile_RenderObject"),
+				LEVEL_TOOL_2D_MAP, L"Layer_TileObject", &pGameObject, nullptr)))
+				return;
+
+			if (pGameObject)
+				m_pTileRenderObject = static_cast<C2DTile_RenderObject*>(pGameObject);
+
+
+			C2DTile_RenderObject::TILE_INFO tInfo;
+			tInfo.iWidthSIze = iTileXSize;
+			tInfo.iHeightSIze = iTileYSize;
+			tInfo.iWidthCount = iTileWidthInTiles;
+			tInfo.iHeightCount = iTileHeightInTiles;
+			ID3D11ShaderResourceView* pSRV = { nullptr };
+			HRESULT		hr = E_FAIL;
+			hr = CreateDDSTextureFromFile(m_pDevice, L"../Bin/json/2DMapTestJson/Tile/CO1_P0910_TD_Tilemap.dds", nullptr, &pSRV);
+
+			if (SUCCEEDED(hr))
+			{
+				tInfo.pTexture = pSRV;
+				tInfo.strTextureName = L"CO1_P0910_TD_Tilemap.dds";
+				m_pTileRenderObject->Set_TileTexture(tInfo);
+
+				for (_uint i = 0 ; i < (_uint)testVector2.size(); ++i)
+				{
+					m_pTileRenderObject->Set_Index(i, testVector2[i].second);
+				}
+			}
+
+		}
+
+	}
+
 	ImGui::End();
-}
-
-void C2DMap_Tool_Manager::Navigation_Imgui(_bool _bLock)
-{
-	//ImGui::Begin("Navigation");
-	//ImGui::BulletText("Navigation Mode");
-	//ImGui::SameLine();
-	//if (ImGui::Checkbox("##NaviMode", &m_bNaviMode))
-	//{
-	//	if (_bLock)
-	//		m_bNaviMode = false;
-	//}
-
-	//if (m_bNaviMode)
-	//{
-	//	NAVIGATION_MODE eMode = m_eNaviMode;
-
-	//	ImGui::SeparatorText("Mode");
-	//	if (ImGui::RadioButton("Vertect - Cell Create", eMode == NAV_CREATE))
-	//		m_eNaviMode = NAV_CREATE;
-	//	if (ImGui::RadioButton("Vertex - Cell Edit", eMode == NAV_EDIT))
-	//		m_eNaviMode = NAV_EDIT;
-
-	//	ImGui::SeparatorText("Cell List");
-	//	if (ImGui::BeginListBox("##Cell_List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-	//	{
-	//		auto CellList = m_pCellContainor->Get_CellList();
-	//		_uint iLoop = 0;
-	//		for (const auto& pCell : CellList)
-	//		{
-	//			string strCellName = "Cell_";
-	//			strCellName += to_string(iLoop);
-	//			if (ImGui::Selectable(strCellName.c_str(), iLoop == m_iSelectCellIndex)) {
-	//				if (iLoop == m_iSelectCellIndex)
-	//				{
-	//					for (_uint i = 0; i < CEditableCell::POINT_END; i++)
-	//					{
-	//						pCell->Get_Point(CEditableCell::POINT(i))->Set_Mode(CNavigationVertex::NORMAL);
-	//					}
-	//					pCell->Set_Picking(false);
-	//					m_iSelectCellIndex = -1;
-	//				}
-	//				else if (iLoop != m_iSelectCellIndex)
-	//				{
-	//					Clear_SelectCell();
-
-	//					m_iSelectCellIndex = iLoop;
-	//					m_eNaviMode = NAV_EDIT;
-	//					pCell->Get_Point(CEditableCell::POINT_A)->Set_Mode(CNavigationVertex::PICKING_FIRST);
-	//					pCell->Get_Point(CEditableCell::POINT_B)->Set_Mode(CNavigationVertex::PICKING_SECOND);
-	//					pCell->Get_Point(CEditableCell::POINT_C)->Set_Mode(CNavigationVertex::PICKING_THIRD);
-	//					pCell->Set_Picking(true);
-	//				}
-	//			}
-	//			iLoop++;
-	//		}
-	//		ImGui::EndListBox();
-	//	}
-	//	_bool bRender = m_pCellContainor->Is_WireRender();
-	//	ImGui::BulletText("Wire Render");
-	//	ImGui::SameLine();
-	//	if (ImGui::Checkbox("##WireRender", &bRender))
-	//	{
-	//		m_pCellContainor->Set_WireRender(bRender);
-	//	}
-
-	//	if (!m_vecVertexStack.empty())
-	//	{
-	//		ImGui::SeparatorText("Create Cell");
-	//		string strTextArr[CEditableCell::POINT_END] = { "First  : %.2f %.2f %.2f","Second : %.2f %.2f %.2f","Third  : %.2f %.2f %.2f" };
-	//		_float4 vColors[CEditableCell::POINT_END] = {};
-	//		XMStoreFloat4(&vColors[CEditableCell::POINT_A], DirectX::Colors::Red);
-	//		XMStoreFloat4(&vColors[CEditableCell::POINT_B], DirectX::Colors::Green);
-	//		XMStoreFloat4(&vColors[CEditableCell::POINT_C], DirectX::Colors::Blue);
-
-	//		for (_uint i = 0; i < m_vecVertexStack.size(); i++)
-	//		{
-	//			ImGui::TextColored(ImVec4(vColors[i].x, vColors[i].y, vColors[i].z, vColors[i].w), strTextArr[i].c_str(), m_vecVertexStack[i]->Get_Pos().x,
-	//				m_vecVertexStack[i]->Get_Pos().y,
-	//				m_vecVertexStack[i]->Get_Pos().z);
-	//		}
-	//	}
-
-
-
-	//	if (m_iSelectCellIndex != -1)
-	//	{
-	//		ImGui::SeparatorText("Picking Cell");
-	//		string strTextArr[CEditableCell::POINT_END] = { "First  : %.2f %.2f %.2f","Second : %.2f %.2f %.2f","Third  : %.2f %.2f %.2f" };
-	//		_float4 vColors[CEditableCell::POINT_END] = {};
-	//		XMStoreFloat4(&vColors[CEditableCell::POINT_A], DirectX::Colors::Red);
-	//		XMStoreFloat4(&vColors[CEditableCell::POINT_B], DirectX::Colors::Green);
-	//		XMStoreFloat4(&vColors[CEditableCell::POINT_C], DirectX::Colors::Blue);
-
-	//		auto pCell = m_pCellContainor->Get_CellList()[m_iSelectCellIndex];
-	//		for (_uint i = 0; i < CEditableCell::POINT_END; i++)
-	//		{
-	//			ImGui::TextColored(ImVec4(vColors[i].x, vColors[i].y, vColors[i].z, vColors[i].w), strTextArr[i].c_str(), pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().x,
-	//				pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().y,
-	//				pCell->Get_Point(CEditableCell::POINT(i))->Get_Pos().z);
-	//		}
-
-	//		ImGui::SeparatorText("Cell State");
-	//		if (ImGui::BeginListBox("##Cell_State_List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-	//		{
-	//			_uint iLoop = 0;
-	//			for (const auto& strName : m_arrCellStateName)
-	//			{
-	//				if (ImGui::Selectable(strName.c_str(), iLoop == pCell->Get_State())) {
-	//					if (iLoop != pCell->Get_State())
-	//					{
-	//						pCell->Set_State(iLoop);
-	//					}
-	//				}
-	//				iLoop++;
-	//			}
-	//			ImGui::EndListBox();
-	//		}
-
-
-	//	}
-
-
-	//	if (m_pPickingVertex)
-	//	{
-	//		ImGui::SeparatorText("Picking Vertex");
-	//		ImGui::Text("X : %.2f Y : %.2f Z : %.2f", m_pPickingVertex->Get_Pos().x,
-	//			m_pPickingVertex->Get_Pos().y,
-	//			m_pPickingVertex->Get_Pos().z);
-
-	//	}
-
-
-
-	//	Begin_Draw_ColorButton("##ExportNav", (ImVec4)ImColor::HSV(0.3f, 0.6f, 0.6f));
-	//	if (ImGui::Button("Export Navigation File"))
-	//	{
-	//		if (SUCCEEDED(m_pCellContainor->Export(L"../../Client/Bin/SettingFile/", L"Nav")))
-	//			LOG_TYPE("Navigation file Export Success!!!", LOG_SAVE);
-	//		else
-	//			LOG_TYPE("Navigation file Export Error...", LOG_ERROR);
-	//	}
-	//	End_Draw_ColorButton();
-
-	//	ImGui::SameLine();
-	//	Begin_Draw_ColorButton("##ImportNav", (ImVec4)ImColor::HSV(0.7f, 0.6f, 0.6f));
-	//	if (ImGui::Button("Import Navigation File"))
-	//	{
-	//		if (SUCCEEDED(m_pCellContainor->Import(L"../../Client/Bin/SettingFile/", L"Nav")))
-	//			LOG_TYPE("Navigation file Import Success!!!", LOG_SAVE);
-	//		else
-	//			LOG_TYPE("Navigation file Import Error...", LOG_ERROR);
-
-	//	}
-	//	End_Draw_ColorButton();
-
-
-	//}
-
-	//ImGui::End();
-
 }
 
 void C2DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
@@ -789,10 +513,6 @@ void C2DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 
 			ImGui::InputText("##Save File Name", m_szSaveFileName, MAX_PATH);
 
-			ImGui::Text("Static?");
-			ImGui::SameLine();
-			ImGui::Checkbox("##isStatic", &m_isStaticProto);
-			ImGui::SameLine();
 			Begin_Draw_ColorButton("Save_", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
 			if (ImGui::Button("Save"))
 			{
@@ -839,211 +559,6 @@ void C2DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 }
 
 
-void C2DMap_Tool_Manager::Model_Imgui(_bool _bLock) 
-{
-#ifdef _DEBUG
-
-
-	ImGui::Begin("Model Info");
-	{
-
-		_string arrEnumText[] =
-		{
-			"NONE",
-			"DIFFUSE",
-			"SPECULAR",
-			"AMBIENT",
-			"EMISSIVE",
-			"HEIGHT",
-			"NORMALS",
-			"SHININESS",
-			"OPACITY",
-			"DISPLACEMENT",
-			"LIGHTMAP",
-			"REFLECTION",
-			"BASE_COLOR",
-			"NORMAL_CAMERA",
-			"EMISSION_COLOR",
-			"METALNESS",
-			"DIFFUSE_ROUGHNESS",
-			"AMBIENT_OCCLUSION",
-			"UNKNOWN",
-			"SHEEN",
-			"CLEARCOAT",
-			"TRANSMISSION",
-			"MAYA_BASE",
-			"MAYA_SPECULAR",
-			"MAYA_SPECULAR_COLOR",
-			"MAYA_SPECULAR_ROUGHNESS",
-		};
-
-
-		if (m_arrObjects[OBJECT_PICKING])
-		{
-			CMapObject* pTargetObj = m_arrObjects[OBJECT_PICKING];
-
-			_wstring strModelName = pTargetObj->Get_ModelName();
-			_wstring strModelPath = L"-";
-			ImGui::BulletText("Model Name : %s", WstringToString(strModelName).c_str());
-
-			auto iter = find_if(m_ObjectFileLists.begin(), m_ObjectFileLists.end(), [&strModelName](const pair<_wstring, _wstring>& PairFileInfo)
-				->_bool {
-				
-				return PairFileInfo.first == strModelName;
-				});
-
-			if (iter != m_ObjectFileLists.end())
-				strModelPath = (*iter).second;
-			ImGui::BulletText("Model Path : %s", WstringToString(strModelPath).c_str());
-
-			if (StyleButton(MINI, "Model RePackaging"))
-			{
-				m_pMapParsingManager->Register_RePackaging((*iter).second, pTargetObj);
-			}
-
-			vector<CMapObject::DIFFUSE_INFO> Textures;
-
-			for (_uint iTextureType = 0; iTextureType < AI_TEXTURE_TYPE_MAX; iTextureType++)
-			{
-				if(0 < iTextureType)
-				ImGui::NewLine();
-
-				Textures.clear();
-
-				if (SUCCEEDED(pTargetObj->Get_Textures(Textures, iTextureType))
-					&&
-					0 < Textures.size()
-					)
-				{
-					ImGui::SeparatorText(arrEnumText[iTextureType].c_str());
-
-					_uint iMaterialIdx = 0;
-					for (auto& tDiffuseInfo : Textures)
-					{
-						_uint iMaxDiffuseIdx = 0;
-						_uint iCurMaterial = iMaterialIdx;
-						auto iter = find_if(Textures.begin(), Textures.end(), [&iCurMaterial, &iMaxDiffuseIdx](CMapObject::DIFFUSE_INFO _tDiffuseInfo) {
-							if (iCurMaterial == _tDiffuseInfo.iMaterialIndex
-								&&
-								iMaxDiffuseIdx < _tDiffuseInfo.iDiffuseIIndex
-								)
-								iMaxDiffuseIdx = _tDiffuseInfo.iDiffuseIIndex;
-							return _tDiffuseInfo.iMaterialIndex > iCurMaterial;
-							});
-
-
-
-						if (tDiffuseInfo.iMaterialIndex == iMaterialIdx)
-						{
-							_string strButtonText = "ADD ";
-							_string strMaterialText = "Material ";
-							strButtonText += arrEnumText[iTextureType];
-							strMaterialText += std::to_string(iMaterialIdx);
-
-							ImGui::BulletText(strMaterialText.c_str());
-							//ImGui::SameLine();
-							Begin_Draw_ColorButton("#AddButton_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
-
-							if (StyleButton(MINI, strButtonText.c_str()))
-#pragma region ADD BUTTON
-							{
-								_tchar originalDir[MAX_PATH];
-								GetCurrentDirectory(MAX_PATH, originalDir);
-
-								_wstring strModelPath = L"..\\..\\Client\\Bin\\resources\\Models\\NonAnim\\";
-
-								OPENFILENAME ofn = {};
-								_tchar szName[MAX_PATH] = {};
-								ofn.lStructSize = sizeof(OPENFILENAME);
-								ofn.hwndOwner = g_hWnd;
-								ofn.lpstrFile = szName;
-								ofn.nMaxFile = sizeof(szName);
-								ofn.lpstrFilter = L".dds\0*.dds\0";
-								ofn.nFilterIndex = 0;
-								ofn.lpstrFileTitle = nullptr;
-								ofn.nMaxFileTitle = 0;
-								wstring strPath = strModelPath + pTargetObj->Get_ModelName();
-								ofn.lpstrInitialDir = strPath.c_str();
-								ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
-
-								if (GetOpenFileName(&ofn))
-								{
-									SetCurrentDirectory(originalDir);
-									const _wstring strFilePath = szName;
-
-									ID3D11ShaderResourceView* pSRV = { nullptr };
-									HRESULT		hr = E_FAIL;
-									if (_string::npos != strFilePath.rfind(L".dds") || _string::npos != strFilePath.rfind(L".DDS"))
-									{
-										hr = CreateDDSTextureFromFile(m_pDevice, szName, nullptr, &pSRV);
-
-										if (SUCCEEDED(hr))
-										{
-											auto PairResult = Get_FileName_From_Path(strFilePath);
-
-
-											CMapObject::DIFFUSE_INFO tAddInfo;
-											tAddInfo.iDiffuseIIndex = iMaxDiffuseIdx;
-											tAddInfo.iMaterialIndex = iMaterialIdx;
-											tAddInfo.pSRV = pSRV;
-
-											_wstring strNameAndExt = PairResult.first + L"."+PairResult.second;
-
-											lstrcpy(tAddInfo.szTextureName, strNameAndExt.c_str());
-											pTargetObj->Add_Textures(tAddInfo, iTextureType);
-										}
-
-									}
-								}
-							}
-#pragma endregion
-							End_Draw_ColorButton();
-
-							iMaterialIdx++;
-						}
-
-						string strButtonTag = std::to_string(tDiffuseInfo.iMaterialIndex) + "_" + std::to_string(tDiffuseInfo.iDiffuseIIndex) + "_" + arrEnumText[iTextureType];
-						ImVec2 size = ImVec2(48.0f, 48.0f);
-						ImVec2 uv0 = ImVec2(0.0f, 0.0f);
-						ImVec2 uv1 = ImVec2(1.0f, 1.0f);
-						ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-						ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-						_uint iCurrenrTextureIndex = pTargetObj->Get_TextureIdx(iTextureType, tDiffuseInfo.iMaterialIndex);
-
-						if (tDiffuseInfo.iDiffuseIIndex == iCurrenrTextureIndex)
-							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.6f, 0.9f, 1.0f)); // 선택된 버튼의 배경색
-
-						if (ImGui::ImageButton(strButtonTag.c_str(), (ImTextureID)tDiffuseInfo.pSRV, size, uv0, uv1, bg_col, tint_col))
-							pTargetObj->Change_TextureIdx(tDiffuseInfo.iDiffuseIIndex, iTextureType, tDiffuseInfo.iMaterialIndex);
-
-						if (tDiffuseInfo.iDiffuseIIndex == iCurrenrTextureIndex)
-							ImGui::PopStyleColor(1);
-
-						if (ImGui::IsItemHovered())
-						{
-							if (ImGui::BeginItemTooltip())
-							{
-								ImGui::SeparatorText(WstringToString(tDiffuseInfo.szTextureName).c_str());
-								ImGui::Image((ImTextureID)tDiffuseInfo.pSRV,
-									ImVec2(256.f, 256.f)
-								);
-								ImGui::EndTooltip();
-							}
-						}
-						ImGui::SameLine();
-					}
-				}
-
-			}
-
-		}
-	}
-
-	ImGui::End();
-#endif // _DEBUG
-}
-
-
 void C2DMap_Tool_Manager::Save(_bool _bSelected)
 {
 	string filename = m_szSaveFileName;
@@ -1079,11 +594,7 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 	}
 
 	_wstring strFullFilePath = L"";
-
-	if (!_bSelected)
-		strFullFilePath = m_strCacheFilePath;
-	else
-		strFullFilePath = (m_strMapBinaryPath  + m_pGameInstance->StringToWString(filename) + L".mchc");
+	strFullFilePath = (m_strMapBinaryPath  + m_pGameInstance->StringToWString(filename) + L".mchc");
 	log = "Save Start... File Name : ";
 	log += filename;
 	LOG_TYPE(log, LOG_SAVE);
@@ -1211,7 +722,7 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 
 	if (SUCCEEDED(
 		m_pMapParsingManager->
-		Export_SaveResult_ToJson(strFullFilePath, vecSaveModelProtos, m_isStaticProto)
+		Export_SaveResult_ToJson(strFullFilePath, vecSaveModelProtos, false)
 	))
 	{
 		log = "Model Prototype Tag Save Complete! FileName :  ";
@@ -1277,10 +788,6 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 	log = "Load Start... File Name : ";
 	log += filename;
 	_wstring strFullFilePath = (m_strMapBinaryPath + L"/" + m_arrSelectName[SAVE_LIST] + L".mchc");
-
-	if (!_bSelected)
-		strFullFilePath = m_strCacheFilePath;
-
 
 
 	if (!Path_String_Validation_Check(filename))
@@ -1391,9 +898,6 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 
 void C2DMap_Tool_Manager::Object_Clear(_bool _bSelected)
 {
-	Object_Clear_PickingMode();
-	Object_Close_PreviewMode();
-
 	if (!_bSelected)
 		Init_Egnore_Layer();
 
@@ -1570,7 +1074,7 @@ HRESULT C2DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3*
 	return S_OK;
 }
 
-void C2DMap_Tool_Manager::Load_ModelList()
+void C2DMap_Tool_Manager::Load_2DModelList()
 {
 	m_ObjectFileLists.clear();
 	_wstring strPath 
@@ -1606,67 +1110,6 @@ void C2DMap_Tool_Manager::Load_SaveFileList()
 	}
 }
 
-void C2DMap_Tool_Manager::Object_Open_PickingMode()
-{
-	CMapObject* pGameObj = Picking_On_Object();
-	if (pGameObj)
-	{
-		
-		Object_Clear_PickingMode();
-		m_arrObjects[OBJECT_PICKING] = pGameObj;
-		m_arrObjects[OBJECT_PICKING]->Set_Mode(CMapObject::PICKING);
-#ifdef _DEBUG
-		m_pGameInstance->Imgui_Select_Debug_ObjectInfo(m_strPickingLayerTag, pGameObj->Get_GameObjectInstanceID());
-#endif // _DEBUG
-
-	}
-}
-
-void C2DMap_Tool_Manager::Object_Clear_PickingMode()
-{
-	if (m_arrObjects[OBJECT_PICKING])
-	{
-		static_cast<CMapObject*>(m_arrObjects[OBJECT_PICKING])->Set_Mode(CMapObject::NORMAL);
-		m_arrObjects[OBJECT_PICKING] = nullptr;
-	}
-
-}
-
-void C2DMap_Tool_Manager::Object_Open_PreviewMode()
-{
-	Object_Clear_PickingMode();
-
-	if (m_arrSelectName[CREATE_OBJECT] != L"")
-	{
-		CMapObject::MAPOBJ_DESC NormalDesc = {};
-		NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
-
-		lstrcpy(NormalDesc.szModelName, m_arrSelectName[CREATE_OBJECT].c_str());
-
-		CGameObject* pGameObject = nullptr;
-
-		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
-			LEVEL_TOOL_3D_MAP, L"Layer_MapObject", &pGameObject, (void*)&NormalDesc);
-		
-		if (nullptr != pGameObject)
-		{
-			m_arrObjects[OBJECT_PREVIEW] = static_cast<CMapObject*>(pGameObject);
-			//Safe_AddRef(m_arrObjects[OBJECT_PREVIEW]);
-			m_arrObjects[OBJECT_PREVIEW]->Set_Mode(CMapObject::PREVIEW);
-		}
-	}
-}
-
-void C2DMap_Tool_Manager::Object_Close_PreviewMode()
-{
-	if (m_arrObjects[OBJECT_PREVIEW])
-	{
-		OBJECT_DESTROY(m_arrObjects[OBJECT_PREVIEW]);
-		m_arrObjects[OBJECT_PREVIEW] = nullptr;
-	}
-}
-
-
 
 C2DMap_Tool_Manager* C2DMap_Tool_Manager::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger)
 {
@@ -1683,10 +1126,6 @@ C2DMap_Tool_Manager* C2DMap_Tool_Manager::Create(ID3D11Device* _pDevice, ID3D11D
 
 void C2DMap_Tool_Manager::Free()
 {
-	//Save(false);
-
-	//Safe_Release(m_pCellContainor);
-
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);

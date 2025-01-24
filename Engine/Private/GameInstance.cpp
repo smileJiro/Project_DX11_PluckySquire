@@ -16,6 +16,7 @@
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
 #include "Physx_Manager.h"
+#include "Frustum.h"
 #include "Physx_EventCallBack.h"
 #include "Layer.h"
 #include "ModelObject.h"
@@ -112,7 +113,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
 
-
+	m_pFrustum = CFrustum::Create();
+	if (nullptr == m_pFrustum)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -125,6 +128,7 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 	m_pSound_Manager->Update(fTimeDelta);
 
 	m_pPipeLine->Update(); 
+	m_pFrustum->Update();
 }
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
@@ -134,7 +138,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 
 	/* 현재는 임시적으로 Physx_Manager가 Scene Update를 돌리며 테스트 예정. 
-	추후 콜리전 매니저 설계시 scene 관리방식 변경.*/
+	추후 콜리전 매니저 설계시 scene 관리방식 변경. */
 	m_pPhysx_Manager->Update(fTimeDelta);
 	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 
@@ -246,6 +250,14 @@ _int CGameInstance::Get_FPS()
 		return 0;
 
 	return m_pTimer_Manager->Get_FPS();
+}
+
+_uint CGameInstance::Get_FPS(const _wstring& _strTimerTag)
+{
+	if (nullptr == m_pTimer_Manager)
+		return 0;
+
+	return m_pTimer_Manager->Get_FPS(_strTimerTag);
 }
 
 HRESULT CGameInstance::Add_Timer(const _wstring& _strTimerTag)
@@ -411,6 +423,13 @@ HRESULT CGameInstance::Add_DebugComponent(CComponent* _pDebugCom)
 		return E_FAIL;
 
 	return m_pRenderer->Add_DebugComponent(_pDebugCom);
+}
+void CGameInstance::Set_DebugRender(_bool _isBool)
+{
+	if (nullptr == m_pRenderer)
+		return;
+
+	return m_pRenderer->Set_DebugRender(_isBool);
 }
 
 #endif // _DEBUG
@@ -1014,6 +1033,14 @@ _uint CGameInstance::Create_ShapeID()
 		assert(nullptr);
 
 	return m_pPhysx_Manager->Create_ShapeID();
+}
+
+_bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange)
+{
+	if (nullptr == m_pFrustum)
+		return true;
+
+	return m_pFrustum->isIn_InWorldSpace(_vWorldPos, _fRange);
 }
 
 HRESULT CGameInstance::Physx_Render()

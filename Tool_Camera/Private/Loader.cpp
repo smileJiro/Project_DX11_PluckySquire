@@ -163,7 +163,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Player/")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Player/player.model2d")))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
@@ -175,7 +175,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         TEXT("../../Client/Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/"), matPretransform)))
         return E_FAIL;
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
-        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("WoodenPlatform_01"),

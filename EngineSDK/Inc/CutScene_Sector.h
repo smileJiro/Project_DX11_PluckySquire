@@ -9,6 +9,12 @@ class ENGINE_DLL CCutScene_Sector final : public CBase
 {
 public:
 	enum SECTOR_TYPE { SPLINE, LINEAR, SECTOR_TYPE_END };
+
+	typedef struct tagCutSceneSectorDesc
+	{
+		_uint			iSectorType = { SECTOR_TYPE_END };
+	}CUTSCENE_SECTOR_DESC;
+
 private:
 	CCutScene_Sector(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CCutScene_Sector(const CCutScene_Sector& _Prototype);
@@ -20,6 +26,11 @@ public:
 	void						Priority_Update(_float _fTimeDelta);
 	void						Update(_float _fTimeDelta);
 	void						Late_Update(_float _fTimeDelta);
+
+public:
+#ifdef _DEBUG
+	vector<CUTSCENE_KEYFRAME>*	Get_KeyFrames() { return &m_KeyFrames; };
+#endif
 
 public:
 	_bool						Play_Sector(_float _fTimeDelta, _vector* _pOutPos);
@@ -34,7 +45,7 @@ private:
 	vector<CUTSCENE_KEYFRAME>	m_KeyFrames;
 	_float						m_fCurrentTime = {};
 	
-	SECTOR_TYPE					m_eSectorType = { SECTOR_TYPE_END };
+	_uint						m_iSectorType = { SECTOR_TYPE_END };
 
 private:
 	_vector						Calculate_Position_Spline(_float _fRatio);

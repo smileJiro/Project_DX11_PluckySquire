@@ -46,15 +46,6 @@
     <Filter Include="01. ToolApp_Managers\MapTool">
       <UniqueIdentifier>{3047ddb0-b5b5-457b-8f07-bfc690e62f63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. ToolAppMain\NewFilter1">
-      <UniqueIdentifier>{60469a03-80de-48ee-90a5-7d32a1a29a39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. GameObject\NaviObject">
-      <UniqueIdentifier>{565e1ef3-0458-4c40-a42a-1d9409cbf948}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. GameObject\Re_PackagingObject">
-      <UniqueIdentifier>{4ef1ebe3-4695-4c99-9761-5ba3a36b3df7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. ToolApp_Managers\Task">
       <UniqueIdentifier>{25188e90-152a-4ab0-8f0b-b9cebde9e6f1}</UniqueIdentifier>
     </Filter>
@@ -66,6 +57,21 @@
     </Filter>
     <Filter Include="02. Levels\3D_Map_Tool">
       <UniqueIdentifier>{a3250756-0bc0-4fd9-94c5-1398c293aee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\3D">
+      <UniqueIdentifier>{0bfcb958-1e7b-4321-be4e-9d41ed570a2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\3D\3D_Defulat_Map_obejct">
+      <UniqueIdentifier>{8c9e5823-da27-4a71-90d1-b2a0d414a0a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\3D\Re_PackagingObject">
+      <UniqueIdentifier>{4ef1ebe3-4695-4c99-9761-5ba3a36b3df7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\2D">
+      <UniqueIdentifier>{568847f6-0beb-48fe-bb2f-c701cc8b5775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\2D\2D_Default_Render_Object">
+      <UniqueIdentifier>{6e1c5467-5cd4-4998-b6c6-2aa762a63585}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,9 +117,6 @@
     <ClInclude Include="..\Public\ImguiLogger.h">
       <Filter>05. Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MapObject.h">
-      <Filter>03. GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\gizmo\GraphEditor.h">
       <Filter>97. gizmo</Filter>
     </ClInclude>
@@ -145,13 +148,22 @@
       <Filter>99. Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Model_PackagingObject.h">
-      <Filter>03. GameObject\Re_PackagingObject</Filter>
+      <Filter>03. GameObject\3D\Re_PackagingObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_2D_Map_Tool.h">
       <Filter>02. Levels\2D_Map_Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\2DMap_Tool_Manager.h">
       <Filter>01. ToolApp_Managers\MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DDefault_RenderObject.h">
+      <Filter>03. GameObject\2D\2D_Default_Render_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>03. GameObject\3D\3D_Defulat_Map_obejct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DTile_RenderObject.h">
+      <Filter>03. GameObject\2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,9 +205,6 @@
     <ClCompile Include="..\Private\ImguiLogger.cpp">
       <Filter>05. Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MapObject.cpp">
-      <Filter>03. GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\gizmo\GraphEditor.cpp">
       <Filter>97. gizmo</Filter>
     </ClCompile>
@@ -224,13 +233,22 @@
       <Filter>99. Defines</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Model_PackagingObject.cpp">
-      <Filter>03. GameObject\Re_PackagingObject</Filter>
+      <Filter>03. GameObject\3D\Re_PackagingObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_2D_Map_Tool .cpp">
       <Filter>02. Levels\2D_Map_Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMap_Tool_Manager.cpp">
       <Filter>01. ToolApp_Managers\MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
+      <Filter>03. GameObject\2D\2D_Default_Render_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>03. GameObject\3D\3D_Defulat_Map_obejct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DTile_RenderObject.cpp">
+      <Filter>03. GameObject\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
