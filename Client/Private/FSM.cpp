@@ -3,6 +3,7 @@
 #include "Monster.h"
 
 #include "IdleState.h"
+#include "PatrolState.h"
 #include "AlertState.h"
 #include "ChaseWalkState.h"
 #include "MeleeAttackState.h"
@@ -21,6 +22,16 @@ CFSM::CFSM(const CFSM& _Prototype)
 void CFSM::Set_Owner(CMonster* _pOwner)
 {
 	m_pOwner = _pOwner;
+}
+
+void CFSM::Set_PatrolBound()
+{
+	if (nullptr == m_pOwner)
+		return;
+
+	_float3 vPosition;
+	XMStoreFloat3(&vPosition, m_pOwner->Get_Position());
+	static_cast<CPatrolState*>(m_States[(_uint)MONSTER_STATE::PATROL])->Set_Bound(vPosition);
 }
 
 HRESULT CFSM::Initialize_Prototype()
@@ -65,6 +76,15 @@ HRESULT CFSM::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)MONSTER_STATE::IDLE, pState);
+		break;
+
+	case Client::MONSTER_STATE::PATROL:
+		pState = CPatrolState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
 		break;
 
 	case Client::MONSTER_STATE::ALERT:
