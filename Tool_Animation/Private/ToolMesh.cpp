@@ -29,22 +29,22 @@ HRESULT CToolMesh::Ready_VertexBuffer_For_NonAnim(ifstream& _inFile, _fmatrix _P
 	for (size_t i = 0; i < m_iNumVertices; i++)
 	{
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vPosition), sizeof(_float3));
+		m_Vertices[i].vPosition = pVertices[i].vPosition;
 		XMStoreFloat3(&pVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), _PreTransformMatrix));
 
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vNormal), sizeof(_float3));
+		m_Vertices[i].vNormal = pVertices[i].vNormal;
 		XMStoreFloat3(&pVertices[i].vNormal, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), _PreTransformMatrix));
 
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
+		m_Vertices[i].vTexcoord = pVertices[i].vTexcoord;
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
+		m_Vertices[i].vTangent = pVertices[i].vTangent;
 		XMStoreFloat3(&pVertices[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vTangent), _PreTransformMatrix));
 
 
 		m_vecVerticesPos.push_back(pVertices[i].vPosition);
 		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
-		m_Vertices[i].vPosition = pVertices->vPosition;
-		m_Vertices[i].vNormal = pVertices->vNormal;
-		m_Vertices[i].vTexcoord = pVertices->vTexcoord;
-		m_Vertices[i].vTangent = pVertices->vTangent;
 	}
 
 	ZeroMemory(&m_SubResourceDesc, sizeof m_SubResourceDesc);
@@ -81,15 +81,16 @@ HRESULT CToolMesh::Ready_VertexBuffer_For_Anim(ifstream& _inFile, C3DModel* _pMo
 	for (_uint i = 0; i < m_iNumVertices; i++)
 	{
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vPosition), sizeof(_float3));
+		m_Vertices[i].vPosition = pVertices[i].vPosition;
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vNormal), sizeof(_float3));
+		m_Vertices[i].vNormal = pVertices[i].vNormal;
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
+		m_Vertices[i].vTexcoord = pVertices[i].vTexcoord;
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
+		m_Vertices[i].vTangent = pVertices[i].vTangent;
 		m_vecVerticesPos.push_back(pVertices[i].vPosition);
 		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
-		m_Vertices[i].vPosition = pVertices->vPosition;
-		m_Vertices[i].vNormal = pVertices->vNormal;
-		m_Vertices[i].vTexcoord = pVertices->vTexcoord;
-		m_Vertices[i].vTangent = pVertices->vTangent;
+
 	}
 	_inFile.read(reinterpret_cast<char*>(&m_iNumBones), sizeof(_uint));
 	m_BoneInfos.resize(m_iNumBones);
@@ -99,10 +100,15 @@ HRESULT CToolMesh::Ready_VertexBuffer_For_Anim(ifstream& _inFile, C3DModel* _pMo
 		_inFile.read(reinterpret_cast<char*>(&m_BoneInfos[curMeshBoneIdx].iNameSize), sizeof(_uint));
 		_inFile.read(m_BoneInfos[curMeshBoneIdx].szName, m_BoneInfos[curMeshBoneIdx].iNameSize);
 		m_BoneInfos[curMeshBoneIdx].szName[m_BoneInfos[curMeshBoneIdx].iNameSize] = '\0';
-
+		//cout << m_BoneInfos[curMeshBoneIdx].szName << endl;
 		m_BoneIndices.push_back(_pModel->Get_BoneIndex(m_BoneInfos[curMeshBoneIdx].szName));
 
 		_inFile.read(reinterpret_cast<char*>(&m_BoneInfos[curMeshBoneIdx].matOffset), sizeof(_float4x4));
+		//cout << m_BoneInfos[curMeshBoneIdx].matOffset._11 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._12 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._13 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._14 << endl;
+		//cout << m_BoneInfos[curMeshBoneIdx].matOffset._21 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._22 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._23 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._24 << endl;
+		//cout << m_BoneInfos[curMeshBoneIdx].matOffset._31 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._32 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._33 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._34 << endl;
+		//cout << m_BoneInfos[curMeshBoneIdx].matOffset._41 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._42 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._43 << " " << m_BoneInfos[curMeshBoneIdx].matOffset._44 << endl;
+
 		_float4x4	OffsetMatrixTranspose = {};
 		XMStoreFloat4x4(&OffsetMatrixTranspose, XMMatrixTranspose(XMLoadFloat4x4(&m_BoneInfos[curMeshBoneIdx].matOffset)));
 		m_BoneOffsetMatrices.push_back(OffsetMatrixTranspose);
@@ -194,11 +200,14 @@ void CToolMesh::Export(ofstream& _outfile, _bool _bAnim)
 
 		for (_uint i = 0; i < m_iNumBones; i++)
 		{
-
 			_outfile.write(reinterpret_cast<const char*>(&m_BoneInfos[i].iNameSize), sizeof(_uint));
 			_outfile.write(m_BoneInfos[i].szName, m_BoneInfos[i].iNameSize);
-
+			//cout << m_BoneInfos[i].szName << endl;
 			_outfile.write(reinterpret_cast<const char*>(&m_BoneInfos[i].matOffset), sizeof(_float4x4));
+			//cout << m_BoneInfos[i].matOffset._11 << " " << m_BoneInfos[i].matOffset._12 << " " << m_BoneInfos[i].matOffset._13 << " " << m_BoneInfos[i].matOffset._14 << endl;
+			//cout << m_BoneInfos[i].matOffset._21 << " " << m_BoneInfos[i].matOffset._22 << " " << m_BoneInfos[i].matOffset._23 << " " << m_BoneInfos[i].matOffset._24 << endl;
+			//cout << m_BoneInfos[i].matOffset._31 << " " << m_BoneInfos[i].matOffset._32 << " " << m_BoneInfos[i].matOffset._33 << " " << m_BoneInfos[i].matOffset._34 << endl;
+			//cout << m_BoneInfos[i].matOffset._41 << " " << m_BoneInfos[i].matOffset._42 << " " << m_BoneInfos[i].matOffset._43 << " " << m_BoneInfos[i].matOffset._44 << endl;
 
 			_outfile.write(reinterpret_cast<const char*>(&m_BoneInfos[i].iNumVertices), sizeof(_uint));
 			for (size_t j = 0; j < m_BoneInfos[i].iNumVertices; j++)
