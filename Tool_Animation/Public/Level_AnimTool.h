@@ -61,7 +61,7 @@ private:
 
 	_int m_iCurrentAnimIndex = 0;
 	_bool m_bLoop = false;
-	_float m_fCurrentTrackPosition = 0;
+	_float m_fCurrentProgerss = 0;
 	_uint m_fCurrentFrame= 0;
 public:
 	static CLevel_AnimTool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

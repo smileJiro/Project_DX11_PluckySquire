@@ -33,6 +33,7 @@ public:
 	_float Get_Progress();
 	bool Is_AnimChangeable();
 
+	void Set_Progress(_float _fProgerss);
 	void Set_Loop(bool bLoop) { m_bLoop = bLoop; }
 	void Set_PostDealyPercent(_float fPercentage) { m_fPostDelayPercentage = fPercentage; }
 	void Set_AnimTransitionTime(_float fTime) { m_fAnimTransitionTime = fTime; }

@@ -165,9 +165,18 @@ void CToolAnimation2D::Set_CurrentFrame(_uint _iFrameIndex)
 	iCurrentFrame = _iFrameIndex;
 }
 
+void CToolAnimation2D::Set_Progerss(_float _fTrackPos)
+{
+}
+
 _uint CToolAnimation2D::Get_CurrentFrame()
 {
 	return iCurrentFrame;
+}
+
+_float CToolAnimation2D::Get_Progerss()
+{
+	return _float();
 }
 
 

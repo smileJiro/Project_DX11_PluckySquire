@@ -147,6 +147,10 @@ bool CAnimation::Is_AnimChangeable()
 	return m_fDuration * m_fPostDelayPercentage <= m_fCurrentTrackPosition;
 }
 
+void CAnimation::Set_Progress(_float _fProgerss)
+{
+}
+
 void CAnimation::Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const
 {
 	for (auto& channel : m_vecChannel)

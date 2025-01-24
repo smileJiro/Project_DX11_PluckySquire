@@ -24,14 +24,11 @@ public:
 	HRESULT				Export_Model(ofstream& _outfile, const _char* _szDirPath, _bool _bExportTextures);
 	//Set
 	void						Set_2DProjMatrix(_fmatrix _vProjMatrix);
-	void						Set_TrackPosition(_float _fTrackPos);
-	void						Set_CurrentFrame(_float _fTrackPos);
+	void						Set_Progerss(_float _fTrackPos);
 	//Get
 	void						Get_TextureNames(set<wstring>& _outTextureNames);
 	_uint						Get_AnimationCount();	
-	const _float			Get_Duration();
-	_float					Get_TrackPosition();
-	_float					Get_CurrentFrame();
+	_float					Get_Progress();
 private:
 	HRESULT					Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc);
 

@@ -39,7 +39,7 @@ HRESULT CTest3DModel::Export_Model(ofstream& _outfile)
 	return S_OK;
 }
 
-void CTest3DModel::Set_TrackPosition(_float _fTrackPos)
+void CTest3DModel::Set_Progerss(_float _fTrackPos)
 {
 	if (m_Animations.empty())
 		return;
@@ -55,7 +55,7 @@ void CTest3DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 
 }
 
-_float CTest3DModel::Get_TrackPosition()
+_float CTest3DModel::Get_Progerss()
 {
 	if (m_Animations.empty())
 		return 0;

@@ -19,10 +19,10 @@ public:
     HRESULT				Export_Model(ofstream& _outfile);
 
     //Set
-    void						Set_CurrentFrame(_int _iFrameIndex);
+    void						Set_Progerss(_float _fTrackPos);
     //Get
     void						Get_TextureNames(set<wstring>& _outTextureNames);
-    _uint					    Get_CurrentFrame();
+    _float					Get_Progerss();
 private:
 
 public:

@@ -150,10 +150,10 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 		}
 		if (m_pTestModelObj->Get_CurCoord() == COORDINATE_3D)
 		{
-			if (ImGui::SliderFloat("TrackPosition", &m_fCurrentTrackPosition, 0.f, m_pTestModelObj->Get_Duration()))
-				m_pTestModelObj->Set_TrackPosition(m_fCurrentTrackPosition);
+			if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
+				m_pTestModelObj->Set_Progerss(m_fCurrentProgerss);
 			else
-				m_fCurrentTrackPosition = m_pTestModelObj->Get_TrackPosition();
+				m_fCurrentProgerss = m_pTestModelObj->Get_Progress();
 		}
 
 

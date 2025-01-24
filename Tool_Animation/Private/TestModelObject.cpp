@@ -99,18 +99,17 @@ void CTestModelObject::Set_2DProjMatrix(_fmatrix _vProjMatrix)
     XMStoreFloat4x4(&m_ProjMatrix, _vProjMatrix);
 }
 
-void CTestModelObject::Set_TrackPosition(_float _fTrackPos)
+void CTestModelObject::Set_Progerss(_float _fTrackPos)
 {
     assert(m_pControllerModel);
-    assert(COORDINATE_3D == m_eCurCoord);
-    static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_TrackPosition(_fTrackPos);
-}
-
-void CTestModelObject::Set_CurrentFrame(_float _fTrackPos)
-{
-    assert(m_pControllerModel);
-    assert(COORDINATE_2D == m_eCurCoord);
-    static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_CurrentFrame(_fTrackPos);
+    assert(COORDINATE_LAST != m_eCurCoord);
+    switch (m_eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progerss(_fTrackPos);
+    case Engine::COORDINATE_3D:
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progerss(_fTrackPos);
+    }
 }
 
 void CTestModelObject::Get_TextureNames(set<wstring>& _outTextureNames)
@@ -133,20 +132,21 @@ _uint CTestModelObject::Get_AnimationCount()
     return m_pControllerModel->Get_Model(m_eCurCoord)->Get_AnimCount();
 }
 
-const _float CTestModelObject::Get_Duration()
+
+_float CTestModelObject::Get_Progress()
 {
-    return  static_cast<C3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_AnimTime();
+    assert(m_pControllerModel);
+    assert(COORDINATE_LAST != m_eCurCoord);
+    switch (m_eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_Progerss();
+    case Engine::COORDINATE_3D:
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_Progerss();
+    }
+   
 }
 
-_float CTestModelObject::Get_TrackPosition()
-{
-    return  static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_TrackPosition();
-}
-
-_float CTestModelObject::Get_CurrentFrame()
-{
-    return  static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_CurrentFrame();
-}
 
 
 HRESULT CTestModelObject::Export_Model(ofstream& _outfile, const _char* _szDirPath, _bool _bExportTextures)
