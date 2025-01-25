@@ -29,7 +29,7 @@ public:
 	HRESULT					Initialize(CON_TRANSFORM_DESC* _pDesc);
 	void							Update_AutoRotation(_float _fTimeDelta);
 public: /* Change_Coordinate */
-	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition);
+	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 
 public: /* 2D, 3D */
 	_bool					Go_Straight(_float _fTimeDelta);

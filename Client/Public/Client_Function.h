@@ -21,6 +21,11 @@ namespace Client
 	void Event_Setup_SimulationFiltering(_uint _MyGroup, _uint _OtherGroupMask);
 	void Event_ChangeMonsterState(MONSTER_STATE _eState, CFSM* _pFSM);
 	void Event_ChangeBossState(BOSS_STATE _eState, CFSM* _pFSM);
+	void Event_Change_Coordinate(CActorObject* _pActorObject, COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
+
+	
+
+
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 

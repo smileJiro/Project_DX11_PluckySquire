@@ -199,6 +199,22 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
     return S_OK;
 }
 
+HRESULT CActor::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+    // Actor 쪽 작업 방식.
+    // 1. Actor 전환되고자 하느 
+    if (COORDINATE_3D == _eCoordinate)
+    {
+        Set_Active(true);
+    }
+    else
+    {
+        Set_Active(false);
+    }
+
+    return S_OK;
+}
+
 void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime)
 {
     PxScene* pScene = m_pGameInstance->Get_Physx_Scene(); // scene의 시뮬레이션 데이터를 reset해줘야함. 그래서 Scene 객체가 없다면 무의미.

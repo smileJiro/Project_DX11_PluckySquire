@@ -36,8 +36,10 @@ public:
 	CComponent*					Find_Component(const _wstring& _strComponentTag);
 	
 public: /* 모드 전환 */
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition);
-	virtual void                On_CoordinateChange() {}
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
+
+private:
+	virtual void                On_CoordinateChange(COORDINATE _eCoordinate, const _float3& _vPosition) {}
 
 public:
 	// Get

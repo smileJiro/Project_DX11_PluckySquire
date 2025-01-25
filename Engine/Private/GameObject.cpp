@@ -105,12 +105,11 @@ CComponent* CGameObject::Find_Component(const _wstring& _strComponentTag)
     return iter->second;
 }
 
-HRESULT CGameObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
+HRESULT CGameObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
-    if (FAILED(m_pControllerTransform->Change_Coordinate(_eCoordinate, _vPosition)))
+    if (FAILED(m_pControllerTransform->Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
 
-    On_CoordinateChange();
     return S_OK;
 }
 
