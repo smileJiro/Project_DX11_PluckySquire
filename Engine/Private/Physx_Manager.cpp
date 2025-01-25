@@ -105,17 +105,17 @@ HRESULT CPhysx_Manager::Initialize()
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
 	
-	_float fUpdateTime = 1.0f / 60.f;
-	m_pPxScene->simulate(fUpdateTime);
+	//_float fUpdateTime = 1.0f / 60.f;
+	//m_pPxScene->simulate(fUpdateTime);
 
-	if (m_pPxScene->fetchResults(true))
-	{
-		if(nullptr != m_pPhysx_EventCallBack)
-			m_pPhysx_EventCallBack->Update();
+	//if (m_pPxScene->fetchResults(true))
+	//{
+	//	if(nullptr != m_pPhysx_EventCallBack)
+	//		m_pPhysx_EventCallBack->Update();
 
-		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
-	}
+	//	const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+	//	m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+	//}
 }
 
 HRESULT CPhysx_Manager::Render()
