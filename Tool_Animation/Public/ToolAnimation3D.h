@@ -1,5 +1,5 @@
 #pragma once
-#include "Animation.h"
+#include "Animation3D.h"
 #include "Channel.h"
 
 BEGIN(AnimTool)
@@ -22,7 +22,7 @@ public:
 	virtual void Free() override;
 };
 class CToolAnimation3D :
-    public CAnimation
+    public CAnimation3D
 {
 private:
 	CToolAnimation3D();

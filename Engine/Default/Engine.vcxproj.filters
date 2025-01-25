@@ -357,7 +357,7 @@
     <ClInclude Include="..\public\Bone.h">
       <Filter>01.Utility\04.Components\Model\Bone</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Animation.h">
+    <ClInclude Include="..\public\Animation3D.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Channel.h">
@@ -498,6 +498,15 @@
     <ClInclude Include="..\public\Frustum.h">
       <Filter>01.Utility\13.Frustum</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Animation.h">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimEventGenerator.h">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimEventReceiver.h">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -593,7 +602,7 @@
     <ClCompile Include="..\private\Bone.cpp">
       <Filter>01.Utility\04.Components\Model\Bone</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Animation.cpp">
+    <ClCompile Include="..\private\Animation3D.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Channel.cpp">
@@ -733,6 +742,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Frustum.cpp">
       <Filter>01.Utility\13.Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation.cpp">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimEventGenerator.cpp">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimEventReceiver.cpp">
+      <Filter>01.Utility\04.Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,6 +17,7 @@
 #include "Controller_Model.h"
 #include "Material.h"
 #include "Bone.h"
+#include "AnimEventGenerator.h"
 
 /* Etc */
 #include "Transform_2D.h"

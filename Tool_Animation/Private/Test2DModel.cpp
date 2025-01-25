@@ -265,7 +265,7 @@ _float CTest2DModel::Get_Progerss()
 {
 	if (m_Animation2Ds.empty())
 		return 0;
-	return static_cast<CToolAnimation2D*>(m_Animation2Ds[m_iCurAnimIdx])->Get_Progerss();
+	return static_cast<CToolAnimation2D*>(m_Animation2Ds[m_iCurAnimIdx])->Get_Progress();
 }
 
 

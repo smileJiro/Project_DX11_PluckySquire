@@ -11,6 +11,7 @@ CModel::CModel(const CModel& _Prototype)
 {
 }
 
+
 void CModel::Free()
 {
 	__super::Free();

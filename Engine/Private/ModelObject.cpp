@@ -346,6 +346,10 @@ _uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
         return m_pControllerModel->Get_TextureIndex_To_3D(_eTextureType, _iMaterialIndex);
     return 0;
 }
+void CModelObject::Set_PlayingAnim(COORDINATE _eCoord, _bool _bPlaying)
+{
+	m_pControllerModel->Get_Model(_eCoord)->Set_PlayingAnim(_bPlaying);
+}
 void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
 {
     if (m_pControllerModel)

@@ -58,7 +58,7 @@ public:
 
 	void					Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
 	_uint					Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
-
+	void					Set_PlayingAnim(COORDINATE _eCoord, _bool _bPlaying);
 
 
 protected:
@@ -70,7 +70,6 @@ protected:
 	_wstring				m_strModelPrototypeTag[COORDINATE_LAST];
 
 	_float					m_fFrustumCullingRange = 0.0f;
-
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 
