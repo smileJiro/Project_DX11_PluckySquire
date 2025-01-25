@@ -24,6 +24,7 @@ public:
     virtual _uint Get_AnimCount() override;
 	virtual _uint Get_CurrentAnimIndex() override { return m_iCurAnimIdx; }
     virtual _float Get_CurrentAnimProgeress() override;
+    virtual CAnimation* Get_Animation(_uint iAnimIndex) override;
     //Set
     virtual void Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)override;
     virtual void Set_Animation(_uint _iIdx)override;

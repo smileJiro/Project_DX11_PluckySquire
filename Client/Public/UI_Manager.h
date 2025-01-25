@@ -41,7 +41,8 @@ private:
 public:
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
-	CPlayer*							Get_Player() { return m_pPlayer; }
+	CPlayer*							Get_Player() { return 
+		m_pPlayer; }
 	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
 	void								Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
 	void								Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel);

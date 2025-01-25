@@ -71,7 +71,9 @@ bool CAnimation3D::Update_TransformationMatrices(const vector<class CBone*>& Bon
 	if (m_fCurrentTrackPosition >= m_fDuration)
 	{
 		if (true == m_bLoop)
-			m_fCurrentTrackPosition = 0.f;
+		{
+			Reset();
+		}
 		else
 			return true;
 	}
@@ -92,7 +94,7 @@ bool CAnimation3D::Update_AnimTransition(const vector<class CBone*>& Bones, _flo
 	float _fAnimTransitionTrackPos = m_fAnimTransitionTime * m_fTickPerSecond;
 	if (m_fCurrentTrackPosition >= _fAnimTransitionTrackPos)
 	{
-		Reset_CurrentTrackPosition();
+		Reset();
 		return true;
 	}
 	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta;
@@ -114,9 +116,9 @@ bool CAnimation3D::Update_AnimTransition(const vector<class CBone*>& Bones, _flo
 	return false;
 }
 
-void CAnimation3D::Reset_CurrentTrackPosition()
+void CAnimation3D::Reset()
 {
-	m_fCurrentTrackPosition = 0.f;
+	__super::Reset();
 	ZeroMemory(m_CurrentKeyFrameIndices.data(), 0);
 }
 
@@ -150,7 +152,7 @@ void CAnimation3D::Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFram
 
 void CAnimation3D::Ready_AnimTransition()
 {
-	Reset_CurrentTrackPosition();
+	Reset();
 }
 
 CAnimation3D* CAnimation3D::Create(ifstream& inFile, const C3DModel* pModel)
