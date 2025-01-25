@@ -32,6 +32,26 @@ _vector CCamera_Manager::Get_CameraVector(CTransform::STATE _eState)
 	return pConTrans->Get_State(_eState);
 }
 
+void CCamera_Manager::Start_ZoomIn()
+{
+	_uint iZoomLevel = m_Cameras[m_eCurrentCameraType]->Get_CurrentZoomLevel();
+
+	if (iZoomLevel <= CCamera::LEVEL_1)
+		return;
+
+	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel - 1), CCamera::EASE_IN);
+}
+
+void CCamera_Manager::Start_ZoomOut()
+{
+	_uint iZoomLevel = m_Cameras[m_eCurrentCameraType]->Get_CurrentZoomLevel();
+
+	if (iZoomLevel >= CCamera::LEVEL_10)
+		return;
+
+	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel + 1), CCamera::EASE_IN);
+}
+
 void CCamera_Manager::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 {
 	if (nullptr == _pCamera)

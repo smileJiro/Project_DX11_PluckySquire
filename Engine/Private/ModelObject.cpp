@@ -209,9 +209,9 @@ void CModelObject::Update(_float _fTimeDelta)
 	__super::Update(_fTimeDelta);
 }
 
-HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
+HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
-	if (FAILED(__super::Change_Coordinate(_eCoordinate, _vPosition)))
+	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
 
     return	m_pControllerModel->Change_Coordinate(_eCoordinate);

@@ -94,6 +94,23 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_Change_Coordinate(CActorObject* _pActorObject, COORDINATE _eCoordinate, _float3* _pNewPosition)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::CHANGE_COORDINATE;
+		tEvent.Parameters.resize(3); // NumParameters
+
+		tEvent.Parameters[0] = (DWORD_PTR)_pActorObject;
+		tEvent.Parameters[1] = (DWORD_PTR)_eCoordinate;
+		_float3* pPosition = nullptr;
+		if (nullptr != _pNewPosition)
+			pPosition = new _float3(*_pNewPosition);
+
+		tEvent.Parameters[2] = (DWORD_PTR)pPosition;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 
 	std::wstring StringToWstring(const std::string& _str)
 	{

@@ -68,13 +68,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     Safe_AddRef(pGameInstance);
     if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_Default"))))
         return E_FAIL;
-
+    if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_60"))))
+        return E_FAIL;
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CAMERATOOL));
 
     MSG msg;
 
     _float fTimeAcc = 0.0f;
 
+    _float fTime = 0.f;
+    _uint iFrameNum = 0;
 
     while (true)
     {

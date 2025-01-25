@@ -64,7 +64,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.isShapeMaterial = true;               // Material을 별도로 지정할 것인지, Default Material을 사용할 것인지.
     ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
@@ -74,7 +73,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    ShapeData.isShapeMaterial = false;              // DEFAULT Material을 사용하겠다는 의미가 되겠지.
     ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity());
     SHAPE_BOX_DESC BoxDesc = {};
@@ -262,21 +260,19 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
 }
 
-HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
+HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
-    /* 태웅 : 2D 전환 시 Actor 처리 필요함. */
-    if (FAILED(m_PartObjects[PART_BODY]->Change_Coordinate(_eCoordinate, _float3(0.0f, 0.0f, 0.0f))))
+    if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
-    return __super::Change_Coordinate(_eCoordinate, _vPosition);
-}
 
-void CPlayer::On_CoordinateChange()
-{
     if (COORDINATE_2D == Get_CurCoord())
-		Set_2DDirection(F_DIRECTION::DOWN);
+        Set_2DDirection(F_DIRECTION::DOWN);
 
-	Set_State(IDLE);
+    Set_State(IDLE);
+
+    return S_OK;
 }
+
 
 void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 {
@@ -472,7 +468,25 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
-        Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
+        _float3 vNewPos = _float3(0.0f, 6.0f, 0.0f);
+        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+        //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
+    }
+    if (KEY_DOWN(KEY::F3))
+    {
+        SHAPE_DATA tShapeData = {};
+        tShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+        tShapeData.eShapeType = SHAPE_TYPE::BOX;
+        tShapeData.iShapeUse = 1;
+        tShapeData.isTrigger = false;
+        XMStoreFloat4x4(&tShapeData.LocalOffsetMatrix, XMMatrixScaling(5.0f, 5.0f, 5.0f) * XMMatrixRotationY(XMConvertToRadians(120.f)) * XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+        SHAPE_BOX_DESC tBoxDesc = {};
+        tBoxDesc.vHalfExtents = { 0.5f ,0.5f ,0.5f };
+        tShapeData.pShapeDesc = &tBoxDesc;
+        tShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+        tShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
+
+        m_pActorCom->Add_Shape(tShapeData);
     }
     if (KEY_DOWN(KEY::F2))
     {

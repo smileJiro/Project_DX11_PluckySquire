@@ -70,7 +70,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 	m_pGameInstance->Start_Imgui();
 
 	m_pGameInstance->Priority_Update_Engine(_fTimeDelta);
-	Imgui_FPS();
+	Imgui_FPS(_fTimeDelta);
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
@@ -112,16 +112,19 @@ HRESULT CMainApp::Render()
 	return S_OK;
 }
 
-void CMainApp::Imgui_FPS()
+void CMainApp::Imgui_FPS(_float _fTimeDelta)
 {
 	ImGui::Begin("FPS");
-
-	_int iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
-	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_Default"));
-
+	static _int iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
+	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_120"));
+	m_vFPSRenderTime.y += _fTimeDelta;
+	if (m_vFPSRenderTime.x <= m_vFPSRenderTime.y)
+	{
+		m_vFPSRenderTime.y = 0.0f;
+		iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);		
+	}
 	ImGui::Text("MaxFPS : %d", iMaxFPS);
 	ImGui::Text("InGameFPS : %d", iInGameFPS);
-
 	ImGui::End();
 }
 
