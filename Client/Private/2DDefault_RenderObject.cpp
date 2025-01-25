@@ -148,6 +148,7 @@ void C2DDefault_RenderObject::Free()
 	__super::Free();
 
 	Safe_Release(m_pShader);
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
 }
 
