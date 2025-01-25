@@ -33,6 +33,10 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 2.f;
 
+    /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
+    if (FAILED(Ready_ActorDesc(pDesc)))
+        return E_FAIL;
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -43,6 +47,7 @@ HRESULT CJumpBug::Initialize(void* _pArg)
         return E_FAIL;
 
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
@@ -67,7 +72,6 @@ void CJumpBug::Priority_Update(_float _fTimeDelta)
 
 void CJumpBug::Update(_float _fTimeDelta)
 {
-    m_pFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -91,7 +95,7 @@ HRESULT CJumpBug::Render()
 
 void CJumpBug::Change_Animation()
 {
-   /* if(m_iState != m_iPreState)
+    if(m_iState != m_iPreState)
     {
         switch (MONSTER_STATE(m_iState))
         {
@@ -99,22 +103,10 @@ void CJumpBug::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
-        case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
-            break;
-
-        case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
-            break;
-
-        case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKSTRIKE);
-            break;
-
         default:
             break;
         }
-    }*/
+    }
 }
 
 void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
@@ -137,6 +129,59 @@ void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     default:
         break;
     }*/
+}
+
+HRESULT CJumpBug::Ready_ActorDesc(void* _pArg)
+{
+    CJumpBug::MONSTER_DESC* pDesc = static_cast<CJumpBug::MONSTER_DESC*>(_pArg);
+
+    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
+
+    /* Actor의 주인 오브젝트 포인터 */
+    ActorDesc->pOwner = this;
+
+    /* Actor의 회전축을 고정하는 파라미터 */
+    ActorDesc->FreezeRotation_XYZ[0] = true;
+    ActorDesc->FreezeRotation_XYZ[1] = false;
+    ActorDesc->FreezeRotation_XYZ[2] = true;
+
+    /* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
+    ActorDesc->FreezePosition_XYZ[0] = false;
+    ActorDesc->FreezePosition_XYZ[1] = false;
+    ActorDesc->FreezePosition_XYZ[2] = false;
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
+    ShapeDesc->fHalfHeight = 0.5f;
+    ShapeDesc->fRadius = 0.5f;
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    SHAPE_DATA* ShapeData = new SHAPE_DATA;
+    ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    ShapeData->isShapeMaterial = true;               // Material을 별도로 지정할 것인지, Default Material을 사용할 것인지.
+    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    /* 충돌 필터에 대한 세팅 ()*/
+    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
+
+    /* Actor Component Finished */
+    pDesc->pActorDesc = ActorDesc;
+
+    /* Shapedata 할당해제 */
+    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+    {
+        Safe_Delete(ShapeData);
+    }
+
+    return S_OK;
 }
 
 HRESULT CJumpBug::Ready_Components()

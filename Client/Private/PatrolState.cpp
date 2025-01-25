@@ -85,7 +85,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	}
 	
 	//구역 벗어났는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-	/*if(false == m_isBack)
+	if(false == m_isBack)
 	{
 		_float3 vPos;
 		XMStoreFloat3(&vPos, m_pOwner->Get_Position());
@@ -98,7 +98,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 
 			m_isBack = true;
 		}
-	}*/
+	}
 
 	//이동
 	PatrolMove(_fTimeDelta, m_iDir);
@@ -125,41 +125,40 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 	if (true == m_isMove)
 	{
 		//기본적으로 추적중에 y값 상태 변화는 없다고 가정
-		_float fY = m_pOwner->Get_Position().m128_f32[1];
 		_vector vDir = {};
 		switch (_iDir)
 		{
 		case 0:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, fY, 1.f, 1.f));
 			vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position()+vDir);
 			break;
 		case 1:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(1.f, fY, 1.f, 1.f));
 			vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position()+vDir);
 			break;
 		case 2:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, fY, 1.f, 1.f));
 			vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position()+vDir);
 			break;
 		case 3:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(1.f, fY, -1.f, 1.f));
 			vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position()+vDir);
 			break;
 		case 4:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, fY, -1.f, 1.f));
 			vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position()+vDir);
 			break;
 		case 5:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, fY, -1.f, 1.f));
 			vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position()+vDir);
 			break;
 		case 6:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, fY, 0.f, 1.f));
 			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position()+vDir);
 			break;
 		case 7:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, fY, 1.f, 1.f));
 			vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position()+vDir);
 			break;
 		default:
 			break;
