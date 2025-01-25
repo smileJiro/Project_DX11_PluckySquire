@@ -50,6 +50,7 @@ HRESULT CAnimEventGenerator::Initialize(void* _pArg)
 	ANIMEVTGENERATOR_DESC* pDesc = (ANIMEVTGENERATOR_DESC*)_pArg;
 	m_pSenderModel = pDesc->pSenderModel;
 	m_pReceiver = pDesc->pReceiver;
+	m_pSenderModel->Set_AnimEventGenerator(this);
 	__super::Initialize(_pArg);
 	return S_OK;
 }

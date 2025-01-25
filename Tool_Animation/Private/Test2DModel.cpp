@@ -249,7 +249,7 @@ void CTest2DModel::Set_Progerss(_float _fTrackPos)
 {
 	if (m_Animation2Ds.empty())
 		return;
-	static_cast<CToolAnimation2D*> (m_Animation2Ds[m_iCurAnimIdx])->Set_Progerss(_fTrackPos);
+	static_cast<CToolAnimation2D*> (m_Animation2Ds[m_iCurAnimIdx])->Set_Progress(_fTrackPos);
 
 }
 

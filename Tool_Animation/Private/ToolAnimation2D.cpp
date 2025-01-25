@@ -165,24 +165,7 @@ void CToolAnimation2D::Set_CurrentFrame(_uint _iFrameIndex)
 	iCurrentFrame = _iFrameIndex;
 }
 
-void CToolAnimation2D::Set_Progerss(_float _fProgerss)
-{
-	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(iFrameCount - 1);
-	_int iTargetSubFrame = (_int)(_fProgerss * iTotalSubFrameCount);
-	_float fRemainTime = fFramesPerSecond*iTotalSubFrameCount * _fProgerss -(fFramesPerSecond * iTargetSubFrame);
-	fCurrentFrameTime = fRemainTime;
-	for (_uint i = 0; i< iFrameCount ; i++)
-	{
-		_int iFrameRun = (_int)SpriteFrames[i].second;
-		if (iTargetSubFrame- iFrameRun < 0)
-		{
-			iCurrentFrame = i;
-			iCurrentSubFrame = iTargetSubFrame;
-			return;
-		}
-		iTargetSubFrame -= iFrameRun;
-	}
-}
+
 
 _uint CToolAnimation2D::Get_CurrentFrame()
 {
