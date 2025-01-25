@@ -37,10 +37,13 @@ private:
 
 private:
 	_float m_fAccTime = { 0.f };
-	_float m_fMoveTime = {};
+	_float m_fDelayTime = {};
+	_float m_fAccDistance = { 0.f };
+	_float m_fMoveDistance = {};
 	_float m_fPatrolOffset = {};
 	PATROLBOUND m_tPatrolBound = {};
 	_int m_iPrevDir = {};
+	_bool m_isDelay = { false };
 	_bool m_isMove = { false };
 
 public:

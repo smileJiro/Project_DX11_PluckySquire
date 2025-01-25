@@ -1,7 +1,7 @@
 #include "stdafx.h"
+#include "PatrolState.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "PatrolState.h"
 #include "Monster.h"
 #include "FSM.h"
 
@@ -19,6 +19,7 @@ HRESULT CPatrolState::Initialize(void* _pArg)
 
 	m_fPatrolOffset = 5.f;
 	m_iPrevDir = -1;
+	m_fDelayTime = 0.5f;
 		
 	return S_OK;
 }
@@ -43,8 +44,13 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	if (true == m_isMove)
+	if (false == m_isMove)
 		m_fAccTime += _fTimeDelta;
+	if (m_fDelayTime <= m_fAccTime)
+	{
+		m_fAccTime = 0.f;
+		m_isDelay = false;
+	}
 
 	//적 발견 시 ALERT 전환
 	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_Position() - m_pOwner->Get_Position())));
@@ -53,6 +59,9 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 		Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
 		return;
 	}
+
+	if (true == m_isDelay)
+		return;
 
 	/*순찰 이동 로직*/
 	//랜덤으로 방향 설정
@@ -67,7 +76,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 			if (iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
 			{
 				m_iPrevDir = iDir;
-				m_fMoveTime = m_pGameInstance->Compute_Random(0.5f, 1.5f);
+				m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 				m_isMove = true;
 				break;
 			}
@@ -82,54 +91,60 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 
 void CPatrolState::State_Exit()
 {
+	m_isDelay = false;
 	m_isMove = false;
 	m_fAccTime = 0.f;
+	m_fAccDistance = 0.f;
 }
 
 void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 {
 	//회전중인 거도 해야함 체크 일단 이동만 해봄
 
-	if (m_fMoveTime <= m_fAccTime)
-	{
-		m_fAccTime = 0.f;
-		m_isMove = false;
-		return;
-	}
-
 	if (true == m_isMove)
 	{
+		//기본적으로 추적중에 y값 상태 변화는 없다고 가정
+		_float fY = m_pOwner->Get_Position().m128_f32[1];
+
 		switch (_iDir)
 		{
 		case 0:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, 0.f, 1.f, 0.f));
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, fY, 1.f, 1.f));
 			break;
 		case 1:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(1.f, 0.f, 1.f, 0.f));
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(1.f, fY, 1.f, 1.f));
 			break;
 		case 2:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, 0.f, 1.f, 0.f));
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, fY, 1.f, 1.f));
 			break;
 		case 3:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(1.f, 0.f, -1.f, 0.f));
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(1.f, fY, -1.f, 1.f));
 			break;
 		case 4:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, 0.f, -1.f, 0.f));
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(0.f, fY, -1.f, 1.f));
 			break;
 		case 5:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, 0.f, -1.f, 0.f));
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, fY, -1.f, 1.f));
 			break;
 		case 6:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, 0.f, 0.f, 0.f));
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, fY, 0.f, 1.f));
 			break;
 		case 7:
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, 0.f, 1.f, 0.f));
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(XMVectorSet(-1.f, fY, 1.f, 1.f));
 			break;
 		default:
 			break;
 		}
 
 		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
+		m_fAccDistance += m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
+
+		if (m_fMoveDistance <= m_fAccDistance)
+		{
+			m_fAccDistance = 0.f;
+			m_isMove = false;
+			m_isDelay = true;
+		}
 	}
 }
 

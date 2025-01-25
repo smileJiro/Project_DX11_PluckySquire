@@ -1,8 +1,12 @@
 #pragma once
 #include "Base.h"
 
-BEGIN(Client)
+BEGIN(Engine)
+class CGameObject;
+class CGameInstance;
+END
 
+BEGIN(Client)
 class CFSM;
 class CMonster;
 

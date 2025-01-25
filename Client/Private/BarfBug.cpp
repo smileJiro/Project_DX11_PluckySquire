@@ -98,7 +98,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
-    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+    m_pFSM->Set_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Set_PatrolBound();
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
