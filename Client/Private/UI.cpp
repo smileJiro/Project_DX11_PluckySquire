@@ -70,20 +70,6 @@ HRESULT CUI::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 HRESULT CUI::Ready_Components()
 {
-	//if (FAILED(Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Shader_VtxPosTex"),
-	//	TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-	//	return E_FAIL;
-	//
-	///* Com_VIBuffer */
-	//if (FAILED(Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_VIBuffer_Rect"),
-	//	TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-	//	return E_FAIL;
-	//
-	///* Com_Texture */
-	//if (FAILED(Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_StartLogo"),
-	//	TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-	//	return E_FAIL;
-
 	return S_OK;
 }
 
@@ -91,8 +77,6 @@ HRESULT CUI::Bind_ShaderResources()
 {
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
 		return E_FAIL;
-
-
 
 	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;

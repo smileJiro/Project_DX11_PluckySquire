@@ -1,4 +1,5 @@
 #pragma once
+#include "Animation.h" 
 #include "Texture.h"
 
 BEGIN(Engine)
@@ -30,7 +31,7 @@ public:
 };
 
 //하나의 애니메이션 데이터
-class ENGINE_DLL CAnimation2D : public CBase
+class ENGINE_DLL CAnimation2D : public CAnimation
 {
 protected:
 	CAnimation2D();
@@ -47,8 +48,13 @@ public:
 
 	const CSpriteFrame* GetCurrentSprite() { return SpriteFrames[iCurrentFrame].first; }
 	const _matrix* Get_CurrentSpriteTransform() ;
+	virtual _float	Get_Progress() override;
 
 	void Set_Loop(_bool bIsLoop) { bLoop = bIsLoop; }
+
+protected:
+	_uint Get_AccumulativeSubFrameCount(_uint _iFrameIndex);
+
 protected:
 	string strName;
 	_float fFramesPerSecond = 60;

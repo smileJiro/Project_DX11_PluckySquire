@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Test3DModel.h"
-#include "Animation.h"
+#include "Animation3D.h"
 #include "ToolAnimation3D.h"
 #include "ToolMaterial.h"
 #include "ToolBone.h"

@@ -11,4 +11,8 @@ namespace Client
 #define SKILLBALLGAP_X 	87.f
 #define PX_SUPPORT_PVD 1 /* pvd 를 위한 플래그 */
 
+
+
+#define Uimgr CUI_Manager::GetInstance()
+
 }

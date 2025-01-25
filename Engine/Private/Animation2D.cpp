@@ -183,6 +183,25 @@ const _matrix* CAnimation2D::Get_CurrentSpriteTransform()
 	return GetCurrentSprite()->Get_Transform();
 }
 
+_float CAnimation2D::Get_Progress()
+{
+	_float fProgerss = 0;
+	if (iFrameCount > 0)
+	{
+		fProgerss = (_float)(Get_AccumulativeSubFrameCount(iCurrentFrame) + iCurrentSubFrame) / (_float)Get_AccumulativeSubFrameCount(iFrameCount - 1);
+	}
+	return fProgerss;
+}
+
+_uint CAnimation2D::Get_AccumulativeSubFrameCount(_uint _iFrameIndex)
+{
+	_uint iAccumulativeSubFrames = 0;
+	for (_uint i = 0; i < _iFrameIndex; i++)
+	{
+		iAccumulativeSubFrames += SpriteFrames[i].second;
+	}
+	return iAccumulativeSubFrames;
+}
 
 
 CAnimation2D* CAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)

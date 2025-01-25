@@ -45,5 +45,7 @@ protected:
 	_uint					m_iTextureCount = { 0 };
 
 
+
+
 };
 

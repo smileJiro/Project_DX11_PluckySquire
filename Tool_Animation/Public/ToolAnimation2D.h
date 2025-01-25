@@ -41,10 +41,8 @@ public:
 	void						Set_Progerss(_float _fTrackPos);
 	//Get
 	_uint						Get_CurrentFrame();
-	_float					Get_Progerss();
 
-private:
-	_uint Get_AccumulativeSubFrameCount(_uint _iFrameIndex);
+
 private:
 	map<string, CTexture*> m_AnimTextures;
 

@@ -111,6 +111,17 @@ HRESULT CPlayer::Ready_Components()
     
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+
+
+    Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this));
+    Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this));
+    Bind_AnimEventFunc("Someting3", bind(&CPlayer::Someting3, this));
+
+	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+	tAnimEventDesc.pReceiver = this;
+	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
     return S_OK;
 }
 
@@ -436,6 +447,8 @@ void CPlayer::Set_2DDirection(F_DIRECTION _eFDir)
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
     }
+
+    
 }
 
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
@@ -451,6 +464,21 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 }
 
 
+
+void CPlayer::Someting()
+{
+    int a = 0;
+}
+
+void CPlayer::Someting2()
+{
+    int a = 0;
+}
+
+void CPlayer::Someting3()
+{
+    int a = 0;
+}
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
