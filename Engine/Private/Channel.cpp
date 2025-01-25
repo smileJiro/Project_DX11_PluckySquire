@@ -2,7 +2,7 @@
 #include "..\Public\Channel.h"
 #include "3DModel.h"
 #include "Bone.h"
-#include "Animation.h"
+#include "Animation3D.h"
 
 CChannel::CChannel()
 {

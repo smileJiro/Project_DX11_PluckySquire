@@ -55,6 +55,10 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
+	Action_Zoom(fTimeDelta);
+	Action_Shake(fTimeDelta);
+	Change_AtOffset(fTimeDelta);
+
 	Key_Input(fTimeDelta);
 }
 

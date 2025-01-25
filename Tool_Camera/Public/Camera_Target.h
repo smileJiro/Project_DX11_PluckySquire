@@ -17,24 +17,10 @@ public:
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_MODE				eCameraMode;
-		ZOOM_LEVEL				eZoomLevel = CCamera::LEVEL_6;
 		_float3					vAtOffset;
 		_float					fSmoothSpeed;
 	}CAMERA_TARGET_DESC;
 
-	enum ZOOM_LEVEL
-	{
-		LEVEL_1,
-		LEVEL_2,
-		LEVEL_3,
-		LEVEL_4,
-		LEVEL_5,
-		LEVEL_6,
-		LEVEL_7,
-		LEVEL_8,
-		LEVEL_9,
-		LEVEL_10,
-	};
 
 private:
 	CCamera_Target(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

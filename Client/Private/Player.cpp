@@ -64,7 +64,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.isShapeMaterial = true;               // Material을 별도로 지정할 것인지, Default Material을 사용할 것인지.
     ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
@@ -74,7 +73,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    ShapeData.isShapeMaterial = false;              // DEFAULT Material을 사용하겠다는 의미가 되겠지.
     ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity());
     SHAPE_BOX_DESC BoxDesc = {};
@@ -113,6 +111,17 @@ HRESULT CPlayer::Ready_Components()
     
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+
+
+    Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this));
+    Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this));
+    Bind_AnimEventFunc("Someting3", bind(&CPlayer::Someting3, this));
+
+	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+	tAnimEventDesc.pReceiver = this;
+	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
     return S_OK;
 }
 
@@ -438,6 +447,8 @@ void CPlayer::Set_2DDirection(F_DIRECTION _eFDir)
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
     }
+
+    
 }
 
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
@@ -453,6 +464,21 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 }
 
 
+
+void CPlayer::Someting()
+{
+    int a = 0;
+}
+
+void CPlayer::Someting2()
+{
+    int a = 0;
+}
+
+void CPlayer::Someting3()
+{
+    int a = 0;
+}
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
@@ -471,6 +497,22 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         _float3 vNewPos = _float3(0.0f, 6.0f, 0.0f);
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
         //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
+    }
+    if (KEY_DOWN(KEY::F3))
+    {
+        SHAPE_DATA tShapeData = {};
+        tShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+        tShapeData.eShapeType = SHAPE_TYPE::BOX;
+        tShapeData.iShapeUse = 1;
+        tShapeData.isTrigger = false;
+        XMStoreFloat4x4(&tShapeData.LocalOffsetMatrix, XMMatrixScaling(5.0f, 5.0f, 5.0f) * XMMatrixRotationY(XMConvertToRadians(120.f)) * XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+        SHAPE_BOX_DESC tBoxDesc = {};
+        tBoxDesc.vHalfExtents = { 0.5f ,0.5f ,0.5f };
+        tShapeData.pShapeDesc = &tBoxDesc;
+        tShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+        tShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
+
+        m_pActorCom->Add_Shape(tShapeData);
     }
     if (KEY_DOWN(KEY::F2))
     {

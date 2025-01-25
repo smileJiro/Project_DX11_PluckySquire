@@ -20,15 +20,17 @@ public:
 	virtual void Set_AnimationLoop(_uint iIdx, _bool bIsLoop) abstract;
 	virtual void Set_Animation(_uint iIdx) abstract;
 	virtual void Switch_Animation(_uint iIdx) abstract;
+	void Set_PlayingAnim(_bool bPlaying) { m_bPlayingAnim = bPlaying; }
 
 	virtual _uint Get_AnimCount() abstract;
 	virtual _uint Get_CurrentAnimIndex() abstract;
+	virtual _float Get_CurrentAnimProgeress() abstract;
 	ANIM_TYPE Get_AnimType() { return m_eAnimType; }
 
 	_bool Is_AnimModel() { return m_eAnimType == ANIM_TYPE::ANIM; };
 protected:
 	ANIM_TYPE				m_eAnimType = ANIM_TYPE::LAST;
-
+	_bool m_bPlayingAnim = true;
 public:
 	virtual void Free() override;
 };

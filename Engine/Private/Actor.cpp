@@ -133,10 +133,14 @@ HRESULT CActor::Render()
         case physx::PxGeometryType::eBOX:
         {
             PxVec3 vHalfExtents = pShape->getGeometry().box().halfExtents;
+            PxQuat quat =  pShape->getLocalPose().q;
+
+            _float4 vQuat = { quat.x, quat.y, quat.z, quat.w };
             _float3 vPosition = {};
             XMStoreFloat3(&vPosition, m_pOwner->Get_Position());
-            BoundingBox BoundingBox(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z));
-            DX::Draw(m_pBatch, BoundingBox, XMLoadFloat4(&m_vDebugColor));
+            BoundingOrientedBox box(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z), vQuat);
+            //BoundingBox BoundingBox(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z));
+            DX::Draw(m_pBatch, box, XMLoadFloat4(&m_vDebugColor));
         }
             break;
         default:
@@ -215,6 +219,92 @@ HRESULT CActor::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositio
     return S_OK;
 }
 
+HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
+{
+    PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
+    if (nullptr == pPhysics)
+        return E_FAIL;
+
+    PxShapeFlags ShapeFlags = (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
+    if (true == _ShapeData.isTrigger)
+    {
+        ShapeFlags.clear(PxShapeFlag::eSIMULATION_SHAPE);
+        ShapeFlags.set(PxShapeFlag::eTRIGGER_SHAPE);
+    }
+
+    PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(_ShapeData.eMaterial);
+
+    /* 技何 Shape Geometry 积己 */
+    PxShape* pShape = nullptr;
+    _float3 vScale;
+    _float4 vQuat;
+    _float3 vPosition;
+    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_ShapeData.LocalOffsetMatrix)))
+        return E_FAIL;
+
+    switch (_ShapeData.eShapeType)
+    {
+    case Engine::SHAPE_TYPE::BOX:
+    {
+        SHAPE_BOX_DESC* pDesc = static_cast<SHAPE_BOX_DESC*>(_ShapeData.pShapeDesc);
+        PxBoxGeometry BoxGeometry = PxBoxGeometry(PxVec3(pDesc->vHalfExtents.x * vScale.x, pDesc->vHalfExtents.y * vScale.y, pDesc->vHalfExtents.z * vScale.z));
+        pShape = pPhysics->createShape(BoxGeometry, *pShapeMaterial, true, ShapeFlags);
+    }
+    break;
+    case Engine::SHAPE_TYPE::SPHERE:
+    {
+        SHAPE_SPHERE_DESC* pDesc = static_cast<SHAPE_SPHERE_DESC*>(_ShapeData.pShapeDesc);
+        PxSphereGeometry SphereGeometry = PxSphereGeometry(pDesc->fRadius * vScale.x);
+        pShape = pPhysics->createShape(SphereGeometry, *pShapeMaterial, true, ShapeFlags);
+    }
+    break;
+    case Engine::SHAPE_TYPE::CAPSULE:
+    {
+        SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(_ShapeData.pShapeDesc);
+       PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius * vScale.x, pDesc->fHalfHeight * vScale.x);
+
+        pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
+    }
+    break;
+    default:
+        return E_FAIL;
+    }
+
+    if (nullptr == pShape)
+    {
+        MSG_BOX("Failed Create pShape (CActor::Ready_Shape)");
+        return E_FAIL;
+    }
+    
+    //pShape->setLocalPose(PxTransform(PxMat44((_float*)(&_ShapeData.LocalOffsetMatrix))));
+    pShape->setLocalPose(PxTransform(PxVec3(vPosition.x, vPosition.y, vPosition.z), PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w)));
+    PxFilterData FilterData;
+    FilterData.word0 = _ShapeData.FilterData.MyGroup;
+    FilterData.word1 = _ShapeData.FilterData.OtherGroupMask;
+
+    pShape->setSimulationFilterData(FilterData);
+    //pShape->setContactOffset(0.05f);
+    //pShape->setRestOffset(0.01f);
+    SHAPE_USERDATA* pShapeUserData = new SHAPE_USERDATA;
+    pShapeUserData->iShapeInstanceID = m_pGameInstance->Create_ShapeID();
+    pShapeUserData->iShapeUse = _ShapeData.iShapeUse;
+    pShape->userData = pShapeUserData;
+    m_pGameInstance->Add_ShapeUserData(pShapeUserData);
+    m_pActor->attachShape(*pShape);
+
+#ifdef _DEBUG
+    if (true == _ShapeData.isTrigger)
+    {
+        m_pTriggerShapes.push_back(pShape);
+        pShape->acquireReference();
+    }
+#endif // _DEBUG
+    pShape->release();
+
+
+    return S_OK;
+}
+
 void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime)
 {
     PxScene* pScene = m_pGameInstance->Get_Physx_Scene(); // scene狼 矫鼓饭捞记 单捞磐甫 reset秦拎具窃. 弊贰辑 Scene 按眉啊 绝促搁 公狼固.
@@ -251,85 +341,91 @@ void CActor::Active_OnDisable()
     m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
 }
 
-HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs)
+HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& _ShapeDatas)
 {
     PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
     if (nullptr == pPhysics)
         return E_FAIL;
 
-    /* Shape 积己 内靛 矫累. */
-    PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(ACTOR_MATERIAL::DEFAULT);
-    for (_uint i = 0; i < ShapeDescs.size(); ++i)
+    for (auto& ShapeData : _ShapeDatas)
     {
-        PxShapeFlags ShapeFlags = (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
-
-        /* IsTrigger Check */
-        if (true == ShapeDescs[i].isTrigger)
-        {
-            ShapeFlags.clear(PxShapeFlag::eSIMULATION_SHAPE);
-            ShapeFlags.set(PxShapeFlag::eTRIGGER_SHAPE);
-        }
-
-        /* Material 积己 */
-        if (true == ShapeDescs[i].isShapeMaterial)
-        {
-            pShapeMaterial = m_pGameInstance->Get_Material(ShapeDescs[i].eMaterial);
-        }
-
-
-        /* 技何 Shape Geometry 积己 */
-        PxShape* pShape = nullptr;
-        switch (ShapeDescs[i].eShapeType)
-        {
-        case Engine::SHAPE_TYPE::BOX:
-        {
-            SHAPE_BOX_DESC* pDesc = static_cast<SHAPE_BOX_DESC*>(ShapeDescs[i].pShapeDesc);
-            PxBoxGeometry BoxGeometry = PxBoxGeometry(PxVec3(pDesc->vHalfExtents.x, pDesc->vHalfExtents.y, pDesc->vHalfExtents.z));
-            pShape = pPhysics->createShape(BoxGeometry, *pShapeMaterial, true, ShapeFlags);
-        }
-            break;
-        case Engine::SHAPE_TYPE::SPHERE:
-        {
-            SHAPE_SPHERE_DESC* pDesc = static_cast<SHAPE_SPHERE_DESC*>(ShapeDescs[i].pShapeDesc);
-            PxSphereGeometry SphereGeometry = PxSphereGeometry(pDesc->fRadius);
-            pShape = pPhysics->createShape(SphereGeometry, *pShapeMaterial, true, ShapeFlags);
-        }
-            break;
-        case Engine::SHAPE_TYPE::CAPSULE:
-        {
-            SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(ShapeDescs[i].pShapeDesc);
-            PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius, pDesc->fHalfHeight);
-            pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
-        }
-            break;
-        default:
-            return E_FAIL;
-        }
-
-        if (nullptr == pShape)
-        {
-            MSG_BOX("Failed Create pShape (CActor::Ready_Shape)");
-            return E_FAIL;
-        }
-
-        pShape->setLocalPose(PxTransform(PxMat44((_float*)(&ShapeDescs[i].LocalOffsetMatrix))));
-        //pShape->setContactOffset(0.05f);
-        //pShape->setRestOffset(0.01f);
-        SHAPE_USERDATA* pShapeUserData = new SHAPE_USERDATA;
-        pShapeUserData->iShapeInstanceID = m_pGameInstance->Create_ShapeID();
-        pShapeUserData->iShapeUse = ShapeDescs[i].iShapeUse;
-        pShape->userData = pShapeUserData;
-        m_pGameInstance->Add_ShapeUserData(pShapeUserData);
-        m_pActor->attachShape(*pShape);
-#ifdef _DEBUG
-        if (true == ShapeDescs[i].isTrigger)
-        {
-            m_pTriggerShapes.push_back(pShape);
-            pShape->acquireReference();
-        }
-#endif // _DEBUG
-        pShape->release();
+        Add_Shape(ShapeData);
     }
+
+#pragma region old
+    //    /* Shape 积己 内靛 矫累. */
+//    PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(ACTOR_MATERIAL::DEFAULT);
+//    for (_uint i = 0; i < _ShapeDatas.size(); ++i)
+//    {
+//        PxShapeFlags ShapeFlags = (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
+//
+//        /* IsTrigger Check */
+//        if (true == _ShapeDatas[i].isTrigger)
+//        {
+//            ShapeFlags.clear(PxShapeFlag::eSIMULATION_SHAPE);
+//            ShapeFlags.set(PxShapeFlag::eTRIGGER_SHAPE);
+//        }
+//
+//        /* Material 积己 */
+//        pShapeMaterial = m_pGameInstance->Get_Material(_ShapeDatas[i].eMaterial);
+//
+//
+//        /* 技何 Shape Geometry 积己 */
+//        PxShape* pShape = nullptr;
+//        switch (_ShapeDatas[i].eShapeType)
+//        {
+//        case Engine::SHAPE_TYPE::BOX:
+//        {
+//            SHAPE_BOX_DESC* pDesc = static_cast<SHAPE_BOX_DESC*>(_ShapeDatas[i].pShapeDesc);
+//            PxBoxGeometry BoxGeometry = PxBoxGeometry(PxVec3(pDesc->vHalfExtents.x, pDesc->vHalfExtents.y, pDesc->vHalfExtents.z));
+//            pShape = pPhysics->createShape(BoxGeometry, *pShapeMaterial, true, ShapeFlags);
+//        }
+//            break;
+//        case Engine::SHAPE_TYPE::SPHERE:
+//        {
+//            SHAPE_SPHERE_DESC* pDesc = static_cast<SHAPE_SPHERE_DESC*>(_ShapeDatas[i].pShapeDesc);
+//            PxSphereGeometry SphereGeometry = PxSphereGeometry(pDesc->fRadius);
+//            pShape = pPhysics->createShape(SphereGeometry, *pShapeMaterial, true, ShapeFlags);
+//        }
+//            break;
+//        case Engine::SHAPE_TYPE::CAPSULE:
+//        {
+//            SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(_ShapeDatas[i].pShapeDesc);
+//            PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius, pDesc->fHalfHeight);
+//            pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
+//        }
+//            break;
+//        default:
+//            return E_FAIL;
+//        }
+//
+//        if (nullptr == pShape)
+//        {
+//            MSG_BOX("Failed Create pShape (CActor::Ready_Shape)");
+//            return E_FAIL;
+//        }
+//
+//        pShape->setLocalPose(PxTransform(PxMat44((_float*)(&_ShapeDatas[i].LocalOffsetMatrix))));
+//        //pShape->setContactOffset(0.05f);
+//        //pShape->setRestOffset(0.01f);
+//        SHAPE_USERDATA* pShapeUserData = new SHAPE_USERDATA;
+//        pShapeUserData->iShapeInstanceID = m_pGameInstance->Create_ShapeID();
+//        pShapeUserData->iShapeUse = _ShapeDatas[i].iShapeUse;
+//        pShape->userData = pShapeUserData;
+//        m_pGameInstance->Add_ShapeUserData(pShapeUserData);
+//        m_pActor->attachShape(*pShape);
+//#ifdef _DEBUG
+//        if (true == _ShapeDatas[i].isTrigger)
+//        {
+//            m_pTriggerShapes.push_back(pShape);
+//            pShape->acquireReference();
+//        }
+//#endif // _DEBUG
+//        pShape->release();
+//    }
+
+#pragma endregion // old
+
 
     return S_OK;
 }

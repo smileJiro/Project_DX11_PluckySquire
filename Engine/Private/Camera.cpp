@@ -171,8 +171,8 @@ void CCamera::Compute_ProjMatrix()
 
 void CCamera::Start_Zoom(_float _fZoomTime, ZOOM_LEVEL _eZoomLevel, RATIO_TYPE _eRatioType)
 {
-	//if (false == m_isZoomOn)
-	//	return;
+	if (true == m_isZoomOn)
+		return;
 
 	m_isZoomOn = true;
 	m_fZoomTime = { _fZoomTime, 0.f };

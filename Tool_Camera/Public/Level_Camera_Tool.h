@@ -24,6 +24,7 @@ public:
 	HRESULT				Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget);
 	HRESULT				Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
 	HRESULT				Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
+	HRESULT				Ready_DataFiles();
 
 private:
 	_float				m_fRotationValue = { 0.5f };
@@ -92,9 +93,25 @@ private:
 	// Frame Info
 	CUTSCENE_KEYFRAME						m_tKeyFrameInfo = {};
 
+	// Simulation
+	CGameObject*							m_pSimulationCube = { nullptr };
+	_bool									m_isSimulation = {};
+
+	//
+	_bool									m_isMaintainOriginPos = { false };
+
+	// SaveLoad
+	_bool									m_isCutSceneData = { false };
+	_bool									m_isArmData = { false };
+	_bool									m_isForClient = { false };
+	_bool									m_isShowPopUp = { false };
+	vector<_string>							m_BinaryFilePaths;
+	_int									m_iCurrentBinaryFileIndex = { 0 };
+	_char									m_szSaveName[MAX_PATH] = { "" };
+
 private:
 	void				Show_CameraTool();
-	void				Show_CutSceneTool();
+	void				Show_CutSceneTool(_float fTimeDelta);
 	void				Show_ArmInfo();
 	void				Show_CutSceneInfo();
 
@@ -104,9 +121,12 @@ private:
 	void				Show_CameraZoomInfo();
 
 	//CutScene
-
 	void				Show_KeyFrameInfo();
 	void				Show_CutSceneComboBox();
+
+	// Save
+	void				Show_SaveLoadFileWindow();
+
 private:
 	// Tool
 	void				Rotate_Arm();
@@ -134,8 +154,13 @@ private:
 	void				Picking();
 	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
 
-private:
-	void				Key_Input();
+	void				Play_CutScene(_float fTimeDelta);
+
+	// Save
+	void				Save_Data_CutScene();
+	void				Save_Data_Arm();
+	void				Load_Data_CutScene();
+	void				Load_Data_Arm();
 
 public:
 	static CLevel_Camera_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

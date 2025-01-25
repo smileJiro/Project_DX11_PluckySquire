@@ -175,6 +175,15 @@
     <Filter Include="02.GameObjects\UI\02. ShopPanel\01. ShopItem\ShopItem">
       <UniqueIdentifier>{f9cecc49-f4ff-40d8-9329-5ade28ab001d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart">
+      <UniqueIdentifier>{6b2e382d-47c5-4fe2-ba7b-e2b4963457dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose">
+      <UniqueIdentifier>{0daba0c3-1d8f-48c6-ae86-64d1dcba25ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\01. SettingGoblin">
+      <UniqueIdentifier>{8c4f6d92-3748-4d76-a576-30412a603c30}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Monster\Goblin">
       <UniqueIdentifier>{7632e6b5-370f-4bc5-9f78-86e3d2eda239}</UniqueIdentifier>
     </Filter>
@@ -195,6 +204,12 @@
     </Filter>
     <Filter Include="03.Components\FSM\State\Patrol">
       <UniqueIdentifier>{659e0234-f497-4370-81c4-97cfc9fc6ba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC">
+      <UniqueIdentifier>{687f816c-88de-4eec-b927-25724250bbef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\04. Dialogue">
+      <UniqueIdentifier>{d24fd4ac-720e-4a88-bcbd-a0b023d0a146}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -369,6 +384,15 @@
     <ClInclude Include="..\Public\ShopItemBG.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Heart.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo_Choose.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Goblin.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Boss_EnergyBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
@@ -423,6 +447,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\PatrolState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dialogue.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -591,6 +618,15 @@
     <ClCompile Include="..\Private\ShopItemBG.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Heart.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Logo_Choose.cpp">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Goblin.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Boss_EnergyBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
@@ -642,6 +678,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PatrolState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dialogue.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
