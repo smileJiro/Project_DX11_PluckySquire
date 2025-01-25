@@ -1,25 +1,25 @@
 #pragma once
 #include "Component.h"
+typedef struct tagFilterData
+{
+	_uint MyGroup = 0;
+	_uint OtherGroupMask = 0;
+}FILTER_DATA;
 
 typedef struct tagShapeData
 {
 	tagShapeData() { XMStoreFloat4x4(&LocalOffsetMatrix, XMMatrixIdentity()); }
 	SHAPE_TYPE		eShapeType = SHAPE_TYPE::LAST;
 	SHAPE_DESC*		pShapeDesc = nullptr;
-	_float3			vLocalOffset = { 0.0f, 0.0f, 0.0f };
 	_float4x4		LocalOffsetMatrix = {};
 	_bool			isTrigger = false;
 
-	_bool			isShapeMaterial = false;
 	ACTOR_MATERIAL	eMaterial = ACTOR_MATERIAL::DEFAULT;
 	_uint			iShapeUse = 0;
+	FILTER_DATA		FilterData = {};
 }SHAPE_DATA;
 
-typedef struct tagFilterData
-{
-	_uint MyGroup = 0;
-	_uint OtherGroupMask = 0;
-}FILTER_DATA;
+
 BEGIN(Engine)
 class CActorObject;
 class ENGINE_DLL CActor abstract : public CComponent
@@ -59,6 +59,8 @@ public:/* Default PhysX */
 	
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
+	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);
+
 public:
 	virtual void				Turn_TargetDirection(_vector _vDirection) { return; }
 
@@ -98,7 +100,7 @@ protected:
 
 private:
 	// 1. ShapeInfos 로 Shape을 생성
-	HRESULT						Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs);
+	HRESULT						Ready_Shapes(const vector<SHAPE_DATA>& ShapeDatas);
 	// 2. Shape 정보와 Actor Desc를 기반으로 Actor를 생성.
 	HRESULT						Ready_Actor(ACTOR_DESC* _pActorDesc);
 
