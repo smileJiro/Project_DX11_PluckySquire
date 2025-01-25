@@ -7,7 +7,7 @@ typedef struct tagAnimEvent
 	void WriteFile(std::ofstream& outFile)
 	{
 		outFile.write(reinterpret_cast<char*>(&iAnimIndex), sizeof(_uint));
-		_uint iLength = strFuncName.length();
+		_uint iLength = (_uint)strFuncName.length();
 		outFile.write(reinterpret_cast<char*>(&iLength), sizeof(_uint));
 		outFile.write(strFuncName.c_str(), iLength);
 		outFile.write(reinterpret_cast<char*>(&fProgress), sizeof(_float));
@@ -61,6 +61,7 @@ public:
 		}
 	}
 
+	map<_uint, vector< ANIM_EVENT>>& Get_AnimEvents() { return m_AnimEvents; }
 #ifdef _TOOL
 public:
 	HRESULT Export_AnimEvents(ofstream& _OutFile);

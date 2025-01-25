@@ -5,6 +5,7 @@
 #include "Bone.h"
 #include "Animation3D.h"
 #include "iostream"
+#include "AnimEventGenerator.h"
 
 C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModel(_pDevice, _pContext)
@@ -218,6 +219,16 @@ _uint C3DModel::Get_AnimIndex()
 	return m_iCurrentAnimIndex;
 }
 
+CAnimation* C3DModel::Get_Animation(_uint iAnimIndex)
+{
+	if (iAnimIndex >= m_Animations.size())
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return nullptr;
+	}
+	return m_Animations[iAnimIndex];
+}
+
 _float C3DModel::Get_AnimationProgress(_uint iAnimIdx)
 {
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
@@ -280,8 +291,7 @@ void C3DModel::Set_Animation(_uint iIdx)
 	}
 	m_iCurrentAnimIndex = iIdx;
 	m_iPrevAnimIndex = iIdx;
-	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
-
+	m_Animations[m_iCurrentAnimIndex]->Reset();
 }
 
 
@@ -297,7 +307,8 @@ void C3DModel::Switch_Animation(_uint iIdx)
 	m_iCurrentAnimIndex = iIdx;
 	m_mapAnimTransLeftFrame.clear();
 
-	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
+	m_Animations[m_iCurrentAnimIndex]->Reset();
+
 	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
 
 }

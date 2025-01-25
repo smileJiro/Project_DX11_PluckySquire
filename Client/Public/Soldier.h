@@ -26,7 +26,7 @@ public:
 		BLOCK_HOLD_UP,
 		DASH_ATTACK_LOOP,
 		DASH_ATTACK_RECOVERY,
-		DASH_ATTACK_STARTUP_,
+		DASH_ATTACK_STARTUP,
 		DEATH_01,
 		DEATH_02_EDIT,
 		FAST_WALK,
@@ -68,6 +68,7 @@ public:
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
+	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 

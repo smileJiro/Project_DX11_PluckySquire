@@ -1,6 +1,7 @@
 #include "2DModel.h"
 #include "GameInstance.h"
 #include "Engine_Defines.h"
+#include "AnimEventGenerator.h"
 
 C2DModel::C2DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModel(_pDevice, _pContext)
@@ -148,7 +149,7 @@ void C2DModel::Switch_Animation(_uint _iIdx)
 		return;
 	}
 	m_iCurAnimIdx = _iIdx;
-	m_Animation2Ds[m_iCurAnimIdx]->Reset_CurrentTrackPosition();
+	m_Animation2Ds[m_iCurAnimIdx]->Reset();
 }
 
 void C2DModel::To_NextAnimation()
@@ -260,4 +261,14 @@ void C2DModel::Free()
 _float C2DModel::Get_CurrentAnimProgeress()
 {
 	return m_Animation2Ds[m_iCurAnimIdx]->Get_Progress();
+}
+
+CAnimation* C2DModel::Get_Animation(_uint iAnimIndex)
+{
+	if (iAnimIndex >= m_Animation2Ds.size())
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return nullptr;
+	}
+	return m_Animation2Ds[iAnimIndex];
 }

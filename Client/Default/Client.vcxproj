@@ -184,6 +184,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\2DDefault_RenderObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
@@ -231,6 +232,7 @@
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\Popuff.h" />
     <ClInclude Include="..\Public\Rat.h" />
+    <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
     <ClInclude Include="..\Public\ShopItemBG.h" />
     <ClInclude Include="..\Public\ShopPanel.h" />
@@ -271,6 +273,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp">
@@ -317,6 +320,7 @@
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\Popuff.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
+    <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\ShopItemBG.cpp" />
     <ClCompile Include="..\Private\ShopPanel.cpp" />

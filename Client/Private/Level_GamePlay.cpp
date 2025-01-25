@@ -13,6 +13,12 @@
 #include "TestTerrain.h"
 #include "Beetle.h"
 #include "BarfBug.h"
+#include "JumpBug.h"
+#include "BirdMonster.h"
+#include "Goblin.h"
+#include "Popuff.h"
+#include "Rat.h"
+#include "Soldier.h"
 #include "ButterGrump.h"
 
 
@@ -208,24 +214,43 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 {
 	/* Test Terrain */
-	CTestTerrain::MODELOBJECT_DESC TerrainDesc{};
+	//CTestTerrain::MODELOBJECT_DESC TerrainDesc{};
 
-	TerrainDesc.eStartCoord = COORDINATE_3D;
-	TerrainDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	TerrainDesc.isCoordChangeEnable = false;
-	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
-	TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
-	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+	//TerrainDesc.eStartCoord = COORDINATE_3D;
+	//TerrainDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	//TerrainDesc.isCoordChangeEnable = false;
+	//TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+	//TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
+	//TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 
-	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+	//TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-	TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
+	//TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	//TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+	//TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	//TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestTerrain"), LEVEL_GAMEPLAY, _strLayerTag, &TerrainDesc)))
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestTerrain"), LEVEL_GAMEPLAY, _strLayerTag, &TerrainDesc)))
+	//	return E_FAIL;
+
+
+
+	//TODO :: SAMPLE
+
+	CModelObject::MODELOBJECT_DESC Desc = {};
+
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
+		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
+		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -942,20 +967,26 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(8.0f, 0.35f, -19.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
 
-	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
-	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
+
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.35f, -15.0f);
+	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
 
 	//CButterGrump::MONSTER_DESC Boss_Desc;
 	//Boss_Desc.iCurLevelID = LEVEL_GAMEPLAY;
