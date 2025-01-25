@@ -42,9 +42,11 @@ private:
 	_float m_fMoveDistance = {};
 	_float m_fPatrolOffset = {};
 	PATROLBOUND m_tPatrolBound = {};
+	_int m_iDir = {};
 	_int m_iPrevDir = {};
 	_bool m_isDelay = { false };
 	_bool m_isMove = { false };
+	_bool m_isBack = { false };
 
 public:
 	static CPatrolState* Create(void* _pArg);
