@@ -10,6 +10,7 @@
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
+#include "Camera_CutScene.h"
 #include "2DModel.h"
 
 #include "StateMachine.h"
@@ -184,6 +185,9 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("alphabet_blocks_d_mesh"),
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_d_mesh/alphabet_blocks_d_mesh.model", matPretransform))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("alphabet_blocks_a_mesh"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_a_mesh/alphabet_blocks_a_mesh.model", matPretransform))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
@@ -210,6 +214,11 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
     /* For. Prototype_GameObject_Camera_Target */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_Target"),
         CCamera_Target::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_CutScene */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene"),
+        CCamera_CutScene::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

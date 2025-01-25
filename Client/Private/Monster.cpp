@@ -100,6 +100,12 @@ HRESULT CMonster::Cleanup_DeadReferences()
 
 void CMonster::Active_OnEnable()
 {
+	// 1. PxActor 활성화 (활성화 시점에는 먼저 켜고)
+	CActorObject::Active_OnEnable();
+
+
+
+	// 2. 몬스터 할거 하고
 //	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
 //	if (nullptr == m_pTarget)
 //	{
@@ -110,10 +116,17 @@ void CMonster::Active_OnEnable()
 //	}
 //
 //	Safe_AddRef(m_pTarget);
+
+
 }
 
 void CMonster::Active_OnDisable()
 {
+	// 1. 몬스터 할거 하고
+
+
+	// 2. PxActor 비활성화 
+	CActorObject::Active_OnDisable();
 }
 
 void CMonster::Free()

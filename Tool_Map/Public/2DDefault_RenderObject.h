@@ -19,6 +19,7 @@ public:
 	{
 
 	}DEFAULT_RENDER_OBJECT_DESC;
+
 private:
 	C2DDefault_RenderObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	C2DDefault_RenderObject(const C2DDefault_RenderObject& Prototype);
@@ -32,16 +33,23 @@ public:
 	virtual void Late_Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+	_bool	Toggle_Mode() { m_is2DMode = !m_is2DMode; return m_is2DMode; }
+public :
+	void Set_Color(_float4& fColor) { m_fBackColor = fColor; }
+
 private:
-	CShader* m_pShader = { nullptr };
+	CShader*		m_pShader = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
-
-
-
+	
+	_bool			m_isBackColorRender = false;
+	_bool			m_is2DMode = true;
+	_float4x4		m_TargetProjMatrix{};
+	_float4			m_fBackColor = {1.f,0.f,1.f,1.f};
+	_float2			m_fTargetSize = {};
 private:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();
-
+	void	Update_RenderWorld();
 
 public:
 	static C2DDefault_RenderObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

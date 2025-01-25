@@ -132,6 +132,20 @@ _bool CGlobalFunction_Manager::MatrixDecompose(_float3* _vScale, _float4* _vQuat
 	return true;
 }
 
+_float3 CGlobalFunction_Manager::Get_ScaleFromMatrix(const _float4x4& _Matrix)
+{
+	return _float3(XMVectorGetX(XMVector3Length(XMLoadFloat4((_float4*)_Matrix.m[0]))),
+				   XMVectorGetX(XMVector3Length(XMLoadFloat4((_float4*)_Matrix.m[1]))),
+				   XMVectorGetX(XMVector3Length(XMLoadFloat4((_float4*)_Matrix.m[2]))));
+}
+
+_float3 CGlobalFunction_Manager::Get_ScaleFromMatrix(const _fmatrix _Matrix)
+{
+	return _float3(XMVectorGetX(XMVector3Length(_Matrix.r[0])),
+				   XMVectorGetX(XMVector3Length(_Matrix.r[1])),
+				   XMVectorGetX(XMVector3Length(_Matrix.r[2])));
+}
+
 _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 {
 	POINT ptCursorPos;

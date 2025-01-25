@@ -119,7 +119,7 @@ HRESULT C2DModel::Initialize(void* _pDesc)
 
 void C2DModel::Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)
 {
-	_int iTemp = m_Animation2Ds.size() - 1;
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
 	if (iTemp < (_int)_iIdx)
 	{
 		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
@@ -130,7 +130,7 @@ void C2DModel::Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)
 
 void C2DModel::Set_Animation(_uint _iIdx)
 {
-	_int iTemp = m_Animation2Ds.size() - 1;
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
 	if (iTemp < (_int)_iIdx)
 	{
 		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
@@ -141,7 +141,7 @@ void C2DModel::Set_Animation(_uint _iIdx)
 
 void C2DModel::Switch_Animation(_uint _iIdx)
 {
-	_int iTemp = m_Animation2Ds.size() - 1;
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
 	if (iTemp < (_int)_iIdx)
 	{
 		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;

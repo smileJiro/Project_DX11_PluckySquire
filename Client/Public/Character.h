@@ -2,8 +2,7 @@
 #include "ContainerObject.h"
 
 BEGIN(Client)
-class CCharacter abstract :
-    public CContainerObject
+class CCharacter abstract :   public CContainerObject
 {
 public:
 	typedef struct tagCharacterDesc : public CContainerObject::CONTAINEROBJ_DESC

@@ -68,7 +68,6 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.isShapeMaterial = true;               // Material을 별도로 지정할 것인지, Default Material을 사용할 것인지.
     ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
@@ -94,10 +93,12 @@ HRESULT CBarfBug::Initialize(void* _pArg)
         return E_FAIL;
 
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+    m_pFSM->Set_PatrolBound();
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -216,6 +217,10 @@ void CBarfBug::Change_Animation()
         {
         case MONSTER_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
+        case MONSTER_STATE::PATROL:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
             break;
 
         case MONSTER_STATE::ALERT:

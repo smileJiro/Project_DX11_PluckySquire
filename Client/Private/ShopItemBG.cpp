@@ -23,13 +23,17 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
+	
+
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
 	m_eSkillShopIcon = pDesc->eShopSkillKind; // 어떤 아이템의 종류이니?
 	m_iSkillLevel = pDesc->iSkillLevel; // 아이템의 몇레벨 이니?
 	m_isRender = false;
-
+	m_vColor = { 227.f / 255.f , 37.f / 255.f,82.f / 255.f, 1.f };
+	m_isChooseItem = pDesc->isChooseItem;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -53,8 +57,26 @@ void CShopItemBG::Child_LateUpdate(_float _fTimeDelta)
 
 HRESULT CShopItemBG::Render()
 {
-	if (true == m_isRender)
+	if (true == m_isRender && SKILLSHOP_BG != m_eSkillShopIcon)
+	{
 		__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+	}
+	else if (true == m_isRender && SKILLSHOP_BG == m_eSkillShopIcon)
+	{
+		if (true == m_isChooseItem)
+		{
+			__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		}
+		else if (false == m_isChooseItem)
+		{
+
+			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &m_vColor, sizeof(_float4))))
+				return E_FAIL;
+
+			__super::Render(0, PASS_VTXPOSTEX::COLOR_ALPHA);
+		}
+	}
+		
 
 	return S_OK;
 }

@@ -73,6 +73,18 @@
     <Filter Include="03. GameObject\2D\2D_Default_Render_Object">
       <UniqueIdentifier>{6e1c5467-5cd4-4998-b6c6-2aa762a63585}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\2D\2D_MapObject">
+      <UniqueIdentifier>{c7a17e8c-adc8-4b42-85df-d9884eb44092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\2D\2D_Tile_RenderObject">
+      <UniqueIdentifier>{d13e90ab-d667-4107-9294-d33611690e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObject\2D\SampleBook">
+      <UniqueIdentifier>{636a99ec-038c-430d-9742-c125fd0ad6f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. TestOverrideShaderFiles">
+      <UniqueIdentifier>{747ee2e5-cf4f-4e47-8f65-bd37b23abccc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -163,7 +175,13 @@
       <Filter>03. GameObject\3D\3D_Defulat_Map_obejct</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\2DTile_RenderObject.h">
-      <Filter>03. GameObject\2D</Filter>
+      <Filter>03. GameObject\2D\2D_Tile_RenderObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapObject.h">
+      <Filter>03. GameObject\2D\2D_MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SampleBook.h">
+      <Filter>03. GameObject\2D\SampleBook</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -235,7 +253,7 @@
     <ClCompile Include="..\Private\Model_PackagingObject.cpp">
       <Filter>03. GameObject\3D\Re_PackagingObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_2D_Map_Tool .cpp">
+    <ClCompile Include="..\Private\Level_2D_Map_Tool.cpp">
       <Filter>02. Levels\2D_Map_Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMap_Tool_Manager.cpp">
@@ -248,12 +266,23 @@
       <Filter>03. GameObject\3D\3D_Defulat_Map_obejct</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DTile_RenderObject.cpp">
-      <Filter>03. GameObject\2D</Filter>
+      <Filter>03. GameObject\2D\2D_Tile_RenderObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapObject.cpp">
+      <Filter>03. GameObject\2D\2D_MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SampleBook.cpp">
+      <Filter>03. GameObject\2D\SampleBook</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Map_Tool.rc">
       <Filter>98. Default</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+      <Filter>96. TestOverrideShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

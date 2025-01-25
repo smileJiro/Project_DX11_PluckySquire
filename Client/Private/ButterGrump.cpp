@@ -364,7 +364,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
 
     CBoss_HomingBall::BOSS_HOMINGBALL_DESC* pHomingBallDesc = new CBoss_HomingBall::BOSS_HOMINGBALL_DESC;
-    pHomingBallDesc->fLifeTime = 5.f;
+    pHomingBallDesc->fLifeTime = 4.f;
     pHomingBallDesc->eStartCoord = COORDINATE_3D;
     pHomingBallDesc->isCoordChangeEnable = false;
     pHomingBallDesc->iNumPartObjects = PART_LAST;

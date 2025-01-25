@@ -386,12 +386,15 @@ public:
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 
 	void									On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	virtual void                     On_CoordinateChange() override;
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Move(_vector _vDir,_float _fTimeDelta);
 	void Attack(_uint _iCombo);
 	//Get
 	F_DIRECTION Get_2DDirection() { return m_e2DDirection; }
+	CController_Transform* Get_Transform() {return m_pControllerTransform;}
+
+
+
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);

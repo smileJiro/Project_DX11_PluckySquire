@@ -10,6 +10,8 @@
 #include "Ray.h"
 #include "2DDefault_RenderObject.h"
 #include "2DTile_RenderObject.h"
+#include "2DMapObject.h"
+#include "SampleBook.h"
 
 #include <filesystem>
 #include <iostream>
@@ -122,7 +124,7 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
     /* For. Prototype_Component_Shader_VtxAnimMesh */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-        CShader::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
+        CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
         return E_FAIL;
     /* For. Prototype_Component_Shader_VtxCube */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
@@ -135,6 +137,14 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_Component_VIBuffer_Rect */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../../Client/Bin/MapSaveFiles/Room_Enviroment.json"), matPretransform)))
+        return E_FAIL;
+    
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../../Client/Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
@@ -184,6 +194,47 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Flower"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/mountain_white_flower_01.dds")))))
+        return E_FAIL;
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("bush"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/mountain_bush_01.dds")))))
+        return E_FAIL;
+        
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("TD_Tree"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_01.dds")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("ButterflyBlue"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/butterfly_blue_fly_02.dds")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("barrel"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/barrel_01.dds")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("townsign"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/town_sign.dds")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("actionsignpost"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/action_sign_post.dds")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("treegreenfallen"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_fallen.dds")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("treegreenbrokentrunk"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_broken_trunk.dds")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("largemossrock"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/large_moss_rock.dds")))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
@@ -191,6 +242,10 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, L"book",
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DAnim/book/book.model", matPretransform))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
     /* For. Prototype_GameObject_MapObject */
@@ -199,6 +254,12 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTile_RenderObject"),
         C2DTile_RenderObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
+        C2DMapObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+        if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
+        CSampleBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -238,7 +299,56 @@ HRESULT CLoader::Loading_Level_3D_Map_Tool()
     return S_OK;
 }
 
+HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix)
+{
+    std::ifstream input_file(_szJsonFilePath);
 
+    json jFileData;
+    if (!input_file.is_open())
+    {
+        MSG_BOX("Failed to Open Json File ");
+        return E_FAIL;
+    }
+    input_file >> jFileData;
+    input_file.close();
+
+    json& jModelList = jFileData["data"];
+    set<string> strModelNames;
+    for (auto& j : jModelList)
+        strModelNames.insert(j.get<string>());
+
+
+    std::filesystem::path path;
+    path = "../../Client/Bin/Resources/Models/NonAnim/";
+    string strFileName;
+    _uint iLoadedCount = 0;
+    _uint iLoadCount = (_uint)strModelNames.size();
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+        if (entry.path().extension() != ".model") continue;
+        strFileName = entry.path().filename().replace_extension().string();
+        if (strModelNames.find(strFileName) != strModelNames.end())
+        {
+            LOG_TYPE("Model Loading(" + strFileName + ".model)...", LOG_LOADING);
+            auto pModel = C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix);
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring(strFileName),
+                pModel)))
+            {
+                Safe_Release(pModel);
+                iLoadedCount++;
+
+                continue;
+            }
+            iLoadedCount++;
+            if (iLoadedCount >= iLoadCount)
+            {
+                break;
+            }
+        }
+
+
+    }
+    return S_OK;
+}
 
 HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
 {
@@ -274,6 +384,7 @@ HRESULT CLoader::Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _
         wstring filename = wstring(FindFileData.cFileName);
         size_t lastDot = filename.find_last_of('.');
         filename = filename.substr(0, lastDot); // 확장자 제거
+        LOG_TYPE("Model Loading(" + str + ".model)...", LOG_LOADING);
 
         if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
             C3DModel::Create(m_pDevice, m_pContext, str.c_str(), _PreTransformMatrix))))

@@ -65,6 +65,18 @@ HRESULT CContainerObject::Render()
     return S_OK;
 }
 
+HRESULT CContainerObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+    if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+        return E_FAIL;
+
+
+    if (FAILED(m_PartObjects[PART_BODY]->Change_Coordinate(_eCoordinate, nullptr)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
 CComponent* CContainerObject::Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag)
 {
     if (_iPartObjectIndex >= m_PartObjects.size())

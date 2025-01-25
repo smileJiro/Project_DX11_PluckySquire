@@ -57,6 +57,7 @@ private:
 	HRESULT Loading_Level_3D_Map_Tool();
 	HRESULT Loading_Level_Trigger();
 
+	HRESULT Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix);
 	HRESULT Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
 	HRESULT Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
 

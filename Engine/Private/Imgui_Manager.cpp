@@ -404,7 +404,18 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 
 	/* Object 세부 정보 렌더링 */
 	if (nullptr != pSelectObject)
+	{
 		pSelectObject->Imgui_Render_ObjectInfos();
+		if (ImGui::Button("Change Target"))
+		{
+			CCamera* pCamera = static_cast<CCamera*>(m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Camera"), 1));
+			if (nullptr != pCamera)
+				pCamera->Change_Target(pSelectObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr());
+		}
+
+	}
+
+
 	ImGui::End();
 
 	return S_OK;

@@ -39,6 +39,7 @@ namespace Client
 		SETUP_SIMULATION_FILTER,
 		CHANGE_MONSTERSTATE,
 		CHANGE_BOSSSTATE,
+		CHANGE_COORDINATE,
 		
 
 		LAST,
@@ -47,6 +48,7 @@ namespace Client
 	enum class MONSTER_STATE
 	{
 		IDLE,
+		PATROL,
 		ALERT,
 		CHASE,
 		ATTACK,

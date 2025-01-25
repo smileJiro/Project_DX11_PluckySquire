@@ -8,6 +8,7 @@
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
+#include "Camera_CutScene.h"
 #include "Camera_Manager_Tool.h"
 
 #include "ModelObject.h"
@@ -36,6 +37,8 @@ HRESULT CLevel_Camera_Tool::Initialize()
 	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
+	Ready_DataFiles();
+
 	m_fFovys[0] = 8.f;
 	m_fFovys[1] = 17.f;
 	m_fFovys[2] = 35.f;
@@ -52,6 +55,8 @@ HRESULT CLevel_Camera_Tool::Initialize()
 
 void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 {
+	//cout << "?" << endl;
+
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::TAB)) {
 		_uint iCurCameraType = CCamera_Manager_Tool::GetInstance()->Get_CameraType();
@@ -59,18 +64,26 @@ void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 		CCamera_Manager_Tool::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	Key_Input();
+	if (KEY_DOWN(KEY::NUM0)) {
+		_uint iCurCameraType = CCamera_Manager_Tool::GetInstance()->Get_CameraType();
+
+		iCurCameraType = (iCurCameraType == CCamera_Manager_Tool::CUTSCENE) ? CCamera_Manager_Tool::FREE : CCamera_Manager_Tool::CUTSCENE;
+
+		CCamera_Manager_Tool::GetInstance()->Change_CameraType(iCurCameraType);
+	}
 
 	Show_CameraTool();
-	Show_CutSceneTool();
+	Show_CutSceneTool(_fTimeDelta);
 	Show_ArmInfo();
 	Show_CutSceneInfo();
+	Show_SaveLoadFileWindow();
 }
 
 HRESULT CLevel_Camera_Tool::Render()
 {
 #ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("Camera Tool Level"));
+	//SetWindowText(g_hWnd, TEXT("Camera Tool Level"));
+	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
 #endif
 
 	return S_OK;
@@ -139,9 +152,28 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CCamera_Manager_Tool::GetInstance()->Add_Camera(CCamera_Manager_Tool::TARGET, dynamic_cast<CCamera*>(pCamera));
-	CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::FREE);
-
+	
 	Create_Arms();
+	
+	// CutScene Camera
+	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
+
+	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
+	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	CutSceneDesc.fNear = 0.1f;
+	CutSceneDesc.fFar = 1000.f;
+	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
+	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
+	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
+	CutSceneDesc.iCameraType = CCamera_Manager_Tool::CUTSCENE;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &CutSceneDesc)))
+		return E_FAIL;
+
+	CCamera_Manager_Tool::GetInstance()->Add_Camera(CCamera_Manager_Tool::CUTSCENE, dynamic_cast<CCamera*>(pCamera));
+
+	CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::FREE);
 
 	return S_OK;
 }
@@ -181,6 +213,40 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Terrain"), LEVEL_CAMERA_TOOL, _strLayerTag, &TerrainDesc)))
 		return E_FAIL;
+
+
+	/* Test Terrain */
+	TerrainDesc.eStartCoord = COORDINATE_3D;
+	TerrainDesc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	TerrainDesc.isCoordChangeEnable = false;
+	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+
+	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+	TerrainDesc.strModelPrototypeTag_3D = TEXT("alphabet_blocks_a_mesh");
+
+	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+
+	TerrainDesc.tTransform3DDesc.vInitialPosition = m_tKeyFrameInfo.vPosition;
+	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(0.5f, 0.5f, 0.5f);
+	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
+
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Terrain"), LEVEL_CAMERA_TOOL, TEXT("Layer_Simulation"), &m_pSimulationCube, &TerrainDesc);
+	Safe_AddRef(m_pSimulationCube);
+	m_pSimulationCube->Set_Active(false);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Camera_Tool::Ready_DataFiles()
+{
+	std::filesystem::path path;
+	path = "../Bin/Resources/DataFiles/";
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+		if (entry.path().extension() == ".bin") {
+			m_BinaryFilePaths.push_back(entry.path().string());
+		}
+	}
 
 	return S_OK;
 }
@@ -239,7 +305,7 @@ void CLevel_Camera_Tool::Show_CameraTool()
 	ImGui::End();
 }
 
-void CLevel_Camera_Tool::Show_CutSceneTool()
+void CLevel_Camera_Tool::Show_CutSceneTool(_float fTimeDelta)
 {
 	ImGui::Begin("CutScene Tool");
 
@@ -279,6 +345,8 @@ void CLevel_Camera_Tool::Show_CutSceneTool()
 
 	if (true == m_isEditSector && false == m_isCreatePoint && false == m_isEditPoint)
 		Edit_Sector();
+
+	Play_CutScene(fTimeDelta);
 
 	ImGui::End();
 }
@@ -418,6 +486,8 @@ void CLevel_Camera_Tool::Show_CameraZoomInfo()
 
 void CLevel_Camera_Tool::Set_KeyFrameInfo()
 {
+
+
 	ImGui::Text("Position: %.2f, %.2f, %.2f", m_tKeyFrameInfo.vPosition.x, m_tKeyFrameInfo.vPosition.y, m_tKeyFrameInfo.vPosition.z);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
@@ -431,12 +501,22 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
 	ImGui::DragFloat("##KeyFramePosZ", &m_tKeyFrameInfo.vPosition.z, 0.1f);
 
+	ImGui::SameLine();
+	ImGui::Checkbox("Maintain Pos", &m_isMaintainOriginPos);
+
 	ImGui::NewLine();
 
 	ImGui::Text("TimeStamp: %.2f\t\t   ", m_tKeyFrameInfo.fTimeStamp);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(200.0f);
 	ImGui::DragFloat("##TimeStamp", &m_tKeyFrameInfo.fTimeStamp, 0.05f, 0.f, 30.f);
+	
+	ImGui::SameLine();
+	if (ImGui::Button("Set Cur KeyFrameInfo")) {
+		if (nullptr != m_pCurKeyFrame)
+			m_tKeyFrameInfo = m_pCurKeyFrame->first;
+
+	}
 
 	ImGui::NewLine();
 
@@ -482,31 +562,31 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 
 	ImGui::NewLine();
 
-	ImGui::Text("At: %.2f, %.2f, %.2f      ", m_tKeyFrameInfo.vAt.x, m_tKeyFrameInfo.vAt.y, m_tKeyFrameInfo.vAt.z);
+	ImGui::Text("At: %.2f, %.2f, %.2f      ", m_tKeyFrameInfo.vAtOffset.x, m_tKeyFrameInfo.vAtOffset.y, m_tKeyFrameInfo.vAtOffset.z);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtX", &m_tKeyFrameInfo.vAt.x);
+	ImGui::DragFloat("##KeyFrameAtX", &m_tKeyFrameInfo.vAtOffset.x);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtY", &m_tKeyFrameInfo.vAt.y);
+	ImGui::DragFloat("##KeyFrameAtY", &m_tKeyFrameInfo.vAtOffset.y);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtZ", &m_tKeyFrameInfo.vAt.z);
+	ImGui::DragFloat("##KeyFrameAtZ", &m_tKeyFrameInfo.vAtOffset.z);
 
-	if(true == m_tKeyFrameInfo.bLookAt)
-		ImGui::Text("Loot At: TRUE             ");
+	if(true == m_tKeyFrameInfo.bLookTarget)
+		ImGui::Text("Loot Target: TRUE             ");
 	else
-		ImGui::Text("Loot At: FALSE            ");
+		ImGui::Text("Loot Target: FALSE            ");
 
 	ImGui::SameLine();
 	if (ImGui::Button("TRUE")) {
-		m_tKeyFrameInfo.bLookAt = true;
+		m_tKeyFrameInfo.bLookTarget = true;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("FALSE")) {
-		m_tKeyFrameInfo.bLookAt = false;
+		m_tKeyFrameInfo.bLookTarget = false;
 	}
 
 	switch (m_tKeyFrameInfo.iAtRatioType) {
@@ -566,9 +646,9 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 			ImGui::Text("Ratio Type: LERP          ");
 			break;
 		}
-		ImGui::Text("At: %.2f, %.2f, %.2f      ", m_pCurKeyFrame->first.vAt.x, m_pCurKeyFrame->first.vAt.y, m_pCurKeyFrame->first.vAt.z);
+		ImGui::Text("At: %.2f, %.2f, %.2f      ", m_pCurKeyFrame->first.vAtOffset.x, m_pCurKeyFrame->first.vAtOffset.y, m_pCurKeyFrame->first.vAtOffset.z);
 
-		if (true == m_pCurKeyFrame->first.bLookAt)
+		if (true == m_pCurKeyFrame->first.bLookTarget)
 			ImGui::Text("Loot At: TRUE             ");
 		else
 			ImGui::Text("Loot At: FALSE            ");
@@ -644,9 +724,9 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 						ImGui::Text("Ratio Type: LERP          ");
 						break;
 					}
-					ImGui::Text("At: %.2f, %.2f, %.2f      ", (*pKeyFrames)[i].vAt.x, (*pKeyFrames)[i].vAt.y, (*pKeyFrames)[i].vAt.z);
+					ImGui::Text("At: %.2f, %.2f, %.2f      ", (*pKeyFrames)[i].vAtOffset.x, (*pKeyFrames)[i].vAtOffset.y, (*pKeyFrames)[i].vAtOffset.z);
 					
-					if (true == (*pKeyFrames)[i].bLookAt)
+					if (true == (*pKeyFrames)[i].bLookTarget)
 						ImGui::Text("Loot At: TRUE             ");
 					else
 						ImGui::Text("Loot At: FALSE            ");
@@ -695,6 +775,73 @@ void CLevel_Camera_Tool::Show_CutSceneComboBox()
 		ImGui::EndCombo();
 	}
 }
+
+void CLevel_Camera_Tool::Show_SaveLoadFileWindow()
+{
+	ImGui::Begin("Save Load File");
+
+	ImGui::Checkbox("For Client", &m_isForClient);
+	ImGui::SameLine();
+	ImGui::Checkbox("Arm Data", &m_isArmData);
+	ImGui::SameLine();
+	ImGui::Checkbox("CutScene Data", &m_isCutSceneData);
+
+	ImGui::BeginChild("Files", ImVec2(400, 150), true);  // true는 border 표시
+	for (int i = 0; i < m_BinaryFilePaths.size(); ++i)
+	{
+		if (ImGui::Selectable(m_BinaryFilePaths[i].c_str(), m_iCurrentBinaryFileIndex == i))
+		{
+			m_iCurrentBinaryFileIndex = i;
+		}
+	}
+	ImGui::EndChild();
+
+	if (ImGui::Button("Save")) {
+		ImGui::OpenPopup("Save File");
+		m_isShowPopUp = true;
+	}
+
+	if (ImGui::BeginPopupModal("Save File", &m_isShowPopUp)) {
+		ImGui::Text("Enter File Name");
+
+		if (ImGui::InputText("File Name", m_szSaveName, sizeof(_char) * MAX_PATH,
+			ImGuiInputTextFlags_EnterReturnsTrue)) {
+			ImGui::CloseCurrentPopup();
+			m_isShowPopUp = false;
+		}
+
+		if (ImGui::Button("Save")) {
+			ImGui::CloseCurrentPopup();
+			m_isShowPopUp = false;
+
+			if (true == m_isArmData && false == m_isCutSceneData)
+				Save_Data_CutScene();
+			else if (true == m_isCutSceneData && false == m_isArmData)
+				Save_Data_Arm();
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel")) {
+			ImGui::CloseCurrentPopup();
+			m_isShowPopUp = false;
+		}
+
+		ImGui::EndPopup();
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Load")) {
+		
+		if (true == m_isArmData && false == m_isCutSceneData)
+			Load_Data_CutScene();
+		else if (true == m_isCutSceneData && false == m_isArmData)
+			Load_Data_Arm();
+	}
+
+	ImGui::End();
+}
+
 
 void CLevel_Camera_Tool::Rotate_Arm()
 {
@@ -1127,9 +1274,13 @@ void CLevel_Camera_Tool::Edit_KeyFrame()
 		if (nullptr == m_pCurKeyFrame)
 			return;
 
+		if (true == m_isMaintainOriginPos)
+			return;
+
 		CController_Transform* pController = m_pCurKeyFrame->second->Get_ControllerTransform();
 
 		pController->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tKeyFrameInfo.vPosition), 1.f));
+		m_pCurKeyFrame->first.vPosition = m_tKeyFrameInfo.vPosition;
 	}
 
 	ImGui::SameLine();
@@ -1139,13 +1290,19 @@ void CLevel_Camera_Tool::Edit_KeyFrame()
 		if (nullptr == m_pCurKeyFrame)
 			return;
 
-		m_pCurKeyFrame->first.vPosition = m_tKeyFrameInfo.vPosition;
+		if (false == m_isMaintainOriginPos)
+			m_pCurKeyFrame->first.vPosition = m_tKeyFrameInfo.vPosition;
 		m_pCurKeyFrame->first.fTimeStamp = m_tKeyFrameInfo.fTimeStamp;
 		m_pCurKeyFrame->first.iZoomLevel = m_tKeyFrameInfo.iZoomLevel;
 		m_pCurKeyFrame->first.iZoomRatioType = m_tKeyFrameInfo.iZoomRatioType;
-		m_pCurKeyFrame->first.vAt = m_tKeyFrameInfo.vAt;
-		m_pCurKeyFrame->first.bLookAt = m_tKeyFrameInfo.bLookAt;
+		m_pCurKeyFrame->first.vAtOffset = m_tKeyFrameInfo.vAtOffset;
+		m_pCurKeyFrame->first.bLookTarget = m_tKeyFrameInfo.bLookTarget;
 		m_pCurKeyFrame->first.iAtRatioType = m_tKeyFrameInfo.iAtRatioType;
+
+		if (false == m_isMaintainOriginPos) {
+			CController_Transform* pController = m_pCurKeyFrame->second->Get_ControllerTransform();
+			pController->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tKeyFrameInfo.vPosition), 1.f));
+		}
 	}
 }
 
@@ -1374,8 +1531,12 @@ void CLevel_Camera_Tool::Edit_Sector()
 
 				// (CutScene.second)[m_iEditSectorNum] -> 수정하기로 한 Sector
 				vector<CUTSCENE_KEYFRAME>* pKeyFrames = (CutScene.second)[m_iEditSectorNum]->Get_KeyFrames();
+				_float3 vOriginPos = (*pKeyFrames)[m_iEditFrameNum].vPosition;
 
 				(*pKeyFrames)[m_iEditFrameNum] = m_tKeyFrameInfo;
+
+				if(true == m_isMaintainOriginPos)
+					(*pKeyFrames)[m_iEditFrameNum].vPosition = vOriginPos;
 			}
 		}
 	}	
@@ -1398,6 +1559,26 @@ void CLevel_Camera_Tool::Picking()
 		list<CGameObject*> Objects = pLayer->Get_GameObjects();
 
 		CGameObject* pGameObject = nullptr;
+
+		for (auto& GameObject : Objects) {
+			CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
+			_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fDist);
+
+			if (true == isPicked) {
+				_vector vClickedPos = vRayPos + (vRayDir * fDist);
+
+				XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
+			}
+		}
+
+		pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"));
+
+		if (nullptr == pLayer)
+			return;
+
+		Objects = pLayer->Get_GameObjects();
+
+		pGameObject = nullptr;
 
 		for (auto& GameObject : Objects) {
 			CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
@@ -1450,7 +1631,105 @@ void CLevel_Camera_Tool::Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir)
 	*_pRayDir = vRayDir;
 }
 
-void CLevel_Camera_Tool::Key_Input()
+void CLevel_Camera_Tool::Play_CutScene(_float fTimeDelta)
+{
+	if (m_CutScenes.size() <= 0)
+		return;
+
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.3f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("             Play CutScene");
+	ImGui::Separator();
+
+	if (ImGui::Button("Add CutScene Data To Camera")) {
+		for (auto& CutScene : m_CutScenes) {
+			CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
+		
+			if (nullptr == pCamera)
+				return;
+
+			dynamic_cast<CCamera_CutScene*>(pCamera)->Add_CutScene(CutScene.first, CutScene.second);
+		}
+	}
+
+	if (ImGui::Button("Simulation")) {
+		m_isSimulation = true;
+
+		CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
+
+		if (nullptr == pCamera)
+			return;
+
+		dynamic_cast<CCamera_CutScene*>(pCamera)->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum]);
+		m_pSimulationCube->Set_Active(true);
+	}
+
+	// 움직이기
+	if (true == m_isSimulation) {
+		CCamera_CutScene* pCamera = dynamic_cast<CCamera_CutScene*>(CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE));
+
+		if (nullptr == pCamera)
+			return;
+
+		pCamera->Update(fTimeDelta);
+		_float3 vSimulationPos = pCamera->Get_SimulationPos();
+
+		CController_Transform* pTransform = m_pSimulationCube->Get_ControllerTransform();
+		pTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&vSimulationPos), 1.f));
+	
+		if (true == pCamera->Get_IsFinish()) {
+			m_isSimulation = false;
+		}
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Play CutScene")) {
+		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::CUTSCENE);
+		//CCamera_Manager_Tool::GetInstance()->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum]);
+		CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
+
+		if (nullptr == pCamera)
+			return;
+
+		dynamic_cast<CCamera_CutScene*>(pCamera)->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum]);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Reset CutScene Camera, Simulation")) {
+		//CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
+
+		//if (nullptr == pCamera)
+		//	return;
+
+		m_pSimulationCube->Set_Active(false);
+	}
+}
+
+void CLevel_Camera_Tool::Save_Data_CutScene()
+{
+	if (true == m_isForClient) {
+
+	}
+	else {
+		
+	}
+}
+
+void CLevel_Camera_Tool::Save_Data_Arm()
+{
+}
+
+void CLevel_Camera_Tool::Load_Data_CutScene()
+{
+	if (true == m_isForClient) {
+
+	}
+	else {
+
+	}
+}
+
+void CLevel_Camera_Tool::Load_Data_Arm()
 {
 }
 
@@ -1482,6 +1761,8 @@ void CLevel_Camera_Tool::Free()
 	}
 
 	m_KeyFrames.clear();
+
+	Safe_Release(m_pSimulationCube);
 
 	__super::Free();
 }

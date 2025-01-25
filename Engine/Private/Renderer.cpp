@@ -22,7 +22,7 @@ HRESULT CRenderer::Initialize()
     m_iOriginViewportHeight = (_uint)ViewportDesc.Height;
 
     /* Target Book2D */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.0f, 0.0f, 1.0f, 1.f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
         return E_FAIL;
 
     /* Target Diffuse */
@@ -252,6 +252,10 @@ HRESULT CRenderer::Render_Book2D()
     m_RenderObjects[RG_BOOK_2D].clear();
 
     if (FAILED(m_pGameInstance->End_MRT()))
+        return E_FAIL;
+
+    /* Origin Viewport Setup */
+    if (FAILED(SetUp_Viewport(m_iOriginViewportWidth, m_iOriginViewportHeight)))
         return E_FAIL;
 
     return S_OK;
@@ -499,26 +503,26 @@ HRESULT CRenderer::Render_Debug()
 
     m_DebugComponents.clear();
 
-    if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-        return E_FAIL;
-    if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBuffer->Bind_BufferDesc()))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Book_2D"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Shadow"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Final"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Weighted_Blended"), m_pShader, m_pVIBuffer)))
-        return E_FAIL;
+    //if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+    //    return E_FAIL;
+    //if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+    //    return E_FAIL;
+    //
+    //if (FAILED(m_pVIBuffer->Bind_BufferDesc()))
+    //    return E_FAIL;
+    //
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Book_2D"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Shadow"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Final"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Weighted_Blended"), m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
     return S_OK;
 }
 

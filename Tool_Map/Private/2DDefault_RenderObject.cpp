@@ -29,10 +29,11 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 	if (pArg != nullptr)
 		pDesc = static_cast<DEFAULT_RENDER_OBJECT_DESC*>(pArg);
 	
+	_float fBookY = RTSIZE_BOOK2D_Y * ((_float)g_iWinSizeX / (_float)RTSIZE_BOOK2D_X);
 	pDesc->fX = g_iWinSizeX >> 1;
-	pDesc->fY = g_iWinSizeY >> 1;
+	pDesc->fY = fBookY * 0.5f;
 	pDesc->fSizeX = g_iWinSizeX;
-	pDesc->fSizeY = g_iWinSizeY;
+	pDesc->fSizeY = fBookY;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -40,14 +41,15 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
+	m_fTargetSize = { (_float)RTSIZE_BOOK2D_X ,(_float)RTSIZE_BOOK2D_Y };
 
 	return S_OK;
 }
 
 void C2DDefault_RenderObject::Priority_Update(_float fTimeDelta)
 {
-	int a = 10;
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	m_isBackColorRender = false;
 }
 
 void C2DDefault_RenderObject::Update(_float fTimeDelta)
@@ -62,10 +64,24 @@ void C2DDefault_RenderObject::Late_Update(_float fTimeDelta)
 
 HRESULT C2DDefault_RenderObject::Render()
 {
+
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShader->Begin(0);
+		//ColorAlpha 3
+		//Default 0
+	if (!m_isBackColorRender)
+	{
+		m_isBackColorRender = !m_isBackColorRender;
+		m_pShader->Begin(3);
+	}
+	else
+	{
+		if (!m_is2DMode)
+			return S_OK;
+		m_pShader->Begin(0);
+	}
+
 
 	m_pVIBufferCom->Bind_BufferDesc();
 
@@ -94,18 +110,58 @@ HRESULT C2DDefault_RenderObject::Ready_Components()
 
 HRESULT C2DDefault_RenderObject::Bind_ShaderResources()
 {
+
+	Update_RenderWorld();
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
 		return E_FAIL;
 
 	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 		return E_FAIL;
-	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
+
+	if (!m_isBackColorRender)
+	{ 
+		XMStoreFloat4x4(&m_TargetProjMatrix, XMMatrixOrthographicLH((_float)m_fTargetSize.x, (_float)m_fTargetSize.y, 0.0f, 1.0f));
+		if (FAILED(m_pShader->Bind_RawValue("g_fRed", &m_fBackColor.x, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShader->Bind_RawValue("g_fGreen", &m_fBackColor.y, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShader->Bind_RawValue("g_fBlue", &m_fBackColor.z, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShader->Bind_RawValue("g_fOpaque", &m_fBackColor.w, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_TargetProjMatrix)))
+			return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
+	}
+	
+
+
 	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_DiffuseTexture", TEXT("Target_Book_2D"))))
 		return E_FAIL;
 
 
 	return S_OK;
+}
+
+void C2DDefault_RenderObject::Update_RenderWorld()
+{
+	if (!m_isBackColorRender)
+	{
+		m_pControllerTransform->Set_Scale(m_fTargetSize.x, m_fTargetSize.y, 1.f);
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fTargetSize.x * 0.5f - m_fTargetSize.x * 0.5f, -(m_fTargetSize.y * 0.5f) + m_fTargetSize.y * 0.5f, 0.f, 1.f));
+	}
+	else 
+	{
+		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
+
+	}
+
+
 }
 
 C2DDefault_RenderObject* C2DDefault_RenderObject::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
