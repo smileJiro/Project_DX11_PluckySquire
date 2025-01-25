@@ -25,6 +25,7 @@ protected:
 
 public:
 	void Set_Owner(CMonster* _pOwner);
+	void Set_PatrolBound();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

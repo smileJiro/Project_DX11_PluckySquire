@@ -47,6 +47,7 @@ namespace Client
 	enum class MONSTER_STATE
 	{
 		IDLE,
+		PATROL,
 		ALERT,
 		CHASE,
 		ATTACK,

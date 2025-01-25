@@ -30,9 +30,9 @@ HRESULT CMapObject::Initialize(void* _pArg)
     m_matWorld = pDesc->matWorld;
 
     pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->iCurLevelID = LEVEL_TOOL_3D_MAP;
+    //pDesc->iCurLevelID = LEVEL_TOOL_3D_MAP;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
+    //pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     pDesc->strModelPrototypeTag_3D = m_strModelName;
 
@@ -152,9 +152,9 @@ HRESULT CMapObject::Get_Textures(vector<DIFFUSE_INFO>& _Diffuses, _uint _eTextur
     _uint iMaterialCnt = 0;
     if (pModel)
     {
-        auto test = static_cast<C3DModel*>(pModel)->Get_Bones();
+        auto Bones = static_cast<C3DModel*>(pModel)->Get_Bones();
 
-        _string strBoneName = test[0]->Get_Name();
+        _string strBoneName = Bones[0]->Get_Name();
         _uint iBoneNameSize = (_uint)strBoneName.size();
 
 

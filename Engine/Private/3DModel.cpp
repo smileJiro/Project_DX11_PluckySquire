@@ -22,6 +22,7 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_PreTransformMatrix{ _Prototype.m_PreTransformMatrix }
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
 {
+
 	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
 	{
 		for (_uint j= 0; j< AI_TEXTURE_TYPE_MAX; j++)
@@ -75,7 +76,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	if (FAILED(Ready_Animations(inFile)))
 		return E_FAIL;
 	inFile.close();
-	std::cout << pModelFilePath << endl;
+	//std::cout << pModelFilePath << endl;
 	return S_OK;
 }
 
@@ -258,7 +259,7 @@ CBone* C3DModel::Get_Bone(const _char* pBoneName) const
 
 void C3DModel::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
 {
-	_int iTemp = m_Animations.size() - 1;
+	_int iTemp = (_int)m_Animations.size() - 1;
 	if (iTemp < (_int)iIdx)
 	{
 		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
@@ -269,7 +270,7 @@ void C3DModel::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
 
 void C3DModel::Set_Animation(_uint iIdx)
 {
-	_int iTemp = m_Animations.size() - 1;
+	_int iTemp = (_int)m_Animations.size() - 1;
 	if (iTemp < (_int)iIdx)
 	{
 		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
@@ -284,7 +285,7 @@ void C3DModel::Set_Animation(_uint iIdx)
 
 void C3DModel::Switch_Animation(_uint iIdx)
 {
-	_int iTemp = m_Animations.size() - 1;
+	_int iTemp = (_int)m_Animations.size() - 1;
 	if(iTemp < (_int)iIdx)
 	{
 		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;

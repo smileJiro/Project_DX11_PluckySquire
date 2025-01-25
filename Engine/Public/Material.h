@@ -5,14 +5,14 @@
 /* 클라이언트에서 접근할 일이... */
 BEGIN(Engine)
 
-class CMaterial final : public CComponent
+class ENGINE_DLL CMaterial  : public CComponent
 {
 protected:
 	CMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CMaterial() = default;
 
 public:
-	HRESULT Initialize( const _char* szDirPath, ifstream& inFile);
+	virtual HRESULT Initialize( const _char* szDirPath, ifstream& inFile);
 
 public:
 	ID3D11ShaderResourceView* Find_Texture(aiTextureType _eTextureType, const _wstring _strTextureName, _uint* _pIndex = nullptr)
@@ -52,7 +52,7 @@ public:
 		return S_OK;
 	}
 
-private:
+protected :
 	// 텍스쳐를 담는 벡터를 보관하는 배열.
 	CTexture* m_MaterialTextures[AI_TEXTURE_TYPE_MAX];
 

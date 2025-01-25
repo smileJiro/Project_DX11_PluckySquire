@@ -21,6 +21,7 @@ namespace Map_Tool
 	std::string WstringToString(const std::wstring& _wstr); 
 
 	pair<_wstring, _wstring> Get_FileName_From_Path(const _wstring& filePath);
+	_wstring				 Get_Path_From_FullPath(const _wstring& filePath);
 
 	_bool Path_String_Validation_Check(const _string _strText);
 	_bool Path_String_Validation_Check(const _wstring _strText);
@@ -28,7 +29,13 @@ namespace Map_Tool
 
 
 	_bool ContainString(const _string _strSourceText, const _string _strDestText);
+	_bool ContainWstring(const _wstring _strSourceText, const _wstring _strDestText);
 	_bool EndString(const _string _strSourceText, const _string _strDestText);
+	
+	// Compnent'Name' -> Name
+	_string	OutName(const _string _strName);
+	_bool Open_Dialog(const _wstring _strDefaultDirectory, const _wstring _strFilter, wstring& _strReturnDirectory);
+
 
 
 }

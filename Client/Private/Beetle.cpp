@@ -43,6 +43,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
         return E_FAIL;
 
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+    //m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
@@ -97,6 +98,10 @@ void CBeetle::Change_Animation()
         {
         case MONSTER_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
+        case MONSTER_STATE::PATROL:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
             break;
 
         case MONSTER_STATE::ALERT:
