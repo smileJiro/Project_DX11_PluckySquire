@@ -71,6 +71,40 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 
 }
 
+HRESULT CActor_Dynamic::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+		return E_FAIL;
+
+	if (COORDINATE_2D == _eCoordinate)
+		return S_OK;
+
+	if (nullptr == _pNewPosition)
+		return S_OK;
+
+	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
+
+	_float3 vPos = {};
+	XMStoreFloat3(&vPos, m_pOwner->Get_Position());
+	static_cast<PxRigidDynamic*>(m_pActor)->setGlobalPose(PxTransform(_pNewPosition->x, _pNewPosition->y, _pNewPosition->z));
+
+	return S_OK;
+}
+
+void CActor_Dynamic::On_Kinematic()
+{
+	m_eActorType = ACTOR_TYPE::KINEMATIC;
+	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
+	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true); // Kinematic 
+}
+
+void CActor_Dynamic::On_Dynamic()
+{
+	m_eActorType = ACTOR_TYPE::DYNAMIC;
+	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
+	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false); // Kinematic 
+}
+
 void CActor_Dynamic::Set_LinearVelocity(_vector _vDirection, _float _fVelocity)
 {
 	// true : 객체가 물리공간상에서 수면상태인 경우 깨운다는 파라미터임 >>> false면 수면상태인 경우 깨우지 않음.

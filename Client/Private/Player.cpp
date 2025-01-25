@@ -262,21 +262,19 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
 }
 
-HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
+HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
-    /* 태웅 : 2D 전환 시 Actor 처리 필요함. */
-    if (FAILED(m_PartObjects[PART_BODY]->Change_Coordinate(_eCoordinate, _float3(0.0f, 0.0f, 0.0f))))
+    if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
-    return __super::Change_Coordinate(_eCoordinate, _vPosition);
-}
 
-void CPlayer::On_CoordinateChange()
-{
     if (COORDINATE_2D == Get_CurCoord())
-		Set_2DDirection(F_DIRECTION::DOWN);
+        Set_2DDirection(F_DIRECTION::DOWN);
 
-	Set_State(IDLE);
+    Set_State(IDLE);
+
+    return S_OK;
 }
+
 
 void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 {
@@ -470,7 +468,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
-        Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
+        _float3 vNewPos = _float3(0.0f, 6.0f, 0.0f);
+        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+        //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
     }
     if (KEY_DOWN(KEY::F2))
     {

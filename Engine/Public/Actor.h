@@ -58,6 +58,8 @@ public:/* Default PhysX */
 	virtual void				Add_Impulse(const _float3& _vForce) { return; }; // °­ÇÑ Èû
 	
 public:
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
+public:
 	virtual void				Turn_TargetDirection(_vector _vDirection) { return; }
 
 public: /* Event Filter */
