@@ -38,6 +38,7 @@ public:
 		return &m_SRVNames[_iSRVIndex];
 
 	}
+	const _float2 Get_Size(_uint _iSRVIndex = 0);
 
 	void	Add_Texture(ID3D11ShaderResourceView* _pSRV, const _wstring strSRVName)
 	{

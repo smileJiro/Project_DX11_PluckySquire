@@ -159,7 +159,7 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 			iCurrentFrame++;
 		}
 	}
-	if (iCurrentFrame > iFrameCount)
+	if (iCurrentFrame >= iFrameCount)
 		iCurrentFrame = iFrameCount -1;
 		
 	fCurrentFrameTime += _fTimeDelta;

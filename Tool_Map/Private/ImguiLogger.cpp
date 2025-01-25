@@ -5,7 +5,10 @@
 
 
 CImguiLogger::CImguiLogger()
+	: m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
+
 }
 
 void CImguiLogger::Add_Log(const string& _strLog, LOG_TYPE _eType)
@@ -37,6 +40,7 @@ HRESULT CImguiLogger::Draw_Log()
 
 void CImguiLogger::Free()
 {
+	Safe_Release(m_pGameInstance);
 	__super::Free();
 }
 

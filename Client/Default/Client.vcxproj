@@ -94,6 +94,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>;.\</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,6 +139,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>;.\</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -186,12 +188,18 @@
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
+    <ClInclude Include="..\Public\BirdMonster.h" />
     <ClInclude Include="..\Public\BossEnergyBallState.h" />
     <ClInclude Include="..\Public\BossHomingBallState.h" />
     <ClInclude Include="..\Public\BossIdleState.h" />
+    <ClInclude Include="..\Public\BossPurpleBallState.h" />
     <ClInclude Include="..\Public\BossSceneState.h" />
+    <ClInclude Include="..\Public\BossState.h" />
+    <ClInclude Include="..\Public\BossYellowBallState.h" />
     <ClInclude Include="..\Public\Boss_EnergyBall.h" />
     <ClInclude Include="..\Public\Boss_HomingBall.h" />
+    <ClInclude Include="..\Public\Boss_PurpleBall.h" />
+    <ClInclude Include="..\Public\Boss_YellowBall.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\DetectionField.h" />
@@ -211,14 +219,20 @@
     <ClInclude Include="..\Public\FSM_Boss.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\Goblin.h" />
     <ClInclude Include="..\public\IdleState.h" />
+    <ClInclude Include="..\Public\JumpBug.h" />
     <ClInclude Include="..\Public\Logo_BG.h" />
     <ClInclude Include="..\Public\MapObject.h" />
+    <ClInclude Include="..\Public\PatrolState.h" />
+    <ClInclude Include="..\Public\Popuff.h" />
+    <ClInclude Include="..\Public\Rat.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
     <ClInclude Include="..\Public\ShopItemBG.h" />
     <ClInclude Include="..\Public\ShopPanel.h" />
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
+    <ClInclude Include="..\Public\Soldier.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
     <ClInclude Include="..\public\Monster.h">
@@ -259,12 +273,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\Beetle.cpp" />
+    <ClCompile Include="..\Private\BirdMonster.cpp" />
     <ClCompile Include="..\Private\BossEnergyBallState.cpp" />
     <ClCompile Include="..\Private\BossHomingBallState.cpp" />
     <ClCompile Include="..\Private\BossIdleState.cpp" />
+    <ClCompile Include="..\Private\BossPurpleBallState.cpp" />
     <ClCompile Include="..\Private\BossSceneState.cpp" />
+    <ClCompile Include="..\Private\BossState.cpp" />
+    <ClCompile Include="..\Private\BossYellowBallState.cpp" />
     <ClCompile Include="..\Private\Boss_EnergyBall.cpp" />
     <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
+    <ClCompile Include="..\Private\Boss_PurpleBall.cpp" />
+    <ClCompile Include="..\Private\Boss_YellowBall.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
@@ -281,14 +301,20 @@
     <ClCompile Include="..\Private\FSM_Boss.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\Goblin.cpp" />
     <ClCompile Include="..\private\IdleState.cpp" />
+    <ClCompile Include="..\Private\JumpBug.cpp" />
     <ClCompile Include="..\Private\Logo_BG.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
+    <ClCompile Include="..\Private\PatrolState.cpp" />
+    <ClCompile Include="..\Private\Popuff.cpp" />
+    <ClCompile Include="..\Private\Rat.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\ShopItemBG.cpp" />
     <ClCompile Include="..\Private\ShopPanel.cpp" />
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_BG.cpp" />
+    <ClCompile Include="..\Private\Soldier.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />

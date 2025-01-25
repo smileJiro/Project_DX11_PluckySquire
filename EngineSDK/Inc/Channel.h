@@ -5,9 +5,9 @@
 
 BEGIN(Engine)
 
-class CChannel final : public CBase
+class ENGINE_DLL CChannel : public CBase
 {
-private:
+protected:
 	CChannel();
 	virtual ~CChannel() = default;
 
@@ -20,7 +20,7 @@ public:
 	_uint Get_KeyFrameIndex(_float fTrackPos, _uint iStartKeyFrameIdx = 0) const;
 	_uint Get_BoneIndex() const { return m_iBoneIndex; }
 	KEYFRAME Get_KeyFrame(_uint iKeyFrameIndex) { return m_KeyFrames[iKeyFrameIndex]; }
-private:
+protected:
 	_char						m_szName[MAX_PATH] = {};
 	_uint						m_iNumKeyFrames = {};
 	vector<KEYFRAME>			m_KeyFrames;

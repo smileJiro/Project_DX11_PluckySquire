@@ -175,6 +175,27 @@
     <Filter Include="02.GameObjects\UI\02. ShopPanel\01. ShopItem\ShopItem">
       <UniqueIdentifier>{f9cecc49-f4ff-40d8-9329-5ade28ab001d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Goblin">
+      <UniqueIdentifier>{7632e6b5-370f-4bc5-9f78-86e3d2eda239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\JumpBug">
+      <UniqueIdentifier>{9ac07b8c-eb66-43f8-bf80-ccf3d62aad4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Rat">
+      <UniqueIdentifier>{83c53ac5-4d09-49d8-abeb-645573ff6971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Popuff">
+      <UniqueIdentifier>{c7039c41-034e-49b1-a264-6ca8115dfdea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Soldier">
+      <UniqueIdentifier>{8dddf44b-0b69-49ca-9b12-e5bf74e48a25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\BirdMonster">
+      <UniqueIdentifier>{fffa564a-61a5-4377-897d-4e875ce10df5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Patrol">
+      <UniqueIdentifier>{659e0234-f497-4370-81c4-97cfc9fc6ba7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -273,9 +294,6 @@
     <ClInclude Include="..\Public\RangedAttackState.h">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\AlertState.h">
-      <Filter>03.Components\FSM\State\Chase</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Pooling_Manager.h">
       <Filter>95.Pooling</Filter>
     </ClInclude>
@@ -330,9 +348,6 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h" />
-    <ClInclude Include="..\Public\ButterGrump.h">
-      <Filter>02.GameObjects\Monster\Boss</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ShopPanel_BG.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>
     </ClInclude>
@@ -366,6 +381,48 @@
     </ClInclude>
     <ClInclude Include="..\Public\BossEnergyBallState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_YellowBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossYellowBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump.h">
+      <Filter>02.GameObjects\Monster\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_PurpleBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossPurpleBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Goblin.h">
+      <Filter>02.GameObjects\Monster\Goblin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Rat.h">
+      <Filter>02.GameObjects\Monster\Rat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JumpBug.h">
+      <Filter>02.GameObjects\Monster\JumpBug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BirdMonster.h">
+      <Filter>02.GameObjects\Monster\BirdMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Soldier.h">
+      <Filter>02.GameObjects\Monster\Soldier</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Popuff.h">
+      <Filter>02.GameObjects\Monster\Popuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AlertState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -443,9 +500,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\RangedAttackState.cpp">
       <Filter>03.Components\FSM\State\Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AlertState.cpp">
-      <Filter>03.Components\FSM\State\Chase</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Pooling_Manager.cpp">
       <Filter>95.Pooling</Filter>
@@ -549,6 +603,45 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossEnergyBallState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_YellowBall.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossYellowBallState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_PurpleBall.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossPurpleBallState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Goblin.cpp">
+      <Filter>02.GameObjects\Monster\Goblin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JumpBug.cpp">
+      <Filter>02.GameObjects\Monster\JumpBug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Rat.cpp">
+      <Filter>02.GameObjects\Monster\Rat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BirdMonster.cpp">
+      <Filter>02.GameObjects\Monster\BirdMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Soldier.cpp">
+      <Filter>02.GameObjects\Monster\Soldier</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Popuff.cpp">
+      <Filter>02.GameObjects\Monster\Popuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AlertState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PatrolState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

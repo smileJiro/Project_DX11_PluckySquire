@@ -40,8 +40,7 @@ public:
 public:
 	virtual void Change_Animation() override;
 	virtual void Attack(_float _fTimeDelta) override;
-	void Alert_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Attack_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
 	virtual HRESULT					Ready_Components();

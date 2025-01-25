@@ -105,8 +105,8 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 HRESULT CLevel_GamePlay::Render()
 {
 #ifdef _DEBUG
-	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
 	return S_OK;
@@ -167,7 +167,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
-
+	TargetDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
@@ -845,17 +845,29 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
-		return E_FAIL;*/
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	//	return E_FAIL;
 
-	CButterGrump::MONSTER_DESC Boss_Desc;
-	Boss_Desc.iCurLevelID = LEVEL_GAMEPLAY;
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 20.35f, 90.0f);
-	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	//	return E_FAIL;
 
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
-		return E_FAIL;*/
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	//	return E_FAIL;
+
+	//CButterGrump::MONSTER_DESC Boss_Desc;
+	//Boss_Desc.iCurLevelID = LEVEL_GAMEPLAY;
+
+	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 20.35f, 40.0f);
+	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -876,7 +888,7 @@ void CLevel_GamePlay::Create_Arm()
 	Desc.fLength = 7.f;
 	Desc.wszArmTag = TEXT("Player_Arm");
 	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-
+	
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
 

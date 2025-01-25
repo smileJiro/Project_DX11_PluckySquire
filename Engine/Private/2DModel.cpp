@@ -60,7 +60,12 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		path += ".png";
 		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str());
 		if (nullptr == pTexture)
-			return E_FAIL;
+		{
+			path.replace_extension(".dds");
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str());
+			if (nullptr == pTexture)
+				return E_FAIL;
+		}
 		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
 		m_Textures.insert({ szTextureName,pTexture });
 	}
@@ -114,16 +119,34 @@ HRESULT C2DModel::Initialize(void* _pDesc)
 
 void C2DModel::Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)
 {
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
+	if (iTemp < (_int)_iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_Animation2Ds[_iIdx]->Set_Loop(_bIsLoop);
 }
 
 void C2DModel::Set_Animation(_uint _iIdx)
 {
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
+	if (iTemp < (_int)_iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_iCurAnimIdx = _iIdx;
 }
 
 void C2DModel::Switch_Animation(_uint _iIdx)
 {
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
+	if (iTemp < (_int)_iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_iCurAnimIdx = _iIdx;
 	m_Animation2Ds[m_iCurAnimIdx]->Reset_CurrentTrackPosition();
 }

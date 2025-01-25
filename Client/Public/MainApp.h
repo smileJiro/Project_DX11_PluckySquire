@@ -20,12 +20,19 @@ public:
 	void	Progress(_float _fTimeDelta);
 	HRESULT Render();
 
+public:
+	void Set_OneFrameDeltaTime(_float _iDeltaTime) { m_iOneFrameDeltaTime = _iDeltaTime; }
 private:
 	CGameInstance* m_pGameInstance = nullptr;
 
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
 
+private:
+	void Imgui_FPS(_float _fTimeDelta);
+private:
+	_float2 m_vFPSRenderTime = { 1.0f, 0.0f };
+	_float m_iOneFrameDeltaTime = 0.0f;
 private:
 	//HRESULT Loading_ShaderMaterials_PathFind(const _wstring& strDirectoryPath);
 	//HRESULT Loading_BGM_PathFind(const _wstring& strDirectoryPath);

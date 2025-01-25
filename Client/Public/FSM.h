@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "Client_Defines.h"
 
 BEGIN(Client)
 
@@ -25,6 +24,7 @@ protected:
 
 public:
 	void Set_Owner(CMonster* _pOwner);
+	void Set_PatrolBound();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

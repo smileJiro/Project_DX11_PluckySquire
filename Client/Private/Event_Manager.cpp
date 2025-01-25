@@ -12,6 +12,7 @@
 
 #include "FSM.h"
 #include "FSM_Boss.h"
+#include "ActorObject.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -93,10 +94,15 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 		Excute_Setup_SimulationFilter(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::CHANGE_COORDINATE:
+	{
+		Excute_Change_Coordinate(_tEvent);
+	}
+	break;
 	default:
 		break;
 	}
-
+	
 	
 	return S_OK;
 }
@@ -236,6 +242,30 @@ HRESULT CEvent_Manager::Excute_Setup_SimulationFilter(const EVENT& _tEvent)
 	_uint iMyGroup = (_uint)_tEvent.Parameters[1];
 	_uint iOtherGroupMask = (_uint)_tEvent.Parameters[2];
 	pActor->Setup_SimulationFiltering(iMyGroup, iOtherGroupMask, true);
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Excute_Change_Coordinate(const EVENT& _tEvent)
+{
+	CActorObject* pActorObject = reinterpret_cast<CActorObject*>(_tEvent.Parameters[0]);
+	COORDINATE eChangeCoord = (COORDINATE)(_tEvent.Parameters[1]);
+	_float3* pPosition = (_float3*)(_tEvent.Parameters[2]);
+
+	if (nullptr == pActorObject)
+	{
+		if (nullptr != pPosition)
+		{
+			delete pPosition;
+			pPosition = nullptr;
+		}
+		return E_FAIL;
+	}
+
+	pActorObject->Change_Coordinate(eChangeCoord, pPosition);
+
+	delete pPosition;
+	pPosition = nullptr;
 
 	return S_OK;
 }

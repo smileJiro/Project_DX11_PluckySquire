@@ -3,7 +3,6 @@
 
 BEGIN(Engine)
 class CGameInstance;
-class CController_Transform;
 class CRay;
 class ENGINE_DLL CGameObject abstract : public CBase
 {
@@ -36,8 +35,10 @@ public:
 	CComponent*					Find_Component(const _wstring& _strComponentTag);
 	
 public: /* 모드 전환 */
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition);
-	virtual void                On_CoordinateChange() {}
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
+
+private:
+	virtual void                On_CoordinateChange(COORDINATE _eCoordinate, const _float3& _vPosition) {}
 
 public:
 	// Get
@@ -45,8 +46,8 @@ public:
 	COORDINATE					Get_CurCoord() const							{ return m_pControllerTransform->Get_CurCoord(); }
 	CController_Transform*		Get_ControllerTransform() const					{ return m_pControllerTransform; }
 	_matrix						Get_WorldMatrix()								{ return m_pControllerTransform->Get_WorldMatrix(); }
- 	_vector						Get_Position() const							{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
-	_float3						Get_Scale() const								{ return m_pControllerTransform->Get_Scale(); }
+ 	virtual _vector				Get_Position() const							{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
+	virtual const _float3&		Get_Scale() const								{ return m_pControllerTransform->Get_Scale(); }
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_bool						Is_Pooling() const								{ return m_isPooling; }

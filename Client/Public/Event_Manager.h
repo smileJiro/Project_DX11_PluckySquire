@@ -35,10 +35,10 @@ private:
 	HRESULT Excute_LevelChange(const EVENT& _tEvent);
 	HRESULT Excute_SetActive(const EVENT& _tEvent);
 	HRESULT Excute_Setup_SimulationFilter(const EVENT& _tEvent);
+	HRESULT Excute_Change_Coordinate(const EVENT& _tEvent);
 
 	HRESULT Excute_ChangeMonsterState(const EVENT& _tEvent);
 	HRESULT Excute_ChangeBossState(const EVENT& _tEvent);
-
 
 private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);

@@ -16,7 +16,8 @@ HRESULT CBossEnergyBallState::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_fDelayTime = 0.5f;
+	m_fDelayTime = 0.3f;
+	m_iNumAttack = 10;
 		
 	return S_OK;
 }
@@ -24,6 +25,7 @@ HRESULT CBossEnergyBallState::Initialize(void* _pArg)
 
 void CBossEnergyBallState::State_Enter()
 {
+	m_pOwner->Set_AnimChangeable(false);
 	Delay_Off();
 	m_iAttackCount = 0;
 }
@@ -49,8 +51,8 @@ void CBossEnergyBallState::State_Update(_float _fTimeDelta)
 	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
 	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
-	//5개 뿜고 공격 종료
-	if (5 <= m_iAttackCount)
+	//10개 뿜고 공격 종료
+	if (m_iNumAttack <= m_iAttackCount)
 	{
 		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
 	}

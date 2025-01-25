@@ -72,6 +72,7 @@ HRESULT CRenderTarget::Ready_Debug(_float _fX, _float _fY, _float _fSizeX, _floa
 
 HRESULT CRenderTarget::Render_Debug(CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect)
 {
+	
 	if (FAILED(_pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
 		return E_FAIL;
 

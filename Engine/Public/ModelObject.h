@@ -21,6 +21,7 @@ public:
 		_uint iShaderPass_2D = {};
 		// 3D ShaderPass
 		_uint iShaderPass_3D = {};
+		_float fFrustumCullingRange = 2.0f;
 	}MODELOBJECT_DESC;
 
 protected:
@@ -36,7 +37,7 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render_Shadow() { return S_OK; }
 	virtual HRESULT			Render() override;
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
 public:
 	_bool Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst);
@@ -68,6 +69,7 @@ protected:
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};
 	_wstring				m_strModelPrototypeTag[COORDINATE_LAST];
 
+	_float					m_fFrustumCullingRange = 0.0f;
 
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();

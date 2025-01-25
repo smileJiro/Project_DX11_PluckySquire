@@ -39,6 +39,9 @@ HRESULT C3DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	ZeroMemory(m_szSaveFileName,sizeof(m_szSaveFileName));
 	ZeroMemory(m_szImportLayerTag,sizeof(m_szSaveFileName));
 
+
+	m_pGameInstance->Set_DebugRender(true);
+
 	// 임구이 크기 설정
 	ImGui::SetNextWindowSizeConstraints(ImVec2(600, 1200), ImVec2(FLT_MAX, FLT_MAX));
 
@@ -1264,6 +1267,8 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 			lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(szSaveMeshName).c_str());
 			NormalDesc.eCreateType = CMapObject::OBJ_LOAD;
 			NormalDesc.matWorld = vWorld;
+			NormalDesc.iCurLevelID = LEVEL_TOOL_3D_MAP;
+			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
 
 
 
@@ -1664,6 +1669,8 @@ void C3DMap_Tool_Manager::Object_Open_PreviewMode()
 	{
 		CMapObject::MAPOBJ_DESC NormalDesc = {};
 		NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
+		NormalDesc.iCurLevelID = LEVEL_TOOL_3D_MAP;
+		NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
 
 		lstrcpy(NormalDesc.szModelName, m_arrSelectName[CREATE_OBJECT].c_str());
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "State.h"
+#include "BossState.h"
 
 BEGIN(Client)
 
 //공격 없이 애니메이션만 재생되는 상태
-class CBossSceneState final : public CState
+class CBossSceneState final : public CBossState
 {
 public:
 	enum SCENE { FIRST, LAST };

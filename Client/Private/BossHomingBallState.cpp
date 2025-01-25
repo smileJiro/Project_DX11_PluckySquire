@@ -17,6 +17,7 @@ HRESULT CBossHomingBallState::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_fDelayTime = 0.5f;
+	m_iNumAttack = 1;
 		
 	return S_OK;
 }
@@ -24,7 +25,9 @@ HRESULT CBossHomingBallState::Initialize(void* _pArg)
 
 void CBossHomingBallState::State_Enter()
 {
+	m_pOwner->Set_AnimChangeable(false);
 	m_fAccTime = 0.f;
+	m_iAttackCount = 0;
 }
 
 void CBossHomingBallState::State_Update(_float _fTimeDelta)
@@ -39,14 +42,22 @@ void CBossHomingBallState::State_Update(_float _fTimeDelta)
 	//АјАн
 	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
 	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
-	m_pOwner->Attack(_fTimeDelta);
-	Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
+	if (m_iNumAttack > m_iAttackCount)
+	{
+		m_pOwner->Attack(_fTimeDelta);
+		++m_iAttackCount;
+	}
+	else
+	{
+		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
+	}
 	
 }
 
 void CBossHomingBallState::State_Exit()
 {
 	m_fAccTime = 0.f;
+	m_iAttackCount = 0;
 }
 
 CBossHomingBallState* CBossHomingBallState::Create(void* _pArg)

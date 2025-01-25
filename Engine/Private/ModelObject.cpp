@@ -30,6 +30,7 @@ HRESULT CModelObject::Initialize(void* _pArg)
     m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
     m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
     m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
+    m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
     // Add
 
 
@@ -62,7 +63,12 @@ void CModelObject::Priority_Update(_float _fTimeDelta)
 void CModelObject::Late_Update(_float _fTimeDelta)
 {    /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+    {
+        if(m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
         m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+        
+    }
+        
     else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
         m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 
@@ -203,9 +209,9 @@ void CModelObject::Update(_float _fTimeDelta)
 	__super::Update(_fTimeDelta);
 }
 
-HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
+HRESULT CModelObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
-	if (FAILED(__super::Change_Coordinate(_eCoordinate, _vPosition)))
+	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
 
     return	m_pControllerModel->Change_Coordinate(_eCoordinate);
@@ -309,10 +315,10 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
             return E_FAIL;
 
         /* 추후 우리 그리고자하는 렌더 타겟 사이즈로 projectionMatrix 를 변경해줘야함. */
-        // m_pGameInstance->Get_RT_Size(TEXT("")); // 렌더타겟 사이즈 받아오는 함수는 만들어뒀음. 2D 3D 공간
+        _float2 vSize = m_pGameInstance->Get_RT_Size(TEXT("Target_Book_2D")); // 렌더타겟 사이즈 받아오는 함수는 만들어뒀음. 2D 3D 공간
+        XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)vSize.x, (_float)vSize.y, 0.0f, 1.0f));
         if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
             return E_FAIL;
-
         break;
     case Engine::COORDINATE_3D:
         if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))

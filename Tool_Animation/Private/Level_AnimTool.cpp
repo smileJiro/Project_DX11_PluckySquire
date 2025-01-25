@@ -28,6 +28,43 @@ HRESULT CLevel_AnimTool::Initialize()
 void CLevel_AnimTool::Update(_float _fTimeDelta)
 {
 	ImGui::Begin("Animation Tool");
+	Update_ImportImgui();
+	Update_ExportImgui();
+	Update_AnimationEditImgui();
+	ImGui::End();
+
+	//CONTROLL
+	if (m_pTestModelObj)
+	{
+		_float fMove = (_float)MOUSE_MOVE(MOUSE_AXIS::Z) / 100.f;
+		if (COORDINATE_3D == m_pTestModelObj->Get_CurCoord())
+		{
+			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
+			m_fZoomMultiplier = min(m_fZoomMultiplier, 3.f);
+			m_pTargetCam->Set_Fovy(m_fZoomMultiplier * m_fDefault3DCamFovY);
+		}
+		else
+		{
+			m_fZoomMultiplier += fMove * m_f2DZoomSpeed * _fTimeDelta;
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
+			m_pTestModelObj->Set_2DProjMatrix(XMMatrixOrthographicLH((_float)m_fDefault2DCamSize.x * m_fZoomMultiplier, (_float)m_fDefault2DCamSize.y * m_fZoomMultiplier, 0.0f, 1.0f));
+		}
+	}
+}
+
+HRESULT CLevel_AnimTool::Render()
+{
+#ifdef _DEBUG
+	if (m_pTestModelObj)
+		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
+#endif
+
+	return S_OK;
+}
+
+void CLevel_AnimTool::Update_ImportImgui()
+{
 	LOADMODEL_TYPE	eLoadModelTYpe = LOADMODEL_TYPE::LOAD_LAST;
 	std::wstring wstrSelectedPath = TEXT("");
 
@@ -60,14 +97,19 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 		{
 			m_szLoadedPath = wstrSelectedPath;
 			Create_Camera(TEXT("Camera"), m_pTestModelObj);
-			Set_Animation(0);
+			m_iCurrentAnimIndex = 0;
+			m_bLoop = true;
+			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
 		}
 	}
+}
 
+void CLevel_AnimTool::Update_ExportImgui()
+{
 	//EXPORT
 	if (nullptr != m_pTestModelObj)
 	{
-		wstrSelectedPath = TEXT("");
+		wstring wstrSelectedPath = TEXT("");
 		if (ImGui::Button("Export")) {
 			wstring wstrFilter = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? TEXT("Model2D Files\0 * .model2d") : TEXT("Model3D Files\0 * .model");
 			wstrSelectedPath = SaveFileDialog(wstrFilter.c_str()); // 파일 다이얼로그 호출
@@ -78,54 +120,48 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 		if (false == wstrSelectedPath.empty())
 		{
 			Export_Model(wstrSelectedPath);
-			if(m_bExportTextures)
+			if (m_bExportTextures)
 			{
 				std::filesystem::path pathDstPath = wstrSelectedPath;
 				Copy_Textures(m_pTestModelObj, m_szLoadedPath.remove_filename(), pathDstPath.remove_filename());
 			}
 		}
 	}
+}
 
-	ImGui::End();
-
-	//CONTROLL
-	if (m_pTestModelObj)
+void CLevel_AnimTool::Update_AnimationEditImgui()
+{
+	if (nullptr != m_pTestModelObj)
 	{
-		_float fMove = (_float)MOUSE_MOVE(MOUSE_AXIS::Z) / 100.f;
-		if (COORDINATE_3D == m_pTestModelObj->Get_CurCoord())
+		COORDINATE eCoord = m_pTestModelObj->Get_CurCoord();
+		CModel* pModel = m_pTestModelObj->Get_Model(eCoord);
+		if(false == pModel->Is_AnimModel())
+			return;
+
+		if (ImGui::Checkbox("Loop", &m_bLoop))
 		{
-			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
-			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
-			m_pTargetCam->Set_Fovy(m_fDefault3DCamFovY * m_fZoomMultiplier);
+			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
 		}
+		if (ImGui::InputInt("Current Animation", &m_iCurrentAnimIndex))
+		{
+			m_iCurrentAnimIndex = max(0, m_iCurrentAnimIndex);
+			m_iCurrentAnimIndex = min(m_iCurrentAnimIndex, (_int)m_pTestModelObj->Get_AnimationCount()-1);
+			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
+		}
+		if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
+			m_pTestModelObj->Set_Progerss(m_fCurrentProgerss);
 		else
-		{
-			m_fZoomMultiplier += fMove * m_f2DZoomSpeed * _fTimeDelta;
-			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
-			m_pTestModelObj->Set_2DProjMatrix(XMMatrixOrthographicLH((_float)m_fDefault2DCamSize.x * m_fZoomMultiplier, (_float)m_fDefault2DCamSize.y * m_fZoomMultiplier, 0.0f, 1.0f));
-		}
+			m_fCurrentProgerss = m_pTestModelObj->Get_Progress();
 	}
-}
-
-HRESULT CLevel_AnimTool::Render()
-{
-#ifdef _DEBUG
-	if (m_pTestModelObj)
-		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
-#endif
-
-	return S_OK;
-}
-
-void CLevel_AnimTool::Update_Imgui()
-{
 }
 
 void CLevel_AnimTool::Set_Animation(_uint _iAnimIdx, _bool _bLoop)
 {
+	assert(m_pTestModelObj);
 	m_pTestModelObj->Switch_Animation(_iAnimIdx);
 	m_pTestModelObj->Set_AnimationLoop(m_pTestModelObj->Get_CurCoord(), _iAnimIdx, _bLoop);
 }
+
 
 HRESULT CLevel_AnimTool::Ready_Lights()
 {
@@ -202,7 +238,7 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 	XMStoreFloat3(&Desc.vArm, vTargetLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.vRotation = { XMConvertToRadians(30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 10.f;
+	Desc.fLength = 30.f;
 	Desc.wszArmTag = TEXT("Cam_Arm");
 	Desc.pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
@@ -218,33 +254,6 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 	assert(!_wstrPath.empty());
 
 	SetWindowText(g_hWnd, TEXT("모델(을)를 로딩중입니다."));
-
-	CTestModelObject::TESTMODELOBJ_DESC tModelObjDesc{};
-	tModelObjDesc.isCoordChangeEnable = false;
-	tModelObjDesc.iCurLevelID = LEVEL_ANIMTOOL;
-	switch (_eType)
-	{
-	case AnimTool::CLevel_AnimTool::LOAD_3D:
-		tModelObjDesc.tTransform3DDesc.vInitialPosition = _float3(0, 0, 0);
-		tModelObjDesc.tTransform3DDesc.vInitialScaling = _float3(1, 1, 1);
-		tModelObjDesc.eStartCoord = COORDINATE_3D;
-		tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-		tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-		break;
-	case AnimTool::CLevel_AnimTool::LOAD_2D:
-	case AnimTool::CLevel_AnimTool::LOAD_RAW2D:
-		tModelObjDesc.tTransform2DDesc.vInitialPosition = _float3(0, 0, 0);
-		tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-		tModelObjDesc.eStartCoord = COORDINATE_2D;
-		tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
-		break;
-	case AnimTool::CLevel_AnimTool::LOAD_LAST:
-		break;
-	default:
-		break;
-	}
-
 
 	CModel* pTmpModel = nullptr;
 	switch (_eType)
@@ -270,6 +279,43 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 	default:
 		break;
 	}
+
+	CTestModelObject::TESTMODELOBJ_DESC tModelObjDesc{};
+	tModelObjDesc.isCoordChangeEnable = false;
+	tModelObjDesc.iCurLevelID = LEVEL_ANIMTOOL;
+	switch (_eType)
+	{
+	case AnimTool::CLevel_AnimTool::LOAD_3D:
+		if(pTmpModel->Is_AnimModel())
+		{
+			tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+			tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
+		}
+		else
+		{
+			tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+			tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+		}
+		tModelObjDesc.tTransform3DDesc.vInitialPosition = _float3(0, 0, 0);
+		tModelObjDesc.tTransform3DDesc.vInitialScaling = _float3(1, 1, 1);
+		tModelObjDesc.eStartCoord = COORDINATE_3D;
+		break;
+	case AnimTool::CLevel_AnimTool::LOAD_2D:
+	case AnimTool::CLevel_AnimTool::LOAD_RAW2D:
+		tModelObjDesc.tTransform2DDesc.vInitialPosition = _float3(0, 0, 0);
+		tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+		tModelObjDesc.eStartCoord = COORDINATE_2D;
+		tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+		break;
+	case AnimTool::CLevel_AnimTool::LOAD_LAST:
+		break;
+	default:
+		break;
+	}
+
+
+	
 	if (pTmpModel)
 	{
 		if(FAILED(pTmpModel->Initialize(nullptr)))
