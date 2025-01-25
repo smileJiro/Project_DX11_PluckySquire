@@ -60,6 +60,15 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBirdMonster::Animation_End, this, placeholders::_1, placeholders::_2));
 
+    /* Actor Desc 채울 때 쓴 데이터 할당해제 */
+
+    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+    {
+        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
+    }
+
+    Safe_Delete(pDesc->pActorDesc);
+
     return S_OK;
 }
 
