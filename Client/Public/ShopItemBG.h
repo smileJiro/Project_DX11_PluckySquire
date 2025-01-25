@@ -38,8 +38,8 @@ protected:
 	virtual HRESULT			Ready_Components() override;
 
 public:
-	static CShopItemBG* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CGameObject* Clone(void* _pArg);
+	static CShopItemBG*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
 

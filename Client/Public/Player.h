@@ -379,6 +379,10 @@ public:
 	void Attack(_uint _iCombo);
 	//Get
 	F_DIRECTION Get_2DDirection() { return m_e2DDirection; }
+	CController_Transform* Get_Transform() {return m_pControllerTransform;}
+
+
+
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);

@@ -43,9 +43,6 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
 		return E_FAIL;
 
-
-
-
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font18"), TEXT("../Bin/Resources/Fonts/YangRound18.spritefont"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font20"), TEXT("../Bin/Resources/Fonts/YangRound20.spritefont"))))
@@ -64,9 +61,6 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font54"), TEXT("../Bin/Resources/Fonts/YangRound54.spritefont"))))
 		return E_FAIL;
-
-
-
 
 	return S_OK;
 }

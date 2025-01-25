@@ -19,6 +19,8 @@ public:
 	enum SKILLSHOPBGS {SHOPBG_BG, SHOPBG_BADGE, SHOPBG_BULB, SHOPBG_END};
 
 	enum SETTINGPANEL {
+		SETTING_ESCGOBLIN,
+		SETTING_BOOKMARK,
 		SETTING_BG,
 		SETTING_HEART,
 		SETTING_BULB,
@@ -68,6 +70,7 @@ public:
 		_uint			iSkillLevel = 0; // 스킬의 레벨
 		_uint			iShopItemCount = 0; // 
 		SKILLSHOP		eShopSkillKind = SKILLSHOP_END; // 어떤 스킬이니?
+		_bool			isChooseItem = false;			// 너가 선택되어있니?
 
 	}UIOBJDESC;
 
@@ -88,9 +91,16 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT);
+	CController_Transform* Get_Transform() { return m_pControllerTransform; }
+
+
+
 
 public:
-
+	_float	Get_FY() { return m_fY; }
+	_float	Get_FX() { return m_fX; }
+	void	Set_FX(_float _fX) { m_fY = _fX; }
+	void	Set_FY(_float _fY) { m_fY = _fY; }
 
 
 protected:

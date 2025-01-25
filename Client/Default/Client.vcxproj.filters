@@ -175,6 +175,15 @@
     <Filter Include="02.GameObjects\UI\02. ShopPanel\01. ShopItem\ShopItem">
       <UniqueIdentifier>{f9cecc49-f4ff-40d8-9329-5ade28ab001d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart">
+      <UniqueIdentifier>{6b2e382d-47c5-4fe2-ba7b-e2b4963457dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose">
+      <UniqueIdentifier>{0daba0c3-1d8f-48c6-ae86-64d1dcba25ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\01. SettingGoblin">
+      <UniqueIdentifier>{8c4f6d92-3748-4d76-a576-30412a603c30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -354,6 +363,15 @@
     <ClInclude Include="..\Public\ShopItemBG.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Heart.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo_Choose.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Goblin.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -523,6 +541,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\ShopItemBG.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Heart.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Logo_Choose.cpp">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Goblin.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

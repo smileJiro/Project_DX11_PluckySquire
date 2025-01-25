@@ -410,6 +410,8 @@ void CPlayer::Set_2DDirection(F_DIRECTION _eFDir)
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
     }
+
+    
 }
 
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)

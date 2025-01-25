@@ -56,7 +56,16 @@ void CSettingPanelBG::Child_LateUpdate(_float _fTimeDelta)
 HRESULT CSettingPanelBG::Render()
 {
 	if (true == m_isRender)
-		__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
+	{
+		if (SETTING_BOOKMARK == m_eSettingPanel ||  SETTING_BG == m_eSettingPanel )
+		{
+			__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		}
+		else
+			__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
+	}
+
+		
 
 	return S_OK;
 }
@@ -86,7 +95,7 @@ HRESULT CSettingPanelBG::Ready_Components()
 
 	switch ((CUI::SETTINGPANEL)m_iTextureCount)
 	{
-	case SETTING_BG :
+	case SETTING_BG:
 	{
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
@@ -135,11 +144,18 @@ HRESULT CSettingPanelBG::Ready_Components()
 			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 			return E_FAIL;
 	}
-	
+	break;
+	case SETTING_BOOKMARK:
+	{
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBookMark"),
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+
 	break;
 	}
 
-
+	
 	return S_OK;
 }
 

@@ -33,8 +33,11 @@ private:
 	//_uint					m_iPanelUI[SETTINGPANEL::SETTING_END];
 
 private:
-	void					isRender();
-	void					isFontPrint();
+	void					isRender() { false == m_isRender ? m_isRender = true : m_isRender = false; };
+	void					isFontPrint() { false == m_isOpenPanel ? m_isOpenPanel = true : m_isOpenPanel = false; };
+	_bool					isInPanel(_float2 _vMousePos);
+	_int					isInPanelItem(_float2 _vMousePos);
+	void					Update_KeyInput(_float _fTimeDelta);
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -42,11 +45,17 @@ protected:
 protected:
 	CUI::SHOPPANEL			Get_ShopPanel() { return m_eShopPanel; }
 
+
 public:
-	static CShopPanel* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CGameObject* Clone(void* _pArg);
+	static CShopPanel*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() { return S_OK; };
+
+public:
+
+	_bool					Get_isChooseItem() { return m_isChooseItem; }
+	void					Set_isChooseItem(_bool _Choose) { m_isChooseItem = _Choose; }
 
 
 
@@ -54,9 +63,14 @@ public:
 protected:
 	CUI::SHOPPANEL		m_eShopPanel = CUI::SHOPPANEL::SHOP_DEFAULT;
 	SKILLSHOP			m_eSkillShopIcon = SKILLSHOP_END;
+	_bool				m_isChooseItem = { false };
+
 
 private:
 	_bool				m_isOpenPanel = { false };
+	_int				m_iPreindex = { 0 };
+	_bool				m_isConfirmItem = { false };
+	_uint				m_iConfirmItemIndex = { 0 };
 
 
 };
