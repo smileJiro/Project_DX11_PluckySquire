@@ -205,6 +205,12 @@
     <Filter Include="03.Components\FSM\State\Patrol">
       <UniqueIdentifier>{659e0234-f497-4370-81c4-97cfc9fc6ba7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC">
+      <UniqueIdentifier>{687f816c-88de-4eec-b927-25724250bbef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\04. Dialogue">
+      <UniqueIdentifier>{d24fd4ac-720e-4a88-bcbd-a0b023d0a146}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -442,6 +448,9 @@
     <ClInclude Include="..\Public\PatrolState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Dialogue.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -669,6 +678,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PatrolState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dialogue.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -210,6 +210,7 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CriticalSectionGuard.h" />
+    <ClInclude Include="..\Public\Dialogue.h" />
     <ClInclude Include="..\Public\ESC_Goblin.h" />
     <ClInclude Include="..\Public\ESC_HeartPoint.h" />
     <ClInclude Include="..\public\FSM.h">
@@ -295,6 +296,7 @@
     <ClCompile Include="..\Private\Client_Function.cpp" />
     <ClCompile Include="..\Private\Condition.cpp" />
     <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
+    <ClCompile Include="..\Private\Dialogue.cpp" />
     <ClCompile Include="..\Private\ESC_Goblin.cpp" />
     <ClCompile Include="..\Private\ESC_HeartPoint.cpp" />
     <ClCompile Include="..\private\FSM.cpp">
