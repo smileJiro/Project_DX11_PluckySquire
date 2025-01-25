@@ -56,9 +56,12 @@ public:/* Default PhysX */
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity) { return; }
 	virtual void				Add_Force(const _float3& _vForce) { return; };// 일반적인 힘
 	virtual void				Add_Impulse(const _float3& _vForce) { return; }; // 강한 힘
-
+	
 public:
 	virtual void				Turn_TargetDirection(_vector _vDirection) { return; }
+
+public: /* Event Filter */
+	void						Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime = false);
 
 public:
 	// Get
@@ -75,9 +78,10 @@ protected: /* Actor Default Data */
 protected:
 	ACTOR_USERDATA				m_UserData;
 
-public: /* Event Filter */
-	void						Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime = false);
-
+private:
+	/* Active 변경시 호출되는 함수 추가. */
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 #ifdef _DEBUG
 protected:

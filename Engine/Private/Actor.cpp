@@ -225,6 +225,16 @@ void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, 
         pScene->resetFiltering(*m_pActor);
 }
 
+void CActor::Active_OnEnable()
+{
+    m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
+}
+
+void CActor::Active_OnDisable()
+{
+    m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
+}
+
 HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs)
 {
     PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
