@@ -133,6 +133,9 @@ void CLoader::Show_Debug()
 HRESULT CLoader::Loading_Level_Static()
 {
 
+    lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+
+
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
@@ -250,7 +253,6 @@ HRESULT CLoader::Loading_Level_Static()
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-
     /* Monster */
 
      /* For. Prototype_GameObject_Beetle */
@@ -338,6 +340,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM_Boss"),
         CFSM_Boss::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
+        return E_FAIL;
+
 
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));

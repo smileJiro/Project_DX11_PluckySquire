@@ -5,7 +5,7 @@ BEGIN(Engine)
 class CMesh;
 class CMaterial;
 class CBone;
-class CAnimation;
+class CAnimation3D;
 class ENGINE_DLL C3DModel : public CModel
 {
 public:
@@ -53,6 +53,7 @@ public:
 	//Get
 	virtual _uint			Get_AnimCount() override;
 	virtual _uint			Get_CurrentAnimIndex() override { return m_iCurrentAnimIndex; }
+	virtual _float		Get_CurrentAnimProgeress() override;
 	// Set
 	virtual void			Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
 	virtual void			Set_Animation(_uint iIdx)override;
@@ -65,6 +66,7 @@ public:
 	//vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
 	vector<CMaterial*>&		Get_Materials() { return m_Materials; }
 	vector<CBone*>&			Get_Bones() { return m_Bones; }
+
 	//vector<CAnimation*>&	Get_Animations() { return m_Animations; }
 #endif // _DEBUG
 public :
@@ -86,7 +88,8 @@ protected:
 	_uint						m_iCurrentAnimIndex = {};
 	_uint						m_iPrevAnimIndex = {};
 	_uint						m_iNumAnimations = 0;
-	vector<CAnimation*>			m_Animations;
+	vector<CAnimation3D*>			m_Animations;
+	
 
 	map<_uint, KEYFRAME>		m_mapAnimTransLeftFrame;
 
@@ -100,6 +103,8 @@ public:
 	static C3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
+
+
 
 };
 

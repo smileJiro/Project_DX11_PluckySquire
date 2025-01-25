@@ -8,6 +8,7 @@
 #include "Camera_Target.h"
 #include "CameraArm.h"
 #include "TestTerrain.h"
+#include "AnimEventGenerator.h"
 
 CLevel_AnimTool::CLevel_AnimTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -30,7 +31,14 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 	ImGui::Begin("Animation Tool");
 	Update_ImportImgui();
 	Update_ExportImgui();
-	Update_AnimationEditImgui();
+	if (m_pTestModelObj)
+	{
+		ImGui::Separator();
+		Update_AnimationEditImgui();
+	}
+	ImGui::End();
+	ImGui::Begin("Animation Event");
+	Update_AnimEventImgui();
 	ImGui::End();
 
 	//CONTROLL
@@ -110,7 +118,7 @@ void CLevel_AnimTool::Update_ExportImgui()
 	if (nullptr != m_pTestModelObj)
 	{
 		wstring wstrSelectedPath = TEXT("");
-		if (ImGui::Button("Export")) {
+		if (ImGui::Button("Export Model")) {
 			wstring wstrFilter = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? TEXT("Model2D Files\0 * .model2d") : TEXT("Model3D Files\0 * .model");
 			wstrSelectedPath = SaveFileDialog(wstrFilter.c_str()); // 파일 다이얼로그 호출
 		}
@@ -137,7 +145,8 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 		CModel* pModel = m_pTestModelObj->Get_Model(eCoord);
 		if(false == pModel->Is_AnimModel())
 			return;
-
+		ImGui::Text("Animation Controller");
+		ImGui::Separator();
 		if (ImGui::Checkbox("Loop", &m_bLoop))
 		{
 			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
@@ -148,10 +157,141 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 			m_iCurrentAnimIndex = min(m_iCurrentAnimIndex, (_int)m_pTestModelObj->Get_AnimationCount()-1);
 			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
 		}
+		if (ImGui::Button(m_bPlaying ? "Stop" :"Play")) 
+		{
+			m_bPlaying ^= 1;
+			m_pTestModelObj->Set_PlayingAnim(m_pTestModelObj->Get_CurCoord(), m_bPlaying);
+		}
+		ImGui::SameLine();
 		if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
 			m_pTestModelObj->Set_Progerss(m_fCurrentProgerss);
 		else
 			m_fCurrentProgerss = m_pTestModelObj->Get_Progress();
+	}
+}
+
+void CLevel_AnimTool::Update_AnimEventImgui()
+{
+
+	if (ImGui::Button("Open AnimEvents File"))
+	{
+		wstring wstrSelectedPath = OpenFileDialog(TEXT("AnimEvent Files\0 * .animevt")); // 파일 다이얼로그 호출
+		if (false == wstrSelectedPath.empty())
+		{
+			if(FAILED(Load_AnimEvents(wstrSelectedPath)))
+			{
+				MSG_BOX("Failed to Load AnimEvents");
+			}
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Export AnimEvents")) 
+	{
+		wstring wstrSelectedPath = SaveFileDialog(TEXT("AnimEvent Files\0 * .animevt")); // 파일 다이얼로그 호출
+
+		if (false == wstrSelectedPath.empty())
+		{
+			Export_AnimEvents(wstrSelectedPath);
+		}
+	}
+	ImGui::Separator();
+
+	ImGui::Text("Animation Index : %d", m_iCurrentAnimIndex);
+	ImGui::Text("Progress : %f", m_fCurrentProgerss);
+
+	if (ImGui::Button("Add AnimEvent"))
+	{
+		ANIM_EVENT tEvent{};
+		tEvent.fProgress = m_fCurrentProgerss;
+		tEvent.iAnimIndex = m_iCurrentAnimIndex;
+		m_AnimEvents[m_iCurrentAnimIndex].push_back(tEvent);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Remove AnimEvent"))
+	{
+		if (m_iSelectedAnimEventIndex != -1)
+		{
+			_int iTmpIndex = m_iSelectedAnimEventIndex;
+			for (auto& pairAnimEvt : m_AnimEvents)
+			{
+				if ((iTmpIndex - (_int)pairAnimEvt.second.size()) < 0)
+				{
+					pairAnimEvt.second.erase(pairAnimEvt.second.begin() + iTmpIndex);
+					break;
+				}
+				iTmpIndex -= pairAnimEvt.second.size();
+			}
+		}
+	}
+	ImGui::Separator();
+
+	_uint iEventIdx = 0;
+	if (ImGui::BeginListBox("AnimEventList")) 
+	{
+		for (auto& pairAnimEvt : m_AnimEvents)
+		{
+			for (auto& tEvent : pairAnimEvt.second)
+			{
+				_bool isSelected = iEventIdx == m_iSelectedAnimEventIndex;
+				string strLable = to_string(iEventIdx) +" AnimIdx : " + to_string(pairAnimEvt.first) +"/ Progress : "+ to_string(tEvent.fProgress);
+				if (ImGui::Selectable(strLable.c_str(), isSelected))
+				{
+					m_iSelectedAnimEventIndex = iEventIdx; // 선택된 항목 갱신
+				}
+				// 선택된 항목 강조
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+				iEventIdx++;
+			}
+		}
+		ImGui::EndListBox();
+	}
+	ImGui::Separator();
+	if (m_iSelectedAnimEventIndex != -1)
+	{
+		ANIM_EVENT* tEvent = nullptr;
+		_int iTmpIdx = m_iSelectedAnimEventIndex;
+		for (auto& pairAnimEvt : m_AnimEvents)
+		{
+			if ((iTmpIdx - (_int)pairAnimEvt.second.size()) < 0)
+			{
+				tEvent = &pairAnimEvt.second[iTmpIdx];
+				break;
+			}
+			iTmpIdx -= pairAnimEvt.second.size();
+		}
+		if (tEvent)
+		{
+			ImGui::Text("Selected Animation Event Data");
+			_int iAniimIndex = (_uint)tEvent->iAnimIndex;
+			if (ImGui::InputInt("Animation Index", &iAniimIndex))
+			{
+				_int iClampedAnimIndex = iAniimIndex;
+				iClampedAnimIndex = max(0, iAniimIndex);
+				if(m_pTestModelObj)
+					iClampedAnimIndex = min(iAniimIndex, (_int)m_pTestModelObj->Get_AnimationCount() - 1);
+				m_AnimEvents[iClampedAnimIndex].push_back(*tEvent);
+				m_AnimEvents[(_uint)tEvent->iAnimIndex].erase(m_AnimEvents[(_uint)tEvent->iAnimIndex].begin() + iTmpIdx);
+				tEvent = &m_AnimEvents[iClampedAnimIndex].back();
+				tEvent->iAnimIndex = iClampedAnimIndex;
+			}
+			_float fProgress = tEvent->fProgress;
+			if (ImGui::InputFloat("Progress", &fProgress))
+			{
+				fProgress = max(0, fProgress);
+				fProgress = fmin(fProgress, 1);
+				tEvent->fProgress = fProgress;
+			}
+
+			char buffer[128] = "";
+			strcpy_s(buffer, tEvent->strFuncName.c_str());
+			if (ImGui::InputText("FunctionName", buffer, 128)) {
+				tEvent->strFuncName = buffer;
+			}
+		}
+
 	}
 }
 
@@ -160,6 +300,7 @@ void CLevel_AnimTool::Set_Animation(_uint _iAnimIdx, _bool _bLoop)
 	assert(m_pTestModelObj);
 	m_pTestModelObj->Switch_Animation(_iAnimIdx);
 	m_pTestModelObj->Set_AnimationLoop(m_pTestModelObj->Get_CurCoord(), _iAnimIdx, _bLoop);
+
 }
 
 
@@ -361,6 +502,75 @@ HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
 		return E_FAIL;
 	}
 	outFile.close();
+	return S_OK;
+}
+
+HRESULT CLevel_AnimTool::Load_AnimEvents(wstring _wstrPath)
+{
+	assert(!_wstrPath.empty());
+
+	SetWindowText(g_hWnd, TEXT("모델(을)를 로딩중입니다."));
+
+	std::ifstream inFile(_wstrPath, std::ios::binary);
+	if (!inFile) {
+		string str = "파일을 열 수 없습니다.";
+		str += WstringToString( _wstrPath);
+		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+		return E_FAIL;
+	}
+	m_AnimEvents.clear();
+	_uint iAnimIndexCount = 0;
+	inFile.read(reinterpret_cast<char*>(&iAnimIndexCount), sizeof(_uint));
+	for (_uint i = 0; i < iAnimIndexCount; i++)
+	{
+		_uint iAnimIndex = 0;
+		_uint iEventCount = 0;
+		inFile.read(reinterpret_cast<char*>(&iAnimIndex), sizeof(_uint));
+		inFile.read(reinterpret_cast<char*>(&iEventCount), sizeof(_uint));
+		m_AnimEvents.emplace(iAnimIndex, vector<ANIM_EVENT>());
+		m_AnimEvents[iAnimIndex].resize(iEventCount);
+		for (_uint j = 0; j < iEventCount; j++)
+		{
+			m_AnimEvents[iAnimIndex][j].ReadFile(inFile);
+		}
+	}
+
+	inFile.close();
+
+	return S_OK;
+}
+
+HRESULT CLevel_AnimTool::Export_AnimEvents(const wstring& _wstrPath)
+{
+	if (m_AnimEvents.empty())
+	{
+		MSG_BOX("이벤트가 없는데요?");
+		return E_FAIL;
+	}
+	wstring wstrExt = TEXT(".animevt");
+	std::filesystem::path path = _wstrPath;
+	if (path.extension().wstring() != wstrExt)
+	{
+		path.replace_extension(wstrExt);
+	}
+	std::ofstream outFile(path, std::ios::binary);
+	if (!outFile)
+	{
+		MSG_BOX("파일 열기 실패.");
+	}
+	_uint iAnimIndexCount = m_AnimEvents.size();
+	outFile.write(reinterpret_cast<char*>(&iAnimIndexCount), sizeof(_uint));
+	for (auto& pairAnimEvt : m_AnimEvents)
+	{
+		_uint iAnimIndex = pairAnimEvt.first;
+		_uint iEventCount = pairAnimEvt.second.size();
+		outFile.write(reinterpret_cast<char*>(&iAnimIndex), sizeof(_uint));
+		outFile.write(reinterpret_cast<char*>(&iEventCount), sizeof(_uint));
+		for (auto& tEvent : pairAnimEvt.second)
+		{
+			tEvent.WriteFile(outFile);
+		}
+	}
 	return S_OK;
 }
 

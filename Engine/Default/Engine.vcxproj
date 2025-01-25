@@ -198,7 +198,10 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\ActorObject.h" />
     <ClInclude Include="..\public\Actor_Dynamic.h" />
     <ClInclude Include="..\public\Actor_Static.h" />
-    <ClInclude Include="..\public\Animation.h" />
+    <ClInclude Include="..\Public\Animation.h" />
+    <ClInclude Include="..\public\Animation3D.h" />
+    <ClInclude Include="..\Public\AnimEventGenerator.h" />
+    <ClInclude Include="..\Public\AnimEventReceiver.h" />
     <ClInclude Include="..\public\Base.h" />
     <ClInclude Include="..\public\Bone.h" />
     <ClInclude Include="..\public\Camera.h" />
@@ -287,7 +290,10 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\ActorObject.cpp" />
     <ClCompile Include="..\private\Actor_Dynamic.cpp" />
     <ClCompile Include="..\private\Actor_Static.cpp" />
-    <ClCompile Include="..\private\Animation.cpp" />
+    <ClCompile Include="..\Private\Animation.cpp" />
+    <ClCompile Include="..\private\Animation3D.cpp" />
+    <ClCompile Include="..\Private\AnimEventGenerator.cpp" />
+    <ClCompile Include="..\Private\AnimEventReceiver.cpp" />
     <ClCompile Include="..\private\Base.cpp" />
     <ClCompile Include="..\private\Bone.cpp" />
     <ClCompile Include="..\private\Camera.cpp" />

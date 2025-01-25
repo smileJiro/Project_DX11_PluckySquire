@@ -3,12 +3,12 @@
 #include "3DModel.h"
 
 CToolAnimation3D::CToolAnimation3D()
-	:CAnimation()
+	:CAnimation3D()
 {
 }
 
 CToolAnimation3D::CToolAnimation3D(const CToolAnimation3D& Prototype)
-	: CAnimation(Prototype)
+	: CAnimation3D(Prototype)
 {
 }
 
