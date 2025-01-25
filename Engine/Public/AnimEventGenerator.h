@@ -61,6 +61,7 @@ public:
 		}
 	}
 
+	map<_uint, vector< ANIM_EVENT>>& Get_AnimEvents() { return m_AnimEvents; }
 #ifdef _TOOL
 public:
 	HRESULT Export_AnimEvents(ofstream& _OutFile);
