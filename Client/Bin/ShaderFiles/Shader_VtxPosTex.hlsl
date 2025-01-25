@@ -5,34 +5,8 @@ float4x4 g_ViewMatrix;
 float4x4 g_ProjMatrix;
 
 float4 g_vDiffuseColor;
-/* Damage Font */
-bool g_isCritical = false;
-float g_fDamageFontLifeTimeRatio = 0.0f;
-
-/* HpBar */
-float g_vBarRatio;
-float3 g_vHpRatio;
-float2 g_vTimeData;
-float g_fTimeRatio;
-float g_fEffectTimeRatio;
-int g_iHpCount;
-
-/* Slide Circle */
-float3 g_vSlideCircleDir;
-/* Dash Stmaina */
-float3 g_vCurStaminaDir;
-
-/* UltimateBar */
-float g_fUltimateRatio;
-
-/* Button Clicked */
-float g_fClickedTimeRatio = 0.0f;
-float4 g_vClickedColor = float4(0.0f / 255.f, 147.f / 255.f, 194.f / 255.f, 1.0f);
 
 Texture2D g_DiffuseTexture;
-Texture2D g_HpBarTexture;
-Texture2D g_StaminaTexture; // 대쉬 게이지 텍스쳐.
-Texture2D g_MaskTexture; 
 
 //SPRITE ANIMATION
 float2 g_vSpriteStartUV;
