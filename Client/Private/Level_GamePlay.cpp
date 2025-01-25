@@ -92,7 +92,14 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	}
 
+	if (KEY_DOWN(KEY::P)) 
+		CCamera_Manager::GetInstance()->Start_ZoomIn();
+	
 
+	if (KEY_DOWN(KEY::O)) 
+		CCamera_Manager::GetInstance()->Start_ZoomOut();
+
+	
 }
 
 HRESULT CLevel_GamePlay::Render()
