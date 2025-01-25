@@ -28,6 +28,9 @@ private:
 	_bool							m_isESC = { false };
 
 public:
+	level_enter()
+		level_exit()
+public:
 	STAMP							Get_StampIndex() { return m_eStampIndex; }
 	void							Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
 
