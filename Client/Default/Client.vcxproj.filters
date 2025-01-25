@@ -211,6 +211,9 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\04. Dialogue">
       <UniqueIdentifier>{d24fd4ac-720e-4a88-bcbd-a0b023d0a146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\SampleBook">
+      <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -378,9 +381,6 @@
     <ClInclude Include="..\Public\Logo_BG.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MapObject.h">
-      <Filter>02.GameObjects\MapObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ShopItemBG.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
     </ClInclude>
@@ -450,6 +450,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\Dialogue.h">
       <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SampleBook.h">
+      <Filter>02.GameObjects\SampleBook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DDefault_RenderObject.h">
+      <Filter>02.GameObjects\SampleBook</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -612,9 +621,6 @@
     <ClCompile Include="..\Private\Logo_BG.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MapObject.cpp">
-      <Filter>02.GameObjects\MapObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ShopItemBG.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
     </ClCompile>
@@ -681,6 +687,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Dialogue.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SampleBook.cpp">
+      <Filter>02.GameObjects\SampleBook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
+      <Filter>02.GameObjects\SampleBook</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
