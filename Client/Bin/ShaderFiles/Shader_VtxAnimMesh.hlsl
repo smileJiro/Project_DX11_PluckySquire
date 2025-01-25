@@ -13,6 +13,10 @@ int g_iFlag = 0;
 
 float4 g_vCamPosition;
 
+float2 g_fStartUV;
+float2 g_fEndUV;
+
+
 // Vertex Shader //
 struct VS_IN
 {
@@ -64,6 +68,32 @@ VS_OUT VS_MAIN(VS_IN In)
 }
 
 
+VS_OUT VS_MAIN_RENDERTARGET_UV(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT)0;
+    matrix matWV, matWVP;
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    float BlendWeightW = 1.0 - (In.vBlendWeights.x + In.vBlendWeights.y + In.vBlendWeights.z);
+
+    matrix matBones = mul(g_BoneMatrices[In.vBlendIndicse.x], In.vBlendWeights.x) +
+        mul(g_BoneMatrices[In.vBlendIndicse.y], In.vBlendWeights.y) +
+        mul(g_BoneMatrices[In.vBlendIndicse.z], In.vBlendWeights.z) +
+        mul(g_BoneMatrices[In.vBlendIndicse.w], In.vBlendWeights.w);
+
+    vector vPosition = mul(float4(In.vPosition, 1.0), matBones);
+    vector vNormal = mul(float4(In.vNormal, 0.0), matBones);
+    vector vTangent = mul(float4(In.vTangent, 0.0), matBones);
+
+    Out.vPosition = mul(vPosition, matWVP);
+    Out.vNormal = normalize(mul(vNormal, g_WorldMatrix));
+    Out.vTexcoord = lerp(g_fStartUV, g_fEndUV, In.vTexcoord);
+    Out.vWorldPos = mul(vPosition, g_WorldMatrix);
+    Out.vProjPos = Out.vPosition;
+    Out.vTangent = vTangent;
+    return Out;
+}
 
 
 // PixelShader //
@@ -122,6 +152,8 @@ PS_OUT_LIGHTDEPTH PS_MAIN_LIGHTDEPTH(PS_IN In)
     return Out;
 }
 
+
+
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
 // https://www.notion.so/15-Shader-Keyword-technique11-pass-10eb1e26c8a8807aad86fb2de6738a1a // 컨트롤 클릭
@@ -167,6 +199,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_LIGHTDEPTH();
+    }
+
+    pass RenderTargetMappingPass // 4
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 
 }

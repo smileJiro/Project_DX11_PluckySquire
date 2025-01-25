@@ -126,7 +126,6 @@ void CButterGrump::Update(_float _fTimeDelta)
 
 #endif // _DEBUG
 
-    m_pBossFSM->Update(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -312,6 +311,11 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CButterGrump::Play_Intro()
 {
+}
+
+HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
+{
+    return E_NOTIMPL;
 }
 
 HRESULT CButterGrump::Ready_Components()

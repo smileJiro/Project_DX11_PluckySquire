@@ -106,7 +106,47 @@ void CUI_Manager::Set_ChooseItem(_int _iIndex)
 		}
 		m_iPreIndex = _iIndex;
 	}
-}	
+}
+HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	if (_iChangeLevelID == LEVEL_LOADING)
+	{
+		m_iCurrentLevel = _iNextChangeLevelID;
+	}
+
+	for (_int i = 0; i < m_ShopItems.size(); ++i)
+	{
+		for (_int j = 0; j < m_ShopItems[i].size(); ++j)
+		{
+			Safe_Release(m_ShopItems[i][j]);
+		}
+	}
+	m_ShopItems.clear();
+
+	for (auto iter : m_pSettingPanels)
+	{
+		Safe_Release(iter.second);
+	}
+	m_pSettingPanels.clear();
+
+	for (auto iter : m_pShopPanels)
+	{
+		Safe_Release(iter.second);
+	}
+	m_pShopPanels.clear();
+
+	
+
+
+	return S_OK;
+
+}
+
+HRESULT CUI_Manager::Level_Enter(_int _iChangeLevelID)
+{
+	return S_OK;
+}
+
 
 void CUI_Manager::Free()
 {

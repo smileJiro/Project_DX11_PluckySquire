@@ -7,7 +7,7 @@ typedef struct tagAnimEvent
 	void WriteFile(std::ofstream& outFile)
 	{
 		outFile.write(reinterpret_cast<char*>(&iAnimIndex), sizeof(_uint));
-		_uint iLength = strFuncName.length();
+		_uint iLength = (_uint)strFuncName.length();
 		outFile.write(reinterpret_cast<char*>(&iLength), sizeof(_uint));
 		outFile.write(strFuncName.c_str(), iLength);
 		outFile.write(reinterpret_cast<char*>(&fProgress), sizeof(_float));

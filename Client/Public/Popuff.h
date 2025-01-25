@@ -31,6 +31,7 @@ public:
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
+	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 

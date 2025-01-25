@@ -102,6 +102,7 @@ public:
 
 
 protected:
+	virtual HRESULT Ready_ActorDesc(void* _pArg) = 0;
 	virtual HRESULT Ready_Components() = 0;
 	virtual HRESULT Ready_PartObjects() = 0;
 
