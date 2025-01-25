@@ -3,7 +3,6 @@
 
 BEGIN(Engine)
 class CGameInstance;
-class CController_Transform;
 class CRay;
 class ENGINE_DLL CGameObject abstract : public CBase
 {
