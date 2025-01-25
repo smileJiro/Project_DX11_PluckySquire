@@ -9,6 +9,7 @@
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
+#include "UI_Manager.h"
 
 #include "FSM.h"
 #include "FSM_Boss.h"
@@ -320,6 +321,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
 	return S_OK;
 }
