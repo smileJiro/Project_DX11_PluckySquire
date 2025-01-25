@@ -566,5 +566,6 @@ CGameObject* CPlayer::Clone(void* _pArg)
 void CPlayer::Free()
 {
 	Safe_Release(m_pStateMachine);
+	Safe_Release(m_pAnimEventGenerator);
     __super::Free();
 }
