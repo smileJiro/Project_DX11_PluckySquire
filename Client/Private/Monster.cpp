@@ -110,10 +110,16 @@ void CMonster::Active_OnEnable()
 //	}
 //
 //	Safe_AddRef(m_pTarget);
+
+	// PxActor 활성화 
+	CActorObject::Active_OnEnable();
 }
 
 void CMonster::Active_OnDisable()
 {
+
+	// PxActor 활성화 
+	CActorObject::Active_OnDisable();
 }
 
 void CMonster::Free()

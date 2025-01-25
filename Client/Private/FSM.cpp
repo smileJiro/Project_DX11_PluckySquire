@@ -3,6 +3,7 @@
 #include "Monster.h"
 
 #include "IdleState.h"
+#include "PatrolState.h"
 #include "AlertState.h"
 #include "ChaseWalkState.h"
 #include "MeleeAttackState.h"
@@ -21,6 +22,16 @@ CFSM::CFSM(const CFSM& _Prototype)
 void CFSM::Set_Owner(CMonster* _pOwner)
 {
 	m_pOwner = _pOwner;
+}
+
+void CFSM::Set_PatrolBound()
+{
+	if (nullptr == m_pOwner)
+		return;
+
+	_float3 vPosition;
+	XMStoreFloat3(&vPosition, m_pOwner->Get_Position());
+	static_cast<CPatrolState*>(m_States[(_uint)MONSTER_STATE::PATROL])->Set_Bound(vPosition);
 }
 
 HRESULT CFSM::Initialize_Prototype()
@@ -45,7 +56,7 @@ void CFSM::Update(_float _fTimeDelta)
 
 }
 
-HRESULT CFSM::Add_State(MONSTER_STATE _eState)
+HRESULT CFSM::Add_State(_uint _iState)
 {
 	if (nullptr == m_pOwner)
 		return E_FAIL;
@@ -56,7 +67,7 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 	Desc.fChaseRange = m_fChaseRange;
 	Desc.fAttackRange = m_fAttackRange;
 
-	switch (_eState)
+	switch ((MONSTER_STATE)_iState)
 	{
 	case Client::MONSTER_STATE::IDLE:
 		pState = CIdleState::Create(&Desc);
@@ -64,7 +75,16 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
-		m_States.emplace(MONSTER_STATE::IDLE, pState);
+		m_States.emplace((_uint)MONSTER_STATE::IDLE, pState);
+		break;
+
+	case Client::MONSTER_STATE::PATROL:
+		pState = CPatrolState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
 		break;
 
 	case Client::MONSTER_STATE::ALERT:
@@ -73,7 +93,7 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
-		m_States.emplace(MONSTER_STATE::ALERT, pState);
+		m_States.emplace((_uint)MONSTER_STATE::ALERT, pState);
 		break;
 
 	case Client::MONSTER_STATE::CHASE:
@@ -82,7 +102,7 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
-		m_States.emplace(MONSTER_STATE::CHASE, pState);
+		m_States.emplace((_uint)MONSTER_STATE::CHASE, pState);
 		break;
 
 	case Client::MONSTER_STATE::ATTACK:
@@ -95,7 +115,7 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 			return E_FAIL;
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
-		m_States.emplace(MONSTER_STATE::ATTACK, pState);
+		m_States.emplace((_uint)MONSTER_STATE::ATTACK, pState);
 		break;
 	case Client::MONSTER_STATE::LAST:
 		break;
@@ -106,7 +126,7 @@ HRESULT CFSM::Add_State(MONSTER_STATE _eState)
 	return S_OK;
 }
 
-HRESULT CFSM::Change_State(MONSTER_STATE _eState)
+HRESULT CFSM::Change_State(_uint _iState)
 {
 	if (nullptr == m_CurState)
 		return E_FAIL;
@@ -118,27 +138,27 @@ HRESULT CFSM::Change_State(MONSTER_STATE _eState)
 		return S_OK;
 
 	m_CurState->State_Exit();
-	m_pOwner->Set_PreState((_uint)m_eCurState);
+	m_pOwner->Set_PreState(m_iCurState);
 
-	Set_State(_eState);
+	Set_State(_iState);
 
 	m_pOwner->Change_Animation();
 
 	return S_OK;
 }
 
-HRESULT CFSM::Set_State(MONSTER_STATE _eState)
+HRESULT CFSM::Set_State(_uint _iState)
 {
-	if (nullptr == m_States[_eState])
+	if (nullptr == m_States[_iState])
 		return E_FAIL;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
-	m_CurState = m_States[_eState];
-	m_eCurState = _eState;
+	m_CurState = m_States[_iState];
+	m_iCurState = _iState;
 
 	m_CurState->State_Enter();
-	m_pOwner->Set_State((_uint)_eState);
+	m_pOwner->Set_State(_iState);
 
 	return S_OK;
 }

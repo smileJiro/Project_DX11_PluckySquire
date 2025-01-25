@@ -25,6 +25,7 @@ protected:
 
 public:
 	void Set_Owner(CMonster* _pOwner);
+	void Set_PatrolBound();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -33,19 +34,20 @@ public:
 	void Update(_float _fTimeDelta);
 
 public:
-	HRESULT Add_State(MONSTER_STATE _eState);
-	HRESULT Change_State(MONSTER_STATE _eState);
-	HRESULT Set_State(MONSTER_STATE _eState);
+	virtual HRESULT Add_State(_uint _iState);
+	virtual HRESULT Change_State(_uint _iState);
+	virtual HRESULT Set_State(_uint _iState);
 
 
 protected:
 	CState* m_CurState = { nullptr };
 	CMonster* m_pOwner = { nullptr };
 
-private:
-	map<MONSTER_STATE, CState*> m_States;
-	MONSTER_STATE		m_eCurState = { MONSTER_STATE::LAST };
+protected:
+	map<_uint, CState*> m_States;
+	_uint		m_iCurState = { };
 
+private:
 	_bool	m_isMelee = { true };
 	_float	m_fAlertRange = {};
 	_float	m_fChaseRange = {};

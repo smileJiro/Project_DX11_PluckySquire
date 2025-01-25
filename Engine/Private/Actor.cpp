@@ -64,6 +64,12 @@ HRESULT CActor::Initialize(void* _pArg)
     if (FAILED(Ready_Shapes(pDesc->ShapeDatas)))
         return E_FAIL;
 
+    // Add User Data (Actor)
+    m_UserData = {};
+    m_UserData.pOwner = m_pOwner;
+    m_UserData.iObjectGroup = pDesc->tFilterData.MyGroup;
+    m_pActor->userData = &m_UserData;
+
     Setup_SimulationFiltering(pDesc->tFilterData.MyGroup, pDesc->tFilterData.OtherGroupMask, false);
 
     // Scene에 등록. (추후 곧바로 등록하지 않고 싶다면, 별도의 Desc 변수를 추가할 예정.)
@@ -172,14 +178,19 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
         static_cast<PxRigidDynamic*>(m_pActor)->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
         break;
     case Engine::ACTOR_TYPE::DYNAMIC:
-        m_pActor = pPhysic->createRigidDynamic(Transform);
-        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, _pActorDesc->FreezeRotation_XYZ[0]);
-        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, _pActorDesc->FreezeRotation_XYZ[1]);
-        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, _pActorDesc->FreezeRotation_XYZ[2]);
-        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X,  _pActorDesc->FreezePosition_XYZ[0]);
-        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y,  _pActorDesc->FreezePosition_XYZ[1]);
-        static_cast<PxRigidDynamic*>(m_pActor)->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z,  _pActorDesc->FreezePosition_XYZ[2]);
-        static_cast<PxRigidDynamic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, false);
+    {
+        PxRigidDynamic* pActor = pPhysic->createRigidDynamic(Transform);
+        pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, _pActorDesc->FreezeRotation_XYZ[0]);
+        pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, _pActorDesc->FreezeRotation_XYZ[1]);
+        pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, _pActorDesc->FreezeRotation_XYZ[2]);
+        pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X, _pActorDesc->FreezePosition_XYZ[0]);
+        pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, _pActorDesc->FreezePosition_XYZ[1]);
+        pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, _pActorDesc->FreezePosition_XYZ[2]);
+        pActor->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, false);
+        //pActor->setSolverIterationCounts(8, 4);
+        m_pActor = pActor;
+    }
+
         break;
     default:
         return E_FAIL;
@@ -214,6 +225,16 @@ void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, 
         pScene->resetFiltering(*m_pActor);
 }
 
+void CActor::Active_OnEnable()
+{
+    m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
+}
+
+void CActor::Active_OnDisable()
+{
+    m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
+}
+
 HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs)
 {
     PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
@@ -236,7 +257,6 @@ HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs)
         /* Material 생성 */
         if (true == ShapeDescs[i].isShapeMaterial)
         {
-            PHYSX_RELEASE(pShapeMaterial);
             pShapeMaterial = m_pGameInstance->Get_Material(ShapeDescs[i].eMaterial);
         }
 
@@ -275,16 +295,24 @@ HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& ShapeDescs)
             MSG_BOX("Failed Create pShape (CActor::Ready_Shape)");
             return E_FAIL;
         }
-        pShape->setLocalPose(PxTransform(PxMat44((_float*)(&ShapeDescs[i].LocalOffsetMatrix))));
-        m_pActor->attachShape(*pShape);
 
+        pShape->setLocalPose(PxTransform(PxMat44((_float*)(&ShapeDescs[i].LocalOffsetMatrix))));
+        //pShape->setContactOffset(0.05f);
+        //pShape->setRestOffset(0.01f);
+        SHAPE_USERDATA* pShapeUserData = new SHAPE_USERDATA;
+        pShapeUserData->iShapeInstanceID = m_pGameInstance->Create_ShapeID();
+        pShapeUserData->iShapeUse = ShapeDescs[i].iShapeUse;
+        pShape->userData = pShapeUserData;
+        m_pGameInstance->Add_ShapeUserData(pShapeUserData);
+        m_pActor->attachShape(*pShape);
 #ifdef _DEBUG
         if (true == ShapeDescs[i].isTrigger)
         {
             m_pTriggerShapes.push_back(pShape);
+            pShape->acquireReference();
         }
 #endif // _DEBUG
-
+        pShape->release();
     }
 
     return S_OK;
@@ -303,10 +331,17 @@ void CActor::Free()
     }
 
 #endif // _DEBUG
+    for (auto& pTriggerShape : m_pTriggerShapes)
+        pTriggerShape->release();
+
+    m_pTriggerShapes.clear();
 
     // 순환 참조로 인해 RefCount 관리하지 않는다.
+    m_UserData.pOwner = nullptr;
     m_pOwner = nullptr;
 
+    if(nullptr != m_pActor)
+        m_pActor->release();
     // PhysX Release
     //PHYSX_RELEASE(m_pActor);
 

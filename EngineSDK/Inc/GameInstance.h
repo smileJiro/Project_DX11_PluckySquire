@@ -43,6 +43,7 @@ public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	void				Render_FPS(const _wstring& _strTimerTag);
 	_int				Get_FPS();
+	_uint				Get_FPS(const _wstring& _strTimerTag);
 	HRESULT				Add_Timer(const _wstring& _strTimerTag);
 	void				Update_TimeDelta(const _wstring& _strTimerTag);
 	HRESULT				Set_TimeScale(_float _fTimeScale, const _wstring& _strTimeTag);
@@ -74,7 +75,9 @@ public: /* For. Object_Manager */
 public: /* For.Renderer */
 	HRESULT				Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, class CGameObject* _pRenderObject);
 #ifdef _DEBUG
-	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);
+	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);	
+	void				Set_DebugRender(_bool _isBool);
+
 #endif
 
 public: /* For. Key_Manager */
@@ -197,7 +200,12 @@ public: /* For. Physx_Manager*/
 	PxPhysics*			Get_Physics() const;
 	PxScene*			Get_Physx_Scene() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
-	void				Set_Player(CGameObject* _pPlayer);
+	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
+	_uint				Create_ShapeID();
+
+public: /* For. Frustum */
+	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);
+
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -218,7 +226,7 @@ private:
 	class CGlobalFunction_Manager* m_pGlobalFunction_Manager = nullptr;
 	class CCamera_Manager_Engine* m_pCamera_Manager = nullptr;
 	class CPhysx_Manager* m_pPhysx_Manager = nullptr;
-
+	class CFrustum* m_pFrustum = nullptr;
 private:
 	HWND m_hWnd = nullptr;
 	HINSTANCE m_hInstance = nullptr;

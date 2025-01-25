@@ -26,15 +26,16 @@ public:
 	void Update(_float _fTimeDelta);
 
 public:
-	HRESULT Add_State(_uint _eState);
-	HRESULT Change_State(_uint _eState);
-	HRESULT Set_State(_uint _eState);
+	virtual HRESULT Add_State(_uint _iState) override;
+	virtual HRESULT Change_State(_uint _iState) override;
+	virtual HRESULT Set_State(_uint _iState) override;
 
 private:
-	map<BOSS_STATE, CState*> m_States;
-	BOSS_STATE		m_eCurState = { BOSS_STATE::LAST };
-	CState* m_CurState = { nullptr };
-	CMonster* m_pOwner = { nullptr };
+	_uint Get_NextAttack();
+
+private:
+	//일단 순서대로 패턴 돌도록 설정
+	_uint m_iAttackIdx = { 0 };
 
 public:
 	HRESULT CleanUp();

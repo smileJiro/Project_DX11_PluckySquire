@@ -5,47 +5,153 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Level">
+      <UniqueIdentifier>{7630257d-8b31-48a7-a03c-298a8a3b0ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default">
+      <UniqueIdentifier>{372daaf5-0e28-4c0a-b374-82b2ef7d3126}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{a44564f4-8882-4444-a01a-52d0f52d1622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{f0b6f478-e1e6-4595-89cd-25b105ae9a19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnimTool_Function.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="..\Public\AnimTool_Defines.h" />
-    <ClInclude Include="..\Public\AnimTool_MainApp.h" />
-    <ClInclude Include="..\Public\Event_Manager.h" />
-    <ClInclude Include="..\Public\Level_Loading.h" />
-    <ClInclude Include="..\Public\Loader.h" />
-    <ClInclude Include="..\Public\CriticalSectionGuard.h" />
-    <ClInclude Include="..\Public\Level_Static.h" />
-    <ClInclude Include="..\Public\Level_AnimTool.h" />
-    <ClInclude Include="..\Public\Test2DModel.h" />
-    <ClInclude Include="..\Public\Test3DModel.h" />
-    <ClInclude Include="..\Public\TestModelObject.h" />
-    <ClInclude Include="..\Public\TestController_Model.h" />
-    <ClInclude Include="..\Public\Camera_Target.h" />
     <ClInclude Include="..\Public\TestTerrain.h" />
-    <ClInclude Include="..\Public\ToolAnimation2D.h" />
+    <ClInclude Include="..\Public\Level_AnimTool.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Static.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimTool_Defines.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Target.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CriticalSectionGuard.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Event_Manager.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimTool_Function.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimTool_MainApp.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Test2DModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Test3DModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestController_Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestModelObject.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ToolAnimation2D.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ToolAnimation3D.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ToolMaterial.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ToolMesh.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ToolBone.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="..\Private\Level_Loading.cpp" />
-    <ClCompile Include="..\Private\Tool_Animation.cpp" />
-    <ClCompile Include="..\Private\Event_Manager.cpp" />
-    <ClCompile Include="..\Private\AnimTool_MainApp.cpp" />
-    <ClCompile Include="..\Private\Loader.cpp" />
-    <ClCompile Include="..\Private\CriticalSectionGuard.cpp" />
-    <ClCompile Include="..\Private\AnimTool_Function.cpp" />
-    <ClCompile Include="..\Private\Level_Static.cpp" />
-    <ClCompile Include="..\Private\Level_AnimTool.cpp" />
-    <ClCompile Include="..\Private\Test2DModel.cpp" />
-    <ClCompile Include="..\Private\Test3DModel.cpp" />
-    <ClCompile Include="..\Private\TestModelObject.cpp" />
-    <ClCompile Include="..\Private\TestController_Model.cpp" />
-    <ClCompile Include="..\Private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\TestTerrain.cpp" />
-    <ClCompile Include="..\Private\ToolAnimation2D.cpp" />
+    <ClCompile Include="..\Private\Level_AnimTool.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Loading.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Static.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Tool_Animation.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Target.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CriticalSectionGuard.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Event_Manager.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loader.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimTool_Function.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimTool_MainApp.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Test2DModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Test3DModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestController_Model.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestModelObject.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ToolAnimation2D.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ToolAnimation3D.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ToolMaterial.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ToolMesh.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ToolBone.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool_Animation.rc">

@@ -247,6 +247,12 @@
     <Filter Include="01.Utility\03.Objects\Camera\CutScene_Sector">
       <UniqueIdentifier>{cba30df6-e1fa-4802-a037-b3c7f69f9b94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\13.Frustum">
+      <UniqueIdentifier>{c8c5c6fc-5cc1-42a0-a0ca-a1c4d95089ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.ShaderFiles\ComputeShaders">
+      <UniqueIdentifier>{52865deb-a86a-424b-ac6d-137811f61354}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -492,6 +498,9 @@
     <ClInclude Include="..\Public\Animation2D.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Frustum.h">
+      <Filter>01.Utility\13.Frustum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -725,6 +734,9 @@
     <ClCompile Include="..\Private\Animation2D.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Frustum.cpp">
+      <Filter>01.Utility\13.Frustum</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
@@ -735,6 +747,9 @@
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Debug.hlsl">
       <Filter>98.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\cs\Test_cs.hlsl">
+      <Filter>98.ShaderFiles\ComputeShaders</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

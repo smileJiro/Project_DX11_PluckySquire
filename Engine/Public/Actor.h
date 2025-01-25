@@ -4,14 +4,15 @@
 typedef struct tagShapeData
 {
 	tagShapeData() { XMStoreFloat4x4(&LocalOffsetMatrix, XMMatrixIdentity()); }
-	SHAPE_TYPE	eShapeType = SHAPE_TYPE::LAST;
-	SHAPE_DESC* pShapeDesc = nullptr;
-	_float3		vLocalOffset = { 0.0f, 0.0f, 0.0f };
-	_float4x4	LocalOffsetMatrix = {};
-	_bool		isTrigger = false; /* 해당 Shape의 Trigger 여부*/
+	SHAPE_TYPE		eShapeType = SHAPE_TYPE::LAST;
+	SHAPE_DESC*		pShapeDesc = nullptr;
+	_float3			vLocalOffset = { 0.0f, 0.0f, 0.0f };
+	_float4x4		LocalOffsetMatrix = {};
+	_bool			isTrigger = false;
 
-	_bool		isShapeMaterial = false;
-	ACTOR_MATERIAL eMaterial = ACTOR_MATERIAL::DEFAULT;
+	_bool			isShapeMaterial = false;
+	ACTOR_MATERIAL	eMaterial = ACTOR_MATERIAL::DEFAULT;
+	_uint			iShapeUse = 0;
 }SHAPE_DATA;
 
 typedef struct tagFilterData
@@ -55,9 +56,12 @@ public:/* Default PhysX */
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity) { return; }
 	virtual void				Add_Force(const _float3& _vForce) { return; };// 일반적인 힘
 	virtual void				Add_Impulse(const _float3& _vForce) { return; }; // 강한 힘
-
+	
 public:
 	virtual void				Turn_TargetDirection(_vector _vDirection) { return; }
+
+public: /* Event Filter */
+	void						Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime = false);
 
 public:
 	// Get
@@ -71,9 +75,13 @@ protected: /* Actor Default Data */
 	ACTOR_TYPE					m_eActorType = ACTOR_TYPE::LAST;	
 	_float4x4					m_OffsetMatrix = {};
 	
-public: /* Event Filter */
-	void						Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime = false);
+protected:
+	ACTOR_USERDATA				m_UserData;
 
+private:
+	/* Active 변경시 호출되는 함수 추가. */
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 #ifdef _DEBUG
 protected:

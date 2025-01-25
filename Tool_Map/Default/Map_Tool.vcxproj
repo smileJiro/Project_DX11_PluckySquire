@@ -142,7 +142,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\2DDefault_RenderObject.h" />
+    <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\2DMap_Tool_Manager.h" />
+    <ClInclude Include="..\Public\2DTile_RenderObject.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\gizmo\GraphEditor.h" />
     <ClInclude Include="..\Public\gizmo\ImCurveEdit.h" />
@@ -154,6 +157,7 @@
     <ClInclude Include="..\Public\ImGuiStyle_MapTool_Function.h" />
     <ClInclude Include="..\Public\Level_2D_Map_Tool.h" />
     <ClInclude Include="..\Public\Level_3D_Map_Tool.h" />
+    <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\Public\Task_Manager.h" />
     <ClInclude Include="..\Public\3DMap_Tool_Manager.h" />
     <ClInclude Include="..\Public\MapObject.h" />
@@ -172,7 +176,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp" />
+    <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMap_Tool_Manager.cpp" />
+    <ClCompile Include="..\Private\2DTile_RenderObject.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\gizmo\GraphEditor.cpp" />
     <ClCompile Include="..\Private\gizmo\ImCurveEdit.cpp" />
@@ -181,8 +188,9 @@
     <ClCompile Include="..\Private\gizmo\ImSequencer.cpp" />
     <ClCompile Include="..\Private\ImguiLogger.cpp" />
     <ClCompile Include="..\Private\ImGuiStyle_MapTool_Function.cpp" />
-    <ClCompile Include="..\Private\Level_2D_Map_Tool .cpp" />
+    <ClCompile Include="..\Private\Level_2D_Map_Tool.cpp" />
     <ClCompile Include="..\Private\Level_3D_Map_Tool.cpp" />
+    <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\Private\Task_Manager.cpp" />
     <ClCompile Include="..\Private\3DMap_Tool_Manager.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
@@ -205,6 +213,14 @@
   <ItemGroup>
     <Image Include="Map_Tool.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

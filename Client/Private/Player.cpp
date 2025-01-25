@@ -227,6 +227,36 @@ HRESULT CPlayer::Render()
     return S_OK;
 }
 
+void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    int a = 0;
+}
+
+void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    int a = 0;
+}
+
+void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    int a = 0;
+}
+
+void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    int a = 0;
+}
+
+void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    int a = 0;
+}
+
+void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    int a = 0;
+}
+
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
@@ -270,7 +300,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
         {
             m_pActorCom->Turn_TargetDirection(_vDir);
             _vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
-            m_pActorCom->Set_LinearVelocity(vLook, 4.f);
+            m_pActorCom->Set_LinearVelocity(vLook, 500.0f * _fTimeDelta);
         }
         else
         {

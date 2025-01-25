@@ -38,6 +38,7 @@ namespace Client
 		SET_ACTIVE,
 		SETUP_SIMULATION_FILTER,
 		CHANGE_MONSTERSTATE,
+		CHANGE_BOSSSTATE,
 		
 
 		LAST,
@@ -46,6 +47,7 @@ namespace Client
 	enum class MONSTER_STATE
 	{
 		IDLE,
+		PATROL,
 		ALERT,
 		CHASE,
 		ATTACK,
@@ -55,7 +57,13 @@ namespace Client
 
 	enum class BOSS_STATE
 	{
+		SCENE,
+		IDLE,
+		ATTACK,
+		ENERGYBALL,
 		HOMINGBALL,
+		YELLOWBALL,
+		PURPLEBALL,
 
 		LAST,
 	};

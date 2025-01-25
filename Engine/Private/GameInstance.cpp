@@ -16,6 +16,7 @@
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
 #include "Physx_Manager.h"
+#include "Frustum.h"
 #include "Physx_EventCallBack.h"
 #include "Layer.h"
 #include "ModelObject.h"
@@ -39,7 +40,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 
-	m_pPhysx_Manager = CPhysx_Manager::Create(*ppDevice, *ppContext); /* PhysX 역시 PxPhysics* 를 Object 생성 시 전달할 예정. (유사 Device, Context 개념.)*/
+	m_pPhysx_Manager = CPhysx_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pPhysx_Manager)
 		return E_FAIL;
 
@@ -112,7 +113,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
 
-
+	m_pFrustum = CFrustum::Create();
+	if (nullptr == m_pFrustum)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -125,6 +128,7 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 	m_pSound_Manager->Update(fTimeDelta);
 
 	m_pPipeLine->Update(); 
+	m_pFrustum->Update();
 }
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
@@ -134,7 +138,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 
 	/* 현재는 임시적으로 Physx_Manager가 Scene Update를 돌리며 테스트 예정. 
-	추후 콜리전 매니저 설계시 scene 관리방식 변경.*/
+	추후 콜리전 매니저 설계시 scene 관리방식 변경. */
 	m_pPhysx_Manager->Update(fTimeDelta);
 	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 
@@ -246,6 +250,14 @@ _int CGameInstance::Get_FPS()
 		return 0;
 
 	return m_pTimer_Manager->Get_FPS();
+}
+
+_uint CGameInstance::Get_FPS(const _wstring& _strTimerTag)
+{
+	if (nullptr == m_pTimer_Manager)
+		return 0;
+
+	return m_pTimer_Manager->Get_FPS(_strTimerTag);
 }
 
 HRESULT CGameInstance::Add_Timer(const _wstring& _strTimerTag)
@@ -411,6 +423,13 @@ HRESULT CGameInstance::Add_DebugComponent(CComponent* _pDebugCom)
 		return E_FAIL;
 
 	return m_pRenderer->Add_DebugComponent(_pDebugCom);
+}
+void CGameInstance::Set_DebugRender(_bool _isBool)
+{
+	if (nullptr == m_pRenderer)
+		return;
+
+	return m_pRenderer->Set_DebugRender(_isBool);
 }
 
 #endif // _DEBUG
@@ -1000,6 +1019,30 @@ PxMaterial* CGameInstance::Get_Material(ACTOR_MATERIAL _eType) const
 	return m_pPhysx_Manager->Get_Material(_eType);
 }
 
+void CGameInstance::Add_ShapeUserData(SHAPE_USERDATA* _pUserData)
+{
+	if (nullptr == m_pPhysx_Manager)
+		return;
+
+	return m_pPhysx_Manager->Add_ShapeUserData(_pUserData);
+}
+
+_uint CGameInstance::Create_ShapeID()
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->Create_ShapeID();
+}
+
+_bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange)
+{
+	if (nullptr == m_pFrustum)
+		return true;
+
+	return m_pFrustum->isIn_InWorldSpace(_vWorldPos, _fRange);
+}
+
 HRESULT CGameInstance::Physx_Render()
 {
 	if (nullptr == m_pPhysx_Manager)
@@ -1008,13 +1051,6 @@ HRESULT CGameInstance::Physx_Render()
 	return m_pPhysx_Manager->Render();
 }
 
-void CGameInstance::Set_Player(CGameObject* _pPlayer)
-{
-	if (nullptr == m_pPhysx_Manager)
-		return;
-
-	return m_pPhysx_Manager->Set_Player(_pPlayer);
-}
 
 #ifdef _DEBUG
 
@@ -1060,7 +1096,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	// Engine Manager Class Release
 	// 여기서 Manger Class->Free() 호출 >>> 참조 중이던 CGameInstance에 대한 Safe_Release() 호출 됌.
 
-	Safe_Release(m_pPhysx_Manager); /* 태웅 : 물리적인 처리를하는 rigid 객체를 생성하기 위해 PxPhysics 객체를 오브젝트에 device처럼 포인터를 던질 예정. */
+	Safe_Release(m_pFrustum);
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);
 	Safe_Release(m_pImgui_Manager);
@@ -1077,6 +1113,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);
+	Safe_Release(m_pPhysx_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
 

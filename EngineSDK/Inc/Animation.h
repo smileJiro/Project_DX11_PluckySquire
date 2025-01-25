@@ -13,15 +13,15 @@ typedef struct AnimEvent
 	_bool bIsTriggered = false;
 	function<void()> pFunc;
 }ANIM_EVENT;
-class CAnimation final : public CBase
+class ENGINE_DLL CAnimation : public CBase
 {
-private:
+protected:
 	CAnimation();
 	CAnimation(const CAnimation& Prototype);
 	virtual ~CAnimation() = default;
 
 public:
-	HRESULT Initialize(ifstream& inFile, const class C3DModel* pModel);
+	virtual HRESULT Initialize(ifstream& inFile, const class C3DModel* pModel);
 	bool Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta);
 	bool Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& m_mapAnimTransLeftFrame);
 
@@ -33,13 +33,14 @@ public:
 	_float Get_Progress();
 	bool Is_AnimChangeable();
 
+	void Set_Progress(_float _fProgerss);
 	void Set_Loop(bool bLoop) { m_bLoop = bLoop; }
 	void Set_PostDealyPercent(_float fPercentage) { m_fPostDelayPercentage = fPercentage; }
 	void Set_AnimTransitionTime(_float fTime) { m_fAnimTransitionTime = fTime; }
 	void Register_AnimEvent(ANIM_EVENT tAnimEvent);
 
 	void Ready_AnimTransition();
-private:
+protected:
 	_char					m_szName[MAX_PATH] = {};
 	_uint					m_iNumChannels = {};
 	vector<class CChannel*> m_vecChannel;

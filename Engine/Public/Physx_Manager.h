@@ -22,7 +22,7 @@ public:
 	PxPhysics*					Get_Physics() const { return m_pPxPhysics; }
 	PxScene*					Get_Scene() const { return m_pPxScene; }
 	PxMaterial*					Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
-
+	_uint						Create_ShapeID() { return m_iShapeInstanceID++; };
 private:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
@@ -41,14 +41,24 @@ private: /* Visual Debugger */
 	PxPvd*						m_pPxPvd = nullptr;
 
 private: /* iNumThreads */
-	static constexpr _uint		s_iNumThreads = 2;
+	static constexpr _uint		s_iNumThreads = 4;
 
 private:
 	PxDefaultAllocator			m_Allocator = {};
 	PxDefaultErrorCallback		m_ErrorCallback = {};
 
+private:
+	static _uint				m_iShapeInstanceID;
+
 private: /* Event CallBack Class */
 	CPhysx_EventCallBack*		m_pPhysx_EventCallBack = nullptr;
+
+public:
+	void Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
+	void Delete_ShapeUserData();
+
+private: /* SHAPE_USERDATA : 메모리 해제용 */
+	vector<SHAPE_USERDATA*> m_pShapeUserDatas;
 
 private: /* Test Object */
 	PxRigidStatic*				m_pGroundPlane = nullptr;
@@ -56,6 +66,8 @@ private: /* Test Object */
 	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
 	CShader*					m_pShader = nullptr;
 
+private:
+	float						m_fTimeAcc = 0.0f;
 private:
 	HRESULT						Initialize_Foundation();
 	HRESULT						Initialize_Physics();
@@ -71,8 +83,10 @@ public:
 		m_pPlayer = _pPlayer;
 		Safe_AddRef(m_pPlayer);
 	};
+
 private:
 	CGameObject*				m_pPlayer = nullptr;
+
 public:
 	static CPhysx_Manager*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void			Free(); /* PhysX 종료 후 객체 소멸 */

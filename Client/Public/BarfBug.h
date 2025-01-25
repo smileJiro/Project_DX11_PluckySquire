@@ -33,10 +33,14 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+
+public:
 	virtual void Change_Animation() override;
 	virtual void Attack(_float _fTimeDelta) override;
-	void Alert_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Attack_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
 	virtual HRESULT					Ready_Components();

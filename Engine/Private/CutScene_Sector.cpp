@@ -18,6 +18,10 @@ CCutScene_Sector::CCutScene_Sector(const CCutScene_Sector& _Prototype)
 
 HRESULT CCutScene_Sector::Initialize(void* _pArg)
 {
+	CUTSCENE_SECTOR_DESC* pDesc = static_cast<CUTSCENE_SECTOR_DESC*>(_pArg);
+
+	m_iSectorType = pDesc->iSectorType;
+
 	return S_OK;
 }
 
@@ -48,7 +52,7 @@ _bool CCutScene_Sector::Play_Sector(_float _fTimeDelta, _vector* _pOutPos)
 		return true;
 	}
 
-	switch (m_eSectorType) {
+	switch (m_iSectorType) {
 	case SPLINE:
 		*_pOutPos = Calculate_Position_Spline(fRatio);
 		break;
@@ -65,10 +69,10 @@ _vector CCutScene_Sector::Calculate_Position_Spline(_float _fRatio)
 	_uint iSegment = (_uint)(_fRatio * (m_KeyFrames.size() - 3));
 	_float fRatio = _fRatio * (m_KeyFrames.size() - 3) - iSegment;
 
-	_vector vPos0 = m_KeyFrames[iSegment].vPosition;
-	_vector vPos1 = m_KeyFrames[iSegment + 1].vPosition;
-	_vector vPos2 = m_KeyFrames[iSegment + 2].vPosition;
-	_vector vPos3 = m_KeyFrames[iSegment + 3].vPosition;
+	_vector vPos0 = XMLoadFloat3(&m_KeyFrames[iSegment].vPosition);
+	_vector vPos1 = XMLoadFloat3(&m_KeyFrames[iSegment + 1].vPosition);
+	_vector vPos2 = XMLoadFloat3(&m_KeyFrames[iSegment + 2].vPosition);
+	_vector vPos3 = XMLoadFloat3(&m_KeyFrames[iSegment + 3].vPosition);
 
 	_vector vLerp0_First = XMVectorLerp(vPos0, vPos1, fRatio);
 	_vector vLerp1_First = XMVectorLerp(vPos1, vPos2, fRatio);
@@ -89,17 +93,18 @@ _vector CCutScene_Sector::Calculate_Position_Linear(_float _fRatio)
 
 void CCutScene_Sector::Sort_Sector()
 {
-	sort(m_KeyFrames.begin(), m_KeyFrames.end(), [](CUTSCENE_KEYFRAME _src, CUTSCENE_KEYFRAME _dst) {
+	sort(m_KeyFrames.begin(), m_KeyFrames.end(), [](CUTSCENE_KEYFRAME& _src, CUTSCENE_KEYFRAME& _dst) {
 
 		if (_src.fTimeStamp < _dst.fTimeStamp)
 			return true;
+		return false;
 		});
 }
 
 void CCutScene_Sector::Add_KeyFrame(CUTSCENE_KEYFRAME _tKeyFrame)
 {
 	for (auto& Frame : m_KeyFrames) {
-		if (true == XMVector3Equal(Frame.vPosition, _tKeyFrame.vPosition))
+		if (true == XMVector3Equal(XMLoadFloat3(&Frame.vPosition), XMLoadFloat3(&_tKeyFrame.vPosition)))
 			return;
 	}
 

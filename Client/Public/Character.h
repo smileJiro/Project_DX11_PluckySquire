@@ -1,10 +1,6 @@
 #pragma once
 #include "ContainerObject.h"
 
-BEGIN(physx)
-class CRigidBody;
-END
-
 BEGIN(Client)
 class CCharacter abstract :
     public CContainerObject

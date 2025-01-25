@@ -22,7 +22,7 @@ HRESULT CRenderer::Initialize()
     m_iOriginViewportHeight = (_uint)ViewportDesc.Height;
 
     /* Target Book2D */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)ViewportDesc.Width, (_uint)ViewportDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
         return E_FAIL;
 
     /* Target Diffuse */
@@ -112,6 +112,10 @@ HRESULT CRenderer::Initialize()
 
     /* DepthStencilView Init */
     if (FAILED(Ready_DepthStencilView(DSV_SHADOW, g_iShadowWidth, g_iShadowHeight)))
+        return E_FAIL;
+
+    /* DepthStencilView Init */
+    if (FAILED(Ready_DepthStencilView(DSV_BOOK2D, RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
         return E_FAIL;
 
 #ifdef _DEBUG
@@ -229,7 +233,10 @@ HRESULT CRenderer::Draw_RenderObject()
 
 HRESULT CRenderer::Render_Book2D()
 {
-    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Book_2D"))))
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Book_2D"), m_pBook2DDepthStencilView)))
+        return E_FAIL;
+
+    if (FAILED(SetUp_Viewport(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
         return E_FAIL;
 
     for (auto& pRenderObject : m_RenderObjects[RG_BOOK_2D])
@@ -245,6 +252,10 @@ HRESULT CRenderer::Render_Book2D()
     m_RenderObjects[RG_BOOK_2D].clear();
 
     if (FAILED(m_pGameInstance->End_MRT()))
+        return E_FAIL;
+
+    /* Origin Viewport Setup */
+    if (FAILED(SetUp_Viewport(m_iOriginViewportWidth, m_iOriginViewportHeight)))
         return E_FAIL;
 
     return S_OK;
@@ -492,26 +503,26 @@ HRESULT CRenderer::Render_Debug()
 
     m_DebugComponents.clear();
 
-    //if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-    //    return E_FAIL;
-    //if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-    //    return E_FAIL;
+    if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+        return E_FAIL;
+    if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+        return E_FAIL;
 
-    //if (FAILED(m_pVIBuffer->Bind_BufferDesc()))
-    //    return E_FAIL;
+    if (FAILED(m_pVIBuffer->Bind_BufferDesc()))
+        return E_FAIL;
 
-    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Book_2D"), m_pShader, m_pVIBuffer)))
-    //    return E_FAIL;
-    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))
-    //    return E_FAIL;
-    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
-    //    return E_FAIL;
-    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Shadow"), m_pShader, m_pVIBuffer)))
-    //    return E_FAIL;
-    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Final"), m_pShader, m_pVIBuffer)))
-    //    return E_FAIL;
-    //if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Weighted_Blended"), m_pShader, m_pVIBuffer)))
-    //    return E_FAIL;
+    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Book_2D"), m_pShader, m_pVIBuffer)))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_GameObjects"), m_pShader, m_pVIBuffer)))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Shadow"), m_pShader, m_pVIBuffer)))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Final"), m_pShader, m_pVIBuffer)))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Render_RT_Debug(TEXT("MRT_Weighted_Blended"), m_pShader, m_pVIBuffer)))
+        return E_FAIL;
     return S_OK;
 }
 
@@ -567,6 +578,10 @@ HRESULT CRenderer::Ready_DepthStencilView(DSVTYPE _eType, _uint _iWidth, _uint _
     {
     case Engine::CRenderer::DSV_SHADOW:
         if (FAILED(m_pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &m_pShadowDepthStencilView)))
+            return E_FAIL;
+        break;
+    case Engine::CRenderer::DSV_BOOK2D:
+        if (FAILED(m_pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &m_pBook2DDepthStencilView)))
             return E_FAIL;
         break;
     default:
@@ -633,6 +648,7 @@ void CRenderer::Free()
     Safe_Release(m_pVIBuffer);
 
     Safe_Release(m_pShadowDepthStencilView);
+    Safe_Release(m_pBook2DDepthStencilView);
 
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);

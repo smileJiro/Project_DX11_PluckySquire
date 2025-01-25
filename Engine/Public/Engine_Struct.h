@@ -1,10 +1,30 @@
 #ifndef Engine_Struct_h__
 #define Engine_Struct_h__
-
 #include "Engine_Typedef.h"
 
 namespace Engine
 {
+	class CActorObject;
+	class CActor;
+
+	typedef struct tagActorUserData
+	{
+		CActorObject*				pOwner = nullptr;
+		_uint						iObjectGroup = 0;
+	}ACTOR_USERDATA;
+
+	typedef struct tagShapeUserData
+	{
+		_uint						iShapeInstanceID = 0;
+		_uint						iShapeUse = 0;
+	}SHAPE_USERDATA;
+
+	typedef struct tagCollisionInfo
+	{
+		ACTOR_USERDATA* pActorUserData;
+		SHAPE_USERDATA* pShapeUserData;
+	}COLL_INFO;
+
 	typedef struct tagShapeDesc
 	{
 
@@ -190,13 +210,13 @@ namespace Engine
 
 	typedef struct tagCutSceneKeyFrameDesc
 	{
-		_vector				vPosition = {};
+		_float3				vPosition = {};
 		_float				fTimeStamp = {};
 		
 		_uint				iZoomLevel = {};
 		_uint				iZoomRatioType = {};
 		
-		_vector				vAt = {};
+		_float3				vAt = {};
 		_bool				bLookAt = {};
 		_uint				iAtRatioType = {};
 	} CUTSCENE_KEYFRAME;

@@ -2,6 +2,8 @@
 #include "GameInstance.h"
 #include "Physx_EventCallBack.h"
 
+_uint CPhysx_Manager::m_iShapeInstanceID = 0;
+
 CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: m_pGameInstance(CGameInstance::GetInstance())
 	, m_pDevice(_pDevice)
@@ -102,49 +104,18 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
+	m_pPxScene->simulate(1.0f / 60.f);
 	
-	_float fUpdateTime = 1.0f / 60.f;
-	m_pPxScene->simulate(fUpdateTime);
-
-	//if (nullptr != m_pPlayer)
-	//{
-	//	/*PxTransform physxTransform = m_pRigidDynamic->getGlobalPose();
-	//	_matrix TranslationMatrix = XMMatrixTranslation(physxTransform.p.x, physxTransform.p.y, physxTransform.p.z);
-	//	_matrix QuatMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(physxTransform.q.x, physxTransform.q.y, physxTransform.q.z, physxTransform.q.w));
-	//	_float4x4 WorldMatrix = {};
-	//	XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
-	//	m_pPlayer->Set_WorldMatrix(WorldMatrix);*/
-
-	
-	//	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
-	//	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
-	//	//m_pRigidDynamic->setKinematicTarget();
-
-	//	if (KEY_PRESSING(KEY::A))
-	//	{
-	//		//m_pRigidDynamic->setAngularVelocity(PxVec3(0.f, 180.f, 0.f));
-	//		m_pRigidDynamic->setLinearVelocity(PxVec3(-3.f, 0.f, 0.f), PxForceMode::eFORCE);
-	//	}
-	//	if (KEY_PRESSING(KEY::D))
-	//	{
-	//		m_pRigidDynamic->setLinearVelocity(PxVec3(3.f, 0.f, 0.f), PxForceMode::eFORCE);
-	//	}
-	//	if (KEY_PRESSING(KEY::SPACE))
-	//	{
-	//		m_pRigidDynamic->addForce(PxVec3(0.f, 22.f, 0.f), PxForceMode::eFORCE);
-	//	}
-	//	//_float3 vPos = {};
-	//	//XMStoreFloat3(&vPos, m_pPlayer->Get_Position());
-	//	//PxTransform Transform = { vPos.x, vPos.y, vPos.z };
-	//	//m_pRigidDynamic->setKinematicTarget(Transform);
-	//}
-
-
 	if (m_pPxScene->fetchResults(true))
 	{
+		if (nullptr != m_pPhysx_EventCallBack)
+			m_pPhysx_EventCallBack->Update();
+	
 		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
 		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
 	}
+
+	
 }
 
 HRESULT CPhysx_Manager::Render()
@@ -163,6 +134,21 @@ HRESULT CPhysx_Manager::Render()
 	m_pVIBufferCom->Render();
 
 	return S_OK;
+}
+
+void CPhysx_Manager::Add_ShapeUserData(SHAPE_USERDATA* _pUserData)
+{
+	m_pShapeUserDatas.push_back(_pUserData);
+}
+
+void CPhysx_Manager::Delete_ShapeUserData()
+{
+	for (auto& pUserData : m_pShapeUserDatas)
+	{
+		delete pUserData;
+		pUserData = nullptr;
+	}
+	m_pShapeUserDatas.clear();
 }
 
 HRESULT CPhysx_Manager::Initialize_Foundation()
@@ -194,12 +180,12 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	SceneDesc.gravity = PxVec3(0.0f, -9.81f * 3.0f, 0.0f);
 
 	/* Create Dispatcher */
-	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(2);
+	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(s_iNumThreads);
 	if (nullptr == m_pPxDefaultCpuDispatcher)
 		return E_FAIL;
 
 	SceneDesc.cpuDispatcher = m_pPxDefaultCpuDispatcher;
-	SceneDesc.filterShader = PxDefaultSimulationFilterShader;//TWFilterShader; //PxDefaultSimulationFilterShader;//; // 일단 기본값으로 생성 해보자.
+	SceneDesc.filterShader = TWFilterShader;//TWFilterShader; //PxDefaultSimulationFilterShader;//; // 일단 기본값으로 생성 해보자.
 	SceneDesc.simulationEventCallback = m_pPhysx_EventCallBack; // 일단 기본값으로 생성 해보자.
 	
 	/* Create Scene */
@@ -303,30 +289,42 @@ void CPhysx_Manager::Free()
 	/////////////////////////////////
 	/* Release 순서 건들지 마시오. */
 	/////////////////////////////////
-	Safe_Release(m_pPhysx_EventCallBack);
-	//PHYSX_RELEASE(m_pGroundPlane);
-	//PHYSX_RELEASE(m_pTestDesk); 
-	PHYSX_RELEASE(m_pPxScene);
-	PHYSX_RELEASE(m_pPxDefaultCpuDispatcher);/* Scene 삭제후 곧바로 정리*/
-	//for(_uint i =0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
-	//	PHYSX_RELEASE(m_pPxMaterial[i]); /* Scene 삭제 후 정리 해야함. */
-	PHYSX_RELEASE(m_pPxPhysics); /* Pvd보다 반드시 먼저 삭제되어야함. */
+
+	// Shape User Data 정리
+	Delete_ShapeUserData();
+	// PhysX 리소스 해제
+	m_pGroundPlane->release();
+	m_pTestDesk->release();
+	m_pPxScene->release();
+	m_pPxDefaultCpuDispatcher->release();
+	/* Scene 삭제후 곧바로 정리*/
+	for(_uint i =0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
+		m_pPxMaterial[i]->release();
+
+	m_pPxPhysics->release();
 	if (nullptr != m_pPxPvd)
 	{
+		m_pPxPvd->disconnect(); // 연결 해제
 		if (auto pTransport = m_pPxPvd->getTransport())
 		{
-			PHYSX_RELEASE(m_pPxPvd); /* Pvd를 정리하고 */
-			PHYSX_RELEASE(pTransport); /* Transport를 정리 */
+			m_pPxPvd->release();
+			pTransport->release();
 		}
-		
 	}
-	PHYSX_RELEASE(m_pPxFoundation); /* 가장 마지막 정리 */
+	m_pPxFoundation->release();
 
+	// 게임 및 DirectX 리소스 해제
+	Safe_Release(m_pPhysx_EventCallBack);
 	Safe_Release(m_pPlayer);
 	Safe_Release(m_pShader);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pGameInstance);
+
+	// DirectX 리소스 해제 (가장 마지막)
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+
+	// 부모 클래스 자원 해제
 	__super::Free();
+
 }

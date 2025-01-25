@@ -1,5 +1,10 @@
 #pragma once
 #include "Monster.h"
+
+BEGIN(Client)
+
+class CFSM_Boss;
+
 class CButterGrump final : public CMonster
 {
 public:
@@ -50,16 +55,6 @@ private:
 	virtual ~CButterGrump() = default;
 
 public:
-	virtual void Set_State(BOSS_STATE _eState)
-	{
-		m_eBossState = _eState;
-	}
-	virtual void Set_PreState(BOSS_STATE _eState)
-	{
-		m_ePreBossState = _eState;
-	}
-
-public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual void			Priority_Update(_float _fTimeDelta) override;
@@ -70,19 +65,16 @@ public:
 public:
 	virtual void Change_Animation() override;
 	virtual void Attack(_float _fTimeDelta) override;
-	void Alert_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Attack_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Intro_First_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Intro_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void Play_Intro();
 
 private:
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
+	HRESULT								Ready_Projectiles();
 
 private:
-	BOSS_STATE		m_eBossState = {};
-	BOSS_STATE		m_ePreBossState = {};
+	CFSM_Boss* m_pBossFSM = { nullptr };
 
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -90,3 +82,4 @@ public:
 	virtual void			Free() override;
 };
 
+END
