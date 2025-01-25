@@ -34,6 +34,18 @@ HRESULT CActorObject::Initialize(void* _pArg)
     return S_OK;
 }
 
+void CActorObject::Active_OnEnable()
+{
+    if (nullptr != m_pActorCom)
+        m_pActorCom->Set_Active(true);
+}
+
+void CActorObject::Active_OnDisable()
+{
+    if(nullptr != m_pActorCom)
+        m_pActorCom->Set_Active(false);
+}
+
 HRESULT CActorObject::Ready_Components(ACTOROBJECT_DESC* _pDesc)
 {
     _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();

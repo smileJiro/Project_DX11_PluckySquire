@@ -254,6 +254,10 @@ HRESULT CRenderer::Render_Book2D()
     if (FAILED(m_pGameInstance->End_MRT()))
         return E_FAIL;
 
+    /* Origin Viewport Setup */
+    if (FAILED(SetUp_Viewport(m_iOriginViewportWidth, m_iOriginViewportHeight)))
+        return E_FAIL;
+
     return S_OK;
 }
 
