@@ -105,30 +105,31 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 				{
 					DialogLine dialogLine;
 
+					// 말하는 대상
 					if (line.contains("Talker") && line["Talker"].is_string())
 					{
 						dialogLine.Talker = StringToWstring(line["Talker"].get<string>());
 					}
 						
-
+					// 대사
 					if (line.contains("text") && line["text"].is_string())
 					{
 						dialogLine.text = StringToWstring(line["text"].get<string>());
 					}
 						
-
+					// 다이얼로그 배경
 					if (line.contains("BG") && line["BG"].is_number_integer())
 					{
 						dialogLine.BG = line["BG"].get<int>();
 					}
 						
-
+					// 다이얼로그 위치 enum 참조
 					if (line.contains("location") && line["location"].is_number_integer())
 					{
 						dialogLine.location = static_cast<LOC>(line["location"].get<int>());
 					}
 						
-
+					// 탁탁탁 나오는 애니메이션의 스피드 및 대기 시간
 					if (line.contains("animation") && line["animation"].is_object())
 					{
 						auto anim = line["animation"];
