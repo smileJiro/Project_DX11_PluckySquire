@@ -31,7 +31,7 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 	
 	_float fBookY = RTSIZE_BOOK2D_Y * ((_float)g_iWinSizeX / (_float)RTSIZE_BOOK2D_X);
 	pDesc->fX = g_iWinSizeX >> 1;
-	pDesc->fY = fBookY * 0.5f;
+	pDesc->fY = (_uint)fBookY >> 1;
 	pDesc->fSizeX = g_iWinSizeX;
 	pDesc->fSizeY = fBookY;
 
@@ -121,14 +121,7 @@ HRESULT C2DDefault_RenderObject::Bind_ShaderResources()
 	if (!m_isBackColorRender)
 	{ 
 		XMStoreFloat4x4(&m_TargetProjMatrix, XMMatrixOrthographicLH((_float)m_fTargetSize.x, (_float)m_fTargetSize.y, 0.0f, 1.0f));
-		if (FAILED(m_pShader->Bind_RawValue("g_fRed", &m_fBackColor.x, sizeof(_float))))
-			return E_FAIL;
-		if (FAILED(m_pShader->Bind_RawValue("g_fGreen", &m_fBackColor.y, sizeof(_float))))
-			return E_FAIL;
-		if (FAILED(m_pShader->Bind_RawValue("g_fBlue", &m_fBackColor.z, sizeof(_float))))
-			return E_FAIL;
-		if (FAILED(m_pShader->Bind_RawValue("g_fOpaque", &m_fBackColor.w, sizeof(_float))))
-			return E_FAIL;
+		if (FAILED(m_pShader->Bind_RawValue("g_vColors", &m_fBackColor, sizeof(_float4))))
 		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_TargetProjMatrix)))
 			return E_FAIL;
 	}

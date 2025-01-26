@@ -206,6 +206,11 @@ HRESULT CModel_PackagingObject::Import_Animations(ifstream& _inFile)
 		tAnim.fDuration = (_float)dValue;
 		_inFile.read(reinterpret_cast<char*>(&dValue), sizeof(double));
 		tAnim.fTickPerSecond = (_float)dValue;
+		//Loop - 1.26 김지완이 추가함
+		_inFile.read(reinterpret_cast<char*>(&tAnim.bLoop), sizeof(_bool));
+		//SpeedMagnifier- 1.26 김지완이 추가함
+		_inFile.read(reinterpret_cast<char*>(&tAnim.fSpeedMagnifier), sizeof(_float));
+
 
 		_inFile.read(reinterpret_cast<char*>(&tAnim.iNumChannels), sizeof(_uint));
 
@@ -362,6 +367,10 @@ HRESULT CModel_PackagingObject::Export_Animations(ofstream& _OutFile)
 		tAnim.fDuration = (_float)dValue;
 		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(double));
 		tAnim.fTickPerSecond = (_float)dValue;
+		//Loop - 1.26 김지완이 추가함
+		_OutFile.write(reinterpret_cast<char*>(&tAnim.bLoop), sizeof(_bool));
+		//SpeedMagnifier- 1.26 김지완이 추가함
+		_OutFile.write(reinterpret_cast<char*>(&tAnim.fSpeedMagnifier), sizeof(_float));
 
 		_OutFile.write(reinterpret_cast<char*>(&tAnim.iNumChannels), sizeof(_uint));
 

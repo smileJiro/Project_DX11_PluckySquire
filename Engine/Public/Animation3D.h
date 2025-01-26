@@ -28,7 +28,7 @@ public:
 	bool Is_AnimChangeable();
 
 	virtual void Set_Progress(_float _fProgerss)override;
-	void Set_Loop(bool bLoop) { m_bLoop = bLoop; }
+
 	void Set_PostDealyPercent(_float fPercentage) { m_fPostDelayPercentage = fPercentage; }
 	void Set_AnimTransitionTime(_float fTime) { m_fAnimTransitionTime = fTime; }
 
@@ -44,8 +44,6 @@ protected:
 	_float					m_fTickPerSecond = {};
 	_float					m_fCurrentTrackPosition = {};
 	_float					m_fAnimTransitionTime = { 0.1f };
-
-	bool						m_bLoop = { false };
 
 	//Channel마다 현재 KeyFrameIndex를 저장하는 배열
 	vector<_uint>			m_CurrentKeyFrameIndices;

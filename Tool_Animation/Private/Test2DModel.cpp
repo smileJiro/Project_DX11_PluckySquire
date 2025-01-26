@@ -213,6 +213,7 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	{
 		string strTextureName = pTexture.first;
 		iCount = strTextureName.length();
+		//cout << strTextureName << endl;
 		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 		_outfile.write(strTextureName.c_str(), iCount);
 	}
@@ -266,6 +267,21 @@ _float CTest2DModel::Get_Progerss()
 	if (m_Animation2Ds.empty())
 		return 0;
 	return static_cast<CToolAnimation2D*>(m_Animation2Ds[m_iCurAnimIdx])->Get_Progress();
+}
+
+_float CTest2DModel::Get_AnimSpeedMagnifier(_uint iAnimIndex)
+{
+	if ((_int)(m_Animation2Ds.size() - 1) < (_int)iAnimIndex)
+		return 0;
+	return static_cast<CToolAnimation2D*>(m_Animation2Ds[iAnimIndex])->Get_SpeedMagnifier();
+
+}
+
+_bool CTest2DModel::Is_LoopAnimation(_uint iAnimIndex)
+{
+	if ((_int)(m_Animation2Ds.size() - 1) < (_int)iAnimIndex)
+		return 0;
+	return static_cast<CToolAnimation2D*>(m_Animation2Ds[iAnimIndex])->Is_LoopAnim();
 }
 
 

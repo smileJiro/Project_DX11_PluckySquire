@@ -82,8 +82,8 @@
     <Filter Include="03. GameObject\2D\SampleBook">
       <UniqueIdentifier>{636a99ec-038c-430d-9742-c125fd0ad6f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. TestOverrideShaderFiles">
-      <UniqueIdentifier>{747ee2e5-cf4f-4e47-8f65-bd37b23abccc}</UniqueIdentifier>
+    <Filter Include="SampleShader">
+      <UniqueIdentifier>{bfe1e1bd-db7a-4089-b38b-d53bf949c5dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +183,9 @@
     <ClInclude Include="..\Public\SampleBook.h">
       <Filter>03. GameObject\2D\SampleBook</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BackGround.h">
+      <Filter>03. GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -274,6 +277,9 @@
     <ClCompile Include="..\Private\SampleBook.cpp">
       <Filter>03. GameObject\2D\SampleBook</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BackGround.cpp">
+      <Filter>03. GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Map_Tool.rc">
@@ -282,7 +288,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
-      <Filter>96. TestOverrideShaderFiles</Filter>
+      <Filter>SampleShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

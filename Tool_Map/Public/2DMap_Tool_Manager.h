@@ -106,7 +106,7 @@ private:
 	ID3D11DeviceContext*			m_pContext;
 	CGameInstance*					m_pGameInstance = { nullptr };
 	CImguiLogger*					m_pLogger = nullptr;
-	CTask_Manager*					m_pMapParsingManager;
+	CTask_Manager*					m_pTaskManager;
 	C2DTile_RenderObject*			m_pTileRenderObject = nullptr;
 	
 	_wstring						m_arrSelectName[LIST_END];

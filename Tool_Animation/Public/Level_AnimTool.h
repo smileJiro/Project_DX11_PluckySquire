@@ -69,6 +69,7 @@ private:
 	_bool m_bPlaying = true;
 	_float m_fCurrentProgerss = 0;
 	_uint m_fCurrentFrame= 0;
+	_float m_fAnimaSpeedMagnifier= 1;
 
 	
 	map<_uint, vector< ANIM_EVENT>>m_AnimEvents;

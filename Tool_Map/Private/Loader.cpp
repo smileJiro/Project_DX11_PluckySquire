@@ -12,6 +12,7 @@
 #include "2DTile_RenderObject.h"
 #include "2DMapObject.h"
 #include "SampleBook.h"
+#include "BackGround.h"
 
 #include <filesystem>
 #include <iostream>
@@ -100,6 +101,10 @@ HRESULT CLoader::Loading_Level_Static()
 {
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_MapTool_Logo"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/MapTool_Logo.png")))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
@@ -141,11 +146,11 @@ HRESULT CLoader::Loading_Level_Static()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../../Client/Bin/MapSaveFiles/Room_Enviroment.json"), matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
         return E_FAIL;
-    
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../../Client/Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
-        return E_FAIL;
+
+    //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../../Client/Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
+    //    return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
     /* For. Prototype_GameObject_Camera_Target */
@@ -156,6 +161,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_MapObject */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
         CMapObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    /* For. Prototype_GameObject_BackGround */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGround"),
+        CBackGround::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -214,7 +224,7 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("barrel"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/barrel_01.dds")))))
         return E_FAIL;
-
+ 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("townsign"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/town_sign.dds")))))
         return E_FAIL;
@@ -248,6 +258,7 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
     /* For. Prototype_GameObject_MapObject */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
         C2DDefault_RenderObject::Create(m_pDevice, m_pContext))))
@@ -291,8 +302,6 @@ HRESULT CLoader::Loading_Level_3D_Map_Tool()
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
     /* For. Prototype_GameObject_MapObject */
-
-    
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 

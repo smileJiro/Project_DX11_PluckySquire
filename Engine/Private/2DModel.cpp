@@ -157,6 +157,16 @@ void C2DModel::To_NextAnimation()
 	Switch_Animation((m_iCurAnimIdx + 1) % m_Animation2Ds.size());
 }
 
+void C2DModel::Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag)
+{
+	if (iAnimIndex >= m_Animation2Ds.size())
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
+	m_Animation2Ds[iAnimIndex]->Set_SpeedMagnifier(_fMag);
+}
+
 const _matrix* C2DModel::Get_CurrentSpriteTransform()
 {
 	return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();

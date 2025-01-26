@@ -25,10 +25,13 @@ public:
 	//Set
 	void						Set_2DProjMatrix(_fmatrix _vProjMatrix);
 	void						Set_Progerss(_float _fTrackPos);
+	void						Set_AnimSpeedMagnifier(COORDINATE _eCoord, _uint iAnimIndex, _float _fMagnifier);
 	//Get
 	void						Get_TextureNames(set<wstring>& _outTextureNames);
 	_uint						Get_AnimationCount();	
 	_float					Get_Progress();
+	_float					Get_AnimSpeedMagnifier(COORDINATE _eCoord, _uint iAnimIndex);
+	_bool					Is_LoopAnimation(COORDINATE _eCoord, _uint iAnimIndex);
 private:
 	HRESULT					Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc);
 

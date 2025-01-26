@@ -318,6 +318,16 @@ void C3DModel::To_NextAnimation()
 	Switch_Animation((m_iCurrentAnimIndex + 1) % m_Animations.size());
 }
 
+void C3DModel::Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag)
+{
+	if (iAnimIndex >= m_Animations.size())
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
+	m_Animations[iAnimIndex]->Set_SpeedMagnifier(_fMag);
+}
+
 _uint C3DModel::Get_AnimCount()
 {
 	return (_uint)m_Animations.size();

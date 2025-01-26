@@ -1,6 +1,7 @@
 #pragma once
 #include <process.h>
 #pragma warning (disable : 4273)
+#pragma warning (disable : 4099)
 namespace Map_Tool
 {
 	const unsigned int g_iWinSizeX = 1600;
@@ -41,8 +42,8 @@ extern HWND g_hWnd;
 #define IMGUI_DEFINE_MATH_OPERATORS_IMPLEMENTED
 
 #define STATIC_3D_MODEL_FILE_PATH L"../../Client/Bin/resources/Models/"
-#define STATIC_3D_MAP_SAVE_FILE_PATH L"../../Client/Bin/MapSaveFiles/"
-
+#define MAP_2D_DEFAULT_PATH L"../../Client/Bin/MapSaveFiles/2D/"
+#define MAP_3D_DEFAULT_PATH L"../../Client/Bin/MapSaveFiles/3D/"
 #include "imguidll\imgui.h"
 #include "imguidll\imgui_internal.h"
 
