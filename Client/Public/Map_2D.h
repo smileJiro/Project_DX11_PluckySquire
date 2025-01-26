@@ -15,7 +15,7 @@ private:
 public:
 	HRESULT	Initialize();
 
-private: /* 외부 요청을 통해 Register할지, 생성시점에 무조건 Register 할지 Renderer 작업하면서 생각 필요. */
+private: /* 외부 요청을 통해 Register할지, 생성시점에 무조건 Register 할지, 그냥 Section채로 그릴지 Renderer 작업하면서 생각 필요. */
 	// 1. RenderTarget을 Target_Manager에 등록하는 기능.(DSV는 어떻게할지 생각해보자.) (x)
 	HRESULT Register_RTV_ToTargetManager();
 	// 2. Texture의 SRV를 RenderTarget의 RTV로 Copy하는 기능. (x)

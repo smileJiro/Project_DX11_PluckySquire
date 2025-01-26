@@ -27,4 +27,14 @@ void CParticle_Emitter::Free()
 	__super::Free();
 }
 
+#ifdef _DEBUG
+void CParticle_Emitter::Tool_Update(_float fTimeDelta)
+{
+
+	
+}
+void CParticle_Emitter::Tool_Setting()
+{
+}
+#endif
 

@@ -12,6 +12,7 @@ CTexture::CTexture(const CTexture& _Prototype)
     : CComponent(_Prototype)
     , m_iNumSRVs(_Prototype.m_iNumSRVs)
     , m_SRVs{ _Prototype.m_SRVs }
+    , m_SRVNames(_Prototype.m_SRVNames)
 {
     for (auto& pSRV : m_SRVs)
         Safe_AddRef(pSRV);

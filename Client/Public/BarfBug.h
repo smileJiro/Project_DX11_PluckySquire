@@ -19,6 +19,33 @@ public:
 		LAST,
 	};
 
+	enum Animation2D
+	{
+		ATTACK_DOWN,
+		ATTACK_RIGHT,
+		ATTACK_UP,
+		BULLY,
+		HIT_DOWN,
+		HIT_RIGHT,
+		HIT_UP,
+		WALK_DOWN,
+		WALK_RIGHT,
+		WALK_UP,
+		ALERT_DOWN,
+		ALERT_RIGHT,
+		ALERT_UP,
+		DEATH_DOWN,
+		DEATH_RIGHT,
+		DEATH_UP,
+		IDLE_DOWN,
+		IDLE_RIGHT,
+		IDLE_UP,
+		SLEEP_DOWN,
+		PROJECTILE,
+		PROJECTILESPLAT,
+		ANIM2D_LAST,
+	};
+
 private:
 	CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CBarfBug(const CBarfBug& _Prototype);

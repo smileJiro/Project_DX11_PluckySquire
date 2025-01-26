@@ -482,13 +482,21 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform)))
         return E_FAIL;
 
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
+        TEXT("../Bin/Resources/Models/3DMapObject/"), matPretransform)))
+        return E_FAIL;
+
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
+    
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
+        return E_FAIL;
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_GAMEPLAY,
+        TEXT("../Bin/Resources/Models/2DAnim/"))))
         return E_FAIL;
 
 
@@ -651,7 +659,7 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
     _tchar				szFilePath[MAX_PATH] = TEXT("");
     _tchar				szFullPath[MAX_PATH] = TEXT("");
     _tchar				szProtoTag[MAX_PATH] = TEXT("");
-    _tchar				szExtension[MAX_PATH] = TEXT(".json");
+    _tchar				szExtension[MAX_PATH] = TEXT(".model2d");
 
     lstrcpy(szFilePath, _szDirPath);
     lstrcat(szFilePath, TEXT("*"));
@@ -707,6 +715,27 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
             {
                 string str = "Failed to Create 3DModel";
+                str += entry.path().filename().replace_extension().string();
+                MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+                return E_FAIL;
+            }
+        }
+    }
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _szDirPath)
+{
+    std::filesystem::path path;
+    path = _szDirPath;
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+        if (entry.path().extension() == ".model2d") {
+            //cout << entry.path().string() << endl;
+
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
+                C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
+            {
+                string str = "Failed to Create 2DModel";
                 str += entry.path().filename().replace_extension().string();
                 MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
                 return E_FAIL;
