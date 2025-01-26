@@ -55,7 +55,7 @@ public:
 
 private:
     HRESULT     LoadFromJson(const std::wstring& filePath); // 데이터 로드
-    HRESULT      DisplayTextWithAnimation(); // 타이핑 되게하자.
+    HRESULT      DisplayText(); // 타이핑 되게하자.
 
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터

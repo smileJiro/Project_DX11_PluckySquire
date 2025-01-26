@@ -67,7 +67,7 @@ HRESULT CDialog::Render()
 
 		if (m_iCurrentLineIndex < m_DialogDatas[0].lines.size())
 		{
-			DisplayTextWithAnimation();
+			DisplayText();
 		}
 	}
 		
@@ -152,7 +152,7 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 	return S_OK;
 }
 
-HRESULT CDialog::DisplayTextWithAnimation()
+HRESULT CDialog::DisplayText()
 {
 	if (m_iCurrentLineIndex >= m_DialogDatas[0].lines.size())
 		return E_FAIL;
