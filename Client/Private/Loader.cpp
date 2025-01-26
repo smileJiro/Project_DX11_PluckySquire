@@ -20,7 +20,7 @@
 #include "ShopItemBG.h"
 #include "Interaction_Heart.h"
 #include "ESC_Goblin.h"
-
+#include "Dialogue.h"
 
 /* For. UI*/
 
@@ -54,6 +54,13 @@
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
 #include "FSM_Boss.h"
+
+
+// Sample
+#include "SampleBook.h"
+#include "2DDefault_RenderObject.h"
+
+
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -378,6 +385,12 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_bulb.dds"), 1))))
 		return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SampleMap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Map/SampleMap.dds"), 1))))
+		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
+        C2DDefault_RenderObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
 
@@ -439,6 +452,16 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		return E_FAIL;
 
 
+    /// 다이얼로그 관련
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DialogueBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Dialogue/BG/DialogueBGs/Dialogue_BG_%d.dds"), 27))))
+		return E_FAIL;
+
+	//if (FAILED(Load_Diagloues(LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Dialogue/Test.json"))))
+	//	return E_FAIL;
+
+
+
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
@@ -487,7 +510,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    /* For. Prototype_GameObject_MapObject */
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
+        CSampleBook::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     ///////////////////////////////// UI /////////////////////////////////
     /* For. Prototype_UIObject_Pick_Bubble */
@@ -727,6 +754,38 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
 
         
     }
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Diagloues(LEVEL_ID _iLevelIndex, const _tchar* _szJasonPath)
+{
+    CDialogue::Dialog tDialogue;
+    ifstream input_File(_szJasonPath);
+
+
+	json jFileData;
+	if (!input_File.is_open())
+	{
+		MSG_BOX("Failed to Open Json File ");
+		return E_FAIL;
+	}
+
+    json& jDialog = jFileData["DialInfo"];
+    input_File >> jFileData;
+    input_File.close();
+    set<string> strDialName;
+
+    for (auto& j : jDialog)
+    {
+        strDialName.insert(j.get<string>());
+    }
+       
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_iLevelIndex, StringToWstring(strFileName),
+	//	CDialogue::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
+	//	return E_FAIL;
+
+
     return S_OK;
 }
 

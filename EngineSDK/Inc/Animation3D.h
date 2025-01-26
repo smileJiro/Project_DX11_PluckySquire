@@ -19,7 +19,7 @@ public:
 	bool Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta);
 	bool Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& m_mapAnimTransLeftFrame);
 
-	void Reset_CurrentTrackPosition();
+	virtual void Reset()override;
 
 	float Get_AnimTime() { return m_fDuration; }
 	void Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const;
@@ -27,7 +27,7 @@ public:
 	virtual _float Get_Progress() override;
 	bool Is_AnimChangeable();
 
-	void Set_Progress(_float _fProgerss);
+	virtual void Set_Progress(_float _fProgerss)override;
 	void Set_Loop(bool bLoop) { m_bLoop = bLoop; }
 	void Set_PostDealyPercent(_float fPercentage) { m_fPostDelayPercentage = fPercentage; }
 	void Set_AnimTransitionTime(_float fTime) { m_fAnimTransitionTime = fTime; }

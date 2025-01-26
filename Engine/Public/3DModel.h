@@ -44,6 +44,7 @@ public:
 	_uint					Get_BoneIndex(const _char* pBoneName) const;
 	float					Get_AnimTime();
 	_uint					Get_AnimIndex();
+	virtual CAnimation* Get_Animation(_uint iAnimIndex) override;
 	_float					Get_AnimationProgress(_uint iAnimIdx);
 
 	const _float4x4*		Get_BoneMatrix(const _char* pBoneName) const;

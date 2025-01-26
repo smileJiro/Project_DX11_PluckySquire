@@ -38,7 +38,6 @@ public:
 
 	//Set
 	void						Set_CurrentFrame(_uint _iFrameIndex);
-	void						Set_Progerss(_float _fTrackPos);
 	//Get
 	_uint						Get_CurrentFrame();
 

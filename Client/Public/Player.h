@@ -404,9 +404,9 @@ public:
 
 
 private:
-	void					Someting();
-	void					Someting2();
-	void					Someting3();
+	void					Someting(int a);
+	void					Someting2(float a);
+	_int					Someting3();
 	void					Key_Input(_float _fTimeDelta);
 
 private:

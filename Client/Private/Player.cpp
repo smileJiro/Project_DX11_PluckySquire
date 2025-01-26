@@ -113,8 +113,8 @@ HRESULT CPlayer::Ready_Components()
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
 
 
-    Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this));
-    Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this));
+    Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this, 1));
+    Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this, 0.1f));
     Bind_AnimEventFunc("Someting3", bind(&CPlayer::Someting3, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -464,20 +464,23 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 }
 
 
-
-void CPlayer::Someting()
+void CPlayer::Someting(int a)
 {
-    int a = 0;
+    cout << "Someting" << endl;
+    int b = a;
 }
 
-void CPlayer::Someting2()
+void CPlayer::Someting2(float a)
 {
-    int a = 0;
+    cout << "Someting2" << endl;
+    float b = a;
 }
 
-void CPlayer::Someting3()
+_int CPlayer::Someting3()
 {
     int a = 0;
+    cout << "Someting3" << endl;
+    return a;
 }
 
 void CPlayer::Key_Input(_float _fTimeDelta)
@@ -563,5 +566,6 @@ CGameObject* CPlayer::Clone(void* _pArg)
 void CPlayer::Free()
 {
 	Safe_Release(m_pStateMachine);
+	Safe_Release(m_pAnimEventGenerator);
     __super::Free();
 }
