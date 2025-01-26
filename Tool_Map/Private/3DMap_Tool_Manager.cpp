@@ -999,7 +999,7 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 	if (!_bSelected)
 		strFullFilePath = m_strCacheFilePath;
 	else
-		strFullFilePath = (STATIC_3D_MAP_SAVE_FILE_PATH + m_pGameInstance->StringToWString(filename) + L".mchc");
+		strFullFilePath = (MAP_3D_DEFAULT_PATH + m_pGameInstance->StringToWString(filename) + L".mchc");
 	log = "Save Start... File Name : ";
 	log += filename;
 	LOG_TYPE(log, LOG_SAVE);
@@ -1194,7 +1194,7 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 
 	log = "Load Start... File Name : ";
 	log += filename;
-	_wstring strFullFilePath = STATIC_3D_MAP_SAVE_FILE_PATH; 
+	_wstring strFullFilePath = MAP_3D_DEFAULT_PATH;
 	strFullFilePath += L"/" + m_arrSelectName[SAVE_LIST] + L".mchc";
 
 	if (!_bSelected)
@@ -1625,7 +1625,7 @@ void C3DMap_Tool_Manager::Load_ModelList()
 void C3DMap_Tool_Manager::Load_SaveFileList()
 {
 	m_SaveFileLists.clear();
-	for (const auto& entry : ::recursive_directory_iterator(STATIC_3D_MAP_SAVE_FILE_PATH))
+	for (const auto& entry : ::recursive_directory_iterator(MAP_3D_DEFAULT_PATH))
 	{
 			if (entry.path().extension() == ".mchc")
 			{

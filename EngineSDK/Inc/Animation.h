@@ -5,7 +5,7 @@
 
 BEGIN(Engine)
 class CAnimEventGenerator;
-class CAnimation abstract:
+class ENGINE_DLL CAnimation abstract:
     public CBase
 {
 public:
