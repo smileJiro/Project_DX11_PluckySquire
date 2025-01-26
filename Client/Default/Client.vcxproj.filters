@@ -214,6 +214,9 @@
     <Filter Include="02.GameObjects\SampleBook">
       <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\FSM\State\Alert">
+      <UniqueIdentifier>{88718416-dfd9-4f31-b553-a803df310b8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -442,9 +445,6 @@
     <ClInclude Include="..\Public\Popuff.h">
       <Filter>02.GameObjects\Monster\Popuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\AlertState.h">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PatrolState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
@@ -459,6 +459,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\2DDefault_RenderObject.h">
       <Filter>02.GameObjects\SampleBook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AlertState.h">
+      <Filter>03.Components\FSM\State\Alert</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -679,9 +682,6 @@
     <ClCompile Include="..\Private\Popuff.cpp">
       <Filter>02.GameObjects\Monster\Popuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AlertState.cpp">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PatrolState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
@@ -696,6 +696,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
       <Filter>02.GameObjects\SampleBook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AlertState.cpp">
+      <Filter>03.Components\FSM\State\Alert</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -25,18 +25,24 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 {
     CBarfBug::MONSTER_DESC* pDesc = static_cast<CBarfBug::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    //pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    //pDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fAlertRange = 5.f;
-    pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 10.f;
+    //pDesc->fAlertRange = 5.f;
+    //pDesc->fChaseRange = 12.f;
+    //pDesc->fAttackRange = 10.f;
+    //pDesc->fDelayTime = 1.f;
+    //pDesc->fCoolTime = 3.f;
+
+    pDesc->fAlertRange = 1.f;
+    pDesc->fChaseRange = 5.f;
+    pDesc->fAttackRange = 3.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
@@ -66,7 +72,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
-    //pModelObject->Set_AnimationLoop(BARF, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BARF, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBarfBug::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -85,8 +91,8 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pProjDesc->iNumPartObjects = PART_LAST;
     pProjDesc->iCurLevelID = m_iCurLevelID;
 
-    //pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    //pProjDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
+    pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pProjDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
 
     pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
@@ -138,6 +144,15 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
+    if (KEY_DOWN(KEY::NUMPAD1))
+    {
+        _int iCurCoord = (_int)Get_CurCoord();
+        (_int)iCurCoord ^= 1;
+        _float3 vNewPos = _float3(3.0f, 6.0f, 0.0f);
+        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+        //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
+    }
+
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -325,27 +340,27 @@ HRESULT CBarfBug::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    //BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    //BodyDesc.strModelPrototypeTag_2D = TEXT("barfBug_Rig");
+    BodyDesc.strModelPrototypeTag_2D = TEXT("BarferBug");
     BodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
-	//BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
+	BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-   //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
-    //BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
-
-    //BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    //BodyDesc.tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
-    //BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    //BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

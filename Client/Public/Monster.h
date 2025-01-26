@@ -6,7 +6,7 @@ class CFSM;
 class CMonster abstract : public CCharacter
 {
 public:
-	enum MONSTERPART { PART_BODY, PART_WEAPON, PART_EFFECT, PART_END };
+	enum MONSTERPART { PART_BODY, PART_EFFECT, PART_WEAPON,  PART_END };
 
 	typedef struct tagMonsterDesc : public CCharacter::CHARACTER_DESC
 	{
@@ -50,11 +50,12 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	_float Calculate_Distance();
 	virtual void Attack(_float _fTimeDelta);
 
 public:
-	virtual void Change_Animation() {};
+	virtual void						Change_Animation() {};
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+	void									Set_2D_Direction(F_DIRECTION _eDir);
 
 protected:
 	void Delay_On() 
@@ -94,6 +95,8 @@ protected:
 	_bool m_isCool = { false };
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
+
+	F_DIRECTION m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
 
 public:
 	HRESULT Cleanup_DeadReferences() override;
