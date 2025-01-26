@@ -34,7 +34,8 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 		return;
 
 	_vector vDir = m_pTarget->Get_Position() - m_pOwner->Get_Position();
-	_float fDis = XMVectorGetX(XMVector3Length((vDir)));
+	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//y값도 더해서 거리 계산하는거 주의
+	XMVectorSetY(vDir, 0.f);
 	if (fDis <= m_fAttackRange)
 	{
 		//공격 전환
@@ -49,11 +50,13 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	}
 	else
 	{
-		//추적
+		//추적 (시야범위 만들면 수정 할 예정)
+		m_pOwner->Get_ControllerTransform()->MoveToTarget(m_pTarget->Get_Position(), _fTimeDelta);
 		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
-		m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
+		//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
 		m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta*2.f);
-		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
+		//m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
+		
 	}
 }
 

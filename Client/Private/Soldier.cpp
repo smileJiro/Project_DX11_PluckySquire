@@ -57,6 +57,7 @@ HRESULT CSoldier::Initialize(void* _pArg)
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CSoldier::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -148,6 +149,7 @@ void CSoldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case DASH_ATTACK_RECOVERY:
+        pModelObject->Switch_Animation(DASH_ATTACK_STARTUP);
         Set_AnimChangeable(true);
         break;
 
@@ -215,11 +217,12 @@ HRESULT CSoldier::Ready_Components()
     Desc.fAlertRange = m_fAlertRange;
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
+    Desc.isMelee = true;
+    Desc.pOwner = this;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
         return E_FAIL;
-    m_pFSM->Set_Owner(this);
 
     return S_OK;
 }

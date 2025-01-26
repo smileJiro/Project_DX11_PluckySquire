@@ -34,22 +34,22 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
+	_float fDis = XMVectorGetX(XMVector3Length((m_pTarget->Get_Position() - m_pOwner->Get_Position())));
 	//공격 범위 벗어나고 추적 범위 내면 Chase 전환
-	if (dis > m_fAttackRange && dis <= m_fChaseRange)
+	if (fDis > m_fAttackRange && fDis <= m_fChaseRange)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
 		return;
 	}
 	//범위 전부를 벗어나면 Idle 전환
-	if (dis > m_fChaseRange)
+	if (fDis > m_fChaseRange)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 	}
 	else
 	{
 		//공격
-		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
 		m_pOwner->Attack(_fTimeDelta);
 	}
 }
