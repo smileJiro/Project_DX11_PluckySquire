@@ -220,6 +220,23 @@ namespace Engine
 		_bool				bLookTarget = {};
 		_uint				iAtRatioType = {};
 	} CUTSCENE_KEYFRAME;
+
+	typedef struct tagCutSceneData
+	{
+		_float3				vPosition = {};
+		_float3				vRotation = {};
+
+		_float3				vAtOffset = {};
+		_float				fFovy = {};
+	} CUTSCENE_DATA;
+
+	typedef struct tagCutSceneInitialData
+	{
+		_float3				vPosition = {};
+
+		_float3				vAtOffset = {};
+		_uint				iZoomLevel = {};
+	} CUTSCENE_INITIAL_DATA;
 #pragma endregion
 
 #pragma region Binary ฐüทร

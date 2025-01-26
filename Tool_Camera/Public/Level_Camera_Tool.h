@@ -80,6 +80,7 @@ private:
 	map<_wstring, vector<CCutScene_Sector*>>		m_CutScenes;
 	vector<CUTSCENE_KEYFRAME>				m_SelectedKeyFrame;
 	_uint									m_iSectorType = {};
+	_float									m_fSectorDuration = {};
 	_int									m_iDeleteSectorNum = {};
 
 	// Sector와 CutScene에 들어간 것들을 수정하기 위한 변수
@@ -108,6 +109,9 @@ private:
 	vector<_string>							m_BinaryFilePaths;
 	_int									m_iCurrentBinaryFileIndex = { 0 };
 	_char									m_szSaveName[MAX_PATH] = { "" };
+
+	// Initial Data
+	CUTSCENE_INITIAL_DATA					m_tInitialData = {};
 
 private:
 	void				Show_CameraTool();
@@ -142,8 +146,9 @@ private:
 
 	// CutScene
 	void				Set_KeyFrameInfo();
+	void				Set_InitialData();
 	void				Create_KeyFrame();
-	CGameObject*		Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame);
+	CGameObject*		Create_Cube();
 	void				Edit_KeyFrame();
 	void				Delete_KeyFrame();
 	void				Set_CurrentKeyFrame();
