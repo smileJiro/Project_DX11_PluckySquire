@@ -144,13 +144,12 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::NUMPAD1))
+    if (KEY_DOWN(KEY::F1))
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
-        _float3 vNewPos = _float3(3.0f, 6.0f, 0.0f);
+        _float3 vNewPos = _float3(10.0f, 6.0f, 0.0f);
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
-        //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
     }
 
     __super::Update(_fTimeDelta); /* Part Object Update */
@@ -195,30 +194,93 @@ void CBarfBug::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
-        switch (MONSTER_STATE(m_iState))
+		if (COORDINATE_3D == Get_CurCoord())
         {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            break;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
 
-        case MONSTER_STATE::PATROL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
-            break;
+            case MONSTER_STATE::PATROL:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+                break;
 
-        case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
-            break;
+            case MONSTER_STATE::ALERT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+                break;
 
-        case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
-            break;
+            case MONSTER_STATE::CHASE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+                break;
 
-        case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
-            break;
+            case MONSTER_STATE::ATTACK:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+        }
+
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+            CBarfBug::Animation2D eAnim = ANIM2D_LAST;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+
+            case MONSTER_STATE::PATROL:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = WALK_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = WALK_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = WALK_RIGHT;
+                break;
+
+            case MONSTER_STATE::ALERT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = ALERT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = ALERT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = ALERT_RIGHT;
+                break;
+
+            case MONSTER_STATE::CHASE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = WALK_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = WALK_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = WALK_RIGHT;
+                break;
+
+            case MONSTER_STATE::ATTACK:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = ATTACK_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = ATTACK_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = ATTACK_RIGHT;
+                break;
+
+            default:
+                break;
+            }
+
+            if (ANIM2D_LAST == eAnim)
+                return;
+
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
         }
     }
 }
