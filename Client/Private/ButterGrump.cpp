@@ -322,11 +322,11 @@ HRESULT CButterGrump::Ready_Components()
 {
     /* Com_FSM */
     CFSM_Boss::FSMBOSSDESC Desc;
+    Desc.pOwner = this;
 
     if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM_Boss"),
         TEXT("Com_FSM_Boss"), reinterpret_cast<CComponent**>(&m_pBossFSM), &Desc)))
         return E_FAIL;
-    m_pBossFSM->Set_Owner(this);
 
 
     return S_OK;

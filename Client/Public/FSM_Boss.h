@@ -12,6 +12,7 @@ class CFSM_Boss final : public CFSM
 public:
 	typedef struct tagFSMBossDesc
 	{
+		CMonster* pOwner;
 	}FSMBOSSDESC;
 
 private:
@@ -31,7 +32,7 @@ public:
 	virtual HRESULT Set_State(_uint _iState) override;
 
 private:
-	_uint Get_NextAttack();
+	_uint Determine_NextAttack();
 
 private:
 	//일단 순서대로 패턴 돌도록 설정

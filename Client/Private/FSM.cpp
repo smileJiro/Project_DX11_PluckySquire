@@ -19,10 +19,10 @@ CFSM::CFSM(const CFSM& _Prototype)
 {
 }
 
-void CFSM::Set_Owner(CMonster* _pOwner)
-{
-	m_pOwner = _pOwner;
-}
+//void CFSM::Set_Owner(CMonster* _pOwner)
+//{
+//	m_pOwner = _pOwner;
+//}
 
 void CFSM::Set_PatrolBound()
 {
@@ -46,6 +46,7 @@ HRESULT CFSM::Initialize(void* _pArg)
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
+	m_pOwner = pDesc->pOwner;
 
 	return S_OK;
 }
@@ -85,6 +86,7 @@ HRESULT CFSM::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
+		Set_PatrolBound();
 		break;
 
 	case Client::MONSTER_STATE::ALERT:
