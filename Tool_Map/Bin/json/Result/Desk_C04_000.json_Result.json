@@ -1,0 +1,244 @@
+{
+ "Button_01": [
+  "MI_MiscDeskObjects_01_04",
+  "MI_MiscDeskObjects_01_04",
+  "MI_MiscDeskObjects_01_02",
+  "MI_MiscDeskObjects_01_02"
+ ],
+ "Button_02": [
+  "MI_MiscDeskObjects_01_04",
+  "MI_MiscDeskObjects_01_01",
+  "MI_MiscDeskObjects_01_03",
+  "MI_MiscDeskObjects_01_03",
+  "MI_MiscDeskObjects_01_03",
+  "MI_MiscDeskObjects_01_02",
+  "MI_MiscDeskObjects_01_02"
+ ],
+ "Peg_01": [
+  "MI_Peg_01_02"
+ ],
+ "Peg_02": [
+  "MI_Peg_02_02"
+ ],
+ "Pin_01": [
+  "MI_MiscDeskObjects_01_04",
+  "MI_MiscDeskObjects_01_03"
+ ],
+ "Pin_02": [
+  "MI_MiscDeskObjects_01_01"
+ ],
+ "SM_Duct_Tape_4": [
+  "MI_Duct_Tape_5"
+ ],
+ "SM_Mod_Block_2x1x05_Update_01": [
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker",
+  "MI_WoodTileable_Sides_01",
+  "MI_WoodTileable_Sides_02_Darker"
+ ],
+ "SM_Paint_Container_1_A": [
+  "MI_Paint_Container_1_D",
+  "MI_Paint_Container_1_C"
+ ],
+ "SM_Watercolor_Bottle_C": [
+  "MI_Watercolor_Bottle_G"
+ ],
+ "SM_Watercolor_Bottle_D": [
+  "MI_Watercolor_Bottle_G",
+  "MI_Watercolor_Bottle_D"
+ ],
+ "SM_Watercolor_Bottle_F": [
+  "MI_Watercolor_Bottle_F"
+ ],
+ "SafetyPin_02": [
+  "MI_MiscDeskObjects_01_01",
+  "MI_MiscDeskObjects_01_01"
+ ],
+ "SewingKit_01": [
+  "MI_Thimble_01_02"
+ ],
+ "SewingKit_03": [
+  "MI_SewingKit_02_01"
+ ],
+ "ToyBrick_05": [
+  "MI_ToyBricks_6"
+ ],
+ "ToyBrick_07": [
+  "MI_ToyBricks_5"
+ ],
+ "ToyBrick_12": [
+  "MI_ToyBricks_9"
+ ],
+ "ToyBrick_14": [
+  "MI_ToyBricks_3"
+ ],
+ "ToyBrick_21": [
+  "MI_ToyBricks_5"
+ ],
+ "ToyBrick_22": [
+  "MI_ToyBricks_9",
+  "MI_ToyBricks_6"
+ ],
+ "ToyBrick_23": [
+  "MI_ToyBricks_6",
+  "MI_ToyBricks_01"
+ ],
+ "ToyBrick_24": [
+  "MI_ToyBricks_2"
+ ],
+ "ToyBrick_25": [
+  "MI_ToyBricks_3",
+  "MI_ToyBricks_7"
+ ],
+ "Wooden_Cube": [
+  "M_WC_05",
+  "MI_WC_08_Var2_02",
+  "M_WC_08_Var2",
+  "MI_WC_07_Var2_03",
+  "M_WC_05",
+  "M_WC_12",
+  "M_WC_08_Var2",
+  "M_WC_02",
+  "MI_WC_08_Var2_01",
+  "M_WC_07_Var2",
+  "MI_WC_08_Var2_01",
+  "M_WC_08_Var2",
+  "M_WC_05",
+  "MI_WC_08_Var2_01",
+  "M_WC_08_Var2",
+  "M_WC_05",
+  "M_WC_05",
+  "M_WC_08_Var2",
+  "M_WC_05",
+  "M_WC_08",
+  "MI_WC_07_Var2_02",
+  "MI_WC_07_Var2_02",
+  "MI_WC_07_Var2_02",
+  "M_WC_08_Var2",
+  "m_block_wood_warm_01",
+  "M_WC_07",
+  "MI_WC_08_Var2_01",
+  "M_WC_04",
+  "MI_WC_08_Var2_01",
+  "M_WC_07_Var2",
+  "MI_WC_07_Var2_02",
+  "MI_WC_07_Var2_02",
+  "M_WC_09",
+  "MI_WC_07_Var2_02",
+  "M_WC_08_Var2",
+  "M_WC_05",
+  "MM_WC_11",
+  "M_WC_08_Var2",
+  "MI_WC_07_Var2_02",
+  "MI_WC_07_Var2_02",
+  "M_WC_12",
+  "MI_WC_07_Var2_02",
+  "MI_WC_07_Var2_02",
+  "M_WC_09",
+  "MI_WC_07_Var2_02",
+  "M_WC_09",
+  "M_WC_08"
+ ],
+ "Wristband_01": [
+  "MI_RubberBands_01_01",
+  "MI_RubberBands_01_02"
+ ],
+ "Wristband_02": [
+  "MI_RubberBands_01_02",
+  "MI_RubberBands_01_02"
+ ],
+ "Wristband_03": [
+  "MI_RubberBands_01_02",
+  "MI_RubberBands_01_01"
+ ],
+ "__CardboardBox_2": [
+  "MI_CardboardBox_Kit_9",
+  "MI_CardboardBox_Kit_9",
+  "MI_CardboardBox_Kit_9"
+ ],
+ "chess_bishop_01": [
+  "MI_ChessPiece_Black_01",
+  "MI_ChessPiece_White_01"
+ ],
+ "chess_pawn_01": [
+  "MI_ChessPiece_Black_01",
+  "MI_ChessPiece_White_01",
+  "MI_ChessPiece_White_01",
+  "MI_ChessPiece_White_01"
+ ],
+ "chess_rook_01": [
+  "MI_ChessPiece_Black_01"
+ ],
+ "paperclip_01": [
+  "m_paperclip_blue_01",
+  "m_paperclip_metal_01",
+  "m_paperclip_green_01",
+  "m_paperclip_red_01",
+  "m_paperclip_green_01",
+  "m_paperclip_yellow_01",
+  "m_paperclip_green_01",
+  "m_paperclip_metal_01",
+  "m_paperclip_yellow_01",
+  "m_paperclip_green_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_red_01",
+  "m_paperclip_yellow_01",
+  "m_paperclip_metal_01",
+  "m_paperclip_red_01",
+  "m_clip_black_01",
+  "m_paperclip_yellow_01",
+  "m_paperclip_green_01",
+  "m_paperclip_yellow_01",
+  "m_paperclip_yellow_01",
+  "m_paperclip_blue_01",
+  "m_clip_black_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_metal_01",
+  "m_paperclip_red_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_metal_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_green_01",
+  "m_paperclip_metal_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_green_01",
+  "m_paperclip_red_01",
+  "m_paperclip_metal_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_metal_01",
+  "m_paperclip_green_01",
+  "m_paperclip_green_01",
+  "m_paperclip_yellow_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_red_01",
+  "m_paperclip_yellow_01",
+  "m_paperclip_red_01",
+  "m_paperclip_blue_01",
+  "m_paperclip_green_01",
+  "m_paperclip_red_01"
+ ],
+ "wooden_platform_01": [
+  "m_wooden_dots_01"
+ ]
+}
