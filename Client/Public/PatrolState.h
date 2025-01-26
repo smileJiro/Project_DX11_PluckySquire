@@ -34,6 +34,7 @@ public:
 
 private:
 	void PatrolMove(_float _fTimeDelta, _int _iDir);
+	_vector Determine_NextDirection(_int _iDir);
 
 private:
 	_float m_fAccTime = { 0.f };

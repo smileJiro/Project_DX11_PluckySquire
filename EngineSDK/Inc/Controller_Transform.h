@@ -54,6 +54,7 @@ public: /* 2D */
 
 public: /* 3D */
 	void					LookAt_3D(_fvector _vAt); // 타겟의 위치쪽으로 바라보는 (회전하는)
+	_bool				MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta);
 
 public:
 	// Get

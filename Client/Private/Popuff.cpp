@@ -208,11 +208,11 @@ HRESULT CPopuff::Ready_Components()
     Desc.fAlertRange = m_fAlertRange;
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
+    Desc.pOwner = this;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
         return E_FAIL;
-    m_pFSM->Set_Owner(this);
 
     return S_OK;
 }
