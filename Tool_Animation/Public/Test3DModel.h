@@ -20,7 +20,8 @@ public:
 	//Get
 	void						Get_TextureNames(set<wstring>& _outTextureNames);
 	_float					Get_Progress();
-
+	_float	                Get_AnimSpeedMagnifier(_uint iAnimIndex);
+	_bool	                Is_LoopAnimation(_uint iAnimIndex);
 protected:
 	virtual HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);
 	virtual HRESULT Ready_Meshes(ifstream& inFile);

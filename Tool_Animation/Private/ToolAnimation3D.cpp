@@ -28,6 +28,11 @@ HRESULT CToolAnimation3D::Initialize(ifstream& inFile, const C3DModel* pModel)
 	m_fDuration = (_float)dValue;
 	inFile.read(reinterpret_cast<char*>(&dValue), sizeof(double));
 	m_fTickPerSecond = (_float)dValue;
+	//Ãß°¡µÊ
+	inFile.read(reinterpret_cast<char*>(&m_bLoop), sizeof(_bool));
+	//Ãß°¡µÊ
+	inFile.read(reinterpret_cast<char*>(&m_fSpeedMagnifier), sizeof(_float));
+
 
 	inFile.read(reinterpret_cast<char*>(&m_iNumChannels), sizeof(_uint));
 
@@ -56,6 +61,13 @@ void CToolAnimation3D::Export(ofstream& _outfile)
 	//TickPerSecond
 	dValue = m_fTickPerSecond;
 	_outfile.write(reinterpret_cast<const char*>(&dValue), sizeof(_double));
+
+	//Ãß°¡µÊ
+	_outfile.write(reinterpret_cast<char*>(&m_bLoop), sizeof(_bool));
+	//Ãß°¡µÊ
+	_outfile.write(reinterpret_cast<char*>(&m_fSpeedMagnifier), sizeof(_float));
+
+
 	//ChannelCount
 	_outfile.write(reinterpret_cast<const char*>(&m_iNumChannels), sizeof(_uint));
 	for (size_t i = 0; i < m_iNumChannels; i++)

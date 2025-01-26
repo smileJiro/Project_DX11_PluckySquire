@@ -60,6 +60,7 @@ public:
 	virtual void			Set_Animation(_uint iIdx)override;
 	virtual void			Switch_Animation(_uint iIdx)override;
 	virtual void			To_NextAnimation() override;
+	virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
 
 
 #ifdef _DEBUG

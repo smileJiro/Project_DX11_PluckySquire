@@ -136,7 +136,7 @@ _uint CCutScene_Sector::Find_Span(_float _fRatio)
 		if (_fRatio <= m_Knots[i + 1])
 			return i;
 	}
-	return m_KeyFrames.size() - 1;
+	return (_uint)m_KeyFrames.size() - 1;
 }
 
 _float CCutScene_Sector::BasisFunction(_uint _i, _uint _iDegree, _float _fRatio)

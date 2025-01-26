@@ -40,7 +40,8 @@ public:
 	void						Set_CurrentFrame(_uint _iFrameIndex);
 	//Get
 	_uint						Get_CurrentFrame();
-
+	_float					Get_SpeedMagnifier() { return m_fSpeedMagnifier; }
+	_bool					Is_LoopAnim() { return m_bLoop; }
 
 private:
 	map<string, CTexture*> m_AnimTextures;
