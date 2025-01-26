@@ -64,14 +64,14 @@ _float CTest3DModel::Get_Progress()
 
 _float CTest3DModel::Get_AnimSpeedMagnifier(_uint iAnimIndex)
 {
-	if ((_int)(m_Animations.size() - 1) < iAnimIndex)
+	if ((_int)(m_Animations.size() - 1) < (_int)iAnimIndex)
 		return 0;
 	return static_cast<CToolAnimation3D*> (m_Animations[iAnimIndex])->Get_SpeedMagnifier();
 }
 
 _bool CTest3DModel::Is_LoopAnimation(_uint iAnimIndex)
 {
-	if ((_int)(m_Animations.size() - 1) < iAnimIndex)
+	if ((_int)(m_Animations.size() - 1) < (_int)iAnimIndex)
 		return 0;
 	return static_cast<CToolAnimation3D*> (m_Animations[iAnimIndex])->Is_LoopAnim();
 }

@@ -271,7 +271,7 @@ _float CTest2DModel::Get_Progerss()
 
 _float CTest2DModel::Get_AnimSpeedMagnifier(_uint iAnimIndex)
 {
-	if ((_int)(m_Animation2Ds.size() - 1) < iAnimIndex)
+	if ((_int)(m_Animation2Ds.size() - 1) < (_int)iAnimIndex)
 		return 0;
 	return static_cast<CToolAnimation2D*>(m_Animation2Ds[iAnimIndex])->Get_SpeedMagnifier();
 
@@ -279,7 +279,7 @@ _float CTest2DModel::Get_AnimSpeedMagnifier(_uint iAnimIndex)
 
 _bool CTest2DModel::Is_LoopAnimation(_uint iAnimIndex)
 {
-	if ((_int)(m_Animation2Ds.size() - 1) < iAnimIndex)
+	if ((_int)(m_Animation2Ds.size() - 1) < (_int)iAnimIndex)
 		return 0;
 	return static_cast<CToolAnimation2D*>(m_Animation2Ds[iAnimIndex])->Is_LoopAnim();
 }
