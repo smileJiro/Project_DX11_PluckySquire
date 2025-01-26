@@ -24,7 +24,7 @@ public:
 	ID3D11ShaderResourceView* Get_SRV(const _wstring _strTextureName, _uint* _pIndex = nullptr);
 	ID3D11ShaderResourceView* Get_SRV(_uint _iSRVIndex)
 	{
-		if (_iSRVIndex >= m_SRVNames.size())
+		if (_iSRVIndex >= m_SRVs.size())
 			return nullptr;
 		if (nullptr == m_SRVs[_iSRVIndex])
 			return nullptr;
@@ -45,6 +45,12 @@ public:
 		m_SRVNames.push_back(strSRVName);
 		m_iNumSRVs++;
 	}
+
+	void	Add_SRVName(const _wstring& _wstrName)
+	{
+		m_SRVNames.push_back(_wstrName);
+	}
+
 private:
 	_uint m_iNumSRVs = 0;
 	vector<ID3D11ShaderResourceView*> m_SRVs;

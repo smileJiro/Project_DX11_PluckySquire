@@ -43,6 +43,10 @@ public:
 public:
 	HRESULT						Add_NewEmitter(CParticle_Emitter::PARTICLE_TYPE _eType, void* _pArg);
 	void						Tool_Update(_float _fTimeDelta);
+
+public:
+	void						Set_Texture(class CTexture* _pTextureCom);
+
 public:
 	static	CParticle_System* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext); /* 툴전용의 파티클 생성 코드입니다, 어떤 Emitter도 만들지 않습니다.*/
 private:
@@ -50,7 +54,7 @@ private:
 	_int						m_iInputNumInstances = { 0 };
 	CParticle_Emitter*			m_pNowItem = { nullptr };
 private:
-	void						Tool_Make();
+	//void						Tool_Make();
 	void						Tool_ShowList();
 #endif
 };

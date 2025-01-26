@@ -42,6 +42,8 @@ struct VS_IN
     float2 vLifeTime : TEXCOORD0;
     float4 vColor : TEXCOORD1;
     float4 vTexcoord : TEXCOORD2;
+    float3 vVelocity : TEXCOORD3;
+    float3 vAcceleration : TEXCOORD4;
 };
 
 struct VS_OUT

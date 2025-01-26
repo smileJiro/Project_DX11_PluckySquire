@@ -159,28 +159,20 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 	if (FAILED(Ready_Modules(_jsonBufferInfo)))
 		return E_FAIL;
 
+	if (FAILED(Initialize_Particles()))
+		return E_FAIL;
+
+
 	return S_OK;
 }
+
+
 
 HRESULT CVIBuffer_Point_Particle::Initialize(void* _pArg)
 {
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	m_pSpeeds = new _float3[m_iNumInstances];
-	m_pForces = new _float3[m_iNumInstances];
-
-	// TEMP : Particle Initialize를 여기서 일단 하자
-	D3D11_MAPPED_SUBRESOURCE		SubResource{};
-	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-	VTXPOINTINSTANCE* pVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
-
-	for (_int i = 0; i < m_iNumInstances; i++)
-	{
-		Init_Particle(i, &pVertices[i].vTranslation, &pVertices[i].vColor);
-	}
-
-	m_pContext->Unmap(m_pVBInstance, 0);
 
 	return S_OK;
 }
@@ -193,10 +185,25 @@ void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 
 	for (_int i = 0; i < m_iNumInstances; i++)
 	{
-		// Temp : 이동만 일단 보자
-		XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&m_pSpeeds[i]) * _fTimeDelta);
+		for (auto& pModule : m_Modules)
+		{
+			if (pModule->Is_Init())
+				continue;
 
+			pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
+		}
+
+		XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
+		XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
 		pVertices[i].vLifeTime.y += _fTimeDelta;
+
+
+		// TODO : Kill or Revive 등..
+		if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
+		{
+			pVertices[i] = m_pInstanceVertices[i];
+		}
+
 	}
 
 	m_pContext->Unmap(m_pVBInstance, 0);
@@ -311,17 +318,24 @@ void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex)
 	m_pInstanceVertices[_iIndex].vColor = Compute_ColorValue();
 }
 
-void CVIBuffer_Point_Particle::Init_Particle(_int _iIndex, _float4* _pPosition, _float4* _pColor)
+HRESULT CVIBuffer_Point_Particle::Initialize_Particles()
 {
 	for (auto& pModule : m_Modules)
 	{
 		if (false == pModule->Is_Init())
 			continue;
 
-		pModule->Init_Data(_pPosition, &m_pSpeeds[_iIndex], &m_pForces[_iIndex], _pColor);
+		for (_int i = 0; i < m_iNumInstances; ++i)
+		{
+			pModule->Update_Translations(0.f, &m_pInstanceVertices[i].vTranslation, &m_pInstanceVertices[i].vVelocity, &m_pInstanceVertices[i].vAcceleration);
+		}
 	}
+	
 
+	return S_OK;
 }
+
+
 
 CVIBuffer_Point_Particle* CVIBuffer_Point_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonBufferInfo)
 {
@@ -378,6 +392,13 @@ void CVIBuffer_Point_Particle::Tool_Reset_Instance()
 	for (size_t i = 0; i < m_iNumInstances; i++)
 	{
 		Set_Instance(i);
+
+	}
+
+	if (FAILED(Initialize_Particles()))
+	{
+		MSG_BOX("Module 초기화 실패!!");
+		return;
 	}
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
@@ -459,6 +480,13 @@ void CVIBuffer_Point_Particle::Tool_Reset_Buffers()
 		return;
 	}
 
+	if (FAILED(Initialize_Particles()))
+	{
+		MSG_BOX("Module 초기화 실패!!");
+		return;
+	}
+
+
 #pragma endregion
 
 }
@@ -468,6 +496,122 @@ void CVIBuffer_Point_Particle::Tool_Update(_float _fTimeDelta)
 	Tool_Adjust_Shape();
 	Tool_Adjust_DefaultData();
 
+	Tool_Modules();
+
+
+}
+// m_pVBInstance까지 Create 실행합니다.
+HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances)
+{
+	if (FAILED(__super::Initialize_Prototype()))
+		return E_FAIL;
+
+	m_iNumVertexBuffers = 2;
+	m_iNumInstances = _iNumInstances;
+
+	m_iVertexStride = sizeof(VTXPOINT);
+	m_iNumVertices = 1;
+
+	m_iIndexStride = sizeof(_ushort);
+	m_iNumIndices = m_iNumInstances;
+	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
+	m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_POINTLIST;
+
+#pragma region VERTEX_BUFFER	
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+
+	m_BufferDesc.ByteWidth = m_iVertexStride * m_iNumVertices;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.StructureByteStride = m_iVertexStride;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	VTXPOINT* pVertices = new VTXPOINT[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXPOINT) * m_iNumVertices);
+
+	pVertices->vPosition = XMFLOAT3(0.0f, 0.0f, 0.f);
+	pVertices->vSize = XMFLOAT2(1.f, 1.f);
+
+	ZeroMemory(&m_SubResourceDesc, sizeof m_SubResourceDesc);
+	m_SubResourceDesc.pSysMem = pVertices;
+
+
+	if (FAILED(__super::Create_Buffer(&m_pVB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
+
+#pragma endregion
+
+#pragma region INDEX_BUFFER
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+
+	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
+	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.StructureByteStride = 0;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	_ushort* pIndices = new _ushort[m_iNumIndices];
+	ZeroMemory(pIndices, sizeof(_ushort) * m_iNumIndices);
+
+
+	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceDesc.pSysMem = pIndices;
+
+	if (FAILED(__super::Create_Buffer(&m_pIB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pIndices);
+
+#pragma endregion
+
+#pragma region INSTANCE_BUFFER
+	m_iInstanceStride = sizeof(VTXPOINTINSTANCE);
+	m_iNumIndexCountPerInstance = 6;
+
+	ZeroMemory(&m_InstanceBufferDesc, sizeof m_InstanceBufferDesc);
+
+	/* 정점버퍼를 몇 바이트 할당할까요? */
+	m_InstanceBufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstances;
+	m_InstanceBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_InstanceBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	m_InstanceBufferDesc.StructureByteStride = m_iInstanceStride;
+	m_InstanceBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	m_InstanceBufferDesc.MiscFlags = 0;
+
+	m_pInstanceVertices = new VTXPOINTINSTANCE[m_iNumInstances];
+	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
+
+
+	for (size_t i = 0; i < m_iNumInstances; i++)
+	{
+		Set_Instance(i);
+	}
+
+	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
+	m_InstanceInitialDesc.pSysMem = m_pInstanceVertices;
+
+#pragma endregion
+
+	if (FAILED(__super::Initialize(nullptr)))
+		return E_FAIL;
+
+	return S_OK;
+}
+CVIBuffer_Point_Particle* CVIBuffer_Point_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iNumInstances)
+{
+	CVIBuffer_Point_Particle* pInstance = new CVIBuffer_Point_Particle(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype(_iNumInstances)))
+	{
+		MSG_BOX("Failed to Created : CVIBuffer_Point_Particle");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 #endif

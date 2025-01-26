@@ -3,13 +3,15 @@
 
 BEGIN(Engine)
 
+
+
 class CParticle_Module : public CBase
 {
+
 public:
-	enum MODULE_TYPE { MODULENONE, INIT_VELOCITY};
-	enum DATA_TYPE { POINT, LINEAR, DIRECTION, AXIS };
-	enum APPLY_DATA { POSITION, VELOCITY, FORCE };
-	enum APPLY_TYPE { OVERWRITE, ADD, SUBSTRACT };
+	enum MODULE_TYPE { MODULENONE, INIT_VELOCITY_POINT, INIT_VELOCITY_LINEAR, INIT_ACCELERATION, GRAVITY, DRAG, VORTEX_ACCELERATION, MODULE_END };
+	enum APPLY_DATA { TRANSLATION, COLOR, ROTATION };
+
 
 private:
 	CParticle_Module();
@@ -17,10 +19,10 @@ private:
 
 public:
 	HRESULT Initialize(const json& _jsonModuleInfo);	
-	void	Init_Data(_float4* _pPosition, _float3* _pVelocity, 
-		_float3* _pForce, _float4* _pColor);
-
-
+	//void	Initialize_Data(_float4* _pPosition, _float3* _pVelocity, 
+	//	_float3* _pAcceleration);
+	//// Scale ? Rotations ? 등등에 해당하는 것은 ?
+	void	Update_Translations(_float _fTimeDelta, _float4* _pPosition, _float3* _pVelocity, _float3* _pAcceleration);
 public:
 	_bool		Is_Init() const { return m_isInit; }
 	_int		Get_Order() const { return m_iOrder; }
@@ -29,10 +31,10 @@ private:
 	_bool		m_isInit = { false };
 	_int		m_iOrder = { 0 };
 	MODULE_TYPE m_eModuleType = {};
-	DATA_TYPE	m_eDataType = {};
 	APPLY_DATA m_eApplyData = {};
-	APPLY_TYPE m_eApplyType = {};
 
+
+	map<const _string, _int> m_IntDatas;
 	map<const _string, _float> m_FloatDatas;
 	map<const _string, _float3> m_Float3Datas;
 
@@ -42,6 +44,25 @@ private:
 public:
 	static CParticle_Module* Create(const json& _jsonModuleInfo);
 	virtual void Free() override;
+
+#ifdef _DEBUG
+public:
+	HRESULT Initialize(MODULE_TYPE eType, const _string& _strTypeName);
+public:
+	void Set_Order(_int _iOrder) { m_iOrder = _iOrder; }
+	const _string Get_TypeName() const { return m_strTypeName; }
+	_bool Is_Changed() { if (m_isChanged) { m_isChanged = false; return true; } else return false; }
+
+	void Tool_Module_Update();
+	
+private:
+	_bool	m_isChanged = { false };
+	_string m_strTypeName;
+
+public:
+	static CParticle_Module* Create(MODULE_TYPE _eType, const _string& _strTypeName);
+
+#endif 
 };
 
 END
@@ -50,15 +71,15 @@ BEGIN(Engine)
 
 NLOHMANN_JSON_SERIALIZE_ENUM(CParticle_Module::MODULE_TYPE, {
 {CParticle_Module::MODULE_TYPE::MODULENONE, "NONE"},
-{CParticle_Module::MODULE_TYPE::INIT_VELOCITY, "INIT_VELOCITY"},
+{CParticle_Module::MODULE_TYPE::INIT_VELOCITY_POINT, "INIT_VELOCITY_POINT"},
+{CParticle_Module::MODULE_TYPE::INIT_VELOCITY_LINEAR, "INIT_VELOCITY_LINEAR"},
+{CParticle_Module::MODULE_TYPE::INIT_ACCELERATION, "INIT_ACCELERATION"},
+{CParticle_Module::MODULE_TYPE::GRAVITY, "GRAVITY"},
+{CParticle_Module::MODULE_TYPE::DRAG, "DRAG"},
+{CParticle_Module::MODULE_TYPE::VORTEX_ACCELERATION, "VORTEX_ACCELERATION"},
 	});
 
-NLOHMANN_JSON_SERIALIZE_ENUM(CParticle_Module::DATA_TYPE, {
-{CParticle_Module::DATA_TYPE::POINT, "POINT"},
-{CParticle_Module::DATA_TYPE::LINEAR, "LINEAR"},
-{CParticle_Module::DATA_TYPE::DIRECTION, "DIRECTION"},
-{CParticle_Module::DATA_TYPE::AXIS, "AXIS"},
-	});
 
 END
+
 

@@ -224,33 +224,33 @@ CParticle_System* CParticle_System::Create(ID3D11Device* _pDevice, ID3D11DeviceC
 
 	return pInstance;
 }
-void CParticle_System::Tool_Make()
-{
-	if (ImGui::TreeNode("Make Emitter"))
-	{
-		if (ImGui::InputInt("Instance Count", &m_iInputNumInstances))
-		{
-			if (0 > m_iInputNumInstances)
-				m_iInputNumInstances = 0;
-		}
-		if (ImGui::TreeNode("Sprite"))
-		{
-			ImGui::InputText("Texture Path", m_szInputTexturePath, MAX_PATH);
-			if (ImGui::Button("Create"))
-			{
-				// TODO:
-				// Create
-			}
+//void CParticle_System::Tool_Make()
+//{
+	//if (ImGui::TreeNode("Make Emitter Components"))
+	//{
+	//	if (ImGui::InputInt("Instance Count", &m_iInputNumInstances))
+	//	{
+	//		if (0 > m_iInputNumInstances)
+	//			m_iInputNumInstances = 0;
+	//	}
+	//	if (ImGui::TreeNode("Sprite"))
+	//	{
+	//		ImGui::InputText("Texture Path", m_szInputTexturePath, MAX_PATH);
+	//		if (ImGui::Button("Create"))
+	//		{
+	//			// TODO:
+	//			// Create
+	//		}
 
-			ImGui::TreePop();
-		}
+	//		ImGui::TreePop();
+	//	}
 
 
-	
+	//
 
-		ImGui::TreePop();
-	}
-}
+	//	ImGui::TreePop();
+	//}
+//}
 
 void CParticle_System::Tool_ShowList()
 {
@@ -287,7 +287,7 @@ void CParticle_System::Tool_ShowList()
 
 void CParticle_System::Tool_Update(_float _fTimeDelta)
 {
-	Tool_Make();
+	//Tool_Make();
 	Tool_ShowList();
 	
 	if (m_pNowItem)
@@ -296,5 +296,15 @@ void CParticle_System::Tool_Update(_float _fTimeDelta)
 	}
 
 
+}
+void CParticle_System::Set_Texture(CTexture* _pTextureCom)
+{
+	if (m_pNowItem)
+	{
+		if (CParticle_Emitter::SPRITE == m_pNowItem->Get_Type())
+		{
+			static_cast<CParticle_Sprite_Emitter*>(m_pNowItem)->Set_Texture(_pTextureCom);
+		}
+	}
 }
 #endif

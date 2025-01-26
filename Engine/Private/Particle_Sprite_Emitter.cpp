@@ -227,17 +227,53 @@ HRESULT CParticle_Sprite_Emitter::Cleanup_DeadReferences()
 #ifdef _DEBUG
 void CParticle_Sprite_Emitter::Tool_Setting()
 {
-    m_pParticleBufferCom->Tool_Setting();
+    if (m_pParticleBufferCom)
+        m_pParticleBufferCom->Tool_Setting();
 }
 void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 {
     ImGui::Begin("Adjust_Sprite_Emitter");
+    
 
-    m_pParticleBufferCom->Tool_Update(_fTimeDelta);
 
+    if (m_pParticleBufferCom)
+        m_pParticleBufferCom->Tool_Update(_fTimeDelta);
+    else
+    {
+        static _int iNumInstanceInput = 1;
+        
+        if (ImGui::InputInt("Instance Count", &iNumInstanceInput))
+        {
+            if (0 >= iNumInstanceInput)
+            {
+                iNumInstanceInput = 1;
+            }
+        }
+
+        if (ImGui::Button("Create_Buffer"))
+        {
+            m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, iNumInstanceInput);
+
+            if (nullptr != m_pParticleBufferCom)
+                m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
+        }
+
+    }
 
 
     ImGui::End();
+
+}
+void CParticle_Sprite_Emitter::Set_Texture(CTexture* _pTextureCom)
+{
+    if (m_pTextureCom)
+    {
+        Safe_Release(m_pTextureCom);
+    }
+       
+    m_pTextureCom = _pTextureCom;
+    m_Components[L"Com_Texture"] = m_pTextureCom;
+    Safe_AddRef(m_pTextureCom);
 
 }
 CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg)

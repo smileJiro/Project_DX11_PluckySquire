@@ -37,11 +37,55 @@ HRESULT CVIBuffer_Instance::Initialize_Prototype()
 	m_SetDatas.resize(DATAEND, UNSET);
 
 	m_pSetScales = new _float3[2];
-	m_pSetRotations = new _float3[2];
-	m_pSetPositions = new _float3[2];
-	m_pSetLifeTimes = new _float[2];
-	m_pSetColors = new _float4[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 3; ++j)
+		{
+			*((_float*)(&m_pSetScales[i]) + j) = 1.f;
+		}
+	}
 
+	m_pSetRotations = new _float3[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 3; ++j)
+		{
+			*((_float*)(&m_pSetRotations[i]) + j) = 0.f;
+		}
+	}
+
+	m_pSetPositions = new _float3[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 3; ++j)
+		{
+			*((_float*)(&m_pSetPositions[i]) + j) = 0.f;
+		}
+	}
+	m_pSetLifeTimes = new _float[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 1; ++j)
+		{
+			*((_float*)(&m_pSetLifeTimes[i]) + j) = 0.f;
+		}
+	}
+
+	m_pSetColors = new _float4[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 4; ++j)
+		{
+			*((_float*)(&m_pSetColors[i]) + j) = 1.f;
+		}
+	}
+
+	for (_int i = 0; i < 3; ++i)
+	{
+		*((_float*)(&m_vShapeScale) + i) = 1.f;
+		*((_float*)(&m_vShapeRotation) + i) = 0.f;
+		*((_float*)(&m_vShapePosition) + i) = 0.f;
+	}
 	return S_OK;
 }
 
@@ -690,9 +734,6 @@ void CVIBuffer_Instance::Free()
 		Safe_Delete_Array(m_pSetLifeTimes);
 		Safe_Delete_Array(m_pSetColors);
 	}
-
-	Safe_Delete_Array(m_pSpeeds);
-	Safe_Delete_Array(m_pForces);
 	
 	for (auto& pModule : m_Modules)
 		Safe_Release(pModule);
@@ -1451,6 +1492,144 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 
 		s_isShapeChange = false;
 		ImGui::TreePop();
+	}
+}
+
+void CVIBuffer_Instance::Tool_Modules()
+{
+	// Add Module
+	Tool_Add_Module();
+	// Adjust Module
+	Tool_Adjust_Modules();
+}
+
+void CVIBuffer_Instance::Tool_Add_Module()
+{
+	if (ImGui::TreeNode("Add Module"))
+	{
+		const _char* Moduleitems[] = { "NONE", "INIT_VELOCITY_POINT", "INIT_VELOCITY_LINEAR", "INIT_ACCELERATION",
+"GRAVITY", "DRAG", "VORTEX_ACCELERATION" };
+
+		static _int item_selected_idx = 0;
+		const char* combo_preview_value = Moduleitems[item_selected_idx];
+
+		if (ImGui::BeginCombo("Module Type", combo_preview_value))
+		{
+
+			for (int n = 0; n < IM_ARRAYSIZE(Moduleitems); n++)
+			{
+				const bool is_selected = (item_selected_idx == n);
+
+				if (ImGui::Selectable(Moduleitems[n], is_selected))
+				{
+					item_selected_idx = n;
+					
+					CParticle_Module* pModule = CParticle_Module::Create((CParticle_Module::MODULE_TYPE)n, Moduleitems[n]);
+					if (nullptr != pModule)
+					{
+						pModule->Set_Order(m_Modules.size());
+						m_Modules.push_back(pModule);
+
+						sort(m_Modules.begin(), m_Modules.end(), [](const CParticle_Module* pSrc, const CParticle_Module* pDst)
+							{
+								return pSrc->Get_Order() < pDst->Get_Order();
+							}
+						);
+
+						Tool_Reset_Buffers();
+					}
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::TreePop();
+	}
+
+}
+
+void CVIBuffer_Instance::Tool_Adjust_Modules()
+{
+	if (ImGui::TreeNode("Module Lists"))
+	{
+		if (ImGui::BeginListBox("List"))
+		{
+			if (ImGui::ArrowButton("Order Up", ImGuiDir::ImGuiDir_Up))
+			{
+				if (0 < m_iNowModuleIndex && 1 < m_Modules.size())
+				{
+					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex - 1]);
+				
+					for (_int i = 0; i < m_Modules.size(); ++i)
+					{
+						m_Modules[i]->Set_Order(i);
+					}
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("Order Down", ImGuiDir::ImGuiDir_Down))
+			{
+				if (m_Modules.size() - 1 > m_iNowModuleIndex && 1 < m_Modules.size())
+				{
+					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex + 1]);
+
+					for (_int i = 0; i < m_Modules.size(); ++i)
+					{
+						m_Modules[i]->Set_Order(i);
+					}
+
+				}
+			}
+
+			int n = 0;
+			for (auto& pModule : m_Modules)
+			{
+				const bool is_selected = (m_iNowModuleIndex == n);
+				if (ImGui::Selectable(pModule->Get_TypeName().c_str(), is_selected))
+				{
+					m_iNowModuleIndex = is_selected ? -1 : n; 
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus(); 
+				++n;
+			}
+			ImGui::EndListBox();
+		}
+
+		if (-1 != m_iNowModuleIndex)
+		{
+			if (ImGui::Button("Delete Module"))
+			{
+				Safe_Release(m_Modules[m_iNowModuleIndex]);
+
+				auto iter = m_Modules.begin() + m_iNowModuleIndex;
+				m_Modules.erase(iter);
+
+				m_iNowModuleIndex = -1;
+
+				Tool_Reset_Buffers();
+			}
+		}
+
+
+		ImGui::TreePop();
+	}
+	
+	if (-1 != m_iNowModuleIndex)
+	{
+		if (ImGui::TreeNode("Adjust Modules"))
+		{
+			m_Modules[m_iNowModuleIndex]->Tool_Module_Update();
+
+
+			ImGui::TreePop();
+		}
+
+		if (m_Modules[m_iNowModuleIndex]->Is_Changed())
+			Tool_Reset_Buffers();
 	}
 }
 

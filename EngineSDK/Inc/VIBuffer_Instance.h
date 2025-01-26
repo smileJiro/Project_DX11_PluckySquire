@@ -51,9 +51,6 @@ protected:
 	_float*	 m_pSetLifeTimes = { nullptr };		// 세팅 수명 시간
 	_float4* m_pSetColors = { nullptr };		// 세팅 색깔
 	
-protected:
-	_float3* m_pSpeeds = { nullptr }; // 각 파티클의 속도
-	_float3* m_pForces = { nullptr }; // 각 파티클의 힘
 
 protected:
 	vector<class CParticle_Module*> m_Modules;
@@ -64,7 +61,7 @@ protected:
 	* 주요한 설명은 함수 내에서
 	*/
 	HRESULT		Set_ShapeData(const json& _jsonInfo);
-
+	
 	_vector		Get_Sphere_Pos(_float _fRadius, _float _fSurface);
 	_vector		Get_Cylinder_Pos(_float _fHeight, _float _fRadius, _float _fMidPoint);
 	_vector		Get_Box_Pos(const _float3& _vWHD, const _float3& _vMidPoint, _bool _isSurface, _float _fSurface);
@@ -111,14 +108,22 @@ public:
 protected:
 	_bool								m_isToolReset = { false };
 	map<const _string, _float>			m_ToolShapeDatas;
+	_int								m_iNowModuleIndex = { -1 };
+	//class CParticle_Module*				m_pNowModule = { nullptr };
+	
 
 protected:
 	void				 Tool_Adjust_DefaultData();
 	void				 Tool_Adjust_Shape();
-	void				 Tool_Create_ShapeData();
 
+	void				 Tool_Modules();
+	void				 Tool_Add_Module();
+	void				 Tool_Adjust_Modules();
+
+	void				 Tool_Create_ShapeData();
 	virtual void		 Tool_Reset_Instance() {}
 	virtual void		 Tool_Reset_Buffers() {} // Count 자체가 바뀌어버린 경우
+
 
 	_bool		Is_ToolData(const _string& _strTag)
 	{

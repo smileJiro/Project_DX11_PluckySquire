@@ -33,7 +33,7 @@ private:
 	void			  Set_Position(_int _iIndex);
 	void			  Set_Instance(_int _iIndex);
 
-	void			 Init_Particle(_int _iIndex, _float4* _pPosition, _float4* _pColor);
+	HRESULT			 Initialize_Particles();
 
 public:
 	static CVIBuffer_Point_Particle* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonBufferInfo);
@@ -41,13 +41,18 @@ public:
 	virtual void Free() override;
 
 #ifdef _DEBUG
+public:
 	virtual void		 Tool_Setting();
 	virtual void		 Tool_Reset_Instance() override;
 	virtual void		 Tool_Reset_Buffers() override; // Count 자체가 바뀌어버린 경우
 
-
 	
 	virtual void Tool_Update(_float _fTimeDelta);
+
+public:
+	HRESULT Initialize_Prototype(_uint _iNumInstances);
+public:
+	static CVIBuffer_Point_Particle* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iNumInstances);
 
 #endif
 

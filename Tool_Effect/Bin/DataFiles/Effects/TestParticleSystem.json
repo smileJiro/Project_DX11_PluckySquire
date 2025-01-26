@@ -5,7 +5,7 @@
             "Type": "Sprite",
             "Texture": "../Bin/Resources/Textures/Effects/Baodian024.dds",
             "Buffer": {
-                "Count": 100,
+                "Count": 800,
                 "ShapeLocation": {
                     "Shape" : "CONE",
                     "Length": 4.0,
@@ -67,7 +67,7 @@
                     "Arg1" :
                     [
                         0.0,
-                        0.0,
+                        0.5,
                         0.0
                     ],
                     "Arg2" :
@@ -92,8 +92,8 @@
                 "LifeTime":
                 {
                     "SetType": "RANDOMLINEAR",
-                    "Arg1": 0.0,
-                    "Arg2": 5.0
+                    "Arg1": 10.0,
+                    "Arg2": 15.0
                 },
                 "Color":
                 {
@@ -118,14 +118,33 @@
                 [
                     {
                         "Init" : true,
-                        "Type" : "INIT_VELOCITY",
+                        "Type" : "INIT_VELOCITY_POINT",
                         "Order" : 0,
-                        "Mode" : "POINT",
-                        "Amount" : 5,
+                        "Amount" : 5.0,
                         "Origin" :
                         [
                             0.0,
+                            -0.5,
+                            0.0
+                        ]
+                    },
+
+                    {
+                        "Init" : false,
+                        "Type" : "VORTEX_ACCELERATION",
+                        "Order" : 0,
+                        "Amount" : 5.0,
+                        "Axis" : 
+                        [
                             0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Pull Amount" : 0.5,
+                        "Origin Point" :
+                        [
+                            1.0,
+                            1.0,
                             0.0
                         ]
                     }

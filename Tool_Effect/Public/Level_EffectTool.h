@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CParticle_System;
+class CTexture;
 END
 
 BEGIN(EffectTool)
@@ -26,18 +27,26 @@ public:
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 
 private:
-	_bool							m_isParticle = { true };
+	_bool											m_isParticle = { true };
+	class CParticle_System*							m_pNowItem = { nullptr };
+	vector<class CParticle_System*>					m_ParticleSystems;
 
-	class CParticle_System* m_pNowItem = { nullptr };
+private:
+	_char							m_szTexturePath[MAX_PATH] = "../Bin/Resources/Textures/Effects/";
+	
+	class CTexture*					m_pNowTexture = { nullptr };
 
-	vector<class CParticle_System*> m_ParticleSystems;
+	map<const _wstring, class CTexture*>			m_Textures;
+
 
 private:
 	void					Update_Particle_Tool(_float _fTimeDelta);
 	void					Show_System_List();
 	void					Adjust_System(_float _fTimeDelta);
 
-
+	void					Tool_Update();
+	void					Tool_Texture();
+	HRESULT					Load_Textures(const _char* _szExtension);
 
 public:
 	static CLevel_EffectTool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
