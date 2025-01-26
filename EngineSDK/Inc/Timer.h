@@ -13,9 +13,10 @@ public:
 	HRESULT Ready_Timer(void); // Timer Initialize
 	void Update_Timer(void); // DeltaTime Calculator
 	void Render_FPS(HWND _hWnd);
+	void Compute_FPS();
 public:
 	_float Get_TimeDelta() const { return m_fTimeDelta; }
-
+	_int Get_FPS() const { return m_iFPS; }
 	// Set
 	void Set_TimeScale(_float _fTimeScale) { m_fTimeScale = _fTimeScale; }
 	void Reset_TimeScale() { m_fTimeScale = 1.0f; }

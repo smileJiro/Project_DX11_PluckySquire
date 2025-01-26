@@ -1,9 +1,13 @@
 #pragma once
 #include "Character.h"
+#include "AnimEventReceiver.h"
 
+BEGIN(Engine)
+class CAnimEventGenerator;
+END
 BEGIN(Client)
 class CStateMachine;
-class CPlayer final : public CCharacter
+class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
 	enum PLAYER_PART
@@ -382,19 +386,27 @@ public:
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 
 	void									On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	virtual void                     On_CoordinateChange() override;
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Move(_vector _vDir,_float _fTimeDelta);
 	void Attack(_uint _iCombo);
 	//Get
 	F_DIRECTION Get_2DDirection() { return m_e2DDirection; }
+	CController_Transform* Get_Transform() {return m_pControllerTransform;}
+
+
+
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
 	void Set_2DDirection(F_DIRECTION _eFDir);
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
+
+
 private:
+	void					Someting(int a);
+	void					Someting2(float a);
+	_int					Someting3();
 	void					Key_Input(_float _fTimeDelta);
 
 private:
@@ -404,7 +416,7 @@ private:
 private:
 	CStateMachine* m_pStateMachine = nullptr;
 	F_DIRECTION m_e2DDirection = F_DIRECTION::F_DIR_LAST;
-	
+	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

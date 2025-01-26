@@ -218,8 +218,8 @@ namespace Engine
 		_uint				iZoomLevel = {};
 		_uint				iZoomRatioType = {};
 		
-		_float3				vAt = {};
-		_bool				bLookAt = {};
+		_float3				vAtOffset = {};
+		_bool				bLookTarget = {};
 		_uint				iAtRatioType = {};
 	} CUTSCENE_KEYFRAME;
 #pragma endregion

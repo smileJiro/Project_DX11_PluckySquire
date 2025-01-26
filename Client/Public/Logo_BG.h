@@ -7,6 +7,7 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
+BEGIN(Client)
 class CLogo_BG final : public CUI
 {
 
@@ -26,9 +27,17 @@ public:
 
 private:
 	_tchar					m_tTest[MAX_PATH] = {};
+	_bool					m_isLogoChooseStage = { false };
+
+protected:
+	_bool					m_isRender = { false };
+
+private:
+	void					ProcesssByIndex(_int _iIndex );
 
 protected:
 	virtual HRESULT			Ready_Components() override;
+	void					isRender() { false == m_isRender ? m_isRender = true : m_isRender = false; }
 
 public:
 	static CLogo_BG*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -37,4 +46,6 @@ public:
 	HRESULT					Cleanup_DeadReferences() override;
 
 };
+
+END
 

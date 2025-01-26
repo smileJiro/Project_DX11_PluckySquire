@@ -80,6 +80,24 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 			if (result.second == false)
 				Safe_Release(pTexture);
 		}
+		/*else if (entry.path().extension() == ".dds")
+		{
+			if (m_Textures.find(entry.path().filename().replace_extension().string()) != m_Textures.end())
+				continue;
+			ID3D11ShaderResourceView* pSRV = { nullptr };
+			HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pDevice, entry.path().c_str(), nullptr, &pSRV);
+			if (FAILED(hr))
+				return E_FAIL;
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext);
+			if (nullptr == pTexture)
+				return E_FAIL;
+			string strTextureName = entry.path().filename().replace_extension().string();
+			wstring wstrTextureName = StringToWstring(strTextureName);
+			pTexture->Add_Texture(pSRV, wstrTextureName.c_str());
+			auto result = m_Textures.insert({ strTextureName, pTexture });
+			if (result.second == false)
+				Safe_Release(pTexture);
+		}*/
 	}
 
 
@@ -149,8 +167,6 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
 		m_Textures.insert({ szTextureName,pTexture });
 	}
-
-	
 
 	//Animation2Ds
 	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
@@ -229,6 +245,14 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	return S_OK;
 }
 
+void CTest2DModel::Set_Progerss(_float _fTrackPos)
+{
+	if (m_Animation2Ds.empty())
+		return;
+	static_cast<CToolAnimation2D*> (m_Animation2Ds[m_iCurAnimIdx])->Set_Progress(_fTrackPos);
+
+}
+
 void CTest2DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 {
 	for (auto& pTexture : m_Textures)
@@ -236,6 +260,15 @@ void CTest2DModel::Get_TextureNames(set<wstring>& _outTextureNames)
 		_outTextureNames.insert(*pTexture.second->Get_SRVName(0));
 	}
 }
+
+_float CTest2DModel::Get_Progerss()
+{
+	if (m_Animation2Ds.empty())
+		return 0;
+	return static_cast<CToolAnimation2D*>(m_Animation2Ds[m_iCurAnimIdx])->Get_Progress();
+}
+
+
 
 CTest2DModel* CTest2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* _pPath)
 {

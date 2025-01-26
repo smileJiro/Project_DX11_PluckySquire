@@ -8,6 +8,7 @@
 #include "Camera_Target.h"
 #include "CameraArm.h"
 #include "TestTerrain.h"
+#include "AnimEventGenerator.h"
 
 CLevel_AnimTool::CLevel_AnimTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -28,6 +29,50 @@ HRESULT CLevel_AnimTool::Initialize()
 void CLevel_AnimTool::Update(_float _fTimeDelta)
 {
 	ImGui::Begin("Animation Tool");
+	Update_ImportImgui();
+	Update_ExportImgui();
+	if (m_pTestModelObj)
+	{
+		ImGui::Separator();
+		Update_AnimationEditImgui();
+	}
+	ImGui::End();
+	ImGui::Begin("Animation Event");
+	Update_AnimEventImgui();
+	ImGui::End();
+
+	//CONTROLL
+	if (m_pTestModelObj)
+	{
+		_float fMove = (_float)MOUSE_MOVE(MOUSE_AXIS::Z) / 100.f;
+		if (COORDINATE_3D == m_pTestModelObj->Get_CurCoord())
+		{
+			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
+			m_fZoomMultiplier = min(m_fZoomMultiplier, 3.f);
+			m_pTargetCam->Set_Fovy(m_fZoomMultiplier * m_fDefault3DCamFovY);
+		}
+		else
+		{
+			m_fZoomMultiplier += fMove * m_f2DZoomSpeed * _fTimeDelta;
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
+			m_pTestModelObj->Set_2DProjMatrix(XMMatrixOrthographicLH((_float)m_fDefault2DCamSize.x * m_fZoomMultiplier, (_float)m_fDefault2DCamSize.y * m_fZoomMultiplier, 0.0f, 1.0f));
+		}
+	}
+}
+
+HRESULT CLevel_AnimTool::Render()
+{
+#ifdef _DEBUG
+	if (m_pTestModelObj)
+		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
+#endif
+
+	return S_OK;
+}
+
+void CLevel_AnimTool::Update_ImportImgui()
+{
 	LOADMODEL_TYPE	eLoadModelTYpe = LOADMODEL_TYPE::LOAD_LAST;
 	std::wstring wstrSelectedPath = TEXT("");
 
@@ -60,15 +105,20 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 		{
 			m_szLoadedPath = wstrSelectedPath;
 			Create_Camera(TEXT("Camera"), m_pTestModelObj);
-			Set_Animation(0);
+			m_iCurrentAnimIndex = 0;
+			m_bLoop = true;
+			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
 		}
 	}
+}
 
+void CLevel_AnimTool::Update_ExportImgui()
+{
 	//EXPORT
 	if (nullptr != m_pTestModelObj)
 	{
-		wstrSelectedPath = TEXT("");
-		if (ImGui::Button("Export")) {
+		wstring wstrSelectedPath = TEXT("");
+		if (ImGui::Button("Export Model")) {
 			wstring wstrFilter = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? TEXT("Model2D Files\0 * .model2d") : TEXT("Model3D Files\0 * .model");
 			wstrSelectedPath = SaveFileDialog(wstrFilter.c_str()); // 파일 다이얼로그 호출
 		}
@@ -78,54 +128,181 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 		if (false == wstrSelectedPath.empty())
 		{
 			Export_Model(wstrSelectedPath);
-			if(m_bExportTextures)
+			if (m_bExportTextures)
 			{
 				std::filesystem::path pathDstPath = wstrSelectedPath;
 				Copy_Textures(m_pTestModelObj, m_szLoadedPath.remove_filename(), pathDstPath.remove_filename());
 			}
 		}
 	}
+}
 
-	ImGui::End();
-
-	//CONTROLL
-	if (m_pTestModelObj)
+void CLevel_AnimTool::Update_AnimationEditImgui()
+{
+	if (nullptr != m_pTestModelObj)
 	{
-		_float fMove = (_float)MOUSE_MOVE(MOUSE_AXIS::Z) / 100.f;
-		if (COORDINATE_3D == m_pTestModelObj->Get_CurCoord())
+		COORDINATE eCoord = m_pTestModelObj->Get_CurCoord();
+		CModel* pModel = m_pTestModelObj->Get_Model(eCoord);
+		if(false == pModel->Is_AnimModel())
+			return;
+		ImGui::Text("Animation Controller");
+		ImGui::Separator();
+		if (ImGui::Checkbox("Loop", &m_bLoop))
 		{
-			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
-			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
-			m_pTargetCam->Set_Fovy(m_fDefault3DCamFovY * m_fZoomMultiplier);
+			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
 		}
+		if (ImGui::InputInt("Current Animation", &m_iCurrentAnimIndex))
+		{
+			m_iCurrentAnimIndex = max(0, m_iCurrentAnimIndex);
+			m_iCurrentAnimIndex = min(m_iCurrentAnimIndex, (_int)m_pTestModelObj->Get_AnimationCount()-1);
+			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
+		}
+		if (ImGui::Button(m_bPlaying ? "Stop" :"Play")) 
+		{
+			m_bPlaying ^= 1;
+			m_pTestModelObj->Set_PlayingAnim(m_pTestModelObj->Get_CurCoord(), m_bPlaying);
+		}
+		ImGui::SameLine();
+		if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
+			m_pTestModelObj->Set_Progerss(m_fCurrentProgerss);
 		else
-		{
-			m_fZoomMultiplier += fMove * m_f2DZoomSpeed * _fTimeDelta;
-			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
-			m_pTestModelObj->Set_2DProjMatrix(XMMatrixOrthographicLH((_float)m_fDefault2DCamSize.x * m_fZoomMultiplier, (_float)m_fDefault2DCamSize.y * m_fZoomMultiplier, 0.0f, 1.0f));
-		}
+			m_fCurrentProgerss = m_pTestModelObj->Get_Progress();
 	}
 }
 
-HRESULT CLevel_AnimTool::Render()
+void CLevel_AnimTool::Update_AnimEventImgui()
 {
-#ifdef _DEBUG
-	if (m_pTestModelObj)
-		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
-#endif
 
-	return S_OK;
-}
+	if (ImGui::Button("Open AnimEvents File"))
+	{
+		wstring wstrSelectedPath = OpenFileDialog(TEXT("AnimEvent Files\0 * .animevt")); // 파일 다이얼로그 호출
+		if (false == wstrSelectedPath.empty())
+		{
+			if(FAILED(Load_AnimEvents(wstrSelectedPath)))
+			{
+				MSG_BOX("Failed to Load AnimEvents");
+			}
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Export AnimEvents")) 
+	{
+		wstring wstrSelectedPath = SaveFileDialog(TEXT("AnimEvent Files\0 * .animevt")); // 파일 다이얼로그 호출
 
-void CLevel_AnimTool::Update_Imgui()
-{
+		if (false == wstrSelectedPath.empty())
+		{
+			Export_AnimEvents(wstrSelectedPath);
+		}
+	}
+	ImGui::Separator();
+
+	ImGui::Text("Animation Index : %d", m_iCurrentAnimIndex);
+	ImGui::Text("Progress : %f", m_fCurrentProgerss);
+
+	if (ImGui::Button("Add AnimEvent"))
+	{
+		ANIM_EVENT tEvent{};
+		tEvent.fProgress = m_fCurrentProgerss;
+		tEvent.iAnimIndex = m_iCurrentAnimIndex;
+		m_AnimEvents[m_iCurrentAnimIndex].push_back(tEvent);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Remove AnimEvent"))
+	{
+		if (m_iSelectedAnimEventIndex != -1)
+		{
+			_int iTmpIndex = m_iSelectedAnimEventIndex;
+			for (auto& pairAnimEvt : m_AnimEvents)
+			{
+				if ((iTmpIndex - (_int)pairAnimEvt.second.size()) < 0)
+				{
+					pairAnimEvt.second.erase(pairAnimEvt.second.begin() + iTmpIndex);
+					break;
+				}
+				iTmpIndex -= pairAnimEvt.second.size();
+			}
+		}
+	}
+	ImGui::Separator();
+
+	_uint iEventIdx = 0;
+	if (ImGui::BeginListBox("AnimEventList")) 
+	{
+		for (auto& pairAnimEvt : m_AnimEvents)
+		{
+			for (auto& tEvent : pairAnimEvt.second)
+			{
+				_bool isSelected = iEventIdx == m_iSelectedAnimEventIndex;
+				string strLable = to_string(iEventIdx) +" AnimIdx : " + to_string(pairAnimEvt.first) +"/ Progress : "+ to_string(tEvent.fProgress);
+				if (ImGui::Selectable(strLable.c_str(), isSelected))
+				{
+					m_iSelectedAnimEventIndex = iEventIdx; // 선택된 항목 갱신
+				}
+				// 선택된 항목 강조
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+				iEventIdx++;
+			}
+		}
+		ImGui::EndListBox();
+	}
+	ImGui::Separator();
+	if (m_iSelectedAnimEventIndex != -1)
+	{
+		ANIM_EVENT* tEvent = nullptr;
+		_int iTmpIdx = m_iSelectedAnimEventIndex;
+		for (auto& pairAnimEvt : m_AnimEvents)
+		{
+			if ((iTmpIdx - (_int)pairAnimEvt.second.size()) < 0)
+			{
+				tEvent = &pairAnimEvt.second[iTmpIdx];
+				break;
+			}
+			iTmpIdx -= pairAnimEvt.second.size();
+		}
+		if (tEvent)
+		{
+			ImGui::Text("Selected Animation Event Data");
+			_int iAniimIndex = (_uint)tEvent->iAnimIndex;
+			if (ImGui::InputInt("Animation Index", &iAniimIndex))
+			{
+				_int iClampedAnimIndex = iAniimIndex;
+				iClampedAnimIndex = max(0, iAniimIndex);
+				if(m_pTestModelObj)
+					iClampedAnimIndex = min(iAniimIndex, (_int)m_pTestModelObj->Get_AnimationCount() - 1);
+				m_AnimEvents[iClampedAnimIndex].push_back(*tEvent);
+				m_AnimEvents[(_uint)tEvent->iAnimIndex].erase(m_AnimEvents[(_uint)tEvent->iAnimIndex].begin() + iTmpIdx);
+				tEvent = &m_AnimEvents[iClampedAnimIndex].back();
+				tEvent->iAnimIndex = iClampedAnimIndex;
+			}
+			_float fProgress = tEvent->fProgress;
+			if (ImGui::InputFloat("Progress", &fProgress))
+			{
+				fProgress = max(0, fProgress);
+				fProgress = fmin(fProgress, 1);
+				tEvent->fProgress = fProgress;
+			}
+
+			char buffer[128] = "";
+			strcpy_s(buffer, tEvent->strFuncName.c_str());
+			if (ImGui::InputText("FunctionName", buffer, 128)) {
+				tEvent->strFuncName = buffer;
+			}
+		}
+
+	}
 }
 
 void CLevel_AnimTool::Set_Animation(_uint _iAnimIdx, _bool _bLoop)
 {
+	assert(m_pTestModelObj);
 	m_pTestModelObj->Switch_Animation(_iAnimIdx);
 	m_pTestModelObj->Set_AnimationLoop(m_pTestModelObj->Get_CurCoord(), _iAnimIdx, _bLoop);
+
 }
+
 
 HRESULT CLevel_AnimTool::Ready_Lights()
 {
@@ -202,7 +379,7 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 	XMStoreFloat3(&Desc.vArm, vTargetLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.vRotation = { XMConvertToRadians(30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 10.f;
+	Desc.fLength = 30.f;
 	Desc.wszArmTag = TEXT("Cam_Arm");
 	Desc.pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
@@ -218,33 +395,6 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 	assert(!_wstrPath.empty());
 
 	SetWindowText(g_hWnd, TEXT("모델(을)를 로딩중입니다."));
-
-	CTestModelObject::TESTMODELOBJ_DESC tModelObjDesc{};
-	tModelObjDesc.isCoordChangeEnable = false;
-	tModelObjDesc.iCurLevelID = LEVEL_ANIMTOOL;
-	switch (_eType)
-	{
-	case AnimTool::CLevel_AnimTool::LOAD_3D:
-		tModelObjDesc.tTransform3DDesc.vInitialPosition = _float3(0, 0, 0);
-		tModelObjDesc.tTransform3DDesc.vInitialScaling = _float3(1, 1, 1);
-		tModelObjDesc.eStartCoord = COORDINATE_3D;
-		tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-		tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-		break;
-	case AnimTool::CLevel_AnimTool::LOAD_2D:
-	case AnimTool::CLevel_AnimTool::LOAD_RAW2D:
-		tModelObjDesc.tTransform2DDesc.vInitialPosition = _float3(0, 0, 0);
-		tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-		tModelObjDesc.eStartCoord = COORDINATE_2D;
-		tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
-		break;
-	case AnimTool::CLevel_AnimTool::LOAD_LAST:
-		break;
-	default:
-		break;
-	}
-
 
 	CModel* pTmpModel = nullptr;
 	switch (_eType)
@@ -270,6 +420,43 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 	default:
 		break;
 	}
+
+	CTestModelObject::TESTMODELOBJ_DESC tModelObjDesc{};
+	tModelObjDesc.isCoordChangeEnable = false;
+	tModelObjDesc.iCurLevelID = LEVEL_ANIMTOOL;
+	switch (_eType)
+	{
+	case AnimTool::CLevel_AnimTool::LOAD_3D:
+		if(pTmpModel->Is_AnimModel())
+		{
+			tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+			tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
+		}
+		else
+		{
+			tModelObjDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+			tModelObjDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+		}
+		tModelObjDesc.tTransform3DDesc.vInitialPosition = _float3(0, 0, 0);
+		tModelObjDesc.tTransform3DDesc.vInitialScaling = _float3(1, 1, 1);
+		tModelObjDesc.eStartCoord = COORDINATE_3D;
+		break;
+	case AnimTool::CLevel_AnimTool::LOAD_2D:
+	case AnimTool::CLevel_AnimTool::LOAD_RAW2D:
+		tModelObjDesc.tTransform2DDesc.vInitialPosition = _float3(0, 0, 0);
+		tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+		tModelObjDesc.eStartCoord = COORDINATE_2D;
+		tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+		break;
+	case AnimTool::CLevel_AnimTool::LOAD_LAST:
+		break;
+	default:
+		break;
+	}
+
+
+	
 	if (pTmpModel)
 	{
 		if(FAILED(pTmpModel->Initialize(nullptr)))
@@ -315,6 +502,75 @@ HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
 		return E_FAIL;
 	}
 	outFile.close();
+	return S_OK;
+}
+
+HRESULT CLevel_AnimTool::Load_AnimEvents(wstring _wstrPath)
+{
+	assert(!_wstrPath.empty());
+
+	SetWindowText(g_hWnd, TEXT("모델(을)를 로딩중입니다."));
+
+	std::ifstream inFile(_wstrPath, std::ios::binary);
+	if (!inFile) {
+		string str = "파일을 열 수 없습니다.";
+		str += WstringToString( _wstrPath);
+		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+		return E_FAIL;
+	}
+	m_AnimEvents.clear();
+	_uint iAnimIndexCount = 0;
+	inFile.read(reinterpret_cast<char*>(&iAnimIndexCount), sizeof(_uint));
+	for (_uint i = 0; i < iAnimIndexCount; i++)
+	{
+		_uint iAnimIndex = 0;
+		_uint iEventCount = 0;
+		inFile.read(reinterpret_cast<char*>(&iAnimIndex), sizeof(_uint));
+		inFile.read(reinterpret_cast<char*>(&iEventCount), sizeof(_uint));
+		m_AnimEvents.emplace(iAnimIndex, vector<ANIM_EVENT>());
+		m_AnimEvents[iAnimIndex].resize(iEventCount);
+		for (_uint j = 0; j < iEventCount; j++)
+		{
+			m_AnimEvents[iAnimIndex][j].ReadFile(inFile);
+		}
+	}
+
+	inFile.close();
+
+	return S_OK;
+}
+
+HRESULT CLevel_AnimTool::Export_AnimEvents(const wstring& _wstrPath)
+{
+	if (m_AnimEvents.empty())
+	{
+		MSG_BOX("이벤트가 없는데요?");
+		return E_FAIL;
+	}
+	wstring wstrExt = TEXT(".animevt");
+	std::filesystem::path path = _wstrPath;
+	if (path.extension().wstring() != wstrExt)
+	{
+		path.replace_extension(wstrExt);
+	}
+	std::ofstream outFile(path, std::ios::binary);
+	if (!outFile)
+	{
+		MSG_BOX("파일 열기 실패.");
+	}
+	_uint iAnimIndexCount = m_AnimEvents.size();
+	outFile.write(reinterpret_cast<char*>(&iAnimIndexCount), sizeof(_uint));
+	for (auto& pairAnimEvt : m_AnimEvents)
+	{
+		_uint iAnimIndex = pairAnimEvt.first;
+		_uint iEventCount = pairAnimEvt.second.size();
+		outFile.write(reinterpret_cast<char*>(&iAnimIndex), sizeof(_uint));
+		outFile.write(reinterpret_cast<char*>(&iEventCount), sizeof(_uint));
+		for (auto& tEvent : pairAnimEvt.second)
+		{
+			tEvent.WriteFile(outFile);
+		}
+	}
 	return S_OK;
 }
 

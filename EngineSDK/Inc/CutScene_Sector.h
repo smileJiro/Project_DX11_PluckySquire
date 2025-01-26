@@ -30,7 +30,13 @@ public:
 public:
 #ifdef _DEBUG
 	vector<CUTSCENE_KEYFRAME>*	Get_KeyFrames() { return &m_KeyFrames; };
+	_uint						Get_CurKeyFrameIndex() { return m_iCurKeyFrameIndex; };
+	_float						Get_TimeOffset();
+	_bool						Get_IsLookAt();
+	CUTSCENE_KEYFRAME			Get_KeyFrame(_uint _iKeyFrameIndex) { return m_KeyFrames[_iKeyFrameIndex]; }
 #endif
+
+	_bool						Get_IsChangeKeyFrame();
 
 public:
 	_bool						Play_Sector(_float _fTimeDelta, _vector* _pOutPos);
@@ -38,19 +44,30 @@ public:
 	void						Add_KeyFrame(CUTSCENE_KEYFRAME _tKeyFrame);
 
 private:
-	ID3D11Device* m_pDevice = { nullptr };
-	ID3D11DeviceContext* m_pContext = { nullptr };
+	ID3D11Device*				m_pDevice = { nullptr };
+	ID3D11DeviceContext*		m_pContext = { nullptr };
 
 private:
 	vector<CUTSCENE_KEYFRAME>	m_KeyFrames;
+	vector<_float>				m_Knots;
+
 	_float						m_fCurrentTime = {};
-	
+	_float						m_fDuration = { 5.f };
+
 	_uint						m_iSectorType = { SECTOR_TYPE_END };
+
+	_int						m_iPreKeyFrameIndex = { -1 };
+	_int						m_iCurKeyFrameIndex = { -1 };
 
 private:
 	_vector						Calculate_Position_Spline(_float _fRatio);
+	_vector						Calculate_Position_Spline_Test(_float _fTimeDelta);
 	_vector						Calculate_Position_Linear(_float _fRatio);
+
+	_uint						Find_Span(_float _fRatio);
+	_float						BasisFunction(_uint _i, _uint _iDegree, _float _fRatio);
 	
+	void						Calculate_Index();
 public:
 	static CCutScene_Sector*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg);
 	CCutScene_Sector*			Clone();

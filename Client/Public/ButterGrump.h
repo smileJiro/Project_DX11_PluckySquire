@@ -65,14 +65,11 @@ public:
 public:
 	virtual void Change_Animation() override;
 	virtual void Attack(_float _fTimeDelta) override;
-	void Alert_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Attack_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Intro_First_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Intro_Second_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Intro_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void Play_Intro();
 
 private:
+	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 	HRESULT								Ready_Projectiles();

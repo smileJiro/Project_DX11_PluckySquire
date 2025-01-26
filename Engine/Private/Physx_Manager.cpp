@@ -55,7 +55,7 @@ HRESULT CPhysx_Manager::Initialize()
 	/* 충돌 필터에 대한 세팅 ()*/
 	PxFilterData FilterData;
 	FilterData.word0 = 0x08;
-	FilterData.word1 = 0x02; // OhterGroupMask는 비트연산자를 통해 여러 그룹을 포함 가능.
+	FilterData.word1 = 0x02 | 0x04; // 이렇게 추가하고 몬스터도 다이나믹으로 돌려보던지 한번 근데 아마 좀 많이 바꿔야할거야 ㅋㅋㅋㅋㅋ
 
 	PxU32 iNumShapes = m_pTestDesk->getNbShapes();
 
@@ -88,7 +88,7 @@ HRESULT CPhysx_Manager::Initialize()
 	
 	
 	/* Debug */
-	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 3000);
+	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 10000);
 	if (nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
@@ -104,18 +104,18 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
+	m_pPxScene->simulate(1.0f / 60.f);
 	
-	_float fUpdateTime = 1.0f / 60.f;
-	m_pPxScene->simulate(fUpdateTime);
-
 	if (m_pPxScene->fetchResults(true))
 	{
-		if(nullptr != m_pPhysx_EventCallBack)
+		if (nullptr != m_pPhysx_EventCallBack)
 			m_pPhysx_EventCallBack->Update();
-
+	
 		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
 		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
 	}
+
+	
 }
 
 HRESULT CPhysx_Manager::Render()

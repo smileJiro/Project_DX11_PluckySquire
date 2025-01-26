@@ -1,4 +1,5 @@
 #pragma once
+#include "Animation.h" 
 #include "Texture.h"
 
 BEGIN(Engine)
@@ -30,7 +31,7 @@ public:
 };
 
 //하나의 애니메이션 데이터
-class ENGINE_DLL CAnimation2D : public CBase
+class ENGINE_DLL CAnimation2D : public CAnimation
 {
 protected:
 	CAnimation2D();
@@ -38,17 +39,23 @@ protected:
 public:
 	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 
-
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
 	_bool Play_Animation(_float _fTimeDelta);
+	virtual void Reset() override;
 
 	void Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun);
-	void Reset_CurrentTrackPosition();
 
 	const CSpriteFrame* GetCurrentSprite() { return SpriteFrames[iCurrentFrame].first; }
 	const _matrix* Get_CurrentSpriteTransform() ;
+	virtual _float	Get_Progress() override;
+
 
 	void Set_Loop(_bool bIsLoop) { bLoop = bIsLoop; }
+	virtual void Set_Progress(_float _fProgerss)override;
+
+protected:
+	_uint Get_AccumulativeSubFrameCount(_uint _iFrameIndex);
+
 protected:
 	string strName;
 	_float fFramesPerSecond = 60;

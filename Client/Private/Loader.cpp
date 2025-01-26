@@ -18,7 +18,9 @@
 #include "ShopPanel_BG.h"
 #include "Logo_BG.h"
 #include "ShopItemBG.h"
-
+#include "Interaction_Heart.h"
+#include "ESC_Goblin.h"
+#include "Dialogue.h"
 
 /* For. UI*/
 
@@ -38,10 +40,27 @@
 #include "Beetle.h"
 #include "BarfBug.h"
 #include "Projectile_BarfBug.h"
+#include "JumpBug.h"
+#include "Goblin.h"
+#include "Rat.h"
+#include "BirdMonster.h"
+#include "Soldier.h"
+#include "Popuff.h"
+
+/* For. Boss */
 #include "ButterGrump.h"
-#include "Boss_HomingBall.h"
 #include "Boss_EnergyBall.h"
+#include "Boss_HomingBall.h"
+#include "Boss_YellowBall.h"
+#include "Boss_PurpleBall.h"
 #include "FSM_Boss.h"
+
+
+// Sample
+#include "SampleBook.h"
+#include "2DDefault_RenderObject.h"
+
+
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -121,9 +140,12 @@ void CLoader::Show_Debug()
 HRESULT CLoader::Loading_Level_Static()
 {
 
+    lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+
+
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom.dds"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_Outline"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bg_border.dds"), 1))))
@@ -145,6 +167,12 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_IconBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_BG_TEST.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCGoblin"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_PauseGoblin.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBookMark"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bookmark.dds"), 1))))
 		return E_FAIL;
 
 
@@ -216,6 +244,8 @@ HRESULT CLoader::Loading_Level_Static()
 	
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanelBG::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), CESC_Goblin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
@@ -229,7 +259,6 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
 
     /* Monster */
 
@@ -248,6 +277,35 @@ HRESULT CLoader::Loading_Level_Static()
         CProjectile_BarfBug::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_GameObject_JumpBug */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_JumpBug"),
+        CJumpBug::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Goblin */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"),
+        CGoblin::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Rat */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"),
+        CRat::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_BirdMonster */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BirdMonster"),
+        CBirdMonster::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"),
+        CSoldier::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Popuff */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"),
+        CPopuff::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -289,6 +347,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM_Boss"),
         CFSM_Boss::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
+        return E_FAIL;
+
 
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
@@ -323,6 +385,12 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_bulb.dds"), 1))))
 		return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SampleMap"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Map/SampleMap.dds"), 1))))
+		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
+        C2DDefault_RenderObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
 
@@ -384,6 +452,16 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		return E_FAIL;
 
 
+    /// 다이얼로그 관련
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DialogueBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Dialogue/BG/DialogueBGs/Dialogue_BG_%d.dds"), 27))))
+		return E_FAIL;
+
+	//if (FAILED(Load_Diagloues(LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Dialogue/Test.json"))))
+	//	return E_FAIL;
+
+
+
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
@@ -400,8 +478,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
     
     //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Room_Free_Enviroment.json"), matPretransform)))
     //    return E_FAIL;    
-    //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
-    //    return E_FAIL;
+    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
+        return E_FAIL;
 
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
 
@@ -432,7 +510,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    /* For. Prototype_GameObject_MapObject */
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
+        CSampleBook::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     ///////////////////////////////// UI /////////////////////////////////
     /* For. Prototype_UIObject_Pick_Bubble */
@@ -466,6 +548,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ShopItem"),
 		CShopItemBG::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"),
+		CInteraction_Heart::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
     ///////////////////////////////// UI /////////////////////////////////
 
@@ -485,8 +570,15 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_YellowBall"),
+        CBoss_YellowBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
-    //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_PurpleBall"),
+        CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Free_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -662,6 +754,38 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
 
         
     }
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Diagloues(LEVEL_ID _iLevelIndex, const _tchar* _szJasonPath)
+{
+    CDialogue::Dialog tDialogue;
+    ifstream input_File(_szJasonPath);
+
+
+	json jFileData;
+	if (!input_File.is_open())
+	{
+		MSG_BOX("Failed to Open Json File ");
+		return E_FAIL;
+	}
+
+    json& jDialog = jFileData["DialInfo"];
+    input_File >> jFileData;
+    input_File.close();
+    set<string> strDialName;
+
+    for (auto& j : jDialog)
+    {
+        strDialName.insert(j.get<string>());
+    }
+       
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_iLevelIndex, StringToWstring(strFileName),
+	//	CDialogue::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
+	//	return E_FAIL;
+
+
     return S_OK;
 }
 

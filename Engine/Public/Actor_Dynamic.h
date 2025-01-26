@@ -14,6 +14,12 @@ public:
 	void						Priority_Update(_float _fTimeDelta) override;
 	void						Update(_float _fTimeDelta)  override;
 	void						Late_Update(_float _fTimeDelta)  override;
+public:
+	HRESULT						Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+
+public:
+	void						On_Kinematic();
+	void						On_Dynamic();
 
 public:
 	virtual void				Set_LinearVelocity(_vector _vDirection, _float _fVelocity);

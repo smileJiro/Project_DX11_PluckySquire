@@ -140,8 +140,7 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 	{
 		if (bLoop)
 		{
-			iCurrentFrame = 0;
-			iCurrentSubFrame = 0;
+			Reset();
 		}
 		else
 		{
@@ -159,11 +158,16 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 			iCurrentFrame++;
 		}
 	}
-	if (iCurrentFrame > iFrameCount)
+	if (iCurrentFrame >= iFrameCount)
 		iCurrentFrame = iFrameCount -1;
 		
 	fCurrentFrameTime += _fTimeDelta;
 	return false;
+}
+
+void CAnimation2D::Reset()
+{
+	__super::Reset();
 }
 
 void CAnimation2D::Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun)
@@ -171,18 +175,49 @@ void CAnimation2D::Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun
 	SpriteFrames.push_back({ _pSpriteFrame ,_iFrameRun});
 }
 
-void CAnimation2D::Reset_CurrentTrackPosition()
-{
-	iCurrentFrame = 0;
-	iCurrentSubFrame = 0;
-	fCurrentFrameTime = 0;
-}
-
 const _matrix* CAnimation2D::Get_CurrentSpriteTransform() 
 {
 	return GetCurrentSprite()->Get_Transform();
 }
 
+_float CAnimation2D::Get_Progress()
+{
+	_float fProgerss = 0;
+	if (iFrameCount > 0)
+	{
+		fProgerss = (_float)(Get_AccumulativeSubFrameCount(iCurrentFrame) + iCurrentSubFrame) / (_float)Get_AccumulativeSubFrameCount(iFrameCount - 1);
+	}
+	return fProgerss;
+}
+
+void CAnimation2D::Set_Progress(_float _fProgerss)
+{
+	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(iFrameCount - 1);
+	_int iTargetSubFrame = (_int)(_fProgerss * iTotalSubFrameCount);
+	_float fRemainTime = fFramesPerSecond * iTotalSubFrameCount * _fProgerss - (fFramesPerSecond * iTargetSubFrame);
+	fCurrentFrameTime = fRemainTime;
+	for (_uint i = 0; i < iFrameCount; i++)
+	{
+		_int iFrameRun = (_int)SpriteFrames[i].second;
+		if (iTargetSubFrame - iFrameRun < 0)
+		{
+			iCurrentFrame = i;
+			iCurrentSubFrame = iTargetSubFrame;
+			return;
+		}
+		iTargetSubFrame -= iFrameRun;
+	}
+}
+
+_uint CAnimation2D::Get_AccumulativeSubFrameCount(_uint _iFrameIndex)
+{
+	_uint iAccumulativeSubFrames = 0;
+	for (_uint i = 0; i < _iFrameIndex; i++)
+	{
+		iAccumulativeSubFrames += SpriteFrames[i].second;
+	}
+	return iAccumulativeSubFrames;
+}
 
 
 CAnimation2D* CAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)

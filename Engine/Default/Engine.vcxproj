@@ -198,7 +198,10 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\ActorObject.h" />
     <ClInclude Include="..\public\Actor_Dynamic.h" />
     <ClInclude Include="..\public\Actor_Static.h" />
-    <ClInclude Include="..\public\Animation.h" />
+    <ClInclude Include="..\Public\Animation.h" />
+    <ClInclude Include="..\public\Animation3D.h" />
+    <ClInclude Include="..\Public\AnimEventGenerator.h" />
+    <ClInclude Include="..\Public\AnimEventReceiver.h" />
     <ClInclude Include="..\public\Base.h" />
     <ClInclude Include="..\public\Bone.h" />
     <ClInclude Include="..\public\Camera.h" />
@@ -219,6 +222,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\CustomFont.h" />
     <ClInclude Include="..\Public\CutScene_Sector.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
+    <ClInclude Include="..\public\Frustum.h" />
     <ClInclude Include="..\public\Particle_Emitter.h" />
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
     <ClInclude Include="..\public\Particle_Module.h" />
@@ -287,7 +291,10 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\ActorObject.cpp" />
     <ClCompile Include="..\private\Actor_Dynamic.cpp" />
     <ClCompile Include="..\private\Actor_Static.cpp" />
-    <ClCompile Include="..\private\Animation.cpp" />
+    <ClCompile Include="..\Private\Animation.cpp" />
+    <ClCompile Include="..\private\Animation3D.cpp" />
+    <ClCompile Include="..\Private\AnimEventGenerator.cpp" />
+    <ClCompile Include="..\Private\AnimEventReceiver.cpp" />
     <ClCompile Include="..\private\Base.cpp" />
     <ClCompile Include="..\private\Bone.cpp" />
     <ClCompile Include="..\private\Camera.cpp" />
@@ -308,6 +315,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CutScene_Sector.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
+    <ClCompile Include="..\private\Frustum.cpp" />
     <ClCompile Include="..\private\Particle_Emitter.cpp" />
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />
     <ClCompile Include="..\private\Particle_Module.cpp" />
@@ -368,6 +376,16 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Public\Engine_Struct.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\cs\Test_cs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Debug.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">

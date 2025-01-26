@@ -71,10 +71,44 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 
 }
 
+HRESULT CActor_Dynamic::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+		return E_FAIL;
+
+	if (COORDINATE_2D == _eCoordinate)
+		return S_OK;
+
+	if (nullptr == _pNewPosition)
+		return S_OK;
+
+	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
+
+	_float3 vPos = {};
+	XMStoreFloat3(&vPos, m_pOwner->Get_Position());
+	static_cast<PxRigidDynamic*>(m_pActor)->setGlobalPose(PxTransform(_pNewPosition->x, _pNewPosition->y, _pNewPosition->z));
+
+	return S_OK;
+}
+
+void CActor_Dynamic::On_Kinematic()
+{
+	m_eActorType = ACTOR_TYPE::KINEMATIC;
+	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
+	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true); // Kinematic 
+}
+
+void CActor_Dynamic::On_Dynamic()
+{
+	m_eActorType = ACTOR_TYPE::DYNAMIC;
+	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
+	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false); // Kinematic 
+}
+
 void CActor_Dynamic::Set_LinearVelocity(_vector _vDirection, _float _fVelocity)
 {
 	// true : 객체가 물리공간상에서 수면상태인 경우 깨운다는 파라미터임 >>> false면 수면상태인 경우 깨우지 않음.
-	static_cast<PxRigidDynamic*>(m_pActor)->setLinearVelocity(PxVec3(XMVectorGetX(_vDirection) * _fVelocity, XMVectorGetY(_vDirection) * _fVelocity, XMVectorGetZ(_vDirection) * _fVelocity), true);
+	static_cast<PxRigidDynamic*>(m_pActor)->setLinearVelocity(PxVec3(XMVectorGetX(_vDirection) * _fVelocity, XMVectorGetY(_vDirection) * _fVelocity, XMVectorGetZ(_vDirection) * _fVelocity), m_isActive);
 }
 
 void CActor_Dynamic::Set_AngularVelocity(const _float3& _vAngularVelocity)
@@ -82,17 +116,17 @@ void CActor_Dynamic::Set_AngularVelocity(const _float3& _vAngularVelocity)
 	PxVec3 vAngularVelocity = PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z);
 	
 	if(true == vAngularVelocity.isFinite())
-		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z), true);
+		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z), m_isActive);
 }
 
 void CActor_Dynamic::Add_Force(const _float3& _vForce)
 {
-	static_cast<PxRigidDynamic*>(m_pActor)->addForce(PxVec3(_vForce.x, _vForce.y, _vForce.z), PxForceMode::eFORCE, true);
+	static_cast<PxRigidDynamic*>(m_pActor)->addForce(PxVec3(_vForce.x, _vForce.y, _vForce.z), PxForceMode::eFORCE, m_isActive);
 }
 
 void CActor_Dynamic::Add_Impulse(const _float3& _vForce)
 {
-	static_cast<PxRigidDynamic*>(m_pActor)->addForce(PxVec3(_vForce.x, _vForce.y, _vForce.z), PxForceMode::eIMPULSE, true);
+	static_cast<PxRigidDynamic*>(m_pActor)->addForce(PxVec3(_vForce.x, _vForce.y, _vForce.z), PxForceMode::eIMPULSE, m_isActive);
 }
 
 void CActor_Dynamic::Turn_TargetDirection(_vector _vDirection)
@@ -108,7 +142,12 @@ void CActor_Dynamic::Turn_TargetDirection(_vector _vDirection)
 
 	PxVec3 vAngularVelocity = vRotationAxis.getNormalized() * fAngleDiff * 4.0f;
 
-	static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(vAngularVelocity, true);
+	if (true == vAngularVelocity.isFinite())
+		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(vAngularVelocity, m_isActive);
+	else
+	{
+		int a = 0;
+	}
 }
 
 

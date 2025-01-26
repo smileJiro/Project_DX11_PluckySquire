@@ -44,7 +44,7 @@ void CController_Transform::Update_AutoRotation(_float _fTimeDelta)
 
 }
 
-HRESULT CController_Transform::Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition)
+HRESULT CController_Transform::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
 	if (_eCoordinate == m_eCurCoord)
 		return S_OK;
@@ -57,7 +57,10 @@ HRESULT CController_Transform::Change_Coordinate(COORDINATE _eCoordinate, const 
 
 	m_eCurCoord = _eCoordinate;
 
-	m_pTransforms[m_eCurCoord]->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&_vPosition), 1.0f));
+	if (nullptr == _pNewPosition)
+		return S_OK;
+
+	m_pTransforms[m_eCurCoord]->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(_pNewPosition), 1.0f));
 
 	return S_OK;
 }
@@ -146,6 +149,17 @@ void CController_Transform::LookAt_3D(_fvector _vAt)
 		return;
 
 	static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->LookAt(_vAt);
+}
+
+_bool CController_Transform::MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta)
+{
+	if (COORDINATE_2D == m_eCurCoord)
+		return false;
+
+	if (nullptr == m_pTransforms[m_eCurCoord])
+		return false;
+
+	return static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->MoveToTarget(_vTargetPos, _fTimeDelta);
 }
 
 CTransform* CController_Transform::Get_Transform() const

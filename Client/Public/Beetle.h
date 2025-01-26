@@ -54,11 +54,10 @@ public:
 
 public:
 	virtual void Change_Animation() override;
-	void Alert_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Attack_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void	Attack_Recovery_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
+	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 

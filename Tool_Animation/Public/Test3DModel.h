@@ -2,6 +2,7 @@
 #include "3DModel.h"
 
 BEGIN(AnimTool)
+
 class CTest3DModel :
     public C3DModel
 {
@@ -14,8 +15,23 @@ public:
 
 	HRESULT				Export_Model(ofstream& _outfile);
 
+	//Set
+	void						Set_Progress(_float _fTrackPos);
 	//Get
 	void						Get_TextureNames(set<wstring>& _outTextureNames);
+	_float					Get_Progress();
+
+protected:
+	virtual HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);
+	virtual HRESULT Ready_Meshes(ifstream& inFile);
+	virtual HRESULT Ready_Materials(ifstream& inFile, const _char* pModelFilePath) override;
+	virtual HRESULT Ready_Animations(ifstream& inFile) override;
+private:
+	HRESULT Export_Bone(ofstream& _outFile);
+	HRESULT Export_Meshes(ofstream& _outFile, _bool _bAnim);
+	HRESULT Export_Materials(ofstream& _outFile);
+	HRESULT Export_Animations(ofstream& _outFile);
+
 public:
 	static CTest3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
 	virtual CComponent* Clone(void* _pArg) override;

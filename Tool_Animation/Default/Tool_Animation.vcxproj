@@ -110,7 +110,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_TOOL;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -159,6 +159,10 @@
     <ClInclude Include="..\Public\TestModelObject.h" />
     <ClInclude Include="..\Public\TestTerrain.h" />
     <ClInclude Include="..\Public\ToolAnimation2D.h" />
+    <ClInclude Include="..\Public\ToolAnimation3D.h" />
+    <ClInclude Include="..\Public\ToolBone.h" />
+    <ClInclude Include="..\Public\ToolMaterial.h" />
+    <ClInclude Include="..\Public\ToolMesh.h" />
     <ClInclude Include="AnimTool_Function.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -181,6 +185,10 @@
     <ClCompile Include="..\Private\TestModelObject.cpp" />
     <ClCompile Include="..\Private\TestTerrain.cpp" />
     <ClCompile Include="..\Private\ToolAnimation2D.cpp" />
+    <ClCompile Include="..\Private\ToolAnimation3D.cpp" />
+    <ClCompile Include="..\Private\ToolBone.cpp" />
+    <ClCompile Include="..\Private\ToolMaterial.cpp" />
+    <ClCompile Include="..\Private\ToolMesh.cpp" />
     <ClCompile Include="..\Private\Tool_Animation.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

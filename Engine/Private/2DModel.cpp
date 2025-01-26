@@ -1,6 +1,7 @@
 #include "2DModel.h"
 #include "GameInstance.h"
 #include "Engine_Defines.h"
+#include "AnimEventGenerator.h"
 
 C2DModel::C2DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModel(_pDevice, _pContext)
@@ -119,18 +120,36 @@ HRESULT C2DModel::Initialize(void* _pDesc)
 
 void C2DModel::Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)
 {
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
+	if (iTemp < (_int)_iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_Animation2Ds[_iIdx]->Set_Loop(_bIsLoop);
 }
 
 void C2DModel::Set_Animation(_uint _iIdx)
 {
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
+	if (iTemp < (_int)_iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_iCurAnimIdx = _iIdx;
 }
 
 void C2DModel::Switch_Animation(_uint _iIdx)
 {
+	_int iTemp = (_int)m_Animation2Ds.size() - 1;
+	if (iTemp < (_int)_iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
 	m_iCurAnimIdx = _iIdx;
-	m_Animation2Ds[m_iCurAnimIdx]->Reset_CurrentTrackPosition();
+	m_Animation2Ds[m_iCurAnimIdx]->Reset();
 }
 
 void C2DModel::To_NextAnimation()
@@ -190,8 +209,14 @@ HRESULT C2DModel::Render(CShader* _pShader, _uint _iShaderPass)
 
 _bool C2DModel::Play_Animation(_float _fTimeDelta)
 {
+	
 	if (Is_AnimModel())
-		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta);
+	{
+		if (m_bPlayingAnim)
+			return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta);
+		else
+			return false;
+	}
 	return false;
 }
 
@@ -231,4 +256,19 @@ void C2DModel::Free()
 		Safe_Release(pTex.second);
 	m_Textures.clear();
 	__super::Free();
+}
+
+_float C2DModel::Get_CurrentAnimProgeress()
+{
+	return m_Animation2Ds[m_iCurAnimIdx]->Get_Progress();
+}
+
+CAnimation* C2DModel::Get_Animation(_uint iAnimIndex)
+{
+	if (iAnimIndex >= m_Animation2Ds.size())
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return nullptr;
+	}
+	return m_Animation2Ds[iAnimIndex];
 }

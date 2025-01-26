@@ -16,45 +16,58 @@ private:
 	virtual ~CUI_Manager() = default;
 
 private:
-	CGameInstance* m_pGameInstance;
-	STAMP							m_eStampIndex = { STAMP_STOP };
-	CPlayer* m_pPlayer = { nullptr };
+	CGameInstance*						m_pGameInstance;
+	STAMP								m_eStampIndex = { STAMP_STOP };
+	CPlayer*							m_pPlayer = { nullptr };
 
-	map<_uint, CSettingPanelBG*>	m_pSettingPanels;
-	map<_uint, CShopPanel_BG*>		m_pShopPanels;
-	vector<CShopItemBG*> m_pShopItemBGs;
-	map <_uint, vector<CShopItemBG*>> m_ShopItems;
+	map<_uint, CSettingPanelBG*>		m_pSettingPanels;
+	map<_uint, CShopPanel_BG*>			m_pShopPanels;
 
-	_bool							m_isESC = { false };
+
+	vector<CShopItemBG*>				m_pShopItemBGs;
+	vector<vector<CShopItemBG*>>		m_ShopItems;
+
+
+	_bool								m_isESC = { false };
+	_bool								m_isConfirmStore = { false };
+	_int								m_iPreIndex = { 0 };
+
+	_int								m_iSettingPanelIndex = { 0 };
+	_int								m_iLogoIndex = { 1 };
+	_bool								m_isStoreYesORNo = { true };
+
+	_int								m_iCurrentLevel = { -1 };
 
 public:
-	STAMP							Get_StampIndex() { return m_eStampIndex; }
-	void							Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
+	STAMP								Get_StampIndex() { return m_eStampIndex; }
+	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
+	CPlayer*							Get_Player() { return 
+		m_pPlayer; }
+	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
+	void								Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
+	void								Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel);
+	void								Delete_ShopItems(_uint _index);
+	map<_uint, CSettingPanelBG*>		Get_SettingPanels() { return m_pSettingPanels; }
+	map<_uint, CShopPanel_BG*>			Get_ShopPanels() { return m_pShopPanels; }
+	vector<CShopItemBG*>				Get_ShopItemBGs() { return m_pShopItemBGs; }
+	vector<vector<CShopItemBG*>>		Get_ShopItems() { return m_ShopItems; }
+	_bool								Get_isESC() { return m_isESC; }
+	void								Set_isEsc(_bool _isEsc) { m_isESC = _isEsc; }
+	_bool								Get_ConfirmStore() { return m_isConfirmStore; }
+	void								Set_ConfirmStore(_bool _Confirm) { m_isConfirmStore = _Confirm; }
+	_bool								Get_StoreYesOrno() { return m_isStoreYesORNo; }
+	void								Set_StoreYesOrno(_bool _yesOrno) { m_isStoreYesORNo = _yesOrno; }
+	_int								Get_SettingPanelIndex() { return m_iSettingPanelIndex; }
+	void								Set_SettingPanelIndex(_int _index) { m_iSettingPanelIndex = _index; }
+	_int								Get_LogoIndex() { return m_iLogoIndex; }
+	void								Set_LogoIndex(_int _index) { m_iLogoIndex = _index; }
+	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs) { m_ShopItems.push_back(_ItemBGs); }
+	void								pushBack_ShopItemBGs(CShopItemBG* _pBGs) {m_pShopItemBGs.push_back(_pBGs);  }
+	void								Set_ChooseItem(_int _iIndex);
 
-	CPlayer* Get_Player() { return m_pPlayer; }
-	void							Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
+	HRESULT								Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
+	HRESULT								Level_Enter(_int _iChangeLevelID);
 
-	void							Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
-	void							Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel);
-
-	map<_uint, CSettingPanelBG*>	Get_SettingPanels() { return m_pSettingPanels; }
-	map<_uint, CShopPanel_BG*>		Get_ShopPanels() { return m_pShopPanels; }
-	vector<CShopItemBG*>			Get_ShopItemBGs() { return m_pShopItemBGs; }
-	void							Emplace_ShopItem(_uint iCount, vector<CShopItemBG*> _ItemBGs) {
-		m_ShopItems.emplace(iCount, _ItemBGs);
-	}
-	void							pushBack_ShopItemBGs(CShopItemBG* _pBGs) {
-		m_pShopItemBGs.push_back(_pBGs);
-	}
-	void							Clean_ShopItemBgs();
-
-	map <_uint, vector<CShopItemBG*>> Get_ShopItems() {
-		return m_ShopItems;
-	}
-
-
-	_bool							Get_isESC() { return m_isESC; }
-	void							Set_isEsc(_bool _isEsc) { m_isESC = _isEsc; }
 
 public:
 	virtual void Free() override;

@@ -17,6 +17,10 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+private:
+	_float m_fAccTime = { 0.f };
+	_float m_fDelayTime = {};
+
 public:
 	static CIdleState* Create(void* _pArg);
 

@@ -23,6 +23,8 @@ public:
     //Get
     virtual _uint Get_AnimCount() override;
 	virtual _uint Get_CurrentAnimIndex() override { return m_iCurAnimIdx; }
+    virtual _float Get_CurrentAnimProgeress() override;
+    virtual CAnimation* Get_Animation(_uint iAnimIndex) override;
     //Set
     virtual void Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)override;
     virtual void Set_Animation(_uint _iIdx)override;
@@ -45,6 +47,8 @@ public:
     static C2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath);
     virtual CComponent* Clone(void* _pArg) override;
     virtual void Free() override;
+
+
 };
 
 END

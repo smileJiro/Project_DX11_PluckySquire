@@ -9,9 +9,11 @@
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
+#include "UI_Manager.h"
 
 #include "FSM.h"
 #include "FSM_Boss.h"
+#include "ActorObject.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -93,10 +95,15 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 		Excute_Setup_SimulationFilter(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::CHANGE_COORDINATE:
+	{
+		Excute_Change_Coordinate(_tEvent);
+	}
+	break;
 	default:
 		break;
 	}
-
+	
 	
 	return S_OK;
 }
@@ -240,6 +247,30 @@ HRESULT CEvent_Manager::Excute_Setup_SimulationFilter(const EVENT& _tEvent)
 	return S_OK;
 }
 
+HRESULT CEvent_Manager::Excute_Change_Coordinate(const EVENT& _tEvent)
+{
+	CActorObject* pActorObject = reinterpret_cast<CActorObject*>(_tEvent.Parameters[0]);
+	COORDINATE eChangeCoord = (COORDINATE)(_tEvent.Parameters[1]);
+	_float3* pPosition = (_float3*)(_tEvent.Parameters[2]);
+
+	if (nullptr == pActorObject)
+	{
+		if (nullptr != pPosition)
+		{
+			delete pPosition;
+			pPosition = nullptr;
+		}
+		return E_FAIL;
+	}
+
+	pActorObject->Change_Coordinate(eChangeCoord, pPosition);
+
+	delete pPosition;
+	pPosition = nullptr;
+
+	return S_OK;
+}
+
 HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
 {
 	/* Parameter_0 : Changing State */
@@ -290,6 +321,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
 	return S_OK;
 }

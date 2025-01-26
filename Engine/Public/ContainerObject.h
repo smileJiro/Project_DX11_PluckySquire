@@ -29,6 +29,8 @@ public:
 	virtual HRESULT		Render() override;
 
 public:
+	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+public:
 	CComponent*			Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag);
 	HRESULT				Add_PartObject(CGameObject* _pPartObject);
 public:

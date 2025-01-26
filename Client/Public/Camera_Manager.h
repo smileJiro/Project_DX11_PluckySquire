@@ -39,6 +39,11 @@ public:
 	_vector				Get_CameraVector(CTransform::STATE _eState);						// 현재 카메라 Right, Up, Look, Pos 가져오는 함수
 	_uint				Get_CameraType() { return m_eCurrentCameraType; }
 
+#ifdef _DEBUG
+	void				Start_ZoomIn();
+	void				Start_ZoomOut();
+#endif
+
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
 

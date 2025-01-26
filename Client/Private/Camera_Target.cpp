@@ -99,11 +99,15 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 #endif
 }
 
-void CCamera_Target::Action_Mode(_float fTimeDelta)
+void CCamera_Target::Action_Mode(_float _fTimeDelta)
 {
+	Action_Zoom(_fTimeDelta);
+	Action_Shake(_fTimeDelta);
+	Change_AtOffset(_fTimeDelta);
+
 	switch (m_eCameraMode) {
 	case DEFAULT:
-		Defualt_Move(fTimeDelta);
+		Defualt_Move(_fTimeDelta);
 		break;
 	case TURN:
 		break;

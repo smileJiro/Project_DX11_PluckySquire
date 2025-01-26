@@ -47,17 +47,20 @@ HRESULT CMonster::Initialize(void* _pArg)
 
 void CMonster::Priority_Update(_float _fTimeDelta)
 {
-	__super::Priority_Update(_fTimeDelta);
+	CGameObject::Priority_Update_Component(_fTimeDelta); /* Component Priority_Update */
+	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 void CMonster::Update(_float _fTimeDelta)
 {
-	__super::Update(_fTimeDelta);
+	CGameObject::Update_Component(_fTimeDelta); /* Component Update */
+	__super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CMonster::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	CGameObject::Late_Update_Component(_fTimeDelta); /* Component Late_Update */
+	__super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
 HRESULT CMonster::Render()
@@ -100,6 +103,12 @@ HRESULT CMonster::Cleanup_DeadReferences()
 
 void CMonster::Active_OnEnable()
 {
+	// 1. PxActor 활성화 (활성화 시점에는 먼저 켜고)
+	CActorObject::Active_OnEnable();
+
+
+
+	// 2. 몬스터 할거 하고
 //	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
 //	if (nullptr == m_pTarget)
 //	{
@@ -110,10 +119,17 @@ void CMonster::Active_OnEnable()
 //	}
 //
 //	Safe_AddRef(m_pTarget);
+
+
 }
 
 void CMonster::Active_OnDisable()
 {
+	// 1. 몬스터 할거 하고
+
+
+	// 2. PxActor 비활성화 
+	CActorObject::Active_OnDisable();
 }
 
 void CMonster::Free()

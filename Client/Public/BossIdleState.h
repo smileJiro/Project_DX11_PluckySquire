@@ -1,10 +1,10 @@
 #pragma once
-#include "State.h"
+#include "BossState.h"
 
 BEGIN(Client)
 
 
-class CBossIdleState final : public CState
+class CBossIdleState final : public CBossState
 {
 private:
 	CBossIdleState();
@@ -20,7 +20,6 @@ public:
 
 private:
 	_float m_fCoolTime = { 0.f };
-	_float m_fAccTime = { 0.f };
 
 public:
 	static CBossIdleState* Create(void* _pArg);

@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "Client_Defines.h"
 
 BEGIN(Client)
 
@@ -16,6 +15,7 @@ public:
 		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
+		CMonster* pOwner;
 	}FSMDESC;
 
 protected:
@@ -24,7 +24,8 @@ protected:
 	virtual ~CFSM() = default;
 
 public:
-	void Set_Owner(CMonster* _pOwner);
+	//void Set_Owner(CMonster* _pOwner);
+	void Set_PatrolBound();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

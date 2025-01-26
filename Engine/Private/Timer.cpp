@@ -35,13 +35,16 @@ void CTimer::Update_Timer(void)
 
 	m_fTimeDelta = (_float)(m_FrameTime.QuadPart - m_LastTime.QuadPart) / (_float)m_CpuTick.QuadPart * m_fTimeScale;
 #ifdef _DEBUG
-	if (m_fTimeDelta > (1.f / 60.f))
-	{
-		m_fTimeDelta = (1.f / 60.f);
-	}
+	//if (m_fTimeDelta > (1.f / 60.f))
+	//{
+	//	m_fTimeDelta = (1.f / 60.f);
+	//}
 #endif
 
 	m_LastTime = m_FrameTime;
+
+
+	Compute_FPS();
 }
 
 void CTimer::Render_FPS(HWND _hWnd)
@@ -59,6 +62,19 @@ void CTimer::Render_FPS(HWND _hWnd)
 		SetWindowText(_hWnd, szBuffer);
 	}
 
+}
+
+void CTimer::Compute_FPS()
+{
+	++m_iCallCount;
+	m_fFPSAcc += m_fTimeDelta; // DT 누적
+	if (m_fFPSAcc >= 1.0f) // 1초 카운트
+	{
+		m_iFPS = m_iCallCount;
+		m_fFPSAcc = 0.;
+		m_iCallCount = 0;
+	}
+;
 }
 
 CTimer* CTimer::Create(void)
