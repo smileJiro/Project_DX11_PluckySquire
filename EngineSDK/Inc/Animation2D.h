@@ -16,14 +16,14 @@ public:
 
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
 	const _matrix* Get_Transform() const { 
-		return &matSpriteTransform; 
+		return &m_matSpriteTransform; 
 	}
 protected:
-	_float2 vSpriteStartUV = { 0,0};
-	_float2 vSpriteEndUV= { 0,0};
-	_float fPixelsPerUnrealUnit = { 1.0f };
-	_matrix matSpriteTransform;
-	CTexture* pTexture = { nullptr };
+	_float2 m_vSpriteStartUV = { 0,0};
+	_float2 m_vSpriteEndUV= { 0,0};
+	_float m_fPixelsPerUnrealUnit = { 1.0f };
+	_matrix m_matSpriteTransform;
+	CTexture* m_pTexture = { nullptr };
 public:
 	static CSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 	virtual CSpriteFrame* Clone();
@@ -45,27 +45,27 @@ public:
 
 	void Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun);
 
-	const CSpriteFrame* GetCurrentSprite() { return SpriteFrames[iCurrentFrame].first; }
+	const CSpriteFrame* GetCurrentSprite() { return m_SpriteFrames[m_iCurrentFrame].first; }
 	const _matrix* Get_CurrentSpriteTransform() ;
 	virtual _float	Get_Progress() override;
 
 
-	void Set_Loop(_bool bIsLoop) { bLoop = bIsLoop; }
+	void Set_Loop(_bool bIsLoop) { m_bLoop = bIsLoop; }
 	virtual void Set_Progress(_float _fProgerss)override;
 
 protected:
 	_uint Get_AccumulativeSubFrameCount(_uint _iFrameIndex);
 
 protected:
-	string strName;
-	_float fFramesPerSecond = 60;
-	_uint iFrameCount = 0;
-	_bool bLoop = false;
-	vector<pair<CSpriteFrame*,_uint>> SpriteFrames;
+	string m_strName;
+	_float m_fFramesPerSecond = 60;
+	_uint m_iFrameCount = 0;
+	_bool m_bLoop = false;
+	vector<pair<CSpriteFrame*,_uint>> m_SpriteFrames;
 
-	_float fCurrentFrameTime = 0;
-	_uint iCurrentFrame = { 0};
-	_uint iCurrentSubFrame = { 0};
+	_float m_fCurrentFrameTime = 0;
+	_uint m_iCurrentFrame = { 0};
+	_uint m_iCurrentSubFrame = { 0};
 
 public:
 	static CAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);

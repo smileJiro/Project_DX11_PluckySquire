@@ -7,11 +7,11 @@ CSpriteFrame::CSpriteFrame()
 {
 }
 CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
-	: vSpriteStartUV(_Prototype.vSpriteStartUV)
-	, vSpriteEndUV(_Prototype.vSpriteEndUV)
-	, pTexture(_Prototype.pTexture)
-	, fPixelsPerUnrealUnit(_Prototype.fPixelsPerUnrealUnit)
-	, matSpriteTransform(_Prototype.matSpriteTransform)
+	: m_vSpriteStartUV(_Prototype.m_vSpriteStartUV)
+	, m_vSpriteEndUV(_Prototype.m_vSpriteEndUV)
+	, m_pTexture(_Prototype.m_pTexture)
+	, m_fPixelsPerUnrealUnit(_Prototype.m_fPixelsPerUnrealUnit)
+	, m_matSpriteTransform(_Prototype.m_matSpriteTransform)
 {
 
 }
@@ -22,11 +22,11 @@ CSpriteFrame::~CSpriteFrame()
 HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath,ifstream& _inFile, map<string, CTexture*>& _Textures)
 {
 	//StartUV
-	_inFile.read(reinterpret_cast<char*>(&vSpriteStartUV), sizeof(_float2));
+	_inFile.read(reinterpret_cast<char*>(&m_vSpriteStartUV), sizeof(_float2));
 	//EndUV
-	_inFile.read(reinterpret_cast<char*>(&vSpriteEndUV), sizeof(_float2));
+	_inFile.read(reinterpret_cast<char*>(&m_vSpriteEndUV), sizeof(_float2));
 	//PixelsPerUnrealUnit
-	_inFile.read(reinterpret_cast<char*>(&fPixelsPerUnrealUnit), sizeof(_float));
+	_inFile.read(reinterpret_cast<char*>(&m_fPixelsPerUnrealUnit), sizeof(_float));
 	//Texture
 	_uint iCount = 0;
 	_inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
@@ -36,21 +36,21 @@ HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 	auto& pairTexture = _Textures.find(szTextureName);
 	if (pairTexture == _Textures.end())
 		return E_FAIL;
-	pTexture = pairTexture->second;
-	if (nullptr == pTexture)
+	m_pTexture = pairTexture->second;
+	if (nullptr == m_pTexture)
 		return E_FAIL;
-	_inFile.read(reinterpret_cast<char*>(&matSpriteTransform), sizeof(_matrix));
+	_inFile.read(reinterpret_cast<char*>(&m_matSpriteTransform), sizeof(_matrix));
 	return S_OK;
 }
 HRESULT CSpriteFrame::Bind_ShaderResource(CShader* _pShader)
 {
-	if (FAILED(pTexture->Bind_ShaderResource(_pShader, "g_DiffuseTexture")))
+	if (FAILED(m_pTexture->Bind_ShaderResource(_pShader, "g_DiffuseTexture")))
 		return E_FAIL;
-	if (FAILED(_pShader->Bind_RawValue("g_vSpriteStartUV", &vSpriteStartUV, sizeof(_float2))))
+	if (FAILED(_pShader->Bind_RawValue("g_vSpriteStartUV", &m_vSpriteStartUV, sizeof(_float2))))
 		return E_FAIL;
-	if (FAILED(_pShader->Bind_RawValue("g_vSpriteEndUV", &vSpriteEndUV, sizeof(_float2))))
+	if (FAILED(_pShader->Bind_RawValue("g_vSpriteEndUV", &m_vSpriteEndUV, sizeof(_float2))))
 		return E_FAIL;
-	if (FAILED(_pShader->Bind_RawValue("g_fPixelsPerUnrealUnit", &fPixelsPerUnrealUnit, sizeof(_float))))
+	if (FAILED(_pShader->Bind_RawValue("g_fPixelsPerUnrealUnit", &m_fPixelsPerUnrealUnit, sizeof(_float))))
 		return E_FAIL;
 	return S_OK;
 }
@@ -83,14 +83,14 @@ CAnimation2D::CAnimation2D()
 }
 
 CAnimation2D::CAnimation2D(const CAnimation2D& _Prototype)
-	:strName(_Prototype.strName)
-	, fFramesPerSecond(_Prototype.fFramesPerSecond)
-	, iFrameCount(_Prototype.iFrameCount)
-	, bLoop(_Prototype.bLoop)
+	:m_strName(_Prototype.m_strName)
+	, m_fFramesPerSecond(_Prototype.m_fFramesPerSecond)
+	, m_iFrameCount(_Prototype.m_iFrameCount)
+	, m_bLoop(_Prototype.m_bLoop)
 {
-	for (auto& pSpriteFrame : _Prototype.SpriteFrames)
+	for (auto& pSpriteFrame : _Prototype.m_SpriteFrames)
 	{
-		SpriteFrames.push_back({ pSpriteFrame.first->Clone(),pSpriteFrame.second });
+		m_SpriteFrames.push_back({ pSpriteFrame.first->Clone(),pSpriteFrame.second });
 	}
 }
 
@@ -99,17 +99,19 @@ HRESULT CAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 	_uint iCount = 0;
 	//Name
 	_infIle.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
-	strName.resize(iCount);
-	_infIle.read(const_cast<char*>(strName.c_str()), iCount);
+	m_strName.resize(iCount);
+	_infIle.read(const_cast<char*>(m_strName.c_str()), iCount);
 	//FramesPerSecond
-	_infIle.read(reinterpret_cast<char*>(&fFramesPerSecond), sizeof(_float));
+	_infIle.read(reinterpret_cast<char*>(&m_fFramesPerSecond), sizeof(_float));
 	//FrameCount
-	_infIle.read(reinterpret_cast<char*>(&iFrameCount), sizeof(_uint));
+	_infIle.read(reinterpret_cast<char*>(&m_iFrameCount), sizeof(_uint));
 	//Loop
-	_infIle.read(reinterpret_cast<char*>(&bLoop), sizeof(_bool));
+	_infIle.read(reinterpret_cast<char*>(&m_bLoop), sizeof(_bool));
+	//SpeedMagnifier
+	_infIle.read(reinterpret_cast<char*>(&m_fSpeedMagnifier), sizeof(_float));
 	//SpriteFrames
 	_infIle.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
-	SpriteFrames.reserve(iCount);
+	m_SpriteFrames.reserve(iCount);
 	for (_uint i = 0; i < iCount; i++)
 	{
 		CSpriteFrame* pSpriteFrame = CSpriteFrame::Create(_pDevice, _pContext, szDirPath,_infIle, _Textures);
@@ -117,7 +119,7 @@ HRESULT CAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 			return E_FAIL;
 		_uint iFrameRun = 0;
 		_infIle.read(reinterpret_cast<char*>(&iFrameRun), sizeof(_uint));
-		SpriteFrames.push_back({ pSpriteFrame,iFrameRun });
+		m_SpriteFrames.push_back({ pSpriteFrame,iFrameRun });
 	}
 
 	return S_OK;
@@ -127,7 +129,7 @@ HRESULT CAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 HRESULT CAnimation2D::Bind_ShaderResource(CShader* _pShader)
 {
-	if (FAILED(SpriteFrames[iCurrentFrame].first->Bind_ShaderResource(_pShader)))
+	if (FAILED(m_SpriteFrames[m_iCurrentFrame].first->Bind_ShaderResource(_pShader)))
 		return E_FAIL;
 
 
@@ -136,9 +138,9 @@ HRESULT CAnimation2D::Bind_ShaderResource(CShader* _pShader)
 
 _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 {
-	if (iCurrentFrame >= iFrameCount -1 )
+	if (m_iCurrentFrame >= m_iFrameCount -1 )
 	{
-		if (bLoop)
+		if (m_bLoop)
 		{
 			Reset();
 		}
@@ -148,20 +150,20 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 		}
 	}
 
-	if (fCurrentFrameTime >= 1 / fFramesPerSecond)
+	if (m_fCurrentFrameTime >= 1 / m_fFramesPerSecond)
 	{
-		fCurrentFrameTime = 0;
-		iCurrentSubFrame++;
-		if (iCurrentSubFrame >= SpriteFrames[iCurrentFrame].second)
+		m_fCurrentFrameTime = 0;
+		m_iCurrentSubFrame++;
+		if (m_iCurrentSubFrame >= m_SpriteFrames[m_iCurrentFrame].second)
 		{
-			iCurrentSubFrame = 0;
-			iCurrentFrame++;
+			m_iCurrentSubFrame = 0;
+			m_iCurrentFrame++;
 		}
 	}
-	if (iCurrentFrame >= iFrameCount)
-		iCurrentFrame = iFrameCount -1;
+	if (m_iCurrentFrame >= m_iFrameCount)
+		m_iCurrentFrame = m_iFrameCount -1;
 		
-	fCurrentFrameTime += _fTimeDelta;
+	m_fCurrentFrameTime += _fTimeDelta * m_fSpeedMagnifier;
 	return false;
 }
 
@@ -172,7 +174,7 @@ void CAnimation2D::Reset()
 
 void CAnimation2D::Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun)
 {
-	SpriteFrames.push_back({ _pSpriteFrame ,_iFrameRun});
+	m_SpriteFrames.push_back({ _pSpriteFrame ,_iFrameRun});
 }
 
 const _matrix* CAnimation2D::Get_CurrentSpriteTransform() 
@@ -183,26 +185,26 @@ const _matrix* CAnimation2D::Get_CurrentSpriteTransform()
 _float CAnimation2D::Get_Progress()
 {
 	_float fProgerss = 0;
-	if (iFrameCount > 0)
+	if (m_iFrameCount > 0)
 	{
-		fProgerss = (_float)(Get_AccumulativeSubFrameCount(iCurrentFrame) + iCurrentSubFrame) / (_float)Get_AccumulativeSubFrameCount(iFrameCount - 1);
+		fProgerss = (_float)(Get_AccumulativeSubFrameCount(m_iCurrentFrame) + m_iCurrentSubFrame) / (_float)Get_AccumulativeSubFrameCount(m_iFrameCount - 1);
 	}
 	return fProgerss;
 }
 
 void CAnimation2D::Set_Progress(_float _fProgerss)
 {
-	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(iFrameCount - 1);
+	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(m_iFrameCount - 1);
 	_int iTargetSubFrame = (_int)(_fProgerss * iTotalSubFrameCount);
-	_float fRemainTime = fFramesPerSecond * iTotalSubFrameCount * _fProgerss - (fFramesPerSecond * iTargetSubFrame);
-	fCurrentFrameTime = fRemainTime;
-	for (_uint i = 0; i < iFrameCount; i++)
+	_float fRemainTime = m_fFramesPerSecond * iTotalSubFrameCount * _fProgerss - (m_fFramesPerSecond * iTargetSubFrame);
+	m_fCurrentFrameTime = fRemainTime;
+	for (_uint i = 0; i < m_iFrameCount; i++)
 	{
-		_int iFrameRun = (_int)SpriteFrames[i].second;
+		_int iFrameRun = (_int)m_SpriteFrames[i].second;
 		if (iTargetSubFrame - iFrameRun < 0)
 		{
-			iCurrentFrame = i;
-			iCurrentSubFrame = iTargetSubFrame;
+			m_iCurrentFrame = i;
+			m_iCurrentSubFrame = iTargetSubFrame;
 			return;
 		}
 		iTargetSubFrame -= iFrameRun;
@@ -214,7 +216,7 @@ _uint CAnimation2D::Get_AccumulativeSubFrameCount(_uint _iFrameIndex)
 	_uint iAccumulativeSubFrames = 0;
 	for (_uint i = 0; i < _iFrameIndex; i++)
 	{
-		iAccumulativeSubFrames += SpriteFrames[i].second;
+		iAccumulativeSubFrames += m_SpriteFrames[i].second;
 	}
 	return iAccumulativeSubFrames;
 }
@@ -240,7 +242,7 @@ CAnimation2D* CAnimation2D::Clone()
 
 void CAnimation2D::Free()
 {
-	for (auto& pSpriteFrame : SpriteFrames)
+	for (auto& pSpriteFrame : m_SpriteFrames)
 	{
 		Safe_Release(pSpriteFrame.first);
 	}

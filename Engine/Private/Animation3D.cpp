@@ -49,7 +49,12 @@ HRESULT CAnimation3D::Initialize(ifstream& inFile, const C3DModel* pModel)
 	m_fDuration = (_float)dValue;
 	inFile.read(reinterpret_cast<char*>(&dValue), sizeof(double));
 	m_fTickPerSecond = (_float)dValue;
-	
+	//Loop
+	inFile.read(reinterpret_cast<char*>(&m_bLoop), sizeof(_bool));
+	//SpeedMagnifier
+	inFile.read(reinterpret_cast<char*>(&m_fSpeedMagnifier), sizeof(_float));
+
+
 	inFile.read(reinterpret_cast<char*>(&m_iNumChannels), sizeof(_uint));
 
 	m_CurrentKeyFrameIndices.resize(m_iNumChannels);
@@ -83,7 +88,7 @@ bool CAnimation3D::Update_TransformationMatrices(const vector<class CBone*>& Bon
 	{
 		m_vecChannel[i]->Update_TransformationMatrix(m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[i], Bones);
 	}
-	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta;
+	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta* m_fSpeedMagnifier;
 
 
 	return false;
@@ -97,7 +102,7 @@ bool CAnimation3D::Update_AnimTransition(const vector<class CBone*>& Bones, _flo
 		Reset();
 		return true;
 	}
-	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta;
+	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * m_fSpeedMagnifier;
 
 	_float			fRatio = m_fCurrentTrackPosition / _fAnimTransitionTrackPos;
 	KEYFRAME tFrame;

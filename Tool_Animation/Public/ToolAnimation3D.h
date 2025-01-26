@@ -33,9 +33,11 @@ public:
 	virtual HRESULT Initialize(ifstream& inFile, const class C3DModel* pModel);
 	void	Export(ofstream& _outfile);
 
-	_float Get_TrackPosition();
 	void Set_TrackPosition(_float _fTrackPos);
 
+	_float Get_TrackPosition();
+	_float Get_SpeedMagnifier() { return m_fSpeedMagnifier; }
+	_bool Is_LoopAnim() { return m_bLoop; }
 private:
 	_uint m_iNameLength = 0;
 public:

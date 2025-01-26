@@ -30,3 +30,4 @@ void CModel::Set_AnimEventGenerator(CAnimEventGenerator* _pAnimEventGenerator)
 		}
 	}
 }
+

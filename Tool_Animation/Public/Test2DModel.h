@@ -20,9 +20,13 @@ public:
 
     //Set
     void						Set_Progerss(_float _fProgerss);
+
     //Get
     void						Get_TextureNames(set<wstring>& _outTextureNames);
     _float					Get_Progerss();
+    _float	                Get_AnimSpeedMagnifier(_uint iAnimIndex);
+    _bool	                Is_LoopAnimation(_uint iAnimIndex);
+
 private:
 
 public:

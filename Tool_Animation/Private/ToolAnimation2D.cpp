@@ -25,20 +25,20 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	iStart = (_uint)(strSourceTexture.find_first_of('\'')) + 1;
 	iCount = (_uint)strSourceTexture.find_last_of('\'') - iStart;
 	strSourceTexture = strSourceTexture.substr(iStart, iCount);
-	pTexture = _Textures[strSourceTexture];
+	m_pTexture = _Textures[strSourceTexture];
 
-	fPixelsPerUnrealUnit = jProperties["PixelsPerUnrealUnit"];
+	m_fPixelsPerUnrealUnit = jProperties["PixelsPerUnrealUnit"];
 
 	json& jBakedRenderData = jProperties["BakedRenderData"];
-	vSpriteStartUV = { 1,1 };
-	vSpriteEndUV = { 0,0 };
+	m_vSpriteStartUV = { 1,1 };
+	m_vSpriteEndUV = { 0,0 };
 	_float fMinX = D3D11_FLOAT32_MAX, fMinY = D3D11_FLOAT32_MAX;
 	_float fMaxX = -D3D11_FLOAT32_MAX, fMaxY = -D3D11_FLOAT32_MAX;
 	for (json& j : jBakedRenderData)
 	{
 		vBakedRenderDatas.push_back(_float4{ j["X"],j["Y"] ,j["Z"] ,j["W"] });
-		vSpriteStartUV = _float2(min(vBakedRenderDatas.back().z, vSpriteStartUV.x), min(vBakedRenderDatas.back().w, vSpriteStartUV.y));
-		vSpriteEndUV = _float2(max(vBakedRenderDatas.back().z, vSpriteEndUV.x), max(vBakedRenderDatas.back().w, vSpriteEndUV.y));
+		m_vSpriteStartUV = _float2(min(vBakedRenderDatas.back().z, m_vSpriteStartUV.x), min(vBakedRenderDatas.back().w, m_vSpriteStartUV.y));
+		m_vSpriteEndUV = _float2(max(vBakedRenderDatas.back().z, m_vSpriteEndUV.x), max(vBakedRenderDatas.back().w, m_vSpriteEndUV.y));
 		fMinX = min(fMinX, vBakedRenderDatas.back().x);
 		fMinY = min(fMinY, vBakedRenderDatas.back().y);
 		fMaxX = max(fMaxX, vBakedRenderDatas.back().x);
@@ -48,22 +48,22 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	_float fHeight = abs(fMaxY - fMinY);
 	_float fXOffset = fMinX + fWidth / 2;
 	_float fYOffset = fMinY + fHeight / 2;
-	matSpriteTransform = XMMatrixScaling(fWidth, fHeight, 1);
-	matSpriteTransform *= XMMatrixTranslation(fXOffset, fYOffset, 0);
+	m_matSpriteTransform = XMMatrixScaling(fWidth, fHeight, 1);
+	m_matSpriteTransform *= XMMatrixTranslation(fXOffset, fYOffset, 0);
 	return S_OK;
 }
 
 HRESULT CToolSpriteFrame::Export(ofstream& _outfile)
 {
-	_outfile.write(reinterpret_cast<const char*>(&vSpriteStartUV), sizeof(_float2));
-	_outfile.write(reinterpret_cast<const char*>(&vSpriteEndUV), sizeof(_float2));
-	_outfile.write(reinterpret_cast<const char*>(&fPixelsPerUnrealUnit), sizeof(_float));
+	_outfile.write(reinterpret_cast<const char*>(&m_vSpriteStartUV), sizeof(_float2));
+	_outfile.write(reinterpret_cast<const char*>(&m_vSpriteEndUV), sizeof(_float2));
+	_outfile.write(reinterpret_cast<const char*>(&m_fPixelsPerUnrealUnit), sizeof(_float));
 	_uint iCount = 0;
-	string strTextureName = WstringToString(*pTexture->Get_SRVName(0));
+	string strTextureName = WstringToString(*m_pTexture->Get_SRVName(0));
 	iCount = strTextureName.length();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	_outfile.write(strTextureName.c_str(), iCount);
-	_outfile.write(reinterpret_cast<const char*>(&matSpriteTransform), sizeof(_matrix));
+	_outfile.write(reinterpret_cast<const char*>(&m_matSpriteTransform), sizeof(_matrix));
 	return S_OK;
 }
 
@@ -115,10 +115,10 @@ CToolAnimation2D::CToolAnimation2D(const CToolAnimation2D& _Prototype)
 
 HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, map<string, CTexture*>& _Textures)
 {
-	strName = _jData["Name"];
+	m_strName = _jData["Name"];
 	json& jProperties = _jData["Properties"];
 	if (jProperties.contains("FramesPerSecond"))
-		fFramesPerSecond = jProperties["FramesPerSecond"];
+		m_fFramesPerSecond = jProperties["FramesPerSecond"];
 
 	json& jKeyFrames = jProperties["KeyFrames"];
 	for (json& jKeyFrame : jKeyFrames)
@@ -130,9 +130,9 @@ HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 		_uint iCount = (_uint)strSpriteFileName.find_last_of('\'') - iStart;
 		strSpriteFileName = strSpriteFileName.substr(iStart, iCount);
 		json& jSpriteFIle = _jPaperSprites[strSpriteFileName];
-		SpriteFrames.push_back({ CToolSpriteFrame::Create(_pDevice, _pContext, jSpriteFIle, _Textures), iFrameRun });
+		m_SpriteFrames.push_back({ CToolSpriteFrame::Create(_pDevice, _pContext, jSpriteFIle, _Textures), iFrameRun });
 	}
-	iFrameCount = (_uint)SpriteFrames.size();
+	m_iFrameCount = (_uint)m_SpriteFrames.size();
 	return S_OK;
 }
 
@@ -140,19 +140,22 @@ HRESULT CToolAnimation2D::Export(ofstream& _outfile)
 {
 	_uint iCount = 0;
 	//Name
-	iCount = strName.length();
+	iCount = m_strName.length();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
-	_outfile.write(strName.c_str(), iCount);
+	_outfile.write(m_strName.c_str(), iCount);
 	//FramesPerSecond
-	_outfile.write(reinterpret_cast<const char*>(&fFramesPerSecond), sizeof(_float));
+	_outfile.write(reinterpret_cast<const char*>(&m_fFramesPerSecond), sizeof(_float));
 	//FrameCount
-	_outfile.write(reinterpret_cast<const char*>(&iFrameCount), sizeof(_uint));
+	_outfile.write(reinterpret_cast<const char*>(&m_iFrameCount), sizeof(_uint));
 	//Loop
-	_outfile.write(reinterpret_cast<const char*>(&bLoop), sizeof(_bool));
+	_outfile.write(reinterpret_cast<const char*>(&m_bLoop), sizeof(_bool));
+	//SpeedMagnifier
+	_outfile.write(reinterpret_cast<const char*>(&m_fSpeedMagnifier), sizeof(_float));
+	
 	//SpriteFrames
-	iCount = SpriteFrames.size();
+	iCount = m_SpriteFrames.size();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
-	for (auto& pairSpriteFrame : SpriteFrames)
+	for (auto& pairSpriteFrame : m_SpriteFrames)
 	{
 		static_cast<CToolSpriteFrame*>(pairSpriteFrame.first)->Export(_outfile);
 		_outfile.write(reinterpret_cast<const char*>(&pairSpriteFrame.second), sizeof(_uint));
@@ -162,14 +165,14 @@ HRESULT CToolAnimation2D::Export(ofstream& _outfile)
 
 void CToolAnimation2D::Set_CurrentFrame(_uint _iFrameIndex)
 {
-	iCurrentFrame = _iFrameIndex;
+	m_iCurrentFrame = _iFrameIndex;
 }
 
 
 
 _uint CToolAnimation2D::Get_CurrentFrame()
 {
-	return iCurrentFrame;
+	return m_iCurrentFrame;
 }
 
 

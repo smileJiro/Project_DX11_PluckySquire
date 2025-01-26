@@ -112,6 +112,14 @@ void CTestModelObject::Set_Progerss(_float _fTrackPos)
     }
 }
 
+void CTestModelObject::Set_AnimSpeedMagnifier(COORDINATE _eCoord, _uint iAnimIndex, _float _fMagnifier)
+{
+    assert(m_pControllerModel);
+    assert(COORDINATE_LAST != _eCoord);
+	m_pControllerModel->Get_Model(_eCoord)->Set_AnimSpeedMagnifier(iAnimIndex,_fMagnifier);
+}
+
+
 void CTestModelObject::Get_TextureNames(set<wstring>& _outTextureNames)
 {
     assert(m_pControllerModel);
@@ -145,6 +153,32 @@ _float CTestModelObject::Get_Progress()
         return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_Progress();
     }
    
+}
+
+_float CTestModelObject::Get_AnimSpeedMagnifier(COORDINATE _eCoord, _uint iAnimIndex)
+{
+    assert(m_pControllerModel);
+    assert(COORDINATE_LAST != _eCoord);
+    switch (_eCoord)
+    {
+    case Engine::COORDINATE_2D:
+        return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(_eCoord))->Get_AnimSpeedMagnifier(iAnimIndex);
+    case Engine::COORDINATE_3D:
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(_eCoord))->Get_AnimSpeedMagnifier(iAnimIndex);
+    }
+}
+
+_bool CTestModelObject::Is_LoopAnimation(COORDINATE _eCoord, _uint iAnimIndex)
+{
+    assert(m_pControllerModel);
+    assert(COORDINATE_LAST != _eCoord);
+    switch (_eCoord)
+    {
+    case Engine::COORDINATE_2D:
+        return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(_eCoord))->Is_LoopAnimation(iAnimIndex);
+    case Engine::COORDINATE_3D:
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(_eCoord))->Is_LoopAnimation(iAnimIndex);
+    }
 }
 
 

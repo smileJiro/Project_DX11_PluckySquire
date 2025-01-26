@@ -106,7 +106,8 @@ void CLevel_AnimTool::Update_ImportImgui()
 			m_szLoadedPath = wstrSelectedPath;
 			Create_Camera(TEXT("Camera"), m_pTestModelObj);
 			m_iCurrentAnimIndex = 0;
-			m_bLoop = true;
+			m_bLoop = m_pTestModelObj->Is_LoopAnimation(m_pTestModelObj->Get_CurCoord(),m_iCurrentAnimIndex);
+			m_fAnimaSpeedMagnifier = m_pTestModelObj->Get_AnimSpeedMagnifier(m_pTestModelObj->Get_CurCoord(), m_iCurrentAnimIndex);
 			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
 		}
 	}
@@ -155,6 +156,8 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 		{
 			m_iCurrentAnimIndex = max(0, m_iCurrentAnimIndex);
 			m_iCurrentAnimIndex = min(m_iCurrentAnimIndex, (_int)m_pTestModelObj->Get_AnimationCount()-1);
+			m_bLoop = m_pTestModelObj->Is_LoopAnimation(m_pTestModelObj->Get_CurCoord(), m_iCurrentAnimIndex);
+			m_fAnimaSpeedMagnifier = m_pTestModelObj->Get_AnimSpeedMagnifier(m_pTestModelObj->Get_CurCoord(), m_iCurrentAnimIndex);
 			Set_Animation(m_iCurrentAnimIndex, m_bLoop);
 		}
 		if (ImGui::Button(m_bPlaying ? "Stop" :"Play")) 
@@ -167,6 +170,10 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 			m_pTestModelObj->Set_Progerss(m_fCurrentProgerss);
 		else
 			m_fCurrentProgerss = m_pTestModelObj->Get_Progress();
+		if (ImGui::InputFloat("AnimSpeedMagnify", &m_fAnimaSpeedMagnifier))
+		{
+			m_pTestModelObj->Set_AnimSpeedMagnifier(m_pTestModelObj->Get_CurCoord(),m_iCurrentAnimIndex, m_fAnimaSpeedMagnifier);
+		}
 	}
 }
 
