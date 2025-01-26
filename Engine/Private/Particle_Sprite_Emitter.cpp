@@ -33,6 +33,10 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const _tchar* _szFilePath
     if (nullptr == m_pTextureCom)
         return E_FAIL;
 
+
+    m_pTextureCom->Add_SRVName(STRINGTOWSTRING(jsonEffectInfo["Texture"]));
+
+
     if (false == jsonEffectInfo.contains("Buffer"))
         return E_FAIL;
 
@@ -53,6 +57,9 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
     if (nullptr == m_pTextureCom)
         return E_FAIL;
+
+    m_pTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
+
 
     if (false == _jsonInfo.contains("Buffer"))
         return E_FAIL;
@@ -263,6 +270,16 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 
     ImGui::End();
 
+}
+HRESULT CParticle_Sprite_Emitter::Save(json& _jsonOut)
+{
+    _jsonOut["Type"] = SPRITE;
+    _jsonOut["Texture"] = WSTRINGTOSTRING(*m_pTextureCom->Get_SRVName(0)).c_str();
+    
+    // TODO :
+
+
+    return S_OK;
 }
 void CParticle_Sprite_Emitter::Set_Texture(CTexture* _pTextureCom)
 {

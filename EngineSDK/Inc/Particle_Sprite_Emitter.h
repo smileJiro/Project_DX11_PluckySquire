@@ -41,8 +41,8 @@ public:
 #ifdef _DEBUG 
 public:
 	virtual void				Tool_Setting() override;
-	virtual void				Tool_Update(_float _fTimeDelta);
-
+	virtual void				Tool_Update(_float _fTimeDelta) override;
+	virtual HRESULT				Save(json& _jsonOut);
 public:
 	void						Set_Texture(class CTexture* _pTextureCom);
 

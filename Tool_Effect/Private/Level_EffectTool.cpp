@@ -262,7 +262,7 @@ void CLevel_EffectTool::Adjust_System(_float _fTimeDelta)
 			Desc.isCoordChangeEnable = false;
 			Desc.iProtoShaderLevel = LEVEL_STATIC;
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxPointInstance";
-			if (FAILED(m_pNowItem->Add_NewEmitter(CParticle_Emitter::SPRITE, &Desc)))
+			if (FAILED(m_pNowItem->Add_New_Emitter(CParticle_Emitter::SPRITE, &Desc)))
 			{
 				MSG_BOX("Emitter 만들기 실패");
 			}

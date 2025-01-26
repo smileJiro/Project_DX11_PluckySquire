@@ -47,6 +47,7 @@ public:
 #ifdef _DEBUG
 	virtual void				Tool_Update(_float fTimeDelta);
 	virtual void				Tool_Setting();
+	virtual HRESULT				Save(json& _jsonOut) { return S_OK; }
 #endif
 
 };
