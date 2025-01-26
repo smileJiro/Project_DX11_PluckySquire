@@ -25,18 +25,24 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 {
     CBarfBug::MONSTER_DESC* pDesc = static_cast<CBarfBug::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    //pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    //pDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fAlertRange = 5.f;
-    pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 10.f;
+    //pDesc->fAlertRange = 5.f;
+    //pDesc->fChaseRange = 12.f;
+    //pDesc->fAttackRange = 10.f;
+    //pDesc->fDelayTime = 1.f;
+    //pDesc->fCoolTime = 3.f;
+
+    pDesc->fAlertRange = 1.f;
+    pDesc->fChaseRange = 5.f;
+    pDesc->fAttackRange = 3.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
@@ -66,7 +72,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
-    //pModelObject->Set_AnimationLoop(BARF, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BARF, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBarfBug::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -85,8 +91,8 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pProjDesc->iNumPartObjects = PART_LAST;
     pProjDesc->iCurLevelID = m_iCurLevelID;
 
-    //pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    //pProjDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
+    pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pProjDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
 
     pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
@@ -138,6 +144,14 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
+    if (KEY_DOWN(KEY::F1))
+    {
+        _int iCurCoord = (_int)Get_CurCoord();
+        (_int)iCurCoord ^= 1;
+        _float3 vNewPos = _float3(10.0f, 6.0f, 0.0f);
+        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+    }
+
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -180,30 +194,93 @@ void CBarfBug::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
-        switch (MONSTER_STATE(m_iState))
+		if (COORDINATE_3D == Get_CurCoord())
         {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            break;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
 
-        case MONSTER_STATE::PATROL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
-            break;
+            case MONSTER_STATE::PATROL:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+                break;
 
-        case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
-            break;
+            case MONSTER_STATE::ALERT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+                break;
 
-        case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
-            break;
+            case MONSTER_STATE::CHASE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+                break;
 
-        case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
-            break;
+            case MONSTER_STATE::ATTACK:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+        }
+
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+            CBarfBug::Animation2D eAnim = ANIM2D_LAST;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+
+            case MONSTER_STATE::PATROL:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = WALK_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = WALK_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = WALK_RIGHT;
+                break;
+
+            case MONSTER_STATE::ALERT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = ALERT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = ALERT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = ALERT_RIGHT;
+                break;
+
+            case MONSTER_STATE::CHASE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = WALK_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = WALK_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = WALK_RIGHT;
+                break;
+
+            case MONSTER_STATE::ATTACK:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = ATTACK_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = ATTACK_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = ATTACK_RIGHT;
+                break;
+
+            default:
+                break;
+            }
+
+            if (ANIM2D_LAST == eAnim)
+                return;
+
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
         }
     }
 }
@@ -325,27 +402,27 @@ HRESULT CBarfBug::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    //BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    //BodyDesc.strModelPrototypeTag_2D = TEXT("barfBug_Rig");
+    BodyDesc.strModelPrototypeTag_2D = TEXT("BarferBug");
     BodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
-	//BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
+	BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-   //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
-    //BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
-
-    //BodyDesc.tTransform2DDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
-    //BodyDesc.tTransform2DDesc.vScaling = _float3(1.0f, 1.0f, 1.0f);
-    //BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    //BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
