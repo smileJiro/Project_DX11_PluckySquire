@@ -39,9 +39,7 @@ protected:
     map<string, CTexture*> m_Textures;
     vector<CAnimation2D* >m_Animation2Ds ;
 
-	vector<CTexture*> m_NonAnimTextures ;
-    _float2 m_vNonAnimSpriteStartUV = { 0,0 };
-    _float2 m_vNonAnimSpriteEndUV = { 1,1 };
+    CSpriteFrame* m_pNonAnimSprite = nullptr;
 
 	_uint m_iCurAnimIdx = 0;
 public:

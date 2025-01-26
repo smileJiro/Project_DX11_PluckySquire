@@ -10,20 +10,14 @@ C2DModel::C2DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 C2DModel::C2DModel(const C2DModel& _Prototype)
 	:CModel(_Prototype)
-	, m_NonAnimTextures(_Prototype.m_NonAnimTextures)
-	, m_vNonAnimSpriteStartUV(_Prototype.m_vNonAnimSpriteStartUV)
-	, m_vNonAnimSpriteEndUV(_Prototype.m_vNonAnimSpriteEndUV)
 	, m_iCurAnimIdx(_Prototype.m_iCurAnimIdx)
 	, m_pVIBufferCom(_Prototype.m_pVIBufferCom)
+	, m_pNonAnimSprite(_Prototype.m_pNonAnimSprite)
 
 {
 	for (auto& pAnim : _Prototype.m_Animation2Ds)
 	{
 		m_Animation2Ds.push_back(pAnim->Clone());
-	}
-	for (auto& pTex : m_NonAnimTextures)
-	{
-		Safe_AddRef(pTex);
 	}
 
 }
@@ -82,25 +76,13 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		m_Animation2Ds.push_back(pAnimation);
 	}
 	m_eAnimType = m_Animation2Ds.size() > 0 ? ANIM : NONANIM;
-	//NonANimTextures
-	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
-	m_NonAnimTextures.reserve(iCount);
-	for (_uint i = 0; i < iCount; i++)
+	//NonANimSpritek
+	if (NONANIM == m_eAnimType)
 	{
-		_uint iLength = 0;
-		inFile.read(reinterpret_cast<char*>(&iLength), sizeof(_uint));
-		_char szTextureName[MAX_PATH];
-		inFile.read(szTextureName, iLength);
-		szTextureName[iLength] = '\0';
-		auto& pairTexture = m_Textures.find(szTextureName);
-		if (pairTexture == m_Textures.end())
+		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
+		if (nullptr == m_pNonAnimSprite)
 			return E_FAIL;
-		m_NonAnimTextures.push_back(pairTexture->second);
 	}
-	//NonAnimSpriteStartUV
-	inFile.read(reinterpret_cast<char*>(&m_vNonAnimSpriteStartUV), sizeof(_float2));
-	//NonAnimSpriteEndUV
-	inFile.read(reinterpret_cast<char*>(&m_vNonAnimSpriteEndUV), sizeof(_float2));
 	return S_OK;
 }
 
@@ -169,7 +151,10 @@ void C2DModel::Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag)
 
 const _matrix* C2DModel::Get_CurrentSpriteTransform()
 {
-	return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();
+	if (ANIM == m_eAnimType)
+		return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();
+	else if (NONANIM == m_eAnimType)
+		return m_pNonAnimSprite->Get_Transform();
 }
 
 _uint C2DModel::Get_AnimCount()
@@ -188,16 +173,8 @@ HRESULT C2DModel::Render(CShader* _pShader, _uint _iShaderPass)
 	}
 	else
 	{
-		if (m_NonAnimTextures[0])
-			if (FAILED(m_NonAnimTextures[0]->Bind_ShaderResource(_pShader, "g_Texture")))
-				return E_FAIL;
-
-		if (FAILED(_pShader->Bind_RawValue("g_vSpriteStartUV", &m_vNonAnimSpriteStartUV, sizeof(_float2))))
-			return E_FAIL;
-		if (FAILED(_pShader->Bind_RawValue("g_vSpriteEndUV", &m_vNonAnimSpriteEndUV, sizeof(_float2))))
-			return E_FAIL;
-		_float fPixelsPerUnrealUnit =1;
-		if (FAILED(_pShader->Bind_RawValue("g_fPixelsPerUnrealUnit", &fPixelsPerUnrealUnit, sizeof(_float))))
+		assert(m_pNonAnimSprite);
+		if (FAILED(m_pNonAnimSprite->Bind_ShaderResource(_pShader)))
 			return E_FAIL;
 	}
 
@@ -265,6 +242,7 @@ void C2DModel::Free()
 	for (auto& pTex : m_Textures)
 		Safe_Release(pTex.second);
 	m_Textures.clear();
+	Safe_Release(m_pNonAnimSprite);
 	__super::Free();
 }
 
