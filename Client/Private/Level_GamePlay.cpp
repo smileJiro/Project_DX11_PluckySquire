@@ -938,7 +938,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 #pragma endregion ·Î°í¾À
 
 
+	pDesc.fX = g_iWinSizeX / 2.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+	pDesc.fSizeX = 1208.f;
+	pDesc.fSizeY = 268.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
 
 	return S_OK;

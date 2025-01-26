@@ -127,7 +127,7 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 	}
 
 	
-
+	//m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 
 	if (true == m_isRender)
 		__super::Render(_iTextureindex, _eShaderPass);
