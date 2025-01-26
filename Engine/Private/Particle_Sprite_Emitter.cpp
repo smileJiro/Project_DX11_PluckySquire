@@ -33,6 +33,10 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const _tchar* _szFilePath
     if (nullptr == m_pTextureCom)
         return E_FAIL;
 
+
+    m_pTextureCom->Add_SRVName(STRINGTOWSTRING(jsonEffectInfo["Texture"]));
+
+
     if (false == jsonEffectInfo.contains("Buffer"))
         return E_FAIL;
 
@@ -53,6 +57,9 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
     if (nullptr == m_pTextureCom)
         return E_FAIL;
+
+    m_pTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
+
 
     if (false == _jsonInfo.contains("Buffer"))
         return E_FAIL;
@@ -93,6 +100,7 @@ void CParticle_Sprite_Emitter::Priority_Update(_float _fTimeDelta)
 
 void CParticle_Sprite_Emitter::Update(_float _fTimeDelta)
 {
+    Update_Component(_fTimeDelta);
 }
 
 void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
@@ -224,6 +232,67 @@ HRESULT CParticle_Sprite_Emitter::Cleanup_DeadReferences()
 }
 
 #ifdef _DEBUG
+void CParticle_Sprite_Emitter::Tool_Setting()
+{
+    if (m_pParticleBufferCom)
+        m_pParticleBufferCom->Tool_Setting();
+}
+void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
+{
+    ImGui::Begin("Adjust_Sprite_Emitter");
+    
+
+
+    if (m_pParticleBufferCom)
+        m_pParticleBufferCom->Tool_Update(_fTimeDelta);
+    else
+    {
+        static _int iNumInstanceInput = 1;
+        
+        if (ImGui::InputInt("Instance Count", &iNumInstanceInput))
+        {
+            if (0 >= iNumInstanceInput)
+            {
+                iNumInstanceInput = 1;
+            }
+        }
+
+        if (ImGui::Button("Create_Buffer"))
+        {
+            m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, iNumInstanceInput);
+
+            if (nullptr != m_pParticleBufferCom)
+                m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
+        }
+
+    }
+
+
+    ImGui::End();
+
+}
+HRESULT CParticle_Sprite_Emitter::Save(json& _jsonOut)
+{
+    _jsonOut["Type"] = SPRITE;
+    _jsonOut["Texture"] = WSTRINGTOSTRING(*m_pTextureCom->Get_SRVName(0)).c_str();
+    
+    // TODO :
+
+
+    return S_OK;
+}
+void CParticle_Sprite_Emitter::Set_Texture(CTexture* _pTextureCom)
+{
+    if (m_pTextureCom)
+    {
+        Safe_Release(m_pTextureCom);
+    }
+       
+    m_pTextureCom = _pTextureCom;
+    m_Components[L"Com_Texture"] = m_pTextureCom;
+    Safe_AddRef(m_pTextureCom);
+
+}
 CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg)
 {
     CParticle_Sprite_Emitter* pInstance = new CParticle_Sprite_Emitter(_pDevice, _pContext);
@@ -236,4 +305,5 @@ CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevic
 
     return pInstance;
 }
+
 #endif

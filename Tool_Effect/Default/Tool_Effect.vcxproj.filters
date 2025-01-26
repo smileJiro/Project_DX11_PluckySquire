@@ -34,6 +34,12 @@
     <Filter Include="96. JsonFiles">
       <UniqueIdentifier>{6e2e03d3-1272-493a-9f0f-891109193c46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\Background">
+      <UniqueIdentifier>{60781b0e-2411-4e7c-bd8d-07e6a0d9e431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\Reference">
+      <UniqueIdentifier>{cd8609bc-3c16-4028-922f-3f2ae35dcd2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool_Effect.h">
@@ -70,7 +76,10 @@
       <Filter>10. Event_Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Object_Background.h">
-      <Filter>02. GameObject</Filter>
+      <Filter>02. GameObject\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Reference.h">
+      <Filter>02. GameObject\Reference</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,7 +118,10 @@
       <Filter>10. Event_Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Object_Background.cpp">
-      <Filter>02. GameObject</Filter>
+      <Filter>02. GameObject\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Reference.cpp">
+      <Filter>02. GameObject\Reference</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

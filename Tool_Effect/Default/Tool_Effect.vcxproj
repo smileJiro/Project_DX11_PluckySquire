@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="..\public\EffectToolLoader.h" />
     <ClInclude Include="..\public\EffectTool_Defines.h" />
+    <ClInclude Include="..\public\Effect_Reference.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\public\Level_EffectTool.h" />
     <ClInclude Include="..\public\Level_EffectLoading.h" />
@@ -162,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\EffectToolLoader.cpp" />
+    <ClCompile Include="..\private\Effect_Reference.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\private\Level_EffectTool.cpp" />
     <ClCompile Include="..\private\Level_EffectLoading.cpp" />

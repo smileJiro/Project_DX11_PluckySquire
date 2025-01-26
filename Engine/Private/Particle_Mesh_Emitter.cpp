@@ -161,6 +161,7 @@ void CParticle_Mesh_Emitter::Priority_Update(_float _fTimeDelta)
 
 void CParticle_Mesh_Emitter::Update(_float _fTimeDelta)
 {
+	Update_Component(_fTimeDelta);
 }
 
 void CParticle_Mesh_Emitter::Late_Update(_float _fTimeDelta)

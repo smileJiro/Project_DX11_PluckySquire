@@ -10,6 +10,7 @@ CParticle_System::CParticle_System(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 CParticle_System::CParticle_System(const CParticle_System& _Prototype)
 	: CGameObject(_Prototype)
+	, m_strFilePath(_Prototype.m_strFilePath)
 {
 	m_strName = _Prototype.m_strName;
 }
@@ -57,6 +58,10 @@ HRESULT CParticle_System::Initialize_Prototype(const _tchar* _szFilePath)
 
 	}
 
+#ifdef _DEBUG
+	m_strFilePath = WSTRINGTOSTRING(_szFilePath);
+#endif
+
 
 	return S_OK;
 }
@@ -101,6 +106,8 @@ HRESULT CParticle_System::Initialize(void* _pArg, const CParticle_System* _pProt
 			return E_FAIL;
 		m_ParticleEmitters.push_back(pEmitter);
 	}
+
+
 
 	return S_OK;
 }
@@ -199,7 +206,7 @@ HRESULT CParticle_System::Cleanup_DeadReferences()
 
 
 #ifdef _DEBUG
-HRESULT CParticle_System::Add_NewEmitter(CParticle_Emitter::PARTICLE_TYPE _eType, void* _pArg)
+HRESULT CParticle_System::Add_New_Emitter(CParticle_Emitter::PARTICLE_TYPE _eType, void* _pArg)
 {
 	if (CParticle_Emitter::SPRITE == _eType)
 	{
@@ -211,45 +218,6 @@ HRESULT CParticle_System::Add_NewEmitter(CParticle_Emitter::PARTICLE_TYPE _eType
 	}
 
 	return S_OK;
-}
-CParticle_System* CParticle_System::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-{
-	CParticle_System* pInstance = new CParticle_System(_pDevice, _pContext);
-
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Cloned : CParticle_System");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-void CParticle_System::Tool_Make()
-{
-	if (ImGui::TreeNode("Make Emitter"))
-	{
-		if (ImGui::InputInt("Instance Count", &m_iInputNumInstances))
-		{
-			if (0 > m_iInputNumInstances)
-				m_iInputNumInstances = 0;
-		}
-		if (ImGui::TreeNode("Sprite"))
-		{
-			ImGui::InputText("Texture Path", m_szInputTexturePath, MAX_PATH);
-			if (ImGui::Button("Create"))
-			{
-				// TODO:
-				// Create
-			}
-
-			ImGui::TreePop();
-		}
-
-
-	
-
-		ImGui::TreePop();
-	}
 }
 
 void CParticle_System::Tool_ShowList()
@@ -269,6 +237,7 @@ void CParticle_System::Tool_ShowList()
 				{
 					iNowIndex = n;
 					m_pNowItem = m_ParticleEmitters[n];
+					m_pNowItem->Tool_Setting();
 				}
 				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 				if (is_selected)
@@ -279,6 +248,12 @@ void CParticle_System::Tool_ShowList()
 
 
 		}
+
+		if (ImGui::Button("Save_this_system"))
+		{
+			Save_File();
+		}
+
 		ImGui::TreePop();
 	}
 
@@ -286,10 +261,69 @@ void CParticle_System::Tool_ShowList()
 
 void CParticle_System::Tool_Update(_float _fTimeDelta)
 {
-	Tool_Make();
+	//Tool_Make();
 	Tool_ShowList();
 
+	
+	if (m_pNowItem)
+	{
+		m_pNowItem->Tool_Update(_fTimeDelta);
+	}
 
 
+}
+void CParticle_System::Set_Texture(CTexture* _pTextureCom)
+{
+	if (m_pNowItem)
+	{
+		if (CParticle_Emitter::SPRITE == m_pNowItem->Get_Type())
+		{
+			static_cast<CParticle_Sprite_Emitter*>(m_pNowItem)->Set_Texture(_pTextureCom);
+		}
+	}
+}
+
+HRESULT CParticle_System::Save_File()
+{
+	std::ofstream OutputFile(m_strFilePath);
+
+	if (OutputFile.is_open())
+	{
+		json jsonRoot;
+		jsonRoot.dump(0);
+
+		jsonRoot["Name"] = WSTRINGTOSTRING(m_strName).c_str();
+
+		
+		for (auto& pEmitter : m_ParticleEmitters)
+		{
+			json jsonLeaf;
+			if (SUCCEEDED(pEmitter->Save(jsonLeaf)))
+				jsonRoot["Emitters"].push_back(jsonLeaf);
+		}
+		
+		OutputFile << jsonRoot;
+
+		OutputFile.close();
+	}
+	else
+	{
+		MessageBoxA(NULL, m_strFilePath.c_str(), "파일 경로 없음", MB_OK);
+	}
+
+	return S_OK;
+}
+
+CParticle_System* CParticle_System::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+	CParticle_System* pInstance = new CParticle_System(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Cloned : CParticle_System");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 #endif
