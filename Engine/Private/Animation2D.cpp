@@ -79,14 +79,15 @@ void CSpriteFrame::Free()
 //==============================Animation2D==============================
 
 CAnimation2D::CAnimation2D()
+	:CAnimation()
 {
 }
 
 CAnimation2D::CAnimation2D(const CAnimation2D& _Prototype)
-	:m_strName(_Prototype.m_strName)
+	:CAnimation(_Prototype)
+	, m_strName(_Prototype.m_strName)
 	, m_fFramesPerSecond(_Prototype.m_fFramesPerSecond)
 	, m_iFrameCount(_Prototype.m_iFrameCount)
-	, m_bLoop(_Prototype.m_bLoop)
 {
 	for (auto& pSpriteFrame : _Prototype.m_SpriteFrames)
 	{

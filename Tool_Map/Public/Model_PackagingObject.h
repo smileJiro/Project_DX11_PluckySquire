@@ -75,6 +75,9 @@ private:
 		_uint			iNumChannels;
 		vector<CHANNEL>	Channels;
 
+		// 1.26 김지완이 추가함
+		_bool bLoop = false;
+		_float fSpeedMagnifier = 1.f;
 	}ANIMATION;
 
 

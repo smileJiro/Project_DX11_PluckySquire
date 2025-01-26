@@ -49,8 +49,6 @@ public:
 	const _matrix* Get_CurrentSpriteTransform() ;
 	virtual _float	Get_Progress() override;
 
-
-	void Set_Loop(_bool bIsLoop) { m_bLoop = bIsLoop; }
 	virtual void Set_Progress(_float _fProgerss)override;
 
 protected:
@@ -60,7 +58,7 @@ protected:
 	string m_strName;
 	_float m_fFramesPerSecond = 60;
 	_uint m_iFrameCount = 0;
-	_bool m_bLoop = false;
+
 	vector<pair<CSpriteFrame*,_uint>> m_SpriteFrames;
 
 	_float m_fCurrentFrameTime = 0;

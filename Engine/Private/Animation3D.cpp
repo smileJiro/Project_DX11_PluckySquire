@@ -18,11 +18,13 @@ namespace Engine
 
 
 CAnimation3D::CAnimation3D()
+	:CAnimation()
 {
 }
 
 CAnimation3D::CAnimation3D(const CAnimation3D& Prototype)
-	: m_iNumChannels{ Prototype.m_iNumChannels }
+	:CAnimation(Prototype)
+	, m_iNumChannels{ Prototype.m_iNumChannels }
 	, m_vecChannel{ Prototype.m_vecChannel }
 	, m_fDuration{ Prototype.m_fDuration }
 	, m_fTickPerSecond{ Prototype.m_fTickPerSecond }

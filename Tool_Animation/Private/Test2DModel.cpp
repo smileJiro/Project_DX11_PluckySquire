@@ -213,7 +213,7 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	{
 		string strTextureName = pTexture.first;
 		iCount = strTextureName.length();
-		cout << strTextureName << endl;
+		//cout << strTextureName << endl;
 		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 		_outfile.write(strTextureName.c_str(), iCount);
 	}
