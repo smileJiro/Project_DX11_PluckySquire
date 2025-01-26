@@ -64,20 +64,23 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
 		m_Textures.insert({ szTextureName,pTexture });
 	}
+	inFile.read(reinterpret_cast<char*>(&m_eAnimType), sizeof(_uint));
 
 	//Animation2Ds
-	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
-	m_Animation2Ds.reserve(iCount);
-	for (_uint i = 0; i < iCount; i++)
+	if (ANIM == m_eAnimType)
 	{
-		CAnimation2D* pAnimation = CAnimation2D::Create(m_pDevice, m_pContext, szDrive,inFile, m_Textures);
-		if (nullptr == pAnimation)
-			return E_FAIL;
-		m_Animation2Ds.push_back(pAnimation);
+		inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+		m_Animation2Ds.reserve(iCount);
+		for (_uint i = 0; i < iCount; i++)
+		{
+			CAnimation2D* pAnimation = CAnimation2D::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
+			if (nullptr == pAnimation)
+				return E_FAIL;
+			m_Animation2Ds.push_back(pAnimation);
+		}
 	}
-	m_eAnimType = m_Animation2Ds.size() > 0 ? ANIM : NONANIM;
 	//NonANimSpritek
-	if (NONANIM == m_eAnimType)
+	else if (NONANIM == m_eAnimType)
 	{
 		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
 		if (nullptr == m_pNonAnimSprite)
