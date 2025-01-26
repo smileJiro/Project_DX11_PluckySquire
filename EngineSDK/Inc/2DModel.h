@@ -25,13 +25,14 @@ public:
 	virtual _uint Get_CurrentAnimIndex() override { return m_iCurAnimIdx; }
     virtual _float Get_CurrentAnimProgeress() override;
     virtual CAnimation* Get_Animation(_uint iAnimIndex) override;
+    const _matrix* Get_CurrentSpriteTransform();
+
     //Set
     virtual void Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)override;
     virtual void Set_Animation(_uint _iIdx)override;
     virtual void Switch_Animation(_uint _iIdx)override;
     virtual void To_NextAnimation()override;
-    const _matrix* Get_CurrentSpriteTransform();
-
+    virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
 protected:
     CVIBuffer_Rect* m_pVIBufferCom = nullptr;
 

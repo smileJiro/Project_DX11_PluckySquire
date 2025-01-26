@@ -21,6 +21,7 @@ public:
 	virtual void Set_AnimationLoop(_uint iIdx, _bool bIsLoop) abstract;
 	virtual void Set_Animation(_uint iIdx) abstract;
 	virtual void Switch_Animation(_uint iIdx) abstract;
+	virtual void Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) abstract;
 	void Set_PlayingAnim(_bool bPlaying) { m_bPlayingAnim = bPlaying; }
 	void Set_AnimEventGenerator(CAnimEventGenerator* _pAnimEventGenerator);
 
@@ -30,11 +31,11 @@ public:
 	virtual CAnimation* Get_Animation(_uint iAnimIndex) abstract;
 	ANIM_TYPE Get_AnimType() { return m_eAnimType; }
 
+
 	_bool Is_AnimModel() { return m_eAnimType == ANIM_TYPE::ANIM; };
 protected:
 	ANIM_TYPE				m_eAnimType = ANIM_TYPE::LAST;
 	_bool m_bPlayingAnim = true;
-
 public:
 	virtual void Free() override;
 };

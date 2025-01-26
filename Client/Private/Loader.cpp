@@ -482,11 +482,16 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform)))
         return E_FAIL;
 
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
+        TEXT("../Bin/Resources/Models/3DMapObject/"), matPretransform)))
+        return E_FAIL;
+
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
+    
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
