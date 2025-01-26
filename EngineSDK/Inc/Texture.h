@@ -24,7 +24,7 @@ public:
 	ID3D11ShaderResourceView* Get_SRV(const _wstring _strTextureName, _uint* _pIndex = nullptr);
 	ID3D11ShaderResourceView* Get_SRV(_uint _iSRVIndex)
 	{
-		if (_iSRVIndex >= m_SRVNames.size())
+		if (_iSRVIndex >= m_SRVs.size())
 			return nullptr;
 		if (nullptr == m_SRVs[_iSRVIndex])
 			return nullptr;

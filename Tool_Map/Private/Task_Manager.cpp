@@ -397,33 +397,20 @@ HRESULT CTask_Manager::Parsing()
 
 	LOG_TYPE(strLogging, LOG_ERROR);
 
+	vector<_string> ExportStrings;
 
-
-	wstring strResultFileFath = m_pGameInstance->StringToWString(strFilePath);
-	strResultFileFath += L"\\ExportResult\\";
-	strResultFileFath += m_pGameInstance->StringToWString(strFileName);
-	strResultFileFath += L"_Result.json";
-
-	json jAddFile;
 	for (auto ModelInfoPair : OverrideMaterialModels)
 	{
 		_string strModelName = ModelInfoPair.first;
 		_string strModelTextureName = ModelInfoPair.second.szMaterialKey;
-		jAddFile[strModelName].push_back(strModelTextureName);
+		ExportStrings.push_back(strModelName + " - " + strModelTextureName);
 	}
 
 
+	wstring strResultFileFath = L"..\\Bin\\json\\Result\\";
 
-
-
-	std::ofstream file(strResultFileFath);
-	if (file.is_open()) {
-		file << jAddFile.dump(1);
-		file.close();
-	}
-	else {
-		return E_FAIL;
-	}
+	if (FAILED(Export_Result(strResultFileFath, m_pGameInstance->StringToWString(strFileName), ExportStrings)))
+		LOG_TYPE("Export Result Save Error... ", LOG_ERROR);
 
 
 	CoUninitialize();
@@ -721,6 +708,29 @@ HRESULT CTask_Manager::Export_SaveResult_ToJson(const _wstring _strFIlePath, con
 	}
 
 
+}
+
+HRESULT CTask_Manager::Export_Result(const _wstring& _strFilePath, const _wstring& _strFileName, vector<_string> _ExportStrings)
+{
+	wstring strResultFileFath = _strFilePath;
+	strResultFileFath += _strFileName;
+	strResultFileFath += L"_Result.json";
+
+	json jAddFile;
+	for (auto strExport : _ExportStrings)
+		jAddFile["ExportData"].push_back(strExport);
+
+
+	std::ofstream file(strResultFileFath);
+	if (file.is_open()) {
+		file << jAddFile.dump(1);
+		file.close();
+	}
+	else {
+		return E_FAIL;
+	}
+
+	return E_NOTIMPL;
 }
 
 _bool CTask_Manager::Check_EgnoreObject(_string _strModelName)

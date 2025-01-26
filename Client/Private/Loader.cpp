@@ -211,7 +211,8 @@ HRESULT CLoader::Loading_Level_Static()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, TEXT("../Bin/MapSaveFiles/Room_Free_Enviroment.json"), matPretransform)))
+
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
         return E_FAIL;
 
 
@@ -476,9 +477,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     
-    //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Room_Free_Enviroment.json"), matPretransform)))
-    //    return E_FAIL;    
-    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, TEXT("../Bin/MapSaveFiles/Chapter_04_Default_Desk.json"), matPretransform)))
+    //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
+    //    return E_FAIL;
+    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform)))
         return E_FAIL;
 
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
@@ -578,7 +579,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+
     Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
+
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Free_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -793,7 +796,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 {
     wstring strFileName = _strFileName;
 
-    _wstring strFullFilePath = L"../Bin/MapSaveFiles/" + strFileName;
+    _wstring strFullFilePath = MAP_3D_DEFAULT_PATH + strFileName;
 
     HANDLE	hFile = CreateFile(strFullFilePath.c_str(),
         GENERIC_READ,
@@ -810,8 +813,8 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 
     DWORD	dwByte(0);
     _uint iLayerCount = 0;
-
-    ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
+    _int isTempReturn = 0;
+    isTempReturn = ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
 
     for (_uint i = 0; i < iLayerCount; i++)
     {
@@ -819,8 +822,8 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
         _char		szLayerTag[MAX_PATH];
         wstring		strLayerTag;
 
-        ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-        ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
+        isTempReturn = ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+        isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
         strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
         for (size_t i = 0; i < iObjectCnt; i++)
@@ -829,8 +832,8 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             _float4x4	vWorld = {};
 
 
-            ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-            ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+            isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+            isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
 
 
             CModelObject::MODELOBJECT_DESC NormalDesc = {};
@@ -852,34 +855,34 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
                 _uint iOverrideCount = 0;
                 C3DModel::COLOR_SHADER_MODE eTextureType;
                 _float4 fDefaultDiffuseColor;
-                
 
-                ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+
+                isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
                 static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
 
                 switch (eTextureType)
                 {
-                    case Engine::C3DModel::COLOR_DEFAULT:
-                    case Engine::C3DModel::MIX_DIFFUSE:
-                    {
-                        ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-                        static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
-                    }
-                        break;
-                    default:
-                        break;
+                case Engine::C3DModel::COLOR_DEFAULT:
+                case Engine::C3DModel::MIX_DIFFUSE:
+                {
+                    isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+                    static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
+                }
+                break;
+                default:
+                    break;
                 }
 
-                ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
+                isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
                 if (0 < iOverrideCount)
                 {
                     CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
                     for (_uint i = 0; i < iOverrideCount; i++)
                     {
                         _uint iMaterialIndex, iTexTypeIndex, iTexIndex;
-                        ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
-                        ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
-                        ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
+                        isTempReturn = ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+                        isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
+                        isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
 
                         pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
                     }

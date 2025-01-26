@@ -174,7 +174,7 @@ _bool CShopPanel::isInPanel(_float2 _vMousePos)
 
 _int CShopPanel::isInPanelItem(_float2 _vMousePos)
 {
- 	_int iItemCounts = CUI_Manager::GetInstance()->Get_ShopItems().size();
+ 	_int iItemCounts = (_uint)CUI_Manager::GetInstance()->Get_ShopItems().size();
 
 	if (373 <= _vMousePos.x && 1228 >= _vMousePos.x)
 	{
