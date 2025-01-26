@@ -3,9 +3,13 @@
 #include "GameInstance.h"
 #include "Layer.h"
 
-CSection::CSection()
-    : m_pGameInstance(CGameInstance::GetInstance())
+CSection::CSection(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+    : m_pDevice(_pDevice)
+    , m_pContext(_pContext)
+    , m_pGameInstance(CGameInstance::GetInstance())
 {
+    Safe_AddRef(m_pDevice);
+    Safe_AddRef(m_pContext);
     Safe_AddRef(m_pGameInstance);
 }
 
@@ -70,9 +74,9 @@ void CSection::Clear_GameObjects()
     m_pLayer->Clear_GameObjects();
 }
 
-CSection* CSection::Create()
+CSection* CSection::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CSection* pInstance = new CSection();
+    CSection* pInstance = new CSection(_pDevice, _pContext);
     if (FAILED(pInstance->Initialize()))
     {
         MSG_BOX("Failed Create CSection Class");
@@ -84,7 +88,8 @@ CSection* CSection::Create()
 void CSection::Free()
 {
     Safe_Release(m_pGameInstance);
-
+    Safe_Release(m_pContext);
+    Safe_Release(m_pDevice);
 
     __super::Free();
 }

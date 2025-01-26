@@ -11,14 +11,14 @@ BEGIN(Client)
 class CSection : public CBase
 {
 protected:
-	CSection();
+	CSection(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CSection() = default;
 
 public:
 	// 1. Section 자체는 마땅히 할게 없다. Section_2D는 별도의 추가작업이 있겠지. 
 	virtual HRESULT Initialize();
 
-public:
+public: /* Object Layer와의 상호 작용 */
 	// 1. Section Layer에 Object를 추가하는 기능.
 	HRESULT Add_GameObject_ToSectionLayer(CGameObject* _pGameObject);
 	// 2. Section Layer에 Object의 Active를 변경하는 기능.
@@ -31,17 +31,17 @@ public:
 	void	Clear_GameObjects();
 
 
-private:
-	CGameInstance* m_pGameInstance = nullptr;
+protected:
+	ID3D11Device*			m_pDevice = nullptr;
+	ID3D11DeviceContext*	m_pContext = nullptr;
+	CGameInstance*			m_pGameInstance = nullptr;
 
-private:
-	_wstring m_strName;
-	CLayer* m_pLayer = nullptr;
-
-private: /* Initialize Method */
+protected:
+	_wstring				m_strName;
+	CLayer*					m_pLayer = nullptr;
 
 public:
-	static CSection* Create();
+	static CSection* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	void Free() override;
 };
 
