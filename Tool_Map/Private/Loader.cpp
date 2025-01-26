@@ -254,7 +254,7 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, L"book",
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DAnim/book/book.model", matPretransform))))
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DMapObject/book/book.model", matPretransform))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
