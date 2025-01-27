@@ -372,9 +372,8 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-	void									On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	virtual void                     On_CoordinateChange() override;
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, const _float3& _vPosition) override;
+	void								On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+	virtual HRESULT						Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Move(_vector _vDir, _float _fTimeDelta);
 	void Attack(_uint _iCombo);
 

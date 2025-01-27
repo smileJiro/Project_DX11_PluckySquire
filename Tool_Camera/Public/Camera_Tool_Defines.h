@@ -15,7 +15,7 @@ namespace Camera_Tool
 		LEVEL_CHANGE,
 		SET_ACTIVE,
 		HR,
-
+		CHANGE_COORDINATE,
 		LAST,
 	};
 

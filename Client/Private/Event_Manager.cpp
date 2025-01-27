@@ -9,6 +9,7 @@
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
+#include "Section_Manager.h"
 #include "UI_Manager.h"
 
 #include "FSM.h"
@@ -23,13 +24,19 @@ CEvent_Manager::CEvent_Manager()
 	Safe_AddRef(m_pGameInstance);
 }
 
-void CEvent_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+HRESULT CEvent_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
+	if (nullptr == _pDevice)
+		return E_FAIL;
+	if (nullptr == _pContext)
+		return E_FAIL;
+
 	m_pDevice = _pDevice;
 	m_pContext = _pContext;
-
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
+
+	return S_OK;
 }
 
 void CEvent_Manager::Update(_float _fTimeDelta)
@@ -311,6 +318,7 @@ HRESULT CEvent_Manager::Excute_ChangeBossState(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
+	CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	
 	return S_OK;
@@ -320,6 +328,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
+	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 

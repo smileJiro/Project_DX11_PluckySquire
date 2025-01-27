@@ -229,6 +229,9 @@
     <Filter Include="03.Components\FSM\State\Alert">
       <UniqueIdentifier>{88718416-dfd9-4f31-b553-a803df310b8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Camera\CutScene">
+      <UniqueIdentifier>{d0922ef4-4f7b-4b44-97d7-e25fd7b1d0f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -487,6 +490,9 @@
     <ClInclude Include="..\Public\AlertState.h">
       <Filter>03.Components\FSM\State\Alert</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_CutScene.h">
+      <Filter>02.GameObjects\Camera\CutScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -735,6 +741,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\AlertState.cpp">
       <Filter>03.Components\FSM\State\Alert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_CutScene.cpp">
+      <Filter>02.GameObjects\Camera\CutScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

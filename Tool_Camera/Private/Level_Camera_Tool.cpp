@@ -50,6 +50,8 @@ HRESULT CLevel_Camera_Tool::Initialize()
 	m_fFovys[8] = 100.f;
 	m_fFovys[9] = 120.f;
 
+	m_tKeyFrameInfo.iZoomLevel = 6;
+
 	return S_OK;
 }
 
@@ -620,6 +622,55 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 
 }
 
+void CLevel_Camera_Tool::Set_InitialData()
+{
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Initial Data");
+	ImGui::Separator();
+
+	ImGui::Text("Position: %.2f, %.2f, %.2f", m_tInitialData.vPosition.x, m_tInitialData.vPosition.y, m_tInitialData.vPosition.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InitialDataPosX", &m_tInitialData.vPosition.x, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InitialDataPosY", &m_tInitialData.vPosition.y, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InitialDataPosZ", &m_tInitialData.vPosition.z, 0.1f);
+
+	ImGui::Text("LookAt Pos: %.2f, %.2f, %.2f", m_tInitialData.vAtOffset.x, m_tInitialData.vAtOffset.y, m_tInitialData.vAtOffset.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InitialDataAtX", &m_tInitialData.vAtOffset.x, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InitialDataAtY", &m_tInitialData.vAtOffset.y, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InitialDataAtZ", &m_tInitialData.vAtOffset.z, 0.1f);
+
+	ImGui::Text("Frame Zoom Level: %d\t   ", m_tInitialData.iZoomLevel);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(200.0f);
+	_int iZoomLevel = m_tInitialData.iZoomLevel;
+	ImGui::InputInt("##InitialData Zoom Level   ", &iZoomLevel);
+	m_tInitialData.iZoomLevel = iZoomLevel;
+
+	if (m_tInitialData.iZoomLevel <= 0)
+		ImGui::Text("Frame Fovy: %.2f", 0.f);
+	else
+		ImGui::Text("Frame Fovy: %.2f", m_fFovys[m_tInitialData.iZoomLevel - 1]);
+
+	ImGui::NewLine();
+}
+
 void CLevel_Camera_Tool::Show_KeyFrameInfo()
 {
 	// Cur KeyFrame Info
@@ -815,9 +866,9 @@ void CLevel_Camera_Tool::Show_SaveLoadFileWindow()
 			m_isShowPopUp = false;
 
 			if (true == m_isArmData && false == m_isCutSceneData)
-				Save_Data_CutScene();
-			else if (true == m_isCutSceneData && false == m_isArmData)
 				Save_Data_Arm();
+			else if (true == m_isCutSceneData && false == m_isArmData)
+				Save_Data_CutScene();
 		}
 
 		ImGui::SameLine();
@@ -834,9 +885,9 @@ void CLevel_Camera_Tool::Show_SaveLoadFileWindow()
 	if (ImGui::Button("Load")) {
 		
 		if (true == m_isArmData && false == m_isCutSceneData)
-			Load_Data_CutScene();
-		else if (true == m_isCutSceneData && false == m_isArmData)
 			Load_Data_Arm();
+		else if (true == m_isCutSceneData && false == m_isArmData)
+			Load_Data_CutScene();
 	}
 
 	ImGui::End();
@@ -1227,8 +1278,8 @@ void CLevel_Camera_Tool::Create_KeyFrame()
 				}
 			}
 
-			CUTSCENE_KEYFRAME tFrame;
-			CGameObject* pCube = Create_Cube(&tFrame);
+			CUTSCENE_KEYFRAME tFrame = m_tKeyFrameInfo;
+			CGameObject* pCube = Create_Cube();
 
 			if (nullptr == pCube)
 				return;
@@ -1238,7 +1289,7 @@ void CLevel_Camera_Tool::Create_KeyFrame()
 	}
 }
 
-CGameObject* CLevel_Camera_Tool::Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame)
+CGameObject* CLevel_Camera_Tool::Create_Cube()
 {
 	/* Test Terrain */
 	CTest_Terrain::MODELOBJECT_DESC TerrainDesc{};
@@ -1262,8 +1313,6 @@ CGameObject* CLevel_Camera_Tool::Create_Cube(CUTSCENE_KEYFRAME* _tKeyFrame)
 
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Terrain"), LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), &pCube, &TerrainDesc);
 	Safe_AddRef(pCube);
-	
-	*_tKeyFrame = m_tKeyFrameInfo;
 
 	return pCube;
 }
@@ -1415,7 +1464,11 @@ void CLevel_Camera_Tool::Create_Sector()
 	if (ImGui::Button("LINEAR")) {
 		m_iSectorType = CCutScene_Sector::LINEAR;
 	}
-	
+
+	ImGui::Text("Sector Duration:   %.2f    ", m_fSectorDuration);
+	ImGui::SameLine();
+	ImGui::DragFloat("##SectorDurationS   ", &m_fSectorDuration, 0.1f, 0.0f, 40.f);
+
 	ImGui::Text("Delete Sector Num:   %d    ", m_iDeleteSectorNum);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(200.0f);
@@ -1447,6 +1500,7 @@ void CLevel_Camera_Tool::Create_Sector()
 		CCutScene_Sector::CUTSCENE_SECTOR_DESC Desc{};
 
 		Desc.iSectorType = m_iSectorType;
+		Desc.fSectorDuration = m_fSectorDuration;
 
 		CCutScene_Sector* pSector = CCutScene_Sector::Create(m_pDevice, m_pContext, &Desc);
 
@@ -1642,25 +1696,31 @@ void CLevel_Camera_Tool::Play_CutScene(_float fTimeDelta)
 	ImGui::Separator();
 
 	if (ImGui::Button("Add CutScene Data To Camera")) {
-		for (auto& CutScene : m_CutScenes) {
-			CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
-		
-			if (nullptr == pCamera)
-				return;
+		CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
 
+		if (nullptr == pCamera)
+			return;
+
+		dynamic_cast<CCamera_CutScene*>(pCamera)->CutScene_Clear();
+
+		for (auto& CutScene : m_CutScenes) {
 			dynamic_cast<CCamera_CutScene*>(pCamera)->Add_CutScene(CutScene.first, CutScene.second);
 		}
 	}
 
+	// Initial Data
+	Set_InitialData();
+
 	if (ImGui::Button("Simulation")) {
 		m_isSimulation = true;
-
+		m_pSimulationCube->Set_Active(true);
 		CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
 
 		if (nullptr == pCamera)
 			return;
 
 		dynamic_cast<CCamera_CutScene*>(pCamera)->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum]);
+		dynamic_cast<CCamera_CutScene*>(pCamera)->Set_IsSimulation(true);
 		m_pSimulationCube->Set_Active(true);
 	}
 
@@ -1671,7 +1731,7 @@ void CLevel_Camera_Tool::Play_CutScene(_float fTimeDelta)
 		if (nullptr == pCamera)
 			return;
 
-		pCamera->Update(fTimeDelta);
+		pCamera->Late_Update(fTimeDelta);
 		_float3 vSimulationPos = pCamera->Get_SimulationPos();
 
 		CController_Transform* pTransform = m_pSimulationCube->Get_ControllerTransform();
@@ -1679,11 +1739,15 @@ void CLevel_Camera_Tool::Play_CutScene(_float fTimeDelta)
 	
 		if (true == pCamera->Get_IsFinish()) {
 			m_isSimulation = false;
+			m_pSimulationCube->Set_Active(false);
+			pCamera->Set_IsSimulation(false);
+			pCamera->Set_IsFinish(false);
 		}
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("Play CutScene")) {
+		
 		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::CUTSCENE);
 		//CCamera_Manager_Tool::GetInstance()->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum]);
 		CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
@@ -1695,14 +1759,16 @@ void CLevel_Camera_Tool::Play_CutScene(_float fTimeDelta)
 	}
 
 	ImGui::SameLine();
-	if (ImGui::Button("Reset CutScene Camera, Simulation")) {
-		//CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
+	if (ImGui::Button("Play CutScene Initialize")) {
+		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::CUTSCENE);
+		CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
 
-		//if (nullptr == pCamera)
-		//	return;
+		if (nullptr == pCamera)
+			return;
 
-		m_pSimulationCube->Set_Active(false);
+		dynamic_cast<CCamera_CutScene*>(pCamera)->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum], &m_tInitialData);
 	}
+
 }
 
 void CLevel_Camera_Tool::Save_Data_CutScene()
@@ -1711,7 +1777,75 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 
 	}
 	else {
+		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/Tool/";
+		_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
+
+		std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);
+
+		if (!outFile) {
+			std::cerr << "파일 열기 실패." << std::endl;
+		}
+
+		// KeyFrame
+		_uint iSize = m_KeyFrames.size();
+		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+
+		for (auto& KeyFrame : m_KeyFrames) {
+			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.vPosition), sizeof(_float3));
+			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.fTimeStamp), sizeof(_float));
+			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.iZoomLevel), sizeof(_uint));
+			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.iZoomRatioType), sizeof(_uint));
+			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.vAtOffset), sizeof(_float3));
+			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.bLookTarget), sizeof(_bool));
+			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.iAtRatioType), sizeof(_uint));
+		}
 		
+		// CutScene
+		iSize = m_CutScenes.size();
+		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+
+		for (auto& CutScene : m_CutScenes) {
+			
+			// CutScene Tag 길이 저장
+			_uint strLength = CutScene.first.length();
+			outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
+			outFile.write(reinterpret_cast<const char*>(CutScene.first.c_str()), strLength * sizeof(wchar_t));
+
+			// CutScene Sector 개수 저장
+			_uint iSectorNum = CutScene.second.size();
+			outFile.write(reinterpret_cast<const char*>(&iSectorNum), sizeof(_uint));
+
+			// Sector
+			for (auto& Sector : CutScene.second) {
+
+				vector<CUTSCENE_KEYFRAME>* pKeyFrames = Sector->Get_KeyFrames();
+
+				// Sector Type 저장(Spline, Linear)
+				_uint iSectorType = Sector->Get_SectorType();
+				outFile.write(reinterpret_cast<const char*>(&iSectorType), sizeof(_uint));
+
+				// Sector Duration 저장
+				_float fSectorDuration = Sector->Get_SectorDuration();
+				outFile.write(reinterpret_cast<const char*>(&fSectorDuration), sizeof(_float));
+
+				// KeyFrame 개수 저장
+				_uint iKeyFrameSize = (*pKeyFrames).size();
+				outFile.write(reinterpret_cast<const char*>(&iKeyFrameSize), sizeof(_uint));
+
+				for (auto& KeyFrame : *pKeyFrames) {
+					outFile.write(reinterpret_cast<const char*>(&KeyFrame.vPosition), sizeof(_float3));
+					outFile.write(reinterpret_cast<const char*>(&KeyFrame.fTimeStamp), sizeof(_float));
+					outFile.write(reinterpret_cast<const char*>(&KeyFrame.iZoomLevel), sizeof(_uint));
+					outFile.write(reinterpret_cast<const char*>(&KeyFrame.iZoomRatioType), sizeof(_uint));
+					outFile.write(reinterpret_cast<const char*>(&KeyFrame.vAtOffset), sizeof(_float3));
+					outFile.write(reinterpret_cast<const char*>(&KeyFrame.bLookTarget), sizeof(_bool));
+					outFile.write(reinterpret_cast<const char*>(&KeyFrame.iAtRatioType), sizeof(_uint));
+				}
+			}
+		}
+		
+		_wstring FullPath = wszSavePath + wszSaveName + TEXT(".bin");
+		m_BinaryFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
 	}
 }
 
@@ -1725,7 +1859,108 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 
 	}
 	else {
+		_wstring wszLoadPath = m_pGameInstance->StringToWString(m_BinaryFilePaths[m_iCurrentBinaryFileIndex]);
+		
+		std::ifstream inFile(wszLoadPath, std::ios::binary);
+		if (!inFile) {
+			string str = "파일을 열 수 없습니다.";
+			MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+		}
+		
+		// KeyFrame
+		_uint iSize = {};
+		inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
 
+		for (_int i = 0; i < iSize; ++i) {
+			CUTSCENE_KEYFRAME tKeyFrame;
+
+			inFile.read(reinterpret_cast<char*>(&tKeyFrame.vPosition), sizeof(_float3));
+			inFile.read(reinterpret_cast<char*>(&tKeyFrame.fTimeStamp), sizeof(_float));
+			inFile.read(reinterpret_cast<char*>(&tKeyFrame.iZoomLevel), sizeof(_uint));
+			inFile.read(reinterpret_cast<char*>(&tKeyFrame.iZoomRatioType), sizeof(_uint));
+			inFile.read(reinterpret_cast<char*>(&tKeyFrame.vAtOffset), sizeof(_float3));
+			inFile.read(reinterpret_cast<char*>(&tKeyFrame.bLookTarget), sizeof(_bool));
+			inFile.read(reinterpret_cast<char*>(&tKeyFrame.iAtRatioType), sizeof(_uint));
+			
+			CGameObject* pCube = Create_Cube();
+			pCube->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f));
+			m_KeyFrames.push_back({ tKeyFrame, pCube });
+		}
+
+		// CutScene
+		inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+
+		for (_int i = 0; i < iSize; ++i) {
+			
+			// CutScene Tag 읽기
+			_uint strLength = {};
+			inFile.read(reinterpret_cast<char*>(&strLength), sizeof(_uint));
+			_wstring CutSceneTag;
+			CutSceneTag.resize(strLength);
+			inFile.read(reinterpret_cast<char*>(&CutSceneTag[0]), strLength * sizeof(wchar_t));
+
+			// CutScene Sector 개수 저장
+			_uint iSectorNum = {};
+			inFile.read(reinterpret_cast<char*>(&iSectorNum), sizeof(_uint));
+
+			// Sector
+			for (_int i = 0; i < iSectorNum; ++i) {
+
+				// Sector Type 저장(Spline, Linear)
+				_uint iSectorType = {};
+				inFile.read(reinterpret_cast<char*>(&iSectorType), sizeof(_uint));
+
+				// Sector Duration 저장 
+				_float fSectorDuration = {};
+				inFile.read(reinterpret_cast<char*>(&fSectorDuration), sizeof(_float));
+
+				CCutScene_Sector::CUTSCENE_SECTOR_DESC Desc{};
+
+				Desc.iSectorType = iSectorType;
+				Desc.fSectorDuration = fSectorDuration;
+
+				CCutScene_Sector* pSector = CCutScene_Sector::Create(m_pDevice, m_pContext, &Desc);
+
+				// KeyFrame 개수 저장
+				_uint iKeyFrameSize = {};
+				inFile.read(reinterpret_cast<char*>(&iKeyFrameSize), sizeof(_uint));
+
+				for (_int i = 0; i < iKeyFrameSize; ++i) {
+
+					CUTSCENE_KEYFRAME tKeyFrame = {};
+
+					inFile.read(reinterpret_cast<char*>(&tKeyFrame.vPosition), sizeof(_float3));
+					inFile.read(reinterpret_cast<char*>(&tKeyFrame.fTimeStamp), sizeof(_float));
+					inFile.read(reinterpret_cast<char*>(&tKeyFrame.iZoomLevel), sizeof(_uint));
+					inFile.read(reinterpret_cast<char*>(&tKeyFrame.iZoomRatioType), sizeof(_uint));
+					inFile.read(reinterpret_cast<char*>(&tKeyFrame.vAtOffset), sizeof(_float3));
+					inFile.read(reinterpret_cast<char*>(&tKeyFrame.bLookTarget), sizeof(_bool));
+					inFile.read(reinterpret_cast<char*>(&tKeyFrame.iAtRatioType), sizeof(_uint));
+					
+					pSector->Add_KeyFrame(tKeyFrame);
+				}
+
+				_bool isSameTag = false;
+				// m_CutScenes에 추가
+				for (auto& CutScene : m_CutScenes) {
+					if (CutScene.first == CutSceneTag) {
+						isSameTag = true;
+					}
+				}
+
+				if (true == isSameTag) {
+					auto iter = m_CutScenes.find(CutSceneTag);
+					iter->second.push_back(pSector);
+				}
+				else {
+					vector<CCutScene_Sector*> vecSector;
+					vecSector.push_back(pSector);
+
+					m_CutScenes.emplace(CutSceneTag, vecSector);
+					m_CutSceneTags.push_back(CutSceneTag);
+				}
+			}
+		}
 	}
 }
 

@@ -14,6 +14,7 @@ namespace Camera_Tool
 	void Event_DeleteObject(CGameObject* _pGameObject);
 	void Event_LevelChange(_uint _iChangeLevelIndex, _uint _iNextChangeLevelIndex = 0);
 	void Event_SetActive(CBase* _pObject, _bool _isActive, _bool _isDelay = false);
+	void Event_Change_Coordinate(CActorObject* _pActorObject, COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr);

@@ -55,14 +55,9 @@ private:
 	// Arm
 	CCameraArm*					m_pArm = { nullptr };
 
-	//// Change AtOffset
-	//_float3						m_vAtOffset = {};
-	//_float3						m_vStartAtOffset = {};
-	//_float3						m_vNextAtOffset = {};
-	//_bool						m_isChangingAtOffset = { false };
-	//_float2						m_fAtOffsetTime = {};
-	//_uint						m_iOffsetRatioType = {};
-	
+	// TargetPos
+	_float3						m_vTargetPos = {};
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Defualt_Move(_float _fTimeDelta);

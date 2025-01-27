@@ -23,7 +23,7 @@ private:
 	virtual ~CEvent_Manager() = default;
 
 public:
-	void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	HRESULT Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	void Update(_float _fTimeDelta);
 	void AddEvent(const EVENT& _tEvent) { m_Events.push_back(_tEvent); }
 
