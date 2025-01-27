@@ -1,109 +1,106 @@
-{
- [
-	{
-		"SearchTag" : "TD_Flower_BP_C01",
-		"TextureName" : "mountain_white_flower_01",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : false
-	},
-	{
-		"SearchTag" : "bush",
-		"TextureName" : "mountain_bush_01",
-		"ModelType" : "NonAnim",
-		"Active" : true,
-		"Collider" : true,
-	"ActivePropertis":
-	{
-		"ActiveType" : "ActiveType_Breakable"
-	},
-	"ColliderPropertis":
-	{
-		"ColliderType" : "Collier_Squere"
-		"ColliderInfo" : {
-			"Collider_Offset_Pos" : 
-			{
-				"X" : 10.0,
-				"Y" : 10.0
-			},
-			"Collider_Offset_Radius" : 10.0
-		}
-	}
-	},
-	{
-		"SearchTag" : "TD_Tree_BP",
-		"TextureName" : "tree_green_01",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "ButterflyBlue",
-		"TextureName" : "butterfly_blue_fly_02",
-		"ModelType" : "Anim",
-		"Active" : true,
-		"Collider" : false,
-		"ActivePropertis":
-			{
-				"ActiveType" : "ActiveType_Patrol"
-			},
-	},	
-	{
-		"SearchTag" : "ButterflyOrange",
-		"TextureName" : "butterfly_orange_fly_02",
-		"ModelType" : "Anim",
-		"Active" : true,
-		"Collider" : false,
-	},
-	{
-		"SearchTag" : "ButterflyWhite",
-		"TextureName" : "butterfly_white_fly_02",
-		"ModelType" : "Anim",
-		"Active" : true,
-		"Collider" : false
-	},
-	{
-		"SearchTag" : "barrel",
-		"TextureName" : "barrel_01",
-		"ModelType" : "NonAnim",
-		"Active" : true,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "townsign",
-		"TextureName" : "town_sign",
-		"ModelType" : "NonAnim",
-		"Active" : true,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "actionsignpost",
-		"TextureName" : "action_sign_post",
-		"ModelType" : "NonAnim",
-		"Active" : true,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "treegreenfallen",
-		"TextureName" : "tree_green_fallen",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "treegreenbrokentrunk",
-		"TextureName" : "tree_green_broken_trunk",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : true
-	
-	},
-	{
-		"SearchTag" : "largemossrock",
-		"TextureName" : "large_moss_rock",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : true
-	}
- ]
-}
+[
+  {
+    "SearchTag": "TD_Flower_BP_C01",
+    "TextureName": "mountain_white_flower_01",
+    "ModelType": "NonAnim",
+    "Active": true,
+    "Collider": false,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Breakable"
+    }
+  },
+  {
+    "SearchTag": "bush",
+    "TextureName": "mountain_bush_01",
+    "ModelType": "NonAnim",
+    "Active": true,
+    "Collider": true,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Breakable"
+    },
+    "ColliderPropertis": {
+      "ColliderType": "Collier_Squere",
+      "ColliderInfo": {
+        "Collider_Offset_Pos": {
+          "X": 10.0,
+          "Y": 10.0
+        },
+        "Collider_Offset_Radius": 10.0
+      }
+    }
+  },
+  {
+    "SearchTag": "TD_Tree_BP",
+    "TextureName": "tree_green_01",
+    "ModelType": "NonAnim",
+    "Active": false,
+    "Collider": true
+  },
+  {
+    "SearchTag": "ButterflyBlue",
+    "TextureName": "",
+    "ModelType": "Anim",
+    "Active": true,
+    "Collider": false,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Patrol"
+    }
+  },
+  {
+    "SearchTag": "ButterflyOrange",
+    "TextureName": "butterfly_orange_fly_02",
+    "ModelType": "Anim",
+    "Active": true,
+    "Collider": false
+  },
+  {
+    "SearchTag": "ButterflyWhite",
+    "TextureName": "butterfly_white_fly_02",
+    "ModelType": "Anim",
+    "Active": true,
+    "Collider": false
+  },
+  {
+    "SearchTag": "barrel",
+    "TextureName": "barrel_01",
+    "ModelType": "NonAnim",
+    "Active": true,
+    "Collider": true
+  },
+  {
+    "SearchTag": "townsign",
+    "TextureName": "town_sign",
+    "ModelType": "NonAnim",
+    "Active": true,
+    "Collider": true
+  },
+  {
+    "SearchTag": "actionsignpost",
+    "TextureName": "action_sign_post",
+    "ModelType": "NonAnim",
+    "Active": true,
+    "Collider": true
+  },
+  {
+    "SearchTag": "treegreenfallen",
+    "TextureName": "tree_green_fallen",
+    "ModelType": "NonAnim",
+    "Active": false,
+    "Collider": true
+  },
+  {
+    "SearchTag": "treegreenbrokentrunk",
+    "TextureName": "tree_green_broken_trunk",
+    "ModelType": "NonAnim",
+    "Active": false,
+    "Collider": true
+
+  },
+  {
+    "SearchTag": "largemossrock",
+    "TextureName": "large_moss_rock",
+    "ModelType": "NonAnim",
+    "Active": false,
+    "Collider": true
+  }
+]
