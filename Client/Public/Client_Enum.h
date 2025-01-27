@@ -77,4 +77,16 @@ namespace Client
 		DOWN,
 		F_DIR_LAST
 	};
+	enum class E_DIRECTION
+	{
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+		LEFT_UP,
+		RIGHT_UP,
+		RIGHT_DOWN,
+		LEFT_DOWN,
+		E_DIR_LAST
+	};
 }
