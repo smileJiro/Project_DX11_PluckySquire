@@ -57,14 +57,14 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC ShapeDesc = {};
-    ShapeDesc.fHalfHeight = 0.5f;
-    ShapeDesc.fRadius = 0.5f;
+    ShapeDesc.fHalfHeight = 0.25f;
+    ShapeDesc.fRadius = 0.25f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::STICKY; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
@@ -74,7 +74,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     /* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity());
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
     SHAPE_BOX_DESC BoxDesc = {};
     BoxDesc.vHalfExtents = { 1.0f, 1.0f, 1.0f };
     ShapeData.pShapeDesc = &BoxDesc;
@@ -94,9 +94,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     }
 
     if (FAILED(Ready_PartObjects()))
-    {
         return E_FAIL;
-    }
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
@@ -290,7 +288,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
     ACTOR_TYPE eActorType = Get_ActorType();
     if (ACTOR_TYPE::KINEMATIC == eActorType)
     {
-        if (Get_CurCoord() == COORDINATE_3D)
+        if (COORDINATE_3D ==Get_CurCoord())
         {
             m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
             m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
@@ -303,7 +301,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
     }
     else if (ACTOR_TYPE::DYNAMIC == eActorType)
     {
-        if (Get_CurCoord() == COORDINATE_3D)
+        if (COORDINATE_3D == Get_CurCoord())
         {
             m_pActorCom->Turn_TargetDirection(_vDir);
             _vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
@@ -313,7 +311,6 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
         {
             m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
         }
-
     }
 
 	
