@@ -28,17 +28,17 @@ public:
 	void AddEvent(const EVENT& _tEvent) { m_Events.push_back(_tEvent); }
 
 private:
-	HRESULT Excute(const EVENT& _tEvent);
+	HRESULT Execute(const EVENT& _tEvent);
 
-	HRESULT Excute_CreateObject(const EVENT& _tEvent);
-	HRESULT Excute_DeleteObject(const EVENT& _tEvent);
-	HRESULT Excute_LevelChange(const EVENT& _tEvent);
-	HRESULT Excute_SetActive(const EVENT& _tEvent);
-	HRESULT Excute_Setup_SimulationFilter(const EVENT& _tEvent);
-	HRESULT Excute_Change_Coordinate(const EVENT& _tEvent);
+	HRESULT Execute_CreateObject(const EVENT& _tEvent);
+	HRESULT Execute_DeleteObject(const EVENT& _tEvent);
+	HRESULT Execute_LevelChange(const EVENT& _tEvent);
+	HRESULT Execute_SetActive(const EVENT& _tEvent);
+	HRESULT Execute_Setup_SimulationFilter(const EVENT& _tEvent);
+	HRESULT Execute_Change_Coordinate(const EVENT& _tEvent);
 
-	HRESULT Excute_ChangeMonsterState(const EVENT& _tEvent);
-	HRESULT Excute_ChangeBossState(const EVENT& _tEvent);
+	HRESULT Execute_ChangeMonsterState(const EVENT& _tEvent);
+	HRESULT Execute_ChangeBossState(const EVENT& _tEvent);
 
 private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);

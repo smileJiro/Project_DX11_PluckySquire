@@ -102,12 +102,16 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	}
 
-	if (KEY_DOWN(KEY::P)) 
+#ifdef _DEBUG
+	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
-	
 
-	if (KEY_DOWN(KEY::O)) 
+
+	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
+#endif // _DEBUG
+
+
 
 	
 }
@@ -992,7 +996,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Section_Test"), pGameObject);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Section_Test"), pGameObject);
 	/*Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.35f, -15.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
