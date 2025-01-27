@@ -24,6 +24,7 @@ HRESULT CRangedAttackState::Initialize(void* _pArg)
 
 void CRangedAttackState::State_Enter()
 {
+	m_pOwner->Set_AnimChangeable(false);
 }
 
 void CRangedAttackState::State_Update(_float _fTimeDelta)

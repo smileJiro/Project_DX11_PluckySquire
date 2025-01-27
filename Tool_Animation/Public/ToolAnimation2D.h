@@ -12,13 +12,17 @@ private:
 
 public:
 	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, CTexture*>& _Textures);
+	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, std::filesystem::path _szDir, json& jFile);
 
 	HRESULT				Export(ofstream& _outfile);
+
+	CTexture* Get_Texture() { return m_pTexture; }
 private:
 	vector<_float4> vBakedRenderDatas;
 public:
 	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, CTexture*>& _Textures);
 	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
+	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext,std::filesystem::path _szDir, json& jFile);
 	virtual CToolSpriteFrame* Clone();
 	virtual void Free() override;
 
@@ -38,13 +42,11 @@ public:
 
 	//Set
 	void						Set_CurrentFrame(_uint _iFrameIndex);
-	void						Set_Progerss(_float _fTrackPos);
 	//Get
 	_uint						Get_CurrentFrame();
-	_float					Get_Progerss();
+	_float					Get_SpeedMagnifier() { return m_fSpeedMagnifier; }
+	_bool					Is_LoopAnim() { return m_bLoop; }
 
-private:
-	_uint Get_AccumulativeSubFrameCount(_uint _iFrameIndex);
 private:
 	map<string, CTexture*> m_AnimTextures;
 

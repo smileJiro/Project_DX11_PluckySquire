@@ -209,15 +209,22 @@ HRESULT CFbxToBinary::Write_Animation(const aiAnimation* pAIAnim, ofstream& outF
 	outFile.write(reinterpret_cast<const char*>(&pAIAnim->mName.length), sizeof(_uint));
 	//cout << pAIAnim->mName.length << endl;
 	outFile.write(pAIAnim->mName.data, pAIAnim->mName.length);
-	cout << pAIAnim->mName.data << endl;
+	//cout << pAIAnim->mName.data << endl;
 
 	outFile.write(reinterpret_cast<const char*>(&pAIAnim->mDuration), sizeof(double));
 	//cout << pAIAnim->mDuration << endl;
 	outFile.write(reinterpret_cast<const char*>(&pAIAnim->mTicksPerSecond), sizeof(double));
 	//cout << pAIAnim->mTicksPerSecond << endl;
 
+	//Ãß°¡µÊ
+	_bool bLoop = false;
+	outFile.write(reinterpret_cast<char*>(&bLoop), sizeof(_bool));
+	//Ãß°¡µÊ
+	_float fSpeedMagnifier = 1.0f;
+	outFile.write(reinterpret_cast<char*>(&fSpeedMagnifier), sizeof(_float));
+
 	outFile.write(reinterpret_cast<const char*>(&pAIAnim->mNumChannels), sizeof(_uint));
-	cout << pAIAnim->mNumChannels << endl;
+	//cout << pAIAnim->mNumChannels << endl;
 
 	for (size_t i = 0; i < pAIAnim->mNumChannels; i++)
 	{

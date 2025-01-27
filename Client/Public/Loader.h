@@ -48,7 +48,12 @@ private:
 	HRESULT Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
 	HRESULT Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath);
 	HRESULT Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
+	HRESULT Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _szDirPath);
 	HRESULT Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix);
+	HRESULT Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, const _tchar* _szJsonFileName, _fmatrix _PreTransformMatrix)
+	{
+		return Load_Models_FromJson(_iLevId, (_wstring(_szJsonFilePath) + _wstring(_szJsonFileName)).c_str(), _PreTransformMatrix);
+	}
 
 	HRESULT Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName);
 public:

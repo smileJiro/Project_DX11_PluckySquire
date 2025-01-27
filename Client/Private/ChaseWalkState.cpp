@@ -33,9 +33,10 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	_vector dir = m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-	_float dis = XMVectorGetX(XMVector3Length((dir)));
-	if (dis <= m_fAttackRange)
+	_vector vDir = m_pTarget->Get_Position() - m_pOwner->Get_Position();
+	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//y값도 더해서 거리 계산하는거 주의
+	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_Position()));
+	if (fDis <= m_fAttackRange)
 	{
 		//공격 전환
 		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
@@ -43,17 +44,19 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	}
 
 	//추적 범위 벗어나면 IDLE 전환
-	if (dis > m_fChaseRange)
+	if (fDis > m_fChaseRange)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 	}
 	else
 	{
-		//추적
+		//추적 (시야범위 만들면 수정 할 예정)
+		m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_Position(), XMVectorGetY(m_pOwner->Get_Position())), _fTimeDelta);
 		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
-		m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(dir);
+		//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
 		m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta*2.f);
-		m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
+		//m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
+		
 	}
 }
 

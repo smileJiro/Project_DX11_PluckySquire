@@ -32,6 +32,7 @@ protected:
 
 private:
 	_bool					m_isOpenPanel = { false };
+	_uint					m_iPanelIndex = -1;
 	
 
 protected:
@@ -42,6 +43,10 @@ private:
 	void					isRender();
 	void					isFontPrint();
 	void					isOpenPanel() { false == m_isOpenPanel ? m_isOpenPanel = true : m_isOpenPanel = false; }
+	void					Move_Menu();
+	void					Choose_Menu(_float _fTimeDelta);
+	void					Menu_Text();
+	void					AllIcon_OpenClose(float _fTimeDelta);
 	//void					isESCUse() { false == CUI_Manager::GetInstance()->Get_isESC() ? CUI_Manager::GetInstance()->Set_isEsc(true) : CUI_Manager::GetInstance()->Set_isEsc(false);}
 
 protected:

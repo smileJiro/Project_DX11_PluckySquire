@@ -55,16 +55,16 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 
 	m_pGameInstance->Set_DebugRender(false);
 
-	m_pMapParsingManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
-	if (nullptr == m_pMapParsingManager)
+	m_pTaskManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
+	if (nullptr == m_pTaskManager)
 		return E_FAIL;
 
-	//m_pMapParsingManager->Register_Parsing("..\\Bin\\json\\Persistent_Room.json", L"Layer_Room_Environment");
+	//m_pTaskManager->Register_Parsing("..\\Bin\\json\\Persistent_Room.json", L"Layer_Room_Environment");
 	m_arrSelectName[SAVE_LIST] = L"Room_Enviroment";
 	Load(false);
 
-	m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
-	Load(false);
+	//m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
+	//Load(false);
 
 
 	CGameObject* pGameObject = nullptr;
@@ -101,7 +101,7 @@ void C2DMap_Tool_Manager::Update_Tool()
 	// 임구이 화면 구성
 	Update_Imgui_Logic();
 
-	m_pMapParsingManager->Update();
+	m_pTaskManager->Update();
 }
 
 
@@ -168,6 +168,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 			//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1718.json";
 			//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1112.json";
 			const std::string filePathDialog = WstringToString(szName);
+			const string strFileName = WstringToString(Get_FileName_From_Path(StringToWstring(filePathDialog)).first);
 			std::ifstream inputFile(filePathDialog);
 			if (!inputFile.is_open()) {
 				throw std::runtime_error("json Error :  " + filePathDialog);
@@ -209,7 +210,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 								memcpy((&fValuePos.x) + i, &fValue, sizeof(_float));
 							}
 
-							if(!ContainString(strText,"Goblin"))
+							if (!ContainString(strText, "Goblin"))
 								MapObjectInfos.push_back(make_pair(strText, fValuePos));
 						}
 
@@ -239,7 +240,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 										for (_uint i = 0; i < 4; i++)
 										{
 											_float fValue = values["ParameterValue"].at(arrColorKey[i]);
-		
+
 											memcpy((&fValueColor.x) + i, &fValue, sizeof(_float));
 										}
 										MapColors.push_back(make_pair(strText, fValueColor));
@@ -266,6 +267,11 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 							strTileMapName = TargetJson["TileMap"]["ObjectName"];
 							strTileMapName = OutName(strTileMapName);
 						}
+						else 
+						
+						{
+						
+						}
 
 					}
 				}
@@ -279,23 +285,30 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 			{
 				if (FAILED(Setting_TileMap(strTileMapName)))
 				{
-					LOG_TYPE("Tile Map Load Error -> " + strTileMapName, LOG_ERROR);
+					LOG_TYPE("Tile Map Load Error! -> " + strTileMapName, LOG_ERROR);
 					return;
 				}
 			}
+			else 
+			{
+					LOG_TYPE("Tile Map Not Exist! -> " + strTileMapName, LOG_ERROR);
+			
+			}
 			if (!MapColors.empty())
-			{ 
+			{
 				fColor = MapColors.front().second;
 				m_DefaultRenderObject->Set_Color(MapColors.front().second);
 			}
-			else 
+			else
 			{
+				LOG_TYPE("Tile Color Not Exist! -> " + strTileMapName, LOG_ERROR);
+
 				m_DefaultRenderObject->Set_Color(fColor);
 			}
 
 			if (!MapObjectInfos.empty())
 			{
-				_float2 fMin = {MapObjectInfos.front().second.x, MapObjectInfos.front().second.y};
+				_float2 fMin = { MapObjectInfos.front().second.x, MapObjectInfos.front().second.y };
 				_float2 fMax = fMin;
 				for_each(MapObjectInfos.begin(), MapObjectInfos.end(), [&fMin, &fMax](pair<_string, _float3>& Pair) {
 					fMin.x = min(fMin.x, Pair.second.x);
@@ -322,7 +335,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 				//treegreenbrokentrunk
 				//largemossrock
 				//Prototype_GameObject_2DMapObject
-
+				vector<_string> NotExistTextures;
 				for (auto& Pair : MapObjectInfos)
 				{
 					C2DMapObject::MAPOBJ_2D_DESC NormalDesc = {};
@@ -339,12 +352,17 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 						&pGameObject,
 						(void*)&NormalDesc)))
 					{
-						LOG_TYPE(L"2D Texture Info not Exist -> " + NormalDesc.strProtoTag, LOG_ERROR);
-					
+						_string strNotExistTextureMessage = WstringToString(_wstring(L"2D Texture Info not Exist ->") + NormalDesc.strProtoTag);
+						LOG_TYPE(strNotExistTextureMessage, LOG_ERROR);
+						NotExistTextures.push_back(strNotExistTextureMessage);
 					}
-					
+
 				}
-				LOG_TYPE(_wstring(L"=====  2D Map Read End  =====") + szName, LOG_LOAD);
+				wstring strResultFileFath = L"..\\Bin\\json\\Result\\";
+
+				if (!NotExistTextures.empty())
+					m_pTaskManager->Export_Result(strResultFileFath, StringToWstring(strFileName),NotExistTextures);
+					LOG_TYPE(_wstring(L"=====  2D Map Read End  =====") + szName, LOG_LOAD);
 
 			}
 		}
@@ -356,23 +374,23 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 	ImGui::Text("Offset: %.2f, %.2f", fOffsetPos.x, fOffsetPos.y);
 	ImGui::SameLine();
 
-	ImGui::SetNextItemWidth(50.0f);    
-	if (ImGui::DragFloat("##X", &fOffsetPos.x,10.f))
+	ImGui::SetNextItemWidth(50.0f);
+	if (ImGui::DragFloat("##X", &fOffsetPos.x, 10.f))
 	{
-		auto Layer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP,L"Layer_2DMapObject");
+		auto Layer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
 		if (nullptr != Layer)
 		{
 			auto GameObjects = Layer->Get_GameObjects();
-		for (auto& pGameObject : GameObjects)
-		{
-			static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(fOffsetPos);
-		}
+			for (auto& pGameObject : GameObjects)
+			{
+				static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(fOffsetPos);
+			}
 		}
 	}
 
 	ImGui::SameLine(0, 10.0f);
 
-	ImGui::SetNextItemWidth(50.0f);    
+	ImGui::SetNextItemWidth(50.0f);
 	if (ImGui::DragFloat("##Y", &fOffsetPos.y, 10.f))
 	{
 		auto Layer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
@@ -416,11 +434,12 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		}
 	}
 
-	if (ImGui::Button("SampleBook Mode Toggle"))
+	if (ImGui::Button("SampleBook Mode Toggle") || ImGui::IsKeyPressed(ImGuiKey_C))
 	{
 		_bool is2DMode = m_DefaultRenderObject->Toggle_Mode();
-		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_2D_MAP,L"Layer_Camera",0);
+		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_2D_MAP, L"Layer_Camera", 0);
 		if (nullptr != pGameObject)
+
 			pGameObject->Set_Active(!is2DMode);
 	}
 
@@ -670,7 +689,7 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 	}
 	// 1. 레이어 검사 후 저장할 레이어 벡터에 삽입 END
 
-	
+
 	// 2. 저장 파일 경로 및 네이밍 무결성 검사 & 핸들 오픈 
 
 
@@ -815,7 +834,7 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 		LOG_TYPE("Model Prototype Tag Save Start...", LOG_SAVE);
 
 	if (SUCCEEDED(
-		m_pMapParsingManager->
+		m_pTaskManager->
 		Export_SaveResult_ToJson(strFullFilePath, vecSaveModelProtos, false)
 	))
 	{
@@ -1039,7 +1058,7 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 				std::ifstream inputFile(filePathDialog);
 				if (!inputFile.is_open()) {
 					LOG_TYPE("TileSet json Read Error -> " + filePathDialog, LOG_ERROR);
-					return E_FAIL;					
+					return E_FAIL;
 				}
 
 				json TileImageJson;
@@ -1112,7 +1131,7 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 					}
 					m_pTileRenderObject->Set_Texture(tInfo, pSRV);
 				}
-				else 
+				else
 				{
 					LOG_TYPE("Tile dds Load Error -> " + strTexturePath, LOG_ERROR);
 					return E_FAIL;
@@ -1148,7 +1167,7 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 
 	log = "Load Start... File Name : ";
 	log += filename;
-	_wstring strFullFilePath = STATIC_3D_MAP_SAVE_FILE_PATH;
+	_wstring strFullFilePath = MAP_3D_DEFAULT_PATH;
 	strFullFilePath += L"/" + m_arrSelectName[SAVE_LIST] + L".mchc";
 
 
@@ -1496,7 +1515,7 @@ void C2DMap_Tool_Manager::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pLogger);
-	Safe_Release(m_pMapParsingManager);
+	Safe_Release(m_pTaskManager);
 
 	__super::Free();
 }

@@ -47,17 +47,20 @@ HRESULT CMonster::Initialize(void* _pArg)
 
 void CMonster::Priority_Update(_float _fTimeDelta)
 {
-	__super::Priority_Update(_fTimeDelta);
+	CGameObject::Priority_Update_Component(_fTimeDelta); /* Component Priority_Update */
+	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 void CMonster::Update(_float _fTimeDelta)
 {
-	__super::Update(_fTimeDelta);
+	CGameObject::Update_Component(_fTimeDelta); /* Component Update */
+	__super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CMonster::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	CGameObject::Late_Update_Component(_fTimeDelta); /* Component Late_Update */
+	__super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
 HRESULT CMonster::Render()
@@ -65,14 +68,34 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
-_float CMonster::Calculate_Distance()
-{
-	//return XMVectorGetX(XMVector3Length((m_pPlayerTransform->Get_State(CTransform::STATE_POSITION) - m_pTransform->Get_State(CTransform::STATE_POSITION))));
-	return 0.f;
-}
-
 void CMonster::Attack(_float _fTimeDelta)
 {
+}
+
+HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+		return E_FAIL;
+
+	if (COORDINATE_2D == Get_CurCoord())
+		Set_2D_Direction(F_DIRECTION::DOWN);
+
+	return S_OK;
+}
+
+void CMonster::Set_2D_Direction(F_DIRECTION _eDir)
+{
+	m_e2DDirection = _eDir;
+	if (F_DIRECTION::LEFT == m_e2DDirection)
+	{
+		_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+		m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+	}
+	else if (F_DIRECTION::RIGHT == m_e2DDirection)
+	{
+		_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+		m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+	}
 }
 
 HRESULT CMonster::Cleanup_DeadReferences()

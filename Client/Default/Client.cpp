@@ -120,7 +120,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             
                 double iOneFrameDeltaTime = (double)(end.QuadPart - start.QuadPart) / (double)frequency.QuadPart;
             
-                pMainApp->Set_OneFrameDeltaTime(iOneFrameDeltaTime);
+                pMainApp->Set_OneFrameDeltaTime((_float)iOneFrameDeltaTime);
             }
             
 

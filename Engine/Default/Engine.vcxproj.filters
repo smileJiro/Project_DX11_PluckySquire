@@ -253,6 +253,9 @@
     <Filter Include="98.ShaderFiles\ComputeShaders">
       <UniqueIdentifier>{52865deb-a86a-424b-ac6d-137811f61354}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Module">
+      <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -360,7 +363,7 @@
     <ClInclude Include="..\public\Bone.h">
       <Filter>01.Utility\04.Components\Model\Bone</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Animation.h">
+    <ClInclude Include="..\public\Animation3D.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Channel.h">
@@ -501,6 +504,18 @@
     <ClInclude Include="..\public\Frustum.h">
       <Filter>01.Utility\13.Frustum</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Animation.h">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimEventGenerator.h">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimEventReceiver.h">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Particle_Module.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -596,7 +611,7 @@
     <ClCompile Include="..\private\Bone.cpp">
       <Filter>01.Utility\04.Components\Model\Bone</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Animation.cpp">
+    <ClCompile Include="..\private\Animation3D.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Channel.cpp">
@@ -736,6 +751,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Frustum.cpp">
       <Filter>01.Utility\13.Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation.cpp">
+      <Filter>01.Utility\04.Components\Model\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimEventGenerator.cpp">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimEventReceiver.cpp">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Particle_Module.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

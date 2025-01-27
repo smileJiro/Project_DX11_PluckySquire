@@ -100,38 +100,38 @@ HRESULT C2DMapObject::Ready_Components(MAPOBJ_2D_DESC* Desc)
 		return E_FAIL;
 	_wstring strProtoTag = Desc->strProtoTag;
 	// TODO :: 텍스쳐 매핑방식 구조 구성후 추후 수정, 0125 박예슬
-	_wstring TestTag[] = {
-		L"Flower",
-		L"bush",
-		L"TD_Tree",
-		L"ButterflyBlue",
-		L"barrel",
-		L"townsign",
-		L"actionsignpost",
-		L"treegreenfallen",
-		L"treegreenbrokentrunk",
-		L"largemossrock",
-	};
+	//_wstring TestTag[] = {
+	//	L"Flower",
+	//	L"bush",
+	//	L"TD_Tree",
+	//	L"ButterflyBlue",
+	//	L"barrel",
+	//	L"townsign",
+	//	L"actionsignpost",
+	//	L"treegreenfallen",
+	//	L"treegreenbrokentrunk",
+	//	L"largemossrock",
+	//};
 
-	_int iTagIndex = -1;
+	//_int iTagIndex = -1;
 
-	for (_uint i = 0; i < (_uint)size(TestTag); i++)
-	{
-		if (ContainWstring(strProtoTag, TestTag[i]))
-		{
-			iTagIndex = i;
-			break;
-		}
-	}
-	if (iTagIndex == -1)
-	{
+	//for (_uint i = 0; i < (_uint)size(TestTag); i++)
+	//{
+	//	if (ContainWstring(strProtoTag, TestTag[i]))
+	//	{
+	//		iTagIndex = i;
+	//		break;
+	//	}
+	//}
+	//if (iTagIndex == -1)
+	//{
 		return E_FAIL;
-	}
+	//}
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TestTag[iTagIndex],
-		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
+	//if (FAILED(Add_Component(m_iCurLevelID, TestTag[iTagIndex],
+	//	TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+	//	return E_FAIL;
 
 
 

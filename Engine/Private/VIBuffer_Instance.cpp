@@ -1,6 +1,6 @@
 #include "VIBuffer_Instance.h"
 #include "GameInstance.h"
-
+#include "Particle_Module.h"
 
 CVIBuffer_Instance::CVIBuffer_Instance(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer(_pDevice, _pContext)
@@ -23,8 +23,13 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& _Prototype)
 	, m_pSetPositions(_Prototype.m_pSetPositions)
 	, m_pSetLifeTimes(_Prototype.m_pSetLifeTimes)
 	, m_pSetColors(_Prototype.m_pSetColors)
-	, m_ShapeMatrix(_Prototype.m_ShapeMatrix)
+	, m_vShapeScale(_Prototype.m_vShapeScale)
+	, m_vShapeRotation(_Prototype.m_vShapeRotation)
+	, m_vShapePosition(_Prototype.m_vShapePosition)
+	, m_Modules(_Prototype.m_Modules)
 {
+	for (auto& pModule : m_Modules)
+		Safe_AddRef(pModule);
 }
 
 HRESULT CVIBuffer_Instance::Initialize_Prototype()
@@ -32,14 +37,55 @@ HRESULT CVIBuffer_Instance::Initialize_Prototype()
 	m_SetDatas.resize(DATAEND, UNSET);
 
 	m_pSetScales = new _float3[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 3; ++j)
+		{
+			*((_float*)(&m_pSetScales[i]) + j) = 1.f;
+		}
+	}
+
 	m_pSetRotations = new _float3[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 3; ++j)
+		{
+			*((_float*)(&m_pSetRotations[i]) + j) = 0.f;
+		}
+	}
+
 	m_pSetPositions = new _float3[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 3; ++j)
+		{
+			*((_float*)(&m_pSetPositions[i]) + j) = 0.f;
+		}
+	}
 	m_pSetLifeTimes = new _float[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 1; ++j)
+		{
+			*((_float*)(&m_pSetLifeTimes[i]) + j) = 0.f;
+		}
+	}
+
 	m_pSetColors = new _float4[2];
+	for (_int i = 0; i < 2; ++i)
+	{
+		for (_int j = 0; j < 4; ++j)
+		{
+			*((_float*)(&m_pSetColors[i]) + j) = 1.f;
+		}
+	}
 
-
-	XMStoreFloat4x4(&m_ShapeMatrix, XMMatrixIdentity());
-
+	for (_int i = 0; i < 3; ++i)
+	{
+		*((_float*)(&m_vShapeScale) + i) = 1.f;
+		*((_float*)(&m_vShapeRotation) + i) = 0.f;
+		*((_float*)(&m_vShapePosition) + i) = 0.f;
+	}
 	return S_OK;
 }
 
@@ -47,6 +93,7 @@ HRESULT CVIBuffer_Instance::Initialize(void* _pArg)
 {
 	return m_pDevice->CreateBuffer(&m_InstanceBufferDesc, &m_InstanceInitialDesc, &m_pVBInstance);
 }
+
 
 HRESULT CVIBuffer_Instance::Render()
 {
@@ -95,25 +142,25 @@ HRESULT CVIBuffer_Instance::Set_ShapeData(const json& _jsonInfo)
 	{
 	case SPHERE:
 	{
-		if (false == _jsonInfo["ShapeLocation"].contains("Radius"))
+		if (false == _jsonInfo["ShapeLocation"].contains("Sphere_Radius"))
 			return E_FAIL;
-		m_ShapeDatas.emplace("Radius", _jsonInfo["ShapeLocation"]["Radius"]);
+		m_ShapeDatas.emplace("Sphere_Radius", _jsonInfo["ShapeLocation"]["Sphere_Radius"]);
 
-		if (false == _jsonInfo["ShapeLocation"].contains("Surface"))
+		if (false == _jsonInfo["ShapeLocation"].contains("Sphere_Surface"))
 			return E_FAIL;
-		m_ShapeDatas.emplace("Surface", _jsonInfo["ShapeLocation"]["Surface"]);
+		m_ShapeDatas.emplace("Sphere_Surface", _jsonInfo["ShapeLocation"]["Sphere_Surface"]);
 
 		break;
 	}
 	case CYLINDER:
 	{
-		if (false == _jsonInfo["ShapeLocation"].contains("Radius"))
+		if (false == _jsonInfo["ShapeLocation"].contains("Cylinder_Radius"))
 			return E_FAIL;
-		m_ShapeDatas.emplace("Radius", _jsonInfo["ShapeLocation"]["Radius"]);
+		m_ShapeDatas.emplace("Cylinder_Radius", _jsonInfo["ShapeLocation"]["Cylinder_Radius"]);
 
-		if (false == _jsonInfo["ShapeLocation"].contains("Height"))
+		if (false == _jsonInfo["ShapeLocation"].contains("Cylinder_Height"))
 			return E_FAIL;
-		m_ShapeDatas.emplace("Height", _jsonInfo["ShapeLocation"]["Height"]);
+		m_ShapeDatas.emplace("Cylinder_Height", _jsonInfo["ShapeLocation"]["Cylinder_Height"]);
 
 		if (false == _jsonInfo["ShapeLocation"].contains("MidPoint"))
 			return E_FAIL;
@@ -147,9 +194,9 @@ HRESULT CVIBuffer_Instance::Set_ShapeData(const json& _jsonInfo)
 			return E_FAIL;
 		m_ShapeDatas.emplace("MidZ", _jsonInfo["ShapeLocation"]["MidZ"]);
 
-		if (_jsonInfo["ShapeLocation"].contains("Surface"))
+		if (_jsonInfo["ShapeLocation"].contains("Box_Surface"))
 		{
-			m_ShapeDatas.emplace("Surface", _jsonInfo["ShapeLocation"]["Surface"]);
+			m_ShapeDatas.emplace("Box_Surface", _jsonInfo["ShapeLocation"]["Box_Surface"]);
 		}
 		break;
 	}
@@ -175,17 +222,17 @@ HRESULT CVIBuffer_Instance::Set_ShapeData(const json& _jsonInfo)
 	}
 	case RING:
 	{
-		if (false == _jsonInfo["ShapeLocation"].contains("Radius"))
+		if (false == _jsonInfo["ShapeLocation"].contains("Ring_Radius"))
 			return E_FAIL;
-		m_ShapeDatas.emplace("Radius", _jsonInfo["ShapeLocation"]["Radius"]);
+		m_ShapeDatas.emplace("Ring_Radius", _jsonInfo["ShapeLocation"]["Ring_Radius"]);
 
 		if (false == _jsonInfo["ShapeLocation"].contains("Coverage"))
 			return E_FAIL;
 		m_ShapeDatas.emplace("Coverage", clamp((_float)_jsonInfo["ShapeLocation"]["Coverage"], 0.f, 1.f));
 
-		if (false == _jsonInfo["ShapeLocation"].contains("U_Distribution"))
+		if (false == _jsonInfo["ShapeLocation"].contains("Ring_Distribution"))
 			return E_FAIL;
-		m_ShapeDatas.emplace("U_Distribution", clamp((_float)_jsonInfo["ShapeLocation"]["U_Distribution"], 0.f, 1.f));
+		m_ShapeDatas.emplace("Ring_Distribution", clamp((_float)_jsonInfo["ShapeLocation"]["Ring_Distribution"], 0.f, 1.f));
 
 
 		break;
@@ -208,9 +255,9 @@ HRESULT CVIBuffer_Instance::Set_ShapeData(const json& _jsonInfo)
 			return E_FAIL;
 		m_ShapeDatas.emplace("Radial_Angle", _jsonInfo["ShapeLocation"]["Radial_Angle"]);
 
-		if (false == _jsonInfo["ShapeLocation"].contains("Surface"))
+		if (false == _jsonInfo["ShapeLocation"].contains("Cone_Surface"))
 			return E_FAIL;
-		m_ShapeDatas.emplace("Surface", clamp((_float)(_jsonInfo["ShapeLocation"]["Surface"]), 0.f, 1.f));
+		m_ShapeDatas.emplace("Cone_Surface", clamp((_float)(_jsonInfo["ShapeLocation"]["Cone_Surface"]), 0.f, 1.f));
 
 		if (false == _jsonInfo["ShapeLocation"].contains("Flatten"))
 			return E_FAIL;
@@ -225,12 +272,18 @@ HRESULT CVIBuffer_Instance::Set_ShapeData(const json& _jsonInfo)
 
 	}
 
-	if (false == _jsonInfo["ShapeLocation"].contains("Matrix") && 16 > _jsonInfo["ShapeLocation"]["Matrix"].size())
+	if (false == _jsonInfo["ShapeLocation"].contains("Scale") && 3 > _jsonInfo["ShapeLocation"]["Scale"].size())
+		return E_FAIL;
+	if (false == _jsonInfo["ShapeLocation"].contains("Rotation") && 3 > _jsonInfo["ShapeLocation"]["Rotation"].size())
+		return E_FAIL;
+	if (false == _jsonInfo["ShapeLocation"].contains("Position") && 3 > _jsonInfo["ShapeLocation"]["Position"].size())
 		return E_FAIL;
 
-	for (_int i = 0; i < 16; ++i)
+	for (_int i = 0; i < 3; ++i)
 	{
-		*((_float*)(&m_ShapeMatrix) + i) = _jsonInfo["ShapeLocation"]["Matrix"][i];
+		*((_float*)(&m_vShapeScale) + i) = _jsonInfo["ShapeLocation"]["Scale"][i];
+		*((_float*)(&m_vShapeRotation) + i) = _jsonInfo["ShapeLocation"]["Rotation"][i];
+		*((_float*)(&m_vShapePosition) + i) = _jsonInfo["ShapeLocation"]["Position"][i];
 	}
 
 	return S_OK;
@@ -282,33 +335,34 @@ _vector CVIBuffer_Instance::Get_Box_Pos(const _float3& _vWHD, const _float3& _vM
 		{
 			iRandValue = rand() % 2;
 			if (iRandValue)
-				fX = _vWHD.x;
+				fX = _vWHD.x - m_pGameInstance->Compute_Random(0.f, _fSurface);
 			else
-				fX = 0.f;
+				fX = 0.f + m_pGameInstance->Compute_Random(0.f, _fSurface);
+
 
 		}
 		else if (1 == iRandValue)
 		{
 			iRandValue = rand() % 2;
 			if (iRandValue)
-				fY = _vWHD.y;
+				fY = _vWHD.y - m_pGameInstance->Compute_Random(0.f, _fSurface);
 			else
-				fY = 0.f;
+				fY = 0.f + m_pGameInstance->Compute_Random(0.f, _fSurface);
 
 		}
 		else if (2 == iRandValue)
 		{
 			iRandValue = rand() % 2;
 			if (iRandValue)
-				fZ = _vWHD.z;
+				fZ = _vWHD.z - m_pGameInstance->Compute_Random(0.f, _fSurface);
 			else
-				fZ = 0.f;
+				fZ = 0.f + m_pGameInstance->Compute_Random(0.f, _fSurface);
 
 		}
 
-		fX += m_pGameInstance->Compute_Random(-_fSurface * 0.5f, _fSurface * 0.5f) - _vWHD.x * _vMidPoint.x;
-		fY += m_pGameInstance->Compute_Random(-_fSurface * 0.5f, _fSurface * 0.5f) - _vWHD.y * _vMidPoint.y;
-		fZ += m_pGameInstance->Compute_Random(-_fSurface * 0.5f, _fSurface * 0.5f) - _vWHD.z * _vMidPoint.z;
+		fX -= _vWHD.x * _vMidPoint.x;
+		fY -= _vWHD.y * _vMidPoint.y;
+		fZ -= _vWHD.z * _vMidPoint.z;
 
 	}
 	else
@@ -397,88 +451,137 @@ _vector CVIBuffer_Instance::Get_Cone_Pos(_float _fFlatten, _float _fLength, cons
 	return vReturn;
 }
 
-
-
-_float CVIBuffer_Instance::Compute_FloatValue(SETTING_TYPE _eType, _float _fArg1, _float _fArg2)
+_float3 CVIBuffer_Instance::Compute_ScaleValue()
 {
-	_float fReturn;
-	if (RANDOMLINEAR == _eType || RANDOMRANGE == _eType)
+	_float3 vScale;
+	switch (m_SetDatas[P_SCALE])
 	{
-		fReturn = m_pGameInstance->Compute_Random(_fArg1, _fArg2);
-	}
-	else
-	{
-		fReturn = _fArg1;
+	case DIRECTSET:
+		vScale = m_pSetScales[0];
+		break;
+	case RANDOMLINEAR:
+		XMStoreFloat3(&vScale, XMVectorLerp(XMLoadFloat3(&m_pSetScales[0]), XMLoadFloat3(&m_pSetScales[1]), m_pGameInstance->Compute_Random_Normal()));
+		break;
+	case RANDOMRANGE:
+		vScale = _float3(m_pGameInstance->Compute_Random(m_pSetScales[0].x, m_pSetScales[1].x),
+			m_pGameInstance->Compute_Random(m_pSetScales[0].y, m_pSetScales[1].y),
+			m_pGameInstance->Compute_Random(m_pSetScales[0].z, m_pSetScales[1].z));
+		break;
+	case UNSET:
+	default:
+		vScale = _float3(1.f, 1.f, 1.f);
+		break;
 	}
 
-	return fReturn;
+
+	return vScale;
 }
 
-_float2 CVIBuffer_Instance::Compute_Float2Value(SETTING_TYPE _eType, const _float2& _vArg1, const _float2& _vArg2)
+_float3 CVIBuffer_Instance::Compute_RotationValue()
 {
-	_float2 vReturn;
-	if (RANDOMLINEAR == _eType)
+	_float3 vRotation;
+	switch (m_SetDatas[P_ROTATION])
 	{
-		XMStoreFloat2(&vReturn, XMVectorLerp(XMLoadFloat2(&_vArg1), XMLoadFloat2(&_vArg2), m_pGameInstance->Compute_Random_Normal()));
-	}
-	else if (RANDOMRANGE == _eType)
-	{
-		vReturn = _float2(m_pGameInstance->Compute_Random(_vArg1.x, _vArg2.x), m_pGameInstance->Compute_Random(_vArg1.y, _vArg2.y));
-	}
-	else
-	{
-		vReturn = _vArg1;
+	case DIRECTSET:
+		vRotation = m_pSetRotations[0];
+		break;
+	case RANDOMLINEAR:
+		XMStoreFloat3(&vRotation, XMVectorLerp(XMLoadFloat3(&m_pSetRotations[0]), XMLoadFloat3(&m_pSetRotations[1]), m_pGameInstance->Compute_Random_Normal()));
+		break;
+	case RANDOMRANGE:
+		vRotation = _float3(m_pGameInstance->Compute_Random(m_pSetRotations[0].x, m_pSetRotations[1].x),
+			m_pGameInstance->Compute_Random(m_pSetRotations[0].y, m_pSetRotations[1].y),
+			m_pGameInstance->Compute_Random(m_pSetRotations[0].z, m_pSetRotations[1].z));
+		break;
+	case UNSET:
+	default:
+		vRotation = _float3(0.f, 0.f, 0.f);
+		break;
 	}
 
-	return vReturn;
+
+	return vRotation;
 }
 
-_float3 CVIBuffer_Instance::Compute_Float3Value(SETTING_TYPE _eType, const _float3& _vArg1, const _float3& _vArg2)
+_float3 CVIBuffer_Instance::Compute_PositionValue()
 {
-	_float3 vReturn;
-	if (RANDOMLINEAR == _eType)
+	_float3 vPosition;
+	switch (m_SetDatas[P_POSITION])
 	{
-		XMStoreFloat3(&vReturn, XMVectorLerp(XMLoadFloat3(&_vArg1), XMLoadFloat3(&_vArg2), m_pGameInstance->Compute_Random_Normal()));
-	}
-	else if (RANDOMRANGE == _eType)
-	{
-		vReturn = _float3(m_pGameInstance->Compute_Random(_vArg1.x, _vArg2.x), 
-			m_pGameInstance->Compute_Random(_vArg1.y, _vArg2.y),
-			m_pGameInstance->Compute_Random(_vArg1.z, _vArg2.z)
-		);
-	}
-	else
-	{
-		vReturn = _vArg1;
+	case DIRECTSET:
+		vPosition = m_pSetPositions[0];
+		break;
+	case RANDOMLINEAR:
+		XMStoreFloat3(&vPosition, XMVectorLerp(XMLoadFloat3(&m_pSetPositions[0]), XMLoadFloat3(&m_pSetPositions[1]), m_pGameInstance->Compute_Random_Normal()));
+		break;
+	case RANDOMRANGE:
+		vPosition = _float3(m_pGameInstance->Compute_Random(m_pSetPositions[0].x, m_pSetPositions[1].x),
+			m_pGameInstance->Compute_Random(m_pSetPositions[0].y, m_pSetPositions[1].y),
+			m_pGameInstance->Compute_Random(m_pSetPositions[0].z, m_pSetPositions[1].z));
+		break;
+	case UNSET:
+	default:
+		vPosition = _float3(0.f, 0.f, 0.f);
+		break;
 	}
 
-	return vReturn;
+
+	return vPosition;
 }
 
-_float4 CVIBuffer_Instance::Compute_Float4Value(SETTING_TYPE _eType, const _float4& _vArg1, const _float4& _vArg2)
+_float CVIBuffer_Instance::Compute_LifeTime()
 {
-	_float4 vReturn;
-	if (RANDOMLINEAR == _eType)
+	_float vLifeTime;
+	switch (m_SetDatas[P_LIFETIME])
 	{
-		XMStoreFloat4(&vReturn, XMVectorLerp(XMLoadFloat4(&_vArg1), XMLoadFloat4(&_vArg2), m_pGameInstance->Compute_Random_Normal()));
-	}
-	else if (RANDOMRANGE == _eType)
-	{
-		vReturn = _float4(m_pGameInstance->Compute_Random(_vArg1.x, _vArg2.x),
-			m_pGameInstance->Compute_Random(_vArg1.y, _vArg2.y),
-			m_pGameInstance->Compute_Random(_vArg1.z, _vArg2.z),
-			m_pGameInstance->Compute_Random(_vArg1.w, _vArg2.w)
-		);
-	}
-	else
-	{
-		vReturn = _vArg1;
+	case DIRECTSET:
+		vLifeTime = m_pSetLifeTimes[0];
+		break;
+	case RANDOMLINEAR:
+	case RANDOMRANGE:
+		vLifeTime = m_pGameInstance->Compute_Random(m_pSetLifeTimes[0], m_pSetLifeTimes[1]);
+		break;
+	case UNSET:
+		vLifeTime = D3D11_FLOAT32_MAX;
+		break;
+	default:
+		vLifeTime = 1.f;
+		break;
 	}
 
-	return vReturn;
+
+	return vLifeTime;
 }
 
-HRESULT CVIBuffer_Instance::Set_FloatData(_Out_ _float* _pSetData, PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float* _pSaveDatas)
+_float4 CVIBuffer_Instance::Compute_ColorValue()
+{
+	_float4 vColor;
+	switch (m_SetDatas[P_COLOR])
+	{
+	case DIRECTSET:
+		vColor = m_pSetColors[0];
+		break;
+	case RANDOMLINEAR:
+		XMStoreFloat4(&vColor, XMVectorLerp(XMLoadFloat4(&m_pSetColors[0]), XMLoadFloat4(&m_pSetColors[1]), m_pGameInstance->Compute_Random_Normal()));
+		break;
+	case RANDOMRANGE:
+		vColor = _float4(m_pGameInstance->Compute_Random(m_pSetColors[0].x, m_pSetColors[1].x),
+			m_pGameInstance->Compute_Random(m_pSetColors[0].y, m_pSetColors[1].y),
+			m_pGameInstance->Compute_Random(m_pSetColors[0].z, m_pSetColors[1].z),
+			m_pGameInstance->Compute_Random(m_pSetColors[0].w, m_pSetColors[1].w));
+		break;
+	case UNSET:
+	default:
+		vColor = _float4(1.f, 1.f, 1.f, 1.f);
+		break;
+	}
+
+
+	return vColor;
+}
+
+
+HRESULT CVIBuffer_Instance::Set_FloatData(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float* _pSaveDatas)
 {
 	if (false == _jsonInfo.contains(_szTag))
 		return E_FAIL;
@@ -497,15 +600,10 @@ HRESULT CVIBuffer_Instance::Set_FloatData(_Out_ _float* _pSetData, PARTICLE_DATA
 		}
 	}
 
-	if (_pSetData)
-	{
-		*_pSetData = Compute_FloatValue(m_SetDatas[eData], _pSaveDatas[0], _pSaveDatas[1]);
-	}
-
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Instance::Set_Float2Data(_Out_ _float2* _pSetData, PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float2* _pSaveDatas)
+HRESULT CVIBuffer_Instance::Set_Float2Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float2* _pSaveDatas)
 {
 	if (false == _jsonInfo.contains(_szTag))
 		return E_FAIL;
@@ -528,19 +626,14 @@ HRESULT CVIBuffer_Instance::Set_Float2Data(_Out_ _float2* _pSetData, PARTICLE_DA
 					*((_float*)(&vArg) + i) = _jsonInfo[_szTag]["Arg2"][i];
 			}
 			_pSaveDatas[1] = vArg;
-
 		}
 	}
 
-	if (_pSetData)
-	{
-		*_pSetData = Compute_Float2Value(m_SetDatas[eData], _pSaveDatas[0], _pSaveDatas[1]);
-	}
 
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Instance::Set_Float3Data(_float3* _pSetData, PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float3* _pSaveDatas)
+HRESULT CVIBuffer_Instance::Set_Float3Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float3* _pSaveDatas)
 {
 	if (false == _jsonInfo.contains(_szTag))
 		return E_FAIL;
@@ -567,15 +660,12 @@ HRESULT CVIBuffer_Instance::Set_Float3Data(_float3* _pSetData, PARTICLE_DATA eDa
 		}
 	}
 
-	if (_pSetData)
-	{
-		*_pSetData = Compute_Float3Value(m_SetDatas[eData], _pSaveDatas[0], _pSaveDatas[1]);
-	}
+
 
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Instance::Set_Float4Data(_Out_ _float4* _pSetData, PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float4* _pSaveDatas)
+HRESULT CVIBuffer_Instance::Set_Float4Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float4* _pSaveDatas)
 {
 	if (false == _jsonInfo.contains(_szTag))
 		return E_FAIL;
@@ -602,10 +692,29 @@ HRESULT CVIBuffer_Instance::Set_Float4Data(_Out_ _float4* _pSetData, PARTICLE_DA
 		}
 	}
 
-	if (_pSetData)
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Instance::Ready_Modules(const json _jsonInfo)
+{
+	if (_jsonInfo.contains("Module"))
 	{
-		*_pSetData = Compute_Float4Value(m_SetDatas[eData], _pSaveDatas[0], _pSaveDatas[1]);
+		for (_int i = 0; i < _jsonInfo["Module"].size(); ++i)
+		{
+			CParticle_Module* pModule = CParticle_Module::Create(_jsonInfo["Module"][i]);
+			if (nullptr == pModule)
+				return E_FAIL;
+			
+			m_Modules.push_back(pModule);
+		}
 	}
+
+	sort(m_Modules.begin(), m_Modules.end(), [](const CParticle_Module* pSrc, const CParticle_Module* pDst)
+		{
+			return pSrc->Get_Order() < pDst->Get_Order();
+		}
+	);
 
 	return S_OK;
 }
@@ -613,11 +722,8 @@ HRESULT CVIBuffer_Instance::Set_Float4Data(_Out_ _float4* _pSetData, PARTICLE_DA
 
 
 
-
-
 void CVIBuffer_Instance::Free()
 {
-	__super::Free();
 
 	Safe_Release(m_pVBInstance);
 	if (false == m_isCloned)
@@ -628,5 +734,982 @@ void CVIBuffer_Instance::Free()
 		Safe_Delete_Array(m_pSetLifeTimes);
 		Safe_Delete_Array(m_pSetColors);
 	}
+	
+	for (auto& pModule : m_Modules)
+		Safe_Release(pModule);
+
+	__super::Free();
+}
+
+#ifdef _DEBUG
+
+_bool CVIBuffer_Instance::s_isShapeChange = false;
+_int CVIBuffer_Instance::s_iShapeFlags = 0;
+
+void CVIBuffer_Instance::Tool_Setting()
+{
+	s_isShapeChange = true;
+	s_iShapeFlags = m_eShapeType;
+}
+
+void CVIBuffer_Instance::Tool_Update(_float _fTimeDelta)
+{
+}
+void CVIBuffer_Instance::Tool_Adjust_DefaultData()
+{
+	if (ImGui::TreeNode("Defaults"))
+	{
+		if (ImGui::TreeNode("Change Counts"))
+		{
+			if (ImGui::InputInt("Instance Count", (_int*)&m_iNumInstances))
+			{
+				Tool_Reset_Buffers();
+			}
+
+
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Particle Scaling"))
+		{
+			const _char* items[] = { "UnSet", "Direct Set", "Random_Linear", "Random_Range" };
+
+			static _int item_selected_idx = 0;
+			const char* combo_preview_value = items[item_selected_idx];
+
+			if (ImGui::BeginCombo("Scale Type", combo_preview_value, m_SetDatas[P_SCALE]))
+			{
+				item_selected_idx = m_SetDatas[P_SCALE];
+				ImGui::SetItemDefaultFocus();
+
+				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+				{
+					const bool is_selected = (item_selected_idx == n);
+
+					if (ImGui::Selectable(items[n], is_selected))
+					{
+						item_selected_idx = n;
+						if (m_SetDatas[P_SCALE] != n)
+						{
+							m_SetDatas[P_SCALE] = (SETTING_TYPE)n;
+							Tool_Reset_Instance();
+						}
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+
+			switch (m_SetDatas[P_SCALE])
+			{
+			case UNSET:
+				break;
+			case DIRECTSET:
+			{
+				if (ImGui::InputFloat3("Set_Scale", (_float*)(&m_pSetScales[0])))
+				{
+					for (_int i = 0; i < 3; ++i)
+					{
+						if (0.f == *((_float*)(&m_pSetScales[0]) + i))
+						{
+							*((_float*)(&m_pSetScales[0]) + i) = 1.f;
+						}
+					}
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			case RANDOMLINEAR:
+			case RANDOMRANGE:
+			{
+				if (ImGui::InputFloat3("Set_Scale1", (_float*)(&m_pSetScales[0])))
+				{
+					for (_int i = 0; i < 3; ++i)
+					{
+						if (0.f == *((_float*)(&m_pSetScales[0]) + i))
+						{
+							*((_float*)(&m_pSetScales[0]) + i) = 1.f;
+						}
+					}
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat3("Set_Scale2", (_float*)(&m_pSetScales[1])))
+				{
+					for (_int i = 0; i < 3; ++i)
+					{
+						if (0.f == *((_float*)(&m_pSetScales[1]) + i))
+						{
+							*((_float*)(&m_pSetScales[1]) + i) = 1.f;
+						}
+					}
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			}
+			
+
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Particle Rotation"))
+		{
+			const _char* items[] = { "Billboard", "Direct Set", "Random_Linear", "Random_Range" };
+
+			static _int item_selected_idx = 0;
+			const char* combo_preview_value = items[item_selected_idx];
+
+			if (ImGui::BeginCombo("Rotation Type", combo_preview_value, m_SetDatas[P_ROTATION]))
+			{
+				item_selected_idx = m_SetDatas[P_ROTATION];
+				ImGui::SetItemDefaultFocus();
+
+				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+				{
+					const bool is_selected = (item_selected_idx == n);
+
+					if (ImGui::Selectable(items[n], is_selected))
+					{
+						item_selected_idx = n;
+						if (m_SetDatas[P_ROTATION] != n)
+						{
+							m_SetDatas[P_ROTATION] = (SETTING_TYPE)n;
+							Tool_Reset_Instance();
+
+						}
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+			switch (m_SetDatas[P_ROTATION])
+			{
+			case UNSET:
+				break;
+			case DIRECTSET:
+			{
+				if (ImGui::InputFloat3("Set_Rotation", (_float*)(&m_pSetRotations[0])))
+				{
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			case RANDOMLINEAR:
+			case RANDOMRANGE:
+			{
+				if (ImGui::InputFloat3("Set_Rotation1", (_float*)(&m_pSetRotations[0])))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat3("Set_Rotation2", (_float*)(&m_pSetRotations[1])))
+				{
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			}
+
+
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Particle Position"))
+		{
+			const _char* items[] = { "UnSet", "Direct Set", "Random_Linear", "Random_Range" };
+			static _int item_selected_idx = 0;
+			const char* combo_preview_value = items[item_selected_idx];
+
+			if (ImGui::BeginCombo("Position Type", combo_preview_value, m_SetDatas[P_POSITION]))
+			{
+				item_selected_idx = m_SetDatas[P_POSITION];
+				ImGui::SetItemDefaultFocus();
+
+				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+				{
+					const bool is_selected = (item_selected_idx == n);
+
+					if (ImGui::Selectable(items[n], is_selected))
+					{
+						item_selected_idx = n;
+						if (m_SetDatas[P_POSITION] != n)
+						{
+							m_SetDatas[P_POSITION] = (SETTING_TYPE)n;
+							Tool_Reset_Instance();
+						}
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+			switch (m_SetDatas[P_POSITION])
+			{
+			case UNSET:
+				break;
+			case DIRECTSET:
+			{
+				if (ImGui::InputFloat3("Set_Position", (_float*)(&m_pSetPositions[0])))
+				{
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			case RANDOMLINEAR:
+			case RANDOMRANGE:
+			{
+				if (ImGui::InputFloat3("Set_Position1", (_float*)(&m_pSetPositions[0])))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat3("Set_Position2", (_float*)(&m_pSetPositions[1])))
+				{
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			}
+
+
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Particle Color"))
+		{
+			const _char* items[] = { "UnSet", "Direct Set", "Random_Linear", "Random_Range" };
+			static _int item_selected_idx = 0;
+			const char* combo_preview_value = items[item_selected_idx];
+
+			if (ImGui::BeginCombo("Color Type", combo_preview_value, m_SetDatas[P_COLOR]))
+			{
+				item_selected_idx = m_SetDatas[P_COLOR];
+				ImGui::SetItemDefaultFocus();
+
+				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+				{
+					const bool is_selected = (item_selected_idx == n);
+
+					if (ImGui::Selectable(items[n], is_selected))
+					{
+						item_selected_idx = n;
+						if (m_SetDatas[P_COLOR] != n)
+						{
+							m_SetDatas[P_COLOR] = (SETTING_TYPE)n;
+							Tool_Reset_Instance();
+						}
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+			switch (m_SetDatas[P_COLOR])
+			{
+			case UNSET:
+				break;
+			case DIRECTSET:
+			{
+				if (ImGui::InputFloat4("Set_Color", (_float*)(&m_pSetColors[0])))
+				{
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			case RANDOMLINEAR:
+			case RANDOMRANGE:
+			{
+				if (ImGui::InputFloat4("Set_Color1", (_float*)(&m_pSetColors[0])))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat4("Set_Color2", (_float*)(&m_pSetColors[1])))
+				{
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			}
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Particle LifeTime"))
+		{
+			const _char* items[] = { "Infinite", "Direct Set", "Random" };
+			static _int item_selected_idx = 0;
+			const char* combo_preview_value = items[item_selected_idx];
+
+			if (ImGui::BeginCombo("LifeTime Type", combo_preview_value, m_SetDatas[P_LIFETIME]))
+			{
+				item_selected_idx = m_SetDatas[P_LIFETIME];
+				ImGui::SetItemDefaultFocus();
+
+				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+				{
+					const bool is_selected = (item_selected_idx == n);
+
+					if (ImGui::Selectable(items[n], is_selected))
+					{
+						item_selected_idx = n;
+						if (m_SetDatas[P_LIFETIME] != n)
+						{
+							m_SetDatas[P_LIFETIME] = (SETTING_TYPE)n;
+							Tool_Reset_Instance();
+						}
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+			switch (m_SetDatas[P_LIFETIME])
+			{
+			case UNSET:
+				break;
+			case DIRECTSET:
+			{
+				if (ImGui::InputFloat("Set_LifeTime", (_float*)(&m_pSetLifeTimes[0])))
+				{
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			case RANDOMLINEAR:
+			case RANDOMRANGE:
+			{
+				if (ImGui::InputFloat("Set_LifeTimeMin", (_float*)(&m_pSetLifeTimes[0])))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Set_LifeTimeMax", (_float*)(&m_pSetLifeTimes[1])))
+				{
+					Tool_Reset_Instance();
+				}
+				break;
+			}
+			}
+
+
+			ImGui::TreePop();
+		}
+		
+		ImGui::TreePop();
+	}
 
 }
+void CVIBuffer_Instance::Tool_Adjust_Shape()
+{
+	if (ImGui::TreeNode("Shape"))
+	{
+		const _char* items[] = { "Sphere", "Cylinder", "Box", "Torus", "Ring", "Cone", "None" };
+		static _int item_selected_idx = 0;
+		const char* combo_preview_value = items[item_selected_idx];
+
+		if (s_isShapeChange)
+		{
+			item_selected_idx = s_iShapeFlags;
+			ImGui::SetItemDefaultFocus();
+		}
+
+		if (ImGui::BeginCombo("Select Shape", combo_preview_value, s_iShapeFlags))
+		{
+			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+			{
+				const bool is_selected = (item_selected_idx == n);				
+
+				if (ImGui::Selectable(items[n], is_selected))
+				{
+					item_selected_idx = n;
+					if (m_eShapeType != n)
+					{
+						m_eShapeType = (SHAPE_TYPE)n;
+						Tool_Create_ShapeData();
+					}
+
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+		
+
+		switch (m_eShapeType)
+		{
+		case SPHERE:
+		{
+			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Sphere_Radius"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+
+			if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Sphere_Surface"], 0.f, 1.f))
+			{
+				Tool_Reset_Instance();
+			}
+
+			if (ImGui::TreeNode("Input Section"))
+			{
+				if (ImGui::InputFloat("Radius", &m_ShapeDatas["Sphere_Radius"]))
+				{
+					Tool_Reset_Instance();
+				}
+
+				if (ImGui::InputFloat("Surface", &m_ShapeDatas["Sphere_Surface"]))
+				{
+					m_ShapeDatas["Sphere_Surface"] = clamp(m_ShapeDatas["Sphere_Surface"], 0.f, 0.9999f);
+
+					Tool_Reset_Instance();
+				}
+
+
+				ImGui::TreePop();
+			}
+
+
+			break;
+		}
+		case CYLINDER:
+		{
+			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Cylinder_Radius"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Height", &m_ShapeDatas["Cylinder_Height"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Mid Point", &m_ShapeDatas["MidPoint"], -20.f, 20.f))
+			{
+				Tool_Reset_Instance();
+			}
+
+			if (ImGui::TreeNode("Input Section"))
+			{
+				if (ImGui::InputFloat("Radius", &m_ShapeDatas["Cylinder_Radius"]))
+				{
+					Tool_Reset_Instance();
+				}
+
+				if (ImGui::InputFloat("Height", &m_ShapeDatas["Cylinder_Height"]))
+				{
+					Tool_Reset_Instance();
+				}
+
+				if (ImGui::InputFloat("Mid Point", &m_ShapeDatas["MidPoint"]))
+				{
+					Tool_Reset_Instance();
+				}
+
+				ImGui::TreePop();
+			}
+
+
+			break;
+		}
+		case BOX:
+		{
+			if (ImGui::SliderFloat("Width", &m_ShapeDatas["Width"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Height", &m_ShapeDatas["Height"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Depth", &m_ShapeDatas["Depth"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("MidX", &m_ShapeDatas["MidX"], -20.f, 20.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("MidY", &m_ShapeDatas["MidY"], -20.f, 20.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("MidZ", &m_ShapeDatas["MidZ"], -20.f, 20.f))
+			{
+				Tool_Reset_Instance();
+			}
+
+			_bool isSurface = Is_ShapeData("Box_Surface");
+			if (ImGui::RadioButton("Surface_On", isSurface))
+			{
+				if (isSurface)
+				{
+					m_ShapeDatas.erase("Box_Surface");
+					if (Is_ToolData("Box_Surface"))
+					{
+						m_ToolShapeDatas.erase("Box_Surface");
+					}
+				}
+				else
+				{
+					m_ShapeDatas.emplace("Box_Surface", 0.f);
+				}
+
+				Tool_Reset_Instance();
+			}
+			isSurface = Is_ShapeData("Box_Surface");
+
+			if (isSurface)
+			{
+				if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Box_Surface"], -100.f, 100.f))
+				{
+					Tool_Reset_Instance();
+				}
+			}
+	
+
+			if (ImGui::TreeNode("Input Section"))
+			{
+				if (ImGui::InputFloat("Width", &m_ShapeDatas["Width"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Height", &m_ShapeDatas["Height"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Depth", &m_ShapeDatas["Depth"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("MidX", &m_ShapeDatas["MidX"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("MidY", &m_ShapeDatas["MidY"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("MidZ", &m_ShapeDatas["MidZ"]))
+				{
+					Tool_Reset_Instance();
+				}
+
+				if (isSurface)
+				{
+					if (ImGui::InputFloat("Surface", &m_ShapeDatas["Box_Surface"]))
+					{
+						Tool_Reset_Instance();
+					}
+				}
+
+				ImGui::TreePop();
+			}
+
+			break;
+		}
+		case TORUS:
+		{
+			if (ImGui::SliderFloat("Large_Radius", &m_ShapeDatas["LargeRadius"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Handle_Radius", &m_ShapeDatas["HandleRadius"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("U_Distribution", &m_ShapeDatas["U_Distribution"], 0.f, 1.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("V_Distribution", &m_ShapeDatas["V_Distribution"], 0.f, 1.f))
+			{
+				Tool_Reset_Instance();
+			}
+
+			
+
+			if (ImGui::TreeNode("Input Section"))
+			{
+				if (ImGui::InputFloat("Large_Radius", &m_ShapeDatas["LargeRadius"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Handle_Radius", &m_ShapeDatas["HandleRadius"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("U_Distribution", &m_ShapeDatas["U_Distribution"]))
+				{
+					m_ShapeDatas["U_Distribution"] = clamp(m_ShapeDatas["U_Distribution"], 0.f, 0.9999f);
+
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("V_Distribution", &m_ShapeDatas["V_Distribution"]))
+				{
+					m_ShapeDatas["V_Distribution"] = clamp(m_ShapeDatas["V_Distribution"], 0.f, 0.9999f);
+
+					Tool_Reset_Instance();
+				}
+
+				ImGui::TreePop();
+
+			}
+
+			break;
+		}
+		case RING:
+		{
+			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Ring_Radius"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Coverage", &m_ShapeDatas["Coverage"], 0.f, 1.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Ring_Distribution", &m_ShapeDatas["Ring_Distribution"], 0.f, 1.f))
+			{
+				Tool_Reset_Instance();
+			}
+
+			if (ImGui::TreeNode("Input Section"))
+			{
+				if (ImGui::InputFloat("Radius", &m_ShapeDatas["Ring_Radius"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Coverage", &m_ShapeDatas["Coverage"]))
+				{
+					m_ShapeDatas["Coverage"] = clamp(m_ShapeDatas["Coverage"], 0.f, 0.9999f);
+
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Ring_Distribution", &m_ShapeDatas["Ring_Distribution"]))
+				{
+					m_ShapeDatas["Ring_Distribution"] = clamp(m_ShapeDatas["Ring_Distribution"], 0.f, 0.9999f);
+
+					Tool_Reset_Instance();
+				}
+
+				ImGui::TreePop();
+
+			}
+			break;
+		}
+
+		case CONE:
+		{
+			if (ImGui::SliderFloat("Length", &m_ShapeDatas["Length"], -100.f, 100.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Outer_Angle", &m_ShapeDatas["Outer_Angle"], -360.f, 360.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Inner_Angle", &m_ShapeDatas["Inner_Angle"], -360.f, 360.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Radial_Angle", &m_ShapeDatas["Radial_Angle"], -360.f, 360.f))
+			{
+				Tool_Reset_Instance();
+			}
+			if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Cone_Surface"], 0.f, 1.f))
+			{
+				Tool_Reset_Instance();
+			}
+			_bool isFlatten = m_ShapeDatas["Flatten"] > 0.5f ? true : false;
+			if (ImGui::RadioButton("Flatten", isFlatten))
+			{
+				if (isFlatten)
+					m_ShapeDatas["Flatten"] = 0.f;
+				else
+					m_ShapeDatas["Flatten"] = 1.f;
+
+				Tool_Reset_Instance();
+			}
+
+			if (ImGui::TreeNode("Input Section"))
+			{
+				if (ImGui::InputFloat("Length", &m_ShapeDatas["Length"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Outer_Angle", &m_ShapeDatas["Outer_Angle"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Inner_Angle", &m_ShapeDatas["Inner_Angle"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Radial_Angle", &m_ShapeDatas["Radial_Angle"]))
+				{
+					Tool_Reset_Instance();
+				}
+				if (ImGui::InputFloat("Surface", &m_ShapeDatas["Cone_Surface"]))
+				{
+					m_ShapeDatas["Cone_Surface"] = clamp(m_ShapeDatas["Cone_Surface"], 0.f, 0.9999f);
+
+					Tool_Reset_Instance();
+				}
+
+				ImGui::TreePop();
+
+			}
+
+
+			break;
+		}
+		case SHAPE_NONE:
+		{
+			break;
+		}
+
+		}
+
+		if (SHAPE_NONE != m_eShapeType)
+		{
+			if (ImGui::InputFloat3("Shape_Scale", (_float*)(&m_vShapeScale)))
+			{
+				for (_int i = 0; i < 3; ++i)
+				{
+					if (0.f == *((_float*)(&m_vShapeScale) + i))
+					{
+						*((_float*)(&m_vShapeScale) + i) = 1.f;
+					}
+					Tool_Reset_Instance();
+				}
+			}
+
+			if (ImGui::InputFloat3("Shape_Rotation", (_float*)(&m_vShapeRotation)))
+			{
+				Tool_Reset_Instance();
+			}
+
+
+			if (ImGui::InputFloat3("Shape_Position", (_float*)(&m_vShapePosition)))
+			{
+				Tool_Reset_Instance();
+			}
+
+
+		}
+
+
+		s_isShapeChange = false;
+		ImGui::TreePop();
+	}
+}
+
+void CVIBuffer_Instance::Tool_Modules()
+{
+	// Add Module
+	Tool_Add_Module();
+	// Adjust Module
+	Tool_Adjust_Modules();
+}
+
+void CVIBuffer_Instance::Tool_Add_Module()
+{
+	if (ImGui::TreeNode("Add Module"))
+	{
+		const _char* Moduleitems[] = { "NONE", "INIT_VELOCITY_POINT", "INIT_VELOCITY_LINEAR", "INIT_ACCELERATION",
+"GRAVITY", "DRAG", "VORTEX_ACCELERATION" };
+
+		static _int item_selected_idx = 0;
+		const char* combo_preview_value = Moduleitems[item_selected_idx];
+
+		if (ImGui::BeginCombo("Module Type", combo_preview_value))
+		{
+
+			for (int n = 0; n < IM_ARRAYSIZE(Moduleitems); n++)
+			{
+				const bool is_selected = (item_selected_idx == n);
+
+				if (ImGui::Selectable(Moduleitems[n], is_selected))
+				{
+					item_selected_idx = n;
+					
+					CParticle_Module* pModule = CParticle_Module::Create((CParticle_Module::MODULE_TYPE)n, Moduleitems[n]);
+					if (nullptr != pModule)
+					{
+						pModule->Set_Order(m_Modules.size());
+						m_Modules.push_back(pModule);
+
+						sort(m_Modules.begin(), m_Modules.end(), [](const CParticle_Module* pSrc, const CParticle_Module* pDst)
+							{
+								return pSrc->Get_Order() < pDst->Get_Order();
+							}
+						);
+
+						Tool_Reset_Buffers();
+					}
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::TreePop();
+	}
+
+}
+
+void CVIBuffer_Instance::Tool_Adjust_Modules()
+{
+	if (ImGui::TreeNode("Module Lists"))
+	{
+		if (ImGui::BeginListBox("List"))
+		{
+			if (ImGui::ArrowButton("Order Up", ImGuiDir::ImGuiDir_Up))
+			{
+				if (0 < m_iNowModuleIndex && 1 < m_Modules.size())
+				{
+					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex - 1]);
+				
+					for (_int i = 0; i < m_Modules.size(); ++i)
+					{
+						m_Modules[i]->Set_Order(i);
+					}
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("Order Down", ImGuiDir::ImGuiDir_Down))
+			{
+				if (m_Modules.size() - 1 > m_iNowModuleIndex && 1 < m_Modules.size())
+				{
+					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex + 1]);
+
+					for (_int i = 0; i < m_Modules.size(); ++i)
+					{
+						m_Modules[i]->Set_Order(i);
+					}
+
+				}
+			}
+
+			int n = 0;
+			for (auto& pModule : m_Modules)
+			{
+				const bool is_selected = (m_iNowModuleIndex == n);
+				if (ImGui::Selectable(pModule->Get_TypeName().c_str(), is_selected))
+				{
+					m_iNowModuleIndex = is_selected ? -1 : n; 
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus(); 
+				++n;
+			}
+			ImGui::EndListBox();
+		}
+
+		if (-1 != m_iNowModuleIndex)
+		{
+			if (ImGui::Button("Delete Module"))
+			{
+				Safe_Release(m_Modules[m_iNowModuleIndex]);
+
+				auto iter = m_Modules.begin() + m_iNowModuleIndex;
+				m_Modules.erase(iter);
+
+				m_iNowModuleIndex = -1;
+
+				Tool_Reset_Buffers();
+			}
+		}
+
+
+		ImGui::TreePop();
+	}
+	
+	if (-1 != m_iNowModuleIndex)
+	{
+		if (ImGui::TreeNode("Adjust Modules"))
+		{
+			m_Modules[m_iNowModuleIndex]->Tool_Module_Update();
+
+
+			ImGui::TreePop();
+		}
+
+		if (m_Modules[m_iNowModuleIndex]->Is_Changed())
+			Tool_Reset_Buffers();
+	}
+}
+
+void CVIBuffer_Instance::Tool_Create_ShapeData()
+{
+	for (auto& Pair : m_ShapeDatas)
+	{
+		m_ToolShapeDatas[Pair.first] = Pair.second;
+	}
+
+	m_ShapeDatas.clear();
+
+	switch (m_eShapeType)
+	{
+	case SPHERE:
+	{
+		Tool_InsertData("Sphere_Radius", 1.f);
+		Tool_InsertData("Sphere_Surface", 0.f);
+		
+		break;
+	}
+	case CYLINDER:
+	{
+		Tool_InsertData("Cylinder_Radius", 1.f);
+		Tool_InsertData("Cylinder_Height", 1.f);
+		Tool_InsertData("MidPoint", 0.5f);
+
+		break;
+	}
+	case BOX:
+	{
+		Tool_InsertData("Width", 1.f);
+		Tool_InsertData("Height", 1.f);
+		Tool_InsertData("Depth", 1.f);
+		Tool_InsertData("MidX", 0.5f);
+		Tool_InsertData("MidY", 0.5f);
+		Tool_InsertData("MidZ", 0.5f);
+		
+		if (Is_ToolData("Box_Surface"))
+		{
+			Tool_InsertData("Box_Surface", 0.f);
+		}
+
+
+		break;
+	}
+	case TORUS:
+	{
+		Tool_InsertData("LargeRadius", 3.f);
+		Tool_InsertData("HandleRadius", 1.f);
+		Tool_InsertData("U_Distribution", 0.f);
+		Tool_InsertData("V_Distribution", 0.f);
+
+		break;
+	}
+	case RING:
+	{
+		Tool_InsertData("Ring_Radius", 3.f);
+		Tool_InsertData("Coverage", 0.f);
+		Tool_InsertData("Ring_Distribution", 0.f);
+		break;
+	}
+	case CONE:
+	{
+		Tool_InsertData("Length", 3.f);
+		Tool_InsertData("Outer_Angle", 90.f);
+		Tool_InsertData("Inner_Angle", 0.f);
+		Tool_InsertData("Radial_Angle", 360.f);
+		Tool_InsertData("Cone_Surface", 0.f);
+		Tool_InsertData("Flatten", 0.f);
+
+		break;
+	}
+	case SHAPE_NONE:
+		break;
+	
+	}
+
+	Tool_Reset_Instance();
+
+}
+
+#endif

@@ -31,7 +31,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 500.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720);
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
@@ -111,6 +111,17 @@ HRESULT CPlayer::Ready_Components()
     
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+
+
+    Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this, 1));
+    Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this, 0.1f));
+    Bind_AnimEventFunc("Someting3", bind(&CPlayer::Someting3, this));
+
+	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+	tAnimEventDesc.pReceiver = this;
+	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
     return S_OK;
 }
 
@@ -436,6 +447,8 @@ void CPlayer::Set_2DDirection(F_DIRECTION _eFDir)
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
     }
+
+    
 }
 
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
@@ -451,6 +464,24 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 }
 
 
+void CPlayer::Someting(int a)
+{
+    cout << "Someting" << endl;
+    int b = a;
+}
+
+void CPlayer::Someting2(float a)
+{
+    cout << "Someting2" << endl;
+    float b = a;
+}
+
+_int CPlayer::Someting3()
+{
+    int a = 0;
+    cout << "Someting3" << endl;
+    return a;
+}
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
@@ -466,7 +497,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
-        _float3 vNewPos = _float3(0.0f, 6.0f, 0.0f);
+        _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
         //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
     }
@@ -535,5 +566,6 @@ CGameObject* CPlayer::Clone(void* _pArg)
 void CPlayer::Free()
 {
 	Safe_Release(m_pStateMachine);
+	Safe_Release(m_pAnimEventGenerator);
     __super::Free();
 }

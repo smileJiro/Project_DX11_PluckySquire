@@ -35,66 +35,70 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-	//if (KEY_DOWN(KEY::I) && SHOP_END == m_eShopPanel)
-	//{
-	//	isRender();
-	//	
-	//}
-
-	if (KEY_DOWN(KEY::I) /* && SHOP_END != m_eShopPanel*/)
+	// 오픈 후 마우스가 안에 있는가?
+	if (true == m_isOpenPanel &&  false == CUI_Manager::GetInstance()->Get_ConfirmStore())
 	{
-		if (true == CUI_Manager::GetInstance()->Get_isESC())
+		_float2 CursorPos = m_pGameInstance->Get_CursorPos();
+		_int index = isInPanelItem(CursorPos);
+		if (true == isInPanel(CursorPos))
+		{
+			if (m_iPreindex != index && -1 != index)
+			{
+				CUI_Manager::GetInstance()->Set_ChooseItem(isInPanelItem(CursorPos));
+				m_iPreindex = isInPanelItem(CursorPos);
+			}
+
+			if (1 == CUI_Manager::GetInstance()->Get_ShopItems().size())
+			{
+				CUI_Manager::GetInstance()->Set_ChooseItem(isInPanelItem(CursorPos));
+				m_iPreindex = isInPanelItem(CursorPos);
+			}
+		}
+		else
 			return;
-
-		isFontPrint();
-
-		for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
-		{
-			if (SHOP_END != iter.second->Get_ShopPanel())
-			{
-				iter.second->Child_Update(_fTimeDelta);
-			}
-		}
-
-
-		for (auto iter : CUI_Manager::GetInstance()->Get_ShopItems())
-		{
-			for (size_t i = 0; i < 3; ++i)
-			{
-				iter.second[i]->Child_Update(_fTimeDelta);
-			}
-
-
-		}
-
-
 	}
+
+
+	Update_KeyInput(_fTimeDelta);
+
+	
 }
 
 void CShopPanel::Late_Update(_float _fTimeDelta)
 {
+
+	
+
 	if (true == m_isRender && SHOP_CHOOSEBG != m_eShopPanel)
 	{
-		for (auto iter : CUI_Manager::GetInstance()->Get_ShopPanels())
+		for (int i = 0; i < CUI_Manager::GetInstance()->Get_ShopPanels().size(); ++i)
 		{
-			iter.second->Child_LateUpdate(_fTimeDelta);
+ 			CUI_Manager::GetInstance()->Get_ShopPanels()[i]->Child_LateUpdate(_fTimeDelta);
 		}
 
 
-		for (auto iter : CUI_Manager::GetInstance()->Get_ShopItems())
+		for (int i = 0; i < CUI_Manager::GetInstance()->Get_ShopItems().size(); ++i)
 		{
-			for (size_t i = 0; i < 3; ++i)
+			for (int j = 0; j < 3; ++j)
 			{
-				iter.second[i]->Child_LateUpdate(_fTimeDelta);
+				CUI_Manager::GetInstance()->Get_ShopItems()[i][j]->Child_LateUpdate(_fTimeDelta);
 			}
-
-
+			
 		}
+
 	}
 	else
 	{
 		__super::Late_Update(_fTimeDelta);
 	}
+
+
+	
+
+
+
+
+
 }
 
 HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
@@ -120,19 +124,35 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 
 		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX / 3.345f, g_iWinSizeY - g_iWinSizeY / 9.4f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-
-
-		//g_iWinSizeX / 3.125f;
-		//g_iWinSizeY - g_iWinSizeY / 13.f
-
 	}
 
-
-
-
+	
+	//m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 
 	if (true == m_isRender)
 		__super::Render(_iTextureindex, _eShaderPass);
+
+
+	if (true == CUI_Manager::GetInstance()->Get_ConfirmStore())
+	{
+		_bool YesorNo = CUI_Manager::GetInstance()->Get_StoreYesOrno();
+
+
+		if (true == YesorNo)
+		{
+			wsprintf(m_tFont, TEXT("예"));
+			m_pGameInstance->Render_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 4.25f, g_iWinSizeY - g_iWinSizeY / 2.8f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+			wsprintf(m_tFont, TEXT("아니요"));
+			m_pGameInstance->Render_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 4.25f, g_iWinSizeY - g_iWinSizeY / 3.65f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+		}
+		else if (false == YesorNo)
+		{
+			wsprintf(m_tFont, TEXT("예"));
+			m_pGameInstance->Render_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 4.25f, g_iWinSizeY - g_iWinSizeY / 2.8f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			wsprintf(m_tFont, TEXT("아니요"));
+			m_pGameInstance->Render_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 4.25f, g_iWinSizeY - g_iWinSizeY / 3.65f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+	}
 
 
 	return S_OK;
@@ -140,26 +160,191 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 
 
-void CShopPanel::isRender()
+_bool CShopPanel::isInPanel(_float2 _vMousePos)
 {
-	if (m_isRender == false)
+	
+
+	if (349 <= _vMousePos.x && 1252 >= _vMousePos.x && 56 <= _vMousePos.y && 797 >= _vMousePos.y)
 	{
-		m_isRender = true;
+		return true;
 	}
-	else if (m_isRender == true)
-		m_isRender = false;
+	else
+		return false;
 }
 
-void CShopPanel::isFontPrint()
+_int CShopPanel::isInPanelItem(_float2 _vMousePos)
 {
-	if (false == m_isOpenPanel)
+ 	_int iItemCounts = (_uint)CUI_Manager::GetInstance()->Get_ShopItems().size();
+
+	if (373 <= _vMousePos.x && 1228 >= _vMousePos.x)
 	{
-		m_isOpenPanel = true;
+
+		// 0개
+		if (171 <= _vMousePos.y && 278 >= _vMousePos.y)
+		{
+			if (0 >= iItemCounts)
+			{
+				return -1;
+			}
+
+			cout << 0 << endl;
+			return 0;
+		}
+		else if (279 <= _vMousePos.y && 305 >= _vMousePos.y)
+		{
+			if (0 >= iItemCounts)
+			{
+				return -1;
+			}
+
+			cout << -1 << endl;
+			return -1;
+		}
+		// 1개
+		else if (306 <= _vMousePos.y && 413 >= _vMousePos.y)
+		{
+			if (1 >= iItemCounts)
+			{
+				return -1;
+			}
+
+			cout << 1 << endl;
+			return 1;
+		}
+		else if (414 <= _vMousePos.y && 440 >= _vMousePos.y)
+		{
+			if (1 >= iItemCounts)
+			{
+				return -1;
+			}
+
+			cout << -1 << endl;
+			return -1;
+		}
+		// 2개
+		else if (441 <= _vMousePos.y && 548 >= _vMousePos.y)
+		{
+			if (2 >= iItemCounts)
+			{
+				return -1;
+			}
+
+			cout << 2 << endl;
+			return 2;
+		}
+		else if (549 <= _vMousePos.y)
+		{
+			if (2 >= iItemCounts)
+			{
+				return -1;
+			}
+
+			cout << -1 << endl;
+			return -1;
+		}
 	}
-	else if (true == m_isOpenPanel)
+	else
+		return -1;
+
+
+	return -1;
+
+}
+
+void CShopPanel::Update_KeyInput(_float _fTimeDelta)
+{
+
+
+	// SHOP  패널 오픈 기능
+	if (KEY_DOWN(KEY::I) /* && SHOP_END != m_eShopPanel*/)
 	{
-		m_isOpenPanel = false;
+		if (true == Uimgr->Get_isESC())
+			return;
+
+		isFontPrint();
+
+		for (auto iter : Uimgr->Get_ShopPanels())
+		{
+			if (SHOP_END != iter.second->Get_ShopPanel())
+			{
+				iter.second->Child_Update(_fTimeDelta);
+			}
+		}
+
+
+		for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+			{
+				Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
+			}
+
+		}
 	}
+
+
+	if (KEY_DOWN(KEY::I) && true == Uimgr->Get_ConfirmStore())
+	{
+		Uimgr->Set_ConfirmStore(false);
+		m_iConfirmItemIndex = 0;
+		Uimgr->Set_StoreYesOrno(true);
+	}
+	if (KEY_DOWN(KEY::ESC) && true == Uimgr->Get_ConfirmStore())
+	{
+		Uimgr->Set_ConfirmStore(false);
+		m_iConfirmItemIndex = 0;
+		Uimgr->Set_StoreYesOrno(true);
+	}
+
+	_bool isYesorNo = Uimgr->Get_StoreYesOrno();
+	if (true == m_isOpenPanel)
+	{
+
+		_float2 CursorPos = m_pGameInstance->Get_CursorPos();
+		_int index = isInPanelItem(CursorPos);
+
+		if (KEY_DOWN(KEY::E) && false == Uimgr->Get_ConfirmStore())
+		{
+			if (-1 != index)
+			{
+				m_iConfirmItemIndex = index;
+				Uimgr->Set_ConfirmStore(true);
+				Uimgr->Set_StoreYesOrno(true);
+			}
+		}
+		else if (KEY_DOWN(KEY::E) && true == Uimgr->Get_ConfirmStore())
+		{
+			if (true == isYesorNo)
+			{
+				Uimgr->Delete_ShopItems(m_iConfirmItemIndex);
+				m_iConfirmItemIndex = 0;
+				Uimgr->Set_ConfirmStore(false);
+			}
+			else if (false == isYesorNo)
+			{
+				Uimgr->Set_ConfirmStore(false);
+				Uimgr->Set_StoreYesOrno(true);
+			}
+		
+		}
+	}
+
+	
+
+	if (KEY_DOWN(KEY::UP) && true == Uimgr->Get_ConfirmStore())
+	{
+
+		CUI_Manager::GetInstance()->Set_StoreYesOrno(true);
+
+	}
+	
+	if (KEY_DOWN(KEY::DOWN) && true == Uimgr->Get_ConfirmStore())
+	{
+
+		CUI_Manager::GetInstance()->Set_StoreYesOrno(false);
+
+	}
+
 }
 
 HRESULT CShopPanel::Ready_Components()

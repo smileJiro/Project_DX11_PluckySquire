@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Test3DModel.h"
-#include "Animation.h"
+#include "Animation3D.h"
 #include "ToolAnimation3D.h"
 #include "ToolMaterial.h"
 #include "ToolBone.h"
@@ -61,6 +61,21 @@ _float CTest3DModel::Get_Progress()
 		return 0;
 	return static_cast<CToolAnimation3D*> (m_Animations[m_iCurrentAnimIndex])->Get_Progress();
 }
+
+_float CTest3DModel::Get_AnimSpeedMagnifier(_uint iAnimIndex)
+{
+	if ((_int)(m_Animations.size() - 1) < (_int)iAnimIndex)
+		return 0;
+	return static_cast<CToolAnimation3D*> (m_Animations[iAnimIndex])->Get_SpeedMagnifier();
+}
+
+_bool CTest3DModel::Is_LoopAnimation(_uint iAnimIndex)
+{
+	if ((_int)(m_Animations.size() - 1) < (_int)iAnimIndex)
+		return 0;
+	return static_cast<CToolAnimation3D*> (m_Animations[iAnimIndex])->Is_LoopAnim();
+}
+
 
 
 HRESULT CTest3DModel::Ready_Bones(ifstream& inFile, _uint iParentBoneIndex)

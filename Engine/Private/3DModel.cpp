@@ -3,8 +3,9 @@
 #include "Material.h"
 #include "Shader.h"
 #include "Bone.h"
-#include "Animation.h"
+#include "Animation3D.h"
 #include "iostream"
+#include "AnimEventGenerator.h"
 
 C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModel(_pDevice, _pContext)
@@ -62,7 +63,6 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	bool bAnim;
 	inFile.read(reinterpret_cast<char*>(&bAnim), 1);
 	m_eAnimType = bAnim ? ANIM : NONANIM;
-
 
 	if (FAILED(Ready_Bones(inFile, -1)))
 		return E_FAIL;
@@ -141,17 +141,20 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 
 _bool C3DModel::Play_Animation(_float fTimeDelta)
 {
-
-	//뼈들의 변환행렬을 갱신
 	_bool bReturn = false;
-	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
+	if (m_bPlayingAnim)
 	{
-		bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
-	}
-	else
-	{
-		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame))
-			m_iPrevAnimIndex = m_iCurrentAnimIndex;
+		//뼈들의 변환행렬을 갱신
+		if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
+		{
+			bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
+		}
+		else
+		{
+			if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame))
+				m_iPrevAnimIndex = m_iCurrentAnimIndex;
+		}
+
 	}
 
 
@@ -216,6 +219,16 @@ _uint C3DModel::Get_AnimIndex()
 	return m_iCurrentAnimIndex;
 }
 
+CAnimation* C3DModel::Get_Animation(_uint iAnimIndex)
+{
+	if (iAnimIndex >= m_Animations.size())
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return nullptr;
+	}
+	return m_Animations[iAnimIndex];
+}
+
 _float C3DModel::Get_AnimationProgress(_uint iAnimIdx)
 {
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
@@ -278,8 +291,7 @@ void C3DModel::Set_Animation(_uint iIdx)
 	}
 	m_iCurrentAnimIndex = iIdx;
 	m_iPrevAnimIndex = iIdx;
-	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
-
+	m_Animations[m_iCurrentAnimIndex]->Reset();
 }
 
 
@@ -295,7 +307,8 @@ void C3DModel::Switch_Animation(_uint iIdx)
 	m_iCurrentAnimIndex = iIdx;
 	m_mapAnimTransLeftFrame.clear();
 
-	m_Animations[m_iCurrentAnimIndex]->Reset_CurrentTrackPosition();
+	m_Animations[m_iCurrentAnimIndex]->Reset();
+
 	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
 
 }
@@ -303,6 +316,16 @@ void C3DModel::Switch_Animation(_uint iIdx)
 void C3DModel::To_NextAnimation()
 {
 	Switch_Animation((m_iCurrentAnimIndex + 1) % m_Animations.size());
+}
+
+void C3DModel::Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag)
+{
+	if (iAnimIndex >= m_Animations.size())
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
+	m_Animations[iAnimIndex]->Set_SpeedMagnifier(_fMag);
 }
 
 _uint C3DModel::Get_AnimCount()
@@ -375,7 +398,7 @@ HRESULT C3DModel::Ready_Animations(ifstream& inFile)
 	m_Animations.reserve(m_iNumAnimations);
 	for (_uint i = 0; i < m_iNumAnimations; i++)
 	{
-		CAnimation* pAnimation = CAnimation::Create(inFile, this);
+		CAnimation3D* pAnimation = CAnimation3D::Create(inFile, this);
 		if (nullptr == pAnimation)
 			return E_FAIL;
 
@@ -429,5 +452,10 @@ void C3DModel::Free()
 	m_Meshes.clear();
 
 	__super::Free();
+}
+
+_float C3DModel::Get_CurrentAnimProgeress()
+{
+	return m_Animations[m_iCurrentAnimIndex]->Get_Progress();
 }
 

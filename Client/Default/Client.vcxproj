@@ -184,6 +184,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\2DDefault_RenderObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
@@ -212,6 +213,8 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CriticalSectionGuard.h" />
+    <ClInclude Include="..\Public\Dialogue.h" />
+    <ClInclude Include="..\Public\ESC_Goblin.h" />
     <ClInclude Include="..\Public\ESC_HeartPoint.h" />
     <ClInclude Include="..\public\FSM.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -221,12 +224,19 @@
     </ClInclude>
     <ClInclude Include="..\Public\Goblin.h" />
     <ClInclude Include="..\public\IdleState.h" />
+    <ClInclude Include="..\Public\Interaction_Heart.h" />
     <ClInclude Include="..\Public\JumpBug.h" />
     <ClInclude Include="..\Public\Logo_BG.h" />
+    <ClInclude Include="..\Public\Logo_Choose.h" />
     <ClInclude Include="..\Public\MapObject.h" />
+    <ClInclude Include="..\Public\Map_2D.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\Popuff.h" />
     <ClInclude Include="..\Public\Rat.h" />
+    <ClInclude Include="..\Public\SampleBook.h" />
+    <ClInclude Include="..\public\Section.h" />
+    <ClInclude Include="..\public\Section_2D.h" />
+    <ClInclude Include="..\public\Section_Manager.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
     <ClInclude Include="..\Public\ShopItemBG.h" />
     <ClInclude Include="..\Public\ShopPanel.h" />
@@ -267,6 +277,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp">
@@ -294,6 +305,8 @@
     <ClCompile Include="..\Private\Client_Function.cpp" />
     <ClCompile Include="..\Private\Condition.cpp" />
     <ClCompile Include="..\private\CriticalSectionGuard.cpp" />
+    <ClCompile Include="..\Private\Dialogue.cpp" />
+    <ClCompile Include="..\Private\ESC_Goblin.cpp" />
     <ClCompile Include="..\Private\ESC_HeartPoint.cpp" />
     <ClCompile Include="..\private\FSM.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -303,12 +316,19 @@
     </ClCompile>
     <ClCompile Include="..\Private\Goblin.cpp" />
     <ClCompile Include="..\private\IdleState.cpp" />
+    <ClCompile Include="..\Private\Interaction_Heart.cpp" />
     <ClCompile Include="..\Private\JumpBug.cpp" />
     <ClCompile Include="..\Private\Logo_BG.cpp" />
+    <ClCompile Include="..\Private\Logo_Choose.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
+    <ClCompile Include="..\Private\Map_2D.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\Popuff.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
+    <ClCompile Include="..\Private\SampleBook.cpp" />
+    <ClCompile Include="..\private\Section.cpp" />
+    <ClCompile Include="..\private\Section_2D.cpp" />
+    <ClCompile Include="..\private\Section_Manager.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\ShopItemBG.cpp" />
     <ClCompile Include="..\Private\ShopPanel.cpp" />

@@ -27,6 +27,7 @@ HRESULT CIdleState::Initialize(void* _pArg)
 
 void CIdleState::State_Enter()
 {
+	m_fAccTime = 0.f;
 }
 
 void CIdleState::State_Update(_float _fTimeDelta)
@@ -48,13 +49,13 @@ void CIdleState::State_Update(_float _fTimeDelta)
 	else if (m_fDelayTime <= m_fAccTime)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::PATROL, m_pFSM);
-		m_fAccTime = 0.f;
 	}
 
 }
 
 void CIdleState::State_Exit()
 {
+	m_fAccTime = 0.f;
 }
 
 CIdleState* CIdleState::Create(void* _pArg)

@@ -103,6 +103,44 @@ CComponent* CLayer::Find_Part_Component(_uint _iPartObjectIndex, const _wstring&
     return static_cast<CContainerObject*>(*iter)->Find_Part_Component(_iPartObjectIndex, _strPartComponentTag);
 }
 
+void CLayer::SetActive_GameObjects(_bool _isActive)
+{
+    if (true == m_GameObjects.empty())
+        return;
+
+    for (auto& pGameObject : m_GameObjects)
+        pGameObject->Set_Active(_isActive);
+}
+
+void CLayer::Cleanup_DeadReferences()
+{
+    /* Pooling Object를 고려하지 않고 사망한 객체라면 죽인다. */
+    /* 해당 함수는 Framework에서 사용하기 위함이 아닌, 외부에 공개되는 함수로 Layer로서의 역할만을 고려한다. */
+    /* Pooling Object에 대한 처리는 Layer의 LateUpdate(); 와 같은 Framework적으로 처리되어야하는 */
+    if (true == m_GameObjects.empty())
+        return;
+
+    auto& iter = m_GameObjects.begin();
+    for (iter; iter != m_GameObjects.end(); )
+    {
+        if (true == (*iter)->Is_Dead())
+        {
+            Safe_Release((*iter));
+            iter = m_GameObjects.erase(iter);
+        }
+        else
+            ++iter;
+    }
+}
+
+void CLayer::Clear_GameObjects()
+{
+    for (auto& pGameObject : m_GameObjects)
+        Safe_Release(pGameObject);
+
+    m_GameObjects.clear();
+}
+
 CGameObject* CLayer::Get_GameObject_Ptr(_int _iObjectIndex)
 {
     if (true == m_GameObjects.empty())
@@ -134,9 +172,6 @@ void CLayer::Free()
 {
     __super::Free();
 
-    for (auto& pGameObject : m_GameObjects)
-    {
-        Safe_Release(pGameObject);
-    }
-    m_GameObjects.clear();
+
+    Clear_GameObjects();
 }

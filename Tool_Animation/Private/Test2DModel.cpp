@@ -14,7 +14,7 @@ CTest2DModel::CTest2DModel(const CTest2DModel& _Prototype)
 }
 
 
-
+//Read RawData jsons
 HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataDirPath)
 {
 
@@ -80,24 +80,6 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 			if (result.second == false)
 				Safe_Release(pTexture);
 		}
-		/*else if (entry.path().extension() == ".dds")
-		{
-			if (m_Textures.find(entry.path().filename().replace_extension().string()) != m_Textures.end())
-				continue;
-			ID3D11ShaderResourceView* pSRV = { nullptr };
-			HRESULT hr = DirectX::CreateDDSTextureFromFile(m_pDevice, entry.path().c_str(), nullptr, &pSRV);
-			if (FAILED(hr))
-				return E_FAIL;
-			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext);
-			if (nullptr == pTexture)
-				return E_FAIL;
-			string strTextureName = entry.path().filename().replace_extension().string();
-			wstring wstrTextureName = StringToWstring(strTextureName);
-			pTexture->Add_Texture(pSRV, wstrTextureName.c_str());
-			auto result = m_Textures.insert({ strTextureName, pTexture });
-			if (result.second == false)
-				Safe_Release(pTexture);
-		}*/
 	}
 
 
@@ -109,19 +91,22 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 		{
 			string strName = j.second["Name"];
 
-			m_Animation2Ds.push_back(CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, jPaperSprites, m_Textures));
+			CToolAnimation2D* pAnim =CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, jPaperSprites, m_Textures);
+			if (nullptr == pAnim)
+				return E_FAIL;
+			m_Animation2Ds.push_back(pAnim);
 		}
 	}
 	else
 	{
-		for (auto& pTex : m_Textures)
-		{
-			m_NonAnimTextures.push_back(pTex.second);
-		}
+		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, jPaperSprites.begin()->second, m_Textures);
+		if (nullptr == m_pNonAnimSprite)
+			return E_FAIL;
 	}
 	return S_OK;
 }
 
+//Read .model2d
 HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 {
 	std::ifstream inFile(_szModel2DFilePath, std::ios::binary);
@@ -167,40 +152,45 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
 		m_Textures.insert({ szTextureName,pTexture });
 	}
-
-	//Animation2Ds
-	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
-	m_Animation2Ds.reserve(iCount);
-	for (_uint i = 0; i < iCount; i++)
+	inFile.read(reinterpret_cast<char*>(&m_eAnimType), sizeof(_uint));
+		//Animation2Ds
+	if (ANIM == m_eAnimType)
 	{
-		CToolAnimation2D* pAnimation = CToolAnimation2D::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
-		if (nullptr == pAnimation)
-			return E_FAIL;
-		m_Animation2Ds.push_back(pAnimation);
-	}
-	m_eAnimType = m_Animation2Ds.size() > 0 ? ANIM : NONANIM;
-	//NonANimTextures
-	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
-	m_NonAnimTextures.reserve(iCount);
-	for (_uint i = 0; i < iCount; i++)
-	{
-		_uint iLength = 0;
-		inFile.read(reinterpret_cast<char*>(&iLength), sizeof(_uint));
-		_char* pTextureName = new char[iLength + 1];
-		inFile.read(pTextureName, iLength);
-		pTextureName[iLength] = '\0';
-		const auto& pairTexture =m_Textures.find(pTextureName);
-		if (pairTexture != m_Textures.end())
+		inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+		m_Animation2Ds.reserve(iCount);
+		for (_uint i = 0; i < iCount; i++)
 		{
-			m_NonAnimTextures.push_back(pairTexture->second);
+			CToolAnimation2D* pAnimation = CToolAnimation2D::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
+			if (nullptr == pAnimation)
+				return E_FAIL;
+			m_Animation2Ds.push_back(pAnimation);
 		}
-
 	}
-	//NonAnimSpriteStartUV
-	inFile.read(reinterpret_cast<char*>(&m_vNonAnimSpriteStartUV), sizeof(_float2));
-	//NonAnimSpriteEndUV
-	inFile.read(reinterpret_cast<char*>(&m_vNonAnimSpriteEndUV), sizeof(_float2));
+	else
+	{
+		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
+	}
+
 	return S_OK;
+}
+
+HRESULT CTest2DModel::Initialize_Prototype_SingleSpriteModel(std::filesystem::path _szDir, json& jFile)
+{
+	for (auto& jObj : jFile)
+	{
+		string strType = jObj["Type"];
+		if (false == strType._Equal("PaperSprite"))
+			continue;
+
+		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, _szDir, jObj);
+		if (nullptr == m_pNonAnimSprite)
+			return E_FAIL;
+		CTexture* pTexture = static_cast<CToolSpriteFrame*>(m_pNonAnimSprite)->Get_Texture();
+		m_Textures.insert({ WstringToString(*pTexture->Get_SRVName(0)),pTexture });
+		m_eAnimType = NONANIM;
+		return S_OK;
+	}
+	return E_FAIL;
 }
 
 HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
@@ -213,34 +203,28 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	{
 		string strTextureName = pTexture.first;
 		iCount = strTextureName.length();
+		//cout << strTextureName << endl;
 		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 		_outfile.write(strTextureName.c_str(), iCount);
 	}
 
+	_outfile.write(reinterpret_cast<const char*>(&m_eAnimType), sizeof(_uint));
 	//Animations
-	iCount = m_Animation2Ds.size();
-	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
-	for (auto& pAnimation : m_Animation2Ds)
-	{
-		static_cast<CToolAnimation2D*>(pAnimation)->Export(_outfile);
-	}
-
-	//NonAnimTextures
-	iCount = m_NonAnimTextures.size();
-	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
-	for (auto& pTexture : m_NonAnimTextures)
-	{
-		const wstring* pTextureName = pTexture->Get_SRVName(0);
-		string strTextureName = WstringToString(*pTextureName);
-		iCount = strTextureName.length();
+	if (ANIM == m_eAnimType)
+	{	
+		iCount = m_Animation2Ds.size();
 		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
-		_outfile.write(strTextureName.c_str(), iCount);
+		for (auto& pAnimation : m_Animation2Ds)
+		{
+			static_cast<CToolAnimation2D*>(pAnimation)->Export(_outfile);
+		}
+	}
+	//NonAnimSprite
+	else if (NONANIM == m_eAnimType)
+	{
+		static_cast<CToolSpriteFrame*>(m_pNonAnimSprite)->Export(_outfile);
 	}
 
-	//NonAnimSpriteStartUV
-	_outfile.write(reinterpret_cast<const char*>(&m_vNonAnimSpriteStartUV), sizeof(_float2));
-	//NonAnimSpriteEndUV
-	_outfile.write(reinterpret_cast<const char*>(&m_vNonAnimSpriteEndUV), sizeof(_float2));
 
 	return S_OK;
 }
@@ -249,7 +233,7 @@ void CTest2DModel::Set_Progerss(_float _fTrackPos)
 {
 	if (m_Animation2Ds.empty())
 		return;
-	static_cast<CToolAnimation2D*> (m_Animation2Ds[m_iCurAnimIdx])->Set_Progerss(_fTrackPos);
+	static_cast<CToolAnimation2D*> (m_Animation2Ds[m_iCurAnimIdx])->Set_Progress(_fTrackPos);
 
 }
 
@@ -265,7 +249,22 @@ _float CTest2DModel::Get_Progerss()
 {
 	if (m_Animation2Ds.empty())
 		return 0;
-	return static_cast<CToolAnimation2D*>(m_Animation2Ds[m_iCurAnimIdx])->Get_Progerss();
+	return static_cast<CToolAnimation2D*>(m_Animation2Ds[m_iCurAnimIdx])->Get_Progress();
+}
+
+_float CTest2DModel::Get_AnimSpeedMagnifier(_uint iAnimIndex)
+{
+	if ((_int)(m_Animation2Ds.size() - 1) < (_int)iAnimIndex)
+		return 0;
+	return static_cast<CToolAnimation2D*>(m_Animation2Ds[iAnimIndex])->Get_SpeedMagnifier();
+
+}
+
+_bool CTest2DModel::Is_LoopAnimation(_uint iAnimIndex)
+{
+	if ((_int)(m_Animation2Ds.size() - 1) < (_int)iAnimIndex)
+		return 0;
+	return static_cast<CToolAnimation2D*>(m_Animation2Ds[iAnimIndex])->Is_LoopAnim();
 }
 
 
@@ -291,6 +290,17 @@ CTest2DModel* CTest2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* p
 		}
 	}
 
+	return pInstance;
+}
+
+CTest2DModel* CTest2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, std::filesystem::path _szDir , json& jFile)
+{
+	CTest2DModel* pInstance = new CTest2DModel(pDevice, pContext);
+	if (FAILED(pInstance->Initialize_Prototype_SingleSpriteModel(_szDir,jFile)))
+	{
+		MSG_BOX("Failed to Created : Test2DModel");
+		Safe_Release(pInstance);
+	}
 	return pInstance;
 }
 

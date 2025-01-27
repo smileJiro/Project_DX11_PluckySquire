@@ -175,6 +175,15 @@
     <Filter Include="02.GameObjects\UI\02. ShopPanel\01. ShopItem\ShopItem">
       <UniqueIdentifier>{f9cecc49-f4ff-40d8-9329-5ade28ab001d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart">
+      <UniqueIdentifier>{6b2e382d-47c5-4fe2-ba7b-e2b4963457dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose">
+      <UniqueIdentifier>{0daba0c3-1d8f-48c6-ae86-64d1dcba25ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\01. SettingPanel\01. SettingGoblin">
+      <UniqueIdentifier>{8c4f6d92-3748-4d76-a576-30412a603c30}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Monster\Goblin">
       <UniqueIdentifier>{7632e6b5-370f-4bc5-9f78-86e3d2eda239}</UniqueIdentifier>
     </Filter>
@@ -195,6 +204,30 @@
     </Filter>
     <Filter Include="03.Components\FSM\State\Patrol">
       <UniqueIdentifier>{659e0234-f497-4370-81c4-97cfc9fc6ba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC">
+      <UniqueIdentifier>{687f816c-88de-4eec-b927-25724250bbef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\04. Dialogue">
+      <UniqueIdentifier>{d24fd4ac-720e-4a88-bcbd-a0b023d0a146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\SampleBook">
+      <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section">
+      <UniqueIdentifier>{d870d844-1bab-4ffe-9849-a8de04aab2b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D">
+      <UniqueIdentifier>{a104e0b5-15a1-4826-96e4-fa3d9fe8117d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D\Map_2D">
+      <UniqueIdentifier>{a66c3d1d-73e0-475d-adaa-abf97500e66f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Manager">
+      <UniqueIdentifier>{5e0a94ff-7d50-4da7-b323-9affdd4aeb8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Alert">
+      <UniqueIdentifier>{88718416-dfd9-4f31-b553-a803df310b8a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -363,11 +396,17 @@
     <ClInclude Include="..\Public\Logo_BG.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MapObject.h">
-      <Filter>02.GameObjects\MapObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ShopItemBG.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Heart.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo_Choose.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Goblin.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Boss_EnergyBall.h">
@@ -418,11 +457,35 @@
     <ClInclude Include="..\Public\Popuff.h">
       <Filter>02.GameObjects\Monster\Popuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\AlertState.h">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PatrolState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dialogue.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SampleBook.h">
+      <Filter>02.GameObjects\SampleBook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DDefault_RenderObject.h">
+      <Filter>02.GameObjects\SampleBook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Section.h">
+      <Filter>04.Section</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Section_2D.h">
+      <Filter>04.Section\Section_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Map_2D.h">
+      <Filter>04.Section\Section_2D\Map_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Section_Manager.h">
+      <Filter>04.Section\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AlertState.h">
+      <Filter>03.Components\FSM\State\Alert</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -585,11 +648,17 @@
     <ClCompile Include="..\Private\Logo_BG.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MapObject.cpp">
-      <Filter>02.GameObjects\MapObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ShopItemBG.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Heart.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Logo_Choose.cpp">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ESC_Goblin.cpp">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Boss_EnergyBall.cpp">
@@ -637,11 +706,35 @@
     <ClCompile Include="..\Private\Popuff.cpp">
       <Filter>02.GameObjects\Monster\Popuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AlertState.cpp">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PatrolState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dialogue.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SampleBook.cpp">
+      <Filter>02.GameObjects\SampleBook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
+      <Filter>02.GameObjects\SampleBook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Section.cpp">
+      <Filter>04.Section</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Section_2D.cpp">
+      <Filter>04.Section\Section_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Map_2D.cpp">
+      <Filter>04.Section\Section_2D\Map_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Section_Manager.cpp">
+      <Filter>04.Section\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AlertState.cpp">
+      <Filter>03.Components\FSM\State\Alert</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
