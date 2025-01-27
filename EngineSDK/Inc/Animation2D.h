@@ -18,6 +18,10 @@ public:
 	const _matrix* Get_Transform() const { 
 		return &m_matSpriteTransform; 
 	}
+#ifdef _DEBUG
+	CTexture* Get_Texture() { return m_pTexture; }
+#endif // _DEBUG
+
 protected:
 	_float2 m_vSpriteStartUV = { 0,0};
 	_float2 m_vSpriteEndUV= { 0,0};

@@ -13,6 +13,7 @@
 #include "2DMapObject.h"
 #include "SampleBook.h"
 #include "BackGround.h"
+#include "2DModel.h"
 
 #include <filesystem>
 #include <iostream>
@@ -204,46 +205,50 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
-
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Flower"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/mountain_white_flower_01.dds")))))
-        return E_FAIL;
-    
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("bush"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/mountain_bush_01.dds")))))
-        return E_FAIL;
-        
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("TD_Tree"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_01.dds")))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_Component_Texture_None_Model"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/None_Model.png")))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("ButterflyBlue"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/butterfly_blue_fly_02.dds")))))
-        return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("barrel"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/barrel_01.dds")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Flower"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/mountain_white_flower_01.dds")))))
+    //    return E_FAIL;
+    //
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("bush"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/mountain_bush_01.dds")))))
+    //    return E_FAIL;
+    //    
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("TD_Tree"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_01.dds")))))
+    //    return E_FAIL;
+
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("ButterflyBlue"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/butterfly_blue_fly_02.dds")))))
+    //    return E_FAIL;
+
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("barrel"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/barrel_01.dds")))))
+    //    return E_FAIL;
  
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("townsign"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/town_sign.dds")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("townsign"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/town_sign.dds")))))
+    //    return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("actionsignpost"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/action_sign_post.dds")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("actionsignpost"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/action_sign_post.dds")))))
+    //    return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("treegreenfallen"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_fallen.dds")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("treegreenfallen"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_fallen.dds")))))
+    //    return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("treegreenbrokentrunk"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_broken_trunk.dds")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("treegreenbrokentrunk"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/tree_green_broken_trunk.dds")))))
+    //    return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("largemossrock"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/large_moss_rock.dds")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("largemossrock"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/Object/Map/large_moss_rock.dds")))))
+    //    return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
@@ -256,6 +261,11 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, L"book",
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DMapObject/book/book.model", matPretransform))))
         return E_FAIL;
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_TOOL_2D_MAP,
+        TEXT("../../Client/Bin/Resources/Models/2DMapObject/"))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
@@ -305,6 +315,27 @@ HRESULT CLoader::Loading_Level_3D_Map_Tool()
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 
+    return S_OK;
+}
+
+HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _szDirPath)
+{
+    std::filesystem::path path;
+    path = _szDirPath;
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+        if (entry.path().extension() == ".model2d") {
+            //cout << entry.path().string() << endl;
+
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
+                C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
+            {
+                string str = "Failed to Create 2DModel";
+                str += entry.path().filename().replace_extension().string();
+                MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+                return E_FAIL;
+            }
+        }
+    }
     return S_OK;
 }
 
@@ -423,7 +454,58 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
     return S_OK;
 }
 
+HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
+{
 
+    WIN32_FIND_DATA		FindFileData = {};
+    HANDLE				hFind = INVALID_HANDLE_VALUE;
+
+    _tchar				szFilePath[MAX_PATH] = TEXT("");
+    _tchar				szFullPath[MAX_PATH] = TEXT("");
+    _tchar				szProtoTag[MAX_PATH] = TEXT("");
+    _tchar				szExtension[MAX_PATH] = TEXT(".model2d");
+
+    lstrcpy(szFilePath, _szDirPath);
+    lstrcat(szFilePath, TEXT("*"));
+    lstrcat(szFilePath, szExtension);
+
+    hFind = FindFirstFile(szFilePath, &FindFileData);
+
+    if (INVALID_HANDLE_VALUE == hFind)
+        return E_FAIL;
+
+    do
+    {
+        if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            continue;
+
+        lstrcpy(szFullPath, _szDirPath);
+        lstrcat(szFullPath, FindFileData.cFileName);
+
+        wstring wstr = szFullPath;
+        string str = m_pGameInstance->WStringToString(wstr);
+
+        //string str{ wstr.begin(), wstr.end() };
+
+        wstring filename = wstring(FindFileData.cFileName);
+        size_t lastDot = filename.find_last_of('.');
+        filename = filename.substr(0, lastDot); // 확장자 제거
+
+        if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
+            C2DModel::Create(m_pDevice, m_pContext, str.c_str()))))
+        {
+            wstring str = TEXT("Failed to Create 2DModel");
+            str += filename;
+            MessageBoxW(NULL, str.c_str(), TEXT("에러"), MB_OK);
+            return E_FAIL;
+        }
+
+    } while (FindNextFile(hFind, &FindFileData));
+
+    FindClose(hFind);
+
+    return S_OK;
+}
 
 CLoader* CLoader::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID, CImguiLogger* _pLogger)
 {

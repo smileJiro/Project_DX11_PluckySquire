@@ -158,6 +158,7 @@ const _matrix* C2DModel::Get_CurrentSpriteTransform()
 		return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();
 	else if (NONANIM == m_eAnimType)
 		return m_pNonAnimSprite->Get_Transform();
+	return nullptr;
 }
 
 _uint C2DModel::Get_AnimCount()

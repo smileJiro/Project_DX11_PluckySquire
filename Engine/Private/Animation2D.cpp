@@ -142,13 +142,9 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 	if (m_iCurrentFrame >= m_iFrameCount -1 )
 	{
 		if (m_bLoop)
-		{
 			Reset();
-		}
 		else
-		{
 			return true;
-		}
 	}
 
 	if (m_fCurrentFrameTime >= 1 / m_fFramesPerSecond)

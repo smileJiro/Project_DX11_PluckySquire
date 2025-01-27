@@ -31,7 +31,7 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 	
 	_float fBookY = RTSIZE_BOOK2D_Y * ((_float)g_iWinSizeX / (_float)RTSIZE_BOOK2D_X);
 	pDesc->fX = g_iWinSizeX >> 1;
-	pDesc->fY = (_uint)fBookY >> 1;
+	pDesc->fY = (_float)((_uint)fBookY >> 1);
 	pDesc->fSizeX = g_iWinSizeX;
 	pDesc->fSizeY = fBookY;
 
@@ -88,6 +88,23 @@ HRESULT C2DDefault_RenderObject::Render()
 	m_pVIBufferCom->Render();
 
 	return S_OK;
+}
+
+_bool C2DDefault_RenderObject::IsCursor_In(_float2 _fCursorPos)
+{
+	_float fOffX = m_fSizeX - (_float)g_iWinSizeX;
+	_float fOffY = m_fSizeY - (_float)g_iWinSizeY;
+	fOffX *= 0.5f;
+	fOffY *= 0.5f;
+	if (
+		fOffX < _fCursorPos.x &&
+		g_iWinSizeX - fOffX  > _fCursorPos.x && 
+		fOffY < _fCursorPos.y && 
+		g_iWinSizeY - fOffY  > _fCursorPos.y 
+		)
+		return true;
+	else 
+		return false;
 }
 
 HRESULT C2DDefault_RenderObject::Ready_Components()

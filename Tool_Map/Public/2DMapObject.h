@@ -2,6 +2,7 @@
 
 #include "Map_Tool_Defines.h"
 #include "UIObject.h"
+#include "2DMapObjectInfo.h"
 
 BEGIN(Engine)
 class CShader;
@@ -21,6 +22,7 @@ public:
 	{
 		_wstring	strProtoTag;
 		_float2		fRenderTargetSize;
+		C2DMapObjectInfo* pInfo;
 	}MAPOBJ_2D_DESC;
 private:
 	C2DMapObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -36,14 +38,22 @@ public:
 	virtual HRESULT Render() override;
 
 	void			Set_OffsetPos(_float2 _fPos);
-	
+	_bool			IsCursor_In(_float2 _fCursorPos);
+	const _wstring& Get_Key() { return m_strKey; }
+	_bool			Is_ModelLoad() { return m_isModelLoad; }
+
+
+	virtual _vector				Get_Position() const override; 
+
 private:
 	CShader*		m_pShader = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	CTexture*		m_pTextureCom = { nullptr };
 
-
+	_wstring		m_strKey = {};
 	_float2			m_fTextureOffsetSize;
+	_float2			m_fRenderTargetSize; 
+	_bool			m_isModelLoad = false;
 
 private:
 	HRESULT Ready_Components(MAPOBJ_2D_DESC* Desc);

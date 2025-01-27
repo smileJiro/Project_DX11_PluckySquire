@@ -2,9 +2,12 @@
 #include "2DMapObjectInfo.h"
 #include "Engine_Defines.h"
 #include "GameInstance.h"
+#include "Animation2D.h"
 
 C2DMapObjectInfo::C2DMapObjectInfo()
+	: m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 C2DMapObjectInfo::C2DMapObjectInfo(const C2DMapObjectInfo& Prototype)
@@ -60,7 +63,41 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 		}
 	}
 
+#ifdef _DEBUG
+	if (m_strSearchTag != "")
+	{
+		CBase* pModel = m_pGameInstance->Find_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(m_strTextureName));
+		if (pModel != nullptr)
+		{
+			m_isModelCreate = true;
+			m_pModel = static_cast<C2DModel*>(pModel);
+			if (m_eModelType == MODEL_NONANIM)
+			{
+				CSpriteFrame* pFrame = m_pModel->Get_SpriteFrame();
+
+				if (nullptr != pFrame)
+				{
+					m_pTexture = pFrame->Get_Texture();
+					m_isToolRendering = true;
+				}
+			}
+		}
+		else
+			int a = 1;
+	}
+#endif // _DEBUG
+
 	return S_OK;
+}
+ID3D11ShaderResourceView* C2DMapObjectInfo::Get_SRV(_float2* _pReturnSize)
+{
+	if (!m_isToolRendering || nullptr == m_pTexture)
+		return nullptr;
+
+	if (nullptr != _pReturnSize)
+		*_pReturnSize = m_pTexture->Get_Size();
+	;
+	return m_pTexture->Get_SRV(0);
 }
 
 
@@ -86,5 +123,6 @@ C2DMapObjectInfo* C2DMapObjectInfo::Create()
 
 void C2DMapObjectInfo::Free()
 {
+	Safe_Release(m_pGameInstance);
 	__super::Free();
 }

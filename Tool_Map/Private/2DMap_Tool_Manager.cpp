@@ -52,8 +52,8 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_ATTACKABLE] = "ActiveType_Attackable";
 	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_DIALOG] = "ActiveType_Dialog";
 
-	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_AABB] = "";
-	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_SQUARE] = "Collier_Squere";
+	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_AABB] = "Collider_AABB";
+	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_SQUARE] = "Collider_Squere";
 
 
 
@@ -114,6 +114,8 @@ HRESULT C2DMap_Tool_Manager::Render()
 
 void C2DMap_Tool_Manager::Update_Tool()
 {
+	Input_Object_Tool_Mode();
+
 	// 임구이 화면 구성
 	Update_Imgui_Logic();
 
@@ -137,6 +139,10 @@ void C2DMap_Tool_Manager::Input_Object_Tool_Mode()
 
 	if (nullptr != hWnd)
 	{
+		if(ImGui::IsKeyPressed(ImGuiKey_MouseLeft) && nullptr != m_DefaultRenderObject && m_DefaultRenderObject->Is_2DMode())
+		{
+			m_pPickingObject = Picking_2DMap();
+		}
 	}
 
 
@@ -342,17 +348,6 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 					Pair.second.x -= fMapCenterOffset.x;
 					Pair.second.y -= fMapCenterOffset.y;
 					});
-				int a = 1;
-				//Flower
-				//bush
-				//ButterflyBlue
-				//barrel
-				//townsign
-				//NPCActionNode
-				//treegreenfallen
-				//treegreenbrokentrunk
-				//largemossrock
-				//Prototype_GameObject_2DMapObject
 				vector<_string> NotExistTextures;
 				for (auto& Pair : MapObjectInfos)
 				{
@@ -362,6 +357,9 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 					NormalDesc.fY = Pair.second.y;
 					NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 					NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+
+					NormalDesc.pInfo = Find_Info(NormalDesc.strProtoTag);
+
 
 					CGameObject* pGameObject = nullptr;
 					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
@@ -459,6 +457,18 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		if (nullptr != pGameObject)
 
 			pGameObject->Set_Active(!is2DMode);
+	}
+
+	if (nullptr != m_pPickingObject)
+	{
+		_vector vPos = m_pPickingObject->Get_Position();
+		_wstring strKey = m_pPickingObject->Get_Key();
+		_float2 fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
+		m_pPickingObject->Get_Position();
+		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
+		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");
+		ImGui::Text("Object Pos : %f, %f", fPos.x, fPos.y);
+
 	}
 
 
@@ -614,25 +624,59 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			_string strTextureName = m_pPickingInfo->Get_TextureName().c_str();
 			_bool isCollider = m_pPickingInfo->Is_Collider();
 			_bool isActive = m_pPickingInfo->Is_Active();
+			_bool isModelLoad = m_pPickingInfo->Is_ModelLoad();
+			_bool isToolRendering = m_pPickingInfo->Is_ToolRendering();
+
+			C2DMapObjectInfo::MAPOBJ_MODEL_TYPE eType = m_pPickingInfo->Get_ModelType();
 			if (InputText("Model Search Tag", strSearchTag))
 				m_pPickingInfo->Set_SearchTag(strSearchTag);
-			InputText("Model Texture Name", strTextureName, ImGuiInputTextFlags_ReadOnly);
-			ImGui::SameLine();
-			if(ImGui::Button("Add Texture"))
+
+
+			ImGui::Text("Model Load : %s", isModelLoad ? "OK" : "NO");
+			if (!isModelLoad)
 			{
-				int a = 1;
+				if (ImGui::Button("Add"))
+				{
+					int a = 1;
+				}
+				ImGui::SameLine();
+				InputText("Model Texture Name", strTextureName, ImGuiInputTextFlags_ReadOnly);
 			}
-			ImGui::Checkbox("Collider", &isCollider);
+			if (isToolRendering)
+			{
+				_float2 fDefaultSize = {128.f, 128.f};
+				_float2 fOffSize = {128.f, 128.f};
+				auto pSRV = m_pPickingInfo->Get_SRV(&fOffSize);
+				if (nullptr != pSRV)
+				{
+					if (fOffSize.x != -1)
+					{
+						//TODO :: 이미지해상도 조절하게될지도?
+						_float fRatio = fDefaultSize.x / fOffSize.x;
+						fDefaultSize.x = fOffSize.x * fRatio;
+						fDefaultSize.y = fOffSize.y * fRatio;
+					}
+					ImGui::Image((ImTextureID)pSRV,
+						ImVec2(fDefaultSize.x, fDefaultSize.y)
+					);
+				}
+			}
+
+			if (ImGui::Checkbox("Collider", &isCollider))
+				m_pPickingInfo->Set_Collider(isCollider);
 			ImGui::SameLine();
-			ImGui::Checkbox("Active", &isActive);
+			if (ImGui::Checkbox("Active", &isActive))
+				m_pPickingInfo->Set_Active(isActive);
 
-			m_pPickingInfo->Is_Active();
-			
-		
+
+			if (isCollider)
+			{
+			}
+
+			if (isActive)
+			{
+			}
 		}
-
-
-
 	}
 	ImGui::End();
 
@@ -949,6 +993,29 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 	Load_SaveFileList();
 }
 
+C2DMapObject* C2DMap_Tool_Manager::Picking_2DMap()
+{
+	_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
+	if (m_DefaultRenderObject->IsCursor_In(fCursorPos))
+	{
+		auto pLayerMaps = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP,L"Layer_2DMapObject");
+		if (nullptr != pLayerMaps)
+		{
+			auto Objects = pLayerMaps->Get_GameObjects();
+		
+			for (auto& pObject : Objects)
+			{
+				C2DMapObject* pMapObject = static_cast<C2DMapObject*>(pObject);
+				if (pMapObject->IsCursor_In(fCursorPos))
+					return pMapObject;
+			}
+		}
+	
+	}
+
+	return nullptr;
+}
+
 void C2DMap_Tool_Manager::Init_Egnore_Layer()
 {
 
@@ -1251,6 +1318,14 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 	return S_OK;
 }
 
+C2DMapObjectInfo* C2DMap_Tool_Manager::Find_Info(const _wstring _strTag)
+{
+	for (auto pInfo : m_ObjectInfoLists)
+		if(ContainString(WstringToString(_strTag), pInfo->Get_SearchTag()))
+			return pInfo;
+	return nullptr;
+}
+
 void C2DMap_Tool_Manager::Load(_bool _bSelected)
 {
 	//Object_Clear(false);
@@ -1443,7 +1518,6 @@ void C2DMap_Tool_Manager::Load_2DModelList()
 		}
 	}
 
-	int a = 1;
 }
 
 void C2DMap_Tool_Manager::Load_SaveFileList()

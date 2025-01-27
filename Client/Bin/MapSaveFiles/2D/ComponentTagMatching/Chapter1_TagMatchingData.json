@@ -19,7 +19,7 @@
       "ActiveType": "ActiveType_Breakable"
     },
     "ColliderPropertis": {
-      "ColliderType": "Collier_Squere",
+      "ColliderType": "Collider_Squere",
       "ColliderInfo": {
         "Collider_Offset_Pos": {
           "X": 10.0,
@@ -34,7 +34,23 @@
     "TextureName": "tree_green_01",
     "ModelType": "NonAnim",
     "Active": false,
-    "Collider": true
+    "Collider": true,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Breakable"
+    },
+    "ColliderPropertis": {
+      "ColliderType": "Collider_AABB",
+      "ColliderInfo": {
+        "Collider_Offset_Pos": {
+          "X": 10.0,
+          "Y": 10.0
+        },
+        "Collider_Offset_Size": {
+          "X": 1.0,
+          "Y": 1.0
+        }
+      }
+    }
   },
   {
     "SearchTag": "ButterflyBlue",
@@ -51,56 +67,135 @@
     "TextureName": "butterfly_orange_fly_02",
     "ModelType": "Anim",
     "Active": true,
-    "Collider": false
+    "Collider": false,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Patrol"
+    }
   },
   {
     "SearchTag": "ButterflyWhite",
     "TextureName": "butterfly_white_fly_02",
     "ModelType": "Anim",
     "Active": true,
-    "Collider": false
+    "Collider": false,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Patrol"
+    }
   },
   {
     "SearchTag": "barrel",
     "TextureName": "barrel_01",
     "ModelType": "NonAnim",
     "Active": true,
-    "Collider": true
+    "Collider": true,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Breakable"
+    },
+    "ColliderPropertis": {
+      "ColliderType": "Collider_AABB",
+      "ColliderInfo": {
+        "Collider_Offset_Pos": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Collider_Offset_Size": {
+          "X": 1.0,
+          "Y": 1.0
+        }
+      }
+    }
   },
   {
     "SearchTag": "townsign",
     "TextureName": "town_sign",
     "ModelType": "NonAnim",
     "Active": true,
-    "Collider": true
+    "Collider": true,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Dialog"
+    },
+    "ColliderPropertis": {
+      "ColliderType": "Collider_AABB",
+      "ColliderInfo": {
+        "Collider_Offset_Pos": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Collider_Offset_Size": {
+          "X": 1.0,
+          "Y": 1.0
+        }
+      }
+    }
   },
   {
     "SearchTag": "actionsignpost",
     "TextureName": "action_sign_post",
     "ModelType": "NonAnim",
     "Active": true,
-    "Collider": true
+    "Collider": true,
+    "ActivePropertis": {
+      "ActiveType": "ActiveType_Dialog"
+    },
+    "ColliderPropertis": {
+      "ColliderType": "Collider_AABB",
+      "ColliderInfo": {
+        "Collider_Offset_Pos": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Collider_Offset_Size": {
+          "X": 1.0,
+          "Y": 1.0
+        }
+      }
+    }
   },
   {
     "SearchTag": "treegreenfallen",
     "TextureName": "tree_green_fallen",
     "ModelType": "NonAnim",
     "Active": false,
-    "Collider": true
+    "Collider": true,
+    "ColliderPropertis": {
+      "ColliderType": "Collider_AABB",
+      "ColliderInfo": {
+        "Collider_Offset_Pos": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Collider_Offset_Size": {
+          "X": 1.0,
+          "Y": 1.0
+        }
+      }
+    }
   },
   {
     "SearchTag": "treegreenbrokentrunk",
     "TextureName": "tree_green_broken_trunk",
     "ModelType": "NonAnim",
     "Active": false,
-    "Collider": true
-
+    "Collider": false
   },
   {
     "SearchTag": "largemossrock",
     "TextureName": "large_moss_rock",
     "ModelType": "NonAnim",
     "Active": false,
-    "Collider": true
+    "Collider": true,
+    "ColliderPropertis": {
+      "ColliderType": "Collider_AABB",
+      "ColliderInfo": {
+        "Collider_Offset_Pos": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Collider_Offset_Size": {
+          "X": 1.0,
+          "Y": 1.0
+        }
+      }
+    }
   }
 ]
