@@ -32,12 +32,13 @@ public:
 
 #ifdef _DEBUG
 	_float3						Get_ArmRotation();
-	//void						Zoom_In();
-	//void						Zoom_Out();
 #endif
 
 public:
-	void						Add_Arm(CCameraArm* _pCameraArm);
+	void						Add_CurArm(CCameraArm* _pCameraArm);
+	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData);
+	
+	void						Set_NextArmData(_wstring _wszNextArmName);
 	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
@@ -48,7 +49,8 @@ private:
 	_float						m_fSmoothSpeed = {};
 
 	// Arm
-	CCameraArm*					m_pArm = { nullptr };
+	map<_wstring, ARM_DATA*>	m_ArmDatas;
+	CCameraArm*					m_pCurArm = { nullptr };
 
 private:
 	void						Key_Input(_float _fTimeDelta);
@@ -56,6 +58,9 @@ private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Defualt_Move(_float fTimeDelta);
 	void						Look_Target(_float fTimeDelta);
+
+private:
+	ARM_DATA*					Find_ArmData(_wstring _wszArmTag);
 
 public:
 	static CCamera_Target*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

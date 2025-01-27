@@ -37,6 +37,7 @@ public:
 	CUTSCENE_KEYFRAME			Get_KeyFrame(_uint _iKeyFrameIndex) { return m_KeyFrames[_iKeyFrameIndex]; }
 	_uint						Get_SectorType() { return m_iSectorType; }
 	_float						Get_SectorDuration() { return m_fDuration; }
+	_float						Get_LastTimeStamp();
 #endif
 
 	_bool						Get_IsChangeKeyFrame();
@@ -73,11 +74,11 @@ private:
 	_float						BasisFunction(_uint _i, _uint _iDegree, _float _fRatio);
 	
 	void						Calculate_Index();
+
 public:
 	static CCutScene_Sector*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg);
 	CCutScene_Sector*			Clone();
 	virtual void				Free() override;
-
 };
 
 END

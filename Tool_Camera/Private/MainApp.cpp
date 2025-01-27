@@ -55,6 +55,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 	m_pGameInstance->Start_Imgui();
 
 	m_pGameInstance->Priority_Update_Engine(_fTimeDelta);
+	Imgui_FPS(_fTimeDelta);
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	m_pCamera_Manager->Update();
@@ -91,6 +92,22 @@ HRESULT CMainApp::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CMainApp::Imgui_FPS(_float _fTimeDelta)
+{
+	ImGui::Begin("FPS");
+	static _int iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
+	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_120"));
+	m_vFPSRenderTime.y += _fTimeDelta;
+	if (m_vFPSRenderTime.x <= m_vFPSRenderTime.y)
+	{
+		m_vFPSRenderTime.y = 0.0f;
+		iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
+	}
+	ImGui::Text("MaxFPS : %d", iMaxFPS);
+	ImGui::Text("InGameFPS : %d", iInGameFPS);
+	ImGui::End();
 }
 
 HRESULT CMainApp::SetUp_StartLevel(LEVEL_ID _eLevelID)

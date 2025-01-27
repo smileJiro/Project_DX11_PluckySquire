@@ -28,6 +28,7 @@ public:
 	_float3						Get_SimulationPos() { return m_vSimulationPos; }
 	_bool						Get_IsFinish() { return m_isFinishCutScene; }
 	_bool						Get_IsSimulation() { return m_isSimulation; }
+	map<_wstring, pair<_float2, vector<CUTSCENE_DATA>>>* Get_CutSceneDatas() { return &m_CutSceneDatas; }
 
 	void						Set_IsFinish(_bool _isFinish) { m_isFinishCutScene = _isFinish; }
 	void						Set_IsSimulation(_bool _isSimulation) { m_isSimulation = _isSimulation; }
@@ -40,8 +41,9 @@ public:
 
 private:
 	map<_wstring, vector<CCutScene_Sector*>>	m_CutScenes;
-	map<_wstring, vector<CUTSCENE_DATA>>		m_CutSceneDatas;
+	map<_wstring, pair<_float2, vector<CUTSCENE_DATA>>>		m_CutSceneDatas;
 	vector<CCutScene_Sector*>*					m_pCurCutScene = { nullptr };
+	_wstring									m_wszCurCutSceneTag = {};
 
 	_uint										m_iSectorNum = {};
 	_uint										m_iCurSectorIndex = {};
@@ -66,6 +68,7 @@ private:
 	void						Change_Sector();
 
 	vector<CCutScene_Sector*>*	Find_CutScene(_wstring _wszCutSceneName);
+	pair < _float2, vector<CUTSCENE_DATA>>*		Find_CutSceneData(_wstring _wszCutSceneName);
 
 	void						Before_CutScene(_float _fTimeDelta);
 	void						After_CutScene(_float _fTimeDelta);
@@ -74,6 +77,8 @@ private:
 	void						Initialize_CameraInfo(CUTSCENE_INITIAL_DATA* _pTargetPos);
 
 	void						Save_Data();
+	void						Save_BinaryData();
+
 public:
 	static CCamera_CutScene*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*		Clone(void* _pArg);
