@@ -28,6 +28,8 @@ void CLevel_EffectTool::Update(_float _fTimeDelta)
 		Update_Particle_Tool(_fTimeDelta);
 
 
+	Tool_Update();
+
 }
 
 HRESULT CLevel_EffectTool::Render()
@@ -83,6 +85,11 @@ HRESULT CLevel_EffectTool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 
 HRESULT CLevel_EffectTool::Ready_Layer_Effect(const _wstring& _strLayerTag)
 {
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_GameObject_EffectReference"),
+		LEVEL_TOOL, _strLayerTag)))
+		return E_FAIL;
+	
+
 	//CParticle_Sprite_Emitter::PARTICLE_EMITTER_DESC TempDesc = {};
 	//TempDesc.eStartCoord = COORDINATE_3D;
 	//TempDesc.iCurLevelID = LEVEL_TOOL;
@@ -176,6 +183,8 @@ void CLevel_EffectTool::Show_System_List()
 {
 	if (ImGui::TreeNode("Particle System List"))
 	{
+		ImGui::PushItemFlag(ImGuiItemFlags_NoNav, true);
+
 		if (ImGui::BeginListBox("List"))
 		{
 			_int n = 0;
@@ -193,13 +202,13 @@ void CLevel_EffectTool::Show_System_List()
 					m_pNowItem = m_ParticleSystems[iNowIndex];
 					m_pNowItem->Set_Active(true);
 				}
-				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
 				++n;
 			}
 			ImGui::EndListBox();
 		}
+		ImGui::PopItemFlag();
 
 		if (ImGui::Button("New System"))
 		{
@@ -253,7 +262,7 @@ void CLevel_EffectTool::Adjust_System(_float _fTimeDelta)
 			Desc.isCoordChangeEnable = false;
 			Desc.iProtoShaderLevel = LEVEL_STATIC;
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxPointInstance";
-			if (FAILED(m_pNowItem->Add_NewEmitter(CParticle_Emitter::SPRITE, &Desc)))
+			if (FAILED(m_pNowItem->Add_New_Emitter(CParticle_Emitter::SPRITE, &Desc)))
 			{
 				MSG_BOX("Emitter 만들기 실패");
 			}
@@ -266,6 +275,128 @@ void CLevel_EffectTool::Adjust_System(_float _fTimeDelta)
 	}
 
 
+}
+
+void CLevel_EffectTool::Tool_Update()
+{
+	ImGui::Begin("Tool");
+
+	Tool_Texture();
+
+	ImGui::End();
+}
+
+void CLevel_EffectTool::Tool_Texture()
+{
+	if (ImGui::TreeNode("Preview Texture"))
+	{
+		if (m_pNowTexture)
+		{
+			ImVec2 imageSize(100, 100); // 이미지 크기 설정
+			ID3D11ShaderResourceView* pSelectImage = m_pNowTexture->Get_SRV(0);
+			if (nullptr != pSelectImage)
+			{
+				ImGui::Image((ImTextureID)pSelectImage, imageSize);
+			}
+
+			if (m_pNowItem)
+			{
+				if (ImGui::Button("Set_Texture"))
+				{
+					m_pNowItem->Set_Texture(m_pNowTexture);
+				}
+			}
+
+		}
+
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("Texture"))
+	{
+		static _wstring wstrSelectedKey = L"";
+		static int iSelectedIndex = -1;
+
+		if (ImGui::BeginListBox("Textures List"))
+		{
+			int iIndex = 0;
+			for (const auto& [key, pTexture] : m_Textures)
+			{
+				std::string strKey = WSTRINGTOSTRING(key);
+
+				const bool is_selected = (iSelectedIndex == iIndex);
+
+				if (ImGui::Selectable(strKey.c_str(), is_selected))
+				{
+					if (is_selected)
+					{
+						m_pNowTexture = nullptr;
+						iSelectedIndex = -1; // 선택 해제
+						wstrSelectedKey = L"";
+					}
+					else
+					{
+						m_pNowTexture = pTexture;
+						iSelectedIndex = iIndex;
+						wstrSelectedKey = key;
+					}
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+
+				++iIndex;
+			}
+			ImGui::EndListBox();
+		}
+
+		ImGui::InputText("Texture Directory", m_szTexturePath, MAX_PATH);
+
+		if (ImGui::Button("Load_DDSTextures"))
+		{
+			Load_Textures(".dds");
+		}
+
+		if (ImGui::Button("Load_PNGTextures"))
+		{
+			Load_Textures(".png");
+		}
+
+
+		ImGui::TreePop();
+	}
+}
+
+HRESULT CLevel_EffectTool::Load_Textures(const _char* _szExtension)
+{
+	std::filesystem::path path;
+	path = m_szTexturePath;
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+		if (entry.path().extension() == _szExtension) {
+			//cout << entry.path().string() << endl;
+
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, entry.path().string().c_str());
+			
+			if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, entry.path().filename(),
+				pTexture)))
+			{
+				string str = "Failed to Create CTexture";
+				str += entry.path().filename().string();
+				MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+				
+				Safe_Release(pTexture);
+
+				return E_FAIL;
+			}
+
+			pTexture->Add_SRVName(entry.path().c_str());
+			m_Textures.emplace(entry.path().c_str(), pTexture);
+			
+
+			Safe_AddRef(pTexture);
+		}
+	}
+
+	return S_OK;
 }
 
 CLevel_EffectTool* CLevel_EffectTool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -286,6 +417,12 @@ void CLevel_EffectTool::Free()
 	for (auto& pParticleSystem : m_ParticleSystems)
 		Safe_Release(pParticleSystem);
 	m_ParticleSystems.clear();
+
+	for (auto& Pair : m_Textures)
+	{
+		Safe_Release(Pair.second);
+	}
+	m_Textures.clear();
 
 	__super::Free();
 

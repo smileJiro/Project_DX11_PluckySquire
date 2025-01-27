@@ -160,6 +160,8 @@ namespace Engine
 		XMFLOAT2		vLifeTime;
 		XMFLOAT4		vColor;
 		XMFLOAT4		vUV;
+		XMFLOAT3		vVelocity;
+		XMFLOAT3		vAcceleration;
 	}VTXPOINTINSTANCE;
 
 
@@ -172,7 +174,7 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagPointParticle
 	{
-		static const unsigned int iNumElements = { 9 };		// Position + Size + VTXPOINTINSTANCE
+		static const unsigned int iNumElements = { 11 };		// Position + Size + VTXPOINTINSTANCE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXPOINTPARTICLE;
 
@@ -220,6 +222,23 @@ namespace Engine
 		_bool				bLookTarget = {};
 		_uint				iAtRatioType = {};
 	} CUTSCENE_KEYFRAME;
+
+	typedef struct tagCutSceneData
+	{
+		_float3				vPosition = {};
+		_float3				vRotation = {};
+
+		_float3				vAtOffset = {};
+		_float				fFovy = {};
+	} CUTSCENE_DATA;
+
+	typedef struct tagCutSceneInitialData
+	{
+		_float3				vPosition = {};
+
+		_float3				vAtOffset = {};
+		_uint				iZoomLevel = {};
+	} CUTSCENE_INITIAL_DATA;
 #pragma endregion
 
 #pragma region Binary ฐüทร

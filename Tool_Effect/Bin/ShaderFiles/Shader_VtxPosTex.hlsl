@@ -4,7 +4,7 @@ float4x4 g_WorldMatrix;
 float4x4 g_ViewMatrix;
 float4x4 g_ProjMatrix;
 
-
+Texture2D g_Texture;
 
 /* ±¸Á¶Ã¼ */
 struct VS_IN
@@ -65,6 +65,19 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_Texture(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+   
+    Out.vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
+    
+    if (Out.vColor.a < 0.05f)
+        discard;
+   
+    
+    return Out;
+}
+
 
 
 
@@ -79,5 +92,15 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
+    }
+
+    pass AlphaBlendTexture
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_Texture();
     }
 }

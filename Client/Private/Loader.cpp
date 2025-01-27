@@ -385,6 +385,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_ShopBulb"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_bulb.dds"), 1))))
 		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DialogueBG"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Dialogue/dialogue_%d.dds"), 27))))
+        return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SampleMap"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Map/SampleMap.dds"), 1))))
@@ -453,14 +456,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		return E_FAIL;
 
 
-    /// 다이얼로그 관련
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DialogueBG"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Dialogue/BG/DialogueBGs/Dialogue_BG_%d.dds"), 27))))
-		return E_FAIL;
-
-	//if (FAILED(Load_Diagloues(LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Dialogue/Test.json"))))
-	//	return E_FAIL;
-
 
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -494,6 +489,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
     
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
         TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
+        return E_FAIL;
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_GAMEPLAY,
+        TEXT("../Bin/Resources/Models/2DAnim/"))))
         return E_FAIL;
 
 
@@ -557,7 +555,12 @@ HRESULT CLoader::Loading_Level_GamePlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"),
 		CInteraction_Heart::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"),
+        CDialog::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
+
+    
     ///////////////////////////////// UI /////////////////////////////////
 
 
@@ -656,7 +659,7 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
     _tchar				szFilePath[MAX_PATH] = TEXT("");
     _tchar				szFullPath[MAX_PATH] = TEXT("");
     _tchar				szProtoTag[MAX_PATH] = TEXT("");
-    _tchar				szExtension[MAX_PATH] = TEXT(".json");
+    _tchar				szExtension[MAX_PATH] = TEXT(".model2d");
 
     lstrcpy(szFilePath, _szDirPath);
     lstrcat(szFilePath, TEXT("*"));
@@ -721,6 +724,27 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
     return S_OK;
 }
 
+HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _szDirPath)
+{
+    std::filesystem::path path;
+    path = _szDirPath;
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+        if (entry.path().extension() == ".model2d") {
+            //cout << entry.path().string() << endl;
+
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
+                C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
+            {
+                string str = "Failed to Create 2DModel";
+                str += entry.path().filename().replace_extension().string();
+                MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+                return E_FAIL;
+            }
+        }
+    }
+    return S_OK;
+}
+
 HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix)
 {
     std::ifstream input_file(_szJsonFilePath);
@@ -765,37 +789,6 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
     return S_OK;
 }
 
-HRESULT CLoader::Load_Diagloues(LEVEL_ID _iLevelIndex, const _tchar* _szJasonPath)
-{
-    CDialogue::Dialog tDialogue;
-    ifstream input_File(_szJasonPath);
-
-
-	json jFileData;
-	if (!input_File.is_open())
-	{
-		MSG_BOX("Failed to Open Json File ");
-		return E_FAIL;
-	}
-
-    json& jDialog = jFileData["DialInfo"];
-    input_File >> jFileData;
-    input_File.close();
-    set<string> strDialName;
-
-    for (auto& j : jDialog)
-    {
-        strDialName.insert(j.get<string>());
-    }
-       
-
-	//if (FAILED(m_pGameInstance->Add_Prototype(_iLevelIndex, StringToWstring(strFileName),
-	//	CDialogue::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
-	//	return E_FAIL;
-
-
-    return S_OK;
-}
 
 HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName)
 {

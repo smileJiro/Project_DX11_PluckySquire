@@ -44,13 +44,15 @@ void CCamera_Target::Priority_Update(_float _fTimeDelta)
 
 void CCamera_Target::Update(_float _fTimeDelta)
 {
-	Action_Mode(_fTimeDelta);
-
-	m_pArm->Get_ArmVector();
+	
 }
 
 void CCamera_Target::Late_Update(_float _fTimeDelta)
 {
+	Action_Mode(_fTimeDelta);
+
+	m_pArm->Get_ArmVector();
+
 	__super::Compute_PipeLineMatrices();
 }
 
@@ -128,6 +130,8 @@ void CCamera_Target::Look_Target(_float _fTimeDelta)
 	
 	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+
+	XMStoreFloat3(&m_vTargetPos, vAt);
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -201,6 +201,7 @@
     <ClInclude Include="..\Public\Boss_HomingBall.h" />
     <ClInclude Include="..\Public\Boss_PurpleBall.h" />
     <ClInclude Include="..\Public\Boss_YellowBall.h" />
+    <ClInclude Include="..\Public\Camera_CutScene.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\DetectionField.h" />
@@ -296,6 +297,7 @@
     <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
     <ClCompile Include="..\Private\Boss_PurpleBall.cpp" />
     <ClCompile Include="..\Private\Boss_YellowBall.cpp" />
+    <ClCompile Include="..\Private\Camera_CutScene.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />

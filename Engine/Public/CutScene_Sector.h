@@ -13,6 +13,7 @@ public:
 	typedef struct tagCutSceneSectorDesc
 	{
 		_uint			iSectorType = { SECTOR_TYPE_END };
+		_float			fSectorDuration = { 5.f };
 	}CUTSCENE_SECTOR_DESC;
 
 private:
@@ -34,6 +35,8 @@ public:
 	_float						Get_TimeOffset();
 	_bool						Get_IsLookAt();
 	CUTSCENE_KEYFRAME			Get_KeyFrame(_uint _iKeyFrameIndex) { return m_KeyFrames[_iKeyFrameIndex]; }
+	_uint						Get_SectorType() { return m_iSectorType; }
+	_float						Get_SectorDuration() { return m_fDuration; }
 #endif
 
 	_bool						Get_IsChangeKeyFrame();
@@ -56,12 +59,14 @@ private:
 
 	_uint						m_iSectorType = { SECTOR_TYPE_END };
 
-	_int						m_iPreKeyFrameIndex = { -1 };
-	_int						m_iCurKeyFrameIndex = { -1 };
+	_int						m_iPreKeyFrameIndex = { 0 };
+	_int						m_iCurKeyFrameIndex = { 1 };
+	_int						m_iCurSegmentIndex = { 0 };
 
 private:
 	_vector						Calculate_Position_Spline(_float _fRatio);
 	_vector						Calculate_Position_Spline_Test(_float _fTimeDelta);
+	_vector						Calculate_Position_Catmull_Rom(_float _fRatio);
 	_vector						Calculate_Position_Linear(_float _fRatio);
 
 	_uint						Find_Span(_float _fRatio);

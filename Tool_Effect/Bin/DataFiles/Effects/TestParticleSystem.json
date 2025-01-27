@@ -3,47 +3,40 @@
     "Emitters": [
         {
             "Type": "Sprite",
-            "Texture": "../Bin/Resources/Textures/Effects/Default_Glow.dds",
+            "Texture": "../Bin/Resources/Textures/Effects/Baodian024.dds",
             "Buffer": {
-                "Count": 2000,
+                "Count": 800,
                 "ShapeLocation": {
                     "Shape" : "CONE",
                     "Length": 4.0,
                     "Outer_Angle": 90.0,
-                    "Inner_Angle" : 30.0,
+                    "Inner_Angle" : 0.0,
                     "Radial_Angle" : 360.0,
-                    "Surface" : 0.7,
-                    "Flatten" : 1.0,
-                    "Matrix": 
-                    [
+                    "Cone_Surface" : 0.0,
+                    "Flatten" : 0.0,
+                    "Scale" : [
                         1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        
-                        0.0,
                         1.0,
-                        0.0,
-                        0.0,
-
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-
-                        0.0,
-                        0.0,
-                        0.0,
                         1.0
+                    ],
+                    "Rotation" : [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Position" : [
+                        0.0,
+                        0.0,
+                        0.0
                     ]
                 },           
                 "Scale": {
-                    "SetType": "RANDOMLINEAR",
+                    "SetType": "DIRECTSET",
                     "Arg1" : 
                     [
-                        0.1,
-                        0.1,
-                        0.1
+                        1.0,
+                        1.0,
+                        1.0
                     ],
                     "Arg2" :
                     [
@@ -74,7 +67,7 @@
                     "Arg1" :
                     [
                         0.0,
-                        0.0,
+                        0.5,
                         0.0
                     ],
                     "Arg2" :
@@ -99,27 +92,63 @@
                 "LifeTime":
                 {
                     "SetType": "RANDOMLINEAR",
-                    "Arg1": 0.0,
-                    "Arg2": 5.0
+                    "Arg1": 10.0,
+                    "Arg2": 15.0
                 },
                 "Color":
                 {
                     "SetType": "RANDOMRANGE",
                     "Arg1":
                     [
-                        0.6,
-                        0.6,
-                        0.3,
+                        0.5,
+                        0.5,
+                        0.5,
                         1.0
                     ],
                     "Arg2":
                     [
-                        0.9,
-                        0.9,
-                        0.6,
+                        1.0,
+                        1.0,
+                        1.0,
                         1.0
+
                     ]
-                }
+                },
+                "Module":
+                [
+                    {
+                        "Init" : true,
+                        "Type" : "INIT_VELOCITY_POINT",
+                        "Order" : 0,
+                        "Amount" : 5.0,
+                        "Origin" :
+                        [
+                            0.0,
+                            -0.5,
+                            0.0
+                        ]
+                    },
+
+                    {
+                        "Init" : false,
+                        "Type" : "VORTEX_ACCELERATION",
+                        "Order" : 0,
+                        "Amount" : 5.0,
+                        "Axis" : 
+                        [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Pull Amount" : 0.5,
+                        "Origin Point" :
+                        [
+                            1.0,
+                            1.0,
+                            0.0
+                        ]
+                    }
+                ]
             }
         }
     ]

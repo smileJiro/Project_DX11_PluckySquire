@@ -46,6 +46,12 @@ public:
 		m_SRVNames.push_back(strSRVName);
 		m_iNumSRVs++;
 	}
+
+	void	Add_SRVName(const _wstring& _wstrName)
+	{
+		m_SRVNames.push_back(_wstrName);
+	}
+
 private:
 	_uint m_iNumSRVs = 0;
 	vector<ID3D11ShaderResourceView*> m_SRVs;

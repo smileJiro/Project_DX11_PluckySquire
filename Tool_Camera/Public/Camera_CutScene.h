@@ -27,14 +27,20 @@ public:
 #ifdef _DEBUG
 	_float3						Get_SimulationPos() { return m_vSimulationPos; }
 	_bool						Get_IsFinish() { return m_isFinishCutScene; }
+	_bool						Get_IsSimulation() { return m_isSimulation; }
+
+	void						Set_IsFinish(_bool _isFinish) { m_isFinishCutScene = _isFinish; }
+	void						Set_IsSimulation(_bool _isSimulation) { m_isSimulation = _isSimulation; }
+	void						CutScene_Clear();
 #endif
 
 public:
-	void						Set_NextCutScene(_wstring _wszCutSceneName);
+	void						Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pTargetPos = nullptr);
 	void						Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene);
 
 private:
 	map<_wstring, vector<CCutScene_Sector*>>	m_CutScenes;
+	map<_wstring, vector<CUTSCENE_DATA>>		m_CutSceneDatas;
 	vector<CCutScene_Sector*>*					m_pCurCutScene = { nullptr };
 
 	_uint										m_iSectorNum = {};
@@ -45,10 +51,14 @@ private:
 
 	// Target
 	_float3										m_vTargetPos = {};
-	_bool										m_isLookAt = {};
+	CUTSCENE_INITIAL_DATA						m_tInitialData = {};
+	_bool										m_isInitialData = { false };
+	_float2										m_InitialTime = { 0.3f, 0.f };
 
 #ifdef _DEBUG
 	_float3										m_vSimulationPos = {};
+	_bool										m_isSimulation = { false };
+	_float2										m_fSimulationTime = { 0.5f, 0.f};
 #endif
 
 private:
@@ -60,9 +70,10 @@ private:
 	void						Before_CutScene(_float _fTimeDelta);
 	void						After_CutScene(_float _fTimeDelta);
 
-	void						Look_Target(_float _fTimeDelta);
-	void						Initialize_CameraInfo();
+	void						Process_Movement(_float _fTimeDelta);
+	void						Initialize_CameraInfo(CUTSCENE_INITIAL_DATA* _pTargetPos);
 
+	void						Save_Data();
 public:
 	static CCamera_CutScene*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*		Clone(void* _pArg);

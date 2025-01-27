@@ -352,7 +352,7 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 						&pGameObject,
 						(void*)&NormalDesc)))
 					{
-						_string strNotExistTextureMessage = WstringToString(_wstring(L"2D Texture Info not Exist ->\t") + NormalDesc.strProtoTag);
+						_string strNotExistTextureMessage = WstringToString(_wstring(L"2D Texture Info not Exist ->") + NormalDesc.strProtoTag);
 						LOG_TYPE(strNotExistTextureMessage, LOG_ERROR);
 						NotExistTextures.push_back(strNotExistTextureMessage);
 					}

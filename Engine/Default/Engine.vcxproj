@@ -225,6 +225,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Frustum.h" />
     <ClInclude Include="..\public\Particle_Emitter.h" />
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
+    <ClInclude Include="..\public\Particle_Module.h" />
     <ClInclude Include="..\public\Particle_System.h" />
     <ClInclude Include="..\public\Particle_Sprite_Emitter.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
@@ -317,6 +318,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Frustum.cpp" />
     <ClCompile Include="..\private\Particle_Emitter.cpp" />
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />
+    <ClCompile Include="..\private\Particle_Module.cpp" />
     <ClCompile Include="..\private\Particle_System.cpp" />
     <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp" />
     <ClCompile Include="..\Private\Engine_Function.cpp" />
