@@ -11,7 +11,6 @@ CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 HRESULT CSection_2D::Initialize()
 {
-    // 만약 Map_2D를 동적으로 변경하고자한다면, Device, Context를 Section이 가지게 해도 될 듯 함.
     if (FAILED(__super::Initialize()))
         return E_FAIL;
 
@@ -32,6 +31,30 @@ HRESULT CSection_2D::Register_RenderGroup_ToRenderer()
 {
     /* 현재 미구현, Rendering 관련해서는 좀만 더 고민해볼예정. */
     return S_OK;
+}
+
+ID3D11RenderTargetView* CSection_2D::Get_RTV_FromRenderTarget()
+{
+    if (nullptr == m_pMap)
+        return nullptr;
+
+    return m_pMap->Get_RTV_FromRenderTarget();
+}
+
+ID3D11ShaderResourceView* CSection_2D::Get_SRV_FromRenderTarget()
+{
+    if (nullptr == m_pMap)
+        return nullptr;
+
+    return m_pMap->Get_SRV_FromRenderTarget();
+}
+
+ID3D11ShaderResourceView* CSection_2D::Get_SRV_FromTexture(_uint _iTextureIndex)
+{
+    if (nullptr == m_pMap)
+        return nullptr;
+
+    return m_pMap->Get_SRV_FromTexture(_iTextureIndex);
 }
 
 HRESULT CSection_2D::Ready_Map_2D()
