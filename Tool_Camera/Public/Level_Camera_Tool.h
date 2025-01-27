@@ -113,6 +113,9 @@ private:
 	// Initial Data
 	CUTSCENE_INITIAL_DATA					m_tInitialData = {};
 
+	// Trigger Tool
+
+
 private:
 	void				Show_CameraTool();
 	void				Show_CutSceneTool(_float fTimeDelta);

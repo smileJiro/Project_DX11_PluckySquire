@@ -71,6 +71,7 @@ void CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INIT
 		return;
 
 	m_iSectorNum = m_pCurCutScene->size();
+	m_wszCurCutSceneTag = _wszCutSceneName;
 
 	for (auto& Sector : *m_pCurCutScene) {
 		Safe_AddRef(Sector);
@@ -78,6 +79,16 @@ void CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INIT
 
 	m_isStartCutScene = true;
 	Initialize_CameraInfo(_pTargetPos);
+
+	// 있다면, 이전에 저장해 둔 CutScene Data 지우기
+	pair<_float2, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(_wszCutSceneName);
+	if (nullptr != pData)
+		(*pData).second.clear();
+	else {
+		pair<_float2, vector<CUTSCENE_DATA>> Data;
+		m_CutSceneDatas.emplace(_wszCutSceneName, Data);
+	}
+
 }
 
 void CCamera_CutScene::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene)
@@ -109,11 +120,20 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 			m_isFinishCutScene = true;
 			m_vAtOffset = { 0.f, 0.f, 0.f };
 
+			_float fTotalTime = {};
+
 			for (auto& Sector : *m_pCurCutScene) {
+				fTotalTime += Sector->Get_LastTimeStamp();
 				Safe_Release(Sector);
 			}
 
 			m_pCurCutScene = nullptr;
+
+			pair<_float2, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(m_wszCurCutSceneTag);
+			
+			if (nullptr == pData)
+				return;
+			pData->first = { fTotalTime, 0.f };
 		}
 		else {
 			Change_Sector();
@@ -149,8 +169,21 @@ vector<CCutScene_Sector*>* CCamera_CutScene::Find_CutScene(_wstring _wszCutScene
 	return &(iter->second);
 }
 
+pair<_float2, vector<CUTSCENE_DATA>>* CCamera_CutScene::Find_CutSceneData(_wstring _wszCutSceneName)
+{
+	auto iter = m_CutSceneDatas.find(_wszCutSceneName);
+
+	if (iter == m_CutSceneDatas.end())
+		return nullptr;
+
+	return &(iter->second);
+}
+
 void CCamera_CutScene::Before_CutScene(_float _fTimeDelta)
 {
+	if (false == m_isStartCutScene)
+		return;
+
 	if (true == m_isInitialData) {
 		// Initial 데이터랑 KeyFrame 혹은 vector<m_CutSceneDatas> 첫 번째 값을 보간함
 		CUTSCENE_KEYFRAME tKeyFrame = (*m_pCurCutScene)[m_iCurSectorIndex]->Get_KeyFrame(1);
@@ -163,7 +196,6 @@ void CCamera_CutScene::Before_CutScene(_float _fTimeDelta)
 			m_iCurZoomLevel = tKeyFrame.iZoomLevel;
 			m_fFovy = m_ZoomLevels[tKeyFrame.iZoomLevel];
 			m_InitialTime.y = 0.f;
-			m_isInitialData = false;
 			m_isStartCutScene = false;
 
 			return;
@@ -192,6 +224,7 @@ void CCamera_CutScene::After_CutScene(_float _fTimeDelta)
 
 	if (m_fSimulationTime.y > m_fSimulationTime.x) {
 		m_isFinishCutScene = false;
+		m_isInitialData = false;
 		m_fSimulationTime.y = 0.f;
 		CCamera_Manager_Tool::GetInstance()->Change_CameraType(CCamera_Manager_Tool::FREE);
 	}
@@ -259,10 +292,25 @@ void CCamera_CutScene::Initialize_CameraInfo(CUTSCENE_INITIAL_DATA* _pTargetPos)
 
 void CCamera_CutScene::Save_Data()
 {
+	pair<_float2, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(m_wszCurCutSceneTag);
+
 	CUTSCENE_DATA tData = {};
+
 	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
-	tData.vRotation = {};
-	
+	tData.vRotation = {};	// 나중에
+	tData.fFovy = m_fFovy;
+
+	// 초기 입력 데이터가 있을 때
+	if (true == m_isInitialData) {
+		_vector vAtOffset = XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		XMStoreFloat3(&tData.vAtOffset, vAtOffset);
+	}
+	else {
+		_vector vAtOffset = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		XMStoreFloat3(&tData.vAtOffset, vAtOffset);
+	}
+
+	(*pData).second.push_back(tData);
 }
 
 CCamera_CutScene* CCamera_CutScene::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

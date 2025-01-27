@@ -40,7 +40,7 @@ void CIdleState::State_Update(_float _fTimeDelta)
 	m_fAccTime += _fTimeDelta;
 
 	//몬스터 인식 범위 안에 들어오면 인식상태로 전환
-	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION) - m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION))));
+	_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
 	if (dis <= m_fAlertRange)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);

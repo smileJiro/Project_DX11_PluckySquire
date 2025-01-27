@@ -1774,7 +1774,53 @@ void CLevel_Camera_Tool::Play_CutScene(_float fTimeDelta)
 void CLevel_Camera_Tool::Save_Data_CutScene()
 {
 	if (true == m_isForClient) {
+		CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::CUTSCENE);
 
+		if (nullptr == pCamera)
+			return;
+		
+		map<_wstring, pair<_float2, vector<CUTSCENE_DATA>>>* pData = dynamic_cast<CCamera_CutScene*>(pCamera)->Get_CutSceneDatas();
+	
+		if (nullptr == pData)
+			return;
+		
+		// Save
+		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/Client/";
+		_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
+
+		std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);
+
+		if (!outFile) {
+			std::cerr << "파일 열기 실패." << std::endl;
+		}
+
+		_uint iSize = pData->size();
+		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+
+		for (auto& CutSceneData : *pData) {
+
+			// CutScene Tag 길이 저장
+			_uint strLength = CutSceneData.first.length();
+			outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
+			outFile.write(reinterpret_cast<const char*>(CutSceneData.first.c_str()), strLength * sizeof(wchar_t));
+
+			// Time 저장
+			outFile.write(reinterpret_cast<const char*>(&CutSceneData.second.first), sizeof(_float2));
+
+			// Data Struct 저장
+			iSize = CutSceneData.second.second.size();
+			outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+
+			for (auto& Data : CutSceneData.second.second) {
+				outFile.write(reinterpret_cast<const char*>(&Data.vPosition), sizeof(_float3));
+				outFile.write(reinterpret_cast<const char*>(&Data.vRotation), sizeof(_float3));
+				outFile.write(reinterpret_cast<const char*>(&Data.vAtOffset), sizeof(_float3));
+				outFile.write(reinterpret_cast<const char*>(&Data.fFovy), sizeof(_float));
+			}
+		}
+
+		_wstring FullPath = wszSavePath + wszSaveName + TEXT(".bin");
+		m_BinaryFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
 	}
 	else {
 		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/Tool/";
@@ -1904,7 +1950,7 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 			inFile.read(reinterpret_cast<char*>(&iSectorNum), sizeof(_uint));
 
 			// Sector
-			for (_int i = 0; i < iSectorNum; ++i) {
+			for (_int j = 0; j < iSectorNum; ++j) {
 
 				// Sector Type 저장(Spline, Linear)
 				_uint iSectorType = {};
@@ -1925,7 +1971,7 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 				_uint iKeyFrameSize = {};
 				inFile.read(reinterpret_cast<char*>(&iKeyFrameSize), sizeof(_uint));
 
-				for (_int i = 0; i < iKeyFrameSize; ++i) {
+				for (_int k = 0; k < iKeyFrameSize; ++k) {
 
 					CUTSCENE_KEYFRAME tKeyFrame = {};
 

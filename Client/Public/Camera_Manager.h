@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "Transform.h"
 #include "Base.h"
+
+#include "Transform.h"
+#include "Camera.h"
 
 BEGIN(Engine)
 class CGameInstance;
-class CCamera;
 END
 
 BEGIN(Client)
@@ -15,15 +16,7 @@ class CCamera_Manager : public CBase
 	DECLARE_SINGLETON(CCamera_Manager)
 
 public:
-	enum CAMERA_TYPE { FREE, TARGET, CAMERA_TYPE_END };
-
-	typedef struct tagArmDataDesc
-	{
-		_float3				vArm = { 0.f, 0.f, -1.f };
-		_float				fLength = 1.f;
-		_float				fTurnTime = {};
-		_float				fLengthTime = {};
-	} ARM_DATA;
+	enum CAMERA_TYPE { FREE, TARGET, CUTSCENE, CAMERA_TYPE_END };
 
 private:
 	CCamera_Manager();
@@ -46,19 +39,32 @@ public:
 
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
-
+	
 	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);		// 카메라 모드 전환(아마 Target Camera만 적용)							
 	void				Change_CameraType(_uint _iCurrentCameraType);
 	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix);
+	
+	void				Set_NextArmData(_wstring _wszNextArmName);
+	void				Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pInitialData = nullptr);
+	void				Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType);
+	void				Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType);
+	void				Start_Shake_ByTime(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime = 0.05f, _uint _iShakeType = CCamera::SHAKE_XY, _float _fDelayTime = 0.f);
+	void				Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _uint _iShakeCount, _uint _iShakeType = CCamera::SHAKE_XY, _float _fDelayTime = 0.f);
+
+public:
+	void				Load_ArmData();
+	void				Load_CutSceneData();
 
 private:
 	CGameInstance*							m_pGameInstance = { nullptr };
 
 private:
-	map<_wstring, ARM_DATA*>				m_ArmDatas;
-
 	CCamera*								m_Cameras[CAMERA_TYPE_END];
 	_uint									m_eCurrentCameraType = { CAMERA_TYPE_END };
+
+private:
+	void				Add_ArmData(_wstring wszArmTag, ARM_DATA _pData);
+	void				Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData);
 
 public:
 	static CCamera_Manager* Create();

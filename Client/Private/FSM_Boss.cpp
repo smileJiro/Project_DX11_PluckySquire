@@ -34,7 +34,7 @@ HRESULT CFSM_Boss::Initialize(void* _pArg)
 
 void CFSM_Boss::Update(_float _fTimeDelta)
 {
-	m_CurState->State_Update(_fTimeDelta);
+	m_pCurState->State_Update(_fTimeDelta);
 
 }
 
@@ -124,7 +124,7 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 
 HRESULT CFSM_Boss::Change_State(_uint _iState)
 {
-	if (nullptr == m_CurState)
+	if (nullptr == m_pCurState)
 		return E_FAIL;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
@@ -142,7 +142,7 @@ HRESULT CFSM_Boss::Change_State(_uint _iState)
 			return S_OK;
 	}
 
-	m_CurState->State_Exit();
+	m_pCurState->State_Exit();
 	m_pOwner->Set_PreState(m_iCurState);
 
 	Set_State(_iState);
@@ -159,10 +159,10 @@ HRESULT CFSM_Boss::Set_State(_uint _iState)
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
-	m_CurState = m_States[_iState];
+	m_pCurState = m_States[_iState];
 	m_iCurState = _iState;
 
-	m_CurState->State_Enter();
+	m_pCurState->State_Enter();
 	m_pOwner->Set_State(_iState);
 
 	return S_OK;
@@ -222,5 +222,7 @@ void CFSM_Boss::Free()
 		Safe_Release(pState.second);
 
 	m_States.clear();
+	m_pOwner = nullptr;
+	m_pCurState = nullptr;
 	__super::Free();
 }
