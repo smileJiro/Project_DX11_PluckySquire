@@ -40,10 +40,6 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 		return E_FAIL;
 
 	_float2 fImageSize = m_pTextureCom->Get_Size();
-	//_float fScale = 1.f / max(fImageSize.x, fImageSize.y);
-	//fImageSize.x *= fScale;
-	//fImageSize.y *= fScale;
-	//m_fX += fImageSize.x * 0.5f;
 	m_fY -= fImageSize.y * 0.5f;
 	m_pControllerTransform->Set_Scale(fImageSize.x , fImageSize.y , 1.f );
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX, -m_fY, 0.f, 1.f));
@@ -100,38 +96,38 @@ HRESULT C2DMapObject::Ready_Components(MAPOBJ_2D_DESC* Desc)
 		return E_FAIL;
 	_wstring strProtoTag = Desc->strProtoTag;
 	// TODO :: 텍스쳐 매핑방식 구조 구성후 추후 수정, 0125 박예슬
-	//_wstring TestTag[] = {
-	//	L"Flower",
-	//	L"bush",
-	//	L"TD_Tree",
-	//	L"ButterflyBlue",
-	//	L"barrel",
-	//	L"townsign",
-	//	L"actionsignpost",
-	//	L"treegreenfallen",
-	//	L"treegreenbrokentrunk",
-	//	L"largemossrock",
-	//};
+	_wstring TestTag[] = {
+		L"Flower",
+		L"bush",
+		L"TD_Tree",
+		L"ButterflyBlue",
+		L"barrel",
+		L"townsign",
+		L"actionsignpost",
+		L"treegreenfallen",
+		L"treegreenbrokentrunk",
+		L"largemossrock",
+	};
 
-	//_int iTagIndex = -1;
+	_int iTagIndex = -1;
 
-	//for (_uint i = 0; i < (_uint)size(TestTag); i++)
-	//{
-	//	if (ContainWstring(strProtoTag, TestTag[i]))
-	//	{
-	//		iTagIndex = i;
-	//		break;
-	//	}
-	//}
-	//if (iTagIndex == -1)
-	//{
+	for (_uint i = 0; i < (_uint)size(TestTag); i++)
+	{
+		if (ContainWstring(strProtoTag, TestTag[i]))
+		{
+			iTagIndex = i;
+			break;
+		}
+	}
+	if (iTagIndex == -1)
+	{
 		return E_FAIL;
-	//}
+	}
 
 	/* Com_Texture */
-	//if (FAILED(Add_Component(m_iCurLevelID, TestTag[iTagIndex],
-	//	TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-	//	return E_FAIL;
+	if (FAILED(Add_Component(m_iCurLevelID, TestTag[iTagIndex],
+		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
 
 
 

@@ -40,13 +40,29 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	Safe_AddRef(m_pLogger);
 
 	ZeroMemory(m_szSaveFileName, sizeof(m_szSaveFileName));
-	ZeroMemory(m_szImportLayerTag, sizeof(m_szSaveFileName));
+
+
+
+
+	m_arrModelTypeString[C2DMapObjectInfo::MODEL_ANIM] = "Anim";
+	m_arrModelTypeString[C2DMapObjectInfo::MODEL_NONANIM] = "NonAnim";
+
+	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_BREAKABLE] = "ActiveType_Breakable";
+	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_PATROL] = "ActiveType_Patrol";
+	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_ATTACKABLE] = "ActiveType_Attackable";
+	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_DIALOG] = "ActiveType_Dialog";
+
+	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_AABB] = "";
+	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_SQUARE] = "Collier_Squere";
+
+
 
 	// 임구이 크기 설정
 	ImGui::SetNextWindowSizeConstraints(ImVec2(600, 1200), ImVec2(FLT_MAX, FLT_MAX));
 
 	// 모델 리스트 불러오기
 	Load_SaveFileList();
+	Load_2DModelList();
 
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Default");
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Camera");
@@ -107,7 +123,8 @@ void C2DMap_Tool_Manager::Update_Tool()
 
 void C2DMap_Tool_Manager::Update_Imgui_Logic()
 {
-	Object_Create_Imgui();
+	Map_Import_Imgui();
+	Model_Edit_Imgui();
 	SaveLoad_Imgui();
 }
 
@@ -131,12 +148,13 @@ void C2DMap_Tool_Manager::Input_Object_Tool_Mode()
 
 }
 
-void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
+
+void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 {
 	ImGui::Begin("Map");
 	static _float4 fColor = { 1.0f, 0.0f, 1.0f, 1.0f }; // 초기 색상 (RGBA)
 
-	if (ImGui::Button("GO"))
+	if (ImGui::Button("Import 2D .umap file"))
 	{
 		_tchar originalDir[MAX_PATH];
 		GetCurrentDirectory(MAX_PATH, originalDir);
@@ -543,7 +561,82 @@ void C2DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 
 	ImGui::End();
 }
+void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
+{
+	ImGui::Begin("2D Model Edit");
+	{
+		static char sz2DModelSearchBuffer[128] = ""; // 검색어 입력을 위한 버퍼
 
+		// 검색어에 따라 필터링된 항목을 저장할 임시 벡터
+		static std::vector<C2DMapObjectInfo*> filteredItems;
+
+		// 검색 입력 필드
+		ImGui::InputText("##Search", sz2DModelSearchBuffer, IM_ARRAYSIZE(sz2DModelSearchBuffer));
+		filteredItems.clear();
+		_string searchTerm = sz2DModelSearchBuffer;
+		std::transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::tolower);
+		for (const auto& item : m_ObjectInfoLists)
+		{
+			_string strSearchTag = item->Get_SearchTag();
+			std::transform(strSearchTag.begin(), strSearchTag.end(), strSearchTag.begin(), ::tolower);
+			if (strSearchTag.find(searchTerm) != _string::npos)
+				filteredItems.push_back(item);
+		}
+
+		ImGui::SeparatorText("Model List");
+		if (ImGui::BeginListBox("##Model List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+		{
+			for (auto& pInfo : filteredItems) {
+				_char szName[MAX_PATH] = {};
+				_string strSearchTag = pInfo->Get_SearchTag();
+				_bool isCurTag = StringToWstring(strSearchTag) == m_arrSelectName[MODEL_LIST];
+				if (ImGui::Selectable(strSearchTag.c_str(), isCurTag))
+				{
+					if (isCurTag)
+					{
+						m_arrSelectName[MODEL_LIST] = L"";
+						m_pPickingInfo = nullptr;
+					}
+					else
+					{
+						wstring filename = StringToWstring(strSearchTag);
+						m_arrSelectName[MODEL_LIST] = filename;
+						m_pPickingInfo = pInfo;
+					}
+				}
+			}
+			ImGui::EndListBox();
+		}
+
+		if (nullptr != m_pPickingInfo)
+		{
+			_string strSearchTag = m_pPickingInfo->Get_SearchTag().c_str();
+			_string strTextureName = m_pPickingInfo->Get_TextureName().c_str();
+			_bool isCollider = m_pPickingInfo->Is_Collider();
+			_bool isActive = m_pPickingInfo->Is_Active();
+			if (InputText("Model Search Tag", strSearchTag))
+				m_pPickingInfo->Set_SearchTag(strSearchTag);
+			InputText("Model Texture Name", strTextureName, ImGuiInputTextFlags_ReadOnly);
+			ImGui::SameLine();
+			if(ImGui::Button("Add Texture"))
+			{
+				int a = 1;
+			}
+			ImGui::Checkbox("Collider", &isCollider);
+			ImGui::SameLine();
+			ImGui::Checkbox("Active", &isActive);
+
+			m_pPickingInfo->Is_Active();
+			
+		
+		}
+
+
+
+	}
+	ImGui::End();
+
+}
 void C2DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 {
 	// Always center this window when appearing
@@ -1319,167 +1412,38 @@ void C2DMap_Tool_Manager::Save_Popup()
 	strcpy_s(m_szSaveFileName, m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]).c_str());
 }
 
-
-HRESULT C2DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject** ppMap)
-{
-	_float3			vRayPos, vRayDir;
-
-	POINT		ptMouse{};
-
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
-	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
-	Compute_World_PickingLay(&vRayPos, &vRayDir);
-
-	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, L"Layer_Environment");
-	if (!pLayer)
-		return E_FAIL;
-	auto List = pLayer->Get_GameObjects();
-	_float	 fDist = 0.f, fNewDist = 0.f;
-	_float3  vReturnPos = {};
-	_float3  vReturnNewPos = {};
-	CMapObject* pReturnObject = nullptr;
-	for_each(List.begin(), List.end(), [this, &fCursorPos, &fDist, &fNewDist, &vReturnNewPos, &vReturnPos, &pReturnObject](CGameObject* pGameObject)
-		{
-			CMapObject* pMapObject = dynamic_cast<CMapObject*>(pGameObject);
-			if (pMapObject)
-			{
-				//bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnNewPos, &fNewDist);
-				_bool bRange = pMapObject->Is_PickingCursor_Model(fCursorPos, fNewDist);
-				if (bRange)
-				{
-					int a = 1;
-				}
-				if (bRange && (fNewDist < fDist || fDist == 0.f))
-				{
-					pReturnObject = pMapObject;
-					fDist = fNewDist;
-				}
-			}
-		});
-
-	if (pReturnObject)
-	{
-		*ppMap = pReturnObject;
-
-		_vector vWorldRayPos = XMLoadFloat3(&vRayPos) + (XMLoadFloat3(&vRayDir) * fDist);
-		XMStoreFloat3(fPickingPos, vWorldRayPos);
-
-		return S_OK;
-	}
-	else
-		return E_FAIL;
-
-}
-
-HRESULT C2DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos)
-{
-	HRESULT hr = {};
-	CMapObject* pToolObj = nullptr;
-
-	if (SUCCEEDED(Picking_On_Terrain(fPickingPos, &pToolObj)))
-		return S_OK;
-	else
-		return E_FAIL;
-}
-
-CMapObject* C2DMap_Tool_Manager::Picking_On_Object()
-{
-	POINT		ptMouse{};
-
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
-	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
-
-	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, m_strPickingLayerTag);
-	if (!pLayer)
-		return nullptr;
-
-	auto List = pLayer->Get_GameObjects();
-	_float	 fDist = 0.f, fNewDist = 0.f;
-	_float3  vReturnPos = {};
-	CMapObject* pReturnObject = nullptr;
-	for_each(List.begin(), List.end(), [this, &fCursorPos, &fDist, &vReturnPos, &fNewDist, &pReturnObject](CGameObject* pGameObject)
-		{
-			CMapObject* pMapObject = dynamic_cast<CMapObject*>(pGameObject);
-			if (pMapObject)
-			{
-				bool bRange = pMapObject->Is_PickingCursor_Model(fCursorPos, fNewDist);
-				//bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnPos, &fNewDist);
-				if (bRange && (fNewDist < fDist || fDist == 0.f))
-				{
-					pReturnObject = pMapObject;
-					fDist = fNewDist;
-				}
-			}
-		});
-
-	return pReturnObject;
-}
-
-HRESULT C2DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3* pLayDir)
-{
-	POINT		ptMouse{};
-
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
-
-	_vector	vMousePos;
-
-	_uint		iNumViewports = { 1 };
-	D3D11_VIEWPORT		ViewportDesc{};
-	ZeroMemory(&ViewportDesc, sizeof(D3D11_VIEWPORT));
-	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
-
-	vMousePos = XMVectorSet(ptMouse.x / (ViewportDesc.Width * 0.5f) - 1.f
-		, ptMouse.y / -(ViewportDesc.Height * 0.5f) + 1.f
-		, 0.f
-		, 1.f
-	);
-	_matrix		matProj;
-	matProj = m_pGameInstance->Get_TransformInverseMatrix(Engine::CPipeLine::D3DTS_PROJ);
-	vMousePos = XMVector3TransformCoord(vMousePos, matProj);
-
-	_vector	vRayDir, vRayPos;
-
-	vRayPos = { 0.f, 0.f, 0.f };
-	vRayDir = vMousePos - vRayPos;
-	XMVectorSetW(vRayDir, 0.f);
-
-	_matrix		matView;
-	matView = m_pGameInstance->Get_TransformInverseMatrix(Engine::CPipeLine::D3DTS_VIEW);
-	vRayPos = XMVector3TransformCoord(vRayPos, matView);
-	vRayDir = XMVector3TransformNormal(vRayDir, matView);
-	vRayDir = XMVector3Normalize(vRayDir);
-
-
-	XMStoreFloat3(pLayDir, vRayDir);
-	XMStoreFloat3(pLayPos, vRayPos);
-
-	return S_OK;
-}
-
 void C2DMap_Tool_Manager::Load_2DModelList()
 {
-	m_ObjectFileLists.clear();
-	_wstring strPath
-		= TEXT("../../Client/Bin/resources/Models/");
 
-	for (const auto& entry : ::recursive_directory_iterator(strPath))
+	m_ObjectInfoLists.clear();
+	_wstring wstrPath = MAP_2D_DEFAULT_PATH;
+	wstrPath += L"ComponentTagMatching\\Chapter1_TagMatchingData.json";
+
+
+	const std::string strPath = WstringToString(wstrPath);
+	const string strFileName = WstringToString(Get_FileName_From_Path(wstrPath).first);
+	std::ifstream inputFile(strPath);
+	if (!inputFile.is_open()) {
+		throw std::runtime_error("json Error :  " + strPath);
+		return;
+	}
+
+	json jsonDialogs;
+	inputFile >> jsonDialogs;
+	if (jsonDialogs.is_array())
 	{
-		if (is_directory(entry))
+		for (auto ChildJson : jsonDialogs)
 		{
-			for (const auto& file : ::recursive_directory_iterator(entry))
+			if (ChildJson.is_object())
 			{
-				if (file.path().extension() == ".model")
-				{
-					_wstring strName = file.path().stem().wstring();
-					_wstring strPath = file.path().wstring();
-					m_ObjectFileLists.push_back(make_pair(strName, strPath));
-				}
+				C2DMapObjectInfo* pInfo = C2DMapObjectInfo::Create(ChildJson, m_arrModelTypeString, m_arrActiveTypeString, m_arrColliderTypeString);
+
+				m_ObjectInfoLists.push_back(pInfo);
 			}
 		}
 	}
+
+	int a = 1;
 }
 
 void C2DMap_Tool_Manager::Load_SaveFileList()
@@ -1516,6 +1480,7 @@ void C2DMap_Tool_Manager::Free()
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pLogger);
 	Safe_Release(m_pTaskManager);
-
+	for (auto pInfo : m_ObjectInfoLists)
+		Safe_Release(pInfo);
 	__super::Free();
 }

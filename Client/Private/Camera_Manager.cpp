@@ -31,6 +31,7 @@ _vector CCamera_Manager::Get_CameraVector(CTransform::STATE _eState)
 	CController_Transform* pConTrans = m_Cameras[m_eCurrentCameraType]->Get_ControllerTransform();
 	return pConTrans->Get_State(_eState);
 }
+#ifdef _DEBUG
 
 void CCamera_Manager::Start_ZoomIn()
 {
@@ -51,6 +52,8 @@ void CCamera_Manager::Start_ZoomOut()
 
 	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel + 1), CCamera::EASE_IN);
 }
+#endif // _DEBUG
+
 
 void CCamera_Manager::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 {

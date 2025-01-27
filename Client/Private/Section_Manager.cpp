@@ -160,3 +160,12 @@ void CSection_Manager::Free()
 
     __super::Free();
 }
+// TODO : Section 생성 시 Key와 Section Class 내부의 strName 일치.
+// 현재 복수의 섹션을 생성하고 Layer에 삽입하는 것 까진 테스트 완 
+// Renderer와 연동하는 작업 해야하고, 동적인 RTV 삽입 삭제에 대한 처리가 가능해야함
+// 문제 1 : 개발자 입장에서 어떻게 Section의 RenderGroupTag를 알게하나 
+// 해결 1 : Section 안에 있는 Object는 원래 Section이 RenderGroup을 지정하여 전달하기에 상관없다.
+// 그러면 기존 프레임 워크에서 존재하던 3D 오브젝트들은 어떤식으로 처리할지, 기본 RenderGroup을 어떻게 편하게 접근하게 할지.
+// Default 한 Object들은 최대한 기존 프레임워크 방향대로 그리게하고, Section이 생성되고 해당 Section 내부의 Object들은 Section에 의해서 
+// Renderer에 전달되어야한다. 
+// Player 같은 경우 Section 간의 이동 처리도 필요하고, Section 자체를 탈출할수도 있어야함. 
