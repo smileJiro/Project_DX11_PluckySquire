@@ -108,7 +108,11 @@ void CTestModelObject::Set_Progerss(_float _fTrackPos)
     case Engine::COORDINATE_2D:
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progerss(_fTrackPos);
     case Engine::COORDINATE_3D:
-        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progress(_fTrackPos);
+    {
+        static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progress(_fTrackPos);
+        m_pControllerModel->Get_Model(m_eCurCoord)->Play_Animation(0);
+        return;
+    }
     }
 }
 

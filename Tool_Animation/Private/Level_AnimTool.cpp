@@ -173,7 +173,7 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 		if (ImGui::Button(m_bPlaying ? "Stop" :"Play")) 
 		{
 			m_bPlaying ^= 1;
-			m_pTestModelObj->Set_PlayingAnim(m_pTestModelObj->Get_CurCoord(), m_bPlaying);
+			m_pTestModelObj->Set_PlayingAnim(m_bPlaying);
 		}
 		ImGui::SameLine();
 		if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
