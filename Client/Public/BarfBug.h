@@ -41,8 +41,6 @@ public:
 		IDLE_RIGHT,
 		IDLE_UP,
 		SLEEP_DOWN,
-		PROJECTILE,
-		PROJECTILESPLAT,
 		ANIM2D_LAST,
 	};
 
@@ -65,6 +63,7 @@ public:
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
 public:
+	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	virtual void Change_Animation() override;
 	virtual void Attack(_float _fTimeDelta) override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);

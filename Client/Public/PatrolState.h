@@ -9,10 +9,8 @@ class CPatrolState final : public CState
 {
 public:
 	typedef struct tagPatrolBound {
-		_float fMinX;
-		_float fMaxX;
-		_float fMinZ;
-		_float fMaxZ;
+		_float3 vMin;
+		_float3 vMax;
 		_float fMinDis;
 		_float fMaxDis;
 	}PATROLBOUND;
@@ -34,7 +32,9 @@ public:
 
 private:
 	void PatrolMove(_float _fTimeDelta, _int _iDir);
-	_vector Determine_NextDirection(_int _iDir);
+	void Determine_Direction();
+	_vector Set_PatrolDirection(_int _iDir);
+	void Check_Bound(_float _fTimeDelta);
 
 private:
 	_float m_fAccTime = { 0.f };
@@ -43,8 +43,9 @@ private:
 	_float m_fMoveDistance = {};
 	_float m_fPatrolOffset = {};
 	PATROLBOUND m_tPatrolBound = {};
-	_int m_iDir = {};
 	_int m_iPrevDir = {};
+	_int m_iDir = {};
+	F_DIRECTION m_eDir = {};
 	_bool m_isDelay = { false };
 	_bool m_isMove = { false };
 	_bool m_isBack = { false };

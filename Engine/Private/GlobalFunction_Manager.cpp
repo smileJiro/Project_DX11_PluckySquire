@@ -146,6 +146,19 @@ _float3 CGlobalFunction_Manager::Get_ScaleFromMatrix(const _fmatrix _Matrix)
 				   XMVectorGetX(XMVector3Length(_Matrix.r[2])));
 }
 
+_float CGlobalFunction_Manager::Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2)
+{
+	_vector vVec1 = XMVector3Normalize(_vVector1);
+	_vector vVec2 = XMVector3Normalize(_vVector2);
+	_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vVec1, vVec2))));
+	_float fResult = XMVectorGetX(XMVector3Cross(_vNormal, XMVector3Cross(vVec1, vVec2)));
+	if (0 > fResult)
+	{
+		fAngle = 360 - fAngle;
+	}
+	return fAngle;
+}
+
 _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 {
 	POINT ptCursorPos;

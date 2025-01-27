@@ -41,6 +41,12 @@ public:
 		return m_isAnimChangeable;
 	}
 
+	void Set_2D_Direction(F_DIRECTION _eDir);
+	F_DIRECTION Get_2DDirection() 
+	{ 
+		return m_e2DDirection; 
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -53,9 +59,9 @@ public:
 	virtual void Attack(_float _fTimeDelta);
 
 public:
-	virtual void						Change_Animation() {};
+	virtual void				Change_Animation() {};
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-	void									Set_2D_Direction(F_DIRECTION _eDir);
+	void						Change_Dir();
 
 protected:
 	void Delay_On() 
