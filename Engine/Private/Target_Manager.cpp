@@ -194,6 +194,8 @@ HRESULT CTarget_Manager::Render_Debug(const _wstring& _strMRTTag, CShader* _pSha
 
     return S_OK;
 }
+
+#endif //_DEBUG
 _float2 CTarget_Manager::Get_RT_Size(const _wstring& _strTargetTag)
 {
     CRenderTarget* pRenderTarget = Find_RenderTarget(_strTargetTag);
@@ -204,7 +206,6 @@ _float2 CTarget_Manager::Get_RT_Size(const _wstring& _strTargetTag)
     }
     return pRenderTarget->Get_Size();
 }
-#endif //_DEBUG
 CRenderTarget* CTarget_Manager::Find_RenderTarget(const _wstring& _strTargetTag)
 {
     auto	iter = m_RenderTargets.find(_strTargetTag);
@@ -239,9 +240,6 @@ CTarget_Manager* CTarget_Manager::Create(ID3D11Device* _pDevice, ID3D11DeviceCon
 
 void CTarget_Manager::Free()
 {
-    Safe_Release(m_pContext);
-    Safe_Release(m_pDevice);
-
     for (auto& Pair : m_MRTs)
     {
         for (auto& pRenderTarget : Pair.second)
@@ -254,9 +252,10 @@ void CTarget_Manager::Free()
     for (auto& Pair : m_RenderTargets)
         Safe_Release(Pair.second);
 
-
     m_RenderTargets.clear();
 
+    Safe_Release(m_pContext);
+    Safe_Release(m_pDevice);
     __super::Free();
 
 }

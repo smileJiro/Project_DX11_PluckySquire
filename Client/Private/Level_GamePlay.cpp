@@ -8,6 +8,7 @@
 #include "Camera_Manager.h"
 #include "Camera_Free.h"
 #include "Camera_Target.h"
+#include "Section_Manager.h"
 
 #include "Player.h"
 #include "TestTerrain.h"
@@ -68,11 +69,14 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
-		/* Pooling Test */
-		_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		//CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
+		/* Section Test */
+		CSection_Manager::GetInstance()->SetActive_Section(TEXT("Section_Test"), false);
 
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
+		///* Pooling Test */
+		//_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
+		////CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
+		//
+		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
 	}
 
 	// Change Camera Free  Or Target
@@ -98,12 +102,16 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	}
 
-	if (KEY_DOWN(KEY::P)) 
+#ifdef _DEBUG
+	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
-	
 
-	if (KEY_DOWN(KEY::O)) 
+
+	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
+#endif // _DEBUG
+
+
 
 	
 }
@@ -984,10 +992,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	CGameObject* pGameObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
 		return E_FAIL;
 
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Section_Test"), pGameObject);
 	/*Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.35f, -15.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 

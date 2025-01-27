@@ -184,10 +184,11 @@ _vector CCameraArm::Calculate_CameraPos(_float fTimeDelta)
    // m_pGameInstance->Set_CameraPos(vCameraPos, vTargetPos);
 }
 
+#ifdef _DEBUG
 void CCameraArm::Set_Rotation(_vector _vRotation)
 {
     XMStoreFloat3(&m_vRotation, _vRotation);
-    
+
     _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
     m_pTransform->TurnAngle(m_vRotation.x, vCrossX);
     m_pTransform->TurnAngle(m_vRotation.y);
@@ -207,6 +208,9 @@ void CCameraArm::Set_ArmVector(_vector _vArm)
     m_pTransform->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
     m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 }
+
+#endif // _DEBUG
+
 
 void CCameraArm::Turn_ArmX(_float fAngle)
 {
@@ -341,11 +345,10 @@ CCameraArm* CCameraArm::Clone()
 
 void CCameraArm::Free()
 {
+    Safe_Release(m_pTransform);
+    Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
-    Safe_Release(m_pGameInstance);
-    Safe_Release(m_pTransform);
-
 #ifdef _DEBUG
     Safe_Delete(m_pBatch);
     Safe_Delete(m_pEffect);

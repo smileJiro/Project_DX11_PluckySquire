@@ -27,17 +27,12 @@ void CPooling_Manager::Update()
 HRESULT CPooling_Manager::Level_Enter(_int _iChangeLevelID)
 {
 
-
 	return S_OK;
 }
 
 HRESULT CPooling_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
-	if (_iChangeLevelID == LEVEL_LOADING)
-	{
-		m_iCurLevelID = _iNextChangeLevelID;
-	}
-		
+	m_iCurLevelID = _iChangeLevelID;
 
 	for (auto& iter : m_PoolingObjects)
 	{
@@ -113,8 +108,6 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3*
 				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
 			if (nullptr != _pPosition)
 				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
-
-
 
 			pGameObject->Set_Active(true);
 			pGameObject->Set_Alive();

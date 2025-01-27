@@ -120,8 +120,10 @@ HRESULT CActor::Render()
         case physx::PxGeometryType::eSPHERE:
         {
             _float fRadius = pShape->getGeometry().sphere().radius;
-            _float3 vPosition = {};
-            XMStoreFloat3(&vPosition, m_pOwner->Get_Position());
+            _vector vOwnerPos = m_pOwner->Get_Position();
+            PxVec3 vShapeOffsetPos = pShape->getLocalPose().p;
+            _float3 vPosition = { vShapeOffsetPos.x, vShapeOffsetPos.y, vShapeOffsetPos.z };
+            XMStoreFloat3(&vPosition, XMLoadFloat3(&vPosition) + vOwnerPos);
             BoundingSphere BoundingSphere(vPosition, fRadius);
             DX::Draw(m_pBatch, BoundingSphere, XMLoadFloat4(&m_vDebugColor));
         }
@@ -136,8 +138,10 @@ HRESULT CActor::Render()
             PxQuat quat =  pShape->getLocalPose().q;
 
             _float4 vQuat = { quat.x, quat.y, quat.z, quat.w };
-            _float3 vPosition = {};
-            XMStoreFloat3(&vPosition, m_pOwner->Get_Position());
+            _vector vOwnerPos = m_pOwner->Get_Position();
+            PxVec3 vShapeOffsetPos = pShape->getLocalPose().p;
+            _float3 vPosition = { vShapeOffsetPos.x, vShapeOffsetPos.y, vShapeOffsetPos.z };
+            XMStoreFloat3(&vPosition, XMLoadFloat3(&vPosition) + vOwnerPos);
             BoundingOrientedBox box(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z), vQuat);
             //BoundingBox BoundingBox(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z));
             DX::Draw(m_pBatch, box, XMLoadFloat4(&m_vDebugColor));
@@ -442,11 +446,12 @@ void CActor::Free()
         Safe_Delete(m_pEffect);
     }
 
-#endif // _DEBUG
     for (auto& pTriggerShape : m_pTriggerShapes)
         pTriggerShape->release();
 
     m_pTriggerShapes.clear();
+#endif // _DEBUG
+
 
     // 순환 참조로 인해 RefCount 관리하지 않는다.
     m_UserData.pOwner = nullptr;
