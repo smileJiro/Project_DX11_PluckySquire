@@ -20,6 +20,8 @@ public:
 
 	HRESULT				Render();
 
+public:
+	void				Set_OneFrameDeltaTime(_float _iDeltaTime) { m_iOneFrameDeltaTime = _iDeltaTime; }
 
 private:
 	CGameInstance*			m_pGameInstance = nullptr;
@@ -30,7 +32,14 @@ private:
 	class CCamera_Manager_Tool*		m_pCamera_Manager = { nullptr };
 
 private:
-	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
+	_float2					m_vFPSRenderTime = { 1.0f, 0.0f };
+	_float					m_iOneFrameDeltaTime = 0.0f;
+
+private:
+	void				Imgui_FPS(_float _fTimeDelta);
+
+private:
+	HRESULT				SetUp_StartLevel(LEVEL_ID _eLevelID);
 
 public:
 	static CMainApp* Create();

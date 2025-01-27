@@ -222,7 +222,7 @@ namespace Engine
 		_bool				bLookTarget = {};
 		_uint				iAtRatioType = {};
 	} CUTSCENE_KEYFRAME;
-
+	
 	typedef struct tagCutSceneData
 	{
 		_float3				vPosition = {};

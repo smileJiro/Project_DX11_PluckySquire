@@ -72,14 +72,11 @@ private:
 	CCamera*								m_Cameras[CAMERA_TYPE_END];
 	_uint									m_eCurrentCameraType = { CAMERA_TYPE_END };
 
-	//map<_wstring, class CCameraArm*>		m_Arms;
 	class CCameraArm*						m_pCurrentArm = { nullptr };
-	//CCameraArm*							m_pCopyArm = { nullptr };
 
 	map<_wstring, ARM_DATA*>				m_ArmDatas;				// Data ¿˙¿Â
 
 private:
-	//CCameraArm*		Find_Arm(_wstring _wszArmTag);
 	ARM_DATA*			Find_ArmData(_wstring _wszArmTag);
 	
 public:

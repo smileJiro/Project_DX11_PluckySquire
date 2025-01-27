@@ -61,6 +61,13 @@ _bool CCutScene_Sector::Get_IsLookAt()
 	return m_KeyFrames[m_iCurKeyFrameIndex].bLookTarget;
 }
 
+_float CCutScene_Sector::Get_LastTimeStamp()
+{
+	_int iSize = m_KeyFrames.size();
+
+	return 	m_KeyFrames[iSize - 2].fTimeStamp;
+}
+
 _bool CCutScene_Sector::Get_IsChangeKeyFrame()
 {
 	if (m_iPreKeyFrameIndex != m_iCurKeyFrameIndex){
