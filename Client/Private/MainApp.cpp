@@ -8,6 +8,7 @@
 #include "Pooling_Manager.h"
 #include "UI_Manager.h"
 #include "Camera_Manager.h"
+#include "Section_Manager.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -35,31 +36,14 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
-	/* Event Manager */
-	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
-	CCamera_Manager::GetInstance()->Initialize();
-	CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext);
+	/* Client Manager Initialize */
+	Initialize_Client_Manager();
+
 
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font18"), TEXT("../Bin/Resources/Fonts/YangRound18.spritefont"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font20"), TEXT("../Bin/Resources/Fonts/YangRound20.spritefont"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font24"), TEXT("../Bin/Resources/Fonts/YangRound24.spritefont"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font28"), TEXT("../Bin/Resources/Fonts/YangRound28.spritefont"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font30"), TEXT("../Bin/Resources/Fonts/YangRound30.spritefont"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font35"), TEXT("../Bin/Resources/Fonts/YangRound35.spritefont"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font38"), TEXT("../Bin/Resources/Fonts/YangRound38.spritefont"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font40"), TEXT("../Bin/Resources/Fonts/YangRound40.spritefont"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font54"), TEXT("../Bin/Resources/Fonts/YangRound54.spritefont"))))
+	if (FAILED(Ready_Font()))
 		return E_FAIL;
 
 	return S_OK;
@@ -136,6 +120,44 @@ HRESULT CMainApp::SetUp_StartLevel(LEVEL_ID _eLevelID)
 	return S_OK;
 }
 
+HRESULT CMainApp::Initialize_Client_Manager()
+{
+	if (FAILED(CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+	if (FAILED(CCamera_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
+	if(FAILED(CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+	if (FAILED(CSection_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Font()
+{
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font18"), TEXT("../Bin/Resources/Fonts/YangRound18.spritefont"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font20"), TEXT("../Bin/Resources/Fonts/YangRound20.spritefont"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font24"), TEXT("../Bin/Resources/Fonts/YangRound24.spritefont"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font28"), TEXT("../Bin/Resources/Fonts/YangRound28.spritefont"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font30"), TEXT("../Bin/Resources/Fonts/YangRound30.spritefont"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font35"), TEXT("../Bin/Resources/Fonts/YangRound35.spritefont"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font38"), TEXT("../Bin/Resources/Fonts/YangRound38.spritefont"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font40"), TEXT("../Bin/Resources/Fonts/YangRound40.spritefont"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font54"), TEXT("../Bin/Resources/Fonts/YangRound54.spritefont"))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CMainApp* CMainApp::Create()
 {
 	CMainApp* pInstance = new CMainApp();
@@ -162,6 +184,7 @@ void CMainApp::Free()
 	CCamera_Manager::DestroyInstance();
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
+	CSection_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

@@ -71,7 +71,18 @@ void CSection::Clear_GameObjects()
     if (nullptr == m_pLayer)
         return;
 
+    /* 해당 함수는 Pooling 객체 여부 고려하지 않음. 무조건 삭제 */
     m_pLayer->Clear_GameObjects();
+}
+
+void CSection::Active_OnEnable()
+{
+    SetActive_GameObjects(true);
+}
+
+void CSection::Active_OnDisable()
+{
+    SetActive_GameObjects(false);
 }
 
 CSection* CSection::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -87,6 +98,8 @@ CSection* CSection::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 
 void CSection::Free()
 {
+    Safe_Release(m_pLayer);
+
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
