@@ -50,9 +50,16 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
 		bMove = true;
 	}
+
+
 	if (bMove)
 	{
-		m_pOwner->Move(vMoveDir, _fTimeDelta);
+		m_pOwner->Move(XMVector3Normalize(vMoveDir), _fTimeDelta);
+		if (KEY_DOWN(KEY::SPACE))
+		{
+			m_pOwner->Set_State(CPlayer::JUMP);
+			return;
+		}
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{
 			F_DIRECTION eNewDir =  To_FDirection(vMoveDir);
@@ -84,7 +91,10 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	else
 	{
 		m_pOwner->Set_State(CPlayer::IDLE);
+		return;
 	}
+
+
 }
 
 void CPlayerState_Run::Enter()
@@ -119,4 +129,13 @@ void CPlayerState_Run::Enter()
 
 void CPlayerState_Run::Exit()
 {
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+
+	if (COORDINATE_2D == eCoord)
+	{
+	}
+	else
+	{
+		m_pOwner->Stop_Rotate();
+	}
 }

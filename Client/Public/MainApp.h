@@ -39,6 +39,9 @@ private:
 	//HRESULT Loading_SFX_PathFind(const _wstring& strDirectoryPath);
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 	
+private:
+	HRESULT Initialize_Client_Manager();
+	HRESULT Ready_Font();
 
 public:
 	static CMainApp* Create();

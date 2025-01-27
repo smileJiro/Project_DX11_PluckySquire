@@ -43,13 +43,15 @@ void CCutScene_Sector::Late_Update(_float _fTimeDelta)
 {
 }
 
+#ifdef _DEBUG
+
 _float CCutScene_Sector::Get_TimeOffset()
 {
 	if (-1 == m_iCurKeyFrameIndex || m_iCurKeyFrameIndex >= (_int)(m_KeyFrames.size() - 2))
 		return -1;
 
 	_float fTimeOffset = m_KeyFrames[m_iCurKeyFrameIndex + 1].fTimeStamp - m_KeyFrames[m_iCurKeyFrameIndex].fTimeStamp;
-	
+
 	return fTimeOffset;
 }
 
@@ -67,6 +69,8 @@ _float CCutScene_Sector::Get_LastTimeStamp()
 
 	return 	m_KeyFrames[iSize - 2].fTimeStamp;
 }
+
+#endif // _DEBUG
 
 _bool CCutScene_Sector::Get_IsChangeKeyFrame()
 {

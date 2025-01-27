@@ -41,4 +41,18 @@ namespace Map_Tool
 		ImGui::PopStyleColor(3);
 		ImGui::PopID();
 	}
+
+	_bool InputText(const char* _label, std::string& _str, ImGuiInputTextFlags _flags) 
+	{
+		char buffer[256];
+		strncpy_s(buffer, _str.c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		if (ImGui::InputText(_label, buffer, sizeof(buffer), _flags)) {
+			_str = buffer;
+			return true;  
+		}
+
+		return false; 
+	}
 }
