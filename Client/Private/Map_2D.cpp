@@ -17,9 +17,6 @@ CMap_2D::CMap_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 HRESULT CMap_2D::Initialize()
 {
 	// 0. Map Data Parsing
-
-
-
 	// 1. CRenderTarget Create
 	// 2. Create DSV & Register DSV To Renderer (Renderer 작업하면서 고민 필요.)
 	// 3. Register_RTV_ToTargetManager();

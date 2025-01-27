@@ -6,6 +6,7 @@
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
+#include "Camera_CutScene.h"
 
 /* For. UI*/
 #include "Pick_Bulb.h"
@@ -508,6 +509,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
     /* For. Prototype_GameObject_Camera_Target */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
         CCamera_Target::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_CutScene */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_CutScene"),
+        CCamera_CutScene::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_MapObject */

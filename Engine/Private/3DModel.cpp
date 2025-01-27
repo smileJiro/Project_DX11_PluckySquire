@@ -142,19 +142,15 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 _bool C3DModel::Play_Animation(_float fTimeDelta)
 {
 	_bool bReturn = false;
-	if (m_bPlayingAnim)
+	//뼈들의 변환행렬을 갱신
+	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
 	{
-		//뼈들의 변환행렬을 갱신
-		if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
-		{
-			bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
-		}
-		else
-		{
-			if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame))
-				m_iPrevAnimIndex = m_iCurrentAnimIndex;
-		}
-
+		bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
+	}
+	else
+	{
+		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame))
+			m_iPrevAnimIndex = m_iCurrentAnimIndex;
 	}
 
 

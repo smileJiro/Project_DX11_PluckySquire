@@ -173,7 +173,7 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 		if (ImGui::Button(m_bPlaying ? "Stop" :"Play")) 
 		{
 			m_bPlaying ^= 1;
-			m_pTestModelObj->Set_PlayingAnim(m_pTestModelObj->Get_CurCoord(), m_bPlaying);
+			m_pTestModelObj->Set_PlayingAnim(m_bPlaying);
 		}
 		ImGui::SameLine();
 		if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
@@ -500,15 +500,16 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 
 HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
 {
+
 	assert(m_pTestModelObj);
-	wstring wstrExt = COORDINATE_2D == m_pTestModelObj->Get_CurCoord()  ? L".model2d" : L".model";
+	wstring wstrExt = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? L".model2d" : L".model";
 	std::filesystem::path path = _wstrPath;
 	if (path.extension().wstring() != wstrExt)
 	{
 		path.replace_extension(wstrExt);
 	}
 	std::ofstream outFile(path, std::ios::binary);
-	if (!outFile) 
+	if (!outFile)
 	{
 		MSG_BOX("파일 열기 실패.");
 	}
@@ -521,6 +522,7 @@ HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
 	outFile.close();
 	return S_OK;
 }
+
 
 HRESULT CLevel_AnimTool::Load_AnimEvents(wstring _wstrPath)
 {

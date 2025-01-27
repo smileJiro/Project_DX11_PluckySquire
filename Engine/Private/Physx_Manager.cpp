@@ -110,9 +110,11 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 	{
 		if (nullptr != m_pPhysx_EventCallBack)
 			m_pPhysx_EventCallBack->Update();
-	
+		
+#ifdef _DEBUG
 		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
 		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+#endif // _DEBUG
 	}
 
 	

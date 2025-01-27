@@ -57,54 +57,54 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 
 	for (size_t i = 0; i < m_Events.size(); ++i)
 	{
-		Excute(m_Events[i]);
+		Execute(m_Events[i]);
 	}
 	m_Events.clear();
 
 }
 
-HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 {
 	switch (_tEvent.eType)
 	{
 	case Client::EVENT_TYPE::CREATE_OBJECT:
 	{
-		Excute_CreateObject(_tEvent);
+		Execute_CreateObject(_tEvent);
 	}
 		break;
 	case Client::EVENT_TYPE::DELETE_OBJECT:
 	{
-		Excute_DeleteObject(_tEvent);
+		Execute_DeleteObject(_tEvent);
 	}
 		break;
 	case Client::EVENT_TYPE::LEVEL_CHANGE:
 	{
-		Excute_LevelChange(_tEvent);
+		Execute_LevelChange(_tEvent);
 	}
 		break;
 	case Client::EVENT_TYPE::SET_ACTIVE:
 	{
-		Excute_SetActive(_tEvent);
+		Execute_SetActive(_tEvent);
 	}
 		break;
 	case Client::EVENT_TYPE::CHANGE_MONSTERSTATE:
 	{
-		Excute_ChangeMonsterState(_tEvent);
+		Execute_ChangeMonsterState(_tEvent);
 	}
 		break;
 	case Client::EVENT_TYPE::CHANGE_BOSSSTATE:
 	{
-		Excute_ChangeBossState(_tEvent);
+		Execute_ChangeBossState(_tEvent);
 	}
 	break;
 	case Client::EVENT_TYPE::SETUP_SIMULATION_FILTER:
 	{
-		Excute_Setup_SimulationFilter(_tEvent);
+		Execute_Setup_SimulationFilter(_tEvent);
 	}
 	break;
 	case Client::EVENT_TYPE::CHANGE_COORDINATE:
 	{
-		Excute_Change_Coordinate(_tEvent);
+		Execute_Change_Coordinate(_tEvent);
 	}
 	break;
 	default:
@@ -115,7 +115,7 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Excute_CreateObject(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_CreateObject(const EVENT& _tEvent)
 {
 	/* Parameter_0 : LevelD; Parameter_1 : LayerTag; Parameter_2 : GameObject Adress */
 	_uint iCurLevelID = (_uint)_tEvent.Parameters[0];
@@ -141,7 +141,7 @@ HRESULT CEvent_Manager::Excute_CreateObject(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Excute_DeleteObject(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_DeleteObject(const EVENT& _tEvent)
 {
 	/* Parameter_0 : Object Address */
 	CGameObject* pDeleteObject = reinterpret_cast<CGameObject*>(_tEvent.Parameters[0]);
@@ -154,7 +154,7 @@ HRESULT CEvent_Manager::Excute_DeleteObject(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 {
 	// par
 	_int iChangeLevelID = (_int)(_tEvent.Parameters[0]);
@@ -215,7 +215,7 @@ HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_SetActive(const EVENT& _tEvent)
 {
 	if (_tEvent.Parameters[0] == 0)
 		return E_FAIL;
@@ -238,7 +238,7 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Excute_Setup_SimulationFilter(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_Setup_SimulationFilter(const EVENT& _tEvent)
 {
 	/* Parameter_0 : CActor Address*/
 	/* Parameter_1 : MyGroup */
@@ -254,7 +254,7 @@ HRESULT CEvent_Manager::Excute_Setup_SimulationFilter(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Excute_Change_Coordinate(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_Change_Coordinate(const EVENT& _tEvent)
 {
 	CActorObject* pActorObject = reinterpret_cast<CActorObject*>(_tEvent.Parameters[0]);
 	COORDINATE eChangeCoord = (COORDINATE)(_tEvent.Parameters[1]);
@@ -278,7 +278,7 @@ HRESULT CEvent_Manager::Excute_Change_Coordinate(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_ChangeMonsterState(const EVENT& _tEvent)
 {
 	/* Parameter_0 : Changing State */
 	MONSTER_STATE eState = (MONSTER_STATE)_tEvent.Parameters[0];
@@ -297,7 +297,7 @@ HRESULT CEvent_Manager::Excute_ChangeMonsterState(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Excute_ChangeBossState(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_ChangeBossState(const EVENT& _tEvent)
 {
 	/* Parameter_0 : Changing State */
 	BOSS_STATE eState = (BOSS_STATE)_tEvent.Parameters[0];
@@ -318,7 +318,7 @@ HRESULT CEvent_Manager::Excute_ChangeBossState(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
-	CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
+	//CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	
 	return S_OK;
@@ -328,7 +328,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
-	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	//CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 

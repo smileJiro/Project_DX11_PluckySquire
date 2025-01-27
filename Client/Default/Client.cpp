@@ -127,7 +127,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
 
     }
-   
 
     // 지역변수로 사용하였더라도, RefCnt 관리.
     Safe_Release(pGameInstance);

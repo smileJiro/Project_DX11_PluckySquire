@@ -105,10 +105,29 @@ void CActor_Dynamic::On_Dynamic()
 	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false); // Kinematic 
 }
 
-void CActor_Dynamic::Set_LinearVelocity(_vector _vDirection, _float _fVelocity)
+_vector CActor_Dynamic::Get_LinearVelocity()
+{
+	PxVec3 vPxVec = static_cast<PxRigidDynamic*>(m_pActor)->getLinearVelocity();
+	_vector vLinearVelocity = { vPxVec.x, vPxVec .y, vPxVec .z};
+	return vLinearVelocity;
+}
+
+_vector CActor_Dynamic::Get_AngularVelocity()
+{
+	PxVec3 vPxVec = static_cast<PxRigidDynamic*>(m_pActor)->getAngularVelocity();
+	_vector vAngularVelocity = { vPxVec.x, vPxVec.y, vPxVec.z };
+	return vAngularVelocity;
+}
+
+void CActor_Dynamic::Set_LinearVelocity(_fvector _vDirection, _float _fVelocity)
 {
 	// true : 객체가 물리공간상에서 수면상태인 경우 깨운다는 파라미터임 >>> false면 수면상태인 경우 깨우지 않음.
 	static_cast<PxRigidDynamic*>(m_pActor)->setLinearVelocity(PxVec3(XMVectorGetX(_vDirection) * _fVelocity, XMVectorGetY(_vDirection) * _fVelocity, XMVectorGetZ(_vDirection) * _fVelocity), m_isActive);
+}
+
+void CActor_Dynamic::Set_LinearVelocity(_fvector _vVelocity)
+{
+	static_cast<PxRigidDynamic*>(m_pActor)->setLinearVelocity(PxVec3{ XMVectorGetX(_vVelocity),XMVectorGetY(_vVelocity) ,XMVectorGetZ(_vVelocity) }, m_isActive);
 }
 
 void CActor_Dynamic::Set_AngularVelocity(const _float3& _vAngularVelocity)
@@ -116,7 +135,52 @@ void CActor_Dynamic::Set_AngularVelocity(const _float3& _vAngularVelocity)
 	PxVec3 vAngularVelocity = PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z);
 	
 	if(true == vAngularVelocity.isFinite())
-		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(PxVec3(_vAngularVelocity.x, _vAngularVelocity.y, _vAngularVelocity.z), m_isActive);
+		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(vAngularVelocity, m_isActive);
+}
+
+void CActor_Dynamic::Set_AngularVelocity(_fvector _vAngularVelocity)
+{
+	PxVec3 vAngularVelocity = PxVec3(XMVectorGetX(_vAngularVelocity), XMVectorGetY(_vAngularVelocity), XMVectorGetZ(_vAngularVelocity));
+
+	if (true == vAngularVelocity.isFinite())
+		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(vAngularVelocity, m_isActive);
+}
+
+void CActor_Dynamic::Set_Rotation(_fvector _vAxis, _float _fRadian)
+{
+	PxRigidDynamic* pDynamicActor = static_cast<PxRigidDynamic*>(m_pActor);
+	PxTransform currentTransform = pDynamicActor->getGlobalPose();
+	PxVec3 currentPosition = currentTransform.p;
+
+	// 새로운 회전 생성 (라디안 단위 각도로 설정)
+	PxVec3 rotationAxis(XMVectorGetX(_vAxis), XMVectorGetY(_vAxis), XMVectorGetZ(_vAxis));
+	PxQuat newRotation(_fRadian, rotationAxis.getNormalized());
+
+	// 새로운 변환 적용
+	PxTransform newTransform(currentPosition, newRotation);
+	pDynamicActor->setGlobalPose(newTransform, m_isActive); 
+}
+
+void CActor_Dynamic::Set_Rotation(_fvector _vLook)
+{
+	PxRigidDynamic* pDynamicActor = static_cast<PxRigidDynamic*>(m_pActor);
+	PxTransform currentTransform = pDynamicActor->getGlobalPose();
+	PxVec3 currentPosition = currentTransform.p;
+
+	_vector vForward = _vector{0,0,1,0};
+	PxQuat newRotation;
+	if (XMVector3NearEqual(vForward, _vLook, XMVectorReplicate(1e-6f))) {
+		newRotation = PxQuat(PxIdentity); // 동일한 방향이면 단위 쿼터니언 반환
+	}
+
+	_float fAngle = acos(XMVectorGetX(XMVector3Dot(vForward, _vLook))); // 라디안 값
+	if (XMVectorGetX(_vLook) < 0)
+		fAngle = -fAngle;
+	PxVec3 pxAxis = PxVec3(0, 1,0);
+	newRotation = PxQuat(fAngle, pxAxis);
+	// 새로운 변환 적용
+	PxTransform newTransform(currentPosition, newRotation);
+	pDynamicActor->setGlobalPose(newTransform, m_isActive); 
 }
 
 void CActor_Dynamic::Add_Force(const _float3& _vForce)
@@ -127,27 +191,6 @@ void CActor_Dynamic::Add_Force(const _float3& _vForce)
 void CActor_Dynamic::Add_Impulse(const _float3& _vForce)
 {
 	static_cast<PxRigidDynamic*>(m_pActor)->addForce(PxVec3(_vForce.x, _vForce.y, _vForce.z), PxForceMode::eIMPULSE, m_isActive);
-}
-
-void CActor_Dynamic::Turn_TargetDirection(_vector _vDirection)
-{
-	_vector vLook = m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-
-	PxVec3 vForward = { XMVectorGetX(vLook),XMVectorGetY(vLook), XMVectorGetZ(vLook) };
-	PxVec3 vTargetDirection = { XMVectorGetX(_vDirection),XMVectorGetY(_vDirection), XMVectorGetZ(_vDirection), };
-
-	PxVec3 vRotationAxis = vForward.cross(vTargetDirection);
-
-	float fAngleDiff = acos(vForward.dot(vTargetDirection));
-
-	PxVec3 vAngularVelocity = vRotationAxis.getNormalized() * fAngleDiff * 4.0f;
-
-	if (true == vAngularVelocity.isFinite())
-		static_cast<PxRigidDynamic*>(m_pActor)->setAngularVelocity(vAngularVelocity, m_isActive);
-	else
-	{
-		int a = 0;
-	}
 }
 
 

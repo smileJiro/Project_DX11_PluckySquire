@@ -2,6 +2,10 @@
 
 #include "Map_Tool_Defines.h"
 #include "Base.h"
+
+#include "2DMapObject.h"
+#include "2DMapObjectInfo.h"
+
 BEGIN(Engine)
 class CGameInstance;
 class CGameObject;
@@ -13,7 +17,7 @@ END
 BEGIN(Map_Tool)
 
 
-class CMapObject;
+class C2DMapObject;
 class CModelFile_Manager;
 class CImguiLogger;
 class CTask_Manager;
@@ -26,11 +30,8 @@ class C2DMap_Tool_Manager final : public CBase
 private :
 	enum LIST_TYPE
 	{
-		CREATE_MAP,
+		MODEL_LIST,
 		SELECT_MAP,
-		CREATE_OBJECT,
-		MESH_LIST,
-		CELL_LIST,
 		SAVE_LIST,
 		LIST_END
 	};
@@ -60,7 +61,8 @@ private:
 
 	// Imgui 메인 로직
 	void				Update_Imgui_Logic();
-	void				Object_Create_Imgui(_bool _isLock = false);
+	void				Map_Import_Imgui(_bool _isLock = false);
+	void				Model_Edit_Imgui(_bool _isLock = false);
 	void				SaveLoad_Imgui(_bool _isLock = false);
 
 #pragma endregion
@@ -81,16 +83,9 @@ private:
 	void				Load(bool bSelected = true);
 
 
-
-	HRESULT				Picking_On_Terrain(_float3* _fPickingPos, CMapObject** _ppMap);
-	HRESULT				Picking_On_Terrain(_float3* _fPickingPos);
-
-	CMapObject*			Picking_On_Object();
-
-
 #pragma endregion
 
-	HRESULT				Compute_World_PickingLay(_float3* _fLayPos, _float3* _fLayDir);
+
 
 	void				Init_Egnore_Layer();
 	HRESULT				Setting_Action_Layer(vector<pair<wstring, CLayer*>>& _TargetLayerPairs);
@@ -99,6 +94,7 @@ private:
 	
 	HRESULT				Setting_TileMap(const _string _strFileMapJsonName);
 
+	
 
 
 private:
@@ -112,19 +108,20 @@ private:
 	_wstring						m_arrSelectName[LIST_END];
 
 
-	vector<pair<_wstring, _wstring>>m_ObjectFileLists;
-
+	vector<C2DMapObjectInfo*>		m_ObjectInfoLists;
+	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
 	vector<_wstring>				m_SaveFileLists;
 
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
 	_char							m_szSaveFileName[MAX_PATH];
-	_char							m_szImportLayerTag[MAX_PATH];
-	_wstring						m_strPickingLayerTag;
 
 	vector<wstring>					m_DefaultEgnoreLayerTags;
 	vector<wstring>					m_EgnoreLayerTags;
 	C2DDefault_RenderObject*		m_DefaultRenderObject;
 
+	_string		m_arrModelTypeString[C2DMapObjectInfo::MODEL_END];
+	_string		m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_END];
+	_string		m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_END];
 
 
 public:

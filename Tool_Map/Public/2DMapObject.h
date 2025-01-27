@@ -14,14 +14,13 @@ BEGIN(Map_Tool)
 
 class C2DMapObject final : public CUIObject
 {
+public :
+
 public:
 	typedef struct tag2DMapObjectDesc : CUIObject::UIOBJECT_DESC
 	{
-		_wstring strProtoTag;
-		_float2 fRenderTargetSize;
-		_float2 fTextureOffsetSize;
-		//_float2 fDefaultPos;
-
+		_wstring	strProtoTag;
+		_float2		fRenderTargetSize;
 	}MAPOBJ_2D_DESC;
 private:
 	C2DMapObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -42,6 +41,7 @@ private:
 	CShader*		m_pShader = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	CTexture*		m_pTextureCom = { nullptr };
+
 
 	_float2			m_fTextureOffsetSize;
 

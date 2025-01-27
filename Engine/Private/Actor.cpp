@@ -446,11 +446,12 @@ void CActor::Free()
         Safe_Delete(m_pEffect);
     }
 
-#endif // _DEBUG
     for (auto& pTriggerShape : m_pTriggerShapes)
         pTriggerShape->release();
 
     m_pTriggerShapes.clear();
+#endif // _DEBUG
+
 
     // 순환 참조로 인해 RefCount 관리하지 않는다.
     m_UserData.pOwner = nullptr;
