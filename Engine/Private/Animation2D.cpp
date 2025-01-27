@@ -195,6 +195,7 @@ _float CAnimation2D::Get_Progress()
 
 void CAnimation2D::Set_Progress(_float _fProgerss)
 {
+
 	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(m_iFrameCount - 1);
 	_int iTargetSubFrame = (_int)(_fProgerss * iTotalSubFrameCount);
 	_float fRemainTime = m_fFramesPerSecond * iTotalSubFrameCount * _fProgerss - (m_fFramesPerSecond * iTargetSubFrame);

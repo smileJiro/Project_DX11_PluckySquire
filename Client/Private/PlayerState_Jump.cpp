@@ -43,11 +43,65 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 		vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
 		bMove = true;
 	}
+
 	if (bMove)
 	{
-		m_pOwner->Move(vMoveDir, _fTimeDelta);
+		m_pOwner->Move(XMVector3Normalize(vMoveDir), _fTimeDelta);
 
-		/* Test */
-		
+		if (m_pOwner->Is_OnGround())
+		{
+			m_pOwner->Set_State(CPlayer::RUN);
+			return;
+		}
+	}
+	else
+	{
+		m_pOwner->Stop_Rotate();
+		if (m_pOwner->Is_OnGround())
+		{
+			m_pOwner->Set_State(CPlayer::IDLE);
+			return;
+		}
+	}
+
+}
+
+void CPlayerState_Jump::Enter()
+{
+	if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	{
+	}
+	else
+	{
+		m_pOwner->Jump();
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_UP_02);
+	}
+
+}
+
+void CPlayerState_Jump::Exit()
+{
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+
+	if (COORDINATE_2D == eCoord)
+	{
+	}
+	else
+	{
+		m_pOwner->Stop_Rotate();
+	}
+}
+
+void CPlayerState_Jump::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (COORDINATE_2D == _eCoord)
+	{
+	}
+	else
+	{
+		if((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_UP_02 == iAnimIdx)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT);
+		else if((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT == iAnimIdx)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_LAND_02);
 	}
 }

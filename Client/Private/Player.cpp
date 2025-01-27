@@ -8,6 +8,8 @@
 #include "PlayerState_Idle.h"
 #include "PlayerState_Run.h"
 #include "PlayerState_Attack.h"
+#include "PlayerState_Jump.h"
+#include "Actor_Dynamic.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -57,8 +59,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC ShapeDesc = {};
-    ShapeDesc.fHalfHeight = 0.5f;
-    ShapeDesc.fRadius = 0.5f;
+    ShapeDesc.fHalfHeight = 0.25f;
+    ShapeDesc.fRadius = 0.25f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
@@ -74,10 +76,10 @@ HRESULT CPlayer::Initialize(void* _pArg)
     /* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity());
-    SHAPE_BOX_DESC BoxDesc = {};
-    BoxDesc.vHalfExtents = { 1.0f, 1.0f, 1.0f };
-    ShapeData.pShapeDesc = &BoxDesc;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
+    SHAPE_SPHERE_DESC SphereDesc = {};
+	SphereDesc.fRadius = 1.f;
+    ShapeData.pShapeDesc = &SphereDesc;
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
@@ -94,9 +96,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     }
 
     if (FAILED(Ready_PartObjects()))
-    {
         return E_FAIL;
-    }
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
@@ -210,10 +210,10 @@ void CPlayer::Update(_float _fTimeDelta)
     Key_Input(_fTimeDelta);
     m_pStateMachine->Update(_fTimeDelta);
 
-
-
     CGameObject::Update_Component(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
+
+    m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));;
 }
 
 void CPlayer::Late_Update(_float _fTimeDelta)
@@ -290,7 +290,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
     ACTOR_TYPE eActorType = Get_ActorType();
     if (ACTOR_TYPE::KINEMATIC == eActorType)
     {
-        if (Get_CurCoord() == COORDINATE_3D)
+        if (COORDINATE_3D ==Get_CurCoord())
         {
             m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
             m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
@@ -303,21 +303,63 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
     }
     else if (ACTOR_TYPE::DYNAMIC == eActorType)
     {
-        if (Get_CurCoord() == COORDINATE_3D)
+        if (COORDINATE_3D == Get_CurCoord())
         {
-            m_pActorCom->Turn_TargetDirection(_vDir);
-            _vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
-            m_pActorCom->Set_LinearVelocity(vLook, 500.0f * _fTimeDelta);
+            CActor_Dynamic* pDynamicActor =static_cast<CActor_Dynamic*>(m_pActorCom);
+
+            
+            _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+            _float3 vLookDiff; XMStoreFloat3( &vLookDiff,_vDir - vLook);
+            _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, _vDir - m_vLookBefore);
+            _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDir));
+			if (XMVector3Equal(_vDir, XMVectorZero()))
+            {
+				_vDir = vLook;
+            }
+            if (XMVector3NearEqual( _vDir ,vLook, XMVectorReplicate(1e-6f)))
+            {
+                pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+            }
+            else if ((vLookDiff.x * vLookDiffBefore.x) < 0 
+                || (vLookDiff.z * vLookDiffBefore.z) < 0)
+            {
+                pDynamicActor->Set_Rotation(_vDir);
+                pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+            }
+            else
+            {
+                pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(360));
+
+            }
+
+            _float fDot = XMVectorGetX(XMVector3Dot(vLook, _vDir));
+            _vector vVeclocity = _vDir* 500.0f * _fTimeDelta * fDot;
+            vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+            pDynamicActor->Set_LinearVelocity(vVeclocity);
+
         }
         else
         {
             m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
         }
-
     }
 
 	
 
+}
+
+void CPlayer::Stop_Rotate()
+{
+
+    ACTOR_TYPE eActorType = Get_ActorType();
+    if (ACTOR_TYPE::DYNAMIC == eActorType)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+            pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+        }
+    }
 }
 
 void CPlayer::Attack(_uint _iCombo)
@@ -402,10 +444,39 @@ void CPlayer::Attack(_uint _iCombo)
     }
 }
 
+void CPlayer::Jump()
+{		/* Test Jump */
+    m_pActorCom->Add_Impulse(_float3(0.0f, 30.0f, 0.0f));
+}
 
+
+
+_bool CPlayer::Is_OnGround()
+{
+    if (XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)) <= 0.f)
+		return true;
+    else
+        return false;
+}
+
+_float CPlayer::Get_UpForce()
+{
+    COORDINATE eCoord = Get_CurCoord();
+
+    if (COORDINATE_2D == eCoord)
+    {
+
+    }
+    else
+    {
+        return XMVectorGetY( static_cast<CActor_Dynamic*>(m_pActorCom)->Get_LinearVelocity());
+    }
+
+}
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
+    cout << "switch animantion " << _iAnimIndex << endl;
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
 }
 
@@ -421,6 +492,7 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Run(this));
         break;
     case Client::CPlayer::JUMP:
+        m_pStateMachine->Transition_To(new CPlayerState_Jump(this));
         break;
     case Client::CPlayer::ATTACK:
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
@@ -485,12 +557,6 @@ _int CPlayer::Someting3()
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::SPACE))
-    {
-        /* Test Jump */
-        m_pActorCom->Add_Impulse(_float3(0.0f, 15.0f, 0.0f));
-    }
-
 
 
     if (KEY_DOWN(KEY::F1))
