@@ -71,6 +71,8 @@ private:
 #pragma region Object Tool Method
 
 	void				Load_2DModelList();
+	void				Save_2DModelList();
+
 	void				Load_SaveFileList();
 
 	void				Object_Clear(_bool _bSelected = true);
@@ -98,6 +100,8 @@ private:
 	HRESULT				Setting_TileMap(const _string _strFileMapJsonName);
 
 	C2DMapObjectInfo*	Find_Info(const _wstring _strTag);
+
+	HRESULT				Update_Model_Index();
 
 
 private:

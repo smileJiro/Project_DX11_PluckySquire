@@ -730,7 +730,7 @@ HRESULT CTask_Manager::Export_Result(const _wstring& _strFilePath, const _wstrin
 		return E_FAIL;
 	}
 
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 _bool CTask_Manager::Check_EgnoreObject(_string _strModelName)

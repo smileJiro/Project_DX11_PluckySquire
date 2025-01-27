@@ -23,6 +23,7 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 	_string strModelText = _InfoJson["ModelType"];
 	m_isActive = _InfoJson["Active"];
 	m_isCollider = _InfoJson["Collider"];
+	m_isSorting = _InfoJson["Sorting"];
 
 	for (_uint i = 0; i < MODEL_END; ++i)
 	{
@@ -50,16 +51,49 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 	{
 		if (
 			_InfoJson.contains("ColliderPropertis")
-			&&
-			_InfoJson["ColliderPropertis"].contains("ColliderType")
 			)
 		{
-			_string ColliderTypeTag = _InfoJson["ColliderPropertis"]["ColliderType"];
-			for (_uint i = 0; i < COLLIDER_END; ++i)
+			auto ColliderPropertis = _InfoJson["ColliderPropertis"];
+			if (ColliderPropertis.contains("ColliderType"))
 			{
-				if (_arrColliderTypeString[i] == ColliderTypeTag)
-					m_eColliderType = (MAPOBJ_2D_COLLIDIER_TYPE)i;
+				_string ColliderTypeTag = ColliderPropertis["ColliderType"];
+				for (_uint i = 0; i < COLLIDER_END; ++i)
+				{
+					if (_arrColliderTypeString[i] == ColliderTypeTag)
+						m_eColliderType = (MAPOBJ_2D_COLLIDIER_TYPE)i;
+				}
 			}
+			if (ColliderPropertis.contains("ColliderInfo"))
+			{
+				auto ColliderInfo = ColliderPropertis["ColliderInfo"];
+
+				if (ColliderInfo.contains("Collider_Offset_Pos"))
+					m_fColliderOffsetPos = { ColliderInfo["Collider_Offset_Pos"]["X"],ColliderInfo["Collider_Offset_Pos"]["Y"] };
+
+				switch (m_eColliderType)
+				{
+					case Map_Tool::C2DMapObjectInfo::COLLIDER_AABB:
+					if (ColliderInfo.contains("Collider_Extent"))
+						m_fColliderExtent = { ColliderInfo["Collider_Extent"]["X"],ColliderInfo["Collider_Extent"]["Y"] };
+						break;
+					case Map_Tool::C2DMapObjectInfo::COLLIDER_SQUARE:
+						if (ColliderInfo.contains("Collider_Radius"))
+							m_fColliderRadius = ColliderInfo["Collider_Radius"];
+						break;
+				}
+			}
+		}
+	}
+	if (m_isCollider)
+	{
+		if (
+			_InfoJson.contains("SortingPropertis")
+			)
+		{
+			auto SortingPropertis = _InfoJson["SortingPropertis"];
+				if (SortingPropertis.contains("Sorting_Offset_Pos"))
+					m_fSortingPosition = { SortingPropertis["Sorting_Offset_Pos"]["X"],SortingPropertis["Sorting_Offset_Pos"]["Y"] };
+
 		}
 	}
 
@@ -87,8 +121,50 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 	}
 #endif // _DEBUG
 
+
 	return S_OK;
 }
+
+HRESULT C2DMapObjectInfo::Export(json& _OutputJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString)
+{
+	_OutputJson["SearchTag"] = m_strSearchTag;
+	_OutputJson["TextureName"] = m_strTextureName;
+	_OutputJson["ModelType"] = _arrModelTypeString[m_eModelType];
+	_OutputJson["Active"] = m_isActive;
+	_OutputJson["Collider"] = m_isCollider;
+	_OutputJson["Sorting"] = m_isSorting;
+	if (m_isActive)
+	{
+		_OutputJson["ActivePropertis"]["ActiveType"] = _arrActiveTypeString[m_eActiveType];
+	}
+	if (m_isCollider)
+	{
+		_OutputJson["ColliderPropertis"]["ColliderType"] = _arrColliderTypeString[m_eColliderType];
+		if (m_eColliderType != COLLIDER_END)
+		{
+			_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Offset_Pos"]["X"] = m_fColliderOffsetPos.x;
+			_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Offset_Pos"]["Y"] = m_fColliderOffsetPos.y;
+			switch (m_eColliderType)
+			{
+				case Map_Tool::C2DMapObjectInfo::COLLIDER_AABB:
+					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["X"] = m_fColliderExtent.y;
+					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["Y"] = m_fColliderExtent.y;
+					break;
+				case Map_Tool::C2DMapObjectInfo::COLLIDER_SQUARE:
+					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Radius"] = m_fColliderRadius;
+					break;
+			}
+		}
+	}
+	if (m_isSorting)
+	{
+		_OutputJson["SortingPropertis"]["Sorting_Offset_Pos"]["X"] = m_fSortingPosition.x;
+		_OutputJson["SortingPropertis"]["Sorting_Offset_Pos"]["Y"] = m_fSortingPosition.y;
+	}
+	return S_OK;
+}
+
+
 ID3D11ShaderResourceView* C2DMapObjectInfo::Get_SRV(_float2* _pReturnSize)
 {
 	if (!m_isToolRendering || nullptr == m_pTexture)

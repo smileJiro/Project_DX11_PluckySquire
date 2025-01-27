@@ -45,6 +45,7 @@ private:
 
 public:
 	HRESULT Initialize(json _InfoJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString);
+	HRESULT Export(json& _OutputJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString);
 
 	_float2			m_fTextureOffsetSize;
 
@@ -64,9 +65,11 @@ public :
 	_bool						Is_ModelLoad() { return m_isModelCreate; };
 	_bool						Is_Active() { return m_isActive; };
 	_bool						Is_Collider() { return m_isCollider; };
+	_bool						Is_Sorting() { return m_isSorting; };
 
 	void						Set_Active(_bool _isActive) { m_isActive = _isActive; }
 	void						Set_Collider(_bool _isCollider) { m_isCollider = _isCollider; }
+	void						Set_Sorting(_bool _isSorting) { m_isSorting = _isSorting; }
 
 	MAPOBJ_ACTIVE_TYPE			Get_ActiveType() { return m_eActiveType; };
 	void						Set_ActiveType(MAPOBJ_ACTIVE_TYPE _eType) { m_eActiveType = _eType; };
@@ -77,12 +80,43 @@ public :
 	ID3D11ShaderResourceView*	Get_SRV(_float2* _pReturnSize = nullptr);
 	CTexture*					Get_Texture(){ return m_pTexture; }
 
+	_uint						Get_ModelIndex() { return m_iModelIndex; }
+	void						Set_ModelIndex(_uint _iIndex) { m_iModelIndex = _iIndex; }
+	
+
+
+	_float2						Get_Collider_Offset_Pos(){ return m_fColliderOffsetPos;}
+	_float2						Get_Collider_Extent() { return m_fColliderExtent; }
+	_float						Get_Collider_Radius(){ return m_fColliderRadius;}
+
+
+	void						Set_Collider_Offset_Pos(_float2 _fValue) { m_fColliderOffsetPos = _fValue; }
+	void						Set_Collider_Extent(_float2 _fValue) { m_fColliderExtent = _fValue; }
+	void						Set_Collider_Radius(_float _fValue) { m_fColliderRadius = _fValue; }
+
+
+
+
+	_float2						Get_Sorting_Pos() { return m_fSortingPosition; }
+	void						Set_Sorting_Pos(_float2 _fValue) { m_fSortingPosition = _fValue; }
+
+
+
+
+	_bool						Is_Delete() { return m_isDelete; };
+	void						Set_Delete(_bool _isDelete) { m_isDelete = _isDelete; }
+
+
+
 private :
 
 	CGameInstance*				m_pGameInstance = { nullptr };
 	Engine::C2DModel*			m_pModel = { nullptr };
 	CTexture*					m_pTexture = { nullptr };
 
+	_uint						m_iModelIndex = 0;
+
+	// DATA -----------------
 	_string						m_strSearchTag = "";
 	_string						m_strTextureName = "";
 
@@ -96,6 +130,19 @@ private :
 	MAPOBJ_MODEL_TYPE			m_eModelType;
 	MAPOBJ_ACTIVE_TYPE			m_eActiveType;
 	MAPOBJ_2D_COLLIDIER_TYPE	m_eColliderType;
+
+	_bool						m_isSorting = false;
+	_float2						m_fSortingPosition = {};
+
+	_float2						m_fColliderOffsetPos = {};
+	_float2						m_fColliderExtent = {};
+	_float						m_fColliderRadius = {};
+	
+	
+	_bool						m_isDelete = false; 
+	
+	
+	// DATA -----------------
 
 
 public:

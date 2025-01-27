@@ -46,7 +46,6 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 	m_fRenderTargetSize = pDesc->fRenderTargetSize;
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)pDesc->fRenderTargetSize.x, (_float)pDesc->fRenderTargetSize.y, 0.0f, 1.0f));
 
-
 	return S_OK;
 }
 
@@ -114,6 +113,20 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 		fRealPos.y >= fTop && fRealPos.y <= fBottom);
 }
 
+HRESULT C2DMapObject::Export(HANDLE hFile)
+{
+	DWORD	dwByte(0);
+	_uint		iModelIndex = 0;
+	_float2		fPos = {};
+	_bool		isOverride = false;
+
+	WriteFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
+	WriteFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+	WriteFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
+
+	return S_OK;
+}
+
 _vector C2DMapObject::Get_Position() const
 {
 	_vector vPos = __super::Get_Position();
@@ -123,6 +136,28 @@ _vector C2DMapObject::Get_Position() const
 	XMVectorSetX(vPos, fPosX);
 	XMVectorSetX(vPos, fPosY);
 	return vPos;
+}
+
+HRESULT C2DMapObject::Update_Model_Index()
+{
+	if (nullptr == m_pModelInfo)
+		return S_OK;
+
+
+	if (m_pModelInfo->Is_Delete())
+	{
+		m_pModelInfo = nullptr;
+		m_isModelLoad = false;
+		/* Com_Texture */
+		Safe_Release(m_pTextureCom);
+
+		if (FAILED(Add_Component(m_iCurLevelID, L"Prototype_Component_Texture_None_Model",
+			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	}
+
+
+	return S_OK;
 }
 
 
@@ -138,12 +173,16 @@ HRESULT C2DMapObject::Ready_Components(MAPOBJ_2D_DESC* Desc)
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 	m_strKey = Desc->strProtoTag;
-	C2DMapObjectInfo* pInfo = Desc->pInfo;
-	m_isModelLoad = nullptr != pInfo;
+
+	m_pModelInfo = Desc->pInfo;
+	m_isModelLoad = nullptr != m_pModelInfo;
 
 
 	if (m_isModelLoad)
-		m_pTextureCom = pInfo->Get_Texture();
+	{
+		m_pTextureCom = m_pModelInfo->Get_Texture();
+		Safe_AddRef(m_pTextureCom);
+	}
 	if (m_pTextureCom == nullptr)
 	{
 		/* Com_Texture */
