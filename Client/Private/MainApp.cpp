@@ -137,8 +137,8 @@ HRESULT CMainApp::Initialize_Client_Manager()
 		return E_FAIL;
 	if(FAILED(CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
-	//if (FAILED(CSection_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
-	//	return E_FAIL;
+	if (FAILED(CSection_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -459,7 +459,7 @@ void CMainApp::Free()
 	CCamera_Manager::DestroyInstance();
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
-	//CSection_Manager::DestroyInstance();
+	CSection_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();
