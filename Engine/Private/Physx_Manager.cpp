@@ -44,7 +44,7 @@ HRESULT CPhysx_Manager::Initialize()
 	_float4x4 matTest = {};
 	PxMat44 matPx;
 	XMStoreFloat4x4(&matTest, XMMatrixIdentity());
-	PxTransform transform(PxVec3(0.0f, -10.0f, 0.0f)); // 위치: (0, 0, 0)
+	PxTransform transform(PxVec3(0.0f, -9.5f, 0.0f)); // 위치: (0, 0, 0)
 
 	// PxRigidStatic 객체 생성
 	m_pTestDesk = m_pPxPhysics->createRigidStatic(transform);

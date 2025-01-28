@@ -48,6 +48,9 @@ protected:
 	_uint					m_iTextureCount = { 0 };
 	_uint					m_iSkillLevel = { 0 };
 
+private:
+	_float					m_fOpaque = { 0.0f };
+
 
 
 };

@@ -35,7 +35,8 @@ HRESULT CSampleBook::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
-
+    pDesc->iRenderGroupID_3D = RG_3D;
+    pDesc->iPriorityID_3D = PR3D_NONBLEND;
 
     __super::Initialize(_pArg);
     Set_AnimationLoop(COORDINATE_3D, 4, true);
@@ -59,8 +60,8 @@ void CSampleBook::Update(_float _fTimeDelta)
 
 void CSampleBook::Late_Update(_float _fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
-
+    //m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
     __super::Update(_fTimeDelta);
 }
 

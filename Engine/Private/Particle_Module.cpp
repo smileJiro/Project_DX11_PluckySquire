@@ -114,33 +114,12 @@ HRESULT CParticle_Module::Initialize(const json& _jsonModuleInfo)
 
 
 
-//void CParticle_Module::Initialize_Data(_float4* _pPosition, _float3* _pVelocity, _float3* _pAcceleration)
-//{
-//    switch (m_eModuleType)
-//    {
-//    case INIT_VELOCITY_POINT:
-//    {
-//        XMStoreFloat3(_pVelocity, XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin"]) * m_FloatDatas["Amount"]);
-//        break;
-//    }
-//    case INIT_VELOCITY_LINEAR:
-//    {
-//
-//        *_pVelocity = m_Float3Datas["Amount"];
-//        break;
-//    }
-//
-//    case INIT_ACCELERATION:
-//    {
-//        *_pAcceleration = *_pVelocity;
-//        break;
-//    }
-//
-//    }
-//}
 
 void CParticle_Module::Update_Translations(_float _fTimeDelta, _float4* _pPosition, _float3* _pVelocity, _float3* _pAcceleration)
 {
+    if (false == m_isActive)
+        return;
+
     switch (m_eModuleType)
     {
     case INIT_VELOCITY_POINT:
@@ -166,23 +145,26 @@ void CParticle_Module::Update_Translations(_float _fTimeDelta, _float4* _pPositi
     }
     case DRAG:
     {
-        XMStoreFloat3(_pVelocity, XMLoadFloat3(_pVelocity) - XMLoadFloat3(_pVelocity) * m_FloatDatas["Amount"] * _fTimeDelta);
+        _vector vVelocity = XMLoadFloat3(_pVelocity) * (1.f - m_FloatDatas["Amount"] * _fTimeDelta);
+        //_float fLength = XMVectorGetX(XMVector3Length(vVelocity));
+       
+
+        //XMStoreFloat3(_pVelocity, XMLoadFloat3(_pVelocity) - XMLoadFloat3(_pVelocity) * m_FloatDatas["Amount"] * _fTimeDelta);
+        XMStoreFloat3(_pVelocity, vVelocity);
         break;
     }
     case VORTEX_ACCELERATION:
     {
-        _vector vR = XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin Point"]);
-        _vector vForce = XMVector3Cross(XMLoadFloat3(&m_Float3Datas["Axis"]), vR) * m_FloatDatas["Amount"] * _fTimeDelta;
-        
-        XMStoreFloat3(_pVelocity, (XMLoadFloat3(_pVelocity) + vForce) * (1.f - m_FloatDatas["Pull Amount"]));
-        //XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) + vForce);
-        
-        //_vector vForce = XMVectorvPos - XMLoadFloat3(&m_Float3Datas["Origin Point"]);
+      
 
-
-        //_vector vDir = XMVector3Cross(XMLoadFloat3(&m_Float3Datas["Axis"]), XMLoadFloat3(_pVelocity)) * _fTimeDelta * m_FloatDatas["Amount"];
+        _vector vDiff = XMVectorSetW(XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin Point"]), 0.f);
+        _vector vR = vDiff - XMVector3Dot(XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"])), vDiff) * XMLoadFloat3(&m_Float3Datas["Axis"]);
+        //// ¹Ð¾î³»´Â Èû + ´ç±â´Â Èû
+        _vector vVortex = XMVector3Normalize(XMVector3Cross(XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"])), vR)) * m_FloatDatas["Amount"];
+        _vector vPull = - XMVector3Normalize(vR) * m_FloatDatas["Pull Amount"];
         //
-        //XMStoreFloat3(_pVelocity, XMLoadFloat3(_pVelocity) - vDir);
+        XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) + (vVortex + vPull) * _fTimeDelta);
+
 
         break;
     }
@@ -229,7 +211,6 @@ void CParticle_Module::Free()
 {
     m_Float3Datas.clear();
     m_FloatDatas.clear();
-    m_IntDatas.clear();
 
     __super::Free();
 
@@ -283,6 +264,11 @@ void CParticle_Module::Tool_Module_Update()
     ImGui::SameLine();
     ImGui::Text(m_strTypeName.c_str());
 
+    if (ImGui::RadioButton("Active", m_isActive))
+    {
+        m_isActive = !m_isActive;
+    }
+
     static _char szName[MAX_PATH] = "";
     if (ImGui::InputText("Set_Module_Name", szName, MAX_PATH))
     {
@@ -298,25 +284,38 @@ void CParticle_Module::Tool_Module_Update()
 
     for (auto& Pair : m_FloatDatas)
     {
-        //ImGui::Text("Adjust");
-        //ImGui::SameLine()	;
-        //ImGui::Text(Pair.first.c_str());
-
         if (ImGui::InputFloat(Pair.first.c_str(), &(Pair.second)))
             m_isChanged = true;
     }
 
     for (auto& Pair : m_Float3Datas)
     {
-        //ImGui::Text("Adjust");
-        //ImGui::SameLine();
-        //ImGui::Text(Pair.first.c_str());
-
         if (ImGui::InputFloat3(Pair.first.c_str(), (_float*)&(Pair.second)))
             m_isChanged = true;
 
     }
 
+}
+HRESULT CParticle_Module::Save_Module(json& _jsonModuleInfo)
+{
+    _jsonModuleInfo["Init"] = m_isInit;
+    _jsonModuleInfo["Type"] = m_eModuleType;
+    _jsonModuleInfo["Order"] = m_iOrder;
+    
+    for (auto& Pair : m_FloatDatas)
+    {
+        _jsonModuleInfo[Pair.first.c_str()] = Pair.second;
+    }
+
+    for (auto& Pair : m_Float3Datas)
+    {
+        _jsonModuleInfo[Pair.first.c_str()].push_back(Pair.second.x);
+        _jsonModuleInfo[Pair.first.c_str()].push_back(Pair.second.y);
+        _jsonModuleInfo[Pair.first.c_str()].push_back(Pair.second.z);
+    }
+
+
+    return S_OK;
 }
 CParticle_Module* CParticle_Module::Create(MODULE_TYPE eType , const _string& _strTypeName)
 {

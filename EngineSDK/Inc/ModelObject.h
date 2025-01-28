@@ -22,6 +22,11 @@ public:
 		// 3D ShaderPass
 		_uint iShaderPass_3D = {};
 		_float fFrustumCullingRange = 2.0f;
+
+		_uint iRenderGroupID_2D = 0;
+		_uint iPriorityID_2D = 0;
+		_uint iRenderGroupID_3D = 0;
+		_uint iPriorityID_3D = 0;
 	}MODELOBJECT_DESC;
 
 protected:
@@ -70,6 +75,10 @@ protected:
 	_wstring				m_strModelPrototypeTag[COORDINATE_LAST];
 
 	_float					m_fFrustumCullingRange = 0.0f;
+	_uint					m_iRenderGroupID_2D = 0;
+	_uint					m_iPriorityID_2D = 0;
+	_uint					m_iRenderGroupID_3D = 0;
+	_uint					m_iPriorityID_3D = 0;
 	_bool				m_bPlayingAnim = true;	
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();

@@ -184,6 +184,34 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 		{
 			m_pTestModelObj->Set_AnimSpeedMagnifier(m_pTestModelObj->Get_CurCoord(),m_iCurrentAnimIndex, m_fAnimaSpeedMagnifier);
 		}
+
+
+
+		_uint iAnimIdx = 0;
+		if (ImGui::BeginListBox("AnimationList"))
+		{
+			list<string> AnimNames;
+			m_pTestModelObj->Get_AnimatinNames(AnimNames);
+			for (auto& strAnimationName : AnimNames)
+			{
+				_bool isSelected = iAnimIdx == m_iCurrentAnimIndex;
+				string strLable = to_string(iAnimIdx) + " " + strAnimationName;
+				if (ImGui::Selectable(strLable.c_str(), isSelected))
+				{
+					m_iCurrentAnimIndex = iAnimIdx; // 선택된 항목 갱신
+					m_bLoop = m_pTestModelObj->Is_LoopAnimation(m_pTestModelObj->Get_CurCoord(), m_iCurrentAnimIndex);
+					m_fAnimaSpeedMagnifier = m_pTestModelObj->Get_AnimSpeedMagnifier(m_pTestModelObj->Get_CurCoord(), m_iCurrentAnimIndex);
+					Set_Animation(m_iCurrentAnimIndex, m_bLoop);
+				}
+				// 선택된 항목 강조
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+				iAnimIdx++;
+			}
+			ImGui::EndListBox();
+		}
 	}
 }
 

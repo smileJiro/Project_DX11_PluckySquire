@@ -44,7 +44,8 @@ void CLogo_Choose::Update(_float _fTimeDelta)
 void CLogo_Choose::Late_Update(_float _fTimeDelta)
 {
 	if (m_isRender)
-		m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_UI, this);
+		//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 
 }
 

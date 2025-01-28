@@ -24,12 +24,7 @@ HRESULT CLevel_EffectTool::Initialize()
 
 void CLevel_EffectTool::Update(_float _fTimeDelta)
 {
-	if (m_isParticle)
-		Update_Particle_Tool(_fTimeDelta);
-
-
-	Tool_Update();
-
+	Update_Particle_Tool(_fTimeDelta);
 }
 
 HRESULT CLevel_EffectTool::Render()
@@ -101,7 +96,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_Effect(const _wstring& _strLayerTag)
 	//	LEVEL_TOOL, _strLayerTag, &TempDesc)))
 	//	return E_FAIL;
 
-	CParticle_System* pOut;
+	/*CParticle_System* pOut;
 
 	CParticle_System::PARTICLE_SYSTEM_DESC Desc = {};
 
@@ -117,9 +112,11 @@ HRESULT CLevel_EffectTool::Ready_Layer_Effect(const _wstring& _strLayerTag)
 
 	if (nullptr == pOut)
 		return E_FAIL;
+
 	m_pNowItem = pOut;
 	Safe_AddRef(pOut);
-	m_ParticleSystems.push_back(pOut);
+	m_ParticleSystems.push_back(pOut);*/
+
 
 	//ZeroMemory(&Desc, sizeof(Desc));
 
@@ -171,15 +168,19 @@ HRESULT CLevel_EffectTool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 void CLevel_EffectTool::Update_Particle_Tool(_float _fTimeDelta)
 {
 	ImGui::Begin("Particle System");
-	Show_System_List();
+	Tool_System_List();
 	ImGui::End();
 
 	ImGui::Begin("Emitter");
-	Adjust_System(_fTimeDelta);
+	Tool_Adjust_System(_fTimeDelta);
+	ImGui::End();
+
+	ImGui::Begin("Textures");
+	Tool_Texture();
 	ImGui::End();
 }
 
-void CLevel_EffectTool::Show_System_List()
+void CLevel_EffectTool::Tool_System_List()
 {
 	if (ImGui::TreeNode("Particle System List"))
 	{
@@ -244,15 +245,29 @@ void CLevel_EffectTool::Show_System_List()
 			m_ParticleSystems.push_back(pOut);
 		}
 
+		ImGui::Dummy(ImVec2(0.f, 5.f));
+
+		if (ImGui::Button("Save All"))
+		{
+			Save_All();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Load All"))
+		{
+			Load_All("../Bin/DataFiles/Effects/");
+		}
+
 		ImGui::TreePop();
 	}
 
 }
 
-void CLevel_EffectTool::Adjust_System(_float _fTimeDelta)
+void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 {
-	if (m_pNowItem && ImGui::TreeNode("Adjust System"))
-	{
+	if (m_pNowItem)
+	{		
+		m_pNowItem->Tool_Update(_fTimeDelta);
+
 		if (ImGui::Button("New_Sprite_Emitter"))
 		{
 			CParticle_Emitter::PARTICLE_EMITTER_DESC Desc = {};
@@ -268,23 +283,19 @@ void CLevel_EffectTool::Adjust_System(_float _fTimeDelta)
 			}
 		}
 
+		ImGui::SameLine();
 
-		m_pNowItem->Tool_Update(_fTimeDelta);
+		if (ImGui::Button("Save_this_system"))
+		{
+			m_pNowItem->Save_File();
+		}
 
-		ImGui::TreePop();
+
 	}
 
-
 }
 
-void CLevel_EffectTool::Tool_Update()
-{
-	ImGui::Begin("Tool");
 
-	Tool_Texture();
-
-	ImGui::End();
-}
 
 void CLevel_EffectTool::Tool_Texture()
 {
@@ -397,6 +408,87 @@ HRESULT CLevel_EffectTool::Load_Textures(const _char* _szExtension)
 	}
 
 	return S_OK;
+}
+
+HRESULT CLevel_EffectTool::Save_All()
+{
+	for (auto& pSystem : m_ParticleSystems)
+	{
+		if (FAILED(pSystem->Save_File()))
+		{
+			continue;
+		}
+	}
+
+	return S_OK;
+}
+
+HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
+{
+	CParticle_System* pOut;
+	CParticle_System::PARTICLE_SYSTEM_DESC Desc = {};
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL;
+	Desc.isCoordChangeEnable = false;
+	Desc.iSpriteShaderLevel = LEVEL_STATIC;
+	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+
+	
+	std::filesystem::path path;
+	path = _szPath;
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+		if (entry.path().extension() == ".json") {
+			//cout << entry.path().string() << endl;
+
+			CParticle_System* pParticleSystem = CParticle_System::Create(m_pDevice, m_pContext, entry.path().c_str());
+
+			if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, entry.path().filename(), pParticleSystem)))
+			{
+				MSG_BOX("불러오기 실패");
+				return E_FAIL;
+			}
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, entry.path().filename(),
+				LEVEL_TOOL, TEXT("Layer_Effect"), reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+			{
+				MSG_BOX("Layer 추가 실패");
+				return E_FAIL;
+			}
+
+			if (nullptr == pOut)
+				return E_FAIL;
+
+			//m_pNowItem = pOut;
+			Safe_AddRef(pOut);
+			m_ParticleSystems.push_back(pOut);
+			pOut->Set_Active(false);
+
+			//CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, entry.path().string().c_str());
+
+			//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, entry.path().filename(),
+			//	pTexture)))
+			//{
+			//	string str = "Failed to Create CTexture";
+			//	str += entry.path().filename().string();
+			//	MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+
+			//	Safe_Release(pTexture);
+
+			//	return E_FAIL;
+			//}
+
+			//pTexture->Add_SRVName(entry.path().c_str());
+			//m_Textures.emplace(entry.path().c_str(), pTexture);
+
+
+			//Safe_AddRef(pTexture);
+		}
+	}
+
+	return S_OK;
+
 }
 
 CLevel_EffectTool* CLevel_EffectTool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

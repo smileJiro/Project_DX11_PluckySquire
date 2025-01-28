@@ -209,7 +209,7 @@ HRESULT CFbxToBinary::Write_Animation(const aiAnimation* pAIAnim, ofstream& outF
 	outFile.write(reinterpret_cast<const char*>(&pAIAnim->mName.length), sizeof(_uint));
 	//cout << pAIAnim->mName.length << endl;
 	outFile.write(pAIAnim->mName.data, pAIAnim->mName.length);
-	//cout << pAIAnim->mName.data << endl;
+	cout << pAIAnim->mName.data << endl;
 
 	outFile.write(reinterpret_cast<const char*>(&pAIAnim->mDuration), sizeof(double));
 	//cout << pAIAnim->mDuration << endl;
