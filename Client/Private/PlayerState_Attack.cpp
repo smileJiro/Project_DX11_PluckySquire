@@ -17,6 +17,36 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 	{
 		m_bCombo = true;
 	}
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+
+	//0.3이상일 때 공격버튼이 눌린 적 있었으면?
+	_float fProgress =m_pOwner->Get_AnimProgress();
+	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
+	_float fForwardingProgress = eCoord == COORDINATE_2D ? m_f2DForwardingProgress : m_f3DForwardingProgress;
+	if (fProgress >= fMotionCancelProgress)
+	{
+		if (m_bCombo)
+		{
+			m_iComboCount++;
+			if (2 >= m_iComboCount)
+			{
+				m_pOwner->Attack(m_iComboCount);
+			}
+
+			m_bCombo = false;
+		}
+
+	}
+	else if(fProgress >= fForwardingProgress)
+	{
+		m_pOwner->Stop_Move();
+	}
+	else
+	{
+		m_pOwner->Move_Forward(m_fForwardSpeed, _fTimeDelta);
+
+	}
+	
 }
 
 void CPlayerState_Attack::Enter()
@@ -31,19 +61,7 @@ void CPlayerState_Attack::Exit()
 
 void CPlayerState_Attack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	if (m_bCombo)
-	{
-		m_iComboCount++;
-		if (2 >= m_iComboCount )
-		{
-			m_pOwner->Attack(m_iComboCount);
-		}
-
-		m_bCombo = false;
-	}
-	else
-	{
-		m_iComboCount = 0;
-		m_pOwner->Set_State(CPlayer::IDLE);
-	}
+	m_iComboCount = 0;
+	m_bCombo = false;
+	m_pOwner->Set_State(CPlayer::IDLE);
 }

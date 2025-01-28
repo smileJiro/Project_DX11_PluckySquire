@@ -5,7 +5,7 @@
 CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CParticle_Emitter(_pDevice, _pContext)
 {
-    m_eType = SPRITE;
+    m_eParticleType = SPRITE;
 }
 
 CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitter& _Prototype)
@@ -22,34 +22,39 @@ CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitte
     Json을 통해서 데이터를 불러옵니다
     Prototype Initialize 상황에서 Texture, Buffer을 같이 로드합니다.
 */
-HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const _tchar* _szFilePath)
-{
-    json jsonEffectInfo;
-    if (false == jsonEffectInfo.contains("Texture"))
-        return E_FAIL;
-
-    _string strTexturePath = jsonEffectInfo["Texture"];
-    m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
-    if (nullptr == m_pTextureCom)
-        return E_FAIL;
-
-
-    m_pTextureCom->Add_SRVName(STRINGTOWSTRING(jsonEffectInfo["Texture"]));
-
-
-    if (false == jsonEffectInfo.contains("Buffer"))
-        return E_FAIL;
-
-    m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, jsonEffectInfo["Buffer"]);
-    if (nullptr == m_pParticleBufferCom)
-        return E_FAIL;
-
-
-    return S_OK;
-}
+//HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const _tchar* _szFilePath)
+//{
+//    json jsonEffectInfo;
+//    if (false == jsonEffectInfo.contains("Texture"))
+//        return E_FAIL;
+//
+//    _string strTexturePath = jsonEffectInfo["Texture"];
+//    m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+//    if (nullptr == m_pTextureCom)
+//        return E_FAIL;
+//
+//#ifdef  _DEBUG
+//    m_pTextureCom->Add_SRVName(STRINGTOWSTRING(jsonEffectInfo["Texture"]));
+//#endif //  _DEBUG
+//
+//
+//
+//    if (false == jsonEffectInfo.contains("Buffer"))
+//        return E_FAIL;
+//
+//    m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, jsonEffectInfo["Buffer"]);
+//    if (nullptr == m_pParticleBufferCom)
+//        return E_FAIL;
+//
+//
+//    return S_OK;
+//}
 
 HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
 {
+    if (FAILED(__super::Initialize_Prototype(_jsonInfo)))
+        return E_FAIL;
+
     if (false == _jsonInfo.contains("Texture"))
         return E_FAIL;
 
@@ -58,7 +63,9 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     if (nullptr == m_pTextureCom)
         return E_FAIL;
 
+#ifdef  _DEBUG
     m_pTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
+#endif //  _DEBUG
 
 
     if (false == _jsonInfo.contains("Buffer"))
@@ -77,19 +84,9 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
 
 HRESULT CParticle_Sprite_Emitter::Initialize(void* _pArg)
 {
-    PARTICLE_EMITTER_DESC* pDesc = static_cast<PARTICLE_EMITTER_DESC*>(_pArg);
-
-    if (nullptr == pDesc)
-        return E_FAIL;
-
-    pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
-
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
-    if (FAILED(Ready_Components(pDesc)))
-        return E_FAIL;
 
     return S_OK;
 }
@@ -100,13 +97,15 @@ void CParticle_Sprite_Emitter::Priority_Update(_float _fTimeDelta)
 
 void CParticle_Sprite_Emitter::Update(_float _fTimeDelta)
 {
-    Update_Component(_fTimeDelta);
+    __super::Update(_fTimeDelta);
 }
 
 void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
 {
+    __super::Late_Update(_fTimeDelta);
 
-    m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
+    if (m_isActive)
+        m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
 }
 
 HRESULT CParticle_Sprite_Emitter::Render()
@@ -131,9 +130,18 @@ HRESULT CParticle_Sprite_Emitter::Render()
 
 HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
 {
-    // TODO : Local 기준 ? World 기준 ?
-    if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-        return E_FAIL;
+    if (m_isFollowParent)
+    {
+        if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
+            return E_FAIL;
+    }
+    else
+    {
+        if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+            return E_FAIL;
+    }
+
+
 
     if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
         return E_FAIL;
@@ -179,18 +187,18 @@ HRESULT CParticle_Sprite_Emitter::Ready_Components(const PARTICLE_EMITTER_DESC* 
     return S_OK;
 }
 
-CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _szFilePath)
-{
-    CParticle_Sprite_Emitter* pInstance = new CParticle_Sprite_Emitter(_pDevice, _pContext);
-
-    if (FAILED(pInstance->Initialize_Prototype(_szFilePath)))
-    {
-        MSG_BOX("Failed to Cloned : CEffect");
-        Safe_Release(pInstance);
-    }
-
-    return pInstance;
-}
+//CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _szFilePath)
+//{
+//    CParticle_Sprite_Emitter* pInstance = new CParticle_Sprite_Emitter(_pDevice, _pContext);
+//
+//    if (FAILED(pInstance->Initialize_Prototype(_szFilePath)))
+//    {
+//        MSG_BOX("Failed to Cloned : CEffect");
+//        Safe_Release(pInstance);
+//    }
+//
+//    return pInstance;
+//}
 
 CParticle_Sprite_Emitter* CParticle_Sprite_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonInfo)
 {
@@ -239,9 +247,14 @@ void CParticle_Sprite_Emitter::Tool_Setting()
 }
 void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 {
-    ImGui::Begin("Adjust_Sprite_Emitter");
-    
+    ImGui::Begin("Adjust_Sprite_Emitter");   
 
+    if (ImGui::TreeNode("Set Emitter State"))
+    {
+        __super::Tool_Update(_fTimeDelta);
+
+        ImGui::TreePop();
+    }
 
     if (m_pParticleBufferCom)
         m_pParticleBufferCom->Tool_Update(_fTimeDelta);
@@ -273,11 +286,28 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 }
 HRESULT CParticle_Sprite_Emitter::Save(json& _jsonOut)
 {
+    if (nullptr == m_pParticleBufferCom || nullptr == m_pTextureCom)
+    {
+        MSG_BOX("Texture 혹은 Buffer 없음");
+        return E_FAIL;
+    }
+
+    if (FAILED(__super::Save(_jsonOut)))
+        return E_FAIL;
+
     _jsonOut["Type"] = SPRITE;
     _jsonOut["Texture"] = WSTRINGTOSTRING(*m_pTextureCom->Get_SRVName(0)).c_str();
-    
-    // TODO :
 
+
+    json jsonBufferInfo;
+
+    // TODO : 추가적으로 저장하거나 해야할거 ..?
+    if (FAILED(m_pParticleBufferCom->Save_Buffer(jsonBufferInfo)))
+    {
+        return E_FAIL;
+    }
+
+    _jsonOut["Buffer"] = jsonBufferInfo;
 
     return S_OK;
 }

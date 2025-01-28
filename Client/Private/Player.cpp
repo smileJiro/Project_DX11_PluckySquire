@@ -101,6 +101,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+	m_tStat[COORDINATE_3D].fMoveSpeed = 500.f;
+	m_tStat[COORDINATE_3D].fJumpPower = 17.f;
     return S_OK;
 }
 
@@ -333,7 +335,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             }
 
             _float fDot = XMVectorGetX(XMVector3Dot(vLook, _vDir));
-            _vector vVeclocity = _vDir* 500.0f * _fTimeDelta * fDot;
+            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed * _fTimeDelta * fDot;
             vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vVeclocity);
 
@@ -348,6 +350,26 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 
 }
 
+void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
+{
+    ACTOR_TYPE eActorType = Get_ActorType();
+    if (ACTOR_TYPE::DYNAMIC == eActorType)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+            _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+            pDynamicActor->Set_LinearVelocity(vLook * fVelocity* _fTimeDelta);
+        }
+        else
+        {
+            _vector vDir = FDir_To_Vector(m_e2DDirection);
+            m_pControllerTransform->Go_Direction(vDir, fVelocity,_fTimeDelta);
+        }
+    }
+
+}
+
 void CPlayer::Stop_Rotate()
 {
 
@@ -358,6 +380,23 @@ void CPlayer::Stop_Rotate()
         {
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
             pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+        }
+    }
+}
+
+void CPlayer::Stop_Move()
+{
+    ACTOR_TYPE eActorType = Get_ActorType();
+    if (ACTOR_TYPE::DYNAMIC == eActorType)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+            pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
+        }
+        else
+        {
+
         }
     }
 }
@@ -442,11 +481,19 @@ void CPlayer::Attack(_uint _iCombo)
             break;
         }
     }
+
+    //CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+    //_vector vLook = XMVector3Normalize( m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+
+    //_float3  vForce;
+    //XMStoreFloat3(&vForce, vLook * 4.f);
+    //pDynamicActor->Add_Force(vForce);
+
 }
 
 void CPlayer::Jump()
 {		/* Test Jump */
-    m_pActorCom->Add_Impulse(_float3(0.0f, 30.0f, 0.0f));
+    m_pActorCom->Add_Impulse(_float3(0.0f, m_tStat[COORDINATE_3D].fJumpPower, 0.0f));
 }
 
 
@@ -472,6 +519,16 @@ _float CPlayer::Get_UpForce()
         return XMVectorGetY( static_cast<CActor_Dynamic*>(m_pActorCom)->Get_LinearVelocity());
     }
 
+}
+
+_float CPlayer::Get_AnimProgress()
+{
+    CModel* pModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(Get_CurCoord());
+	if (nullptr != pModel)
+	{
+		return pModel->Get_CurrentAnimProgeress();
+	}
+    return 0;
 }
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)

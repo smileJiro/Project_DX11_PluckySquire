@@ -162,6 +162,25 @@ namespace Client
 		return F_DIRECTION::F_DIR_LAST;
 	}
 
+	_vector FDir_To_Vector(F_DIRECTION _eFDir)
+	{
+		switch (_eFDir)
+		{
+		case Client::F_DIRECTION::LEFT:
+			return _vector{ -1, 0, 0 };
+		case Client::F_DIRECTION::RIGHT:
+			return _vector{ 1, 0, 0 };
+		case Client::F_DIRECTION::UP:
+			return _vector{ 0, 1, 0 };
+		case Client::F_DIRECTION::DOWN:
+			return _vector{ 0, -1, 0 };
+		case Client::F_DIRECTION::F_DIR_LAST:
+		default:
+			return _vector{ 0, 0, 0 };
+		}
+
+	}
+
 
 
 }

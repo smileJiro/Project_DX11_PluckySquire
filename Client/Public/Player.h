@@ -23,6 +23,7 @@ public:
 		RUN,
 		JUMP,
 		ATTACK,
+		ROLL,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -335,7 +336,7 @@ public:
 		,LATCH_ANIM_STAMP_PULLOUT_SHORT_GT_EDIT
 		,LATCH_ANIM_STAMP_PULLOUT_SHORT_NEWRIG
 		,LATCH_ANIM_STEALTH_RUN_GT
-		,LATCH_ANIM_SWORDTHROW_AIM_GT
+		,LATCH_ANIM_SWORDTHROW_AIM_GT = 80
 		,LATCH_ANIM_SWORDTHROW_AIM_NEWRIG
 		,LATCH_ANIM_SWORDTHROW_INTO_GT
 		,LATCH_ANIM_SWORDTHROW_INTO_NEWRIG
@@ -345,7 +346,7 @@ public:
 		,LATCH_ANIM_TORCH_STRAFE_FWD_01_GT
 		,LATCH_ANIM_TORCH_STRAFE_LEFT_01_GT
 		,LATCH_ANIM_TORCH_STRAFE_RIGHT_01_GT
-		,LATCH_ANIM_TRAILER_OUTBOOK_01_ANIM
+		,LATCH_ANIM_TRAILER_OUTBOOK_01_ANIM = 90
 		,LATCH_CINE_D09_LB_INTRO_SH_01
 		,LATCH_CINE_D09_LB_INTRO_SH_02
 		,LATCH_CINE_D09_LB_INTRO_SH_03
@@ -388,7 +389,9 @@ public:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Move(_vector _vDir,_float _fTimeDelta);
+	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Stop_Rotate();
+	void Stop_Move();
 	void Attack(_uint _iCombo);
 	void Jump();
 	//Get
@@ -396,6 +399,7 @@ public:
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
 	_bool Is_OnGround();
 	_float Get_UpForce();
+	_float Get_AnimProgress();
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -420,6 +424,7 @@ private:
 	F_DIRECTION m_e2DDirection = F_DIRECTION::F_DIR_LAST;
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
 	_vector m_vLookBefore = {};
+	
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

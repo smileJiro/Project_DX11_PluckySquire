@@ -27,7 +27,6 @@ public:
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 
 private:
-	_bool											m_isParticle = { true };
 	class CParticle_System*							m_pNowItem = { nullptr };
 	vector<class CParticle_System*>					m_ParticleSystems;
 
@@ -41,12 +40,13 @@ private:
 
 private:
 	void					Update_Particle_Tool(_float _fTimeDelta);
-	void					Show_System_List();
-	void					Adjust_System(_float _fTimeDelta);
-
-	void					Tool_Update();
+	void					Tool_System_List();
+	void					Tool_Adjust_System(_float _fTimeDelta);
 	void					Tool_Texture();
+
 	HRESULT					Load_Textures(const _char* _szExtension);
+	HRESULT					Save_All();
+	HRESULT					Load_All(const _char* _szPath);
 
 public:
 	static CLevel_EffectTool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

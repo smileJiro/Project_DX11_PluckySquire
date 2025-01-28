@@ -1,155 +1,133 @@
 {
-    "Name": "Testing",
     "Emitters": [
         {
-            "Type": "Sprite",
-            "Texture": "../Bin/Resources/Textures/Effects/Baodian024.dds",
             "Buffer": {
+                "Color": {
+                    "Arg1": [
+                        0.5,
+                        0.5,
+                        0.5,
+                        1.0
+                    ],
+                    "Arg2": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
                 "Count": 800,
-                "ShapeLocation": {
-                    "Shape" : "CONE",
-                    "Length": 4.0,
-                    "Outer_Angle": 90.0,
-                    "Inner_Angle" : 0.0,
-                    "Radial_Angle" : 360.0,
-                    "Cone_Surface" : 0.0,
-                    "Flatten" : 0.0,
-                    "Scale" : [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Rotation" : [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Position" : [
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                },           
-                "Scale": {
-                    "SetType": "DIRECTSET",
-                    "Arg1" : 
-                    [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Arg2" :
-                    [
-                        0.5,
-                        0.5,
-                        0.5
-                    ]
+                "LifeTime": {
+                    "Arg1": 20.0,
+                    "Arg2": 15.0,
+                    "SetType": "DIRECTSET"
                 },
-                "Rotation":
-                {
-                    "SetType" : "RANDOMRANGE",
-                    "Arg1" : 
-                    [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Arg2":
-                    [
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                },
-                "Position":
-                {
-                    "SetType" : "RANDOMRANGE",
-                    "Arg1" :
-                    [
-                        0.0,
-                        0.5,
-                        0.0
-                    ],
-                    "Arg2" :
-                    [
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                },
-                "UVSet" : 
-                {
-                    "Anim": false,
-                    "Random": false,
-                    "UV": [
-                        1,
-                        1
-                    ],
-                    "Count": 1,
-                    "Start": 0,
-                    "Time": 0
-                },
-                "LifeTime":
-                {
-                    "SetType": "RANDOMLINEAR",
-                    "Arg1": 10.0,
-                    "Arg2": 15.0
-                },
-                "Color":
-                {
-                    "SetType": "RANDOMRANGE",
-                    "Arg1":
-                    [
-                        0.5,
-                        0.5,
-                        0.5,
-                        1.0
-                    ],
-                    "Arg2":
-                    [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-
-                    ]
-                },
-                "Module":
-                [
+                "Module": [
                     {
-                        "Init" : true,
-                        "Type" : "INIT_VELOCITY_POINT",
-                        "Order" : 0,
-                        "Amount" : 5.0,
-                        "Origin" :
-                        [
-                            0.0,
-                            -0.5,
-                            0.0
-                        ]
-                    },
-
-                    {
-                        "Init" : false,
-                        "Type" : "VORTEX_ACCELERATION",
-                        "Order" : 0,
-                        "Amount" : 5.0,
-                        "Axis" : 
-                        [
+                        "Amount": 1.0,
+                        "Axis": [
                             0.0,
                             1.0,
                             0.0
                         ],
-                        "Pull Amount" : 0.5,
-                        "Origin Point" :
-                        [
-                            1.0,
-                            1.0,
+                        "Init": false,
+                        "Order": 1,
+                        "Origin Point": [
+                            0.0,
+                            0.0,
                             0.0
-                        ]
+                        ],
+                        "Pull Amount": 0.5,
+                        "Type": "VORTEX_ACCELERATION"
+                    },
+                    {
+                        "Amount": 1.0,
+                        "Init": false,
+                        "Order": 2,
+                        "Type": "DRAG"
                     }
-                ]
-            }
+                ],
+                "Position": {
+                    "Arg1": [
+                        0.0,
+                        0.5,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "Rotation": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "Scale": {
+                    "Arg1": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Arg2": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ],
+                    "SetType": "DIRECTSET"
+                },
+                "ShapeLocation": {
+                    "HandleRadius": 1.0,
+                    "LargeRadius": 10.121999740600586,
+                    "Position": [
+                        0.0,
+                        6.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        6.0,
+                        1.0
+                    ],
+                    "Shape": "TORUS",
+                    "U_Distribution": 0.0,
+                    "V_Distribution": 0.0
+                },
+                "UVSet": {
+                    "Anim": false,
+                    "Count": 1.0,
+                    "Random": false,
+                    "Start": 0.0,
+                    "Time": 0.0,
+                    "UV": [
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            "Event": 0,
+            "Parent": false,
+            "Progress": true,
+            "Texture": "../Bin/Resources/Textures/Effects/Baodian024.dds",
+            "Time": 5.0,
+            "Type": "SPRITE"
         }
-    ]
-}    
+    ],
+    "Name": "Testing"
+}

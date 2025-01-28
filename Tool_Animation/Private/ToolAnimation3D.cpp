@@ -16,10 +16,9 @@ CToolAnimation3D::CToolAnimation3D(const CToolAnimation3D& Prototype)
 HRESULT CToolAnimation3D::Initialize(ifstream& inFile, const C3DModel* pModel)
 {
 
-	_uint iNameLength = 0;
-	inFile.read(reinterpret_cast<char*>(&iNameLength), sizeof(_uint));
-	inFile.read(m_szName, iNameLength);
-	m_szName[iNameLength] = '\0';
+	inFile.read(reinterpret_cast<char*>(&m_iNameLength), sizeof(_uint));
+	inFile.read(m_szName, m_iNameLength);
+	m_szName[m_iNameLength] = '\0';
 	//cout << m_szName << endl;
 
 

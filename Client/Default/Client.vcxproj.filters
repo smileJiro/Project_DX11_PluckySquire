@@ -493,6 +493,9 @@
     <ClInclude Include="..\Public\Camera_CutScene.h">
       <Filter>02.GameObjects\Camera\CutScene</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Roll.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -744,6 +747,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_CutScene.cpp">
       <Filter>02.GameObjects\Camera\CutScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Roll.cpp">
+      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

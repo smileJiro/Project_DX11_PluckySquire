@@ -34,7 +34,6 @@ private:
 	APPLY_DATA m_eApplyData = {};
 
 
-	map<const _string, _int> m_IntDatas;
 	map<const _string, _float> m_FloatDatas;
 	map<const _string, _float3> m_Float3Datas;
 
@@ -46,14 +45,17 @@ public:
 	virtual void Free() override;
 
 #ifdef _DEBUG
+
 public:
 	HRESULT Initialize(MODULE_TYPE eType, const _string& _strTypeName);
-public:
-	void Set_Order(_int _iOrder) { m_iOrder = _iOrder; }
-	const _string Get_TypeName() const { return m_strTypeName; }
-	_bool Is_Changed() { if (m_isChanged) { m_isChanged = false; return true; } else return false; }
+	void	Tool_Module_Update();
+	HRESULT	Save_Module(json& _jsonModuleInfo);
 
-	void Tool_Module_Update();
+public:
+	void			Set_Order(_int _iOrder) { m_iOrder = _iOrder; }
+	const _string	Get_TypeName() const { return m_strTypeName; }
+	_bool			Is_Changed() { if (m_isChanged) { m_isChanged = false; return true; } else return false; }
+
 	
 private:
 	_bool	m_isChanged = { false };

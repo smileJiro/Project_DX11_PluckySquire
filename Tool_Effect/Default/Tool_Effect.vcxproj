@@ -188,6 +188,7 @@
   <ItemGroup>
     <None Include="..\Bin\DataFiles\Effects\TestEffect.json" />
     <None Include="..\Bin\DataFiles\Effects\TestParticleSystem.json" />
+    <None Include="..\Bin\DataFiles\Effects\TestParticleSystem22.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
