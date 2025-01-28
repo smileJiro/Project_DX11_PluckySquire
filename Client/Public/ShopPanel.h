@@ -39,6 +39,10 @@ private:
 	_int					isInPanelItem(_float2 _vMousePos);
 	void					Update_KeyInput(_float _fTimeDelta);
 
+	HRESULT					Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag);
+	HRESULT					Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag);
+	
+
 protected:
 	virtual HRESULT			Ready_Components() override;
 

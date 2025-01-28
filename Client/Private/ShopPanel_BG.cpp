@@ -47,7 +47,13 @@ void CShopPanel_BG::Child_Update(_float _fTimeDelta)
 
 void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+
+
+
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	
+
 }
 
 HRESULT CShopPanel_BG::Render()
@@ -123,7 +129,6 @@ HRESULT CShopPanel_BG::Ready_Components()
 		if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_BACK"),
 			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 			return E_FAIL;
-
 	}
 	break;
 

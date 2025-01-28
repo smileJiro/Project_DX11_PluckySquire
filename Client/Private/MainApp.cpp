@@ -155,6 +155,7 @@ HRESULT CMainApp::Ready_Font()
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font54"), TEXT("../Bin/Resources/Fonts/YangRound54.spritefont"))))
 		return E_FAIL;
 
+
 	return S_OK;
 }
 

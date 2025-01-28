@@ -33,6 +33,7 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 	m_iSkillLevel = pDesc->iSkillLevel; // 아이템의 몇레벨 이니?
 	m_isRender = false;
 	m_vColor = { 227.f / 255.f , 37.f / 255.f,82.f / 255.f, 1.f };
+	m_fOpaque = 0.3f;
 	m_isChooseItem = pDesc->isChooseItem;
 
 	if (FAILED(Ready_Components()))
@@ -52,7 +53,11 @@ void CShopItemBG::Child_Update(_float _fTimeDelta)
 
 void CShopItemBG::Child_LateUpdate(_float _fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+
+
+
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 }
 
 HRESULT CShopItemBG::Render()
@@ -70,10 +75,10 @@ HRESULT CShopItemBG::Render()
 		else if (false == m_isChooseItem)
 		{
 
-			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &m_vColor, sizeof(_float4))))
+			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_fOpaque", &m_fOpaque, sizeof(_float))))
 				return E_FAIL;
 
-			__super::Render(0, PASS_VTXPOSTEX::COLOR_ALPHA);
+			__super::Render(0, PASS_VTXPOSTEX::UI_ALPHA);
 		}
 	}
 		
