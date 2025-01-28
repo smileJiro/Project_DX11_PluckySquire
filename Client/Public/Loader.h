@@ -55,8 +55,6 @@ private:
 		return Load_Models_FromJson(_iLevId, (_wstring(_szJsonFilePath) + _wstring(_szJsonFileName)).c_str(), _PreTransformMatrix);
 	}
 
-	HRESULT	Load_Diagloues(LEVEL_ID _iLevelIndex, const _tchar* _szJasonPath);
-
 	HRESULT Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName);
 public:
 	static CLoader* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID);

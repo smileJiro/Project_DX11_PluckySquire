@@ -53,6 +53,63 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	return S_OK;
 }
 
+HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, std::filesystem::path _szDir, json& jFile)
+{
+	json& jProperties = jFile["Properties"];
+
+	json& jSpriteStart = jProperties["BakedSourceUV"];
+
+	json& jSpriteSize = jProperties["BakedSourceDimension"];
+
+	_uint iStart;
+	_uint iCount;
+	json& jBakedSourceTexture = jProperties["BakedSourceTexture"];
+	string strSourceTexture = jBakedSourceTexture["ObjectName"];
+	iStart = (_uint)(strSourceTexture.find_first_of('\'')) + 1;
+	iCount = (_uint)strSourceTexture.find_last_of('\'') - iStart;
+	strSourceTexture = strSourceTexture.substr(iStart, iCount);
+	_szDir += strSourceTexture + ".png";
+
+	ID3D11ShaderResourceView* pSRV = { nullptr };
+	HRESULT hr = DirectX::CreateWICTextureFromFile(_pDevice, _szDir.wstring().c_str(), nullptr, &pSRV);
+	if (FAILED(hr))
+	{
+		_szDir.replace_extension(".dds");
+		if(FAILED(DirectX::CreateWICTextureFromFile(_pDevice, _szDir.wstring().c_str(), nullptr, &pSRV)))
+			return E_FAIL;
+	}
+	m_pTexture = CTexture::Create(_pDevice, _pContext);
+	if (nullptr == m_pTexture)
+		return E_FAIL;
+	m_pTexture->Add_Texture(pSRV, _szDir.filename().replace_extension().wstring());
+
+
+	m_fPixelsPerUnrealUnit = jProperties["PixelsPerUnrealUnit"];
+
+	json& jBakedRenderData = jProperties["BakedRenderData"];
+	m_vSpriteStartUV = { 1,1 };
+	m_vSpriteEndUV = { 0,0 };
+	_float fMinX = D3D11_FLOAT32_MAX, fMinY = D3D11_FLOAT32_MAX;
+	_float fMaxX = -D3D11_FLOAT32_MAX, fMaxY = -D3D11_FLOAT32_MAX;
+	for (json& j : jBakedRenderData)
+	{
+		vBakedRenderDatas.push_back(_float4{ j["X"],j["Y"] ,j["Z"] ,j["W"] });
+		m_vSpriteStartUV = _float2(min(vBakedRenderDatas.back().z, m_vSpriteStartUV.x), min(vBakedRenderDatas.back().w, m_vSpriteStartUV.y));
+		m_vSpriteEndUV = _float2(max(vBakedRenderDatas.back().z, m_vSpriteEndUV.x), max(vBakedRenderDatas.back().w, m_vSpriteEndUV.y));
+		fMinX = min(fMinX, vBakedRenderDatas.back().x);
+		fMinY = min(fMinY, vBakedRenderDatas.back().y);
+		fMaxX = max(fMaxX, vBakedRenderDatas.back().x);
+		fMaxY = max(fMaxY, vBakedRenderDatas.back().y);
+	}
+	_float fWidth = abs(fMaxX - fMinX);
+	_float fHeight = abs(fMaxY - fMinY);
+	_float fXOffset = fMinX + fWidth / 2;
+	_float fYOffset = fMinY + fHeight / 2;
+	m_matSpriteTransform = XMMatrixScaling(fWidth, fHeight, 1);
+	m_matSpriteTransform *= XMMatrixTranslation(fXOffset, fYOffset, 0);
+	return S_OK;
+}
+
 HRESULT CToolSpriteFrame::Export(ofstream& _outfile)
 {
 	_outfile.write(reinterpret_cast<const char*>(&m_vSpriteStartUV), sizeof(_float2));
@@ -85,6 +142,19 @@ CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceC
 	CToolSpriteFrame* pInstance = new CToolSpriteFrame();
 
 	if (FAILED(static_cast<CSpriteFrame*>(pInstance)->Initialize(_pDevice, _pContext,_szDirPath, _infIle,_Textures)))
+	{
+		MSG_BOX("SpriteFrame Create Failed");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, std::filesystem::path _szDir, json& jFile)
+{
+	CToolSpriteFrame* pInstance = new CToolSpriteFrame();
+
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _szDir, jFile)))
 	{
 		MSG_BOX("SpriteFrame Create Failed");
 		Safe_Release(pInstance);

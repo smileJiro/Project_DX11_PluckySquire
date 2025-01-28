@@ -53,7 +53,7 @@ HRESULT CFSM::Initialize(void* _pArg)
 
 void CFSM::Update(_float _fTimeDelta)
 {
-	m_CurState->State_Update(_fTimeDelta);
+	m_pCurState->State_Update(_fTimeDelta);
 
 }
 
@@ -130,7 +130,7 @@ HRESULT CFSM::Add_State(_uint _iState)
 
 HRESULT CFSM::Change_State(_uint _iState)
 {
-	if (nullptr == m_CurState)
+	if (nullptr == m_pCurState)
 		return E_FAIL;
 	if (nullptr == m_pOwner)
 		return E_FAIL;
@@ -139,7 +139,7 @@ HRESULT CFSM::Change_State(_uint _iState)
 	if (false == m_pOwner->Get_AnimChangeable())
 		return S_OK;
 
-	m_CurState->State_Exit();
+	m_pCurState->State_Exit();
 	m_pOwner->Set_PreState(m_iCurState);
 
 	Set_State(_iState);
@@ -156,10 +156,10 @@ HRESULT CFSM::Set_State(_uint _iState)
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
-	m_CurState = m_States[_iState];
+	m_pCurState = m_States[_iState];
 	m_iCurState = _iState;
 
-	m_CurState->State_Enter();
+	m_pCurState->State_Enter();
 	m_pOwner->Set_State(_iState);
 
 	return S_OK;
@@ -208,5 +208,6 @@ void CFSM::Free()
 
 	m_States.clear();
 	m_pOwner = nullptr;
+	m_pCurState = nullptr;
 	__super::Free();
 }

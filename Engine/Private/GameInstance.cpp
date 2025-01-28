@@ -957,6 +957,11 @@ _bool CGameInstance::MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _f
 	return m_pGlobalFunction_Manager->MatrixDecompose(_vScale, _vQuaternion, _vPosition, _Matrix);
 }
 
+_float CGameInstance::Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2)
+{
+	return m_pGlobalFunction_Manager->Get_Angle_Between_Vectors(_vNormal, _vVector1, _vVector2);
+}
+
 CCamera* CGameInstance::Get_CurrentCamera()
 {
 	return m_pCamera_Manager->Get_CurrentCamera();

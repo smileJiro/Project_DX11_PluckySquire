@@ -16,12 +16,12 @@ namespace Map_Tool
 
 	}
 
-	_bool StartPopupButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE _eButtonType, const string& _strButtonText)
+	_bool StartPopupButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE _eButtonType, const string& _strButtonText, ImGuiWindowFlags_ _Flag)
 	{
 		const string strPopupText = "##" + _strButtonText;
 		if(StyleButton(_eButtonType,_strButtonText.c_str()))
 			ImGui::OpenPopup(strPopupText.c_str());
-		return ImGui::BeginPopup(strPopupText.c_str());
+		return ImGui::BeginPopup(strPopupText.c_str(), _Flag);
 	}
 
 	_bool ActiveButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE _eButtonType, _bool _isActivePlag, const string& _strTrueText, const string& _strFalseText)
@@ -40,5 +40,19 @@ namespace Map_Tool
 	{
 		ImGui::PopStyleColor(3);
 		ImGui::PopID();
+	}
+
+	_bool InputText(const char* _label, std::string& _str, ImGuiInputTextFlags _flags) 
+	{
+		char buffer[256];
+		strncpy_s(buffer, _str.c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		if (ImGui::InputText(_label, buffer, sizeof(buffer), _flags)) {
+			_str = buffer;
+			return true;  
+		}
+
+		return false; 
 	}
 }

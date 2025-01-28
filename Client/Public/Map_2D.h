@@ -23,11 +23,11 @@ private: /* 외부 요청을 통해 Register할지, 생성시점에 무조건 Register 할지, 그냥
 
 public:
 	// 3. RenderTarget의 RTV를 Get (o)
-	ID3D11RenderTargetView* Get_RTV_FromRenderTarget();
+	ID3D11RenderTargetView*		Get_RTV_FromRenderTarget();
 	// 4. RenderTarget의 SRV를 Get (o)
-	ID3D11ShaderResourceView* Get_SRV_FromRenderTarget();
+	ID3D11ShaderResourceView*	Get_SRV_FromRenderTarget();
 	// 5. Texture의 SRV를 Get (o)
-	ID3D11ShaderResourceView* Get_SRV_FromTexture(_uint _iTextureIndex);
+	ID3D11ShaderResourceView*	Get_SRV_FromTexture(_uint _iTextureIndex);
 	
 private:
 	ID3D11Device*				m_pDevice = nullptr;

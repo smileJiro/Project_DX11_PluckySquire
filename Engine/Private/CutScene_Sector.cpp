@@ -21,6 +21,7 @@ HRESULT CCutScene_Sector::Initialize(void* _pArg)
 	CUTSCENE_SECTOR_DESC* pDesc = static_cast<CUTSCENE_SECTOR_DESC*>(_pArg);
 
 	m_iSectorType = pDesc->iSectorType;
+	m_fDuration = pDesc->fSectorDuration;
 
 	return S_OK;
 }
@@ -42,14 +43,16 @@ void CCutScene_Sector::Late_Update(_float _fTimeDelta)
 {
 }
 
+#ifdef _DEBUG
+
 _float CCutScene_Sector::Get_TimeOffset()
 {
-	if (-1 == m_iCurKeyFrameIndex || m_iCurKeyFrameIndex >= m_KeyFrames.size() - 1)
+	if (-1 == m_iCurKeyFrameIndex || m_iCurKeyFrameIndex >= (_int)(m_KeyFrames.size() - 2))
 		return -1;
 
-	_float fRatioOffset = m_KeyFrames[m_iCurKeyFrameIndex + 1].fTimeStamp - m_KeyFrames[m_iCurKeyFrameIndex].fTimeStamp;
-	
-	return m_fCurrentTime * fRatioOffset;
+	_float fTimeOffset = m_KeyFrames[m_iCurKeyFrameIndex + 1].fTimeStamp - m_KeyFrames[m_iCurKeyFrameIndex].fTimeStamp;
+
+	return fTimeOffset;
 }
 
 _bool CCutScene_Sector::Get_IsLookAt()
@@ -59,6 +62,15 @@ _bool CCutScene_Sector::Get_IsLookAt()
 
 	return m_KeyFrames[m_iCurKeyFrameIndex].bLookTarget;
 }
+
+_float CCutScene_Sector::Get_LastTimeStamp()
+{
+	_int iSize = m_KeyFrames.size();
+
+	return 	m_KeyFrames[iSize - 2].fTimeStamp;
+}
+
+#endif // _DEBUG
 
 _bool CCutScene_Sector::Get_IsChangeKeyFrame()
 {
@@ -73,25 +85,25 @@ _bool CCutScene_Sector::Get_IsChangeKeyFrame()
 _bool CCutScene_Sector::Play_Sector(_float _fTimeDelta, _vector* _pOutPos)
 {
 	m_fCurrentTime += _fTimeDelta;
-	_float fRatio = m_fCurrentTime / m_fDuration;
 	
-	if (fRatio > 1.f) {
-		m_fCurrentTime = 0.f;
-		m_iPreKeyFrameIndex = -1;
-		m_iCurKeyFrameIndex = -1;
-		return true;
+	_float fRatio = (m_fCurrentTime - m_KeyFrames[m_iCurSegmentIndex + 1].fTimeStamp) /
+		(m_KeyFrames[m_iCurSegmentIndex + 2].fTimeStamp - m_KeyFrames[m_iCurSegmentIndex + 1].fTimeStamp);
+
+	if (m_fCurrentTime > m_KeyFrames[m_iCurSegmentIndex + 2].fTimeStamp) {
+		m_iCurSegmentIndex++;
+		fRatio = 0.f;
 	}
 
-	if(fRatio > m_KeyFrames[m_KeyFrames.size() - 5].fTimeStamp)	{
+	if (m_iCurSegmentIndex > (_int)(m_KeyFrames.size() - 4)) {
 		m_fCurrentTime = 0.f;
-		m_iPreKeyFrameIndex = -1;
-		m_iCurKeyFrameIndex = -1;
+		m_iCurSegmentIndex = 0;
+		m_iCurKeyFrameIndex = 1;
 		return true;
 	}
 
 	switch (m_iSectorType) {
 	case SPLINE:
-		*_pOutPos = Calculate_Position_Spline_Test(fRatio);
+		*_pOutPos = Calculate_Position_Catmull_Rom(fRatio);
 		break;
 	case LINEAR:
 		*_pOutPos = Calculate_Position_Linear(fRatio);
@@ -105,21 +117,23 @@ _bool CCutScene_Sector::Play_Sector(_float _fTimeDelta, _vector* _pOutPos)
 
 _vector CCutScene_Sector::Calculate_Position_Spline(_float _fRatio)
 {
-	_uint iSegment = (_uint)(_fRatio * (m_KeyFrames.size() - 3));
-	//_float fRatio = (_fRatio - (float)iSegment / (m_KeyFrames.size() - 3)) * (m_KeyFrames.size() - 3);
-	_vector vPos0 = XMLoadFloat3(&m_KeyFrames[iSegment].vPosition);
-	_vector vPos1 = XMLoadFloat3(&m_KeyFrames[iSegment + 1].vPosition);
-	_vector vPos2 = XMLoadFloat3(&m_KeyFrames[iSegment + 2].vPosition);
-	_vector vPos3 = XMLoadFloat3(&m_KeyFrames[iSegment + 3].vPosition);
+	//_uint iSegment = (_uint)(_fRatio * (m_KeyFrames.size() - 3));
+	_float deBoorRatio = (m_fCurrentTime - m_KeyFrames[m_iCurSegmentIndex].fTimeStamp) /
+		(m_KeyFrames[m_iCurSegmentIndex + 3].fTimeStamp - m_KeyFrames[m_iCurSegmentIndex].fTimeStamp);
 
-	_vector vLerp0_First = XMVectorLerp(vPos0, vPos1, _fRatio);
-	_vector vLerp1_First = XMVectorLerp(vPos1, vPos2, _fRatio);
-	_vector vLerp2_First = XMVectorLerp(vPos2, vPos3, _fRatio);
+	_vector vPos0 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex].vPosition);
+	_vector vPos1 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 1].vPosition);
+	_vector vPos2 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 2].vPosition);
+	_vector vPos3 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 3].vPosition);
 
-	_vector vLerp0_Second = XMVectorLerp(vLerp0_First, vLerp1_First, _fRatio);
-	_vector vLerp1_Second = XMVectorLerp(vLerp1_First, vLerp2_First, _fRatio);
+	_vector vLerp0_First = XMVectorLerp(vPos0, vPos1, deBoorRatio);
+	_vector vLerp1_First = XMVectorLerp(vPos1, vPos2, deBoorRatio);
+	_vector vLerp2_First = XMVectorLerp(vPos2, vPos3, deBoorRatio);
 
-	_vector vResult = XMVectorLerp(vLerp0_Second, vLerp1_Second, _fRatio);
+	_vector vLerp0_Second = XMVectorLerp(vLerp0_First, vLerp1_First, deBoorRatio);
+	_vector vLerp1_Second = XMVectorLerp(vLerp1_First, vLerp2_First, deBoorRatio);
+
+	_vector vResult = XMVectorLerp(vLerp0_Second, vLerp1_Second, deBoorRatio);
 
 	return vResult;
 }
@@ -160,7 +174,7 @@ _float CCutScene_Sector::BasisFunction(_uint _i, _uint _iDegree, _float _fRatio)
 
 void CCutScene_Sector::Calculate_Index()
 {
-	if (m_iCurKeyFrameIndex >= m_KeyFrames.size() - 1)
+	if (m_iCurKeyFrameIndex >= (_int)(m_KeyFrames.size() - 2))
 		return;
 
 	if (m_fCurrentTime > m_KeyFrames[m_iCurKeyFrameIndex + 1].fTimeStamp) {
@@ -177,14 +191,27 @@ _vector CCutScene_Sector::Calculate_Position_Spline_Test(_float _fRatio)
 	for (_uint i = iSpan - 3; i <= iSpan; ++i) {
 		_float fWeight = BasisFunction(i, 3, _fRatio);
 		vPos += XMLoadFloat3(&m_KeyFrames[i].vPosition) * fWeight;
-
-		cout << "제어점: " << i << "m_KeyFrames[i].vPosition" << m_KeyFrames[i].vPosition.x << "   " << m_KeyFrames[i].vPosition.y << "   " << m_KeyFrames[i].vPosition.z << ", fWieght: " << fWeight << endl;
-		cout << "vPos: " << vPos.m128_f32[0] << "    " << vPos.m128_f32[1] << "    " << vPos.m128_f32[2] << endl;
 	}
-	cout << "!!!!!!!최종 Pos: " << vPos.m128_f32[0] << "    " << vPos.m128_f32[1] << "    " << vPos.m128_f32[2] << endl;
-	cout << "=====================" << endl;
 
 	return vPos;
+}
+
+_vector CCutScene_Sector::Calculate_Position_Catmull_Rom(_float _fRatio)
+{
+	_vector P0 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex].vPosition);
+	_vector P1 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 1].vPosition);
+	_vector P2 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 2].vPosition);
+	_vector P3 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 3].vPosition);
+
+	_float t2 = _fRatio * _fRatio;
+	_float t3 = t2 * _fRatio;
+
+	return 0.5f * (
+		(2.0f * P1) +
+		(-P0 + P2) * _fRatio +
+		(2.0f * P0 - 5.0f * P1 + 4.0f * P2 - P3) * t2 +
+		(-P0 + 3.0f * P1 - 3.0f * P2 + P3) * t3
+		);
 }
 
 void CCutScene_Sector::Sort_Sector()
@@ -206,12 +233,12 @@ void CCutScene_Sector::Sort_Sector()
 			iCount++;
 			continue;
 		}
-		else if (m_Knots.size() - 1 == iCount ) {
+		else if ((m_Knots.size() - 1) == iCount ) {
 			Knots = 1.f;
 			iCount++;
 			continue;
 		}
-		else if (m_Knots.size() - 3 == iCount || m_Knots.size() - 2 == iCount) {
+		else if ((m_Knots.size() - 3) == iCount || (m_Knots.size() - 2) == iCount) {
 			Knots = m_KeyFrames.back().fTimeStamp;
 			iCount++;
 			continue;

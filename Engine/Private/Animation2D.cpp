@@ -139,19 +139,7 @@ HRESULT CAnimation2D::Bind_ShaderResource(CShader* _pShader)
 
 _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 {
-	if (m_iCurrentFrame >= m_iFrameCount -1 )
-	{
-		if (m_bLoop)
-		{
-			Reset();
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	if (m_fCurrentFrameTime >= 1 / m_fFramesPerSecond)
+	if (m_fCurrentFrameTime >= (1 / m_fFramesPerSecond))
 	{
 		m_fCurrentFrameTime = 0;
 		m_iCurrentSubFrame++;
@@ -161,8 +149,21 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 			m_iCurrentFrame++;
 		}
 	}
-	if (m_iCurrentFrame >= m_iFrameCount)
-		m_iCurrentFrame = m_iFrameCount -1;
+	//마지막 프레임 +1 일떄 
+	if (m_iCurrentFrame >= (m_iFrameCount))
+	{
+		//루프면 처음으로
+		if (m_bLoop)
+		{
+			Reset();
+		}
+		//루프 아니면 마지막인채로 유지
+		else
+		{
+			m_iCurrentFrame = m_iFrameCount - 1;
+			return true;
+		}
+	}
 		
 	m_fCurrentFrameTime += _fTimeDelta * m_fSpeedMagnifier;
 	return false;
@@ -195,7 +196,7 @@ _float CAnimation2D::Get_Progress()
 
 void CAnimation2D::Set_Progress(_float _fProgerss)
 {
-	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(m_iFrameCount - 1);
+	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(m_iFrameCount-1);
 	_int iTargetSubFrame = (_int)(_fProgerss * iTotalSubFrameCount);
 	_float fRemainTime = m_fFramesPerSecond * iTotalSubFrameCount * _fProgerss - (m_fFramesPerSecond * iTargetSubFrame);
 	m_fCurrentFrameTime = fRemainTime;
@@ -215,7 +216,7 @@ void CAnimation2D::Set_Progress(_float _fProgerss)
 _uint CAnimation2D::Get_AccumulativeSubFrameCount(_uint _iFrameIndex)
 {
 	_uint iAccumulativeSubFrames = 0;
-	for (_uint i = 0; i < _iFrameIndex; i++)
+	for (_uint i = 0; i <= _iFrameIndex; i++)
 	{
 		iAccumulativeSubFrames += m_SpriteFrames[i].second;
 	}

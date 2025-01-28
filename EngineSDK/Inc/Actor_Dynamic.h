@@ -22,13 +22,20 @@ public:
 	void						On_Dynamic();
 
 public:
-	virtual void				Set_LinearVelocity(_vector _vDirection, _float _fVelocity);
+	//Get
+	_vector					Get_LinearVelocity();
+	_vector					Get_AngularVelocity();
+	//Set
+	virtual void				Set_LinearVelocity(_fvector _vDirection, _float _fVelocity);
+	virtual void				Set_LinearVelocity(_fvector _vVelocity);
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity);
+	virtual void				Set_AngularVelocity(_fvector _vAngularVelocity);
+	virtual void				Set_Rotation(_fvector _vAxis, _float _fRadian);
+	virtual void				Set_Rotation(_fvector _vLook);
 	virtual void				Add_Force(const _float3& _vForce);// ÀÏ¹ÝÀûÀÎ Èû
 	virtual void				Add_Impulse(const _float3& _vForce); // °­ÇÑ Èû
 
-public:
-	virtual void				Turn_TargetDirection(_vector _vDirection);
+private:
 
 public:
 	static CActor_Dynamic*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _bool _isKinematic = false);

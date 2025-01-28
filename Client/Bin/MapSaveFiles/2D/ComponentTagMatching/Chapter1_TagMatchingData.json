@@ -1,109 +1,264 @@
-{
- [
-	{
-		"SearchTag" : "TD_Flower_BP_C01",
-		"TextureName" : "mountain_white_flower_01",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : false
-	},
-	{
-		"SearchTag" : "bush",
-		"TextureName" : "mountain_bush_01",
-		"ModelType" : "NonAnim",
-		"Active" : true,
-		"Collider" : true,
-	"ActivePropertis":
-	{
-		"ActiveType" : "ActiveType_Breakable"
-	},
-	"ColliderPropertis":
-	{
-		"ColliderType" : "Collier_Squere"
-		"ColliderInfo" : {
-			"Collider_Offset_Pos" : 
-			{
-				"X" : 10.0,
-				"Y" : 10.0
-			},
-			"Collider_Offset_Radius" : 10.0
-		}
-	}
-	},
-	{
-		"SearchTag" : "TD_Tree_BP",
-		"TextureName" : "tree_green_01",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "ButterflyBlue",
-		"TextureName" : "butterfly_blue_fly_02",
-		"ModelType" : "Anim",
-		"Active" : true,
-		"Collider" : false,
-		"ActivePropertis":
-			{
-				"ActiveType" : "ActiveType_Patrol"
-			},
-	},	
-	{
-		"SearchTag" : "ButterflyOrange",
-		"TextureName" : "butterfly_orange_fly_02",
-		"ModelType" : "Anim",
-		"Active" : true,
-		"Collider" : false,
-	},
-	{
-		"SearchTag" : "ButterflyWhite",
-		"TextureName" : "butterfly_white_fly_02",
-		"ModelType" : "Anim",
-		"Active" : true,
-		"Collider" : false
-	},
-	{
-		"SearchTag" : "barrel",
-		"TextureName" : "barrel_01",
-		"ModelType" : "NonAnim",
-		"Active" : true,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "townsign",
-		"TextureName" : "town_sign",
-		"ModelType" : "NonAnim",
-		"Active" : true,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "actionsignpost",
-		"TextureName" : "action_sign_post",
-		"ModelType" : "NonAnim",
-		"Active" : true,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "treegreenfallen",
-		"TextureName" : "tree_green_fallen",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : true
-	},
-	{
-		"SearchTag" : "treegreenbrokentrunk",
-		"TextureName" : "tree_green_broken_trunk",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : true
-	
-	},
-	{
-		"SearchTag" : "largemossrock",
-		"TextureName" : "large_moss_rock",
-		"ModelType" : "NonAnim",
-		"Active" : false,
-		"Collider" : true
-	}
- ]
-}
+[
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Breakable"
+  },
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "TD_Flower_BP_C01",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 42.0
+   }
+  },
+  "TextureName": "mountain_white_flower_01"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Breakable"
+  },
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    },
+    "Collider_Radius": 76.80000305175781
+   },
+   "ColliderType": "Collider_Squere"
+  },
+  "ModelType": "NonAnim",
+  "SearchTag": "bush",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 70.0
+   }
+  },
+  "TextureName": "mountain_bush_01"
+ },
+ {
+  "Active": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 546.0,
+     "Y": 546.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
+  "ModelType": "NonAnim",
+  "SearchTag": "TD_Tree_BP",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 268.0
+   }
+  },
+  "TextureName": "tree_green_01"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Patrol"
+  },
+  "Collider": false,
+  "ModelType": "Anim",
+  "SearchTag": "ButterflyBlue",
+  "Sorting": false,
+  "TextureName": ""
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Patrol"
+  },
+  "Collider": false,
+  "ModelType": "Anim",
+  "SearchTag": "ButterflyOrange",
+  "Sorting": false,
+  "TextureName": "butterfly_orange_fly_02"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Patrol"
+  },
+  "Collider": false,
+  "ModelType": "Anim",
+  "SearchTag": "ButterflyWhite",
+  "Sorting": false,
+  "TextureName": "butterfly_white_fly_02"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Breakable"
+  },
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 302.0,
+     "Y": 302.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
+  "ModelType": "NonAnim",
+  "SearchTag": "barrel",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 146.0
+   }
+  },
+  "TextureName": "barrel_01"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Dialog"
+  },
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 346.0,
+     "Y": 346.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
+  "ModelType": "NonAnim",
+  "SearchTag": "townsign",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 168.0
+   }
+  },
+  "TextureName": "town_sign"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Dialog"
+  },
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 246.0,
+     "Y": 246.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
+  "ModelType": "NonAnim",
+  "SearchTag": "actionsignpost",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 118.0
+   }
+  },
+  "TextureName": "action_sign_post"
+ },
+ {
+  "Active": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 398.0,
+     "Y": 398.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
+  "ModelType": "NonAnim",
+  "SearchTag": "treegreenfallen",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 194.0
+   }
+  },
+  "TextureName": "tree_green_fallen"
+ },
+ {
+  "Active": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "treegreenbrokentrunk",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 64.0
+   }
+  },
+  "TextureName": "tree_green_broken_trunk"
+ },
+ {
+  "Active": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 574.0,
+     "Y": 574.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
+  "ModelType": "NonAnim",
+  "SearchTag": "largemossrock",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 282.0
+   }
+  },
+  "TextureName": "large_moss_rock"
+ }
+]

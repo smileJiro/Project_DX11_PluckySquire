@@ -45,6 +45,7 @@ private:
 	HRESULT					Export_Model(const wstring& _wstrPath);
 	HRESULT					Load_AnimEvents(wstring _wstrPath);
 	HRESULT					Export_AnimEvents(const wstring& _wstrPath);
+	HRESULT					Convert_SingleSprite2DModels(const wstring& _wstrPath);
 	HRESULT					Copy_Textures(CTestModelObject* _pModel, std::filesystem::path& _wstrSrcPath, std::filesystem::path& _wstrDstPath);
 
 private:

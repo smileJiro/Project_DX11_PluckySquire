@@ -33,15 +33,21 @@ public:
     virtual void Switch_Animation(_uint _iIdx)override;
     virtual void To_NextAnimation()override;
     virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
+
+
+
+#ifdef _DEBUG
+    CSpriteFrame* Get_SpriteFrame() { return m_pNonAnimSprite; };
+#endif // _DEBUG
+
+
 protected:
     CVIBuffer_Rect* m_pVIBufferCom = nullptr;
 
     map<string, CTexture*> m_Textures;
     vector<CAnimation2D* >m_Animation2Ds ;
 
-	vector<CTexture*> m_NonAnimTextures ;
-    _float2 m_vNonAnimSpriteStartUV = { 0,0 };
-    _float2 m_vNonAnimSpriteEndUV = { 1,1 };
+    CSpriteFrame* m_pNonAnimSprite = nullptr;
 
 	_uint m_iCurAnimIdx = 0;
 public:

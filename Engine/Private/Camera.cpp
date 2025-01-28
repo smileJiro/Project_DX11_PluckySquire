@@ -171,7 +171,7 @@ void CCamera::Compute_ProjMatrix()
 
 void CCamera::Start_Zoom(_float _fZoomTime, ZOOM_LEVEL _eZoomLevel, RATIO_TYPE _eRatioType)
 {
-	if (true == m_isZoomOn)
+	if (true == m_isZoomOn && 2 != m_eCameraType)
 		return;
 
 	m_isZoomOn = true;
@@ -184,7 +184,7 @@ void CCamera::Start_Zoom(_float _fZoomTime, ZOOM_LEVEL _eZoomLevel, RATIO_TYPE _
 
 void CCamera::Start_Changing_AtOffset(_float _fAtOffsetTime, _vector _vNextAtOffset, _uint _iRatioType)
 {
-	if (true == m_isChangingAtOffset)
+	if (true == m_isChangingAtOffset && 2 != m_eCameraType)
 		return;
 
 	m_isChangingAtOffset = true;

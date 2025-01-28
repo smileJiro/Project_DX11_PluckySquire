@@ -31,7 +31,7 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 	ImGui::Begin("Animation Tool");
 	Update_ImportImgui();
 	Update_ExportImgui();
-	if (m_pTestModelObj)
+	if (m_pTestModelObj )
 	{
 		ImGui::Separator();
 		Update_AnimationEditImgui();
@@ -115,10 +115,19 @@ void CLevel_AnimTool::Update_ImportImgui()
 
 void CLevel_AnimTool::Update_ExportImgui()
 {
+	wstring wstrSelectedPath = TEXT("");
+	if (ImGui::Button("Convert SingleSprite2DModels")) {
+		wstrSelectedPath = OpenDirectoryDialog(); // 폴더 다이얼로그 호출
+		if (false == wstrSelectedPath.empty())
+		{
+			wstrSelectedPath += L"\\";
+			Convert_SingleSprite2DModels(wstrSelectedPath);
+		}
+	}
 	//EXPORT
 	if (nullptr != m_pTestModelObj)
 	{
-		wstring wstrSelectedPath = TEXT("");
+		wstrSelectedPath = TEXT("");
 		if (ImGui::Button("Export Model")) {
 			wstring wstrFilter = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? TEXT("Model2D Files\0 * .model2d") : TEXT("Model3D Files\0 * .model");
 			wstrSelectedPath = SaveFileDialog(wstrFilter.c_str()); // 파일 다이얼로그 호출
@@ -136,6 +145,7 @@ void CLevel_AnimTool::Update_ExportImgui()
 			}
 		}
 	}
+
 }
 
 void CLevel_AnimTool::Update_AnimationEditImgui()
@@ -163,7 +173,7 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 		if (ImGui::Button(m_bPlaying ? "Stop" :"Play")) 
 		{
 			m_bPlaying ^= 1;
-			m_pTestModelObj->Set_PlayingAnim(m_pTestModelObj->Get_CurCoord(), m_bPlaying);
+			m_pTestModelObj->Set_PlayingAnim(m_bPlaying);
 		}
 		ImGui::SameLine();
 		if (ImGui::SliderFloat("Progress", &m_fCurrentProgerss, 0.f, 1.f))
@@ -490,15 +500,16 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 
 HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
 {
+
 	assert(m_pTestModelObj);
-	wstring wstrExt = COORDINATE_2D == m_pTestModelObj->Get_CurCoord()  ? L".model2d" : L".model";
+	wstring wstrExt = COORDINATE_2D == m_pTestModelObj->Get_CurCoord() ? L".model2d" : L".model";
 	std::filesystem::path path = _wstrPath;
 	if (path.extension().wstring() != wstrExt)
 	{
 		path.replace_extension(wstrExt);
 	}
 	std::ofstream outFile(path, std::ios::binary);
-	if (!outFile) 
+	if (!outFile)
 	{
 		MSG_BOX("파일 열기 실패.");
 	}
@@ -511,6 +522,7 @@ HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
 	outFile.close();
 	return S_OK;
 }
+
 
 HRESULT CLevel_AnimTool::Load_AnimEvents(wstring _wstrPath)
 {
@@ -577,6 +589,50 @@ HRESULT CLevel_AnimTool::Export_AnimEvents(const wstring& _wstrPath)
 		{
 			tEvent.WriteFile(outFile);
 		}
+	}
+	return S_OK;
+}
+
+HRESULT CLevel_AnimTool::Convert_SingleSprite2DModels(const wstring& _wstrPath)
+{
+	std::filesystem::path path;
+	path = _wstrPath;
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+		if (".json" != entry.path().extension())
+			continue;
+		
+		json jFile;
+		std::ifstream input_file(entry.path());
+		if (!input_file.is_open())
+			return E_FAIL;
+		input_file >> jFile;
+		input_file.close();
+
+		for (auto& jObj : jFile)
+		{
+			string strType = jObj["Type"];
+			if (false == strType._Equal("PaperSprite"))
+				continue;
+
+			CTest2DModel* pTmpModel = nullptr;
+			pTmpModel = CTest2DModel::Create(m_pDevice, m_pContext, path.remove_filename(), jFile);
+			if (nullptr == pTmpModel)
+			{
+				MSG_BOX("2D모델 만들기 실패.");
+				return E_FAIL;
+			}
+			pTmpModel->Initialize(nullptr);
+			std::filesystem::path strNewPath = path.remove_filename();
+			strNewPath += entry.path().filename().replace_extension(".model2d");
+			std::ofstream outFile(strNewPath, std::ios::binary);
+			if (!outFile)
+			{
+				MSG_BOX("파일 열기 실패.");
+				return E_FAIL;
+			}
+			pTmpModel->Export_Model(outFile);
+		}
+		
 	}
 	return S_OK;
 }

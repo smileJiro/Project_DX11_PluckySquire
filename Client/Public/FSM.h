@@ -40,7 +40,7 @@ public:
 
 
 protected:
-	CState* m_CurState = { nullptr };
+	CState* m_pCurState = { nullptr };
 	CMonster* m_pOwner = { nullptr };
 
 protected:

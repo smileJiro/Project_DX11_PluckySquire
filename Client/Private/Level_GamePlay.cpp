@@ -2,12 +2,12 @@
 #include "Level_GamePlay.h"
 
 #include "GameInstance.h"
-#include "Camera_Free.h"
-#include "Camera_Target.h"
 #include "Pooling_Manager.h"
 #include "Camera_Manager.h"
 #include "Camera_Free.h"
 #include "Camera_Target.h"
+#include "Camera_CutScene.h"
+#include "Section_Manager.h"
 
 #include "Player.h"
 #include "TestTerrain.h"
@@ -68,11 +68,14 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
-		/* Pooling Test */
-		_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		//CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
+		/* Section Test */
+		CSection_Manager::GetInstance()->SetActive_Section(TEXT("Section_Test"), false);
 
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
+		///* Pooling Test */
+		//_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
+		////CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
+		//
+		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
 	}
 
 	// Change Camera Free  Or Target
@@ -98,14 +101,22 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	}
 
-	if (KEY_DOWN(KEY::P)) 
+#ifdef _DEBUG
+	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
-	
 
-	if (KEY_DOWN(KEY::O)) 
+
+	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
+#endif // _DEBUG
 
-	
+
+
+	if (KEY_DOWN(KEY::U)) {
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("B_InitialData"));
+	}
+		
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -154,6 +165,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.eZoomLevel = CCamera::LEVEL_6;
+	Desc.iCameraType = CCamera_Manager::FREE;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Desc)))
@@ -166,6 +178,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 
 	TargetDesc.fSmoothSpeed = 5.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
+	TargetDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -173,15 +186,39 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
-	TargetDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
+	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
+	TargetDesc.iCameraType = CCamera_Manager::TARGET;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
-	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	Create_Arm();
+
+	// CutScene Camera
+	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
+
+	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
+	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	CutSceneDesc.fNear = 0.1f;
+	CutSceneDesc.fFar = 1000.f;
+	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
+	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
+	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
+	CutSceneDesc.iCameraType = CCamera_Manager::CUTSCENE;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_CutScene"),
+		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &CutSceneDesc)))
+		return E_FAIL;
+
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::CUTSCENE, dynamic_cast<CCamera*>(pCamera));
+	
+	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
+
+	// Load CutSceneData
+	CCamera_Manager::GetInstance()->Load_CutSceneData();
 
 	return S_OK;
 }
@@ -938,7 +975,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 #pragma endregion 로고씬
 
 
+	pDesc.fX = g_iWinSizeX / 2.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+	pDesc.fSizeX = 1208.f;
+	pDesc.fSizeY = 268.f;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -978,10 +1021,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	CGameObject* pGameObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
 		return E_FAIL;
 
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Section_Test"), pGameObject);
 	/*Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.35f, -15.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
@@ -1002,7 +1046,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 void CLevel_GamePlay::Create_Arm()
 {
-
 	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
 	if (nullptr == pPlayer)
 		return;
@@ -1019,10 +1062,9 @@ void CLevel_GamePlay::Create_Arm()
 	
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
-
 	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 
-	pTarget->Add_Arm(pArm);
+	pTarget->Add_CurArm(pArm);
 }
 
 CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

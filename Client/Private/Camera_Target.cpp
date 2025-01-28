@@ -58,22 +58,52 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 #ifdef _DEBUG
 _float3 CCamera_Target::Get_ArmRotation()
 {
-	return m_pArm->Get_Rotation();
+	return m_pCurArm->Get_Rotation();
 }
 #endif
 
 
-void CCamera_Target::Add_Arm(CCameraArm* _pCameraArm)
+void CCamera_Target::Add_CurArm(CCameraArm* _pCameraArm)
 {
 	if (nullptr == _pCameraArm)
 		return;
 
-	m_pArm = _pCameraArm;
+	m_pCurArm = _pCameraArm;
+}
+
+void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
+{
+	if (nullptr != Find_ArmData(_wszArmTag))
+		return;
+
+	ARM_DATA* pArmData = new ARM_DATA();
+
+	pArmData->fLength = _pData.fLength;
+	pArmData->fMoveTimeAxisY = _pData.fMoveTimeAxisY;
+	pArmData->fMoveTimeAxisRight = _pData.fMoveTimeAxisRight;
+	pArmData->fLengthTime = _pData.fLengthTime;
+	pArmData->fRotationPerSecAxisY = _pData.fRotationPerSecAxisY;
+	pArmData->fRotationPerSecAxisRight = _pData.fRotationPerSecAxisRight;
+
+	m_ArmDatas.emplace(_wszArmTag, pArmData);
 }
 
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 {
-	m_pArm->Change_Target(_pTargetWorldMatrix);
+	m_pCurArm->Change_Target(_pTargetWorldMatrix);
+}
+
+void CCamera_Target::Set_NextArmData(_wstring _wszNextArmName)
+{
+	ARM_DATA* pData = Find_ArmData(_wszNextArmName);
+
+	if (nullptr == pData)
+		return;
+
+	if (nullptr == m_pCurArm)
+		return;
+
+	m_pCurArm->Set_NextArmData(pData);
 }
 
 void CCamera_Target::Key_Input(_float _fTimeDelta)
@@ -94,7 +124,7 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
 		}
 
-		m_pArm->Set_Rotation(fRotation);
+		m_pCurArm->Set_Rotation(fRotation);
 	}
 #endif
 }
@@ -116,10 +146,10 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 
 void CCamera_Target::Defualt_Move(_float fTimeDelta)
 {
-	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
+	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(fTimeDelta);
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
+	_vector vTargetPos = m_pCurArm->Get_TargetState(CCameraArm::POS);
 
 	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
@@ -128,6 +158,16 @@ void CCamera_Target::Defualt_Move(_float fTimeDelta)
 void CCamera_Target::Look_Target(_float fTimeDelta)
 {
 
+}
+
+ARM_DATA* CCamera_Target::Find_ArmData(_wstring _wszArmTag)
+{
+	auto iter = m_ArmDatas.find(_wszArmTag);
+
+	if (iter == m_ArmDatas.end())
+		return nullptr;
+
+	return iter->second;
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -158,7 +198,11 @@ CGameObject* CCamera_Target::Clone(void* pArg)
 
 void CCamera_Target::Free()
 {
-	Safe_Release(m_pArm);
+	for (auto& ArmData : m_ArmDatas)
+		Safe_Delete(ArmData.second);
+	m_ArmDatas.clear();
+
+	Safe_Release(m_pCurArm);
 
 	__super::Free();
 }

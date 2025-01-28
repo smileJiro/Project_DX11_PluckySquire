@@ -14,6 +14,7 @@ protected:
 
 public:
     HRESULT	 Initialize_Prototype_FromJsonFile(const _char* _szRawDataDirPath);
+    HRESULT	 Initialize_Prototype_SingleSpriteModel(std::filesystem::path  _szDir, json& jFile);
     virtual HRESULT	Initialize_Prototype(const _char* _szModel2DFilePath);
 
     HRESULT				Export_Model(ofstream& _outfile);
@@ -31,6 +32,7 @@ private:
 
 public:
     static CTest2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* pPath);
+    static CTest2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, std::filesystem::path _szDir, json& jFile);
     virtual CComponent* Clone(void* _pArg) override;
     virtual void Free() override;
 };

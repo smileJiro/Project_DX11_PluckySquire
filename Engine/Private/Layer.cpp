@@ -170,8 +170,7 @@ CLayer* CLayer::Create()
 
 void CLayer::Free()
 {
-    __super::Free();
-
-
     Clear_GameObjects();
+
+    __super::Free();
 }

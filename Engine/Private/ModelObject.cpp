@@ -204,7 +204,10 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 
 void CModelObject::Update(_float _fTimeDelta)
 {
-    m_pControllerModel->Play_Animation(_fTimeDelta);
+    if(m_bPlayingAnim)
+        m_pControllerModel->Play_Animation(_fTimeDelta);
+    else
+        m_pControllerModel->Play_Animation(0);
 
 	__super::Update(_fTimeDelta);
 }
@@ -346,10 +349,11 @@ _uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
         return m_pControllerModel->Get_TextureIndex_To_3D(_eTextureType, _iMaterialIndex);
     return 0;
 }
-void CModelObject::Set_PlayingAnim(COORDINATE _eCoord, _bool _bPlaying)
+void CModelObject::Set_PlayingAnim(_bool _bPlaying)
 {
-	m_pControllerModel->Get_Model(_eCoord)->Set_PlayingAnim(_bPlaying);
+    m_bPlayingAnim = _bPlaying;
 }
+
 void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
 {
     if (m_pControllerModel)

@@ -10,7 +10,10 @@ CParticle_System::CParticle_System(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 CParticle_System::CParticle_System(const CParticle_System& _Prototype)
 	: CPartObject(_Prototype)
+#ifdef _DEBUG
 	, m_strFilePath(_Prototype.m_strFilePath)
+#endif // _DEBUG
+
 {
 	m_strName = _Prototype.m_strName;
 }
