@@ -19,32 +19,14 @@
     <Filter Include="01. ToolApp_Managers">
       <UniqueIdentifier>{0226909a-a982-4b54-a514-fa16d87a2f1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Levels\Loader">
-      <UniqueIdentifier>{70b58eca-6641-44c6-87c7-0391d5f1a930}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98. Default">
       <UniqueIdentifier>{5e030d2a-e9d3-4b0a-baa0-e883290e8ab7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Levels\Loading">
-      <UniqueIdentifier>{3f096376-aa0c-464d-953a-6c707f7b6886}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Levels\Static">
-      <UniqueIdentifier>{15575d75-376a-440c-9ef0-c818fb2d9a6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Levels\Loader\Guard">
-      <UniqueIdentifier>{49377049-ab7e-4614-8a68-fe36e316065c}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Imgui">
       <UniqueIdentifier>{edf30b50-710f-417b-be8a-708f3d47ab6d}</UniqueIdentifier>
     </Filter>
     <Filter Include="97. gizmo">
       <UniqueIdentifier>{0eec8388-e4d2-4d52-be93-07e98ed044fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. ToolApp_Managers\Event">
-      <UniqueIdentifier>{42200b2a-0a0e-420e-be25-5d3a30236f4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. ToolApp_Managers\MapTool">
-      <UniqueIdentifier>{3047ddb0-b5b5-457b-8f07-bfc690e62f63}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. ToolApp_Managers\Task">
       <UniqueIdentifier>{25188e90-152a-4ab0-8f0b-b9cebde9e6f1}</UniqueIdentifier>
@@ -88,6 +70,36 @@
     <Filter Include="03. GameObject\2D\2D_MapObject\Info">
       <UniqueIdentifier>{7335fd67-2386-4327-b368-6c418b11715b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Levels\01. Static">
+      <UniqueIdentifier>{15575d75-376a-440c-9ef0-c818fb2d9a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Levels\00. Loading">
+      <UniqueIdentifier>{3f096376-aa0c-464d-953a-6c707f7b6886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Levels\00. Loader">
+      <UniqueIdentifier>{70b58eca-6641-44c6-87c7-0391d5f1a930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Levels\00. Loader\Guard">
+      <UniqueIdentifier>{49377049-ab7e-4614-8a68-fe36e316065c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ToolApp_Managers\3D">
+      <UniqueIdentifier>{f2f79d43-7070-4af3-975f-f079a561742c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ToolApp_Managers\3D\3DMapTool">
+      <UniqueIdentifier>{8c4f354d-cdf9-48c8-95e6-c214d173fa2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ToolApp_Managers\3D\3DModelTool">
+      <UniqueIdentifier>{9d489dc2-8b71-4052-a05f-ab0c8b204913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ToolApp_Managers\2D">
+      <UniqueIdentifier>{5a3ebd82-a614-4ca1-9ec3-f49d22d6f665}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ToolApp_Managers\2D\2DMapTool">
+      <UniqueIdentifier>{3047ddb0-b5b5-457b-8f07-bfc690e62f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ToolApp_Managers\Event">
+      <UniqueIdentifier>{42200b2a-0a0e-420e-be25-5d3a30236f4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -112,16 +124,16 @@
       <Filter>98. Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
-      <Filter>02. Levels\Loading</Filter>
+      <Filter>02. Levels\00. Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Loader.h">
-      <Filter>02. Levels\Loader</Filter>
+      <Filter>02. Levels\00. Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Static.h">
-      <Filter>02. Levels\Static</Filter>
+      <Filter>02. Levels\01. Static</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CriticalSectionGuard.h">
-      <Filter>02. Levels\Loader\Guard</Filter>
+      <Filter>02. Levels\00. Loader\Guard</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Map_Tool_Function.h">
       <Filter>99. Defines</Filter>
@@ -153,9 +165,6 @@
     <ClInclude Include="..\Public\Event_Manager.h">
       <Filter>01. ToolApp_Managers\Event</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\3DMap_Tool_Manager.h">
-      <Filter>01. ToolApp_Managers\MapTool</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Task_Manager.h">
       <Filter>01. ToolApp_Managers\Task</Filter>
     </ClInclude>
@@ -169,7 +178,7 @@
       <Filter>02. Levels\2D_Map_Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\2DMap_Tool_Manager.h">
-      <Filter>01. ToolApp_Managers\MapTool</Filter>
+      <Filter>01. ToolApp_Managers\2D\2DMapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\2DDefault_RenderObject.h">
       <Filter>03. GameObject\2D\2D_Default_Render_Object</Filter>
@@ -192,6 +201,15 @@
     <ClInclude Include="..\Public\2DMapObjectInfo.h">
       <Filter>03. GameObject\2D\2D_MapObject\Info</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Model_Tool.h">
+      <Filter>02. Levels\Model_Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMap_Tool_Manager.h">
+      <Filter>01. ToolApp_Managers\3D\3DMapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Model_Tool_Manager.h">
+      <Filter>01. ToolApp_Managers\3D\3DModelTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -212,16 +230,16 @@
       <Filter>98. Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
-      <Filter>02. Levels\Loading</Filter>
+      <Filter>02. Levels\00. Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Loader.cpp">
-      <Filter>02. Levels\Loader</Filter>
+      <Filter>02. Levels\00. Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Static.cpp">
-      <Filter>02. Levels\Static</Filter>
+      <Filter>02. Levels\01. Static</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CriticalSectionGuard.cpp">
-      <Filter>02. Levels\Loader\Guard</Filter>
+      <Filter>02. Levels\00. Loader\Guard</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Map_Tool_Function.cpp">
       <Filter>99. Defines</Filter>
@@ -250,9 +268,6 @@
     <ClCompile Include="..\Private\Event_Manager.cpp">
       <Filter>01. ToolApp_Managers\Event</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\3DMap_Tool_Manager.cpp">
-      <Filter>01. ToolApp_Managers\MapTool</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Task_Manager.cpp">
       <Filter>01. ToolApp_Managers\Task</Filter>
     </ClCompile>
@@ -266,7 +281,7 @@
       <Filter>02. Levels\2D_Map_Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMap_Tool_Manager.cpp">
-      <Filter>01. ToolApp_Managers\MapTool</Filter>
+      <Filter>01. ToolApp_Managers\2D\2DMapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
       <Filter>03. GameObject\2D\2D_Default_Render_Object</Filter>
@@ -288,6 +303,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\2DMapObjectInfo.cpp">
       <Filter>03. GameObject\2D\2D_MapObject\Info</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Model_Tool.cpp">
+      <Filter>02. Levels\Model_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMap_Tool_Manager.cpp">
+      <Filter>01. ToolApp_Managers\3D\3DMapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model_Tool_Manager.cpp">
+      <Filter>01. ToolApp_Managers\3D\3DModelTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

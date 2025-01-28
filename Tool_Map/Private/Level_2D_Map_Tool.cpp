@@ -21,6 +21,7 @@ HRESULT CLevel_2D_Map_Tool::Initialize(CImguiLogger* _pLogger)
 	m_pToolManager = C2DMap_Tool_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pToolManager)
 		return E_FAIL;
+	m_pGameInstance->Set_DebugRender(false);
 
 	return S_OK;
 }

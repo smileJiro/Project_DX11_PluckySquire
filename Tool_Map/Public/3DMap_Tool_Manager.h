@@ -41,21 +41,6 @@ public:
 		SAVE_LIST,
 		LIST_END
 	};
-
-	enum NAVIGATION_MODE
-	{
-		NAV_CREATE,
-		NAV_EDIT,
-		NAV_END
-	};
-
-	enum CELL_STATE
-	{
-		NORMAL,
-		START,
-		CELL_STATE_END
-	};
-
 private:
 	typedef struct tagMapObjList
 	{
@@ -107,9 +92,9 @@ private:
 
 
 	// 오브젝트 파일 저장
-	void				Save(bool bSelected = true);
+	void				Save(_bool _bSelected = true);
 	// 오브젝트 파일 로드
-	void				Load(bool bSelected = true);
+	void				Load(_bool _bSelected = true);
 
 
 
@@ -134,7 +119,7 @@ private:
 	ID3D11DeviceContext*			m_pContext;
 	CGameInstance*					m_pGameInstance = { nullptr };
 	CImguiLogger*					m_pLogger = nullptr;
-	CTask_Manager*			m_pMapParsingManager;
+	CTask_Manager*					m_pMapParsingManager;
 
 	CMapObject*						m_arrObjects[OBJECT_END] = { nullptr, };
 	_wstring						m_arrSelectName[LIST_END];
@@ -149,13 +134,6 @@ private:
 	_char							m_szSaveFileName[MAX_PATH];
 	_char							m_szImportLayerTag[MAX_PATH];
 	_wstring						m_strPickingLayerTag;
-
-	string							m_arrCellStateName[CELL_STATE_END] =
-	{
-		"Normal",
-		"Start"
-	};
-
 
 	_float3							m_fPickingPos = _float3();
 	_float3							m_fPreviewPos = _float3();
