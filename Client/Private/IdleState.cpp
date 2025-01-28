@@ -13,8 +13,7 @@ HRESULT CIdleState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 	m_fAlertRange = pDesc->fAlertRange;
-	m_fChaseRange = pDesc->fChaseRange;
-	m_fAttackRange = pDesc->fAttackRange;
+	m_fAlert2DRange = pDesc->fAlert2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -32,21 +31,23 @@ void CIdleState::State_Enter()
 
 void CIdleState::State_Update(_float _fTimeDelta)
 {
-	if (nullptr == m_pTarget)
-		return;
 	if (nullptr == m_pOwner)
 		return;
 
 	m_fAccTime += _fTimeDelta;
 
-	//몬스터 인식 범위 안에 들어오면 인식상태로 전환
-	_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
-	if (dis <= m_fAlertRange)
+	if (nullptr != m_pTarget)
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
+		_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
+		if (fDis <= Get_CurCoordRange(MONSTER_STATE::ALERT))
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+			return;
+		}
 	}
 	
-	else if (m_fDelayTime <= m_fAccTime)
+	if (m_fDelayTime <= m_fAccTime)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::PATROL, m_pFSM);
 	}

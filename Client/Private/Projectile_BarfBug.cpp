@@ -25,6 +25,8 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 
     m_fLifeTime = pDesc->fLifeTime;
 
+    //투사체는 쓰는 객체가 Desc 넣어줌.
+
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
 
@@ -36,6 +38,9 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
+
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+    pModelObject->Set_AnimationLoop(COORDINATE_2D, PROJECTILE, true);
 
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
@@ -64,7 +69,18 @@ void CProjectile_BarfBug::Update(_float _fTimeDelta)
         m_fAccTime = 0.f;
         Event_DeleteObject(this);
     }
-    m_pControllerTransform->Go_Straight(_fTimeDelta);
+
+	if (COORDINATE_2D == Get_CurCoord())
+    {
+        _vector vPos = m_pControllerTransform->Get_State(CTransform::STATE::STATE_POSITION);
+        _vector vLook = m_pControllerTransform->Get_State(CTransform::STATE::STATE_UP);
+        _vector vFinalPos = vPos + XMVector3Normalize(vLook) * m_pControllerTransform->Get_SpeedPerSec() * _fTimeDelta;
+
+        m_pControllerTransform->Set_State(CTransform::STATE::STATE_POSITION, vFinalPos);
+    }
+
+    else if (COORDINATE_3D == Get_CurCoord())
+        m_pControllerTransform->Go_Straight(_fTimeDelta);
 
     __super::Update(_fTimeDelta);
 }
@@ -79,6 +95,21 @@ HRESULT CProjectile_BarfBug::Render()
 {
     __super::Render();
     return S_OK;
+}
+
+HRESULT CProjectile_BarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+    if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+        return E_FAIL;
+
+    if (COORDINATE_2D == Get_CurCoord())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(PROJECTILE);
+
+    return S_OK;
+}
+
+void CProjectile_BarfBug::Change_Animation()
+{
 }
 
 void CProjectile_BarfBug::Active_OnEnable()
@@ -128,7 +159,7 @@ HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER_PROJECTILE;
     ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
 
     /* Actor Component Finished */

@@ -1,6 +1,6 @@
 #pragma once
 #include "Monster.h"
-class CSoldier final : public CMonster
+class CSoldier_Spear final : public CMonster
 {
 public:
 	enum Animation
@@ -51,9 +51,9 @@ public:
 	};
 
 private:
-	CSoldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CSoldier(const CSoldier& _Prototype);
-	virtual ~CSoldier() = default;
+	CSoldier_Spear(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CSoldier_Spear(const CSoldier_Spear& _Prototype);
+	virtual ~CSoldier_Spear() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -73,7 +73,7 @@ private:
 	virtual HRESULT					Ready_PartObjects();
 
 public:
-	static CSoldier* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CSoldier_Spear* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
 };

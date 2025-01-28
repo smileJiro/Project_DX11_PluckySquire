@@ -29,7 +29,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
@@ -37,6 +37,9 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 10.f;
+    pDesc->fAlert2DRange = 500.f;
+    pDesc->fChase2DRange = 1200.f;
+    pDesc->fAttack2DRange = 1000.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
@@ -64,11 +67,28 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_UP, true);
+
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
-    pModelObject->Set_Animation(IDLE);
+
+    pModelObject->Set_Animation(Animation::IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBarfBug::Animation_End, this, placeholders::_1, placeholders::_2));
+
+
+    /* Actor Desc 채울 때 쓴 데이터 할당해제 */
+
+    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+    {
+        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
+    }
+    Safe_Delete(pDesc->pActorDesc);
 
 
     /*  Projectile  */
@@ -80,27 +100,17 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
     pProjDesc->fLifeTime = 5.f;
     pProjDesc->eStartCoord = COORDINATE_3D;
-    pProjDesc->isCoordChangeEnable = false;
+    pProjDesc->isCoordChangeEnable = true;
     pProjDesc->iNumPartObjects = PART_LAST;
     pProjDesc->iCurLevelID = m_iCurLevelID;
 
     pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pProjDesc->tTransform2DDesc.fSpeedPerSec = 3.f;
+    pProjDesc->tTransform2DDesc.fSpeedPerSec = 1000.f;
 
     pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
-
-
-    /* Actor Desc 채울 때 쓴 데이터 할당해제 */
-
-    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    {
-        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
-    }
-
-   Safe_Delete(pDesc->pActorDesc);
 
     return S_OK;
 }
@@ -188,7 +198,7 @@ HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
 
-
+    m_pFSM->Set_PatrolBound();
 
     return S_OK;
 }
@@ -322,22 +332,50 @@ void CBarfBug::Attack(_float _fTimeDelta)
 void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CBarfBug::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+
+    if(COORDINATE_3D == _eCoord)
     {
-    case ALERT:
-        Set_AnimChangeable(true);
-        break;
-
-    case BARF:
-        //딜레이 동안은 애니 전환 안됨. 따라서 상태 전환도 불가
-        if (false == m_isDelay)
+        switch ((CBarfBug::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
         {
+        case ALERT:
             Set_AnimChangeable(true);
-        }
-        break;
+            break;
 
-    default:
-        break;
+        case BARF:
+            //딜레이 동안은 애니 전환 안됨. 따라서 상태 전환도 불가
+            if (false == m_isDelay)
+            {
+                Set_AnimChangeable(true);
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    else if (COORDINATE_2D == _eCoord)
+    {
+        switch ((CBarfBug::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+        {
+        case ALERT_DOWN:
+        case ALERT_RIGHT:
+        case ALERT_UP:
+            Set_AnimChangeable(true);
+            break;
+
+        case ATTACK_DOWN:
+        case ATTACK_RIGHT:
+        case ATTACK_UP:
+            if(false == m_isDelay)
+            {
+                Set_AnimChangeable(true);
+            }
+            break;
+
+        default:
+            break;
+        }
     }
 }
 
@@ -400,6 +438,9 @@ HRESULT CBarfBug::Ready_Components()
     Desc.fAlertRange = m_fAlertRange;
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
+    Desc.fAlert2DRange = m_fAlert2DRange;
+    Desc.fChase2DRange = m_fChase2DRange;
+    Desc.fAttack2DRange = m_fAttack2DRange;
     Desc.isMelee = false;
     Desc.pOwner = this;
 
@@ -434,13 +475,13 @@ HRESULT CBarfBug::Ready_PartObjects()
 
     BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+    BodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
+    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

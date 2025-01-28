@@ -13,6 +13,9 @@ public:
 		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
+		_float fAlert2DRange;
+		_float fChase2DRange;
+		_float fAttack2DRange;
 		_float fDelayTime;
 		_float fCoolTime;
 	}MONSTER_DESC;
@@ -93,6 +96,9 @@ protected:
 	_float m_fAlertRange = { 0.f };
 	_float m_fChaseRange = { 0.f };
 	_float m_fAttackRange = { 0.f };
+	_float m_fAlert2DRange = { 0.f };
+	_float m_fChase2DRange = { 0.f };
+	_float m_fAttack2DRange = { 0.f };
 	_bool m_isAnimChangeable = { true };
 
 	_float m_fAccTime = { 0.f };

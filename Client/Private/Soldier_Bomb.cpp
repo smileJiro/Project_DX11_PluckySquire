@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "Soldier.h"
+#include "Soldier_Bomb.h"
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
 
-CSoldier::CSoldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CSoldier_Bomb::CSoldier_Bomb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
 {
 }
 
-CSoldier::CSoldier(const CSoldier& _Prototype)
+CSoldier_Bomb::CSoldier_Bomb(const CSoldier_Bomb& _Prototype)
     : CMonster(_Prototype)
 {
 }
 
-HRESULT CSoldier::Initialize_Prototype()
+HRESULT CSoldier_Bomb::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CSoldier::Initialize(void* _pArg)
+HRESULT CSoldier_Bomb::Initialize(void* _pArg)
 {
-    CSoldier::MONSTER_DESC* pDesc = static_cast<CSoldier::MONSTER_DESC*>(_pArg);
+    CSoldier_Bomb::MONSTER_DESC* pDesc = static_cast<CSoldier_Bomb::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
@@ -31,7 +31,10 @@ HRESULT CSoldier::Initialize(void* _pArg)
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 2.f;
+    pDesc->fAttackRange = 10.f;
+    pDesc->fAlert2DRange = 5.f;
+    pDesc->fChase2DRange = 12.f;
+    pDesc->fAttack2DRange = 10.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -60,7 +63,7 @@ HRESULT CSoldier::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
     pModelObject->Set_Animation(IDLE);
 
-    pModelObject->Register_OnAnimEndCallBack(bind(&CSoldier::Animation_End, this, placeholders::_1, placeholders::_2));
+    pModelObject->Register_OnAnimEndCallBack(bind(&CSoldier_Bomb::Animation_End, this, placeholders::_1, placeholders::_2));
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -74,23 +77,23 @@ HRESULT CSoldier::Initialize(void* _pArg)
     return S_OK;
 }
 
-void CSoldier::Priority_Update(_float _fTimeDelta)
+void CSoldier_Bomb::Priority_Update(_float _fTimeDelta)
 {
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
-void CSoldier::Update(_float _fTimeDelta)
+void CSoldier_Bomb::Update(_float _fTimeDelta)
 {
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
-void CSoldier::Late_Update(_float _fTimeDelta)
+void CSoldier_Bomb::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
-HRESULT CSoldier::Render()
+HRESULT CSoldier_Bomb::Render()
 {
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
@@ -103,7 +106,7 @@ HRESULT CSoldier::Render()
     return S_OK;
 }
 
-void CSoldier::Change_Animation()
+void CSoldier_Bomb::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
@@ -126,7 +129,7 @@ void CSoldier::Change_Animation()
             break;
 
         case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BOMB_THROW);
             break;
 
         default:
@@ -135,21 +138,16 @@ void CSoldier::Change_Animation()
     }
 }
 
-void CSoldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
+void CSoldier_Bomb::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CSoldier::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    switch ((CSoldier_Bomb::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
     case ALERT:
         Set_AnimChangeable(true);
         break;
-        
-    case DASH_ATTACK_STARTUP:
-        pModelObject->Switch_Animation(DASH_ATTACK_RECOVERY);
-        break;
 
-    case DASH_ATTACK_RECOVERY:
-        pModelObject->Switch_Animation(DASH_ATTACK_STARTUP);
+    case BOMB_THROW:
         Set_AnimChangeable(true);
         break;
 
@@ -158,9 +156,9 @@ void CSoldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
-HRESULT CSoldier::Ready_ActorDesc(void* _pArg)
+HRESULT CSoldier_Bomb::Ready_ActorDesc(void* _pArg)
 {
-    CSoldier::MONSTER_DESC* pDesc = static_cast<CSoldier::MONSTER_DESC*>(_pArg);
+    CSoldier_Bomb::MONSTER_DESC* pDesc = static_cast<CSoldier_Bomb::MONSTER_DESC*>(_pArg);
 
     pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
@@ -210,13 +208,16 @@ HRESULT CSoldier::Ready_ActorDesc(void* _pArg)
     return S_OK;
 }
 
-HRESULT CSoldier::Ready_Components()
+HRESULT CSoldier_Bomb::Ready_Components()
 {
     /* Com_FSM */
     CFSM::FSMDESC Desc;
     Desc.fAlertRange = m_fAlertRange;
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
+    Desc.fAlert2DRange = m_fAlert2DRange;
+    Desc.fChase2DRange = m_fChase2DRange;
+    Desc.fAttack2DRange = m_fAttack2DRange;
     Desc.isMelee = true;
     Desc.pOwner = this;
 
@@ -227,7 +228,7 @@ HRESULT CSoldier::Ready_Components()
     return S_OK;
 }
 
-HRESULT CSoldier::Ready_PartObjects()
+HRESULT CSoldier_Bomb::Ready_PartObjects()
 {
     /* Part Body */
     CModelObject::MODELOBJECT_DESC BodyDesc{};
@@ -245,8 +246,8 @@ HRESULT CSoldier::Ready_PartObjects()
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
+    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
@@ -255,33 +256,33 @@ HRESULT CSoldier::Ready_PartObjects()
     return S_OK;
 }
 
-CSoldier* CSoldier::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CSoldier_Bomb* CSoldier_Bomb::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CSoldier* pInstance = new CSoldier(_pDevice, _pContext);
+    CSoldier_Bomb* pInstance = new CSoldier_Bomb(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CSoldier");
+        MSG_BOX("Failed to Created : CSoldier_Bomb");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CSoldier::Clone(void* _pArg)
+CGameObject* CSoldier_Bomb::Clone(void* _pArg)
 {
-    CSoldier* pInstance = new CSoldier(*this);
+    CSoldier_Bomb* pInstance = new CSoldier_Bomb(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CSoldier");
+        MSG_BOX("Failed to Cloned : CSoldier_Bomb");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CSoldier::Free()
+void CSoldier_Bomb::Free()
 {
 
     __super::Free();

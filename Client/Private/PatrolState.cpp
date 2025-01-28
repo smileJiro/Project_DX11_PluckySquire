@@ -13,11 +13,13 @@ HRESULT CPatrolState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 	m_fAlertRange = pDesc->fAlertRange;
+	m_fAlert2DRange = pDesc->fAlert2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
 	m_fPatrolOffset = 7.f;
+	m_fPatrol2DOffset = m_fPatrolOffset * 100.f;
 	m_iPrevDir = -1;
 	m_iDir = -1;
 	m_eDir = F_DIRECTION::F_DIR_LAST;
@@ -28,8 +30,13 @@ HRESULT CPatrolState::Initialize(void* _pArg)
 
 void CPatrolState::Set_Bound(_float3& _vPosition)
 {
+	//일단 현재 위치 기준으로 잡음
 	_vector vResult=XMLoadFloat3(&_vPosition);
-	_vector vOffset = XMVectorReplicate(m_fPatrolOffset);
+	_vector vOffset = XMVectorZero();
+	if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+		vOffset = XMVectorReplicate(m_fPatrolOffset);
+	else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+		vOffset = XMVectorReplicate(m_fPatrol2DOffset);
 
 	XMStoreFloat3(&m_tPatrolBound.vMin, vResult - vOffset);
 	XMStoreFloat3(&m_tPatrolBound.vMax, vResult + vOffset);
@@ -52,12 +59,17 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 
 	if (nullptr != m_pTarget)
 	{
-		//적 발견 시 ALERT 전환
-		_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
-		if (dis <= m_fAlertRange)
-		{
-			Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+		if (m_pOwner->Get_CurCoord() == COORDINATE_LAST)
 			return;
+		//적 발견 시 ALERT 전환
+		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
+		{
+			_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
+			if (dis <= Get_CurCoordRange(MONSTER_STATE::ALERT))
+			{
+				Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+				return;
+			}
 		}
 	}
 
