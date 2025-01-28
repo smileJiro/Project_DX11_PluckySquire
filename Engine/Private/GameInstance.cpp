@@ -745,12 +745,12 @@ HRESULT CGameInstance::Render_Font(const _wstring& _strFontTag, const _tchar* _p
 	return m_pFont_Manager->Render_Font(_strFontTag, _pText, _vPosition, _vColor, _fRotation, _vOrigin);
 }
 
-HRESULT CGameInstance::Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor)
+HRESULT CGameInstance::Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut)
 {
 	if (nullptr == m_pTarget_Manager)
 		return E_FAIL;
 
-	return m_pTarget_Manager->Add_RenderTarget(_strTargetTag, _iWidth, _iHeight, _ePixelFormat, _vClearColor);
+	return m_pTarget_Manager->Add_RenderTarget(_strTargetTag, _iWidth, _iHeight, _ePixelFormat, _vClearColor, _ppOut);
 }
 
 HRESULT CGameInstance::Add_MRT(const _wstring& _strMRTTag, const _wstring& _strTargetTag)
