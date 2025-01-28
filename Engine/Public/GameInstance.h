@@ -183,6 +183,7 @@ public: /* For. GlobalFunction_Manager */
 	_float				Lerp(_float _fLeft, _float _fRight, _float _fRatio);
 	_fvector			Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio);
 	_bool				MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix);
+	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();

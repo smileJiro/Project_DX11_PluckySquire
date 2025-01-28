@@ -21,6 +21,7 @@ class C2DMapObject;
 class CModelFile_Manager;
 class CImguiLogger;
 class CTask_Manager;
+class C2DMapObject;
 class C2DDefault_RenderObject;
 class C2DTile_RenderObject;
 
@@ -70,6 +71,8 @@ private:
 #pragma region Object Tool Method
 
 	void				Load_2DModelList();
+	void				Save_2DModelList();
+
 	void				Load_SaveFileList();
 
 	void				Object_Clear(_bool _bSelected = true);
@@ -83,6 +86,8 @@ private:
 	void				Load(bool bSelected = true);
 
 
+	C2DMapObject*	Picking_2DMap();
+
 #pragma endregion
 
 
@@ -94,7 +99,9 @@ private:
 	
 	HRESULT				Setting_TileMap(const _string _strFileMapJsonName);
 
-	
+	C2DMapObjectInfo*	Find_Info(const _wstring _strTag);
+
+	HRESULT				Update_Model_Index();
 
 
 private:
@@ -109,8 +116,10 @@ private:
 
 
 	vector<C2DMapObjectInfo*>		m_ObjectInfoLists;
-	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
 	vector<_wstring>				m_SaveFileLists;
+
+	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
+	C2DMapObject*				m_pPickingObject = nullptr;
 
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
 	_char							m_szSaveFileName[MAX_PATH];

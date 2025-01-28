@@ -37,6 +37,8 @@ public:
 public :
 	void Set_Color(_float4& fColor) { m_fBackColor = fColor; }
 
+	_bool	Is_2DMode() { return m_is2DMode; }
+	_bool	IsCursor_In(_float2 _fCursorPos);
 private:
 	CShader*		m_pShader = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };

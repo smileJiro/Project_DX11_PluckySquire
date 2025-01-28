@@ -126,6 +126,44 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3*
 	return S_OK;
 }
 
+HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINATE* eCoordinate, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
+{
+	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
+
+	if (nullptr == pGameObjects)
+		return E_FAIL;
+
+	for (auto& pGameObject : *pGameObjects)
+	{
+		if (false == pGameObject->Is_Active())
+		{
+			if (nullptr != eCoordinate)
+				pGameObject->Change_Coordinate(*eCoordinate);
+
+			if (nullptr != _pScaling)
+				pGameObject->Set_Scale(*_pScaling);
+			if (nullptr != _pRotation)
+				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
+			if (nullptr != _pPosition)
+				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
+
+			pGameObject->Set_Active(true);
+			pGameObject->Set_Alive();
+
+			return S_OK;
+		}
+
+	}
+
+	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
+		return E_FAIL;
+
+	if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CPooling_Manager::Pooling_Objects(const _wstring& _strPoolingTag, _uint _iNumPoolingObjects)
 {
 	pair<Pooling_DESC, CGameObject::GAMEOBJECT_DESC*>* pPair = Find_PoolingDesc(_strPoolingTag);

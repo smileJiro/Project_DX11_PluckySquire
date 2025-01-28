@@ -11,6 +11,13 @@ public:
 		_float fLifeTime;
 	}PROJECTILE_BARFBUG_DESC;
 
+	enum Animation2D
+	{
+		PROJECTILE,
+		PROJECTILESPLAT,
+		ANIM2D_LAST,
+	};
+
 protected:
 	CProjectile_BarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CProjectile_BarfBug(const CProjectile_BarfBug& _Prototype);
@@ -33,6 +40,7 @@ private:
 	_float m_fAccTime = { 0.f };
 
 private:
+	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 

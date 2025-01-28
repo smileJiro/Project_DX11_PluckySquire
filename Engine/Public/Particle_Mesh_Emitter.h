@@ -16,7 +16,7 @@ private:
 	virtual ~CParticle_Mesh_Emitter() = default;
 
 public:
-	HRESULT						Initialize_Prototype(const _char* _szModelPath, const _tchar* _szInfoPath);
+	//HRESULT						Initialize_Prototype(const _char* _szModelPath, const _tchar* _szInfoPath);
 	HRESULT						Initialize_Prototype(const json& _jsonInfo);
 	virtual HRESULT				Initialize(void* _pArg) override;
 	virtual void				Priority_Update(_float _fTimeDelta) override;
@@ -48,7 +48,7 @@ private:
 
 
 public:
-	static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szModelPath, const _tchar* _szInfoPath);
+	//static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szModelPath, const _tchar* _szInfoPath);
 	static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonInfo);
 
 	virtual CGameObject* Clone(void* _pArg) override;

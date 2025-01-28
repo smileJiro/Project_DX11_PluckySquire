@@ -16,12 +16,12 @@ namespace Map_Tool
 
 	}
 
-	_bool StartPopupButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE _eButtonType, const string& _strButtonText)
+	_bool StartPopupButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE _eButtonType, const string& _strButtonText, ImGuiWindowFlags_ _Flag)
 	{
 		const string strPopupText = "##" + _strButtonText;
 		if(StyleButton(_eButtonType,_strButtonText.c_str()))
 			ImGui::OpenPopup(strPopupText.c_str());
-		return ImGui::BeginPopup(strPopupText.c_str());
+		return ImGui::BeginPopup(strPopupText.c_str(), _Flag);
 	}
 
 	_bool ActiveButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE _eButtonType, _bool _isActivePlag, const string& _strTrueText, const string& _strFalseText)

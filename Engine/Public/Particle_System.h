@@ -1,17 +1,22 @@
 #pragma once
-#include "GameObject.h"
+#include "PartObject.h"
 #include "Particle_Emitter.h"
 
 BEGIN(Engine)
 
 
-class ENGINE_DLL CParticle_System : public CGameObject
+class ENGINE_DLL CParticle_System : public CPartObject
 {
 public:
-	typedef struct tagParticleSystemDesc : public CGameObject::GAMEOBJECT_DESC
+	typedef struct tagParticleSystemDesc : public CPartObject::PARTOBJECT_DESC
 	{
-		vector<_uint> EmitterShaderLevels;
-		vector<const _tchar*> ShaderTags;
+		_uint iSpriteShaderLevel = 0;
+		const _tchar* szSpriteShaderTags = L"";
+		_uint iModelShaderLevel = 0;
+		const _tchar* szModelShaderTags = L"";
+
+		//vector<_uint> EmitterShaderLevels;
+		//vector<const _tchar*> ShaderTags;
 	} PARTICLE_SYSTEM_DESC;
 
 private:
@@ -29,6 +34,8 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT				Render() override;
 
+public:
+	void						Play_Effect(_uint _iEventID);
 
 private:
 	vector<class CParticle_Emitter*> m_ParticleEmitters;
@@ -51,14 +58,16 @@ public:
 	HRESULT						Save_File();
 
 private:
-	_char						m_szInputTexturePath[MAX_PATH] = "../Bin/Resources/Textures/Effects/";
 	_string						m_strFilePath;
+	CParticle_Emitter*			m_pNowItem = { nullptr };
 
 	_int						m_iInputNumInstances = { 0 };
-	CParticle_Emitter*			m_pNowItem = { nullptr };
-private:
+	_float						m_fToolAccTime = { 0.f };
+	_float						m_fToolRepeatTime = { 8.f };
 
+private:
 	void						Tool_ShowList();
+	void						Tool_InputText();
 
 public:
 	static	CParticle_System* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext); /* 툴전용의 파티클 생성 코드입니다, 어떤 Emitter도 만들지 않습니다.*/
