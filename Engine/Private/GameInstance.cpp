@@ -474,6 +474,14 @@ HRESULT CGameInstance::Add_RenderObject_New(_int _iGroupID, _int _iPriorityID, C
 	return m_pNewRenderer->Add_RenderObject(_iGroupID, _iPriorityID, _pGameObject);
 }
 
+HRESULT CGameInstance::Erase_RenderGroup_New(_int _iGroupID, _int _iPriorityID)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+	return m_pNewRenderer->Erase_RenderGroup(_iGroupID, _iPriorityID);
+}
+
 HRESULT CGameInstance::Add_DSV_ToRenderer(const _wstring _strDSVTag, _float2 _vDSVSize)
 {
 	if (nullptr == m_pNewRenderer)

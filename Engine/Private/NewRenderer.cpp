@@ -107,6 +107,21 @@ CRenderGroup* CNewRenderer::Find_RenderGroup(_int _iGroupID, _int _iPriorityID)
 	return (*iter).second;
 }
 
+HRESULT CNewRenderer::Erase_RenderGroup(_int _iGroupID, _int _iPriorityID)
+{
+	_int iKey = _iGroupID + _iPriorityID;
+	auto& iter = m_RenderGroups.find(iKey);
+	if (iter == m_RenderGroups.end())
+	{
+		MSG_BOX("현재 렌더그룹에 존재하지 않는 렌더그룹 삭제요청함.");
+		return E_FAIL;
+	}
+	Safe_Release(iter->second);
+	m_RenderGroups.erase(iter);
+
+	return S_OK;
+}
+
 ID3D11DepthStencilView* CNewRenderer::Find_DSV(const _wstring& _strDSVTag)
 {
 	auto& iter = m_DSVs.find(_strDSVTag);

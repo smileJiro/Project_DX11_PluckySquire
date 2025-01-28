@@ -85,6 +85,7 @@ public: /* For. NewRenderer*/
 	HRESULT				Add_RenderGroup(_int _iGroupID, _int _iPriorityID, class CRenderGroup* _pRenderGroup);
 	class CRenderGroup*	Find_RenderGroup(_int _iGroupID, _int _iPriorityID);
 	HRESULT				Add_RenderObject_New(_int _iGroupID, _int _iPriorityID, CGameObject* _pGameObject);
+	HRESULT				Erase_RenderGroup_New(_int _iGroupID, _int _iPriorityID);
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _float2 _vDSVSize);
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight);
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);

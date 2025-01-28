@@ -23,7 +23,7 @@ public:
 public:
 	HRESULT								Add_RenderGroup(_int _iGroupID, _int _iPriorityID, CRenderGroup* _pRenderGroup);
 	CRenderGroup*						Find_RenderGroup(_int _iGroupID, _int _iPriorityID);
-
+	HRESULT								Erase_RenderGroup(_int _iGroupID, _int _iPriorityID);
 public: /* DSV */
 	ID3D11DepthStencilView*				Find_DSV(const _wstring& _strDSVTag);
 	HRESULT								Add_DSV(const _wstring _strDSVTag, _float2 _vDSVSize);
