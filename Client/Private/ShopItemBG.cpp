@@ -54,10 +54,7 @@ void CShopItemBG::Child_Update(_float _fTimeDelta)
 void CShopItemBG::Child_LateUpdate(_float _fTimeDelta)
 {
 	//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
-
-
-
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_UI, this);
 }
 
 HRESULT CShopItemBG::Render()

@@ -31,6 +31,11 @@ HRESULT CModelObject::Initialize(void* _pArg)
     m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
     m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
     m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
+
+    m_iRenderGroupID_2D = pDesc->iRenderGroupID_2D;
+    m_iPriorityID_2D = pDesc->iPriorityID_2D;
+    m_iRenderGroupID_3D = pDesc->iRenderGroupID_3D;
+    m_iPriorityID_3D = pDesc->iPriorityID_3D;
     // Add
 
 
@@ -71,6 +76,17 @@ void CModelObject::Late_Update(_float _fTimeDelta)
         
     else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
         m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+
+    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+    {
+        if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
+            m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
+    }
+    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    {
+        m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_2D, m_iPriorityID_2D, this);
+    }
+
 
 
     /* Update Parent Matrix */

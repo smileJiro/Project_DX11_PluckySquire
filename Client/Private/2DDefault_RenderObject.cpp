@@ -51,7 +51,8 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 
 void C2DDefault_RenderObject::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	//m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BOOK2D, this);
 }
 
 void C2DDefault_RenderObject::Update(_float fTimeDelta)

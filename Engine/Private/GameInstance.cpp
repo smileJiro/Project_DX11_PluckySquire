@@ -16,6 +16,7 @@
 #include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
 #include "Physx_Manager.h"
+#include "NewRenderer.h"
 #include "Frustum.h"
 #include "Physx_EventCallBack.h"
 #include "Layer.h"
@@ -35,6 +36,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_iViewportWidth = EngineDesc.iViewportWidth;
 	m_iViewportHeight = EngineDesc.iViewportHeight;
 	m_iStaticLevelID = EngineDesc.iStaticLevelID;
+	m_isNewRenderer = EngineDesc.isNewRenderer;
 
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iViewportWidth, EngineDesc.iViewportHeight, ppDevice, ppContext);
 	if (nullptr == m_pGraphic_Device)
@@ -57,9 +59,19 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pTarget_Manager)
 		return E_FAIL;
 
-	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
-	if (nullptr == m_pRenderer)
-		return E_FAIL;
+	if (false == m_isNewRenderer)
+	{
+		m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
+		if (nullptr == m_pRenderer)
+			return E_FAIL;
+	}
+	else
+	{
+		m_pNewRenderer = CNewRenderer::Create(*ppDevice, *ppContext);
+		if (nullptr == m_pNewRenderer)
+			return E_FAIL;
+	}
+
 	
 	m_pPrototype_Manager = CPrototype_Manager::Create(EngineDesc.iNumLevels, EngineDesc.iStaticLevelID);
 	if (nullptr == m_pPrototype_Manager)
@@ -167,7 +179,11 @@ HRESULT CGameInstance::Render_Begin(const _float4& vClearColor)
 
 HRESULT CGameInstance::Draw()
 {
-	m_pRenderer->Draw_RenderObject();
+	if (false == m_isNewRenderer)
+		m_pRenderer->Draw_RenderObject();
+	else
+		m_pNewRenderer->Draw_RenderObject();
+
 
 	m_pLevel_Manager->Render();
 
@@ -430,6 +446,103 @@ void CGameInstance::Set_DebugRender(_bool _isBool)
 		return;
 
 	return m_pRenderer->Set_DebugRender(_isBool);
+}
+
+HRESULT CGameInstance::Add_RenderGroup(_int _iGroupID, _int _iPriorityID, CRenderGroup* _pRenderGroup)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+
+	return m_pNewRenderer->Add_RenderGroup(_iGroupID, _iPriorityID, _pRenderGroup);
+}
+
+CRenderGroup* CGameInstance::Find_RenderGroup(_int _iGroupID, _int _iPriorityID)
+{
+	if (nullptr == m_pNewRenderer)
+		return nullptr;
+
+
+	return m_pNewRenderer->Find_RenderGroup(_iGroupID, _iPriorityID);
+}
+
+HRESULT CGameInstance::Add_RenderObject_New(_int _iGroupID, _int _iPriorityID, CGameObject* _pGameObject)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+	return m_pNewRenderer->Add_RenderObject(_iGroupID, _iPriorityID, _pGameObject);
+}
+
+HRESULT CGameInstance::Add_DSV_ToRenderer(const _wstring _strDSVTag, _float2 _vDSVSize)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+	return m_pNewRenderer->Add_DSV(_strDSVTag, _vDSVSize);
+}
+
+HRESULT CGameInstance::Add_DSV_ToRenderer(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+	return m_pNewRenderer->Add_DSV(_strDSVTag, _iWidth, _iHeight);
+}
+
+HRESULT CGameInstance::Add_DSV_ToRenderer(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+	return m_pNewRenderer->Add_DSV(_strDSVTag, _pDSV);
+}
+
+HRESULT CGameInstance::Erase_DSV_ToRenderer(const _wstring _strDSVTag)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+	return m_pNewRenderer->Erase_DSV(_strDSVTag);
+}
+
+ID3D11DepthStencilView* CGameInstance::Find_DSV(const _wstring& _strDSVTag)
+{
+	if (nullptr == m_pNewRenderer)
+		return nullptr;
+
+	return m_pNewRenderer->Find_DSV(_strDSVTag);
+}
+
+const _float4x4* CGameInstance::Get_WorldMatrix_Renderer() const
+{
+	return m_pNewRenderer->Get_WorldMatrix();
+}
+
+const _float4x4* CGameInstance::Get_ViewMatrix_Renderer() const
+{
+	return m_pNewRenderer->Get_ViewMatrix();
+}
+
+const _float4x4* CGameInstance::Get_ProjMatrix_Renderer() const
+{
+	return m_pNewRenderer->Get_ProjMatrix();
+}
+
+HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+	return m_pNewRenderer->Add_DebugComponent(_pDebugCom);
+}
+
+void CGameInstance::Set_DebugRender_New(_bool _isBool)
+{
+	if (nullptr == m_pNewRenderer)
+		return;
+
+	return m_pNewRenderer->Set_DebugRender(_isBool);
 }
 
 #endif // _DEBUG
@@ -1113,7 +1226,13 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pTarget_Manager);
-	Safe_Release(m_pRenderer);
+
+	/* 임시 코드 */
+	if (false == m_isNewRenderer)
+		Safe_Release(m_pRenderer);
+	else
+		Safe_Release(m_pNewRenderer);
+
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);

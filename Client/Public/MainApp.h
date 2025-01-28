@@ -42,6 +42,8 @@ private:
 private:
 	HRESULT Initialize_Client_Manager();
 	HRESULT Ready_Font();
+	HRESULT Ready_RenderTargets();
+	HRESULT Ready_RenderGroup();
 
 public:
 	static CMainApp* Create();

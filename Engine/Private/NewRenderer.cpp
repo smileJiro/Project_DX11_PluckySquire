@@ -1,0 +1,249 @@
+#include "NewRenderer.h"
+#include "GameInstance.h"
+#include "GameObject.h"
+#include "RenderGroup.h"
+
+CNewRenderer::CNewRenderer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	:m_pDevice(_pDevice)
+	,m_pContext(_pContext)
+	,m_pGameInstance(CGameInstance::GetInstance())
+{
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
+	Safe_AddRef(m_pGameInstance);
+}
+
+HRESULT CNewRenderer::Initialize()
+{
+	_uint iNumViewport = 1;
+	D3D11_VIEWPORT ViewportDesc = {};
+
+	m_pContext->RSGetViewports(&iNumViewport, &ViewportDesc);
+	m_iOriginViewportWidth = (_uint)ViewportDesc.Width;
+	m_iOriginViewportHeight = (_uint)ViewportDesc.Height;
+
+	/* 직교 투영으로 그리기 위한 Shader, VIBuffer, Matrix Init */
+	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../../EngineSDK/Hlsl/Shader_Deferred.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements);
+	if (nullptr == m_pShader)
+		return E_FAIL;
+
+	m_pVIBuffer = CVIBuffer_Rect::Create(m_pDevice, m_pContext);
+	if (nullptr == m_pVIBuffer)
+		return E_FAIL;
+
+	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixScaling(ViewportDesc.Width, ViewportDesc.Height, 1.f));
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.f, 1.f));
+
+	return S_OK;
+}
+
+HRESULT CNewRenderer::Add_RenderObject(_int _iGroupID, _int _iPriorityID, CGameObject* _pGameObject)
+{
+	CRenderGroup* pRenderGroup = Find_RenderGroup(_iGroupID, _iPriorityID);
+	if (nullptr == pRenderGroup)
+		return E_FAIL;
+
+	if (FAILED(pRenderGroup->Add_RenderObject(_pGameObject)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CNewRenderer::Draw_RenderObject()
+{
+	for (auto& Pair : m_RenderGroups)
+	{
+		Pair.second->Render(m_pShader, m_pVIBuffer);
+	}
+
+#ifdef _DEBUG
+	if (true == m_isDebugRender)
+	{
+		if (FAILED(Render_Debug()))
+		{
+			MSG_BOX("Render Failed Render_Debug");
+			return E_FAIL;
+		}
+		m_pGameInstance->Physx_Render();
+	}
+
+	if (KEY_DOWN(KEY::F6))
+		m_isDebugRender ^= 1;
+#endif
+
+	return S_OK;
+}
+
+HRESULT CNewRenderer::Add_RenderGroup(_int _iGroupID, _int _iPriorityID, CRenderGroup* _pRenderGroup)
+{
+	if (nullptr != Find_RenderGroup(_iGroupID, _iPriorityID))
+	{
+		MSG_BOX("비상!!! 렌더러 렌더그룹 중복 키값 발생!");
+		return E_FAIL;
+	}
+	
+	if (nullptr == _pRenderGroup)
+	{
+		MSG_BOX("비상!!! 렌더그룹 nullptr을 등록하려했어!");
+		return E_FAIL;
+	}
+		
+	_int iKey = _iGroupID + _iPriorityID;
+	m_RenderGroups.emplace(iKey, _pRenderGroup);
+	Safe_AddRef(_pRenderGroup);
+
+	return S_OK;
+}
+
+CRenderGroup* CNewRenderer::Find_RenderGroup(_int _iGroupID, _int _iPriorityID)
+{
+	_int iKey = _iGroupID + _iPriorityID;
+	auto& iter = m_RenderGroups.find(iKey);
+
+	if (iter == m_RenderGroups.end())
+		return nullptr;
+
+	return (*iter).second;
+}
+
+ID3D11DepthStencilView* CNewRenderer::Find_DSV(const _wstring& _strDSVTag)
+{
+	auto& iter = m_DSVs.find(_strDSVTag);
+	if (iter == m_DSVs.end())
+		return nullptr;
+
+	return (*iter).second;
+}
+
+HRESULT CNewRenderer::Add_DSV(const _wstring _strDSVTag, _float2 _vDSVSize)
+{
+	if(FAILED(Ready_DepthStencilView(_strDSVTag, (_uint)_vDSVSize.x, (_uint)_vDSVSize.y)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CNewRenderer::Add_DSV(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight)
+{
+	if (FAILED(Ready_DepthStencilView(_strDSVTag, _iWidth, _iHeight)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CNewRenderer::Add_DSV(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV)
+{
+	if (nullptr != Find_DSV(_strDSVTag))
+		return E_FAIL;
+
+	m_DSVs.emplace(_strDSVTag, _pDSV);
+	Safe_AddRef(_pDSV);
+
+	return S_OK;
+}
+
+HRESULT CNewRenderer::Erase_DSV(const _wstring _strDSVTag)
+{
+	auto& iter = m_DSVs.find(_strDSVTag);
+	if (iter == m_DSVs.end())
+	{
+		MSG_BOX("컨테이너에 없는 DSV를 삭제요청했음.");
+		return E_FAIL;
+	}
+
+	Safe_Release((*iter).second);
+	m_DSVs.erase(iter);
+
+	return S_OK;
+}
+
+HRESULT CNewRenderer::Render_Debug()
+{
+	for (auto& pDebugCom : m_DebugComponents)
+	{
+		if (nullptr != pDebugCom)
+			pDebugCom->Render();
+
+		Safe_Release(pDebugCom);
+	}
+
+	m_DebugComponents.clear();
+
+	return S_OK;
+}
+
+HRESULT CNewRenderer::Ready_DepthStencilView(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight)
+{
+	if (nullptr == m_pDevice)
+		return E_FAIL;
+
+	ID3D11Texture2D* pDepthStencilTexture = nullptr;
+
+	D3D11_TEXTURE2D_DESC TextureDesc;
+	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	/* RTV의 사이즈와 DSV의 사이즈가 일치 되어야한다. */
+	TextureDesc.Width = _iWidth;
+	TextureDesc.Height = _iHeight;
+	TextureDesc.MipLevels = 1;
+	TextureDesc.ArraySize = 1;
+	TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	TextureDesc.SampleDesc.Quality = 0;
+	TextureDesc.SampleDesc.Count = 1;
+
+	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	TextureDesc.CPUAccessFlags = 0;
+	TextureDesc.MiscFlags = 0;
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &pDepthStencilTexture)))
+		return E_FAIL;
+
+	ID3D11DepthStencilView* pDSV = nullptr;
+	if (FAILED(m_pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &pDSV)))
+		return E_FAIL;
+
+	Add_DSV(_strDSVTag, pDSV);
+
+
+	Safe_Release(pDepthStencilTexture);
+	Safe_Release(pDSV);
+	return S_OK;
+}
+
+CNewRenderer* CNewRenderer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+	CNewRenderer* pInstance = new CNewRenderer(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize()))
+	{
+		MSG_BOX("Failed Create CNewRenderer");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void CNewRenderer::Free()
+{
+	for (auto& Pair : m_RenderGroups)
+	{
+		Safe_Release(Pair.second);
+	}
+	m_RenderGroups.clear();
+
+	for (auto& Pair : m_DSVs)
+	{
+		Safe_Release(Pair.second);
+	}
+	m_DSVs.clear();
+
+	Safe_Release(m_pVIBuffer);
+	Safe_Release(m_pShader);
+	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
+
+	__super::Free();
+}

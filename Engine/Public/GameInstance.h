@@ -16,6 +16,8 @@ private:
 	CGameInstance();
 	virtual ~CGameInstance() = default;
 
+private: /* Renderer 때문에 임시 */
+	_bool m_isNewRenderer = false;
 public: /* For.GameInstance */
 	HRESULT				Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
 	void				Priority_Update_Engine(_float fTimeDelta);
@@ -77,7 +79,23 @@ public: /* For.Renderer */
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);	
 	void				Set_DebugRender(_bool _isBool);
+#endif
 
+public: /* For. NewRenderer*/
+	HRESULT				Add_RenderGroup(_int _iGroupID, _int _iPriorityID, class CRenderGroup* _pRenderGroup);
+	class CRenderGroup*	Find_RenderGroup(_int _iGroupID, _int _iPriorityID);
+	HRESULT				Add_RenderObject_New(_int _iGroupID, _int _iPriorityID, CGameObject* _pGameObject);
+	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _float2 _vDSVSize);
+	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight);
+	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
+	HRESULT				Erase_DSV_ToRenderer(const _wstring _strDSVTag);
+	ID3D11DepthStencilView* Find_DSV(const _wstring& _strDSVTag);
+	const _float4x4*	Get_WorldMatrix_Renderer() const;
+	const _float4x4*	Get_ViewMatrix_Renderer() const;
+	const _float4x4*	Get_ProjMatrix_Renderer() const;
+#ifdef _DEBUG
+	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
+	void				Set_DebugRender_New(_bool _isBool);
 #endif
 
 public: /* For. Key_Manager */
@@ -214,6 +232,7 @@ private:
 	class CPrototype_Manager* m_pPrototype_Manager = nullptr;
 	class CObject_Manager* m_pObject_Manager = nullptr;
 	class CRenderer* m_pRenderer = nullptr;
+	class CNewRenderer* m_pNewRenderer = nullptr; // New 
 	class CKey_Manager* m_pKey_Manager = nullptr;
 	class CPipeLine* m_pPipeLine = nullptr;
 	class CLight_Manager* m_pLight_Manager = nullptr;
