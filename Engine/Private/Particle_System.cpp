@@ -4,12 +4,12 @@
 #include "Particle_Sprite_Emitter.h"
 #include "Particle_Mesh_Emitter.h"
 CParticle_System::CParticle_System(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CGameObject(_pDevice, _pContext)
+	: CPartObject(_pDevice, _pContext)
 {
 }
 
 CParticle_System::CParticle_System(const CParticle_System& _Prototype)
-	: CGameObject(_Prototype)
+	: CPartObject(_Prototype)
 	, m_strFilePath(_Prototype.m_strFilePath)
 {
 	m_strName = _Prototype.m_strName;
@@ -34,7 +34,6 @@ HRESULT CParticle_System::Initialize_Prototype(const _tchar* _szFilePath)
 	{
 		if (false == jsonEffectInfo["Emitters"][i].contains("Type"))
 			return E_FAIL;
-
 		
 		CParticle_Emitter::PARTICLE_TYPE eType = jsonEffectInfo["Emitters"][i]["Type"];
 
@@ -50,10 +49,10 @@ HRESULT CParticle_System::Initialize_Prototype(const _tchar* _szFilePath)
 		{
 			//const jsonEffectInfo["Emitters"][]
 
-			//CParticle_Mesh_Emitter* pMeshEmitter = CParticle_Mesh_Emitter::Create(m_pDevice, m_pContext, jsonEffectInfo["Emitters"][i]);
-			//if (nullptr == pMeshEmitter)
-			//	return E_FAIL;
-			//m_ParticleEmitters.push_back(pMeshEmitter);
+			CParticle_Mesh_Emitter* pMeshEmitter = CParticle_Mesh_Emitter::Create(m_pDevice, m_pContext, jsonEffectInfo["Emitters"][i]);
+			if (nullptr == pMeshEmitter)
+				return E_FAIL;
+			m_ParticleEmitters.push_back(pMeshEmitter);
 		}
 
 	}
@@ -80,6 +79,7 @@ HRESULT CParticle_System::Initialize(void* _pArg, const CParticle_System* _pProt
 
 	PARTICLE_SYSTEM_DESC* pDesc = static_cast<PARTICLE_SYSTEM_DESC*>(_pArg);
 
+	// TODO: Particle Coordinate는 2D도 해야할까 ? 
 	pDesc->eStartCoord = COORDINATE_3D;
 	pDesc->isCoordChangeEnable = false;
 
@@ -87,19 +87,31 @@ HRESULT CParticle_System::Initialize(void* _pArg, const CParticle_System* _pProt
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	if (_pPrototype->m_ParticleEmitters.size() != pDesc->EmitterShaderLevels.size())
-		return E_FAIL;
-	if (_pPrototype->m_ParticleEmitters.size() != pDesc->ShaderTags.size())
-		return E_FAIL;
+	//if (_pPrototype->m_ParticleEmitters.size() != pDesc->EmitterShaderLevels.size())
+	//	return E_FAIL;
+	//if (_pPrototype->m_ParticleEmitters.size() != pDesc->ShaderTags.size())
+	//	return E_FAIL;
 
 	for (_uint i = 0; i < _pPrototype->m_ParticleEmitters.size(); ++i)
 	{
 		CParticle_Emitter::PARTICLE_EMITTER_DESC Desc = {};
+
+		if (CParticle_Emitter::MESH == _pPrototype->m_ParticleEmitters[i]->Get_Type())
+		{
+			Desc.iProtoShaderLevel = pDesc->iModelShaderLevel;
+			Desc.szShaderTag = pDesc->szModelShaderTags;
+		}
+
+		else if (CParticle_Emitter::SPRITE == _pPrototype->m_ParticleEmitters[i]->Get_Type())
+		{
+			Desc.iProtoShaderLevel = pDesc->iSpriteShaderLevel;
+			Desc.szShaderTag = pDesc->szSpriteShaderTags;
+		}
+
 		Desc.iCurLevelID = pDesc->iCurLevelID;
 		Desc.eStartCoord = COORDINATE_3D;
 		Desc.isCoordChangeEnable = false;
-		Desc.iProtoShaderLevel = pDesc->EmitterShaderLevels[i];
-		Desc.szShaderTag = pDesc->ShaderTags[i];
+		Desc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
 
 		CParticle_Emitter* pEmitter = static_cast<CParticle_Emitter*>(_pPrototype->m_ParticleEmitters[i]->Clone(&Desc));
 		if (nullptr == pEmitter)
@@ -125,6 +137,8 @@ void CParticle_System::Priority_Update(_float _fTimeDelta)
 {
 	for (auto& pEmitter : m_ParticleEmitters)
 		pEmitter->Priority_Update(_fTimeDelta);
+
+
 }
 
 void CParticle_System::Update(_float _fTimeDelta)
@@ -135,13 +149,27 @@ void CParticle_System::Update(_float _fTimeDelta)
 
 void CParticle_System::Late_Update(_float _fTimeDelta)
 {
+	// 부모 오브젝트의 World에 따라 먼저 Update된 이후에 갱신됩니다.
+	__super::Late_Update(_fTimeDelta);
+
 	for (auto& pEmitter : m_ParticleEmitters)
 		pEmitter->Late_Update(_fTimeDelta);
+
 }
 
 HRESULT CParticle_System::Render()
 {
 	return S_OK;
+}
+
+void CParticle_System::Play_Effect(_uint _iEventID)
+{
+	for (auto& pEmitter : m_ParticleEmitters)
+	{
+		if (_iEventID == pEmitter->Get_EventID())
+			pEmitter->Set_Active(true);
+	}
+			
 }
 
 CParticle_System* CParticle_System::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _szFilePath)
@@ -249,19 +277,52 @@ void CParticle_System::Tool_ShowList()
 
 		}
 
-		if (ImGui::Button("Save_this_system"))
-		{
-			Save_File();
-		}
-
 		ImGui::TreePop();
 	}
+
+
+}
+
+void CParticle_System::Tool_InputText()
+{
+	static _char szInputName[MAX_PATH] = "";
+
+	strcpy_s(szInputName, WSTRINGTOSTRING(m_strName).c_str());
+	if (ImGui::InputText("Name", szInputName, MAX_PATH))
+	{
+		if (0 != strcmp(szInputName, ""))
+			m_strName = STRINGTOWSTRING(szInputName);
+	}
+
+	static _char szInputPath[MAX_PATH] = "";
+	
+	strcpy_s(szInputPath, m_strFilePath.c_str());
+	if (ImGui::InputText("File Path", szInputPath, MAX_PATH))
+	{
+		m_strFilePath = szInputPath;
+	}
+
+	if (ImGui::InputFloat("Debug Loop Time", &m_fToolRepeatTime))
+	{
+		if (0.f > m_fToolRepeatTime)
+			m_fToolRepeatTime = 1.f;
+	}
+
+
 
 }
 
 void CParticle_System::Tool_Update(_float _fTimeDelta)
 {
-	//Tool_Make();
+	m_fToolAccTime += _fTimeDelta;
+	if (m_fToolRepeatTime <= m_fToolAccTime)
+	{
+		// TODO: Tool Reset 설정
+		m_fToolAccTime = 0.f;
+	}
+
+	
+	Tool_InputText();
 	Tool_ShowList();
 
 	
@@ -290,7 +351,6 @@ HRESULT CParticle_System::Save_File()
 	if (OutputFile.is_open())
 	{
 		json jsonRoot;
-		jsonRoot.dump(0);
 
 		jsonRoot["Name"] = WSTRINGTOSTRING(m_strName).c_str();
 
@@ -302,8 +362,8 @@ HRESULT CParticle_System::Save_File()
 				jsonRoot["Emitters"].push_back(jsonLeaf);
 		}
 		
-		OutputFile << jsonRoot;
-
+		
+		OutputFile << jsonRoot.dump(4);
 		OutputFile.close();
 	}
 	else

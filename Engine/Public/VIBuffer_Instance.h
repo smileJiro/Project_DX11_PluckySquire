@@ -37,10 +37,10 @@ protected:
 
 protected:
 	SHAPE_TYPE							m_eShapeType = SHAPE_NONE; // 초기 스폰 모양
-	map<const _string, _float>			m_ShapeDatas;
-	_float3 m_vShapeScale;
+	map<const _string, _float>			m_ShapeDatas;			   // 모양에 따른 Data, 다 다름..
+	_float3 m_vShapeScale;											
 	_float3 m_vShapeRotation;
-	_float3 m_vShapePosition;
+	_float3 m_vShapePosition;	// 모양 WorldMatrix에 필요한 정보
 
 protected:
 	vector<SETTING_TYPE> m_SetDatas;			// 세팅 정보들
@@ -100,10 +100,14 @@ public:
 	virtual CComponent* Clone(void* _pArg) = 0;
 	virtual void Free() override;
 
+
+	/* 이하 Tool 함수 & 변수입니다. */
 #ifdef _DEBUG
 public:
 	virtual void Tool_Setting();
 	virtual void Tool_Update(_float _fTimeDelta);
+
+	virtual HRESULT Save_Buffer(json& _jsonBufferInfo);
 
 protected:
 	_bool								m_isToolReset = { false };

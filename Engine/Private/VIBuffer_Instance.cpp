@@ -755,6 +755,55 @@ void CVIBuffer_Instance::Tool_Setting()
 void CVIBuffer_Instance::Tool_Update(_float _fTimeDelta)
 {
 }
+HRESULT CVIBuffer_Instance::Save_Buffer(json& _jsonBufferInfo)
+{
+	_jsonBufferInfo["Count"] = m_iNumInstances;
+
+	_jsonBufferInfo["ShapeLocation"]["Shape"] = m_eShapeType;
+	for (auto& ShapeData : m_ShapeDatas)
+	{
+		_jsonBufferInfo["ShapeLocation"][ShapeData.first.c_str()] = ShapeData.second;
+	}
+
+	for (_int i = 0; i < 3; ++i)
+	{
+		_jsonBufferInfo["ShapeLocation"]["Scale"].push_back(*((_float*)(&m_vShapeScale) + i));
+		_jsonBufferInfo["ShapeLocation"]["Rotation"].push_back(*((_float*)(&m_vShapeRotation) + i));
+		_jsonBufferInfo["ShapeLocation"]["Position"].push_back(*((_float*)(&m_vShapePosition) + i));
+
+		_jsonBufferInfo["Scale"]["Arg1"].push_back(*((_float*)(&m_pSetScales[0]) + i));
+		_jsonBufferInfo["Scale"]["Arg2"].push_back(*((_float*)(&m_pSetScales[1]) + i));
+		_jsonBufferInfo["Rotation"]["Arg1"].push_back(*((_float*)(&m_pSetRotations[0]) + i));
+		_jsonBufferInfo["Rotation"]["Arg2"].push_back(*((_float*)(&m_pSetRotations[1]) + i));
+		_jsonBufferInfo["Position"]["Arg1"].push_back(*((_float*)(&m_pSetPositions[0]) + i));
+		_jsonBufferInfo["Position"]["Arg2"].push_back(*((_float*)(&m_pSetPositions[1]) + i));
+		_jsonBufferInfo["Color"]["Arg1"].push_back(*((_float*)(&m_pSetColors[0]) + i));
+		_jsonBufferInfo["Color"]["Arg2"].push_back(*((_float*)(&m_pSetColors[1]) + i));
+	}
+
+	_jsonBufferInfo["Scale"]["SetType"] = m_SetDatas[P_SCALE];
+	_jsonBufferInfo["Rotation"]["SetType"] = m_SetDatas[P_ROTATION];
+	_jsonBufferInfo["Position"]["SetType"] = m_SetDatas[P_POSITION];
+	_jsonBufferInfo["LifeTime"]["SetType"] = m_SetDatas[P_LIFETIME];
+	_jsonBufferInfo["Color"]["SetType"] = m_SetDatas[P_COLOR];
+
+	_jsonBufferInfo["LifeTime"]["Arg1"] = m_pSetLifeTimes[0];
+	_jsonBufferInfo["LifeTime"]["Arg2"] = m_pSetLifeTimes[1];
+	_jsonBufferInfo["Color"]["Arg1"].push_back(m_pSetColors[0].w);
+	_jsonBufferInfo["Color"]["Arg2"].push_back(m_pSetColors[1].w);
+
+	for (auto& pModule : m_Modules)
+	{
+		json jsonModuleInfo;
+
+		if (FAILED(pModule->Save_Module(jsonModuleInfo)))
+			return E_FAIL;
+
+		_jsonBufferInfo["Module"].push_back(jsonModuleInfo);
+	}
+
+	return S_OK;
+}
 void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 {
 	if (ImGui::TreeNode("Defaults"))

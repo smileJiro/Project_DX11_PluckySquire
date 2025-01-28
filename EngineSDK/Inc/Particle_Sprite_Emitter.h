@@ -13,8 +13,8 @@ private:
 	virtual ~CParticle_Sprite_Emitter() = default;
 
 public:
-	HRESULT						Initialize_Prototype(const _tchar* _szFilePath);
-	HRESULT						Initialize_Prototype(const json& _jsonInfo);
+	//HRESULT						Initialize_Prototype(const _tchar* _szFilePath);
+	virtual HRESULT				Initialize_Prototype(const json& _jsonInfo) override;
 	virtual HRESULT				Initialize(void* _pArg) override; 
 	virtual void				Priority_Update(_float _fTimeDelta) override ;
 	virtual void				Update(_float _fTimeDelta) override;
@@ -31,7 +31,7 @@ private:
 	virtual HRESULT					Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc) override;
 
 public:
-	static	CParticle_Sprite_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _szFilePath);
+	//static	CParticle_Sprite_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _szFilePath);
 	static	CParticle_Sprite_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonInfo);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void		 Free() override;

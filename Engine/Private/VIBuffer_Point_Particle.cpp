@@ -500,6 +500,27 @@ void CVIBuffer_Point_Particle::Tool_Update(_float _fTimeDelta)
 
 
 }
+
+// Buffer 정보 저장
+HRESULT CVIBuffer_Point_Particle::Save_Buffer(json& _jsonBufferInfo)
+{
+	if (FAILED(__super::Save_Buffer(_jsonBufferInfo)))
+		return E_FAIL;
+
+	_jsonBufferInfo["UVSet"]["Anim"] = m_isAnim;
+	_jsonBufferInfo["UVSet"]["Random"] = m_isRandomUV;
+	_jsonBufferInfo["UVSet"]["Count"] = m_fAnimCount;
+	_jsonBufferInfo["UVSet"]["Start"] = m_fStartIndex;
+	_jsonBufferInfo["UVSet"]["Time"] = m_fAnimTime;
+
+	_jsonBufferInfo["UVSet"]["UV"].push_back(m_vUVPerAnim.x);
+	_jsonBufferInfo["UVSet"]["UV"].push_back(m_vUVPerAnim.y);
+
+
+	return S_OK;
+
+}
+
 // m_pVBInstance까지 Create 실행합니다.
 HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances)
 {
@@ -598,6 +619,10 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances)
 
 	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
+
+	if (FAILED(Initialize_Particles()))
+		return E_FAIL;
+
 
 	return S_OK;
 }

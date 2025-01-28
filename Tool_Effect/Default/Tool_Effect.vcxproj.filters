@@ -139,5 +139,8 @@
     <None Include="..\Bin\DataFiles\Effects\TestParticleSystem.json">
       <Filter>96. JsonFiles</Filter>
     </None>
+    <None Include="..\Bin\DataFiles\Effects\TestParticleSystem22.json">
+      <Filter>96. JsonFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>
