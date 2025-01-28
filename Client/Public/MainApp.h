@@ -24,7 +24,6 @@ public:
 	void Set_OneFrameDeltaTime(_float _iDeltaTime) { m_iOneFrameDeltaTime = _iDeltaTime; }
 private:
 	CGameInstance* m_pGameInstance = nullptr;
-
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
 
@@ -52,8 +51,7 @@ public:
 
 END
 
-
-
+////제발되라
 
 
 /*
