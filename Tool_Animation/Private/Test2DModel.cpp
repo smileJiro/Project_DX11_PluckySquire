@@ -267,6 +267,14 @@ _bool CTest2DModel::Is_LoopAnimation(_uint iAnimIndex)
 	return static_cast<CToolAnimation2D*>(m_Animation2Ds[iAnimIndex])->Is_LoopAnim();
 }
 
+void CTest2DModel::Get_AnimationNames(list<string>& _Names)
+{
+	for (auto& pAnimation : m_Animation2Ds)
+	{
+		_Names.push_back(static_cast<CToolAnimation2D*>(pAnimation)->Get_Name());
+	}
+}
+
 
 
 CTest2DModel* CTest2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* _pPath)

@@ -21,6 +21,7 @@ public:
 	void						Get_TextureNames(set<wstring>& _outTextureNames);
 	_float					Get_Progress();
 	_float	                Get_AnimSpeedMagnifier(_uint iAnimIndex);
+	void						Get_AnimationNames(list<string>& _Names);
 	_bool	                Is_LoopAnimation(_uint iAnimIndex);
 protected:
 	virtual HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);
