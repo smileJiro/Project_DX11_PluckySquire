@@ -11,6 +11,7 @@
 #include "PlayerState_Jump.h"
 #include "PlayerState_Roll.h"
 #include "Actor_Dynamic.h"
+#include "PlayerSword.h"    
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -116,7 +117,7 @@ HRESULT CPlayer::Ready_Components()
     
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
-
+    Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
     Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this, 1));
     Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this, 0.1f));
@@ -173,7 +174,45 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.0f);
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-    m_PartObjects[PLAYER_PART_SWORD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+
+    BodyDesc.eActorType = ACTOR_TYPE::KINEMATIC;
+    CActor::ACTOR_DESC ActorDesc;
+
+    /* Actor의 주인 오브젝트 포인터 */
+    ActorDesc.pOwner = this;
+
+    /* Actor의 회전축을 고정하는 파라미터 */
+    ActorDesc.FreezeRotation_XYZ[0] = true;
+    ActorDesc.FreezeRotation_XYZ[1] = false;
+    ActorDesc.FreezeRotation_XYZ[2] = true;
+
+    /* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
+    ActorDesc.FreezePosition_XYZ[0] = false;
+    ActorDesc.FreezePosition_XYZ[1] = true;
+    ActorDesc.FreezePosition_XYZ[2] = false;
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_SPHERE_DESC ShapeDesc = {};
+    ShapeDesc.fRadius = 0.5f;
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    SHAPE_DATA ShapeData;
+    ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData.eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix,  XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+
+    /* 충돌 필터에 대한 세팅 ()*/
+    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER;
+
+    /* Actor Component Finished */
+    BodyDesc.pActorDesc = &ActorDesc;
+    m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &BodyDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
     {
         MSG_BOX("CPlayer Sword Creation Failed");
@@ -187,6 +226,8 @@ HRESULT CPlayer::Ready_PartObjects()
 	//Part Glove
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+	BodyDesc.eActorType = ACTOR_TYPE::LAST;
+	BodyDesc.pActorDesc = nullptr;
     m_PartObjects[PLAYER_PART_GLOVE] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
     {
@@ -218,18 +259,12 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
-    m_pStateMachine->Update(_fTimeDelta);
-
-    CGameObject::Update_Component(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
-
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
-
-    CGameObject::Late_Update_Component(_fTimeDelta);
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -463,7 +498,7 @@ _float CPlayer::Get_AnimProgress()
 
 _bool CPlayer::Is_SwordEquiped()
 {
-    return Is_PartActive(PLAYER_PART_SWORD);
+	return m_pSword->Is_Active();
 }
 
 _bool CPlayer::Is_CarryingObject()
@@ -473,13 +508,11 @@ _bool CPlayer::Is_CarryingObject()
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
-    cout << "SwitchAnim" << _iAnimIndex << endl;
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
 }
 
 void CPlayer::Set_Animation(_uint _iAnimIndex)
 {
-    cout << "Set_Animation" << _iAnimIndex << endl;
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(_iAnimIndex);
 }
 
@@ -593,6 +626,12 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     if (KEY_DOWN(KEY::M))
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
+    }
+    if (Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::RB))
+    {
+         _vector vLook =  XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+        m_pSword->Throw(vLook);
+        return;
     }
 
 }

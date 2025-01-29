@@ -233,6 +233,7 @@
     <ClInclude Include="..\Public\Map_2D.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerState_Roll.h" />
+    <ClInclude Include="..\Public\PlayerSword.h" />
     <ClInclude Include="..\Public\Popuff.h" />
     <ClInclude Include="..\Public\Rat.h" />
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
@@ -330,6 +331,7 @@
     <ClCompile Include="..\Private\Map_2D.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerState_Roll.cpp" />
+    <ClCompile Include="..\Private\PlayerSword.cpp" />
     <ClCompile Include="..\Private\Popuff.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />

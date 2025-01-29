@@ -53,13 +53,11 @@ void CMonster::Priority_Update(_float _fTimeDelta)
 
 void CMonster::Update(_float _fTimeDelta)
 {
-	CGameObject::Update_Component(_fTimeDelta); /* Component Update */
 	__super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CMonster::Late_Update(_float _fTimeDelta)
 {
-	CGameObject::Late_Update_Component(_fTimeDelta); /* Component Late_Update */
 	__super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 

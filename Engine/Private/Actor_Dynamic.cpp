@@ -15,7 +15,6 @@ HRESULT CActor_Dynamic::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
-
     return S_OK;
 }
 
@@ -93,14 +92,14 @@ HRESULT CActor_Dynamic::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNe
 	return S_OK;
 }
 
-void CActor_Dynamic::On_Kinematic()
+void CActor_Dynamic::Set_Kinematic()
 {
 	m_eActorType = ACTOR_TYPE::KINEMATIC;
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
 	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true); // Kinematic 
 }
 
-void CActor_Dynamic::On_Dynamic()
+void CActor_Dynamic::Set_Dynamic()
 {
 	m_eActorType = ACTOR_TYPE::DYNAMIC;
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);

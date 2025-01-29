@@ -27,6 +27,7 @@
 
 #include "ModelObject.h"
 #include "Player.h"
+#include "PlayerSword.h"
 #include "TestTerrain.h"
 
 #include "2DModel.h"
@@ -261,7 +262,12 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"),
+        CPlayer::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"),
+        CPlayerSword::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     /* Monster */
 
      /* For. Prototype_GameObject_Beetle */
@@ -502,9 +508,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
-        CPlayer::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
 
     /* For. Prototype_GameObject_Camera_Free */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),

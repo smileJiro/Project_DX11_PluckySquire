@@ -97,7 +97,7 @@ HRESULT CModelObject::Render()
 {
     int a = 0;
 #ifdef _DEBUG
-    if (m_iInstanceID == 666)
+    if (m_iInstanceID == 662)
     {
         a = 1;
         cout << a << endl;

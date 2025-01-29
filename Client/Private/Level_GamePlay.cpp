@@ -231,7 +231,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
 
 

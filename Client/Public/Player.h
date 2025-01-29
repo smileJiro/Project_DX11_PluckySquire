@@ -428,6 +428,7 @@ private:
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
 	_vector m_vLookBefore = {};
 
+	class CPlayerSword* m_pSword = nullptr;
 
 	CGameObject* m_pCarryingObject = nullptr;
 public:

@@ -520,6 +520,9 @@
     <ClInclude Include="..\Public\PlayerState_Roll.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerSword.h">
+      <Filter>02.GameObjects\TestPlayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -783,6 +786,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Roll.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerSword.cpp">
+      <Filter>02.GameObjects\TestPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
