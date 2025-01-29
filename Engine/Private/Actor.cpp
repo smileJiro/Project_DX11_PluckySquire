@@ -211,6 +211,20 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
     return S_OK;
 }
 
+_float3 CActor::Get_GlobalPose()
+{
+    PxTransform CurTransform = m_pActor->getGlobalPose();
+
+    return _float3(CurTransform.p.x, CurTransform.p.y, CurTransform.p.z);
+}
+
+void CActor::Set_GlobalPose(const _float3& _vPos)
+{
+    PxTransform CurTransform = m_pActor->getGlobalPose();
+    CurTransform.p = { _vPos.x, _vPos.y , _vPos.z };
+    m_pActor->setGlobalPose(CurTransform);
+}
+
 HRESULT CActor::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
     // Actor 쪽 작업 방식.

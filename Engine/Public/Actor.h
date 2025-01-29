@@ -58,7 +58,9 @@ public:/* Default PhysX */
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity) { return; }
 	virtual void				Add_Force(const _float3& _vForce) { return; };// ÀÏ¹ÝÀûÀÎ Èû
 	virtual void				Add_Impulse(const _float3& _vForce) { return; }; // °­ÇÑ Èû
-	
+
+	_float3						Get_GlobalPose();
+	void						Set_GlobalPose(const _float3& _vPos);
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);

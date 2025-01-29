@@ -159,6 +159,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		_float3 vOutPos = {};
 		CActorObject* pActorObject = {};
 		_bool isResult = false;
+
 		isResult = m_pGameInstance->RayCast_Nearest(vOrigin, vRayDirection, 1000.f, &vOutPos, &pActorObject);
 
 		int a = 0;
