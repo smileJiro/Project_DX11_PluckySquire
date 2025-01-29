@@ -1175,6 +1175,14 @@ _uint CGameInstance::Create_ShapeID()
 	return m_pPhysx_Manager->Create_ShapeID();
 }
 
+_bool CGameInstance::RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos, CActorObject** _ppOutActorObject)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->RayCast_Nearest(_vOrigin, _vRayDir, _fMaxDistance, _pOutPos, _ppOutActorObject);
+}
+
 _bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange)
 {
 	if (nullptr == m_pFrustum)

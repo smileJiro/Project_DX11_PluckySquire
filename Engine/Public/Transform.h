@@ -20,6 +20,7 @@ public:
 
 		// 초기화 크기
 		_float3 vInitialScaling = { 1.0f, 1.0f, 1.0f };
+
 	}TRANSFORM_DESC;
 
 protected:

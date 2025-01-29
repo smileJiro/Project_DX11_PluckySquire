@@ -5,6 +5,7 @@ BEGIN(Engine)
 class CGameObject;
 class CLevel;
 class CBase;
+class CActor_Dynamic;
 END
 
 BEGIN(Client)
@@ -22,6 +23,7 @@ namespace Client
 	void Event_ChangeMonsterState(MONSTER_STATE _eState, CFSM* _pFSM);
 	void Event_ChangeBossState(BOSS_STATE _eState, CFSM* _pFSM);
 	void Event_Change_Coordinate(CActorObject* _pActorObject, COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
+	void Event_Set_Kinematic(CActor_Dynamic* _pActorObject, _bool _bValue);
 
 	
 

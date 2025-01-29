@@ -526,6 +526,9 @@
     <ClInclude Include="..\Public\Camera_Trigger.h">
       <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerSword.h">
+      <Filter>02.GameObjects\TestPlayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -792,6 +795,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Trigger.cpp">
       <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerSword.cpp">
+      <Filter>02.GameObjects\TestPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

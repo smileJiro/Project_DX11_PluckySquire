@@ -464,10 +464,10 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 
 	if (nullptr != m_pPickingObject)
 	{
-		_vector vPos = m_pPickingObject->Get_Position();
+		_vector vPos = m_pPickingObject->Get_FinalPosition();
 		_wstring strKey = m_pPickingObject->Get_Key();
 		_float2 fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
-		m_pPickingObject->Get_Position();
+		m_pPickingObject->Get_FinalPosition();
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
 		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");
 		ImGui::Text("Object Pos : %f, %f", fPos.x, fPos.y);

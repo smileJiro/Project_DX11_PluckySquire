@@ -277,6 +277,18 @@
     <Filter Include="01.Utility\09.RenderTargets\Manager">
       <UniqueIdentifier>{b8b92195-49d1-43e8-bd2b-cd0f39b298c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\AnimEvent">
+      <UniqueIdentifier>{1ff8e193-1657-47b8-b4ff-1675ab2f5492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider">
+      <UniqueIdentifier>{ec61471d-b8ae-4c10-bdf8-8bf589715536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider\Circle">
+      <UniqueIdentifier>{c70a493a-2218-45c9-8ae5-06b02d8e4b35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider\AABB">
+      <UniqueIdentifier>{aed4aa39-81a2-4e1a-a759-6499ddd8469f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -528,12 +540,6 @@
     <ClInclude Include="..\Public\Animation.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\AnimEventGenerator.h">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\AnimEventReceiver.h">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Particle_Module.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
     </ClInclude>
@@ -548,6 +554,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\TriggerObject.h">
       <Filter>01.Utility\03.Objects\Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimEventGenerator.h">
+      <Filter>01.Utility\04.Components\AnimEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimEventReceiver.h">
+      <Filter>01.Utility\04.Components\AnimEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Collider.h">
+      <Filter>01.Utility\04.Components\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -788,12 +803,6 @@
     <ClCompile Include="..\Private\Animation.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AnimEventGenerator.cpp">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AnimEventReceiver.cpp">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Particle_Module.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
     </ClCompile>
@@ -808,6 +817,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\TriggerObject.cpp">
       <Filter>01.Utility\03.Objects\Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimEventGenerator.cpp">
+      <Filter>01.Utility\04.Components\AnimEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimEventReceiver.cpp">
+      <Filter>01.Utility\04.Components\AnimEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Collider.cpp">
+      <Filter>01.Utility\04.Components\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

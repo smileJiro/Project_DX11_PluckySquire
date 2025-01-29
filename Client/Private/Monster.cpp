@@ -53,13 +53,11 @@ void CMonster::Priority_Update(_float _fTimeDelta)
 
 void CMonster::Update(_float _fTimeDelta)
 {
-	CGameObject::Update_Component(_fTimeDelta); /* Component Update */
 	__super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CMonster::Late_Update(_float _fTimeDelta)
 {
-	CGameObject::Late_Update_Component(_fTimeDelta); /* Component Late_Update */
 	__super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -87,7 +85,7 @@ void CMonster::Change_Dir()
 {
 	//플레이어와의 각도를 구해 방향 전환 (시야각이 있을 때 기준)
 	_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-	_vector vDir = XMVector3Normalize(m_pTarget->Get_Position() - Get_Position());
+	_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition());
 	_vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 	_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vDir, vLook))));
 	_float fResult = XMVectorGetX(XMVector3Cross(vUp, XMVector3Cross(vLook, vDir)));

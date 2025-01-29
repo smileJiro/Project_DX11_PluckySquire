@@ -53,7 +53,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	if (nullptr != m_pTarget)
 	{
 		//적 발견 시 ALERT 전환
-		_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
+		_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 		if (dis <= m_fAlertRange)
 		{
 			Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
@@ -96,7 +96,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			//기본적으로 추적중에 y값 상태 변화는 없다고 가정
 
 			_vector vDir = Set_PatrolDirection(_iDir);
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_Position());
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
 			m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
 		}
 	}
@@ -269,7 +269,7 @@ void CPatrolState::Check_Bound(_float _fTimeDelta)
 	_float3 vPos;
 	_bool isOut = false;
 	//델타타임으로 다음 위치 예상해서 막기
-	XMStoreFloat3(&vPos, m_pOwner->Get_Position() + Set_PatrolDirection(m_iDir) * _fTimeDelta);
+	XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_PatrolDirection(m_iDir) * _fTimeDelta);
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.z > vPos.z || m_tPatrolBound.vMax.z < vPos.z)

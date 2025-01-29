@@ -58,10 +58,12 @@ void CGameObject::Priority_Update(_float _fTimeDelta)
 
 void CGameObject::Update(_float _fTimeDelta)
 {
+    CGameObject::Update_Component(_fTimeDelta);
 }
 
 void CGameObject::Late_Update(_float _fTimeDelta)
 {
+    CGameObject::Late_Update_Component(_fTimeDelta);
 }
 
 HRESULT CGameObject::Render()

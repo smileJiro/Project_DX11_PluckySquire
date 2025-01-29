@@ -91,7 +91,7 @@ void CActor::Update(_float _fTimeDelta)
 void CActor::Late_Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-	m_pGameInstance->Add_DebugComponent(this);
+    //m_pGameInstance->Add_DebugComponent(this);
 #endif // _DEBUG
 
 }
@@ -119,42 +119,42 @@ HRESULT CActor::Render()
 
 		PxGeometryType::Enum eType = pShape->getGeometryType();
 
-		switch (eType)
-		{
-		case physx::PxGeometryType::eSPHERE:
-		{
-			_float fRadius = pShape->getGeometry().sphere().radius;
-			_vector vOwnerPos = m_pOwner->Get_Position();
-			PxVec3 vShapeOffsetPos = pShape->getLocalPose().p;
-			_float3 vPosition = { vShapeOffsetPos.x, vShapeOffsetPos.y, vShapeOffsetPos.z };
-			XMStoreFloat3(&vPosition, XMLoadFloat3(&vPosition) + vOwnerPos);
-			BoundingSphere BoundingSphere(vPosition, fRadius);
-			DX::Draw(m_pBatch, BoundingSphere, XMLoadFloat4(&m_vDebugColor));
-		}
-		break;
-		case physx::PxGeometryType::ePLANE:
-			break;
-		case physx::PxGeometryType::eCAPSULE:
-			break;
-		case physx::PxGeometryType::eBOX:
-		{
-			PxVec3 vHalfExtents = pShape->getGeometry().box().halfExtents;
-			PxQuat quat = pShape->getLocalPose().q;
+        switch (eType)
+        {
+        case physx::PxGeometryType::eSPHERE:
+        {
+            _float fRadius = pShape->getGeometry().sphere().radius;
+            _vector vOwnerPos = m_pOwner->Get_FinalPosition();
+            PxVec3 vShapeOffsetPos = pShape->getLocalPose().p;
+            _float3 vPosition = { vShapeOffsetPos.x, vShapeOffsetPos.y, vShapeOffsetPos.z };
+            XMStoreFloat3(&vPosition, XMLoadFloat3(&vPosition) + vOwnerPos);
+            BoundingSphere BoundingSphere(vPosition, fRadius);
+            DX::Draw(m_pBatch, BoundingSphere, XMLoadFloat4(&m_vDebugColor));
+        }
+            break;
+        case physx::PxGeometryType::ePLANE:
+            break;
+        case physx::PxGeometryType::eCAPSULE:
+            break;
+        case physx::PxGeometryType::eBOX:
+        {
+            PxVec3 vHalfExtents = pShape->getGeometry().box().halfExtents;
+            PxQuat quat =  pShape->getLocalPose().q;
 
-			_float4 vQuat = { quat.x, quat.y, quat.z, quat.w };
-			_vector vOwnerPos = m_pOwner->Get_Position();
-			PxVec3 vShapeOffsetPos = pShape->getLocalPose().p;
-			_float3 vPosition = { vShapeOffsetPos.x, vShapeOffsetPos.y, vShapeOffsetPos.z };
-			XMStoreFloat3(&vPosition, XMLoadFloat3(&vPosition) + vOwnerPos);
-			BoundingOrientedBox box(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z), vQuat);
-			//BoundingBox BoundingBox(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z));
-			DX::Draw(m_pBatch, box, XMLoadFloat4(&m_vDebugColor));
-		}
-		break;
-		default:
-			break;
-		}
-	}
+            _float4 vQuat = { quat.x, quat.y, quat.z, quat.w };
+            _vector vOwnerPos = m_pOwner->Get_FinalPosition();
+            PxVec3 vShapeOffsetPos = pShape->getLocalPose().p;
+            _float3 vPosition = { vShapeOffsetPos.x, vShapeOffsetPos.y, vShapeOffsetPos.z };
+            XMStoreFloat3(&vPosition, XMLoadFloat3(&vPosition) + vOwnerPos);
+            BoundingOrientedBox box(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z), vQuat);
+            //BoundingBox BoundingBox(vPosition, _float3(vHalfExtents.x, vHalfExtents.y, vHalfExtents.z));
+            DX::Draw(m_pBatch, box, XMLoadFloat4(&m_vDebugColor));
+        }
+            break;
+        default:
+            break;
+        }
+    }
 
 	m_pBatch->End();
 	return S_OK;
@@ -211,6 +211,20 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
 	return S_OK;
 }
 
+_float3 CActor::Get_GlobalPose()
+{
+    PxTransform CurTransform = m_pActor->getGlobalPose();
+
+    return _float3(CurTransform.p.x, CurTransform.p.y, CurTransform.p.z);
+}
+
+void CActor::Set_GlobalPose(const _float3& _vPos)
+{
+    PxTransform CurTransform = m_pActor->getGlobalPose();
+    CurTransform.p = { _vPos.x, _vPos.y , _vPos.z };
+    m_pActor->setGlobalPose(CurTransform);
+}
+
 HRESULT CActor::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
 	// Actor 쪽 작업 방식.
@@ -229,26 +243,23 @@ HRESULT CActor::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositio
 
 HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 {
-	PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
-	if (nullptr == pPhysics)
-		return E_FAIL;
+    PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
+    if (nullptr == pPhysics)
+        return E_FAIL;
+    PxShapeFlags ShapeFlags = _ShapeData.isTrigger ?
+        (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eTRIGGER_SHAPE) :
+        (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
 
-	PxShapeFlags ShapeFlags = (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
-	if (true == _ShapeData.isTrigger)
-	{
-		ShapeFlags.clear(PxShapeFlag::eSIMULATION_SHAPE);
-		ShapeFlags.set(PxShapeFlag::eTRIGGER_SHAPE);
-	}
 
 	PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(_ShapeData.eMaterial);
 
-	/* 세부 Shape Geometry 생성 */
-	PxShape* pShape = nullptr;
-	_float3 vScale;
-	_float4 vQuat;
-	_float3 vPosition;
-	if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_ShapeData.LocalOffsetMatrix)))
-		return E_FAIL;
+    /* 세부 Shape Geometry 생성 */
+    PxShape* pShape = nullptr;
+    _float3 vScale;
+    _float4 vQuat;
+    _float3 vPosition;
+    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition,  XMLoadFloat4x4(&_ShapeData.LocalOffsetMatrix)))
+        return E_FAIL;
 
 	switch (_ShapeData.eShapeType)
 	{
@@ -571,43 +582,40 @@ HRESULT CActor::Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType
 
 	PxGeometryType::Enum eType = m_Shapes[_iShapeIndex]->getGeometryType();
 
-	if (eType != _eType)
-	{
-		MSG_BOX(" Shape Geometry Type이 틀렸어. >>> Set_ShapeScale()");
-		return E_FAIL;
-	}
+    if (eType != _eType)
+    {
+        MSG_BOX(" Shape Geometry Type이 틀렸어. >>> Set_ShapeScale()");
+        return E_FAIL;
+    }
+    
+    switch (_eType)
+    {
+    case physx::PxGeometryType::eSPHERE:
+    {
+        SHAPE_SPHERE_DESC* pSphereDesc = static_cast<SHAPE_SPHERE_DESC*>(_pDesc);
+        PxSphereGeometry Geometry(pSphereDesc->fRadius);
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    case physx::PxGeometryType::eCAPSULE:
+    {
+        SHAPE_CAPSULE_DESC* pCapsuleDesc = static_cast<SHAPE_CAPSULE_DESC*>(_pDesc);
+        PxCapsuleGeometry Geometry(pCapsuleDesc->fHalfHeight, pCapsuleDesc->fRadius);
 
-	switch (eType)
-	{
-	case physx::PxGeometryType::eSPHERE:
-	{
-		SHAPE_SPHERE_DESC* pSphereDesc = static_cast<SHAPE_SPHERE_DESC*>(_pDesc);
-		PxSphereGeometry Geometry;
-		Geometry.radius = pSphereDesc->fRadius;
-		m_Shapes[_iShapeIndex]->setGeometry(Geometry);
-	}
-	break;
-	case physx::PxGeometryType::eCAPSULE:
-	{
-		SHAPE_CAPSULE_DESC* pCapsuleDesc = static_cast<SHAPE_CAPSULE_DESC*>(_pDesc);
-		PxCapsuleGeometry Geometry;
-		Geometry.halfHeight = pCapsuleDesc->fHalfHeight;
-		Geometry.radius = pCapsuleDesc->fRadius;
-		m_Shapes[_iShapeIndex]->setGeometry(Geometry);
-	}
-	break;
-	case physx::PxGeometryType::eBOX:
-	{
-		SHAPE_BOX_DESC* pBoxDesc = static_cast<SHAPE_BOX_DESC*>(_pDesc);
-		PxBoxGeometry Geometry;
-		Geometry.halfExtents = { pBoxDesc->vHalfExtents.x, pBoxDesc->vHalfExtents.y, pBoxDesc->vHalfExtents.z };
-		m_Shapes[_iShapeIndex]->setGeometry(Geometry);
-	}
-	break;
-	default:
-		MSG_BOX(" Sphere, Capsule, Box 만 크기를 변경할 수 있어. ");
-		return E_FAIL;
-	}
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    case physx::PxGeometryType::eBOX:
+    {
+        SHAPE_BOX_DESC* pBoxDesc = static_cast<SHAPE_BOX_DESC*>(_pDesc);
+        PxBoxGeometry Geometry(pBoxDesc->vHalfExtents.x, pBoxDesc->vHalfExtents.y, pBoxDesc->vHalfExtents.z);
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    default:
+        MSG_BOX(" Sphere, Capsule, Box 만 크기를 변경할 수 있어. ");
+        return E_FAIL;
+    }
 
 	return S_OK;
 }

@@ -33,7 +33,8 @@ public:
 	HRESULT				Ready_DataFiles();
 
 private:
-	vector<pair<TRIGGEROBJECT_DATA, CTriggerObject*>> m_Triggers;
+	list<pair<TRIGGEROBJECT_DATA, CTriggerObject*>>		m_Triggers;
+	pair<TRIGGEROBJECT_DATA, CTriggerObject*>*			m_pCurTrigger = { nullptr };
 
 	_float3				m_vPosition = {};
 	_float3				m_vRotation = {};
@@ -69,6 +70,7 @@ private:
 
 private:
 	void				Show_TriggerTool();
+	void				Show_Info();
 	void				Show_CurTriggerInfo();
 	void				Show_SaveLoadFileWindow();
 
@@ -94,8 +96,13 @@ private:
 	void				Picking();
 	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
 
+	void				Set_CurTrigger();
+
 	void				Save_TriggerData();
 	void				Load_TriggerData();
+
+private:
+	_float3				Quaternion_ToEuler(const _float4 _q);
 
 public:
 	static CLevel_Trigger_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

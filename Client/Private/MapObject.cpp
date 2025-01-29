@@ -60,7 +60,7 @@ void CMapObject::Late_Update(_float _fTimeDelta)
         //if(true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), 5.0f))
         //      m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
 
-        if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), 5.0f))
+        //if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), 5.0f))
             m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_NONBLEND, this);
        
     }
