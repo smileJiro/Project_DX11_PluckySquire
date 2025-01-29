@@ -40,6 +40,7 @@
 #include "set"
 #include "StateMachine.h"
 #include "MapObject.h"
+#include "DetectionField.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -49,7 +50,9 @@
 #include "Goblin.h"
 #include "Rat.h"
 #include "BirdMonster.h"
-#include "Soldier.h"
+#include "Soldier_Spear.h"
+#include "Soldier_CrossBow.h"
+#include "Soldier_Bomb.h"
 #include "Popuff.h"
 
 /* For. Boss */
@@ -64,6 +67,8 @@
 // Sample
 #include "SampleBook.h"
 #include "2DDefault_RenderObject.h"
+
+#include "DebugDraw_For_Client.h"
 
 
 
@@ -318,9 +323,19 @@ HRESULT CLoader::Loading_Level_Static()
         CBirdMonster::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"),
-        CSoldier::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_Soldier_Spear */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"),
+        CSoldier_Spear::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_CrossBow */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_CrossBow"),
+        CSoldier_CrossBow::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_Bomb */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Bomb"),
+        CSoldier_Bomb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Popuff */
@@ -371,6 +386,17 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DetectionField"),
+        CDetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    #ifdef _DEBUG
+    
+    #endif // _DEBUG
+
+    
 
 
 

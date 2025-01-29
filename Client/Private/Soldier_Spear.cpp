@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "Popuff.h"
+#include "Soldier_Spear.h"
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
 
-CPopuff::CPopuff(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CSoldier_Spear::CSoldier_Spear(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
 {
 }
 
-CPopuff::CPopuff(const CPopuff& _Prototype)
+CSoldier_Spear::CSoldier_Spear(const CSoldier_Spear& _Prototype)
     : CMonster(_Prototype)
 {
 }
 
-HRESULT CPopuff::Initialize_Prototype()
+HRESULT CSoldier_Spear::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CPopuff::Initialize(void* _pArg)
+HRESULT CSoldier_Spear::Initialize(void* _pArg)
 {
-    CPopuff::MONSTER_DESC* pDesc = static_cast<CPopuff::MONSTER_DESC*>(_pArg);
+    CSoldier_Spear::MONSTER_DESC* pDesc = static_cast<CSoldier_Spear::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
@@ -31,10 +31,10 @@ HRESULT CPopuff::Initialize(void* _pArg)
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 2.f;
+    pDesc->fAttackRange = 3.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
-    pDesc->fAttack2DRange = 2.f;
+    pDesc->fAttack2DRange = 3.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -60,9 +60,10 @@ HRESULT CPopuff::Initialize(void* _pArg)
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
     pModelObject->Set_Animation(IDLE);
 
-    pModelObject->Register_OnAnimEndCallBack(bind(&CPopuff::Animation_End, this, placeholders::_1, placeholders::_2));
+    pModelObject->Register_OnAnimEndCallBack(bind(&CSoldier_Spear::Animation_End, this, placeholders::_1, placeholders::_2));
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -76,23 +77,23 @@ HRESULT CPopuff::Initialize(void* _pArg)
     return S_OK;
 }
 
-void CPopuff::Priority_Update(_float _fTimeDelta)
+void CSoldier_Spear::Priority_Update(_float _fTimeDelta)
 {
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
-void CPopuff::Update(_float _fTimeDelta)
+void CSoldier_Spear::Update(_float _fTimeDelta)
 {
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
-void CPopuff::Late_Update(_float _fTimeDelta)
+void CSoldier_Spear::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
-HRESULT CPopuff::Render()
+HRESULT CSoldier_Spear::Render()
 {
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
@@ -105,7 +106,7 @@ HRESULT CPopuff::Render()
     return S_OK;
 }
 
-void CPopuff::Change_Animation()
+void CSoldier_Spear::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
@@ -120,15 +121,15 @@ void CPopuff::Change_Animation()
             break;
 
         case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
             break;
 
         case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
             break;
 
         case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACK);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
             break;
 
         default:
@@ -137,13 +138,21 @@ void CPopuff::Change_Animation()
     }
 }
 
-void CPopuff::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
+void CSoldier_Spear::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CPopuff::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    switch ((CSoldier_Spear::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
+    case ALERT:
+        Set_AnimChangeable(true);
+        break;
+        
+    case DASH_ATTACK_STARTUP:
+        pModelObject->Switch_Animation(DASH_ATTACK_RECOVERY);
+        break;
 
-    case ATTACK:
+    case DASH_ATTACK_RECOVERY:
+        pModelObject->Switch_Animation(DASH_ATTACK_STARTUP);
         Set_AnimChangeable(true);
         break;
 
@@ -152,9 +161,9 @@ void CPopuff::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
-HRESULT CPopuff::Ready_ActorDesc(void* _pArg)
+HRESULT CSoldier_Spear::Ready_ActorDesc(void* _pArg)
 {
-    CPopuff::MONSTER_DESC* pDesc = static_cast<CPopuff::MONSTER_DESC*>(_pArg);
+    CSoldier_Spear::MONSTER_DESC* pDesc = static_cast<CSoldier_Spear::MONSTER_DESC*>(_pArg);
 
     pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
@@ -204,7 +213,7 @@ HRESULT CPopuff::Ready_ActorDesc(void* _pArg)
     return S_OK;
 }
 
-HRESULT CPopuff::Ready_Components()
+HRESULT CSoldier_Spear::Ready_Components()
 {
     /* Com_FSM */
     CFSM::FSMDESC Desc;
@@ -214,6 +223,7 @@ HRESULT CPopuff::Ready_Components()
     Desc.fAlert2DRange = m_fAlert2DRange;
     Desc.fChase2DRange = m_fChase2DRange;
     Desc.fAttack2DRange = m_fAttack2DRange;
+    Desc.isMelee = true;
     Desc.pOwner = this;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
@@ -223,7 +233,7 @@ HRESULT CPopuff::Ready_Components()
     return S_OK;
 }
 
-HRESULT CPopuff::Ready_PartObjects()
+HRESULT CSoldier_Spear::Ready_PartObjects()
 {
     /* Part Body */
     CModelObject::MODELOBJECT_DESC BodyDesc{};
@@ -233,7 +243,7 @@ HRESULT CPopuff::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("Popuff_Rig");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("humgrump_troop_Rig_GT");
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
@@ -241,14 +251,14 @@ HRESULT CPopuff::Ready_PartObjects()
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
     /* 태웅 : 렌더러 관련 추가 */
     BodyDesc.iRenderGroupID_2D = RG_3D;
     BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
-    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
-
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
@@ -256,33 +266,33 @@ HRESULT CPopuff::Ready_PartObjects()
     return S_OK;
 }
 
-CPopuff* CPopuff::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CSoldier_Spear* CSoldier_Spear::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CPopuff* pInstance = new CPopuff(_pDevice, _pContext);
+    CSoldier_Spear* pInstance = new CSoldier_Spear(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CPopuff");
+        MSG_BOX("Failed to Created : CSoldier_Spear");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CPopuff::Clone(void* _pArg)
+CGameObject* CSoldier_Spear::Clone(void* _pArg)
 {
-    CPopuff* pInstance = new CPopuff(*this);
+    CSoldier_Spear* pInstance = new CSoldier_Spear(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CPopuff");
+        MSG_BOX("Failed to Cloned : CSoldier_Spear");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CPopuff::Free()
+void CSoldier_Spear::Free()
 {
 
     __super::Free();

@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "Soldier.h"
+#include "Soldier_CrossBow.h"
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
 
-CSoldier::CSoldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CSoldier_CrossBow::CSoldier_CrossBow(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
 {
 }
 
-CSoldier::CSoldier(const CSoldier& _Prototype)
+CSoldier_CrossBow::CSoldier_CrossBow(const CSoldier_CrossBow& _Prototype)
     : CMonster(_Prototype)
 {
 }
 
-HRESULT CSoldier::Initialize_Prototype()
+HRESULT CSoldier_CrossBow::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CSoldier::Initialize(void* _pArg)
+HRESULT CSoldier_CrossBow::Initialize(void* _pArg)
 {
-    CSoldier::MONSTER_DESC* pDesc = static_cast<CSoldier::MONSTER_DESC*>(_pArg);
+    CSoldier_CrossBow::MONSTER_DESC* pDesc = static_cast<CSoldier_CrossBow::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
@@ -31,7 +31,10 @@ HRESULT CSoldier::Initialize(void* _pArg)
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 2.f;
+    pDesc->fAttackRange = 10.f;
+    pDesc->fAlert2DRange = 5.f;
+    pDesc->fChase2DRange = 12.f;
+    pDesc->fAttack2DRange = 10.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -55,12 +58,12 @@ HRESULT CSoldier::Initialize(void* _pArg)
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_IDLE, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_WALK, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
-    pModelObject->Set_Animation(IDLE);
+    pModelObject->Set_Animation((_uint)CROSSBOW_IDLE);
 
-    pModelObject->Register_OnAnimEndCallBack(bind(&CSoldier::Animation_End, this, placeholders::_1, placeholders::_2));
+    pModelObject->Register_OnAnimEndCallBack(bind(&CSoldier_CrossBow::Animation_End, this, placeholders::_1, placeholders::_2));
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -74,23 +77,23 @@ HRESULT CSoldier::Initialize(void* _pArg)
     return S_OK;
 }
 
-void CSoldier::Priority_Update(_float _fTimeDelta)
+void CSoldier_CrossBow::Priority_Update(_float _fTimeDelta)
 {
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
-void CSoldier::Update(_float _fTimeDelta)
+void CSoldier_CrossBow::Update(_float _fTimeDelta)
 {
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
-void CSoldier::Late_Update(_float _fTimeDelta)
+void CSoldier_CrossBow::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
-HRESULT CSoldier::Render()
+HRESULT CSoldier_CrossBow::Render()
 {
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
@@ -103,22 +106,22 @@ HRESULT CSoldier::Render()
     return S_OK;
 }
 
-void CSoldier::Change_Animation()
+void CSoldier_CrossBow::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
         switch (MONSTER_STATE(m_iState))
         {
         case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_IDLE);
             break;
 
         case MONSTER_STATE::PATROL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_WALK);
             break;
 
         case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_ALERT);
             break;
 
         case MONSTER_STATE::CHASE:
@@ -126,7 +129,7 @@ void CSoldier::Change_Animation()
             break;
 
         case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_SHOOT);
             break;
 
         default:
@@ -135,21 +138,21 @@ void CSoldier::Change_Animation()
     }
 }
 
-void CSoldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
+void CSoldier_CrossBow::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CSoldier::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    switch ((CSoldier_CrossBow::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
     case ALERT:
         Set_AnimChangeable(true);
         break;
         
-    case DASH_ATTACK_STARTUP:
-        pModelObject->Switch_Animation(DASH_ATTACK_RECOVERY);
+    case CROSSBOW_SHOOT:
+        pModelObject->Switch_Animation(CROSSBOW_SHOOT_RECOVERY);
         break;
 
-    case DASH_ATTACK_RECOVERY:
-        pModelObject->Switch_Animation(DASH_ATTACK_STARTUP);
+    case CROSSBOW_SHOOT_RECOVERY:
+        pModelObject->Switch_Animation(CROSSBOW_SHOOT);
         Set_AnimChangeable(true);
         break;
 
@@ -158,9 +161,9 @@ void CSoldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
-HRESULT CSoldier::Ready_ActorDesc(void* _pArg)
+HRESULT CSoldier_CrossBow::Ready_ActorDesc(void* _pArg)
 {
-    CSoldier::MONSTER_DESC* pDesc = static_cast<CSoldier::MONSTER_DESC*>(_pArg);
+    CSoldier_CrossBow::MONSTER_DESC* pDesc = static_cast<CSoldier_CrossBow::MONSTER_DESC*>(_pArg);
 
     pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
@@ -210,13 +213,16 @@ HRESULT CSoldier::Ready_ActorDesc(void* _pArg)
     return S_OK;
 }
 
-HRESULT CSoldier::Ready_Components()
+HRESULT CSoldier_CrossBow::Ready_Components()
 {
     /* Com_FSM */
     CFSM::FSMDESC Desc;
     Desc.fAlertRange = m_fAlertRange;
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
+    Desc.fAlert2DRange = m_fAlert2DRange;
+    Desc.fChase2DRange = m_fChase2DRange;
+    Desc.fAttack2DRange = m_fAttack2DRange;
     Desc.isMelee = true;
     Desc.pOwner = this;
 
@@ -227,7 +233,7 @@ HRESULT CSoldier::Ready_Components()
     return S_OK;
 }
 
-HRESULT CSoldier::Ready_PartObjects()
+HRESULT CSoldier_CrossBow::Ready_PartObjects()
 {
     /* Part Body */
     CModelObject::MODELOBJECT_DESC BodyDesc{};
@@ -245,14 +251,15 @@ HRESULT CSoldier::Ready_PartObjects()
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
+    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
     /* 태웅 : 렌더러 관련 추가 */
     BodyDesc.iRenderGroupID_2D = RG_3D;
     BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
+
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
@@ -260,33 +267,33 @@ HRESULT CSoldier::Ready_PartObjects()
     return S_OK;
 }
 
-CSoldier* CSoldier::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CSoldier_CrossBow* CSoldier_CrossBow::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CSoldier* pInstance = new CSoldier(_pDevice, _pContext);
+    CSoldier_CrossBow* pInstance = new CSoldier_CrossBow(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CSoldier");
+        MSG_BOX("Failed to Created : CSoldier_CrossBow");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CSoldier::Clone(void* _pArg)
+CGameObject* CSoldier_CrossBow::Clone(void* _pArg)
 {
-    CSoldier* pInstance = new CSoldier(*this);
+    CSoldier_CrossBow* pInstance = new CSoldier_CrossBow(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CSoldier");
+        MSG_BOX("Failed to Cloned : CSoldier_CrossBow");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CSoldier::Free()
+void CSoldier_CrossBow::Free()
 {
 
     __super::Free();

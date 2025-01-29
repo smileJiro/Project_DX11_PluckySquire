@@ -18,7 +18,9 @@
 #include "Goblin.h"
 #include "Popuff.h"
 #include "Rat.h"
-#include "Soldier.h"
+#include "Soldier_Spear.h"
+#include "Soldier_CrossBow.h"
+#include "Soldier_Bomb.h"
 #include "ButterGrump.h"
 
 
@@ -681,11 +683,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
-	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
-		return E_FAIL;
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//CGameObject* pGameObject = nullptr;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
+	//	return E_FAIL;
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Section_Test"), pGameObject);
 	/*Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.35f, -15.0f);

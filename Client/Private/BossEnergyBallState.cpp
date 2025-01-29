@@ -48,7 +48,7 @@ void CBossEnergyBallState::State_Update(_float _fTimeDelta)
 
 	m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 	//공격
-	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
+	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
 	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
 	//10개 뿜고 공격 종료

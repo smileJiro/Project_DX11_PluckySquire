@@ -564,6 +564,9 @@
     <ClInclude Include="..\public\Collider.h">
       <Filter>01.Utility\04.Components\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw_For_Client.h">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -826,6 +829,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Collider.cpp">
       <Filter>01.Utility\04.Components\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw_For_Client.cpp">
+      <Filter>01.Utility\04.Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

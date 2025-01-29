@@ -32,11 +32,15 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+	void Change_Animation();
+
+public:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
 private:
-	_float m_fLifeTime = { 5.f };
+	_float m_fLifeTime = { 0.f };
 	_float m_fAccTime = { 0.f };
 
 private:
