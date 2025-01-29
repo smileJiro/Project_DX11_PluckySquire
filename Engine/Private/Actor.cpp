@@ -458,31 +458,28 @@ HRESULT CActor::Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType
         MSG_BOX(" Shape Geometry TypeÀÌ Æ²·È¾î. >>> Set_ShapeScale()");
         return E_FAIL;
     }
-
-    switch (eType)
+    
+    switch (_eType)
     {
     case physx::PxGeometryType::eSPHERE:
     {
         SHAPE_SPHERE_DESC* pSphereDesc = static_cast<SHAPE_SPHERE_DESC*>(_pDesc);
-        PxSphereGeometry Geometry;
-        Geometry.radius = pSphereDesc->fRadius;
+        PxSphereGeometry Geometry(pSphereDesc->fRadius);
         m_Shapes[_iShapeIndex]->setGeometry(Geometry);
     }
         break;
     case physx::PxGeometryType::eCAPSULE:
     {
         SHAPE_CAPSULE_DESC* pCapsuleDesc = static_cast<SHAPE_CAPSULE_DESC*>(_pDesc);
-        PxCapsuleGeometry Geometry;
-        Geometry.halfHeight = pCapsuleDesc->fHalfHeight;
-        Geometry.radius = pCapsuleDesc->fRadius;
+        PxCapsuleGeometry Geometry(pCapsuleDesc->fHalfHeight, pCapsuleDesc->fRadius);
+
         m_Shapes[_iShapeIndex]->setGeometry(Geometry);
     }
         break;
     case physx::PxGeometryType::eBOX:
     {
         SHAPE_BOX_DESC* pBoxDesc = static_cast<SHAPE_BOX_DESC*>(_pDesc);
-        PxBoxGeometry Geometry;
-        Geometry.halfExtents = { pBoxDesc->vHalfExtents.x, pBoxDesc->vHalfExtents.y, pBoxDesc->vHalfExtents.z};
+        PxBoxGeometry Geometry(pBoxDesc->vHalfExtents.x, pBoxDesc->vHalfExtents.y, pBoxDesc->vHalfExtents.z);
         m_Shapes[_iShapeIndex]->setGeometry(Geometry);
     }
         break;
