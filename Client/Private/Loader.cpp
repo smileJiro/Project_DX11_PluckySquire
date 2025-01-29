@@ -976,9 +976,11 @@ HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelI
                         return E_FAIL;
                     }
 
-                   // dynamic_cast<CTriggerObject*>(pTrigger)->Set_TriggerType(m_iTriggerType);
+                    // Rotation
+                    _matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(vRotation.z));
+                    dynamic_cast<CTriggerObject*>(pTrigger)->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
 
-                   // m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
+                   // dynamic_cast<CTriggerObject*>(pTrigger)->Set_TriggerType(m_iTriggerType);
                 }
                 break;
                 }

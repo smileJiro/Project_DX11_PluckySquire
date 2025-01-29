@@ -36,6 +36,7 @@ public:
 public:
 	_uint						Get_CameraTriggerType() { return m_iCameraTriggerType; }
 
+	void						Set_CameraTriggerType(_uint _iCameraTriggerType) { m_iCameraTriggerType = _iCameraTriggerType; }
 public:
 	virtual void				OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void				OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) override;
