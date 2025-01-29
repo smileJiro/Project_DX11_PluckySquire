@@ -464,10 +464,10 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 
 	if (nullptr != m_pPickingObject)
 	{
-		_vector vPos = m_pPickingObject->Get_Position();
+		_vector vPos = m_pPickingObject->Get_FinalPosition();
 		_wstring strKey = m_pPickingObject->Get_Key();
 		_float2 fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
-		m_pPickingObject->Get_Position();
+		m_pPickingObject->Get_FinalPosition();
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
 		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");
 		ImGui::Text("Object Pos : %f, %f", fPos.x, fPos.y);
@@ -1624,10 +1624,10 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 			CMapObject::MAPOBJ_DESC NormalDesc = {};
 			lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(szSaveMeshName).c_str());
 			NormalDesc.eCreateType = CMapObject::OBJ_LOAD;
-			NormalDesc.matWorld = vWorld;
 			NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
-
+			NormalDesc.tTransform3DDesc.isMatrix = true;
+			NormalDesc.tTransform3DDesc.matWorld = vWorld;
 
 
 			CGameObject* pGameObject = nullptr;

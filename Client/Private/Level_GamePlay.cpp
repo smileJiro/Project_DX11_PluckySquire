@@ -18,7 +18,9 @@
 #include "Goblin.h"
 #include "Popuff.h"
 #include "Rat.h"
-#include "Soldier.h"
+#include "Soldier_Spear.h"
+#include "Soldier_CrossBow.h"
+#include "Soldier_Bomb.h"
 #include "ButterGrump.h"
 
 
@@ -160,6 +162,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		_float3 vOutPos = {};
 		CActorObject* pActorObject = {};
 		_bool isResult = false;
+
 		isResult = m_pGameInstance->RayCast_Nearest(vOrigin, vRayDirection, 1000.f, &vOutPos, &pActorObject);
 
 		int a = 0;
@@ -279,7 +282,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
 
 
@@ -668,11 +671,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
-	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
-		return E_FAIL;
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//CGameObject* pGameObject = nullptr;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
+	//	return E_FAIL;
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Section_Test"), pGameObject);
 	/*Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.35f, -15.0f);

@@ -66,7 +66,7 @@ void CBoss_EnergyBall::Update(_float _fTimeDelta)
         Event_DeleteObject(this);
     }
 
-    /*_vector vDir = m_pTarget->Get_Position() - Get_Position();
+    /*_vector vDir = m_pTarget->Get_FinalPosition() - Get_FinalPosition();
     m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);*/
     m_pControllerTransform->Go_Straight(_fTimeDelta);
 

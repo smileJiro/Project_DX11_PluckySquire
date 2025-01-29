@@ -209,6 +209,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\Camera_Manager_Engine.h" />
     <ClInclude Include="..\public\Channel.h" />
     <ClInclude Include="..\public\Actor.h" />
+    <ClInclude Include="..\public\Collider.h" />
     <ClInclude Include="..\public\Collision_Manager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -222,6 +223,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\CustomFont.h" />
     <ClInclude Include="..\Public\CutScene_Sector.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
+    <ClInclude Include="..\Public\DebugDraw_For_Client.h" />
     <ClInclude Include="..\public\Frustum.h" />
     <ClInclude Include="..\public\NewRenderer.h" />
     <ClInclude Include="..\public\Particle_Emitter.h" />
@@ -306,6 +308,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\Camera_Manager_Engine.cpp" />
     <ClCompile Include="..\private\Channel.cpp" />
     <ClCompile Include="..\private\Actor.cpp" />
+    <ClCompile Include="..\private\Collider.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -319,6 +322,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CutScene_Sector.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
+    <ClCompile Include="..\Private\DebugDraw_For_Client.cpp" />
     <ClCompile Include="..\private\Frustum.cpp" />
     <ClCompile Include="..\private\NewRenderer.cpp" />
     <ClCompile Include="..\private\Particle_Emitter.cpp" />

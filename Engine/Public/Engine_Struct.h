@@ -29,16 +29,19 @@ namespace Engine
 	{
 
 	}SHAPE_DESC;
+
 	typedef struct tagShapeSphereDesc : public SHAPE_DESC
 	{
 		// 구의 반지름
 		float fRadius = 0.5f;
 	}SHAPE_SPHERE_DESC;
+
 	typedef struct tagShapeBoxDesc : public SHAPE_DESC
 	{
 		// 박스의 x,y,z 각 축 방향의 절반 크기.
 		XMFLOAT3 vHalfExtents = { 0.5f, 0.5f, 0.5f };
 	}SHAPE_BOX_DESC;
+
 	typedef struct tagShapeCapsuleDesc : public SHAPE_DESC
 	{
 		// 구 부분의 반지름.
@@ -46,6 +49,13 @@ namespace Engine
 		// 원기둥 부분의 높이의 절반.
 		float fHalfHeight = 0.5f;
 	}SHAPE_CAPSULE_DESC;
+
+	typedef struct tagCookingDesc : public SHAPE_DESC
+	{
+		_bool isLoad = false;
+		_bool isSave = false;
+		_string strFilePath;
+	}SHAPE_COOKING_DESC;
 
 	typedef struct tagEngineDesc
 	{

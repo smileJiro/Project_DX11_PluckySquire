@@ -472,9 +472,6 @@
     <ClInclude Include="..\Public\BirdMonster.h">
       <Filter>02.GameObjects\Monster\BirdMonster</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Soldier.h">
-      <Filter>02.GameObjects\Monster\Soldier</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Popuff.h">
       <Filter>02.GameObjects\Monster\Popuff</Filter>
     </ClInclude>
@@ -525,6 +522,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\Camera_Trigger.h">
       <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerSword.h">
+      <Filter>02.GameObjects\TestPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Soldier_Bomb.h">
+      <Filter>02.GameObjects\Monster\Soldier</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Soldier_CrossBow.h">
+      <Filter>02.GameObjects\Monster\Soldier</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Soldier_Spear.h">
+      <Filter>02.GameObjects\Monster\Soldier</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -739,9 +748,6 @@
     <ClCompile Include="..\Private\BirdMonster.cpp">
       <Filter>02.GameObjects\Monster\BirdMonster</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Soldier.cpp">
-      <Filter>02.GameObjects\Monster\Soldier</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Popuff.cpp">
       <Filter>02.GameObjects\Monster\Popuff</Filter>
     </ClCompile>
@@ -792,6 +798,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Trigger.cpp">
       <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerSword.cpp">
+      <Filter>02.GameObjects\TestPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Soldier_Bomb.cpp">
+      <Filter>02.GameObjects\Monster\Soldier</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Soldier_CrossBow.cpp">
+      <Filter>02.GameObjects\Monster\Soldier</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Soldier_Spear.cpp">
+      <Filter>02.GameObjects\Monster\Soldier</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

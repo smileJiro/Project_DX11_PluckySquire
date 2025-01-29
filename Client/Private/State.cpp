@@ -45,6 +45,39 @@ HRESULT CState::CleanUp()
 	return S_OK;
 }
 
+_float CState::Get_CurCoordRange(MONSTER_STATE _eState)
+{
+	_float fRange = { 0.f };
+
+	switch (_eState)
+	{
+	case Client::MONSTER_STATE::ALERT:
+		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+			fRange = m_fAlertRange;
+		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+			fRange = m_fAlert2DRange;
+		break;
+	case Client::MONSTER_STATE::CHASE:
+		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+			fRange = m_fChaseRange;
+		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+			fRange = m_fChase2DRange;
+		break;
+	case Client::MONSTER_STATE::ATTACK:
+		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+			fRange = m_fAttackRange;
+		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+			fRange = m_fAttack2DRange;
+		break;
+	case Client::MONSTER_STATE::LAST:
+		break;
+	default:
+		break;
+	}
+
+	return fRange;
+}
+
 
 void CState::Set_Owner(CMonster* _pOwner)
 {

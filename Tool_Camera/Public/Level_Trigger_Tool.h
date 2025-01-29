@@ -33,9 +33,8 @@ public:
 	HRESULT				Ready_DataFiles();
 
 private:
-	vector<pair<TRIGGEROBJECT_DATA, CTriggerObject*>>	m_Triggers;
+	list<pair<TRIGGEROBJECT_DATA, CTriggerObject*>>		m_Triggers;
 	pair<TRIGGEROBJECT_DATA, CTriggerObject*>*			m_pCurTrigger = { nullptr };
-	_uint				m_iTriggerObjectTagNum = {};		// Ray 되기 전 임시
 
 	_float3				m_vPosition = {};
 	_float3				m_vRotation = {};
@@ -59,7 +58,6 @@ private:
 	vector<_wstring>	m_ShapeTags;
 	vector<pair<_uint, _wstring>>	m_ObjectGroupTags;
 	vector<_wstring>	m_CameraTriggerTags;				// Camera Trigger
-	vector<_wstring>	m_TriggerObjectTags;				// Ray 되기 전에 임시
 
 	// ========== Camera Trigger
 	_uint				m_iCameraTriggerType = {};
@@ -82,7 +80,6 @@ private:
 	void				Show_MyObjectGroup();
 	void				Show_OtherGroup();
 	void				Show_CameraTriggerListBox();			// Camera Trigger
-	void				Show_TriggerObjectTagListBox();			// Ray 되기 전 임시
 
 	void				Set_TriggerBasicInfo();
 	void				Set_TriggerInfoByType();
@@ -98,6 +95,8 @@ private:
 	void				Initialize_ListBoxName();
 	void				Picking();
 	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
+
+	void				Set_CurTrigger();
 
 	void				Save_TriggerData();
 	void				Load_TriggerData();
