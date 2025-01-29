@@ -55,7 +55,7 @@ private:
 	HRESULT Loading_Level_Logo();
 	HRESULT Loading_Level_2D_Map_Tool();
 	HRESULT Loading_Level_3D_Map_Tool();
-	HRESULT Loading_Level_Trigger();
+	HRESULT Loading_Level_3D_Model_Tool();
 
 	HRESULT Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix);
 	HRESULT Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, const _tchar* _szJsonFileName, _fmatrix _PreTransformMatrix)

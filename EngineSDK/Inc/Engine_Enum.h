@@ -20,6 +20,8 @@ enum class PASS_VTXPOSTEX
 	COLOR_ALPHA,
 	SPRITE_ANIM,
 	UI_POINTSAMPLE,
+	UI_ALPHA,
+
 
 	LAST
 };
@@ -70,7 +72,6 @@ enum RENDERING_FLAG
 	RENDERING_FLAG_NORMALMAP = 0x01,
 
 };
-
 
 /* Physx를 위한 enum 들 */
 enum class SHAPE_TYPE { BOX, SPHERE, CAPSULE, LAST };

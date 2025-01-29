@@ -5,8 +5,11 @@
 #include "Level_Static.h"
 #include "Level_Loading.h"
 #include "Level_Camera_Tool.h"
+#include "Level_Trigger_Tool.h"
 #include "Layer.h"
 #include "GameObject.h"
+
+#include "Camera_Manager_Tool.h"
 
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
@@ -154,6 +157,9 @@ HRESULT CEvent_Manager::Excute_LevelChange(const EVENT& _tEvent)
 	case Camera_Tool::LEVEL_CAMERA_TOOL:
 		pChangeLevel = CLevel_Camera_Tool::Create(m_pDevice, m_pContext);
 		break;
+	case Camera_Tool::LEVEL_TRIGGER_TOOL:
+		pChangeLevel = CLevel_Trigger_Tool::Create(m_pDevice, m_pContext);
+		break;
 	default:
 		break;
 	}
@@ -211,6 +217,8 @@ HRESULT CEvent_Manager::Client_Level_Enter(_uint _iNextLevelID)
 HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
+
+	CCamera_Manager_Tool::GetInstance()->Clear();
 
 	return S_OK;
 }

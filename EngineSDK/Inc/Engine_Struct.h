@@ -47,7 +47,7 @@ namespace Engine
 		float fHalfHeight = 0.5f;
 	}SHAPE_CAPSULE_DESC;
 
-	typedef struct 
+	typedef struct tagEngineDesc
 	{
 		HINSTANCE		hInst;
 		HWND			hWnd;
@@ -56,6 +56,7 @@ namespace Engine
 		unsigned int	iViewportWidth;
 		unsigned int	iViewportHeight;
 		_uint			iStaticLevelID;
+		_bool			isNewRenderer = false;
 	}ENGINE_DESC;
 
 	typedef struct
@@ -239,6 +240,18 @@ namespace Engine
 		_float3				vAtOffset = {};
 		_uint				iZoomLevel = {};
 	} CUTSCENE_INITIAL_DATA;
+#pragma endregion
+
+#pragma region Trigger 관련
+	typedef struct tagTriggerObjectData
+	{
+		_uint				iShapeType = {};
+		_float3				vHalfExtents = {};
+		_float				fRadius = {};
+
+		_uint				iFillterMyGroup = {};
+		_uint				iFillterOtherGroupMask = {};
+	} TRIGGEROBJECT_DATA;
 #pragma endregion
 
 #pragma region Binary 관련

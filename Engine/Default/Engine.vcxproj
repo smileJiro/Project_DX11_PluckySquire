@@ -223,6 +223,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\CutScene_Sector.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\public\Frustum.h" />
+    <ClInclude Include="..\public\NewRenderer.h" />
     <ClInclude Include="..\public\Particle_Emitter.h" />
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
     <ClInclude Include="..\public\Particle_Module.h" />
@@ -261,6 +262,8 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\Prototype_Manager.h" />
     <ClInclude Include="..\public\Ray.h" />
     <ClInclude Include="..\Public\Renderer.h" />
+    <ClInclude Include="..\Public\RenderGroup.h" />
+    <ClInclude Include="..\Public\RenderGroup_MRT.h" />
     <ClInclude Include="..\public\RenderTarget.h" />
     <ClInclude Include="..\public\Shader.h" />
     <ClInclude Include="..\public\Shadow.h" />
@@ -274,6 +277,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Transform.h" />
     <ClInclude Include="..\public\Transform_2D.h" />
     <ClInclude Include="..\Public\Transform_3D.h" />
+    <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\UIObject.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
@@ -316,6 +320,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\CutScene_Sector.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\private\Frustum.cpp" />
+    <ClCompile Include="..\private\NewRenderer.cpp" />
     <ClCompile Include="..\private\Particle_Emitter.cpp" />
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />
     <ClCompile Include="..\private\Particle_Module.cpp" />
@@ -349,6 +354,8 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />
     <ClCompile Include="..\private\Ray.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
+    <ClCompile Include="..\Private\RenderGroup.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_MRT.cpp" />
     <ClCompile Include="..\private\RenderTarget.cpp" />
     <ClCompile Include="..\private\Shader.cpp" />
     <ClCompile Include="..\private\Shadow.cpp" />
@@ -362,6 +369,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Transform.cpp" />
     <ClCompile Include="..\private\Transform_2D.cpp" />
     <ClCompile Include="..\Private\Transform_3D.cpp" />
+    <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />

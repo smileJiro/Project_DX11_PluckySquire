@@ -1,0 +1,34 @@
+#pragma once
+
+#include "Level.h"
+
+BEGIN(Map_Tool)
+
+class CImguiLogger;
+
+class CLevel_Model_Tool final : public CLevel
+{
+private:
+	CLevel_Model_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual ~CLevel_Model_Tool() = default;
+
+public:
+	virtual HRESULT			Initialize(CImguiLogger* _pLogger);
+	virtual void			Update(_float _fTimeDelta) override;
+	virtual HRESULT			Render() override;
+
+public:
+	HRESULT					Ready_Lights();
+	HRESULT					Ready_Layer_Camera(const _wstring& _strLayerTag);
+private:
+	class CModel_Tool_Manager* m_pToolManager = { nullptr };
+	CImguiLogger* m_pLogger = { nullptr };
+
+public:
+
+	static CLevel_Model_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CImguiLogger* _pLogger);
+	virtual void			Free() override;
+};
+
+END
+

@@ -67,7 +67,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
@@ -153,6 +153,11 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+    BodyDesc.iRenderGroupID_2D = RG_3D;
+    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
+
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
     {
@@ -316,7 +321,6 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
             _float3 vLookDiff; XMStoreFloat3( &vLookDiff,_vDir - vLook);
             _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, _vDir - m_vLookBefore);
-            _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDir));
 			if (XMVector3Equal(_vDir, XMVectorZero()))
             {
 				_vDir = vLook;
@@ -333,11 +337,14 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             }
             else
             {
-                pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(360));
+                _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDir));
+                if(XMVector3Equal(vAxis, XMVectorZero()))
+					vAxis = XMVectorSet(0, 1, 0, 0);
+                pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(720));
 
             }
 
-            _float fDot = XMVectorGetX(XMVector3Dot(vLook, _vDir));
+            _float fDot = abs( XMVectorGetX(XMVector3Dot(vLook, _vDir)));
             _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed * _fTimeDelta * fDot;
             vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vVeclocity);
@@ -423,7 +430,7 @@ void CPlayer::Jump()
 
 _bool CPlayer::Is_OnGround()
 {
-    if (XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)) <= 0.f)
+    if (XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)) <= 0.8f)
 		return true;
     else
         return false;
@@ -466,11 +473,13 @@ _bool CPlayer::Is_CarryingObject()
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
+    cout << "SwitchAnim" << _iAnimIndex << endl;
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
 }
 
 void CPlayer::Set_Animation(_uint _iAnimIndex)
 {
+    cout << "Set_Animation" << _iAnimIndex << endl;
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(_iAnimIndex);
 }
 

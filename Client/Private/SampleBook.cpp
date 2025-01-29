@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Controller_Model.h"
 #include "3DModel.h"
+#include "Section_Manager.h"
 
 
 CSampleBook::CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -35,12 +36,14 @@ HRESULT CSampleBook::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
-
+    pDesc->iRenderGroupID_3D = RG_3D;
+    pDesc->iPriorityID_3D = PR3D_NONBLEND;
 
     __super::Initialize(_pArg);
-    Set_AnimationLoop(COORDINATE_3D, 4, true);
-    Set_Animation(11);
-
+    Set_AnimationLoop(COORDINATE_3D, 0, true);
+    Set_AnimationLoop(COORDINATE_3D, 8, false);
+    Set_AnimationLoop(COORDINATE_3D, 9, true);
+    Set_Animation(0);
 
     Set_Position(XMVectorSet(2.f,0.f,-17.3f,1.f));
 
@@ -54,13 +57,24 @@ void CSampleBook::Priority_Update(_float _fTimeDelta)
 
 void CSampleBook::Update(_float _fTimeDelta)
 {
-    __super::Update(_fTimeDelta);
+    if (KEY_DOWN(KEY::SPACE))
+    {
+        Set_Animation(8);
+        //m_fTestOffset *= -1.f;
+    }
+
+    if (m_bPlayingAnim)
+        m_pControllerModel->Play_Animation(_fTimeDelta );
+    else
+        m_pControllerModel->Play_Animation(0);
+
+    CPartObject::Update(_fTimeDelta);
 }
 
 void CSampleBook::Late_Update(_float _fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
-
+    //m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+    m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
     __super::Update(_fTimeDelta);
 }
 
@@ -74,44 +88,64 @@ HRESULT CSampleBook::Render()
     CShader* pShader = m_pShaderComs[eCoord];
     _uint iShaderPass = m_iShaderPasses[eCoord];
     C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
-     
+    
+    _float2 fLeftStartUV = { 0.f, 0.f };
+    _float2 fLeftEndUV = { 0.5f, 1.f };
+    _float2 fRightStartUV = { 0.5f, 0.f };
+    _float2 fRightEndUV = { 1.f, 1.f };
+
+    // 
+    _uint iMaxActiveSectionCount = CSection_Manager::GetInstance()->Get_MaxCurActiveSectionCount();
+    _uint iMainPageIndex = iMaxActiveSectionCount / 2;
+
+    //XMINT2 iPreRenderPageMeshIndex = { 9, 8};
+    XMINT2 iMainRenderPageMeshIndex = { 11, 10};
+    XMINT2 iNextRenderPageMeshIndex = { 9, 8};
+    // 양면인지, 단면인지도 파악해야해. 이건나중에하자
+
     for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
     {
         _uint iShaderPass = 0;
         auto pMesh = pModel->Get_Mesh(i);
         _uint iMaterialIndex = pMesh->Get_MaterialIndex();
-        if (10 == i || 11 == i)
+        if (
+            iMainRenderPageMeshIndex.x == i || iMainRenderPageMeshIndex.y == i ||
+            iNextRenderPageMeshIndex.x == i || iNextRenderPageMeshIndex.y == i
+            )
         {
-            _float2 fStartUV = {};
-            _float2 fEndUV = {};
-            if (11 == i)
+            if (iMainRenderPageMeshIndex.x == i || iNextRenderPageMeshIndex.x == i)
             {
-                fStartUV = { 0.f,0.f };
-                fEndUV = { 0.5f,1.f };
-                if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+                if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fLeftStartUV, sizeof(_float2))))
                     return E_FAIL;
-                if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+                if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fLeftEndUV, sizeof(_float2))))
                     return E_FAIL;
             }
             else
             {
-                fStartUV = { 0.5f,0.f };
-                fEndUV = { 1.f,1.f };
-                if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+                if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fRightStartUV, sizeof(_float2))))
                     return E_FAIL;
-                if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+                if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fRightEndUV, sizeof(_float2))))
                     return E_FAIL;
             }
+            _uint iIndex = 0;
+            if (iMainRenderPageMeshIndex.x == i || iMainRenderPageMeshIndex.y == i)
+                iIndex = iMainPageIndex;
+            else
+                iIndex = iMainPageIndex + 1;
+            ID3D11ShaderResourceView* pResourceView = CSection_Manager::GetInstance()->Get_SRV_FromRenderTarget(iIndex);
+            if(nullptr != pResourceView)
+                pShader->Bind_SRV("g_DiffuseTexture", pResourceView);
 
-            if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_DiffuseTexture", TEXT("Target_Book_2D"))))
-                return E_FAIL;
+
+            //if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_DiffuseTexture", TEXT("Target_Book_2D"))))
+            //    return E_FAIL;
             iShaderPass = 4;
         }
         else
         {
             if (FAILED(pModel->Bind_Material(pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
             {
-                //continue;
+                continue;
             }
         }
 

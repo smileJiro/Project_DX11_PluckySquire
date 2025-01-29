@@ -58,7 +58,7 @@ private:
 #pragma region Input & Imgui Method
 private:
 	// 인풋 로직 
-	void				Input_Object_Tool_Mode();
+	void				Input_Logic();
 
 	// Imgui 메인 로직
 	void				Update_Imgui_Logic();
@@ -81,22 +81,15 @@ private:
 
 
 	// 오브젝트 파일 저장
-	void				Save(bool bSelected = true);
+	void				Save(_bool _bSelected = true);
 	// 오브젝트 파일 로드
-	void				Load(bool bSelected = true);
+	void				Load(_bool _bSelected = true);
 
 
 	C2DMapObject*	Picking_2DMap();
 
 #pragma endregion
 
-
-
-	void				Init_Egnore_Layer();
-	HRESULT				Setting_Action_Layer(vector<pair<wstring, CLayer*>>& _TargetLayerPairs);
-
-
-	
 	HRESULT				Setting_TileMap(const _string _strFileMapJsonName);
 
 	C2DMapObjectInfo*	Find_Info(const _wstring _strTag);
@@ -119,13 +112,11 @@ private:
 	vector<_wstring>				m_SaveFileLists;
 
 	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
-	C2DMapObject*				m_pPickingObject = nullptr;
+	C2DMapObject*					m_pPickingObject = nullptr;
 
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
 	_char							m_szSaveFileName[MAX_PATH];
 
-	vector<wstring>					m_DefaultEgnoreLayerTags;
-	vector<wstring>					m_EgnoreLayerTags;
 	C2DDefault_RenderObject*		m_DefaultRenderObject;
 
 	_string		m_arrModelTypeString[C2DMapObjectInfo::MODEL_END];

@@ -47,10 +47,12 @@ public:
 	void						Priority_Update(_float _fTimeDelta) override;
 	void						Update(_float _fTimeDelta)  override;
 	void						Late_Update(_float _fTimeDelta)  override;
+
 #ifdef _DEBUG
 public:
 	virtual HRESULT				Render();
 #endif
+
 public:/* Default PhysX */
 	virtual void				Set_LinearVelocity(_vector _vDirection, _float _fVelocity) { return; }
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity) { return; }

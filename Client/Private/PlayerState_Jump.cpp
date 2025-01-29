@@ -15,6 +15,13 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	_vector vMoveDir = XMVectorZero();
 	_bool bMove = false;
+
+	if (m_pOwner->Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::LB))
+	{
+		m_pOwner->Set_State(CPlayer::ATTACK);
+		return;
+	}
+
 	if (KEY_PRESSING(KEY::LSHIFT))
 	{
 		m_pOwner->Set_State(CPlayer::ROLL);
@@ -53,18 +60,19 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 	if (m_pOwner->Is_OnGround())
 	{
 		m_pOwner->Stop_Rotate();
+		if (bMove)
+		{
+			m_pOwner->Set_State(CPlayer::RUN);
+			return;
+		}
 		//바닥에 방금 닿음
 		if (m_bGrounded == false)
 		{
 			m_bGrounded = true;
-			if (bMove)
-			{
-				m_pOwner->Set_State(CPlayer::RUN);
-				return;
-			}
-			else
-				Switch_JumpAnimation(LAND);
+			Switch_JumpAnimation(LAND);
 		}
+		else
+			m_pOwner->Set_State(CPlayer::IDLE);
 
 	}
 	//공중일때
@@ -72,6 +80,8 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 	{
 		if (bMove)
 			m_pOwner->Move(XMVector3Normalize(vMoveDir), _fTimeDelta);
+		else
+			m_pOwner->Stop_Rotate();
 		//Upforce가 0이상일 때, 
 		if (fUpForce > 0)
 		{
