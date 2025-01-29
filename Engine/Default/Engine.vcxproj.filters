@@ -519,6 +519,9 @@
     <ClInclude Include="..\public\Particle_Module.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\TriggerObject.h">
+      <Filter>01.Utility\03.Objects\Trigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -766,6 +769,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Particle_Module.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TriggerObject.cpp">
+      <Filter>01.Utility\03.Objects\Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

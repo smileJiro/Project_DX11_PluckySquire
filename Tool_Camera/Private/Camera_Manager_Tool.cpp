@@ -33,6 +33,22 @@ void CCamera_Manager_Tool::Render()
 		m_pCurrentArm->Render_Arm();
 }
 
+void CCamera_Manager_Tool::Clear()
+{
+	for (auto& ArmData : m_ArmDatas)
+		Safe_Delete(ArmData.second);
+	m_ArmDatas.clear();
+
+	for (auto& Camera : m_Cameras) {
+		Safe_Release(Camera);
+		Camera = nullptr;
+	}
+
+
+	Safe_Release(m_pCurrentArm);
+	m_pCurrentArm = nullptr;
+}
+
 _vector CCamera_Manager_Tool::Get_CameraVector(CTransform::STATE _eState)
 {
 	CController_Transform* pConTrans = m_Cameras[m_eCurrentCameraType]->Get_ControllerTransform();
@@ -94,6 +110,8 @@ void CCamera_Manager_Tool::Change_CameraType(_uint _iCurrentCameraType)
 			Camera->Set_Active(false);
 
 		if (FREE == _iCurrentCameraType) {
+			if (nullptr == m_Cameras[TARGET])
+				return;
 			CController_Transform* pTargetConTrans = m_Cameras[TARGET]->Get_ControllerTransform();
 			CController_Transform* pFreeConTrans = m_Cameras[FREE]->Get_ControllerTransform();
 			pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());

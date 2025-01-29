@@ -232,6 +232,9 @@
     <Filter Include="02.GameObjects\Camera\CutScene">
       <UniqueIdentifier>{d0922ef4-4f7b-4b44-97d7-e25fd7b1d0f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Trigger">
+      <UniqueIdentifier>{2a7a1cb9-e639-4be6-a19f-65aeae8e850a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

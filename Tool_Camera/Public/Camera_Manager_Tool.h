@@ -30,6 +30,9 @@ public:
 	void				Render();
 
 public:
+	void				Clear();
+
+public:
 	CCamera*			Get_CurrentCamera() { return m_Cameras[m_eCurrentCameraType]; }
 	CCamera*			Get_Camera(_uint _iCameraType) { return m_Cameras[_iCameraType]; }
 	_vector				Get_CameraVector(CTransform::STATE _eState);						// 현재 카메라 Right, Up, Look, Pos 가져오는 함수

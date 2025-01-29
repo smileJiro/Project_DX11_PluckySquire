@@ -241,6 +241,18 @@ namespace Engine
 	} CUTSCENE_INITIAL_DATA;
 #pragma endregion
 
+#pragma region Trigger 관련
+	typedef struct tagTriggerObjectData
+	{
+		_uint				iShapeType = {};
+		_float3				vHalfExtents = {};
+		_float				fRadius = {};
+
+		_uint				iFillterMyGroup = {};
+		_uint				iFillterOtherGroupMask = {};
+	} TRIGGEROBJECT_DATA;
+#pragma endregion
+
 #pragma region Binary 관련
 
 	/* Binary_Manager Struct */
