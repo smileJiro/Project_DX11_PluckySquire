@@ -1,6 +1,7 @@
 #include "Actor.h"
 #include "GameInstance.h"
 #include "ActorObject.h"
+#include "ModelObject.h"
 
 #include "DebugDraw.h"
 CActor::CActor(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ACTOR_TYPE _eActorType)
@@ -269,6 +270,48 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     {
         SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(_ShapeData.pShapeDesc);
        PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius * vScale.x, pDesc->fHalfHeight * vScale.x);
+
+        pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
+    }
+    break;
+    case Engine::SHAPE_TYPE::COOKING:
+    {
+        if (nullptr == m_pOwner)
+            return E_FAIL;
+
+        CModelObject* pModelObj = dynamic_cast<CModelObject*>(m_pOwner);
+        if(nullptr == pModelObj)
+            return E_FAIL;
+
+        CModel* _pModel = pModelObj->Get_Model(COORDINATE_3D);
+        if (nullptr == _pModel)
+            return E_FAIL;
+        C3DModel* pModel = static_cast<C3DModel*>(_pModel);
+
+        _uint iNumMeshes = pModel->Get_NumMeshes();
+
+        //for (_uint i = 0; i < iNumMeshes; i++)
+        //{
+        //    CMesh* pMesh = pModel->Get_Mesh(i);
+        //    PxTriangleMeshDesc meshDesc;
+        //    if(FAILED(pMesh->Cooking(meshDesc)))
+        //        return E_FAIL;
+        //    PxDefaultMemoryOutputStream writeBuffer;
+        //    PxCookingParams params(pPhysics->getTolerancesScale());
+        //    PxCooking* cooking = m_pGameInstance->Get_Cooking();
+        //    cooking->setParams(params);
+
+        //    if (!cooking->cookTriangleMesh(meshDesc, writeBuffer)) 
+        //        return E_FAIL;
+
+        //    PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+        //    PxTriangleMesh* pPxMesh =  pPhysics->createTriangleMesh(readBuffer);
+        //    PxTriangleMeshGeometry geometry(pPxMesh);
+        //    pShape =  pPhysics->createShape(geometry, *pPhysics->createMaterial(0.5f, 0.5f, 0.5f));
+        //}
+
+        SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(_ShapeData.pShapeDesc);
+        PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius * vScale.x, pDesc->fHalfHeight * vScale.x);
 
         pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
     }
