@@ -181,6 +181,90 @@ namespace Client
 
 	}
 
+	E_DIRECTION To_EDirection(_vector _vDir)
+	{
+		_float fSlope = _vDir.m128_f32[1] / _vDir.m128_f32[0];
+		//2 , 1/2, -1/2, -2
+		if(2 >= fSlope &&  1/2 < fSlope)
+		{
+			if (_vDir.m128_f32[1] > 0)
+				return E_DIRECTION::RIGHT_UP;
+			else
+				return E_DIRECTION::LEFT_DOWN;
+		}
+		else if ((1 / 2 >= fSlope && 0 <= fSlope)
+			|| (-1 / 2 < fSlope && 0 >= fSlope))
+		{
+			if (_vDir.m128_f32[0] > 0)
+				return E_DIRECTION::RIGHT;
+			else
+				return E_DIRECTION::LEFT;
+		}
+		else if (-1 / 2 >= fSlope && -2 < fSlope)
+		{
+			if (_vDir.m128_f32[0] > 0)
+				return E_DIRECTION::RIGHT_DOWN;
+			else
+				return E_DIRECTION::LEFT_UP;
+		}
+		else if(-2 >= fSlope || 2 < fSlope)
+		{
+			if (_vDir.m128_f32[1] > 0)
+				return E_DIRECTION::UP;
+			else
+				return E_DIRECTION::DOWN;
+		}
+
+		return E_DIRECTION::UP;
+	}
+
+	_vector EDir_To_Vector(E_DIRECTION _eFDir)
+	{
+		switch (_eFDir)
+		{
+		case Client::E_DIRECTION::LEFT:
+			return _vector{ -1, 0, 0 };
+		case Client::E_DIRECTION::RIGHT:
+			return _vector{ 1, 0, 0 };
+		case Client::E_DIRECTION::UP:
+			return _vector{ 0, 1, 0 };
+		case Client::E_DIRECTION::DOWN:
+			return _vector{ 0, -1, 0 };
+		case Client::E_DIRECTION::LEFT_UP:
+			return XMVector3Normalize( _vector{ -1, 1, 0 });
+		case Client::E_DIRECTION::RIGHT_UP:
+			return XMVector3Normalize(_vector{ 1, 1, 0 });
+		case Client::E_DIRECTION::RIGHT_DOWN:
+			return XMVector3Normalize(_vector{ 1, -1, 0 });
+		case Client::E_DIRECTION::LEFT_DOWN:
+			return XMVector3Normalize(_vector{ -1, -1, 0 });
+		case Client::E_DIRECTION::E_DIR_LAST:
+		default:
+			return _vector{ 0, 0, 0 };
+		}
+	}
+
+	F_DIRECTION EDir_To_FDir(E_DIRECTION _eEDir)
+	{
+		switch (_eEDir)
+		{
+		case Client::E_DIRECTION::LEFT_UP:
+		case Client::E_DIRECTION::LEFT:
+			return F_DIRECTION::LEFT;
+		case Client::E_DIRECTION::RIGHT_UP:
+		case Client::E_DIRECTION::UP:
+			return F_DIRECTION::UP;
+		case Client::E_DIRECTION::RIGHT_DOWN:
+		case Client::E_DIRECTION::RIGHT:
+			return F_DIRECTION::RIGHT;
+		case Client::E_DIRECTION::LEFT_DOWN:
+		case Client::E_DIRECTION::DOWN:
+			return F_DIRECTION::DOWN;
+		default:
+			break;
+		}
+	}
+
 
 
 }

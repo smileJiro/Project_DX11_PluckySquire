@@ -55,37 +55,38 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	if (bMove)
 	{
 		m_pOwner->Move(XMVector3Normalize(vMoveDir), _fTimeDelta);
-		if (KEY_DOWN(KEY::SPACE))
+		if (KEY_PRESSING(KEY::SPACE))
 		{
 			m_pOwner->Set_State(CPlayer::JUMP);
 			return;
 		}
+		if (KEY_PRESSING(KEY::LSHIFT))
+		{
+			m_pOwner->Set_State(CPlayer::ROLL);
+			return;
+		}
+
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{
-			F_DIRECTION eNewDir =  To_FDirection(vMoveDir);
-			F_DIRECTION eOldDir = m_pOwner->Get_2DDirection();
+			E_DIRECTION eNewDir =  To_EDirection(vMoveDir);
+			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
 			m_pOwner->Set_2DDirection(eNewDir);
-			if (eNewDir != eOldDir)
+			switch (eFDir)
 			{
-			
-				switch (eNewDir)
-				{
-				case Client::F_DIRECTION::LEFT:
-				case Client::F_DIRECTION::RIGHT:
-					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT);
-					break;
-				case Client::F_DIRECTION::UP:
-					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP);
-					break;
-				case Client::F_DIRECTION::DOWN:
-					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN);
-					break;
-				case Client::F_DIRECTION::F_DIR_LAST:
-				default:
-					break;
-				}
+			case Client::F_DIRECTION::LEFT:
+			case Client::F_DIRECTION::RIGHT:
+				m_pOwner->Set_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT);
+				break;
+			case Client::F_DIRECTION::UP:
+				m_pOwner->Set_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP);
+				break;
+			case Client::F_DIRECTION::DOWN:
+				m_pOwner->Set_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN);
+				break;
+			case Client::F_DIRECTION::F_DIR_LAST:
+			default:
+				break;
 			}
-
 		}
 	}
 	else
@@ -103,7 +104,7 @@ void CPlayerState_Run::Enter()
 	
 	if (COORDINATE_2D == eCoord)
 	{
-		F_DIRECTION eOldDir = m_pOwner->Get_2DDirection();
+		F_DIRECTION eOldDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
 		switch (eOldDir)
 		{
 		case Client::F_DIRECTION::LEFT:
@@ -138,4 +139,5 @@ void CPlayerState_Run::Exit()
 	{
 		m_pOwner->Stop_Rotate();
 	}
+	m_pOwner->Stop_Move();
 }
