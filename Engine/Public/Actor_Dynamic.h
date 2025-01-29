@@ -23,8 +23,8 @@ public:
 
 public:
 	//Get
-	_vector					Get_LinearVelocity();
-	_vector					Get_AngularVelocity();
+	_vector						Get_LinearVelocity();
+	_vector						Get_AngularVelocity();
 	//Set
 	virtual void				Set_LinearVelocity(_fvector _vDirection, _float _fVelocity);
 	virtual void				Set_LinearVelocity(_fvector _vVelocity);
@@ -35,6 +35,8 @@ public:
 	virtual void				Add_Force(const _float3& _vForce);// ÀÏ¹ÝÀûÀÎ Èû
 	virtual void				Add_Impulse(const _float3& _vForce); // °­ÇÑ Èû
 
+
+	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix) override;
 private:
 
 public:

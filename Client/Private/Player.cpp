@@ -631,19 +631,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::F3))
     {
-        SHAPE_DATA tShapeData = {};
-        tShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
-        tShapeData.eShapeType = SHAPE_TYPE::BOX;
-        tShapeData.iShapeUse = 1;
-        tShapeData.isTrigger = false;
-        XMStoreFloat4x4(&tShapeData.LocalOffsetMatrix, XMMatrixScaling(5.0f, 5.0f, 5.0f) * XMMatrixRotationY(XMConvertToRadians(120.f)) * XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-        SHAPE_BOX_DESC tBoxDesc = {};
-        tBoxDesc.vHalfExtents = { 0.5f ,0.5f ,0.5f };
-        tShapeData.pShapeDesc = &tBoxDesc;
-        tShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-        tShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
-
-        m_pActorCom->Add_Shape(tShapeData);
+        //m_pActorCom->Set_OffsetMatrix(XMMatrixScaling(3.0f, 3.0f, 3.0f) * XMMatrixRotationZ(30.f));
     }
     if (KEY_DOWN(KEY::F2))
     {
