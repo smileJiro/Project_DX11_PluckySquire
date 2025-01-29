@@ -70,7 +70,7 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	if (nullptr == m_pTaskManager)
 		return E_FAIL;
 
-	m_arrSelectName[SAVE_LIST] = L"Room_Enviroment";
+	m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
 	Load(false);
 
 

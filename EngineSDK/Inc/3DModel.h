@@ -26,7 +26,7 @@ protected:
 	virtual ~C3DModel() = default;
 
 public:
-	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider);
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass) override;
 
@@ -76,6 +76,11 @@ public :
 	void						Binding_TextureIndex(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex) { m_arrTextureBindingIndex[_iMaterialIndex][_eTextureType] = _iIndex; }
 	_uint						Get_TextureIndex(_uint _eTextureType, _uint _iMaterialIndex) { return m_arrTextureBindingIndex[_iMaterialIndex][_eTextureType]; }
 
+
+	_char*						Get_CookingColliderData() { return m_arrCookingColliderData; }
+	_uint						Get_CookingColliderDataLength() { return m_iCookingColliderDataLength; }
+	_bool						Has_CookingCollider() { return m_isCookingCollider; }
+
 protected:
 	_uint						m_arrTextureBindingIndex[AI_TEXTURE_TYPE_MAX][AI_TEXTURE_TYPE_MAX];
 
@@ -95,6 +100,11 @@ protected:
 
 	map<_uint, KEYFRAME>		m_mapAnimTransLeftFrame;
 
+	_bool						m_isCookingCollider = false;
+	_uint						m_iCookingColliderDataLength = 0;
+	_char*						m_arrCookingColliderData = nullptr;
+
+
 protected:
 	virtual HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);
 	virtual HRESULT Ready_Meshes(ifstream& inFile);
@@ -102,7 +112,7 @@ protected:
 	virtual HRESULT Ready_Animations(ifstream& inFile);
 
 public:
-	static C3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	static C3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCookingCollider = false);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
 

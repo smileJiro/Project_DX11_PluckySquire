@@ -175,6 +175,9 @@ CMap_2D* CMap_2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext,
 
 void CMap_2D::Free()
 {
+	m_pGameInstance->Erase_RenderGroup_New(RENDERGROUP::RG_2D,m_iPriorityID);
+	m_pGameInstance->Erase_DSV_ToRenderer(m_strDSVKey);
+	//m_pGameInstance->rt, mrt 삭제필요
 	Safe_Release(m_pDSV);
 	Safe_Release(m_pRenderTarget);
 	Safe_Release(m_pTextureCom);

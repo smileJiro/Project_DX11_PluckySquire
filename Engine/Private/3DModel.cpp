@@ -22,6 +22,9 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_Materials{ _Prototype.m_Materials }
 	, m_PreTransformMatrix{ _Prototype.m_PreTransformMatrix }
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
+	, m_isCookingCollider(_Prototype.m_isCookingCollider)
+	, m_iCookingColliderDataLength(_Prototype.m_iCookingColliderDataLength)
+	, m_arrCookingColliderData(_Prototype.m_arrCookingColliderData)
 {
 
 	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
@@ -49,9 +52,10 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 
 }
 
-HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider)
+HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCookingCollider)
 {
 	XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
+
 
 	std::ifstream inFile(pModelFilePath, std::ios::binary);
 	if (!inFile) {
@@ -78,13 +82,25 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	inFile.close();
 	//std::cout << pModelFilePath << endl;
 
-	if (_isCollider)
+
+	if (_isCookingCollider)
 	{
-	
-		filesystem::exists(path)
+		_string strColliderPath = pModelFilePath;
+		strColliderPath += "Coll";
+		if (filesystem::exists(strColliderPath))
+		{
+			ifstream  file;
+			file.open(strColliderPath, ios::binary);
+			if (!file)
+				return E_FAIL;
+			file.read(reinterpret_cast<_char*>(&m_iCookingColliderDataLength), sizeof(_uint));
+			m_arrCookingColliderData = new _char[m_iCookingColliderDataLength];
+			file.read(m_arrCookingColliderData, m_iCookingColliderDataLength);
 
+			m_isCookingCollider = _isCookingCollider;
+
+		}
 	}
-
 	return S_OK;
 }
 
@@ -412,11 +428,11 @@ HRESULT C3DModel::Ready_Animations(ifstream& inFile)
 	return S_OK;
 }
 						   
-C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider)
+C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCookingCollider)
 {
 	C3DModel* pInstance = new C3DModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix, _isCollider)))
+	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix, _isCookingCollider)))
 	{
 		MSG_BOX("Failed to Created : 3DModel");
 		Safe_Release(pInstance);
@@ -454,6 +470,9 @@ void C3DModel::Free()
 	for (auto& pMesh : m_Meshes)
 		Safe_Release(pMesh);
 	m_Meshes.clear();
+
+	if (!m_isCloned)
+		Safe_Delete_Array(m_arrCookingColliderData);
 
 	__super::Free();
 }

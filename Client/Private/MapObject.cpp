@@ -22,9 +22,12 @@ HRESULT CMapObject::Initialize_Prototype()
 
 HRESULT CMapObject::Initialize(void* _pArg)
 {
+
     if (_pArg != nullptr)
     {
         MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
+        m_matWorld = pDesc->tTransform3DDesc.matWorld;
+
         if (pDesc->is2DImport)
         {
             auto tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(pDesc->i2DModelIndex);
@@ -32,11 +35,86 @@ HRESULT CMapObject::Initialize(void* _pArg)
             pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
             pDesc->strModelPrototypeTag_2D = StringToWstring(tInfo.strModelName);
             //pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
+
+        }
+    }
+    // MODELOBJ
+    {
+        MODELOBJECT_DESC* pDesc = static_cast<MODELOBJECT_DESC*>(_pArg);
+
+        // Save 
+        m_iShaderPasses[COORDINATE_2D] = pDesc->iShaderPass_2D;
+        m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
+        m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
+        m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
+        m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
+
+        m_iRenderGroupID_2D = pDesc->iRenderGroupID_2D;
+        m_iPriorityID_2D = pDesc->iPriorityID_2D;
+        m_iRenderGroupID_3D = pDesc->iRenderGroupID_3D;
+        m_iPriorityID_3D = pDesc->iPriorityID_3D;
+
+
+        if (FAILED(CModelObject::Ready_Components(pDesc)))
+            return E_FAIL;
+
+        XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+
+        _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
+
+        XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
+    }
+    
+    CActor::ACTOR_DESC ActorDesc;
+    SHAPE_COOKING_DESC ShapeCookingDesc = {};
+    SHAPE_DATA ShapeData;
+
+    if (nullptr != m_pControllerModel)
+    {
+        CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+
+        if (nullptr != pModel)
+        {
+            if (static_cast<C3DModel*>(pModel)->Has_CookingCollider())
+            {
+
+                MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
+
+                pDesc->eActorType = ACTOR_TYPE::STATIC;
+
+                ActorDesc.pOwner = this;
+
+                ActorDesc.FreezeRotation_XYZ[0] = true;
+                ActorDesc.FreezeRotation_XYZ[1] = true;
+                ActorDesc.FreezeRotation_XYZ[2] = true;
+
+                ActorDesc.FreezePosition_XYZ[0] = false;
+                ActorDesc.FreezePosition_XYZ[1] = false;
+                ActorDesc.FreezePosition_XYZ[2] = false;
+
+                ShapeCookingDesc.isLoad = true;
+                ShapeCookingDesc.isSave = false;
+                ShapeData.eShapeType = SHAPE_TYPE::COOKING;
+                ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+                ShapeData.pShapeDesc = &ShapeCookingDesc;
+                ShapeData.isTrigger = false;
+                _float3 fScale =
+                    _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
+                        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
+                        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
+                _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
+                XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, matScale);
+                ActorDesc.ShapeDatas.push_back(ShapeData);
+                pDesc->pActorDesc = &ActorDesc;
+
+                ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+                ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
+            
+            }
         }
     }
 
-
-    if (FAILED(__super::Initialize(_pArg)))
+    if (FAILED(CPartObject::Initialize(_pArg)))
         return E_FAIL;
 
 

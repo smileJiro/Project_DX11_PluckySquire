@@ -217,7 +217,10 @@ HRESULT CLoader::Loading_Level_Static()
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
 
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
+    //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
+    //    return E_FAIL;
+    //
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
         return E_FAIL;
 
 
@@ -496,7 +499,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     
     //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
     //    return E_FAIL;
-    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
@@ -612,10 +615,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    // 액터 들어가는넘. 뺌.
+    //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
 
-    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
-
-    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Free_Enviroment.mchc");
+    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
     Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
 
@@ -772,7 +775,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
     return S_OK;
 }
 
-HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix)
+HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix, _bool _isCollider)
 {
     std::ifstream input_file(_szJsonFilePath);
 
@@ -802,7 +805,7 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
         if (strModelNames.find(strFileName) != strModelNames.end())
         {
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring( strFileName),
-                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix, _isCollider))))
                 return E_FAIL;
 			iLoadedCount++;
 			if (iLoadedCount >= iLoadCount)
@@ -867,6 +870,8 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             NormalDesc.isCoordChangeEnable = false;
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
             NormalDesc.eStartCoord = COORDINATE_3D;
+            NormalDesc.tTransform3DDesc.isMatrix = true;
+            NormalDesc.tTransform3DDesc.matWorld = vWorld;
             CGameObject* pGameObject = nullptr;
             m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
                 _eObjectLevelId,
@@ -912,7 +917,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
                         pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
                     }
                 }
-                pGameObject->Set_WorldMatrix(vWorld);
+                //pGameObject->Set_WorldMatrix(vWorld);
             }
         }
     }
