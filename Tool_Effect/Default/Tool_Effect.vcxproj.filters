@@ -40,6 +40,9 @@
     <Filter Include="02. GameObject\Reference">
       <UniqueIdentifier>{cd8609bc-3c16-4028-922f-3f2ae35dcd2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\Skybox">
+      <UniqueIdentifier>{37b46d4a-b50f-45dc-aa04-c719262e0d5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool_Effect.h">
@@ -80,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Effect_Reference.h">
       <Filter>02. GameObject\Reference</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SkyBox.h">
+      <Filter>02. GameObject\Skybox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -123,12 +129,21 @@
     <ClCompile Include="..\private\Effect_Reference.cpp">
       <Filter>02. GameObject\Reference</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\SkyBox.cpp">
+      <Filter>02. GameObject\Skybox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstance.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
@@ -140,6 +155,9 @@
       <Filter>96. JsonFiles</Filter>
     </None>
     <None Include="..\Bin\DataFiles\Effects\TestParticleSystem22.json">
+      <Filter>96. JsonFiles</Filter>
+    </None>
+    <None Include="..\Bin\DataFiles\Effects\TestParticleSystem3.json">
       <Filter>96. JsonFiles</Filter>
     </None>
   </ItemGroup>

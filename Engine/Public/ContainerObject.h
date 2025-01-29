@@ -41,6 +41,11 @@ public:
 			return 0;
 		return (_int)m_PartObjects.size();
 	}
+	_bool Is_PartActive(_uint _iPartID) {
+		if (m_PartObjects[_iPartID] == nullptr)
+			return false;
+		return m_PartObjects[_iPartID]->Is_Active();
+	}
 	//Set
 	void				Set_PartActive(_uint _iPartID, _bool _bValue);
 protected:

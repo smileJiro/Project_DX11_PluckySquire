@@ -171,6 +171,8 @@ namespace Engine
 		XMFLOAT4		vRight, vUp, vLook, vTranslation;
 		XMFLOAT2		vLifeTime;
 		XMFLOAT4		vColor;
+		XMFLOAT3		vVelocity;
+		XMFLOAT3		vAcceleration;
 	}VTXMESHINSTANCE;
 
 	typedef struct ENGINE_DLL tagPointParticle
@@ -181,7 +183,7 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagMeshParticle
 	{
-		static const unsigned int iNumElements = { 10 };		// Mesh + VTXMESHINSTACNE
+		static const unsigned int iNumElements = { 12 };		// Mesh + VTXMESHINSTACNE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXMESHPARTICLE;
 
@@ -240,6 +242,18 @@ namespace Engine
 		_float3				vAtOffset = {};
 		_uint				iZoomLevel = {};
 	} CUTSCENE_INITIAL_DATA;
+#pragma endregion
+
+#pragma region Trigger 관련
+	typedef struct tagTriggerObjectData
+	{
+		_uint				iShapeType = {};
+		_float3				vHalfExtents = {};
+		_float				fRadius = {};
+
+		_uint				iFillterMyGroup = {};
+		_uint				iFillterOtherGroupMask = {};
+	} TRIGGEROBJECT_DATA;
 #pragma endregion
 
 #pragma region Binary 관련

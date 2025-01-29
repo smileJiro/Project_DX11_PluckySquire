@@ -15,6 +15,8 @@ public:
 	virtual HRESULT Initialize(void* _pArg) override;
 	virtual void	Update(_float _fTimeDelta) override;
 
+	virtual void	Reset_Buffers() override;			// Buffer을 처음 시점으로 바꾼다.. 
+
 private:
 	VTXPOINTINSTANCE* m_pInstanceVertices = { nullptr };
 
@@ -27,6 +29,7 @@ private:
 	_float			  m_fStartIndex = { 0.f };
 	_float			  m_fAnimCount = { 1.f };
 	_float2			  m_vUVPerAnim = { 1.f, 1.f };
+
 
 private:
 	void			  Set_UV(_Out_ _float4* _pOutUV, _float _fIndex);

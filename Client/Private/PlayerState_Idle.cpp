@@ -13,43 +13,35 @@ CPlayerState_Idle::CPlayerState_Idle(CPlayer* _pOwner)
 
 void CPlayerState_Idle::Update(_float _fTimeDelta)
 {
-	if (MOUSE_DOWN(MOUSE_KEY::LB))
+	if (m_pOwner->Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::LB))
 	{
 		m_pOwner->Set_State(CPlayer::ATTACK);
 		return;
 	}
 
-	_bool bMove = false;
-	_bool bJump = false;
 	/* Test Move Code */
 	if (KEY_PRESSING(KEY::SPACE))
 	{
-		bJump = true;
-	}
-	else if (KEY_PRESSING(KEY::W))
-	{
-		bMove = true;
-	}
-	else if (KEY_PRESSING(KEY::A))
-	{
-		bMove = true;
-	}
-	else if (KEY_PRESSING(KEY::S))
-	{
-		bMove = true;
-	}
-	else if (KEY_PRESSING(KEY::D))
-	{
-		bMove = true;
-	} 
-	if (bJump)
-	{
 		m_pOwner->Set_State(CPlayer::JUMP);
+		return;
 	}
-	else if (bMove)
+	if (KEY_PRESSING(KEY::LSHIFT))
 	{
-		m_pOwner->Set_State(CPlayer::RUN);
+		m_pOwner->Set_State(CPlayer::ROLL);
+		return;
 	}
+	_bool bMove = false;
+	if (KEY_PRESSING(KEY::W))
+		bMove = true;
+	else if (KEY_PRESSING(KEY::A))
+		bMove = true;
+	else if (KEY_PRESSING(KEY::S))
+		bMove = true;
+	else if (KEY_PRESSING(KEY::D))
+		bMove = true;
+
+	if (bMove)
+		m_pOwner->Set_State(CPlayer::RUN);
 
 }
 
@@ -59,8 +51,8 @@ void CPlayerState_Idle::Enter()
 
 	if (COORDINATE_2D == eCoord)
 	{
-		F_DIRECTION eOldDir = m_pOwner->Get_2DDirection();
-		switch (eOldDir)
+		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
+		switch (eFDir)
 		{
 		case Client::F_DIRECTION::LEFT:
 		case Client::F_DIRECTION::RIGHT:

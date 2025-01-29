@@ -12,6 +12,8 @@ public:
     void Update(_float _fTimeDelta) override;
     virtual void Enter() override;
     virtual void Exit() override;
+
+	void Switch_RunAnimation2D(F_DIRECTION _eFDir);
 };
 
 END

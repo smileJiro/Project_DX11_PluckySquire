@@ -63,7 +63,7 @@ namespace Client
 		INTERACTION_OBEJCT =		0x10,
 		PLAYER_PROJECTILE =			0x20,
 		MONSTER_PROJECTILE =		0x40,
-								 // 0x80
+		TRIGGER_OBJECT =		    0x80,
 								 // 0x100
 								 // 0x200
 								 // 0x400 
@@ -130,5 +130,11 @@ namespace Client
 		RIGHT_DOWN,
 		LEFT_DOWN,
 		E_DIR_LAST
+	};
+
+	enum class TRIGGER_TYPE
+	{
+		CAMERA_TRIGGER,
+		LAST
 	};
 }

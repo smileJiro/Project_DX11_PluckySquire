@@ -435,6 +435,12 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, CG
 #ifdef _DEBUG
 HRESULT CGameInstance::Add_DebugComponent(CComponent* _pDebugCom)
 {
+	if (true == m_isNewRenderer)
+	{
+		Add_DebugComponent_New(_pDebugCom);
+		return S_OK;
+	}
+
 	if (nullptr == m_pRenderer)
 		return E_FAIL;
 

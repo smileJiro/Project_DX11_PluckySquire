@@ -9,6 +9,7 @@ public:
 	enum SHAPE_TYPE { SPHERE, CYLINDER, BOX, TORUS, RING, CONE, SHAPE_NONE };
 	enum SETTING_TYPE { UNSET, DIRECTSET, RANDOMLINEAR, RANDOMRANGE  };
 	enum PARTICLE_DATA { P_SCALE, P_ROTATION, P_POSITION, P_LIFETIME, P_COLOR, DATAEND };
+	enum SPAWN_TYPE {BURST, SPAWN };
 	
 
 protected:
@@ -23,9 +24,13 @@ public:
 	virtual HRESULT Render();
 
 	virtual HRESULT Bind_BufferDesc();
+	virtual void	Reset_Buffers();
 
 public:
 	_uint	Get_NumInstance() const { return m_iNumInstances; }
+
+public:
+	SETTING_TYPE Get_DataType(const PARTICLE_DATA eData) const { return m_SetDatas[eData]; }
 
 protected:
 	ID3D11Buffer*				m_pVBInstance = { nullptr };		// Instance 전용 버퍼
@@ -34,6 +39,13 @@ protected:
 	_uint						m_iNumInstances = {};				// Instance 개수
 	_uint						m_iNumIndexCountPerInstance = {};	// Instance 한 개당 Index 할당 개수
 	_uint						m_iInstanceStride = {};				// Instance Buffer 자료형의 크기
+
+
+protected:
+	SPAWN_TYPE					m_eSpawnType = SPAWN;
+	_float						m_fAccSpawnTime = 0.f;
+	_float						m_fSpawnTime = 0.f;
+	_uint						m_iSpawnIndex = 0;
 
 protected:
 	SHAPE_TYPE							m_eShapeType = SHAPE_NONE; // 초기 스폰 모양
@@ -87,6 +99,7 @@ protected:
 protected:
 	HRESULT		Ready_Modules(const json _jsonInfo);
 
+
 protected:
 	_bool		Is_ShapeData(const _string& _strTag)
 	{
@@ -109,11 +122,13 @@ public:
 
 	virtual HRESULT Save_Buffer(json& _jsonBufferInfo);
 
+	_bool		Is_ToolChanged() { if (m_isToolChanged) { m_isToolChanged = false; return true; } else return false; }
+
 protected:
+	_bool								m_isToolChanged = { false };
 	_bool								m_isToolReset = { false };
 	map<const _string, _float>			m_ToolShapeDatas;
 	_int								m_iNowModuleIndex = { -1 };
-	//class CParticle_Module*				m_pNowModule = { nullptr };
 	
 
 protected:
@@ -175,6 +190,13 @@ NLOHMANN_JSON_SERIALIZE_ENUM(CVIBuffer_Instance::SETTING_TYPE, {
 {CVIBuffer_Instance::SETTING_TYPE::DIRECTSET, "DIRECTSET"},
 {CVIBuffer_Instance::SETTING_TYPE::RANDOMLINEAR, "RANDOMLINEAR"},
 {CVIBuffer_Instance::SETTING_TYPE::RANDOMRANGE, "RANDOMRANGE"},
+
+	});
+
+NLOHMANN_JSON_SERIALIZE_ENUM(CVIBuffer_Instance::SPAWN_TYPE, {
+{CVIBuffer_Instance::SPAWN_TYPE::BURST, "BURST"},
+{CVIBuffer_Instance::SPAWN_TYPE::SPAWN, "SPAWN"},
+
 
 	});
 
