@@ -446,6 +446,56 @@ HRESULT CActor::Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float
     return S_OK;
 }
 
+HRESULT CActor::Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    PxGeometryType::Enum eType = m_Shapes[_iShapeIndex]->getGeometryType();
+
+    if (eType != _eType)
+    {
+        MSG_BOX(" Shape Geometry Type이 틀렸어. >>> Set_ShapeScale()");
+        return E_FAIL;
+    }
+
+    switch (eType)
+    {
+    case physx::PxGeometryType::eSPHERE:
+    {
+        SHAPE_SPHERE_DESC* pSphereDesc = static_cast<SHAPE_SPHERE_DESC*>(_pDesc);
+        PxSphereGeometry Geometry;
+        Geometry.radius = pSphereDesc->fRadius;
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    case physx::PxGeometryType::eCAPSULE:
+    {
+        SHAPE_CAPSULE_DESC* pCapsuleDesc = static_cast<SHAPE_CAPSULE_DESC*>(_pDesc);
+        PxCapsuleGeometry Geometry;
+        Geometry.halfHeight = pCapsuleDesc->fHalfHeight;
+        Geometry.radius = pCapsuleDesc->fRadius;
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    case physx::PxGeometryType::eBOX:
+    {
+        SHAPE_BOX_DESC* pBoxDesc = static_cast<SHAPE_BOX_DESC*>(_pDesc);
+        PxBoxGeometry Geometry;
+        Geometry.halfExtents = { pBoxDesc->vHalfExtents.x, pBoxDesc->vHalfExtents.y, pBoxDesc->vHalfExtents.z};
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    default:
+        MSG_BOX(" Sphere, Capsule, Box 만 크기를 변경할 수 있어. ");
+        return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+
+
 void CActor::Active_OnEnable()
 {
     m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);

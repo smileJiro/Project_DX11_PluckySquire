@@ -33,6 +33,9 @@ private: /* Core PhysX */
 	PxPhysics*					m_pPxPhysics = nullptr;
 	PxDefaultCpuDispatcher*		m_pPxDefaultCpuDispatcher = nullptr;
 
+private: /* PhysX Cooking */
+	PxCooking*					m_pPxCooking = nullptr;
+
 private:/* Scene (추후 분리 예정)*/
 	PxScene*					m_pPxScene = nullptr;
 	PxMaterial*					m_pPxMaterial[(_uint)ACTOR_MATERIAL::CUSTOM] = {};
