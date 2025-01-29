@@ -132,6 +132,8 @@ void CLevel_Trigger_Tool::Show_TriggerTool()
 	ImGui::SameLine();
 	ImGui::Checkbox("Edit Trigger", &m_isEdit);
 
+	Set_CurTrigger();
+
 	if (true == m_isCreate && false == m_isEdit) {
 		Create_Trigger();
 		Delete_Trigger();
@@ -160,19 +162,6 @@ void CLevel_Trigger_Tool::Show_CurTriggerInfo()
 	ImGui::SameLine();
 	ImGui::Text("Cur Trigger Info");
 	ImGui::Separator();
-
-	ImGui::Text("Cur Trigger Tag:");
-	if (m_iTriggerObjectTagNum <= m_TriggerObjectTags.size() - 1) {
-		if (m_TriggerObjectTags.size() <= 0)
-			return;
-		ImGui::SameLine();
-		_string Name = m_pGameInstance->WStringToString(m_TriggerObjectTags[m_iTriggerObjectTagNum]);
-		ImGui::Text("%s ", Name.c_str());
-	}
-
-	Show_TriggerObjectTagListBox();
-
-	ImGui::NewLine();
 
 	if (nullptr == m_pCurTrigger)
 		return;
@@ -426,33 +415,6 @@ void CLevel_Trigger_Tool::Show_CameraTriggerListBox()
 	}
 }
 
-void CLevel_Trigger_Tool::Show_TriggerObjectTagListBox()
-{
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(120.0f);
-
-	if (m_TriggerObjectTags.size() <= 0)
-		return;
-
-	_string Name = m_pGameInstance->WStringToString(m_TriggerObjectTags[m_iTriggerObjectTagNum]);
-
-	if (ImGui::BeginCombo("##CameraTriggerTag", Name.c_str())) {
-		for (_int i = 0; i < m_TriggerObjectTags.size(); ++i) {
-			_bool bSelected = (m_iTriggerObjectTagNum == i);
-
-			if (ImGui::Selectable(m_pGameInstance->WStringToString(m_TriggerObjectTags[i]).c_str(), bSelected)) {
-				m_iTriggerObjectTagNum = i;
-				m_pCurTrigger = &m_Triggers[m_iTriggerObjectTagNum];
-			}
-
-			if (bSelected)
-				ImGui::SetItemDefaultFocus();
-		}
-
-		ImGui::EndCombo();
-	}
-}
-
 void CLevel_Trigger_Tool::Set_TriggerBasicInfo()
 {
 	ImGui::NewLine();
@@ -518,21 +480,21 @@ void CLevel_Trigger_Tool::Set_TriggerBasicInfo()
 		ImGui::SameLine();
 
 		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-		ImGui::DragFloat("##HalfExtentX", &m_vHalfExtents.x);
+		ImGui::DragFloat("##HalfExtentX", &m_vHalfExtents.x, 0.1f, 0.5f, 20.f);
 		ImGui::SameLine(0, 10.0f);
 
 		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-		ImGui::DragFloat("##HalfExtentY", &m_vHalfExtents.y);
+		ImGui::DragFloat("##HalfExtentY", &m_vHalfExtents.y, 0.1f, 0.5f, 20.f);
 		ImGui::SameLine(0, 10.0f);
 
 		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-		ImGui::DragFloat("##HalfExtentZ", &m_vHalfExtents.z);
+		ImGui::DragFloat("##HalfExtentZ", &m_vHalfExtents.z, 0.1f, 0.5f, 20.f);
 		break;
 	case (_uint)SHAPE_TYPE::SPHERE:
 		ImGui::Text("Radius: %.2f                 ", m_fRadius);
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(120.0f);
-		ImGui::DragFloat("##Radius", &m_fRadius);
+		ImGui::DragFloat("##Radius", &m_fRadius, 0.1f, 0.5f, 20.f);
 		break;
 	}
 
@@ -738,12 +700,6 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 
 	m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
 	m_pCurTrigger = nullptr;
-
-	// Ray 되기 전 임시
-	_wstring ObjectName = pTrigger->Get_Name();
-	_int iInstanceID = (_int)(pTrigger->Get_GameObjectInstanceID());
-	ObjectName += TEXT("_") + to_wstring(iInstanceID);
-	m_TriggerObjectTags.push_back(ObjectName);
 }
 
 void CLevel_Trigger_Tool::Initialize_ListBoxName()
@@ -949,6 +905,33 @@ void CLevel_Trigger_Tool::Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir)
 	*_pRayDir = vRayDir;
 }
 
+void CLevel_Trigger_Tool::Set_CurTrigger()
+{
+	if (KEY_PRESSING(KEY::ALT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			_vector vPos, vDir;
+			Get_RayInfo(&vPos, &vDir);
+
+			_float3 vRayPos, vRayDir;
+			XMStoreFloat3(&vRayPos, vPos);
+			XMStoreFloat3(&vRayDir, vDir);
+
+			CActorObject* pObject;
+
+			_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 1000.f, nullptr, &pObject);
+
+			if (true == isSelected) {
+				for (auto& Trigger : m_Triggers) {
+					if (pObject == Trigger.second) {
+						m_pCurTrigger = &Trigger;
+					}
+				}
+			}
+		}
+	}
+}
+
 void CLevel_Trigger_Tool::Save_TriggerData()
 {
 	json Result = json::array();
@@ -1066,12 +1049,6 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 			dynamic_cast<CTriggerObject*>(pTrigger)->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
 
 			m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
-
-			// Ray 만들기 전 임시
-			_wstring ObjectName = pTrigger->Get_Name();
-			_int iInstanceID = (_int)(pTrigger->Get_GameObjectInstanceID());
-			ObjectName += TEXT("_") + to_wstring(iInstanceID);
-			m_TriggerObjectTags.push_back(ObjectName);
 		}
 			break;
 		}
