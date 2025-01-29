@@ -40,7 +40,7 @@ void CBossHomingBallState::State_Update(_float _fTimeDelta)
 
 	m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 	//АјАн
-	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
+	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
 	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 	if (m_iNumAttack > m_iAttackCount)
 	{

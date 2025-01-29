@@ -66,7 +66,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 		{	
 			if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 			{
-				_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
+				_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 				if (fDis <= m_fAlert2DRange)
 				{
 					Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
@@ -212,42 +212,42 @@ _vector CPatrolState::Set_PatrolDirection(_int _iDir)
 		{
 		case 0:
 			vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
 			//cout << "»ó" << endl;
 			break;
 		case 1:
 			vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
 			//cout << "¿ì»ó" << endl;
 			break;
 		case 2:
 			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
 			//cout << "¿ì" << endl;
 			break;
 		case 3:
 			vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
 			//cout << "¿ìÇÏ" << endl;
 			break;
 		case 4:
 			vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
 			//cout << "ÇÏ" << endl;
 			break;
 		case 5:
 			vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
 			//cout << "ÁÂÇÏ" << endl;
 			break;
 		case 6:
 			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
 			//cout << "ÁÂ" << endl;
 			break;
 		case 7:
 			vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
 			//cout << "ÁÂ»ó" << endl;
 			break;
 		default:

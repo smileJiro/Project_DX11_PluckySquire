@@ -37,7 +37,7 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 
 	_vector vDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
-	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_Position()));
+	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
 		//공격 전환

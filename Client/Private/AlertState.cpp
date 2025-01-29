@@ -36,7 +36,7 @@ void CAlertState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 	
-	_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
+	_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 	if (dis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);

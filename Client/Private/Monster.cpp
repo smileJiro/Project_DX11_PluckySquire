@@ -91,17 +91,17 @@ HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 void CMonster::Change_Dir()
 {
 	//플레이어와의 각도를 구해 방향 전환 (시야각이 있을 때 기준)
-	_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-	_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition());
-	_vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-	_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vDir, vLook))));
-	_float fResult = XMVectorGetX(XMVector3Cross(vUp, XMVector3Cross(vLook, vDir)));
-	if (0 > fResult)
-	{
-		fAngle = 360 - fAngle;
-	}*/
+	//_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+	//_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition());
+	//_vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	//_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vDir, vLook))));
+	//_float fResult = XMVectorGetX(XMVector3Cross(vUp, XMVector3Cross(vLook, vDir)));
+	//if (0 > fResult)
+	//{
+	//	fAngle = 360 - fAngle;
+	//}
 	
-	_float fResult = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_Position() - Get_Position());
+	_float fResult = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition());
 	
 	if ((315.f <= fResult && fResult < 360.f) || (45.f > fResult && 0.f <= fResult))
 		Set_2D_Direction(F_DIRECTION::UP);

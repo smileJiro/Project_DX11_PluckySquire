@@ -78,10 +78,10 @@ _bool CDetectionField::IsTarget_In_Detection()
 		return false;
 
 	//거리 먼저 판단(일단 오프셋 적용안했음)
-	if (m_fRange >= m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position()))
+	if (m_fRange >= m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition()))
 	{
 		//이후 각도로 판단 (예외처리는....)
-		_float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_Position() - m_pOwner->Get_Position());
+		_float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 		_float fLookAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
 		_float fRightAngle = m_pGameInstance->Clamp_Degrees(fLookAngle + m_fFOVX / 2.f);
 		_float fLeftAngle = m_pGameInstance->Clamp_Degrees(fLookAngle - m_fFOVX / 2.f);

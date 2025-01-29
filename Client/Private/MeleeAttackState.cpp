@@ -53,7 +53,7 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 		//АјАн
 		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
 		}
 		m_pOwner->Change_Dir();
 		m_pOwner->Attack(_fTimeDelta);
