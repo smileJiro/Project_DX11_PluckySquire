@@ -28,7 +28,7 @@ HRESULT CParticle_Module::Initialize(const json& _jsonModuleInfo)
     {
     case MODULENONE:
         break;
-    case INIT_VELOCITY_POINT:
+    case POINT_VELOCITY:
     {
         m_eApplyData = TRANSLATION;
 
@@ -43,7 +43,7 @@ HRESULT CParticle_Module::Initialize(const json& _jsonModuleInfo)
 
         break;
     }
-    case INIT_VELOCITY_LINEAR:
+    case LINEAR_VELOCITY:
     {
         m_eApplyData = TRANSLATION;
 
@@ -104,6 +104,33 @@ HRESULT CParticle_Module::Initialize(const json& _jsonModuleInfo)
 
         break;
     }
+
+    case POINT_ACCELERATION:
+    {
+        m_eApplyData = TRANSLATION;
+
+        if (false == _jsonModuleInfo.contains("Origin"))
+            return E_FAIL;
+        if (FAILED(Add_Float3("Origin", _jsonModuleInfo)))
+            return E_FAIL;
+
+        if (false == _jsonModuleInfo.contains("Amount"))
+            return E_FAIL;
+        if (FAILED(Add_Float3("Amount", _jsonModuleInfo)))
+            return E_FAIL;
+
+        break;
+    }
+    case LIMIT_ACCELERATION:
+    {
+        m_eApplyData = TRANSLATION;
+
+        if (false == _jsonModuleInfo.contains("Amount"))
+            return E_FAIL;
+        m_FloatDatas.emplace("Amount", _jsonModuleInfo["Amount"]);
+
+        break;
+    }
     default:
         break;
     }
@@ -122,12 +149,12 @@ void CParticle_Module::Update_Translations(_float _fTimeDelta, _float4* _pPositi
 
     switch (m_eModuleType)
     {
-    case INIT_VELOCITY_POINT:
+    case POINT_VELOCITY:
     {
         XMStoreFloat3(_pVelocity, XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin"]) * m_FloatDatas["Amount"]);
         break;
     }   
-    case INIT_VELOCITY_LINEAR:
+    case LINEAR_VELOCITY:
     {
 
         *_pVelocity = m_Float3Datas["Amount"];
@@ -154,9 +181,7 @@ void CParticle_Module::Update_Translations(_float _fTimeDelta, _float4* _pPositi
         break;
     }
     case VORTEX_ACCELERATION:
-    {
-      
-
+    {   
         _vector vDiff = XMVectorSetW(XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin Point"]), 0.f);
         _vector vR = vDiff - XMVector3Dot(XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"])), vDiff) * XMLoadFloat3(&m_Float3Datas["Axis"]);
         //// ¹Ð¾î³»´Â Èû + ´ç±â´Â Èû
@@ -165,6 +190,23 @@ void CParticle_Module::Update_Translations(_float _fTimeDelta, _float4* _pPositi
         //
         XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) + (vVortex + vPull) * _fTimeDelta);
 
+
+        break;
+    }
+
+    case POINT_ACCELERATION:
+    {
+        XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) +
+        XMVectorGetX(XMVector3Length(XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin"]))) * _fTimeDelta * XMLoadFloat3(&m_Float3Datas["Amount"]));
+
+        break;
+    }
+    case LIMIT_ACCELERATION:
+    {
+        _vector vAccel = XMLoadFloat3(_pAcceleration);
+        _float fLength = XMVectorGetX(XMVector3Length(vAccel));
+
+        XMStoreFloat3(_pAcceleration, XMVector3Normalize(vAccel) * max(fLength, m_FloatDatas["Amount"]));
 
         break;
     }
@@ -226,11 +268,11 @@ HRESULT CParticle_Module::Initialize(MODULE_TYPE eType, const _string& _strTypeN
     {
     case MODULENONE:
         break;
-    case INIT_VELOCITY_LINEAR:
+    case LINEAR_VELOCITY:
         m_isInit = true;
         m_Float3Datas.emplace("Amount", _float3(0.f, 0.f, 0.f));
         break;
-    case INIT_VELOCITY_POINT:
+    case POINT_VELOCITY:
         m_isInit = true;
         m_Float3Datas.emplace("Origin", _float3(0.f, 0.f, 0.f));
         m_FloatDatas.emplace("Amount", 0.f);
@@ -252,6 +294,15 @@ HRESULT CParticle_Module::Initialize(MODULE_TYPE eType, const _string& _strTypeN
         m_FloatDatas.emplace("Pull Amount", 0.f);
         m_Float3Datas.emplace("Axis", _float3(0.f, 1.f, 0.f));
         m_Float3Datas.emplace("Origin Point", _float3(0.f, 0.f, 0.f));
+        break;
+    case POINT_ACCELERATION:
+        m_isInit = false;
+        m_Float3Datas.emplace("Origin", _float3(0.f, 0.f, 0.f));
+        m_Float3Datas.emplace("Amount", _float3(0.f, 0.f, 0.f));
+        break;
+    case LIMIT_ACCELERATION:
+        m_isInit = false;
+        m_FloatDatas.emplace("Amount", 10.f);
         break;
     }
 

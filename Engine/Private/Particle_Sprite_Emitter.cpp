@@ -10,6 +10,8 @@ CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(ID3D11Device* _pDevice, ID3D1
 
 CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitter& _Prototype)
 	: CParticle_Emitter(_Prototype)
+    , m_fAlphaDiscard(_Prototype.m_fAlphaDiscard)
+    , m_fRGBDiscard(_Prototype.m_fRGBDiscard)
 {
     if (nullptr != _Prototype.m_pTextureCom)
         m_pTextureCom = static_cast<CTexture*>(_Prototype.m_pTextureCom->Clone(nullptr));
@@ -67,6 +69,12 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     m_pTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
 #endif //  _DEBUG
 
+    if (_jsonInfo.contains("Discard_RGB"))
+        m_fRGBDiscard = _jsonInfo["Discard_RGB"];
+
+    if (_jsonInfo.contains("Discard_A"))
+        m_fAlphaDiscard = _jsonInfo["Discard_A"];
+
 
     if (false == _jsonInfo.contains("Buffer"))
         return E_FAIL;
@@ -105,7 +113,8 @@ void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
     __super::Late_Update(_fTimeDelta);
 
     if (m_isActive)
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
+        //m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
+        m_pGameInstance->Add_RenderObject_New(2000, 70, this);
 }
 
 HRESULT CParticle_Sprite_Emitter::Render()
@@ -115,7 +124,7 @@ HRESULT CParticle_Sprite_Emitter::Render()
 
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
-
+    
     if (CVIBuffer_Instance::UNSET == m_pParticleBufferCom->Get_DataType(CVIBuffer_Instance::P_ROTATION))
     {
         if (FAILED(m_pShaderCom->Begin(1)))
@@ -126,8 +135,8 @@ HRESULT CParticle_Sprite_Emitter::Render()
         if (FAILED(m_pShaderCom->Begin(2)))
             return E_FAIL;
     }
-
-
+    
+    
     if (FAILED(m_pParticleBufferCom->Bind_BufferDesc()))
         return E_FAIL;
     if (FAILED(m_pParticleBufferCom->Render()))
@@ -138,7 +147,8 @@ HRESULT CParticle_Sprite_Emitter::Render()
 
 void CParticle_Sprite_Emitter::Reset()
 {
-    m_pParticleBufferCom->Reset_Buffers();
+    if (m_pParticleBufferCom)
+        m_pParticleBufferCom->Reset_Buffers();
 }
 
 HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
@@ -155,15 +165,20 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
     }
 
 
-
     if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_Near", m_pGameInstance->Get_NearZ(), sizeof(_float))))
+    //if (FAILED(m_pShaderCom->Bind_RawValue("g_Near", m_pGameInstance->Get_NearZ(), sizeof(_float))))
+    //    return E_FAIL;
+
+    //if (FAILED(m_pShaderCom->Bind_RawValue("g_Far", m_pGameInstance->Get_FarZ(), sizeof(_float))))
+    //    return E_FAIL;
+
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_AlphaTest", &m_fAlphaDiscard, sizeof(_float))))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_RGBTest", &m_fRGBDiscard, sizeof(_float))))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_Far", m_pGameInstance->Get_FarZ(), sizeof(_float))))
-        return E_FAIL;
         
 
 
@@ -173,11 +188,13 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
-        return E_FAIL;
+    //if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
+    //    return E_FAIL;
 
     _float4 vLook;
-    XMStoreFloat4(&vLook, -1.f * m_pGameInstance->Get_CameraVector(CTransform::STATE_LOOK));
+    XMStoreFloat4(&vLook, m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW).r[2]);
+
+    //XMStoreFloat4(&vLook, -1.f * m_pGameInstance->Get_CameraVector(CTransform::STATE_LOOK));
     if (FAILED(m_pShaderCom->Bind_RawValue("g_vLook", &vLook, sizeof(_float4))))
         return E_FAIL;
 
@@ -273,6 +290,16 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
     {
         __super::Tool_Update(_fTimeDelta);
 
+        if (ImGui::InputFloat("Alpha Test", &m_fAlphaDiscard, 0.001f, 0.1f, "%.4f"))
+        {
+            clamp(m_fAlphaDiscard, 0.f, 1.f);
+        }
+
+        if (ImGui::InputFloat("RGB Test", &m_fRGBDiscard, 0.001f, 0.1f, "%.4f"))
+        {
+            clamp(m_fRGBDiscard, 0.f, 3.f);
+        }
+
         ImGui::TreePop();
     }
 
@@ -320,6 +347,8 @@ HRESULT CParticle_Sprite_Emitter::Save(json& _jsonOut)
         return E_FAIL;
 
     _jsonOut["Texture"] = WSTRINGTOSTRING(*m_pTextureCom->Get_SRVName(0)).c_str();
+    _jsonOut["Discard_RGB"] = m_fRGBDiscard;
+    _jsonOut["Discard_A"] = m_fAlphaDiscard;
 
 
     json jsonBufferInfo;

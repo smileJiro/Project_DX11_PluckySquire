@@ -23,6 +23,7 @@ public:
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
+	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 
 private:
 	void					Create_Arm();

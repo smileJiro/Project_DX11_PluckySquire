@@ -33,7 +33,7 @@
                             -0.5,
                             0.0
                         ],
-                        "Type": "INIT_VELOCITY_POINT"
+                        "Type": "POINT_VELOCITY"
                     },
                     {
                         "Amount": 0.30000001192092896,
@@ -104,7 +104,6 @@
                     "V_Distribution": 0.0
                 },
                 "Spawn": {
-                    "Count": 1,
                     "Time": 0.0,
                     "Type": "BURST"
                 },
@@ -120,6 +119,8 @@
                     ]
                 }
             },
+            "Discard_A": 0.0,
+            "Discard_RGB": 0.0,
             "Event": 0,
             "LoopTime": 0,
             "Parent": true,

@@ -247,9 +247,6 @@
     <Filter Include="98.ShaderFiles\ComputeShaders">
       <UniqueIdentifier>{52865deb-a86a-424b-ac6d-137811f61354}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Module">
-      <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\14.RenderGroup">
       <UniqueIdentifier>{8040b157-eed4-4d9a-afbc-c3d05d96a39e}</UniqueIdentifier>
     </Filter>
@@ -267,6 +264,9 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Point_Particle">
       <UniqueIdentifier>{1943b2ce-e47d-4ba7-94b0-25c928efb2b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Module">
+      <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -68,6 +68,10 @@ public:
 private:
 	_string						m_strModelPath;
 
+private:
+	HRESULT Ready_Meshes(ifstream& _inFile, _uint _iNumInstance);
+
+
 public:
 	static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg);
 

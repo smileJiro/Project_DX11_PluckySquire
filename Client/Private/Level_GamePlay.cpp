@@ -43,6 +43,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_Effects(TEXT("Layer_Effect"));
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
@@ -641,6 +642,24 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
+{
+	CParticle_System::PARTICLE_SYSTEM_DESC Desc = {};
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+	Desc.isCoordChangeEnable = false;
+	Desc.iSpriteShaderLevel = LEVEL_STATIC;
+	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	Desc.iModelShaderLevel = LEVEL_STATIC;
+	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), LEVEL_GAMEPLAY, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

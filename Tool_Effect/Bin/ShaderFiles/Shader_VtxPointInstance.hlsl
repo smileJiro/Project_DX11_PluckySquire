@@ -5,8 +5,10 @@ Texture2D       g_DiffuseTexture;
 
 vector          g_vCamPosition, g_vLook;
 float4          g_vParticleColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-float g_Near;
-float g_Far;
+float g_Near, g_Far;
+float g_AlphaTest, g_RGBTest;
+
+
 
 // Weight에 대한 식은 총 4개
 float FUNC_WEIGHT1(float fDepth, float fAlpha)
@@ -346,10 +348,13 @@ PS_OUT_WEIGHTEDBLENDED PS_WEIGHT_BLENDED(PS_IN In)
         
     
     float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
-    vColor *= In.vColor;
-    if (0.05f > vColor.a)
+    if (g_RGBTest > vColor.r + vColor.g + vColor.b)
+        discard;
+    if (g_AlphaTest > vColor.a)
         discard;
 
+    vColor *= In.vColor;
+    
     // 아래 식 추가 선택
     /*max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a)*/
     // Weight 식 선택 후 적용, 혹은 1.0

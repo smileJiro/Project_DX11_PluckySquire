@@ -33,7 +33,7 @@
                             -0.5,
                             0.0
                         ],
-                        "Type": "INIT_VELOCITY_POINT"
+                        "Type": "POINT_VELOCITY"
                     },
                     {
                         "Amount": 0.30000001192092896,

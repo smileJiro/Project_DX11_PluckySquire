@@ -374,7 +374,7 @@ void CVIBuffer_Point_Particle::Set_Position(_int _iIndex)
 		break;
 
 	}
-
+	vPosition = XMVectorSetW(vPosition, 1.f);
 	XMStoreFloat4(&m_pInstanceVertices[_iIndex].vTranslation, vPosition);
 }
 

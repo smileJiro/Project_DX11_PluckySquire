@@ -441,6 +441,7 @@ void CVIBuffer_Mesh_Particle::Set_Position(_int _iIndex)
 
 	}
 
+	vPosition = XMVectorSetW(vPosition, 1.f);
 	XMStoreFloat4(&m_pInstanceVertices[_iIndex].vTranslation, vPosition);
 }
 
@@ -512,6 +513,112 @@ void CVIBuffer_Mesh_Particle::Free()
 }
 
 #ifdef _DEBUG
+
+HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix)
+{
+	if (FAILED(__super::Initialize_Prototype()))
+		return E_FAIL;
+
+	_inFile.read(reinterpret_cast<char*>(&m_iMaterialIndex), sizeof(_uint));
+
+	_uint iNameLength = 0;
+	_inFile.read(reinterpret_cast<char*>(&iNameLength), sizeof(_uint));
+	_inFile.read(m_szName, iNameLength);
+	m_szName[iNameLength] = '\0';
+
+	// Mesh 정보 읽어들이기
+#pragma region VERTEX_BUFFER
+	m_iNumVertexBuffers = 2;
+	m_iNumInstances = _iNumInstances;
+
+	_inFile.read(reinterpret_cast<char*>(&m_iNumVertices), sizeof(_uint));
+
+	m_iIndexStride = sizeof(_uint);
+	_uint iNumFaces = 0;
+	_inFile.read(reinterpret_cast<char*>(&iNumFaces), sizeof(_uint));
+#ifdef _DEBUG
+	m_iNumFaces = iNumFaces;
+#endif
+
+	m_iNumIndices = iNumFaces * 3;
+	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
+	m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+	if (FAILED(Ready_VertexBuffer(_inFile, _PreTransformMatrix)))
+		return E_FAIL;
+#pragma endregion
+
+#pragma region INDEX_BUFFER
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+
+	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
+	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.StructureByteStride = /*m_iIndexStride*/0;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	_uint* pIndices = new _uint[m_iNumIndices];
+	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
+
+	_uint		iNumIndices = { 0 };
+
+	for (size_t i = 0; i < iNumFaces; i++)
+	{
+		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+	}
+
+
+	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceDesc.pSysMem = pIndices;
+
+	if (FAILED(__super::Create_Buffer(&m_pIB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pIndices);
+
+#pragma endregion
+
+#pragma region INSTANCE_BUFFER
+	m_iInstanceStride = sizeof(VTXMESHINSTANCE);
+	m_iNumIndexCountPerInstance = iNumFaces * 3;
+
+	ZeroMemory(&m_InstanceBufferDesc, sizeof m_InstanceBufferDesc);
+
+	m_InstanceBufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstances;
+	m_InstanceBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_InstanceBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	m_InstanceBufferDesc.StructureByteStride = m_iInstanceStride;
+	m_InstanceBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	m_InstanceBufferDesc.MiscFlags = 0;
+
+	m_pInstanceVertices = new VTXMESHINSTANCE[m_iNumInstances];
+	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
+
+
+	for (size_t i = 0; i < m_iNumInstances; ++i)
+	{
+		Set_Instance(i);
+	}
+
+	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
+	m_InstanceInitialDesc.pSysMem = m_pInstanceVertices;
+
+#pragma endregion
+
+	if (FAILED(__super::Initialize(nullptr)))
+		return E_FAIL;
+
+	if (FAILED(Initialize_Particles()))
+		return E_FAIL;
+
+	return S_OK;
+}
 
 void CVIBuffer_Mesh_Particle::Tool_Setting()
 {
@@ -640,6 +747,19 @@ HRESULT CVIBuffer_Mesh_Particle::Save_Buffer(json& _jsonBufferInfo)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+CVIBuffer_Mesh_Particle* CVIBuffer_Mesh_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix)
+{
+	CVIBuffer_Mesh_Particle* pInstance = new CVIBuffer_Mesh_Particle(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype(_inFile, _iNumInstances, _PreTransformMatrix)))
+	{
+		MSG_BOX("Failed to Created : CVIBuffer_Mesh_Particle");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 #endif

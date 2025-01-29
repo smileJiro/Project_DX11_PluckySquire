@@ -190,6 +190,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Bin\DataFiles\Effects\Portal.json" />
     <None Include="..\Bin\DataFiles\Effects\TestEffect.json" />
     <None Include="..\Bin\DataFiles\Effects\TestParticleSystem.json" />
     <None Include="..\Bin\DataFiles\Effects\TestParticleSystem22.json" />

@@ -54,6 +54,7 @@ private:
 	{
 		return Load_Models_FromJson(_iLevId, (_wstring(_szJsonFilePath) + _wstring(_szJsonFileName)).c_str(), _PreTransformMatrix);
 	}
+	HRESULT Load_Directory_Effects(LEVEL_ID _iLevID, const _tchar* _szJsonFilePath);
 
 	HRESULT Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName);
 public:

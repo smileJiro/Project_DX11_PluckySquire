@@ -42,7 +42,7 @@ protected:
 
 
 protected:
-	SPAWN_TYPE					m_eSpawnType = SPAWN;
+	SPAWN_TYPE					m_eSpawnType = BURST;
 	_float						m_fAccSpawnTime = 0.f;
 	_float						m_fSpawnTime = 0.f;
 	_uint						m_iSpawnIndex = 0;

@@ -393,6 +393,9 @@ void CParticle_Mesh_Emitter::Tool_Update(_float _fTimeDelta)
 	else
 	{
 		static _int iNumInstanceInput = 1;
+		static _char szInputModelPath[MAX_PATH] = "../Bin/Resources/Models/FX/";
+
+		ImGui::InputText("Model Path", szInputModelPath, MAX_PATH);
 
 		if (ImGui::InputInt("Instance Count", &iNumInstanceInput))
 		{
@@ -404,11 +407,50 @@ void CParticle_Mesh_Emitter::Tool_Update(_float _fTimeDelta)
 
 		if (ImGui::Button("Create_Buffer"))
 		{
-			MSG_BOX("아직 불가능해요~");
-			//m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, iNumInstanceInput);
-			//
-			//if (nullptr != m_pParticleBufferCom)
-			//	m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
+			XMMATRIX matPreTransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+			matPreTransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+			XMStoreFloat4x4(&m_PreTransformMatrix, matPreTransform);
+
+			m_strModelPath = szInputModelPath;
+
+			std::ifstream inFile(m_strModelPath.c_str(), std::ios::binary);
+			if (!inFile) {
+				string str = "파일을 열 수 없습니다.";
+				str += m_strModelPath;
+				MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+			}
+			
+			else
+			{
+				_bool bAnim;
+				inFile.read(reinterpret_cast<char*>(&bAnim), 1);
+				if (FAILED(Ready_Bones(inFile, -1)))
+				{
+					MSG_BOX("Bone 실패 !!");
+				}
+
+				else
+				{
+					if (FAILED(Ready_Meshes(inFile, iNumInstanceInput)))
+					{
+						MSG_BOX("Mesh 실패 !!");
+					}
+
+					else
+					{
+						if (FAILED(Ready_Materials(inFile, m_strModelPath.c_str())))
+						{
+							MSG_BOX("Material 실패 !!");
+						}
+					}
+
+				}
+				
+				
+
+				inFile.close();
+			}
+			
 		}
 
 	}
@@ -442,6 +484,22 @@ HRESULT CParticle_Mesh_Emitter::Save(json& _jsonOut)
 	}
 
 	_jsonOut["Buffer"] = jsonBufferInfo;
+
+	return S_OK;
+}
+
+
+HRESULT CParticle_Mesh_Emitter::Ready_Meshes(ifstream& _inFile, _uint _iNumInstance)
+{
+	_inFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
+	for (_uint i = 0; i < m_iNumMeshes; i++)
+	{
+		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _iNumInstance, XMLoadFloat4x4(&m_PreTransformMatrix));
+		if (nullptr == pMesh)
+			return E_FAIL;
+
+		m_ParticleMeshes.push_back(pMesh);
+	}
 
 	return S_OK;
 }
