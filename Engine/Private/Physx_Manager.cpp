@@ -85,8 +85,7 @@ HRESULT CPhysx_Manager::Initialize()
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eJOINT_LOCAL_FRAMES, 1.0f); // 관절 로컬 프레임
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
 
-	
-	
+
 	/* Debug */
 	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 10000);
 	if (nullptr == m_pVIBufferCom)
@@ -171,6 +170,21 @@ HRESULT CPhysx_Manager::Initialize_Physics()
 
 	/* Create Physics */
 	m_pPxPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pPxFoundation, TolerancesScale, true, m_pPxPvd);
+
+
+
+	/* PxCookingParams 설정 */
+	PxCookingParams CookingParams(TolerancesScale);
+	CookingParams.meshPreprocessParams = PxMeshPreprocessingFlag::eWELD_VERTICES; // 중복된 정점 병합
+	CookingParams.meshWeldTolerance = 0.001f; // 병합 허용 오차
+
+	// 4. PxCooking 생성
+	m_pPxCooking = PxCreateCooking(PX_PHYSICS_VERSION, *m_pPxFoundation, CookingParams);
+	if (nullptr == m_pPxCooking)
+	{
+		MSG_BOX("PxCreateCooking failed!");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -272,6 +286,7 @@ HRESULT CPhysx_Manager::Initialize_PVD()
 
 	return S_OK;
 }
+
 
 CPhysx_Manager* CPhysx_Manager::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
