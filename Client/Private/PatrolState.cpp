@@ -63,12 +63,23 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 			return;
 		//적 발견 시 ALERT 전환
 		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
-		{
-			_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
-			if (dis <= Get_CurCoordRange(MONSTER_STATE::ALERT))
+		{	
+			if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 			{
-				Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
-				return;
+				_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
+				if (fDis <= m_fAlert2DRange)
+				{
+					Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+					return;
+				}
+			}
+			else if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+			{
+				if (m_pOwner->IsTarget_In_Detection())
+				{
+					Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+					return;
+				}
 			}
 		}
 	}

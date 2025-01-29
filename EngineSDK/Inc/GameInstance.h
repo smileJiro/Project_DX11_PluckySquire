@@ -202,7 +202,8 @@ public: /* For. GlobalFunction_Manager */
 	_float				Lerp(_float _fLeft, _float _fRight, _float _fRatio);
 	_fvector			Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio);
 	_bool				MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix);
-	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);
+	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);		//노말벡터 기준으로 방향 벡터 간 각도 구함 (0-360도 간)
+	_float				Clamp_Degrees(_float _fDegrees);		//0~360도 사이로 만듦
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();

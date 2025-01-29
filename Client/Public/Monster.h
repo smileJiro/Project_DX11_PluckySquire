@@ -1,8 +1,13 @@
 #pragma once
 #include "Character.h"
 
+BEGIN(Engine)
+class CDebugDraw_For_Client;
+END
+
 BEGIN(Client)
 class CFSM;
+class CDetectionField;
 class CMonster abstract : public CCharacter
 {
 public:
@@ -65,6 +70,7 @@ public:
 	virtual void				Change_Animation() {};
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void						Change_Dir();
+	_bool						IsTarget_In_Detection();
 
 protected:
 	void Delay_On() 
@@ -93,6 +99,9 @@ protected:
 	_uint		m_iPreState = {};
 	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
+	CDetectionField* m_pDetectionField = { nullptr };
+	CDebugDraw_For_Client* m_pDraw = { nullptr };
+	
 	_float m_fAlertRange = { 0.f };
 	_float m_fChaseRange = { 0.f };
 	_float m_fAttackRange = { 0.f };

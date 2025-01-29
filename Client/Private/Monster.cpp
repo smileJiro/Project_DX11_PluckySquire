@@ -2,6 +2,7 @@
 #include "Monster.h"
 #include "GameInstance.h"
 #include "FSM.h"
+#include "DetectionField.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -114,6 +115,11 @@ void CMonster::Change_Dir()
 		Set_2D_Direction(F_DIRECTION::LEFT);
 }
 
+_bool CMonster::IsTarget_In_Detection()
+{
+	return m_pDetectionField->IsTarget_In_Detection();
+}
+
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)
 {
 	m_e2DDirection = _eDir;
@@ -191,6 +197,7 @@ void CMonster::Free()
 		Safe_Release(m_pTarget);
 
 	Safe_Release(m_pFSM);
+	Safe_Release(m_pDetectionField);
 
 	__super::Free();
 }

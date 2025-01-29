@@ -36,6 +36,7 @@
 #include "set"
 #include "StateMachine.h"
 #include "MapObject.h"
+#include "DetectionField.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -62,6 +63,8 @@
 // Sample
 #include "SampleBook.h"
 #include "2DDefault_RenderObject.h"
+
+#include "DebugDraw_For_Client.h"
 
 
 
@@ -364,6 +367,17 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DetectionField"),
+        CDetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    #ifdef _DEBUG
+    
+    #endif // _DEBUG
+
+    
 
 
 

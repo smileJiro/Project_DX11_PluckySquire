@@ -242,8 +242,6 @@ HRESULT CBeetle::Ready_PartObjects()
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
     /* ÅÂ¿õ : ·»´õ·¯ °ü·Ã Ãß°¡ */
     BodyDesc.iRenderGroupID_2D = RG_3D;
     BodyDesc.iPriorityID_2D = PR3D_BOOK2D;

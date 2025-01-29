@@ -5,6 +5,7 @@
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "Projectile_BarfBug.h"
+#include "DetectionField.h"
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -160,7 +161,6 @@ void CBarfBug::Update(_float _fTimeDelta)
 
 void CBarfBug::Late_Update(_float _fTimeDelta)
 {
-
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -434,20 +434,40 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 HRESULT CBarfBug::Ready_Components()
 {
     /* Com_FSM */
-    CFSM::FSMDESC Desc;
-    Desc.fAlertRange = m_fAlertRange;
-    Desc.fChaseRange = m_fChaseRange;
-    Desc.fAttackRange = m_fAttackRange;
-    Desc.fAlert2DRange = m_fAlert2DRange;
-    Desc.fChase2DRange = m_fChase2DRange;
-    Desc.fAttack2DRange = m_fAttack2DRange;
-    Desc.isMelee = false;
-    Desc.pOwner = this;
+    CFSM::FSMDESC FSMDesc;
+    FSMDesc.fAlertRange = m_fAlertRange;
+    FSMDesc.fChaseRange = m_fChaseRange;
+    FSMDesc.fAttackRange = m_fAttackRange;
+    FSMDesc.fAlert2DRange = m_fAlert2DRange;
+    FSMDesc.fChase2DRange = m_fChase2DRange;
+    FSMDesc.fAttack2DRange = m_fAttack2DRange;
+    FSMDesc.isMelee = false;
+    FSMDesc.pOwner = this;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
-        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
+        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
+
+    /* Com_DebugDraw_For_Client */
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
+        return E_FAIL;
+
+    /* Com_DetectionField */
+    CDetectionField::DETECTIONFIELDDESC DetectionDesc;
+    DetectionDesc.fRange = m_fAlertRange;
+    DetectionDesc.fFOVX = 45.f;
+    DetectionDesc.fFOVY = 20.f;
+    DetectionDesc.fOffset = 1.f;
+    DetectionDesc.pOwner = this;
+    DetectionDesc.pTarget = m_pTarget;
+    DetectionDesc.pDraw = m_pDraw;
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+        TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
+        return E_FAIL;
 
     return S_OK;
 }

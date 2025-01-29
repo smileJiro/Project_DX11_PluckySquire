@@ -537,6 +537,9 @@
     <ClInclude Include="..\Public\RenderGroup_MRT.h">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_MRT</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw_For_Client.h">
+      <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -793,6 +796,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup.cpp">
       <Filter>01.Utility\14.RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw_For_Client.cpp">
+      <Filter>01.Utility\04.Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

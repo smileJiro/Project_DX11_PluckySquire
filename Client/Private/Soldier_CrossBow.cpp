@@ -254,6 +254,12 @@ HRESULT CSoldier_CrossBow::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
+    /* ÅÂ¿õ : ·»´õ·¯ °ü·Ã Ãß°¡ */
+    BodyDesc.iRenderGroupID_2D = RG_3D;
+    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
+
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;

@@ -159,6 +159,19 @@ _float CGlobalFunction_Manager::Get_Angle_Between_Vectors(_fvector _vNormal, _fv
 	return fAngle;
 }
 
+_float CGlobalFunction_Manager::Clamp_Degrees(_float _fDegrees)
+{
+	_float fResult = _fDegrees;
+
+	if (0.f > _fDegrees)
+		fResult = _fDegrees + 360.f;
+
+	else if (360.f <= _fDegrees)
+		fResult = _fDegrees - 360.f;
+
+	return fResult;
+}
+
 _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 {
 	POINT ptCursorPos;
