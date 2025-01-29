@@ -482,8 +482,6 @@ HRESULT CRenderer::Render_After_Effect()
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_RevealageTexture", TEXT("Target_EffectRevealage"))))
         return E_FAIL;
 
-
-
     /* Final Pass */
     m_pShader->Begin((_uint)PASS_DEFERRED::AFTER_EFFECT);
 

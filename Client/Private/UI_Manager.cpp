@@ -135,7 +135,8 @@ HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 	}
 	m_pShopPanels.clear();
 
-	
+	Uimgr->Set_isMakeItem(false);
+
 
 
 	return S_OK;
@@ -150,6 +151,7 @@ HRESULT CUI_Manager::Level_Enter(_int _iChangeLevelID)
 
 void CUI_Manager::Free()
 {
+	
 	Safe_Release(m_pGameInstance);
 
 	for (auto iter : m_pSettingPanels)
@@ -165,6 +167,8 @@ void CUI_Manager::Free()
 	m_pShopPanels.clear();
 	
 	Safe_Release(m_pPlayer);
+
+	
 
 	__super::Free();
 }

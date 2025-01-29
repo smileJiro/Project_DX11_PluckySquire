@@ -27,7 +27,7 @@ public:
     _float					Get_Progerss();
     _float	                Get_AnimSpeedMagnifier(_uint iAnimIndex);
     _bool	                Is_LoopAnimation(_uint iAnimIndex);
-
+    void						Get_AnimationNames(list<string>& _Names);
 private:
 
 public:

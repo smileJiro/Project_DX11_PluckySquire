@@ -37,6 +37,7 @@ public:
 
 	_float Get_TrackPosition();
 	_float Get_SpeedMagnifier() { return m_fSpeedMagnifier; }
+	string Get_Name() { return m_szName; }
 	_bool Is_LoopAnim() { return m_bLoop; }
 private:
 	_uint m_iNameLength = 0;

@@ -294,6 +294,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     pShapeUserData->iShapeUse = _ShapeData.iShapeUse;
     pShape->userData = pShapeUserData;
     m_pGameInstance->Add_ShapeUserData(pShapeUserData);
+
     m_pActor->attachShape(*pShape);
 
 #ifdef _DEBUG

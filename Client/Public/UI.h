@@ -62,7 +62,7 @@ public:
 public:
 	typedef struct tagUIDesc : public CUIObject::UIOBJECT_DESC
 	{
-		const _wstring strProtoTypeTag;
+		 _wstring strLayerTag;
 		_uint			iTextureCount; // 어떤 스킬의 어떤 레벨의 텍스쳐 이니?
 		SETTINGPANEL	eSettingPanelKind;
 		SHOPPANEL		eShopPanelKind; 

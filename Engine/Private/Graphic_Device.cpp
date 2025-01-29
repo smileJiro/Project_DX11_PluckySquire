@@ -180,10 +180,10 @@ HRESULT CGraphic_Device::Ready_BackBufferRenderTargetView()
 	return S_OK;
 }
 
-HRESULT CGraphic_Device::Ready_DepthStencilView(_uint _iWinCX, _uint _iWinCY)
+ID3D11DepthStencilView* CGraphic_Device::Ready_DepthStencilView(_uint _iWinCX, _uint _iWinCY)
 {
 	if (nullptr == m_pDevice)
-		return E_FAIL;
+		return nullptr;
 
 	ID3D11Texture2D* pDepthStencilTexture = nullptr;
 
@@ -210,14 +210,14 @@ HRESULT CGraphic_Device::Ready_DepthStencilView(_uint _iWinCX, _uint _iWinCY)
 	TextureDesc.MiscFlags = 0;
 
 	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &pDepthStencilTexture)))
-		return E_FAIL;
+		return nullptr;
 
 	/* RenderTargetView */
 	/* ShaderResourceView */
 	/* DepthStencilView */
 
 	if (FAILED(m_pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &m_pDepthStencilView)))
-		return E_FAIL;
+		return nullptr;
 
 	Safe_Release(pDepthStencilTexture);
 

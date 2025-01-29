@@ -2,12 +2,12 @@
 namespace Map_Tool
 {
 
-	_bool StyleButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE _eButtonType, const string& _strText)
+	_bool StyleButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE _eButtonType, const string& _strText, _float _fHeight)
 	{
 		switch (_eButtonType)
 		{
 		case Map_Tool::ALIGN_SQUARE:
-			return ImGui::Button(_strText.c_str(), ImVec2(-FLT_MIN, 1.5f * ImGui::GetTextLineHeightWithSpacing()));
+			return ImGui::Button(_strText.c_str(), ImVec2(-FLT_MIN, _fHeight * ImGui::GetTextLineHeightWithSpacing()));
 		case Map_Tool::MINI:
 			return ImGui::Button(_strText.c_str());
 		default:

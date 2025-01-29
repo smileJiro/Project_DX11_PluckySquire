@@ -20,6 +20,7 @@ HRESULT CLevel_3D_Map_Tool::Initialize(CImguiLogger* _pLogger)
 	if (nullptr == m_pToolManager)
 		return E_FAIL;
 
+	m_pGameInstance->Set_DebugRender(true);
 
 
 	return S_OK;
@@ -33,7 +34,7 @@ void CLevel_3D_Map_Tool::Update(_float _fTimeDelta)
 HRESULT CLevel_3D_Map_Tool::Render()
 {
 #ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	SetWindowText(g_hWnd, TEXT("Mojam 3D Map Tool."));
 #endif
 
 	return S_OK;

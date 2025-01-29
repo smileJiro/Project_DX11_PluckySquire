@@ -13,7 +13,7 @@ private:
 
 public:
 	HRESULT Initialize();
-	HRESULT Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor);
+	HRESULT Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _pReturnRT = nullptr);
 	HRESULT Add_MRT(const _wstring& _strMRTTag, const _wstring& _strTargetTag);
 	HRESULT Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool isClear = true); /* 지정한 RenderTargets를 셰이더에 바인딩하고 그리기 준비를 하는 */
 	HRESULT End_MRT(); /* 렌더링을 마친 후, 기존의 BackRTV를 다시 바인딩 한다. */

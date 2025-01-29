@@ -56,7 +56,8 @@ void CDialog::Update(_float _fTimeDelta)
 
 void CDialog::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	//__super::Late_Update(_fTimeDelta);
+	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 }
 
 HRESULT CDialog::Render()
@@ -207,8 +208,12 @@ HRESULT CDialog::DisplayText()
 	switch (currentLine.location)
 	{
 	case LOC_DEFAULT:  // 가운데 아래
-	{
-		vTextPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
+	{	
+		// 3D rlwns
+		//vTextPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
+
+
+		vTextPos = _float2(g_iWinSizeX / 1.25f, g_iWinSizeY  * 1.77f);
 	}
 	break;
 
@@ -237,11 +242,11 @@ HRESULT CDialog::DisplayText()
 
 	// 대상 이름 출력
 	wsprintf(m_tFont, currentLine.Talker.c_str());
-	pGameInstance->Render_Font(TEXT("Font40"), m_tFont, vTextPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font54"), m_tFont, vTextPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	
 	// 대화 내용 출력
 	wsprintf(m_tFont, strDisplaytext.c_str());
-	pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(vTextPos.x - 90.f, vTextPos.y + 70.f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font40"), m_tFont, _float2(vTextPos.x - 120.f, vTextPos.y + 120.f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	
 	Safe_Release(pGameInstance);
 

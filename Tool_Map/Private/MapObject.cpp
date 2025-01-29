@@ -99,10 +99,13 @@ void CMapObject::Late_Update(_float _fTimeDelta)
 {
 
     /* Add Render Group */
-    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
-    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+    if (m_eMode != PREVIEW)
+    {
+        if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+            m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+        else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+            m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+    }
 
     /* Update Parent Matrix */
     CPartObject::Late_Update(_fTimeDelta);
@@ -139,6 +142,42 @@ HRESULT CMapObject::Render()
 
 HRESULT CMapObject::Render_Shadow()
 {
+    return S_OK;
+}
+
+HRESULT CMapObject::Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat)
+{
+
+    CPartObject::Update(0.f);
+    CPartObject::Late_Update(0.f);
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ViewMatrix", _ViewMat)))
+        return E_FAIL;
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ProjMatrix", _ProjMat)))
+        return E_FAIL;
+
+    switch (m_eColorShaderMode)
+    {
+        case Engine::C3DModel::COLOR_DEFAULT:
+            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
+                return E_FAIL;
+            m_iShaderPasses[COORDINATE_3D] = 3;
+            break;
+        case Engine::C3DModel::MIX_DIFFUSE:
+            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
+                return E_FAIL;
+            m_iShaderPasses[COORDINATE_3D] = 4;
+            break;
+        default:
+            m_iShaderPasses[COORDINATE_3D] = 0;
+            break;
+    }
+
+
+
+
+    CModelObject::Render();
     return S_OK;
 }
 

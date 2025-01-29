@@ -69,6 +69,14 @@ _float CTest3DModel::Get_AnimSpeedMagnifier(_uint iAnimIndex)
 	return static_cast<CToolAnimation3D*> (m_Animations[iAnimIndex])->Get_SpeedMagnifier();
 }
 
+void CTest3DModel::Get_AnimationNames(list<string>& _Names)
+{
+	for (auto& pAnimation : m_Animations)
+	{
+		_Names.push_back(static_cast<CToolAnimation3D*>(pAnimation)->Get_Name());
+	}
+}
+
 _bool CTest3DModel::Is_LoopAnimation(_uint iAnimIndex)
 {
 	if ((_int)(m_Animations.size() - 1) < (_int)iAnimIndex)
