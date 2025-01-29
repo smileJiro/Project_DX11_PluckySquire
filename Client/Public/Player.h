@@ -431,6 +431,7 @@ private:
 	class CPlayerSword* m_pSword = nullptr;
 
 	CGameObject* m_pCarryingObject = nullptr;
+
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

@@ -469,7 +469,7 @@ _float CPlayer::Get_AnimProgress()
 
 _bool CPlayer::Is_SwordEquiped()
 {
-	return m_pSword->Is_Active();
+    return m_pSword->Is_Active() && (false == m_pSword->Is_Flying());
 }
 
 _bool CPlayer::Is_CarryingObject()
