@@ -26,9 +26,9 @@ private:
 
 public:
 	HRESULT						Initialize_Prototype(const _tchar* _szFilePath);
-	virtual	HRESULT				Initialize_Prototype();
+	virtual	HRESULT				Initialize_Prototype() override;
 	HRESULT						Initialize(void* _pArg, const CParticle_System* _pPrototype);
-	HRESULT						Initialize();
+	virtual HRESULT				Initialize(void* _pArg) override;
 	virtual void				Priority_Update(_float _fTimeDelta) override;
 	virtual void				Update(_float _fTimeDelta) override;
 	virtual void				Late_Update(_float _fTimeDelta) override;

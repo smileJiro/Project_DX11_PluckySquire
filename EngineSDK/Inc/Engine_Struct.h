@@ -170,6 +170,8 @@ namespace Engine
 		XMFLOAT4		vRight, vUp, vLook, vTranslation;
 		XMFLOAT2		vLifeTime;
 		XMFLOAT4		vColor;
+		XMFLOAT3		vVelocity;
+		XMFLOAT3		vAcceleration;
 	}VTXMESHINSTANCE;
 
 	typedef struct ENGINE_DLL tagPointParticle
@@ -180,7 +182,7 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagMeshParticle
 	{
-		static const unsigned int iNumElements = { 10 };		// Mesh + VTXMESHINSTACNE
+		static const unsigned int iNumElements = { 12 };		// Mesh + VTXMESHINSTACNE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXMESHPARTICLE;
 

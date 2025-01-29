@@ -4,9 +4,9 @@
             "Buffer": {
                 "Color": {
                     "Arg1": [
-                        0.5,
-                        0.5,
-                        0.5,
+                        0.30000001192092896,
+                        0.30000001192092896,
+                        0.800000011920929,
                         1.0
                     ],
                     "Arg2": [
@@ -15,43 +15,37 @@
                         1.0,
                         1.0
                     ],
-                    "SetType": "RANDOMRANGE"
+                    "SetType": "RANDOMLINEAR"
                 },
-                "Count": 800,
+                "Count": 180,
                 "LifeTime": {
-                    "Arg1": 20.0,
+                    "Arg1": 3.0,
                     "Arg2": 15.0,
                     "SetType": "DIRECTSET"
                 },
                 "Module": [
                     {
-                        "Amount": 1.0,
-                        "Axis": [
+                        "Amount": 5.0,
+                        "Init": true,
+                        "Order": 0,
+                        "Origin": [
                             0.0,
-                            1.0,
+                            -0.5,
                             0.0
                         ],
-                        "Init": false,
-                        "Order": 1,
-                        "Origin Point": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Pull Amount": 0.5,
-                        "Type": "VORTEX_ACCELERATION"
+                        "Type": "INIT_VELOCITY_POINT"
                     },
                     {
-                        "Amount": 1.0,
+                        "Amount": 0.30000001192092896,
                         "Init": false,
-                        "Order": 2,
+                        "Order": 1,
                         "Type": "DRAG"
                     }
                 ],
                 "Position": {
                     "Arg1": [
                         0.0,
-                        0.5,
+                        0.0,
                         0.0
                     ],
                     "Arg2": [
@@ -59,7 +53,7 @@
                         0.0,
                         0.0
                     ],
-                    "SetType": "RANDOMRANGE"
+                    "SetType": "UNSET"
                 },
                 "Rotation": {
                     "Arg1": [
@@ -72,27 +66,27 @@
                         0.0,
                         0.0
                     ],
-                    "SetType": "RANDOMRANGE"
+                    "SetType": "UNSET"
                 },
                 "Scale": {
                     "Arg1": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Arg2": [
                         0.5,
                         0.5,
                         0.5
                     ],
-                    "SetType": "DIRECTSET"
+                    "Arg2": [
+                        0.800000011920929,
+                        0.800000011920929,
+                        0.800000011920929
+                    ],
+                    "SetType": "RANDOMLINEAR"
                 },
                 "ShapeLocation": {
                     "HandleRadius": 1.0,
-                    "LargeRadius": 10.121999740600586,
+                    "LargeRadius": 7.748000144958496,
                     "Position": [
                         0.0,
-                        6.0,
+                        0.0,
                         0.0
                     ],
                     "Rotation": [
@@ -102,32 +96,44 @@
                     ],
                     "Scale": [
                         1.0,
-                        6.0,
+                        1.0,
                         1.0
                     ],
                     "Shape": "TORUS",
                     "U_Distribution": 0.0,
                     "V_Distribution": 0.0
                 },
-                "UVSet": {
-                    "Anim": false,
-                    "Count": 1.0,
-                    "Random": false,
-                    "Start": 0.0,
+                "Spawn": {
                     "Time": 0.0,
-                    "UV": [
-                        1.0,
-                        1.0
-                    ]
+                    "Type": "BURST"
                 }
             },
             "Event": 0,
-            "Parent": false,
+            "LoopTime": 0,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Bird_01.model",
+            "Parent": true,
+            "PreTransform": [
+                -0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
             "Progress": true,
-            "Texture": "../Bin/Resources/Textures/Effects/Baodian024.dds",
-            "Time": 5.0,
-            "Type": "SPRITE"
+            "Time": 12.0,
+            "Type": "MESH"
         }
     ],
-    "Name": "Testing"
+    "Name": "Testing3"
 }

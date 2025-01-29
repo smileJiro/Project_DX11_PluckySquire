@@ -79,9 +79,9 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
     //    CParticle_Sprite_Emitter::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestEffect.json")))))
     //    return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
-        CParticle_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestParticleSystem.json")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
+    //    CParticle_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestParticleSystem.json")))))
+    //    return E_FAIL;
 
     //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_MeshEffect_Temp"),
     //    CParticle_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestMesh.json")))))
