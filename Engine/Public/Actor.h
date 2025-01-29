@@ -74,13 +74,15 @@ public:
 	const vector<PxShape*>&		Get_Shapes() { return m_Shapes; }
 	ACTOR_TYPE					Get_ActorType() const { return m_eActorType; }
 	
+
 	// Set 
-	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix);
-	HRESULT						Set_ShapeLocalOffsetMatrix(_int _iShapeIndex, _fmatrix _ShapeLocalOffsetMatrix);
-	HRESULT						Set_ShapeLocalOffsetPosition(_int _iShapeIndex, const _float3& _vOffsetPos);
+	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix); // 특별한 경우 아니면 사용을 비권장하겠음. 버그있는듯함.
+
+	HRESULT						Set_ShapeLocalOffsetMatrix(_int _iShapeIndex, _fmatrix _ShapeLocalOffsetMatrix); // 크기는 안되고 위치랑 회전만 가능함.
+	HRESULT						Set_ShapeLocalOffsetPosition(_int _iShapeIndex, const _float3& _vOffsetPos); // shape offset 위치 변경.
 	HRESULT						Set_ShapeLocalOffsetQuaternion(_int _iShapeIndex, const _float4& _vQuat); // 쿼터니언
 	HRESULT						Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float3& _vPitchYawRoll); // xyz 회전량 넣으면 쿼터니언으로 변환해서 넣음.
-
+	HRESULT						Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc); // shape 크기변경
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;

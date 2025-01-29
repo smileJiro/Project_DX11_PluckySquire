@@ -30,6 +30,11 @@ public:
 
 	// Set
 	void Set_Name(string _strName) { strcpy_s(m_szName, _strName.c_str()); }
+
+	// TODO :: 0129 박예슬 TEST
+	HRESULT		Cooking(PxTriangleMeshDesc& Desc);
+
+
 protected:
 	/* Mesh Data */
 	_char m_szName[MAX_PATH] = ""; // Mesh의 이름은 추후 중요하게 사용 된다.

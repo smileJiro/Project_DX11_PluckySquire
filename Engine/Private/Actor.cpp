@@ -1,6 +1,7 @@
 #include "Actor.h"
 #include "GameInstance.h"
 #include "ActorObject.h"
+#include "ModelObject.h"
 
 #include "DebugDraw.h"
 CActor::CActor(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ACTOR_TYPE _eActorType)
@@ -273,6 +274,48 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
         pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
     }
     break;
+    case Engine::SHAPE_TYPE::COOKING:
+    {
+        if (nullptr == m_pOwner)
+            return E_FAIL;
+
+        CModelObject* pModelObj = dynamic_cast<CModelObject*>(m_pOwner);
+        if(nullptr == pModelObj)
+            return E_FAIL;
+
+        CModel* _pModel = pModelObj->Get_Model(COORDINATE_3D);
+        if (nullptr == _pModel)
+            return E_FAIL;
+        C3DModel* pModel = static_cast<C3DModel*>(_pModel);
+
+        _uint iNumMeshes = pModel->Get_NumMeshes();
+
+        //for (_uint i = 0; i < iNumMeshes; i++)
+        //{
+        //    CMesh* pMesh = pModel->Get_Mesh(i);
+        //    PxTriangleMeshDesc meshDesc;
+        //    if(FAILED(pMesh->Cooking(meshDesc)))
+        //        return E_FAIL;
+        //    PxDefaultMemoryOutputStream writeBuffer;
+        //    PxCookingParams params(pPhysics->getTolerancesScale());
+        //    PxCooking* cooking = m_pGameInstance->Get_Cooking();
+        //    cooking->setParams(params);
+
+        //    if (!cooking->cookTriangleMesh(meshDesc, writeBuffer)) 
+        //        return E_FAIL;
+
+        //    PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+        //    PxTriangleMesh* pPxMesh =  pPhysics->createTriangleMesh(readBuffer);
+        //    PxTriangleMeshGeometry geometry(pPxMesh);
+        //    pShape =  pPhysics->createShape(geometry, *pPhysics->createMaterial(0.5f, 0.5f, 0.5f));
+        //}
+
+        SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(_ShapeData.pShapeDesc);
+        PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius * vScale.x, pDesc->fHalfHeight * vScale.x);
+
+        pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
+    }
+    break;
     default:
         return E_FAIL;
     }
@@ -445,6 +488,53 @@ HRESULT CActor::Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float
 
     return S_OK;
 }
+
+HRESULT CActor::Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    PxGeometryType::Enum eType = m_Shapes[_iShapeIndex]->getGeometryType();
+
+    if (eType != _eType)
+    {
+        MSG_BOX(" Shape Geometry Type이 틀렸어. >>> Set_ShapeScale()");
+        return E_FAIL;
+    }
+    
+    switch (_eType)
+    {
+    case physx::PxGeometryType::eSPHERE:
+    {
+        SHAPE_SPHERE_DESC* pSphereDesc = static_cast<SHAPE_SPHERE_DESC*>(_pDesc);
+        PxSphereGeometry Geometry(pSphereDesc->fRadius);
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    case physx::PxGeometryType::eCAPSULE:
+    {
+        SHAPE_CAPSULE_DESC* pCapsuleDesc = static_cast<SHAPE_CAPSULE_DESC*>(_pDesc);
+        PxCapsuleGeometry Geometry(pCapsuleDesc->fHalfHeight, pCapsuleDesc->fRadius);
+
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    case physx::PxGeometryType::eBOX:
+    {
+        SHAPE_BOX_DESC* pBoxDesc = static_cast<SHAPE_BOX_DESC*>(_pDesc);
+        PxBoxGeometry Geometry(pBoxDesc->vHalfExtents.x, pBoxDesc->vHalfExtents.y, pBoxDesc->vHalfExtents.z);
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    default:
+        MSG_BOX(" Sphere, Capsule, Box 만 크기를 변경할 수 있어. ");
+        return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+
 
 void CActor::Active_OnEnable()
 {
