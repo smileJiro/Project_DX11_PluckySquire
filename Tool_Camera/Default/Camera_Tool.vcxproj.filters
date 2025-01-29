@@ -79,6 +79,18 @@
     <Filter Include="02. GameObjects\Trigger\CameraTrigger">
       <UniqueIdentifier>{df994250-ee46-4a00-9b41-34ac450287bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. RenderGroup">
+      <UniqueIdentifier>{54621cc9-be21-4449-99a3-c0216addc0e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\AfterEffect">
+      <UniqueIdentifier>{3fbe77e5-3a17-4b92-98aa-5246ab11048e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Final">
+      <UniqueIdentifier>{309a5b75-ad62-44d9-992e-0d9857e3c5c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Lights">
+      <UniqueIdentifier>{0544e323-7411-4255-8eb9-fec9c979ab8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera_Tool.h">
@@ -165,6 +177,15 @@
     <ClInclude Include="..\Public\Camera_Trigger.h">
       <Filter>02. GameObjects\Trigger\CameraTrigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Lights.h">
+      <Filter>03. RenderGroup\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Final.h">
+      <Filter>03. RenderGroup\Final</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
+      <Filter>03. RenderGroup\AfterEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp">
@@ -241,6 +262,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Trigger.cpp">
       <Filter>02. GameObjects\Trigger\CameraTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Lights.cpp">
+      <Filter>03. RenderGroup\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Final.cpp">
+      <Filter>03. RenderGroup\Final</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
+      <Filter>03. RenderGroup\AfterEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

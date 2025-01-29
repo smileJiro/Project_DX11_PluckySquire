@@ -9,6 +9,7 @@
 #include "PlayerState_Run.h"
 #include "PlayerState_Attack.h"
 #include "PlayerState_Jump.h"
+#include "PlayerState_Roll.h"
 #include "Actor_Dynamic.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -102,7 +103,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
 
 	m_tStat[COORDINATE_3D].fMoveSpeed = 500.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 17.f;
+	m_tStat[COORDINATE_3D].fJumpPower = 17.f;	
+    m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
+	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
     return S_OK;
 }
 
@@ -220,7 +223,7 @@ void CPlayer::Update(_float _fTimeDelta)
     CGameObject::Update_Component(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
 
-    m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));;
+    m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
 
 void CPlayer::Late_Update(_float _fTimeDelta)
@@ -284,7 +287,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         return E_FAIL;
 
     if (COORDINATE_2D == Get_CurCoord())
-        Set_2DDirection(F_DIRECTION::DOWN);
+        Set_2DDirection(E_DIRECTION::DOWN);
 
     Set_State(IDLE);
 
@@ -306,7 +309,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
         {
 
         }
-        m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
+        m_pControllerTransform->Go_Direction(_vDir, m_tStat[COORDINATE_2D].fMoveSpeed,_fTimeDelta);
     }
     else if (ACTOR_TYPE::DYNAMIC == eActorType)
     {
@@ -318,7 +321,6 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
             _float3 vLookDiff; XMStoreFloat3( &vLookDiff,_vDir - vLook);
             _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, _vDir - m_vLookBefore);
-            _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDir));
 			if (XMVector3Equal(_vDir, XMVectorZero()))
             {
 				_vDir = vLook;
@@ -335,11 +337,14 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             }
             else
             {
-                pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(360));
+                _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDir));
+                if(XMVector3Equal(vAxis, XMVectorZero()))
+					vAxis = XMVectorSet(0, 1, 0, 0);
+                pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(720));
 
             }
 
-            _float fDot = XMVectorGetX(XMVector3Dot(vLook, _vDir));
+            _float fDot = abs( XMVectorGetX(XMVector3Dot(vLook, _vDir)));
             _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed * _fTimeDelta * fDot;
             vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vVeclocity);
@@ -363,12 +368,14 @@ void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
         if (COORDINATE_3D == Get_CurCoord())
         {
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+            
             _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-            pDynamicActor->Set_LinearVelocity(vLook * fVelocity* _fTimeDelta);
+            vLook = XMVectorSetY(vLook * fVelocity * _fTimeDelta, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+            pDynamicActor->Set_LinearVelocity(vLook);
         }
         else
         {
-            _vector vDir = FDir_To_Vector(m_e2DDirection);
+            _vector vDir = EDir_To_Vector(m_e2DDirection_E);
             m_pControllerTransform->Go_Direction(vDir, fVelocity,_fTimeDelta);
         }
     }
@@ -406,106 +413,24 @@ void CPlayer::Stop_Move()
     }
 }
 
-void CPlayer::Attack(_uint _iCombo)
-{
+
+void CPlayer::Jump()
+{		/* Test Jump */
     COORDINATE eCoord = Get_CurCoord();
 
     if (COORDINATE_2D == eCoord)
     {
-        F_DIRECTION eOldDir = Get_2DDirection();
-        switch (eOldDir)
-        {
-        case Client::F_DIRECTION::LEFT:
-        case Client::F_DIRECTION::RIGHT:
-            switch (_iCombo)
-            {
-            case 0:
-                Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACK_RIGHT);
-                break;
-			case 1:
-				Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKCOMBO_01_RIGHT);
-				break;
-            case 2:
-                Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKCOMBO_03_RIGHT);
-                break;
-            default:
-                break;
-            }
-            break;
-        case Client::F_DIRECTION::UP:
-            switch (_iCombo)
-            {
-            case 0:
-                Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACK_UP);
-                break;
-            case 1:
-                Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKCOMBO_01_UP);
-                break;
-            case 2:
-                Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKCOMBO_03_UP);
-                break;
-            default:
-                break;
-            }
-            break;
-        case Client::F_DIRECTION::DOWN:
-            switch (_iCombo)
-            {
-            case 0:
-                Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACK_DOWN);
-                break;
-            case 1:
-                Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKCOMBO_01_DOWN);
-                break;
-            case 2:
-                Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKCOMBO_03_DOWN);
-                break;
-            default:
-                break;
-            }
-            break;
-        case Client::F_DIRECTION::F_DIR_LAST:
-        default:
-            break;
-        }
+        //m_f2DUpForce = m_tStat[COORDINATE_2D].fJumpPower;
     }
     else
-    {
-        switch (_iCombo)
-        {
-        case 0:
-            Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ATTACK_01_GT_EDIT);
-            break;
-        case 1:
-            Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ATTACK_02_GT);
-            break;
-        case 2:
-            Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ATTACK_03_GT);
-            break;
-        default:
-            break;
-        }
-    }
-
-    //CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-    //_vector vLook = XMVector3Normalize( m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-
-    //_float3  vForce;
-    //XMStoreFloat3(&vForce, vLook * 4.f);
-    //pDynamicActor->Add_Force(vForce);
-
-}
-
-void CPlayer::Jump()
-{		/* Test Jump */
-    m_pActorCom->Add_Impulse(_float3(0.0f, m_tStat[COORDINATE_3D].fJumpPower, 0.0f));
+        m_pActorCom->Add_Impulse(_float3(0.0f, m_tStat[COORDINATE_3D].fJumpPower, 0.0f));
 }
 
 
 
 _bool CPlayer::Is_OnGround()
 {
-    if (XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)) <= 0.f)
+    if (XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)) <= 0.8f)
 		return true;
     else
         return false;
@@ -536,10 +461,26 @@ _float CPlayer::Get_AnimProgress()
     return 0;
 }
 
+_bool CPlayer::Is_SwordEquiped()
+{
+    return Is_PartActive(PLAYER_PART_SWORD);
+}
+
+_bool CPlayer::Is_CarryingObject()
+{
+    return nullptr != m_pCarryingObject;
+}
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
-    cout << "switch animantion " << _iAnimIndex << endl;
+    cout << "SwitchAnim" << _iAnimIndex << endl;
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
+}
+
+void CPlayer::Set_Animation(_uint _iAnimIndex)
+{
+    cout << "Set_Animation" << _iAnimIndex << endl;
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(_iAnimIndex);
 }
 
 void CPlayer::Set_State(STATE _eState)
@@ -557,8 +498,11 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Jump(this));
         break;
     case Client::CPlayer::ATTACK:
-        m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
+        m_pStateMachine->Transition_To(new CPlayerState_Attack(this, m_e2DDirection_E));
         break;
+    case Client::CPlayer::ROLL:
+        m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
+		break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -568,15 +512,16 @@ void CPlayer::Set_State(STATE _eState)
 
 
 
-void CPlayer::Set_2DDirection(F_DIRECTION _eFDir)
+void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
 {
-    m_e2DDirection = _eFDir; 
-    if (F_DIRECTION::LEFT == m_e2DDirection)
+    m_e2DDirection_E = _eEDir;
+	F_DIRECTION eFDir = EDir_To_FDir(m_e2DDirection_E);
+    if (F_DIRECTION::LEFT ==  eFDir)
     {
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
     }
-    else if (F_DIRECTION::RIGHT == m_e2DDirection)
+    else if (F_DIRECTION::RIGHT == eFDir)
     {
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
@@ -631,19 +576,19 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::F3))
     {
-        SHAPE_DATA tShapeData = {};
-        tShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
-        tShapeData.eShapeType = SHAPE_TYPE::BOX;
-        tShapeData.iShapeUse = 1;
-        tShapeData.isTrigger = false;
-        XMStoreFloat4x4(&tShapeData.LocalOffsetMatrix, XMMatrixScaling(5.0f, 5.0f, 5.0f) * XMMatrixRotationY(XMConvertToRadians(120.f)) * XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-        SHAPE_BOX_DESC tBoxDesc = {};
-        tBoxDesc.vHalfExtents = { 0.5f ,0.5f ,0.5f };
-        tShapeData.pShapeDesc = &tBoxDesc;
-        tShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-        tShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
-
-        m_pActorCom->Add_Shape(tShapeData);
+        //static_cast<CActor_Dynamic*>(m_pActorCom)->On_Kinematic();
+        //m_pActorCom->Set_ShapeLocalOffsetPosition(0, _float3(0.0f, 0.5f, 0.0f));
+        m_pActorCom->Set_ShapeLocalOffsetPitchYawRoll(0, _float3(XMConvertToRadians(0.f), XMConvertToRadians(00.f), XMConvertToRadians(60.f)));
+        //m_pActorCom->Delete_Shape(1);
+        //m_pActorCom->Set_ShapeLocalOffsetMatrix(0, XMMatrixRotationZ(XMConvertToRadians(-30.f)) * XMMatrixTranslation(0.0f, -1.0f, 0.0f));
+    }
+    if (KEY_DOWN(KEY::B))
+    {
+        // 도형 크기 바꾸기
+        SHAPE_CAPSULE_DESC Desc;
+        Desc.fRadius = 1.f;
+        Desc.fHalfHeight = 1.f;
+        m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
     }
     if (KEY_DOWN(KEY::F2))
     {

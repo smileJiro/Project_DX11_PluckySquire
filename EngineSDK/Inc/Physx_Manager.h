@@ -33,6 +33,9 @@ private: /* Core PhysX */
 	PxPhysics*					m_pPxPhysics = nullptr;
 	PxDefaultCpuDispatcher*		m_pPxDefaultCpuDispatcher = nullptr;
 
+private: /* PhysX Cooking */
+	PxCooking*					m_pPxCooking = nullptr;
+
 private:/* Scene (추후 분리 예정)*/
 	PxScene*					m_pPxScene = nullptr;
 	PxMaterial*					m_pPxMaterial[(_uint)ACTOR_MATERIAL::CUSTOM] = {};
@@ -56,6 +59,7 @@ private: /* Event CallBack Class */
 public:
 	void Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	void Delete_ShapeUserData();
+	_bool RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 
 private: /* SHAPE_USERDATA : 메모리 해제용 */
 	vector<SHAPE_USERDATA*> m_pShapeUserDatas;

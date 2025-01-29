@@ -42,6 +42,39 @@ HRESULT CMapObject::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
+
+
+
+    pDesc->eActorType = ACTOR_TYPE::STATIC;
+    CActor::ACTOR_DESC ActorDesc;
+
+    ActorDesc.pOwner = this;
+
+    ActorDesc.FreezeRotation_XYZ[0] = true;
+    ActorDesc.FreezeRotation_XYZ[1] = true;
+    ActorDesc.FreezeRotation_XYZ[2] = true;
+
+    ActorDesc.FreezePosition_XYZ[0] = false;
+    ActorDesc.FreezePosition_XYZ[1] = false;
+    ActorDesc.FreezePosition_XYZ[2] = false;
+
+    SHAPE_CAPSULE_DESC ShapeDesc = {};
+    ShapeDesc.fHalfHeight = 0.25f;
+    ShapeDesc.fRadius = 0.25f;
+
+    SHAPE_DATA ShapeData;
+    ShapeData.pShapeDesc = &ShapeDesc;             
+    ShapeData.eShapeType = SHAPE_TYPE::COOKING;
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; 
+    ShapeData.isTrigger = false;                   
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+
+    /* Actor Component Finished */
+    pDesc->pActorDesc = &ActorDesc;
+
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -60,6 +93,35 @@ HRESULT CMapObject::Initialize(void* _pArg)
     }
     //if (FAILED(Ready_Components(pDesc)))
     //    return E_FAIL;
+
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+
+    if (nullptr != pModel)
+    {
+        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
+
+        auto Meshes = p3DModel->Get_Meshes();
+        auto pBuffer = Meshes.front();
+
+        
+        CMesh* pMesh = static_cast<CMesh*>(pBuffer);
+
+        PxTriangleMeshDesc meshDesc;
+
+        //if (FAILED(pMesh->Cooking(meshDesc)))
+        //    return E_FAIL;
+
+        //PxDefaultMemoryOutputStream writeBuffer;
+        //PxCookingParams params(physics->getTolerancesScale());
+        //cooking->setParams(params);
+
+        //if (!cooking->cookTriangleMesh(meshDesc, writeBuffer)) {
+        //    return nullptr; 
+        //}
+
+        //PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+        //return physics->createTriangleMesh(readBuffer);
+    }
 
     return S_OK;
 }

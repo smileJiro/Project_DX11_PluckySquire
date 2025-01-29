@@ -247,6 +247,9 @@
     <Filter Include="02.GameObjects\Trigger">
       <UniqueIdentifier>{2a7a1cb9-e639-4be6-a19f-65aeae8e850a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Trigger\Camera_Trigger">
+      <UniqueIdentifier>{b758ccb4-7151-48b1-99b9-1eeef86e1bab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -520,6 +523,9 @@
     <ClInclude Include="..\Public\PlayerState_Roll.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Trigger.h">
+      <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -783,6 +789,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Roll.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Trigger.cpp">
+      <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

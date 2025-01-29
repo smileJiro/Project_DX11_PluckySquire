@@ -5,6 +5,8 @@ BEGIN(Client)
 class CPlayerState_Jump :
     public CPlayerState
 {
+private:
+    enum JUMP_STATE{UP, DOWN,LAND,LAST};
 public:
     CPlayerState_Jump(CPlayer* _pOwner);
 
@@ -15,7 +17,14 @@ public:
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)override;
 
 private:
-	_float m_fUpForceBefore = 0.f;
+	void Switch_JumpAnimation(JUMP_STATE _eJMPSTATE);
+private:
+    _bool m_bRising = true;
+    _bool m_bGrounded = false;
+
+
+    _float m_f2DHeight = 0.f;
+    _float m_f2DUpForce = 0.f;
 };
 
 END
