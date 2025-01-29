@@ -27,10 +27,10 @@ class ENGINE_DLL CActor abstract : public CComponent
 public:
 	typedef struct tagActorDesc
 	{
-		tagActorDesc() { XMStoreFloat4x4(&OffsetMatrix, XMMatrixIdentity()); }
+		tagActorDesc() { XMStoreFloat4x4(&ActorOffsetMatrix, XMMatrixIdentity()); }
 		CActorObject*			pOwner = nullptr;
 		vector<SHAPE_DATA>		ShapeDatas;
-		_float4x4				OffsetMatrix = {};
+		_float4x4				ActorOffsetMatrix = {};
 		_bool					FreezeRotation_XYZ[3] = { false, true, false };
 		_bool					FreezePosition_XYZ[3] = { false, false, false };
 		
@@ -71,18 +71,26 @@ public: /* Event Filter */
 
 public:
 	// Get
+	const vector<PxShape*>&		Get_Shapes() { return m_Shapes; }
 	ACTOR_TYPE					Get_ActorType() const { return m_eActorType; }
+	
 	// Set 
+	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix);
+	HRESULT						Set_ShapeLocalOffsetMatrix(_int _iShapeIndex, _fmatrix _ShapeLocalOffsetMatrix);
+	HRESULT						Set_ShapeLocalOffsetPosition(_int _iShapeIndex, const _float3& _vOffsetPos);
+	HRESULT						Set_ShapeLocalOffsetQuaternion(_int _iShapeIndex, const _float4& _vQuat); // 쿼터니언
+	HRESULT						Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float3& _vPitchYawRoll); // xyz 회전량 넣으면 쿼터니언으로 변환해서 넣음.
+
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;
 
+protected:
+	vector<PxShape*>			m_Shapes;
+
 protected: /* Actor Default Data */
 	ACTOR_TYPE					m_eActorType = ACTOR_TYPE::LAST;	
 	_float4x4					m_OffsetMatrix = {};
-	
-protected:
-	ACTOR_USERDATA				m_UserData;
 
 private:
 	/* Active 변경시 호출되는 함수 추가. */

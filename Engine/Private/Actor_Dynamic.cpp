@@ -39,10 +39,12 @@ void CActor_Dynamic::Update(_float _fTimeDelta)
 		if (nullptr == m_pOwner)
 			return;
 
-		_float3 vPos = {};
-		XMStoreFloat3(&vPos, m_pOwner->Get_Position());
+		_matrix OwnerWorldMatrix = m_pOwner->Get_WorldMatrix();
+		_float4x4 FinalMatrix = {};
+		XMStoreFloat4x4(&FinalMatrix, XMLoadFloat4x4(&m_OffsetMatrix) * OwnerWorldMatrix);
+		PxMat44 PxFinalMatrix((_float*)(&FinalMatrix));
 
-		static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(PxTransform(vPos.x, vPos.y, vPos.z));
+		static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(PxTransform(PxFinalMatrix));
 	}
 
 }
@@ -64,7 +66,7 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 		XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
 		m_pOwner->Set_WorldMatrix(WorldMatrix);
 	}
-
+	
 #ifdef _DEBUG
 	CActor::Late_Update(_fTimeDelta); // Debug_Render (Trigger Shape)
 #endif // _DEBUG
@@ -191,6 +193,29 @@ void CActor_Dynamic::Add_Force(const _float3& _vForce)
 void CActor_Dynamic::Add_Impulse(const _float3& _vForce)
 {
 	static_cast<PxRigidDynamic*>(m_pActor)->addForce(PxVec3(_vForce.x, _vForce.y, _vForce.z), PxForceMode::eIMPULSE, m_isActive);
+}
+
+
+void CActor_Dynamic::Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix)
+{
+	if (m_eActorType == ACTOR_TYPE::DYNAMIC)
+		return;
+	else
+	{
+		XMStoreFloat4x4(&m_OffsetMatrix, _ActorOffsetMatrix);
+
+		_matrix OwnerWorldMatrix = m_pOwner->Get_WorldMatrix();
+		_vector vScale = {};
+		_vector vPosition = {};
+		_vector vQuat = {};
+		XMMatrixDecompose(&vScale, &vQuat, &vPosition, _ActorOffsetMatrix * OwnerWorldMatrix);
+
+		PxTransform Transform;
+		Transform.p = PxVec3(XMVectorGetX(vPosition), XMVectorGetY(vPosition), XMVectorGetZ(vPosition));
+		Transform.q = PxQuat(XMVectorGetX(vQuat), XMVectorGetY(vQuat), XMVectorGetZ(vQuat), XMVectorGetW(vQuat));
+
+		static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(Transform);
+	}
 }
 
 

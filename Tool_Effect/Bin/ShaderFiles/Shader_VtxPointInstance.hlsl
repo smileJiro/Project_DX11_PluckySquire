@@ -55,6 +55,17 @@ struct VS_OUT
     float4 vTexcoord : TEXCOORD2;
 };
 
+struct VS_ROUT
+{
+    float4 vPosition : POSITION;
+    float2 vPSize : PSIZE;
+    
+    row_major float4x4 InstancingMatrix : WORLD;
+    float2 vLifeTime : TEXCOORD0;
+    float4 vColor : TEXCOORD1;
+    float4 vTexcoord : TEXCOORD2;
+};
+
 // Rendering PipeLine : Vertex Shader // 
 VS_OUT VS_MAIN(VS_IN In)
 {
@@ -82,24 +93,14 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
-struct VS_ROUT
-{
-    float4 vPosition : POSITION;
-    float2 vPSize : PSIZE;
-    row_major float4x4 InstancingMatrix : WORLD;
-    float2 vLifeTime : TEXCOORD0;
-    float4 vColor : TEXCOORD1;
-    float4 vTexcoord : TEXCOORD2;
-};
-
-VS_ROUT VS_ROTATION(VS_IN In)
+VS_ROUT VS_RMAIN(VS_IN In)
 {
     VS_ROUT Out = (VS_ROUT) 0;
-    
+  
     Out.vPosition = float4(In.vPosition, 1.f);
-    Out.vPSize = In.vPSize;
+    Out.vPSize = float2(In.vPSize.x, In.vPSize.y);
+    
     Out.InstancingMatrix = In.InstancingMatrix;
-
     Out.vLifeTime = In.vLifeTime;
     Out.vTexcoord = In.vTexcoord;
     Out.vColor = In.vColor;
@@ -129,6 +130,16 @@ struct GS_OUT
     float vDepth : TEXCOORD3;
 };
 
+struct GS_RIN
+{
+    float4 vPosition : POSITION;
+    float2 vPSize : PSIZE;
+    
+    row_major float4x4 InstancingMatrix : WORLD;
+    float2 vLifeTime : TEXCOORD0;
+    float4 vColor : TEXCOORD1;
+    float4 vTexcoord : TEXCOORD2;
+};
 
 //GS_MAIN(triangle GS_IN In[3])
 //GS_MAIN(line GS_IN In[2])
@@ -204,62 +215,68 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     OutStream.RestartStrip();
 }
 
-struct GS_RIN
-{
-    float4 vPosition : POSITION;
-    float2 vPSize : PSIZE;
-    row_major float4x4 InstancingMatrix : WORLD;
-    float2 vLifeTime : TEXCOORD0;
-    float4 vColor : TEXCOORD1;
-    float4 vTexcoord : TEXCOORD2;
-};
-
-// 일단 나중에 하자
-[maxvertexcount(6)] 
+[maxvertexcount(6)]
+// Biilboard 적용되지 않은 GS
 void GS_RMAIN(point GS_RIN In[1], inout TriangleStream<GS_OUT> OutStream)
 {
-    GS_OUT Out[4];  
+    GS_OUT Out[4]; 
     
+    matrix FinalMatrix = float4x4(In[0].InstancingMatrix._11_12_13_14,
+                                    In[0].InstancingMatrix._21_22_23_24,
+                                    In[0].InstancingMatrix._31_32_33_34,
+                                    In[0].InstancingMatrix._41_42_43_44);
     
+    // Local
+    vector vCenter = In[0].vPosition;
+    vector vRight = float4(In[0].vPSize.x, 0.f, 0.f, 0.f);
+    vector vUp = float4(0.f, In[0].vPSize.y, 0.f, 0.f);
+   
+    
+    matrix matFWVP = mul(mul(mul(FinalMatrix, g_WorldMatrix), g_ViewMatrix), g_ProjMatrix);
         
-    //// 정점 기준 우상단 (카메라가 바라보는 기준 좌상단.)
-    //Out[0].vPosition = float4(vCenter + vRightDist + vUpDist, 1.0f);
-    //Out[0].vPosition = mul(Out[0].vPosition, matVP);
-    //Out[0].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.y);
-    //Out[0].vLifeTime = In[0].vLifeTime;
-    ////Out[0].vDepth = Out[0].vPosition.w;
+    // 정점 기준 우상단 (카메라가 바라보는 기준 좌상단.)
+    Out[0].vPosition = vCenter + vRight + vUp;
+    Out[0].vPosition = mul(Out[0].vPosition, matFWVP);
+    Out[0].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.y);
+    Out[0].vLifeTime = In[0].vLifeTime;
+    //Out[0].vDepth = Out[0].vPosition.w;
     
-    //// 정점 기준 좌상단 (카메라가 바라보는 기준 우상단.)
-    //Out[1].vPosition = float4(vCenter - vRightDist + vUpDist, 1.0f);
-    //Out[1].vPosition = mul(Out[1].vPosition, matVP);
-    //Out[1].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.y);
-    //Out[1].vLifeTime = In[0].vLifeTime;
-    ////Out[1].vDepth = Out[1].vPosition.w;
+    // 정점 기준 좌상단 (카메라가 바라보는 기준 우상단.)
+    Out[1].vPosition = vCenter - vRight + vUp;
+    Out[1].vPosition = mul(Out[1].vPosition, matFWVP);
+    Out[1].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.y);
+    Out[1].vLifeTime = In[0].vLifeTime;
+    //Out[1].vDepth = Out[1].vPosition.w;
 
-    //// 정점 기준 좌하단 (카메라가 바라보는 기준 우하단.)
-    //Out[2].vPosition = float4(vCenter - vRightDist - vUpDist, 1.0f);
-    //Out[2].vPosition = mul(Out[2].vPosition, matVP);
-    //Out[2].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.w);
-    //Out[2].vLifeTime = In[0].vLifeTime;
-    ////Out[2].vDepth = Out[2].vPosition.w;
+    // 정점 기준 좌하단 (카메라가 바라보는 기준 우하단.)
+    Out[2].vPosition = vCenter - vRight - vUp;
+    Out[2].vPosition = mul(Out[2].vPosition, matFWVP);
+    Out[2].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.w);
+    Out[2].vLifeTime = In[0].vLifeTime;
+    //Out[2].vDepth = Out[2].vPosition.w;
 
-    //// 정점 기준 우하단 (카메라가 바라보는 기준 좌하단.)
-    //Out[3].vPosition = float4(vCenter + vRightDist - vUpDist, 1.0f);
-    //Out[3].vPosition = mul(Out[3].vPosition, matVP);
-    //Out[3].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.w);
-    //Out[3].vLifeTime = In[0].vLifeTime;
-    ////Out[3].vDepth = Out[3].vPosition.w;
+    // 정점 기준 우하단 (카메라가 바라보는 기준 좌하단.)
+    Out[3].vPosition = vCenter + vRight - vUp;
+    Out[3].vPosition = mul(Out[3].vPosition, matFWVP);
+    Out[3].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.w);
+    Out[3].vLifeTime = In[0].vLifeTime;
+    //Out[3].vDepth = Out[3].vPosition.w;
     
+    //float fdZ = (g_Near * g_Far) / (mul(In[0].vPosition, matVP).w - g_Far) / (g_Near - g_Far);
+    //float fWeight = clamp(pow(1 - fdZ, 3.f), 1e-2, 3e3);
+    
+    //float fWeight = 3000.f;
+    float fWeight = clamp(10.f / (1e-5 + pow(mul(In[0].vPosition, matFWVP).w / 10.f, 3.0f) + pow(mul(In[0].vPosition, matFWVP).w / 200.f, 6.f)), 1e-2, 3e3);
     //float fWeight = clamp(10.f / (1e-5 + pow(mul(In[0].vPosition, matVP).w / 5.f, 2.0f) + pow(mul(In[0].vPosition, matVP).w / 200.f, 6.f)), 1e-2, 3e3);
-    //Out[0].vDepth = fWeight;
-    //Out[1].vDepth = fWeight;
-    //Out[2].vDepth = fWeight;
-    //Out[3].vDepth = fWeight;
+    Out[0].vDepth = fWeight;
+    Out[1].vDepth = fWeight;
+    Out[2].vDepth = fWeight;
+    Out[3].vDepth = fWeight;
     
-    //Out[0].vColor = In[0].vColor;
-    //Out[1].vColor = In[0].vColor;
-    //Out[2].vColor = In[0].vColor;
-    //Out[3].vColor = In[0].vColor;
+    Out[0].vColor = In[0].vColor;
+    Out[1].vColor = In[0].vColor;
+    Out[2].vColor = In[0].vColor;
+    Out[3].vColor = In[0].vColor;
     
     OutStream.Append(Out[0]);
     OutStream.Append(Out[1]);
@@ -374,14 +391,16 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDED();
     }
 
-    pass WEIGHTED_BLENDED_ROTATION // 2
+    pass ROT_WEIGHTED_BLENDED // 2
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_WriteNone, 0);
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_ROTATION();
+        VertexShader = compile vs_5_0 VS_RMAIN();
         GeometryShader = compile gs_5_0 GS_RMAIN();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDED();
     }
+
 }

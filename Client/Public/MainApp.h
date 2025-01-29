@@ -51,9 +51,6 @@ public:
 
 END
 
-////제발되라
-
-
 /*
 class C이름
 {
