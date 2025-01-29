@@ -76,6 +76,11 @@ public:
 	
 	// Set 
 	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix);
+	HRESULT						Set_ShapeLocalOffsetMatrix(_int _iShapeIndex, _fmatrix _ShapeLocalOffsetMatrix);
+	HRESULT						Set_ShapeLocalOffsetPosition(_int _iShapeIndex, const _float3& _vOffsetPos);
+	HRESULT						Set_ShapeLocalOffsetQuaternion(_int _iShapeIndex, const _float4& _vQuat); // 쿼터니언
+	HRESULT						Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float3& _vPitchYawRoll); // xyz 회전량 넣으면 쿼터니언으로 변환해서 넣음.
+
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;
