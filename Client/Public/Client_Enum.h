@@ -115,4 +115,10 @@ namespace Client
 		LEFT_DOWN,
 		E_DIR_LAST
 	};
+
+	enum class TRIGGER_TYPE
+	{
+		CAMERA_TRIGGER,
+		LAST
+	};
 }
