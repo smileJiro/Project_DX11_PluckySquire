@@ -103,6 +103,11 @@
                     "U_Distribution": 0.0,
                     "V_Distribution": 0.0
                 },
+                "Spawn": {
+                    "Count": 1,
+                    "Time": 0.0,
+                    "Type": "BURST"
+                },
                 "UVSet": {
                     "Anim": false,
                     "Count": 1.0,
@@ -116,6 +121,7 @@
                 }
             },
             "Event": 0,
+            "LoopTime": 0,
             "Parent": true,
             "Progress": true,
             "Texture": "../Bin/Resources/Textures/Effects/blue.dds",

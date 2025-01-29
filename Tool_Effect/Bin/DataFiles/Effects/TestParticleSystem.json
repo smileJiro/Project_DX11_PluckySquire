@@ -4,9 +4,9 @@
             "Buffer": {
                 "Color": {
                     "Arg1": [
-                        0.5,
-                        0.5,
-                        0.5,
+                        0.20000000298023224,
+                        0.10000000149011612,
+                        0.800000011920929,
                         1.0
                     ],
                     "Arg2": [
@@ -17,15 +17,15 @@
                     ],
                     "SetType": "RANDOMRANGE"
                 },
-                "Count": 800,
+                "Count": 1200,
                 "LifeTime": {
-                    "Arg1": 20.0,
+                    "Arg1": 6.0,
                     "Arg2": 15.0,
                     "SetType": "DIRECTSET"
                 },
                 "Module": [
                     {
-                        "Amount": 1.0,
+                        "Amount": 4.0,
                         "Axis": [
                             0.0,
                             1.0,
@@ -38,7 +38,7 @@
                             0.0,
                             0.0
                         ],
-                        "Pull Amount": 0.5,
+                        "Pull Amount": 30.0,
                         "Type": "VORTEX_ACCELERATION"
                     },
                     {
@@ -68,16 +68,16 @@
                         0.0
                     ],
                     "Arg2": [
-                        0.0,
-                        0.0,
-                        0.0
+                        360.0,
+                        360.0,
+                        360.0
                     ],
                     "SetType": "RANDOMRANGE"
                 },
                 "Scale": {
                     "Arg1": [
-                        1.0,
-                        1.0,
+                        2.0,
+                        2.0,
                         1.0
                     ],
                     "Arg2": [
@@ -89,7 +89,7 @@
                 },
                 "ShapeLocation": {
                     "HandleRadius": 1.0,
-                    "LargeRadius": 10.121999740600586,
+                    "LargeRadius": 12.0,
                     "Position": [
                         0.0,
                         6.0,
@@ -109,6 +109,11 @@
                     "U_Distribution": 0.0,
                     "V_Distribution": 0.0
                 },
+                "Spawn": {
+                    "Count": 1,
+                    "Time": 0.10000000149011612,
+                    "Type": "SPAWN"
+                },
                 "UVSet": {
                     "Anim": false,
                     "Count": 1.0,
@@ -122,10 +127,11 @@
                 }
             },
             "Event": 0,
+            "LoopTime": 0,
             "Parent": false,
             "Progress": true,
-            "Texture": "../Bin/Resources/Textures/Effects/Baodian024.dds",
-            "Time": 5.0,
+            "Texture": "../Bin/Resources/Textures/Effects/blue.dds",
+            "Time": 4.0,
             "Type": "SPRITE"
         }
     ],

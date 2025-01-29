@@ -145,6 +145,16 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 	if (FAILED(Set_ShapeData(_jsonBufferInfo)))
 		return E_FAIL;	
 
+	// Spawn 설정
+	if (_jsonBufferInfo.contains("Spawn"))
+	{
+		m_eSpawnType = _jsonBufferInfo["Spawn"]["Type"];
+		m_fSpawnTime = _jsonBufferInfo["Spawn"]["Time"];
+		//if (_jsonBufferInfo["Spawn"].contains("Count"))
+		//	m_iSpawnCount = _jsonBufferInfo["Spawn"]["Count"];
+	}
+
+
 
 	for (size_t i = 0; i < m_iNumInstances; i++)
 	{
@@ -172,42 +182,125 @@ HRESULT CVIBuffer_Point_Particle::Initialize(void* _pArg)
 {
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
-
+	
+	Reset_Buffers();
 
 	return S_OK;
 }
 
 void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 {
+	m_fAccSpawnTime += _fTimeDelta;
+
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
 	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 	VTXPOINTINSTANCE* pVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
 
-	for (_int i = 0; i < m_iNumInstances; i++)
+	if (SPAWN == m_eSpawnType)
 	{
-		for (auto& pModule : m_Modules)
+		while (m_fSpawnTime <= m_fAccSpawnTime)
 		{
-			if (pModule->Is_Init())
+			// 시간이 충족되면 Spawn합니다.
+			pVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
+
+			m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
+			m_fAccSpawnTime -= m_fSpawnTime;
+		}
+
+		for (_int i = 0; i < m_iNumInstances; ++i)
+		{
+			if (D3D11_FLOAT32_MAX == pVertices[i].vLifeTime.y)
 				continue;
 
-			pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
+			for (auto& pModule : m_Modules)
+			{
+				if (pModule->Is_Init())
+					continue;
+
+				pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
+			}
+
+			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
+			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
+			pVertices[i].vLifeTime.y += _fTimeDelta;
+
+			// TODO : Kill or Revive 등..
+			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
+			{
+				pVertices[i] = m_pInstanceVertices[i];
+			}
+			
 		}
-
-		XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
-		XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
-		pVertices[i].vLifeTime.y += _fTimeDelta;
-
-
-		// TODO : Kill or Revive 등..
-		if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
+		
+	}
+	else if (BURST == m_eSpawnType)
+	{
+		if (m_fSpawnTime <= m_fAccSpawnTime)
 		{
-			pVertices[i] = m_pInstanceVertices[i];
-		}
+			for (_int i = 0; i < m_iNumInstances; i++)
+			{
+				if (m_iSpawnIndex != m_iNumInstances)
+				{
+					pVertices[i] = m_pInstanceVertices[i];
+					pVertices[i].vLifeTime.y = 0.f;
 
+					m_iSpawnIndex = m_iNumInstances;
+				}
+
+				for (auto& pModule : m_Modules)
+				{
+					if (pModule->Is_Init())
+						continue;
+
+					pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
+				}
+
+				XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
+				XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
+				pVertices[i].vLifeTime.y += _fTimeDelta;
+
+				// TODO : Kill or Revive 등..
+				if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
+				{
+					pVertices[i] = m_pInstanceVertices[i];
+				}
+
+			}
+		}		
 	}
 
 	m_pContext->Unmap(m_pVBInstance, 0);
 
+}
+
+void CVIBuffer_Point_Particle::Reset_Buffers()
+{
+	m_iSpawnIndex = 0;
+	m_fAccSpawnTime = 0.f;
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource{};
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	VTXPOINTINSTANCE* pVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
+
+	for (size_t i = 0; i < m_iNumInstances; i++)
+	{
+		//if (SPAWN == m_eSpawnType)
+		{
+			pVertices[i].vLifeTime.y = D3D11_FLOAT32_MAX;
+			ZeroMemory(&pVertices[i].vRight, sizeof(_float4));
+			ZeroMemory(&pVertices[i].vUp, sizeof(_float4));
+			ZeroMemory(&pVertices[i].vLook, sizeof(_float4));
+		}
+		//else if (BURST == m_eSpawnType)
+		//{
+		//	pVertices[i] = m_pInstanceVertices[i];
+		//	pVertices[i].vLifeTime.y = 0.f;
+		//}
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
 void CVIBuffer_Point_Particle::Set_UV(_Out_ _float4* _pOutUV, _float _fIndex)
@@ -287,7 +380,6 @@ void CVIBuffer_Point_Particle::Set_Position(_int _iIndex)
 
 void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex)
 {
-	// TODO : 추가적인 Transform 설정이 필요하다
 	_float3 vScale = Compute_ScaleValue();
 	_float3 vRotation = Compute_RotationValue();
 	_matrix matRotation = XMMatrixRotationQuaternion(XMQuaternionRotationRollPitchYaw(XMConvertToRadians(vRotation.x), XMConvertToRadians(vRotation.y), XMConvertToRadians(vRotation.z)));
@@ -365,7 +457,6 @@ CComponent* CVIBuffer_Point_Particle::Clone(void* _pArg)
 
 void CVIBuffer_Point_Particle::Free()
 {
-	__super::Free();
 
 	if (false == m_isCloned)
 	{
@@ -379,6 +470,7 @@ void CVIBuffer_Point_Particle::Free()
 	}
 #endif
 
+	__super::Free();
 }
 
 #ifdef _DEBUG
@@ -392,7 +484,6 @@ void CVIBuffer_Point_Particle::Tool_Reset_Instance()
 	for (size_t i = 0; i < m_iNumInstances; i++)
 	{
 		Set_Instance(i);
-
 	}
 
 	if (FAILED(Initialize_Particles()))
@@ -400,19 +491,21 @@ void CVIBuffer_Point_Particle::Tool_Reset_Instance()
 		MSG_BOX("Module 초기화 실패!!");
 		return;
 	}
+	
+	Reset_Buffers();
 
-	D3D11_MAPPED_SUBRESOURCE		SubResource{};
+	m_isToolChanged = true;
 
-	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	//D3D11_MAPPED_SUBRESOURCE		SubResource{};
+	//m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	//VTXPOINTINSTANCE* pVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
 
-	VTXPOINTINSTANCE* pVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
+	//for (size_t i = 0; i < m_iNumInstances; i++)
+	//{
+	//	pVertices[i] = m_pInstanceVertices[i];
+	//}
 
-	for (size_t i = 0; i < m_iNumInstances; i++)
-	{
-		pVertices[i] = m_pInstanceVertices[i];
-	}
-
-	m_pContext->Unmap(m_pVBInstance, 0);
+	//m_pContext->Unmap(m_pVBInstance, 0);
 }
 void CVIBuffer_Point_Particle::Tool_Reset_Buffers()
 {
@@ -474,6 +567,7 @@ void CVIBuffer_Point_Particle::Tool_Reset_Buffers()
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
 	m_InstanceInitialDesc.pSysMem = m_pInstanceVertices;
+
 	if (FAILED(m_pDevice->CreateBuffer(&m_InstanceBufferDesc, &m_InstanceInitialDesc, &m_pVBInstance)))
 	{
 		MSG_BOX("Instance 버퍼 만들기 실패!!");
@@ -486,6 +580,9 @@ void CVIBuffer_Point_Particle::Tool_Reset_Buffers()
 		return;
 	}
 
+	Reset_Buffers();
+
+	m_isToolChanged = true;
 
 #pragma endregion
 

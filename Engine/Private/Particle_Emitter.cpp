@@ -15,6 +15,7 @@ CParticle_Emitter::CParticle_Emitter(const CParticle_Emitter& _Prototype)
 	, m_iEventID(_Prototype.m_iEventID)
 	, m_fEventTime(_Prototype.m_fEventTime)
 	, m_fAccTime(_Prototype.m_fAccTime)
+	, m_iLoopTime(_Prototype.m_iLoopTime)
 {
 	m_isActive = _Prototype.m_isActive;
 }
@@ -29,7 +30,8 @@ HRESULT CParticle_Emitter::Initialize_Prototype(const json& _jsonInfo)
 		m_isActive = _jsonInfo["Progress"];
 	if (_jsonInfo.contains("Time"))
 		m_fEventTime = _jsonInfo["Time"];
-
+	if (_jsonInfo.contains("LoopTime"))
+		m_iLoopTime = _jsonInfo["LoopTime"];
 
 	return S_OK;
 }
@@ -59,8 +61,20 @@ void CParticle_Emitter::Update(_float _fTimeDelta)
 	{
 		m_fAccTime += _fTimeDelta;
 
-		if (m_fEventTime <= m_fAccTime)
-			Set_Active(false);
+		if (0 != m_iLoopTime && m_fEventTime <= m_fAccTime)
+		{
+			++m_iAccLoop;
+
+			if (m_iAccLoop >= m_iLoopTime)
+				Set_Active(false);
+			else if (0 != m_iLoopTime)
+			{
+				Reset();
+			}
+
+			m_fAccTime = 0.f;
+
+		}
 
 		Update_Component(_fTimeDelta);
 	}
@@ -75,10 +89,16 @@ void CParticle_Emitter::Late_Update(_float _fTimeDelta)
 
 }
 
+void CParticle_Emitter::Reset()
+{
+
+}
+
 void CParticle_Emitter::Active_OnEnable()
 {
 	m_fAccTime = 0.f;
 
+	Reset();
 }
 
 void CParticle_Emitter::Active_OnDisable()
@@ -115,8 +135,15 @@ void CParticle_Emitter::Tool_Update(_float fTimeDelta)
 		m_isToolProgress = !m_isToolProgress;
 	}
 
-	ImGui::InputInt("Event", (_int*)&m_iEventID);
-	ImGui::InputFloat("Time", &m_fEventTime);
+	if (ImGui::InputInt("Event", (_int*)&m_iEventID))
+		m_isToolChanged = true;
+	if (ImGui::InputFloat("Time", &m_fEventTime))
+		m_isToolChanged = true;
+	if (ImGui::InputInt("Loop Count", (_int*)&m_iLoopTime))
+		m_isToolChanged = true;
+	
+
+
 }
 void CParticle_Emitter::Tool_Setting()
 {
@@ -129,6 +156,9 @@ HRESULT CParticle_Emitter::Save(json& _jsonOut)
 	_jsonOut["Event"] = m_iEventID;
 	_jsonOut["Progress"] = m_isToolProgress;
 	_jsonOut["Time"] = m_fEventTime;
+	_jsonOut["LoopTime"] = m_iLoopTime;
+	_jsonOut["Type"] = m_eParticleType;
+
 
 	return S_OK;
 }

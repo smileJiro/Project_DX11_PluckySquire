@@ -116,9 +116,17 @@ HRESULT CParticle_Sprite_Emitter::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
-    // TODO : PASS ¼±ÅÃ
-    if (FAILED(m_pShaderCom->Begin(1)))
-        return E_FAIL;
+    if (CVIBuffer_Instance::UNSET == m_pParticleBufferCom->Get_DataType(CVIBuffer_Instance::P_ROTATION))
+    {
+        if (FAILED(m_pShaderCom->Begin(1)))
+            return E_FAIL;
+    }
+    else
+    {
+        if (FAILED(m_pShaderCom->Begin(2)))
+            return E_FAIL;
+    }
+
 
     if (FAILED(m_pParticleBufferCom->Bind_BufferDesc()))
         return E_FAIL;
@@ -126,6 +134,11 @@ HRESULT CParticle_Sprite_Emitter::Render()
         return E_FAIL;
 
     return S_OK;
+}
+
+void CParticle_Sprite_Emitter::Reset()
+{
+    m_pParticleBufferCom->Reset_Buffers();
 }
 
 HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
@@ -179,10 +192,16 @@ HRESULT CParticle_Sprite_Emitter::Ready_Components(const PARTICLE_EMITTER_DESC* 
         return E_FAIL;
 
     if (nullptr != m_pTextureCom)
+    {
         m_Components.emplace(L"Com_Texture", m_pTextureCom);
+        Safe_AddRef(m_pTextureCom);
+    }
 
     if (nullptr != m_pParticleBufferCom)
+    {
         m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
+        Safe_AddRef(m_pParticleBufferCom);
+    }
 
     return S_OK;
 }
@@ -247,6 +266,7 @@ void CParticle_Sprite_Emitter::Tool_Setting()
 }
 void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 {
+
     ImGui::Begin("Adjust_Sprite_Emitter");   
 
     if (ImGui::TreeNode("Set Emitter State"))
@@ -257,7 +277,11 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
     }
 
     if (m_pParticleBufferCom)
+    {
         m_pParticleBufferCom->Tool_Update(_fTimeDelta);
+
+        m_isToolChanged = m_pParticleBufferCom->Is_ToolChanged();
+    }
     else
     {
         static _int iNumInstanceInput = 1;
@@ -295,7 +319,6 @@ HRESULT CParticle_Sprite_Emitter::Save(json& _jsonOut)
     if (FAILED(__super::Save(_jsonOut)))
         return E_FAIL;
 
-    _jsonOut["Type"] = SPRITE;
     _jsonOut["Texture"] = WSTRINGTOSTRING(*m_pTextureCom->Get_SRVName(0)).c_str();
 
 

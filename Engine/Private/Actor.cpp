@@ -49,9 +49,9 @@ HRESULT CActor::Initialize(void* _pArg)
         return E_FAIL;
 
     // Save Desc 
-    m_pOwner = pDesc->pOwner;                       // 순환 참조로 인해 RefCount 관리 X
-    if (pDesc->OffsetMatrix._44 != 0)                       // m_OffsetMatrix은 항등행렬로 초기화 된 상태임 Desc에 값을 채운경우에만, Offset 적용.
-        m_OffsetMatrix = pDesc->OffsetMatrix;
+    m_pOwner = pDesc->pOwner;                                   // 순환 참조로 인해 RefCount 관리 X
+    if (pDesc->ActorOffsetMatrix._44 != 0)                       // m_OffsetMatrix은 항등행렬로 초기화 된 상태임 Desc에 값을 채운경우에만, Offset 적용.
+        m_OffsetMatrix = pDesc->ActorOffsetMatrix;
 
     // Add Desc
 
@@ -65,10 +65,10 @@ HRESULT CActor::Initialize(void* _pArg)
         return E_FAIL;
 
     // Add User Data (Actor)
-    m_UserData = {};
-    m_UserData.pOwner = m_pOwner;
-    m_UserData.iObjectGroup = pDesc->tFilterData.MyGroup;
-    m_pActor->userData = &m_UserData;
+    ACTOR_USERDATA* pActorUserData = new ACTOR_USERDATA;
+    pActorUserData->pOwner = m_pOwner;
+    pActorUserData->iObjectGroup = pDesc->tFilterData.MyGroup;
+    m_pActor->userData = pActorUserData;
 
     Setup_SimulationFiltering(pDesc->tFilterData.MyGroup, pDesc->tFilterData.OtherGroupMask, false);
 
@@ -164,13 +164,13 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
 {
     PxPhysics* pPhysic = m_pGameInstance->Get_Physics();
     PxTransform Transform = PxTransform();
-    _vector vOwnerPos = m_pOwner->Get_Position();
-
+    //_vector vOwnerPos = m_pOwner->Get_Position();
+    _matrix OwnerWorldMatrix = m_pOwner->Get_WorldMatrix();
     _vector vScale = {};
     _vector vPosition = {};
     _vector vQuat = {};
-    XMMatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&m_OffsetMatrix));
-    vPosition += vOwnerPos;
+    XMMatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&m_OffsetMatrix) * OwnerWorldMatrix);
+    //vPosition += vOwnerPos;
     Transform.p = PxVec3(XMVectorGetX(vPosition), XMVectorGetY(vPosition), XMVectorGetZ(vPosition));
     Transform.q = PxQuat(XMVectorGetX(vQuat), XMVectorGetY(vQuat), XMVectorGetZ(vQuat), XMVectorGetW(vQuat));
     /* 1. RigidBody Type Check */
@@ -280,7 +280,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
         return E_FAIL;
     }
     
-    //pShape->setLocalPose(PxTransform(PxMat44((_float*)(&_ShapeData.LocalOffsetMatrix))));
+    
     pShape->setLocalPose(PxTransform(PxVec3(vPosition.x, vPosition.y, vPosition.z), PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w)));
     PxFilterData FilterData;
     FilterData.word0 = _ShapeData.FilterData.MyGroup;
@@ -296,6 +296,8 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     m_pGameInstance->Add_ShapeUserData(pShapeUserData);
 
     m_pActor->attachShape(*pShape);
+    m_Shapes.push_back(pShape);
+    pShape->acquireReference(); // Add_Ref
 
 #ifdef _DEBUG
     if (true == _ShapeData.isTrigger)
@@ -334,6 +336,25 @@ void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, 
 
     if(true ==_isRunTime)
         pScene->resetFiltering(*m_pActor);
+}
+
+void CActor::Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix)
+{
+    // Offset 저장.
+    XMStoreFloat4x4(&m_OffsetMatrix, _ActorOffsetMatrix);
+
+    _matrix OwnerWorldMatrix = m_pOwner->Get_WorldMatrix();
+    _matrix FinalMatrix = _ActorOffsetMatrix * OwnerWorldMatrix;
+    _vector vScale = {};
+    _vector vPosition = {};
+    _vector vQuat = {};
+    XMMatrixDecompose(&vScale, &vQuat, &vPosition, FinalMatrix);
+
+    PxTransform Transform;
+    Transform.p = PxVec3(XMVectorGetX(vPosition), XMVectorGetY(vPosition), XMVectorGetZ(vPosition));
+    Transform.q = PxQuat(XMVectorGetX(vQuat), XMVectorGetY(vQuat), XMVectorGetZ(vQuat), XMVectorGetW(vQuat));
+
+    m_pActor->setGlobalPose(Transform);
 }
 
 void CActor::Active_OnEnable()
@@ -453,15 +474,25 @@ void CActor::Free()
     m_pTriggerShapes.clear();
 #endif // _DEBUG
 
-
-    // 순환 참조로 인해 RefCount 관리하지 않는다.
-    m_UserData.pOwner = nullptr;
-    m_pOwner = nullptr;
+    for (auto& pPxShape : m_Shapes)
+    {
+        pPxShape->release();
+    }
 
     if(nullptr != m_pActor)
+    {
+        // 순환 참조로 인해 RefCount 관리하지 않는다.
+        ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(m_pActor->userData);
+        pActorUserData->pOwner = nullptr;
+        delete m_pActor->userData;
+        m_pActor->userData = nullptr;
+        m_pOwner = nullptr;
         m_pActor->release();
-    // PhysX Release
-    //PHYSX_RELEASE(m_pActor);
+    }
+    else
+    {
+        int a = 0;
+    }
 
     __super::Free();
 }

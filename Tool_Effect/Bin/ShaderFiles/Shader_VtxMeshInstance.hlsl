@@ -22,6 +22,8 @@ struct VS_IN
     row_major float4x4 InstancingMatrix : WORLD;
     float2 vLifeTime : TEXCOORD1;
     float4 vColor : TEXCOORD2;
+    float3 vVelocity : TEXCOORD3;
+    float3 vForce : TEXCOORD4;
 };
 
 struct VS_OUT
@@ -74,9 +76,8 @@ struct PS_IN
 
 struct PS_OUT
 {
-    float4 vColor : SV_TARGET0;
-    float4 vNormal : SV_TARGET1;
-    float4 vDepth : SV_TARGET2;
+    float4 vAccumulate : SV_TARGET0;
+    float vRevealage : SV_TARGET1;
 };
 
 /* PixelShader */
@@ -87,11 +88,18 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
     float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     vMtrlDiffuse *= In.vColor;
     
-    Out.vColor = vMtrlDiffuse;
-    Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-        
-    float fFlag = g_iFlag;
-    Out.vDepth.a = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
+    //Out.vAccumulate = vMtrlDiffuse;
+    //Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
+    //    
+    //float fFlag = g_iFlag;
+    //Out.vDepth.a = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
+    
+    float fWeight = clamp(10.f / (1e-5 + pow(In.vProjPos.w / 10.f, 3.0f) + pow(In.vProjPos.w / 200.f, 6.f)), 1e-2, 3e3)
+    * max(min(1.0, max(max(vMtrlDiffuse.r, vMtrlDiffuse.g), vMtrlDiffuse.b) * vMtrlDiffuse.a), vMtrlDiffuse.a);
+    
+    Out.vAccumulate.rgb = vMtrlDiffuse.rgb * vMtrlDiffuse.a * fWeight;
+    Out.vAccumulate.a = vMtrlDiffuse.a * fWeight;
+    Out.vRevealage.r = vMtrlDiffuse.a * clamp(log(0.6f + vMtrlDiffuse.a), 0.25f, 0.6f);
     
     return Out;
 }
@@ -103,11 +111,11 @@ technique11 DefaultTechnique
 {
 	/* 우리가 수행해야할 정점, 픽셀 셰이더의 진입점 함수를 지정한다. */
     /* 우리가 수행해야할 정점, 픽셀 셰이더의 진입점 함수를 지정한다. */
-    pass Loop
+    pass Pass_Default
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
