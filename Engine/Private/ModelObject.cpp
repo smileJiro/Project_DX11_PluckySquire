@@ -66,17 +66,7 @@ void CModelObject::Priority_Update(_float _fTimeDelta)
 }
 
 void CModelObject::Late_Update(_float _fTimeDelta)
-{    /* Add Render Group */
-    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-    {
-        if(m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
-        
-    }
-        
-    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
-
+{
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
         if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
@@ -95,12 +85,12 @@ void CModelObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CModelObject::Render()
 {
-    int a = 0;
+
 #ifdef _DEBUG
     if (m_iInstanceID == 662)
     {
+        int a = 0;
         a = 1;
-        cout << a << endl;
     }
 #endif // _DEBUG
 

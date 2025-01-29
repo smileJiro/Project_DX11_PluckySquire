@@ -104,7 +104,7 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
-	m_pPxScene->simulate(1.0f / 60.f);
+	m_pPxScene->simulate(1.f/60.f);
 	
 	if (m_pPxScene->fetchResults(true))
 	{

@@ -3,6 +3,7 @@
 #include "Event_Manager.h"
 #include "GameObject.h"
 #include "Actor.h"
+#include "Actor_Dynamic.h"
 
 /* 함수 구현부 */
 namespace Client
@@ -110,6 +111,19 @@ namespace Client
 
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
+
+	void Event_Set_Kinematic(CActor_Dynamic* _pActorObject, _bool _bValue)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::SET_KINEMATIC;
+		tEvent.Parameters.resize(2); // NumParameters
+
+		tEvent.Parameters[0] = (DWORD_PTR)_pActorObject;
+		tEvent.Parameters[1] = (DWORD_PTR)_bValue;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+
+	}
+
 
 
 	std::wstring StringToWstring(const std::string& _str)

@@ -133,6 +133,11 @@ _float3 CPartObject::Get_Scale() const
                    XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[eCurCoord].m[2]))));
 }
 
+_matrix CPartObject::Get_FinalWorldMatrix()
+{
+    return XMLoadFloat4x4( &m_WorldMatrices[m_pControllerTransform->Get_CurCoord()]);
+}
+
 void CPartObject::Free()
 {
     for (_int i = 0; i < COORDINATE_LAST; ++i)

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PlayerSword.h"
 #include "Actor_Dynamic.h"
+#include "Player.h"
+#include "3DModel.h"
 
 CPlayerSword::CPlayerSword(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -13,8 +15,75 @@ CPlayerSword::CPlayerSword(const CPlayerSword& _Prototype)
 {
 }
 
+HRESULT CPlayerSword::Initialize(void* _pArg)
+{
+    //Part Sword
+    PLAYER_SWORD_DESC* pDesc = static_cast<PLAYER_SWORD_DESC*>(_pArg);
+	m_pPlayer = pDesc->pParent;
+    pDesc->pParentMatrices[COORDINATE_3D] = m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
+    Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
+
+    pDesc->isCoordChangeEnable = false;
+    pDesc->strModelPrototypeTag_3D = TEXT("latch_sword");
+    pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    pDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.0f);
+    pDesc->tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+
+    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    CActor::ACTOR_DESC ActorDesc;
+
+    /* Actor의 주인 오브젝트 포인터 */
+    ActorDesc.pOwner = this;
+
+    /* Actor의 회전축을 고정하는 파라미터 */
+    ActorDesc.FreezeRotation_XYZ[0] = true;
+    ActorDesc.FreezeRotation_XYZ[1] = false;
+    ActorDesc.FreezeRotation_XYZ[2] = true;
+
+    /* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
+    ActorDesc.FreezePosition_XYZ[0] = false;
+    ActorDesc.FreezePosition_XYZ[1] = true;
+    ActorDesc.FreezePosition_XYZ[2] = false;
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_SPHERE_DESC ShapeDesc = {};
+    ShapeDesc.fRadius = 0.5f;
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    SHAPE_DATA ShapeData;
+    ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData.eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+
+    /* 충돌 필터에 대한 세팅 ()*/
+    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER;
+
+    /* Actor Component Finished */
+    pDesc->pActorDesc = &ActorDesc;
+	if (FAILED(__super::Initialize(pDesc)))
+		return E_FAIL;
+    return S_OK;
+}
+
 void CPlayerSword::Update(_float _fTimeDelta)
 {
+    if (m_bFlying)
+    {
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+		_vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+        _vector vTargetPos =  m_pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+        _float3 vDir;
+        XMStoreFloat3(&vDir, (vTargetPos - vPosition) * m_fHomingForce);
+        pDynamicActor->Add_Force(vDir);
+    }
 	__super::Update(_fTimeDelta);
 }
 
@@ -28,14 +97,16 @@ void CPlayerSword::Throw( _fvector _vDirection)
 	m_bFlying = true;
     m_pSocketMatrix = nullptr;
 	m_pParentMatrices[COORDINATE_3D] = nullptr;
-	_matrix matWorld = XMLoadFloat4x4( &m_WorldMatrices[COORDINATE_3D]);
-    _float4 vPositon;
-    XMStoreFloat4(&vPositon, matWorld.r[3]);
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPositon);
-	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
+    _matrix matWorld = XMMatrixIdentity(); ;
+    matWorld.r[3] = XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_3D]).r[3];
+    XMStoreFloat4x4( &m_WorldMatrices[COORDINATE_3D] , matWorld);
+	m_pActorCom->Update(0.0f);
+    static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
     _float3 f3Direction;
 	XMStoreFloat3(&f3Direction, _vDirection * m_fThrowForce);
 	m_pActorCom->Add_Impulse(f3Direction);
+	_float3 vAngularVelocity = { 0, -m_fRotationForce, 0 };
+    m_pActorCom->Set_AngularVelocity(vAngularVelocity);
 }
 
 CPlayerSword* CPlayerSword::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -36,6 +36,7 @@ private:
 	HRESULT Execute_SetActive(const EVENT& _tEvent);
 	HRESULT Execute_Setup_SimulationFilter(const EVENT& _tEvent);
 	HRESULT Execute_Change_Coordinate(const EVENT& _tEvent);
+	HRESULT Execute_Set_Kinematic(const EVENT& _tEvent);
 
 	HRESULT Execute_ChangeMonsterState(const EVENT& _tEvent);
 	HRESULT Execute_ChangeBossState(const EVENT& _tEvent);

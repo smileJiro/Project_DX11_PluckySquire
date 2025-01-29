@@ -167,59 +167,29 @@ HRESULT CPlayer::Ready_PartObjects()
     }
 
 	//Part Sword
-	BodyDesc.isCoordChangeEnable = false;
-    BodyDesc.strModelPrototypeTag_3D = TEXT("latch_sword");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.0f);
-    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-
-    BodyDesc.eActorType = ACTOR_TYPE::KINEMATIC;
-    CActor::ACTOR_DESC ActorDesc;
-
-    /* Actor의 주인 오브젝트 포인터 */
-    ActorDesc.pOwner = this;
-
-    /* Actor의 회전축을 고정하는 파라미터 */
-    ActorDesc.FreezeRotation_XYZ[0] = true;
-    ActorDesc.FreezeRotation_XYZ[1] = false;
-    ActorDesc.FreezeRotation_XYZ[2] = true;
-
-    /* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
-    ActorDesc.FreezePosition_XYZ[0] = false;
-    ActorDesc.FreezePosition_XYZ[1] = true;
-    ActorDesc.FreezePosition_XYZ[2] = false;
-
-    /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_SPHERE_DESC ShapeDesc = {};
-    ShapeDesc.fRadius = 0.5f;
-
-    /* 해당 Shape의 Flag에 대한 Data 정의 */
-    SHAPE_DATA ShapeData;
-    ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData.eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData.isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix,  XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
-
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc.ShapeDatas.push_back(ShapeData);
-
-    /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER;
-
-    /* Actor Component Finished */
-    BodyDesc.pActorDesc = &ActorDesc;
-    m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &BodyDesc));
+	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
+	SwordDesc.pParent = this;
+    SwordDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    SwordDesc.iCurLevelID = m_iCurLevelID;
+    SwordDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+    SwordDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    SwordDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    SwordDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    SwordDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+    SwordDesc.iRenderGroupID_2D = RG_3D;
+    SwordDesc.iPriorityID_2D = PR3D_BOOK2D;
+    SwordDesc.iRenderGroupID_3D = RG_3D;
+    SwordDesc.iPriorityID_3D = PR3D_NONBLEND;
+    SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
     {
         MSG_BOX("CPlayer Sword Creation Failed");
         return E_FAIL;
     }
-    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));    
-    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_SWORD])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r")); /**/
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
 	Set_PartActive(PLAYER_PART_SWORD, false);
 
@@ -234,6 +204,7 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer Glove Creation Failed");
         return E_FAIL;
     }
+    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
 	m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
 	Set_PartActive(PLAYER_PART_GLOVE, false);
