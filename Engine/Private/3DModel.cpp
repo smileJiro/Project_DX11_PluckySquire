@@ -78,12 +78,12 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	inFile.close();
 	//std::cout << pModelFilePath << endl;
 
-	if (_isCollider)
-	{
-	
-		filesystem::exists(path)
+	//if (_isCollider)
+	//{
+	//
+	//	filesystem::exists(path)
 
-	}
+	//}
 
 	return S_OK;
 }
