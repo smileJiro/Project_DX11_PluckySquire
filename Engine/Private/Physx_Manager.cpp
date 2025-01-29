@@ -177,7 +177,7 @@ HRESULT CPhysx_Manager::Initialize_Physics()
 	PxCookingParams CookingParams(TolerancesScale);
 	CookingParams.meshPreprocessParams = PxMeshPreprocessingFlag::eWELD_VERTICES; // 중복된 정점 병합
 	CookingParams.meshWeldTolerance = 0.001f; // 병합 허용 오차
-
+	
 	// 4. PxCooking 생성
 	m_pPxCooking = PxCreateCooking(PX_PHYSICS_VERSION, *m_pPxFoundation, CookingParams);
 	if (nullptr == m_pPxCooking)
@@ -309,26 +309,47 @@ void CPhysx_Manager::Free()
 
 	// Shape User Data 정리
 	Delete_ShapeUserData();
-	// PhysX 리소스 해제
-	m_pGroundPlane->release();
-	m_pTestDesk->release();
-	m_pPxScene->release();
-	m_pPxDefaultCpuDispatcher->release();
-	/* Scene 삭제후 곧바로 정리*/
-	for(_uint i =0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
-		m_pPxMaterial[i]->release();
 
-	m_pPxPhysics->release();
-	if (nullptr != m_pPxPvd)
+	// 1. Actor 및 Shape 관련 리소스 해제
+	if (m_pGroundPlane)
+		m_pGroundPlane->release();
+	if (m_pTestDesk)
+		m_pTestDesk->release();
+
+	// 2. Scene 및 Dispatcher 정리
+	if (m_pPxScene)
+		m_pPxScene->release();
+	if (m_pPxDefaultCpuDispatcher)
+		m_pPxDefaultCpuDispatcher->release();
+
+	// 3. Material 정리
+	for (_uint i = 0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
 	{
-		m_pPxPvd->disconnect(); // 연결 해제
+		if (m_pPxMaterial[i])
+			m_pPxMaterial[i]->release();
+	}
+
+	// 4. Cooking 및 Physics 정리
+	if (m_pPxCooking)
+		m_pPxCooking->release();
+	if (m_pPxPhysics)
+		m_pPxPhysics->release();
+
+	// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
+	if (m_pPxPvd)
+	{
+		m_pPxPvd->disconnect(); // PVD 연결 해제
+
 		if (auto pTransport = m_pPxPvd->getTransport())
 		{
 			m_pPxPvd->release();
 			pTransport->release();
 		}
 	}
-	m_pPxFoundation->release();
+
+	// 6. Foundation 정리
+	if (m_pPxFoundation)
+		m_pPxFoundation->release();
 
 	// 게임 및 DirectX 리소스 해제
 	Safe_Release(m_pPhysx_EventCallBack);
