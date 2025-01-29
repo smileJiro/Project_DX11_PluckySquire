@@ -1,0 +1,139 @@
+{
+    "Emitters": [
+        {
+            "Buffer": {
+                "Color": {
+                    "Arg1": [
+                        0.20000000298023224,
+                        0.10000000149011612,
+                        0.800000011920929,
+                        1.0
+                    ],
+                    "Arg2": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "Count": 1200,
+                "LifeTime": {
+                    "Arg1": 6.0,
+                    "Arg2": 15.0,
+                    "SetType": "DIRECTSET"
+                },
+                "Module": [
+                    {
+                        "Amount": 4.0,
+                        "Axis": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Init": false,
+                        "Order": 1,
+                        "Origin Point": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Pull Amount": 30.0,
+                        "Type": "VORTEX_ACCELERATION"
+                    },
+                    {
+                        "Amount": 1.0,
+                        "Init": false,
+                        "Order": 2,
+                        "Type": "DRAG"
+                    }
+                ],
+                "Position": {
+                    "Arg1": [
+                        0.0,
+                        0.5,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "Rotation": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        360.0,
+                        360.0,
+                        360.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "Scale": {
+                    "Arg1": [
+                        2.0,
+                        2.0,
+                        1.0
+                    ],
+                    "Arg2": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ],
+                    "SetType": "DIRECTSET"
+                },
+                "ShapeLocation": {
+                    "HandleRadius": 1.0,
+                    "LargeRadius": 12.0,
+                    "Position": [
+                        0.0,
+                        6.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        6.0,
+                        1.0
+                    ],
+                    "Shape": "TORUS",
+                    "U_Distribution": 0.0,
+                    "V_Distribution": 0.0
+                },
+                "Spawn": {
+                    "Count": 1,
+                    "Time": 0.10000000149011612,
+                    "Type": "SPAWN"
+                },
+                "UVSet": {
+                    "Anim": false,
+                    "Count": 1.0,
+                    "Random": false,
+                    "Start": 0.0,
+                    "Time": 0.0,
+                    "UV": [
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            "Event": 0,
+            "LoopTime": 0,
+            "Parent": false,
+            "Progress": true,
+            "Texture": "../Bin/Resources/Textures/Effects/blue.dds",
+            "Time": 4.0,
+            "Type": "SPRITE"
+        }
+    ],
+    "Name": "Testing"
+}
