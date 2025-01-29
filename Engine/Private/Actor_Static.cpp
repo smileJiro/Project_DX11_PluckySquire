@@ -36,6 +36,9 @@ void CActor_Static::Update(_float _fTimeDelta)
 
 void CActor_Static::Late_Update(_float _fTimeDelta)
 {
+#ifdef _DEBUG
+	CActor::Late_Update(_fTimeDelta); // Debug_Render (Trigger Shape)
+#endif // _DEBUG
 }
 
 

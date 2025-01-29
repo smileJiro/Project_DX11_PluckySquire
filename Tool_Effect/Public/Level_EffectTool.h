@@ -25,6 +25,7 @@ public:
 	HRESULT					Ready_Layer_Camera(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Effect(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
+	HRESULT					Ready_SkyBox(const _wstring& _strLayerTag);
 
 private:
 	class CParticle_System*							m_pNowItem = { nullptr };

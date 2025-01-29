@@ -107,6 +107,8 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 			Camera->Set_Active(false);
 
 		if (FREE == _iCurrentCameraType) {
+			if (nullptr == m_Cameras[TARGET])
+				return;
 			CController_Transform* pTargetConTrans = m_Cameras[TARGET]->Get_ControllerTransform();
 			CController_Transform* pFreeConTrans = m_Cameras[FREE]->Get_ControllerTransform();
 			pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());

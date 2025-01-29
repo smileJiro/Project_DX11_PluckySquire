@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MapObject.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 
 CMapObject::CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -21,6 +22,20 @@ HRESULT CMapObject::Initialize_Prototype()
 
 HRESULT CMapObject::Initialize(void* _pArg)
 {
+    if (_pArg != nullptr)
+    {
+        MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
+        if (pDesc->is2DImport)
+        {
+            auto tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(pDesc->i2DModelIndex);
+            // 콜라이더, 소팅, 액티브, 오버라이드 등은 나중에... 일단 띄워놓기만 합니다.
+            pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+            pDesc->strModelPrototypeTag_2D = StringToWstring(tInfo.strModelName);
+            //pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
+        }
+    }
+
+
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
@@ -50,8 +65,8 @@ void CMapObject::Late_Update(_float _fTimeDelta)
        
     }
         
-    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BOOK2D, this);
+    //else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    //    m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BOOK2D, this);
         //m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
 
 

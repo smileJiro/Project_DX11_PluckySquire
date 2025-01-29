@@ -20,7 +20,8 @@ HRESULT CRenderGroup_Lights::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuf
     /* Diffuse, Normal 등의 정보를 기반으로 Shade RTV를 구성하는 단계 */
 
        /* 1. shade MRT 세팅 */
-    if (FAILED(m_pGameInstance->Begin_MRT(m_strMRTTag), m_pDSV, m_isClear)) // 조명별 연산의 결과를 블렌드하며 누적시키는 RTV
+        // 0128 박예슬 : 오타같아서 고쳐놓겠어요(깃 이력 참조)
+    if (FAILED(m_pGameInstance->Begin_MRT(m_strMRTTag, m_pDSV, m_isClear))) // 조명별 연산의 결과를 블렌드하며 누적시키는 RTV
         return E_FAIL;
 
     /* 2. 직교투영 Matrix 정보 전달. */

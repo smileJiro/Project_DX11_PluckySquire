@@ -16,14 +16,17 @@ CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Pr
 	, m_iNumMeshes(_Prototype.m_iNumMeshes)
 	, m_iNumMaterials(_Prototype.m_iNumMaterials)
 	, m_Materials(_Prototype.m_Materials)
+#ifdef _DEBUG
+	, m_strModelPath(_Prototype.m_strModelPath)
+#endif
 {
-	if (_Prototype.m_Meshes.size())
+	if (_Prototype.m_ParticleMeshes.size())
 	{
-		for (auto& pPrototypeMesh : _Prototype.m_Meshes)
+		for (auto& pPrototypeMesh : _Prototype.m_ParticleMeshes)
 		{
 			CVIBuffer_Mesh_Particle* pMesh = static_cast<CVIBuffer_Mesh_Particle*>(pPrototypeMesh->Clone(nullptr));
 			if (nullptr != pMesh)
-				m_Meshes.push_back(pMesh);
+				m_ParticleMeshes.push_back(pMesh);
 		}
 	}
 
@@ -110,6 +113,9 @@ HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const json& _jsonInfo)
 		return E_FAIL;
 
 	_string strModelPath = _jsonInfo["Model"];
+#ifdef _DEBUG
+	m_strModelPath = strModelPath;
+#endif
 
 	std::ifstream inFile(strModelPath.c_str(), std::ios::binary);
 	if (!inFile) {
@@ -162,13 +168,13 @@ void CParticle_Mesh_Emitter::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 
 	if (m_isActive)
-		m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+		m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
 
 }
 
 HRESULT CParticle_Mesh_Emitter::Render()
 {
-	if (nullptr == m_pShaderCom || 0 == m_Meshes.size())
+	if (nullptr == m_pShaderCom || 0 == m_ParticleMeshes.size())
 		return S_OK;
 
 	if (FAILED(Bind_ShaderResources()))
@@ -184,12 +190,18 @@ HRESULT CParticle_Mesh_Emitter::Render()
 		if (FAILED(m_pShaderCom->Begin(0)))
 			return E_FAIL;
 
-		m_Meshes[i]->Bind_BufferDesc();
-		m_Meshes[i]->Render();
+		m_ParticleMeshes[i]->Bind_BufferDesc();
+		m_ParticleMeshes[i]->Render();
 	}
 
 
 	return S_OK;
+}
+
+void CParticle_Mesh_Emitter::Reset()
+{
+	m_fAccTime = 0.f;
+
 }
 
 HRESULT CParticle_Mesh_Emitter::Bind_ShaderResources()
@@ -211,7 +223,7 @@ HRESULT CParticle_Mesh_Emitter::Bind_ShaderResources()
 
 HRESULT CParticle_Mesh_Emitter::Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex)
 {
-	_uint iMaterialIndex = m_Meshes[_iMeshIndex]->Get_MaterialIndex();
+	_uint iMaterialIndex = m_ParticleMeshes[_iMeshIndex]->Get_MaterialIndex();
 
 	ID3D11ShaderResourceView* pSRV = m_Materials[iMaterialIndex]->Find_Texture(_eTextureType, _iTextureIndex);
 	if (nullptr == pSRV)
@@ -225,6 +237,14 @@ HRESULT CParticle_Mesh_Emitter::Ready_Components(const PARTICLE_EMITTER_DESC* _p
 {
 	if (FAILED(__super::Ready_Components(_pDesc)))
 		return E_FAIL;
+
+	for (_int i = 0; i < m_ParticleMeshes.size(); ++i)
+	{
+		_wstring wstrName = L"Particle" + to_wstring(i);
+
+		m_Components.emplace(wstrName, m_ParticleMeshes[i]);
+		Safe_AddRef(m_ParticleMeshes[i]);
+	}
 
 	return S_OK;
 }
@@ -259,7 +279,7 @@ HRESULT CParticle_Mesh_Emitter::Ready_Meshes(ifstream& _inFile, const json& _jso
 		if (nullptr == pMesh)
 			return E_FAIL;
 
-		m_Meshes.push_back(pMesh);
+		m_ParticleMeshes.push_back(pMesh);
 	}
 
 	return S_OK;
@@ -281,6 +301,8 @@ HRESULT CParticle_Mesh_Emitter::Ready_Materials(ifstream& _inFile, const _char* 
 	}
 	return S_OK;
 }
+
+
 
 //CParticle_Mesh_Emitter* CParticle_Mesh_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szModelPath, const _tchar* _szInfoPath)
 //{
@@ -330,9 +352,9 @@ void CParticle_Mesh_Emitter::Free()
 		Safe_Release(pMaterial);
 	m_Materials.clear();
 
-	for (auto& pMesh : m_Meshes)
+	for (auto& pMesh : m_ParticleMeshes)
 		Safe_Release(pMesh);
-	m_Meshes.clear();
+	m_ParticleMeshes.clear();
 
 	__super::Free();
 }
@@ -340,4 +362,99 @@ void CParticle_Mesh_Emitter::Free()
 HRESULT CParticle_Mesh_Emitter::Cleanup_DeadReferences()
 {
 	return S_OK;
+}
+
+void CParticle_Mesh_Emitter::Tool_Setting()
+{
+	if (m_ParticleMeshes.size())
+	{
+		for (auto& pMesh : m_ParticleMeshes)
+			pMesh->Tool_Setting();
+	}
+}
+
+void CParticle_Mesh_Emitter::Tool_Update(_float _fTimeDelta)
+{
+	ImGui::Begin("Adjust_Mesh_Emitter");
+
+	if (ImGui::TreeNode("Set Emitter State"))
+	{
+		__super::Tool_Update(_fTimeDelta);
+
+		ImGui::TreePop();
+	}
+
+	if (m_ParticleMeshes.size())
+	{
+		m_ParticleMeshes[0]->Tool_Update(_fTimeDelta);
+
+		m_isToolChanged = m_ParticleMeshes[0]->Is_ToolChanged();
+	}
+	else
+	{
+		static _int iNumInstanceInput = 1;
+
+		if (ImGui::InputInt("Instance Count", &iNumInstanceInput))
+		{
+			if (0 >= iNumInstanceInput)
+			{
+				iNumInstanceInput = 1;
+			}
+		}
+
+		if (ImGui::Button("Create_Buffer"))
+		{
+			MSG_BOX("아직 불가능해요~");
+			//m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, iNumInstanceInput);
+			//
+			//if (nullptr != m_pParticleBufferCom)
+			//	m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
+		}
+
+	}
+
+
+	ImGui::End();
+}
+
+HRESULT CParticle_Mesh_Emitter::Save(json& _jsonOut)
+{
+	if (0 == m_ParticleMeshes.size())
+	{
+		MSG_BOX("Model이나 불러오세요.");
+	}
+
+	if (FAILED(__super::Save(_jsonOut)))
+		return E_FAIL;
+
+	_jsonOut["Model"] = m_strModelPath.c_str();
+	
+	for (_int i = 0; i < 16; ++i)
+	{
+		_jsonOut["PreTransform"].push_back(*((_float*)(&m_PreTransformMatrix) + i));
+	}
+
+	json jsonBufferInfo;
+
+	if (FAILED(m_ParticleMeshes[0]->Save_Buffer(jsonBufferInfo)))
+	{
+		return E_FAIL;
+	}
+
+	_jsonOut["Buffer"] = jsonBufferInfo;
+
+	return S_OK;
+}
+
+CParticle_Mesh_Emitter* CParticle_Mesh_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg)
+{
+	CParticle_Mesh_Emitter* pInstance = new CParticle_Mesh_Emitter(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CParticle_Mesh_Emitter");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }

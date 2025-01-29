@@ -17,6 +17,8 @@ public:
 	virtual HRESULT			Render() override;
 	virtual HRESULT			Render_Shadow() override;
 
+	vector<_uint>			m_ActivePageIndexs;
+	_float					m_fTestOffset = -1.f;
 public:
 	static CSampleBook* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

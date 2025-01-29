@@ -70,6 +70,9 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
+	// TODO :: 여기가 맞는지? 
+	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
+	
 	m_pGameInstance->End_Imgui();
 
 	if (FAILED(Render()))

@@ -67,6 +67,18 @@
     <Filter Include="02. GameObjects\Camera\02. Camera_CutScene">
       <UniqueIdentifier>{bc784271-f006-4822-aa6c-58ebce4d22dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Levels\03. Trigger_Tool">
+      <UniqueIdentifier>{8948c933-c7f1-4862-a251-ab3dd1be83ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\MapObject">
+      <UniqueIdentifier>{b77e9251-4154-4ca4-8faf-0355e8e4293b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Trigger">
+      <UniqueIdentifier>{f0045d5d-a41a-4617-8dc6-875b03d41ee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Trigger\CameraTrigger">
+      <UniqueIdentifier>{df994250-ee46-4a00-9b41-34ac450287bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera_Tool.h">
@@ -144,6 +156,15 @@
     <ClInclude Include="..\Public\Camera_CutScene.h">
       <Filter>02. GameObjects\Camera\02. Camera_CutScene</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Trigger_Tool.h">
+      <Filter>01. Levels\03. Trigger_Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02. GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Trigger.h">
+      <Filter>02. GameObjects\Trigger\CameraTrigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp">
@@ -211,6 +232,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_CutScene.cpp">
       <Filter>02. GameObjects\Camera\02. Camera_CutScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Trigger_Tool.cpp">
+      <Filter>01. Levels\03. Trigger_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>02. GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Trigger.cpp">
+      <Filter>02. GameObjects\Trigger\CameraTrigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -269,16 +269,17 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
     {
     case Engine::COORDINATE_2D:
     {
-        /* Com_Shader_3D */
-        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
-            TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
-            return E_FAIL;
+
         /* Com_Shader_2D */
         if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
             TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
             return E_FAIL;
         if (true == _pDesc->isCoordChangeEnable)
         {
+            /* Com_Shader_3D */
+            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
+                TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
+                return E_FAIL;
         }
         break;
     }

@@ -15,6 +15,8 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& _Prototype)
 	, m_iNumIndexCountPerInstance(_Prototype.m_iNumIndexCountPerInstance)
 	, m_iInstanceStride(_Prototype.m_iInstanceStride)
 
+	, m_eSpawnType(_Prototype.m_eSpawnType)
+	, m_fSpawnTime(_Prototype.m_fSpawnTime)
 	, m_eShapeType(_Prototype.m_eShapeType)
 	, m_ShapeDatas(_Prototype.m_ShapeDatas)
 	, m_SetDatas(_Prototype.m_SetDatas)
@@ -27,6 +29,7 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& _Prototype)
 	, m_vShapeRotation(_Prototype.m_vShapeRotation)
 	, m_vShapePosition(_Prototype.m_vShapePosition)
 	, m_Modules(_Prototype.m_Modules)
+
 {
 	for (auto& pModule : m_Modules)
 		Safe_AddRef(pModule);
@@ -127,6 +130,10 @@ HRESULT CVIBuffer_Instance::Bind_BufferDesc()
 	m_pContext->IASetPrimitiveTopology(m_ePrimitiveTopology);
 
 	return S_OK;
+}
+
+void CVIBuffer_Instance::Reset_Buffers()
+{
 }
 
 
@@ -720,8 +727,6 @@ HRESULT CVIBuffer_Instance::Ready_Modules(const json _jsonInfo)
 }
 
 
-
-
 void CVIBuffer_Instance::Free()
 {
 
@@ -781,6 +786,10 @@ HRESULT CVIBuffer_Instance::Save_Buffer(json& _jsonBufferInfo)
 		_jsonBufferInfo["Color"]["Arg2"].push_back(*((_float*)(&m_pSetColors[1]) + i));
 	}
 
+	_jsonBufferInfo["Spawn"]["Type"] = m_eSpawnType;
+	_jsonBufferInfo["Spawn"]["Time"] = m_fSpawnTime;
+	//_jsonBufferInfo["Spawn"]["Count"] = m_iSpawnCount;
+
 	_jsonBufferInfo["Scale"]["SetType"] = m_SetDatas[P_SCALE];
 	_jsonBufferInfo["Rotation"]["SetType"] = m_SetDatas[P_ROTATION];
 	_jsonBufferInfo["Position"]["SetType"] = m_SetDatas[P_POSITION];
@@ -808,13 +817,52 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 {
 	if (ImGui::TreeNode("Defaults"))
 	{
+		if (ImGui::TreeNode("Spawn"))
+		{
+			const _char* items[] = {"Burst", "Spawn"};
+			static _int item_selected_idx = 0;
+			const char* combo_preview_value = items[item_selected_idx];
+
+			if (ImGui::BeginCombo("Spawn Type", combo_preview_value, m_eSpawnType))
+			{
+				item_selected_idx = m_eSpawnType;
+				ImGui::SetItemDefaultFocus();
+
+				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+				{
+					const bool is_selected = (item_selected_idx == n);
+
+					if (ImGui::Selectable(items[n], is_selected))
+					{
+						item_selected_idx = n;
+						m_eSpawnType = (SPAWN_TYPE)n;
+						if (SPAWN == m_eSpawnType && 0.f >= m_fSpawnTime)
+							m_fSpawnTime = 0.001f;
+						Tool_Reset_Instance();
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+
+			if (ImGui::InputFloat("Spawn Time", &m_fSpawnTime, 0.01f, 0.1f, "%.4f"))
+			{
+
+				if (SPAWN == m_eSpawnType && 0.f >= m_fSpawnTime)
+					m_fSpawnTime = 0.001f;
+				Tool_Reset_Instance();
+			}
+
+			ImGui::TreePop();
+		}
+
 		if (ImGui::TreeNode("Change Counts"))
 		{
 			if (ImGui::InputInt("Instance Count", (_int*)&m_iNumInstances))
 			{
 				Tool_Reset_Buffers();
 			}
-
 
 			ImGui::TreePop();
 		}

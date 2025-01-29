@@ -263,6 +263,9 @@ HRESULT CRenderer::Render_Book2D()
 
 HRESULT CRenderer::Render_Priority()
 {
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Final"), nullptr, true)))
+        return E_FAIL;
+
     for (auto& pRenderObject : m_RenderObjects[RG_PRIORITY])
     {
         if (nullptr != pRenderObject && true == pRenderObject->Is_Render())
@@ -274,6 +277,9 @@ HRESULT CRenderer::Render_Priority()
     }
     // 해당 그룹에 속한 모든 Object들에 대해 Render 수행 후, 해당 리스트는 Clear
     m_RenderObjects[RG_PRIORITY].clear();
+
+    if (FAILED(m_pGameInstance->End_MRT()))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -371,7 +377,7 @@ HRESULT CRenderer::Render_Lights()
 HRESULT CRenderer::Render_Final()
 {
     /* 최종 화면을 그려내는 단계 */
-    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Final"),  nullptr, true)))
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Final"),  nullptr, false)))
         return E_FAIL;
 
     // Render_Light 단계에서 직교투영 사각형을 그리기위한 데이터는 전달되어서 그대로 남아있는 상태라 안해줘도 되긴 하지만, 추후 사이에 별도의 작업이 생길수도있으니 안전성을 위해 바인드.
