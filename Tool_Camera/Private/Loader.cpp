@@ -173,6 +173,11 @@ HRESULT CLoader::Loading_Level_Static()
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    // Trigger
+    /* For. Prototype_GameObject_Camera_Trigger */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"),
+        CCamera_Trigger::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -318,12 +323,6 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
     Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_04_Default_Desk.mchc");
 
     Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Free_Enviroment.mchc");
-
-    // Trigger
-     /* For. Prototype_GameObject_Camera_Trigger */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_Camera_Trigger"),
-        CCamera_Trigger::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

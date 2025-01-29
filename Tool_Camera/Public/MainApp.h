@@ -17,7 +17,6 @@ private:
 public:
 	HRESULT				Initialize();
 	void				Progress(_float _fTimeDelta);
-
 	HRESULT				Render();
 
 public:
@@ -40,6 +39,10 @@ private:
 
 private:
 	HRESULT				SetUp_StartLevel(LEVEL_ID _eLevelID);
+
+private:
+	HRESULT				Ready_RenderTargets();
+	HRESULT				Ready_RenderGroup();
 
 public:
 	static CMainApp* Create();
