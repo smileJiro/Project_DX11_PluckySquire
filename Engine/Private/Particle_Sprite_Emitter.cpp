@@ -114,7 +114,7 @@ void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
 
     if (m_isActive)
         //m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
-        m_pGameInstance->Add_RenderObject_New(2000, 70, this);
+        m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_EFFECT, this);
 }
 
 HRESULT CParticle_Sprite_Emitter::Render()
@@ -292,12 +292,12 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 
         if (ImGui::InputFloat("Alpha Test", &m_fAlphaDiscard, 0.001f, 0.1f, "%.4f"))
         {
-            clamp(m_fAlphaDiscard, 0.f, 1.f);
+            m_fAlphaDiscard = clamp(m_fAlphaDiscard, 0.f, 1.f);
         }
 
         if (ImGui::InputFloat("RGB Test", &m_fRGBDiscard, 0.001f, 0.1f, "%.4f"))
         {
-            clamp(m_fRGBDiscard, 0.f, 3.f);
+            m_fRGBDiscard = clamp(m_fRGBDiscard, 0.f, 3.f);
         }
 
         ImGui::TreePop();

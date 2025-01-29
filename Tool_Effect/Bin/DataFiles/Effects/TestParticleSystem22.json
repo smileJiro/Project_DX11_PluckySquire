@@ -23,25 +23,6 @@
                     "Arg2": 15.0,
                     "SetType": "DIRECTSET"
                 },
-                "Module": [
-                    {
-                        "Amount": 5.0,
-                        "Init": true,
-                        "Order": 0,
-                        "Origin": [
-                            0.0,
-                            -0.5,
-                            0.0
-                        ],
-                        "Type": "POINT_VELOCITY"
-                    },
-                    {
-                        "Amount": 0.30000001192092896,
-                        "Init": false,
-                        "Order": 1,
-                        "Type": "DRAG"
-                    }
-                ],
                 "Position": {
                     "Arg1": [
                         0.0,
@@ -58,7 +39,7 @@
                 "Rotation": {
                     "Arg1": [
                         0.0,
-                        0.0,
+                        90.0,
                         0.0
                     ],
                     "Arg2": [
@@ -66,7 +47,7 @@
                         0.0,
                         0.0
                     ],
-                    "SetType": "UNSET"
+                    "SetType": "DIRECTSET"
                 },
                 "Scale": {
                     "Arg1": [

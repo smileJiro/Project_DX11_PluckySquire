@@ -1,6 +1,10 @@
 #include "Particle_Emitter.h"
 #include "GameInstance.h"
 
+_int			CParticle_Emitter::s_iRG_3D = 0;
+_int			CParticle_Emitter::s_iRG_2D = 0;
+_int			CParticle_Emitter::s_iRGP_EFFECT = 0;
+
 CParticle_Emitter::CParticle_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CPartObject(_pDevice, _pContext)
 {

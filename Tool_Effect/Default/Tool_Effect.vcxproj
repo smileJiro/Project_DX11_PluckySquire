@@ -150,6 +150,9 @@
     <ClInclude Include="..\public\EffectToolLoader.h" />
     <ClInclude Include="..\public\EffectTool_Defines.h" />
     <ClInclude Include="..\public\Effect_Reference.h" />
+    <ClInclude Include="..\public\ETool_RenderGroup_AfterEffect.h" />
+    <ClInclude Include="..\public\ETool_RenderGroup_Final.h" />
+    <ClInclude Include="..\public\ETool_RenderGroup_Lights.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\public\Level_EffectTool.h" />
     <ClInclude Include="..\public\Level_EffectLoading.h" />
@@ -165,6 +168,9 @@
   <ItemGroup>
     <ClCompile Include="..\private\EffectToolLoader.cpp" />
     <ClCompile Include="..\private\Effect_Reference.cpp" />
+    <ClCompile Include="..\private\ETool_RenderGroup_AfterEffect.cpp" />
+    <ClCompile Include="..\private\ETool_RenderGroup_Final.cpp" />
+    <ClCompile Include="..\private\ETool_RenderGroup_Lights.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\private\Level_EffectTool.cpp" />
     <ClCompile Include="..\private\Level_EffectLoading.cpp" />

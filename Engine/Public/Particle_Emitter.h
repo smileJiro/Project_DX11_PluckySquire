@@ -10,6 +10,8 @@ BEGIN(Engine)
 
 class ENGINE_DLL CParticle_Emitter : public CPartObject
 {
+
+
 public:
 	enum PARTICLE_TYPE { SPRITE, MESH, NONE };
 
@@ -26,6 +28,11 @@ protected:
 	virtual ~CParticle_Emitter() = default;
 
 public:
+	static void SetID_3D(_int _iID) { s_iRG_3D = _iID; }
+	static void SetID_2D(_int _iID) { s_iRG_2D = _iID; }
+	static void SetID_Effect(_int _iID) { s_iRGP_EFFECT = _iID; }
+
+public:
 	virtual HRESULT				Initialize_Prototype(const json& _jsonInfo);
 	virtual HRESULT				Initialize(void* _pArg) override;
 	//virtual void				Priority_Update(_float _fTimeDelta) override;
@@ -38,6 +45,12 @@ public:
 public:
 	const PARTICLE_TYPE Get_Type() const { return m_eParticleType; }
 	_uint				Get_EventID() const { return m_iEventID; }
+
+protected:
+	static _int			s_iRG_3D;
+	static _int			s_iRG_2D;
+	static _int			s_iRGP_EFFECT;
+
 
 protected:
 	class CShader* m_pShaderCom = { nullptr };			
@@ -54,13 +67,14 @@ protected:
 	_uint			m_iLoopTime = { 0 };				// 루프 횟수, 0 일경우 = 무한루프
 	_uint			m_iAccLoop = { 0 };
 
+
+
 protected:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
 protected:
 	virtual HRESULT Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc);
-
 
 
 
