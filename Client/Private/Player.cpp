@@ -66,7 +66,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
@@ -101,6 +101,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+	m_tStat[COORDINATE_3D].fMoveSpeed = 500.f;
+	m_tStat[COORDINATE_3D].fJumpPower = 17.f;
     return S_OK;
 }
 
@@ -148,6 +150,11 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+    BodyDesc.iRenderGroupID_2D = RG_3D;
+    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
+
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
     {
@@ -333,7 +340,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             }
 
             _float fDot = XMVectorGetX(XMVector3Dot(vLook, _vDir));
-            _vector vVeclocity = _vDir* 500.0f * _fTimeDelta * fDot;
+            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed * _fTimeDelta * fDot;
             vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vVeclocity);
 
@@ -348,6 +355,26 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 
 }
 
+void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
+{
+    ACTOR_TYPE eActorType = Get_ActorType();
+    if (ACTOR_TYPE::DYNAMIC == eActorType)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+            _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+            pDynamicActor->Set_LinearVelocity(vLook * fVelocity* _fTimeDelta);
+        }
+        else
+        {
+            _vector vDir = FDir_To_Vector(m_e2DDirection);
+            m_pControllerTransform->Go_Direction(vDir, fVelocity,_fTimeDelta);
+        }
+    }
+
+}
+
 void CPlayer::Stop_Rotate()
 {
 
@@ -358,6 +385,23 @@ void CPlayer::Stop_Rotate()
         {
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
             pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+        }
+    }
+}
+
+void CPlayer::Stop_Move()
+{
+    ACTOR_TYPE eActorType = Get_ActorType();
+    if (ACTOR_TYPE::DYNAMIC == eActorType)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+            pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
+        }
+        else
+        {
+
         }
     }
 }
@@ -442,11 +486,19 @@ void CPlayer::Attack(_uint _iCombo)
             break;
         }
     }
+
+    //CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+    //_vector vLook = XMVector3Normalize( m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+
+    //_float3  vForce;
+    //XMStoreFloat3(&vForce, vLook * 4.f);
+    //pDynamicActor->Add_Force(vForce);
+
 }
 
 void CPlayer::Jump()
 {		/* Test Jump */
-    m_pActorCom->Add_Impulse(_float3(0.0f, 30.0f, 0.0f));
+    m_pActorCom->Add_Impulse(_float3(0.0f, m_tStat[COORDINATE_3D].fJumpPower, 0.0f));
 }
 
 
@@ -472,6 +524,16 @@ _float CPlayer::Get_UpForce()
         return XMVectorGetY( static_cast<CActor_Dynamic*>(m_pActorCom)->Get_LinearVelocity());
     }
 
+}
+
+_float CPlayer::Get_AnimProgress()
+{
+    CModel* pModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(Get_CurCoord());
+	if (nullptr != pModel)
+	{
+		return pModel->Get_CurrentAnimProgeress();
+	}
+    return 0;
 }
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)

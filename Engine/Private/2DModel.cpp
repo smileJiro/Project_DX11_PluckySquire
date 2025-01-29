@@ -158,6 +158,7 @@ const _matrix* C2DModel::Get_CurrentSpriteTransform()
 		return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();
 	else if (NONANIM == m_eAnimType)
 		return m_pNonAnimSprite->Get_Transform();
+	return nullptr;
 }
 
 _uint C2DModel::Get_AnimCount()
@@ -199,13 +200,9 @@ HRESULT C2DModel::Render(CShader* _pShader, _uint _iShaderPass)
 
 _bool C2DModel::Play_Animation(_float _fTimeDelta)
 {
-	
 	if (Is_AnimModel())
 	{
-		if (m_bPlayingAnim)
-			return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta);
-		else
-			return false;
+		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta);
 	}
 	return false;
 }

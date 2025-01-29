@@ -18,8 +18,9 @@ HRESULT CPatrolState::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_fPatrolOffset = 7.f;
-	m_iDir = -1;
 	m_iPrevDir = -1;
+	m_iDir = -1;
+	m_eDir = F_DIRECTION::F_DIR_LAST;
 	m_fDelayTime = 1.f;
 		
 	return S_OK;
@@ -27,10 +28,11 @@ HRESULT CPatrolState::Initialize(void* _pArg)
 
 void CPatrolState::Set_Bound(_float3& _vPosition)
 {
-	m_tPatrolBound.fMinX = _vPosition.x - m_fPatrolOffset;
-	m_tPatrolBound.fMaxX = _vPosition.x + m_fPatrolOffset;
-	m_tPatrolBound.fMinZ = _vPosition.z - m_fPatrolOffset;
-	m_tPatrolBound.fMaxZ = _vPosition.z + m_fPatrolOffset;
+	_vector vResult=XMLoadFloat3(&_vPosition);
+	_vector vOffset = XMVectorReplicate(m_fPatrolOffset);
+
+	XMStoreFloat3(&m_tPatrolBound.vMin, vResult - vOffset);
+	XMStoreFloat3(&m_tPatrolBound.vMax, vResult + vOffset);
 }
 
 
@@ -41,20 +43,22 @@ void CPatrolState::State_Enter()
 
 void CPatrolState::State_Update(_float _fTimeDelta)
 {
-	if (nullptr == m_pTarget)
-		return;
 	if (nullptr == m_pOwner)
 		return;
 
 	if (true == m_isMove)
 		m_fAccTime += _fTimeDelta;
 
-	//적 발견 시 ALERT 전환
-	_float dis = XMVectorGetX(XMVector3Length((m_pTarget->Get_Position() - m_pOwner->Get_Position())));
-	if (dis <= m_fAlertRange)
+
+	if (nullptr != m_pTarget)
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
-		return;
+		//적 발견 시 ALERT 전환
+		_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
+		if (dis <= m_fAlertRange)
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+			return;
+		}
 	}
 
 	/*순찰 이동 로직*/
@@ -62,41 +66,11 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	
 	if (false == m_isMove)
 	{
-		while (true)
-		{
-			//8 방향 중 랜덤 방향 지정
-			m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
-			if (m_iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
-			{
-				m_iPrevDir = m_iDir;
-				m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-				m_isMove = true;
-				break;
-			}
-		}
+		Determine_Direction();
 	}
 	
 	//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-	if(false == m_isBack)
-	{
-		_float3 vPos;
-		XMStoreFloat3(&vPos, m_pOwner->Get_Position() + Determine_NextDirection(m_iDir));
-		if (m_tPatrolBound.fMinX > vPos.x || m_tPatrolBound.fMaxX < vPos.x || m_tPatrolBound.fMinZ > vPos.z || m_tPatrolBound.fMaxZ < vPos.z)
-		{
-			m_isBack = true;
-			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-			return;
-		}
-	}
-	else
-	{
-		if (4 > m_iDir)
-			m_iDir += 4;
-		else
-			m_iDir -= 4;
-
-		m_isBack = false;
-	}
+	Check_Bound(_fTimeDelta);
 
 	//이동
 	PatrolMove(_fTimeDelta, m_iDir);
@@ -110,23 +84,63 @@ void CPatrolState::State_Exit()
 
 void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 {
-	if (0 > _iDir || 8 < _iDir)
-		return;
+	//회전중인 거도 해야할듯 일단 이동만 해봄
 
-	//회전중인 거도 해야함 일단 이동만 해봄
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	{
+		if (0 > _iDir || 7 < _iDir)
+			return;
 
+		if (true == m_isMove)
+		{
+			//기본적으로 추적중에 y값 상태 변화는 없다고 가정
 
+			_vector vDir = Set_PatrolDirection(_iDir);
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_Position());
+			m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+		}
+	}
+
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	{
+		if (0 > _iDir || 3 < _iDir)
+			return;
+
+		if (true == m_isMove)
+		{
+			m_pOwner->Get_ControllerTransform()->Go_Direction(Set_PatrolDirection(_iDir), _fTimeDelta);
+			m_pOwner->Set_2D_Direction(m_eDir);
+			switch (m_eDir)
+			{
+			case Client::F_DIRECTION::LEFT:
+				m_pOwner->Get_ControllerTransform()->Go_Left(_fTimeDelta);
+				break;
+
+			case Client::F_DIRECTION::RIGHT:
+				m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
+				break;
+
+			case Client::F_DIRECTION::UP:
+				m_pOwner->Get_ControllerTransform()->Go_Up(_fTimeDelta);
+				break;
+
+			case Client::F_DIRECTION::DOWN:
+				m_pOwner->Get_ControllerTransform()->Go_Down(_fTimeDelta);
+				break;
+
+			case Client::F_DIRECTION::F_DIR_LAST:
+				return;
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
 
 	if (true == m_isMove)
 	{
-		//기본적으로 추적중에 y값 상태 변화는 없다고 가정
-		
-		_vector vDir = Determine_NextDirection(_iDir);
-		m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_Position());
-		//m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
-		m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
 		m_fAccDistance += m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
-
 		if (m_fMoveDistance <= m_fAccDistance)
 		{
 			m_fAccDistance = 0.f;
@@ -137,56 +151,167 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 	}
 }
 
-_vector CPatrolState::Determine_NextDirection(_int _iDir)
+void CPatrolState::Determine_Direction()
+{
+	if (COORDINATE::COORDINATE_LAST == m_pOwner->Get_CurCoord())
+		return;
+
+	while (true)
+	{
+		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+		{
+			//8 방향 중 랜덤 방향 지정
+			m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
+		}
+
+		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+		{
+			//4 방향 중 랜덤 방향 지정
+			m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 4.f)));
+		}
+
+		if (m_iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
+		{
+			m_iPrevDir = m_iDir;
+			m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+			m_isMove = true;
+			break;
+		}
+	}
+}
+
+_vector CPatrolState::Set_PatrolDirection(_int _iDir)
 {
 	_vector vDir = {};
-	switch (_iDir)
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
-	case 0:
-		vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
-		//cout << "상" << endl;
-		break;
-	case 1:
-		vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
-		//cout << "우상" << endl;
-		break;
-	case 2:
-		vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
-		//cout << "우" << endl;
-		break;
-	case 3:
-		vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
-		//cout << "우하" << endl;
-		break;
-	case 4:
-		vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
-		//cout << "하" << endl;
-		break;
-	case 5:
-		vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
-		//cout << "좌하" << endl;
-		break;
-	case 6:
-		vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
-		//cout << "좌" << endl;
-		break;
-	case 7:
-		vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
-		//cout << "좌상" << endl;
-		break;
-	default:
-		break;
+		switch (_iDir)
+		{
+		case 0:
+			vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//cout << "상" << endl;
+			break;
+		case 1:
+			vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//cout << "우상" << endl;
+			break;
+		case 2:
+			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//cout << "우" << endl;
+			break;
+		case 3:
+			vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//cout << "우하" << endl;
+			break;
+		case 4:
+			vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//cout << "하" << endl;
+			break;
+		case 5:
+			vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//cout << "좌하" << endl;
+			break;
+		case 6:
+			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//cout << "좌" << endl;
+			break;
+		case 7:
+			vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_Position() + vDir);
+			//cout << "좌상" << endl;
+			break;
+		default:
+			break;
+		}
+	}
+	//방향전환 시켜야함
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	{
+		switch (_iDir)
+		{
+		case 0:
+			vDir = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+			m_eDir = F_DIRECTION::UP;
+			//cout << "상" << endl;
+			break;
+		case 1:
+			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+			m_eDir = F_DIRECTION::RIGHT;
+			//cout << "우" << endl;
+			break;
+		case 2:
+			vDir = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+			m_eDir = F_DIRECTION::DOWN;
+			//cout << "하" << endl;
+			break;
+		case 3:
+			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
+			m_eDir = F_DIRECTION::LEFT;
+			//cout << "좌" << endl;
+			break;
+		default:
+			break;
+		}
 	}
 
 	return vDir;
+}
+
+void CPatrolState::Check_Bound(_float _fTimeDelta)
+{
+	_float3 vPos;
+	_bool isOut = false;
+	//델타타임으로 다음 위치 예상해서 막기
+	XMStoreFloat3(&vPos, m_pOwner->Get_Position() + Set_PatrolDirection(m_iDir) * _fTimeDelta);
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	{
+		if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.z > vPos.z || m_tPatrolBound.vMax.z < vPos.z)
+		{
+			isOut = true;
+		}
+	}
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	{
+		//일단 2D는 처리안해놓음
+		/*if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.y > vPos.y || m_tPatrolBound.vMax.y < vPos.y)
+		{
+			isOut = true;
+		}*/
+	}
+
+	if (true == isOut)
+	{
+		m_isBack = true;
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+	}
+	//반대방향으로 진행해도 경계를 벗어나는 경우가 있나?
+	if (true == m_isBack)
+	{
+		if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+		{
+			if (4 > m_iDir)
+				m_iDir += 4;
+			else
+				m_iDir -= 4;
+		}
+
+		else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+		{
+			if (2 > m_iDir)
+				m_iDir += 2;
+			else
+				m_iDir -= 2;
+		}
+
+		m_isBack = false;
+	}
 }
 
 CPatrolState* CPatrolState::Create(void* _pArg)

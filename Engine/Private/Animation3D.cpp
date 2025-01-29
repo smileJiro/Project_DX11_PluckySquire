@@ -75,14 +75,17 @@ HRESULT CAnimation3D::Initialize(ifstream& inFile, const C3DModel* pModel)
 bool CAnimation3D::Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta)
 {
 
-	if (m_fCurrentTrackPosition >= m_fDuration)
+	if (m_fCurrentTrackPosition > m_fDuration)
 	{
 		if (true == m_bLoop)
 		{
 			Reset();
 		}
 		else
+		{
+			m_fCurrentTrackPosition = m_fDuration;
 			return true;
+		}
 	}
 
 
@@ -148,6 +151,11 @@ bool CAnimation3D::Is_AnimChangeable()
 void CAnimation3D::Set_Progress(_float _fProgerss)
 {
 	m_fCurrentTrackPosition = _fProgerss * m_fDuration;
+	//현재 TrackPosition이 되기 전의 키 프레임으로
+	for (_uint i = 0; i < m_iNumChannels; i++)
+	{
+		m_CurrentKeyFrameIndices[i] = m_vecChannel[i]->Get_KeyFrameIndex(m_fCurrentTrackPosition);
+	}
 }
 
 void CAnimation3D::Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const

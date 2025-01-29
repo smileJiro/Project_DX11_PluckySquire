@@ -59,11 +59,17 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 		m_pOwner->Stop_Rotate();
 		if (m_pOwner->Is_OnGround())
 		{
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT);
 			m_pOwner->Set_State(CPlayer::IDLE);
 			return;
 		}
 	}
-
+	_float fNewUpForce = m_pOwner->Get_UpForce();
+	if (m_fUpForceBefore >= 0 && fNewUpForce < 0)
+	{
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT);
+	}
+	m_fUpForceBefore = fNewUpForce;
 }
 
 void CPlayerState_Jump::Enter()
@@ -94,14 +100,15 @@ void CPlayerState_Jump::Exit()
 
 void CPlayerState_Jump::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
+
 	if (COORDINATE_2D == _eCoord)
 	{
 	}
 	else
 	{
-		if((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_UP_02 == iAnimIdx)
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT);
-		else if((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT == iAnimIdx)
+		if((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT ==  iAnimIdx)
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_LAND_02);
+		else if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_LAND_02 == iAnimIdx)
+			m_pOwner->Set_State(CPlayer::IDLE);
 	}
 }

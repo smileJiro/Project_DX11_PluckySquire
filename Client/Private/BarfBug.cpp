@@ -34,15 +34,9 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    //pDesc->fAlertRange = 5.f;
-    //pDesc->fChaseRange = 12.f;
-    //pDesc->fAttackRange = 10.f;
-    //pDesc->fDelayTime = 1.f;
-    //pDesc->fCoolTime = 3.f;
-
-    pDesc->fAlertRange = 1.f;
-    pDesc->fChaseRange = 5.f;
-    pDesc->fAttackRange = 3.f;
+    pDesc->fAlertRange = 5.f;
+    pDesc->fChaseRange = 12.f;
+    pDesc->fAttackRange = 10.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
@@ -72,7 +66,6 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BARF, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBarfBug::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -144,7 +137,7 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::F1))
+    if (KEY_DOWN(KEY::F5))
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
@@ -188,6 +181,16 @@ void CBarfBug::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, con
 void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     int a = 0;
+}
+
+HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+    if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+        return E_FAIL;
+
+
+
+    return S_OK;
 }
 
 void CBarfBug::Change_Animation()
@@ -291,14 +294,28 @@ void CBarfBug::Attack(_float _fTimeDelta)
     {
         _float3 vScale, vPosition;
         _float4 vRotation;
+        COORDINATE* pCoord = new COORDINATE;
+
         if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
             return;
 
-        vPosition.y += vScale.y * 0.5f;
-
-        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"),&vPosition, &vRotation);
+        if(COORDINATE_3D == Get_CurCoord())
+        {
+            *pCoord = COORDINATE::COORDINATE_3D;
+            vPosition.y += vScale.y * 0.5f;
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), pCoord, &vPosition, &vRotation);
+        }
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+            *pCoord = COORDINATE::COORDINATE_2D;
+            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_Position() - Get_Position());
+            XMStoreFloat4(&vRotation, XMQuaternionRotationRollPitchYaw(0.f, 0.f, XMConvertToRadians(fAngle)));
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), pCoord, &vPosition, &vRotation);
+        }
         Delay_On();
         ++m_iAttackCount;
+
+        Safe_Delete(pCoord);
     }
 }
 
@@ -383,6 +400,7 @@ HRESULT CBarfBug::Ready_Components()
     Desc.fAlertRange = m_fAlertRange;
     Desc.fChaseRange = m_fChaseRange;
     Desc.fAttackRange = m_fAttackRange;
+    Desc.isMelee = false;
     Desc.pOwner = this;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
@@ -423,6 +441,12 @@ HRESULT CBarfBug::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
+
+    /* ÅÂ¿õ : ·»´õ·¯ °ü·Ã Ãß°¡ */
+    BodyDesc.iRenderGroupID_2D = RG_3D;
+    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

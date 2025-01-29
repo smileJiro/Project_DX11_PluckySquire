@@ -21,6 +21,7 @@ class C2DMapObject;
 class CModelFile_Manager;
 class CImguiLogger;
 class CTask_Manager;
+class C2DMapObject;
 class C2DDefault_RenderObject;
 class C2DTile_RenderObject;
 
@@ -57,7 +58,7 @@ private:
 #pragma region Input & Imgui Method
 private:
 	// 인풋 로직 
-	void				Input_Object_Tool_Mode();
+	void				Input_Logic();
 
 	// Imgui 메인 로직
 	void				Update_Imgui_Logic();
@@ -70,6 +71,8 @@ private:
 #pragma region Object Tool Method
 
 	void				Load_2DModelList();
+	void				Save_2DModelList();
+
 	void				Load_SaveFileList();
 
 	void				Object_Clear(_bool _bSelected = true);
@@ -78,23 +81,20 @@ private:
 
 
 	// 오브젝트 파일 저장
-	void				Save(bool bSelected = true);
+	void				Save(_bool _bSelected = true);
 	// 오브젝트 파일 로드
-	void				Load(bool bSelected = true);
+	void				Load(_bool _bSelected = true);
 
+
+	C2DMapObject*	Picking_2DMap();
 
 #pragma endregion
 
-
-
-	void				Init_Egnore_Layer();
-	HRESULT				Setting_Action_Layer(vector<pair<wstring, CLayer*>>& _TargetLayerPairs);
-
-
-	
 	HRESULT				Setting_TileMap(const _string _strFileMapJsonName);
 
-	
+	C2DMapObjectInfo*	Find_Info(const _wstring _strTag);
+
+	HRESULT				Update_Model_Index();
 
 
 private:
@@ -109,14 +109,14 @@ private:
 
 
 	vector<C2DMapObjectInfo*>		m_ObjectInfoLists;
-	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
 	vector<_wstring>				m_SaveFileLists;
+
+	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
+	C2DMapObject*					m_pPickingObject = nullptr;
 
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
 	_char							m_szSaveFileName[MAX_PATH];
 
-	vector<wstring>					m_DefaultEgnoreLayerTags;
-	vector<wstring>					m_EgnoreLayerTags;
 	C2DDefault_RenderObject*		m_DefaultRenderObject;
 
 	_string		m_arrModelTypeString[C2DMapObjectInfo::MODEL_END];

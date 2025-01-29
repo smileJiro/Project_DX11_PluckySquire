@@ -108,7 +108,11 @@ void CTestModelObject::Set_Progerss(_float _fTrackPos)
     case Engine::COORDINATE_2D:
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progerss(_fTrackPos);
     case Engine::COORDINATE_3D:
-        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progress(_fTrackPos);
+    {
+        static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Set_Progress(_fTrackPos);
+        m_pControllerModel->Get_Model(m_eCurCoord)->Play_Animation(0);
+        return;
+    }
     }
 }
 
@@ -178,6 +182,19 @@ _bool CTestModelObject::Is_LoopAnimation(COORDINATE _eCoord, _uint iAnimIndex)
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(_eCoord))->Is_LoopAnimation(iAnimIndex);
     case Engine::COORDINATE_3D:
         return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(_eCoord))->Is_LoopAnimation(iAnimIndex);
+    }
+}
+
+void CTestModelObject::Get_AnimatinNames(list<string>& _Names)
+{
+    assert(m_pControllerModel);
+    assert(COORDINATE_LAST != m_eCurCoord);
+    switch (m_eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_AnimationNames(_Names);
+    case Engine::COORDINATE_3D:
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_AnimationNames(_Names);
     }
 }
 

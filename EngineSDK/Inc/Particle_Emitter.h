@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "PartObject.h"
 
 BEGIN(Engine)
 
@@ -8,13 +8,13 @@ BEGIN(Engine)
 /* Shader Component만 보유 */
 /* 기본 함수들 보유 */
 
-class ENGINE_DLL CParticle_Emitter : public CGameObject
+class ENGINE_DLL CParticle_Emitter : public CPartObject
 {
 public:
 	enum PARTICLE_TYPE { SPRITE, MESH, NONE };
 
 public:
-	typedef struct tagParticleEmitterDesc : public CGameObject::GAMEOBJECT_DESC
+	typedef struct tagParticleEmitterDesc : public CPartObject::PARTOBJECT_DESC
 	{
 		_uint iProtoShaderLevel;
 		const _tchar* szShaderTag = L"";
@@ -26,17 +26,38 @@ protected:
 	virtual ~CParticle_Emitter() = default;
 
 public:
-	const PARTICLE_TYPE Get_Type() const { return m_eType; }
+	virtual HRESULT				Initialize_Prototype(const json& _jsonInfo);
+	virtual HRESULT				Initialize(void* _pArg) override;
+	//virtual void				Priority_Update(_float _fTimeDelta) override;
+	virtual void				Update(_float _fTimeDelta) override;
+	virtual void				Late_Update(_float _fTimeDelta) override;
+
+
+public:
+	const PARTICLE_TYPE Get_Type() const { return m_eParticleType; }
+	_uint				Get_EventID() const { return m_iEventID; }
 
 protected:
-	class CShader* m_pShaderCom = { nullptr };
+	class CShader* m_pShaderCom = { nullptr };			
 
 protected:
-	_uint			m_iShaderPass = 0;
-	PARTICLE_TYPE	m_eType = { NONE };
+	PARTICLE_TYPE	m_eParticleType = { NONE };			// Sprite or Mesh?
+	_uint			m_iShaderPass = 0;					// Particle 설정 여부에 따라서 Pass도 바뀐다.
+	_bool			m_isFollowParent = { true };		// System에 따라 위치가 결정? World 좌표 그대로로 설정? 여부
+	/*_bool			m_isProgress = { true };*/			
+	// 이벤트로 인해 Particle 진행여부는 Active로 판단.
+	_uint			m_iEventID = { 0 };					// 파티클이 진행될 ID
+	_float			m_fEventTime = { 0.f };				// 이벤트 총 진행시간
+	_float			m_fAccTime = { 0.f };				// 진행시간
+
+protected:
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 protected:
 	virtual HRESULT Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc);
+
+
 
 
 public:
@@ -45,11 +66,18 @@ public:
 	virtual HRESULT		 Cleanup_DeadReferences() = 0;
 
 #ifdef _DEBUG
+public:
 	virtual void				Tool_Update(_float fTimeDelta);
 	virtual void				Tool_Setting();
-	virtual HRESULT				Save(json& _jsonOut) { return S_OK; }
+	virtual HRESULT				Save(json& _jsonOut);
+protected:
+	_bool						m_isToolProgress = { true };
 #endif
 
 };
+
+END
+
+BEGIN(Engine)
 
 END

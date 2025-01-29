@@ -27,6 +27,9 @@ public:
 
 	_float3				Get_ScaleFromMatrix(const _float4x4& _Matrix);
 	_float3				Get_ScaleFromMatrix(const _fmatrix _Matrix);
+
+	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);	//방향 벡터 간 각도 구함 (0-360도 간)
+
 private:
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;

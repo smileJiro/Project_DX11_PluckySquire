@@ -17,6 +17,7 @@ public:
 	HRESULT				Export(ofstream& _outfile);
 
 	CTexture* Get_Texture() { return m_pTexture; }
+
 private:
 	vector<_float4> vBakedRenderDatas;
 public:
@@ -46,7 +47,7 @@ public:
 	_uint						Get_CurrentFrame();
 	_float					Get_SpeedMagnifier() { return m_fSpeedMagnifier; }
 	_bool					Is_LoopAnim() { return m_bLoop; }
-
+	string					Get_Name() { return m_strName; }
 private:
 	map<string, CTexture*> m_AnimTextures;
 

@@ -34,7 +34,7 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	_float fDis = XMVectorGetX(XMVector3Length(m_pTarget->Get_Position() - m_pOwner->Get_Position()));
+	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
 	//공격 범위 벗어나고 추적 범위 내면 Chase 전환
 	if (fDis > m_fAttackRange && fDis <= m_fChaseRange)
 	{

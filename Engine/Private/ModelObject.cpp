@@ -31,6 +31,11 @@ HRESULT CModelObject::Initialize(void* _pArg)
     m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
     m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
     m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
+
+    m_iRenderGroupID_2D = pDesc->iRenderGroupID_2D;
+    m_iPriorityID_2D = pDesc->iPriorityID_2D;
+    m_iRenderGroupID_3D = pDesc->iRenderGroupID_3D;
+    m_iPriorityID_3D = pDesc->iPriorityID_3D;
     // Add
 
 
@@ -71,6 +76,17 @@ void CModelObject::Late_Update(_float _fTimeDelta)
         
     else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
         m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+
+    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+    {
+        if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
+            m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
+    }
+    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    {
+        m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_2D, m_iPriorityID_2D, this);
+    }
+
 
 
     /* Update Parent Matrix */
@@ -204,7 +220,10 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 
 void CModelObject::Update(_float _fTimeDelta)
 {
-    m_pControllerModel->Play_Animation(_fTimeDelta);
+    if(m_bPlayingAnim)
+        m_pControllerModel->Play_Animation(_fTimeDelta);
+    else
+        m_pControllerModel->Play_Animation(0);
 
 	__super::Update(_fTimeDelta);
 }
@@ -250,16 +269,17 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
     {
     case Engine::COORDINATE_2D:
     {
-        /* Com_Shader_3D */
-        if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
-            TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
-            return E_FAIL;
+
         /* Com_Shader_2D */
         if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
             TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
             return E_FAIL;
         if (true == _pDesc->isCoordChangeEnable)
         {
+            /* Com_Shader_3D */
+            if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_3D,
+                TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
+                return E_FAIL;
         }
         break;
     }
@@ -346,10 +366,11 @@ _uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
         return m_pControllerModel->Get_TextureIndex_To_3D(_eTextureType, _iMaterialIndex);
     return 0;
 }
-void CModelObject::Set_PlayingAnim(COORDINATE _eCoord, _bool _bPlaying)
+void CModelObject::Set_PlayingAnim(_bool _bPlaying)
 {
-	m_pControllerModel->Get_Model(_eCoord)->Set_PlayingAnim(_bPlaying);
+    m_bPlayingAnim = _bPlaying;
 }
+
 void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
 {
     if (m_pControllerModel)

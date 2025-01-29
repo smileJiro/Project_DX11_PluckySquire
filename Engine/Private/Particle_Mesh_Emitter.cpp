@@ -7,7 +7,7 @@
 CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CParticle_Emitter(_pDevice, _pContext)
 {
-	m_eType = MESH;
+	m_eParticleType = MESH;
 }
 
 CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Prototype)
@@ -40,56 +40,59 @@ CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Pr
 
 }
 
-HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const _char* _szModelPath, const _tchar* _szInfoPath)
-{
-	//XMMATRIX matPreTransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-	//matPreTransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
-	//XMStoreFloat4x4(&m_PreTransformMatrix, matPreTransform);
-
-	json jsonEmitterInfo;
-	if (FAILED(m_pGameInstance->Load_Json(_szInfoPath, &jsonEmitterInfo)))
-		return E_FAIL;
-
-	if (false == jsonEmitterInfo.contains("Emitters"))
-		return E_FAIL;
-
-	if (false == jsonEmitterInfo["Emitters"].contains("PreTransform"))
-		return E_FAIL;
-
-	for (size_t i = 0; i < sizeof(_float4x4) / sizeof(_float); ++i)
-	{
-		*((_float*)(&m_PreTransformMatrix) + i) = jsonEmitterInfo["Emitters"]["PreTransform"][i];
-	}
-
-
-	std::ifstream inFile(_szModelPath, std::ios::binary);
-	if (!inFile) {
-		string str = "파일을 열 수 없습니다.";
-		str += _szModelPath;
-		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
-		return E_FAIL;
-	}
-
-	_bool bAnim;
-	inFile.read(reinterpret_cast<char*>(&bAnim), 1);
-	if (FAILED(Ready_Bones(inFile, -1)))
-		return E_FAIL;
-
-
-	// TODO: 바꿔!!
-	if (FAILED(Ready_Meshes(inFile, jsonEmitterInfo["Emitters"][0]["Buffer"])))
-		return E_FAIL;
-
-	if (FAILED(Ready_Materials(inFile, _szModelPath)))
-		return E_FAIL;
-
-	inFile.close();
-
-	return S_OK;
-}
+//HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const _char* _szModelPath, const _tchar* _szInfoPath)
+//{
+//	//XMMATRIX matPreTransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+//	//matPreTransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+//	//XMStoreFloat4x4(&m_PreTransformMatrix, matPreTransform);
+//
+//	json jsonEmitterInfo;
+//	if (FAILED(m_pGameInstance->Load_Json(_szInfoPath, &jsonEmitterInfo)))
+//		return E_FAIL;
+//
+//	if (false == jsonEmitterInfo.contains("Emitters"))
+//		return E_FAIL;
+//
+//	if (false == jsonEmitterInfo["Emitters"].contains("PreTransform"))
+//		return E_FAIL;
+//
+//	for (size_t i = 0; i < sizeof(_float4x4) / sizeof(_float); ++i)
+//	{
+//		*((_float*)(&m_PreTransformMatrix) + i) = jsonEmitterInfo["Emitters"]["PreTransform"][i];
+//	}
+//
+//
+//	std::ifstream inFile(_szModelPath, std::ios::binary);
+//	if (!inFile) {
+//		string str = "파일을 열 수 없습니다.";
+//		str += _szModelPath;
+//		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+//		return E_FAIL;
+//	}
+//
+//	_bool bAnim;
+//	inFile.read(reinterpret_cast<char*>(&bAnim), 1);
+//	if (FAILED(Ready_Bones(inFile, -1)))
+//		return E_FAIL;
+//
+//
+//	// TODO: 바꿔!!
+//	if (FAILED(Ready_Meshes(inFile, jsonEmitterInfo["Emitters"][0]["Buffer"])))
+//		return E_FAIL;
+//
+//	if (FAILED(Ready_Materials(inFile, _szModelPath)))
+//		return E_FAIL;
+//
+//	inFile.close();
+//
+//	return S_OK;
+//}
 
 HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const json& _jsonInfo)
 {
+	if (FAILED(__super::Initialize_Prototype(_jsonInfo)))
+		return E_FAIL;
+
 	if (false == _jsonInfo.contains("PreTransform"))
 	{
 		XMStoreFloat4x4(&m_PreTransformMatrix, XMMatrixIdentity());
@@ -138,19 +141,9 @@ HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const json& _jsonInfo)
 
 HRESULT CParticle_Mesh_Emitter::Initialize(void* _pArg)
 {
-	PARTICLE_EMITTER_DESC* pDesc = static_cast<PARTICLE_EMITTER_DESC*>(_pArg);
-
-	if (nullptr == pDesc)
-		return E_FAIL;
-
-	pDesc->eStartCoord = COORDINATE_3D;
-	pDesc->isCoordChangeEnable = false;
-
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components(pDesc)))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -161,12 +154,16 @@ void CParticle_Mesh_Emitter::Priority_Update(_float _fTimeDelta)
 
 void CParticle_Mesh_Emitter::Update(_float _fTimeDelta)
 {
-	Update_Component(_fTimeDelta);
+	__super::Update(_fTimeDelta);
 }
 
 void CParticle_Mesh_Emitter::Late_Update(_float _fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+	__super::Late_Update(_fTimeDelta);
+
+	if (m_isActive)
+		m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+
 }
 
 HRESULT CParticle_Mesh_Emitter::Render()
@@ -285,17 +282,17 @@ HRESULT CParticle_Mesh_Emitter::Ready_Materials(ifstream& _inFile, const _char* 
 	return S_OK;
 }
 
-CParticle_Mesh_Emitter* CParticle_Mesh_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szModelPath, const _tchar* _szInfoPath)
-{
-	CParticle_Mesh_Emitter* pInstance = new CParticle_Mesh_Emitter(_pDevice, _pContext);
-
-	if (FAILED(pInstance->Initialize_Prototype(_szModelPath, _szInfoPath)))
-	{
-		MSG_BOX("Failed to Created : CParticle_Mesh_Emitter");
-		Safe_Release(pInstance);
-	}
-	return pInstance;
-}
+//CParticle_Mesh_Emitter* CParticle_Mesh_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szModelPath, const _tchar* _szInfoPath)
+//{
+//	CParticle_Mesh_Emitter* pInstance = new CParticle_Mesh_Emitter(_pDevice, _pContext);
+//
+//	if (FAILED(pInstance->Initialize_Prototype(_szModelPath, _szInfoPath)))
+//	{
+//		MSG_BOX("Failed to Created : CParticle_Mesh_Emitter");
+//		Safe_Release(pInstance);
+//	}
+//	return pInstance;
+//}
 
 CParticle_Mesh_Emitter* CParticle_Mesh_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonInfo)
 {

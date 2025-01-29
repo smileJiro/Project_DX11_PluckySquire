@@ -100,6 +100,11 @@ void CController_Transform::Go_Direction(_vector _vDirection, _float _fTimeDelta
 	m_pTransforms[m_eCurCoord]->Go_Direction(_vDirection, _fTimeDelta);
 }
 
+void CController_Transform::Go_Direction(_vector _vDirection, _float _fSpeed, _float _fTimeDelta)
+{
+	m_pTransforms[m_eCurCoord]->Go_Direction(_vDirection, _fSpeed, _fTimeDelta);
+}
+
 void CController_Transform::Rotation(_float _fRadian, _fvector _vAxis)
 {
 	m_pTransforms[m_eCurCoord]->Rotation(_fRadian, _vAxis);

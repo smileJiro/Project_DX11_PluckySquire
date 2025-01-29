@@ -32,6 +32,7 @@ public:
 	_float					Get_Progress();
 	_float					Get_AnimSpeedMagnifier(COORDINATE _eCoord, _uint iAnimIndex);
 	_bool					Is_LoopAnimation(COORDINATE _eCoord, _uint iAnimIndex);
+	void						Get_AnimatinNames(list<string>& _Names);
 private:
 	HRESULT					Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc);
 

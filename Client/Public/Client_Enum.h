@@ -2,6 +2,32 @@
 #include "Engine_Defines.h"
 namespace Client
 {
+	enum RENDERGROUP
+	{
+		RG_2D = 1000,
+		RG_3D = 2000,
+
+		RG_LAST,
+	};
+
+	enum PRIORITY_3D
+	{
+		PR3D_BOOK2D =		0,
+		PR3D_PRIORITY =		10,
+		PR3D_SHADOW =		20,
+		PR3D_NONBLEND =		30,
+		PR3D_LIGHTS =		40,
+		PR3D_FINAL =		50,
+		PR3D_BLEND =		60,
+		PR3D_EFFECT =		70,
+		PR3D_AFTEREFFECT =	80,
+		PR3D_UI =			90,
+
+		PR3D_LAST = 999
+	};
+
+
+
 	enum LEVEL_ID 
 	{
 		LEVEL_LOADING,

@@ -42,12 +42,13 @@ public:
 
 #ifdef _DEBUG
 public:
-	virtual void		 Tool_Setting();
+	virtual void		 Tool_Setting() override;
 	virtual void		 Tool_Reset_Instance() override;
 	virtual void		 Tool_Reset_Buffers() override; // Count 자체가 바뀌어버린 경우
 
+	virtual void		 Tool_Update(_float _fTimeDelta) override;
+	virtual HRESULT		 Save_Buffer(json& _jsonBufferInfo) override;
 	
-	virtual void Tool_Update(_float _fTimeDelta);
 
 public:
 	HRESULT Initialize_Prototype(_uint _iNumInstances);

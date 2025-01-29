@@ -17,6 +17,12 @@ public:
 private:
     _uint m_iComboCount = 0;
     _bool m_bCombo = false;
+	_float m_fForwardSpeed = 1000.f;
+
+    _float m_f3DMotionCancelProgress = 0.35f;
+    _float m_f2DMotionCancelProgress = 0.8f;
+    _float m_f3DForwardingProgress = 0.15f;
+    _float m_f2DForwardingProgress = 0.5f;
 };
 
 END

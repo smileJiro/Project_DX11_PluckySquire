@@ -16,9 +16,9 @@ private:
 	virtual ~CUI_Manager() = default;
 
 private:
-	CGameInstance*						m_pGameInstance;
+	CGameInstance* m_pGameInstance;
 	STAMP								m_eStampIndex = { STAMP_STOP };
-	CPlayer*							m_pPlayer = { nullptr };
+	CPlayer* m_pPlayer = { nullptr };
 
 	map<_uint, CSettingPanelBG*>		m_pSettingPanels;
 	map<_uint, CShopPanel_BG*>			m_pShopPanels;
@@ -26,6 +26,10 @@ private:
 
 	vector<CShopItemBG*>				m_pShopItemBGs;
 	vector<vector<CShopItemBG*>>		m_ShopItems;
+
+	_bool								m_isMakeItem = { false };
+	_bool								m_isMakeShop = { false };
+
 
 
 	_bool								m_isESC = { false };
@@ -41,8 +45,7 @@ private:
 public:
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
-	CPlayer*							Get_Player() { return 
-		m_pPlayer; }
+	CPlayer* Get_Player() { return m_pPlayer; }
 	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
 	void								Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
 	void								Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel);
@@ -62,8 +65,13 @@ public:
 	_int								Get_LogoIndex() { return m_iLogoIndex; }
 	void								Set_LogoIndex(_int _index) { m_iLogoIndex = _index; }
 	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs) { m_ShopItems.push_back(_ItemBGs); }
-	void								pushBack_ShopItemBGs(CShopItemBG* _pBGs) {m_pShopItemBGs.push_back(_pBGs);  }
+	void								pushBack_ShopItemBGs(CShopItemBG* _pBGs) { m_pShopItemBGs.push_back(_pBGs); }
 	void								Set_ChooseItem(_int _iIndex);
+
+
+	_bool								Get_isMakeItem() { 
+		return m_isMakeItem; }
+	void								Set_isMakeItem(_bool _make) { m_isMakeItem = _make; }
 
 	HRESULT								Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 	HRESULT								Level_Enter(_int _iChangeLevelID);
