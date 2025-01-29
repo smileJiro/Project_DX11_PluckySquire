@@ -102,6 +102,9 @@ private:
 	void				Save_TriggerData();
 	void				Load_TriggerData();
 
+private:
+	_float3				Quaternion_ToEuler(const _float4 _q);
+
 public:
 	static CLevel_Trigger_Tool* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void		Free() override;
