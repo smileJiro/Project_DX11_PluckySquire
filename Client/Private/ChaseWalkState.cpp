@@ -35,7 +35,7 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	_vector vDir = m_pTarget->Get_Position() - m_pOwner->Get_Position();
+	_vector vDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
 	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_Position()));
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
@@ -55,7 +55,7 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 		if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
 			//추적 (시야범위 만들면 수정 할 예정)
-			m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_Position(), XMVectorGetY(m_pOwner->Get_Position())), _fTimeDelta);
+			m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_FinalPosition(), XMVectorGetY(m_pOwner->Get_FinalPosition())), _fTimeDelta);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 			//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
 			m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta * 2.f);

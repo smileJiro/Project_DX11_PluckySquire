@@ -32,6 +32,8 @@ public:
 	virtual void				Update(_float _fTimeDelta) override;
 	virtual void				Late_Update(_float _fTimeDelta) override;
 
+public:
+	virtual	void				Reset(); 
 
 public:
 	const PARTICLE_TYPE Get_Type() const { return m_eParticleType; }
@@ -49,6 +51,8 @@ protected:
 	_uint			m_iEventID = { 0 };					// 파티클이 진행될 ID
 	_float			m_fEventTime = { 0.f };				// 이벤트 총 진행시간
 	_float			m_fAccTime = { 0.f };				// 진행시간
+	_uint			m_iLoopTime = { 0 };				// 루프 횟수, 0 일경우 = 무한루프
+	_uint			m_iAccLoop = { 0 };
 
 protected:
 	virtual void Active_OnEnable() override;
@@ -70,8 +74,12 @@ public:
 	virtual void				Tool_Update(_float fTimeDelta);
 	virtual void				Tool_Setting();
 	virtual HRESULT				Save(json& _jsonOut);
+
+	_bool						Is_ToolChanged() { if (m_isToolChanged) { m_isToolChanged = false; return true; } else return false; }
+
 protected:
 	_bool						m_isToolProgress = { true };
+	_bool						m_isToolChanged = { false };
 #endif
 
 };

@@ -209,6 +209,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\Camera_Manager_Engine.h" />
     <ClInclude Include="..\public\Channel.h" />
     <ClInclude Include="..\public\Actor.h" />
+    <ClInclude Include="..\public\Collider.h" />
     <ClInclude Include="..\public\Collision_Manager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -278,6 +279,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Transform.h" />
     <ClInclude Include="..\public\Transform_2D.h" />
     <ClInclude Include="..\Public\Transform_3D.h" />
+    <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\UIObject.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
@@ -306,6 +308,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\Camera_Manager_Engine.cpp" />
     <ClCompile Include="..\private\Channel.cpp" />
     <ClCompile Include="..\private\Actor.cpp" />
+    <ClCompile Include="..\private\Collider.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -370,6 +373,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Transform.cpp" />
     <ClCompile Include="..\private\Transform_2D.cpp" />
     <ClCompile Include="..\Private\Transform_3D.cpp" />
+    <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />

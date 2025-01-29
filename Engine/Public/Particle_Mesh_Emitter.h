@@ -24,9 +24,12 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT				Render() override;
 
+public:
+	virtual	void				Reset() override;
+
 private:
 	_uint									m_iNumMeshes = 0;
-	vector<CVIBuffer_Mesh_Particle*>		m_Meshes;
+	vector<CVIBuffer_Mesh_Particle*>		m_ParticleMeshes;
 
 	_uint				m_iNumMaterials = 0;
 	vector<CMaterial*>	m_Materials;
@@ -47,6 +50,7 @@ private:
 
 
 
+
 public:
 	//static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szModelPath, const _tchar* _szInfoPath);
 	static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonInfo);
@@ -54,6 +58,20 @@ public:
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void		 Free() override;
 	virtual HRESULT		 Cleanup_DeadReferences() override;
+
+#ifdef _DEBUG
+public:
+	virtual void				Tool_Setting() override;
+	virtual void				Tool_Update(_float _fTimeDelta) override;
+	virtual HRESULT				Save(json& _jsonOut);
+	
+private:
+	_string						m_strModelPath;
+
+public:
+	static	CParticle_Mesh_Emitter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg);
+
+#endif
 
 };
 

@@ -49,7 +49,7 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 
 }
 
-HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider)
 {
 	XMStoreFloat4x4(&m_PreTransformMatrix, PreTransformMatrix);
 
@@ -77,6 +77,14 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 		return E_FAIL;
 	inFile.close();
 	//std::cout << pModelFilePath << endl;
+
+	if (_isCollider)
+	{
+	
+		filesystem::exists(path)
+
+	}
+
 	return S_OK;
 }
 
@@ -404,11 +412,11 @@ HRESULT C3DModel::Ready_Animations(ifstream& inFile)
 	return S_OK;
 }
 						   
-C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix)
+C3DModel* C3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider)
 {
 	C3DModel* pInstance = new C3DModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix)))
+	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix, _isCollider)))
 	{
 		MSG_BOX("Failed to Created : 3DModel");
 		Safe_Release(pInstance);

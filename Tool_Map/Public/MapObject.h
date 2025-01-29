@@ -34,7 +34,6 @@ public:
 	typedef struct tagMapObjectDesc : public CModelObject::MODELOBJECT_DESC
 	{
 		_tchar			szModelName[MAX_PATH];
-		_float4x4		matWorld;
 		OBJ_CREATE_TYPE eCreateType;
 
 	}MAPOBJ_DESC;

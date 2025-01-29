@@ -29,16 +29,19 @@ namespace Engine
 	{
 
 	}SHAPE_DESC;
+
 	typedef struct tagShapeSphereDesc : public SHAPE_DESC
 	{
 		// 구의 반지름
 		float fRadius = 0.5f;
 	}SHAPE_SPHERE_DESC;
+
 	typedef struct tagShapeBoxDesc : public SHAPE_DESC
 	{
 		// 박스의 x,y,z 각 축 방향의 절반 크기.
 		XMFLOAT3 vHalfExtents = { 0.5f, 0.5f, 0.5f };
 	}SHAPE_BOX_DESC;
+
 	typedef struct tagShapeCapsuleDesc : public SHAPE_DESC
 	{
 		// 구 부분의 반지름.
@@ -46,6 +49,13 @@ namespace Engine
 		// 원기둥 부분의 높이의 절반.
 		float fHalfHeight = 0.5f;
 	}SHAPE_CAPSULE_DESC;
+
+	typedef struct tagCookingDesc : public SHAPE_DESC
+	{
+		_bool isLoad = false;
+		_bool isSave = false;
+		_string strFilePath;
+	}SHAPE_COOKING_DESC;
 
 	typedef struct tagEngineDesc
 	{
@@ -171,6 +181,8 @@ namespace Engine
 		XMFLOAT4		vRight, vUp, vLook, vTranslation;
 		XMFLOAT2		vLifeTime;
 		XMFLOAT4		vColor;
+		XMFLOAT3		vVelocity;
+		XMFLOAT3		vAcceleration;
 	}VTXMESHINSTANCE;
 
 	typedef struct ENGINE_DLL tagPointParticle
@@ -181,7 +193,7 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagMeshParticle
 	{
-		static const unsigned int iNumElements = { 10 };		// Mesh + VTXMESHINSTACNE
+		static const unsigned int iNumElements = { 12 };		// Mesh + VTXMESHINSTACNE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXMESHPARTICLE;
 
@@ -240,6 +252,18 @@ namespace Engine
 		_float3				vAtOffset = {};
 		_uint				iZoomLevel = {};
 	} CUTSCENE_INITIAL_DATA;
+#pragma endregion
+
+#pragma region Trigger 관련
+	typedef struct tagTriggerObjectData
+	{
+		_uint				iShapeType = {};
+		_float3				vHalfExtents = {};
+		_float				fRadius = {};
+
+		_uint				iFillterMyGroup = {};
+		_uint				iFillterOtherGroupMask = {};
+	} TRIGGEROBJECT_DATA;
 #pragma endregion
 
 #pragma region Binary 관련

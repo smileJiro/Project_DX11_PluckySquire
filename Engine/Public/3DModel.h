@@ -26,7 +26,7 @@ protected:
 	virtual ~C3DModel() = default;
 
 public:
-	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider);
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass) override;
 
@@ -65,7 +65,7 @@ public:
 
 #ifdef _DEBUG
 public:
-	//vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
+	vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
 	vector<CMaterial*>&		Get_Materials() { return m_Materials; }
 	vector<CBone*>&			Get_Bones() { return m_Bones; }
 
@@ -102,7 +102,7 @@ protected:
 	virtual HRESULT Ready_Animations(ifstream& inFile);
 
 public:
-	static C3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix);
+	static C3DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider = false);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
 

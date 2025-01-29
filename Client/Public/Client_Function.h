@@ -5,6 +5,7 @@ BEGIN(Engine)
 class CGameObject;
 class CLevel;
 class CBase;
+class CActor_Dynamic;
 END
 
 BEGIN(Client)
@@ -22,6 +23,7 @@ namespace Client
 	void Event_ChangeMonsterState(MONSTER_STATE _eState, CFSM* _pFSM);
 	void Event_ChangeBossState(BOSS_STATE _eState, CFSM* _pFSM);
 	void Event_Change_Coordinate(CActorObject* _pActorObject, COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
+	void Event_Set_Kinematic(CActor_Dynamic* _pActorObject, _bool _bValue);
 
 	
 
@@ -32,4 +34,7 @@ namespace Client
 	std::string MatrixToString(_float4x4 vMatrix);
 	F_DIRECTION To_FDirection(_vector _vDir);
 	_vector FDir_To_Vector(F_DIRECTION _eFDir);
+	E_DIRECTION To_EDirection(_vector _vDir);
+	_vector EDir_To_Vector(E_DIRECTION _eFDir);
+	F_DIRECTION EDir_To_FDir(E_DIRECTION _eEDir);
 }

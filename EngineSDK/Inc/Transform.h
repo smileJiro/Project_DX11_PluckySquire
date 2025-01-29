@@ -9,6 +9,8 @@ public:
 	enum STATE { STATE_RIGHT, STATE_UP, STATE_LOOK, STATE_POSITION, STATE_END };
 	typedef struct tagTransformDesc
 	{
+		_bool	isMatrix = false;
+		_float4x4 matWorld;
 		// 초당 이동속도
 		_float	fSpeedPerSec = {};
 		// 초당 회전속도
@@ -18,6 +20,7 @@ public:
 
 		// 초기화 크기
 		_float3 vInitialScaling = { 1.0f, 1.0f, 1.0f };
+
 	}TRANSFORM_DESC;
 
 protected:

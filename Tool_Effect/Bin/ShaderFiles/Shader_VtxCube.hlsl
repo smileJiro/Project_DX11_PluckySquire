@@ -61,9 +61,9 @@ technique11 DefaultTechnique
 	/* 우리가 수행해야할 정점, 픽셀 셰이더의 진입점 함수를 지정한다. */
     pass DefaultPass
     {
-        SetRasterizerState(RS_Cull_Front); /* 전면 추려내기 */
-        SetDepthStencilState(DSS_None, 0); /* 깊이 버퍼 사용 x */
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff); /* 알파 블렌딩 사용 */
+        SetRasterizerState(RS_Cull_Front); 
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;

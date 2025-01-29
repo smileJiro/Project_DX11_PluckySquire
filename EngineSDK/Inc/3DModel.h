@@ -65,7 +65,7 @@ public:
 
 #ifdef _DEBUG
 public:
-	//vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
+	vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
 	vector<CMaterial*>&		Get_Materials() { return m_Materials; }
 	vector<CBone*>&			Get_Bones() { return m_Bones; }
 

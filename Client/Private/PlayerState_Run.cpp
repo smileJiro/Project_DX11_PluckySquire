@@ -15,7 +15,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 {
 	COORDINATE eCoord =  m_pOwner->Get_CurCoord();
 
-	if (MOUSE_DOWN(MOUSE_KEY::LB))
+	if (m_pOwner->Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::LB))
 	{
 		m_pOwner->Set_State(CPlayer::ATTACK);
 		return;
@@ -55,37 +55,23 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	if (bMove)
 	{
 		m_pOwner->Move(XMVector3Normalize(vMoveDir), _fTimeDelta);
-		if (KEY_DOWN(KEY::SPACE))
+		if (KEY_PRESSING(KEY::SPACE))
 		{
 			m_pOwner->Set_State(CPlayer::JUMP);
 			return;
 		}
+		if (KEY_PRESSING(KEY::LSHIFT))
+		{
+			m_pOwner->Set_State(CPlayer::ROLL);
+			return;
+		}
+
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{
-			F_DIRECTION eNewDir =  To_FDirection(vMoveDir);
-			F_DIRECTION eOldDir = m_pOwner->Get_2DDirection();
+			E_DIRECTION eNewDir =  To_EDirection(vMoveDir);
+			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
 			m_pOwner->Set_2DDirection(eNewDir);
-			if (eNewDir != eOldDir)
-			{
-			
-				switch (eNewDir)
-				{
-				case Client::F_DIRECTION::LEFT:
-				case Client::F_DIRECTION::RIGHT:
-					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT);
-					break;
-				case Client::F_DIRECTION::UP:
-					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP);
-					break;
-				case Client::F_DIRECTION::DOWN:
-					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN);
-					break;
-				case Client::F_DIRECTION::F_DIR_LAST:
-				default:
-					break;
-				}
-			}
-
+			Switch_RunAnimation2D(eFDir);
 		}
 	}
 	else
@@ -100,30 +86,23 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 void CPlayerState_Run::Enter()
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	
+
 	if (COORDINATE_2D == eCoord)
 	{
-		F_DIRECTION eOldDir = m_pOwner->Get_2DDirection();
-		switch (eOldDir)
-		{
-		case Client::F_DIRECTION::LEFT:
-		case Client::F_DIRECTION::RIGHT:
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT);
-			break;
-		case Client::F_DIRECTION::UP:
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP);
-			break;
-		case Client::F_DIRECTION::DOWN:
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN);
-			break;
-		case Client::F_DIRECTION::F_DIR_LAST:
-		default:
-			break;
-		}
+		F_DIRECTION eFDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		Switch_RunAnimation2D(eFDir);
 	}
-	
 	else
-		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
+	{
+		_bool bSword = m_pOwner->Is_SwordEquiped();
+		_bool bCarrying = m_pOwner->Is_CarryingObject();
+		if (bSword)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_SWORD_01_GT);
+		else if (bCarrying)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
+		else
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
+	}
 
 }
 
@@ -138,4 +117,43 @@ void CPlayerState_Run::Exit()
 	{
 		m_pOwner->Stop_Rotate();
 	}
+	m_pOwner->Stop_Move();
 }
+
+void CPlayerState_Run::Switch_RunAnimation2D(F_DIRECTION _eFDir)
+{
+	_bool bSword = m_pOwner->Is_SwordEquiped();
+	_bool bCarrying = m_pOwner->Is_CarryingObject();
+	switch (_eFDir)
+	{
+	case Client::F_DIRECTION::LEFT:
+	case Client::F_DIRECTION::RIGHT:
+		if (bCarrying)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_OBJECT_RIGHT);
+		else if (bSword)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT);
+		else
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT);
+		break;
+	case Client::F_DIRECTION::UP:
+		if (bCarrying)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_OBJECT_UP);
+		else if (bSword)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_UP);
+		else
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP);
+		break;
+	case Client::F_DIRECTION::DOWN:
+		if (bCarrying)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_OBJECT_DOWN);
+		else if (bSword)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_DOWN);
+		else
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN);
+		break;
+	case Client::F_DIRECTION::F_DIR_LAST:
+	default:
+		break;
+	}
+}
+

@@ -8,6 +8,9 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 
+/* For. Trigger*/
+#include "Camera_Trigger.h"
+
 /* For. UI*/
 #include "Pick_Bulb.h"
 #include "SettingPanelBG.h"
@@ -27,6 +30,7 @@
 
 #include "ModelObject.h"
 #include "Player.h"
+#include "PlayerSword.h"
 #include "TestTerrain.h"
 
 #include "2DModel.h"
@@ -246,7 +250,14 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ParentSettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
+    // ============ Triger
+    /* For. Prototype_GameObject_Camera_Trigger */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"),
+        CCamera_Trigger::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ParentSettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 	
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanelBG::Create(m_pDevice, m_pContext))))
@@ -266,7 +277,12 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"),
+        CPlayer::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"),
+        CPlayerSword::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     /* Monster */
 
      /* For. Prototype_GameObject_Beetle */
@@ -528,10 +544,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
-        CPlayer::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
 
+    // ============ Camera
     /* For. Prototype_GameObject_Camera_Free */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
         CCamera_Free::Create(m_pDevice, m_pContext))))
@@ -628,6 +642,8 @@ HRESULT CLoader::Loading_Level_GamePlay()
     Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
 
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Free_Enviroment.mchc");
+
+    Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -927,6 +943,80 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
         }
     }
     CloseHandle(hFile);
+    return S_OK;
+}
+
+HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath)
+{
+    std::filesystem::path path;
+    //path = "../Bin/Resources/DataFiles/";
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(_szFilePath)) {
+        if (entry.path().extension() == ".json") {
+           
+            ifstream file(entry.path());
+
+            if (!file.is_open())
+            {
+                MSG_BOX("파일을 열 수 없습니다.");
+                file.close();
+                return E_FAIL;
+            }
+
+            json Result;
+            file >> Result;
+            file.close();
+
+            for (auto& Trigger_json : Result) {
+                TRIGGEROBJECT_DATA Data = {};
+
+                _uint iTriggerType = Trigger_json["Trigger Type"];
+                _float3 vPosition = { Trigger_json["Position"][0].get<_float>(),  Trigger_json["Position"][1].get<_float>() , Trigger_json["Position"][2].get<_float>() };
+                _float3 vRotation = { Trigger_json["Rotation"][0].get<_float>(),  Trigger_json["Rotation"][1].get<_float>() , Trigger_json["Rotation"][2].get<_float>() };
+
+                Data.iShapeType = Trigger_json["Shape Type"];
+                Data.vHalfExtents = { Trigger_json["Half Extents"][0].get<_float>(),  Trigger_json["Half Extents"][1].get<_float>() , Trigger_json["Half Extents"][2].get<_float>() };
+                Data.fRadius = Trigger_json["Radius"];
+
+                Data.iFillterMyGroup = Trigger_json["Fillter My Group"];
+                Data.iFillterOtherGroupMask = Trigger_json["Fillter Other Group Mask"];
+
+                switch (iTriggerType) {
+                case (_uint)TRIGGER_TYPE::CAMERA_TRIGGER:
+                {
+                    _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
+
+                    CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
+
+                    Desc.iCameraTriggerType = iCameraTriggerType;
+
+                    Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
+                    Desc.vHalfExtents = Data.vHalfExtents;
+                    Desc.fRadius = Data.fRadius;
+
+                    Desc.iFillterMyGroup = Data.iFillterMyGroup;
+                    Desc.iFillterOtherGroupMask = Data.iFillterOtherGroupMask;
+
+                    Desc.tTransform3DDesc.vInitialPosition = vPosition;
+
+                    CGameObject* pTrigger = nullptr;
+
+                    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"), LEVEL_GAMEPLAY, TEXT("Layer_Trigger"), &pTrigger, &Desc))) {
+                        MSG_BOX("Failed To Load Camera Trigger");
+                        return E_FAIL;
+                    }
+
+                    // Rotation
+                    _matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(vRotation.z));
+                    dynamic_cast<CTriggerObject*>(pTrigger)->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
+
+                   // dynamic_cast<CTriggerObject*>(pTrigger)->Set_TriggerType(m_iTriggerType);
+                }
+                break;
+                }
+            }
+        }
+    }
+
     return S_OK;
 }
 

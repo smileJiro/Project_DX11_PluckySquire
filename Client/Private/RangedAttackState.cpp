@@ -36,7 +36,7 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_Position());
+	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 	//공격 범위 벗어나고 추적 범위 내면 Chase 전환
 	if (fDis > Get_CurCoordRange(MONSTER_STATE::ATTACK) && fDis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
@@ -53,7 +53,7 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 		//공격
 		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_Position());
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
 		}
 		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{

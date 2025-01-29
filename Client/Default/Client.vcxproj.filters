@@ -244,6 +244,12 @@
     <Filter Include="94.RenderGroups%28Custom%29\AfterEffect">
       <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Trigger">
+      <UniqueIdentifier>{2a7a1cb9-e639-4be6-a19f-65aeae8e850a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Trigger\Camera_Trigger">
+      <UniqueIdentifier>{b758ccb4-7151-48b1-99b9-1eeef86e1bab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -514,6 +520,12 @@
     <ClInclude Include="..\Public\PlayerState_Roll.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Trigger.h">
+      <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerSword.h">
+      <Filter>02.GameObjects\TestPlayer</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Soldier_Bomb.h">
       <Filter>02.GameObjects\Monster\Soldier</Filter>
     </ClInclude>
@@ -783,6 +795,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Roll.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Trigger.cpp">
+      <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerSword.cpp">
+      <Filter>02.GameObjects\TestPlayer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Soldier_Bomb.cpp">
       <Filter>02.GameObjects\Monster\Soldier</Filter>

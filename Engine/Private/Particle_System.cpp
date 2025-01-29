@@ -129,9 +129,13 @@ HRESULT CParticle_System::Initialize(void* _pArg, const CParticle_System* _pProt
 
 // TOOL 전용의 Particle Initialize입니다.
 // 새로운 파티클을 툴에서 만들 때 사용합니다.
-HRESULT CParticle_System::Initialize()
+HRESULT CParticle_System::Initialize(void* _pArg)
 {
+	if (FAILED(__super::Initialize(_pArg)))
+		return E_FAIL;
+
 	return S_OK;
+
 }
 
 
@@ -197,7 +201,7 @@ CGameObject* CParticle_System::Clone(void* _pArg)
 	// 툴 전용
 	if (0 == m_ParticleEmitters.size())
 	{
-		if (FAILED(pInstance->Initialize()))
+		if (FAILED(pInstance->Initialize(_pArg)))
 		{
 			MSG_BOX("Failed to Cloned : CParticle_System");
 			Safe_Release(pInstance);
@@ -247,6 +251,17 @@ HRESULT CParticle_System::Add_New_Emitter(CParticle_Emitter::PARTICLE_TYPE _eTyp
 
 		m_ParticleEmitters.push_back(pOut);
 	}
+
+	else if (CParticle_Emitter::MESH == _eType)
+	{
+		CParticle_Mesh_Emitter* pOut = CParticle_Mesh_Emitter::Create(m_pDevice, m_pContext, _pArg);
+		if (nullptr == pOut)
+			return E_FAIL;
+
+		m_ParticleEmitters.push_back(pOut);
+
+	}
+
 
 	return S_OK;
 }
@@ -317,22 +332,41 @@ void CParticle_System::Tool_InputText()
 
 void CParticle_System::Tool_Update(_float _fTimeDelta)
 {
+
 	m_fToolAccTime += _fTimeDelta;
+
 	if (m_fToolRepeatTime <= m_fToolAccTime)
 	{
-		// TODO: Tool Reset 설정
+		for (auto& pEmitter : m_ParticleEmitters)
+		{
+			// TODO: 이거 바꿔야 할듯!!
+			pEmitter->Set_Active(true);
+		}
+
 		m_fToolAccTime = 0.f;
 	}
 
+	ImGui::Text("Debug Loop Time : %f", m_fToolAccTime);
 	
 	Tool_InputText();
 	Tool_ShowList();
-
 	
 	if (m_pNowItem)
 	{
 		m_pNowItem->Tool_Update(_fTimeDelta);
+
+		if (m_pNowItem->Is_ToolChanged())
+		{
+			for (auto& pEmitter : m_ParticleEmitters)
+			{
+				// TODO: 이거 바꿔야 할듯!!
+				pEmitter->Set_Active(true);
+			}
+
+			m_fToolAccTime = 0.f;
+		}
 	}
+
 
 
 }

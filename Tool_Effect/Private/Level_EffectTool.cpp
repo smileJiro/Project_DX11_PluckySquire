@@ -12,11 +12,14 @@ HRESULT CLevel_EffectTool::Initialize()
 {
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
+	if (FAILED(Ready_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -165,6 +168,18 @@ HRESULT CLevel_EffectTool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_EffectTool::Ready_SkyBox(const _wstring& _strLayerTag)
+{
+	CGameObject::GAMEOBJECT_DESC Desc = {};
+	Desc.iCurLevelID = LEVEL_TOOL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Object_SkyBox"),
+		LEVEL_TOOL, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CLevel_EffectTool::Update_Particle_Tool(_float _fTimeDelta)
 {
 	ImGui::Begin("Particle System");
@@ -214,9 +229,15 @@ void CLevel_EffectTool::Tool_System_List()
 		if (ImGui::Button("New System"))
 		{
 			CParticle_System* pOut;
+			CPartObject::PARTOBJECT_DESC Desc = {};
+
+			Desc.eStartCoord = COORDINATE_3D;
+			Desc.iCurLevelID = LEVEL_TOOL;
+			Desc.isCoordChangeEnable = false;
+			Desc.pParentMatrices[COORDINATE_3D] = nullptr;
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_Effect_ForNew"),
-				LEVEL_TOOL, TEXT("Layer_Effect"), reinterpret_cast<CGameObject**>(&pOut))))
+				LEVEL_TOOL, TEXT("Layer_Effect"), reinterpret_cast<CGameObject**>(&pOut), &Desc)))
 			{
 				MSG_BOX("파티클 시스템 추가 불가능");
 				return;
@@ -279,11 +300,29 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxPointInstance";
 			if (FAILED(m_pNowItem->Add_New_Emitter(CParticle_Emitter::SPRITE, &Desc)))
 			{
-				MSG_BOX("Emitter 만들기 실패");
+				MSG_BOX("Sprite Emitter 만들기 실패");
 			}
 		}
 
 		ImGui::SameLine();
+
+		if (ImGui::Button("New_Mesh_Emitter"))
+		{
+			CParticle_Emitter::PARTICLE_EMITTER_DESC Desc = {};
+
+			Desc.eStartCoord = COORDINATE_3D; 
+			Desc.iCurLevelID = LEVEL_TOOL;
+			Desc.isCoordChangeEnable = false;
+			Desc.iProtoShaderLevel = LEVEL_STATIC;
+			Desc.szShaderTag = L"Prototype_Component_Shader_VtxModelInstance";
+			if (FAILED(m_pNowItem->Add_New_Emitter(CParticle_Emitter::MESH, &Desc)))
+			{
+				MSG_BOX("Mesh Emitter 만들기 실패");
+			}
+
+		}
+
+
 
 		if (ImGui::Button("Save_this_system"))
 		{
@@ -433,7 +472,8 @@ HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
 	Desc.isCoordChangeEnable = false;
 	Desc.iSpriteShaderLevel = LEVEL_STATIC;
 	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
-
+	Desc.iModelShaderLevel = LEVEL_STATIC;
+	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxModelInstance";
 	
 	std::filesystem::path path;
 	path = _szPath;
@@ -465,25 +505,6 @@ HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
 			m_ParticleSystems.push_back(pOut);
 			pOut->Set_Active(false);
 
-			//CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, entry.path().string().c_str());
-
-			//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, entry.path().filename(),
-			//	pTexture)))
-			//{
-			//	string str = "Failed to Create CTexture";
-			//	str += entry.path().filename().string();
-			//	MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
-
-			//	Safe_Release(pTexture);
-
-			//	return E_FAIL;
-			//}
-
-			//pTexture->Add_SRVName(entry.path().c_str());
-			//m_Textures.emplace(entry.path().c_str(), pTexture);
-
-
-			//Safe_AddRef(pTexture);
 		}
 	}
 

@@ -130,14 +130,14 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle">
       <UniqueIdentifier>{2bccbdcc-f487-4cc0-ac5f-2f61ef4de991}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Point">
-      <UniqueIdentifier>{1943b2ce-e47d-4ba7-94b0-25c928efb2b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\09. RenderTargets">
       <UniqueIdentifier>{c6f2ce8e-acda-4bcb-b691-3d92d5e7ee0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\09. RenderTargets\Manager">
       <UniqueIdentifier>{b8b92195-49d1-43e8-bd2b-cd0f39b298c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Point">
+      <UniqueIdentifier>{1943b2ce-e47d-4ba7-94b0-25c928efb2b4}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Rect\Rect_Vertical">
       <UniqueIdentifier>{1e2760b5-d438-4278-91c9-293c036ad287}</UniqueIdentifier>
@@ -241,9 +241,6 @@
     <Filter Include="01.Utility\03.Objects\Effect\Emitter\Mesh">
       <UniqueIdentifier>{4e29ca39-e287-4460-82aa-ca6105e1e3cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh">
-      <UniqueIdentifier>{c4dbee5e-b0ec-4fea-bcd9-f258a7028cd4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.Objects\Camera\CutScene_Sector">
       <UniqueIdentifier>{cba30df6-e1fa-4802-a037-b3c7f69f9b94}</UniqueIdentifier>
     </Filter>
@@ -267,6 +264,30 @@
     </Filter>
     <Filter Include="01.Utility\03.Objects\Trigger">
       <UniqueIdentifier>{48dd45cb-48ea-425a-baa8-4b28491a2eab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh_Particle">
+      <UniqueIdentifier>{c4dbee5e-b0ec-4fea-bcd9-f258a7028cd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Point_Particle">
+      <UniqueIdentifier>{1943b2ce-e47d-4ba7-94b0-25c928efb2b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\09.RenderTargets">
+      <UniqueIdentifier>{c6f2ce8e-acda-4bcb-b691-3d92d5e7ee0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\09.RenderTargets\Manager">
+      <UniqueIdentifier>{b8b92195-49d1-43e8-bd2b-cd0f39b298c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\AnimEvent">
+      <UniqueIdentifier>{1ff8e193-1657-47b8-b4ff-1675ab2f5492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider">
+      <UniqueIdentifier>{ec61471d-b8ae-4c10-bdf8-8bf589715536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider\Circle">
+      <UniqueIdentifier>{c70a493a-2218-45c9-8ae5-06b02d8e4b35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider\AABB">
+      <UniqueIdentifier>{aed4aa39-81a2-4e1a-a759-6499ddd8469f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -400,10 +421,10 @@
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RenderTarget.h">
-      <Filter>01.Utility\09. RenderTargets</Filter>
+      <Filter>01.Utility\09.RenderTargets</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Target_Manager.h">
-      <Filter>01.Utility\09. RenderTargets\Manager</Filter>
+      <Filter>01.Utility\09.RenderTargets\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Rect_Vertical.h">
       <Filter>01.Utility\04.Components\VIBuffer\Rect\Rect_Vertical</Filter>
@@ -466,7 +487,7 @@
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Point_Particle.h">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Point</Filter>
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Point_Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Instance.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
@@ -505,7 +526,7 @@
       <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Mesh_Particle.h">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh</Filter>
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh_Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
@@ -519,12 +540,6 @@
     <ClInclude Include="..\Public\Animation.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\AnimEventGenerator.h">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\AnimEventReceiver.h">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Particle_Module.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
     </ClInclude>
@@ -536,6 +551,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_MRT.h">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_MRT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TriggerObject.h">
+      <Filter>01.Utility\03.Objects\Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimEventGenerator.h">
+      <Filter>01.Utility\04.Components\AnimEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AnimEventReceiver.h">
+      <Filter>01.Utility\04.Components\AnimEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Collider.h">
+      <Filter>01.Utility\04.Components\Collider</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DebugDraw_For_Client.h">
       <Filter>01.Utility\04.Components</Filter>
@@ -660,10 +687,10 @@
       <Filter>01.Utility\08.Font\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RenderTarget.cpp">
-      <Filter>01.Utility\09. RenderTargets</Filter>
+      <Filter>01.Utility\09.RenderTargets</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Target_Manager.cpp">
-      <Filter>01.Utility\09. RenderTargets\Manager</Filter>
+      <Filter>01.Utility\09.RenderTargets\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Rect_Vertical.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Rect\Rect_Vertical</Filter>
@@ -726,7 +753,7 @@
       <Filter>01.Utility\12.JsonManager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Point_Particle.cpp">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Point</Filter>
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Point_Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Instance.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
@@ -765,7 +792,7 @@
       <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Mesh_Particle.cpp">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh</Filter>
+      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh_Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
@@ -779,12 +806,6 @@
     <ClCompile Include="..\Private\Animation.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AnimEventGenerator.cpp">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AnimEventReceiver.cpp">
-      <Filter>01.Utility\04.Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Particle_Module.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
     </ClCompile>
@@ -796,6 +817,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup.cpp">
       <Filter>01.Utility\14.RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TriggerObject.cpp">
+      <Filter>01.Utility\03.Objects\Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimEventGenerator.cpp">
+      <Filter>01.Utility\04.Components\AnimEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AnimEventReceiver.cpp">
+      <Filter>01.Utility\04.Components\AnimEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Collider.cpp">
+      <Filter>01.Utility\04.Components\Collider</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw_For_Client.cpp">
       <Filter>01.Utility\04.Components</Filter>

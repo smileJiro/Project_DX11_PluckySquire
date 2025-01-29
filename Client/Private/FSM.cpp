@@ -30,7 +30,7 @@ void CFSM::Set_PatrolBound()
 		return;
 	//전환 시에도 불러야함
 	_float3 vPosition;
-	XMStoreFloat3(&vPosition, m_pOwner->Get_Position());
+	XMStoreFloat3(&vPosition, m_pOwner->Get_FinalPosition());
 	static_cast<CPatrolState*>(m_States[(_uint)MONSTER_STATE::PATROL])->Set_Bound(vPosition);
 }
 
