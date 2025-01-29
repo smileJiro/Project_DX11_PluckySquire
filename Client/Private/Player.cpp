@@ -580,7 +580,19 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::F3))
     {
-        //m_pActorCom->Set_OffsetMatrix(XMMatrixScaling(3.0f, 3.0f, 3.0f) * XMMatrixRotationZ(30.f));
+        //static_cast<CActor_Dynamic*>(m_pActorCom)->On_Kinematic();
+        //m_pActorCom->Set_ShapeLocalOffsetPosition(0, _float3(0.0f, 0.5f, 0.0f));
+        m_pActorCom->Set_ShapeLocalOffsetPitchYawRoll(0, _float3(XMConvertToRadians(0.f), XMConvertToRadians(00.f), XMConvertToRadians(60.f)));
+        //m_pActorCom->Delete_Shape(1);
+        //m_pActorCom->Set_ShapeLocalOffsetMatrix(0, XMMatrixRotationZ(XMConvertToRadians(-30.f)) * XMMatrixTranslation(0.0f, -1.0f, 0.0f));
+    }
+    if (KEY_DOWN(KEY::B))
+    {
+        // 도형 크기 바꾸기
+        SHAPE_CAPSULE_DESC Desc;
+        Desc.fRadius = 1.f;
+        Desc.fHalfHeight = 1.f;
+        m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
     }
     if (KEY_DOWN(KEY::F2))
     {

@@ -1,6 +1,7 @@
 #include "Actor.h"
 #include "GameInstance.h"
 #include "ActorObject.h"
+#include "ModelObject.h"
 
 #include "DebugDraw.h"
 CActor::CActor(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ACTOR_TYPE _eActorType)
@@ -90,7 +91,7 @@ void CActor::Update(_float _fTimeDelta)
 void CActor::Late_Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-    m_pGameInstance->Add_DebugComponent(this);
+    //m_pGameInstance->Add_DebugComponent(this);
 #endif // _DEBUG
 
 }
@@ -111,8 +112,11 @@ HRESULT CActor::Render()
     m_pEffect->Apply(m_pContext);
     m_pContext->IASetInputLayout(m_pInputLayout);
     m_pBatch->Begin();
-    for (auto& pShape : m_pTriggerShapes)
+    for (auto& pShape : m_Shapes)
     {
+        if (false == pShape->getFlags().isSet(PxShapeFlag::eTRIGGER_SHAPE))
+            continue;
+
         PxGeometryType::Enum eType = pShape->getGeometryType();
 
         switch (eType)
@@ -207,6 +211,20 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
     return S_OK;
 }
 
+_float3 CActor::Get_GlobalPose()
+{
+    PxTransform CurTransform = m_pActor->getGlobalPose();
+
+    return _float3(CurTransform.p.x, CurTransform.p.y, CurTransform.p.z);
+}
+
+void CActor::Set_GlobalPose(const _float3& _vPos)
+{
+    PxTransform CurTransform = m_pActor->getGlobalPose();
+    CurTransform.p = { _vPos.x, _vPos.y , _vPos.z };
+    m_pActor->setGlobalPose(CurTransform);
+}
+
 HRESULT CActor::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
     // Actor 쪽 작업 방식.
@@ -228,13 +246,10 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
     if (nullptr == pPhysics)
         return E_FAIL;
+    PxShapeFlags ShapeFlags = _ShapeData.isTrigger ?
+        (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eTRIGGER_SHAPE) :
+        (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
 
-    PxShapeFlags ShapeFlags = (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
-    if (true == _ShapeData.isTrigger)
-    {
-        ShapeFlags.clear(PxShapeFlag::eSIMULATION_SHAPE);
-        ShapeFlags.set(PxShapeFlag::eTRIGGER_SHAPE);
-    }
 
     PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(_ShapeData.eMaterial);
 
@@ -243,7 +258,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     _float3 vScale;
     _float4 vQuat;
     _float3 vPosition;
-    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_ShapeData.LocalOffsetMatrix)))
+    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition,  XMLoadFloat4x4(&_ShapeData.LocalOffsetMatrix)))
         return E_FAIL;
 
     switch (_ShapeData.eShapeType)
@@ -266,6 +281,48 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     {
         SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(_ShapeData.pShapeDesc);
        PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius * vScale.x, pDesc->fHalfHeight * vScale.x);
+
+        pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
+    }
+    break;
+    case Engine::SHAPE_TYPE::COOKING:
+    {
+        if (nullptr == m_pOwner)
+            return E_FAIL;
+
+        CModelObject* pModelObj = dynamic_cast<CModelObject*>(m_pOwner);
+        if(nullptr == pModelObj)
+            return E_FAIL;
+
+        CModel* _pModel = pModelObj->Get_Model(COORDINATE_3D);
+        if (nullptr == _pModel)
+            return E_FAIL;
+        C3DModel* pModel = static_cast<C3DModel*>(_pModel);
+
+        _uint iNumMeshes = pModel->Get_NumMeshes();
+
+        //for (_uint i = 0; i < iNumMeshes; i++)
+        //{
+        //    CMesh* pMesh = pModel->Get_Mesh(i);
+        //    PxTriangleMeshDesc meshDesc;
+        //    if(FAILED(pMesh->Cooking(meshDesc)))
+        //        return E_FAIL;
+        //    PxDefaultMemoryOutputStream writeBuffer;
+        //    PxCookingParams params(pPhysics->getTolerancesScale());
+        //    PxCooking* cooking = m_pGameInstance->Get_Cooking();
+        //    cooking->setParams(params);
+
+        //    if (!cooking->cookTriangleMesh(meshDesc, writeBuffer)) 
+        //        return E_FAIL;
+
+        //    PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+        //    PxTriangleMesh* pPxMesh =  pPhysics->createTriangleMesh(readBuffer);
+        //    PxTriangleMeshGeometry geometry(pPxMesh);
+        //    pShape =  pPhysics->createShape(geometry, *pPhysics->createMaterial(0.5f, 0.5f, 0.5f));
+        //}
+
+        SHAPE_CAPSULE_DESC* pDesc = static_cast<SHAPE_CAPSULE_DESC*>(_ShapeData.pShapeDesc);
+        PxCapsuleGeometry CapsuleGeometry = PxCapsuleGeometry(pDesc->fRadius * vScale.x, pDesc->fHalfHeight * vScale.x);
 
         pShape = pPhysics->createShape(CapsuleGeometry, *pShapeMaterial, true, ShapeFlags);
     }
@@ -299,17 +356,42 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     m_Shapes.push_back(pShape);
     pShape->acquireReference(); // Add_Ref
 
-#ifdef _DEBUG
-    if (true == _ShapeData.isTrigger)
-    {
-        m_pTriggerShapes.push_back(pShape);
-        pShape->acquireReference();
-    }
-#endif // _DEBUG
+    // 이건 생성 시점에 추가된 ref를 감소
     pShape->release();
 
 
     return S_OK;
+}
+
+HRESULT CActor::Delete_Shape(_int _iShapeIndex)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    if (nullptr == m_Shapes[_iShapeIndex])
+        return E_FAIL;
+
+    m_pActor->detachShape(*m_Shapes[_iShapeIndex]);
+
+    m_Shapes[_iShapeIndex]->release();
+
+    auto& iter = m_Shapes.begin();
+    _int iIndexCount = 0;
+    for (iter; iter != m_Shapes.end(); )
+    {
+        if (iIndexCount == _iShapeIndex)
+        {
+            m_Shapes.erase(iter);
+            return S_OK;
+        }
+        else
+        {
+            ++iter;
+            ++iIndexCount;
+        }
+    }
+    
+    return E_FAIL;
 }
 
 void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime)
@@ -356,6 +438,114 @@ void CActor::Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix)
 
     m_pActor->setGlobalPose(Transform);
 }
+
+HRESULT CActor::Set_ShapeLocalOffsetMatrix(_int _iShapeIndex, _fmatrix _ShapeLocalOffsetMatrix)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    // 1. 행렬에서 위치, 회전 추출
+    XMVECTOR scale, rotationQuat, position;
+    XMMatrixDecompose(&scale, &rotationQuat, &position, _ShapeLocalOffsetMatrix);
+
+    // 2. DirectXMath 데이터를 PhysX 데이터로 변환
+    PxVec3 pxPosition(XMVectorGetX(position), XMVectorGetY(position), XMVectorGetZ(position));
+    PxQuat pxRotation(XMVectorGetX(rotationQuat), XMVectorGetY(rotationQuat), XMVectorGetZ(rotationQuat), XMVectorGetW(rotationQuat));
+
+    // 3. PxTransform 생성
+    PxTransform newLocalPose(pxPosition, pxRotation);
+
+    // 4. Shape의 Local Pose 설정
+    m_Shapes[_iShapeIndex]->setLocalPose(newLocalPose);
+
+    return S_OK;
+}
+
+HRESULT CActor::Set_ShapeLocalOffsetPosition(_int _iShapeIndex, const _float3& _vOffsetPos)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    PxTransform Transform = m_Shapes[_iShapeIndex]->getLocalPose();
+    Transform.p = { _vOffsetPos.x, _vOffsetPos.y, _vOffsetPos.z };
+    m_Shapes[_iShapeIndex]->setLocalPose(Transform);
+
+    return S_OK;
+}
+
+HRESULT CActor::Set_ShapeLocalOffsetQuaternion(_int _iShapeIndex, const _float4& _vQuat)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    PxTransform Transform = m_Shapes[_iShapeIndex]->getLocalPose();
+    Transform.q = PxQuat(_vQuat.x, _vQuat.y, _vQuat.z, _vQuat.w);
+    
+    m_Shapes[_iShapeIndex]->setLocalPose(Transform);
+
+    return S_OK;
+}
+
+HRESULT CActor::Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float3& _vPitchYawRoll)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    PxTransform Transform = m_Shapes[_iShapeIndex]->getLocalPose();
+    _vector vQuat = XMQuaternionRotationRollPitchYaw(_vPitchYawRoll.x, _vPitchYawRoll.y, _vPitchYawRoll.z);
+    Transform.q = PxQuat(XMVectorGetX(vQuat), XMVectorGetY(vQuat), XMVectorGetZ(vQuat), XMVectorGetW(vQuat));
+
+    m_Shapes[_iShapeIndex]->setLocalPose(Transform);
+
+    return S_OK;
+}
+
+HRESULT CActor::Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    PxGeometryType::Enum eType = m_Shapes[_iShapeIndex]->getGeometryType();
+
+    if (eType != _eType)
+    {
+        MSG_BOX(" Shape Geometry Type이 틀렸어. >>> Set_ShapeScale()");
+        return E_FAIL;
+    }
+    
+    switch (_eType)
+    {
+    case physx::PxGeometryType::eSPHERE:
+    {
+        SHAPE_SPHERE_DESC* pSphereDesc = static_cast<SHAPE_SPHERE_DESC*>(_pDesc);
+        PxSphereGeometry Geometry(pSphereDesc->fRadius);
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    case physx::PxGeometryType::eCAPSULE:
+    {
+        SHAPE_CAPSULE_DESC* pCapsuleDesc = static_cast<SHAPE_CAPSULE_DESC*>(_pDesc);
+        PxCapsuleGeometry Geometry(pCapsuleDesc->fHalfHeight, pCapsuleDesc->fRadius);
+
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    case physx::PxGeometryType::eBOX:
+    {
+        SHAPE_BOX_DESC* pBoxDesc = static_cast<SHAPE_BOX_DESC*>(_pDesc);
+        PxBoxGeometry Geometry(pBoxDesc->vHalfExtents.x, pBoxDesc->vHalfExtents.y, pBoxDesc->vHalfExtents.z);
+        m_Shapes[_iShapeIndex]->setGeometry(Geometry);
+    }
+        break;
+    default:
+        MSG_BOX(" Sphere, Capsule, Box 만 크기를 변경할 수 있어. ");
+        return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+
 
 void CActor::Active_OnEnable()
 {
@@ -468,10 +658,6 @@ void CActor::Free()
         Safe_Delete(m_pEffect);
     }
 
-    for (auto& pTriggerShape : m_pTriggerShapes)
-        pTriggerShape->release();
-
-    m_pTriggerShapes.clear();
 #endif // _DEBUG
 
     for (auto& pPxShape : m_Shapes)

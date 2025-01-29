@@ -26,6 +26,22 @@ namespace Client
 		PR3D_LAST = 999
 	};
 
+	
+	enum PRIORITY_2D
+	{
+		// 전처리 그룹
+		PR2D_PRIORITY =			0,
+		PR2D_SECTION_START =	10,
+		// 10 ~ 970 
+		//-> 섹션 유동생성 발급
+		
+		PR2D_SECTION_END =		970,
+		PR2D_UI =				980,
+		// 후처리 그룹
+		PR2D_AFTER =			990,
+		PR2D_LAST =				999
+	};
+
 
 
 	enum LEVEL_ID 
@@ -115,5 +131,11 @@ namespace Client
 		RIGHT_DOWN,
 		LEFT_DOWN,
 		E_DIR_LAST
+	};
+
+	enum class TRIGGER_TYPE
+	{
+		CAMERA_TRIGGER,
+		LAST
 	};
 }

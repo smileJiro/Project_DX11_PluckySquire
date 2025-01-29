@@ -116,6 +116,54 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("B_InitialData"));
 	}
+
+	if (MOUSE_DOWN(MOUSE_KEY::MB))
+	{
+		POINT pt;
+		GetCursorPos(&pt);
+		ScreenToClient(g_hWnd, &pt);
+
+		_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+
+		_uint		iNumViewports = { 1 };
+		D3D11_VIEWPORT		ViewportDesc{};
+
+		m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+		// 마우스 -> 투영
+		vMousePos = XMVectorSet(pt.x / (ViewportDesc.Width * 0.5f) - 1.f,
+			pt.y / -(ViewportDesc.Height * 0.5f) + 1.f,
+			0.f,
+			1.f);
+
+		// 투영 -> 뷰 스페이스
+		_matrix matProj = m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_PROJ);
+		vMousePos = XMVector3TransformCoord(vMousePos, matProj);
+
+		_vector vRayPos, vRayDir;
+
+		vRayPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+		vRayDir = vMousePos - vRayPos;
+
+		_matrix matView = m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW);
+		vRayPos = XMVector3TransformCoord(vRayPos, matView);
+		vRayDir = XMVector3TransformNormal(vRayDir, matView);
+		vRayDir = XMVectorSetW(vRayDir, 0.f);
+		vRayDir = XMVector3Normalize(vRayDir);
+
+		_float3 vOrigin = {};
+		_float3 vRayDirection = {};
+		XMStoreFloat3(&vOrigin, vRayPos);
+		XMStoreFloat3(&vRayDirection, vRayDir);
+
+		_float3 vOutPos = {};
+		CActorObject* pActorObject = {};
+		_bool isResult = false;
+
+		isResult = m_pGameInstance->RayCast_Nearest(vOrigin, vRayDirection, 1000.f, &vOutPos, &pActorObject);
+
+		int a = 0;
+	}
 		
 }
 

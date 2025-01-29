@@ -272,6 +272,20 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 	return S_OK;
 }
 
+HRESULT CMesh::Cooking(PxTriangleMeshDesc& Desc)
+{
+
+	Desc.points.count = static_cast<PxU32>(m_iNumVertices);
+	Desc.points.stride = m_iVertexStride;
+	Desc.points.data = m_vecVerticesPos.data();
+
+	Desc.triangles.count = static_cast<PxU32>((m_iNumIndices / 3));
+	Desc.triangles.stride = 3 * m_iIndexStride;
+	Desc.triangles.data = m_vecIndexBuffer.data();
+
+	return E_NOTIMPL;
+}
+
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, C3DModel::ANIM_TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
 {

@@ -58,11 +58,13 @@ public:/* Default PhysX */
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity) { return; }
 	virtual void				Add_Force(const _float3& _vForce) { return; };// 일반적인 힘
 	virtual void				Add_Impulse(const _float3& _vForce) { return; }; // 강한 힘
-	
+
+	_float3						Get_GlobalPose();
+	void						Set_GlobalPose(const _float3& _vPos);
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);
-
+	HRESULT						Delete_Shape(_int _iShapeIndex);
 public:
 	virtual void				Turn_TargetDirection(_vector _vDirection) { return; }
 
@@ -73,9 +75,15 @@ public:
 	// Get
 	const vector<PxShape*>&		Get_Shapes() { return m_Shapes; }
 	ACTOR_TYPE					Get_ActorType() const { return m_eActorType; }
-	
+
 	// Set 
-	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix);
+	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix); // 특별한 경우 아니면 사용을 비권장하겠음. 버그있는듯함.
+
+	HRESULT						Set_ShapeLocalOffsetMatrix(_int _iShapeIndex, _fmatrix _ShapeLocalOffsetMatrix); // 크기는 안되고 위치랑 회전만 가능함.
+	HRESULT						Set_ShapeLocalOffsetPosition(_int _iShapeIndex, const _float3& _vOffsetPos); // shape offset 위치 변경.
+	HRESULT						Set_ShapeLocalOffsetQuaternion(_int _iShapeIndex, const _float4& _vQuat); // 쿼터니언
+	HRESULT						Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float3& _vPitchYawRoll); // xyz 회전량 넣으면 쿼터니언으로 변환해서 넣음.
+	HRESULT						Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc); // shape 크기변경
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;
@@ -94,7 +102,6 @@ private:
 
 #ifdef _DEBUG
 protected:
-	vector<PxShape*>						m_pTriggerShapes;	
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
 	BasicEffect*							m_pEffect = nullptr;
 	ID3D11InputLayout*						m_pInputLayout = nullptr;
