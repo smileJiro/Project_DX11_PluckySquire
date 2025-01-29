@@ -124,7 +124,7 @@ HRESULT CActor::Render()
         case physx::PxGeometryType::eSPHERE:
         {
             _float fRadius = pShape->getGeometry().sphere().radius;
-            _vector vOwnerPos = m_pOwner->Get_Position();
+            _vector vOwnerPos = m_pOwner->Get_FinalPosition();
             PxVec3 vShapeOffsetPos = pShape->getLocalPose().p;
             _float3 vPosition = { vShapeOffsetPos.x, vShapeOffsetPos.y, vShapeOffsetPos.z };
             XMStoreFloat3(&vPosition, XMLoadFloat3(&vPosition) + vOwnerPos);
@@ -142,7 +142,7 @@ HRESULT CActor::Render()
             PxQuat quat =  pShape->getLocalPose().q;
 
             _float4 vQuat = { quat.x, quat.y, quat.z, quat.w };
-            _vector vOwnerPos = m_pOwner->Get_Position();
+            _vector vOwnerPos = m_pOwner->Get_FinalPosition();
             PxVec3 vShapeOffsetPos = pShape->getLocalPose().p;
             _float3 vPosition = { vShapeOffsetPos.x, vShapeOffsetPos.y, vShapeOffsetPos.z };
             XMStoreFloat3(&vPosition, XMLoadFloat3(&vPosition) + vOwnerPos);

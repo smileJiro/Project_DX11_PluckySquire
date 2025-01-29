@@ -308,7 +308,7 @@ void CBarfBug::Attack(_float _fTimeDelta)
         else if (COORDINATE_2D == Get_CurCoord())
         {
             *pCoord = COORDINATE::COORDINATE_2D;
-            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_Position() - Get_Position());
+            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition());
             XMStoreFloat4(&vRotation, XMQuaternionRotationRollPitchYaw(0.f, 0.f, XMConvertToRadians(fAngle)));
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), pCoord, &vPosition, &vRotation);
         }

@@ -86,7 +86,7 @@ HRESULT CActor_Dynamic::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNe
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
 
 	_float3 vPos = {};
-	XMStoreFloat3(&vPos, m_pOwner->Get_Position());
+	XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
 	static_cast<PxRigidDynamic*>(m_pActor)->setGlobalPose(PxTransform(_pNewPosition->x, _pNewPosition->y, _pNewPosition->z));
 
 	return S_OK;

@@ -117,7 +117,7 @@ HRESULT CPartObject::Render()
     return S_OK;
 }
 
-_vector CPartObject::Get_Position() const
+_vector CPartObject::Get_FinalPosition() const
 {
     COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
     return XMLoadFloat4((_float4*)&m_WorldMatrices[eCurCoord].m[3]);

@@ -432,7 +432,7 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		ImGui::BulletText("Picking Mode  :  %s", m_arrObjects[OBJECT_PICKING] ? "On" : "Off");
 		if (pPickingObj)
 		{
-			XMStoreFloat3(&vPos, pPickingObj->Get_Position());
+			XMStoreFloat3(&vPos, pPickingObj->Get_FinalPosition());
 			eOper = pPickingObj->Get_Operation();
 			ImGui::SeparatorText("Gizmo Mode");
 			if (ImGui::RadioButton("Translate", eOper == ImGuizmo::TRANSLATE))
