@@ -232,6 +232,18 @@
     <Filter Include="02.GameObjects\Camera\CutScene">
       <UniqueIdentifier>{d0922ef4-4f7b-4b44-97d7-e25fd7b1d0f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29">
+      <UniqueIdentifier>{c595985d-5f7d-4dc1-ab8b-866af8cedab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Lights">
+      <UniqueIdentifier>{b50802f1-31a2-421f-960a-eb214682a952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Final">
+      <UniqueIdentifier>{a6bd0c49-f206-48f3-87ac-708d992e073a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\AfterEffect">
+      <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -490,6 +502,18 @@
     <ClInclude Include="..\Public\Camera_CutScene.h">
       <Filter>02.GameObjects\Camera\CutScene</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_Lights.h">
+      <Filter>94.RenderGroups%28Custom%29\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Final.h">
+      <Filter>94.RenderGroups%28Custom%29\Final</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
+      <Filter>94.RenderGroups%28Custom%29\AfterEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Roll.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Soldier_Bomb.h">
       <Filter>02.GameObjects\Monster\Soldier</Filter>
     </ClInclude>
@@ -747,6 +771,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_CutScene.cpp">
       <Filter>02.GameObjects\Camera\CutScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RenderGroup_Lights.cpp">
+      <Filter>94.RenderGroups%28Custom%29\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Final.cpp">
+      <Filter>94.RenderGroups%28Custom%29\Final</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
+      <Filter>94.RenderGroups%28Custom%29\AfterEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Roll.cpp">
+      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Soldier_Bomb.cpp">
       <Filter>02.GameObjects\Monster\Soldier</Filter>

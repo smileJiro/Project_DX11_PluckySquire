@@ -14,7 +14,7 @@ HRESULT CTarget_Manager::Initialize()
     return S_OK;
 }
 
-HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor)
+HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _pReturnRT)
 {
     if (nullptr != Find_RenderTarget(_strTargetTag))
         return E_FAIL;
@@ -23,7 +23,12 @@ HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& _strTargetTag, _uint _
     if (nullptr == pRenderTarget)
         return E_FAIL;
 
+
+
     m_RenderTargets.emplace(_strTargetTag, pRenderTarget);
+
+    if (_pReturnRT != nullptr)
+        *_pReturnRT = pRenderTarget;
 
     return S_OK;
 }

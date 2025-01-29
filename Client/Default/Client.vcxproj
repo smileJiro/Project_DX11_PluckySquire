@@ -232,8 +232,12 @@
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Map_2D.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
+    <ClInclude Include="..\Public\PlayerState_Roll.h" />
     <ClInclude Include="..\Public\Popuff.h" />
     <ClInclude Include="..\Public\Rat.h" />
+    <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
+    <ClInclude Include="..\Public\RenderGroup_Final.h" />
+    <ClInclude Include="..\public\RenderGroup_Lights.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\public\Section.h" />
     <ClInclude Include="..\public\Section_2D.h" />
@@ -327,8 +331,12 @@
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Map_2D.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Roll.cpp" />
     <ClCompile Include="..\Private\Popuff.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
+    <ClCompile Include="..\private\RenderGroup_Lights.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\private\Section.cpp" />
     <ClCompile Include="..\private\Section_2D.cpp" />

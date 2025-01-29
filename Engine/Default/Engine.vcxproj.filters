@@ -256,6 +256,15 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Module">
       <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\14.RenderGroup">
+      <UniqueIdentifier>{8040b157-eed4-4d9a-afbc-c3d05d96a39e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.NewRenderer">
+      <UniqueIdentifier>{5e1dcd6e-7bf5-47a0-9a5a-bd6be90f6026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\14.RenderGroup\RenderGroup_MRT">
+      <UniqueIdentifier>{396e807a-38e4-4963-88dd-89969174e94d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01.Utility\03.Objects\Trigger">
       <UniqueIdentifier>{48dd45cb-48ea-425a-baa8-4b28491a2eab}</UniqueIdentifier>
     </Filter>
@@ -519,6 +528,15 @@
     <ClInclude Include="..\public\Particle_Module.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\NewRenderer.h">
+      <Filter>01.Utility\05.NewRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup.h">
+      <Filter>01.Utility\14.RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_MRT.h">
+      <Filter>01.Utility\14.RenderGroup\RenderGroup_MRT</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -766,6 +784,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Particle_Module.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\NewRenderer.cpp">
+      <Filter>01.Utility\05.NewRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_MRT.cpp">
+      <Filter>01.Utility\14.RenderGroup\RenderGroup_MRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup.cpp">
+      <Filter>01.Utility\14.RenderGroup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

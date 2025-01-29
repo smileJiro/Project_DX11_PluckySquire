@@ -103,8 +103,8 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	}
 	_float fWidth = abs(fMaxX - fMinX);
 	_float fHeight = abs(fMaxY - fMinY);
-	_float fXOffset = fMinX + fWidth / 2;
-	_float fYOffset = fMinY + fHeight / 2;
+	_float fXOffset = fMinX + fWidth / 2; // 122
+	_float fYOffset = fMinY + fHeight / 2; //117
 	m_matSpriteTransform = XMMatrixScaling(fWidth, fHeight, 1);
 	m_matSpriteTransform *= XMMatrixTranslation(fXOffset, fYOffset, 0);
 	return S_OK;

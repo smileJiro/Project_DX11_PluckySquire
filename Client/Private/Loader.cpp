@@ -477,6 +477,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_GAMEPLAY,
+        TEXT("../Bin/Resources/Models/2DMapObject/"))))
+        return E_FAIL;
+
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_player2DAnimation"),
@@ -852,7 +857,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
 
 
-            CModelObject::MODELOBJECT_DESC NormalDesc = {};
+            CMapObject::MAPOBJ_DESC NormalDesc = {};
             NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
             NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
             NormalDesc.isCoordChangeEnable = false;

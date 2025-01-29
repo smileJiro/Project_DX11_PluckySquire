@@ -185,6 +185,19 @@ _bool CTestModelObject::Is_LoopAnimation(COORDINATE _eCoord, _uint iAnimIndex)
     }
 }
 
+void CTestModelObject::Get_AnimatinNames(list<string>& _Names)
+{
+    assert(m_pControllerModel);
+    assert(COORDINATE_LAST != m_eCurCoord);
+    switch (m_eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_AnimationNames(_Names);
+    case Engine::COORDINATE_3D:
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_AnimationNames(_Names);
+    }
+}
+
 
 
 HRESULT CTestModelObject::Export_Model(ofstream& _outfile, const _char* _szDirPath, _bool _bExportTextures)

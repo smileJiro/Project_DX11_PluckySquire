@@ -47,7 +47,7 @@ namespace Engine
 		float fHalfHeight = 0.5f;
 	}SHAPE_CAPSULE_DESC;
 
-	typedef struct 
+	typedef struct tagEngineDesc
 	{
 		HINSTANCE		hInst;
 		HWND			hWnd;
@@ -56,6 +56,7 @@ namespace Engine
 		unsigned int	iViewportWidth;
 		unsigned int	iViewportHeight;
 		_uint			iStaticLevelID;
+		_bool			isNewRenderer = false;
 	}ENGINE_DESC;
 
 	typedef struct

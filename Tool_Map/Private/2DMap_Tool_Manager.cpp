@@ -64,23 +64,14 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	Load_SaveFileList();
 	Load_2DModelList();
 
-	m_DefaultEgnoreLayerTags.push_back(L"Layer_Default");
-	m_DefaultEgnoreLayerTags.push_back(L"Layer_Camera");
-	m_DefaultEgnoreLayerTags.push_back(L"Layer_MapObject");
-	m_DefaultEgnoreLayerTags.push_back(L"Layer_Room_Environment");
-
 	m_pGameInstance->Set_DebugRender(false);
 
 	m_pTaskManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pTaskManager)
 		return E_FAIL;
 
-	//m_pTaskManager->Register_Parsing("..\\Bin\\json\\Persistent_Room.json", L"Layer_Room_Environment");
 	m_arrSelectName[SAVE_LIST] = L"Room_Enviroment";
 	Load(false);
-
-	//m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
-	//Load(false);
 
 
 	CGameObject* pGameObject = nullptr;
@@ -114,7 +105,7 @@ HRESULT C2DMap_Tool_Manager::Render()
 
 void C2DMap_Tool_Manager::Update_Tool()
 {
-	Input_Object_Tool_Mode();
+	Input_Logic();
 
 	// 烙备捞 拳搁 备己
 	Update_Imgui_Logic();
@@ -132,7 +123,7 @@ void C2DMap_Tool_Manager::Update_Imgui_Logic()
 
 
 
-void C2DMap_Tool_Manager::Input_Object_Tool_Mode()
+void C2DMap_Tool_Manager::Input_Logic()
 {
 	HWND hWnd = GetFocus();
 	auto& io = ImGui::GetIO();
@@ -827,11 +818,11 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 				_float2 fSortingPos = m_pPickingInfo->Get_Sorting_Pos();
 				ImGui::SetNextItemWidth(70.f);
 				if (ImGui::InputFloat("##SortPosX", &fSortingPos.x, 0.f, 0.f, "x:%.1f"))
-					m_pPickingInfo->Set_Collider_Offset_Pos(fSortingPos);
+					m_pPickingInfo->Set_Sorting_Pos(fSortingPos);
 				ImGui::SameLine();
 				ImGui::SetNextItemWidth(70.f);
 				if (ImGui::InputFloat("##SortPosY", &fSortingPos.y, 0.f, 0.f, "y:%.1f"))
-					m_pPickingInfo->Set_Collider_Offset_Pos(fSortingPos);
+					m_pPickingInfo->Set_Sorting_Pos(fSortingPos);
 
 				Begin_Draw_ColorButton("##Edit Sorting Postion", (ImVec4)ImColor::HSV(0.3f, 0.3f, 0.3f));
 				if (isToolRendering && StartPopupButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE::MINI, "Edit Sorting Postion", ImGuiWindowFlags_NoMove))
@@ -860,7 +851,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 							mousePos.y >= imagePos.y && mousePos.y <= imagePos.y + fDefaultSize.y);
 
 						if (isMouseOverImage && ImGui::IsMouseDown(0))
-							m_pPickingInfo->Set_Sorting_Pos({ mousePos.x - imagePos.x, mousePos.y - imagePos.y });
+							m_pPickingInfo->Set_Sorting_Pos({ (mousePos.x - imagePos.x) / fRatio - (fOffSize.x * 0.5f), (mousePos.y - imagePos.y) /fRatio - (fOffSize.y * 0.5f) });
 
 						ImVec2 DrawPos = { fSortingPos.x * fRatio + imagePos.x + (fDefaultSize.x * 0.5f),fSortingPos.y * fRatio + imagePos.y + (fDefaultSize.y * 0.5f) };
 						drawList->AddCircleFilled(DrawPos, 5.f, IM_COL32(255, 0, 0, 255));
@@ -1263,41 +1254,6 @@ C2DMapObject* C2DMap_Tool_Manager::Picking_2DMap()
 	return nullptr;
 }
 
-void C2DMap_Tool_Manager::Init_Egnore_Layer()
-{
-
-	m_EgnoreLayerTags.clear();
-	m_EgnoreLayerTags.insert(m_EgnoreLayerTags.end(), m_DefaultEgnoreLayerTags.begin(), m_DefaultEgnoreLayerTags.end());
-}
-
-
-HRESULT C2DMap_Tool_Manager::Setting_Action_Layer(vector<pair<wstring, CLayer*>>& _TargetLayerPairs)
-{
-	_TargetLayerPairs.clear();
-
-	auto pLayerMaps = m_pGameInstance->Get_Layers_Ptr();
-
-	if (nullptr == pLayerMaps)
-		return E_FAIL;
-
-	for (auto& Pair : pLayerMaps[LEVEL_TOOL_2D_MAP])
-	{
-		wstring strLayerTag = Pair.first;
-		auto iter = find_if(m_EgnoreLayerTags.begin(), m_EgnoreLayerTags.end(), [&strLayerTag]
-		(const wstring& strEgnoreLayerTag)->_bool {
-				return strEgnoreLayerTag == strLayerTag;
-			});
-		if (iter != m_EgnoreLayerTags.end())
-			continue;
-		else
-		{
-			CLayer* arrLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, strLayerTag);
-			_TargetLayerPairs.push_back(make_pair(strLayerTag, arrLayer));
-		}
-	}
-	return S_OK;
-}
-
 HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 {
 	_uint iTileXSize = 0;
@@ -1670,7 +1626,7 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 			NormalDesc.eCreateType = CMapObject::OBJ_LOAD;
 			NormalDesc.matWorld = vWorld;
 			NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
-			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
 
 
 
@@ -1715,38 +1671,23 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 
 void C2DMap_Tool_Manager::Object_Clear(_bool _bSelected)
 {
-	if (!_bSelected)
-		Init_Egnore_Layer();
-
-	vector<pair<wstring, CLayer*>> vecSaveLayerPairs;
-	Setting_Action_Layer(vecSaveLayerPairs);
-
 	if (_bSelected)
 		LOG_TYPE("Object Clear", LOG_DELETE);
 
 	CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
-	DWORD	dwByte(0);
-	for (auto LayerPair : vecSaveLayerPairs)
+	if (pLayer != nullptr)
 	{
-		CLayer* pLayer = LayerPair.second;
-		if (pLayer != nullptr)
-		{
-			auto ObjList = pLayer->Get_GameObjects();
-			for_each(ObjList.begin(), ObjList.end(), [](CGameObject* pGameObject)
-				{
-					OBJECT_DESTROY(pGameObject);
-				});
-		}
+		auto ObjList = pLayer->Get_GameObjects();
+		for_each(ObjList.begin(), ObjList.end(), [](CGameObject* pGameObject)
+			{
+				OBJECT_DESTROY(pGameObject);
+			});
 	}
-	Init_Egnore_Layer();
 }
 
 
 void C2DMap_Tool_Manager::Save_Popup()
 {
-	Init_Egnore_Layer();
-	// default EgnoreLayerTag 备己 !
-
 	ImGui::OpenPopup("Save_Popup");
 	strcpy_s(m_szSaveFileName, m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]).c_str());
 }

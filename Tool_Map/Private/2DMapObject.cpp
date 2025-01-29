@@ -115,9 +115,12 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 
 HRESULT C2DMapObject::Export(HANDLE hFile)
 {
-	DWORD	dwByte(0);
-	_uint		iModelIndex = 0;
-	_float2		fPos = {};
+
+	_vector vPos = Get_Position();
+
+	DWORD		dwByte(0);
+	_uint		iModelIndex = nullptr != m_pModelInfo ? m_pModelInfo->Get_ModelIndex() : 0;
+	_float2		fPos = {XMVectorGetX(vPos),XMVectorGetY(vPos) };
 	_bool		isOverride = false;
 
 	WriteFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
