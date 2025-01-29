@@ -218,6 +218,7 @@ public: /* For. Physx_Manager*/
 	void				Physx_Update(_float _fTimeDelta);
 	HRESULT				Physx_Render();
 	PxPhysics*			Get_Physics() const;
+	PxCooking*			Get_Cooking() const;
 	PxScene*			Get_Physx_Scene() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);

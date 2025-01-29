@@ -1135,6 +1135,14 @@ PxPhysics* CGameInstance::Get_Physics() const
 	return m_pPhysx_Manager->Get_Physics();
 }
 
+PxCooking* CGameInstance::Get_Cooking() const
+{
+	if (nullptr == m_pPhysx_Manager)
+		return nullptr;
+
+	return m_pPhysx_Manager->Get_Cooking();
+}
+
 PxScene* CGameInstance::Get_Physx_Scene() const
 {
 	if (nullptr == m_pPhysx_Manager)

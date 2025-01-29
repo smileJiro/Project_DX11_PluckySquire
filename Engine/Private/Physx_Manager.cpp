@@ -87,7 +87,7 @@ HRESULT CPhysx_Manager::Initialize()
 
 
 	/* Debug */
-	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 10000);
+	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 10000000);
 	if (nullptr == m_pVIBufferCom)
 		return E_FAIL;
 

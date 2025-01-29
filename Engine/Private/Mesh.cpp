@@ -276,14 +276,25 @@ HRESULT CMesh::Cooking(PxTriangleMeshDesc& Desc)
 {
 
 	Desc.points.count = static_cast<PxU32>(m_iNumVertices);
-	Desc.points.stride = m_iVertexStride;
+	Desc.points.stride = sizeof(_float3);
 	Desc.points.data = m_vecVerticesPos.data();
 
 	Desc.triangles.count = static_cast<PxU32>((m_iNumIndices / 3));
 	Desc.triangles.stride = 3 * m_iIndexStride;
 	Desc.triangles.data = m_vecIndexBuffer.data();
 
-	return E_NOTIMPL;
+	return S_OK;
+}
+
+HRESULT CMesh::Cooking(PxConvexMeshDesc& Desc)
+{
+
+	Desc.points.count = static_cast<PxU32>(m_iNumVertices);
+	Desc.points.stride = sizeof(_float3);
+	Desc.points.data = m_vecVerticesPos.data();
+	Desc.flags = PxConvexFlag::eCOMPUTE_CONVEX; 
+
+	return S_OK;
 }
 
 

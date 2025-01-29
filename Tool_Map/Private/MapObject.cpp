@@ -5,6 +5,7 @@
 #include "Material.h"
 
 #include "Bone.h"
+#include "Engine_Struct.h"
 #include <gizmo/ImGuizmo.h>
 
 CMapObject::CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -27,7 +28,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
 {
     MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
     m_strModelName = pDesc->szModelName;
-    m_matWorld = pDesc->matWorld;
+    m_matWorld = pDesc->tTransform3DDesc.matWorld;
 
     pDesc->eStartCoord = COORDINATE_3D;
     //pDesc->iCurLevelID = LEVEL_TOOL_3D_MAP;
@@ -58,17 +59,46 @@ HRESULT CMapObject::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[1] = false;
     ActorDesc.FreezePosition_XYZ[2] = false;
 
-    SHAPE_CAPSULE_DESC ShapeDesc = {};
-    ShapeDesc.fHalfHeight = 0.25f;
-    ShapeDesc.fRadius = 0.25f;
-
+    SHAPE_COOKING_DESC ShapeCookingDesc = {};
+    ShapeCookingDesc.isLoad = true;
+    ShapeCookingDesc.isSave = false;
+    ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
+    ShapeCookingDesc.strFilePath += "/3DCollider/";
+    ShapeCookingDesc.strFilePath += WstringToString(m_strModelName);
+    ShapeCookingDesc.strFilePath += ".modelColl";
     SHAPE_DATA ShapeData;
-    ShapeData.pShapeDesc = &ShapeDesc;             
     ShapeData.eShapeType = SHAPE_TYPE::COOKING;
     ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; 
+    ShapeData.pShapeDesc = &ShapeCookingDesc;
     ShapeData.isTrigger = false;                   
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
+    ShapeData.LocalOffsetMatrix = m_matWorld;
+    ShapeData.LocalOffsetMatrix = m_matWorld;
+    ShapeData.LocalOffsetMatrix.m[3][0] = 0.f;
+    ShapeData.LocalOffsetMatrix.m[3][1] = 0.f;
+    ShapeData.LocalOffsetMatrix.m[3][2] = 0.f;
 
+
+
+    //FILE* file = fopen("convex_mesh.bin", "rb");
+    //fseek(file, 0, SEEK_END);
+    //size_t fileSize = ftell(file);
+    //rewind(file);
+
+    //char* data = new char[fileSize];
+    //fread(data, 1, fileSize, file);
+    //fclose(file);
+
+    //PxDefaultMemoryInputData input(reinterpret_cast<PxU8*>(data), fileSize);
+    //PxConvexMesh* convexMesh = physics->createConvexMesh(input);
+    //delete[] data;
+
+
+    _float3 fScale = 
+    _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
+        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
+        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
+    _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, matScale);
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* Actor Component Finished */
@@ -86,42 +116,11 @@ HRESULT CMapObject::Initialize(void* _pArg)
             TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom),&RayDesc)))
         return E_FAIL;
 
-    if (pDesc->eCreateType == OBJ_LOAD)
-    {
-        Set_WorldMatrix(m_matWorld);
+    //if (pDesc->eCreateType == OBJ_LOAD)
+    //{
+    //    Set_WorldMatrix(m_matWorld);
 
-    }
-    //if (FAILED(Ready_Components(pDesc)))
-    //    return E_FAIL;
-
-    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
-
-    if (nullptr != pModel)
-    {
-        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
-
-        auto Meshes = p3DModel->Get_Meshes();
-        auto pBuffer = Meshes.front();
-
-        
-        CMesh* pMesh = static_cast<CMesh*>(pBuffer);
-
-        PxTriangleMeshDesc meshDesc;
-
-        //if (FAILED(pMesh->Cooking(meshDesc)))
-        //    return E_FAIL;
-
-        //PxDefaultMemoryOutputStream writeBuffer;
-        //PxCookingParams params(physics->getTolerancesScale());
-        //cooking->setParams(params);
-
-        //if (!cooking->cookTriangleMesh(meshDesc, writeBuffer)) {
-        //    return nullptr; 
-        //}
-
-        //PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
-        //return physics->createTriangleMesh(readBuffer);
-    }
+    //}
 
     return S_OK;
 }
