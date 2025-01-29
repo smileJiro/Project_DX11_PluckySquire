@@ -111,8 +111,11 @@ HRESULT CActor::Render()
     m_pEffect->Apply(m_pContext);
     m_pContext->IASetInputLayout(m_pInputLayout);
     m_pBatch->Begin();
-    for (auto& pShape : m_pTriggerShapes)
+    for (auto& pShape : m_Shapes)
     {
+        if (false == pShape->getFlags().isSet(PxShapeFlag::eTRIGGER_SHAPE))
+            continue;
+
         PxGeometryType::Enum eType = pShape->getGeometryType();
 
         switch (eType)
@@ -299,17 +302,42 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     m_Shapes.push_back(pShape);
     pShape->acquireReference(); // Add_Ref
 
-#ifdef _DEBUG
-    if (true == _ShapeData.isTrigger)
-    {
-        m_pTriggerShapes.push_back(pShape);
-        pShape->acquireReference();
-    }
-#endif // _DEBUG
+    // 이건 생성 시점에 추가된 ref를 감소
     pShape->release();
 
 
     return S_OK;
+}
+
+HRESULT CActor::Delete_Shape(_int _iShapeIndex)
+{
+    if (m_Shapes.size() <= _iShapeIndex)
+        return E_FAIL;
+
+    if (nullptr == m_Shapes[_iShapeIndex])
+        return E_FAIL;
+
+    m_pActor->detachShape(*m_Shapes[_iShapeIndex]);
+
+    m_Shapes[_iShapeIndex]->release();
+
+    auto& iter = m_Shapes.begin();
+    _int iIndexCount = 0;
+    for (iter; iter != m_Shapes.end(); )
+    {
+        if (iIndexCount == _iShapeIndex)
+        {
+            m_Shapes.erase(iter);
+            return S_OK;
+        }
+        else
+        {
+            ++iter;
+            ++iIndexCount;
+        }
+    }
+    
+    return E_FAIL;
 }
 
 void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, _bool _isRunTime)
@@ -529,10 +557,6 @@ void CActor::Free()
         Safe_Delete(m_pEffect);
     }
 
-    for (auto& pTriggerShape : m_pTriggerShapes)
-        pTriggerShape->release();
-
-    m_pTriggerShapes.clear();
 #endif // _DEBUG
 
     for (auto& pPxShape : m_Shapes)

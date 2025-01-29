@@ -62,7 +62,7 @@ public:/* Default PhysX */
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);
-
+	HRESULT						Delete_Shape(_int _iShapeIndex);
 public:
 	virtual void				Turn_TargetDirection(_vector _vDirection) { return; }
 
@@ -99,7 +99,6 @@ private:
 
 #ifdef _DEBUG
 protected:
-	vector<PxShape*>						m_pTriggerShapes;	
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
 	BasicEffect*							m_pEffect = nullptr;
 	ID3D11InputLayout*						m_pInputLayout = nullptr;
