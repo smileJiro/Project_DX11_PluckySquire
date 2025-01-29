@@ -362,7 +362,7 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
                 MSG_BOX("Failed Create CSection_2D");
                 return E_FAIL;
             } 
-            m_iPriorityGenKey++;
+            m_iPriorityGenKey += 10;
             
             if (m_CurLevelSections.empty())
                 strStartSectionKey = pSection_2D->Get_SectionName();

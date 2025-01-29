@@ -65,7 +65,7 @@ private:
 private:
 
 
-	_uint							m_iPriorityGenKey = 0;
+	_uint							m_iPriorityGenKey = PR2D_SECTION_START;
 
 	_int							m_iCurLevelID = -1;
 	map<_wstring, CSection*>		m_CurLevelSections;
