@@ -159,6 +159,8 @@
     <ClInclude Include="..\Public\ImGuiStyle_MapTool_Function.h" />
     <ClInclude Include="..\Public\Level_2D_Map_Tool.h" />
     <ClInclude Include="..\Public\Level_3D_Map_Tool.h" />
+    <ClInclude Include="..\Public\Level_Model_Tool.h" />
+    <ClInclude Include="..\Public\Model_Tool_Manager.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\Public\Task_Manager.h" />
     <ClInclude Include="..\Public\3DMap_Tool_Manager.h" />
@@ -194,6 +196,8 @@
     <ClCompile Include="..\Private\ImGuiStyle_MapTool_Function.cpp" />
     <ClCompile Include="..\Private\Level_2D_Map_Tool.cpp" />
     <ClCompile Include="..\Private\Level_3D_Map_Tool.cpp" />
+    <ClCompile Include="..\Private\Level_Model_Tool.cpp" />
+    <ClCompile Include="..\Private\Model_Tool_Manager.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\Private\Task_Manager.cpp" />
     <ClCompile Include="..\Private\3DMap_Tool_Manager.cpp" />
