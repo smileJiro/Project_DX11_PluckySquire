@@ -515,7 +515,7 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 	CGameObject* pTrigger = nullptr;
 	TRIGGEROBJECT_DATA Data = {};
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_Camera_Trigger"), LEVEL_TRIGGER_TOOL, TEXT("Layer_Trigger"), &pTrigger, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"), LEVEL_TRIGGER_TOOL, TEXT("Layer_Trigger"), &pTrigger, &Desc)))
 		return E_FAIL;
 
 	dynamic_cast<CTriggerObject*>(pTrigger)->Set_TriggerType(m_iTriggerType);
@@ -832,12 +832,12 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 
 			CGameObject* pTrigger = nullptr;
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_Camera_Trigger"), LEVEL_TRIGGER_TOOL, TEXT("Layer_Trigger"), &pTrigger, &Desc))) {
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"), LEVEL_TRIGGER_TOOL, TEXT("Layer_Trigger"), &pTrigger, &Desc))) {
 				MSG_BOX("Failed To Load Camera Trigger");
 				return;
 			}
 			
-			dynamic_cast<CTriggerObject*>(pTrigger)->Set_TriggerType(m_iTriggerType);
+			dynamic_cast<CTriggerObject*>(pTrigger)->Set_TriggerType(iTriggerType);
 
 			m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
 		}
