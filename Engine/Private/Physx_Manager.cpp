@@ -152,6 +152,30 @@ void CPhysx_Manager::Delete_ShapeUserData()
 	m_pShapeUserDatas.clear();
 }
 
+_bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos, CActorObject** _ppOutActorObject)
+{
+	PxRaycastBuffer hit;
+
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+
+	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit);
+
+	if (isResult && hit.hasBlock)
+	{
+		if (nullptr != _ppOutActorObject)
+		{
+			PxRigidActor* pActor = static_cast<PxRigidActor*>(hit.block.actor);
+			ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+			*_ppOutActorObject = pActorUserData->pOwner;
+		}
+		if(nullptr != _pOutPos)
+			*_pOutPos = _float3(hit.block.position.x, hit.block.position.y, hit.block.position.z);
+	}
+
+	return isResult;
+}
+
 HRESULT CPhysx_Manager::Initialize_Foundation()
 {
 	/* Create PxFoundation */
@@ -170,7 +194,6 @@ HRESULT CPhysx_Manager::Initialize_Physics()
 
 	/* Create Physics */
 	m_pPxPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pPxFoundation, TolerancesScale, true, m_pPxPvd);
-
 
 
 	/* PxCookingParams ¼³Á¤ */

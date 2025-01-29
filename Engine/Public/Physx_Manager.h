@@ -59,6 +59,7 @@ private: /* Event CallBack Class */
 public:
 	void Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	void Delete_ShapeUserData();
+	_bool RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 
 private: /* SHAPE_USERDATA : 메모리 해제용 */
 	vector<SHAPE_USERDATA*> m_pShapeUserDatas;

@@ -91,7 +91,7 @@ void CActor::Update(_float _fTimeDelta)
 void CActor::Late_Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-    m_pGameInstance->Add_DebugComponent(this);
+    //m_pGameInstance->Add_DebugComponent(this);
 #endif // _DEBUG
 
 }
@@ -232,13 +232,10 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
     if (nullptr == pPhysics)
         return E_FAIL;
+    PxShapeFlags ShapeFlags = _ShapeData.isTrigger ?
+        (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eTRIGGER_SHAPE) :
+        (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
 
-    PxShapeFlags ShapeFlags = (PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
-    if (true == _ShapeData.isTrigger)
-    {
-        ShapeFlags.clear(PxShapeFlag::eSIMULATION_SHAPE);
-        ShapeFlags.set(PxShapeFlag::eTRIGGER_SHAPE);
-    }
 
     PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(_ShapeData.eMaterial);
 
@@ -247,7 +244,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
     _float3 vScale;
     _float4 vQuat;
     _float3 vPosition;
-    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_ShapeData.LocalOffsetMatrix)))
+    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition,  XMLoadFloat4x4(&_ShapeData.LocalOffsetMatrix)))
         return E_FAIL;
 
     switch (_ShapeData.eShapeType)
