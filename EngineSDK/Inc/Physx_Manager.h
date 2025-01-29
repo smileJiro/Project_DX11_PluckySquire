@@ -20,6 +20,7 @@ public:
 	HRESULT						Render();
 public:
 	PxPhysics*					Get_Physics() const { return m_pPxPhysics; }
+	PxCooking*					Get_Cooking() const { return m_pPxCooking; }
 	PxScene*					Get_Scene() const { return m_pPxScene; }
 	PxMaterial*					Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
 	_uint						Create_ShapeID() { return m_iShapeInstanceID++; };

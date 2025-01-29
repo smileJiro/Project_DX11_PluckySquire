@@ -33,6 +33,7 @@ public:
 
 	// TODO :: 0129 ¹Ú¿¹½½ TEST
 	HRESULT		Cooking(PxTriangleMeshDesc& Desc);
+	HRESULT		Cooking(PxConvexMeshDesc& Desc);
 
 
 protected:

@@ -28,7 +28,7 @@ void CFSM::Set_PatrolBound()
 {
 	if (nullptr == m_pOwner)
 		return;
-
+	//전환 시에도 불러야함
 	_float3 vPosition;
 	XMStoreFloat3(&vPosition, m_pOwner->Get_FinalPosition());
 	static_cast<CPatrolState*>(m_States[(_uint)MONSTER_STATE::PATROL])->Set_Bound(vPosition);
@@ -46,6 +46,9 @@ HRESULT CFSM::Initialize(void* _pArg)
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
+	m_fAlert2DRange = pDesc->fAlert2DRange;
+	m_fChase2DRange = pDesc->fChase2DRange;
+	m_fAttack2DRange = pDesc->fAttack2DRange;
 	m_pOwner = pDesc->pOwner;
 
 	return S_OK;
@@ -67,6 +70,9 @@ HRESULT CFSM::Add_State(_uint _iState)
 	Desc.fAlertRange = m_fAlertRange;
 	Desc.fChaseRange = m_fChaseRange;
 	Desc.fAttackRange = m_fAttackRange;
+	Desc.fAlert2DRange = m_fAlert2DRange;
+	Desc.fChase2DRange = m_fChase2DRange;
+	Desc.fAttack2DRange = m_fAttack2DRange;
 
 	switch ((MONSTER_STATE)_iState)
 	{

@@ -13,7 +13,9 @@ HRESULT CChaseWalkState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 	m_fChaseRange = pDesc->fChaseRange;
+	m_fChase2DRange = pDesc->fChase2DRange;
 	m_fAttackRange = pDesc->fAttackRange;
+	m_fAttack2DRange = pDesc->fAttack2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -36,7 +38,7 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	_vector vDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
 	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
-	if (fDis <= m_fAttackRange)
+	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
 		//공격 전환
 		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
@@ -44,7 +46,7 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	}
 
 	//추적 범위 벗어나면 IDLE 전환
-	if (fDis > m_fChaseRange)
+	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 	}

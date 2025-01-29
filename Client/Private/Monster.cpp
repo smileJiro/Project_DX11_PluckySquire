@@ -2,6 +2,7 @@
 #include "Monster.h"
 #include "GameInstance.h"
 #include "FSM.h"
+#include "DetectionField.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -24,6 +25,9 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
+	m_fAlert2DRange = pDesc->fAlert2DRange;
+	m_fChase2DRange = pDesc->fChase2DRange;
+	m_fAttack2DRange = pDesc->fAttack2DRange;
 	m_fDelayTime = pDesc->fDelayTime;
 	m_fCoolTime = pDesc->fCoolTime;
 
@@ -78,31 +82,40 @@ HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 	if (COORDINATE_2D == Get_CurCoord())
 		Set_2D_Direction(F_DIRECTION::DOWN);
 
+	Set_AnimChangeable(true);
+	m_pFSM->Change_State((_uint)MONSTER_STATE::IDLE);
+
 	return S_OK;
 }
 
 void CMonster::Change_Dir()
 {
 	//플레이어와의 각도를 구해 방향 전환 (시야각이 있을 때 기준)
-	_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-	_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition());
-	_vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-	_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vDir, vLook))));
-	_float fResult = XMVectorGetX(XMVector3Cross(vUp, XMVector3Cross(vLook, vDir)));
-	if (0 > fResult)
-	{
-		fAngle = 360 - fAngle;
-	}
+	//_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+	//_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition());
+	//_vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	//_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vDir, vLook))));
+	//_float fResult = XMVectorGetX(XMVector3Cross(vUp, XMVector3Cross(vLook, vDir)));
+	//if (0 > fResult)
+	//{
+	//	fAngle = 360 - fAngle;
+	//}
 	
+	_float fResult = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition());
 	
-	if (315.f < fResult || 45.f >= fResult)
+	if ((315.f <= fResult && fResult < 360.f) || (45.f > fResult && 0.f <= fResult))
 		Set_2D_Direction(F_DIRECTION::UP);
-	else if (45.f < fResult || 135.f >= fResult)
+	else if (45.f <= fResult && 135.f > fResult)
 		Set_2D_Direction(F_DIRECTION::RIGHT);
-	else if (135.f < fResult || 225.f >= fResult)
+	else if (135.f <= fResult && 225.f > fResult)
 		Set_2D_Direction(F_DIRECTION::DOWN);
-	else if (225.f < fResult || 315.f >= fResult)
+	else if (225.f <= fResult && 315.f > fResult)
 		Set_2D_Direction(F_DIRECTION::LEFT);
+}
+
+_bool CMonster::IsTarget_In_Detection()
+{
+	return m_pDetectionField->IsTarget_In_Detection();
 }
 
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)
@@ -118,6 +131,8 @@ void CMonster::Set_2D_Direction(F_DIRECTION _eDir)
 		_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
 		m_pControllerTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
 	}
+
+	Change_Animation();
 }
 
 HRESULT CMonster::Cleanup_DeadReferences()
@@ -180,6 +195,7 @@ void CMonster::Free()
 		Safe_Release(m_pTarget);
 
 	Safe_Release(m_pFSM);
+	Safe_Release(m_pDetectionField);
 
 	__super::Free();
 }

@@ -39,12 +39,12 @@ HRESULT CModelObject::Initialize(void* _pArg)
     // Add
 
 
-    if (FAILED(__super::Initialize(_pArg)))
-        return E_FAIL;
-
     if (FAILED(Ready_Components(pDesc)))
         return E_FAIL;
 
+
+    if (FAILED(__super::Initialize(_pArg)))
+        return E_FAIL;
 
 
     // View Matrix´Â IdentityMatrix

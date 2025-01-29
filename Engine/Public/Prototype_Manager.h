@@ -18,6 +18,7 @@
 #include "Material.h"
 #include "Bone.h"
 #include "AnimEventGenerator.h"
+#include "DebugDraw_For_Client.h"
 
 /* Etc */
 #include "Transform_2D.h"
