@@ -230,6 +230,7 @@
     <ClInclude Include="..\Public\JumpBug.h" />
     <ClInclude Include="..\Public\Logo_BG.h" />
     <ClInclude Include="..\Public\Logo_Choose.h" />
+    <ClInclude Include="..\Public\Logo_Props.h" />
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Map_2D.h" />
     <ClInclude Include="..\Public\Monster_Body.h" />
@@ -336,6 +337,7 @@
     <ClCompile Include="..\Private\JumpBug.cpp" />
     <ClCompile Include="..\Private\Logo_BG.cpp" />
     <ClCompile Include="..\Private\Logo_Choose.cpp" />
+    <ClCompile Include="..\Private\Logo_Props.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Map_2D.cpp" />
     <ClCompile Include="..\Private\Monster_Body.cpp" />

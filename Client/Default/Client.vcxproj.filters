@@ -259,6 +259,9 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait">
       <UniqueIdentifier>{59efe45f-490f-4395-b910-e2dc25f6fc99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props">
+      <UniqueIdentifier>{d8fb4898-0a03-4df1-8323-688d11f30d1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -559,6 +562,9 @@
     <ClInclude Include="..\Public\Portrait.h">
       <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Logo_Props.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -849,6 +855,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Portrait.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Logo_Props.cpp">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
