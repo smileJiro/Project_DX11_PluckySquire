@@ -67,7 +67,7 @@ void CBoss_HomingBall::Update(_float _fTimeDelta)
         Event_DeleteObject(this);
     }
 
-    _vector vDir = m_pTarget->Get_Position() - Get_Position();
+    _vector vDir = m_pTarget->Get_FinalPosition() - Get_FinalPosition();
     //테스트용, 원 게임에서는 구체인데 일단 불릿 모델 써봄
 	if (2.f >= m_fAccTime)
     {

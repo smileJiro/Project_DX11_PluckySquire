@@ -1089,6 +1089,11 @@ _float CGameInstance::Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVe
 	return m_pGlobalFunction_Manager->Get_Angle_Between_Vectors(_vNormal, _vVector1, _vVector2);
 }
 
+_float CGameInstance::Clamp_Degrees(_float _fDegrees)
+{
+	return m_pGlobalFunction_Manager->Clamp_Degrees(_fDegrees);
+}
+
 CCamera* CGameInstance::Get_CurrentCamera()
 {
 	return m_pCamera_Manager->Get_CurrentCamera();
@@ -1133,6 +1138,14 @@ PxPhysics* CGameInstance::Get_Physics() const
 		return nullptr;
 
 	return m_pPhysx_Manager->Get_Physics();
+}
+
+PxCooking* CGameInstance::Get_Cooking() const
+{
+	if (nullptr == m_pPhysx_Manager)
+		return nullptr;
+
+	return m_pPhysx_Manager->Get_Cooking();
 }
 
 PxScene* CGameInstance::Get_Physx_Scene() const

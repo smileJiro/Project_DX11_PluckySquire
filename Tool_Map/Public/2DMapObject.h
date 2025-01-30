@@ -44,7 +44,7 @@ public:
 
 	HRESULT			Export(HANDLE hFile);
 
-	virtual _vector				Get_Position() const override; 
+	virtual _vector				Get_FinalPosition() const override; 
 	HRESULT Update_Model_Index();
 	
 private:

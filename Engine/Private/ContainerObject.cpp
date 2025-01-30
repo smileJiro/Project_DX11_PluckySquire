@@ -49,6 +49,7 @@ void CContainerObject::Update(_float _fTimeDelta)
         if (nullptr != pPartObj && true == pPartObj->Is_Active())
             pPartObj->Update(_fTimeDelta);
     }
+	__super::Update(_fTimeDelta);
 }
 
 void CContainerObject::Late_Update(_float _fTimeDelta)
@@ -58,6 +59,7 @@ void CContainerObject::Late_Update(_float _fTimeDelta)
         if (nullptr != pPartObj && true == pPartObj->Is_Active())
             pPartObj->Late_Update(_fTimeDelta);
     }
+	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CContainerObject::Render()

@@ -24,13 +24,18 @@ HRESULT CTransform::Initialize(void* _pArg)
         return S_OK; // nullptr이어도 문제 삼지 않는다. 다만 return 하는 이유는, 아래의 코드 자체가 의미가 없기때문, 하지만 의미가 생긴다면?
 
     TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(_pArg);
+    if (pDesc->isMatrix) 
+    {
+        Set_WorldMatrix(pDesc->matWorld);
+    }
+    else 
+    {
+        m_fSpeedPerSec = pDesc->fSpeedPerSec;
+        m_fRotationPerSec = pDesc->fRotationPerSec;
 
-    m_fSpeedPerSec = pDesc->fSpeedPerSec;
-    m_fRotationPerSec = pDesc->fRotationPerSec;
-
-    Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vInitialPosition), 1.0f));
-    Set_Scale(pDesc->vInitialScaling.x, pDesc->vInitialScaling.y, pDesc->vInitialScaling.z);
-
+        Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vInitialPosition), 1.0f));
+        Set_Scale(pDesc->vInitialScaling.x, pDesc->vInitialScaling.y, pDesc->vInitialScaling.z);
+    }
     return S_OK;
 }
 

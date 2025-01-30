@@ -263,7 +263,7 @@ void CSection_Manager::Clear_Sections()
 {
     for (auto& Pair : m_CurLevelSections)
         Safe_Release(Pair.second);
-
+    m_CurActiveSections.clear();
     m_CurLevelSections.clear();
 }
 

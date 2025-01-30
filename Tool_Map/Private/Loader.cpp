@@ -100,6 +100,23 @@ void CLoader::Show_Debug()
 
 HRESULT CLoader::Loading_Level_Static()
 {
+    lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
+
+    /* For. Prototype_Component_Actor_Dynamic */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Dynamic"),
+        CActor_Dynamic::Create(m_pDevice, m_pContext, false))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Actor_Kinematic */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Kinematic"),
+        CActor_Dynamic::Create(m_pDevice, m_pContext, true))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Actor_Static */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Static"),
+        CActor_Static::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_MapTool_Logo"),
@@ -245,12 +262,15 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DMapObject/book/book.model", matPretransform))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
+    //if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
+    //    return E_FAIL;
+    
+    if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
         return E_FAIL;
 
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_TOOL_2D_MAP,
-        TEXT("../../Client/Bin/Resources/Models/2DMapObject/"))))
-        return E_FAIL;
+    //if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_TOOL_2D_MAP,
+    //    TEXT("../../Client/Bin/Resources/Models/2DMapObject/"))))
+    //    return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
@@ -322,7 +342,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
     return S_OK;
 }
 
-HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix)
+HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix, _bool _isCollider)
 {
     std::ifstream input_file(_szJsonFilePath);
 
@@ -352,7 +372,7 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
         if (strModelNames.find(strFileName) != strModelNames.end())
         {
             LOG_TYPE("Model Loading(" + strFileName + ".model)...", LOG_LOADING);
-            auto pModel = C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix);
+            auto pModel = C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix, _isCollider);
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring(strFileName),
                 pModel)))
             {
