@@ -79,6 +79,8 @@ public:
 	ID3D11ShaderResourceView*			Get_SRV_FromRenderTarget();
 	ID3D11ShaderResourceView*			Get_SRV_FromTexture(_uint _iTextureIndex);
 
+	_float2								Get_RenderTarget_Size();
+
 
 	// 맵 연결 생각안해놨는데, 일단 해보자.
 

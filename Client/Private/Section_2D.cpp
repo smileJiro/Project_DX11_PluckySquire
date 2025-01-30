@@ -197,6 +197,14 @@ ID3D11ShaderResourceView* CSection_2D::Get_SRV_FromTexture(_uint _iTextureIndex)
 	return m_pMap->Get_SRV_FromTexture(_iTextureIndex);
 }
 
+_float2 CSection_2D::Get_RenderTarget_Size()
+{
+	if (nullptr == m_pMap)
+		return _float2(-1,-1);
+
+	return m_pMap->Get_RenderTarget_Size();
+};
+
 HRESULT CSection_2D::Ready_Map_2D(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
 {
 	m_pMap = CMap_2D::Create(m_pDevice, m_pContext, _pDesc->strMapName,_pDesc->fRenderTarget_Size, _iPriorityKey);
