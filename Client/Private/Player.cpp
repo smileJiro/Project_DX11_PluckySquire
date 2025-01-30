@@ -10,6 +10,7 @@
 #include "PlayerState_Attack.h"
 #include "PlayerState_Jump.h"
 #include "PlayerState_Roll.h"
+#include "PlayerState_ThrowSword.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 
@@ -68,9 +69,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::STICKY;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -119,9 +120,7 @@ HRESULT CPlayer::Ready_Components()
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
-    Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this, 1));
-    Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this, 0.1f));
-    Bind_AnimEventFunc("Someting3", bind(&CPlayer::Someting3, this));
+    Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -285,6 +284,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
+
 }
 
 HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -477,6 +477,14 @@ _bool CPlayer::Is_CarryingObject()
     return nullptr != m_pCarryingObject;
 }
 
+_vector CPlayer::Get_CenterPosition()
+{
+	if (COORDINATE_2D == Get_CurCoord())
+		return Get_FinalPosition();
+	else
+        return Get_FinalPosition() + _vector{0,m_fCenterHeight, 0};
+}
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
@@ -507,6 +515,8 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::ROLL:
         m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
 		break;
+    case Client::CPlayer::THROWSWORD:
+        m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -546,24 +556,10 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 	Set_PartActive(_ePartId, false);
 }
 
-
-void CPlayer::Someting(int a)
+void CPlayer::ThrowSword()
 {
-    cout << "Someting" << endl;
-    int b = a;
-}
+    m_pSword->Throw(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK)));
 
-void CPlayer::Someting2(float a)
-{
-    cout << "Someting2" << endl;
-    float b = a;
-}
-
-_int CPlayer::Someting3()
-{
-    int a = 0;
-    cout << "Someting3" << endl;
-    return a;
 }
 
 void CPlayer::Key_Input(_float _fTimeDelta)
@@ -605,15 +601,13 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         Event_DeleteObject(this);
     }
-
     if (KEY_DOWN(KEY::M))
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
     if (Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::RB))
     {
-         _vector vLook =  XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-        m_pSword->Throw(vLook);
+        Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_GT);
         return;
     }
 

@@ -24,6 +24,7 @@ public:
 		JUMP,
 		ATTACK,
 		ROLL,
+		THROWSWORD,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -392,7 +393,7 @@ public:
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Stop_Rotate();
 	void Stop_Move();
-
+	void	ThrowSword();
 	void Jump();
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
@@ -402,6 +403,7 @@ public:
 	_float Get_AnimProgress();
 	_bool Is_SwordEquiped();
 	_bool Is_CarryingObject();
+	_vector Get_CenterPosition();
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -413,9 +415,8 @@ public:
 
 
 private:
-	void					Someting(int a);
-	void					Someting2(float a);
-	_int					Someting3();
+
+
 	void					Key_Input(_float _fTimeDelta);
 
 private:
@@ -423,6 +424,7 @@ private:
 	HRESULT					Ready_PartObjects();
 	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
+	_float m_fCenterHeight = 0.5;
 	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;

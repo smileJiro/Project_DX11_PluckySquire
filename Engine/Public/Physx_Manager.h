@@ -72,7 +72,8 @@ private: /* Test Object */
 	CShader*					m_pShader = nullptr;
 
 private:
-	float						m_fTimeAcc = 0.0f;
+	_float						m_fTimeAcc = 0.0f;
+	_float						m_fFixtedTimeStep= 1.f/60.f;
 private:
 	HRESULT						Initialize_Foundation();
 	HRESULT						Initialize_Physics();

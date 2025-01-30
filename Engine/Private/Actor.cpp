@@ -91,7 +91,7 @@ void CActor::Update(_float _fTimeDelta)
 void CActor::Late_Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-	m_pGameInstance->Add_DebugComponent(this);
+	//m_pGameInstance->Add_DebugComponent(this);
 #endif // _DEBUG
 
 }

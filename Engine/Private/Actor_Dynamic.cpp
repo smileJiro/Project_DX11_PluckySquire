@@ -42,8 +42,9 @@ void CActor_Dynamic::Update(_float _fTimeDelta)
 		_float4x4 FinalMatrix = {};
 		XMStoreFloat4x4(&FinalMatrix, XMLoadFloat4x4(&m_OffsetMatrix) * OwnerWorldMatrix);
 		PxMat44 PxFinalMatrix((_float*)(&FinalMatrix));
-
-		static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(PxTransform(PxFinalMatrix));
+		PxTransform pxTransform{ PxFinalMatrix };
+		if(pxTransform.isValid())
+			static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(pxTransform);
 	}
 
 }

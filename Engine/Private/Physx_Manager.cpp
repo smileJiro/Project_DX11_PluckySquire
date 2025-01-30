@@ -98,25 +98,56 @@ HRESULT CPhysx_Manager::Initialize()
 		return E_FAIL;
 
 #endif
+
+
 	return S_OK;
 }
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
-	m_pPxScene->simulate(1.f/60.f);
-	
+
+	//m_fTImeAcc : 지난 시뮬레이션 이후로 지난 시간.
+	//m_fFixtedTimeStep : 고정된 시간 간격. 1/60초
+	//1. 지난 시뮬이후로 1/60초 이상이 지났으면 시뮬레이션 해야 함.
+	//	->만약 시뮬레이션이 안끝났으면? 물리 시뮬레이션 작업량이 너무 많아서 1/60안에 도저히 못끝냄.
+	//  -> m_fFixtedTimeStep을 수정하거나, 다음 프레임으로 물ㄹ ㅣ시뮬레이션을 미룸. 
+	//   -> 만약 다음 프레임으로 물리 시뮬을 미루면, 
+	//
+//	m_fTimeAcc += _fTimeDelta;
+//	if (m_fFixtedTimeStep <= m_fTimeAcc)
+//	{
+//		m_pPxScene->simulate(m_fTimeAcc);
+//		m_fTimeAcc = 0;
+//
+//		//fetch 끝났는지 확인
+//		if (m_pPxScene->fetchResults(true))
+//		{
+//			if (nullptr != m_pPhysx_EventCallBack)
+//				m_pPhysx_EventCallBack->Update();
+//
+//#ifdef _DEBUG
+//			const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+//			m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+//#endif // _DEBUG
+//		}
+//
+//	}
+
+//
+//	//기존 코드
+	m_pPxScene->simulate(1.f / 60.f);
+
 	if (m_pPxScene->fetchResults(true))
 	{
 		if (nullptr != m_pPhysx_EventCallBack)
 			m_pPhysx_EventCallBack->Update();
-		
+
 #ifdef _DEBUG
 		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
 		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
 #endif // _DEBUG
 	}
 
-	
 }
 
 HRESULT CPhysx_Manager::Render()
@@ -258,7 +289,7 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	//MySimulationEventCallback* callback = new MySimulationEventCallback();
 	//sceneDesc.simulationEventCallback = callback;
 #pragma endregion
-
+	m_pPxScene->simulate(m_fFixtedTimeStep);
 	return S_OK;
 }
 
