@@ -120,7 +120,3 @@ public:
 	void Free() override;
 };
 END
-
-
-// 25.01.26 TODO :: 기초 기능 만든 후 Section 생성해보고 public, private 정리하기
-// Renderer 작업하면서 실질적인 Section 생성 해보기. 
