@@ -207,6 +207,15 @@ _bool C2DModel::Play_Animation(_float _fTimeDelta)
 	return false;
 }
 
+_bool C2DModel::Play_Animation_Reverse(_float _fTimeDelta)
+{
+	if (Is_AnimModel())
+	{
+		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation_Reverse(_fTimeDelta);
+	}
+	return false;
+}
+
 
 C2DModel* C2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath)
 {

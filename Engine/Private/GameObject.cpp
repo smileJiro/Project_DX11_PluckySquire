@@ -71,6 +71,11 @@ HRESULT CGameObject::Render()
     return S_OK;
 }
 
+HRESULT CGameObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
+{
+    return m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this);
+}
+
 void CGameObject::Priority_Update_Component(_float _fTimeDelta)
 {
     for (auto& iter : m_Components)
@@ -258,7 +263,7 @@ HRESULT CGameObject::Imgui_Render_ObjectInfos()
 
 
     ImGui::PushItemWidth(150.f);
-    _float3 vScale = Get_Scale();
+    _float3 vScale = Get_FinalScale();
     if (ImGui::InputFloat3("       vScale", (float*)&vScale, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
         Set_Scale(vScale);
     ImGui::PopItemWidth();

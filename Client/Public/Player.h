@@ -4,9 +4,11 @@
 
 BEGIN(Engine)
 class CAnimEventGenerator;
+class CCollider; // test
 END
 BEGIN(Client)
 class CStateMachine;
+
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -24,6 +26,7 @@ public:
 		JUMP,
 		ATTACK,
 		ROLL,
+		THROWSWORD,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -392,7 +395,7 @@ public:
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Stop_Rotate();
 	void Stop_Move();
-
+	void	ThrowSword();
 	void Jump();
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
@@ -402,6 +405,7 @@ public:
 	_float Get_AnimProgress();
 	_bool Is_SwordEquiped();
 	_bool Is_CarryingObject();
+	_vector Get_CenterPosition();
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -411,11 +415,12 @@ public:
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
+public: // Test code еб©У
+	HRESULT					Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
 
 private:
-	void					Someting(int a);
-	void					Someting2(float a);
-	_int					Someting3();
+
+
 	void					Key_Input(_float _fTimeDelta);
 
 private:
@@ -423,6 +428,7 @@ private:
 	HRESULT					Ready_PartObjects();
 	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
+	_float m_fCenterHeight = 0.5;
 	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
@@ -431,6 +437,11 @@ private:
 	class CPlayerSword* m_pSword = nullptr;
 
 	CGameObject* m_pCarryingObject = nullptr;
+
+private:
+	CCollider* m_pColliderCom = nullptr;
+
+
 
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

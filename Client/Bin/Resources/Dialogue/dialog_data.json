@@ -1,40 +1,43 @@
 {
 	"dialogs": [
 		{
-			"id": "0",
+			"id": "dialog_01",
 			"lines": [
 				{
-					"Talker": "준열이",
+					"Portrait": 0,
+					"Talker": "바이올렛",
 					"BG": 3,
 					"location": 0,
 					"animation": {
 						"duration": 1000,
-						"speed": 100
+						"speed": 350
 					},
-					"text": "배고파요. 남산 도서관 구내식당에 가서 오므라이스 먹을래요?"
+					"text": "마법을 쓰러가볼까요?"
 				},
 				{
-					"Talker": "남산이",
+					"Portrait": 2,
+					"Talker": "마티나",
 					"BG": 2,
 					"location": 0,
 					"animation": {
 						"duration": 1000,
-						"speed": 100
+						"speed": 350
 					},
-					"text": "아 그건쫌;"
+					"text": "제가 마법인걸요?"
 				}
 			]
 		},
 		{
-			"id": "1",
+			"id": "dialog_02",
 			"lines": [
 				{
+					"Portrait": "PORTRAITNAME_THRASH",
 					"Talker": "하나둘셋넷",
 					"BG": 0,
 					"location": 0,
 					"animation": {
 						"duration": 1000,
-						"speed": 100
+						"speed": 350
 					},
 					"text": "티모대위 명을 받들겠습니다."
 				}

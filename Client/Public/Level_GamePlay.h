@@ -23,6 +23,7 @@ public:
 	HRESULT					Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_NPC(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
 
 private:

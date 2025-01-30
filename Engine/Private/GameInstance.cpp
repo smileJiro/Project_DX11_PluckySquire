@@ -1188,6 +1188,14 @@ _bool CGameInstance::RayCast_Nearest(const _float3& _vOrigin, const _float3& _vR
 	return m_pPhysx_Manager->RayCast_Nearest(_vOrigin, _vRayDir, _fMaxDistance, _pOutPos, _ppOutActorObject);
 }
 
+void CGameInstance::Set_Physx_DebugRender(_bool _isDebugRender)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->Set_DebugRender(_isDebugRender);
+}
+
 _bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange)
 {
 	if (nullptr == m_pFrustum)

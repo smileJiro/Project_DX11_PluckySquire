@@ -35,30 +35,31 @@ HRESULT CSection::Initialize(SECTION_DESC* pDesc)
 
 HRESULT CSection::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
+    if (nullptr == _pGameObject)
+        return E_FAIL;
+
     if (!Has_Exist_Layer(_iLayerIndex))
         return E_FAIL;
 
     if (FAILED(m_Layers[_iLayerIndex]->Add_GameObject(_pGameObject)))
         return E_FAIL;
 
+    _pGameObject->Set_Include_Section_Name(m_strName);
+
     return S_OK;
 }
 
 HRESULT CSection::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
 {
+    if (nullptr == _pGameObject)
+        return E_FAIL;
+
     auto pLayer = Get_Include_Layer(_pGameObject);
     
     if (nullptr != pLayer)
-    {
-        auto Objects = pLayer->Get_GameObjects();
-        auto iter = find_if(Objects.begin(), Objects.end(), [&_pGameObject](CGameObject* pGameObject) {
-            return _pGameObject->Get_GameObjectInstanceID() == pGameObject->Get_GameObjectInstanceID();
-            });
-        if(iter != Objects.end())
-            Objects.erase(iter);
-        return S_OK;
-    }
-    return E_FAIL;
+        return pLayer->Remove_GameObject(_pGameObject);
+    else
+        return E_FAIL;
 }
 
 HRESULT CSection::SetActive_GameObjects(_bool _isActive, _bool _isAllActive, _uint _iLayerIndex)
@@ -80,10 +81,9 @@ HRESULT CSection::Add_RenderGroup_GameObjects()
 {
     for (_uint i = 0; i < m_iLayerGroupCount; i++)
     {
-        auto Objects = m_Layers[i]->Get_GameObjects();
+        auto& Objects = m_Layers[i]->Get_GameObjects();
         for_each(Objects.begin(), Objects.end(), [&](CGameObject* pGameObject) {
-            // TODO :: Render그룹에 바뀌게하자
-                m_pGameInstance->Add_RenderObject_New(m_iGroupID, m_iPriorityID, pGameObject);
+            pGameObject->Register_RenderGroup(m_iGroupID, m_iPriorityID);
             });
     }
 
@@ -130,7 +130,7 @@ CLayer* CSection::Get_Include_Layer(CGameObject* _pGameObject)
 {
     for (_uint i = 0; i < m_iLayerGroupCount; i++)
     {
-        auto Objects = m_Layers[i]->Get_GameObjects();
+        auto& Objects = m_Layers[i]->Get_GameObjects();
         auto iter = find_if(Objects.begin(), Objects.end(),[&_pGameObject](CGameObject* pGameObject) {
             return _pGameObject->Get_GameObjectInstanceID() == pGameObject->Get_GameObjectInstanceID();
             });
@@ -138,6 +138,8 @@ CLayer* CSection::Get_Include_Layer(CGameObject* _pGameObject)
         if (iter != Objects.end())
             return m_Layers[i];
     }
+
+    return nullptr;
 }
 
 

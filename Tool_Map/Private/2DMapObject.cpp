@@ -99,7 +99,7 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 	_float fPosX = XMVectorGetX(fPosition) + (m_fRenderTargetSize.x * 0.5f);
 	_float fPosY = (XMVectorGetY(fPosition) * -1.f) + (m_fRenderTargetSize.y * 0.5f);
 
-	_float3 fScale = Get_Scale();
+	_float3 fScale = Get_FinalScale(); // 태웅 : 함수 이름이 바껴서 수정했음. 혹시나 문제가있다면 이걸수정하시오 트랜스폼컨트롤러 get_scale 로
 
 	_float fLeft = fPosX - fScale.x / 2;
 	_float fRight = fPosX + fScale.x / 2;

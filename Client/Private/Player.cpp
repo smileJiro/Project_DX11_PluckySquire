@@ -10,8 +10,10 @@
 #include "PlayerState_Attack.h"
 #include "PlayerState_Jump.h"
 #include "PlayerState_Roll.h"
+#include "PlayerState_ThrowSword.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
+#include "Section_Manager.h"    
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -68,9 +70,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::STICKY;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -103,10 +105,13 @@ HRESULT CPlayer::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-	m_tStat[COORDINATE_3D].fMoveSpeed = 500.f;
+	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
 	m_tStat[COORDINATE_3D].fJumpPower = 17.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
+
+	//fill(begin(m_KeyLocks), end(m_KeyLocks), false);
+
     return S_OK;
 }
 
@@ -119,15 +124,26 @@ HRESULT CPlayer::Ready_Components()
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
-    Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this, 1));
-    Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this, 0.1f));
-    Bind_AnimEventFunc("Someting3", bind(&CPlayer::Someting3, this));
+    Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
+
+
+
+   /* Test 2D Collider */
+   CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
+   AABBDesc.pOwner = this;
+   AABBDesc.fRadius = { 200.f };
+   AABBDesc.vScale = { 1.0f, 1.0f };
+   AABBDesc.vOffsetPosition = { 200.f, 200.f };
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+       TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+       return E_FAIL; 
+
     return S_OK;
 }
 
@@ -154,8 +170,8 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    BodyDesc.iRenderGroupID_2D = RG_3D;
-    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
+    //BodyDesc.iRenderGroupID_2D = RG_3D;
+    //BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
@@ -244,7 +260,7 @@ HRESULT CPlayer::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-
+    m_pColliderCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -285,6 +301,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
+
 }
 
 HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -351,7 +368,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             }
 
             _float fDot = abs( XMVectorGetX(XMVector3Dot(vLook, _vDir)));
-            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed * _fTimeDelta * fDot;
+            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed  * fDot;
             vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vVeclocity);
 
@@ -376,7 +393,7 @@ void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
             
             _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-            vLook = XMVectorSetY(vLook * fVelocity * _fTimeDelta, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+            vLook = XMVectorSetY(vLook * fVelocity /** _fTimeDelta*/, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vLook);
         }
         else
@@ -477,6 +494,14 @@ _bool CPlayer::Is_CarryingObject()
     return nullptr != m_pCarryingObject;
 }
 
+_vector CPlayer::Get_CenterPosition()
+{
+	if (COORDINATE_2D == Get_CurCoord())
+		return Get_FinalPosition();
+	else
+        return Get_FinalPosition() + _vector{0,m_fCenterHeight, 0};
+}
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
@@ -507,6 +532,8 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::ROLL:
         m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
 		break;
+    case Client::CPlayer::THROWSWORD:
+        m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -546,24 +573,18 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 	Set_PartActive(_ePartId, false);
 }
 
-
-void CPlayer::Someting(int a)
+HRESULT CPlayer::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
 {
-    cout << "Someting" << endl;
-    int b = a;
+    m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this);
+
+    CContainerObject::Register_RenderGroup(_iGroupId, _iPriorityID);
+    return S_OK;
 }
 
-void CPlayer::Someting2(float a)
+void CPlayer::ThrowSword()
 {
-    cout << "Someting2" << endl;
-    float b = a;
-}
+    m_pSword->Throw(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK)));
 
-_int CPlayer::Someting3()
-{
-    int a = 0;
-    cout << "Someting3" << endl;
-    return a;
 }
 
 void CPlayer::Key_Input(_float _fTimeDelta)
@@ -575,6 +596,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+        if (iCurCoord == COORDINATE_2D)
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+        else
+            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
         //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
     }
@@ -601,21 +627,16 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         else
 			Equip_Part(PLAYER_PART_SWORD);
     }
+
     if (KEY_DOWN(KEY::F4))
     {
         Event_DeleteObject(this);
     }
-
     if (KEY_DOWN(KEY::M))
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
-    if (Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::RB))
-    {
-         _vector vLook =  XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-        m_pSword->Throw(vLook);
-        return;
-    }
+
 
 }
 
@@ -648,6 +669,9 @@ CGameObject* CPlayer::Clone(void* _pArg)
 
 void CPlayer::Free()
 {
+    // test
+    Safe_Release(m_pColliderCom);
+
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
     __super::Free();
