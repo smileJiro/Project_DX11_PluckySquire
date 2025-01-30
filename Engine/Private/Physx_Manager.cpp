@@ -336,6 +336,7 @@ void CPhysx_Manager::Free()
 	/* Release 순서 건들지 마시오. */
 	/////////////////////////////////
 
+
 	// Shape User Data 정리
 	Delete_ShapeUserData();
 
@@ -382,7 +383,6 @@ void CPhysx_Manager::Free()
 
 	// 게임 및 DirectX 리소스 해제
 	Safe_Release(m_pPhysx_EventCallBack);
-	Safe_Release(m_pPlayer);
 	Safe_Release(m_pShader);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pGameInstance);
