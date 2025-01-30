@@ -153,7 +153,6 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 	
 	//m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
-	//m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BOOK2D, this); // 새로운버전입니다.
 
 	if (true == m_isRender)
 		__super::Render(_iTextureindex, _eShaderPass);

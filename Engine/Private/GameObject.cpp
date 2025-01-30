@@ -71,6 +71,11 @@ HRESULT CGameObject::Render()
     return S_OK;
 }
 
+HRESULT CGameObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
+{
+    return m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this);
+}
+
 void CGameObject::Priority_Update_Component(_float _fTimeDelta)
 {
     for (auto& iter : m_Components)

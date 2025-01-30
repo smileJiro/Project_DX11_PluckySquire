@@ -6,6 +6,7 @@
 #include "Pooling_Manager.h"
 #include "Projectile_BarfBug.h"
 #include "DetectionField.h"
+#include "Section_Manager.h"
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -153,6 +154,12 @@ void CBarfBug::Update(_float _fTimeDelta)
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(10.0f, 6.0f, 0.0f);
+
+        if (iCurCoord == COORDINATE_2D)
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+        else 
+            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     }
 

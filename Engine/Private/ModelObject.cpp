@@ -72,10 +72,10 @@ void CModelObject::Late_Update(_float _fTimeDelta)
         //if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
             m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
     }
-    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-    {
-        m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_2D, m_iPriorityID_2D, this);
-    }
+    //else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    //{
+    //    m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_2D, m_iPriorityID_2D, this);
+    //}
 
 
 

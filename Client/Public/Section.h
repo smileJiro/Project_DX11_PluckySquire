@@ -43,6 +43,11 @@ public:
 	// 5. Section Layer를 Clear 하는 기능. (o)
 	void	Clear_GameObjects(_bool _isAllClear = true, _uint _iLayerIndex = 0);
 
+	_bool	Get_RenderGroupKey(_uint& _iOutputGroupID, _uint& _iOutputPriorityID) { 
+		_iOutputGroupID = m_iGroupID; 
+	_iOutputPriorityID = m_iPriorityID; 
+	return true; };
+
 
 	_bool			Is_CurSection(CGameObject* _pGameObject);
 

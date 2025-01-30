@@ -12,6 +12,7 @@
 #include "PlayerState_Roll.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
+#include "Section_Manager.h"    
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -154,8 +155,8 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    BodyDesc.iRenderGroupID_2D = RG_3D;
-    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
+    //BodyDesc.iRenderGroupID_2D = RG_3D;
+    //BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
@@ -575,6 +576,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+        if (iCurCoord == COORDINATE_2D)
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+        else
+            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
         //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
     }
