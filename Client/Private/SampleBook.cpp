@@ -57,11 +57,11 @@ void CSampleBook::Priority_Update(_float _fTimeDelta)
 
 void CSampleBook::Update(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::SPACE))
-    {
-        Set_Animation(8);
-        //m_fTestOffset *= -1.f;
-    }
+    //if (KEY_DOWN(KEY::SPACE))
+    //{
+    //    Set_Animation(8);
+    //    //m_fTestOffset *= -1.f;
+    //}
 
     if (m_bPlayingAnim)
         m_pControllerModel->Play_Animation(_fTimeDelta );
