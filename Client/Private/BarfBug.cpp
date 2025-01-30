@@ -186,18 +186,18 @@ HRESULT CBarfBug::Render()
 
 void CBarfBug::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    int a = 0;
+    __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
 }
 
 void CBarfBug::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 
-    int a = 0;
+    __super::OnContact_Stay(_My, _Other, _ContactPointDatas);
 }
 
 void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    int a = 0;
+    __super::OnContact_Exit(_My, _Other, _ContactPointDatas);
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
