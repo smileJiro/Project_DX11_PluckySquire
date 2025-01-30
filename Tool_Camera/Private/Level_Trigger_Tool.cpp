@@ -133,10 +133,11 @@ void CLevel_Trigger_Tool::Show_TriggerTool()
 	ImGui::Checkbox("Edit Trigger", &m_isEdit);
 
 	Set_CurTrigger();
+	Delete_Trigger();
 
 	if (true == m_isCreate && false == m_isEdit) {
 		Create_Trigger();
-		Delete_Trigger();
+	
 	}
 
 	if (false == m_isCreate && true == m_isEdit) {
@@ -169,8 +170,8 @@ void CLevel_Trigger_Tool::Show_CurTriggerInfo()
 	_string TriggerName = m_pGameInstance->WStringToString(m_TriggerTags[m_pCurTrigger->second->Get_TriggerType()]);
 	ImGui::Text("%s ", TriggerName.c_str());
 
-	_vector vPosition = m_pCurTrigger->second->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-	ImGui::Text("Position: %.2f, %.2f, %.2f", XMVectorGetX(vPosition), XMVectorGetY(vPosition), XMVectorGetZ(vPosition));
+	_float3 vPosition = m_pCurTrigger->second->Get_ActorCom()->Get_GlobalPose();
+	ImGui::Text("Position: %.2f, %.2f, %.2f", vPosition.x, vPosition.y, vPosition.z);
 
 	const vector<PxShape*>& Shapes = m_pCurTrigger->second->Get_ActorCom()->Get_Shapes();
 	PxTransform ShapeTransform = Shapes[0]->getLocalPose();
@@ -577,6 +578,32 @@ void CLevel_Trigger_Tool::Create_Trigger()
 
 void CLevel_Trigger_Tool::Delete_Trigger()
 {
+	if (KEY_PRESSING(KEY::LSHIFT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			pair<TRIGGEROBJECT_DATA, CTriggerObject*>* pSelectedTrigger = Get_SelectedTrigger();
+
+			if (nullptr == pSelectedTrigger)
+				return;
+			
+			for (auto iterator = m_Triggers.begin(); iterator != m_Triggers.end();) {
+				if (pSelectedTrigger == &(*iterator)) {
+
+					if (pSelectedTrigger == m_pCurTrigger) {
+						Safe_Release(m_pCurTrigger->second);
+						pSelectedTrigger = nullptr;
+					}
+
+					Safe_Release((*iterator).second);
+					iterator = m_Triggers.erase(iterator);
+
+					return;
+				}
+				else
+					iterator++;
+			}
+		}
+	}
 }
 
 void CLevel_Trigger_Tool::Edit_Trigger()
@@ -587,7 +614,7 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 			return;
 
 		m_iTriggerType = m_pCurTrigger->second->Get_TriggerType();
-		XMStoreFloat3(&m_vPosition, m_pCurTrigger->second->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+		m_vPosition = m_pCurTrigger->second->Get_ActorCom()->Get_GlobalPose();
 		
 		const vector<PxShape*>& Shapes = m_pCurTrigger->second->Get_ActorCom()->Get_Shapes();
 		PxTransform ShapeTransform = Shapes[0]->getLocalPose();
@@ -636,10 +663,12 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		if (nullptr == m_pCurTrigger)
 			return;
 
-		// ÀÌµ¿?
-		CController_Transform* pController = m_pCurTrigger->second->Get_ControllerTransform();
-		pController->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_vPosition), 1.f));
+		// Position
+		m_pCurTrigger->second->Get_ActorCom()->Set_GlobalPose(m_vPosition);
 
+		// Rotation
+		_matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(m_vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(m_vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(m_vRotation.z));
+		m_pCurTrigger->second->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
 
 		switch (m_pCurTrigger->first.iShapeType)
 		{
@@ -661,8 +690,27 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		}
 		}
 
-		_matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(m_vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(m_vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(m_vRotation.z));
-		m_pCurTrigger->second->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
+		
+	}
+}
+
+void CLevel_Trigger_Tool::Set_CurTrigger()
+{
+	if (KEY_PRESSING(KEY::ALT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			pair<TRIGGEROBJECT_DATA, CTriggerObject*>* pSelectedTrigger = Get_SelectedTrigger();
+
+			if (nullptr == pSelectedTrigger)
+				return;
+
+			if (nullptr != m_pCurTrigger)
+				Safe_Release(m_pCurTrigger->second);
+
+			m_pCurTrigger = pSelectedTrigger;
+
+			Safe_AddRef(m_pCurTrigger->second);
+		}
 	}
 }
 
@@ -699,7 +747,8 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 	Data.iFillterOtherGroupMask = m_iTotalOtherGroupMask;
 
 	m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
-	m_pCurTrigger = nullptr;
+	
+	Safe_AddRef(pTrigger);
 }
 
 void CLevel_Trigger_Tool::Initialize_ListBoxName()
@@ -905,31 +954,29 @@ void CLevel_Trigger_Tool::Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir)
 	*_pRayDir = vRayDir;
 }
 
-void CLevel_Trigger_Tool::Set_CurTrigger()
+pair<TRIGGEROBJECT_DATA, CTriggerObject*>* CLevel_Trigger_Tool::Get_SelectedTrigger()
 {
-	if (KEY_PRESSING(KEY::ALT)) {
-		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+	_vector vPos, vDir;
+	Get_RayInfo(&vPos, &vDir);
 
-			_vector vPos, vDir;
-			Get_RayInfo(&vPos, &vDir);
+	_float3 vRayPos, vRayDir;
+	XMStoreFloat3(&vRayPos, vPos);
+	XMStoreFloat3(&vRayDir, vDir);
 
-			_float3 vRayPos, vRayDir;
-			XMStoreFloat3(&vRayPos, vPos);
-			XMStoreFloat3(&vRayDir, vDir);
+	CActorObject* pObject = nullptr;
 
-			CActorObject* pObject;
+	_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 1000.f, nullptr, &pObject);
 
-			_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 1000.f, nullptr, &pObject);
-
-			if (true == isSelected) {
-				for (auto& Trigger : m_Triggers) {
-					if (pObject == Trigger.second) {
-						m_pCurTrigger = &Trigger;
-					}
-				}
+	if (true == isSelected) {
+		for (auto& Trigger : m_Triggers) {
+			if (pObject == Trigger.second) {
+				
+				return &Trigger;
 			}
 		}
 	}
+
+	return nullptr;
 }
 
 void CLevel_Trigger_Tool::Save_TriggerData()
@@ -938,11 +985,11 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 
 	for (auto& Trigger : m_Triggers) {
 
-		_vector vPosition = Trigger.second->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+		_float3 vPosition = Trigger.second->Get_ActorCom()->Get_GlobalPose();
 		
 		json Trigger_json;
 		Trigger_json["Trigger Type"] = Trigger.second->Get_TriggerType();
-		Trigger_json["Position"] = { XMVectorGetX(vPosition), XMVectorGetY(vPosition), XMVectorGetZ(vPosition) };
+		Trigger_json["Position"] = { vPosition.x, vPosition.y, vPosition.z };
 		
 		const vector<PxShape*>& Shapes = Trigger.second->Get_ActorCom()->Get_Shapes();
 		PxTransform ShapeTransform = Shapes[0]->getLocalPose();
@@ -1049,6 +1096,7 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 			dynamic_cast<CTriggerObject*>(pTrigger)->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
 
 			m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
+			Safe_AddRef(pTrigger);
 		}
 			break;
 		}
@@ -1082,5 +1130,10 @@ CLevel_Trigger_Tool* CLevel_Trigger_Tool::Create(ID3D11Device* _pDevice, ID3D11D
 
 void CLevel_Trigger_Tool::Free()
 {
+	for (auto& Trigger : m_Triggers)
+		Safe_Release(Trigger.second);
+
+	Safe_Release(m_pCurTrigger->second);
+
 	__super::Free();
 }

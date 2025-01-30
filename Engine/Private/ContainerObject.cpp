@@ -79,6 +79,19 @@ HRESULT CContainerObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _p
     return S_OK;
 }
 
+HRESULT CContainerObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
+{
+    for (CGameObject* pPartObject : m_PartObjects)
+    {
+        if (nullptr != pPartObject)
+        {
+            if (FAILED(pPartObject->Register_RenderGroup(_iGroupId, _iPriorityID)))
+                return E_FAIL;
+        }
+    }
+    return S_OK;
+}
+
 CComponent* CContainerObject::Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag)
 {
     if (_iPartObjectIndex >= m_PartObjects.size())

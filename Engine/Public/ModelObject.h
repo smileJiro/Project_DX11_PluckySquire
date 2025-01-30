@@ -65,6 +65,19 @@ public:
 	_uint					Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
 	void					Set_PlayingAnim(_bool _bPlaying);
 
+	void					Change_RenderGroup(COORDINATE _eCoord, _uint _iGroupKey, _uint _iPriorityKey)
+	{ 
+		if (COORDINATE_2D == _eCoord)
+		{
+			m_iRenderGroupID_2D = _iGroupKey;
+			m_iPriorityID_2D = _iPriorityKey;
+		}
+		else if(COORDINATE_3D == _eCoord)
+		{
+			m_iRenderGroupID_3D = _iGroupKey;
+			m_iPriorityID_3D = _iPriorityKey;
+		}
+	}
 
 protected:
 	CController_Model*		m_pControllerModel = nullptr;
@@ -79,7 +92,7 @@ protected:
 	_uint					m_iPriorityID_2D = 0;
 	_uint					m_iRenderGroupID_3D = 0;
 	_uint					m_iPriorityID_3D = 0;
-	_bool				m_bPlayingAnim = true;	
+	_bool					m_bPlayingAnim = true;	
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

@@ -13,6 +13,7 @@
 #include "PlayerState_ThrowSword.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
+#include "Section_Manager.h"    
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -127,6 +128,19 @@ HRESULT CPlayer::Ready_Components()
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
+
+
+
+   /* Test 2D Collider */
+   CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
+   AABBDesc.pOwner = this;
+   AABBDesc.fRadius = { 200.f };
+   AABBDesc.vScale = { 1.0f, 1.0f };
+   AABBDesc.vOffsetPosition = { 200.f, 200.f };
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+       TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+       return E_FAIL; 
+
     return S_OK;
 }
 
@@ -153,8 +167,8 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    BodyDesc.iRenderGroupID_2D = RG_3D;
-    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
+    //BodyDesc.iRenderGroupID_2D = RG_3D;
+    //BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
@@ -243,7 +257,7 @@ HRESULT CPlayer::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-
+    m_pColliderCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -571,6 +585,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+        if (iCurCoord == COORDINATE_2D)
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+        else
+            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
         //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
     }
@@ -597,6 +616,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         else
 			Equip_Part(PLAYER_PART_SWORD);
     }
+
     if (KEY_DOWN(KEY::F4))
     {
         Event_DeleteObject(this);
@@ -642,6 +662,9 @@ CGameObject* CPlayer::Clone(void* _pArg)
 
 void CPlayer::Free()
 {
+    // test
+    Safe_Release(m_pColliderCom);
+
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
     __super::Free();

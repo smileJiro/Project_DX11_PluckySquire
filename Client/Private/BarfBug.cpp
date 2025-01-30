@@ -6,6 +6,7 @@
 #include "Pooling_Manager.h"
 #include "Projectile_BarfBug.h"
 #include "DetectionField.h"
+#include "Section_Manager.h"
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -153,6 +154,12 @@ void CBarfBug::Update(_float _fTimeDelta)
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(10.0f, 6.0f, 0.0f);
+
+        if (iCurCoord == COORDINATE_2D)
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+        else 
+            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     }
 
@@ -480,15 +487,10 @@ HRESULT CBarfBug::Ready_PartObjects()
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
-
-    BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
     BodyDesc.strModelPrototypeTag_2D = TEXT("BarferBug");
     BodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
 	BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -503,13 +505,7 @@ HRESULT CBarfBug::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
-    /* ÅÂ¿õ : ·»´õ·¯ °ü·Ã Ãß°¡ */
-    BodyDesc.iRenderGroupID_2D = RG_3D;
-    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
-    BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
-
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 

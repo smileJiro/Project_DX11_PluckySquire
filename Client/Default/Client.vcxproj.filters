@@ -535,6 +535,9 @@
     <ClInclude Include="..\Public\Soldier_Spear.h">
       <Filter>02.GameObjects\Monster\Soldier</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Monster_Body.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h" />
   </ItemGroup>
   <ItemGroup>
@@ -811,6 +814,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Soldier_Spear.cpp">
       <Filter>02.GameObjects\Monster\Soldier</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Monster_Body.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp" />
   </ItemGroup>
