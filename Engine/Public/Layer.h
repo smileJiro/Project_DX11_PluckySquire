@@ -13,7 +13,8 @@ private:
 	virtual ~CLayer() = default;
 
 public:
-	HRESULT		Add_GameObject(class CGameObject* pGameObject);
+	HRESULT		Add_GameObject(class CGameObject* _pGameObject);
+	HRESULT		Remove_GameObject(class CGameObject* _pGameObject);
 	CComponent* Find_Component(const _wstring& _strComponentTag, _uint _iObjectIndex = 0);
 	CComponent* Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag, _uint _iObjectIndex = 0);
 
@@ -22,7 +23,6 @@ public:
 	void		Cleanup_DeadReferences(); 
 	void		SetActive_GameObjects(_bool _isActive);
 	void		Clear_GameObjects();
-	void		Add_RenderGroup_GameObjects() { return; }
 
 public:
 	// Get

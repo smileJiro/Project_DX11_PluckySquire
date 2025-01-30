@@ -2,7 +2,7 @@
 #include "PlayerState_Run.h"
 #include "PlayerState_Idle.h"
 #include "GameInstance.h"
-#include "Player.h"
+#include "Test_Player.h"
 #include "StateMachine.h"
 
 

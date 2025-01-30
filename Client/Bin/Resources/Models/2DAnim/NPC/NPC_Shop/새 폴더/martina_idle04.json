@@ -1,0 +1,263 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "martina_idle04",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0001'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0001.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0002'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0002.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0003'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0003.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0004'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0004.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0005'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0005.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0006'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0006.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0007'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0007.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0008'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0008.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0009'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0009.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0010'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0010.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0011'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0011.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0012'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0012.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0013'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0013.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0014'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0014.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0015'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0015.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0016'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0016.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0017'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0017.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0018'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0018.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0019'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0019.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0020'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0020.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0021'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0021.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0022'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0022.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0023'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0023.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0024'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0024.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0025'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0025.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0026'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0026.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0027'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0027.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0028'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0028.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0029'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0029.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0030'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0030.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0031'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0031.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0032'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0032.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0033'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0033.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0034'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0034.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0035'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0035.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle03_0036'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle03_0036.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

@@ -393,7 +393,7 @@ void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
             
             _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-            vLook = XMVectorSetY(vLook * fVelocity * _fTimeDelta, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+            vLook = XMVectorSetY(vLook * fVelocity /** _fTimeDelta*/, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vLook);
         }
         else
@@ -571,6 +571,14 @@ void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 {
 	Set_PartActive(_ePartId, false);
+}
+
+HRESULT CPlayer::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
+{
+    m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this);
+
+    CContainerObject::Register_RenderGroup(_iGroupId, _iPriorityID);
+    return S_OK;
 }
 
 void CPlayer::ThrowSword()

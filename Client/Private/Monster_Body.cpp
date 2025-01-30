@@ -21,12 +21,10 @@ HRESULT CMonster_Body::Initialize_Prototype()
 
 HRESULT CMonster_Body::Initialize(void* _pArg)
 {
-	void** ppArg = &_pArg;
-
-	if (FAILED(Ready_Desc(ppArg)))
+	if (FAILED(Ready_Desc(&_pArg)))
 		return E_FAIL;
 
-	if (FAILED(__super::Initialize(*ppArg)))
+	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
 	return S_OK;

@@ -34,6 +34,8 @@
 #include "ESC_HeartPoint.h"
 #include "ShopItemBG.h"
 
+#include "NPC.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
@@ -47,7 +49,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
-	Ready_Layer_UI(TEXT("Layer_UI"));
+	//Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
 	//Ready_Layer_Map();
@@ -647,6 +650,27 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	pDesc.fX = g_iWinSizeX / 2.f / 2.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+	pDesc.fSizeX = 256.f * 0.7f / 2.f;
+	pDesc.fSizeY = 256.f * 0.7f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
+{
+	CNPC::NPC_DESC NPCDesc;
+
+	NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
