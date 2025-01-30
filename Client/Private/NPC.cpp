@@ -85,25 +85,25 @@ HRESULT CNPC::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 void CNPC::Change_Dir()
 {
 	//플레이어와의 각도를 구해 방향 전환 (시야각이 있을 때 기준)
-	_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-	_vector vDir = XMVector3Normalize(m_pTarget->Get_Position() - Get_Position());
-	_vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-	_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vDir, vLook))));
-	_float fResult = XMVectorGetX(XMVector3Cross(vUp, XMVector3Cross(vLook, vDir)));
-	if (0 > fResult)
-	{
-		fAngle = 360 - fAngle;
-	}
-	
-	
-	if (315.f < fResult || 45.f >= fResult)
-		Set_2D_Direction(F_DIRECTION::UP);
-	else if (45.f < fResult || 135.f >= fResult)
-		Set_2D_Direction(F_DIRECTION::RIGHT);
-	else if (135.f < fResult || 225.f >= fResult)
-		Set_2D_Direction(F_DIRECTION::DOWN);
-	else if (225.f < fResult || 315.f >= fResult)
-		Set_2D_Direction(F_DIRECTION::LEFT);
+	//_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+	//_vector vDir = XMVector3Normalize(m_pTarget->Get_Position() -> Get_Position());
+	//_vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	//_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vDir, vLook))));
+	//_float fResult = XMVectorGetX(XMVector3Cross(vUp, XMVector3Cross(vLook, vDir)));
+	//if (0 > fResult)
+	//{
+	//	fAngle = 360 - fAngle;
+	//}
+	//
+	//
+	//if (315.f < fResult || 45.f >= fResult)
+	//	Set_2D_Direction(F_DIRECTION::UP);
+	//else if (45.f < fResult || 135.f >= fResult)
+	//	Set_2D_Direction(F_DIRECTION::RIGHT);
+	//else if (135.f < fResult || 225.f >= fResult)
+	//	Set_2D_Direction(F_DIRECTION::DOWN);
+	//else if (225.f < fResult || 315.f >= fResult)
+	//	Set_2D_Direction(F_DIRECTION::LEFT);
 }
 
 void CNPC::Set_2D_Direction(F_DIRECTION _eDir)

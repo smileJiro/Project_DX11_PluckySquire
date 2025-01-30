@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "Dialogue.h"
+#include "Section_Manager.h"
 
 CPortrait::CPortrait(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
@@ -57,7 +58,13 @@ void CPortrait::Update(_float _fTimeDelta)
 void CPortrait::Late_Update(_float _fTimeDelta)
 {
 	//__super::Late_Update(_fTimeDelta);
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	//Register_RenderGroup(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_SECTION_UI);
+	//Register_RenderGroup(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_SECTION_START);
+
+	if (true == m_isRender)
+	{
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	}
 }
 
 HRESULT CPortrait::Render()
