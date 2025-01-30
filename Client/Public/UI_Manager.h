@@ -4,6 +4,8 @@
 #include "ShopPanel_BG.h"
 #include "ShopItemBG.h"
 #include "Dialogue.h"
+#include "Logo_Props.h"
+
 
 BEGIN(Client)
 class CUI_Manager final : public CBase
@@ -27,6 +29,7 @@ private:
 
 	vector<CShopItemBG*>				m_pShopItemBGs;
 	vector<vector<CShopItemBG*>>		m_ShopItems;
+	vector<CLogo_Props*>				m_LogoProps;
 
 
 
@@ -44,6 +47,7 @@ private:
 	_int								m_iCurrentLevel = { -1 };
 
 	vector<CDialog::DialogData>			m_DialogDatas;
+	
 	_tchar								m_tDialogId[MAX_PATH] = {};
 	_int								m_iCurrnetLineIndex = { 0 };
 	_bool								m_isPortraitRender = { true };
@@ -55,7 +59,7 @@ private:
 public:
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
-	CPlayer* Get_Player() { return m_pPlayer; }
+	CPlayer*							Get_Player() { return m_pPlayer; }
 	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
 	void								Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
 	void								Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel);
@@ -83,7 +87,14 @@ public:
 	vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
 	CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
 
-	_tchar* Get_DialogId() { return m_tDialogId; }
+
+
+	vector<CLogo_Props*>				Get_LogoProps() { return m_LogoProps; }
+	void								pushBack_LogoPorp(CLogo_Props* _props) { m_LogoProps.push_back(_props); Safe_AddRef(_props); }
+	
+
+
+	_tchar*								Get_DialogId() { return m_tDialogId; }
 	void								Set_DialogId(const _tchar* _id) { wsprintf(m_tDialogId, _id); }
 
 	_int								Get_DialogueLineIndex() { return m_iCurrnetLineIndex; }
@@ -98,6 +109,7 @@ public:
 	void								Set_isMakeItem(_bool _make) { m_isMakeItem = _make; }
 
 	HRESULT								Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
+	HRESULT								Level_Logo_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 	HRESULT								Level_Enter(_int _iChangeLevelID);
 
 

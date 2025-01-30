@@ -26,6 +26,8 @@
 #include "ESC_Goblin.h"
 #include "Dialogue.h"
 #include "Portrait.h"
+#include "Logo_Props.h"
+#include "Logo.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -197,6 +199,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBookMark"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bookmark.dds"), 1))))
 		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_Borderline"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/New_T_bg_border.dds"), 1))))
+        return E_FAIL;
 
 
 
@@ -373,10 +378,13 @@ HRESULT CLoader::Loading_Level_Logo()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_BG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/_BACK_T_TitleBG.dds"), 1))))
 		return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower0"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_01.dds"), 1))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower1"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_02.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree0"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink0"),
@@ -395,6 +403,11 @@ HRESULT CLoader::Loading_Level_Logo()
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_LogoBG"), CLogo_BG::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_LogoProp"), CLogo_Props::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_Logo"), CLogo::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

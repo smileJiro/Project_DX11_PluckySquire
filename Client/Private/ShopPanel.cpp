@@ -68,34 +68,6 @@ void CShopPanel::Update(_float _fTimeDelta)
 	Update_KeyInput(_fTimeDelta, iIndex);
 
 
-	//_int index = 0;
-	//
-	//// 오픈 후 마우스가 안에 있는가?
-	//if (true == m_isOpenPanel &&  false == CUI_Manager::GetInstance()->Get_ConfirmStore())
-	//{
-	//	_float2 CursorPos = m_pGameInstance->Get_CursorPos();
-	//	index = isInPanelItem(CursorPos);
-	//	if (true == isInPanel(CursorPos))
-	//	{
-	//		if (m_iPreindex != index && -1 != index)
-	//		{
-	//			CUI_Manager::GetInstance()->Set_ChooseItem(isInPanelItem(CursorPos));
-	//			m_iPreindex = isInPanelItem(CursorPos);
-	//		}
-	//
-	//		//if (1 == CUI_Manager::GetInstance()->Get_ShopItems().size())
-	//		//{
-	//		//	CUI_Manager::GetInstance()->Set_ChooseItem(isInPanelItem(CursorPos));
-	//		//	m_iPreindex = isInPanelItem(CursorPos);
-	//		//}
-	//	}
-	//	else
-	//		return;
-	//}
-	//
-	//
-	//Update_KeyInput(_fTimeDelta, index);
-
 	
 }
 

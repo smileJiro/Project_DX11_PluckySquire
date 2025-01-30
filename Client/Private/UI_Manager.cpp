@@ -201,6 +201,22 @@ HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 
 }
 
+HRESULT CUI_Manager::Level_Logo_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	if (_iChangeLevelID == LEVEL_LOADING)
+	{
+		m_iCurrentLevel = _iNextChangeLevelID;
+	}
+
+	for (_int i = 0; i < m_LogoProps.size(); ++i)
+	{
+		Safe_Release(m_LogoProps[i]);
+	}
+	m_LogoProps.clear();
+
+	return S_OK;
+}
+
 HRESULT CUI_Manager::Level_Enter(_int _iChangeLevelID)
 {
 	return S_OK;
@@ -233,7 +249,12 @@ void CUI_Manager::Free()
 	}
 	m_pShopPanels.clear();
 	
-	
+	for (_int i = 0; i < m_LogoProps.size(); ++i)
+	{
+		Safe_Release(m_LogoProps[i]);
+	}
+	m_LogoProps.clear();
+
 
 	Safe_Release(m_pPlayer);
 

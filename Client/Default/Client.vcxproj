@@ -228,6 +228,7 @@
     <ClInclude Include="..\public\IdleState.h" />
     <ClInclude Include="..\Public\Interaction_Heart.h" />
     <ClInclude Include="..\Public\JumpBug.h" />
+    <ClInclude Include="..\Public\Logo.h" />
     <ClInclude Include="..\Public\Logo_BG.h" />
     <ClInclude Include="..\Public\Logo_Choose.h" />
     <ClInclude Include="..\Public\Logo_Props.h" />
@@ -336,6 +337,7 @@
     <ClCompile Include="..\private\IdleState.cpp" />
     <ClCompile Include="..\Private\Interaction_Heart.cpp" />
     <ClCompile Include="..\Private\JumpBug.cpp" />
+    <ClCompile Include="..\Private\Logo.cpp" />
     <ClCompile Include="..\Private\Logo_BG.cpp" />
     <ClCompile Include="..\Private\Logo_Choose.cpp" />
     <ClCompile Include="..\Private\Logo_Props.cpp" />

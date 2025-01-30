@@ -58,19 +58,32 @@ public:
 		SKILLSHOP_END
 	};
 
+	enum LOGOPROP
+	{
+		LOGOPROP_BORDER,
+		LOGOPROP_TREEINK0,
+		LOGOPROP_TREEINK1,
+		LOGOPROP_TREE,
+		LOGOPROP_WHITEFLOWER0,
+		LOGOPROP_WHITEFLOWER1,
+		LOGOPROP_ENTER,
+
+		LOGOPROP_END
+	};
+
 
 public:
 	typedef struct tagUIDesc : public CUIObject::UIOBJECT_DESC
 	{
 		 _wstring strLayerTag;
-		_uint			iTextureCount;					// 어떤 스킬의 어떤 레벨의 텍스쳐 이니?
-		SETTINGPANEL	eSettingPanelKind;				// 세팅 패널에서 어떤 파츠(종류)이니
-		SHOPPANEL		eShopPanelKind;					// 상점 패널에서 어떤 파츠(종류)이니
+		 _uint			iTextureCount = { 0 };					// 어떤 스킬의 어떤 레벨의 텍스쳐 이니?
+		SETTINGPANEL	eSettingPanelKind = { SETTING_END };				// 세팅 패널에서 어떤 파츠(종류)이니
+		SHOPPANEL		eShopPanelKind = { SHOP_END };					// 상점 패널에서 어떤 파츠(종류)이니
 
-		_uint			iSkillLevel = 0;				// 스킬의 레벨
-		_uint			iShopItemCount = 0; 			// 텍스쳐를 연결하기 위한
-		SKILLSHOP		eShopSkillKind = SKILLSHOP_END; // 어떤 스킬이니?
-		_bool			isChooseItem = false;			// 너가 선택되어있니?
+		_uint			iSkillLevel = { 0 };				// 스킬의 레벨
+		_uint			iShopItemCount = { 0 }; 			// 텍스쳐를 연결하기 위한
+		SKILLSHOP		eShopSkillKind = { SKILLSHOP_END }; // 어떤 스킬이니?
+		_bool			isChooseItem = { false };			// 너가 선택되어있니?
 
 	}UIOBJDESC;
 
