@@ -27,13 +27,15 @@ public:
 public:
 	// 0. 원하는 Section Find
 	CSection*						Find_Section(const _wstring& _strSectionTag);
-	// 1. 원하는 Section에 Object 추가.
+	// 1. 원하는 Section에 Object 추가 / 삭제.
 	HRESULT							Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
-	HRESULT							Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 0);
-	// 2. 현재 Section에서 Object 제거. (일단 현재거만. )
-	HRESULT							Remove_GameObject_ToCurSectionLayer(CGameObject* _pGameObject);
-	// 3. 원하는 Section 활성, 비활성 
+	HRESULT							Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
 	
+	// 2. 현재 활성화된 Section에 Object 추가/삭제
+	HRESULT							Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 0);
+	HRESULT							Remove_GameObject_ToCurSectionLayer(CGameObject* _pGameObject);
+	
+	// 3. 원하는 Section 활성, 비활성 
 	HRESULT							SetActive_Section(const _wstring& _strSectionTag, _bool _isActive);
 	// 4. 외부에서도 Section을 추가하게 할지 말지 
 

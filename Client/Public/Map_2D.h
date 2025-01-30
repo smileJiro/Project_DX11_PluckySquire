@@ -40,6 +40,8 @@ public:
 	const _wstring&				Get_DSV_Key() { return m_strDSVKey; }
 	const _wstring&				Get_MRT_Key() { return m_strMRTKey; }
 
+	const _float2&				Get_RenderTarget_Size() { return m_fRenderTargetSize; }
+
 private:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
