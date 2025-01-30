@@ -113,40 +113,40 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 	//  -> m_fFixtedTimeStep을 수정하거나, 다음 프레임으로 물ㄹ ㅣ시뮬레이션을 미룸. 
 	//   -> 만약 다음 프레임으로 물리 시뮬을 미루면, 
 	//
-//	m_fTimeAcc += _fTimeDelta;
-//	if (m_fFixtedTimeStep <= m_fTimeAcc)
-//	{
-//		m_pPxScene->simulate(m_fTimeAcc);
-//		m_fTimeAcc = 0;
-//
-//		//fetch 끝났는지 확인
-//		if (m_pPxScene->fetchResults(true))
-//		{
-//			if (nullptr != m_pPhysx_EventCallBack)
-//				m_pPhysx_EventCallBack->Update();
-//
-//#ifdef _DEBUG
-//			const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-//			m_pVIBufferCom->Update_PxDebug(RenderBuffer);
-//#endif // _DEBUG
-//		}
-//
-//	}
+	m_fTimeAcc += _fTimeDelta;
+	if (m_fFixtedTimeStep <= m_fTimeAcc)
+	{
+		m_pPxScene->simulate(m_fFixtedTimeStep);
+		m_fTimeAcc -= m_fFixtedTimeStep;
+
+		//fetch 끝났는지 확인
+		if (m_pPxScene->fetchResults(true))
+		{
+			if (nullptr != m_pPhysx_EventCallBack)
+				m_pPhysx_EventCallBack->Update();
+
+#ifdef _DEBUG
+			const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+			m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+#endif // _DEBUG
+		}
+
+	}
 
 //
 //	//기존 코드
-	m_pPxScene->simulate(1.f / 60.f);
-
-	if (m_pPxScene->fetchResults(true))
-	{
-		if (nullptr != m_pPhysx_EventCallBack)
-			m_pPhysx_EventCallBack->Update();
-
-#ifdef _DEBUG
-		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
-#endif // _DEBUG
-	}
+//	m_pPxScene->simulate(1.f / 60.f);
+//
+//	if (m_pPxScene->fetchResults(true))
+//	{
+//		if (nullptr != m_pPhysx_EventCallBack)
+//			m_pPhysx_EventCallBack->Update();
+//
+//#ifdef _DEBUG
+//		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+//		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+//#endif // _DEBUG
+//	}
 
 }
 

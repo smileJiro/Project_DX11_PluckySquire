@@ -27,6 +27,8 @@ public:
 
 public:
 	_vector					Get_FinalPosition() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
+
+
 	_float3					Get_FinalScale() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
 	const _float4x4*		Get_FinalWorldMatrix_Ptr(COORDINATE _eCoord) { return &m_WorldMatrices[_eCoord]; }
 	virtual _matrix		Get_FinalWorldMatrix() override;

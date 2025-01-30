@@ -107,7 +107,7 @@ _bool CCollider_AABB::Is_Collision(CCollider* _pOther)
 
 void CCollider_AABB::Update_OwnerTransform()
 {
-    _vector vOwnerPos = m_pOwner->Get_Position();
+    _vector vOwnerPos = m_pOwner->Get_FinalPosition();
     XMStoreFloat2(&m_vPosition, XMLoadFloat2(&m_vOffsetPosition) + vOwnerPos);
 
     _float3 vOwnerScale = m_pOwner->Get_FinalScale();

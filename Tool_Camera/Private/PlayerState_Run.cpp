@@ -2,7 +2,7 @@
 #include "PlayerState_Run.h"
 #include "PlayerState_Idle.h"
 #include "GameInstance.h"
-#include "Test_Player.h"
+#include "Player.h"
 #include "StateMachine.h"
 
 
@@ -20,6 +20,8 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CTest_Player::ATTACK);
 		return;
 	}
+
+
 
 	_vector vMoveDir = XMVectorZero();
 	_bool bMove = false;

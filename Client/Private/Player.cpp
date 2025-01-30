@@ -105,10 +105,13 @@ HRESULT CPlayer::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-	m_tStat[COORDINATE_3D].fMoveSpeed = 500.f;
+	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
 	m_tStat[COORDINATE_3D].fJumpPower = 17.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
+
+	//fill(begin(m_KeyLocks), end(m_KeyLocks), false);
+
     return S_OK;
 }
 
@@ -365,7 +368,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             }
 
             _float fDot = abs( XMVectorGetX(XMVector3Dot(vLook, _vDir)));
-            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed * _fTimeDelta * fDot;
+            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed  * fDot;
             vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vVeclocity);
 
@@ -625,11 +628,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
-    if (Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::RB))
-    {
-        Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_GT);
-        return;
-    }
+
 
 }
 

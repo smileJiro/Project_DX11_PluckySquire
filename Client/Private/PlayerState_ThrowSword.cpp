@@ -24,7 +24,7 @@ void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 
 void CPlayerState_ThrowSword::Enter()
 {
-	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_INTO_NEWRIG);
+    m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_GT);
 }
 
 void CPlayerState_ThrowSword::Exit()
@@ -35,11 +35,7 @@ void CPlayerState_ThrowSword::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
     if (COORDINATE_3D == _eCoord)
     {
-        if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_INTO_NEWRIG == iAnimIdx)
-        {
-            m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_AIM_GT);
-        }
-        else if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_NEWRIG == iAnimIdx)
+        if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_GT == iAnimIdx)
         {
             m_pOwner->Set_State(CPlayer::IDLE);
         }
