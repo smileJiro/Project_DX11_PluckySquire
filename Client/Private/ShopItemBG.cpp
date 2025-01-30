@@ -53,7 +53,13 @@ void CShopItemBG::Child_Update(_float _fTimeDelta)
 
 void CShopItemBG::Child_LateUpdate(_float _fTimeDelta)
 {
-	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
+	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
+	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
+
+	if (true == m_isRender)
+	{
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	}
 }
 
 HRESULT CShopItemBG::Render()
