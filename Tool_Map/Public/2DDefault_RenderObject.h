@@ -34,15 +34,24 @@ public:
 	virtual HRESULT Render() override;
 
 	_bool	Toggle_Mode() { m_is2DMode = !m_is2DMode; return m_is2DMode; }
+
+
+
+	void Texture_Output(const _wstring& _strTexturePath);
+	void Set_Texture_Mode(const _string& _strTextureName);
+	void Set_Default_Render_Mode();
 public :
 	void Set_Color(_float4& fColor) { m_fBackColor = fColor; }
 
 	_bool	Is_2DMode() { return m_is2DMode; }
 	_bool	IsCursor_In(_float2 _fCursorPos);
+
 private:
 	CShader*		m_pShader = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
-	
+	CTexture*		m_pTextureCom = { nullptr };
+
+	_bool			m_isDefaultRenderMode = true;
 	_bool			m_isBackColorRender = false;
 	_bool			m_is2DMode = true;
 	_float4x4		m_TargetProjMatrix{};

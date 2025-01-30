@@ -43,8 +43,10 @@ public:
 	_bool			Is_ModelLoad() { return m_isModelLoad; }
 
 	HRESULT			Export(HANDLE hFile);
+	HRESULT			Import(HANDLE hFile,vector<C2DMapObjectInfo*>& _ModelInfos);
 
 	virtual _vector				Get_FinalPosition() const override; 
+	
 	HRESULT Update_Model_Index();
 	
 private:
@@ -63,6 +65,7 @@ private:
 	HRESULT Bind_ShaderResources();
 public:
 	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HANDLE _hFile, vector<C2DMapObjectInfo*>& _ModelInfos);
 	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 
