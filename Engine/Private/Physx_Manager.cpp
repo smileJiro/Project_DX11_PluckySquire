@@ -36,10 +36,9 @@ HRESULT CPhysx_Manager::Initialize()
 	if (FAILED(Initialize_Material()))
 		return E_FAIL;
 
-
 	/* Test Code */
-	m_pGroundPlane = PxCreatePlane(*m_pPxPhysics, PxPlane(0, 1, 0, 99), *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
-	m_pPxScene->addActor(*m_pGroundPlane);
+	//m_pGroundPlane = PxCreatePlane(*m_pPxPhysics, PxPlane(0, 1, 0, 99), *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
+	//m_pPxScene->addActor(*m_pGroundPlane);
 
 	_float4x4 matTest = {};
 	PxMat44 matPx;
@@ -70,14 +69,6 @@ HRESULT CPhysx_Manager::Initialize()
 
 	m_pPxScene->addActor(*m_pTestDesk);
 
-	//m_pRigidDynamic = m_pPxPhysics->createRigidDynamic(transform);
-	//PxCapsuleGeometry CapsuleGeometry2(0.5f, 0.2f);
-	//m_pPxshape = PxRigidActorExt::createExclusiveShape(*m_pRigidDynamic, CapsuleGeometry2, *m_pPxMaterial);
-	//m_pRigidDynamic->setGlobalPose(PxTransform(0.0f, 15.0f, 0.0f));
-	//m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
-	//m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
-	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
-	//m_pPxScene->addActor(*m_pRigidDynamic);
 	//
 	// 필요한 시각화 기능 활성화
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
@@ -372,8 +363,8 @@ void CPhysx_Manager::Free()
 	Delete_ShapeUserData();
 
 	// 1. Actor 및 Shape 관련 리소스 해제
-	if (m_pGroundPlane)
-		m_pGroundPlane->release();
+	//if (m_pGroundPlane)
+	//	m_pGroundPlane->release();
 	if (m_pTestDesk)
 		m_pTestDesk->release();
 
