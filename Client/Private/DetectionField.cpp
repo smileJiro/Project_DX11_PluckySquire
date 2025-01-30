@@ -153,12 +153,9 @@ CDetectionField* CDetectionField::Clone(void* _pArg)
 void CDetectionField::Free()
 {
 	m_pOwner = nullptr;
+	Safe_Release(m_pTarget);
+	Safe_Release(m_pDraw);
 
-	if (nullptr != m_pTarget)
-		Safe_Release(m_pTarget);
-	if (nullptr != m_pDraw)
-		Safe_Release(m_pDraw);
-	m_pDraw = nullptr;
 
 	__super::Free();
 }
