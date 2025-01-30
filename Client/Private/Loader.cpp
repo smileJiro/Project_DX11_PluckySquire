@@ -373,6 +373,18 @@ HRESULT CLoader::Loading_Level_Logo()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_BG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/_BACK_T_TitleBG.dds"), 1))))
 		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_01.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_01.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink0"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_ink_01.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink1"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_ink_02.dds"), 1))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
@@ -678,7 +690,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
-    Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
+    //Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -1021,10 +1033,12 @@ HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelI
                 case (_uint)TRIGGER_TYPE::CAMERA_TRIGGER:
                 {
                     _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
-
+                    _string szEventTag = Trigger_json["Camera Trigger Event Tag"];
+                    
                     CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
                     Desc.iCameraTriggerType = iCameraTriggerType;
+                    Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
 
                     Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
                     Desc.vHalfExtents = Data.vHalfExtents;

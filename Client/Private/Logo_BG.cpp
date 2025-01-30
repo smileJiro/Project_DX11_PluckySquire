@@ -45,12 +45,12 @@ void CLogo_BG::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::E))
 	{
-		m_isLogoChooseStage = true;
+		Uimgr->Set_LogoChangeState(true);
 		m_vColor = { 246.f / 255.f , 127.f / 255.f, 98.f / 255.f, 1.f };
 	}
 
 	
-	if (true == m_isLogoChooseStage)
+	if (true == Uimgr->Get_LogoChanseStage())
 	{
 		_int iIndex = CUI_Manager::GetInstance()->Get_LogoIndex();
 
@@ -92,13 +92,13 @@ HRESULT CLogo_BG::Render()
 
 	__super::Render(0, PASS_VTXPOSTEX::COLOR_ALPHA);
 
-
-	if (false == m_isLogoChooseStage)
+	
+	if (false == Uimgr->Get_LogoChanseStage())
 	{
 		wsprintf(m_tTest, TEXT("아무 키를 눌러주세요"));
 		m_pGameInstance->Render_Font(TEXT("Font40"), m_tTest, _float2(g_iWinSizeX - g_iWinSizeX / 4.f, g_iWinSizeY - g_iWinSizeY / 4.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
-	else if (true == m_isLogoChooseStage)
+	else if (true == Uimgr->Get_LogoChanseStage())
 	{
 		_int iIndex = CUI_Manager::GetInstance()->Get_LogoIndex();
 		_tchar wMouseTalk[MAX_PATH];
@@ -201,6 +201,7 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 	{
 	case 0 :
 	{
+		Uimgr->Set_LogoChangeState(false);
 		Event_LevelChange(LEVEL_LOADING, LEVEL_GAMEPLAY);
 	}
 	break;

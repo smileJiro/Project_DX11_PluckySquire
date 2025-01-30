@@ -52,7 +52,7 @@ void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 
 	if (true == m_isRender)
 	{
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+		//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 	}
 	//else
 	//{

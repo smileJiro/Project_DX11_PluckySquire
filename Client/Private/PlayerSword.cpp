@@ -75,19 +75,23 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
 void CPlayerSword::Update(_float _fTimeDelta)
 {
-	m_fOutingForce -= m_fCentripetalForce * _fTimeDelta;
-    _vector vDir = m_vThrowDirection;
-    CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-	if (m_fOutingForce < 0)
-	{
-        _vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-        _vector vTargetPos = m_pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+    if (m_IsFlying)
+    {
+        m_fOutingForce -= m_fCentripetalForce * _fTimeDelta;
+        _vector vDir = m_vThrowDirection;
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        if (m_fOutingForce < 0)
+        {
+            _vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+            _vector vTargetPos = m_pPlayer->Get_CenterPosition();
+            XMVectorSetY(vTargetPos, XMVectorGetY(vTargetPos) + 0.5f);
+            vDir = XMVector3Normalize(vTargetPos - vPosition);
+        }
 
-        vDir = XMVector3Normalize(vTargetPos - vPosition);
-	}
+        pDynamicActor->Set_LinearVelocity(vDir * abs(m_fOutingForce));
 
-    pDynamicActor->Set_LinearVelocity(vDir * abs(m_fOutingForce));
-    
+    }
+
 	__super::Update(_fTimeDelta);
 }
 
@@ -112,11 +116,9 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
                 Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
                 _matrix matWorld = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180));
                 m_pControllerTransform->Set_WorldMatrix(matWorld);
-                Update(0);
-                static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
-                m_pActorCom->Update(0.0f);
-                m_pActorCom->Set_LinearVelocity(m_vThrowDirection, 0);
-                m_pActorCom->Set_AngularVelocity(_float3{0,0,0});
+
+                 static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
+
             }
 
         }

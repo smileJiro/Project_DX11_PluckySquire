@@ -20,6 +20,12 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::ATTACK);
 		return;
 	}
+	if (m_pOwner->Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::RB))
+	{
+		m_pOwner->Set_State(CPlayer::THROWSWORD);
+		
+		return;
+	}
 
 	_vector vMoveDir = XMVectorZero();
 	_bool bMove = false;

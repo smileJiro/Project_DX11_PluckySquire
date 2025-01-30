@@ -16,6 +16,7 @@ protected:
 public:
 	virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)abstract;
 	virtual _bool Play_Animation(_float fTimeDelta) {return false;}
+	virtual _bool Play_Animation_Reverse(_float fTimeDelta) {return false;}
 	virtual void To_NextAnimation()abstract;
 
 	virtual void Set_AnimationLoop(_uint iIdx, _bool bIsLoop) abstract;

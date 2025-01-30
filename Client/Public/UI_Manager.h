@@ -28,10 +28,13 @@ private:
 	vector<CShopItemBG*>				m_pShopItemBGs;
 	vector<vector<CShopItemBG*>>		m_ShopItems;
 
+
+
 	_bool								m_isMakeItem = { false };
 	_bool								m_isMakeShop = { false };
 	_bool								m_isESC = { false };
 	_bool								m_isConfirmStore = { false };
+	_bool								m_isLogoChooseStage = { false };
 
 	_int								m_iPreIndex = { 0 };
 	_int								m_iSettingPanelIndex = { 0 };
@@ -44,6 +47,7 @@ private:
 	_tchar								m_tDialogId[MAX_PATH] = {};
 	_int								m_iCurrnetLineIndex = { 0 };
 	_bool								m_isPortraitRender = { true };
+
 
 
 
@@ -73,6 +77,8 @@ public:
 	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs) { m_ShopItems.push_back(_ItemBGs); }
 	void								pushBack_ShopItemBGs(CShopItemBG* _pBGs) { m_pShopItemBGs.push_back(_pBGs); }
 	void								Set_ChooseItem(_int _iIndex);
+	_bool								Get_LogoChanseStage() { return m_isLogoChooseStage; }
+	void								Set_LogoChangeState(_bool _LogoChooseStage) { m_isLogoChooseStage = _LogoChooseStage; }
 
 	vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
 	CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);

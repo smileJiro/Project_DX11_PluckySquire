@@ -53,7 +53,7 @@ public:
 public:
 	// Get
 	_uint					Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
-	CModel*					Get_Model(COORDINATE _eCoord);
+	CModel*			Get_Model(COORDINATE _eCoord);
 
 	// Set
 	void					Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);

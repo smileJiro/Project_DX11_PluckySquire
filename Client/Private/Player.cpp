@@ -10,6 +10,7 @@
 #include "PlayerState_Attack.h"
 #include "PlayerState_Jump.h"
 #include "PlayerState_Roll.h"
+#include "PlayerState_ThrowSword.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
@@ -69,9 +70,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::STICKY;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -104,10 +105,13 @@ HRESULT CPlayer::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-	m_tStat[COORDINATE_3D].fMoveSpeed = 500.f;
+	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
 	m_tStat[COORDINATE_3D].fJumpPower = 17.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
+
+	//fill(begin(m_KeyLocks), end(m_KeyLocks), false);
+
     return S_OK;
 }
 
@@ -120,9 +124,7 @@ HRESULT CPlayer::Ready_Components()
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
-    Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this, 1));
-    Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this, 0.1f));
-    Bind_AnimEventFunc("Someting3", bind(&CPlayer::Someting3, this));
+    Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -299,6 +301,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
+
 }
 
 HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -365,7 +368,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             }
 
             _float fDot = abs( XMVectorGetX(XMVector3Dot(vLook, _vDir)));
-            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed * _fTimeDelta * fDot;
+            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed  * fDot;
             vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vVeclocity);
 
@@ -390,7 +393,7 @@ void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
             
             _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-            vLook = XMVectorSetY(vLook * fVelocity * _fTimeDelta, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+            vLook = XMVectorSetY(vLook * fVelocity /** _fTimeDelta*/, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vLook);
         }
         else
@@ -491,6 +494,14 @@ _bool CPlayer::Is_CarryingObject()
     return nullptr != m_pCarryingObject;
 }
 
+_vector CPlayer::Get_CenterPosition()
+{
+	if (COORDINATE_2D == Get_CurCoord())
+		return Get_FinalPosition();
+	else
+        return Get_FinalPosition() + _vector{0,m_fCenterHeight, 0};
+}
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
@@ -521,6 +532,8 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::ROLL:
         m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
 		break;
+    case Client::CPlayer::THROWSWORD:
+        m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -568,24 +581,10 @@ HRESULT CPlayer::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
     return S_OK;
 }
 
-
-void CPlayer::Someting(int a)
+void CPlayer::ThrowSword()
 {
-    cout << "Someting" << endl;
-    int b = a;
-}
+    m_pSword->Throw(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK)));
 
-void CPlayer::Someting2(float a)
-{
-    cout << "Someting2" << endl;
-    float b = a;
-}
-
-_int CPlayer::Someting3()
-{
-    int a = 0;
-    cout << "Someting3" << endl;
-    return a;
 }
 
 void CPlayer::Key_Input(_float _fTimeDelta)
@@ -633,17 +632,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         Event_DeleteObject(this);
     }
-
     if (KEY_DOWN(KEY::M))
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
-    if (Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::RB))
-    {
-         _vector vLook =  XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-        m_pSword->Throw(vLook);
-        return;
-    }
+
 
 }
 

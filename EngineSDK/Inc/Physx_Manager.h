@@ -71,13 +71,14 @@ private: /* Test Object */
 	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
 	CShader*					m_pShader = nullptr;
 
-private:
-	float						m_fTimeAcc = 0.0f;
+
 
 public:
 	void						Set_DebugRender(_bool _isDebugRender) { m_isDebugRender = _isDebugRender; }
 private:
 	_bool						m_isDebugRender = true;
+	_float						m_fTimeAcc = 0.0f;
+	_float						m_fFixtedTimeStep= 1.f/60.f;
 private:
 	HRESULT						Initialize_Foundation();
 	HRESULT						Initialize_Physics();

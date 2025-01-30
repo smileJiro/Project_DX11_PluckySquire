@@ -61,6 +61,8 @@ private:
 
 	// ========== Camera Trigger
 	_uint				m_iCameraTriggerType = {};
+	_char				m_szEventTag[MAX_PATH] = { "" };
+	_char				m_szEventTemp[MAX_PATH] = { "" };
 
 	// Save Load
 	vector<_string>		m_JsonFilePaths;
