@@ -35,17 +35,25 @@ HRESULT CSection::Initialize(SECTION_DESC* pDesc)
 
 HRESULT CSection::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
+    if (nullptr == _pGameObject)
+        return E_FAIL;
+
     if (!Has_Exist_Layer(_iLayerIndex))
         return E_FAIL;
 
     if (FAILED(m_Layers[_iLayerIndex]->Add_GameObject(_pGameObject)))
         return E_FAIL;
 
+    _pGameObject->Set_Include_Section_Name(m_strName);
+
     return S_OK;
 }
 
 HRESULT CSection::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
 {
+    if (nullptr == _pGameObject)
+        return E_FAIL;
+
     auto pLayer = Get_Include_Layer(_pGameObject);
     
     if (nullptr != pLayer)
@@ -54,10 +62,14 @@ HRESULT CSection::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
         auto iter = find_if(Objects.begin(), Objects.end(), [&_pGameObject](CGameObject* pGameObject) {
             return _pGameObject->Get_GameObjectInstanceID() == pGameObject->Get_GameObjectInstanceID();
             });
-        if(iter != Objects.end())
+        if (iter != Objects.end())
+        {
+            (*iter)->Init_Include_Section_Name();
             Objects.erase(iter);
+        }
         return S_OK;
     }
+
     return E_FAIL;
 }
 
@@ -137,6 +149,8 @@ CLayer* CSection::Get_Include_Layer(CGameObject* _pGameObject)
         if (iter != Objects.end())
             return m_Layers[i];
     }
+
+    return nullptr;
 }
 
 
