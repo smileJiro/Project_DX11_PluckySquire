@@ -231,9 +231,12 @@
     <ClInclude Include="..\Public\Logo_Choose.h" />
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Map_2D.h" />
+    <ClInclude Include="..\Public\NPC.h" />
+    <ClInclude Include="..\public\NPC_Store.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerState_Roll.h" />
     <ClInclude Include="..\Public\Popuff.h" />
+    <ClInclude Include="..\Public\Portrait.h" />
     <ClInclude Include="..\Public\Rat.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\public\Section.h" />
@@ -325,9 +328,12 @@
     <ClCompile Include="..\Private\Logo_Choose.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Map_2D.cpp" />
+    <ClCompile Include="..\Private\NPC.cpp" />
+    <ClCompile Include="..\private\NPC_Store.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerState_Roll.cpp" />
     <ClCompile Include="..\Private\Popuff.cpp" />
+    <ClCompile Include="..\Private\Portrait.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\private\Section.cpp" />

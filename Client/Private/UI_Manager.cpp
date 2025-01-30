@@ -107,6 +107,52 @@ void CUI_Manager::Set_ChooseItem(_int _iIndex)
 		m_iPreIndex = _iIndex;
 	}
 }
+
+vector<CDialog::DialogData> CUI_Manager::Get_Dialogue(const _wstring& _id)
+{
+	auto iter = find_if(m_DialogDatas.begin(), m_DialogDatas.end(), 
+		[&_id](const CDialog::DialogData& dialog)
+		{ 
+			return dialog.id == _id; 
+		});
+
+
+	if (iter != m_DialogDatas.end())
+	{
+		return { *iter };
+	}
+	else
+	{
+		return {};
+	}
+}
+
+CDialog::DialogLine CUI_Manager::Get_DialogueLine(const _wstring& _id, _int _LineIndex)
+{
+	auto iter = find_if(m_DialogDatas.begin(), m_DialogDatas.end(), [&](const CDialog::DialogData& Data)
+		{
+			return Data.id == _id;
+		});
+
+	if (iter != m_DialogDatas.end())
+	{
+		if (_LineIndex < iter->lines.size())
+		{
+			return iter->lines[_LineIndex];
+		}
+	}
+
+	return CDialog::DialogLine{};
+}
+
+
+
+
+void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
+{
+	m_DialogDatas.push_back(_DialogData);
+
+}
 HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	if (_iChangeLevelID == LEVEL_LOADING)

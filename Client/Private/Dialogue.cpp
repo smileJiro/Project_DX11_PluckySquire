@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Dialogue.h"
 #include "GameInstance.h"
+#include "UI_Manager.h"
 
 CDialog::CDialog(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
@@ -42,16 +43,25 @@ void CDialog::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::B))
 	{
-		if (m_iCurrentLineIndex <= m_DialogDatas[0].lines.size())
+		if (Uimgr->Get_DialogueLineIndex() <= Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
 		{
-			++m_iCurrentLineIndex;
+			Uimgr->Set_DialogueLineIndex(Uimgr->Get_DialogueLineIndex() + 1);
+			
 
-			if (m_iCurrentLineIndex == m_DialogDatas[0].lines.size())
+			if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
 			{
 				m_isRender = false;
+				Uimgr->Set_PortraitRender(false);
 			}
 		}
 	}
+
+
+	// 다이얼로그 변경 시 이용 스위치이나 뭘듯 해야할듯
+	Uimgr->Set_DialogId(TEXT("dialog_01"));
+	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+
+
 }
 
 void CDialog::Late_Update(_float _fTimeDelta)
@@ -64,9 +74,9 @@ HRESULT CDialog::Render()
 {
 	if (true == m_isRender)
 	{
-		__super::Render(m_DialogDatas[0].lines[m_iCurrentLineIndex].BG, PASS_VTXPOSTEX::DEFAULT);
+		__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::UI_POINTSAMPLE);
 
-		if (m_iCurrentLineIndex < m_DialogDatas[0].lines.size())
+		if (Uimgr->Get_DialogueLineIndex() < Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		{
 			DisplayText();
 		}
@@ -105,6 +115,12 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 				for (auto& line : dialog["lines"])
 				{
 					DialogLine dialogLine;
+
+					// 초상화 대상
+					if (line.contains("Portrait") && line["Portrait"].is_number_integer())
+					{
+						dialogLine.portrait = static_cast<PORTRAITNAME>(line["Portrait"].get<int>());
+					}
 
 					// 말하는 대상
 					if (line.contains("Talker") && line["Talker"].is_string())
@@ -147,7 +163,7 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 					dialogData.lines.push_back(dialogLine);
 				}
 			}
-			m_DialogDatas.push_back(dialogData);
+			Uimgr->Pushback_Dialogue(dialogData);
 		}
 	}
 	return S_OK;
@@ -155,25 +171,31 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 
 HRESULT CDialog::DisplayText()
 {
-	if (m_iCurrentLineIndex >= m_DialogDatas[0].lines.size())
+	if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		return E_FAIL;
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	_float2 vTextPos = _float2(0.f, 0.f);
 
+
+
 	// 현재 대화의 절대 글자 수
-	const auto& currentLine = m_DialogDatas[0].lines[m_iCurrentLineIndex];
+	//const auto& currentLine = Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines[m_iCurrentLineIndex];
+
+	const auto& currentLine = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex());
+
 	static _wstring strDisplaytext;
 	static _float fWaitTime = 0.0f;
 	static _int iPreviousLineIndex = -1; 
 
 	// 라인이 변경되었을 때 초기화
-	if (iPreviousLineIndex != m_iCurrentLineIndex)
+	if (iPreviousLineIndex != Uimgr->Get_DialogueLineIndex())
 	{
 		strDisplaytext.clear();
 		fWaitTime = 0.0f;
-		iPreviousLineIndex = m_iCurrentLineIndex;
+		iPreviousLineIndex = Uimgr->Get_DialogueLineIndex();
+		
 	}
 
 	// 하나씩 출력되게 계산
