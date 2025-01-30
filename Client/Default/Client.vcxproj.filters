@@ -250,6 +250,9 @@
     <Filter Include="02.GameObjects\Trigger\Camera_Trigger">
       <UniqueIdentifier>{b758ccb4-7151-48b1-99b9-1eeef86e1bab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\2D">
+      <UniqueIdentifier>{0791b9f7-464c-4734-9777-7e162be1d4c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -538,6 +541,9 @@
     <ClInclude Include="..\Public\Monster_Body.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_2D.h">
+      <Filter>94.RenderGroups%28Custom%29\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -816,6 +822,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Monster_Body.cpp">
       <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_2D.cpp">
+      <Filter>94.RenderGroups%28Custom%29\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
