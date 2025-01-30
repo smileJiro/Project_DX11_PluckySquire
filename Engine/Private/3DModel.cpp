@@ -185,6 +185,11 @@ _bool C3DModel::Play_Animation(_float fTimeDelta)
  	return bReturn;
 }
 
+_bool C3DModel::Play_Animation_Reverse(_float fTimeDelta)
+{
+	return _bool();
+}
+
 
 _uint C3DModel::Get_MeshIndex(const _char* _szName) const
 {

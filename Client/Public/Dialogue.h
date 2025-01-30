@@ -12,26 +12,49 @@ BEGIN(Client)
 
 class CDialog : public CUI
 {
-
+public:
     enum LOC { LOC_DEFAULT, LOC_MIDDLE, LOC_MIDLEFT, LOC_MIDRIGHT, LOC_END };
-    // Default : 가운데 아래
-    // Middle : 정 가운데
-    // MidLeft : 가운데 살짝 좌측
-    // MidRight : 가운데 살짝 우측
+
+    enum PORTRAITNAME
+    {
+        PORTRAITNAME_VIOLET,                // 마법사
+        PORTRAITNAME_THRASH,                // 트롤
+        PORTRAITNAME_MARTINA,               // 상점
+        PORTRAITNAME_PIP,                   // 쥐
+        PORTRAITNAME_PAGE,                  // 책벌레
+        PORTRAITNAME_HUMGRUMP,              // 험그럼프
+        PORTRAITNAME_ROLA,                  // 엄마
+        PORTRAITNAME_MOONBEARD,             // 달수염
+        PORTRAITNAME_MOONBEARD_MONO,        // 회색 달수염
+        PORTRAITNAME_MOONBEARD_RUNETOOTH,   // 이어폰낀 달수염
+        PORTRAITNAME_MINIBEARD,             // 조그만 달수염
+        PORTRAITNAME_MINIBEARD_MONO,        //조그만 회색 달수염
+        PORTRAITNAME_KRONG,                 // 쓰레쉬 할아버지
+        PORTRAITNAME_KRONG_GHOST,           // 죽은 쓰레쉬 할아버지
+        PORTRAITNAME_BENNYBEE,              // 미니게임에 있는 벌
+        PORTRAITNAME_CHROMA,                // 여왕님
+        PORTRAITNAME_TUMBA,                 // 애기 홍학(삽파는아이)
+
+        PORTRAITNAME_DEFAULT,
+        PORTRAITNAME_END
+    };
+
 
 public:
     struct Animation
     {
         _int duration = 1000;   // 지속 시간 (밀리초)
-        _int speed = 100;      // 속도 (타자기 효과 등)
+        _int speed = 350;      // 속도 (타자기 효과 등)
     };
 
     struct DialogLine
     {
+
         wstring Talker;  // 말하는 놈 : 이름 및 초상화를 설정하자.
         wstring text;     // 대화 내용
         _int   BG;     // 배경
         LOC  location = LOC_DEFAULT;    // 위치 설정
+        PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
         Animation animation;   // 애니메이션 정보
     };
 
@@ -60,12 +83,13 @@ private:
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터
     _int                m_iCurrentLineIndex = 0; // 현재 출력 중인 라인의 인덱스 (id)
+    _tchar			    m_tDialogIndex[MAX_PATH] = {};
 
-    vector<DialogData>  m_DialogDatas;
+    //vector<DialogData>  m_DialogDatas;
 
     _bool               m_isOpenDialogue = { true };
 
-    vector<DialogData>         Get_Dialogues() { return m_DialogDatas; }
+   // vector<DialogData>         Get_Dialogues() { return m_DialogDatas; }
 
 protected:
     virtual HRESULT Ready_Components() override;

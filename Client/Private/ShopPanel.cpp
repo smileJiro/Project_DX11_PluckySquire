@@ -24,8 +24,6 @@ HRESULT CShopPanel::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-
-
 	m_eShopPanel = SHOP_END;
 
 	if (false == Uimgr->Get_isMakeItem())
@@ -34,7 +32,6 @@ HRESULT CShopPanel::Initialize(void* _pArg)
 		Ready_ShopPannel(LEVEL_ID(pDesc->iCurLevelID), pDesc->strLayerTag);
 		Ready_Item(LEVEL_ID(pDesc->iCurLevelID), pDesc->strLayerTag);
 	}
-	
 
 	return S_OK;
 }
@@ -45,31 +42,59 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-	// 오픈 후 마우스가 안에 있는가?
-	if (true == m_isOpenPanel &&  false == CUI_Manager::GetInstance()->Get_ConfirmStore())
+	if (!m_isOpenPanel || CUI_Manager::GetInstance()->Get_ConfirmStore())
 	{
-		_float2 CursorPos = m_pGameInstance->Get_CursorPos();
-		_int index = isInPanelItem(CursorPos);
-		if (true == isInPanel(CursorPos))
-		{
-			if (m_iPreindex != index && -1 != index)
-			{
-				CUI_Manager::GetInstance()->Set_ChooseItem(isInPanelItem(CursorPos));
-				m_iPreindex = isInPanelItem(CursorPos);
-			}
-
-			if (1 == CUI_Manager::GetInstance()->Get_ShopItems().size())
-			{
-				CUI_Manager::GetInstance()->Set_ChooseItem(isInPanelItem(CursorPos));
-				m_iPreindex = isInPanelItem(CursorPos);
-			}
-		}
-		else
-			return;
+		Update_KeyInput(_fTimeDelta, -1);
+		return;
 	}
 
+	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
 
-	Update_KeyInput(_fTimeDelta);
+
+	if (!isInPanel(cursorPos))
+	{
+		Update_KeyInput(_fTimeDelta, -1);
+		return;
+	}
+
+	_int iIndex = isInPanelItem(cursorPos);
+
+	if (iIndex != -1 && iIndex != m_iPreindex)
+	{
+		CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
+		m_iPreindex = iIndex;
+	}
+
+	Update_KeyInput(_fTimeDelta, iIndex);
+
+
+	//_int index = 0;
+	//
+	//// 오픈 후 마우스가 안에 있는가?
+	//if (true == m_isOpenPanel &&  false == CUI_Manager::GetInstance()->Get_ConfirmStore())
+	//{
+	//	_float2 CursorPos = m_pGameInstance->Get_CursorPos();
+	//	index = isInPanelItem(CursorPos);
+	//	if (true == isInPanel(CursorPos))
+	//	{
+	//		if (m_iPreindex != index && -1 != index)
+	//		{
+	//			CUI_Manager::GetInstance()->Set_ChooseItem(isInPanelItem(CursorPos));
+	//			m_iPreindex = isInPanelItem(CursorPos);
+	//		}
+	//
+	//		//if (1 == CUI_Manager::GetInstance()->Get_ShopItems().size())
+	//		//{
+	//		//	CUI_Manager::GetInstance()->Set_ChooseItem(isInPanelItem(CursorPos));
+	//		//	m_iPreindex = isInPanelItem(CursorPos);
+	//		//}
+	//	}
+	//	else
+	//		return;
+	//}
+	//
+	//
+	//Update_KeyInput(_fTimeDelta, index);
 
 	
 }
@@ -276,12 +301,17 @@ _int CShopPanel::isInPanelItem(_float2 _vMousePos)
 
 }
 
-void CShopPanel::Update_KeyInput(_float _fTimeDelta)
+void CShopPanel::Update_KeyInput(_float _fTimeDelta, _int _index)
 {
-
+	
 
 	// SHOP  패널 오픈 기능
-	if (KEY_DOWN(KEY::I) /* && SHOP_END != m_eShopPanel*/)
+	
+	bool iskeyI = KEY_DOWN(KEY::I);
+	bool iskeyESC = KEY_DOWN(KEY::ESC);
+	bool iskeyE = KEY_DOWN(KEY::E);
+
+	if (true == iskeyI) /* && SHOP_END != m_eShopPanel*/
 	{
 		if (true == Uimgr->Get_isESC())
 			return;
@@ -303,18 +333,20 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta)
 			{
 				Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
 			}
-
 		}
 	}
 
+	if (false == m_isOpenPanel)
+		return;
 
-	if (KEY_DOWN(KEY::I) && true == Uimgr->Get_ConfirmStore())
+
+	if (true == iskeyI && true == Uimgr->Get_ConfirmStore())
 	{
 		Uimgr->Set_ConfirmStore(false);
 		m_iConfirmItemIndex = 0;
 		Uimgr->Set_StoreYesOrno(true);
 	}
-	if (KEY_DOWN(KEY::ESC) && true == Uimgr->Get_ConfirmStore())
+	if (true == iskeyESC && true == Uimgr->Get_ConfirmStore())
 	{
 		Uimgr->Set_ConfirmStore(false);
 		m_iConfirmItemIndex = 0;
@@ -322,13 +354,14 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta)
 	}
 
 	_bool isYesorNo = Uimgr->Get_StoreYesOrno();
+
 	if (true == m_isOpenPanel)
 	{
 
 		_float2 CursorPos = m_pGameInstance->Get_CursorPos();
 		_int index = isInPanelItem(CursorPos);
 
-		if (KEY_DOWN(KEY::E) && false == Uimgr->Get_ConfirmStore())
+		if (true == iskeyE && false == Uimgr->Get_ConfirmStore())
 		{
 			if (-1 != index)
 			{
@@ -337,7 +370,7 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta)
 				Uimgr->Set_StoreYesOrno(true);
 			}
 		}
-		else if (KEY_DOWN(KEY::E) && true == Uimgr->Get_ConfirmStore())
+		else if (true == iskeyE && true == Uimgr->Get_ConfirmStore())
 		{
 			if (true == isYesorNo)
 			{
@@ -350,11 +383,11 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta)
 				Uimgr->Set_ConfirmStore(false);
 				Uimgr->Set_StoreYesOrno(true);
 			}
-		
+
 		}
 	}
 
-	
+
 
 	if (KEY_DOWN(KEY::UP) && true == Uimgr->Get_ConfirmStore())
 	{
@@ -362,13 +395,106 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta)
 		CUI_Manager::GetInstance()->Set_StoreYesOrno(true);
 
 	}
-	
+
 	if (KEY_DOWN(KEY::DOWN) && true == Uimgr->Get_ConfirmStore())
 	{
 
 		CUI_Manager::GetInstance()->Set_StoreYesOrno(false);
 
 	}
+
+
+
+
+	
+	//if (KEY_DOWN(KEY::I) /* && SHOP_END != m_eShopPanel*/)
+	//{
+	//	if (true == Uimgr->Get_isESC())
+	//		return;
+	//
+	//	isFontPrint();
+	//
+	//	for (auto iter : Uimgr->Get_ShopPanels())
+	//	{
+	//		if (SHOP_END != iter.second->Get_ShopPanel())
+	//		{
+	//			iter.second->Child_Update(_fTimeDelta);
+	//		}
+	//	}
+	//
+	//
+	//	for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
+	//	{
+	//		for (int j = 0; j < 3; ++j)
+	//		{
+	//			Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
+	//		}
+	//
+	//	}
+	//}
+	//
+	//
+	//if (KEY_DOWN(KEY::I) && true == Uimgr->Get_ConfirmStore())
+	//{
+	//	Uimgr->Set_ConfirmStore(false);
+	//	m_iConfirmItemIndex = 0;
+	//	Uimgr->Set_StoreYesOrno(true);
+	//}
+	//if (KEY_DOWN(KEY::ESC) && true == Uimgr->Get_ConfirmStore())
+	//{
+	//	Uimgr->Set_ConfirmStore(false);
+	//	m_iConfirmItemIndex = 0;
+	//	Uimgr->Set_StoreYesOrno(true);
+	//}
+	//
+	//_bool isYesorNo = Uimgr->Get_StoreYesOrno();
+	//if (true == m_isOpenPanel)
+	//{
+	//
+	//	_float2 CursorPos = m_pGameInstance->Get_CursorPos();
+	//	_int index = isInPanelItem(CursorPos);
+	//
+	//	if (KEY_DOWN(KEY::E) && false == Uimgr->Get_ConfirmStore())
+	//	{
+	//		if (-1 != index)
+	//		{
+	//			m_iConfirmItemIndex = index;
+	//			Uimgr->Set_ConfirmStore(true);
+	//			Uimgr->Set_StoreYesOrno(true);
+	//		}
+	//	}
+	//	else if (KEY_DOWN(KEY::E) && true == Uimgr->Get_ConfirmStore())
+	//	{
+	//		if (true == isYesorNo)
+	//		{
+	//			Uimgr->Delete_ShopItems(m_iConfirmItemIndex);
+	//			m_iConfirmItemIndex = 0;
+	//			Uimgr->Set_ConfirmStore(false);
+	//		}
+	//		else if (false == isYesorNo)
+	//		{
+	//			Uimgr->Set_ConfirmStore(false);
+	//			Uimgr->Set_StoreYesOrno(true);
+	//		}
+	//	
+	//	}
+	//}
+	//
+	//
+	//
+	//if (KEY_DOWN(KEY::UP) && true == Uimgr->Get_ConfirmStore())
+	//{
+	//
+	//	CUI_Manager::GetInstance()->Set_StoreYesOrno(true);
+	//
+	//}
+	//
+	//if (KEY_DOWN(KEY::DOWN) && true == Uimgr->Get_ConfirmStore())
+	//{
+	//
+	//	CUI_Manager::GetInstance()->Set_StoreYesOrno(false);
+	//
+	//}
 
 }
 

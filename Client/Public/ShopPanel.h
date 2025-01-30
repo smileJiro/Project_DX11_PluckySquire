@@ -1,5 +1,6 @@
 #pragma once
 #include "UI.h"
+#include "Section_Manager.h"
 
 BEGIN(Engine)
 class CShader;
@@ -37,7 +38,7 @@ private:
 	void					isFontPrint() { false == m_isOpenPanel ? m_isOpenPanel = true : m_isOpenPanel = false; };
 	_bool					isInPanel(_float2 _vMousePos);
 	_int					isInPanelItem(_float2 _vMousePos);
-	void					Update_KeyInput(_float _fTimeDelta);
+	void					Update_KeyInput(_float _fTimeDelta, _int _index = -1);
 
 	HRESULT					Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag);
 	HRESULT					Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag);

@@ -22,7 +22,6 @@ enum class PASS_VTXPOSTEX
 	UI_POINTSAMPLE,
 	UI_ALPHA,
 
-
 	LAST
 };
 

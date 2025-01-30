@@ -19,7 +19,7 @@ public:
 
     virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)override;
     virtual _bool			Play_Animation(_float _fTimeDelta)override;
-
+    virtual _bool           Play_Animation_Reverse(_float _fTimeDelta)override;
     //Get
     virtual _uint Get_AnimCount() override;
 	virtual _uint Get_CurrentAnimIndex() override { return m_iCurAnimIdx; }

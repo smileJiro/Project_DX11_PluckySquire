@@ -250,6 +250,18 @@
     <Filter Include="02.GameObjects\Trigger\Camera_Trigger">
       <UniqueIdentifier>{b758ccb4-7151-48b1-99b9-1eeef86e1bab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\2D">
+      <UniqueIdentifier>{0791b9f7-464c-4734-9777-7e162be1d4c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\00. NPC_Store">
+      <UniqueIdentifier>{a27943b2-2eef-4b1a-b1a1-44b51bd7431f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait">
+      <UniqueIdentifier>{59efe45f-490f-4395-b910-e2dc25f6fc99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props">
+      <UniqueIdentifier>{d8fb4898-0a03-4df1-8323-688d11f30d1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -538,6 +550,22 @@
     <ClInclude Include="..\Public\Monster_Body.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_2D.h">
+      <Filter>94.RenderGroups%28Custom%29\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\NPC_Store.h">
+      <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC.h">
+      <Filter>02.GameObjects\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portrait.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo_Props.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ThrowSword.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -817,6 +845,22 @@
     <ClCompile Include="..\Private\Monster_Body.cpp">
       <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_2D.cpp">
+      <Filter>94.RenderGroups%28Custom%29\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\NPC_Store.cpp">
+      <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC.cpp">
+      <Filter>02.GameObjects\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portrait.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Logo_Props.cpp">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

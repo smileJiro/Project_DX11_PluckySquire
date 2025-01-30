@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "martina_idle01",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle01_0001_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle01_0001_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle01_0002_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle01_0002_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle01_0003_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle01_0003_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_idle01_0004_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_idle01_0004_X04.0"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

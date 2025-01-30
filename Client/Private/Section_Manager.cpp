@@ -100,6 +100,18 @@ HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSect
     return S_OK;
 }
 
+HRESULT CSection_Manager::Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
+{
+    CSection* pSection = Find_Section(_strSectionTag);
+    if (nullptr == pSection)
+        return E_FAIL;
+
+    if (FAILED(pSection->Remove_GameObject_ToSectionLayer(_pGameObject)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
 HRESULT CSection_Manager::Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
     if (nullptr == m_pCurSection)

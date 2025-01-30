@@ -6,14 +6,28 @@ CLayer::CLayer()
     
 }
 
-HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
+HRESULT CLayer::Add_GameObject(CGameObject* _pGameObject)
 {
-    if (nullptr == pGameObject)
+    if (nullptr == _pGameObject)
         return E_FAIL;
 
-    m_GameObjects.push_back(pGameObject);
+    m_GameObjects.push_back(_pGameObject);
 
     return S_OK;
+}
+
+HRESULT CLayer::Remove_GameObject(CGameObject* _pGameObject)
+{
+    auto iter = find_if(m_GameObjects.begin(), m_GameObjects.end(), [&_pGameObject](CGameObject* pGameObject) {
+        return _pGameObject->Get_GameObjectInstanceID() == pGameObject->Get_GameObjectInstanceID();
+        });
+    if (iter != m_GameObjects.end())
+    {
+        m_GameObjects.erase(iter);
+        return S_OK;
+    }
+    else
+        return E_FAIL;
 }
 
 void CLayer::Priority_Update(_float fTimeDelta)

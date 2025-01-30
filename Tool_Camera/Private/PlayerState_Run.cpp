@@ -21,6 +21,8 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		return;
 	}
 
+
+
 	_vector vMoveDir = XMVectorZero();
 	_bool bMove = false;
 	if (KEY_PRESSING(KEY::W))

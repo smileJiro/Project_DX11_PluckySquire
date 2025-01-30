@@ -3,6 +3,7 @@
 #include "SettingPanelBG.h"
 #include "ShopPanel_BG.h"
 #include "ShopItemBG.h"
+#include "Dialogue.h"
 
 BEGIN(Client)
 class CUI_Manager final : public CBase
@@ -27,20 +28,29 @@ private:
 	vector<CShopItemBG*>				m_pShopItemBGs;
 	vector<vector<CShopItemBG*>>		m_ShopItems;
 
+
+
 	_bool								m_isMakeItem = { false };
 	_bool								m_isMakeShop = { false };
-
-
-
 	_bool								m_isESC = { false };
 	_bool								m_isConfirmStore = { false };
-	_int								m_iPreIndex = { 0 };
+	_bool								m_isLogoChooseStage = { false };
 
+	_int								m_iPreIndex = { 0 };
 	_int								m_iSettingPanelIndex = { 0 };
 	_int								m_iLogoIndex = { 1 };
 	_bool								m_isStoreYesORNo = { true };
 
 	_int								m_iCurrentLevel = { -1 };
+
+	vector<CDialog::DialogData>			m_DialogDatas;
+	_tchar								m_tDialogId[MAX_PATH] = {};
+	_int								m_iCurrnetLineIndex = { 0 };
+	_bool								m_isPortraitRender = { true };
+
+
+
+
 
 public:
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
@@ -67,10 +77,24 @@ public:
 	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs) { m_ShopItems.push_back(_ItemBGs); }
 	void								pushBack_ShopItemBGs(CShopItemBG* _pBGs) { m_pShopItemBGs.push_back(_pBGs); }
 	void								Set_ChooseItem(_int _iIndex);
+	_bool								Get_LogoChanseStage() { return m_isLogoChooseStage; }
+	void								Set_LogoChangeState(_bool _LogoChooseStage) { m_isLogoChooseStage = _LogoChooseStage; }
 
+	vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
+	CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
 
-	_bool								Get_isMakeItem() { 
-		return m_isMakeItem; }
+	_tchar* Get_DialogId() { return m_tDialogId; }
+	void								Set_DialogId(const _tchar* _id) { wsprintf(m_tDialogId, _id); }
+
+	_int								Get_DialogueLineIndex() { return m_iCurrnetLineIndex; }
+	void								Set_DialogueLineIndex(_int _index) { m_iCurrnetLineIndex = _index; }
+
+	_bool								Get_PortraitRender() { return m_isPortraitRender; }
+	void								Set_PortraitRender(_bool _Render) { m_isPortraitRender = _Render; }
+
+	void								Pushback_Dialogue(CDialog::DialogData _DialogData);
+
+	_bool								Get_isMakeItem() { return m_isMakeItem; }
 	void								Set_isMakeItem(_bool _make) { m_isMakeItem = _make; }
 
 	HRESULT								Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);

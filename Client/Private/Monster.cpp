@@ -252,6 +252,7 @@ void CMonster::Free()
 	if (nullptr != m_pTarget)
 		Safe_Release(m_pTarget);
 
+	Safe_Release(m_pDraw);
 	Safe_Release(m_pFSM);
 	Safe_Release(m_pDetectionField);
 

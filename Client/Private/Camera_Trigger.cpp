@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Camera_Trigger.h"
 
+#include "Camera_Manager.h"
+
 CCamera_Trigger::CCamera_Trigger(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CTriggerObject(_pDevice, _pContext)
 {
@@ -21,6 +23,8 @@ HRESULT CCamera_Trigger::Initialize(void* _pArg)
 	CAMERA_TRIGGER_DESC* pDesc = static_cast<CAMERA_TRIGGER_DESC*>(_pArg);
 
 	m_iCameraTriggerType = pDesc->iCameraTriggerType;
+	m_szEventTag = pDesc->szEventTag;
+	m_isReturn = pDesc->isReturn;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -43,6 +47,17 @@ void CCamera_Trigger::Late_Update(_float _fTimeDelta)
 
 void CCamera_Trigger::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	switch (m_iCameraTriggerType) {
+	case ARM_TRIGGER:
+		break;
+	case CUTSCENE_TRIGGER:
+		Event_CameraTrigger(m_iCameraTriggerType, m_szEventTag);
+		break;
+	case FREEZE_X:
+		break;
+	case FREEZE_Z:
+		break;
+	}
 }
 
 void CCamera_Trigger::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
