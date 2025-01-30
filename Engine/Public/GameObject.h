@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CGameInstance;
 class CRay;
+class CCollider;
 class ENGINE_DLL CGameObject abstract : public CBase
 {
 public:
@@ -47,7 +48,7 @@ public:
 	CController_Transform*		Get_ControllerTransform() const					{ return m_pControllerTransform; }
 	_matrix						Get_WorldMatrix()								{ return m_pControllerTransform->Get_WorldMatrix(); }
  	virtual _vector				Get_Position() const							{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
-	virtual _float3				Get_Scale() const								{ return m_pControllerTransform->Get_Scale(); }
+	virtual _float3				Get_FinalScale() const							{ return m_pControllerTransform->Get_Scale(); }
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_bool						Is_Pooling() const								{ return m_isPooling; }
@@ -70,7 +71,7 @@ protected:
 	CGameInstance*				m_pGameInstance = nullptr;
 	CController_Transform*		m_pControllerTransform = nullptr; 
 	CRay*						m_pRayCom = nullptr;
-
+	vector<CCollider*>			m_ColliderComs;
 private:
 	static _uint				g_iInstanceIDCount;
 

@@ -18,6 +18,8 @@
 #include "Material.h"
 #include "Bone.h"
 #include "AnimEventGenerator.h"
+#include "Collider_Circle.h"
+#include "Collider_AABB.h"
 
 /* Etc */
 #include "Transform_2D.h"

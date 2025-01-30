@@ -256,7 +256,7 @@ HRESULT CGameObject::Imgui_Render_ObjectInfos()
 
 
     ImGui::PushItemWidth(150.f);
-    _float3 vScale = Get_Scale();
+    _float3 vScale = Get_FinalScale();
     if (ImGui::InputFloat3("       vScale", (float*)&vScale, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
         Set_Scale(vScale);
     ImGui::PopItemWidth();

@@ -127,6 +127,19 @@ HRESULT CPlayer::Ready_Components()
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
+
+
+
+   /* Test 2D Collider */
+   CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
+   AABBDesc.pOwner = this;
+   AABBDesc.fRadius = { 200.f };
+   AABBDesc.vScale = { 1.0f, 1.0f };
+   AABBDesc.vOffsetPosition = { 200.f, 200.f };
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+       TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+       return E_FAIL; 
+
     return S_OK;
 }
 
@@ -230,6 +243,9 @@ void CPlayer::Late_Update(_float _fTimeDelta)
 {
 
     CGameObject::Late_Update_Component(_fTimeDelta);
+
+    m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BOOK2D, this);
+
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -238,7 +254,7 @@ HRESULT CPlayer::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-
+    m_pColliderCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -597,6 +613,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         else
 			Equip_Part(PLAYER_PART_SWORD);
     }
+
     if (KEY_DOWN(KEY::F4))
     {
         Event_DeleteObject(this);
@@ -638,6 +655,9 @@ CGameObject* CPlayer::Clone(void* _pArg)
 
 void CPlayer::Free()
 {
+    // test
+    Safe_Release(m_pColliderCom);
+
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
     __super::Free();

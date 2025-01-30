@@ -4,9 +4,11 @@
 
 BEGIN(Engine)
 class CAnimEventGenerator;
+class CCollider; // test
 END
 BEGIN(Client)
 class CStateMachine;
+
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -430,6 +432,9 @@ private:
 
 
 	CGameObject* m_pCarryingObject = nullptr;
+
+private:
+	CCollider* m_pColliderCom = nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

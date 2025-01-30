@@ -167,7 +167,8 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 		{
 			PxRigidActor* pActor = static_cast<PxRigidActor*>(hit.block.actor);
 			ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
-			*_ppOutActorObject = pActorUserData->pOwner;
+			if(nullptr != pActorUserData)
+				*_ppOutActorObject = pActorUserData->pOwner;
 		}
 		if(nullptr != _pOutPos)
 			*_pOutPos = _float3(hit.block.position.x, hit.block.position.y, hit.block.position.z);
