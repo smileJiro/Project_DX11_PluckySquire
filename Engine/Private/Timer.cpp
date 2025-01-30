@@ -34,12 +34,13 @@ void CTimer::Update_Timer(void)
 	}
 
 	m_fTimeDelta = (_float)(m_FrameTime.QuadPart - m_LastTime.QuadPart) / (_float)m_CpuTick.QuadPart * m_fTimeScale;
-#ifdef _DEBUG
-	if (m_fTimeDelta > (1.f / 60.f))
-	{
-		m_fTimeDelta = (1.f / 60.f);
-	}
-#endif
+
+//#ifdef _DEBUG // 프레임 정상화 되면 다시 걸기.
+//	if (m_fTimeDelta > (1.f / 60.f))
+//	{
+//		m_fTimeDelta = (1.f / 60.f);
+//	}
+//#endif
 
 	m_LastTime = m_FrameTime;
 

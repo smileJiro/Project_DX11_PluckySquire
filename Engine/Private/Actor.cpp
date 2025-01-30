@@ -105,17 +105,17 @@ HRESULT CActor::Render()
 		return S_OK;
 	/* dx9 처럼 W,V,P 행렬을 던져준다. */
 
-		/* World Matrix를 Indentity로 던지는 이유 : 이미 각각의 CBounding* 가 소유한 BoundingDesc의 정점 자체를 이미 World까지 변환 할 것임. */
-	m_pEffect->SetWorld(XMMatrixIdentity());
-	m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
-	m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
-	m_pEffect->Apply(m_pContext);
-	m_pContext->IASetInputLayout(m_pInputLayout);
-	m_pBatch->Begin();
-	for (auto& pShape : m_Shapes)
-	{
-		if (false == pShape->getFlags().isSet(PxShapeFlag::eTRIGGER_SHAPE))
-			continue;
+    /* World Matrix를 Indentity로 던지는 이유 : 이미 각각의 CBounding* 가 소유한 BoundingDesc의 정점 자체를 이미 World까지 변환 할 것임. */
+    m_pEffect->SetWorld(XMMatrixIdentity());
+    m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
+    m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
+    m_pEffect->Apply(m_pContext);
+    m_pContext->IASetInputLayout(m_pInputLayout);
+    m_pBatch->Begin();
+    for (auto& pShape : m_Shapes)
+    {
+        if (false == pShape->getFlags().isSet(PxShapeFlag::eTRIGGER_SHAPE))
+            continue;
 
 		PxGeometryType::Enum eType = pShape->getGeometryType();
 
