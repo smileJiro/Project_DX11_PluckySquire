@@ -253,6 +253,12 @@
     <Filter Include="94.RenderGroups%28Custom%29\2D">
       <UniqueIdentifier>{0791b9f7-464c-4734-9777-7e162be1d4c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\00. NPC_Store">
+      <UniqueIdentifier>{a27943b2-2eef-4b1a-b1a1-44b51bd7431f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait">
+      <UniqueIdentifier>{59efe45f-490f-4395-b910-e2dc25f6fc99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -544,6 +550,15 @@
     <ClInclude Include="..\Public\RenderGroup_2D.h">
       <Filter>94.RenderGroups%28Custom%29\2D</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\NPC_Store.h">
+      <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC.h">
+      <Filter>02.GameObjects\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portrait.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -825,6 +840,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_2D.cpp">
       <Filter>94.RenderGroups%28Custom%29\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\NPC_Store.cpp">
+      <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC.cpp">
+      <Filter>02.GameObjects\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portrait.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

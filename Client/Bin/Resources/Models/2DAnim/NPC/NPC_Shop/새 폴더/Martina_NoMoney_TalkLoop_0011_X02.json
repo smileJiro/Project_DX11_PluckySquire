@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Martina_NoMoney_TalkLoop_0011_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1062.0,
+        "Y": 2820.0
+      },
+      "BakedSourceDimension": {
+        "X": 264.0,
+        "Y": 293.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'martina-0'",
+        "ObjectPath": "/Game/Characters/Friends/Martina/Textures/martina-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 120.0,
+          "Y": 262.0,
+          "Z": 0.32348633,
+          "W": 0.6887207
+        },
+        {
+          "X": -142.0,
+          "Y": 262.0,
+          "Z": 0.25952148,
+          "W": 0.6887207
+        },
+        {
+          "X": -142.0,
+          "Y": -29.0,
+          "Z": 0.25952148,
+          "W": 0.7597656
+        },
+        {
+          "X": 120.0,
+          "Y": -29.0,
+          "Z": 0.32348633,
+          "W": 0.7597656
+        },
+        {
+          "X": 120.0,
+          "Y": 262.0,
+          "Z": 0.32348633,
+          "W": 0.6887207
+        },
+        {
+          "X": -142.0,
+          "Y": -29.0,
+          "Z": 0.25952148,
+          "W": 0.7597656
+        }
+      ]
+    }
+  }
+]
