@@ -30,7 +30,7 @@ private:
 
 public:
 	static CTransform_2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CComponent* Clone(void* pArg) override;
+	virtual CComponent* Clone(void* pArg);
 	virtual void Free() override;
 };
 END

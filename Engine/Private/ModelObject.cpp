@@ -505,7 +505,7 @@ HRESULT CModelObject::Imgui_Render_ObjectInfos()
 
 
     ImGui::PushItemWidth(150.f);
-    _float3 vScale = Get_Scale();
+    _float3 vScale = m_pControllerTransform->Get_Scale();
     if (ImGui::InputFloat3("       Model_vScale", (float*)&vScale, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
         Set_Scale(vScale);
     ImGui::PopItemWidth();
