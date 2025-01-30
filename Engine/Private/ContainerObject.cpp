@@ -72,9 +72,16 @@ HRESULT CContainerObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _p
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
 
-
-    if (FAILED(m_PartObjects[PART_BODY]->Change_Coordinate(_eCoordinate, nullptr)))
-        return E_FAIL;
+    for (CGameObject* pPartObject : m_PartObjects)
+    {
+        if (nullptr != pPartObject)
+        {
+            if (FAILED(pPartObject->Change_Coordinate(_eCoordinate, nullptr)))
+                return E_FAIL;
+        }
+    }
+    //if (FAILED(m_PartObjects[PART_BODY]->Change_Coordinate(_eCoordinate, nullptr)))
+    //    return E_FAIL;
 
     return S_OK;
 }
