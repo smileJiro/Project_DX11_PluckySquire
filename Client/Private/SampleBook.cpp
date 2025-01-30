@@ -73,8 +73,7 @@ void CSampleBook::Update(_float _fTimeDelta)
 
 void CSampleBook::Late_Update(_float _fTimeDelta)
 {
-    //m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
-    m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
+    Register_RenderGroup(m_iRenderGroupID_3D, m_iPriorityID_3D);
     __super::Update(_fTimeDelta);
 }
 

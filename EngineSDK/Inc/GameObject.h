@@ -25,6 +25,7 @@ public:
 	virtual void				Update(_float _fTimeDelta);
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
+	virtual HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID);
 
 protected:/* Component Update */
 	void						Priority_Update_Component(_float _fTimeDelta);

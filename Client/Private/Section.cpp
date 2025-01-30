@@ -82,8 +82,7 @@ HRESULT CSection::Add_RenderGroup_GameObjects()
     {
         auto Objects = m_Layers[i]->Get_GameObjects();
         for_each(Objects.begin(), Objects.end(), [&](CGameObject* pGameObject) {
-            // TODO :: Render그룹에 바뀌게하자
-                m_pGameInstance->Add_RenderObject_New(m_iGroupID, m_iPriorityID, pGameObject);
+            pGameObject->Register_RenderGroup(m_iGroupID, m_iPriorityID);
             });
     }
 

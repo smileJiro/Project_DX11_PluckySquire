@@ -30,6 +30,7 @@ public:
 
 public:
 	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+	HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
 
 public:
 	CComponent*			Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag);

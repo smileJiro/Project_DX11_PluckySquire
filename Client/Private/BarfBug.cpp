@@ -156,9 +156,9 @@ void CBarfBug::Update(_float _fTimeDelta)
         _float3 vNewPos = _float3(10.0f, 6.0f, 0.0f);
 
         if (iCurCoord == COORDINATE_2D)
-            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_PartObjects[PART_BODY]);
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
         else 
-            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_PartObjects[PART_BODY]);
+            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     }
