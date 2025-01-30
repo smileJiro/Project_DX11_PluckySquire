@@ -135,6 +135,40 @@ void CTransform::Turn(_float _fTimeDelta, _fvector _vAxis)
     Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
 
+_bool CTransform::Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _float _fRatio)
+{
+    _vector vCross = XMVector3Cross(Get_State(CTransform::STATE_LOOK), _vDesireDir);
+    _vector vDot = XMVector3Dot(XMVector3Normalize(Get_State(CTransform::STATE_LOOK)), XMVector3Normalize(vDesireDir));
+    _float fCrossLength = XMVectorGetX(XMVector3Length(vCross));
+
+    _float fRotationValue = 1.f;
+
+    if (fCrossLength < 0.1f && XMVectorGetX(vDot) > 0) {
+        fRotationValue = 0.05f;
+        //m_fRotationPerSec = m_fPreRotationPerSec;
+    }
+
+    if (fCrossLength < 0.0001f) {
+        if (XMVectorGetX(vDot) > 0) {
+            Set_Look(vDesireDir);
+            return true;
+        }
+    }
+
+    _float3		vScale = Get_Scale();
+
+    //		vLook = Get_State(STATE_LOOK);
+
+    _vector     vLook = XMVectorLerp(_vStartDir, _vDesireDir, _fRatio);
+
+    _vector		vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
+    _vector		vUp = XMVector3Cross(vLook, vRight);
+
+    Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
+    Set_State(STATE_UP, XMVector3Normalize(vUp) * vScale.y);
+    Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
+}
+
 void CTransform::TurnAngle(_float _fRadian, _fvector _vAxis)
 {
     // 지속적인 회전.
@@ -272,6 +306,20 @@ _float CTransform::Compute_Distance(_fvector _vTargetPos) const
     _vector vPos = Get_State(STATE_POSITION);
 
     return XMVectorGetX(XMVector3Length(_vTargetPos - vPos));
+}
+
+void CTransform::Set_Look(_fvector _vDir)
+{
+    _float3		vScale = Get_Scale();
+
+    _vector		vPosition = Get_State(STATE_POSITION);
+    _vector		vLook = _vDir;
+    _vector		vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
+    _vector		vUp = XMVector3Cross(vLook, vRight);
+
+    Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
+    Set_State(STATE_UP, XMVector3Normalize(vUp) * vScale.y);
+    Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
 }
 
 HRESULT CTransform::Bind_ShaderResource(CShader* pShader, const _char* pConstantName) const

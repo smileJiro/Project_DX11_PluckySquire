@@ -102,18 +102,6 @@ void CCameraArm::Render_Arm()
     _vector vCameraPos = vTargetPos + (m_fLength * XMLoadFloat3(&m_vArm));
     _vector vColor = {};
 
-    switch (m_eArmType) {
-    case DEFAULT:
-        vColor = Colors::Red;
-        break;
-    case COPY:
-        vColor = Colors::White;
-        break;
-    case OTHER:
-        vColor = Colors::Yellow;
-        break;
-    }
-    
     m_pBatch->DrawLine(
         VertexPositionColor(vTargetPos, vColor),  // 시작점, 빨간색
         VertexPositionColor(vCameraPos, vColor)     // 끝점, 빨간색
@@ -171,6 +159,16 @@ void CCameraArm::Set_WorldMatrix()
     XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
 }
 
+void CCameraArm::Set_NextArmData(ARM_DATA* _pData)
+{
+    m_pNextArmData = _pData;
+    m_fStartLength = m_fLength;
+
+    if (true == _pData->isReturn) {
+        m_ArmStaks.push(make_pair(m_fLength, m_vArm));
+    }
+}
+
 _vector CCameraArm::Calculate_CameraPos(_float fTimeDelta)
 {
     _vector vTargetPos;
@@ -209,6 +207,11 @@ void CCameraArm::Set_ArmVector(_vector _vArm)
     m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 }
 
+void CCameraArm::Set_DesireVector()
+{
+    m_pNextArmData->vDesireArm = m_vArm;
+}
+
 #endif // _DEBUG
 
 
@@ -242,23 +245,23 @@ void CCameraArm::Turn_ArmY(_float fAngle)
     XMStoreFloat3(&m_vArm, vRoatateArm);
 }
 
-_float CCameraArm::Calculate_Ratio(_uint _iTimeRate, _float2* _fTime, _float _fTimeDelta)
+_float CCameraArm::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType)
 {
     _float fRatio = {};
 
-    //_fTime->y += _fTimeDelta;
-    //fRatio = _fTime->y / _fTime->x;
+    _fTime->y += _fTimeDelta;
+    fRatio = _fTime->y / _fTime->x;
 
-    //switch (_iTimeRate) {
-    //case EASE_IN:
-    //    fRatio = (fRatio + pow(fRatio, 2)) * 0.5f;
-    //    break;
-    //case EASE_OUT:
-    //    fRatio = 1.0f - ((1.0f - fRatio) + pow(1.0f - fRatio, 2)) * 0.5f;
-    //    break;
-    //case LERP:
-    //    break;
-    //}
+    switch (_iRatioType) {
+    case CCamera::EASE_IN:
+        fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
+        break;
+    case CCamera::EASE_OUT:
+        fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
+        break;
+    case CCamera::LERP:
+        break;
+    }
 
     return fRatio;
 }
@@ -266,14 +269,14 @@ _float CCameraArm::Calculate_Ratio(_uint _iTimeRate, _float2* _fTime, _float _fT
 _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
 {
     // Y축 회전
-    if (!(m_iRoateFlags & DONE_Y_ROTATE)) { // 안 끝났을 때
+    if (!(m_iMovementFlags & DONE_Y_ROTATE)) { // 안 끝났을 때
        
         m_pNextArmData->fMoveTimeAxisY.y += _fTimeDelta;
         _float fRatio = m_pNextArmData->fMoveTimeAxisY.y / m_pNextArmData->fMoveTimeAxisY.x;
 
         if (m_pNextArmData->fMoveTimeAxisY.y >= m_pNextArmData->fMoveTimeAxisY.x) {
             m_pNextArmData->fMoveTimeAxisY.y = 0.f;
-            m_iRoateFlags |= DONE_Y_ROTATE;
+            m_iMovementFlags |= DONE_Y_ROTATE;
         }
         else {
             _float fRotationPerSec = m_pGameInstance->Lerp(m_pNextArmData->fRotationPerSecAxisY.x, m_pNextArmData->fRotationPerSecAxisY.y, fRatio);
@@ -286,14 +289,15 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
         }
     }
 
-    if (!(m_iRoateFlags & DONE_RIGHT_ROTATE)) {
+    // Right 축 회전
+    if (!(m_iMovementFlags & DONE_RIGHT_ROTATE)) {
 
         m_pNextArmData->fMoveTimeAxisRight.y += _fTimeDelta;
         _float fRatio = m_pNextArmData->fMoveTimeAxisRight.y / m_pNextArmData->fMoveTimeAxisRight.x;
 
         if (m_pNextArmData->fMoveTimeAxisRight.y >= m_pNextArmData->fMoveTimeAxisRight.x) {
             m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
-            m_iRoateFlags |= DONE_RIGHT_ROTATE;
+            m_iMovementFlags |= DONE_RIGHT_ROTATE;
         }
         else {
             _float fRotationPerSec = m_pGameInstance->Lerp(m_pNextArmData->fRotationPerSecAxisRight.x, m_pNextArmData->fRotationPerSecAxisRight.y, fRatio);
@@ -307,14 +311,35 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
             XMStoreFloat3(&m_vArm, vLook);
         }
     }
+    
+    // Length 이동
+    if (!(m_iMovementFlags & DONE_LENGTH_MOVE)) {
 
-    if (ALL_DONE_ROTATE == (m_iRoateFlags & ALL_DONE_ROTATE)) {
-        m_iRoateFlags = RESET_FLAG;
+        _float fRatio = Calculate_Ratio(&m_pNextArmData->fLengthTime, _fTimeDelta, m_pNextArmData->iLengthRatioType);
+
+        if (m_pNextArmData->fLengthTime.y >= m_pNextArmData->fLengthTime.x) {
+            m_pNextArmData->fLengthTime.y = 0.f;
+            m_iMovementFlags |= DONE_LENGTH_MOVE;
+        }
+        else {
+            m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_pNextArmData->fLength, fRatio);
+        }
+    }
+
+    if (ALL_DONE_MOVEMENT == (m_iMovementFlags & ALL_DONE_MOVEMENT)) {
+        m_iMovementFlags = RESET_FLAG;
 
         return true;
     }
 
     return false;
+}
+
+_bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
+{
+
+
+    return _bool();
 }
 
 CCameraArm* CCameraArm::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg)

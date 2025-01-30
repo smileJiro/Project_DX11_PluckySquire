@@ -43,6 +43,8 @@ private:
 	_float2				m_fRotationPerSecAxisY{};
 	_float2				m_fRotationPerSecAxisRight{};
 	_float				m_fLength = {};
+	_uint				m_iLengthRatioType = {};
+	_bool				m_isReturn = {};
 
 
 	_float3				m_vResetArmPos = {};
