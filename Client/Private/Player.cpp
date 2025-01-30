@@ -562,8 +562,9 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 
 HRESULT CPlayer::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
 {
-   
+    m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this);
 
+    CContainerObject::Register_RenderGroup(_iGroupId, _iPriorityID);
     return S_OK;
 }
 
