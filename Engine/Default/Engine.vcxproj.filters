@@ -565,7 +565,7 @@
       <Filter>01.Utility\04.Components\Collider</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DebugDraw_For_Client.h">
-      <Filter>01.Utility\04.Components</Filter>
+      <Filter>01.Utility\04.Components\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -831,7 +831,7 @@
       <Filter>01.Utility\04.Components\Collider</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw_For_Client.cpp">
-      <Filter>01.Utility\04.Components</Filter>
+      <Filter>01.Utility\04.Components\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

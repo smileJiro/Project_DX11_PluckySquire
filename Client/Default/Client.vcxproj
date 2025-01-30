@@ -232,6 +232,7 @@
     <ClInclude Include="..\Public\Logo_Choose.h" />
     <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Map_2D.h" />
+    <ClInclude Include="..\Public\Monster_Body.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerState_Roll.h" />
     <ClInclude Include="..\Public\PlayerSword.h" />
@@ -333,6 +334,7 @@
     <ClCompile Include="..\Private\Logo_Choose.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Map_2D.cpp" />
+    <ClCompile Include="..\Private\Monster_Body.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerState_Roll.cpp" />
     <ClCompile Include="..\Private\PlayerSword.cpp" />
