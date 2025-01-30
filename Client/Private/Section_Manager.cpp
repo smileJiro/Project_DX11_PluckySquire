@@ -100,11 +100,11 @@ HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSect
     return S_OK;
 }
 
-HRESULT CSection_Manager::Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject)
+HRESULT CSection_Manager::Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
     if (nullptr == m_pCurSection)
         return E_FAIL;
-    return m_pCurSection->Add_GameObject_ToSectionLayer(_pGameObject);
+    return m_pCurSection->Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
 }
 HRESULT CSection_Manager::Remove_GameObject_ToCurSectionLayer(CGameObject* _pGameObject)
 {
@@ -290,7 +290,7 @@ HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPa
     inputFile >> ChapterJson;
     if (ChapterJson.is_array())
     {
-        _uint iModelSize = ChapterJson.size();
+        _uint iModelSize = (_uint)ChapterJson.size();
         m_2DModelInfos.resize(iModelSize);
         _uint iIndex = 0;
         for (auto ChildJson : ChapterJson)

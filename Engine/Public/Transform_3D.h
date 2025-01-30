@@ -49,7 +49,7 @@ private: /* For. Auto Rotation Y */
 
 public:
 	static CTransform_3D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CComponent* Clone(void* _pArg) override;
+	virtual CComponent* Clone(void* _pArg);
 	virtual void Free() override;
 };
 

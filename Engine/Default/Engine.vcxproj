@@ -210,6 +210,8 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Channel.h" />
     <ClInclude Include="..\public\Actor.h" />
     <ClInclude Include="..\public\Collider.h" />
+    <ClInclude Include="..\public\Collider_AABB.h" />
+    <ClInclude Include="..\public\Collider_Circle.h" />
     <ClInclude Include="..\public\Collision_Manager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -309,6 +311,8 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Channel.cpp" />
     <ClCompile Include="..\private\Actor.cpp" />
     <ClCompile Include="..\private\Collider.cpp" />
+    <ClCompile Include="..\private\Collider_AABB.cpp" />
+    <ClCompile Include="..\private\Collider_Circle.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

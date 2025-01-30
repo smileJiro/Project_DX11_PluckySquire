@@ -241,6 +241,7 @@
     <ClInclude Include="..\Public\Popuff.h" />
     <ClInclude Include="..\Public\Portrait.h" />
     <ClInclude Include="..\Public\Rat.h" />
+    <ClInclude Include="..\Public\RenderGroup_2D.h" />
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
     <ClInclude Include="..\Public\RenderGroup_Final.h" />
     <ClInclude Include="..\public\RenderGroup_Lights.h" />
@@ -346,6 +347,7 @@
     <ClCompile Include="..\Private\Popuff.cpp" />
     <ClCompile Include="..\Private\Portrait.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_2D.cpp" />
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
     <ClCompile Include="..\private\RenderGroup_Lights.cpp" />
