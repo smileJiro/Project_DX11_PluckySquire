@@ -73,6 +73,11 @@ private: /* Test Object */
 
 private:
 	float						m_fTimeAcc = 0.0f;
+
+public:
+	void						Set_DebugRender(_bool _isDebugRender) { m_isDebugRender = _isDebugRender; }
+private:
+	_bool						m_isDebugRender = true;
 private:
 	HRESULT						Initialize_Foundation();
 	HRESULT						Initialize_Physics();

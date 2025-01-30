@@ -225,6 +225,7 @@ public: /* For. Physx_Manager*/
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
 	_bool				RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
+	void				Set_Physx_DebugRender(_bool _isDebugRender);
 public: /* For. Frustum */
 	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);
 
