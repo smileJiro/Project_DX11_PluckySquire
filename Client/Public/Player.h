@@ -413,6 +413,8 @@ public:
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
+public: // Test code еб©У
+	HRESULT					Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
 
 private:
 	void					Someting(int a);

@@ -560,6 +560,13 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 	Set_PartActive(_ePartId, false);
 }
 
+HRESULT CPlayer::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
+{
+   
+
+    return S_OK;
+}
+
 
 void CPlayer::Someting(int a)
 {
