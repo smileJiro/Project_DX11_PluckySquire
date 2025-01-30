@@ -45,6 +45,7 @@ public:
 
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
 	_bool Play_Animation(_float _fTimeDelta);
+	_bool Play_Animation_Reverse(_float _fTimeDelta);
 	virtual void Reset() override;
 
 	void Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun);

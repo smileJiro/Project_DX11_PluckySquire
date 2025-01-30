@@ -34,7 +34,7 @@ public:
 	HRESULT					Bind_Material(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
 	HRESULT					Bind_Matrices(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
 	virtual _bool			Play_Animation(_float fTimeDelta) override;
-
+	virtual _bool			Play_Animation_Reverse(_float fTimeDelta) override;
 
 public:
 	// Get

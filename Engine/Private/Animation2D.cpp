@@ -169,6 +169,11 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 	return false;
 }
 
+_bool CAnimation2D::Play_Animation_Reverse(_float _fTimeDelta)
+{
+	return _bool();
+}
+
 void CAnimation2D::Reset()
 {
 	__super::Reset();

@@ -565,6 +565,7 @@
     <ClInclude Include="..\Public\Logo_Props.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ThrowSword.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -859,6 +860,7 @@
     <ClCompile Include="..\Private\Logo_Props.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
