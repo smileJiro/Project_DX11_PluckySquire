@@ -20,7 +20,7 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta) override;
 
 public:
-	void						Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pTargetPos = nullptr);
+	_bool						Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pTargetPos = nullptr);
 	void						Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData);
 
 private:

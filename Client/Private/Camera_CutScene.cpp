@@ -57,16 +57,18 @@ void CCamera_CutScene::Late_Update(_float _fTimeDelta)
 	__super::Compute_PipeLineMatrices();
 }
 
-void CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pTargetPos)
+_bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pTargetPos)
 {
 	m_pCurCutScene = Find_CutScene(_wszCutSceneName);
 
 	if (nullptr == m_pCurCutScene)
-		return;
+		return false;
 
 	m_isStartCutScene = true;
 	
 	Initialize_CameraInfo(_pTargetPos);
+
+	return true;
 }
 
 void CCamera_CutScene::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData)

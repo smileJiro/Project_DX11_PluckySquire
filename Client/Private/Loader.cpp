@@ -690,7 +690,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
-    Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
+    //Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -1033,10 +1033,12 @@ HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelI
                 case (_uint)TRIGGER_TYPE::CAMERA_TRIGGER:
                 {
                     _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
-
+                    _string szEventTag = Trigger_json["Camera Trigger Event Tag"];
+                    
                     CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
                     Desc.iCameraTriggerType = iCameraTriggerType;
+                    Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
 
                     Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
                     Desc.vHalfExtents = Data.vHalfExtents;

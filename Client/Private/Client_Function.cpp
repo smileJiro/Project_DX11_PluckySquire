@@ -124,7 +124,16 @@ namespace Client
 
 	}
 
-
+	void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::CAMERATRIGGER_EVENT;
+		tEvent.Parameters.resize(2);
+		
+		tEvent.Parameters[0] = (DWORD_PTR)_iCameraTriggerType;
+		tEvent.Parameters[1] = (DWORD_PTR)new _wstring(_szEventTag);
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
 
 	std::wstring StringToWstring(const std::string& _str)
 	{
