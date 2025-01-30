@@ -17,15 +17,14 @@ public:
 public:
 	HRESULT						Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
-public:
-	void						On_Kinematic();
-	void						On_Dynamic();
 
 public:
 	//Get
-	_vector					Get_LinearVelocity();
-	_vector					Get_AngularVelocity();
+	_vector						Get_LinearVelocity();
+	_vector						Get_AngularVelocity();
 	//Set
+	void							Set_Kinematic();
+	void							Set_Dynamic();
 	virtual void				Set_LinearVelocity(_fvector _vDirection, _float _fVelocity);
 	virtual void				Set_LinearVelocity(_fvector _vVelocity);
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity);
@@ -35,6 +34,8 @@ public:
 	virtual void				Add_Force(const _float3& _vForce);// ÀÏ¹ÝÀûÀÎ Èû
 	virtual void				Add_Impulse(const _float3& _vForce); // °­ÇÑ Èû
 
+
+	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix) override;
 private:
 
 public:

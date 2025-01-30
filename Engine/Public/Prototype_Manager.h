@@ -18,17 +18,21 @@
 #include "Material.h"
 #include "Bone.h"
 #include "AnimEventGenerator.h"
+#include "DebugDraw_For_Client.h"
 
 /* Etc */
 #include "Transform_2D.h"
 #include "Transform_3D.h"
 #include "CustomFont.h"
 #include "RenderTarget.h"
-#include "CameraArm.h"
-#include "CutScene_Sector.h"
+
+/* Trigger */
+#include "TriggerObject.h"
 
 /* Camera */
 #include "Camera_Free.h"
+#include "CameraArm.h"
+#include "CutScene_Sector.h"
 
 /* Object */
 #include "Particle_Sprite_Emitter.h"

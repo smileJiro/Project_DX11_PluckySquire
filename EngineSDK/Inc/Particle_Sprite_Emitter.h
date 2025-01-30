@@ -21,6 +21,8 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta) override ;
 	virtual HRESULT				Render() override;
 
+public:
+	virtual	void				Reset() override;
 
 private:
 	class CVIBuffer_Point_Particle* m_pParticleBufferCom = { nullptr };

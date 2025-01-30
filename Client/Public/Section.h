@@ -13,6 +13,7 @@ class CSection : public CBase
 public:
 	typedef struct tagSectionDesc
 	{
+		_int	 iLayerGroupCount = 1;
 		_wstring strSectionName;
 	}SECTION_DESC;
 protected:
@@ -21,41 +22,75 @@ protected:
 
 public:
 	// 1. Section 자체는 마땅히 할게 없다. Section_2D는 별도의 추가작업이 있겠지. 
-	virtual HRESULT Initialize();
+	virtual HRESULT Initialize(SECTION_DESC* pDesc);
 
 public: /* Object Layer와의 상호 작용 */
 	// 1. Section Layer에 Object를 추가하는 기능. (o)
-	HRESULT Add_GameObject_ToSectionLayer(CGameObject* _pGameObject);
+	HRESULT Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 0);
+	HRESULT Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject);
 
-private:
+public: // 왜 private?
 	// 2. Section Layer에 Object의 Active를 변경하는 기능. (o)
-	HRESULT SetActive_GameObjects(_bool _isActive);
+	HRESULT SetActive_GameObjects(_bool _isActive, _bool _isAllActive = true, _uint _iLayerIndex = 0);
 
 public:
 	// 3. Section Layer에 Object를 Renderer의 자신의 그룹에 Add 하는 기능.(x)
 	HRESULT Add_RenderGroup_GameObjects();
+
 	// 4. Section Layer에 Object의 DeadCheck를 하는 기능. (o)
-	HRESULT Cleanup_DeadReferences();
+	HRESULT Cleanup_DeadReferences(_bool _isAllCheck = true, _uint _iLayerIndex = 0);
+
 	// 5. Section Layer를 Clear 하는 기능. (o)
-	void	Clear_GameObjects();
+	void	Clear_GameObjects(_bool _isAllClear = true, _uint _iLayerIndex = 0);
 
+	_bool	Get_RenderGroupKey(_uint& _iOutputGroupID, _uint& _iOutputPriorityID) { 
+		_iOutputGroupID = m_iGroupID; 
+	_iOutputPriorityID = m_iPriorityID; 
+	return true; };
+
+
+	_bool			Is_CurSection(CGameObject* _pGameObject);
+
+
+	const _wstring& Get_SectionName() { return m_strName; }
+
+	template <typename Comparator>
+	void	Sort_Layer(Comparator _funcCompair, _uint _iLayerIndex = 0)
+	{
+		if (!Has_Exist_Layer(_iLayerIndex))
+			return;
+
+		auto& GameObjects = m_Layers[_iLayerIndex]->Get_GameObjects();
+		sort(GameObjects.begin(), GameObjects.end(), _funcCompair);
+	}
+
+	CLayer* Get_Include_Layer(CGameObject* _pGameObject);
 
 protected:
-	ID3D11Device*			m_pDevice = nullptr;
-	ID3D11DeviceContext*	m_pContext = nullptr;
-	CGameInstance*			m_pGameInstance = nullptr;
+	virtual HRESULT Layer_Sort() { return S_OK; };
 
 protected:
-	_wstring				m_strName;
-	CLayer*					m_pLayer = nullptr;
+	ID3D11Device*				m_pDevice = nullptr;
+	ID3D11DeviceContext*		m_pContext = nullptr;
+	CGameInstance*				m_pGameInstance = nullptr;
+
+protected:
+	_int						m_iGroupID = {};
+	_int						m_iPriorityID = {};
+	_uint						m_iLayerGroupCount = {};
+	_wstring					m_strName;
+	CLayer**					m_Layers = nullptr;
 
 private:
+	
+	_bool Has_Exist_Layer(_uint _iLayerIndex) { return _iLayerIndex < m_iLayerGroupCount && nullptr != m_Layers[_iLayerIndex];  }
+
 	/* Section은 update 기반이 아니다. 즉 본인이 Active False여도 기능수행 가능. */
 	virtual void Active_OnEnable();
 	virtual void Active_OnDisable();
 
 public:
-	static CSection* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CSection* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc);
 	void Free() override;
 };
 

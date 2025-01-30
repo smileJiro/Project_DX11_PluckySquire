@@ -42,6 +42,7 @@ private:
 	_float m_fAccDistance = { 0.f };
 	_float m_fMoveDistance = {};
 	_float m_fPatrolOffset = {};
+	_float m_fPatrol2DOffset = {};
 	PATROLBOUND m_tPatrolBound = {};
 	_int m_iPrevDir = {};
 	_int m_iDir = {};

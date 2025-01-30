@@ -58,15 +58,22 @@ void CGameObject::Priority_Update(_float _fTimeDelta)
 
 void CGameObject::Update(_float _fTimeDelta)
 {
+    CGameObject::Update_Component(_fTimeDelta);
 }
 
 void CGameObject::Late_Update(_float _fTimeDelta)
 {
+    CGameObject::Late_Update_Component(_fTimeDelta);
 }
 
 HRESULT CGameObject::Render()
 {
     return S_OK;
+}
+
+HRESULT CGameObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
+{
+    return m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this);
 }
 
 void CGameObject::Priority_Update_Component(_float _fTimeDelta)

@@ -43,7 +43,7 @@ void CUI::Update(_float fTimeDelta)
 
 void CUI::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 }
 
 HRESULT CUI::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)

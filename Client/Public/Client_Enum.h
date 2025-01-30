@@ -2,6 +2,48 @@
 #include "Engine_Defines.h"
 namespace Client
 {
+	enum RENDERGROUP
+	{
+		RG_2D = 1000,
+		RG_3D = 2000,
+
+		RG_LAST,
+	};
+
+	enum PRIORITY_3D
+	{
+		PR3D_BOOK2D =		0,
+		PR3D_PRIORITY =		10,
+		PR3D_SHADOW =		20,
+		PR3D_NONBLEND =		30,
+		PR3D_LIGHTS =		40,
+		PR3D_FINAL =		50,
+		PR3D_BLEND =		60,
+		PR3D_EFFECT =		70,
+		PR3D_AFTEREFFECT =	80,
+		PR3D_UI =			90,
+
+		PR3D_LAST = 999
+	};
+
+	
+	enum PRIORITY_2D
+	{
+		// 전처리 그룹
+		PR2D_PRIORITY =			0,
+		PR2D_SECTION_START =	10,
+		// 10 ~ 970 
+		//-> 섹션 유동생성 발급
+		
+		PR2D_SECTION_END =		970,
+		PR2D_UI =				980,
+		// 후처리 그룹
+		PR2D_AFTER =			990,
+		PR2D_LAST =				999
+	};
+
+
+
 	enum LEVEL_ID 
 	{
 		LEVEL_LOADING,
@@ -21,7 +63,7 @@ namespace Client
 		INTERACTION_OBEJCT =		0x10,
 		PLAYER_PROJECTILE =			0x20,
 		MONSTER_PROJECTILE =		0x40,
-								 // 0x80
+		TRIGGER_OBJECT =		    0x80,
 								 // 0x100
 								 // 0x200
 								 // 0x400 
@@ -40,6 +82,7 @@ namespace Client
 		CHANGE_MONSTERSTATE,
 		CHANGE_BOSSSTATE,
 		CHANGE_COORDINATE,
+		SET_KINEMATIC,
 		
 
 		LAST,
@@ -88,5 +131,11 @@ namespace Client
 		RIGHT_DOWN,
 		LEFT_DOWN,
 		E_DIR_LAST
+	};
+
+	enum class TRIGGER_TYPE
+	{
+		CAMERA_TRIGGER,
+		LAST
 	};
 }

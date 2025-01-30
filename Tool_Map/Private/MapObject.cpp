@@ -5,6 +5,7 @@
 #include "Material.h"
 
 #include "Bone.h"
+#include "Engine_Struct.h"
 #include <gizmo/ImGuizmo.h>
 
 CMapObject::CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -27,7 +28,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
 {
     MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
     m_strModelName = pDesc->szModelName;
-    m_matWorld = pDesc->matWorld;
+    m_matWorld = pDesc->tTransform3DDesc.matWorld;
 
     pDesc->eStartCoord = COORDINATE_3D;
     //pDesc->iCurLevelID = LEVEL_TOOL_3D_MAP;
@@ -42,6 +43,63 @@ HRESULT CMapObject::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
+
+
+
+    pDesc->eActorType = ACTOR_TYPE::STATIC;
+    CActor::ACTOR_DESC ActorDesc;
+
+    ActorDesc.pOwner = this;
+
+    ActorDesc.FreezeRotation_XYZ[0] = true;
+    ActorDesc.FreezeRotation_XYZ[1] = true;
+    ActorDesc.FreezeRotation_XYZ[2] = true;
+
+    ActorDesc.FreezePosition_XYZ[0] = false;
+    ActorDesc.FreezePosition_XYZ[1] = false;
+    ActorDesc.FreezePosition_XYZ[2] = false;
+
+    SHAPE_COOKING_DESC ShapeCookingDesc = {};
+    ShapeCookingDesc.isLoad = true;
+    ShapeCookingDesc.isSave = false;
+    //ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
+    //ShapeCookingDesc.strFilePath += "NonAnim/";
+    //ShapeCookingDesc.strFilePath += WstringToString(m_strModelName) + "/";
+    //ShapeCookingDesc.strFilePath += ".modelColl";
+    SHAPE_DATA ShapeData;
+    ShapeData.eShapeType = SHAPE_TYPE::COOKING;
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; 
+    ShapeData.pShapeDesc = &ShapeCookingDesc;
+    ShapeData.isTrigger = false;                   
+
+
+
+    //FILE* file = fopen("convex_mesh.bin", "rb");
+    //fseek(file, 0, SEEK_END);
+    //size_t fileSize = ftell(file);
+    //rewind(file);
+
+    //char* data = new char[fileSize];
+    //fread(data, 1, fileSize, file);
+    //fclose(file);
+
+    //PxDefaultMemoryInputData input(reinterpret_cast<PxU8*>(data), fileSize);
+    //PxConvexMesh* convexMesh = physics->createConvexMesh(input);
+    //delete[] data;
+
+
+    _float3 fScale = 
+    _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
+        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
+        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
+    _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, matScale);
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+
+    /* Actor Component Finished */
+    pDesc->pActorDesc = &ActorDesc;
+
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -53,13 +111,11 @@ HRESULT CMapObject::Initialize(void* _pArg)
             TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom),&RayDesc)))
         return E_FAIL;
 
-    if (pDesc->eCreateType == OBJ_LOAD)
-    {
-        Set_WorldMatrix(m_matWorld);
+    //if (pDesc->eCreateType == OBJ_LOAD)
+    //{
+    //    Set_WorldMatrix(m_matWorld);
 
-    }
-    //if (FAILED(Ready_Components(pDesc)))
-    //    return E_FAIL;
+    //}
 
     return S_OK;
 }
@@ -99,10 +155,13 @@ void CMapObject::Late_Update(_float _fTimeDelta)
 {
 
     /* Add Render Group */
-    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
-    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+    if (m_eMode != PREVIEW)
+    {
+        if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+            m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+        else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+            m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+    }
 
     /* Update Parent Matrix */
     CPartObject::Late_Update(_fTimeDelta);
@@ -139,6 +198,42 @@ HRESULT CMapObject::Render()
 
 HRESULT CMapObject::Render_Shadow()
 {
+    return S_OK;
+}
+
+HRESULT CMapObject::Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat)
+{
+
+    CPartObject::Update(0.f);
+    CPartObject::Late_Update(0.f);
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ViewMatrix", _ViewMat)))
+        return E_FAIL;
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ProjMatrix", _ProjMat)))
+        return E_FAIL;
+
+    switch (m_eColorShaderMode)
+    {
+        case Engine::C3DModel::COLOR_DEFAULT:
+            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
+                return E_FAIL;
+            m_iShaderPasses[COORDINATE_3D] = 3;
+            break;
+        case Engine::C3DModel::MIX_DIFFUSE:
+            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
+                return E_FAIL;
+            m_iShaderPasses[COORDINATE_3D] = 4;
+            break;
+        default:
+            m_iShaderPasses[COORDINATE_3D] = 0;
+            break;
+    }
+
+
+
+
+    CModelObject::Render();
     return S_OK;
 }
 

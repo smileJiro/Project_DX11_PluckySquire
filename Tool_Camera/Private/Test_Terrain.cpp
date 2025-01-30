@@ -52,10 +52,12 @@ void CTest_Terrain::Update(_float _fTimeDelta)
 void CTest_Terrain::Late_Update(_float _fTimeDelta)
 {
     /* Add Render Group */
-    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
-    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
+    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord()) {
+        if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
+            m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_NONBLEND, this);
+    }
+    //else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    //    m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
 
     /* Update Parent Matrix */
     CPartObject::Late_Update(_fTimeDelta);

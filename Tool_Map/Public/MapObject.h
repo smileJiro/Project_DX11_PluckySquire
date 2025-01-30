@@ -34,7 +34,6 @@ public:
 	typedef struct tagMapObjectDesc : public CModelObject::MODELOBJECT_DESC
 	{
 		_tchar			szModelName[MAX_PATH];
-		_float4x4		matWorld;
 		OBJ_CREATE_TYPE eCreateType;
 
 	}MAPOBJ_DESC;
@@ -68,6 +67,7 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 	virtual HRESULT			Render_Shadow() override;
+	HRESULT					Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat);
 
 	void					Set_Operation(OPERATION _eOper) { m_CurrentGizmoOperation = _eOper; }
 	OPERATION				Get_Operation() { return m_CurrentGizmoOperation; }

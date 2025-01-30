@@ -15,6 +15,7 @@
 #include "FSM.h"
 #include "FSM_Boss.h"
 #include "ActorObject.h"
+#include "Actor_Dynamic.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -107,11 +108,14 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Change_Coordinate(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::SET_KINEMATIC:
+		Execute_Set_Kinematic(_tEvent);
+		break;
 	default:
 		break;
 	}
 	
-	
+	//이벤트 매니저에서 Excute 함수 안에 Swichcase 추가
 	return S_OK;
 }
 
@@ -278,6 +282,17 @@ HRESULT CEvent_Manager::Execute_Change_Coordinate(const EVENT& _tEvent)
 	return S_OK;
 }
 
+HRESULT CEvent_Manager::Execute_Set_Kinematic(const EVENT& _tEvent)
+{
+	CActor_Dynamic* pActor = (CActor_Dynamic*)_tEvent.Parameters[0];
+	_bool bValue = (_bool)_tEvent.Parameters[1];
+	if (bValue)
+		pActor->Set_Kinematic();
+	else
+		pActor->Set_Dynamic();
+	return S_OK;
+}
+
 HRESULT CEvent_Manager::Execute_ChangeMonsterState(const EVENT& _tEvent)
 {
 	/* Parameter_0 : Changing State */
@@ -318,7 +333,7 @@ HRESULT CEvent_Manager::Execute_ChangeBossState(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
-	//CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
+	CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	
 	return S_OK;
@@ -328,7 +343,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
-	//CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 

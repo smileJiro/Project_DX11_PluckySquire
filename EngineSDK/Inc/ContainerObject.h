@@ -30,6 +30,8 @@ public:
 
 public:
 	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+	HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
+
 public:
 	CComponent*			Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag);
 	HRESULT				Add_PartObject(CGameObject* _pPartObject);
@@ -40,6 +42,11 @@ public:
 		if (true == m_PartObjects.empty())
 			return 0;
 		return (_int)m_PartObjects.size();
+	}
+	_bool Is_PartActive(_uint _iPartID) {
+		if (m_PartObjects[_iPartID] == nullptr)
+			return false;
+		return m_PartObjects[_iPartID]->Is_Active();
 	}
 	//Set
 	void				Set_PartActive(_uint _iPartID, _bool _bValue);

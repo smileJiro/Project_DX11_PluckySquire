@@ -25,7 +25,8 @@ HRESULT CTransform_3D::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 	TRANSFORM_3D_DESC* pDesc = static_cast<TRANSFORM_3D_DESC*>(_pArg);
-	RotationQuaternion(pDesc->vInitialRotation);
+    if(!pDesc->isMatrix)
+	    RotationQuaternion(pDesc->vInitialRotation);
     return S_OK;
 }
 

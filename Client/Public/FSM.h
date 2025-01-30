@@ -15,6 +15,9 @@ public:
 		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
+		_float fAlert2DRange;
+		_float fChase2DRange;
+		_float fAttack2DRange;
 		CMonster* pOwner;
 	}FSMDESC;
 
@@ -52,6 +55,9 @@ private:
 	_float	m_fAlertRange = {};
 	_float	m_fChaseRange = {};
 	_float	m_fAttackRange = {};
+	_float	m_fAlert2DRange = {};
+	_float	m_fChase2DRange = {};
+	_float	m_fAttack2DRange = {};
 
 public:
 	HRESULT CleanUp();

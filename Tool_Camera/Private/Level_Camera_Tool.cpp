@@ -57,9 +57,7 @@ HRESULT CLevel_Camera_Tool::Initialize()
 
 void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 {
-	//cout << "?" << endl;
-
-	// Change Camera Free  Or Target
+	// Change Camera Free  Or Target Or CutScene
 	if (KEY_DOWN(KEY::TAB)) {
 		_uint iCurCameraType = CCamera_Manager_Tool::GetInstance()->Get_CameraType();
 		iCurCameraType ^= 1;
@@ -73,6 +71,10 @@ void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 
 		CCamera_Manager_Tool::GetInstance()->Change_CameraType(iCurCameraType);
 	}
+
+	// Chagne To Trigger Tool
+	if (KEY_DOWN(KEY::ENTER))
+		Event_LevelChange(LEVEL_LOADING, LEVEL_TRIGGER_TOOL);
 
 	Show_CameraTool();
 	Show_CutSceneTool(_fTimeDelta);
@@ -1100,7 +1102,7 @@ void CLevel_Camera_Tool::Set_AtOffsetInfo()
 	ImGui::Text("             AtOffset Info");
 	ImGui::Separator();
 
-	ImGui::Text("Position: %.2f, %.2f, %.2f", m_vNextAtOffset.x, m_vNextAtOffset.y, m_vNextAtOffset.z);
+	ImGui::Text("AtOffset: %.2f, %.2f, %.2f", m_vNextAtOffset.x, m_vNextAtOffset.y, m_vNextAtOffset.z);
 	ImGui::SameLine();
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
@@ -1785,7 +1787,7 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 			return;
 		
 		// Save
-		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/Client/";
+		_wstring wszSavePath = L"../../Client/Bin/DataFiles/Camera/CutSceneData/";
 		_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
 
 		std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);
@@ -1823,7 +1825,7 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 		m_BinaryFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
 	}
 	else {
-		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/Tool/";
+		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/";
 		_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
 
 		std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);

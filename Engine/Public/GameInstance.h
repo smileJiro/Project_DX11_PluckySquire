@@ -16,6 +16,8 @@ private:
 	CGameInstance();
 	virtual ~CGameInstance() = default;
 
+private: /* Renderer 때문에 임시 */
+	_bool m_isNewRenderer = false;
 public: /* For.GameInstance */
 	HRESULT				Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext);
 	void				Priority_Update_Engine(_float fTimeDelta);
@@ -77,7 +79,24 @@ public: /* For.Renderer */
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);	
 	void				Set_DebugRender(_bool _isBool);
+#endif
 
+public: /* For. NewRenderer*/
+	HRESULT				Add_RenderGroup(_int _iGroupID, _int _iPriorityID, class CRenderGroup* _pRenderGroup);
+	class CRenderGroup*	Find_RenderGroup(_int _iGroupID, _int _iPriorityID);
+	HRESULT				Add_RenderObject_New(_int _iGroupID, _int _iPriorityID, CGameObject* _pGameObject);
+	HRESULT				Erase_RenderGroup_New(_int _iGroupID, _int _iPriorityID);
+	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _float2 _vDSVSize);
+	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight);
+	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
+	HRESULT				Erase_DSV_ToRenderer(const _wstring _strDSVTag);
+	ID3D11DepthStencilView* Find_DSV(const _wstring& _strDSVTag);
+	const _float4x4*	Get_WorldMatrix_Renderer() const;
+	const _float4x4*	Get_ViewMatrix_Renderer() const;
+	const _float4x4*	Get_ProjMatrix_Renderer() const;
+#ifdef _DEBUG
+	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
+	void				Set_DebugRender_New(_bool _isBool);
 #endif
 
 public: /* For. Key_Manager */
@@ -115,7 +134,7 @@ public: /* For. Font_Manager s*/
 	HRESULT				Render_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f));
 
 public: /* For. Target_Manager */
-	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor);
+	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
 	HRESULT				Add_MRT(const _wstring& _strMRTTag, const _wstring& _strTargetTag);
 	HRESULT				Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool isClear = true);	/* 지정한 RenderTargets를 셰이더에 바인딩하고 그리기 준비를 하는 */
 	HRESULT				End_MRT(); /* 렌더링을 마친 후, 기존의 BackRTV를 다시 바인딩 한다. */
@@ -183,7 +202,8 @@ public: /* For. GlobalFunction_Manager */
 	_float				Lerp(_float _fLeft, _float _fRight, _float _fRatio);
 	_fvector			Get_BezierCurve(_fvector _vStartPoint, _fvector _vGuidePoint, _fvector _vEndPoint, _float _fRatio);
 	_bool				MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix);
-	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);
+	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);		//노말벡터 기준으로 방향 벡터 간 각도 구함 (0-360도 간)
+	_float				Clamp_Degrees(_float _fDegrees);		//0~360도 사이로 만듦
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();
@@ -199,11 +219,12 @@ public: /* For. Physx_Manager*/
 	void				Physx_Update(_float _fTimeDelta);
 	HRESULT				Physx_Render();
 	PxPhysics*			Get_Physics() const;
+	PxCooking*			Get_Cooking() const;
 	PxScene*			Get_Physx_Scene() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
-
+	_bool				RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 public: /* For. Frustum */
 	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);
 
@@ -214,6 +235,7 @@ private:
 	class CPrototype_Manager* m_pPrototype_Manager = nullptr;
 	class CObject_Manager* m_pObject_Manager = nullptr;
 	class CRenderer* m_pRenderer = nullptr;
+	class CNewRenderer* m_pNewRenderer = nullptr; // New 
 	class CKey_Manager* m_pKey_Manager = nullptr;
 	class CPipeLine* m_pPipeLine = nullptr;
 	class CLight_Manager* m_pLight_Manager = nullptr;

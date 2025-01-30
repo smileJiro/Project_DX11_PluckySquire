@@ -27,10 +27,10 @@ class ENGINE_DLL CActor abstract : public CComponent
 public:
 	typedef struct tagActorDesc
 	{
-		tagActorDesc() { XMStoreFloat4x4(&OffsetMatrix, XMMatrixIdentity()); }
+		tagActorDesc() { XMStoreFloat4x4(&ActorOffsetMatrix, XMMatrixIdentity()); }
 		CActorObject*			pOwner = nullptr;
 		vector<SHAPE_DATA>		ShapeDatas;
-		_float4x4				OffsetMatrix = {};
+		_float4x4				ActorOffsetMatrix = {};
 		_bool					FreezeRotation_XYZ[3] = { false, true, false };
 		_bool					FreezePosition_XYZ[3] = { false, false, false };
 		
@@ -47,20 +47,24 @@ public:
 	void						Priority_Update(_float _fTimeDelta) override;
 	void						Update(_float _fTimeDelta)  override;
 	void						Late_Update(_float _fTimeDelta)  override;
+
 #ifdef _DEBUG
 public:
 	virtual HRESULT				Render();
 #endif
+
 public:/* Default PhysX */
 	virtual void				Set_LinearVelocity(_vector _vDirection, _float _fVelocity) { return; }
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity) { return; }
 	virtual void				Add_Force(const _float3& _vForce) { return; };// 일반적인 힘
 	virtual void				Add_Impulse(const _float3& _vForce) { return; }; // 강한 힘
-	
+
+	_float3						Get_GlobalPose();
+	void						Set_GlobalPose(const _float3& _vPos);
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);
-
+	HRESULT						Delete_Shape(_int _iShapeIndex);
 public:
 	virtual void				Turn_TargetDirection(_vector _vDirection) { return; }
 
@@ -69,18 +73,27 @@ public: /* Event Filter */
 
 public:
 	// Get
+	const vector<PxShape*>&		Get_Shapes() { return m_Shapes; }
 	ACTOR_TYPE					Get_ActorType() const { return m_eActorType; }
+
 	// Set 
+	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix); // 특별한 경우 아니면 사용을 비권장하겠음. 버그있는듯함.
+
+	HRESULT						Set_ShapeLocalOffsetMatrix(_int _iShapeIndex, _fmatrix _ShapeLocalOffsetMatrix); // 크기는 안되고 위치랑 회전만 가능함.
+	HRESULT						Set_ShapeLocalOffsetPosition(_int _iShapeIndex, const _float3& _vOffsetPos); // shape offset 위치 변경.
+	HRESULT						Set_ShapeLocalOffsetQuaternion(_int _iShapeIndex, const _float4& _vQuat); // 쿼터니언
+	HRESULT						Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float3& _vPitchYawRoll); // xyz 회전량 넣으면 쿼터니언으로 변환해서 넣음.
+	HRESULT						Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc); // shape 크기변경
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;
 
+protected:
+	vector<PxShape*>			m_Shapes;
+
 protected: /* Actor Default Data */
 	ACTOR_TYPE					m_eActorType = ACTOR_TYPE::LAST;	
 	_float4x4					m_OffsetMatrix = {};
-	
-protected:
-	ACTOR_USERDATA				m_UserData;
 
 private:
 	/* Active 변경시 호출되는 함수 추가. */
@@ -89,7 +102,6 @@ private:
 
 #ifdef _DEBUG
 protected:
-	vector<PxShape*>						m_pTriggerShapes;	
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
 	BasicEffect*							m_pEffect = nullptr;
 	ID3D11InputLayout*						m_pInputLayout = nullptr;

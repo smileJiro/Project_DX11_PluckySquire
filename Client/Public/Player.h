@@ -392,19 +392,22 @@ public:
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Stop_Rotate();
 	void Stop_Move();
-	void Attack(_uint _iCombo);
+
 	void Jump();
 	//Get
-	F_DIRECTION Get_2DDirection() { return m_e2DDirection; }
+	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
 	_bool Is_OnGround();
 	_float Get_UpForce();
 	_float Get_AnimProgress();
+	_bool Is_SwordEquiped();
+	_bool Is_CarryingObject();
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
+	void Set_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
-	void Set_2DDirection(F_DIRECTION _eFDir);
+	void Set_2DDirection(E_DIRECTION _eEDir);
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
@@ -421,10 +424,14 @@ private:
 	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
 	CStateMachine* m_pStateMachine = nullptr;
-	F_DIRECTION m_e2DDirection = F_DIRECTION::F_DIR_LAST;
+	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
 	_vector m_vLookBefore = {};
-	
+
+	class CPlayerSword* m_pSword = nullptr;
+
+	CGameObject* m_pCarryingObject = nullptr;
+
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

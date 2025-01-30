@@ -24,7 +24,6 @@ public:
 	void Set_OneFrameDeltaTime(_float _iDeltaTime) { m_iOneFrameDeltaTime = _iDeltaTime; }
 private:
 	CGameInstance* m_pGameInstance = nullptr;
-
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
 
@@ -42,6 +41,8 @@ private:
 private:
 	HRESULT Initialize_Client_Manager();
 	HRESULT Ready_Font();
+	HRESULT Ready_RenderTargets();
+	HRESULT Ready_RenderGroup();
 
 public:
 	static CMainApp* Create();
@@ -49,10 +50,6 @@ public:
 };
 
 END
-
-
-
-
 
 /*
 class C¿Ã∏ß

@@ -20,6 +20,7 @@ public:
 	HRESULT						Render();
 public:
 	PxPhysics*					Get_Physics() const { return m_pPxPhysics; }
+	PxCooking*					Get_Cooking() const { return m_pPxCooking; }
 	PxScene*					Get_Scene() const { return m_pPxScene; }
 	PxMaterial*					Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
 	_uint						Create_ShapeID() { return m_iShapeInstanceID++; };
@@ -32,6 +33,9 @@ private: /* Core PhysX */
 	PxFoundation*				m_pPxFoundation = nullptr;
 	PxPhysics*					m_pPxPhysics = nullptr;
 	PxDefaultCpuDispatcher*		m_pPxDefaultCpuDispatcher = nullptr;
+
+private: /* PhysX Cooking */
+	PxCooking*					m_pPxCooking = nullptr;
 
 private:/* Scene (추후 분리 예정)*/
 	PxScene*					m_pPxScene = nullptr;
@@ -56,6 +60,7 @@ private: /* Event CallBack Class */
 public:
 	void Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	void Delete_ShapeUserData();
+	_bool RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 
 private: /* SHAPE_USERDATA : 메모리 해제용 */
 	vector<SHAPE_USERDATA*> m_pShapeUserDatas;
