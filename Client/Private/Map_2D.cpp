@@ -123,6 +123,7 @@ HRESULT CMap_2D::Copy_DefaultMap_ToRenderTarget()
 	
 	if (nullptr != pSrcResource && nullptr != pDestResource)
 		m_pContext->CopyResource(pDestResource, pSrcResource);
+	Safe_Release(pSrcResource);
 
 	return S_OK;
 }
