@@ -33,9 +33,8 @@ public:
 	HRESULT				Ready_DataFiles();
 
 private:
-	vector<pair<TRIGGEROBJECT_DATA, CTriggerObject*>>	m_Triggers;
+	list<pair<TRIGGEROBJECT_DATA, CTriggerObject*>>		m_Triggers;
 	pair<TRIGGEROBJECT_DATA, CTriggerObject*>*			m_pCurTrigger = { nullptr };
-	_uint				m_iTriggerObjectTagNum = {};		// Ray 되기 전 임시
 
 	_float3				m_vPosition = {};
 	_float3				m_vRotation = {};
@@ -46,7 +45,7 @@ private:
 	SHAPE_TYPE			m_eShapeType = {};
 
 	_uint				m_iFillterMyGroup = {};				// 현재 선택한 곳, 만들 때 m_szObjectGroupTag[m_iFillterMyGroup].first로 넣으면 됨
-	_uint				m_iFillterOtherGroup = {};		// 현재 선택한 곳, 만들 때 m_szObjectGroupTag[m_iFillterMyGroup].first로 넣으면 됨
+	_uint				m_iFillterOtherGroup = {};			// 현재 선택한 곳, 만들 때 m_szObjectGroupTag[m_iFillterMyGroup].first로 넣으면 됨
 	_uint				m_iTotalOtherGroupMask = {};		// || 연산 후 Total
 
 	_uint				m_iTriggerType = {};
@@ -59,7 +58,6 @@ private:
 	vector<_wstring>	m_ShapeTags;
 	vector<pair<_uint, _wstring>>	m_ObjectGroupTags;
 	vector<_wstring>	m_CameraTriggerTags;				// Camera Trigger
-	vector<_wstring>	m_TriggerObjectTags;				// Ray 되기 전에 임시
 
 	// ========== Camera Trigger
 	_uint				m_iCameraTriggerType = {};
@@ -82,7 +80,6 @@ private:
 	void				Show_MyObjectGroup();
 	void				Show_OtherGroup();
 	void				Show_CameraTriggerListBox();			// Camera Trigger
-	void				Show_TriggerObjectTagListBox();			// Ray 되기 전 임시
 
 	void				Set_TriggerBasicInfo();
 	void				Set_TriggerInfoByType();
@@ -90,6 +87,7 @@ private:
 	void				Create_Trigger();
 	void				Delete_Trigger();
 	void				Edit_Trigger();
+	void				Set_CurTrigger();
 
 	// Camera Trigger
 	HRESULT				Create_Camera_Trigger();
@@ -98,6 +96,7 @@ private:
 	void				Initialize_ListBoxName();
 	void				Picking();
 	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
+	pair<TRIGGEROBJECT_DATA, CTriggerObject*>* Get_SelectedTrigger();
 
 	void				Save_TriggerData();
 	void				Load_TriggerData();

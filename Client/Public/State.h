@@ -18,6 +18,9 @@ public:
 		_float fAlertRange;
 		_float fChaseRange;
 		_float fAttackRange;
+		_float fAlert2DRange;
+		_float fChase2DRange;
+		_float fAttack2DRange;
 	}STATEDESC;
 
 protected:
@@ -49,6 +52,9 @@ public:
 	HRESULT CleanUp();
 
 protected:
+	_float Get_CurCoordRange(MONSTER_STATE _eState);
+
+protected:
 	CGameInstance* m_pGameInstance = { nullptr };
 	CGameObject* m_pTarget = { nullptr };
 	//상태를 가지는 몬스터
@@ -58,6 +64,9 @@ protected:
 	_float	m_fAlertRange = {};
 	_float	m_fChaseRange = {};
 	_float	m_fAttackRange = {};
+	_float	m_fAlert2DRange = {};
+	_float	m_fChase2DRange = {};
+	_float	m_fAttack2DRange = {};
 
 public:
 	virtual void Free() override;

@@ -30,6 +30,7 @@
 
 #include "ModelObject.h"
 #include "Player.h"
+#include "PlayerSword.h"
 #include "TestTerrain.h"
 
 #include "2DModel.h"
@@ -39,6 +40,7 @@
 #include "set"
 #include "StateMachine.h"
 #include "MapObject.h"
+#include "DetectionField.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -48,8 +50,11 @@
 #include "Goblin.h"
 #include "Rat.h"
 #include "BirdMonster.h"
-#include "Soldier.h"
+#include "Soldier_Spear.h"
+#include "Soldier_CrossBow.h"
+#include "Soldier_Bomb.h"
 #include "Popuff.h"
+#include "Monster_Body.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -63,6 +68,8 @@
 // Sample
 #include "SampleBook.h"
 #include "2DDefault_RenderObject.h"
+
+#include "DebugDraw_For_Client.h"
 
 
 
@@ -224,7 +231,10 @@ HRESULT CLoader::Loading_Level_Static()
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
 
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
+    //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
+    //    return E_FAIL;
+    //
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
         return E_FAIL;
 
 
@@ -279,8 +289,18 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
         CStateMachine::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"),
+        CPlayer::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"),
+        CPlayerSword::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     /* Monster */
+
+    /* For. Prototype_GameObject_Monster_Body */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"),
+        CMonster_Body::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
      /* For. Prototype_GameObject_Beetle */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"),
@@ -317,9 +337,19 @@ HRESULT CLoader::Loading_Level_Static()
         CBirdMonster::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"),
-        CSoldier::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_Soldier_Spear */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"),
+        CSoldier_Spear::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_CrossBow */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_CrossBow"),
+        CSoldier_CrossBow::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_Bomb */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Bomb"),
+        CSoldier_Bomb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Popuff */
@@ -370,6 +400,17 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DetectionField"),
+        CDetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    #ifdef _DEBUG
+    
+    #endif // _DEBUG
+
+    
 
 
 
@@ -498,7 +539,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
     
     //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
     //    return E_FAIL;
-    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
@@ -520,9 +561,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"),
-        CPlayer::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
 
     // ============ Camera
     /* For. Prototype_GameObject_Camera_Free */
@@ -617,10 +655,10 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    // 액터 들어가는넘. 뺌.
+    //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
 
-    Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
-
-    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Free_Enviroment.mchc");
+    Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
     Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
 
@@ -777,7 +815,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
     return S_OK;
 }
 
-HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix)
+HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix, _bool _isCollider)
 {
     std::ifstream input_file(_szJsonFilePath);
 
@@ -807,7 +845,7 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
         if (strModelNames.find(strFileName) != strModelNames.end())
         {
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring( strFileName),
-                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix, _isCollider))))
                 return E_FAIL;
 			iLoadedCount++;
 			if (iLoadedCount >= iLoadCount)
@@ -872,6 +910,8 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             NormalDesc.isCoordChangeEnable = false;
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
             NormalDesc.eStartCoord = COORDINATE_3D;
+            NormalDesc.tTransform3DDesc.isMatrix = true;
+            NormalDesc.tTransform3DDesc.matWorld = vWorld;
             CGameObject* pGameObject = nullptr;
             m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
                 _eObjectLevelId,
@@ -917,7 +957,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
                         pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
                     }
                 }
-                pGameObject->Set_WorldMatrix(vWorld);
+                //pGameObject->Set_WorldMatrix(vWorld);
             }
         }
     }

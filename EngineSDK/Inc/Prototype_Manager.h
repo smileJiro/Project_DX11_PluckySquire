@@ -18,6 +18,7 @@
 #include "Material.h"
 #include "Bone.h"
 #include "AnimEventGenerator.h"
+#include "DebugDraw_For_Client.h"
 #include "Collider_Circle.h"
 #include "Collider_AABB.h"
 

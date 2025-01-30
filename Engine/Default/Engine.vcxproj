@@ -225,6 +225,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\CustomFont.h" />
     <ClInclude Include="..\Public\CutScene_Sector.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
+    <ClInclude Include="..\Public\DebugDraw_For_Client.h" />
     <ClInclude Include="..\public\Frustum.h" />
     <ClInclude Include="..\public\NewRenderer.h" />
     <ClInclude Include="..\public\Particle_Emitter.h" />
@@ -325,6 +326,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CutScene_Sector.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
+    <ClCompile Include="..\Private\DebugDraw_For_Client.cpp" />
     <ClCompile Include="..\private\Frustum.cpp" />
     <ClCompile Include="..\private\NewRenderer.cpp" />
     <ClCompile Include="..\private\Particle_Emitter.cpp" />

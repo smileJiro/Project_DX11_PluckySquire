@@ -564,11 +564,8 @@
     <ClInclude Include="..\public\Collider.h">
       <Filter>01.Utility\04.Components\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Collider_Circle.h">
-      <Filter>01.Utility\04.Components\Collider\Circle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Collider_AABB.h">
-      <Filter>01.Utility\04.Components\Collider\AABB</Filter>
+    <ClInclude Include="..\Public\DebugDraw_For_Client.h">
+      <Filter>01.Utility\04.Components\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -833,11 +830,8 @@
     <ClCompile Include="..\private\Collider.cpp">
       <Filter>01.Utility\04.Components\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Collider_Circle.cpp">
-      <Filter>01.Utility\04.Components\Collider\Circle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Collider_AABB.cpp">
-      <Filter>01.Utility\04.Components\Collider\AABB</Filter>
+    <ClCompile Include="..\Private\DebugDraw_For_Client.cpp">
+      <Filter>01.Utility\04.Components\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

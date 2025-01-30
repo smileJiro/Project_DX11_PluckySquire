@@ -18,8 +18,13 @@
 #include "Goblin.h"
 #include "Popuff.h"
 #include "Rat.h"
-#include "Soldier.h"
+#include "Soldier_Spear.h"
+#include "Soldier_CrossBow.h"
+#include "Soldier_Bomb.h"
 #include "ButterGrump.h"
+
+
+#include "MapObject.h"
 
 
 //#include "UI.h"
@@ -43,6 +48,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
+
+	//액터 들어가는넘.,
+	Ready_Layer_Map();
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
@@ -196,6 +204,13 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	return S_OK;
 }
 
+HRESULT CLevel_GamePlay::Ready_Layer_Map()
+{
+	if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
+		return E_FAIL;
+	return S_OK;
+}
+
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
@@ -279,7 +294,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), LEVEL_GAMEPLAY, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
 
 
@@ -668,11 +683,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
-	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
-		return E_FAIL;
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//CGameObject* pGameObject = nullptr;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &Monster_Desc)))
+	//	return E_FAIL;
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Section_Test"), pGameObject);
 	/*Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.35f, -15.0f);
@@ -714,6 +729,111 @@ void CLevel_GamePlay::Create_Arm()
 	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 
 	pTarget->Add_CurArm(pArm);
+}
+
+HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
+{
+	wstring strFileName = _strFileName;
+
+	_wstring strFullFilePath = MAP_3D_DEFAULT_PATH + strFileName;
+
+	HANDLE	hFile = CreateFile(strFullFilePath.c_str(),
+		GENERIC_READ,
+		NULL,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		return E_FAIL;
+	}
+	_uint iCount = 0;
+
+	DWORD	dwByte(0);
+	_uint iLayerCount = 0;
+	_int isTempReturn = 0;
+	isTempReturn = ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
+
+	for (_uint i = 0; i < iLayerCount; i++)
+	{
+		_uint		iObjectCnt = 0;
+		_char		szLayerTag[MAX_PATH];
+		wstring		strLayerTag;
+
+		isTempReturn = ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
+
+		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
+		for (size_t i = 0; i < iObjectCnt; i++)
+		{
+			_char		szSaveMeshName[MAX_PATH];
+			_float4x4	vWorld = {};
+
+
+			isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+			isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+
+
+			CMapObject::MAPOBJ_DESC NormalDesc = {};
+			NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
+			NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
+			NormalDesc.isCoordChangeEnable = false;
+			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+			NormalDesc.eStartCoord = COORDINATE_3D;
+			NormalDesc.tTransform3DDesc.isMatrix = true;
+			NormalDesc.tTransform3DDesc.matWorld = vWorld;
+			CGameObject* pGameObject = nullptr;
+			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+				LEVEL_GAMEPLAY,
+				strLayerTag,
+				&pGameObject,
+				(void*)&NormalDesc);
+
+			if (pGameObject)
+			{
+				DWORD	dwByte(0);
+				_uint iOverrideCount = 0;
+				C3DModel::COLOR_SHADER_MODE eTextureType;
+				_float4 fDefaultDiffuseColor;
+
+
+				isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+				static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
+
+				switch (eTextureType)
+				{
+				case Engine::C3DModel::COLOR_DEFAULT:
+				case Engine::C3DModel::MIX_DIFFUSE:
+				{
+					isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+					static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
+				}
+				break;
+				default:
+					break;
+				}
+
+				isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
+				if (0 < iOverrideCount)
+				{
+					CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
+					for (_uint i = 0; i < iOverrideCount; i++)
+					{
+						_uint iMaterialIndex, iTexTypeIndex, iTexIndex;
+						isTempReturn = ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+						isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
+						isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
+
+						pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
+					}
+				}
+				//pGameObject->Set_WorldMatrix(vWorld);
+			}
+		}
+	}
+	CloseHandle(hFile);
+	return S_OK;
 }
 
 CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

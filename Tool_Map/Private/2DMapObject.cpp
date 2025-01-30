@@ -95,7 +95,7 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 
 	_float2 fRealPos = { fRelativeX * m_fRenderTargetSize.x , fRelativeY * m_fRenderTargetSize.y };
 
-	_vector fPosition = Get_Position();
+	_vector fPosition = Get_FinalPosition();
 	_float fPosX = XMVectorGetX(fPosition) + (m_fRenderTargetSize.x * 0.5f);
 	_float fPosY = (XMVectorGetY(fPosition) * -1.f) + (m_fRenderTargetSize.y * 0.5f);
 
@@ -116,7 +116,7 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 HRESULT C2DMapObject::Export(HANDLE hFile)
 {
 
-	_vector vPos = Get_Position();
+	_vector vPos = Get_FinalPosition();
 
 	DWORD		dwByte(0);
 	_uint		iModelIndex = nullptr != m_pModelInfo ? m_pModelInfo->Get_ModelIndex() : 0;
@@ -130,9 +130,9 @@ HRESULT C2DMapObject::Export(HANDLE hFile)
 	return S_OK;
 }
 
-_vector C2DMapObject::Get_Position() const
+_vector C2DMapObject::Get_FinalPosition() const
 {
-	_vector vPos = __super::Get_Position();
+	_vector vPos = __super::Get_FinalPosition();
 
 	_float fPosX = XMVectorGetX(vPos) + (m_fRenderTargetSize.x * 0.5f);
 	_float fPosY = (XMVectorGetY(vPos) * -1.f) + (m_fRenderTargetSize.y * 0.5f);

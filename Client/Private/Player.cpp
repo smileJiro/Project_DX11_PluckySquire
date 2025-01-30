@@ -11,6 +11,8 @@
 #include "PlayerState_Jump.h"
 #include "PlayerState_Roll.h"
 #include "Actor_Dynamic.h"
+#include "PlayerSword.h"    
+#include "Section_Manager.h"    
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -116,7 +118,7 @@ HRESULT CPlayer::Ready_Components()
     
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
-
+    Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
     Bind_AnimEventFunc("Someting", bind(&CPlayer::Someting, this, 1));
     Bind_AnimEventFunc("Someting2", bind(&CPlayer::Someting2, this, 0.1f));
@@ -166,8 +168,8 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    BodyDesc.iRenderGroupID_2D = RG_3D;
-    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
+    //BodyDesc.iRenderGroupID_2D = RG_3D;
+    //BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
@@ -179,33 +181,44 @@ HRESULT CPlayer::Ready_PartObjects()
     }
 
 	//Part Sword
-	BodyDesc.isCoordChangeEnable = false;
-    BodyDesc.strModelPrototypeTag_3D = TEXT("latch_sword");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.0f);
-    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-    m_PartObjects[PLAYER_PART_SWORD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
+	SwordDesc.pParent = this;
+    SwordDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    SwordDesc.iCurLevelID = m_iCurLevelID;
+    SwordDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+    SwordDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    SwordDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    SwordDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    SwordDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+    SwordDesc.iRenderGroupID_2D = RG_3D;
+    SwordDesc.iPriorityID_2D = PR3D_BOOK2D;
+    SwordDesc.iRenderGroupID_3D = RG_3D;
+    SwordDesc.iPriorityID_3D = PR3D_NONBLEND;
+    SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
     {
         MSG_BOX("CPlayer Sword Creation Failed");
         return E_FAIL;
     }
-    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));    
-    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_SWORD])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r")); /**/
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
 	Set_PartActive(PLAYER_PART_SWORD, false);
 
 	//Part Glove
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+	BodyDesc.eActorType = ACTOR_TYPE::LAST;
+	BodyDesc.pActorDesc = nullptr;
     m_PartObjects[PLAYER_PART_GLOVE] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
     {
         MSG_BOX("CPlayer Glove Creation Failed");
         return E_FAIL;
     }
+    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
 	m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
 	Set_PartActive(PLAYER_PART_GLOVE, false);
@@ -231,21 +244,12 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
-    m_pStateMachine->Update(_fTimeDelta);
-
-    CGameObject::Update_Component(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
-
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
-
-    CGameObject::Late_Update_Component(_fTimeDelta);
-
-    m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BOOK2D, this);
-
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -479,7 +483,7 @@ _float CPlayer::Get_AnimProgress()
 
 _bool CPlayer::Is_SwordEquiped()
 {
-    return Is_PartActive(PLAYER_PART_SWORD);
+    return m_pSword->Is_Active() && (false == m_pSword->Is_Flying());
 }
 
 _bool CPlayer::Is_CarryingObject()
@@ -489,13 +493,11 @@ _bool CPlayer::Is_CarryingObject()
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
-    cout << "SwitchAnim" << _iAnimIndex << endl;
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
 }
 
 void CPlayer::Set_Animation(_uint _iAnimIndex)
 {
-    cout << "Set_Animation" << _iAnimIndex << endl;
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(_iAnimIndex);
 }
 
@@ -587,6 +589,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+        if (iCurCoord == COORDINATE_2D)
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+        else
+            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
         //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
     }
@@ -622,6 +629,12 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     if (KEY_DOWN(KEY::M))
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
+    }
+    if (Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::RB))
+    {
+         _vector vLook =  XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+        m_pSword->Throw(vLook);
+        return;
     }
 
 }

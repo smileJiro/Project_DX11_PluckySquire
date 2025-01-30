@@ -87,7 +87,7 @@ HRESULT CPhysx_Manager::Initialize()
 
 
 	/* Debug */
-	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 10000);
+	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 10000000);
 	if (nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
@@ -103,7 +103,7 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
-	m_pPxScene->simulate(1.0f / 60.f);
+	m_pPxScene->simulate(1.f/60.f);
 	
 	if (m_pPxScene->fetchResults(true))
 	{
@@ -167,11 +167,13 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 		{
 			PxRigidActor* pActor = static_cast<PxRigidActor*>(hit.block.actor);
 			ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
 			if(nullptr != pActorUserData)
 				*_ppOutActorObject = pActorUserData->pOwner;
 		}
 		if(nullptr != _pOutPos)
 			*_pOutPos = _float3(hit.block.position.x, hit.block.position.y, hit.block.position.z);
+
 	}
 
 	return isResult;

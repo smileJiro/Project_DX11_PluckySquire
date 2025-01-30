@@ -26,10 +26,12 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	_vector					Get_Position() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
+	_vector					Get_FinalPosition() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
 	_float3					Get_FinalScale() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
 	const _float4x4*		Get_FinalWorldMatrix_Ptr(COORDINATE _eCoord) { return &m_WorldMatrices[_eCoord]; }
+	virtual _matrix		Get_FinalWorldMatrix() override;
 	void Set_SocketMatrix(const _float4x4* _pSocketMatrix) { m_pSocketMatrix = _pSocketMatrix; }
+	void Set_ParentMatrix(COORDINATE _eCoord, const _float4x4* _pSocketMatrix) { m_pParentMatrices[_eCoord] = _pSocketMatrix; }
 
 protected:
 	const _float4x4*		m_pParentMatrices[COORDINATE_LAST] = {}; // 부모의 월드 행렬의 주소

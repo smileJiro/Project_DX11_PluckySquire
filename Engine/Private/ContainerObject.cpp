@@ -49,6 +49,7 @@ void CContainerObject::Update(_float _fTimeDelta)
         if (nullptr != pPartObj && true == pPartObj->Is_Active())
             pPartObj->Update(_fTimeDelta);
     }
+	__super::Update(_fTimeDelta);
 }
 
 void CContainerObject::Late_Update(_float _fTimeDelta)
@@ -58,6 +59,7 @@ void CContainerObject::Late_Update(_float _fTimeDelta)
         if (nullptr != pPartObj && true == pPartObj->Is_Active())
             pPartObj->Late_Update(_fTimeDelta);
     }
+	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CContainerObject::Render()
@@ -74,6 +76,19 @@ HRESULT CContainerObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _p
     if (FAILED(m_PartObjects[PART_BODY]->Change_Coordinate(_eCoordinate, nullptr)))
         return E_FAIL;
 
+    return S_OK;
+}
+
+HRESULT CContainerObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
+{
+    for (CGameObject* pPartObject : m_PartObjects)
+    {
+        if (nullptr != pPartObject)
+        {
+            if (FAILED(pPartObject->Register_RenderGroup(_iGroupId, _iPriorityID)))
+                return E_FAIL;
+        }
+    }
     return S_OK;
 }
 
