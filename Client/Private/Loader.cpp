@@ -989,10 +989,12 @@ HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelI
                 case (_uint)TRIGGER_TYPE::CAMERA_TRIGGER:
                 {
                     _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
-
+                    _string szEventTag = Trigger_json["Camera Trigger Event Tag"];
+                    
                     CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
                     Desc.iCameraTriggerType = iCameraTriggerType;
+                    Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
 
                     Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
                     Desc.vHalfExtents = Data.vHalfExtents;
