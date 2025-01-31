@@ -70,7 +70,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::CUSTOM;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::PLAYER;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
 
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
@@ -78,9 +78,21 @@ HRESULT CPlayer::Initialize(void* _pArg)
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
-    /* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
+ //   //마찰용 박스
+ //   SHAPE_BOX_DESC BoxDesc = {};
+	//BoxDesc.vHalfExtents = { 0.5f, 0.8f, 0.5f };
+ //   SHAPE_DATA BoxShapeData;
+ //   BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
+ //   BoxShapeData.pShapeDesc = &BoxDesc;
+ //   XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f));
+ //   BoxShapeData.isTrigger = false;                    
+ //   BoxShapeData.eMaterial = ACTOR_MATERIAL::PLAYER;
+ //   ActorDesc.ShapeDatas.push_back(BoxShapeData);
+	//
+
+    //충돌 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
+    ShapeData.isTrigger = true;                    
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
     SHAPE_SPHERE_DESC SphereDesc = {};
 	SphereDesc.fRadius = 1.f;
@@ -248,6 +260,8 @@ void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
     __super::Update(_fTimeDelta); /* Part Object Update */
+	if (COORDINATE_3D == Get_CurCoord())
+        Rotate_To(m_v3DTargetDirection);
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
 
@@ -321,67 +335,21 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
 {
+	m_v3DTargetDirection = _vDir;
     ACTOR_TYPE eActorType = Get_ActorType();
-    if (ACTOR_TYPE::KINEMATIC == eActorType)
+
+    if (COORDINATE_3D == Get_CurCoord())
     {
-        if (COORDINATE_3D ==Get_CurCoord())
-        {
-            m_pControllerTransform->Set_AutoRotationYDirection(_vDir);
-            m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
-        }
-        else
-        {
 
-        }
-        m_pControllerTransform->Go_Direction(_vDir, m_tStat[COORDINATE_2D].fMoveSpeed,_fTimeDelta);
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        _vector vVeclocity = _vDir * m_tStat[COORDINATE_3D].fMoveSpeed  /** fDot*/;
+        vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+        pDynamicActor->Set_LinearVelocity(vVeclocity);
     }
-    else if (ACTOR_TYPE::DYNAMIC == eActorType)
+    else
     {
-        if (COORDINATE_3D == Get_CurCoord())
-        {
-            CActor_Dynamic* pDynamicActor =static_cast<CActor_Dynamic*>(m_pActorCom);
-
-            
-            _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-            _float3 vLookDiff; XMStoreFloat3( &vLookDiff,_vDir - vLook);
-            _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, _vDir - m_vLookBefore);
-			if (XMVector3Equal(_vDir, XMVectorZero()))
-            {
-				_vDir = vLook;
-            }
-            if (XMVector3NearEqual( _vDir ,vLook, XMVectorReplicate(1e-6f)))
-            {
-                pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
-            }
-            else if ((vLookDiff.x * vLookDiffBefore.x) < 0 
-                || (vLookDiff.z * vLookDiffBefore.z) < 0)
-            {
-                pDynamicActor->Set_Rotation(_vDir);
-                pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
-            }
-            else
-            {
-                _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDir));
-                if(XMVector3Equal(vAxis, XMVectorZero()))
-					vAxis = XMVectorSet(0, 1, 0, 0);
-                pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(720));
-
-            }
-
-            _float fDot = abs( XMVectorGetX(XMVector3Dot(vLook, _vDir)));
-            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed  /** fDot*/;
-            vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
-            pDynamicActor->Set_LinearVelocity(vVeclocity);
-
-        }
-        else
-        {
-            m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
-        }
+        m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
     }
-
-	
-
 }
 
 void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
@@ -449,6 +417,46 @@ void CPlayer::Jump()
     else
         m_pActorCom->Add_Impulse(_float3(0.0f, m_tStat[COORDINATE_3D].fJumpPower, 0.0f));
 }
+
+void CPlayer::Add_Impuls(_vector vForce)
+{
+    _float3 f3Force;
+    XMStoreFloat3(&f3Force, vForce);
+    m_pActorCom->Add_Impulse(f3Force);
+}
+
+void CPlayer::Rotate_To(_vector _vDirection)
+{
+    CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+
+    _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+    _float3 vLookDiff; XMStoreFloat3(&vLookDiff, _vDirection - vLook);
+    _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, _vDirection - m_vLookBefore);
+    if (XMVector3Equal(_vDirection, XMVectorZero()))
+    {
+        _vDirection = vLook;
+    }
+    if (XMVector3NearEqual(_vDirection, vLook, XMVectorReplicate(1e-6f)))
+    {
+        pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+    }
+    else if ((vLookDiff.x * vLookDiffBefore.x) < 0
+        || (vLookDiff.z * vLookDiffBefore.z) < 0)
+    {
+        pDynamicActor->Set_Rotation(_vDirection);
+        pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+    }
+    else
+    {
+        _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDirection));
+        if (XMVector3Equal(vAxis, XMVectorZero()))
+            vAxis = XMVectorSet(0, 1, 0, 0);
+        pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(1080));
+
+    }
+
+}
+
 
 PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
 {
@@ -563,7 +571,7 @@ _vector CPlayer::Get_LookDirection()
     if (COORDINATE_2D == eCoord)
         return EDir_To_Vector(m_e2DDirection_E);
     else
-        return m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+        return XMVector4Normalize( m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
@@ -594,7 +602,7 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this, m_e2DDirection_E));
         break;
     case Client::CPlayer::ROLL:
-        m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
+        m_pStateMachine->Transition_To(new CPlayerState_Roll(this, m_v3DTargetDirection));
 		break;
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
@@ -626,6 +634,10 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
     
 }
 
+void CPlayer::Set_3DTargetDirection(_fvector _vDir)
+{
+    m_v3DTargetDirection = XMVector4Normalize( _vDir);
+}
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {
 	for (_int i = PLAYER_PART_SWORD; i < PLAYER_PART_LAST; ++i)

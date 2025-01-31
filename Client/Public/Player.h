@@ -412,6 +412,8 @@ public:
 	void Stop_Move();
 	void	ThrowSword();
 	void Jump();
+	void Add_Impuls(_vector _vForce);
+	void Rotate_To(_vector _vDirection);
 	PLAYER_KEY_RESULT Player_KeyInput();
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
@@ -423,12 +425,14 @@ public:
 	_bool Is_CarryingObject();
 	_vector Get_CenterPosition();
 	_vector Get_LookDirection();
+	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
 	void Set_2DDirection(E_DIRECTION _eEDir);
+	void Set_3DTargetDirection(_fvector _vDir);
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
@@ -446,10 +450,13 @@ private:
 	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
 	_float m_fCenterHeight = 0.5;
+
+
 	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
-	_vector m_vLookBefore = {};
+	_vector m_vLookBefore = {0,0,-1};
+	_vector m_v3DTargetDirection = { 0,0,-1 };
 
 	class CPlayerSword* m_pSword = nullptr;
 
