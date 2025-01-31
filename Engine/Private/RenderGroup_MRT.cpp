@@ -46,7 +46,7 @@ HRESULT CRenderGroup_MRT::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer
 
     // Origin Viewport 로 변경해야해.////// 
     if (true == m_isViewportSizeChange)
-        Setup_Viewport(_float2(m_pGameInstance->Get_ViewportWidth(), m_pGameInstance->Get_ViewportHeight()));
+        Setup_Viewport(_float2((_float)m_pGameInstance->Get_ViewportWidth(), (_float)m_pGameInstance->Get_ViewportHeight()));
 
     if (FAILED(m_pGameInstance->End_MRT())) // MRT에 정보들을 모두 저장했다면, 기존의 BackBuffer로 RTV를 변경. 
         return E_FAIL;

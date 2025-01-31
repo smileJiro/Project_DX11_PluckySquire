@@ -148,7 +148,9 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
             return E_FAIL;
 
         pSection_2D->Register_RenderGroup_ToRenderer();
-
+        //pSection_2D->Sort_Layer([](CGameObject* pLeftGameObject, CGameObject* pRightGameObject) {
+        //    
+        //    });
         if (nullptr != pSection)
         {
             if(FAILED(pSection->Add_RenderGroup_GameObjects()))

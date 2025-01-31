@@ -2,6 +2,8 @@
 #include "GameInstance.h"
 #include "Level_EffectTool.h"
 
+#include "ModelObject.h"
+#include "3DModel.h"
 
 CLevel_EffectTool::CLevel_EffectTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -20,6 +22,8 @@ HRESULT CLevel_EffectTool::Initialize()
 	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 	if (FAILED(Ready_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_Model(TEXT("Layer_Model"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -46,7 +50,7 @@ HRESULT CLevel_EffectTool::Ready_Lights()
 	ZeroMemory(&LightDesc, sizeof LightDesc);
 
 	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTOINAL;
-	LightDesc.vDirection = _float4(-1.f, -1.f, 0.5f, 0.f);
+	LightDesc.vDirection = _float4(0.f, 1.f, 1.5f, 0.f);
 	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.f);
 	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
@@ -99,9 +103,9 @@ HRESULT CLevel_EffectTool::Ready_Layer_Effect(const _wstring& _strLayerTag)
 	//	LEVEL_TOOL, _strLayerTag, &TempDesc)))
 	//	return E_FAIL;
 
-	/*CParticle_System* pOut;
+	/*CEffect_System* pOut;
 
-	CParticle_System::PARTICLE_SYSTEM_DESC Desc = {};
+	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
 
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_TOOL;
@@ -180,6 +184,30 @@ HRESULT CLevel_EffectTool::Ready_SkyBox(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
+{
+	CModelObject* pOut = { nullptr };
+	CModelObject::MODELOBJECT_DESC Desc = {};
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Player";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	Desc.iShaderPass_3D = 0;
+	Desc.iPriorityID_3D = PR3D_NONBLEND;
+	Desc.iRenderGroupID_3D = RG_3D;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_ModelObject"),
+		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
+
+	return S_OK;
+}
+
 void CLevel_EffectTool::Update_Particle_Tool(_float _fTimeDelta)
 {
 	ImGui::Begin("Particle System");
@@ -190,9 +218,10 @@ void CLevel_EffectTool::Update_Particle_Tool(_float _fTimeDelta)
 	Tool_Adjust_System(_fTimeDelta);
 	ImGui::End();
 
-	ImGui::Begin("Textures");
 	Tool_Texture();
-	ImGui::End();
+
+	Tool_ControlModel();
+
 }
 
 void CLevel_EffectTool::Tool_System_List()
@@ -228,7 +257,7 @@ void CLevel_EffectTool::Tool_System_List()
 
 		if (ImGui::Button("New System"))
 		{
-			CParticle_System* pOut;
+			CEffect_System* pOut;
 			CPartObject::PARTOBJECT_DESC Desc = {};
 
 			Desc.eStartCoord = COORDINATE_3D;
@@ -291,14 +320,14 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 
 		if (ImGui::Button("New_Sprite_Emitter"))
 		{
-			CParticle_Emitter::PARTICLE_EMITTER_DESC Desc = {};
+			CEmitter::PARTICLE_EMITTER_DESC Desc = {};
 
 			Desc.eStartCoord = COORDINATE_3D;
 			Desc.iCurLevelID = LEVEL_TOOL;
 			Desc.isCoordChangeEnable = false;
 			Desc.iProtoShaderLevel = LEVEL_STATIC;
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxPointInstance";
-			if (FAILED(m_pNowItem->Add_New_Emitter(CParticle_Emitter::SPRITE, &Desc)))
+			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::SPRITE, &Desc)))
 			{
 				MSG_BOX("Sprite Emitter 만들기 실패");
 			}
@@ -308,14 +337,14 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 
 		if (ImGui::Button("New_Mesh_Emitter"))
 		{
-			CParticle_Emitter::PARTICLE_EMITTER_DESC Desc = {};
+			CEmitter::PARTICLE_EMITTER_DESC Desc = {};
 
 			Desc.eStartCoord = COORDINATE_3D; 
 			Desc.iCurLevelID = LEVEL_TOOL;
 			Desc.isCoordChangeEnable = false;
 			Desc.iProtoShaderLevel = LEVEL_STATIC;
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxModelInstance";
-			if (FAILED(m_pNowItem->Add_New_Emitter(CParticle_Emitter::MESH, &Desc)))
+			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::MESH, &Desc)))
 			{
 				MSG_BOX("Mesh Emitter 만들기 실패");
 			}
@@ -338,12 +367,14 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 
 void CLevel_EffectTool::Tool_Texture()
 {
-	if (ImGui::TreeNode("Preview Texture"))
+	ImGui::Begin("Particle Textures");
+
+	if (ImGui::TreeNode("Preview Particle Texture"))
 	{
-		if (m_pNowTexture)
+		if (m_pParticleTexture)
 		{
 			ImVec2 imageSize(100, 100); // 이미지 크기 설정
-			ID3D11ShaderResourceView* pSelectImage = m_pNowTexture->Get_SRV(0);
+			ID3D11ShaderResourceView* pSelectImage = m_pParticleTexture->Get_SRV(0);
 			if (nullptr != pSelectImage)
 			{
 				ImGui::Image((ImTextureID)pSelectImage, imageSize);
@@ -353,7 +384,7 @@ void CLevel_EffectTool::Tool_Texture()
 			{
 				if (ImGui::Button("Set_Texture"))
 				{
-					m_pNowItem->Set_Texture(m_pNowTexture);
+					m_pNowItem->Set_Texture(m_pParticleTexture);
 				}
 			}
 
@@ -361,7 +392,7 @@ void CLevel_EffectTool::Tool_Texture()
 
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("Texture"))
+	if (ImGui::TreeNode("Particle Texture"))
 	{
 		static _wstring wstrSelectedKey = L"";
 		static int iSelectedIndex = -1;
@@ -369,7 +400,7 @@ void CLevel_EffectTool::Tool_Texture()
 		if (ImGui::BeginListBox("Textures List"))
 		{
 			int iIndex = 0;
-			for (const auto& [key, pTexture] : m_Textures)
+			for (const auto& [key, pTexture] : m_ParticleTextures)
 			{
 				std::string strKey = WSTRINGTOSTRING(key);
 
@@ -379,13 +410,13 @@ void CLevel_EffectTool::Tool_Texture()
 				{
 					if (is_selected)
 					{
-						m_pNowTexture = nullptr;
+						m_pParticleTexture = nullptr;
 						iSelectedIndex = -1; // 선택 해제
 						wstrSelectedKey = L"";
 					}
 					else
 					{
-						m_pNowTexture = pTexture;
+						m_pParticleTexture = pTexture;
 						iSelectedIndex = iIndex;
 						wstrSelectedKey = key;
 					}
@@ -399,27 +430,157 @@ void CLevel_EffectTool::Tool_Texture()
 			ImGui::EndListBox();
 		}
 
-		ImGui::InputText("Texture Directory", m_szTexturePath, MAX_PATH);
+		ImGui::InputText("Texture Directory", m_szParticleTexturePath, MAX_PATH);
 
 		if (ImGui::Button("Load_DDSTextures"))
 		{
-			Load_Textures(".dds");
+			Load_Textures(".dds", m_szParticleTexturePath, m_ParticleTextures);
 		}
 
 		if (ImGui::Button("Load_PNGTextures"))
 		{
-			Load_Textures(".png");
+			Load_Textures(".png", m_szParticleTexturePath, m_ParticleTextures);
 		}
 
 
 		ImGui::TreePop();
 	}
+
+	ImGui::End();
+
+	ImGui::Begin("Effect Textures");
+
+	if (ImGui::TreeNode("Preview Effect Texture"))
+	{
+		if (m_pEffectTexture)
+		{
+			ImVec2 imageSize(100, 100); // 이미지 크기 설정
+			ID3D11ShaderResourceView* pSelectImage = m_pEffectTexture->Get_SRV(0);
+			if (nullptr != pSelectImage)
+			{
+				ImGui::Image((ImTextureID)pSelectImage, imageSize);
+			}
+
+			if (m_pNowItem)
+			{
+				if (ImGui::Button("Mask"))
+				{
+					m_pNowItem->Set_Texture(m_pEffectTexture);
+				}
+				if (ImGui::Button("Noise"))
+				{
+					m_pNowItem->Set_Texture(m_pEffectTexture, 1);
+				}
+			}
+
+		}
+
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Effect Texture"))
+	{
+		static _wstring wstrSelectedKey = L"";
+		static int iSelectedIndex = -1;
+
+		if (ImGui::BeginListBox("Textures List"))
+		{
+			int iIndex = 0;
+			for (const auto& [key, pTexture] : m_EffectTextures)
+			{
+				std::string strKey = WSTRINGTOSTRING(key);
+
+				const bool is_selected = (iSelectedIndex == iIndex);
+
+				if (ImGui::Selectable(strKey.c_str(), is_selected))
+				{
+					if (is_selected)
+					{
+						m_pEffectTexture = nullptr;
+						iSelectedIndex = -1; // 선택 해제
+						wstrSelectedKey = L"";
+					}
+					else
+					{
+						m_pEffectTexture = pTexture;
+						iSelectedIndex = iIndex;
+						wstrSelectedKey = key;
+					}
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+
+				++iIndex;
+			}
+			ImGui::EndListBox();
+		}
+
+		ImGui::InputText("Texture Directory", m_szEffectTexturePath, MAX_PATH);
+
+		if (ImGui::Button("Load_DDSTextures"))
+		{
+			Load_Textures(".dds", m_szEffectTexturePath, m_EffectTextures);
+		}
+
+		if (ImGui::Button("Load_PNGTextures"))
+		{
+			Load_Textures(".png", m_szEffectTexturePath, m_EffectTextures);
+		}
+
+
+		ImGui::TreePop();
+	}
+
+
+	ImGui::End();
+
 }
 
-HRESULT CLevel_EffectTool::Load_Textures(const _char* _szExtension)
+void CLevel_EffectTool::Tool_ControlModel()
+{
+
+	for (auto& pModel : m_ModelObjects)
+	{
+		if (pModel->Is_Active())
+		{
+			ImGui::Begin("Control Model");
+
+			_float fTime = static_cast<C3DModel*>(pModel->Get_Model(COORDINATE_3D))->Get_AnimTime();
+			ImGui::Text("Current Anim Time : %.4f", fTime);
+
+			static _bool isLoop = { true };
+			if (ImGui::RadioButton("Loop", isLoop))
+			{
+				isLoop = !isLoop;
+			}
+
+			static _int iAnim = { 0 };
+			ImGui::InputInt("Anim Index", &iAnim);
+
+			if (ImGui::Button("Anim Reset and Effect Reset"))
+			{
+				pModel->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
+				pModel->Set_Animation(iAnim);
+				if (m_pNowItem)
+				{
+					m_pNowItem->Tool_Reset(0);
+				}
+			}
+
+			ImGui::End();
+			break;
+		}
+	}
+	
+
+
+}
+
+HRESULT CLevel_EffectTool::Load_Textures(const _char* _szExtension, const _char* _szPath, map<const _wstring, class CTexture*>& _TextureMaps)
 {
 	std::filesystem::path path;
-	path = m_szTexturePath;
+	path = _szPath;
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
 		if (entry.path().extension() == _szExtension) {
 			//cout << entry.path().string() << endl;
@@ -439,7 +600,7 @@ HRESULT CLevel_EffectTool::Load_Textures(const _char* _szExtension)
 			}
 
 			pTexture->Add_SRVName(entry.path().c_str());
-			m_Textures.emplace(entry.path().c_str(), pTexture);
+			_TextureMaps.emplace(entry.path().c_str(), pTexture);
 			
 
 			Safe_AddRef(pTexture);
@@ -464,8 +625,8 @@ HRESULT CLevel_EffectTool::Save_All()
 
 HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
 {
-	CParticle_System* pOut;
-	CParticle_System::PARTICLE_SYSTEM_DESC Desc = {};
+	CEffect_System* pOut;
+	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
 
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_TOOL;
@@ -474,6 +635,8 @@ HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
 	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
 	Desc.iModelShaderLevel = LEVEL_STATIC;
 	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxModelInstance";
+	Desc.iEffectShaderLevel = LEVEL_STATIC;
+	Desc.szEffectShaderTags = L"Prototype_Component_Shader_Effect";
 	
 	std::filesystem::path path;
 	path = _szPath;
@@ -482,7 +645,7 @@ HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
 		if (entry.path().extension() == ".json") {
 			//cout << entry.path().string() << endl;
 
-			CParticle_System* pParticleSystem = CParticle_System::Create(m_pDevice, m_pContext, entry.path().c_str());
+			CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, entry.path().c_str());
 
 			if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, entry.path().filename(), pParticleSystem)))
 			{
@@ -531,11 +694,17 @@ void CLevel_EffectTool::Free()
 		Safe_Release(pParticleSystem);
 	m_ParticleSystems.clear();
 
-	for (auto& Pair : m_Textures)
+	for (auto& Pair : m_ParticleTextures)
 	{
 		Safe_Release(Pair.second);
 	}
-	m_Textures.clear();
+	m_ParticleTextures.clear();
+
+	for (auto& Pair : m_EffectTextures)
+	{
+		Safe_Release(Pair.second);
+	}
+	m_EffectTextures.clear();
 
 	__super::Free();
 

@@ -8,15 +8,15 @@ BEGIN(Engine)
 class ENGINE_DLL CCameraArm final : public CBase
 {
 public:
-	enum ARM_TYPE { DEFAULT, COPY, OTHER, ARM_TYPE_END };
 	enum TARGET_STATE { RIGHT, UP, LOOK, POS, TARGET_STATE_END };
 
-	enum ROTATE_FLAGS
+	enum MOVEMENT_FLAGS
 	{
 		RESET_FLAG = 0,
 		DONE_Y_ROTATE = 1,
 		DONE_RIGHT_ROTATE = 1 << 1,
-		ALL_DONE_ROTATE = DONE_Y_ROTATE | DONE_RIGHT_ROTATE
+		DONE_LENGTH_MOVE = 2 << 1,
+		ALL_DONE_MOVEMENT = DONE_Y_ROTATE | DONE_RIGHT_ROTATE | DONE_LENGTH_MOVE
 	};
 
 	typedef struct tagCameraArmDesc : public CTransform_3D::TRANSFORM_3D_DESC
@@ -26,7 +26,7 @@ public:
 		_float3				vRotation;
 		_float				fLength = 1.f;
 		_wstring			wszArmTag = {};
-		ARM_TYPE			eArmType = { DEFAULT };
+		//ARM_TYPE			eArmType = { DEFAULT };
 
 		const _float4x4*	pTargetWorldMatrix = { nullptr };
 	}CAMERA_ARM_DESC;
@@ -59,9 +59,9 @@ public:
 
 	void				Set_Rotation(_vector _vRotation);
 	void				Set_Length(_float _fLength) { m_fLength = _fLength; }
-	void				Set_ArmType(_uint _eType) { m_eArmType = _eType; }
 	void				Set_ArmTag(_wstring _wszArmTag) { m_wszArmTag = _wszArmTag; }
 	void				Set_ArmVector(_vector _vArm);
+	void				Set_DesireVector();		// 최종 벡터 저장하는용
 #endif
 
 public:
@@ -70,33 +70,37 @@ public:
 	_vector				Get_TargetState(TARGET_STATE _eTargetState) const { return XMLoadFloat4x4(m_pTargetWorldMatrix).r[_eTargetState]; }
 	CTransform_3D*		Get_TransformCom() { return m_pTransform; }
 
-	void				Set_NextArmData(ARM_DATA* _pData) { m_pNextArmData = _pData; }
+	void				Set_NextArmData(ARM_DATA* _pData);
 
 	void				Change_Target(const _float4x4* _pTargetWorldMatrix) { m_pTargetWorldMatrix = _pTargetWorldMatrix; }
 	_vector				Calculate_CameraPos(_float fTimeDelta);					// Arm과 Length에 따라 카메라 위치 결정
 	_bool				Move_To_NextArm(_float _fTimeDelta);
+	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 
 private:
 	ID3D11Device*		m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 	CGameInstance*		m_pGameInstance = { nullptr };
 	CTransform_3D*		m_pTransform = { nullptr };
+
 private:
+	// 이거 나중에 Target 월드 행렬 받으려면 Target File Tag 같은 거 필요할 수도
+	const _float4x4*	m_pTargetWorldMatrix = { nullptr };
+
 	_wstring			m_wszArmTag = {};
 	_float3				m_vArm = {};
 	_float3				m_vRotation = {};
 	_float				m_fLength = {};
-
-	// 이거 나중에 Target 월드 행렬 받으려면 Target File Tag 같은 거 필요할 수도
-	const _float4x4*	m_pTargetWorldMatrix = { nullptr };
-
-	_uint				m_eArmType = {};
+	_float				m_fStartLength = {};
 
 	// Desire Arm
 	ARM_DATA*			m_pNextArmData = { nullptr };
 
 	// Rotate Flag
-	_uint				m_iRoateFlags = RESET_FLAG;
+	_uint				m_iMovementFlags = RESET_FLAG;
+
+	// Return
+	stack<pair<_float, _float3>> m_ArmStaks;
 
 	// Line
 #ifdef _DEBUG
@@ -116,7 +120,7 @@ private:
 
 	void				Turn_ArmX(_float fAngle);
 	void				Turn_ArmY(_float fAngle);
-	_float				Calculate_Ratio(_uint _iTimeRate, _float2* _fTime, _float _fTimeDelta);
+	_float				Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 public:
 	static CCameraArm*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg);

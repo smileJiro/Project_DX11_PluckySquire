@@ -49,10 +49,12 @@ public:
 	virtual void			RotationQuaternionW(const _float4& _vQuaternion);	//쿼터니언으로 회전
 
 	void					Turn(_float _fTimeDelta, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 기존 회전을 기준으로 추가로 정해진 속도로 회전한다.
+	_bool					Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _float _fRatio);
 	void					TurnAngle(_float _fRadian, _fvector _vAxis = { 0.0f, 1.0f, 0.0f, 0.0f });	// 기존 회전을 기준으로 정해진 각도만큼 회전한다
 	void					TurnZ(_float _fTimeDelta);
 
 	_float					Compute_Distance(_fvector _vTargetPos) const; // 거리 계산 함수.
+	void					Set_Look(_fvector _vDir);
 
 public:
 	HRESULT					Bind_ShaderResource(class CShader* pShader, const _char* pConstantName) const;
@@ -78,7 +80,6 @@ public:
 	}
 	void					Set_SpeedPerSec(_float _fSpeedPerSec) { m_fSpeedPerSec = _fSpeedPerSec; };
 	void					Set_RotationPerSec(_float _fRotationPerSec) { m_fRotationPerSec = _fRotationPerSec; };
-
 protected:
 	_float4x4				m_WorldMatrix = {};
 	_float					m_fSpeedPerSec = {};

@@ -39,6 +39,7 @@ public:
 	_uint				Get_CameraType() { return m_eCurrentCameraType; }
 	void				Get_ArmNames(vector<_wstring>* _vecArmNames);
 	ARM_DATA*			Get_ArmData(_wstring _wszArmName);
+	map<_wstring, ARM_DATA*>* Get_ArmDatas() { return &m_ArmDatas; };
 
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)

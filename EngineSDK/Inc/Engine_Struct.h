@@ -212,16 +212,28 @@ namespace Engine
 	typedef struct tagArmDataDesc
 	{
 		_float				fLength = 1.f;
+		_float2				fLengthTime = {};
+		_uint				iLengthRatioType = {};
+
 		_float2				fMoveTimeAxisY = {};
 		_float2				fMoveTimeAxisRight = {};
-		_float2				fLengthTime = {};
 		_float2				fRotationPerSecAxisY = {};
 		_float2				fRotationPerSecAxisRight = {};
-	
-		/*_uint				iTimeRateAxisY = {};
-		_uint				iTimeRateAxisRight = {};
-		_uint				iTimeRateAt = {};*/
+
+		_float3				vDesireArm = {};		// 최종 벡터
+		_bool				isReturn = {};			// Trigger Exit 때 돌아갈 것인지
 	} ARM_DATA;
+
+	typedef struct tagCameraSubDataDesc
+	{
+		_float2				fZoomTime = {};
+		_uint				iZoomLevel = {};
+		_uint				iZoomRatioType = {};
+
+		_float2				fAtOffsetTime = {};
+		_float3				vAtOffset = {};
+		_uint				iAtRatioType = {};
+	} CAMERA_SUBDATA;
 
 	typedef struct tagCutSceneKeyFrameDesc
 	{

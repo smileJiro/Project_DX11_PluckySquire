@@ -139,7 +139,13 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	case DEFAULT:
 		Defualt_Move(_fTimeDelta);
 		break;
-	case TURN:
+	case MOVE_TO_NEXTARM:
+		Move_To_NextArm(_fTimeDelta);
+		break;
+	case RETURN_TO_PREARM:
+		Move_To_PreArm(_fTimeDelta);
+		break;
+	case RETURN_TO_DEFUALT:
 		break;
 	}
 }
@@ -149,13 +155,31 @@ void CCamera_Target::Defualt_Move(_float fTimeDelta)
 	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(fTimeDelta);
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
+	Look_Target(fTimeDelta);
+}
+
+void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
+{
+	if (true == m_pCurArm->Move_To_NextArm(_fTimeDelta)) {
+		m_eCameraMode = DEFAULT;
+		return;
+	}
+
+	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(_fTimeDelta);
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	Look_Target(_fTimeDelta);
+}
+
+void CCamera_Target::Look_Target(_float fTimeDelta)
+{
 	_vector vTargetPos = m_pCurArm->Get_TargetState(CCameraArm::POS);
 
 	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 
-void CCamera_Target::Look_Target(_float fTimeDelta)
+void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 {
 
 }

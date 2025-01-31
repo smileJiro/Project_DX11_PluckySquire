@@ -66,6 +66,11 @@ void CCamera_Trigger::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Oth
 
 void CCamera_Trigger::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	if (true == m_isReturn) {
+		// Pre로 나가기
+		// Move_To_PreArm 모드로 변경함
+		// (변경할 모드)
+	}
 }
 
 CCamera_Trigger* CCamera_Trigger::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -84,7 +89,6 @@ CCamera_Trigger* CCamera_Trigger::Create(ID3D11Device* _pDevice, ID3D11DeviceCon
 CGameObject* CCamera_Trigger::Clone(void* _pArg)
 {
 	CCamera_Trigger* pInstance = new CCamera_Trigger(*this);
-
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
 		MSG_BOX("Failed to Cloned : CCamera_Trigger");

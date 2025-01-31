@@ -16,10 +16,10 @@ public:
 private:
     _float m_fForwardSpeedMax = 1000.f;
     _float m_fForwardSpeedMin = 300.f;
-    _float m_f3DForwardStartProgress = 0.12;
-    _float m_f3DForwardEndProgress = 0.52;
-    _float m_f2DForwardStartProgress = 0;
-    _float m_f2DForwardEndProgress = 1;
+    _float m_f3DForwardStartProgress = 0.12f;
+    _float m_f3DForwardEndProgress = 0.52f;
+    _float m_f2DForwardStartProgress = 0.f;
+    _float m_f2DForwardEndProgress = 1.f;
     _float m_f3DMotionCancelProgress = 0.52f;
     _float m_f2DMotionCancelProgress = 0.8f;
 

@@ -80,10 +80,12 @@ private:
 	void				Save_Popup();
 
 
-	// 오브젝트 파일 저장
+	// 2D 맵, 오브젝트 출력
 	void				Save(_bool _bSelected = true);
-	// 오브젝트 파일 로드
+	// 2D 맵, 오브젝트 입력
 	void				Load(_bool _bSelected = true);
+
+	void				Load_3D_Map(_bool _bSelected = true);
 
 
 	C2DMapObject*	Picking_2DMap();

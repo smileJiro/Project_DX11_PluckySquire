@@ -771,6 +771,8 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 	m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
 	
 	Safe_AddRef(pTrigger);
+
+	return S_OK;
 }
 
 void CLevel_Trigger_Tool::Initialize_ListBoxName()
@@ -944,7 +946,7 @@ void CLevel_Trigger_Tool::Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir)
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+	_vector vMousePos = XMVectorSet((_float)pt.x, (_float)pt.y, 0.f, 1.f);
 
 	_uint		iNumViewports = { 1 };
 	D3D11_VIEWPORT		ViewportDesc{};

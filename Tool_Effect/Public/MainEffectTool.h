@@ -27,8 +27,9 @@ private:
 private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 	HRESULT Ready_Prototype_Static();
-
-	
+	HRESULT Ready_RenderTargets();
+	HRESULT Ready_RenderGroup();
+	void	Set_EffectRG();
 
 public:
 	static CMainEffectTool* Create();

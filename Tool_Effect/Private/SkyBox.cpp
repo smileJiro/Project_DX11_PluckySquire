@@ -48,7 +48,10 @@ void CSkyBox::Update(_float _fTimeDelta)
 void CSkyBox::Late_Update(_float _fTimeDelta)
 {
     m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
-    m_pGameInstance->Add_RenderObject(CRenderer::RG_PRIORITY, this);}
+    
+    m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_PRIORITY, this);
+    //m_pGameInstance->Add_RenderObject(CRenderer::RG_PRIORITY, this);
+}
 
 HRESULT CSkyBox::Render()
 {

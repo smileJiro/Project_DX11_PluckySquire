@@ -51,6 +51,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_Effects(TEXT("Layer_Effect"));
 	Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
@@ -158,7 +159,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
 
-		_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+		_vector vMousePos = XMVectorSet((_float)pt.x, (_float)pt.y, 0.f, 1.f);
 
 		_uint		iNumViewports = { 1 };
 		D3D11_VIEWPORT		ViewportDesc{};
@@ -719,6 +720,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-7.0f, 0.35f, -19.0f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	//	return E_FAIL;
+
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//
@@ -752,6 +758,24 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
+{
+	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+	Desc.isCoordChangeEnable = false;
+	Desc.iSpriteShaderLevel = LEVEL_STATIC;
+	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	Desc.iModelShaderLevel = LEVEL_STATIC;
+	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), LEVEL_GAMEPLAY, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

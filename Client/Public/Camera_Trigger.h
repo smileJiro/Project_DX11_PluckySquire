@@ -49,7 +49,7 @@ private:
 	_uint						m_iCameraTriggerType = { CAMERA_TRIGGER_TYPE_END };
 	_wstring					m_szEventTag = {};			// CutScene이나 Arm 이름 같은 거
 
-	_bool						m_isReturn = { false };		// Exit 후 Defautl Arm 벡터로 돌아갈 건지 말 건지
+	_bool						m_isReturn = { false };		// Exit 후 Pre Arm 벡터로 돌아갈 건지 말 건지
 
 public:
 	static CCamera_Trigger*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

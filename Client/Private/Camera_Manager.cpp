@@ -128,7 +128,7 @@ void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
 
 void CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName)
 {
-	if (nullptr == m_Cameras[TARGET] || TARGET != m_eCurrentCameraType)
+	if (nullptr == m_Cameras[TARGET])
 		return;
 
 	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName);

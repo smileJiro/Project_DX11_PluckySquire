@@ -71,7 +71,7 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 		return E_FAIL;
 
 	m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
-	Load(false);
+	Load_3D_Map(false);
 
 
 	CGameObject* pGameObject = nullptr;
@@ -128,7 +128,7 @@ void C2DMap_Tool_Manager::Input_Logic()
 	HWND hWnd = GetFocus();
 	auto& io = ImGui::GetIO();
 
-	if (nullptr != hWnd)
+	if (nullptr != hWnd && !io.WantCaptureMouse)
 	{
 		if(ImGui::IsKeyPressed(ImGuiKey_MouseLeft) && nullptr != m_DefaultRenderObject && m_DefaultRenderObject->Is_2DMode())
 		{
@@ -324,6 +324,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 			if (!MapColors.empty())
 			{
 				fColor = MapColors.front().second;
+				m_DefaultRenderObject->Set_Default_Render_Mode();
 				m_DefaultRenderObject->Set_Color(MapColors.front().second);
 			}
 			else
@@ -470,7 +471,21 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		m_pPickingObject->Get_FinalPosition();
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
 		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");
-		ImGui::Text("Object Pos : %f, %f", fPos.x, fPos.y);
+		ImGui::SetNextItemWidth(100.f);
+		if (ImGui::DragFloat("##ObjectPosX", &fPos.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
+		{
+			m_pPickingObject->Set_PositionX(fPos.x);
+			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(fOffsetPos);
+		}
+		ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		if (ImGui::DragFloat("##ObjectPosY", &fPos.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
+		{
+			m_pPickingObject->Set_PositionY(-fPos.y);
+			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(fOffsetPos);
+		}
+		ImGui::SameLine();
+		ImGui::Text("Offset Pos");
 
 	}
 
@@ -1204,9 +1219,11 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 
 	_string strBackGroundName = filename + "_BackGround.dds";
 	_wstring strModelPath = L"..\\..\\Client\\Bin\\Resources\\Textures\\Map\\" + StringToWstring(strBackGroundName);
-
 	// 1. 맵뽑기
-	m_pTileRenderObject->Set_OutputPath(strModelPath);
+	if (nullptr == m_pTileRenderObject)
+		m_DefaultRenderObject->Texture_Output(strModelPath);
+	else
+		m_pTileRenderObject->Set_OutputPath(strModelPath);
 
 	strcpy_s(szSaveMapName, strBackGroundName.c_str());
 	
@@ -1546,7 +1563,9 @@ HRESULT C2DMap_Tool_Manager::Update_Model_Index()
 		return S_OK;
 }
 
-void C2DMap_Tool_Manager::Load(_bool _bSelected)
+
+
+void C2DMap_Tool_Manager::Load_3D_Map(_bool _bSelected)
 {
 	//Object_Clear(false);
 
@@ -1657,6 +1676,92 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 			}
 		}
 	}
+
+
+
+
+	CloseHandle(hFile);
+	log = "Load Complete! FileName : ";
+	log += m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]);
+	if (_bSelected)
+		LOG_TYPE(log, LOG_LOAD);
+}
+
+
+void C2DMap_Tool_Manager::Load(_bool _bSelected)
+{
+	Object_Clear(false);
+
+	string filename = m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]);
+	string log = "";
+
+	log = "Load Start... File Name : ";
+	log += filename;
+	_wstring strFullFilePath = MAP_2D_DEFAULT_PATH;
+	strFullFilePath += m_arrSelectName[SAVE_LIST] + L".m2chc";
+
+
+
+	if (!Path_String_Validation_Check(filename))
+	{
+		if (_bSelected)
+		{
+			log = "Load Failed... File Path Error - File Path : ";
+			log += filename;
+			if (_bSelected)
+				LOG_TYPE(log, LOG_ERROR);
+		}
+
+		return;
+	}
+
+
+
+	HANDLE	hFile = CreateFile(strFullFilePath.c_str(),
+		GENERIC_READ,
+		NULL,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		log = "Load Failed... File Open Error - File Path : ";
+		log += filename;
+			LOG_TYPE(log, LOG_ERROR);
+		return;
+	}
+
+
+	DWORD	dwByte(0);
+
+	_char		szSaveMapName[MAX_PATH];
+
+	_uint iObjectCnt = 0;
+	ReadFile(hFile, &szSaveMapName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+	
+	// 텍스쳐로 렌더하는 모드로 바까주고
+	m_DefaultRenderObject->Set_Texture_Mode(szSaveMapName);
+	// 타일 렌더하는 객체 지우고 !
+	Event_DeleteObject(m_pTileRenderObject);
+	m_pTileRenderObject = nullptr;
+	
+	_uint iLayerCount = 0;
+
+	ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
+
+	WriteFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
+
+	for (_uint i = 0; i < iLayerCount ; ++i)
+	{
+
+		C2DMapObject* pObject = C2DMapObject::Create(m_pDevice, m_pContext, hFile, m_ObjectInfoLists);
+		if (nullptr != pObject)
+		{
+			Event_CreateObject(LEVEL_TOOL_2D_MAP ,L"Layer_2DMapObject", pObject);
+		}
+	}
+
 
 
 

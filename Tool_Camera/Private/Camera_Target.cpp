@@ -114,6 +114,7 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
 	if (true == m_pArm->Move_To_NextArm(_fTimeDelta)) {
+		m_pArm->Set_DesireVector();
 		m_eCameraMode = DEFAULT;
 		return;
 	}

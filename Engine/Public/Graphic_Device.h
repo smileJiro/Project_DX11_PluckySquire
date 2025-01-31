@@ -78,7 +78,7 @@ private:
 	/* 스왑체인을 만들었다 == 백버퍼(텍스쳐)가 생성된다. */
 	HRESULT Ready_SwapChain(HWND hWnd, _bool isWindowed, _uint iWinCX, _uint iWinCY);
 	HRESULT Ready_BackBufferRenderTargetView();
-	ID3D11DepthStencilView* Ready_DepthStencilView(_uint iWinCX, _uint iWinCY);
+	HRESULT Ready_DepthStencilView(_uint iWinCX, _uint iWinCY);
 
 public:
 	static CGraphic_Device* Create(HWND hWnd, _bool isWindowed, _uint iWinSizeX, _uint iWinSizeY, _Out_ ID3D11Device** ppDevice,

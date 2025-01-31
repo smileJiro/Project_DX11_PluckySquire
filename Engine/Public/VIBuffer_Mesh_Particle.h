@@ -50,12 +50,19 @@ public:
 
 #ifdef _DEBUG
 public:
+	HRESULT Initialize_Prototype(ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix);
+
+public:
 	virtual void		 Tool_Setting() override;
 	virtual void		 Tool_Reset_Instance() override;
 	virtual void		 Tool_Reset_Buffers() override; // Count 자체가 바뀌어버린 경우
 
 	virtual void		 Tool_Update(_float _fTimeDelta) override;
 	virtual HRESULT		 Save_Buffer(json& _jsonBufferInfo) override;
+
+public:
+	static CVIBuffer_Mesh_Particle* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix);
+
 
 private:
 	_float2* m_pTexcoords = { nullptr };
