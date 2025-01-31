@@ -121,13 +121,13 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
     }
 }
 
-HRESULT CCollision_Manager::Register_Section(_uint _iSectionKey)
+HRESULT CCollision_Manager::Register_Section(const _wstring& _strSectionKey)
 {
     array<vector<CCollider*>, 32> Colliders;
-    if (nullptr != Find_Colliders(_iSectionKey))
+    if (nullptr != Find_Colliders(_strSectionKey))
         return E_FAIL;
 
-    m_Colliders.emplace(_iSectionKey, Colliders);
+    m_Colliders.emplace(_strSectionKey, Colliders);
     return S_OK;
 }
 
@@ -169,9 +169,9 @@ void CCollision_Manager::Erase_GroupFilter(OBJECT_GROUP _eLeft, OBJECT_GROUP _eR
     m_iGroupFilter[iRow] &= ~iCol;
 }
 
-HRESULT CCollision_Manager::Add_Collider(_uint _iSectionKey, OBJECT_GROUP _eGroupFilter, CCollider* _pCollider)
+HRESULT CCollision_Manager::Add_Collider(const _wstring& _strSectionKey, OBJECT_GROUP _eGroupFilter, CCollider* _pCollider)
 {
-    array<vector<CCollider*>, MAX_GROUPID>* pColliders = Find_Colliders(_iSectionKey);
+    array<vector<CCollider*>, MAX_GROUPID>* pColliders = Find_Colliders(_strSectionKey);
     if (nullptr == pColliders)
         return E_FAIL;
 
@@ -193,9 +193,9 @@ _uint CCollision_Manager::Convert_GroupID_ToIndex(_uint _iGroupID)
     return (_uint)dwIndex;
 }
 
-array<vector<CCollider*>, MAX_GROUPID>* CCollision_Manager::Find_Colliders(_uint _iSectionKey)
+array<vector<CCollider*>, MAX_GROUPID>* CCollision_Manager::Find_Colliders(const _wstring& _strSectionKey)
 {
-    auto iter = m_Colliders.find(_iSectionKey);
+    auto iter = m_Colliders.find(_strSectionKey);
 
     if (iter == m_Colliders.end())
         return nullptr;

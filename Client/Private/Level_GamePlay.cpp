@@ -69,9 +69,6 @@ HRESULT CLevel_GamePlay::Initialize()
 
 
 	/* Collision Test */
-	// 섹션 추가
-	_uint iSectionKey = RG_2D + PR2D_SECTION_START;
-	CCollision_Manager::GetInstance()->Register_Section(iSectionKey);
 
 	// 그룹필터 추가
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);

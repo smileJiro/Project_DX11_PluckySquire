@@ -251,7 +251,7 @@ void CPlayer::Update(_float _fTimeDelta)
 
     //// TestCode : еб©У
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
-    CCollision_Manager::GetInstance()->Add_Collider(iSectionKey, OBJECT_GROUP::PLAYER, m_pColliderCom);
+    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
 
     __super::Update(_fTimeDelta); /* Part Object Update */
