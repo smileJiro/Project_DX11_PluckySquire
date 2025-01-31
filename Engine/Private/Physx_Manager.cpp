@@ -54,7 +54,7 @@ HRESULT CPhysx_Manager::Initialize()
 	/* 충돌 필터에 대한 세팅 ()*/
 	PxFilterData FilterData;
 	FilterData.word0 = 0x08;
-	FilterData.word1 = 0x02 | 0x04; // 이렇게 추가하고 몬스터도 다이나믹으로 돌려보던지 한번 근데 아마 좀 많이 바꿔야할거야 ㅋㅋㅋㅋㅋ
+	FilterData.word1 = 0x01 | 0x02; // 이렇게 추가하고 몬스터도 다이나믹으로 돌려보던지 한번 근데 아마 좀 많이 바꿔야할거야 ㅋㅋㅋㅋㅋ
 
 	PxU32 iNumShapes = m_pTestDesk->getNbShapes();
 

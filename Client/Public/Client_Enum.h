@@ -56,19 +56,19 @@ namespace Client
 	// 비트연산자를 통해 SimulationFilter를 설정해야해서 enum으로 하겠음. enum class는 비트연산자 쓰려면 형변환많이하고 번거로워서.
 	enum OBJECT_GROUP // 아래 GROUP은 예시임. 편한대로 사용하시면 됨.
 	{
-		NONE =						0x00, 
-		PLAYER =					0x02,
-		MONSTER =					0x04,
-		MAPOBJECT =					0x08,
-		INTERACTION_OBEJCT =		0x10,
-		PLAYER_PROJECTILE =			0x20,
-		MONSTER_PROJECTILE =		0x40,
-		TRIGGER_OBJECT =		    0x80,
+		NONE =						0x00,
+		PLAYER =					0x01,
+		MONSTER =					0x02,
+		MAPOBJECT =					0x04,
+		INTERACTION_OBEJCT =		0x08,
+		PLAYER_PROJECTILE =			0x10,
+		MONSTER_PROJECTILE =		0x20,
+		TRIGGER_OBJECT =		    0x40,
+								 // 0x80
 								 // 0x100
-								 // 0x200
-								 // 0x400 
+								 // 0x200 
 
-		LAST
+		LAST =						0x100000000 // == 2의 32승 (32개 이상의 그룹은 X)
 	};
 
 
