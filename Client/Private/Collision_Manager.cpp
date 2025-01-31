@@ -123,7 +123,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
 
 HRESULT CCollision_Manager::Register_Section(const _wstring& _strSectionKey)
 {
-    array<vector<CCollider*>, 32> Colliders;
+    array<vector<CCollider*>, MAX_GROUPID> Colliders;
     if (nullptr != Find_Colliders(_strSectionKey))
         return E_FAIL;
 

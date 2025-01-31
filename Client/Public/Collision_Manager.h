@@ -36,7 +36,7 @@ public: /* Section 등록 */
 public: /* Group Filter 관리 */
 	void					Check_GroupFilter(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRight);						 // 그룹필터를 추가
 	void					Erase_GroupFilter(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRight);						 // 그룹필터를 삭제
-	void					Clear_GroupFilter() { memset(m_iGroupFilter, 0, sizeof(_uint) * 32); }
+	void					Clear_GroupFilter() { memset(m_iGroupFilter, 0, sizeof(_uint) * MAX_GROUPID); }
 
 public: /* Group에 Collider 등록 */
 	HRESULT					Add_Collider(const _wstring& _strSectionKey, OBJECT_GROUP _eGroupFilter, CCollider* _pCollider); // 콜라이더를 추가.
