@@ -14,29 +14,19 @@ CPlayerState_Attack::CPlayerState_Attack(CPlayer* _pOwner, E_DIRECTION _eDirecti
 
 void CPlayerState_Attack::Update(_float _fTimeDelta)
 {
-	if (MOUSE_DOWN(MOUSE_KEY::LB))
-	{
-		m_bCombo = true;
-	}
+    PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
-    if (KEY_PRESSING(KEY::LSHIFT))
+    if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
     {
-        m_pOwner->Set_State(CPlayer::ROLL);
-        return;
+        m_bCombo = true;
     }
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-
 	//0.3이상일 때 공격버튼이 눌린 적 있었으면?
 	_float fProgress =m_pOwner->Get_AnimProgress();
 	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
 	_float fForwardingProgress = eCoord == COORDINATE_2D ? m_f2DForwardingProgress : m_f3DForwardingProgress;
 	if (fProgress >= fMotionCancelProgress)
 	{
-        if (KEY_PRESSING(KEY::SPACE))
-        {
-            m_pOwner->Set_State(CPlayer::JUMP);
-            return;
-        }
 		if (m_bCombo)
 		{
 			m_iComboCount++;
@@ -46,6 +36,18 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 			}
 			m_bCombo = false;
 		}
+        else
+        {
+            if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
+                m_pOwner->Set_State(CPlayer::JUMP);
+            else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+                m_pOwner->Set_State(CPlayer::ROLL); 
+            else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+                m_pOwner->Set_State(CPlayer::THROWSWORD);
+            else if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
+                m_pOwner->Set_State(CPlayer::RUN);
+
+        }
 
 	}
 	else if(fProgress >= fForwardingProgress)

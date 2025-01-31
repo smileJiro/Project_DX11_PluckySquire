@@ -8,7 +8,21 @@ class CCollider; // test
 END
 BEGIN(Client)
 class CStateMachine;
-
+enum PLAYER_KEY
+{
+	PLAYER_KEY_MOVE,
+	PLAYER_KEY_JUMP,
+	PLAYER_KEY_ATTACK,
+	PLAYER_KEY_ROLL,
+	PLAYER_KEY_THROWSWORD,
+	PLAYER_KEY_INTERACT,
+	PLAYER_KEY_LAST
+};
+typedef struct tagPlayerKeyResult
+{
+	_vector vMoveDir = {0,0,0};
+	_bool bKeyStates[PLAYER_KEY_LAST] = {false,};
+}PLAYER_KEY_RESULT;
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -25,6 +39,7 @@ public:
 		RUN,
 		JUMP,
 		ATTACK,
+		JUMP_ATTACK,
 		ROLL,
 		THROWSWORD,
 		STATE_LAST
@@ -397,6 +412,7 @@ public:
 	void Stop_Move();
 	void	ThrowSword();
 	void Jump();
+	PLAYER_KEY_RESULT Player_KeyInput();
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
@@ -406,6 +422,7 @@ public:
 	_bool Is_SwordEquiped();
 	_bool Is_CarryingObject();
 	_vector Get_CenterPosition();
+	_vector Get_LookDirection();
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);

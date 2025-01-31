@@ -13,13 +13,19 @@ CPlayerState_ThrowSword::CPlayerState_ThrowSword(CPlayer* _pOwner)
 
 void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 {
-    if(MOUSE_UP(MOUSE_KEY::RB))
-    {
-        m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_NEWRIG);
+	if (m_pOwner->Is_SwordEquiped())
+		return;
+	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
- 
-        return;
-    }
+	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
+		m_pOwner->Set_State(CPlayer::RUN);
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
+		m_pOwner->Set_State(CPlayer::JUMP);
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+		m_pOwner->Set_State(CPlayer::ROLL);
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+		m_pOwner->Set_State(CPlayer::THROWSWORD);
+
 }
 
 void CPlayerState_ThrowSword::Enter()

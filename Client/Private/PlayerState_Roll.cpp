@@ -38,16 +38,9 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 		}
 		else
 		{
-			_bool bMove = false;
-			if (KEY_PRESSING(KEY::W))
-				bMove = true;
-			else if (KEY_PRESSING(KEY::A))
-				bMove = true;
-			else if (KEY_PRESSING(KEY::S))
-				bMove = true;
-			else if (KEY_PRESSING(KEY::D))
-				bMove = true;
-			if (bMove)
+			PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+
+			if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 				m_pOwner->Set_State(CPlayer::RUN);
 		}
 	}

@@ -70,7 +70,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::STICKY;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::CUSTOM;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
@@ -110,7 +111,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
-	//fill(begin(m_KeyLocks), end(m_KeyLocks), false);
+	//
 
     return S_OK;
 }
@@ -368,7 +369,7 @@ void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
             }
 
             _float fDot = abs( XMVectorGetX(XMVector3Dot(vLook, _vDir)));
-            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed  * fDot;
+            _vector vVeclocity = _vDir* m_tStat[COORDINATE_3D].fMoveSpeed  /** fDot*/;
             vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vVeclocity);
 
@@ -449,6 +450,60 @@ void CPlayer::Jump()
         m_pActorCom->Add_Impulse(_float3(0.0f, m_tStat[COORDINATE_3D].fJumpPower, 0.0f));
 }
 
+PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
+{
+	PLAYER_KEY_RESULT tResult;
+    fill(begin(tResult.bKeyStates), end(tResult.bKeyStates), false);
+
+
+    if (Is_SwordEquiped())
+    {
+        //기본공격
+        if (MOUSE_DOWN(MOUSE_KEY::LB))
+			tResult.bKeyStates[PLAYER_KEY_ATTACK] = true;
+        //칼 던지기
+        else if (MOUSE_DOWN(MOUSE_KEY::RB))
+			tResult.bKeyStates[PLAYER_KEY_THROWSWORD] = true;
+    }
+    //점프
+    if (KEY_PRESSING(KEY::SPACE))
+        tResult.bKeyStates[PLAYER_KEY_JUMP] = true;
+    //구르기
+    if (KEY_PRESSING(KEY::LSHIFT))
+        tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
+
+    COORDINATE eCoord = Get_CurCoord();
+    //이동
+    if (KEY_PRESSING(KEY::W))
+    {
+        if (eCoord == COORDINATE_3D)
+            tResult.vMoveDir += _vector{ 0.f, 0.f, 1.f,0.f };
+        else
+            tResult.vMoveDir += _vector{ 0.f, 1.f, 0.f,0.f };
+        tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
+    }
+    if (KEY_PRESSING(KEY::A))
+    {
+        tResult.vMoveDir += _vector{ -1.f, 0.f, 0.f,0.f };
+        tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
+    }
+    if (KEY_PRESSING(KEY::S))
+    {
+        if (eCoord == COORDINATE_3D)
+            tResult.vMoveDir += _vector{ 0.f, 0.f, -1.f,0.f };
+        else
+            tResult.vMoveDir += _vector{ 0.f, -1.f, 0.f,0.f };
+        tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
+    }
+    if (KEY_PRESSING(KEY::D))
+    {
+        tResult.vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
+        tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
+    }
+
+    return tResult;
+}
+
 
 
 _bool CPlayer::Is_OnGround()
@@ -502,6 +557,15 @@ _vector CPlayer::Get_CenterPosition()
         return Get_FinalPosition() + _vector{0,m_fCenterHeight, 0};
 }
 
+_vector CPlayer::Get_LookDirection()
+{
+	COORDINATE eCoord = Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+        return EDir_To_Vector(m_e2DDirection_E);
+    else
+        return m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+}
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
@@ -534,6 +598,7 @@ void CPlayer::Set_State(STATE _eState)
 		break;
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
