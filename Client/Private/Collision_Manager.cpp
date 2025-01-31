@@ -171,7 +171,7 @@ void CCollision_Manager::Erase_GroupFilter(OBJECT_GROUP _eLeft, OBJECT_GROUP _eR
 
 HRESULT CCollision_Manager::Add_Collider(_uint _iSectionKey, OBJECT_GROUP _eGroupFilter, CCollider* _pCollider)
 {
-    array<vector<CCollider*>, 32>* pColliders = Find_Colliders(_iSectionKey);
+    array<vector<CCollider*>, MAX_GROUPID>* pColliders = Find_Colliders(_iSectionKey);
     if (nullptr == pColliders)
         return E_FAIL;
 
