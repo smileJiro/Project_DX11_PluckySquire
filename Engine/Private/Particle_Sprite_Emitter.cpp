@@ -3,13 +3,13 @@
 
 
 CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CParticle_Emitter(_pDevice, _pContext)
+	: CEmitter(_pDevice, _pContext)
 {
-    m_eParticleType = SPRITE;
+    m_eEffectType = SPRITE;
 }
 
 CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitter& _Prototype)
-	: CParticle_Emitter(_Prototype)
+	: CEmitter(_Prototype)
     , m_fAlphaDiscard(_Prototype.m_fAlphaDiscard)
     , m_fRGBDiscard(_Prototype.m_fRGBDiscard)
 {
@@ -160,7 +160,7 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
     }
     else
     {
-        if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+        if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_IdentityMatrix)))
             return E_FAIL;
     }
 
@@ -283,7 +283,6 @@ void CParticle_Sprite_Emitter::Tool_Setting()
 }
 void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 {
-
     ImGui::Begin("Adjust_Sprite_Emitter");   
 
     if (ImGui::TreeNode("Set Emitter State"))

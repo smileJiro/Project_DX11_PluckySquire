@@ -1,5 +1,5 @@
 #pragma once
-#include "Particle_Emitter.h"
+#include "Emitter.h"
 
 
 BEGIN(Engine)
@@ -8,7 +8,7 @@ class CVIBuffer_Mesh_Particle;
 class CMaterial;
 class CBone;
 
-class ENGINE_DLL CParticle_Mesh_Emitter : public CParticle_Emitter
+class ENGINE_DLL CParticle_Mesh_Emitter : public CEmitter
 {
 private:
 	CParticle_Mesh_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

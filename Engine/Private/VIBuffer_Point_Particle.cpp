@@ -1,6 +1,6 @@
 #include "VIBuffer_Point_Particle.h"
 #include "GameInstance.h"
-#include "Particle_Module.h"
+#include "Effect_Module.h"
 
 CVIBuffer_Point_Particle::CVIBuffer_Point_Particle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer_Instance(_pDevice, _pContext)

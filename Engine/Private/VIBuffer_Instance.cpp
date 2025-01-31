@@ -1,6 +1,6 @@
 #include "VIBuffer_Instance.h"
 #include "GameInstance.h"
-#include "Particle_Module.h"
+#include "Effect_Module.h"
 
 CVIBuffer_Instance::CVIBuffer_Instance(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer(_pDevice, _pContext)
@@ -709,7 +709,7 @@ HRESULT CVIBuffer_Instance::Ready_Modules(const json _jsonInfo)
 	{
 		for (_int i = 0; i < _jsonInfo["Module"].size(); ++i)
 		{
-			CParticle_Module* pModule = CParticle_Module::Create(_jsonInfo["Module"][i]);
+			CEffect_Module* pModule = CEffect_Module::Create(_jsonInfo["Module"][i]);
 			if (nullptr == pModule)
 				return E_FAIL;
 			
@@ -717,7 +717,7 @@ HRESULT CVIBuffer_Instance::Ready_Modules(const json _jsonInfo)
 		}
 	}
 
-	sort(m_Modules.begin(), m_Modules.end(), [](const CParticle_Module* pSrc, const CParticle_Module* pDst)
+	sort(m_Modules.begin(), m_Modules.end(), [](const CEffect_Module* pSrc, const CEffect_Module* pDst)
 		{
 			return pSrc->Get_Order() < pDst->Get_Order();
 		}
@@ -1621,13 +1621,13 @@ void CVIBuffer_Instance::Tool_Add_Module()
 				{
 					item_selected_idx = n;
 					
-					CParticle_Module* pModule = CParticle_Module::Create((CParticle_Module::MODULE_TYPE)n, Moduleitems[n]);
+					CEffect_Module* pModule = CEffect_Module::Create((CEffect_Module::MODULE_TYPE)n, Moduleitems[n]);
 					if (nullptr != pModule)
 					{
 						pModule->Set_Order(m_Modules.size());
 						m_Modules.push_back(pModule);
 
-						sort(m_Modules.begin(), m_Modules.end(), [](const CParticle_Module* pSrc, const CParticle_Module* pDst)
+						sort(m_Modules.begin(), m_Modules.end(), [](const CEffect_Module* pSrc, const CEffect_Module* pDst)
 							{
 								return pSrc->Get_Order() < pDst->Get_Order();
 							}

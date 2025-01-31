@@ -65,7 +65,7 @@ protected:
 	
 
 protected:
-	vector<class CParticle_Module*> m_Modules;
+	vector<class CEffect_Module*> m_Modules;
 
 protected:
 	/*

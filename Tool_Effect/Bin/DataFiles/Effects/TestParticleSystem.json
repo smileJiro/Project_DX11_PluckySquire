@@ -131,7 +131,7 @@
             "LoopTime": 0,
             "Parent": false,
             "Progress": true,
-            "Texture": "../Bin/Resources/Textures/Effects/blue.dds",
+            "Texture": "../Bin/Resources/Textures/Particles/blue.dds",
             "Time": 4.0,
             "Type": "SPRITE"
         }

@@ -136,9 +136,6 @@
     <Filter Include="01.Utility\09. RenderTargets\Manager">
       <UniqueIdentifier>{b8b92195-49d1-43e8-bd2b-cd0f39b298c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Point">
-      <UniqueIdentifier>{1943b2ce-e47d-4ba7-94b0-25c928efb2b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Rect\Rect_Vertical">
       <UniqueIdentifier>{1e2760b5-d438-4278-91c9-293c036ad287}</UniqueIdentifier>
     </Filter>
@@ -192,9 +189,6 @@
     </Filter>
     <Filter Include="01.Utility\12.JsonManager">
       <UniqueIdentifier>{786c962a-0033-4598-b089-306fb56a2a2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03.Objects\Effect\Particle_System">
-      <UniqueIdentifier>{e01a6ae4-8d3a-4105-9aaf-bfe9ec3e9bad}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\03.Objects\Effect\Emitter">
       <UniqueIdentifier>{78145474-8460-4e67-a217-cab6f3d801f3}</UniqueIdentifier>
@@ -268,9 +262,6 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Point_Particle">
       <UniqueIdentifier>{1943b2ce-e47d-4ba7-94b0-25c928efb2b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Module">
-      <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\09.RenderTargets">
       <UniqueIdentifier>{c6f2ce8e-acda-4bcb-b691-3d92d5e7ee0a}</UniqueIdentifier>
     </Filter>
@@ -288,6 +279,15 @@
     </Filter>
     <Filter Include="01.Utility\04.Components\Collider\AABB">
       <UniqueIdentifier>{aed4aa39-81a2-4e1a-a759-6499ddd8469f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect\Emitter\MeshEffect">
+      <UniqueIdentifier>{ccaad2c3-2739-4872-88ea-eb1656c6a908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect\Effect_System">
+      <UniqueIdentifier>{e01a6ae4-8d3a-4105-9aaf-bfe9ec3e9bad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect\Emitter\Module">
+      <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -492,10 +492,10 @@
     <ClInclude Include="..\public\VIBuffer_Instance.h">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Particle_System.h">
-      <Filter>01.Utility\03.Objects\Effect\Particle_System</Filter>
+    <ClInclude Include="..\public\Effect_System.h">
+      <Filter>01.Utility\03.Objects\Effect\Effect_System</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Particle_Emitter.h">
+    <ClInclude Include="..\public\Emitter.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Particle_Sprite_Emitter.h">
@@ -540,8 +540,8 @@
     <ClInclude Include="..\Public\Animation.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Particle_Module.h">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
+    <ClInclude Include="..\public\Effect_Module.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClInclude>
     <ClInclude Include="..\public\NewRenderer.h">
       <Filter>01.Utility\05.NewRenderer</Filter>
@@ -566,6 +566,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\DebugDraw_For_Client.h">
       <Filter>01.Utility\04.Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MeshEffect_Emitter.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EffectModel.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -758,10 +764,10 @@
     <ClCompile Include="..\private\VIBuffer_Instance.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Particle_System.cpp">
-      <Filter>01.Utility\03.Objects\Effect\Particle_System</Filter>
+    <ClCompile Include="..\private\Effect_System.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Effect_System</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Particle_Emitter.cpp">
+    <ClCompile Include="..\private\Emitter.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp">
@@ -806,8 +812,8 @@
     <ClCompile Include="..\Private\Animation.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Particle_Module.cpp">
-      <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Module</Filter>
+    <ClCompile Include="..\private\Effect_Module.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClCompile>
     <ClCompile Include="..\private\NewRenderer.cpp">
       <Filter>01.Utility\05.NewRenderer</Filter>
@@ -832,6 +838,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw_For_Client.cpp">
       <Filter>01.Utility\04.Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MeshEffect_Emitter.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EffectModel.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

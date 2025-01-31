@@ -5,13 +5,13 @@
 #include "Bone.h"
 
 CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CParticle_Emitter(_pDevice, _pContext)
+	: CEmitter(_pDevice, _pContext)
 {
-	m_eParticleType = MESH;
+	m_eEffectType = MESH;
 }
 
 CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Prototype)
-	: CParticle_Emitter(_Prototype)
+	: CEmitter(_Prototype)
 	, m_PreTransformMatrix(_Prototype.m_PreTransformMatrix)
 	, m_iNumMeshes(_Prototype.m_iNumMeshes)
 	, m_iNumMaterials(_Prototype.m_iNumMaterials)
@@ -168,7 +168,9 @@ void CParticle_Mesh_Emitter::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 
 	if (m_isActive)
-		m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
+		m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_EFFECT, this);
+
+		//m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
 
 }
 
@@ -206,9 +208,16 @@ void CParticle_Mesh_Emitter::Reset()
 
 HRESULT CParticle_Mesh_Emitter::Bind_ShaderResources()
 {
-	// TODO
-	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
+	if (m_isFollowParent)
+	{
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
+			return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_IdentityMatrix)))
+			return E_FAIL;
+	}
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
 		return E_FAIL;

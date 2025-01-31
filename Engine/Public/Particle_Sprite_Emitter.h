@@ -1,10 +1,10 @@
 #pragma once
-#include "Particle_Emitter.h"
+#include "Emitter.h"
 
 BEGIN(Engine)
 
 
-class ENGINE_DLL CParticle_Sprite_Emitter : public CParticle_Emitter
+class ENGINE_DLL CParticle_Sprite_Emitter : public CEmitter
 {
 
 private:

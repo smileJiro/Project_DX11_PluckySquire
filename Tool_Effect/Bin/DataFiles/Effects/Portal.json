@@ -162,7 +162,7 @@
             "LoopTime": 0,
             "Parent": true,
             "Progress": true,
-            "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Dust_01.dds",
+            "Texture": "../Bin/Resources/Textures/Particles/T_FX_CMN_Dust_01.dds",
             "Time": 0.0,
             "Type": "SPRITE"
         }

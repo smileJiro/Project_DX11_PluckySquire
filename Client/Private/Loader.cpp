@@ -859,7 +859,7 @@ HRESULT CLoader::Load_Directory_Effects(LEVEL_ID _iLevID, const _tchar* _szJsonF
     for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
         if (entry.path().extension() == ".json") {
             
-            CParticle_System* pParticleSystem = CParticle_System::Create(m_pDevice, m_pContext, entry.path().c_str());
+            CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, entry.path().c_str());
 
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevID, entry.path().filename(), pParticleSystem)))
             {

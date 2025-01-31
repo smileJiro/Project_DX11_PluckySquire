@@ -204,7 +204,7 @@ CTest3DModel* CTest3DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* p
 {
 	CTest3DModel* pInstance = new CTest3DModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix)))
+	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PreTransformMatrix, false)))
 	{
 		MSG_BOX("Failed to Created : Test3DModel");
 		Safe_Release(pInstance);

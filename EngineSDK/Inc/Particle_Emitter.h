@@ -8,7 +8,7 @@ BEGIN(Engine)
 /* Shader Component만 보유 */
 /* 기본 함수들 보유 */
 
-class ENGINE_DLL CParticle_Emitter : public CPartObject
+class ENGINE_DLL CEmitter : public CPartObject
 {
 
 
@@ -23,9 +23,9 @@ public:
 	} PARTICLE_EMITTER_DESC;
 
 protected:
-	CParticle_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CParticle_Emitter(const CParticle_Emitter& _Prototype);
-	virtual ~CParticle_Emitter() = default;
+	CEmitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CEmitter(const CEmitter& _Prototype);
+	virtual ~CEmitter() = default;
 
 public:
 	static void SetID_3D(_int _iID) { s_iRG_3D = _iID; }

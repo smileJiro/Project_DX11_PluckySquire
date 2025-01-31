@@ -45,7 +45,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
-	//Ready_Layer_Effects(TEXT("Layer_Effect"));
+	Ready_Layer_Effects(TEXT("Layer_Effect"));
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
@@ -698,7 +698,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
-	CParticle_System::PARTICLE_SYSTEM_DESC Desc = {};
+	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
 
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;

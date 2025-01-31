@@ -6,10 +6,10 @@
 #include "ETool_RenderGroup_AfterEffect.h"
 #include "ETool_RenderGroup_Final.h"
 
+#include "ModelObject.h"
 #include "Event_Manager.h"
 #include "Object_Background.h"
 #include "SkyBox.h"
-
 
 
 CMainEffectTool::CMainEffectTool()
@@ -152,6 +152,14 @@ HRESULT CMainEffectTool::Ready_Prototype_Static()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE::Elements, VTXCUBE::iNumElements))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Effect"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Effect.hlsl"), VTXMESH::Elements, VTXMESH::iNumElements))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Sky"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Skybox/Dutch-Sky_0157_4k.dds")))))
 		return E_FAIL;
@@ -173,6 +181,9 @@ HRESULT CMainEffectTool::Ready_Prototype_Static()
 		CSkyBox::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_ModelObject"),
+		CModelObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -346,7 +357,7 @@ HRESULT CMainEffectTool::Ready_RenderGroup()
 	RG_LightDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_LightDesc.iPriorityID = PRIORITY_3D::PR3D_LIGHTS;
 	RG_LightDesc.strMRTTag = TEXT("MRT_LightAcc");
-	CETool_RenderGroup_AfterEffect* pRenderGroup_Lights = CETool_RenderGroup_AfterEffect::Create(m_pDevice, m_pContext, &RG_LightDesc);
+	CETool_RenderGroup_Lights* pRenderGroup_Lights = CETool_RenderGroup_Lights::Create(m_pDevice, m_pContext, &RG_LightDesc);
 	if (nullptr == pRenderGroup_Lights)
 	{
 		MSG_BOX("Failed Create PR3D_LIGHTS");
@@ -444,9 +455,9 @@ HRESULT CMainEffectTool::Ready_RenderGroup()
 void CMainEffectTool::Set_EffectRG()
 {
 	
-	CParticle_Emitter::SetID_2D(RG_2D);
-	CParticle_Emitter::SetID_3D(RG_3D);
-	CParticle_Emitter::SetID_Effect(PR3D_EFFECT);
+	CEmitter::SetID_2D(RG_2D);
+	CEmitter::SetID_3D(RG_3D);
+	CEmitter::SetID_Effect(PR3D_EFFECT);
 
 }
 

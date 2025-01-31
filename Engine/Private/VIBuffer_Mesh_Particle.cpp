@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "Engine_Function.h"
 #include "iostream"
-#include "Particle_Module.h"
+#include "Effect_Module.h"
 
 CVIBuffer_Mesh_Particle::CVIBuffer_Mesh_Particle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer_Instance(_pDevice, _pContext)

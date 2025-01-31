@@ -86,7 +86,7 @@ technique11 DefaultTechnique
 	/* 우리가 수행해야할 정점, 픽셀 셰이더의 진입점 함수를 지정한다. */
     pass DefaultPass
     {
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
