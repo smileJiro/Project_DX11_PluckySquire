@@ -21,6 +21,8 @@ HRESULT CCamera_Trigger::Initialize(void* _pArg)
 	CAMERA_TRIGGER_DESC* pDesc = static_cast<CAMERA_TRIGGER_DESC*>(_pArg);
 
 	m_iCameraTriggerType = pDesc->iCameraTriggerType;
+	m_szEventTag = pDesc->szEventTag;
+	m_isReturn = pDesc->isReturn;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;

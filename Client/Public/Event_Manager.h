@@ -41,6 +41,8 @@ private:
 	HRESULT Execute_ChangeMonsterState(const EVENT& _tEvent);
 	HRESULT Execute_ChangeBossState(const EVENT& _tEvent);
 
+	HRESULT	Execute_CameraTrigger(const EVENT& _tEvent);
+
 private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);
 	HRESULT Client_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);

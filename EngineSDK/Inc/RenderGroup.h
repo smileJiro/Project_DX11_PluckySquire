@@ -24,7 +24,7 @@ public:
 	virtual HRESULT				Initialize(void* _pArg);
 	virtual HRESULT				Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer);
 
-	HRESULT						Add_RenderObject(CGameObject* _pGameObject);
+	virtual HRESULT				Add_RenderObject(CGameObject* _pGameObject);
 
 protected:
 	ID3D11Device*				m_pDevice = nullptr;

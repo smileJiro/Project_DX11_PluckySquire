@@ -2,7 +2,7 @@
 #include "Map_2D.h"
 #include "GameInstance.h"
 #include "RenderTarget.h"
-#include "RenderGroup_MRT.h"
+#include "RenderGroup_2D.h"
 
 
 CMap_2D::CMap_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -82,20 +82,20 @@ HRESULT CMap_2D::Register_RTV_ToTargetManager()
 HRESULT CMap_2D::Register_RenderGroup_ToRenderer()
 {
 
-	CRenderGroup_MRT* pRenderGroup_MRT = nullptr;
+	CRenderGroup_2D* pRenderGroup_MRT = nullptr;
 
-	CRenderGroup_MRT::RG_MRT_DESC RG_Map2DDesc;
+	CRenderGroup_2D::RG_MRT_DESC RG_Map2DDesc;
 	RG_Map2DDesc.iRenderGroupID = RENDERGROUP::RG_2D;
 	RG_Map2DDesc.iPriorityID = m_iPriorityID;
 	RG_Map2DDesc.isViewportSizeChange = true;
 	RG_Map2DDesc.strMRTTag = m_strMRTKey;
 	m_pDSV = RG_Map2DDesc.pDSV = m_pGameInstance->Find_DSV(m_strDSVKey);
-	
+
 	RG_Map2DDesc.vViewportSize = m_fRenderTargetSize;
 	RG_Map2DDesc.isClear = false;
 	if (nullptr == RG_Map2DDesc.pDSV)
 		return E_FAIL;
-	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_Map2DDesc);
+	pRenderGroup_MRT = CRenderGroup_2D::Create(m_pDevice, m_pContext, &RG_Map2DDesc);
 	if (nullptr == pRenderGroup_MRT)
 	{
 		MSG_BOX("Failed Create PR2D_Map2D");
@@ -123,6 +123,7 @@ HRESULT CMap_2D::Copy_DefaultMap_ToRenderTarget()
 	
 	if (nullptr != pSrcResource && nullptr != pDestResource)
 		m_pContext->CopyResource(pDestResource, pSrcResource);
+	Safe_Release(pSrcResource);
 
 	return S_OK;
 }
@@ -175,6 +176,9 @@ CMap_2D* CMap_2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext,
 
 void CMap_2D::Free()
 {
+	m_pGameInstance->Erase_RenderGroup_New(RENDERGROUP::RG_2D,m_iPriorityID);
+	m_pGameInstance->Erase_DSV_ToRenderer(m_strDSVKey);
+	//m_pGameInstance->rt, mrt 삭제필요
 	Safe_Release(m_pDSV);
 	Safe_Release(m_pRenderTarget);
 	Safe_Release(m_pTextureCom);

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Logo_Choose.h"
-
+#include "UI_Manager.h"
 
 
 CLogo_Choose::CLogo_Choose(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -43,14 +43,14 @@ void CLogo_Choose::Update(_float _fTimeDelta)
 
 void CLogo_Choose::Late_Update(_float _fTimeDelta)
 {
-	if (m_isRender)
-		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_UI, this);
-		//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	if (true == m_isRender && true == Uimgr->Get_LogoChanseStage())
+		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 
 }
 
 HRESULT CLogo_Choose::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 {	
+
 
 	if (!m_isRender)
 		return S_OK;

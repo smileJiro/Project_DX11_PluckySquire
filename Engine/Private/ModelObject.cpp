@@ -72,10 +72,10 @@ void CModelObject::Late_Update(_float _fTimeDelta)
         //if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
             m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
     }
-    else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-    {
-        m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_2D, m_iPriorityID_2D, this);
-    }
+    //else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    //{
+    //    m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_2D, m_iPriorityID_2D, this);
+    //}
 
 
 
@@ -505,7 +505,7 @@ HRESULT CModelObject::Imgui_Render_ObjectInfos()
 
 
     ImGui::PushItemWidth(150.f);
-    _float3 vScale = Get_Scale();
+    _float3 vScale = m_pControllerTransform->Get_Scale();
     if (ImGui::InputFloat3("       Model_vScale", (float*)&vScale, " %.2f", ImGuiInputTextFlags_EnterReturnsTrue))
         Set_Scale(vScale);
     ImGui::PopItemWidth();

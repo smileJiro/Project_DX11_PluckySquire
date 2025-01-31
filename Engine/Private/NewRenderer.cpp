@@ -69,7 +69,11 @@ HRESULT CNewRenderer::Draw_RenderObject()
 	}
 
 	if (KEY_DOWN(KEY::F6))
+	{
 		m_isDebugRender ^= 1;
+		m_pGameInstance->Set_Physx_DebugRender(m_isDebugRender);
+	}
+
 #endif
 
 	return S_OK;

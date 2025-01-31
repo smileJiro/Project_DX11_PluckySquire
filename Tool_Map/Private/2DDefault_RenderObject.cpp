@@ -72,8 +72,18 @@ HRESULT C2DDefault_RenderObject::Render()
 		//Default 0
 	if (!m_isBackColorRender)
 	{
+
+		if (m_isDefaultRenderMode)
+		{
+			m_pShader->Begin(3);
+		}
+		else 
+		{
+			m_pShader->Begin(0);
+
+		}
 		m_isBackColorRender = !m_isBackColorRender;
-		m_pShader->Begin(3);
+
 	}
 	else
 	{
@@ -88,6 +98,52 @@ HRESULT C2DDefault_RenderObject::Render()
 	m_pVIBufferCom->Render();
 
 	return S_OK;
+}
+
+void C2DDefault_RenderObject::Texture_Output(const _wstring& _strTexturePath)
+{
+	if (nullptr != m_pTextureCom)
+	{
+		ID3D11ShaderResourceView* pSRV = m_pTextureCom->Get_SRV(0);
+
+		ID3D11Texture2D* pTexture2D = nullptr;
+		ID3D11Resource* pResource = nullptr;
+
+		pSRV->GetResource(&pResource);
+		if (pResource)
+		{
+			HRESULT hr = pResource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&pTexture2D));
+			pResource->Release();
+
+			if (SUCCEEDED(hr) && pTexture2D)
+			{
+				if (FAILED(SaveDDSTextureToFile(m_pContext, pTexture2D, _strTexturePath.c_str())))
+					return;
+			}
+		}
+	}
+}
+
+void C2DDefault_RenderObject::Set_Texture_Mode(const _string& _strTextureName)
+{
+	m_isDefaultRenderMode = false;
+	// 텍스쳐 불러오는 코드
+	_wstring strPath = L"../../Client/Bin/Resources/Textures/Map/" + StringToWstring(_strTextureName);
+	m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strPath.c_str());
+
+	if (nullptr == m_pTextureCom)
+	{ 
+		MSG_BOX("Map Load Texture Create Fail !");
+		return;
+	}
+
+}
+
+void C2DDefault_RenderObject::Set_Default_Render_Mode()
+{
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pTextureCom);
+	m_isDefaultRenderMode = true;
 }
 
 _bool C2DDefault_RenderObject::IsCursor_In(_float2 _fCursorPos)
@@ -139,19 +195,27 @@ HRESULT C2DDefault_RenderObject::Bind_ShaderResources()
 	{ 
 		XMStoreFloat4x4(&m_TargetProjMatrix, XMMatrixOrthographicLH((_float)m_fTargetSize.x, (_float)m_fTargetSize.y, 0.0f, 1.0f));
 		if (FAILED(m_pShader->Bind_RawValue("g_vColors", &m_fBackColor, sizeof(_float4))))
+			return E_FAIL;
 		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_TargetProjMatrix)))
 			return E_FAIL;
+
+		if (nullptr != m_pTextureCom)
+		{
+			if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShader, "g_DiffuseTexture")))
+				return E_FAIL;
+		}
 	}
 	else
 	{
 		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_DiffuseTexture", TEXT("Target_Book_2D"))))
+			return E_FAIL;
 	}
 	
 
 
-	if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_DiffuseTexture", TEXT("Target_Book_2D"))))
-		return E_FAIL;
 
 
 	return S_OK;

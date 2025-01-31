@@ -277,8 +277,10 @@ void CLevel_Camera_Tool::Show_CameraTool()
 		tData.fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
 		tData.fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
 		tData.fLengthTime = { m_fLengthTime, 0.f };
+		tData.iLengthRatioType = m_iLengthRatioType;
 		tData.fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x), XMConvertToRadians(m_fRotationPerSecAxisY.y) };
 		tData.fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x), XMConvertToRadians(m_fRotationPerSecAxisRight.y)};
+		tData.isReturn = m_isReturn;
 
 		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
 		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
@@ -911,7 +913,7 @@ void CLevel_Camera_Tool::Change_ArmLength()
 	_float fArmLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength();
 	_bool bActive = false;
 
-	ImGui::Text("Arm Length: %.2f  ", m_fLengthValue);
+	ImGui::Text("Arm Length: %.2f  ", fArmLength);
 	ImGui::SameLine();
 	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
 		fArmLength -= m_fLengthValue;
@@ -947,6 +949,34 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::SetNextItemWidth(-1);
 	ImGui::DragFloat("##Length Time", &m_fLengthTime, 0.05f, 0.f, 10.f);
 
+	//Type
+	switch (m_iLengthRatioType) {
+	case CCamera::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN   ");
+		break;
+
+	case CCamera::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT  ");
+		break;
+
+	case CCamera::LERP:
+		ImGui::Text("Ratio Type: LERP      ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Length EASE IN")) {
+		m_iLengthRatioType = CCamera::EASE_IN;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Length EASE OUT")) {
+		m_iLengthRatioType = CCamera::EASE_OUT;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Length LERP")) {
+		m_iLengthRatioType = CCamera::LERP;
+	}
+
 	ImGui::Text("Move Time AxisY: %.2f    ", m_fMoveTimeAxisY);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
@@ -972,6 +1002,8 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::SameLine();
 	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
 
+	ImGui::Checkbox("IS RETURN?", &m_isReturn);
+
 	ImGui::NewLine();
 }
 
@@ -988,8 +1020,11 @@ void CLevel_Camera_Tool::Edit_CopyArm()
 	pData->fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
 	pData->fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
 	pData->fLengthTime = { m_fLengthTime, 0.f };
+	pData->fLength = { m_fLength };
+	pData->iLengthRatioType = { m_iLengthRatioType };
 	pData->fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x),   XMConvertToRadians(m_fRotationPerSecAxisY.y) };
 	pData->fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x),   XMConvertToRadians(m_fRotationPerSecAxisRight.y) };
+	pData->isReturn = m_isReturn;
 	// Show Data
 }
 
@@ -1899,6 +1934,43 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 
 void CLevel_Camera_Tool::Save_Data_Arm()
 {
+	_wstring wszSavePath = L"../Bin/Resources/DataFiles/ArmData/";
+	_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
+
+	std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);
+
+	if (!outFile) {
+		std::cerr << "파일 열기 실패." << std::endl;
+	}
+
+	// Arm Data
+	map<_wstring, ARM_DATA*>* pDatas = CCamera_Manager_Tool::GetInstance()->Get_ArmDatas();
+
+	_uint iSize = pDatas->size();
+	outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+
+	for (auto& Data : *pDatas) {
+
+		// Arm Tag 길이 저장
+		_uint strLength = Data.first.length();
+		outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
+		outFile.write(reinterpret_cast<const char*>(Data.first.c_str()), strLength * sizeof(wchar_t));
+
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fLength), sizeof(_float));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fLengthTime), sizeof(_float2));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->iLengthRatioType), sizeof(_uint));
+		
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fMoveTimeAxisY), sizeof(_float2));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fMoveTimeAxisRight), sizeof(_float2));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fRotationPerSecAxisY), sizeof(_float2));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fRotationPerSecAxisRight), sizeof(_float2));
+	
+		outFile.write(reinterpret_cast<const char*>(&Data.second->vDesireArm), sizeof(_float3));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->isReturn), sizeof(_bool));
+	}
+
+	_wstring FullPath = wszSavePath + wszSaveName + TEXT(".bin");
+	m_BinaryFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
 }
 
 void CLevel_Camera_Tool::Load_Data_CutScene()
@@ -2014,6 +2086,45 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 
 void CLevel_Camera_Tool::Load_Data_Arm()
 {
+	_wstring wszLoadPath = m_pGameInstance->StringToWString(m_BinaryFilePaths[m_iCurrentBinaryFileIndex]);
+
+	std::ifstream inFile(wszLoadPath, std::ios::binary);
+	if (!inFile) {
+		string str = "파일을 열 수 없습니다.";
+		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+	}
+
+	// Arm Data
+	_uint iSize = {};
+	inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+
+	for (_uint i = 0; i < iSize; ++i) {
+		
+		ARM_DATA tData;
+	
+		// CutScene Tag 읽기
+		_uint strLength = {};
+		inFile.read(reinterpret_cast<char*>(&strLength), sizeof(_uint));
+		_wstring ArmTag;
+		ArmTag.resize(strLength);
+		inFile.read(reinterpret_cast<char*>(&ArmTag[0]), strLength * sizeof(wchar_t));
+
+		inFile.read(reinterpret_cast<char*>(&tData.fLength), sizeof(_float));
+		inFile.read(reinterpret_cast<char*>(&tData.fLengthTime), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.iLengthRatioType), sizeof(_uint));
+		
+		inFile.read(reinterpret_cast<char*>(&tData.fMoveTimeAxisY), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fMoveTimeAxisRight), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisY), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisRight), sizeof(_float2));
+		
+		inFile.read(reinterpret_cast<char*>(&tData.vDesireArm), sizeof(_float3));
+		inFile.read(reinterpret_cast<char*>(&tData.isReturn), sizeof(_bool));
+
+		CCamera_Manager_Tool::GetInstance()->Add_ArmData(ArmTag, tData);
+	}
+
+	CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
 }
 
 CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

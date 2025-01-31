@@ -45,7 +45,7 @@ private:
 	SHAPE_TYPE			m_eShapeType = {};
 
 	_uint				m_iFillterMyGroup = {};				// 현재 선택한 곳, 만들 때 m_szObjectGroupTag[m_iFillterMyGroup].first로 넣으면 됨
-	_uint				m_iFillterOtherGroup = {};		// 현재 선택한 곳, 만들 때 m_szObjectGroupTag[m_iFillterMyGroup].first로 넣으면 됨
+	_uint				m_iFillterOtherGroup = {};			// 현재 선택한 곳, 만들 때 m_szObjectGroupTag[m_iFillterMyGroup].first로 넣으면 됨
 	_uint				m_iTotalOtherGroupMask = {};		// || 연산 후 Total
 
 	_uint				m_iTriggerType = {};
@@ -61,6 +61,8 @@ private:
 
 	// ========== Camera Trigger
 	_uint				m_iCameraTriggerType = {};
+	_char				m_szEventTag[MAX_PATH] = { "" };
+	_char				m_szEventTemp[MAX_PATH] = { "" };
 
 	// Save Load
 	vector<_string>		m_JsonFilePaths;
@@ -87,6 +89,7 @@ private:
 	void				Create_Trigger();
 	void				Delete_Trigger();
 	void				Edit_Trigger();
+	void				Set_CurTrigger();
 
 	// Camera Trigger
 	HRESULT				Create_Camera_Trigger();
@@ -95,8 +98,7 @@ private:
 	void				Initialize_ListBoxName();
 	void				Picking();
 	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
-
-	void				Set_CurTrigger();
+	pair<TRIGGEROBJECT_DATA, CTriggerObject*>* Get_SelectedTrigger();
 
 	void				Save_TriggerData();
 	void				Load_TriggerData();

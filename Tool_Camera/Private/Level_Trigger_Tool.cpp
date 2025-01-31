@@ -133,10 +133,11 @@ void CLevel_Trigger_Tool::Show_TriggerTool()
 	ImGui::Checkbox("Edit Trigger", &m_isEdit);
 
 	Set_CurTrigger();
+	Delete_Trigger();
 
 	if (true == m_isCreate && false == m_isEdit) {
 		Create_Trigger();
-		Delete_Trigger();
+	
 	}
 
 	if (false == m_isCreate && true == m_isEdit) {
@@ -169,8 +170,8 @@ void CLevel_Trigger_Tool::Show_CurTriggerInfo()
 	_string TriggerName = m_pGameInstance->WStringToString(m_TriggerTags[m_pCurTrigger->second->Get_TriggerType()]);
 	ImGui::Text("%s ", TriggerName.c_str());
 
-	_vector vPosition = m_pCurTrigger->second->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-	ImGui::Text("Position: %.2f, %.2f, %.2f", XMVectorGetX(vPosition), XMVectorGetY(vPosition), XMVectorGetZ(vPosition));
+	_float3 vPosition = m_pCurTrigger->second->Get_ActorCom()->Get_GlobalPose();
+	ImGui::Text("Position: %.2f, %.2f, %.2f", vPosition.x, vPosition.y, vPosition.z);
 
 	const vector<PxShape*>& Shapes = m_pCurTrigger->second->Get_ActorCom()->Get_Shapes();
 	PxTransform ShapeTransform = Shapes[0]->getLocalPose();
@@ -228,6 +229,11 @@ void CLevel_Trigger_Tool::Show_CurTriggerInfo()
 		ImGui::SameLine();
 		_string Name = m_pGameInstance->WStringToString(m_CameraTriggerTags[dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerType()]);
 		ImGui::Text("%s     ", Name.c_str());
+
+		ImGui::Text("Event Tag");
+		ImGui::SameLine();
+		_string EventTag = m_pGameInstance->WStringToString(dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerEventTag());
+		ImGui::Text("%s     ", EventTag.c_str());
 	}
 		break;
 	}
@@ -547,14 +553,25 @@ void CLevel_Trigger_Tool::Set_TriggerInfoByType()
 	switch (m_iTriggerType) {
 	case TRIGGER_TYPE::CAMERA_TRIGGER:
 		
+		// CameraTrigger Type
 		ImGui::Text("Camera Trigger Tag");
 		if (m_iCameraTriggerType <= m_CameraTriggerTags.size() - 1) {
 			ImGui::SameLine();
 			_string Name = m_pGameInstance->WStringToString(m_CameraTriggerTags[m_iCameraTriggerType]);
 			ImGui::Text("%s     ", Name.c_str());
 		}
-
 		Show_CameraTriggerListBox();
+
+		
+		// EventTag
+		ImGui::Text("Event Tag Input:  %s", m_szEventTag);
+		ImGui::SameLine();
+		ImGui::SetNextItemWidth(-1);
+		ImGui::InputText("##EventTag", m_szEventTemp, MAX_PATH);
+		
+		if (ImGui::Button("Set Tag")) {
+			strcpy_s(m_szEventTag, m_szEventTemp);
+		}
 		break;
 	}
 
@@ -577,6 +594,33 @@ void CLevel_Trigger_Tool::Create_Trigger()
 
 void CLevel_Trigger_Tool::Delete_Trigger()
 {
+	if (KEY_PRESSING(KEY::LSHIFT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			pair<TRIGGEROBJECT_DATA, CTriggerObject*>* pSelectedTrigger = Get_SelectedTrigger();
+
+			if (nullptr == pSelectedTrigger)
+				return;
+			
+			for (auto iterator = m_Triggers.begin(); iterator != m_Triggers.end();) {
+				if (pSelectedTrigger == &(*iterator)) {
+
+					if (pSelectedTrigger == m_pCurTrigger) {
+						Safe_Release(m_pCurTrigger->second);
+						m_pCurTrigger = nullptr;
+					}
+
+					Safe_Release((*iterator).second);
+					(*iterator).second->Set_Dead();
+					iterator = m_Triggers.erase(iterator);
+
+					return;
+				}
+				else
+					iterator++;
+			}
+		}
+	}
 }
 
 void CLevel_Trigger_Tool::Edit_Trigger()
@@ -587,7 +631,7 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 			return;
 
 		m_iTriggerType = m_pCurTrigger->second->Get_TriggerType();
-		XMStoreFloat3(&m_vPosition, m_pCurTrigger->second->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+		m_vPosition = m_pCurTrigger->second->Get_ActorCom()->Get_GlobalPose();
 		
 		const vector<PxShape*>& Shapes = m_pCurTrigger->second->Get_ActorCom()->Get_Shapes();
 		PxTransform ShapeTransform = Shapes[0]->getLocalPose();
@@ -613,6 +657,9 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		switch (m_iTriggerType) {
 		case CAMERA_TRIGGER:
 			m_iCameraTriggerType = dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerType();
+
+			_string EventTag = m_pGameInstance->WStringToString(dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerEventTag());
+			strcpy_s(m_szEventTag, EventTag.c_str());
 			break;
 		}
 	}
@@ -628,6 +675,7 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		switch (m_iTriggerType) {
 		case CAMERA_TRIGGER:
 			dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Set_CameraTriggerType(m_iCameraTriggerType);
+			dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Set_CameraTriggerEventTag(m_pGameInstance->StringToWString(m_szEventTag));
 			break;
 		}
 	}
@@ -636,10 +684,12 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		if (nullptr == m_pCurTrigger)
 			return;
 
-		// ÀÌµ¿?
-		CController_Transform* pController = m_pCurTrigger->second->Get_ControllerTransform();
-		pController->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_vPosition), 1.f));
+		// Position
+		m_pCurTrigger->second->Get_ActorCom()->Set_GlobalPose(m_vPosition);
 
+		// Rotation
+		_matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(m_vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(m_vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(m_vRotation.z));
+		m_pCurTrigger->second->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
 
 		switch (m_pCurTrigger->first.iShapeType)
 		{
@@ -661,8 +711,27 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		}
 		}
 
-		_matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(m_vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(m_vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(m_vRotation.z));
-		m_pCurTrigger->second->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
+		
+	}
+}
+
+void CLevel_Trigger_Tool::Set_CurTrigger()
+{
+	if (KEY_PRESSING(KEY::ALT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			pair<TRIGGEROBJECT_DATA, CTriggerObject*>* pSelectedTrigger = Get_SelectedTrigger();
+
+			if (nullptr == pSelectedTrigger)
+				return;
+
+			if (nullptr != m_pCurTrigger)
+				Safe_Release(m_pCurTrigger->second);
+
+			m_pCurTrigger = pSelectedTrigger;
+
+			Safe_AddRef(m_pCurTrigger->second);
+		}
 	}
 }
 
@@ -671,7 +740,8 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 	CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
 	Desc.iCameraTriggerType = m_iCameraTriggerType;
-	
+	Desc.szEventTag = m_pGameInstance->StringToWString(m_szEventTag);
+
 	Desc.eShapeType = m_eShapeType;
 	Desc.vHalfExtents = m_vHalfExtents;
 	Desc.fRadius = m_fRadius;
@@ -699,7 +769,8 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 	Data.iFillterOtherGroupMask = m_iTotalOtherGroupMask;
 
 	m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
-	m_pCurTrigger = nullptr;
+	
+	Safe_AddRef(pTrigger);
 }
 
 void CLevel_Trigger_Tool::Initialize_ListBoxName()
@@ -905,31 +976,29 @@ void CLevel_Trigger_Tool::Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir)
 	*_pRayDir = vRayDir;
 }
 
-void CLevel_Trigger_Tool::Set_CurTrigger()
+pair<TRIGGEROBJECT_DATA, CTriggerObject*>* CLevel_Trigger_Tool::Get_SelectedTrigger()
 {
-	if (KEY_PRESSING(KEY::ALT)) {
-		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+	_vector vPos, vDir;
+	Get_RayInfo(&vPos, &vDir);
 
-			_vector vPos, vDir;
-			Get_RayInfo(&vPos, &vDir);
+	_float3 vRayPos, vRayDir;
+	XMStoreFloat3(&vRayPos, vPos);
+	XMStoreFloat3(&vRayDir, vDir);
 
-			_float3 vRayPos, vRayDir;
-			XMStoreFloat3(&vRayPos, vPos);
-			XMStoreFloat3(&vRayDir, vDir);
+	CActorObject* pObject = nullptr;
 
-			CActorObject* pObject;
+	_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 2000.f, nullptr, &pObject);
 
-			_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 1000.f, nullptr, &pObject);
-
-			if (true == isSelected) {
-				for (auto& Trigger : m_Triggers) {
-					if (pObject == Trigger.second) {
-						m_pCurTrigger = &Trigger;
-					}
-				}
+	if (true == isSelected) {
+		for (auto& Trigger : m_Triggers) {
+			if (pObject == Trigger.second) {
+				
+				return &Trigger;
 			}
 		}
 	}
+
+	return nullptr;
 }
 
 void CLevel_Trigger_Tool::Save_TriggerData()
@@ -938,11 +1007,11 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 
 	for (auto& Trigger : m_Triggers) {
 
-		_vector vPosition = Trigger.second->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+		_float3 vPosition = Trigger.second->Get_ActorCom()->Get_GlobalPose();
 		
 		json Trigger_json;
 		Trigger_json["Trigger Type"] = Trigger.second->Get_TriggerType();
-		Trigger_json["Position"] = { XMVectorGetX(vPosition), XMVectorGetY(vPosition), XMVectorGetZ(vPosition) };
+		Trigger_json["Position"] = { vPosition.x, vPosition.y, vPosition.z };
 		
 		const vector<PxShape*>& Shapes = Trigger.second->Get_ActorCom()->Get_Shapes();
 		PxTransform ShapeTransform = Shapes[0]->getLocalPose();
@@ -961,6 +1030,9 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 		switch (iTriggerType) {
 		case CAMERA_TRIGGER:
 			Trigger_json["Camera Trigger Type"] = dynamic_cast<CCamera_Trigger*>(Trigger.second)->Get_CameraTriggerType();
+
+			_string szEventTag = m_pGameInstance->WStringToString(dynamic_cast<CCamera_Trigger*>(Trigger.second)->Get_CameraTriggerEventTag());
+			Trigger_json["Camera Trigger Event Tag"] = szEventTag;
 			break;
 		}
 
@@ -1022,10 +1094,12 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 		case CAMERA_TRIGGER:
 		{
 			_uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
+			_string szEventTag = Trigger_json["Camera Trigger Event Tag"];
 
 			CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
 			Desc.iCameraTriggerType = iCameraTriggerType;
+			Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
 
 			Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
 			Desc.vHalfExtents = Data.vHalfExtents;
@@ -1049,6 +1123,7 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 			dynamic_cast<CTriggerObject*>(pTrigger)->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
 
 			m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
+			Safe_AddRef(pTrigger);
 		}
 			break;
 		}
@@ -1082,5 +1157,11 @@ CLevel_Trigger_Tool* CLevel_Trigger_Tool::Create(ID3D11Device* _pDevice, ID3D11D
 
 void CLevel_Trigger_Tool::Free()
 {
+	for (auto& Trigger : m_Triggers)
+		Safe_Release(Trigger.second);
+
+	if(nullptr != m_pCurTrigger)
+		Safe_Release(m_pCurTrigger->second);
+
 	__super::Free();
 }

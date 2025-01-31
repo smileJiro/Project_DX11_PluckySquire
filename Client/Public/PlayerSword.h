@@ -22,13 +22,22 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+
 	void Throw(_fvector _vDirection);
+	_bool Is_Flying() { return m_IsFlying; }
 private:
-	_bool m_bFlying = false;
-	_float m_fThrowForce = 10.f;
-	_float m_fHomingForce = 100.f;
+	_float m_fThrowingPower = 15.f;
+	_vector m_vThrowDirection = {};
+	//¹ÛÀ¸·Î ³ª°¡·Á´Â Èû
+	_float m_fOutingForce = 1.f;
+	//²ø¾îµéÀÌ´Â Èû
+	_float m_fCentripetalForce = 30.f;
 	_float m_fRotationForce = 50.f;
 	class CPlayer* m_pPlayer = nullptr;
+	_bool m_IsFlying = false;
 public:
 	static CPlayerSword* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

@@ -47,8 +47,18 @@ void CShopPanel_BG::Child_Update(_float _fTimeDelta)
 
 void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 {
-	//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
-	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BOOK2D, this);
+	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
+	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
+
+	if (true == m_isRender)
+	{
+		//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	}
+	//else
+	//{
+	//	CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+	//}
+
 }
 
 HRESULT CShopPanel_BG::Render()
@@ -132,7 +142,6 @@ HRESULT CShopPanel_BG::Ready_Components()
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBackArrow"),
 			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 			return E_FAIL;
-
 	}
 	break;
 
@@ -141,7 +150,6 @@ HRESULT CShopPanel_BG::Ready_Components()
 		if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_Enter"),
 			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 			return E_FAIL;
-
 	}
 	break;
 	case SHOP_ESCBG:

@@ -9,7 +9,7 @@ BEGIN(Client)
 class CCamera_Target  : public CCamera
 {
 public:
-	enum CAMERA_MODE { DEFAULT, TURN, CAMERA_MODE_END };
+	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, CAMERA_MODE_END };
 
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
 	{
@@ -57,7 +57,9 @@ private:
 
 	void						Action_Mode(_float _fTimeDelta);
 	void						Defualt_Move(_float fTimeDelta);
+	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Look_Target(_float fTimeDelta);
+	void						Move_To_PreArm(_float _fTimeDelta);
 
 private:
 	ARM_DATA*					Find_ArmData(_wstring _wszArmTag);

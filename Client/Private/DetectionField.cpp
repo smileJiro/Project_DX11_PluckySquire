@@ -89,13 +89,33 @@ _bool CDetectionField::IsTarget_In_Detection()
 		_float fDownAngle = m_pGameInstance->Clamp_Degrees(fLookAngle - m_fFOVY / 2.f);
 
 		//x 시야각 먼저 체크
-		if (fRightAngle >= fAngle && fLeftAngle <= fAngle)
+		_bool isIn_FOVX = false;
+		//왼쪽의 각도가 더 큰 경우는 0도를 사이에 걸쳤을 경우
+		if (fLeftAngle > fRightAngle)
+		{
+			if (fLeftAngle <= fAngle || fRightAngle >= fAngle)
+				isIn_FOVX = true;
+		}
+
+		else if (fRightAngle >= fAngle && fLeftAngle <= fAngle)
+		{
+			isIn_FOVX = true;
+		}
+
+		if(true== isIn_FOVX)
 		{
 			// y 시야각까지 들어오면 true 리턴
-			if (fUpAngle >= fAngle && fDownAngle <= fAngle)
+
+			//아래쪽의 각도가 더 큰 경우는 0도를 사이에 걸쳤을 경우
+			if (fDownAngle > fUpAngle)
+			{
+				if (fDownAngle <= fAngle || fUpAngle >= fAngle)
+					m_isColl = true;
+			}
+
+			else if (fUpAngle >= fAngle && fDownAngle <= fAngle)
 			{
 				m_isColl = true;
-				return m_isColl;
 			}
 		}
 
@@ -133,10 +153,9 @@ CDetectionField* CDetectionField::Clone(void* _pArg)
 void CDetectionField::Free()
 {
 	m_pOwner = nullptr;
-	m_pDraw = nullptr;
+	Safe_Release(m_pTarget);
+	Safe_Release(m_pDraw);
 
-	if (nullptr != m_pTarget)
-		Safe_Release(m_pTarget);
 
 	__super::Free();
 }

@@ -81,11 +81,23 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 
 void CUI_Manager::Set_ChooseItem(_int _iIndex)
 {
+
+
+
+
+
+
+
+
+
+
+
+	// ¿øº»
 	if (-1 == _iIndex)
 	{
 		return;
 	}
-
+	
 	if (m_iPreIndex == _iIndex && 1 != m_ShopItems.size())
 	{
 		return;
@@ -99,13 +111,59 @@ void CUI_Manager::Set_ChooseItem(_int _iIndex)
 				m_ShopItems[i][j]->Set_isChooseItem(false);
 			}
 		}
-
+	
 		for (_int i = 0; i <= _iIndex; ++i)
 		{
 			m_ShopItems[_iIndex][i]->Set_isChooseItem(true);
 		}
 		m_iPreIndex = _iIndex;
 	}
+}
+
+vector<CDialog::DialogData> CUI_Manager::Get_Dialogue(const _wstring& _id)
+{
+	auto iter = find_if(m_DialogDatas.begin(), m_DialogDatas.end(), 
+		[&_id](const CDialog::DialogData& dialog)
+		{ 
+			return dialog.id == _id; 
+		});
+
+
+	if (iter != m_DialogDatas.end())
+	{
+		return { *iter };
+	}
+	else
+	{
+		return {};
+	}
+}
+
+CDialog::DialogLine CUI_Manager::Get_DialogueLine(const _wstring& _id, _int _LineIndex)
+{
+	auto iter = find_if(m_DialogDatas.begin(), m_DialogDatas.end(), [&](const CDialog::DialogData& Data)
+		{
+			return Data.id == _id;
+		});
+
+	if (iter != m_DialogDatas.end())
+	{
+		if (_LineIndex < iter->lines.size())
+		{
+			return iter->lines[_LineIndex];
+		}
+	}
+
+	return CDialog::DialogLine{};
+}
+
+
+
+
+void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
+{
+	m_DialogDatas.push_back(_DialogData);
+
 }
 HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
@@ -152,7 +210,7 @@ HRESULT CUI_Manager::Level_Enter(_int _iChangeLevelID)
 void CUI_Manager::Free()
 {
 	
-	Safe_Release(m_pGameInstance);
+	
 
 	for (auto iter : m_pSettingPanels)
 	{
@@ -160,16 +218,28 @@ void CUI_Manager::Free()
 	}
 	m_pSettingPanels.clear();
 
+	for (auto& i : m_ShopItems)
+	{
+		for (auto& j : i)
+		{
+			Safe_Release(j);
+		}
+	}
+	m_ShopItems.clear();
+
 	for (auto iter : m_pShopPanels)
 	{
 		Safe_Release(iter.second);
 	}
 	m_pShopPanels.clear();
 	
-	Safe_Release(m_pPlayer);
-
 	
 
+	Safe_Release(m_pPlayer);
+
+	vector<CDialog::DialogData>().swap(m_DialogDatas);
+
+	Safe_Release(m_pGameInstance);
 	__super::Free();
 }
 

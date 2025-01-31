@@ -62,20 +62,15 @@ HRESULT CMapObject::Initialize(void* _pArg)
     SHAPE_COOKING_DESC ShapeCookingDesc = {};
     ShapeCookingDesc.isLoad = true;
     ShapeCookingDesc.isSave = false;
-    ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
-    ShapeCookingDesc.strFilePath += "/3DCollider/";
-    ShapeCookingDesc.strFilePath += WstringToString(m_strModelName);
-    ShapeCookingDesc.strFilePath += ".modelColl";
+    //ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
+    //ShapeCookingDesc.strFilePath += "NonAnim/";
+    //ShapeCookingDesc.strFilePath += WstringToString(m_strModelName) + "/";
+    //ShapeCookingDesc.strFilePath += ".modelColl";
     SHAPE_DATA ShapeData;
     ShapeData.eShapeType = SHAPE_TYPE::COOKING;
     ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; 
     ShapeData.pShapeDesc = &ShapeCookingDesc;
     ShapeData.isTrigger = false;                   
-    ShapeData.LocalOffsetMatrix = m_matWorld;
-    ShapeData.LocalOffsetMatrix = m_matWorld;
-    ShapeData.LocalOffsetMatrix.m[3][0] = 0.f;
-    ShapeData.LocalOffsetMatrix.m[3][1] = 0.f;
-    ShapeData.LocalOffsetMatrix.m[3][2] = 0.f;
 
 
 

@@ -43,8 +43,7 @@ void CUI::Update(_float fTimeDelta)
 
 void CUI::Late_Update(_float fTimeDelta)
 {
-	//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
-	m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI,this);
+	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 }
 
 HRESULT CUI::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
@@ -94,6 +93,7 @@ HRESULT CUI::Bind_ShaderResources()
 
 void CUI::Free()
 {
+
 	Safe_Release(m_pShaderComs[COORDINATE_2D]);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);

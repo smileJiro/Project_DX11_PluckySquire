@@ -64,7 +64,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::PLAYER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
@@ -75,15 +75,23 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
 void CPlayerSword::Update(_float _fTimeDelta)
 {
-    if (m_bFlying)
+    if (m_IsFlying)
     {
+        m_fOutingForce -= m_fCentripetalForce * _fTimeDelta;
+        _vector vDir = m_vThrowDirection;
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-		_vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-        _vector vTargetPos =  m_pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-        _float3 vDir;
-        XMStoreFloat3(&vDir, (vTargetPos - vPosition) * m_fHomingForce);
-        pDynamicActor->Add_Force(vDir);
+        if (m_fOutingForce < 0)
+        {
+            _vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+            _vector vTargetPos = m_pPlayer->Get_CenterPosition();
+            XMVectorSetY(vTargetPos, XMVectorGetY(vTargetPos) + 0.5f);
+            vDir = XMVector3Normalize(vTargetPos - vPosition);
+        }
+
+        pDynamicActor->Set_LinearVelocity(vDir * abs(m_fOutingForce));
+
     }
+
 	__super::Update(_fTimeDelta);
 }
 
@@ -92,9 +100,48 @@ void CPlayerSword::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
+void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
+    {
+        if (0 > m_fOutingForce )
+        {
+            m_IsFlying = false;
+            m_fOutingForce = 0;
+            COORDINATE eCoord = Get_CurCoord();
+            if (COORDINATE_3D == eCoord)
+            {
+                Set_ParentMatrix(eCoord,m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
+                C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
+                Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
+                _matrix matWorld = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180));
+                m_pControllerTransform->Set_WorldMatrix(matWorld);
+
+                 static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
+
+            }
+
+        }
+    }
+
+
+}
+
+void CPlayerSword::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    int a = 0;
+}
+
+void CPlayerSword::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    int a = 0;
+}
+
 void CPlayerSword::Throw( _fvector _vDirection)
 {
-	m_bFlying = true;
+    m_IsFlying = true;
+    m_fOutingForce = m_fThrowingPower;
+    m_vThrowDirection = _vDirection;
     m_pSocketMatrix = nullptr;
 	m_pParentMatrices[COORDINATE_3D] = nullptr;
     _matrix matWorld = XMMatrixIdentity(); ;
@@ -102,9 +149,7 @@ void CPlayerSword::Throw( _fvector _vDirection)
     XMStoreFloat4x4( &m_WorldMatrices[COORDINATE_3D] , matWorld);
 	m_pActorCom->Update(0.0f);
     static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
-    _float3 f3Direction;
-	XMStoreFloat3(&f3Direction, _vDirection * m_fThrowForce);
-	m_pActorCom->Add_Impulse(f3Direction);
+	m_pActorCom->Set_LinearVelocity(m_vThrowDirection, m_fThrowingPower);
 	_float3 vAngularVelocity = { 0, -m_fRotationForce, 0 };
     m_pActorCom->Set_AngularVelocity(vAngularVelocity);
 }

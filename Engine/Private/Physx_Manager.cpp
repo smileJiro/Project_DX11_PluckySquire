@@ -36,10 +36,9 @@ HRESULT CPhysx_Manager::Initialize()
 	if (FAILED(Initialize_Material()))
 		return E_FAIL;
 
-
 	/* Test Code */
-	m_pGroundPlane = PxCreatePlane(*m_pPxPhysics, PxPlane(0, 1, 0, 99), *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
-	m_pPxScene->addActor(*m_pGroundPlane);
+	//m_pGroundPlane = PxCreatePlane(*m_pPxPhysics, PxPlane(0, 1, 0, 99), *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
+	//m_pPxScene->addActor(*m_pGroundPlane);
 
 	_float4x4 matTest = {};
 	PxMat44 matPx;
@@ -70,14 +69,6 @@ HRESULT CPhysx_Manager::Initialize()
 
 	m_pPxScene->addActor(*m_pTestDesk);
 
-	//m_pRigidDynamic = m_pPxPhysics->createRigidDynamic(transform);
-	//PxCapsuleGeometry CapsuleGeometry2(0.5f, 0.2f);
-	//m_pPxshape = PxRigidActorExt::createExclusiveShape(*m_pRigidDynamic, CapsuleGeometry2, *m_pPxMaterial);
-	//m_pRigidDynamic->setGlobalPose(PxTransform(0.0f, 15.0f, 0.0f));
-	//m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
-	//m_pRigidDynamic->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
-	//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
-	//m_pPxScene->addActor(*m_pRigidDynamic);
 	//
 	// 필요한 시각화 기능 활성화
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
@@ -98,25 +89,59 @@ HRESULT CPhysx_Manager::Initialize()
 		return E_FAIL;
 
 #endif
+
+
 	return S_OK;
 }
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
-	m_pPxScene->simulate(1.f/60.f);
-	
-	if (m_pPxScene->fetchResults(true))
+
+	//m_fTImeAcc : 지난 시뮬레이션 이후로 지난 시간.
+	//m_fFixtedTimeStep : 고정된 시간 간격. 1/60초
+	//1. 지난 시뮬이후로 1/60초 이상이 지났으면 시뮬레이션 해야 함.
+	//	->만약 시뮬레이션이 안끝났으면? 물리 시뮬레이션 작업량이 너무 많아서 1/60안에 도저히 못끝냄.
+	//  -> m_fFixtedTimeStep을 수정하거나, 다음 프레임으로 물ㄹ ㅣ시뮬레이션을 미룸. 
+	//   -> 만약 다음 프레임으로 물리 시뮬을 미루면, 
+	//
+	m_fTimeAcc += _fTimeDelta;
+	if (m_fFixtedTimeStep <= m_fTimeAcc)
 	{
-		if (nullptr != m_pPhysx_EventCallBack)
-			m_pPhysx_EventCallBack->Update();
-		
+		m_pPxScene->simulate(m_fFixtedTimeStep);
+		m_fTimeAcc -= m_fFixtedTimeStep;
+
+		//fetch 끝났는지 확인
+		if (m_pPxScene->fetchResults(true))
+		{
+			if (nullptr != m_pPhysx_EventCallBack)
+				m_pPhysx_EventCallBack->Update();
+
 #ifdef _DEBUG
-		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+		if (true == m_isDebugRender)
+		{
+			const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+			m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+		}
 #endif // _DEBUG
+		}
+
 	}
 
-	
+//
+//	//기존 코드
+//	m_pPxScene->simulate(1.f / 60.f);
+//
+//	if (m_pPxScene->fetchResults(true))
+//	{
+//		if (nullptr != m_pPhysx_EventCallBack)
+//			m_pPhysx_EventCallBack->Update();
+//
+//#ifdef _DEBUG
+//		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+//		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+//#endif // _DEBUG
+//	}
+
 }
 
 HRESULT CPhysx_Manager::Render()
@@ -258,7 +283,7 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	//MySimulationEventCallback* callback = new MySimulationEventCallback();
 	//sceneDesc.simulationEventCallback = callback;
 #pragma endregion
-
+	m_pPxScene->simulate(m_fFixtedTimeStep);
 	return S_OK;
 }
 
@@ -333,12 +358,13 @@ void CPhysx_Manager::Free()
 	/* Release 순서 건들지 마시오. */
 	/////////////////////////////////
 
+
 	// Shape User Data 정리
 	Delete_ShapeUserData();
 
 	// 1. Actor 및 Shape 관련 리소스 해제
-	if (m_pGroundPlane)
-		m_pGroundPlane->release();
+	//if (m_pGroundPlane)
+	//	m_pGroundPlane->release();
 	if (m_pTestDesk)
 		m_pTestDesk->release();
 
@@ -379,7 +405,6 @@ void CPhysx_Manager::Free()
 
 	// 게임 및 DirectX 리소스 해제
 	Safe_Release(m_pPhysx_EventCallBack);
-	Safe_Release(m_pPlayer);
 	Safe_Release(m_pShader);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pGameInstance);

@@ -51,8 +51,8 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 
 void C2DDefault_RenderObject::Priority_Update(_float fTimeDelta)
 {
-	//m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
-	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BOOK2D, this);
+	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
+
 }
 
 void C2DDefault_RenderObject::Update(_float fTimeDelta)
@@ -146,11 +146,11 @@ CGameObject* C2DDefault_RenderObject::Clone(void* pArg)
 
 void C2DDefault_RenderObject::Free()
 {
-	__super::Free();
 
 	Safe_Release(m_pShader);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
+	__super::Free();
 }
 
 HRESULT C2DDefault_RenderObject::Cleanup_DeadReferences()

@@ -71,26 +71,20 @@ private: /* Test Object */
 	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
 	CShader*					m_pShader = nullptr;
 
+
+
+public:
+	void						Set_DebugRender(_bool _isDebugRender) { m_isDebugRender = _isDebugRender; }
 private:
-	float						m_fTimeAcc = 0.0f;
+	_bool						m_isDebugRender = true;
+	_float						m_fTimeAcc = 0.0f;
+	_float						m_fFixtedTimeStep= 1.f/60.f;
 private:
 	HRESULT						Initialize_Foundation();
 	HRESULT						Initialize_Physics();
 	HRESULT						Initialize_Scene();
 	HRESULT						Initialize_Material();
 	HRESULT						Initialize_PVD();
-
-public:
-	void Set_Player(CGameObject* _pPlayer) { 
-		if (nullptr != _pPlayer)
-			Safe_Release(m_pPlayer);
-
-		m_pPlayer = _pPlayer;
-		Safe_AddRef(m_pPlayer);
-	};
-
-private:
-	CGameObject*				m_pPlayer = nullptr;
 
 public:
 	static CPhysx_Manager*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -128,18 +128,18 @@ void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
 
 void CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName)
 {
-	if (nullptr == m_Cameras[TARGET] || TARGET != m_eCurrentCameraType)
+	if (nullptr == m_Cameras[TARGET])
 		return;
 
 	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName);
 }
 
-void CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pInitialData)
+_bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pInitialData)
 {
-	if (nullptr == m_Cameras[CUTSCENE] || CUTSCENE != m_eCurrentCameraType)
-		return;
+	if (nullptr == m_Cameras[CUTSCENE])
+		return false;
 
-	dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName, _pInitialData);
+	return dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName, _pInitialData);
 }
 
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)

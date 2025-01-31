@@ -57,11 +57,11 @@ void CSampleBook::Priority_Update(_float _fTimeDelta)
 
 void CSampleBook::Update(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::SPACE))
-    {
-        Set_Animation(8);
-        //m_fTestOffset *= -1.f;
-    }
+    //if (KEY_DOWN(KEY::SPACE))
+    //{
+    //    Set_Animation(8);
+    //    //m_fTestOffset *= -1.f;
+    //}
 
     if (m_bPlayingAnim)
         m_pControllerModel->Play_Animation(_fTimeDelta );
@@ -73,8 +73,7 @@ void CSampleBook::Update(_float _fTimeDelta)
 
 void CSampleBook::Late_Update(_float _fTimeDelta)
 {
-    //m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
-    m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
+    Register_RenderGroup(m_iRenderGroupID_3D, m_iPriorityID_3D);
     __super::Update(_fTimeDelta);
 }
 

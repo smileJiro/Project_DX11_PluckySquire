@@ -53,7 +53,8 @@ void CSettingPanelBG::Child_LateUpdate(_float _fTimeDelta)
 	//	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
 
 	if (true == m_isRender)
-		m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI, this);
+			Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
+
 }
 
 HRESULT CSettingPanelBG::Render()
@@ -204,8 +205,7 @@ void CSettingPanelBG::Update(_float _fTimeDelta)
 
 void CSettingPanelBG::Late_Update(_float _fTimeDelta)
 {
-	//m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
-	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_UI, this);
+	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 }
 
 HRESULT CSettingPanelBG::Cleanup_DeadReferences()

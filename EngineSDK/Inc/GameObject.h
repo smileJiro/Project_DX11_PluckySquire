@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CGameInstance;
 class CRay;
+class CCollider;
 class ENGINE_DLL CGameObject abstract : public CBase
 {
 public:
@@ -25,6 +26,7 @@ public:
 	virtual void				Update(_float _fTimeDelta);
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
+	virtual HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID);
 
 protected:/* Component Update */
 	void						Priority_Update_Component(_float _fTimeDelta);
@@ -46,14 +48,16 @@ public:
 	COORDINATE					Get_CurCoord() const							{ return m_pControllerTransform->Get_CurCoord(); }
 	CController_Transform*		Get_ControllerTransform() const					{ return m_pControllerTransform; }
 	_matrix						Get_WorldMatrix()								{ return m_pControllerTransform->Get_WorldMatrix(); }
-	virtual _matrix			Get_FinalWorldMatrix()								{ return m_pControllerTransform->Get_WorldMatrix(); }
- 	virtual _vector				Get_FinalPosition() const							{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
-	virtual _float3				Get_Scale() const								{ return m_pControllerTransform->Get_Scale(); }
+	virtual _matrix				Get_FinalWorldMatrix()							{ return m_pControllerTransform->Get_WorldMatrix(); }
+ 	virtual _vector				Get_FinalPosition() const						{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
+
+	virtual _float3				Get_FinalScale() const							{ return m_pControllerTransform->Get_Scale(); }
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_bool						Is_Pooling() const								{ return m_isPooling; }
 	_int						Get_CurLevelID() const							{ return m_iCurLevelID; }
 	_uint						Get_GameObjectInstanceID() const				{ return m_iInstanceID; }
+	const _wstring&				Get_Include_Section_Name()						{ return m_strSectionName; }
 
 	// Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
@@ -65,12 +69,18 @@ public:
 	void						Set_Alive()										{ m_isDead = false; }
 	virtual void				Set_Render(_bool _isRender)						{ m_isRender = _isRender; }
 	void						Set_Pooling(_bool _isPooling)					{ m_isPooling = _isPooling; }
+	void						Set_Include_Section_Name(const _wstring _strIncludeSectionName) { m_strSectionName = _strIncludeSectionName; }
+	void						Init_Include_Section_Name()						{ m_strSectionName = L""; }
+	
 protected:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
 	CGameInstance*				m_pGameInstance = nullptr;
 	CController_Transform*		m_pControllerTransform = nullptr; 
 	CRay*						m_pRayCom = nullptr;
+
+
+	_wstring					m_strSectionName = L"";
 
 private:
 	static _uint				g_iInstanceIDCount;

@@ -115,7 +115,7 @@ void CMainApp::Imgui_FPS(_float _fTimeDelta)
 {
 	ImGui::Begin("FPS");
 	static _int iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
-	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_120"));
+	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_Default"));
 	m_vFPSRenderTime.y += _fTimeDelta;
 	if (m_vFPSRenderTime.x <= m_vFPSRenderTime.y)
 	{

@@ -40,7 +40,7 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 		return E_FAIL;
 
 	_float2 fImageSize = m_pTextureCom->Get_Size();
-	m_fY -= fImageSize.y * 0.5f;
+	m_fY += fImageSize.y * 0.5f;
 	m_pControllerTransform->Set_Scale(fImageSize.x , fImageSize.y , 1.f );
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX, -m_fY, 0.f, 1.f));
 	m_fRenderTargetSize = pDesc->fRenderTargetSize;
@@ -99,7 +99,7 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 	_float fPosX = XMVectorGetX(fPosition) + (m_fRenderTargetSize.x * 0.5f);
 	_float fPosY = (XMVectorGetY(fPosition) * -1.f) + (m_fRenderTargetSize.y * 0.5f);
 
-	_float3 fScale = Get_Scale();
+	_float3 fScale = Get_FinalScale(); // 태웅 : 함수 이름이 바껴서 수정했음. 혹시나 문제가있다면 이걸수정하시오 트랜스폼컨트롤러 get_scale 로
 
 	_float fLeft = fPosX - fScale.x / 2;
 	_float fRight = fPosX + fScale.x / 2;
@@ -130,14 +130,53 @@ HRESULT C2DMapObject::Export(HANDLE hFile)
 	return S_OK;
 }
 
+HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfos)
+{
+	MAPOBJ_2D_DESC Desc = {};
+	Desc.fSizeX = 1.f;
+	Desc.fSizeY = 1.f;
+	if (FAILED(__super::Initialize(&Desc)))
+		return E_FAIL;
+
+	m_isModelLoad = true;
+
+	DWORD		dwByte(0);
+	_uint		iModelIndex = 0;
+	_float2		fPos = { };
+	_bool		isOverride = false;
+
+	ReadFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
+	ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+	ReadFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
+
+	/* Com_Shader */
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShader))))
+		return E_FAIL;
+
+	/* Com_VIBuffer */
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
+
+	m_pModelInfo = _ModelInfos[iModelIndex];
+	m_pTextureCom = m_pModelInfo->Get_Texture();
+	Safe_AddRef(m_pTextureCom);
+
+
+
+	_float2 fImageSize = m_pTextureCom->Get_Size();
+	m_pControllerTransform->Set_Scale(fImageSize.x, fImageSize.y, 1.f);
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fPos.x, fPos.y, 0.f, 1.f));
+	m_fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X ,(_float)RTSIZE_BOOK2D_Y };
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)m_fRenderTargetSize.x, m_fRenderTargetSize.y, 0.0f, 1.0f));
+
+	return S_OK;
+}
+
 _vector C2DMapObject::Get_FinalPosition() const
 {
 	_vector vPos = __super::Get_FinalPosition();
-
-	_float fPosX = XMVectorGetX(vPos) + (m_fRenderTargetSize.x * 0.5f);
-	_float fPosY = (XMVectorGetY(vPos) * -1.f) + (m_fRenderTargetSize.y * 0.5f);
-	XMVectorSetX(vPos, fPosX);
-	XMVectorSetX(vPos, fPosY);
 	return vPos;
 }
 
@@ -219,6 +258,19 @@ C2DMapObject* C2DMapObject::Create(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
 		//MSG_BOX("Failed to Created : C2DMapObject");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+C2DMapObject* C2DMapObject::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HANDLE _hFile, vector<C2DMapObjectInfo*>& _ModelInfos)
+{
+	C2DMapObject* pInstance = new C2DMapObject(pDevice, pContext);
+
+	if (FAILED(pInstance->Import(_hFile, _ModelInfos)))
+	{
+		MSG_BOX("Failed to Load : C2DMapObject");
 		Safe_Release(pInstance);
 	}
 
