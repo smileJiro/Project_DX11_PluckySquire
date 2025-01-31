@@ -142,6 +142,8 @@ public: /* For. Target_Manager */
 	HRESULT				Clear_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool isClear = true);
 	ID3D11ShaderResourceView* Get_RT_SRV(const _wstring& _strTargetTag);
 	_float2				Get_RT_Size(const _wstring& _strTargetTag);
+	HRESULT				Erase_RenderTarget(const _wstring& _strTargetTag);
+	HRESULT				Erase_MRT(const _wstring& _strMRTTag);
 #ifdef _DEBUG
 	HRESULT				Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY);	/* 렌더타겟을 디버그용으로 렌더하기위한 함수 */
 	HRESULT				Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect);			/* 디버그 렌더 함수 */

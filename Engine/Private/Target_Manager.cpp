@@ -167,6 +167,34 @@ HRESULT CTarget_Manager::Copy_BackBuffer_RT_Resource(const _wstring& _strTargetT
     return S_OK;
 }
 
+HRESULT CTarget_Manager::Erase_RenderTarget(const _wstring& _strTargetTag)
+{
+    auto iter = m_RenderTargets.find(_strTargetTag);
+    if (m_RenderTargets.end() == iter)
+        return E_FAIL;
+
+    Safe_Release(iter->second);
+    m_RenderTargets.erase(iter);
+
+    return S_OK;
+}
+
+HRESULT CTarget_Manager::Erase_MRT(const _wstring& _strMRTTag)
+{
+    auto iter = m_MRTs.find(_strMRTTag);
+    if (m_MRTs.end() == iter)
+        return E_FAIL;
+
+    for (auto& pRenderTarget : iter->second)
+    {
+        Safe_Release(pRenderTarget);
+    }
+    iter->second.clear();
+    m_MRTs.erase(iter);
+
+    return S_OK;
+}
+
 ID3D11ShaderResourceView* CTarget_Manager::Get_SRV(const _wstring& _strTargetTag)
 {
     CRenderTarget* pRenderTarget = Find_RenderTarget(_strTargetTag);

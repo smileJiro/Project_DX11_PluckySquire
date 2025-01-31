@@ -825,6 +825,22 @@ _float2 CGameInstance::Get_RT_Size(const _wstring& _strTargetTag)
 	return m_pTarget_Manager->Get_RT_Size(_strTargetTag);
 }
 
+HRESULT CGameInstance::Erase_RenderTarget(const _wstring& _strTargetTag)
+{
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	return m_pTarget_Manager->Erase_RenderTarget(_strTargetTag);
+}
+
+HRESULT CGameInstance::Erase_MRT(const _wstring& _strMRTTag)
+{
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	return m_pTarget_Manager->Erase_MRT(_strMRTTag);
+}
+
 const _float4x4* CGameInstance::Get_Shadow_Transform_Ptr(CShadow::D3DTRANSFORMSTATE _eState)
 {
 	return m_pShadow->Get_Shadow_Transform_Ptr(_eState);
