@@ -465,7 +465,7 @@ _float CPlayer::Get_UpForce()
 
     if (COORDINATE_2D == eCoord)
     {
-
+        return -1.f;
     }
     else
     {

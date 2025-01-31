@@ -117,7 +117,7 @@ HRESULT CToolSpriteFrame::Export(ofstream& _outfile)
 	_outfile.write(reinterpret_cast<const char*>(&m_fPixelsPerUnrealUnit), sizeof(_float));
 	_uint iCount = 0;
 	string strTextureName = WstringToString(*m_pTexture->Get_SRVName(0));
-	iCount = strTextureName.length();
+	iCount = (_uint)strTextureName.length();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	_outfile.write(strTextureName.c_str(), iCount);
 	_outfile.write(reinterpret_cast<const char*>(&m_matSpriteTransform), sizeof(_matrix));
@@ -210,7 +210,7 @@ HRESULT CToolAnimation2D::Export(ofstream& _outfile)
 {
 	_uint iCount = 0;
 	//Name
-	iCount = m_strName.length();
+	iCount = (_uint)m_strName.length();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	_outfile.write(m_strName.c_str(), iCount);
 	//FramesPerSecond
@@ -223,7 +223,7 @@ HRESULT CToolAnimation2D::Export(ofstream& _outfile)
 	_outfile.write(reinterpret_cast<const char*>(&m_fSpeedMagnifier), sizeof(_float));
 	
 	//SpriteFrames
-	iCount = m_SpriteFrames.size();
+	iCount = (_uint)m_SpriteFrames.size();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	for (auto& pairSpriteFrame : m_SpriteFrames)
 	{

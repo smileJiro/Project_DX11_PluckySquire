@@ -158,11 +158,9 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const j
 		//	m_iSpawnCount = _jsonBufferInfo["Spawn"]["Count"];
 	}
 
-	for (size_t i = 0; i < m_iNumInstances; ++i)
+	for (_uint i = 0; i < m_iNumInstances; ++i)
 	{
 		Set_Instance(i);
-
-
 	}
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
@@ -208,7 +206,7 @@ void CVIBuffer_Mesh_Particle::Update(_float _fTimeDelta)
 			m_fAccSpawnTime -= m_fSpawnTime;
 		}
 
-		for (_int i = 0; i < m_iNumInstances; ++i)
+		for (_uint i = 0; i < m_iNumInstances; ++i)
 		{
 			if (D3D11_FLOAT32_MAX == pVertices[i].vLifeTime.y)
 				continue;
@@ -238,7 +236,7 @@ void CVIBuffer_Mesh_Particle::Update(_float _fTimeDelta)
 	{
 		if (m_fSpawnTime <= m_fAccSpawnTime)
 		{
-			for (_int i = 0; i < m_iNumInstances; i++)
+			for (_uint i = 0; i < m_iNumInstances; i++)
 			{
 				if (m_iSpawnIndex != m_iNumInstances)
 				{
@@ -452,7 +450,7 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Particles()
 		if (false == pModule->Is_Init())
 			continue;
 
-		for (_int i = 0; i < m_iNumInstances; ++i)
+		for (_uint i = 0; i < m_iNumInstances; ++i)
 		{
 			pModule->Update_Translations(0.f, &m_pInstanceVertices[i].vTranslation, &m_pInstanceVertices[i].vVelocity, &m_pInstanceVertices[i].vAcceleration);
 		}
@@ -601,7 +599,7 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _
 	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
 
 
-	for (size_t i = 0; i < m_iNumInstances; ++i)
+	for (_uint i = 0; i < m_iNumInstances; ++i)
 	{
 		Set_Instance(i);
 	}
@@ -628,7 +626,7 @@ void CVIBuffer_Mesh_Particle::Tool_Setting()
 
 void CVIBuffer_Mesh_Particle::Tool_Reset_Instance()
 {
-	for (size_t i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		Set_Instance(i);
 	}
@@ -706,7 +704,7 @@ void CVIBuffer_Mesh_Particle::Tool_Reset_Buffers()
 	m_pInstanceVertices = new VTXMESHINSTANCE[m_iNumInstances];
 	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
 
-	for (size_t i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		Set_Instance(i);
 	}

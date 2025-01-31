@@ -134,7 +134,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
 
-		_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+		_vector vMousePos = XMVectorSet((_float)pt.x, (_float)pt.y, 0.f, 1.f);
 
 		_uint		iNumViewports = { 1 };
 		D3D11_VIEWPORT		ViewportDesc{};

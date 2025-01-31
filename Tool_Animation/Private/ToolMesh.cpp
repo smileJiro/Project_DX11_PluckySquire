@@ -178,7 +178,7 @@ void CToolMesh::Export(ofstream& _outfile, _bool _bAnim)
 {
 	_outfile.write(reinterpret_cast<const char*>(&m_iMaterialIndex), sizeof(_uint));
 	string strName = m_szName;
-	_uint iCount = strName.length();
+	_uint iCount = (_uint)strName.length();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 
 	_outfile.write(strName.c_str(), iCount);

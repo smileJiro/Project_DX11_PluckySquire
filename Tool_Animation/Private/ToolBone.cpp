@@ -34,7 +34,7 @@ void CToolBone::Export(ofstream& _outfile)
 	string strName = m_szName;
 	_uint iCount = 0;
 	//Name
-	iCount = strName.length();
+	iCount = (_uint)strName.length();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	_outfile.write(strName.c_str(), iCount);
 

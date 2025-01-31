@@ -8,7 +8,6 @@ BEGIN(Engine)
 class ENGINE_DLL CCameraArm final : public CBase
 {
 public:
-	enum ARM_TYPE { DEFAULT, COPY, OTHER, ARM_TYPE_END };
 	enum TARGET_STATE { RIGHT, UP, LOOK, POS, TARGET_STATE_END };
 
 	enum MOVEMENT_FLAGS
@@ -27,7 +26,7 @@ public:
 		_float3				vRotation;
 		_float				fLength = 1.f;
 		_wstring			wszArmTag = {};
-		ARM_TYPE			eArmType = { DEFAULT };
+		//ARM_TYPE			eArmType = { DEFAULT };
 
 		const _float4x4*	pTargetWorldMatrix = { nullptr };
 	}CAMERA_ARM_DESC;
@@ -60,7 +59,6 @@ public:
 
 	void				Set_Rotation(_vector _vRotation);
 	void				Set_Length(_float _fLength) { m_fLength = _fLength; }
-	void				Set_ArmType(_uint _eType) { m_eArmType = _eType; }
 	void				Set_ArmTag(_wstring _wszArmTag) { m_wszArmTag = _wszArmTag; }
 	void				Set_ArmVector(_vector _vArm);
 	void				Set_DesireVector();		// 최종 벡터 저장하는용
@@ -77,29 +75,32 @@ public:
 	void				Change_Target(const _float4x4* _pTargetWorldMatrix) { m_pTargetWorldMatrix = _pTargetWorldMatrix; }
 	_vector				Calculate_CameraPos(_float fTimeDelta);					// Arm과 Length에 따라 카메라 위치 결정
 	_bool				Move_To_NextArm(_float _fTimeDelta);
+	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 
 private:
 	ID3D11Device*		m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 	CGameInstance*		m_pGameInstance = { nullptr };
 	CTransform_3D*		m_pTransform = { nullptr };
+
 private:
+	// 이거 나중에 Target 월드 행렬 받으려면 Target File Tag 같은 거 필요할 수도
+	const _float4x4*	m_pTargetWorldMatrix = { nullptr };
+
 	_wstring			m_wszArmTag = {};
 	_float3				m_vArm = {};
 	_float3				m_vRotation = {};
 	_float				m_fLength = {};
 	_float				m_fStartLength = {};
 
-	// 이거 나중에 Target 월드 행렬 받으려면 Target File Tag 같은 거 필요할 수도
-	const _float4x4*	m_pTargetWorldMatrix = { nullptr };
-
-	_uint				m_eArmType = {};
-
 	// Desire Arm
 	ARM_DATA*			m_pNextArmData = { nullptr };
 
 	// Rotate Flag
 	_uint				m_iMovementFlags = RESET_FLAG;
+
+	// Return
+	stack<pair<_float, _float3>> m_ArmStaks;
 
 	// Line
 #ifdef _DEBUG

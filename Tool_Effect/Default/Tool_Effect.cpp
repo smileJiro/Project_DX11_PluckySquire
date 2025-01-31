@@ -43,7 +43,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     CMainEffectTool* pMainApp = nullptr;
 
 
-    srand(time(nullptr));
+    srand((_uint)time(nullptr));
     pMainApp = CMainEffectTool::Create();
     if (nullptr == pMainApp)
         return FALSE;

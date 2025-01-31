@@ -26,7 +26,7 @@ public:
 		_float3				vRotation;
 		_float				fLength = 1.f;
 		_wstring			wszArmTag = {};
-		ARM_TYPE			eArmType = { DEFAULT };
+		//ARM_TYPE			eArmType = { DEFAULT };
 
 		const _float4x4*	pTargetWorldMatrix = { nullptr };
 	}CAMERA_ARM_DESC;

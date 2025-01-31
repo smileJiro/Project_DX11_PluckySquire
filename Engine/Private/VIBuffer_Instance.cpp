@@ -1624,7 +1624,7 @@ void CVIBuffer_Instance::Tool_Add_Module()
 					CEffect_Module* pModule = CEffect_Module::Create((CEffect_Module::MODULE_TYPE)n, Moduleitems[n]);
 					if (nullptr != pModule)
 					{
-						pModule->Set_Order(m_Modules.size());
+						pModule->Set_Order((_int)m_Modules.size());
 						m_Modules.push_back(pModule);
 
 						sort(m_Modules.begin(), m_Modules.end(), [](const CEffect_Module* pSrc, const CEffect_Module* pDst)

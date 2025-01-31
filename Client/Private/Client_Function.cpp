@@ -284,7 +284,7 @@ namespace Client
 		case Client::E_DIRECTION::DOWN:
 			return F_DIRECTION::DOWN;
 		default:
-			break;
+			return F_DIRECTION::F_DIR_LAST;
 		}
 	}
 

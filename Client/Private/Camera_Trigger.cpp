@@ -89,7 +89,6 @@ CCamera_Trigger* CCamera_Trigger::Create(ID3D11Device* _pDevice, ID3D11DeviceCon
 CGameObject* CCamera_Trigger::Clone(void* _pArg)
 {
 	CCamera_Trigger* pInstance = new CCamera_Trigger(*this);
-xmfl
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
 		MSG_BOX("Failed to Cloned : CCamera_Trigger");

@@ -65,7 +65,7 @@ _bool CCutScene_Sector::Get_IsLookAt()
 
 _float CCutScene_Sector::Get_LastTimeStamp()
 {
-	_int iSize = m_KeyFrames.size();
+	_int iSize = (_uint)m_KeyFrames.size();
 
 	return 	m_KeyFrames[iSize - 2].fTimeStamp;
 }

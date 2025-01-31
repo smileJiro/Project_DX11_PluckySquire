@@ -20,7 +20,7 @@ CCameraArm::CCameraArm(const CCameraArm& Prototype)
     , m_vRotation(Prototype.m_vRotation)
     , m_fLength(Prototype.m_fLength)
     , m_pTargetWorldMatrix(Prototype.m_pTargetWorldMatrix)
-    , m_eArmType(COPY)
+    //, m_eArmType(COPY)
 {
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
@@ -35,7 +35,7 @@ HRESULT CCameraArm::Initialize(void* pArg)
     m_vRotation = pDesc->vRotation;
     m_fLength = pDesc->fLength;
     m_wszArmTag = pDesc->wszArmTag;
-    m_eArmType = pDesc->eArmType;
+    //m_eArmType = pDesc->eArmType;
     
     m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 

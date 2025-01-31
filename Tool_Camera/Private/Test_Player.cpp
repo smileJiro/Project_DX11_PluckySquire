@@ -283,7 +283,7 @@ void CTest_Player::Switch_Animation(_uint _iAnimIndex)
 
 void CTest_Player::Set_State(STATE _eState)
 {
-    _uint iAnimIdx;
+    //_uint iAnimIdx;
     switch (_eState)
     {
     case Camera_Tool::CTest_Player::IDLE:
