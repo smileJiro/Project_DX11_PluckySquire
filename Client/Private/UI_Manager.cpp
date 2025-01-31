@@ -27,17 +27,22 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 	_float fY = m_ShopItems[_index][0]->Get_FY();
 	_float NewfY = { 0.f };
 
-	_float BGfX = g_iWinSizeX / 2.f; // 배경
-	_float BDfX = g_iWinSizeX / 3.5f; // 스킬아이콘
-	_float BUfX = g_iWinSizeX - g_iWinSizeX / 3.f; // 전구
+	//_float BGfX = g_iWinSizeX / 2.f; // 배경
+	//_float BDfX = g_iWinSizeX / 3.5f; // 스킬아이콘
+	//_float BUfX = g_iWinSizeX - g_iWinSizeX / 3.f; // 전구
+
+	_float BGfX = g_iWinSizeX / 2.f / 2.f;
+	_float BDfX = g_iWinSizeX / 3.5f / 1.6f;
+	_float BUfX = (g_iWinSizeX - g_iWinSizeX / 3.f) / 2.2f;
+
 
 	BGfX = BGfX - g_iWinSizeX * 0.5f;
 	BDfX = BDfX - g_iWinSizeX * 0.5f;
 	BUfX = BUfX - g_iWinSizeX * 0.5f;
 
 	_float fIdx0 = g_iWinSizeY / 4.f;
-	_float fIdx1 = g_iWinSizeY / 2.5f;
-	_float fIdx2 = g_iWinSizeY - g_iWinSizeY / 2.2f;
+	_float fIdx1 = g_iWinSizeY / 2.75f;
+	_float fIdx2 = g_iWinSizeY - g_iWinSizeY / 1.9f;
 
 	fIdx0 = -fIdx0 + g_iWinSizeY * 0.5f;
 	fIdx1 = -fIdx1 + g_iWinSizeY * 0.5f;
@@ -201,6 +206,22 @@ HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 
 }
 
+HRESULT CUI_Manager::Level_Logo_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	if (_iChangeLevelID == LEVEL_LOADING)
+	{
+		m_iCurrentLevel = _iNextChangeLevelID;
+	}
+
+	for (_int i = 0; i < m_LogoProps.size(); ++i)
+	{
+		Safe_Release(m_LogoProps[i]);
+	}
+	m_LogoProps.clear();
+
+	return S_OK;
+}
+
 HRESULT CUI_Manager::Level_Enter(_int _iChangeLevelID)
 {
 	return S_OK;
@@ -233,7 +254,12 @@ void CUI_Manager::Free()
 	}
 	m_pShopPanels.clear();
 	
-	
+	for (_int i = 0; i < m_LogoProps.size(); ++i)
+	{
+		Safe_Release(m_LogoProps[i]);
+	}
+	m_LogoProps.clear();
+
 
 	Safe_Release(m_pPlayer);
 

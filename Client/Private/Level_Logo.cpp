@@ -47,8 +47,11 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_LOGO, TEXT("Prototype_UIObejct_LogoBG"), LEVEL_LOGO, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	pDesc.strLayerTag = _strLayerTag;
 
-
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_LOGO, TEXT("Prototype_UIObejct_Logo"), LEVEL_LOGO, _strLayerTag, &pDesc)))
+		return E_FAIL;
+		
 
 	return S_OK;
 }

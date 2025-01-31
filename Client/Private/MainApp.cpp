@@ -9,6 +9,9 @@
 #include "UI_Manager.h"
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
+#include "Collision_Manager.h"
+
+
 #include "RenderGroup_MRT.h"
 #include "RenderGroup_Lights.h"
 #include "RenderGroup_Final.h"
@@ -48,6 +51,9 @@ HRESULT CMainApp::Initialize()
 	/* Client Manager Initialize */
 	Initialize_Client_Manager();
 
+	CEmitter::SetID_2D(RG_2D);
+	CEmitter::SetID_3D(RG_3D);
+	CEmitter::SetID_Effect(PR3D_EFFECT);
 
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
 		return E_FAIL;
@@ -67,10 +73,11 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
+	CCollision_Manager::GetInstance()->Update();			// 충돌 검사 수행.
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
-	// TODO :: 여기가 맞는지? 
+	// TODO :: 여기가 맞는지? >> 맞는 것 같삼.
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
 	
 	m_pGameInstance->End_Imgui();
@@ -463,6 +470,7 @@ void CMainApp::Free()
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
+	CCollision_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

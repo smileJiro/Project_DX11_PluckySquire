@@ -45,6 +45,7 @@ protected:
 protected:
 	_uint					m_iColliderID = 0;
 	TYPE					m_eType = TYPE::TYPE_LAST;
+
 protected:
 	CGameObject*			m_pOwner = nullptr;
 

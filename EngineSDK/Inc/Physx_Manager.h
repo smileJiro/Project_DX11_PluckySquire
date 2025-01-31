@@ -87,18 +87,6 @@ private:
 	HRESULT						Initialize_PVD();
 
 public:
-	void Set_Player(CGameObject* _pPlayer) { 
-		if (nullptr != _pPlayer)
-			Safe_Release(m_pPlayer);
-
-		m_pPlayer = _pPlayer;
-		Safe_AddRef(m_pPlayer);
-	};
-
-private:
-	CGameObject*				m_pPlayer = nullptr;
-
-public:
 	static CPhysx_Manager*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void			Free(); /* PhysX Á¾·á ÈÄ °´Ã¼ ¼Ò¸ê */
 };

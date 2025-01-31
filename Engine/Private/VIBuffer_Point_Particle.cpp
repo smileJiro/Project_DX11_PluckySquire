@@ -1,6 +1,6 @@
 #include "VIBuffer_Point_Particle.h"
 #include "GameInstance.h"
-#include "Particle_Module.h"
+#include "Effect_Module.h"
 
 CVIBuffer_Point_Particle::CVIBuffer_Point_Particle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer_Instance(_pDevice, _pContext)
@@ -156,7 +156,7 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 
 
 
-	for (size_t i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		Set_Instance(i);
 	}
@@ -207,7 +207,7 @@ void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 			m_fAccSpawnTime -= m_fSpawnTime;
 		}
 
-		for (_int i = 0; i < m_iNumInstances; ++i)
+		for (_uint i = 0; i < m_iNumInstances; ++i)
 		{
 			if (D3D11_FLOAT32_MAX == pVertices[i].vLifeTime.y)
 				continue;
@@ -237,7 +237,7 @@ void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 	{
 		if (m_fSpawnTime <= m_fAccSpawnTime)
 		{
-			for (_int i = 0; i < m_iNumInstances; i++)
+			for (_uint i = 0; i < m_iNumInstances; i++)
 			{
 				if (m_iSpawnIndex != m_iNumInstances)
 				{
@@ -374,7 +374,7 @@ void CVIBuffer_Point_Particle::Set_Position(_int _iIndex)
 		break;
 
 	}
-
+	vPosition = XMVectorSetW(vPosition, 1.f);
 	XMStoreFloat4(&m_pInstanceVertices[_iIndex].vTranslation, vPosition);
 }
 
@@ -417,7 +417,7 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Particles()
 		if (false == pModule->Is_Init())
 			continue;
 
-		for (_int i = 0; i < m_iNumInstances; ++i)
+		for (_uint i = 0; i < m_iNumInstances; ++i)
 		{
 			pModule->Update_Translations(0.f, &m_pInstanceVertices[i].vTranslation, &m_pInstanceVertices[i].vVelocity, &m_pInstanceVertices[i].vAcceleration);
 		}
@@ -481,7 +481,7 @@ void CVIBuffer_Point_Particle::Tool_Setting()
 }
 void CVIBuffer_Point_Particle::Tool_Reset_Instance()
 {
-	for (size_t i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		Set_Instance(i);
 	}
@@ -560,7 +560,7 @@ void CVIBuffer_Point_Particle::Tool_Reset_Buffers()
 	m_pInstanceVertices = new VTXPOINTINSTANCE[m_iNumInstances];
 	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
 
-	for (size_t i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		Set_Instance(i);
 	}
@@ -704,7 +704,7 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances)
 	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
 
 
-	for (size_t i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		Set_Instance(i);
 	}

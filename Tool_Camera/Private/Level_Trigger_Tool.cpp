@@ -229,6 +229,11 @@ void CLevel_Trigger_Tool::Show_CurTriggerInfo()
 		ImGui::SameLine();
 		_string Name = m_pGameInstance->WStringToString(m_CameraTriggerTags[dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerType()]);
 		ImGui::Text("%s     ", Name.c_str());
+
+		ImGui::Text("Event Tag");
+		ImGui::SameLine();
+		_string EventTag = m_pGameInstance->WStringToString(dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerEventTag());
+		ImGui::Text("%s     ", EventTag.c_str());
 	}
 		break;
 	}
@@ -548,14 +553,25 @@ void CLevel_Trigger_Tool::Set_TriggerInfoByType()
 	switch (m_iTriggerType) {
 	case TRIGGER_TYPE::CAMERA_TRIGGER:
 		
+		// CameraTrigger Type
 		ImGui::Text("Camera Trigger Tag");
 		if (m_iCameraTriggerType <= m_CameraTriggerTags.size() - 1) {
 			ImGui::SameLine();
 			_string Name = m_pGameInstance->WStringToString(m_CameraTriggerTags[m_iCameraTriggerType]);
 			ImGui::Text("%s     ", Name.c_str());
 		}
-
 		Show_CameraTriggerListBox();
+
+		
+		// EventTag
+		ImGui::Text("Event Tag Input:  %s", m_szEventTag);
+		ImGui::SameLine();
+		ImGui::SetNextItemWidth(-1);
+		ImGui::InputText("##EventTag", m_szEventTemp, MAX_PATH);
+		
+		if (ImGui::Button("Set Tag")) {
+			strcpy_s(m_szEventTag, m_szEventTemp);
+		}
 		break;
 	}
 
@@ -591,10 +607,11 @@ void CLevel_Trigger_Tool::Delete_Trigger()
 
 					if (pSelectedTrigger == m_pCurTrigger) {
 						Safe_Release(m_pCurTrigger->second);
-						pSelectedTrigger = nullptr;
+						m_pCurTrigger = nullptr;
 					}
 
 					Safe_Release((*iterator).second);
+					(*iterator).second->Set_Dead();
 					iterator = m_Triggers.erase(iterator);
 
 					return;
@@ -640,6 +657,9 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		switch (m_iTriggerType) {
 		case CAMERA_TRIGGER:
 			m_iCameraTriggerType = dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerType();
+
+			_string EventTag = m_pGameInstance->WStringToString(dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerEventTag());
+			strcpy_s(m_szEventTag, EventTag.c_str());
 			break;
 		}
 	}
@@ -655,6 +675,7 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		switch (m_iTriggerType) {
 		case CAMERA_TRIGGER:
 			dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Set_CameraTriggerType(m_iCameraTriggerType);
+			dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Set_CameraTriggerEventTag(m_pGameInstance->StringToWString(m_szEventTag));
 			break;
 		}
 	}
@@ -719,7 +740,8 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 	CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
 	Desc.iCameraTriggerType = m_iCameraTriggerType;
-	
+	Desc.szEventTag = m_pGameInstance->StringToWString(m_szEventTag);
+
 	Desc.eShapeType = m_eShapeType;
 	Desc.vHalfExtents = m_vHalfExtents;
 	Desc.fRadius = m_fRadius;
@@ -749,6 +771,8 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 	m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
 	
 	Safe_AddRef(pTrigger);
+
+	return S_OK;
 }
 
 void CLevel_Trigger_Tool::Initialize_ListBoxName()
@@ -922,7 +946,7 @@ void CLevel_Trigger_Tool::Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir)
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+	_vector vMousePos = XMVectorSet((_float)pt.x, (_float)pt.y, 0.f, 1.f);
 
 	_uint		iNumViewports = { 1 };
 	D3D11_VIEWPORT		ViewportDesc{};
@@ -965,7 +989,7 @@ pair<TRIGGEROBJECT_DATA, CTriggerObject*>* CLevel_Trigger_Tool::Get_SelectedTrig
 
 	CActorObject* pObject = nullptr;
 
-	_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 1000.f, nullptr, &pObject);
+	_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 2000.f, nullptr, &pObject);
 
 	if (true == isSelected) {
 		for (auto& Trigger : m_Triggers) {
@@ -1008,6 +1032,9 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 		switch (iTriggerType) {
 		case CAMERA_TRIGGER:
 			Trigger_json["Camera Trigger Type"] = dynamic_cast<CCamera_Trigger*>(Trigger.second)->Get_CameraTriggerType();
+
+			_string szEventTag = m_pGameInstance->WStringToString(dynamic_cast<CCamera_Trigger*>(Trigger.second)->Get_CameraTriggerEventTag());
+			Trigger_json["Camera Trigger Event Tag"] = szEventTag;
 			break;
 		}
 
@@ -1069,10 +1096,12 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 		case CAMERA_TRIGGER:
 		{
 			_uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
+			_string szEventTag = Trigger_json["Camera Trigger Event Tag"];
 
 			CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
 			Desc.iCameraTriggerType = iCameraTriggerType;
+			Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
 
 			Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
 			Desc.vHalfExtents = Data.vHalfExtents;
@@ -1133,7 +1162,8 @@ void CLevel_Trigger_Tool::Free()
 	for (auto& Trigger : m_Triggers)
 		Safe_Release(Trigger.second);
 
-	Safe_Release(m_pCurTrigger->second);
+	if(nullptr != m_pCurTrigger)
+		Safe_Release(m_pCurTrigger->second);
 
 	__super::Free();
 }

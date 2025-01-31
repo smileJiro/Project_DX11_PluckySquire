@@ -33,6 +33,8 @@ HRESULT CShopPanel_BG::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+
 	return S_OK;
 }
 
@@ -47,18 +49,7 @@ void CShopPanel_BG::Child_Update(_float _fTimeDelta)
 
 void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 {
-	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
-	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
-
-	if (true == m_isRender)
-	{
-		//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-	}
-	//else
-	//{
-	//	CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
-	//}
-
+	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
 }
 
 HRESULT CShopPanel_BG::Render()
@@ -207,6 +198,7 @@ CGameObject* CShopPanel_BG::Clone(void* _pArg)
 
 void CShopPanel_BG::Free()
 {
+	//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	__super::Free();
 }
 

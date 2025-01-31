@@ -121,9 +121,11 @@ _bool CCollider_AABB::Is_Collision_AABB(CCollider_AABB* _pOther)
     _float2 vOtherLT = _pOther->Get_LT();
     _float2 vOtherRB = _pOther->Get_RB();
 
+    // 가로 방향 충돌 검사
     if (vLT.x > vOtherRB.x || vRB.x < vOtherLT.x)
         return false;
 
+    // 세로 방향 충돌 검사
     if (vLT.y < vOtherRB.y || vRB.y > vOtherLT.y)
         return false;
 
@@ -154,8 +156,8 @@ _bool CCollider_AABB::Is_Collision_Circle(CCollider_Circle* _pOther)
 _float2 CCollider_AABB::Get_LT()
 {
     _float2 vLT = {};
-    vLT.x = m_vPosition.x - m_vFinalExtents.x * 0.5f;
-    vLT.y = m_vPosition.y - m_vFinalExtents.y * 0.5f;
+    vLT.x = m_vPosition.x - m_vFinalExtents.x;
+    vLT.y = m_vPosition.y + m_vFinalExtents.y;
 
     return vLT;
 }
@@ -163,8 +165,8 @@ _float2 CCollider_AABB::Get_LT()
 _float2 CCollider_AABB::Get_RB()
 {
     _float2 vRB = {};
-    vRB.x = m_vPosition.x + m_vFinalExtents.x * 0.5f;
-    vRB.y = m_vPosition.y + m_vFinalExtents.y * 0.5f;
+    vRB.x = m_vPosition.x + m_vFinalExtents.x;
+    vRB.y = m_vPosition.y - m_vFinalExtents.y;
 
     return vRB;
 }

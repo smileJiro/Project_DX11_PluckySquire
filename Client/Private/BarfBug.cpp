@@ -7,6 +7,7 @@
 #include "Projectile_BarfBug.h"
 #include "DetectionField.h"
 #include "Section_Manager.h"
+#include "Collision_Manager.h"
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -163,6 +164,9 @@ void CBarfBug::Update(_float _fTimeDelta)
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     }
 
+    //// TestCode : 태웅
+    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
+
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -176,7 +180,7 @@ HRESULT CBarfBug::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-
+    m_pColliderCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -186,18 +190,18 @@ HRESULT CBarfBug::Render()
 
 void CBarfBug::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    int a = 0;
+    __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
 }
 
 void CBarfBug::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 
-    int a = 0;
+    __super::OnContact_Stay(_My, _Other, _ContactPointDatas);
 }
 
 void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    int a = 0;
+    __super::OnContact_Exit(_My, _Other, _ContactPointDatas);
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -476,6 +480,17 @@ HRESULT CBarfBug::Ready_Components()
         TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
+
+    /* Test 2D Collider */
+    CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+    AABBDesc.pOwner = this;
+    AABBDesc.vExtents = { 75.f, 100.f };
+    AABBDesc.vScale = { 1.0f, 1.0f };
+    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -540,6 +555,6 @@ CGameObject* CBarfBug::Clone(void* _pArg)
 
 void CBarfBug::Free()
 {
-
+    Safe_Release(m_pColliderCom);
     __super::Free();
 }

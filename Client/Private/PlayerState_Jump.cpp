@@ -14,12 +14,7 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 {
 	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
-	if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
-	{
-		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
-		return;
-	}
-	else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+	if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
 	{
 		m_pOwner->Set_State(CPlayer::ROLL);
 		return;

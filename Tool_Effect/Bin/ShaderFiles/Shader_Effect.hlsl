@@ -4,6 +4,8 @@
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_DiffuseTexture, g_NormalTexture;
+Texture2D g_MaskTexture;
+Texture2D g_NoiseTexture;
 Texture2D g_ShaderMaterial_0, g_ShaderMaterial_1, g_ShaderMaterial_2, g_ShaderMaterial_3, g_ShaderMaterial_4;
 Texture2D g_ShaderMaterial_5, g_ShaderMaterial_6, g_ShaderMaterial_7, g_ShaderMaterial_8, g_ShaderMaterial_9;
 float g_fFarZ = 1000.f;
@@ -21,6 +23,8 @@ float g_fTimeAcc = 0.0f;
 float2 g_vScrollSpeed = 0.0f;
 float2 g_vScrollSpeed_Mask = 0.0f;
 float g_fPlayTimeRatio = 0.0f;
+float3 g_vColor;
+float g_Alpha;
 float4 g_vColor_1 = { 0.0f, 0.0f, 0.0f, 0.0f };
 float4 g_vColor_2 = { 1.0f, 1.0f, 1.0f, 1.0f };
 float4 g_vEmissiveColor = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -33,6 +37,28 @@ float g_fBloomWeights = 1.0f;
 float g_fWaveSpeed = 2.f;
 float g_fWaveFrequency = 1.f;
 float g_fWaveAmplitude = 0.1f;
+
+// Weight에 대한 식은 총 4개
+float FUNC_WEIGHT1(float fDepth, float fAlpha)
+{
+    return fAlpha * clamp(10.f / (1e-5 + pow(fDepth / 5.f, 2.0f) + pow(fDepth / 200.f, 6.f)), 1e-2, 3e3);
+}
+
+float FUNC_WEIGHT2(float fDepth, float fAlpha)
+{
+    return fAlpha * clamp(10.f / (1e-5 + pow(fDepth / 10.f, 3.0f) + pow(fDepth / 200.f, 6.f)), 1e-2, 3e3);
+}
+
+float FUNC_WEIGHT3(float fDepth, float fAlpha)
+{
+    return fAlpha * clamp(10.f / (1e-5 + pow(fDepth / 200.f, 4.f)), 1e-2, 3e3);
+}
+
+float FUNC_WEIGHT4(float fDepth, float fAlpha)
+{
+    float fdZ = (0.01f * g_fFarZ) / (fDepth - g_fFarZ) / (0.01f - g_fFarZ);
+    return fAlpha * clamp(pow(1 - fdZ, 3.f), 1e-2, 3e3);
+}
 
 // Vertex Shader //
 struct VS_IN
@@ -75,11 +101,11 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
-    float4 vNormal : NORMAL0;
+    float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2;
-    float3 vTangent : TEXCOORD3;
+    float4 vTangent : TEXCOORD3;
 };
 
 struct PS_OUT
@@ -89,421 +115,67 @@ struct PS_OUT
     float2 vDistortion : SV_TARGET2;
 };
 
-PS_OUT PS_MAIN(PS_IN In)
+struct PS_OUT_WEIGHTEDBLENDED
 {
-    PS_OUT Out = (PS_OUT) 0;
-    float fFlag = g_iFlag;
-
-    float2 vAnimateUV = In.vTexcoord;
-    float2 vScroll = { 0.0f, 0.0f };
-    vScroll = g_vScrollSpeed * g_fTimeAcc;
-    vAnimateUV = In.vTexcoord + vScroll;
-
-    float4 vMtrlDiffuse = g_ShaderMaterial_0.Sample(LinearSampler, vAnimateUV);
-    vMtrlDiffuse.a;
-    vMtrlDiffuse *= g_vColor_1;
+    float4 vAccumulate : SV_TARGET0;
+    float vRevealage : SV_TARGET1;
+};
 
 
-    if (vMtrlDiffuse.a < 0.1f)
+PS_OUT_WEIGHTEDBLENDED PS_MAIN(PS_IN In)
+{
+    PS_OUT_WEIGHTEDBLENDED Out = (PS_OUT_WEIGHTEDBLENDED) 0;
+    
+    if (g_fTimeAcc < length(In.vTexcoord))
         discard;
-    // 밝은 영역만 추출.
-    float fBrightness = dot(vMtrlDiffuse.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > g_fBrightnessThreshold) ? vMtrlDiffuse : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    vBrightnessColor.a = g_fBloomWeights / 4.f;
     
-    Out.vBrightness = vBrightnessColor;
-
-    Out.vDiffuse = vMtrlDiffuse;
-
-    return Out;
-}
-
-PS_OUT PS_LUXIYA_ULTIMATE(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    float fFlag = g_iFlag;
-
-    float2 vAnimateUV = In.vTexcoord;
-    float fScrollY = g_fTimeAcc * g_vScrollSpeed.y;
-    vAnimateUV.y = clamp(In.vTexcoord.y + fScrollY, 0.0f, 1.0f);
-    //vAnimateUV.y = In.vTexcoord.y + fScroll;
-    float4 vMaskDesc = g_ShaderMaterial_0.Sample(LinearSampler, vAnimateUV);
-    float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, vAnimateUV);
-    vMtrlDiffuse *= g_vColor_1;
-    vMtrlDiffuse.a *= vMaskDesc.r;
+    float4 vMask = g_MaskTexture.Sample(PointSampler, In.vTexcoord);
+    float vNoise = g_NoiseTexture.Sample(PointSampler, In.vTexcoord).r;
     
+      // 디졸브 연산
+    float fDissolveAlpha = smoothstep(g_fTimeAcc - 0.1f, g_fTimeAcc, vNoise);
 
-    //// Distortion     
-    //float2 vDistortionAnimateUV = In.vTexcoord + sin(g_fTimeAcc * 2.0f + In.vTexcoord.y * 1.0f) * 0.1f;
-    //float2 vNoise1 = g_NoiseTexture1.Sample(LinearSampler, vDistortionAnimateUV).rg;
-    //float fDistortionStrength = 2.0f;
-    //float2 vDistortionUV = In.vTexcoord + (vNoise1.xy * fDistortionStrength);
-    //float vDistortionValue = g_ShaderMaterial_1.Sample(LinearSampler, vDistortionUV).r;
-    //vDistortionUV = lerp(In.vTexcoord, vDistortionUV, vDistortionValue);
-    //Out.vDistortion = float2(0.0f, 0.0f);
-    //if (fScroll < 1.0f)
-    //{
-    //    Out.vDistortion = clamp(vDistortionUV, 0.0f, 1.0f) * vMaskDesc.r;
-    //}
+    // 가장자리 효과 적용
+    float edgeFactor = smoothstep(g_fTimeAcc - 1.f * 0.5, g_fTimeAcc, vNoise);
+    float4 edgeColor = float4(1.f, 1.f, 1.f, 1.f) * edgeFactor;
 
-    if (vMtrlDiffuse.a < 0.1f)
-        discard;
-    // 밝은 영역만 추출. 
-    float fBrightness = dot(vMtrlDiffuse.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > g_fBrightnessThreshold) ? vMtrlDiffuse : float4(0.0f, 0.0f, 0.0f, 0.0f);
-
-    
-    Out.vBrightness = vBrightnessColor;
-    Out.vDiffuse = vMtrlDiffuse;
-
-    return Out;
-}
-
-
-
-PS_OUT PS_BASH(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    float fFlag = g_iFlag;
-
-    float2 vAnimateUV = In.vTexcoord;
-    
-    float2 vScroll = g_fTimeAcc * g_vScrollSpeed;
-    vAnimateUV = vAnimateUV + vScroll;
-
-
-    float4 vMtrlDiffuse = float4(1.0f, 1.0f, 1.0f, 1.0f);
-    float4 vDiffuseMask = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    float4 vNoiseMask = float4(0.0f, 0.0f, 0.0f, 0.0f);
-
-    //vMtrlDiffuse = g_ShaderMaterial_0.Sample(LinearSampler, In.vTexcoord);
-    //vDiffuseMask = g_ShaderMaterial_0.Sample(LinearSampler, clamp(vAnimateUV, 0.f, 1.0f));
-    //vNoiseMask = g_ShaderMaterial_1.Sample(LinearSampler, clamp(vAnimateUV, 0.f, 1.0f));
-    //
-    //vMtrlDiffuse = g_vColor_1 * vMtrlDiffuse.r * vDiffuseMask.r * vNoiseMask.r;
-
-
-    //vMtrlDiffuse = g_ShaderMaterial_0.Sample(LinearSampler, In.vTexcoord);
-    vDiffuseMask = g_ShaderMaterial_0.Sample(LinearSampler, clamp(vAnimateUV, 0.f, 1.0f));
-    vNoiseMask = g_ShaderMaterial_1.Sample(LinearSampler, clamp(vAnimateUV, 0.f, 1.0f));
-
-    vMtrlDiffuse *= g_vColor_1;
-    vMtrlDiffuse.a *= vDiffuseMask.r * vNoiseMask.r;
-
+    // 최종 색상 적용
+    float4 finalColor = lerp(edgeColor, float4(g_vColor, g_Alpha), fDissolveAlpha);
+    finalColor.a *= fDissolveAlpha; // 알파 채널 적용
         
-    float fFadeAlpha = smoothstep(0.0f, 1.0f, 1.5f - g_fPlayTimeRatio);
-    vMtrlDiffuse.a *= fFadeAlpha;
+    float fAlpha = length(vMask.rgb) * 0.33f * g_Alpha * finalColor.a;
     
-    if (vMtrlDiffuse.a < 0.05f)
-        discard;
-
-    // 밝은 영역만 추출. 
-    float fBrightness = dot(vMtrlDiffuse.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > g_fBrightnessThreshold) ? vMtrlDiffuse : float4(0.0f, 0.0f, 0.0f, 0.0f);
+    float fWeight = FUNC_WEIGHT3(In.vProjPos.w, 1.f);
     
-    vBrightnessColor.a = g_fBloomWeights / 4.f;
+    Out.vAccumulate.rgb = finalColor.rgb * fAlpha * fWeight;
+    Out.vAccumulate.a = fAlpha * fWeight;
+    Out.vRevealage = fAlpha * clamp(log(0.6f + fAlpha), 0.25f, 0.6f);
     
-    //float3 vGlowColor = float3(0.8f, 0.2f, 0.2f);
-    //vBrightnessColor.rgb *= vGlowColor.rgb;
-
-
-
-    Out.vBrightness = vBrightnessColor;
-    Out.vDiffuse = vMtrlDiffuse;
+    //float fAlpha = length(vMask.rgb) * 0.33f * g_Alpha;
     
+    //float fWeight = FUNC_WEIGHT3(In.vProjPos.w, 1.f);
+    
+    //Out.vAccumulate.rgb = g_vColor * fAlpha  * fWeight;
+    //Out.vAccumulate.a = fAlpha * fWeight;
+    //Out.vRevealage = fAlpha * clamp(log(0.6f + fAlpha), 0.25f, 0.6f);
 
     return Out;
 }
 
 
-PS_OUT PS_SCROLL_ONETIME(PS_IN In)
-{
-    
-    PS_OUT Out = (PS_OUT) 0;
-    float fFlag = g_iFlag;
-
-    float2 vAnimateUV = In.vTexcoord;
-    float2 vScroll = { 0.0f, 0.0f };
-    vScroll = g_vScrollSpeed * g_fTimeAcc;
-    vAnimateUV = In.vTexcoord + vScroll;
-
-    float4 vMtrlDiffuse = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    if (vAnimateUV.x < 1.0f && vAnimateUV.x > 0.0f && vAnimateUV.y < 1.0f && vAnimateUV.x > 0.0f)
-        vMtrlDiffuse = g_ShaderMaterial_0.Sample(LinearSampler, vAnimateUV);
-    
-    vMtrlDiffuse *= g_vColor_1;
-
-
-    if (vMtrlDiffuse.a < 0.1f)
-        discard;
-    
-    // 밝은 영역만 추출.
-    float fBrightness = dot(vMtrlDiffuse.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > g_fBrightnessThreshold) ? vMtrlDiffuse : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    vBrightnessColor.a = g_fBloomWeights / 4.f;
-    
-    Out.vBrightness = vBrightnessColor;
-
-    Out.vDiffuse = vMtrlDiffuse;
-
-    return Out;
-
-}
-
-PS_OUT PS_DISTORTION(PS_IN In)
-{
-    
-    PS_OUT Out = (PS_OUT) 0;
-    float fFlag = g_iFlag;
-
-    float2 vAnimateUV = In.vTexcoord;
-    vAnimateUV.y += 0.5f;
-    float2 vScroll = g_fTimeAcc * g_vScrollSpeed;
-    vAnimateUV = vAnimateUV + vScroll;
-
-
-    float4 vMtrlDiffuse = float4(1.0f, 1.0f, 1.0f, 1.0f);
-    float4 vNoiseMask = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    float4 vDistortionMask = float4(0.0f, 0.0f, 0.0f, 0.0f);
-
-    vMtrlDiffuse = g_ShaderMaterial_0.Sample(LinearSampler, vAnimateUV);
-    vNoiseMask = g_ShaderMaterial_1.Sample(LinearSampler, vAnimateUV);
-    vDistortionMask = g_ShaderMaterial_2.Sample(LinearSampler, In.vTexcoord);
-
-    vMtrlDiffuse *= g_vColor_1;
-    vMtrlDiffuse.a *= vMtrlDiffuse.r;
-
-
-    // Distortion     
-    float2 vDistortionAnimateUV = In.vTexcoord + sin(g_fTimeAcc * g_fWaveSpeed + In.vTexcoord.y * g_fWaveFrequency) * g_fWaveAmplitude;
-    float fDistortionStrength = 1.0f;
-    float2 vDistortionUV = In.vTexcoord + (vNoiseMask.xy * fDistortionStrength);
-    vDistortionUV = lerp(In.vTexcoord, vDistortionUV, vDistortionMask.r);
-    Out.vDistortion = float2(0.0f, 0.0f);
-    Out.vDistortion = clamp(vDistortionUV, 0.0f, 1.0f) * vDistortionMask.r;
-    
-
-    //if (vMtrlDiffuse.a < 0.05f)
-    //    discard;
-
-    // 밝은 영역만 추출. 
-    float fBrightness = dot(vMtrlDiffuse.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > g_fBrightnessThreshold) ? vMtrlDiffuse : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    
-    vBrightnessColor.a = g_fBloomWeights / 4.f;
-    
-    //float3 vGlowColor = float3(0.8f, 0.2f, 0.2f);
-    //vBrightnessColor.rgb *= vGlowColor.rgb;
-    
-    float fFadeAlpha = smoothstep(0.0f, 1.0f, 1.5f - g_fPlayTimeRatio);
-    vMtrlDiffuse.a *= fFadeAlpha;
-
-
-    Out.vBrightness = vBrightnessColor;
-    Out.vDiffuse = vMtrlDiffuse;
-    
-
-    return Out;
-
-}
-
-PS_OUT PS_LUXIYA_COREWEAPON(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    float fFlag = g_iFlag;
-
-    float2 vAnimateUV = In.vTexcoord;
-    float2 vScroll = g_fTimeAcc * g_vScrollSpeed;
-    vAnimateUV = vAnimateUV + vScroll;
-
-
-    float4 vMtrlDiffuse = float4(1.0f, 1.0f, 1.0f, 1.0f);
-    float4 vNoiseMask = float4(0.0f, 0.0f, 0.0f, 0.0f);
-
-    vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
-    vNoiseMask = g_ShaderMaterial_1.Sample(LinearSampler, vAnimateUV);
-
-    vMtrlDiffuse.a += vNoiseMask.r;
-    vMtrlDiffuse *= g_vColor_1;
-
-
-    //// Distortion     
-    //float2 vDistortionAnimateUV = In.vTexcoord + sin(g_fTimeAcc * g_fWaveSpeed + In.vTexcoord.y * g_fWaveFrequency) * g_fWaveAmplitude;
-    //float fDistortionStrength = 1.0f;
-    //float2 vDistortionUV = In.vTexcoord + (vNoiseMask.xy * fDistortionStrength);
-    //vDistortionUV = lerp(In.vTexcoord, vDistortionUV, vDistortionMask.r);
-    //Out.vDistortion = float2(0.0f, 0.0f);
-    //Out.vDistortion = clamp(vDistortionUV, 0.0f, 1.0f) * vDistortionMask.r;
-    
-
-    //if (vMtrlDiffuse.a < 0.05f)
-    //    discard;
-
-    // 밝은 영역만 추출. 
-    float fBrightness = dot(vMtrlDiffuse.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > g_fBrightnessThreshold) ? vMtrlDiffuse : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    
-    vBrightnessColor.a = g_fBloomWeights / 4.f;
-    
-    float3 vGlowColor = float3(0.8f, 0.2f, 0.2f);
-    vBrightnessColor.rgb *= vGlowColor.rgb;
-
-    Out.vBrightness = vBrightnessColor;
-    Out.vDiffuse = vMtrlDiffuse;
-
-    return Out;
-
-}
-
-PS_OUT PS_ROTATIONCIRCLEEFFECT(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    float fFlag = g_iFlag;
-
-    float2 vAnimateUV = In.vTexcoord;
-    float2 vScroll = { 0.0f, 0.0f };
-    vScroll = g_vScrollSpeed * g_fTimeAcc;
-    vAnimateUV = In.vTexcoord + vScroll;
-
-    float4 vMtrlDiffuse = g_ShaderMaterial_0.Sample(LinearSampler, In.vTexcoord);
-    float4 vMaskDesc = g_ShaderMaterial_1.Sample(LinearSampler, vAnimateUV);
-    vMtrlDiffuse *= g_vColor_1;
-    vMtrlDiffuse.a *= vMaskDesc.r;
-
-    if (vMtrlDiffuse.a < 0.1f)
-        discard;
-    
-    // 밝은 영역만 추출.
-    float fBrightness = dot(vMtrlDiffuse.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > g_fBrightnessThreshold) ? vMtrlDiffuse : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    vBrightnessColor.a = g_fBloomWeights / 4.f;
-    
-    Out.vBrightness = vBrightnessColor;
-
-    Out.vDiffuse = vMtrlDiffuse;
-
-    return Out;
-}
-
-
-PS_OUT PS_LEE_LASER(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    float fFlag = g_iFlag;
-    
-    float2 vAnimateUV = In.vTexcoord;
-    float2 vScroll = { 0.0f, 0.0f };
-    vScroll = g_vScrollSpeed * g_fTimeAcc;
-    vAnimateUV = In.vTexcoord + vScroll;
-    
-    float4 vMtrlDiffuse = g_ShaderMaterial_0.Sample(LinearSampler, vAnimateUV);
-    vMtrlDiffuse.a;
-    vMtrlDiffuse *= g_vColor_1;
-    
-    
-        
-        // 밝은 영역만 추출.
-    float fBrightness = dot(vMtrlDiffuse.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-    float4 vBrightnessColor = (fBrightness > g_fBrightnessThreshold) ? vMtrlDiffuse : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    vBrightnessColor.a = g_fBloomWeights / 4.f;
-        
-    float3 vGlowColor = float3(0.38f, 0.7f, 1.0f);
-    vBrightnessColor.rgb *= vGlowColor.rgb;
-    Out.vBrightness = vBrightnessColor;
-    Out.vDiffuse = vMtrlDiffuse;
-    
-    return Out;
-}
-
-
-// technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
-// pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
-// https://www.notion.so/15-Shader-Keyword-technique11-pass-10eb1e26c8a8807aad86fb2de6738a1a // 컨트롤 클릭
 technique11 DefaultTechnique
 {
     pass DefaultPass // 0
     {
         SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass BashPass // 1
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_BASH();
-    }
-
-    pass ScrollOneTime // 2
-    {
-        SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_SCROLL_ONETIME();
-    }
-
-
-    pass Distortion_Circle // 3
-    {
-        SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_DISTORTION();
-    }
-    
-
-    pass LuxiyaCoreWeapon
-    {
-        SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_LUXIYA_COREWEAPON();
-    }
-
-    pass RotationCircleEffect
-    {
-        SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_ROTATIONCIRCLEEFFECT();
-    }
-    
-    pass LeeLaserPass // 1
-    {
-        SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_LEE_LASER();
-    }
-
-
-
-    pass LuxiyaUltimatePass // 1
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_LUXIYA_ULTIMATE();
-    }
 
 
 }

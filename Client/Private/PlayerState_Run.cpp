@@ -16,7 +16,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 	{
-		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir), _fTimeDelta);
+		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* m_fSpeed, _fTimeDelta);
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{
 			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);

@@ -58,7 +58,7 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 		{
 			_float fRatio = (fProgress - fForwardStartProgress) / (fForwardEndProgress - fForwardStartProgress);
 			_float fSpeed = m_fForwardSpeedMax - (m_fForwardSpeedMax - m_fForwardSpeedMin) * fRatio;
-			//m_pOwner->Move(XMVector4Normalize(m_vDirection), _fTimeDelta);
+			m_pOwner->Move((m_vDirection)*fSpeed, _fTimeDelta);
 		}
 	}
 	
@@ -101,7 +101,6 @@ void CPlayerState_Roll::Enter()
     }
     else
     {
-		m_pOwner->Add_Impuls(m_vDirection * m_fForwardSpeedMax);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_DODGE_GT);
     }
 }

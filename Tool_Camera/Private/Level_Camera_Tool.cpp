@@ -277,8 +277,10 @@ void CLevel_Camera_Tool::Show_CameraTool()
 		tData.fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
 		tData.fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
 		tData.fLengthTime = { m_fLengthTime, 0.f };
+		tData.iLengthRatioType = m_iLengthRatioType;
 		tData.fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x), XMConvertToRadians(m_fRotationPerSecAxisY.y) };
 		tData.fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x), XMConvertToRadians(m_fRotationPerSecAxisRight.y)};
+		tData.isReturn = m_isReturn;
 
 		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
 		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
@@ -911,7 +913,7 @@ void CLevel_Camera_Tool::Change_ArmLength()
 	_float fArmLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength();
 	_bool bActive = false;
 
-	ImGui::Text("Arm Length: %.2f  ", m_fLengthValue);
+	ImGui::Text("Arm Length: %.2f  ", fArmLength);
 	ImGui::SameLine();
 	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
 		fArmLength -= m_fLengthValue;
@@ -947,6 +949,34 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::SetNextItemWidth(-1);
 	ImGui::DragFloat("##Length Time", &m_fLengthTime, 0.05f, 0.f, 10.f);
 
+	//Type
+	switch (m_iLengthRatioType) {
+	case CCamera::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN   ");
+		break;
+
+	case CCamera::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT  ");
+		break;
+
+	case CCamera::LERP:
+		ImGui::Text("Ratio Type: LERP      ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Length EASE IN")) {
+		m_iLengthRatioType = CCamera::EASE_IN;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Length EASE OUT")) {
+		m_iLengthRatioType = CCamera::EASE_OUT;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Length LERP")) {
+		m_iLengthRatioType = CCamera::LERP;
+	}
+
 	ImGui::Text("Move Time AxisY: %.2f    ", m_fMoveTimeAxisY);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
@@ -972,6 +1002,8 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::SameLine();
 	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
 
+	ImGui::Checkbox("IS RETURN?", &m_isReturn);
+
 	ImGui::NewLine();
 }
 
@@ -988,8 +1020,11 @@ void CLevel_Camera_Tool::Edit_CopyArm()
 	pData->fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
 	pData->fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
 	pData->fLengthTime = { m_fLengthTime, 0.f };
+	pData->fLength = { m_fLength };
+	pData->iLengthRatioType = { m_iLengthRatioType };
 	pData->fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x),   XMConvertToRadians(m_fRotationPerSecAxisY.y) };
 	pData->fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x),   XMConvertToRadians(m_fRotationPerSecAxisRight.y) };
+	pData->isReturn = m_isReturn;
 	// Show Data
 }
 
@@ -1186,7 +1221,7 @@ void CLevel_Camera_Tool::Set_ShakeInfo()
 	ImGui::Text("Shake Count: %d  ", m_iShakeCount);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);
-	ImGui::DragInt("##ShakeCount", &m_iShakeCount, 0.05f, 0.f, 200.f);
+	ImGui::DragInt("##ShakeCount", &m_iShakeCount, 0.05f, 0, 200);
 
 	ImGui::Text("Shake Delay Time: %.2f  ", m_fShakeDelayTime);
 	ImGui::SameLine();
@@ -1435,7 +1470,7 @@ void CLevel_Camera_Tool::Create_Sector()
 						if (true == XMVector3Equal(XMLoadFloat3(&SelectedFrame.vPosition), XMLoadFloat3(&KeyFrame.first.vPosition)))
 							return;
 
-						_float fEpsilon = 0.01;
+						_float fEpsilon = 0.01f;
 
 						if (KeyFrame.first.fTimeStamp < SelectedFrame.fTimeStamp + fEpsilon &&
 							KeyFrame.first.fTimeStamp > SelectedFrame.fTimeStamp - fEpsilon)
@@ -1655,7 +1690,7 @@ void CLevel_Camera_Tool::Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir)
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+	_vector vMousePos = XMVectorSet((_float)pt.x, (_float)pt.y, 0.f, 1.f);
 
 	_uint		iNumViewports = { 1 };
 	D3D11_VIEWPORT		ViewportDesc{};
@@ -1796,13 +1831,13 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 			std::cerr << "파일 열기 실패." << std::endl;
 		}
 
-		_uint iSize = pData->size();
+		_uint iSize = (_uint)pData->size();
 		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
 
 		for (auto& CutSceneData : *pData) {
 
 			// CutScene Tag 길이 저장
-			_uint strLength = CutSceneData.first.length();
+			_uint strLength = (_uint)CutSceneData.first.length();
 			outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
 			outFile.write(reinterpret_cast<const char*>(CutSceneData.first.c_str()), strLength * sizeof(wchar_t));
 
@@ -1810,7 +1845,7 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 			outFile.write(reinterpret_cast<const char*>(&CutSceneData.second.first), sizeof(_float2));
 
 			// Data Struct 저장
-			iSize = CutSceneData.second.second.size();
+			iSize = (_uint)CutSceneData.second.second.size();
 			outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
 
 			for (auto& Data : CutSceneData.second.second) {
@@ -1835,7 +1870,7 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 		}
 
 		// KeyFrame
-		_uint iSize = m_KeyFrames.size();
+		_uint iSize = (_uint)m_KeyFrames.size();
 		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
 
 		for (auto& KeyFrame : m_KeyFrames) {
@@ -1849,18 +1884,18 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 		}
 		
 		// CutScene
-		iSize = m_CutScenes.size();
+		iSize = (_uint)m_CutScenes.size();
 		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
 
 		for (auto& CutScene : m_CutScenes) {
 			
 			// CutScene Tag 길이 저장
-			_uint strLength = CutScene.first.length();
+			_uint strLength = (_uint)CutScene.first.length();
 			outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
 			outFile.write(reinterpret_cast<const char*>(CutScene.first.c_str()), strLength * sizeof(wchar_t));
 
 			// CutScene Sector 개수 저장
-			_uint iSectorNum = CutScene.second.size();
+			_uint iSectorNum = (_uint)CutScene.second.size();
 			outFile.write(reinterpret_cast<const char*>(&iSectorNum), sizeof(_uint));
 
 			// Sector
@@ -1877,7 +1912,7 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 				outFile.write(reinterpret_cast<const char*>(&fSectorDuration), sizeof(_float));
 
 				// KeyFrame 개수 저장
-				_uint iKeyFrameSize = (*pKeyFrames).size();
+				_uint iKeyFrameSize = (_uint)(*pKeyFrames).size();
 				outFile.write(reinterpret_cast<const char*>(&iKeyFrameSize), sizeof(_uint));
 
 				for (auto& KeyFrame : *pKeyFrames) {
@@ -1899,6 +1934,43 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 
 void CLevel_Camera_Tool::Save_Data_Arm()
 {
+	_wstring wszSavePath = L"../Bin/Resources/DataFiles/ArmData/";
+	_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
+
+	std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);
+
+	if (!outFile) {
+		std::cerr << "파일 열기 실패." << std::endl;
+	}
+
+	// Arm Data
+	map<_wstring, ARM_DATA*>* pDatas = CCamera_Manager_Tool::GetInstance()->Get_ArmDatas();
+
+	_uint iSize = (_uint)pDatas->size();
+	outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+
+	for (auto& Data : *pDatas) {
+
+		// Arm Tag 길이 저장
+		_uint strLength = (_uint)Data.first.length();
+		outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
+		outFile.write(reinterpret_cast<const char*>(Data.first.c_str()), strLength * sizeof(wchar_t));
+
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fLength), sizeof(_float));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fLengthTime), sizeof(_float2));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->iLengthRatioType), sizeof(_uint));
+		
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fMoveTimeAxisY), sizeof(_float2));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fMoveTimeAxisRight), sizeof(_float2));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fRotationPerSecAxisY), sizeof(_float2));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->fRotationPerSecAxisRight), sizeof(_float2));
+	
+		outFile.write(reinterpret_cast<const char*>(&Data.second->vDesireArm), sizeof(_float3));
+		outFile.write(reinterpret_cast<const char*>(&Data.second->isReturn), sizeof(_bool));
+	}
+
+	_wstring FullPath = wszSavePath + wszSaveName + TEXT(".bin");
+	m_BinaryFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
 }
 
 void CLevel_Camera_Tool::Load_Data_CutScene()
@@ -1919,7 +1991,7 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 		_uint iSize = {};
 		inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
 
-		for (_int i = 0; i < iSize; ++i) {
+		for (_uint i = 0; i < iSize; ++i) {
 			CUTSCENE_KEYFRAME tKeyFrame;
 
 			inFile.read(reinterpret_cast<char*>(&tKeyFrame.vPosition), sizeof(_float3));
@@ -1938,7 +2010,7 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 		// CutScene
 		inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
 
-		for (_int i = 0; i < iSize; ++i) {
+		for (_uint i = 0; i < iSize; ++i) {
 			
 			// CutScene Tag 읽기
 			_uint strLength = {};
@@ -1952,7 +2024,7 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 			inFile.read(reinterpret_cast<char*>(&iSectorNum), sizeof(_uint));
 
 			// Sector
-			for (_int j = 0; j < iSectorNum; ++j) {
+			for (_uint j = 0; j < iSectorNum; ++j) {
 
 				// Sector Type 저장(Spline, Linear)
 				_uint iSectorType = {};
@@ -1973,7 +2045,7 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 				_uint iKeyFrameSize = {};
 				inFile.read(reinterpret_cast<char*>(&iKeyFrameSize), sizeof(_uint));
 
-				for (_int k = 0; k < iKeyFrameSize; ++k) {
+				for (_uint k = 0; k < iKeyFrameSize; ++k) {
 
 					CUTSCENE_KEYFRAME tKeyFrame = {};
 
@@ -2014,6 +2086,45 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 
 void CLevel_Camera_Tool::Load_Data_Arm()
 {
+	_wstring wszLoadPath = m_pGameInstance->StringToWString(m_BinaryFilePaths[m_iCurrentBinaryFileIndex]);
+
+	std::ifstream inFile(wszLoadPath, std::ios::binary);
+	if (!inFile) {
+		string str = "파일을 열 수 없습니다.";
+		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+	}
+
+	// Arm Data
+	_uint iSize = {};
+	inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+
+	for (_uint i = 0; i < iSize; ++i) {
+		
+		ARM_DATA tData;
+	
+		// CutScene Tag 읽기
+		_uint strLength = {};
+		inFile.read(reinterpret_cast<char*>(&strLength), sizeof(_uint));
+		_wstring ArmTag;
+		ArmTag.resize(strLength);
+		inFile.read(reinterpret_cast<char*>(&ArmTag[0]), strLength * sizeof(wchar_t));
+
+		inFile.read(reinterpret_cast<char*>(&tData.fLength), sizeof(_float));
+		inFile.read(reinterpret_cast<char*>(&tData.fLengthTime), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.iLengthRatioType), sizeof(_uint));
+		
+		inFile.read(reinterpret_cast<char*>(&tData.fMoveTimeAxisY), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fMoveTimeAxisRight), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisY), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisRight), sizeof(_float2));
+		
+		inFile.read(reinterpret_cast<char*>(&tData.vDesireArm), sizeof(_float3));
+		inFile.read(reinterpret_cast<char*>(&tData.isReturn), sizeof(_bool));
+
+		CCamera_Manager_Tool::GetInstance()->Add_ArmData(ArmTag, tData);
+	}
+
+	CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
 }
 
 CLevel_Camera_Tool* CLevel_Camera_Tool::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

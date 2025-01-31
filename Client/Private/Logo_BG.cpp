@@ -28,7 +28,7 @@ HRESULT CLogo_BG::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_vColor = { 227.f / 255.f , 37.f / 255.f,82.f / 255.f, 1.f };
-	
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -108,78 +108,78 @@ HRESULT CLogo_BG::Render()
 		wsprintf(m_tTest, TEXT("시간이에요"));
 		m_pGameInstance->Render_Font(TEXT("Font54"), m_tTest, _float2(g_iWinSizeX / 4.f - 60.f, g_iWinSizeY - g_iWinSizeY / 2.1f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		wsprintf(m_tTest, TEXT("확인"));
-		m_pGameInstance->Render_Font(TEXT("Font38"), m_tTest, _float2(g_iWinSizeX - g_iWinSizeX / 15.f, g_iWinSizeY - g_iWinSizeY / 16.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font30"), m_tTest, _float2(g_iWinSizeX - g_iWinSizeX / 13.f, g_iWinSizeY - g_iWinSizeY / 11.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
 		if (0 == iIndex)
 		{
 			wsprintf(wMouseTalk, TEXT("자, 시작해 볼까요!"));
-			m_pGameInstance->Render_Font(TEXT("Font38"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - g_iWinSizeX / 16.f, g_iWinSizeY / 10.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.35f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("게임 시작"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 35.f, g_iWinSizeY / 3.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("옵션"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f + 5.f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.65f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("크레딧"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 15.f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.56f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("바탕화면으로 나가기"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 120.f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.2f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 		}
 		else if (1 == iIndex)
 		{
 			wsprintf(wMouseTalk, TEXT("옵션을 설정하고 조작법을 확인합니다."));
-			m_pGameInstance->Render_Font(TEXT("Font38"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 200.f, g_iWinSizeY / 10.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 
 			wsprintf(wMouseTalk, TEXT("게임 시작"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 35.f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("옵션"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f + 5.f, g_iWinSizeY / 2.4f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.65f, g_iWinSizeY / 2.4f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("크레딧"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 15.f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.56f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("바탕화면으로 나가기"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 120.f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.2f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 		else if (2 == iIndex)
 		{
 			wsprintf(wMouseTalk, TEXT("크레딧을 감상합니다."));
-			m_pGameInstance->Render_Font(TEXT("Font38"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 100.f, g_iWinSizeY / 10.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.3f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 
 			wsprintf(wMouseTalk, TEXT("게임 시작"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 35.f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("옵션"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f + 5.f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.65f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("크레딧"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 15.f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.56f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("바탕화면으로 나가기"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 120.f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.2f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 		else if (3 == iIndex)
 		{
 			wsprintf(wMouseTalk, TEXT("또 들러 주세요!"));
-			m_pGameInstance->Render_Font(TEXT("Font38"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 80.f, g_iWinSizeY / 10.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.45f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("게임 시작"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 35.f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("옵션"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f + 5.f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.65f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("크레딧"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 15.f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.56f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 			wsprintf(wMouseTalk, TEXT("바탕화면으로 나가기"));
-			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 3.f - 120.f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.2f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
 	
@@ -225,6 +225,7 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 	break;
 	}
 }
+
 
 HRESULT CLogo_BG::Ready_Components()
 {

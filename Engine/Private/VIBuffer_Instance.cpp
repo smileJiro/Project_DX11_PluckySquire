@@ -1,6 +1,6 @@
 #include "VIBuffer_Instance.h"
 #include "GameInstance.h"
-#include "Particle_Module.h"
+#include "Effect_Module.h"
 
 CVIBuffer_Instance::CVIBuffer_Instance(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer(_pDevice, _pContext)
@@ -709,7 +709,7 @@ HRESULT CVIBuffer_Instance::Ready_Modules(const json _jsonInfo)
 	{
 		for (_int i = 0; i < _jsonInfo["Module"].size(); ++i)
 		{
-			CParticle_Module* pModule = CParticle_Module::Create(_jsonInfo["Module"][i]);
+			CEffect_Module* pModule = CEffect_Module::Create(_jsonInfo["Module"][i]);
 			if (nullptr == pModule)
 				return E_FAIL;
 			
@@ -717,7 +717,7 @@ HRESULT CVIBuffer_Instance::Ready_Modules(const json _jsonInfo)
 		}
 	}
 
-	sort(m_Modules.begin(), m_Modules.end(), [](const CParticle_Module* pSrc, const CParticle_Module* pDst)
+	sort(m_Modules.begin(), m_Modules.end(), [](const CEffect_Module* pSrc, const CEffect_Module* pDst)
 		{
 			return pSrc->Get_Order() < pDst->Get_Order();
 		}
@@ -823,7 +823,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
-			if (ImGui::BeginCombo("Spawn Type", combo_preview_value, m_eSpawnType))
+			if (ImGui::BeginCombo("Spawn Type", combo_preview_value))
 			{
 				item_selected_idx = m_eSpawnType;
 				ImGui::SetItemDefaultFocus();
@@ -873,7 +873,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
-			if (ImGui::BeginCombo("Scale Type", combo_preview_value, m_SetDatas[P_SCALE]))
+			if (ImGui::BeginCombo("Scale Type", combo_preview_value))
 			{
 				item_selected_idx = m_SetDatas[P_SCALE];
 				ImGui::SetItemDefaultFocus();
@@ -950,12 +950,12 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 		}
 		if (ImGui::TreeNode("Particle Rotation"))
 		{
-			const _char* items[] = { "Billboard", "Direct Set", "Random_Linear", "Random_Range" };
+			const _char* items[] = { "UnSet", "Direct Set", "Random_Linear", "Random_Range" };
 
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
-			if (ImGui::BeginCombo("Rotation Type", combo_preview_value, m_SetDatas[P_ROTATION]))
+			if (ImGui::BeginCombo("Rotation Type", combo_preview_value))
 			{
 				item_selected_idx = m_SetDatas[P_ROTATION];
 				ImGui::SetItemDefaultFocus();
@@ -1015,7 +1015,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
-			if (ImGui::BeginCombo("Position Type", combo_preview_value, m_SetDatas[P_POSITION]))
+			if (ImGui::BeginCombo("Position Type", combo_preview_value))
 			{
 				item_selected_idx = m_SetDatas[P_POSITION];
 				ImGui::SetItemDefaultFocus();
@@ -1074,7 +1074,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
-			if (ImGui::BeginCombo("Color Type", combo_preview_value, m_SetDatas[P_COLOR]))
+			if (ImGui::BeginCombo("Color Type", combo_preview_value))
 			{
 				item_selected_idx = m_SetDatas[P_COLOR];
 				ImGui::SetItemDefaultFocus();
@@ -1131,7 +1131,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
-			if (ImGui::BeginCombo("LifeTime Type", combo_preview_value, m_SetDatas[P_LIFETIME]))
+			if (ImGui::BeginCombo("LifeTime Type", combo_preview_value))
 			{
 				item_selected_idx = m_SetDatas[P_LIFETIME];
 				ImGui::SetItemDefaultFocus();
@@ -1203,7 +1203,7 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 			ImGui::SetItemDefaultFocus();
 		}
 
-		if (ImGui::BeginCombo("Select Shape", combo_preview_value, s_iShapeFlags))
+		if (ImGui::BeginCombo("Select Shape", combo_preview_value))
 		{
 			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
 			{
@@ -1604,8 +1604,8 @@ void CVIBuffer_Instance::Tool_Add_Module()
 {
 	if (ImGui::TreeNode("Add Module"))
 	{
-		const _char* Moduleitems[] = { "NONE", "INIT_VELOCITY_POINT", "INIT_VELOCITY_LINEAR", "INIT_ACCELERATION",
-"GRAVITY", "DRAG", "VORTEX_ACCELERATION" };
+		const _char* Moduleitems[] = { "NONE", "POINT_VELOCITY", "LINEAR_VELOCITY", "INIT_ACCELERATION",
+"GRAVITY", "DRAG", "VORTEX_ACCELERATION", "POINT_ACCELERATION", "LIMIT_ACCELERATION"};
 
 		static _int item_selected_idx = 0;
 		const char* combo_preview_value = Moduleitems[item_selected_idx];
@@ -1621,13 +1621,13 @@ void CVIBuffer_Instance::Tool_Add_Module()
 				{
 					item_selected_idx = n;
 					
-					CParticle_Module* pModule = CParticle_Module::Create((CParticle_Module::MODULE_TYPE)n, Moduleitems[n]);
+					CEffect_Module* pModule = CEffect_Module::Create((CEffect_Module::MODULE_TYPE)n, Moduleitems[n]);
 					if (nullptr != pModule)
 					{
-						pModule->Set_Order(m_Modules.size());
+						pModule->Set_Order((_int)m_Modules.size());
 						m_Modules.push_back(pModule);
 
-						sort(m_Modules.begin(), m_Modules.end(), [](const CParticle_Module* pSrc, const CParticle_Module* pDst)
+						sort(m_Modules.begin(), m_Modules.end(), [](const CEffect_Module* pSrc, const CEffect_Module* pDst)
 							{
 								return pSrc->Get_Order() < pDst->Get_Order();
 							}

@@ -14,6 +14,7 @@
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
+#include "Collision_Manager.h"    
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -150,9 +151,9 @@ HRESULT CPlayer::Ready_Components()
    /* Test 2D Collider */
    CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
    AABBDesc.pOwner = this;
-   AABBDesc.fRadius = { 200.f };
+   AABBDesc.fRadius = 100.f;
    AABBDesc.vScale = { 1.0f, 1.0f };
-   AABBDesc.vOffsetPosition = { 200.f, 200.f };
+   AABBDesc.vOffsetPosition = { 0.f, AABBDesc.fRadius };
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
        TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
        return E_FAIL; 
@@ -259,6 +260,13 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
+
+
+    //// TestCode : еб©У
+    _uint iSectionKey = RG_2D + PR2D_SECTION_START;
+    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
+
+
     __super::Update(_fTimeDelta); /* Part Object Update */
 	if (COORDINATE_3D == Get_CurCoord())
         Rotate_To(m_v3DTargetDirection);
@@ -313,6 +321,21 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     int a = 0;
 }
 
+void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    int a = 0;
+}
+
+void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    int a = 0;
+}
+
+void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    int a = 0;
+}
+
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
@@ -333,22 +356,21 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 }
 
 
-void CPlayer::Move(_vector _vDir, _float _fTimeDelta)
+void CPlayer::Move(_vector _vForce, _float _fTimeDelta)
 {
-	m_v3DTargetDirection = _vDir;
     ACTOR_TYPE eActorType = Get_ActorType();
 
     if (COORDINATE_3D == Get_CurCoord())
     {
-
+	    m_v3DTargetDirection = XMVector4Normalize(_vForce);
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        _vector vVeclocity = _vDir * m_tStat[COORDINATE_3D].fMoveSpeed  /** fDot*/;
+        _vector vVeclocity = _vForce /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
         vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
         pDynamicActor->Set_LinearVelocity(vVeclocity);
     }
     else
     {
-        m_pControllerTransform->Go_Direction(_vDir, _fTimeDelta);
+        m_pControllerTransform->Go_Direction(XMVector4Normalize( _vForce), _fTimeDelta);
     }
 }
 
@@ -528,7 +550,7 @@ _float CPlayer::Get_UpForce()
 
     if (COORDINATE_2D == eCoord)
     {
-
+        return -1.f;
     }
     else
     {
@@ -648,14 +670,6 @@ void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 {
 	Set_PartActive(_ePartId, false);
-}
-
-HRESULT CPlayer::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
-{
-    m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this);
-
-    CContainerObject::Register_RenderGroup(_iGroupId, _iPriorityID);
-    return S_OK;
 }
 
 void CPlayer::ThrowSword()

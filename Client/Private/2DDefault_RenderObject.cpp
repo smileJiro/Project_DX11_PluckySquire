@@ -146,11 +146,11 @@ CGameObject* C2DDefault_RenderObject::Clone(void* pArg)
 
 void C2DDefault_RenderObject::Free()
 {
-	__super::Free();
 
 	Safe_Release(m_pShader);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
+	__super::Free();
 }
 
 HRESULT C2DDefault_RenderObject::Cleanup_DeadReferences()

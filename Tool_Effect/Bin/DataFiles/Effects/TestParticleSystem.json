@@ -110,7 +110,6 @@
                     "V_Distribution": 0.0
                 },
                 "Spawn": {
-                    "Count": 1,
                     "Time": 0.10000000149011612,
                     "Type": "SPAWN"
                 },
@@ -126,11 +125,13 @@
                     ]
                 }
             },
+            "Discard_A": 0.0,
+            "Discard_RGB": 0.0,
             "Event": 0,
             "LoopTime": 0,
             "Parent": false,
             "Progress": true,
-            "Texture": "../Bin/Resources/Textures/Effects/blue.dds",
+            "Texture": "../Bin/Resources/Textures/Particles/blue.dds",
             "Time": 4.0,
             "Type": "SPRITE"
         }

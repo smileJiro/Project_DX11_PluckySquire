@@ -3,8 +3,10 @@
 #include "EffectTool_Defines.h"
 
 BEGIN(Engine)
-class CParticle_System;
+class CEffect_System;
 class CTexture;
+class CModelObject;
+class C3DModel;
 END
 
 BEGIN(EffectTool)
@@ -26,26 +28,32 @@ public:
 	HRESULT					Ready_Layer_Effect(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 	HRESULT					Ready_SkyBox(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_Model(const _wstring& _strLayerTag);
 
 private:
-	class CParticle_System*							m_pNowItem = { nullptr };
-	vector<class CParticle_System*>					m_ParticleSystems;
+	class CEffect_System*							m_pNowItem = { nullptr };
+	vector<class CEffect_System*>					m_ParticleSystems;
 
 private:
-	_char							m_szTexturePath[MAX_PATH] = "../Bin/Resources/Textures/Effects/";
-	
-	class CTexture*					m_pNowTexture = { nullptr };
+	_char							m_szParticleTexturePath[MAX_PATH] = "../Bin/Resources/Textures/Particles/";
+	_char							m_szEffectTexturePath[MAX_PATH] = "../Bin/Resources/Textures/Effects/";
+	class CTexture*					m_pParticleTexture = { nullptr };
+	class CTexture*					m_pEffectTexture = { nullptr };
 
-	map<const _wstring, class CTexture*>			m_Textures;
+	map<const _wstring, class CTexture*>			m_ParticleTextures;
+	map<const _wstring, class CTexture*>			m_EffectTextures;
 
+private:
+	vector<class CModelObject*>						m_ModelObjects;
 
 private:
 	void					Update_Particle_Tool(_float _fTimeDelta);
 	void					Tool_System_List();
 	void					Tool_Adjust_System(_float _fTimeDelta);
 	void					Tool_Texture();
+	void					Tool_ControlModel();
 
-	HRESULT					Load_Textures(const _char* _szExtension);
+	HRESULT					Load_Textures(const _char* _szExtension, const _char* _szPath, map<const _wstring, class CTexture*>& _TextureMaps);
 	HRESULT					Save_All();
 	HRESULT					Load_All(const _char* _szPath);
 

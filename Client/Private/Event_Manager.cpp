@@ -17,6 +17,9 @@
 #include "ActorObject.h"
 #include "Actor_Dynamic.h"
 
+#include "Camera_Manager.h"
+#include "Camera_Trigger.h"
+
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
 CEvent_Manager::CEvent_Manager()
@@ -110,6 +113,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 	break;
 	case Client::EVENT_TYPE::SET_KINEMATIC:
 		Execute_Set_Kinematic(_tEvent);
+		break;
+	case Client::EVENT_TYPE::CAMERATRIGGER_EVENT:
+	{
+		Execute_CameraTrigger(_tEvent);
+	}
 		break;
 	default:
 		break;
@@ -331,6 +339,36 @@ HRESULT CEvent_Manager::Execute_ChangeBossState(const EVENT& _tEvent)
 	return S_OK;
 }
 
+HRESULT CEvent_Manager::Execute_CameraTrigger(const EVENT& _tEvent)
+{
+	_uint iCameraTriggerType = (_uint)_tEvent.Parameters[0];
+	
+	if (CCamera_Trigger::CAMERA_TRIGGER_TYPE_END == iCameraTriggerType)
+		return E_FAIL;
+
+	_wstring* pStr = (_wstring*)_tEvent.Parameters[1];
+
+	if (nullptr == pStr)
+		return E_FAIL;
+
+	switch (iCameraTriggerType) {
+	case CCamera_Trigger::CUTSCENE_TRIGGER:
+		if(true == CCamera_Manager::GetInstance()->Set_NextCutSceneData(*pStr))
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+		break;
+	case CCamera_Trigger::ARM_TRIGGER:
+		break;
+	case CCamera_Trigger::FREEZE_X:
+		break;
+	case CCamera_Trigger::FREEZE_Z:
+		break;
+	}
+
+	Safe_Delete(pStr);
+
+	return S_OK;
+}
+
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
 	CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
@@ -345,7 +383,11 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 
 	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	
+
+	Uimgr->Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	
 
 	return S_OK;
 }

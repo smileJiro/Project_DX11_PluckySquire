@@ -22,6 +22,7 @@
 #include <locale>
 #include <filesystem>
 #include <iostream>
+#include <stack>
 
 
 #include "Client_Defines.h"

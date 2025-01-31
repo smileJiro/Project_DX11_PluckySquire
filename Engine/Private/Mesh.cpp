@@ -80,6 +80,75 @@ HRESULT CMesh::Initialize_Prototype(C3DModel::ANIM_TYPE eModelType, C3DModel* pM
 	return S_OK;
 }
 
+HRESULT CMesh::Initialize_Prototype(ifstream& inFile, _fmatrix _PreTransformMatrix)
+{
+	inFile.read(reinterpret_cast<char*>(&m_iMaterialIndex), sizeof(_uint));
+
+	_uint iNameLength = 0;
+	inFile.read(reinterpret_cast<char*>(&iNameLength), sizeof(_uint));
+	inFile.read(m_szName, iNameLength);
+	m_szName[iNameLength] = '\0';
+
+
+	m_iNumVertexBuffers = 1;
+	inFile.read(reinterpret_cast<char*>(&m_iNumVertices), sizeof(_uint));
+	m_iIndexStride = sizeof(_uint);
+	_uint iNumFaces = 0;
+	inFile.read(reinterpret_cast<char*>(&iNumFaces), sizeof(_uint));
+	m_iNumIndices = iNumFaces * 3;
+	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
+	m_ePrimitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+#pragma region VERTEX_BUFFER	
+
+	HRESULT hr = Ready_VertexBuffer_For_NonAnim(inFile, _PreTransformMatrix);
+
+	if (FAILED(hr))
+		return E_FAIL;
+
+
+#pragma endregion
+
+#pragma region INDEX_BUFFER
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+
+	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
+	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.StructureByteStride = /*m_iIndexStride*/0;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	_uint* pIndices = new _uint[m_iNumIndices];
+	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
+
+	_uint		iNumIndices = { 0 };
+
+
+	for (size_t i = 0; i < iNumFaces; i++)
+	{
+		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
+		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+
+	}
+
+	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceDesc.pSysMem = pIndices;
+
+	if (FAILED(__super::Create_Buffer(&m_pIB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pIndices);
+
+#pragma endregion
+
+	return S_OK;
+}
+
 HRESULT CMesh::Initialize(void* _pArg)
 {
     return S_OK;
@@ -303,6 +372,18 @@ CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, C3DMo
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype(eModelType, pModel, inFile, PreTransformMatrix)))
+	{
+		MSG_BOX("Failed to Created : CMesh");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
+}
+
+CMesh* CMesh::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& inFile, _fmatrix PreTransformMatrix)
+{
+	CMesh* pInstance = new CMesh(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype(inFile, PreTransformMatrix)))
 	{
 		MSG_BOX("Failed to Created : CMesh");
 		Safe_Release(pInstance);

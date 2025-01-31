@@ -22,6 +22,10 @@ public:
 	HRESULT Copy_RT_Resource(const _wstring& _strTargetTag, ID3D11Texture2D* _pDest);
 	HRESULT Copy_BackBuffer_RT_Resource(const _wstring& _strTargetTag);
 
+public: /* 특정 RTV 및 MRT를 삭제하는 함수 */
+	HRESULT Erase_RenderTarget(const _wstring& _strTargetTag);
+	HRESULT Erase_MRT(const _wstring& _strMRTTag);
+
 #ifdef _DEBUG
 public:
 	HRESULT Ready_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY); /* 렌더타겟을 디버그용으로 렌더하기위한 함수 */
