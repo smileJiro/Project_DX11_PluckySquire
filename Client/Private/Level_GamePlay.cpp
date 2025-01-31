@@ -49,7 +49,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
-	//Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_UI(TEXT("Layer_UI"));
 	Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
@@ -601,20 +601,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 			}
 			break;
 
-			//case CUI::SETTINGPANEL::SETTING_ESCGOBLIN:
-			//{
-			//	CGameObject* pSettingPanel = { nullptr };
-			//	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
-			//	pDesc.fY = g_iWinSizeY / 4.2f;
-			//	pDesc.fSizeX = 124.f;
-			//	pDesc.fSizeY = 108.f;
-			//	pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCGOBLIN;
-			//
-			//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
-			//		return E_FAIL;
-			//
-			//}
-			//break;
+			case CUI::SETTINGPANEL::SETTING_ESCGOBLIN:
+			{
+				CGameObject* pSettingPanel = { nullptr };
+				pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
+				pDesc.fY = g_iWinSizeY / 4.2f;
+				pDesc.fSizeX = 124.f;
+				pDesc.fSizeY = 108.f;
+				pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCGOBLIN;
+			
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
+					return E_FAIL;
+			
+			}
+			break;
 
 			
 			}

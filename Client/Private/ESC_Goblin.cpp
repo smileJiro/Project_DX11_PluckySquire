@@ -43,74 +43,93 @@ void CESC_Goblin::Priority_Update(_float _fTimeDelta)
 
 void CESC_Goblin::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::ESC))
+	{
+		m_bPreRender = m_isRender;
+		false == m_isRender ? m_isRender = true : m_isRender = false;
+	}
+
+	//m_bPreRender = m_isRender;
+
 	if (m_isRender == true)
 	{
 		_float2 vPos = {};
 		vPos.x = g_iWinSizeX - g_iWinSizeX / 2.8f;
 		vPos.y = m_pControllerTransform->Get_State(CTransform::STATE_POSITION).m128_f32[1];
+		vPos.y = -vPos.y + g_iWinSizeY * 0.5f;
 
-		if (false == m_isWait && false == m_isUp && false == m_isDown)
+		switch (m_eState)
 		{
-			m_isWait = true;
+		case STATE_WAIT:
 			m_fWaitGoblinTime += _fTimeDelta;
-		}
-		else if (true == m_isWait)
-		{
-			m_fWaitGoblinTime += _fTimeDelta * 100;
-
-			if (2.f <= m_fWaitGoblinTime)
+			if (m_fWaitGoblinTime >= 2.f)
 			{
-				m_isUp = true;
-				m_isWait = false;
-				m_fWaitGoblinTime = 0;
+				m_eState = STATE_UP;
+				m_fWaitGoblinTime = 0.f;
 			}
-		}
-		else if (true == m_isUp)
-		{
-			vPos.y -= _fTimeDelta * 50.f;
+			break;
 
-			if (g_iWinSizeY / 6.5f >= vPos.y)
+		case STATE_UP: // 위로 이동
+			vPos.y -= _fTimeDelta * 30.f;
+			if (vPos.y <= g_iWinSizeY / 6.5f)
 			{
-				m_isUp = false;
-				m_isMWait = true;
-				
+				m_eState = STATE_MWAIT;
+				m_fWaitGoblinTime = 0.f;
 			}
+			break;
 
-			m_pControllerTransform->Set_State(CTransform::STATE_POSITION,
-				XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
-		}
-		else if (true == m_isMWait)
-		{
-			m_fWaitGoblinTime += _fTimeDelta * 100;
-
-			if (2.f <= m_fWaitGoblinTime)
+		case STATE_MWAIT: // 중간 대기 상태
+			m_fWaitGoblinTime += _fTimeDelta;
+			if (m_fWaitGoblinTime >= 2.5f)
 			{
-				m_isDown = true;
-				m_isMWait = false;
-				m_fWaitGoblinTime = 0;
+				m_eState = STATE_DOWN;
+				m_fWaitGoblinTime = 0.f;
 			}
-		}
-		else if (true == m_isDown)
-		{
-			vPos.y += _fTimeDelta * 50.f;
+			break;
 
-			if (g_iWinSizeY / 4.2f <= vPos.y)
+		case STATE_DOWN: // 아래로 이동
+			vPos.y += _fTimeDelta * 30.f;
+			if (vPos.y >= g_iWinSizeY / 4.2f)
 			{
-				m_isDown = false;
-				m_isWait = true;
-				m_fWaitGoblinTime = 0;
+				m_eState = STATE_WAIT;
+				m_fWaitGoblinTime = 0.f;
 			}
+			break;
 
-			m_pControllerTransform->Set_State(CTransform::STATE_POSITION,
-				XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
-
+		default:
+			break;
 		}
+
+		// 위치 업데이트 (모든 상태에서 적용)
+
+		vPos.x = vPos.x - g_iWinSizeX * 0.5f;
+		vPos.y = -vPos.y + g_iWinSizeY * 0.5f;
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION,
+			XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 	}
-	
-	
-	__super::Update(_fTimeDelta);
+	else 
+	{
+		if (m_bPreRender == true)
+		{
+			_float2 vInitialPos = { g_iWinSizeX - g_iWinSizeX / 2.8f, g_iWinSizeY / 4.2f };
 
+			vInitialPos.x = vInitialPos.x - g_iWinSizeX * 0.5f;
+			vInitialPos.y = -vInitialPos.y + g_iWinSizeY * 0.5f;
+			m_pControllerTransform->Set_State(CTransform::STATE_POSITION,
+				XMVectorSet(vInitialPos.x, vInitialPos.y, 0.f, 1.f));
+
+			// 모든 상태 초기화
+			m_eState = STATE_WAIT;
+			m_fWaitGoblinTime = 0.f;
+		}
+		
+		
+	}
+
+	m_bPreRender = m_isRender;
 }
+	
+
 
 void CESC_Goblin::Late_Update(_float _fTimeDelta)
 {
