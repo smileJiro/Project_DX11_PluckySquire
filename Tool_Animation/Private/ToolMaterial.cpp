@@ -18,7 +18,7 @@ void CToolMaterial::Export(ofstream& _outfile)
 		{
 			_uint iNameSize = 0;
 			string strTextureName = WstringToString(*m_MaterialTextures[texIdx]->Get_SRVName(iSRVIndex));
-			iNameSize = strTextureName.length();
+			iNameSize = (_uint)strTextureName.length();
 			_outfile.write(reinterpret_cast<char*>(&iNameSize), sizeof(_uint));
 			_outfile.write(strTextureName.c_str(), iNameSize);
 		}

@@ -23,25 +23,6 @@
                     "Arg2": 15.0,
                     "SetType": "DIRECTSET"
                 },
-                "Module": [
-                    {
-                        "Amount": 5.0,
-                        "Init": true,
-                        "Order": 0,
-                        "Origin": [
-                            0.0,
-                            -0.5,
-                            0.0
-                        ],
-                        "Type": "INIT_VELOCITY_POINT"
-                    },
-                    {
-                        "Amount": 0.30000001192092896,
-                        "Init": false,
-                        "Order": 1,
-                        "Type": "DRAG"
-                    }
-                ],
                 "Position": {
                     "Arg1": [
                         0.0,
@@ -57,8 +38,8 @@
                 },
                 "Rotation": {
                     "Arg1": [
-                        0.0,
-                        0.0,
+                        45.0,
+                        45.0,
                         0.0
                     ],
                     "Arg2": [
@@ -66,7 +47,7 @@
                         0.0,
                         0.0
                     ],
-                    "SetType": "UNSET"
+                    "SetType": "DIRECTSET"
                 },
                 "Scale": {
                     "Arg1": [
@@ -104,7 +85,6 @@
                     "V_Distribution": 0.0
                 },
                 "Spawn": {
-                    "Count": 1,
                     "Time": 0.0,
                     "Type": "BURST"
                 },
@@ -120,11 +100,13 @@
                     ]
                 }
             },
+            "Discard_A": 0.0,
+            "Discard_RGB": 0.0,
             "Event": 0,
             "LoopTime": 0,
             "Parent": true,
             "Progress": true,
-            "Texture": "../Bin/Resources/Textures/Effects/blue.dds",
+            "Texture": "../Bin/Resources/Textures/Particles/blue.dds",
             "Time": 12.0,
             "Type": "SPRITE"
         }

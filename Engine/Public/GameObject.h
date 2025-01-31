@@ -28,6 +28,12 @@ public:
 	virtual HRESULT				Render();
 	virtual HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID);
 
+public:
+	virtual void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
+	virtual void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
+	virtual void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
+
+
 protected:/* Component Update */
 	void						Priority_Update_Component(_float _fTimeDelta);
 	void						Update_Component(_float _fTimeDelta);
@@ -78,7 +84,6 @@ protected:
 	CGameInstance*				m_pGameInstance = nullptr;
 	CController_Transform*		m_pControllerTransform = nullptr; 
 	CRay*						m_pRayCom = nullptr;
-
 
 	_wstring					m_strSectionName = L"";
 

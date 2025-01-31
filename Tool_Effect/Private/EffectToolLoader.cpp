@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "EffectToolLoader.h"
-
 #include "GameInstance.h"
 
 #include "MainEffectTool.h"
+
 #include "Effect_Reference.h"
+#include "ModelObject.h"
 
 CEffectToolLoader::CEffectToolLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -80,15 +81,15 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
     //    return E_FAIL;
 
     //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
-    //    CParticle_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestParticleSystem.json")))))
+    //    CEffect_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestParticleSystem.json")))))
     //    return E_FAIL;
 
     //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_MeshEffect_Temp"),
-    //    CParticle_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestMesh.json")))))
+    //    CEffect_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestMesh.json")))))
     //    return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_ForNew"),
-        CParticle_System::Create(m_pDevice, m_pContext))))
+        CEffect_System::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_EffectReference"),
@@ -96,7 +97,17 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Reference"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/Baodian024.dds")))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Particles/Baodian024.dds")))))
+        return E_FAIL;
+
+
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Player"),
+        C3DModel::Create(m_pDevice, m_pContext, 
+            ("../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/Latch_SkelMesh_NewRig.model"
+            ), matPretransform, false))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

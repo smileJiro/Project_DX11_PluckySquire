@@ -197,12 +197,12 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 {
 	_uint iCount = 0;
 	//AllTextures
-	iCount = m_Textures.size();
+	iCount = (_uint)m_Textures.size();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	for (auto& pTexture : m_Textures)
 	{
 		string strTextureName = pTexture.first;
-		iCount = strTextureName.length();
+		iCount = (_uint)strTextureName.length();
 		//cout << strTextureName << endl;
 		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 		_outfile.write(strTextureName.c_str(), iCount);
@@ -212,7 +212,7 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	//Animations
 	if (ANIM == m_eAnimType)
 	{	
-		iCount = m_Animation2Ds.size();
+		iCount = (_uint)m_Animation2Ds.size();
 		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 		for (auto& pAnimation : m_Animation2Ds)
 		{

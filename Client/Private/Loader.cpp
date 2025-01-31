@@ -234,6 +234,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPointInstance"),
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"), VTXPOINTPARTICLE::Elements, VTXPOINTPARTICLE::iNumElements))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMeshInstance"),
+        CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxMeshInstance.hlsl"), VTXMESHPARTICLE::Elements, VTXMESHPARTICLE::iNumElements))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -364,6 +367,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_Popuff */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"),
         CPopuff::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
+
+    if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -703,7 +711,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
-    Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
+    //Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -903,6 +911,30 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
 }
 
 
+HRESULT CLoader::Load_Directory_Effects(LEVEL_ID _iLevID, const _tchar* _szJsonFilePath)
+{
+    std::filesystem::path path;
+    path = _szJsonFilePath;
+
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+        if (entry.path().extension() == ".json") {
+            
+            CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, entry.path().c_str());
+
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevID, entry.path().filename(), pParticleSystem)))
+            {
+                string str = "Failed to Create Effects";
+                str += entry.path().filename().replace_extension().string();
+                MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+                return E_FAIL;
+            }
+
+        }
+    }
+
+    return S_OK;
+}
+
 HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName)
 {
     wstring strFileName = _strFileName;
@@ -1046,10 +1078,12 @@ HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelI
                 case (_uint)TRIGGER_TYPE::CAMERA_TRIGGER:
                 {
                     _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
-
+                    _string szEventTag = Trigger_json["Camera Trigger Event Tag"];
+                    
                     CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
                     Desc.iCameraTriggerType = iCameraTriggerType;
+                    Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
 
                     Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
                     Desc.vHalfExtents = Data.vHalfExtents;

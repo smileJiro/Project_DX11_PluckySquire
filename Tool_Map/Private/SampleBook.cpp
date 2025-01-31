@@ -39,7 +39,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 
     __super::Initialize(_pArg);
     Set_AnimationLoop(COORDINATE_3D, 4, true);
-    Set_Animation(11);
+    Set_Animation(0);
 
 
     Set_Position(XMVectorSet(2.f,0.f,-17.3f,1.f));

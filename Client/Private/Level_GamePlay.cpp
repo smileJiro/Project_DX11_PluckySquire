@@ -8,6 +8,7 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 #include "Section_Manager.h"
+#include "Collision_Manager.h"
 
 #include "Player.h"
 #include "TestTerrain.h"
@@ -50,10 +51,11 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_Effects(TEXT("Layer_Effect"));
 	Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
-	//Ready_Layer_Map();
+	Ready_Layer_Map();
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
@@ -64,7 +66,27 @@ HRESULT CLevel_GamePlay::Initialize()
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
-	//
+
+
+	/* Collision Test */
+
+	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER_PROJECTILE);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::TRIGGER_OBJECT);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MAPOBJECT);
+
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
+
+
+	// 그룹필터 제거
+	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
+	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+
+
 	return S_OK;
 }
 
@@ -134,7 +156,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
 
-		_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+		_vector vMousePos = XMVectorSet((_float)pt.x, (_float)pt.y, 0.f, 1.f);
 
 		_uint		iNumViewports = { 1 };
 		D3D11_VIEWPORT		ViewportDesc{};
@@ -601,20 +623,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 			}
 			break;
 
-			case CUI::SETTINGPANEL::SETTING_ESCGOBLIN:
-			{
-				CGameObject* pSettingPanel = { nullptr };
-				pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
-				pDesc.fY = g_iWinSizeY / 4.2f;
-				pDesc.fSizeX = 124.f;
-				pDesc.fSizeY = 108.f;
-				pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCGOBLIN;
-			
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
-					return E_FAIL;
-			
-			}
-			break;
+			//case CUI::SETTINGPANEL::SETTING_ESCGOBLIN:
+			//{
+			//	CGameObject* pSettingPanel = { nullptr };
+			//	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
+			//	pDesc.fY = g_iWinSizeY / 4.2f;
+			//	pDesc.fSizeX = 124.f;
+			//	pDesc.fSizeY = 108.f;
+			//	pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCGOBLIN;
+			//
+			//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
+			//		return E_FAIL;
+			//
+			//}
+			//break;
 
 			
 			}
@@ -695,6 +717,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-7.0f, 0.35f, -19.0f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	//	return E_FAIL;
+
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//
@@ -728,6 +755,24 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
+{
+	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+	Desc.isCoordChangeEnable = false;
+	Desc.iSpriteShaderLevel = LEVEL_STATIC;
+	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	Desc.iModelShaderLevel = LEVEL_STATIC;
+	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), LEVEL_GAMEPLAY, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

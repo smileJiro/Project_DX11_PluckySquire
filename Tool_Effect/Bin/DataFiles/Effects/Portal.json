@@ -1,0 +1,171 @@
+{
+    "Emitters": [
+        {
+            "Buffer": {
+                "Color": {
+                    "Arg1": [
+                        0.07000000029802322,
+                        1.600000023841858,
+                        1.0,
+                        0.800000011920929
+                    ],
+                    "Arg2": [
+                        0.949999988079071,
+                        1.899999976158142,
+                        1.2999999523162842,
+                        0.800000011920929
+                    ],
+                    "SetType": "RANDOMLINEAR"
+                },
+                "Count": 200,
+                "LifeTime": {
+                    "Arg1": 2.0,
+                    "Arg2": 2.5,
+                    "SetType": "RANDOMLINEAR"
+                },
+                "Module": [
+                    {
+                        "Amount": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Init": true,
+                        "Order": 0,
+                        "Type": "LINEAR_VELOCITY"
+                    },
+                    {
+                        "Amount": 3.0,
+                        "Axis": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Init": false,
+                        "Order": 1,
+                        "Origin Point": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Pull Amount": 2.0,
+                        "Type": "VORTEX_ACCELERATION"
+                    },
+                    {
+                        "Amount": [
+                            0.0,
+                            2.5,
+                            0.0
+                        ],
+                        "Init": false,
+                        "Order": 2,
+                        "Origin": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Type": "POINT_ACCELERATION"
+                    },
+                    {
+                        "Amount": 1.5,
+                        "Init": false,
+                        "Order": 3,
+                        "Type": "DRAG"
+                    },
+                    {
+                        "Amount": 0.03999999910593033,
+                        "Init": false,
+                        "Order": 4,
+                        "Type": "LIMIT_ACCELERATION"
+                    }
+                ],
+                "Position": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "UNSET"
+                },
+                "Rotation": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "UNSET"
+                },
+                "Scale": {
+                    "Arg1": [
+                        0.029999999329447746,
+                        0.05999999865889549,
+                        0.029999999329447746
+                    ],
+                    "Arg2": [
+                        0.05000000074505806,
+                        0.10000000149011612,
+                        0.05000000074505806
+                    ],
+                    "SetType": "RANDOMLINEAR"
+                },
+                "ShapeLocation": {
+                    "HandleRadius": 0.10000000149011612,
+                    "LargeRadius": 1.0,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Shape": "TORUS",
+                    "U_Distribution": 0.0,
+                    "V_Distribution": 0.0
+                },
+                "Spawn": {
+                    "Time": 0.2200000137090683,
+                    "Type": "SPAWN"
+                },
+                "UVSet": {
+                    "Anim": false,
+                    "Count": 1.0,
+                    "Random": false,
+                    "Start": 0.0,
+                    "Time": 0.0,
+                    "UV": [
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            "Discard_A": 0.0,
+            "Discard_RGB": 0.6530001163482666,
+            "Event": 0,
+            "LoopTime": 0,
+            "Parent": true,
+            "Progress": true,
+            "Texture": "../Bin/Resources/Textures/Particles/T_FX_CMN_Dust_01.dds",
+            "Time": 0.0,
+            "Type": "SPRITE"
+        }
+    ],
+    "Name": "Portal"
+}

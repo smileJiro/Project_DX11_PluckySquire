@@ -111,6 +111,7 @@ namespace Engine
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
+#include <stack>
 using namespace std;
 
 #include "Engine_Typedef.h"

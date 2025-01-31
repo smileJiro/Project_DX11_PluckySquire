@@ -38,7 +38,8 @@ HRESULT CEffect_Reference::Initialize(void* _pArg)
 
 void CEffect_Reference::Late_Update(_float _fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(CRenderer::RG_BLEND, this);
+    m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BLEND, this);
+    //m_pGameInstance->Add_RenderObject(CRenderer::RG_BLEND, this);
 
 }
 

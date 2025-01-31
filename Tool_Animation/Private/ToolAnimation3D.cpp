@@ -144,7 +144,7 @@ void CToolChannel::Export(ofstream& _outfile)
 	_outfile.write(reinterpret_cast<const char*>(&m_iNameLength), sizeof(_uint));
 	_outfile.write(m_szName, m_iNameLength);
 	//KeyFrames
-	_uint iCount = m_KeyFrames.size();
+	_uint iCount = (_uint)m_KeyFrames.size();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	for (auto& tKeyFrame : m_KeyFrames)
 	{

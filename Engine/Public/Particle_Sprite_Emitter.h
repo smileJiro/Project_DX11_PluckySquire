@@ -1,10 +1,10 @@
 #pragma once
-#include "Particle_Emitter.h"
+#include "Emitter.h"
 
 BEGIN(Engine)
 
 
-class ENGINE_DLL CParticle_Sprite_Emitter : public CParticle_Emitter
+class ENGINE_DLL CParticle_Sprite_Emitter : public CEmitter
 {
 
 private:
@@ -27,6 +27,10 @@ public:
 private:
 	class CVIBuffer_Point_Particle* m_pParticleBufferCom = { nullptr };
 	class CTexture*					m_pTextureCom = { nullptr };
+
+private:
+	_float							m_fAlphaDiscard = { 0.f };
+	_float							m_fRGBDiscard = { 0.f };
 
 private:
 	HRESULT							Bind_ShaderResources();

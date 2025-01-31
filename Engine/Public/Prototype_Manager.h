@@ -37,9 +37,8 @@
 #include "CutScene_Sector.h"
 
 /* Object */
-#include "Particle_Sprite_Emitter.h"
-#include "Particle_Mesh_Emitter.h"
-#include "Particle_System.h"
+#include "MeshEffect_Emitter.h"
+#include "Effect_System.h"
 
 /* 원형객체들을 레벨별로 관리하겠다. */
 /* 특정 레벨에서 복제할 필요가 없는 원형들은 삭제하겠다 */

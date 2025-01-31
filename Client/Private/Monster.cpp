@@ -67,7 +67,21 @@ void CMonster::Late_Update(_float _fTimeDelta)
 
 HRESULT CMonster::Render()
 {
+
+
 	return S_OK;
+}
+
+void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
+void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
+void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
 }
 
 void CMonster::Attack(_float _fTimeDelta)

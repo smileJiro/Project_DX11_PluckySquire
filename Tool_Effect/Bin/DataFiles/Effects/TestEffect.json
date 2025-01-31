@@ -1,0 +1,48 @@
+{
+    "Emitters": [
+        {
+            "Alpha": 2.0,
+            "Color": [
+                2.0,
+                2.0,
+                2.0
+            ],
+            "Event": 0,
+            "LoopTime": 0,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Cylinder_02.model",
+            "Parent": false,
+            "PreTransform": [
+                0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Progress": true,
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_04.dds",
+                    "Type": "MASK"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
+                    "Type": "NOISE"
+                }
+            ],
+            "Time": 4.0,
+            "Type": "EFFECT"
+        }
+    ],
+    "Name": "EffectTesting545"
+}
