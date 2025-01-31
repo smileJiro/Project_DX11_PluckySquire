@@ -3,7 +3,6 @@
 #include "Renderer.h" // Renderer Enum 사용을 위해, Base.h는 포함되어있음.
 #include "Prototype_Manager.h"// Prototype_Manager.h 안에 Component들 헤더 인클루드 되어있음.
 #include "Key_Manager.h"
-#include "Collision_Manager.h"
 #include "PipeLine.h"
 #include "Shadow.h"
 
@@ -26,7 +25,6 @@ public: /* For.GameInstance */
 	HRESULT				Render_Begin(const _float4& vClearColor = _float4(0.f, 0.f, 1.f, 1.f));
 	HRESULT				Draw();
 	HRESULT				Render_End();
-	void				Set_CurLevelID(_uint _iLevelID);
 	HWND				Get_HWND() const { return m_hWnd; }
 	HINSTANCE			Get_HINSTANCE() const { return m_hInstance; }
 	_uint				Get_ViewportWidth() const { return m_iViewportWidth; }
@@ -240,7 +238,6 @@ private:
 	class CKey_Manager* m_pKey_Manager = nullptr;
 	class CPipeLine* m_pPipeLine = nullptr;
 	class CLight_Manager* m_pLight_Manager = nullptr;
-	class CCollision_Manager* m_pCollision_Manager = nullptr;
 	class CFont_Manager* m_pFont_Manager = nullptr;
 	class CTarget_Manager* m_pTarget_Manager = nullptr;
 	class CShadow* m_pShadow = nullptr;

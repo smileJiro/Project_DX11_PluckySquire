@@ -208,9 +208,6 @@
     <Filter Include="01.Utility\04.Components\Actor">
       <UniqueIdentifier>{017c2a5b-5b1e-4777-8e4a-6250cf3d46e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\Actor\Manager">
-      <UniqueIdentifier>{ffe31121-6718-4f4d-8c26-22c3bce6d6a2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.Objects\Actor">
       <UniqueIdentifier>{1687dc9f-6b4d-460f-a6c7-5bd71b784e30}</UniqueIdentifier>
     </Filter>
@@ -404,9 +401,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\DebugDraw.h">
       <Filter>01.Utility\04.Components\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Collision_Manager.h">
-      <Filter>01.Utility\04.Components\Actor\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Cell.h">
       <Filter>01.Utility\04.Components\VIBuffer\Cell</Filter>
@@ -676,9 +670,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw.cpp">
       <Filter>01.Utility\04.Components\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Collision_Manager.cpp">
-      <Filter>01.Utility\04.Components\Actor\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Cell.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Cell</Filter>

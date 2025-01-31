@@ -67,6 +67,8 @@ void CMonster::Late_Update(_float _fTimeDelta)
 
 HRESULT CMonster::Render()
 {
+
+
 	return S_OK;
 }
 

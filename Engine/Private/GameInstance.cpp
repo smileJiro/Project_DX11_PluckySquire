@@ -195,16 +195,6 @@ HRESULT CGameInstance::Render_End()
 	return m_pGraphic_Device->Present();
 }
 
-
-void CGameInstance::Set_CurLevelID(_uint _iLevelID)
-{
-	/* 레벨 인덱스 전달해줘야하는 매니저들 여기서 전달. */
-	if (nullptr == m_pCollision_Manager)
-		return;
-
-	m_pCollision_Manager->Set_CurLevelID(_iLevelID);
-}
-
 _float CGameInstance::Compute_Random_Normal()
 {
 	return (_float)rand() / RAND_MAX;
@@ -1276,7 +1266,6 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	else
 		Safe_Release(m_pNewRenderer);
 
-	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);

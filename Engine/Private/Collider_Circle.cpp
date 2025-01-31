@@ -129,7 +129,7 @@ _bool CCollider_Circle::Is_Collision_AABB(CCollider_AABB* _pOther)
     // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
     _float2 vNearestPoint = {};
     vNearestPoint.x = clamp(m_vPosition.x, vLT.x, vRB.x); 
-    vNearestPoint.y = clamp(m_vPosition.y, vLT.y, vRB.y); 
+    vNearestPoint.y = clamp(m_vPosition.y, vRB.y, vLT.y);
 
     // 2. 원의 중심과 가장 가까운 점 사이의 거리를 구한다.
     _vector vDiff = XMLoadFloat2(&m_vPosition) - XMLoadFloat2(&vNearestPoint);

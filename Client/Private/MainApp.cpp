@@ -9,6 +9,9 @@
 #include "UI_Manager.h"
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
+#include "Collision_Manager.h"
+
+
 #include "RenderGroup_MRT.h"
 #include "RenderGroup_Lights.h"
 #include "RenderGroup_Final.h"
@@ -67,10 +70,11 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
+	CCollision_Manager::GetInstance()->Update();			// 충돌 검사 수행.
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
-	// TODO :: 여기가 맞는지? 
+	// TODO :: 여기가 맞는지? >> 맞는 것 같삼.
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
 	
 	m_pGameInstance->End_Imgui();
@@ -112,7 +116,7 @@ void CMainApp::Imgui_FPS(_float _fTimeDelta)
 {
 	ImGui::Begin("FPS");
 	static _int iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
-	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_Default"));
+	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_120"));
 	m_vFPSRenderTime.y += _fTimeDelta;
 	if (m_vFPSRenderTime.x <= m_vFPSRenderTime.y)
 	{
@@ -463,6 +467,7 @@ void CMainApp::Free()
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
+	CCollision_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

@@ -212,10 +212,6 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Collider.h" />
     <ClInclude Include="..\public\Collider_AABB.h" />
     <ClInclude Include="..\public\Collider_Circle.h" />
-    <ClInclude Include="..\public\Collision_Manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\ContainerObject.h" />
     <ClInclude Include="..\public\Controller_Model.h">
@@ -313,10 +309,6 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Collider.cpp" />
     <ClCompile Include="..\private\Collider_AABB.cpp" />
     <ClCompile Include="..\private\Collider_Circle.cpp" />
-    <ClCompile Include="..\private\Collision_Manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\ContainerObject.cpp" />
     <ClCompile Include="..\private\Controller_Model.cpp">

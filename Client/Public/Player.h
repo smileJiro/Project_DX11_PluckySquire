@@ -389,6 +389,11 @@ public:
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 
+public: /* 2D Ãæµ¹ */
+	void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Move(_vector _vDir,_float _fTimeDelta);
@@ -415,8 +420,6 @@ public:
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
-public: // Test code ÅÂ¿õ
-	HRESULT					Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
 
 private:
 

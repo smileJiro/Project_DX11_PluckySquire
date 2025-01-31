@@ -262,6 +262,9 @@
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props">
       <UniqueIdentifier>{d8fb4898-0a03-4df1-8323-688d11f30d1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="93.CollisionManager">
+      <UniqueIdentifier>{99840855-d6f1-4bae-b149-ef2dd3f092bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -566,6 +569,9 @@
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h" />
+    <ClInclude Include="..\public\Collision_Manager.h">
+      <Filter>93.CollisionManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -861,6 +867,9 @@
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp" />
+    <ClCompile Include="..\private\Collision_Manager.cpp">
+      <Filter>93.CollisionManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

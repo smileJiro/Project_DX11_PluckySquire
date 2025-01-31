@@ -8,6 +8,7 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 #include "Section_Manager.h"
+#include "Collision_Manager.h"
 
 #include "Player.h"
 #include "TestTerrain.h"
@@ -63,6 +64,30 @@ HRESULT CLevel_GamePlay::Initialize()
 	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
+
+
+
+	/* Collision Test */
+	// 섹션 추가
+	_uint iSectionKey = RG_2D + PR2D_SECTION_START;
+	CCollision_Manager::GetInstance()->Register_Section(iSectionKey);
+
+	// 그룹필터 추가
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER_PROJECTILE);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::TRIGGER_OBJECT);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MAPOBJECT);
+
+
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
+
+
+	// 그룹필터 제거
+	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+
 
 	return S_OK;
 }
