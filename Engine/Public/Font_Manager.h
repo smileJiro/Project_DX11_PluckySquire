@@ -11,6 +11,7 @@ private:
 public:
 	HRESULT Add_Font(const _wstring& _strFontTag, const _tchar* _pFontFilePath);
 	HRESULT Render_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f));
+	HRESULT Render_Scaling_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f), _float _fScale = 1.f);
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

@@ -265,6 +265,12 @@
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\02. Logo_BG">
       <UniqueIdentifier>{14049d27-7f6c-4c16-b728-b01f1dbf2a00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\00. ShopPanel_BGs">
+      <UniqueIdentifier>{103ca2a1-4b05-4baf-ac9a-aaa8133f6263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel">
+      <UniqueIdentifier>{4db3e1b1-5129-41a1-8ff1-497121cd6bf9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -417,9 +423,6 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h" />
-    <ClInclude Include="..\Public\ShopPanel_BG.h">
-      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Boss_HomingBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
@@ -575,6 +578,12 @@
     <ClInclude Include="..\Public\Logo.h">
       <Filter>02.GameObjects\UI\03. Logo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel_BG.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\00. ShopPanel_BGs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel_YesNo.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -720,9 +729,6 @@
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp">
       <Filter>02.GameObjects\Monster\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ShopPanel_BG.cpp">
-      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Boss_HomingBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
@@ -875,6 +881,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Logo.cpp">
       <Filter>02.GameObjects\UI\03. Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel_BG.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\00. ShopPanel_BGs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel_YesNo.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

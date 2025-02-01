@@ -623,20 +623,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 			}
 			break;
 
-			//case CUI::SETTINGPANEL::SETTING_ESCGOBLIN:
-			//{
-			//	CGameObject* pSettingPanel = { nullptr };
-			//	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
-			//	pDesc.fY = g_iWinSizeY / 4.2f;
-			//	pDesc.fSizeX = 124.f;
-			//	pDesc.fSizeY = 108.f;
-			//	pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCGOBLIN;
-			//
-			//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
-			//		return E_FAIL;
-			//
-			//}
-			//break;
+			case CUI::SETTINGPANEL::SETTING_ESCGOBLIN:
+			{
+				CGameObject* pSettingPanel = { nullptr };
+				pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
+				pDesc.fY = g_iWinSizeY / 4.2f;
+				pDesc.fSizeX = 124.f;
+				pDesc.fSizeY = 108.f;
+				pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCGOBLIN;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
+					return E_FAIL;
+
+			}
+			break;
 
 			
 			}
@@ -686,13 +686,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
-	CNPC::NPC_DESC NPCDesc;
-
-	NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-		return E_FAIL;
+	//CNPC::NPC_DESC NPCDesc;
+	//
+	//NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
