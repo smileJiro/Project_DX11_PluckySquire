@@ -28,7 +28,6 @@
 #include "Portrait.h"
 #include "Logo_Props.h"
 #include "Logo.h"
-#include "ShopPanel_YesNo.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -664,9 +663,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ShopPannelBG"),
 		CShopPanel_BG::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ShopPannelYesNo"),
-		CShopPanel_YesNo::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ShopItem"),
 		CShopItemBG::Create(m_pDevice, m_pContext))))

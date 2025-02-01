@@ -101,7 +101,14 @@ HRESULT CShopPanel_BG::Ready_Components()
 	}
 	break;
 
-	
+	case SHOP_CHOOSEBG:
+	{
+		if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_ShopChooseBG"),
+			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+
+	}
+	break;
 
 	case SHOP_BULB:
 	{

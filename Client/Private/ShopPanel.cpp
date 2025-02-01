@@ -163,16 +163,16 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		if (true == YesorNo)
 		{
 			wsprintf(m_tFont, TEXT("예"));
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX * 1.65f, g_iWinSizeY * 1.45f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f), 0.f, _float2(0.f, 0.f), 1.5f);
+			m_pGameInstance->Render_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 4.25f, g_iWinSizeY - g_iWinSizeY / 2.8f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 			wsprintf(m_tFont, TEXT("아니요"));
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX * 1.65f, g_iWinSizeY * 1.6f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f), 0.f, _float2(0.f, 0.f), 1.5f);
+			m_pGameInstance->Render_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 4.25f, g_iWinSizeY - g_iWinSizeY / 3.65f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 		else if (false == YesorNo)
 		{
 			wsprintf(m_tFont, TEXT("예"));
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX * 1.65f, g_iWinSizeY * 1.45f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f), 0.f, _float2(0.f, 0.f), 1.5f);
+			m_pGameInstance->Render_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 4.25f, g_iWinSizeY - g_iWinSizeY / 2.8f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 			wsprintf(m_tFont, TEXT("아니요"));
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX * 1.65f, g_iWinSizeY * 1.6f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f), 0.f, _float2(0.f, 0.f), 1.5f);
+			m_pGameInstance->Render_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 4.25f, g_iWinSizeY - g_iWinSizeY / 3.65f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
 
@@ -474,7 +474,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 {
 	CUI::UIOBJDESC pDesc = {};
 	CUI::UIOBJDESC pShopDescs[CUI::SHOPPANEL::SHOP_END] = {};
-	CUI::UIOBJDESC pShopYesNo = {};
 	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
 
 
@@ -539,7 +538,7 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].eShopPanelKind = CUI::SHOPPANEL::SHOP_DIALOGUEBG;
 
 
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[i].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG])))
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG])))
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
@@ -549,18 +548,14 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 
 			case CUI::SHOPPANEL::SHOP_CHOOSEBG:
 			{
-				CGameObject* pShopYesOrNo = { nullptr };
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iCurLevelID = m_iCurLevelID;
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fX = g_iWinSizeX / 2.8f;// / 2.f;
-				//pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fX = g_iWinSizeX / 10.f; /// //2.f;
-				//pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fY = g_iWinSizeY - g_iWinSizeY / 3.7f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fY = g_iWinSizeY - g_iWinSizeY / 3.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeX = 400.f * 0.7f / 2.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeY = 213.f * 0.7f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fX = g_iWinSizeX - g_iWinSizeX / 5.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fY = g_iWinSizeY - g_iWinSizeY / 3.7f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeX = 400.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeY = 213.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_CHOOSEBG;
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].eShopPanelKind = CUI::SHOPPANEL::SHOP_CHOOSEBG;
 
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"), pShopDescs[i].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG])))
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG])))
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
@@ -710,10 +705,7 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 				break;
 			}
 
-			
-
 		}
-		
 	}
 
 	return S_OK;

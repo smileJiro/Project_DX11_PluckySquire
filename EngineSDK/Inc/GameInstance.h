@@ -130,7 +130,6 @@ public: /* For. Collision_Manager */
 public: /* For. Font_Manager s*/
 	HRESULT				Add_Font(const _wstring& _strFontTag, const _tchar* _pFontFilePath);
 	HRESULT				Render_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f));
-	HRESULT				Render_Scaling_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f), _float _fScale = 1.f);
 
 public: /* For. Target_Manager */
 	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
