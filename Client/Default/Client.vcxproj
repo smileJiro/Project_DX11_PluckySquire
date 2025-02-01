@@ -258,6 +258,7 @@
     <ClInclude Include="..\Public\ShopPanel.h" />
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
+    <ClInclude Include="..\Public\ShopPanel_YesNo.h" />
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
     <ClInclude Include="..\Public\Soldier_Spear.h" />
@@ -368,6 +369,7 @@
     <ClCompile Include="..\Private\ShopPanel.cpp" />
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_BG.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_YesNo.cpp" />
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
     <ClCompile Include="..\Private\Soldier_Spear.cpp" />
