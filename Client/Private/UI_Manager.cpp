@@ -52,12 +52,15 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 	for (int i = 0; i < m_ShopItems[_index].size(); ++i)
 	{
 		Event_DeleteObject(m_ShopItems[_index][i]);
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_ShopItems[_index][i]);
 	}
 
 	m_ShopItems.erase(m_ShopItems.begin() + _index);
 
-	_float fHeight = 135.f; // 한 줄의 높이 (고정)
+	//_float fHeight = 135.f; // 한 줄의 높이 (고정)
+	_float fHeight = 103.f; // 한 줄의 높이 (고정)
 	_float baseY = g_iWinSizeY / 4.f;    // 첫 번째 줄의 기준 Y 좌표 (예: 화면 중앙 기준)
+
 
 	for (int i = 0; i < m_ShopItems.size(); ++i)
 	{
