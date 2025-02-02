@@ -92,6 +92,11 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
 {
+	// 피직스 업데이트 
+	m_pGameInstance->Physx_Update(_fTimeDelta);
+
+
+
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)

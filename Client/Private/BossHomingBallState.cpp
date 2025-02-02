@@ -44,7 +44,7 @@ void CBossHomingBallState::State_Update(_float _fTimeDelta)
 	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 	if (m_iNumAttack > m_iAttackCount)
 	{
-		m_pOwner->Attack(_fTimeDelta);
+		m_pOwner->Attack();
 		++m_iAttackCount;
 	}
 	else

@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 
-//인식 상태
+//처음 인식 상태 (있다면 애니메이션 재생)
 class CAlertState final : public CState
 {
 private:

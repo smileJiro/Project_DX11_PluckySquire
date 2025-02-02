@@ -93,6 +93,7 @@ namespace Client
 		IDLE,
 		PATROL,
 		ALERT,
+		STANDBY,
 		CHASE,
 		ATTACK,
 

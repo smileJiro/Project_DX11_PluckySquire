@@ -60,7 +60,7 @@ void CBossYellowBallState::State_Update(_float _fTimeDelta)
 	{
 		if (false == m_isDelay)
 		{
-			m_pOwner->Attack(_fTimeDelta);
+			m_pOwner->Attack();
 			++m_iAttackCount;
 			Delay_On();
 		}
