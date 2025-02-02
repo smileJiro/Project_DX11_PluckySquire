@@ -18,8 +18,7 @@ public:
     HRESULT			Initialize(void* _pDesc);
 
     virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)override;
-    virtual _bool			Play_Animation(_float _fTimeDelta)override;
-    virtual _bool           Play_Animation_Reverse(_float _fTimeDelta)override;
+    virtual _bool			Play_Animation(_float _fTimeDelta, _bool _vReverse)override;
     //Get
     virtual _uint Get_AnimCount() override;
 	virtual _uint Get_CurrentAnimIndex() override { return m_iCurAnimIdx; }
@@ -29,8 +28,8 @@ public:
 
     //Set
     virtual void Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)override;
-    virtual void Set_Animation(_uint _iIdx)override;
-    virtual void Switch_Animation(_uint _iIdx)override;
+    virtual void Set_Animation(_uint _iIdx, _bool _bReverse = false)override;
+    virtual void Switch_Animation(_uint _iIdx, _bool _bReverse = false)override;
     virtual void To_NextAnimation()override;
     virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
 

@@ -51,7 +51,9 @@ void CShopPanel_YesNo::Child_Update(_float _fTimeDelta)
 void CShopPanel_YesNo::Child_LateUpdate(_float _fTimeDelta)
 {
 	if (true == Uimgr->Get_StoreYesOrno())
-	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
+	{
+
+	}
 }
 
 HRESULT CShopPanel_YesNo::Render()

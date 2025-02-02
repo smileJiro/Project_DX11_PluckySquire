@@ -64,9 +64,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC ShapeDesc = {};
-    ShapeDesc.fHalfHeight = 0.25f;
-    ShapeDesc.fRadius = 0.25f;
-
+    ShapeDesc.fRadius = m_fFootLength;
+    ShapeDesc.fHalfHeight = m_fCenterHeight - m_fFootLength;
+    
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -98,6 +98,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_SPHERE_DESC SphereDesc = {};
 	SphereDesc.fRadius = 1.f;
     ShapeData.pShapeDesc = &SphereDesc;
+
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
@@ -125,7 +126,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
 	//
-
+    
     return S_OK;
 }
 
@@ -184,17 +185,16 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    //BodyDesc.iRenderGroupID_2D = RG_3D;
-    //BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
     {
         MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
     }
+   // static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_ReverseAnimation(true);
 
 	//Part Sword
 	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
@@ -208,8 +208,6 @@ HRESULT CPlayer::Ready_PartObjects()
     SwordDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    SwordDesc.iRenderGroupID_2D = RG_3D;
-    SwordDesc.iPriorityID_2D = PR3D_BOOK2D;
     SwordDesc.iRenderGroupID_3D = RG_3D;
     SwordDesc.iPriorityID_3D = PR3D_NONBLEND;
     SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
@@ -271,6 +269,7 @@ void CPlayer::Update(_float _fTimeDelta)
 	if (COORDINATE_3D == Get_CurCoord())
         Rotate_To(m_v3DTargetDirection);
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+    m_bOnGround = false;
 }
 
 void CPlayer::Late_Update(_float _fTimeDelta)
@@ -298,7 +297,25 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    int a = 0;
+    if (false == m_bOnGround)
+    {
+        for (auto& pxPairData : _ContactPointDatas)
+        {
+            _vector vMyPos = Get_FinalPosition();
+			//발 범위에 안닿으면 무시
+            if (vMyPos.m128_f32[1] + m_fFootLength < pxPairData.position.y
+                || vMyPos.m128_f32[1] > pxPairData.position.y)
+                continue;
+            //천장이면 무시
+			if (pxPairData.normal.y  < 0)
+				continue;
+            //닿은 곳의 경사가 너무 급하면 무시
+            if (pxPairData.normal.y < m_fStepSlopeThreshold)
+                continue;
+            m_bOnGround = true;
+            return;
+        }
+    }
 }
 
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -538,10 +555,24 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
 
 _bool CPlayer::Is_OnGround()
 {
-    if (XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)) <= 0.8f)
-		return true;
-    else
-        return false;
+ //   _float3 vOrigin, vRayDirection{ 0,-1,0 };
+	//XMStoreFloat3(&vOrigin, Get_FinalPosition()); 
+ //   vOrigin.y -=0.02f;
+
+ //   list<CActorObject*> hitActors;
+ //   list<_float3> hitPositions;
+ //   if (m_pGameInstance->RayCast(vOrigin, vRayDirection, 0.02f, hitActors, hitPositions))
+ //   {
+ //       for (auto& pActor : hitActors)
+ //       {
+	//		if (this != pActor)
+	//			return true;
+ //       }
+ //   }
+
+	//return false;
+
+    return m_bOnGround;
 }
 
 _float CPlayer::Get_UpForce()
@@ -677,6 +708,8 @@ void CPlayer::ThrowSword()
     m_pSword->Throw(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK)));
 
 }
+
+
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {

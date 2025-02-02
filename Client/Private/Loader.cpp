@@ -37,6 +37,7 @@
 
 #include "ModelObject.h"
 #include "Player.h"
+#include "PlayerBody.h"
 #include "PlayerSword.h"
 #include "TestTerrain.h"
 
@@ -308,6 +309,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"),
         CPlayerSword::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
+        CPlayerBody::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     /* Monster */
 
     /* For. Prototype_GameObject_Monster_Body */
@@ -441,11 +445,15 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/barfBug_Rig/BarfBug_Attack.animevt"))))
+        return E_FAIL;
+
+    #ifdef _DEBUG
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DebugDraw_For_Client"),
         CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    #ifdef _DEBUG
-    
     #endif // _DEBUG
 
     

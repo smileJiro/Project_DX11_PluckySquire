@@ -92,6 +92,11 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
 {
+	// 피직스 업데이트 
+	m_pGameInstance->Physx_Update(_fTimeDelta);
+
+
+
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
@@ -762,6 +767,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
+	CEmitter::SetID_2D(RG_2D);
+	CEmitter::SetID_3D(RG_3D);
+	CEmitter::SetID_Particle(PR3D_EFFECT);
+
 	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
 
 	Desc.eStartCoord = COORDINATE_3D;

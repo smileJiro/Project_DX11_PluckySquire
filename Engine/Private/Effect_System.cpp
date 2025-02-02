@@ -166,7 +166,12 @@ void CEffect_System::Priority_Update(_float _fTimeDelta)
 void CEffect_System::Update(_float _fTimeDelta)
 {
 	for (auto& pEmitter : m_Emitters)
+#ifdef _DEBUG
+		pEmitter->Update(_fTimeDelta * m_fDebugTimeScale);
+#elif
 		pEmitter->Update(_fTimeDelta);
+#endif
+
 }
 
 void CEffect_System::Late_Update(_float _fTimeDelta)
@@ -175,7 +180,11 @@ void CEffect_System::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 
 	for (auto& pEmitter : m_Emitters)
+#ifdef _DEBUG
+		pEmitter->Late_Update(_fTimeDelta * m_fDebugTimeScale);
+#elif
 		pEmitter->Late_Update(_fTimeDelta);
+#endif
 
 }
 
@@ -184,15 +193,16 @@ HRESULT CEffect_System::Render()
 	return S_OK;
 }
 
-void CEffect_System::Play_Effect(_uint _iEventID)
+void CEffect_System::Active_Effect(_uint _iEventID, _bool _isActive)
 {
 	for (auto& pEmitter : m_Emitters)
 	{
 		if (_iEventID == pEmitter->Get_EventID())
-			pEmitter->Set_Active(true);
+			pEmitter->Set_Active(_isActive);
 	}
 			
 }
+
 
 CEffect_System* CEffect_System::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _szFilePath)
 {
@@ -337,30 +347,49 @@ void CEffect_System::Tool_InputText()
 		m_strFilePath = szInputPath;
 	}
 
-	if (ImGui::InputFloat("Debug Loop Time", &m_fToolRepeatTime))
+	if (ImGui::DragFloat("Debug Loop Time", &m_fToolRepeatTime, 0.1f))
 	{
 		if (0.f > m_fToolRepeatTime)
 			m_fToolRepeatTime = 1.f;
 	}
+	if (ImGui::DragFloat("Time Scale", &m_fDebugTimeScale, 0.01f))
+	{
+		if (0.f > m_fDebugTimeScale)
+			m_fDebugTimeScale = 1.f;
+	}
 
 
+	if (ImGui::InputInt("Event ID", (_int*)(&m_iToolEventID)))
+	{
+		Tool_Reset(m_iToolEventID);
+	}
+
+
+	if (ImGui::Button("Resume"))
+	{
+		m_fDebugTimeScale = 1.f;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		m_fDebugTimeScale = 0.f;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("ReStart"))
+	{
+		Tool_Reset(m_iToolEventID);
+	}
 
 }
 
 void CEffect_System::Tool_Update(_float _fTimeDelta)
 {
 
-	m_fToolAccTime += _fTimeDelta;
+	m_fToolAccTime += _fTimeDelta * m_fDebugTimeScale;
 
 	if (m_fToolRepeatTime <= m_fToolAccTime)
 	{
-		for (auto& pEmitter : m_Emitters)
-		{
-			// TODO: 이거 바꿔야 할듯!!
-			pEmitter->Set_Active(true);
-		}
-
-		m_fToolAccTime = 0.f;
+		Tool_Reset(m_iToolEventID);
 	}
 
 	ImGui::Text("Debug Loop Time : %f", m_fToolAccTime);
@@ -370,28 +399,26 @@ void CEffect_System::Tool_Update(_float _fTimeDelta)
 	
 	if (m_pNowItem)
 	{
-		m_pNowItem->Tool_Update(_fTimeDelta);
+		m_pNowItem->Tool_Update(_fTimeDelta * m_fDebugTimeScale);
 
 		if (m_pNowItem->Is_ToolChanged())
 		{
-			for (auto& pEmitter : m_Emitters)
-			{
-				// TODO: 이거 바꿔야 할듯!!
-				pEmitter->Set_Active(true);
-			}
-
-			m_fToolAccTime = 0.f;
+			Tool_Reset(m_iToolEventID);
 		}
 	}
 
 
 
 }
-void CEffect_System::Tool_Reset(_int _iEvent)
+void CEffect_System::Tool_Reset(_uint _iEvent)
 {
 	for (auto& pEmitter : m_Emitters)
 	{
-		pEmitter->Set_Active(true);
+		if (_iEvent == pEmitter->Get_EventID())
+			pEmitter->Set_Active(true);
+		else if (false == pEmitter->Is_Active())
+			pEmitter->Set_Active(false);
+
 	}
 	m_fToolAccTime = 0.f;
 }

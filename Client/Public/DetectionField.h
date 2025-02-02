@@ -20,7 +20,9 @@ public:
 		_float fOffset;
 		CMonster* pOwner;
 		CGameObject* pTarget;
+#ifdef _DEBUG
 		CDebugDraw_For_Client* pDraw;
+#endif // _DEBUG
 	}DETECTIONFIELDDESC;
 
 private:

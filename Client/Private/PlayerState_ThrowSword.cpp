@@ -23,8 +23,6 @@ void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::JUMP);
 	else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
 		m_pOwner->Set_State(CPlayer::ROLL);
-	else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
-		m_pOwner->Set_State(CPlayer::THROWSWORD);
 
 }
 

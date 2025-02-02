@@ -67,7 +67,7 @@ HRESULT CNPC::Render()
 	return S_OK;
 }
 
-void CNPC::Attack(_float _fTimeDelta)
+void CNPC::Attack()
 {
 }
 

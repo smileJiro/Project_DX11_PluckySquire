@@ -33,8 +33,7 @@ public:
 public:
 	HRESULT					Bind_Material(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
 	HRESULT					Bind_Matrices(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
-	virtual _bool			Play_Animation(_float fTimeDelta) override;
-	virtual _bool			Play_Animation_Reverse(_float fTimeDelta) override;
+	virtual _bool			Play_Animation(_float fTimeDelta, _bool bReverse = false) override;
 
 public:
 	// Get
@@ -57,8 +56,8 @@ public:
 	virtual _float		Get_CurrentAnimProgeress() override;
 	// Set
 	virtual void			Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
-	virtual void			Set_Animation(_uint iIdx)override;
-	virtual void			Switch_Animation(_uint iIdx)override;
+	virtual void			Set_Animation(_uint iIdx, _bool _bReverse = false)override;
+	virtual void			Switch_Animation(_uint iIdx, _bool _bReverse = false)override;
 	virtual void			To_NextAnimation() override;
 	virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
 

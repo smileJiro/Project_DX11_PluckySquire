@@ -3,8 +3,9 @@
 #include "GameInstance.h"
 #include "RenderGroup_MRT.h"
 #include "ETool_RenderGroup_Lights.h"
-#include "ETool_RenderGroup_AfterEffect.h"
+#include "ETool_RenderGroup_AfterParticle.h"
 #include "ETool_RenderGroup_Final.h"
+#include "ETool_RenderGroup_AfterEffect.h"
 
 #include "ModelObject.h"
 #include "Event_Manager.h"
@@ -222,6 +223,10 @@ HRESULT CMainEffectTool::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Final"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
+	/* Target_EffectColor */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectColor"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+
 	/* Target_EffectAccumulate */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectAccumulate"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
@@ -256,6 +261,10 @@ HRESULT CMainEffectTool::Ready_RenderTargets()
 
 	/* MRT_Final */
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Final"), TEXT("Target_Final"))))
+		return E_FAIL;
+
+	/* MRT_EFFECT */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_EffectColor"))))
 		return E_FAIL;
 
 	/* MRT_Weighted_Blended*/
@@ -385,6 +394,41 @@ HRESULT CMainEffectTool::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_Final);
 	pRenderGroup_Final = nullptr;
 
+	/* RG_3D, PR3D_EFFECT */
+	CRenderGroup_MRT::RG_MRT_DESC RG_EffectDesc;
+	RG_EffectDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_EffectDesc.iPriorityID = PRIORITY_3D::PR3D_EFFECT;
+	RG_EffectDesc.strMRTTag = TEXT("MRT_Effect");
+	RG_EffectDesc.isClear = true;
+	CRenderGroup_MRT* pRenderGroup_Effect = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_EffectDesc);
+	if (nullptr == pRenderGroup_Effect)
+	{
+		MSG_BOX("Failed Create PR3D_EFFECT");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Effect->Get_RenderGroupID(), pRenderGroup_Effect->Get_PriorityID(), pRenderGroup_Effect)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Effect);
+	pRenderGroup_Effect = nullptr;
+
+	CRenderGroup_MRT::RG_MRT_DESC RG_AfterEffectDesc;
+	RG_AfterEffectDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_AfterEffectDesc.iPriorityID = PRIORITY_3D::PR3D_AFTEREFFECT;
+	RG_AfterEffectDesc.strMRTTag = TEXT("MRT_Final");
+	RG_AfterEffectDesc.isClear = false;
+
+	CETool_RenderGroup_AfterEffect* pRenderGroup_Aftereffect = CETool_RenderGroup_AfterEffect::Create(m_pDevice, m_pContext, &RG_AfterEffectDesc);
+	if (nullptr == pRenderGroup_Aftereffect)
+	{
+		MSG_BOX("Failed Create PR3D_AFTEREFFECT");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Aftereffect->Get_RenderGroupID(), pRenderGroup_Aftereffect->Get_PriorityID(), pRenderGroup_Aftereffect)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Aftereffect);
+	pRenderGroup_Aftereffect = nullptr;
+
+
 	/* RG_3D, PR3D_BLEND */
 	CRenderGroup_MRT::RG_MRT_DESC RG_BlendDesc;
 	RG_BlendDesc.iRenderGroupID = RENDERGROUP::RG_3D;
@@ -402,37 +446,37 @@ HRESULT CMainEffectTool::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_Blend);
 	pRenderGroup_Blend = nullptr;
 
-	/* RG_3D, PR3D_EFFECT */
-	CRenderGroup_MRT::RG_MRT_DESC RG_EffectDesc;
-	RG_EffectDesc.iRenderGroupID = RENDERGROUP::RG_3D;
-	RG_EffectDesc.iPriorityID = PRIORITY_3D::PR3D_EFFECT;
-	RG_EffectDesc.strMRTTag = TEXT("MRT_Weighted_Blended");
+	/* RG_3D, PR3D_PARTICLE */
+	CRenderGroup_MRT::RG_MRT_DESC RG_ParticleDesc;
+	RG_ParticleDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_ParticleDesc.iPriorityID = PRIORITY_3D::PR3D_PARTICLE;
+	RG_ParticleDesc.strMRTTag = TEXT("MRT_Weighted_Blended");
 
-	CRenderGroup_MRT* pRenderGroup_Effect = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_EffectDesc);
-	if (nullptr == pRenderGroup_Effect)
+	CRenderGroup_MRT* pRenderGroup_Particle = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_ParticleDesc);
+	if (nullptr == pRenderGroup_Particle)
 	{
-		MSG_BOX("Failed Create PR3D_EFFECT");
+		MSG_BOX("Failed Create PR3D_PARTICLE");
 		return E_FAIL;
 	}
-	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Effect->Get_RenderGroupID(), pRenderGroup_Effect->Get_PriorityID(), pRenderGroup_Effect)))
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Particle->Get_RenderGroupID(), pRenderGroup_Particle->Get_PriorityID(), pRenderGroup_Particle)))
 		return E_FAIL;
-	Safe_Release(pRenderGroup_Effect);
-	pRenderGroup_Effect = nullptr;
+	Safe_Release(pRenderGroup_Particle);
+	pRenderGroup_Particle = nullptr;
 
-	/* RG_3D, PR3D_AFTEREFFECT */
-	CRenderGroup::RG_DESC RG_AfterEffectDesc;
-	RG_AfterEffectDesc.iRenderGroupID = RENDERGROUP::RG_3D;
-	RG_AfterEffectDesc.iPriorityID = PRIORITY_3D::PR3D_AFTEREFFECT;
-	CETool_RenderGroup_AfterEffect* pRenderGroup_AfterEffect = CETool_RenderGroup_AfterEffect::Create(m_pDevice, m_pContext, &RG_AfterEffectDesc);
-	if (nullptr == pRenderGroup_AfterEffect)
+	/* RG_3D, PR3D_AFTERPARTICLE */
+	CRenderGroup::RG_DESC RG_AfterParticleDesc;
+	RG_AfterParticleDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_AfterParticleDesc.iPriorityID = PRIORITY_3D::PR3D_AFTERPARTICLE;
+	CETool_RenderGroup_AfterParticle* pRenderGroup_AfterParticle = CETool_RenderGroup_AfterParticle::Create(m_pDevice, m_pContext, &RG_AfterParticleDesc);
+	if (nullptr == pRenderGroup_AfterParticle)
 	{
-		MSG_BOX("Failed Create PR3D_AFTEREFFECT");
+		MSG_BOX("Failed Create PR3D_AFTERPARTICLE");
 		return E_FAIL;
 	}
-	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_AfterEffect->Get_RenderGroupID(), pRenderGroup_AfterEffect->Get_PriorityID(), pRenderGroup_AfterEffect)))
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_AfterParticle->Get_RenderGroupID(), pRenderGroup_AfterParticle->Get_PriorityID(), pRenderGroup_AfterParticle)))
 		return E_FAIL;
-	Safe_Release(pRenderGroup_AfterEffect);
-	pRenderGroup_AfterEffect = nullptr;
+	Safe_Release(pRenderGroup_AfterParticle);
+	pRenderGroup_AfterParticle = nullptr;
 
 	/* RG_3D, PR3D_UI */
 	CRenderGroup::RG_DESC RG_UIDesc;
@@ -457,6 +501,7 @@ void CMainEffectTool::Set_EffectRG()
 	
 	CEmitter::SetID_2D(RG_2D);
 	CEmitter::SetID_3D(RG_3D);
+	CEmitter::SetID_Particle(PR3D_PARTICLE);
 	CEmitter::SetID_Effect(PR3D_EFFECT);
 
 }

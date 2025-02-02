@@ -16,7 +16,9 @@ CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitte
     if (nullptr != _Prototype.m_pTextureCom)
         m_pTextureCom = static_cast<CTexture*>(_Prototype.m_pTextureCom->Clone(nullptr));
     if (nullptr != _Prototype.m_pParticleBufferCom)
+    {
         m_pParticleBufferCom = static_cast<CVIBuffer_Point_Particle*>(_Prototype.m_pParticleBufferCom->Clone(nullptr));
+    }
 }
 
 
@@ -95,6 +97,10 @@ HRESULT CParticle_Sprite_Emitter::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
+    if (false == m_isWorld)
+    {
+        m_pParticleBufferCom->Set_SpawnMatrix(m_pParentMatrices[COORDINATE_3D]);
+    }
 
     return S_OK;
 }
@@ -112,9 +118,9 @@ void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta);
 
-    if (m_isActive)
+    if (m_isActive && m_iAccLoop)
         //m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
-        m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_EFFECT, this);
+        m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_PARTICLE, this);
 }
 
 HRESULT CParticle_Sprite_Emitter::Render()
@@ -125,16 +131,8 @@ HRESULT CParticle_Sprite_Emitter::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
     
-    if (CVIBuffer_Instance::UNSET == m_pParticleBufferCom->Get_DataType(CVIBuffer_Instance::P_ROTATION))
-    {
-        if (FAILED(m_pShaderCom->Begin(1)))
-            return E_FAIL;
-    }
-    else
-    {
-        if (FAILED(m_pShaderCom->Begin(2)))
-            return E_FAIL;
-    }
+    if (FAILED(m_pShaderCom->Begin(1)))
+        return E_FAIL;
     
     
     if (FAILED(m_pParticleBufferCom->Bind_BufferDesc()))
@@ -151,16 +149,24 @@ void CParticle_Sprite_Emitter::Reset()
         m_pParticleBufferCom->Reset_Buffers();
 }
 
+void CParticle_Sprite_Emitter::On_Event()
+{
+}
+
+void CParticle_Sprite_Emitter::Off_Event()
+{
+}
+
 HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
 {
-    if (m_isFollowParent)
+    if (m_isWorld)
     {
         if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
             return E_FAIL;
     }
     else
     {
-        if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_IdentityMatrix)))
+        if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
             return E_FAIL;
     }
 
@@ -218,6 +224,8 @@ HRESULT CParticle_Sprite_Emitter::Ready_Components(const PARTICLE_EMITTER_DESC* 
     {
         m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
         Safe_AddRef(m_pParticleBufferCom);
+
+        
     }
 
     return S_OK;
@@ -306,7 +314,8 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
     {
         m_pParticleBufferCom->Tool_Update(_fTimeDelta);
 
-        m_isToolChanged = m_pParticleBufferCom->Is_ToolChanged();
+        if (false == m_isToolChanged)
+            m_isToolChanged = m_pParticleBufferCom->Is_ToolChanged();
     }
     else
     {
