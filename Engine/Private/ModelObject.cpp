@@ -211,9 +211,9 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 void CModelObject::Update(_float _fTimeDelta)
 {
     if(m_bPlayingAnim)
-        m_pControllerModel->Play_Animation(_fTimeDelta);
+        m_pControllerModel->Play_Animation(_fTimeDelta, m_bReverseAnimation);
     else
-        m_pControllerModel->Play_Animation(0);
+        m_pControllerModel->Play_Animation(0, m_bReverseAnimation);
 
 	__super::Update(_fTimeDelta);
 }
@@ -238,12 +238,12 @@ void CModelObject::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLo
 
 void CModelObject::Set_Animation(_uint iIdx)
 {
-    m_pControllerModel->Set_Animation(iIdx);
+    m_pControllerModel->Set_Animation(iIdx, m_bReverseAnimation);
 }
 
 void CModelObject::Switch_Animation(_uint iIdx)
 {
-    m_pControllerModel->Switch_Animation(iIdx);
+    m_pControllerModel->Switch_Animation(iIdx, m_bReverseAnimation);
 }
 
 void CModelObject::To_NextAnimation()

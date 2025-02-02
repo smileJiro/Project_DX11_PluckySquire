@@ -125,7 +125,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
 	//
-
+    
     return S_OK;
 }
 
@@ -195,6 +195,7 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
     }
+   // static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_ReverseAnimation(true);
 
 	//Part Sword
 	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};

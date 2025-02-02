@@ -91,11 +91,11 @@ HRESULT CController_Model::Change_Coordinate(COORDINATE _eCoordinate)
     return S_OK;
 }
 
-void CController_Model::Play_Animation(_float fTimeDelta)
+void CController_Model::Play_Animation(_float fTimeDelta, _bool _bReverse)
 {
 	if (m_ModelComs[m_eCurCoord] && m_ModelComs[m_eCurCoord]->Is_AnimModel())
     {
-        if(m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta))
+        if(m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta, _bReverse))
         {
             for (auto& callback : m_listAnimEndCallBack)
                 callback(m_eCurCoord,m_ModelComs[m_eCurCoord]->Get_CurrentAnimIndex());
@@ -125,14 +125,14 @@ void CController_Model::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool 
 	m_ModelComs[_eCoord]->Set_AnimationLoop(iIdx, bIsLoop);
 }
 
-void CController_Model::Set_Animation(_uint iIdx)
+void CController_Model::Set_Animation(_uint iIdx, _bool _bReverse)
 {
-	m_ModelComs[m_eCurCoord]->Set_Animation(iIdx);
+	m_ModelComs[m_eCurCoord]->Set_Animation(iIdx, _bReverse);
 }
 
-void CController_Model::Switch_Animation(_uint iIdx)
+void CController_Model::Switch_Animation(_uint iIdx, _bool _bReverse)
 {
-	m_ModelComs[m_eCurCoord]->Switch_Animation(iIdx);
+	m_ModelComs[m_eCurCoord]->Switch_Animation(iIdx, _bReverse);
 }
 
 void CController_Model::To_NextAnimation()

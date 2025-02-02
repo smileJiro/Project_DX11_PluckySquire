@@ -29,38 +29,61 @@ HRESULT CChannel::Initialize(ifstream& inFile, const C3DModel* pModel)
 	return S_OK;
 }
 
-void CChannel::Update_TransformationMatrix(_float fCurrentTrackPosition, _uint* pKeyFrameIndex, const vector<class CBone*>& Bones)
+void CChannel::Update_TransformationMatrix(_float fCurrentTrackPosition, _uint* pKeyFrameIndex, const vector<class CBone*>& Bones, _bool _bReverse)
 {
-
 	if (0.f == fCurrentTrackPosition)
 		*pKeyFrameIndex = 0;
 
-	KEYFRAME& tKeyFrame = Get_Frame(fCurrentTrackPosition, pKeyFrameIndex);
+	KEYFRAME& tKeyFrame = Get_Frame(fCurrentTrackPosition, pKeyFrameIndex, _bReverse);
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(XMMatrixAffineTransformation(XMLoadFloat3(&tKeyFrame.vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&tKeyFrame.vRotation), XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f)));
+
 }
 
-KEYFRAME CChannel::Get_Frame(_float fTrackPos, _uint* pOutCurrentKeyFrameIdx) const
+
+KEYFRAME CChannel::Get_Frame(_float fTrackPos, _uint* pOutCurrentKeyFrameIdx, _bool bReverse) const
 {
 
-	*pOutCurrentKeyFrameIdx = Get_KeyFrameIndex(fTrackPos, *pOutCurrentKeyFrameIdx);
-	if (fTrackPos >= m_KeyFrames.back().fTrackPosition)
+	if (bReverse)
+	{
+		if (fTrackPos <= 0)
+			return m_KeyFrames[0];
+	}
+	else if (fTrackPos >= m_KeyFrames.back().fTrackPosition)
 		return m_KeyFrames.back();
 
-	_float			fRatio = (fTrackPos - m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition) /
-		(m_KeyFrames[*pOutCurrentKeyFrameIdx + 1].fTrackPosition - m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition);
+	*pOutCurrentKeyFrameIdx = Get_KeyFrameIndex(fTrackPos, *pOutCurrentKeyFrameIdx, bReverse);
+	if (bReverse)
+	{	
+		_float fRatio = (m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition - fTrackPos) /
+			(m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition - m_KeyFrames[*pOutCurrentKeyFrameIdx - 1].fTrackPosition);
+		return Lerp_Frame(m_KeyFrames[*pOutCurrentKeyFrameIdx], m_KeyFrames[*pOutCurrentKeyFrameIdx - 1], 1 - fRatio);
+	}
+	else
+	{
+		_float fRatio = (fTrackPos - m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition) /
+			(m_KeyFrames[*pOutCurrentKeyFrameIdx + 1].fTrackPosition - m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition);
+		return Lerp_Frame(m_KeyFrames[*pOutCurrentKeyFrameIdx], m_KeyFrames[*pOutCurrentKeyFrameIdx + 1], fRatio);;
+	}
 
-	return Lerp_Frame(m_KeyFrames[*pOutCurrentKeyFrameIdx], m_KeyFrames[*pOutCurrentKeyFrameIdx + 1], fRatio);;
 }
-
-_uint CChannel::Get_KeyFrameIndex(_float fTrackPos, _uint iStartKeyFrameIdx) const
+_uint CChannel::Get_KeyFrameIndex(_float fTrackPos, _uint iStartKeyFrameIdx, _bool _bReverse) const
 {
-	if (0.f == fTrackPos)
+	if (0.f >= fTrackPos)
 		return 0;
 	if (fTrackPos >= m_KeyFrames.back().fTrackPosition)
 		return (_uint)m_KeyFrames.size() - 1;
 
-	while (fTrackPos >= m_KeyFrames[iStartKeyFrameIdx + 1].fTrackPosition)
-		++iStartKeyFrameIdx;
+	if (_bReverse)
+	{
+		while (fTrackPos <= m_KeyFrames[iStartKeyFrameIdx-1].fTrackPosition)
+			--iStartKeyFrameIdx;
+	}
+	else
+	{
+		while (fTrackPos >= m_KeyFrames[iStartKeyFrameIdx + 1].fTrackPosition)
+			++iStartKeyFrameIdx;
+	}
+
 	return iStartKeyFrameIdx;
 }
 
@@ -70,6 +93,7 @@ void CChannel::Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) 
 	_uint iCurrentKeyFrameIdx = 0;
 	(*pOutKeyFrames)[m_iBoneIndex] = Get_Frame(fTrackPos, &iCurrentKeyFrameIdx);
 }
+
 
 CChannel* CChannel::Create(ifstream& inFile, const C3DModel* pModel)
 {

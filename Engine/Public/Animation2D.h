@@ -44,9 +44,7 @@ public:
 	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
-	_bool Play_Animation(_float _fTimeDelta);
-	_bool Play_Animation_Reverse(_float _fTimeDelta);
-	virtual void Reset() override;
+	_bool Play_Animation(_float _fTimeDelta, _bool bReverse);
 
 	void Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun);
 

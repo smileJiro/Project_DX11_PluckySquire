@@ -16,10 +16,10 @@ protected:
 
 public:
 	virtual HRESULT Initialize(ifstream& inFile, const class C3DModel* pModel);
-	bool Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta);
-	bool Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& m_mapAnimTransLeftFrame);
+	bool Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta, _bool _bReverse = false);
+	bool Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& mapAnimTransLeftFrame, _bool _bReverse = false);
 
-	virtual void Reset()override;
+	virtual void Reset(_bool _bReverse = false)override;
 
 	float Get_AnimTime() { return m_fDuration; }
 	void Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const;

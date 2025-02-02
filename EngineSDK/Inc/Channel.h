@@ -13,11 +13,11 @@ protected:
 
 public:
 	HRESULT Initialize(ifstream& inFile, const class C3DModel* pModel);
-	void Update_TransformationMatrix(_float fCurrentTrackPosition, _uint* pKeyFrameIndex, const vector<class CBone*>& Bones);
+	void Update_TransformationMatrix(_float fCurrentTrackPosition, _uint* pKeyFrameIndex, const vector<class CBone*>& Bones, _bool _bReverse);
 
 	void Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const;
-	KEYFRAME Get_Frame(_float fTrackPos, _uint* pOutCurrentKeyFrameIdx) const;
-	_uint Get_KeyFrameIndex(_float fTrackPos, _uint iStartKeyFrameIdx = 0) const;
+	KEYFRAME Get_Frame(_float fTrackPos, _uint* pOutCurrentKeyFrameIdx, _bool bReverse = false) const;
+	_uint Get_KeyFrameIndex(_float fTrackPos, _uint iStartKeyFrameIdx = 0, _bool _bReverse = false) const;
 	_uint Get_BoneIndex() const { return m_iBoneIndex; }
 	KEYFRAME Get_KeyFrame(_uint iKeyFrameIndex) { return m_KeyFrames[iKeyFrameIndex]; }
 protected:

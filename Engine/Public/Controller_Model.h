@@ -39,7 +39,7 @@ public:
 
 
 public: /* 2D, 3D */
-	void			Play_Animation(_float fTimeDelta);
+	void			Play_Animation(_float fTimeDelta, _bool _bReverse = false);
 	void			Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback) { m_listAnimEndCallBack.push_back(fCallback); }
 
 	//Get
@@ -47,8 +47,8 @@ public: /* 2D, 3D */
 
 	//Set
 	void Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
-	void Set_Animation(_uint iIdx);
-	void Switch_Animation(_uint iIdx);
+	void Set_Animation(_uint iIdx, _bool _bReverse = false);
+	void Switch_Animation(_uint iIdx, _bool _bReverse = false);
 	void To_NextAnimation();
 public:
 	HRESULT Binding_TextureIndex_To_3D(_uint _iIndex, _uint _eTextureType = aiTextureType_DIFFUSE, _uint _iMaterialIndex = 0);
