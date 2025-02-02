@@ -445,11 +445,15 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/barfBug_Rig/BarfBug_Attack.animevt"))))
+        return E_FAIL;
+
+    #ifdef _DEBUG
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DebugDraw_For_Client"),
         CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    #ifdef _DEBUG
-    
     #endif // _DEBUG
 
     
@@ -1087,11 +1091,13 @@ HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelI
                 {
                     _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
                     _string szEventTag = Trigger_json["Camera Trigger Event Tag"];
-                    
+                    _uint iReturnMask = Trigger_json["Exit Return Mask"];
+
                     CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
                     Desc.iCameraTriggerType = iCameraTriggerType;
                     Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
+                    Desc.iReturnMask = iReturnMask;
 
                     Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
                     Desc.vHalfExtents = Data.vHalfExtents;

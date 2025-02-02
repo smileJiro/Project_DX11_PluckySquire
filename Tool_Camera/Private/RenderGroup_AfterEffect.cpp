@@ -32,7 +32,7 @@ HRESULT CRenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Rect* _p
         return E_FAIL;
 
     /* Final Pass */
-    _pRTShader->Begin((_uint)PASS_DEFERRED::AFTER_EFFECT);
+    _pRTShader->Begin((_uint)PASS_DEFERRED::AFTER_PARTICLE);
 
     _pRTBuffer->Bind_BufferDesc();
 

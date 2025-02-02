@@ -38,7 +38,8 @@ public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData);
 	
-	void						Set_NextArmData(_wstring _wszNextArmName);
+	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
+	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
 	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 

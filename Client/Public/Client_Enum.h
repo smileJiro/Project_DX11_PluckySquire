@@ -83,6 +83,7 @@ namespace Client
 		CHANGE_COORDINATE,
 		SET_KINEMATIC,
 		CAMERATRIGGER_EVENT,
+		CAMERATRIGGER_EXIT_EVENT,
 		
 
 		LAST,
@@ -93,6 +94,7 @@ namespace Client
 		IDLE,
 		PATROL,
 		ALERT,
+		STANDBY,
 		CHASE,
 		ATTACK,
 

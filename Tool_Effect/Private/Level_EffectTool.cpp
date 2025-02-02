@@ -219,9 +219,7 @@ void CLevel_EffectTool::Update_Particle_Tool(_float _fTimeDelta)
 	ImGui::End();
 
 	Tool_Texture();
-
 	Tool_ControlModel();
-
 }
 
 void CLevel_EffectTool::Tool_System_List()
@@ -463,13 +461,19 @@ void CLevel_EffectTool::Tool_Texture()
 
 			if (m_pNowItem)
 			{
+				if (ImGui::Button("Alpha"))
+				{
+					m_pNowItem->Set_Texture(m_pEffectTexture, 0);
+				}
+				ImGui::SameLine();
 				if (ImGui::Button("Mask"))
 				{
-					m_pNowItem->Set_Texture(m_pEffectTexture);
+					m_pNowItem->Set_Texture(m_pEffectTexture, 1);
 				}
+				ImGui::SameLine();
 				if (ImGui::Button("Noise"))
 				{
-					m_pNowItem->Set_Texture(m_pEffectTexture, 1);
+					m_pNowItem->Set_Texture(m_pEffectTexture, 2);
 				}
 			}
 
@@ -481,11 +485,11 @@ void CLevel_EffectTool::Tool_Texture()
 	if (ImGui::TreeNode("Effect Texture"))
 	{
 		static _wstring wstrSelectedKey = L"";
-		static int iSelectedIndex = -1;
+		static _int iSelectedIndex = -1;
 
 		if (ImGui::BeginListBox("Textures List"))
 		{
-			int iIndex = 0;
+			_int iIndex = 0;
 			for (const auto& [key, pTexture] : m_EffectTextures)
 			{
 				std::string strKey = WSTRINGTOSTRING(key);
@@ -576,6 +580,8 @@ void CLevel_EffectTool::Tool_ControlModel()
 
 
 }
+
+
 
 HRESULT CLevel_EffectTool::Load_Textures(const _char* _szExtension, const _char* _szPath, map<const _wstring, class CTexture*>& _TextureMaps)
 {

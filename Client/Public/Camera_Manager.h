@@ -44,12 +44,14 @@ public:
 	void				Change_CameraType(_uint _iCurrentCameraType);
 	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix);
 	
-	void				Set_NextArmData(_wstring _wszNextArmName);
+	_bool				Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	_bool				Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pInitialData = nullptr);
+	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
+	
 	void				Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType);
 	void				Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType);
 	void				Start_Shake_ByTime(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime = 0.05f, _uint _iShakeType = CCamera::SHAKE_XY, _float _fDelayTime = 0.f);
-	void				Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _uint _iShakeCount, _uint _iShakeType = CCamera::SHAKE_XY, _float _fDelayTime = 0.f);
+	void				Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _uint _iShakeCount, _uint _iShakeType = CCamera::SHAKE_XY, _float _fDelayTime = 0.f);	
 
 public:
 	void				Load_ArmData();

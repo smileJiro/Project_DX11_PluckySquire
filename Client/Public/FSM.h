@@ -18,6 +18,8 @@ public:
 		_float fAlert2DRange;
 		_float fChase2DRange;
 		_float fAttack2DRange;
+		_float fDelayTime;
+		_float fCoolTime;
 		CMonster* pOwner;
 	}FSMDESC;
 
@@ -58,6 +60,8 @@ private:
 	_float	m_fAlert2DRange = {};
 	_float	m_fChase2DRange = {};
 	_float	m_fAttack2DRange = {};
+	_float	m_fDelayTime = {};
+	_float	m_fCoolTime = {};
 
 public:
 	HRESULT CleanUp();

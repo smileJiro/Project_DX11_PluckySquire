@@ -8,6 +8,7 @@
 #include <dinput.h>
 #include <DirectXMath.h>
 #include "DirectXCollision.h"
+#include <dxgi1_4.h> // DXGI 1.4 헤더 필요
 using namespace DirectX;
 
 #include "Effects11\d3dx11effect.h"
@@ -32,7 +33,7 @@ using namespace DirectX;
 #include "imguidll\imgui_impl_dx11.h"
 // 코드
 #pragma comment(lib, "imguidll.lib")
-
+#pragma comment(lib, "dxgi.lib")
 
 /* Sound */
 #include <Windows.h>

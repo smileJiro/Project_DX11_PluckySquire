@@ -15,13 +15,23 @@ public:
 		CAMERA_TRIGGER_TYPE_END
 	};
 
+	enum EXIT_RETURN_MASK
+	{
+		NONE = 0x00,
+		RIGHT = 0x01,
+		LEFT = 0x02,
+		UP = 0x04,
+		DOWN = 0x08,
+		RETURN_MASK_END
+	};
+
 public:
 	typedef struct tagCamerTriggerDesc : public CTriggerObject::TRIGGEROBJECT_DESC
 	{
 		_uint			iCameraTriggerType = {};
 		_wstring		szEventTag = {};
 
-		_bool			isReturn = { false };
+		_uint			iReturnMask = {};
 	}CAMERA_TRIGGER_DESC;
 
 private:
@@ -49,7 +59,11 @@ private:
 	_uint						m_iCameraTriggerType = { CAMERA_TRIGGER_TYPE_END };
 	_wstring					m_szEventTag = {};			// CutScene이나 Arm 이름 같은 거
 
-	_bool						m_isReturn = { false };		// Exit 후 Pre Arm 벡터로 돌아갈 건지 말 건지
+	//_bool						m_isReturn = { false };		// Exit 후 Pre Arm 벡터로 돌아갈 건지 말 건지
+	_uint						m_iReturnMask = {};			// 체크되어 있으면 그때 돌아가는 거임
+
+private:
+	_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
 
 public:
 	static CCamera_Trigger*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -11,6 +11,7 @@ Texture2D g_Texture, g_NormalTexture, g_DiffuseTexture, g_ShadeTexture, g_DepthT
 
 // Weighted Blended
 Texture2D g_AccumulateTexture, g_RevealageTexture;
+Texture2D g_EffectColorTexture;
 
 //Texture2D g_EffectTexture, g_Effect_BrightnessTexture, g_Effect_Blur_XTeuxture, g_Effect_Blur_YTeuxture, g_Effect_DistortionTeuxture;
 
@@ -212,41 +213,18 @@ PS_OUT PS_MAIN_FINAL(PS_IN In)
 }
 
 PS_OUT PS_AFTER_EFFECT(PS_IN In)
+{   
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector vColor = g_EffectColorTexture.Sample(LinearSampler, In.vTexcoord);
+    Out.vColor = vColor;
+        
+    return Out;
+}
+
+
+PS_OUT PS_AFTER_PARTICLE(PS_IN In)
 {
-    //PS_OUT Out = (PS_OUT) 0;
-    //
-    //vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
-    //
-    //vector vAccumulate = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
-    //float fRevealage = saturate(g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r);
-    //vector vCount = g_AddTexture.Sample(LinearSampler, In.vTexcoord);
-    
-    
-    //float3 vEffectColor = vAccumulate.rgb / max(vAccumulate.a, 1e-3) * (1.f - fRevealage);
-    //float3 vColor = vFinal * fRevealage;
-    //Out.vColor = float4(vEffectColor + vColor, 1.f);
-    //Out.vColor.rgb = vEffectColor.rgb;
-    //Out.vColor.a = 1.f;
-    //{
-    //  //PS_OUT Out = (PS_OUT) 0;
-    
-    //vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
-    
-    //vector vAccumulate = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
-    //float fRevealage = g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r;
-    //vector vCount = g_AddTexture.Sample(LinearSampler, In.vTexcoord);
-    
-    
-    //float4 vEffectColor = float4(vAccumulate.rgb / max(vAccumulate.a, 1e-5), fRevealage) /*/ max(1e-2, vCount.r)*/;
-    ////float3 vEffectColor = vAccumulate.rgb / max(vAccumulate.a, 1e-3) * (1.f - fRevealage) /*/ max(1e-2, vCount.r)*/;
-    ////float3 vColor = vFinal * fRevealage;
-    //Out.vColor = vEffectColor * (1 - vEffectColor.a) + vFinal * (vEffectColor.a);
-    ////vEffectColor.a = 1.0f - fRevealage    ;
-    ////Out.vColor.rgb = vColor.rgb * (1.f - vEffectColor.a) + vEffectColor.rgb * vEffectColor.a;
-    
-    ////float fCoverage = max(1e-4, 1.0f - fRevealage);
-    ////float4 vEffectColor;
-    ////vEffectColor.rgb = vAccumulate.rgb / fCoverage;
    
     
     PS_OUT Out = (PS_OUT) 0;
@@ -325,11 +303,22 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_AFTER_EFFECT();
+    }
+
+    pass AfterParticle // 5
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_AFTER_PARTICLE();
     }
 
 }

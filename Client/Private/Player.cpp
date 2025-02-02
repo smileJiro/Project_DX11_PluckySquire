@@ -64,9 +64,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC ShapeDesc = {};
-    ShapeDesc.fHalfHeight = 0.25f;
-    ShapeDesc.fRadius = 0.25f;
-
+    ShapeDesc.fRadius = m_fFootLength;
+    ShapeDesc.fHalfHeight = m_fCenterHeight - m_fFootLength;
+    
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -98,6 +98,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_SPHERE_DESC SphereDesc = {};
 	SphereDesc.fRadius = 1.f;
     ShapeData.pShapeDesc = &SphereDesc;
+
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
@@ -268,6 +269,7 @@ void CPlayer::Update(_float _fTimeDelta)
 	if (COORDINATE_3D == Get_CurCoord())
         Rotate_To(m_v3DTargetDirection);
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+    m_bOnGround = false;
 }
 
 void CPlayer::Late_Update(_float _fTimeDelta)
@@ -295,7 +297,25 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    int a = 0;
+    if (false == m_bOnGround)
+    {
+        for (auto& pxPairData : _ContactPointDatas)
+        {
+            _vector vMyPos = Get_FinalPosition();
+			//발 범위에 안닿으면 무시
+            if (vMyPos.m128_f32[1] + m_fFootLength < pxPairData.position.y
+                || vMyPos.m128_f32[1] > pxPairData.position.y)
+                continue;
+            //천장이면 무시
+			if (pxPairData.normal.y  < 0)
+				continue;
+            //닿은 곳의 경사가 너무 급하면 무시
+            if (pxPairData.normal.y < m_fStepSlopeThreshold)
+                continue;
+            m_bOnGround = true;
+            return;
+        }
+    }
 }
 
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -535,18 +555,24 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
 
 _bool CPlayer::Is_OnGround()
 {
-    _float3 vOrigin, vRayDirection{ 1,0,0 };
-	XMStoreFloat3(&vOrigin, Get_FinalPosition()); 
-    vOrigin.x -= 2.f;
-    _float3* vOutPos  = new _float3;   
-    CActorObject* pOutActor;
-    if (m_pGameInstance->RayCast_Nearest(vOrigin, vRayDirection, 0.2f, vOutPos, &pOutActor))
-    {
-        if(pOutActor != this)
-			return true;
-    }
-    delete vOutPos;
-	return false;
+ //   _float3 vOrigin, vRayDirection{ 0,-1,0 };
+	//XMStoreFloat3(&vOrigin, Get_FinalPosition()); 
+ //   vOrigin.y -=0.02f;
+
+ //   list<CActorObject*> hitActors;
+ //   list<_float3> hitPositions;
+ //   if (m_pGameInstance->RayCast(vOrigin, vRayDirection, 0.02f, hitActors, hitPositions))
+ //   {
+ //       for (auto& pActor : hitActors)
+ //       {
+	//		if (this != pActor)
+	//			return true;
+ //       }
+ //   }
+
+	//return false;
+
+    return m_bOnGround;
 }
 
 _float CPlayer::Get_UpForce()
@@ -682,6 +708,8 @@ void CPlayer::ThrowSword()
     m_pSword->Throw(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK)));
 
 }
+
+
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {

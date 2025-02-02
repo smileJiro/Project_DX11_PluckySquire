@@ -221,7 +221,6 @@ namespace Engine
 		_float2				fRotationPerSecAxisRight = {};
 
 		_float3				vDesireArm = {};		// 최종 벡터
-		_bool				isReturn = {};			// Trigger Exit 때 돌아갈 것인지
 	} ARM_DATA;
 
 	typedef struct tagCameraSubDataDesc
@@ -233,7 +232,14 @@ namespace Engine
 		_float2				fAtOffsetTime = {};
 		_float3				vAtOffset = {};
 		_uint				iAtRatioType = {};
-	} CAMERA_SUBDATA;
+	} CAMERA_SUBDATA;			// 쓸지 말지 모름
+
+	typedef struct tagCameraArmReturnDataDesc
+	{
+		_float3				vPreArm = {};
+		_float				fPreLength = {};
+		_int				iTriggerID = {};
+	} RETURN_ARMDATA;
 
 	typedef struct tagCutSceneKeyFrameDesc
 	{

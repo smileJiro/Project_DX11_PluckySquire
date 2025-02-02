@@ -37,6 +37,11 @@ public:
 protected:
 	SHAPE_TYPE					m_eShapeType = { SHAPE_TYPE::LAST };
 
+	_int						m_iTriggerID = {};
+
+private:
+	static _int					g_iNextID;
+
 #ifdef _DEBUG
 	_uint						m_iTriggerType;
 #endif
