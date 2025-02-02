@@ -1,16 +1,59 @@
 {
     "Emitters": [
         {
-            "Alpha": 2.0,
             "Color": [
-                2.0,
-                2.0,
+                1.0,
+                1.0,
+                1.0,
                 2.0
             ],
+            "DelayTime": 0.4000000059604645,
             "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.17000000178813934
+                },
+                {
+                    "Name": "ColorTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 1.2000000476837158
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "AlphaUVScale",
+                    "Value": [
+                        -0.6000000238418579,
+                        0.5,
+                        0.4000000059604645,
+                        0.4000000059604645
+                    ]
+                },
+                {
+                    "Name": "MaskUVScale",
+                    "Value": [
+                        1.0,
+                        1.5,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        -0.30000001192092896,
+                        -2.0,
+                        0.4000000059604645,
+                        0.4000000059604645
+                    ]
+                }
+            ],
             "LoopTime": 0,
             "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Cylinder_02.model",
-            "Parent": false,
             "PreTransform": [
                 0.006000000052154064,
                 0.0,
@@ -30,7 +73,12 @@
                 1.0
             ],
             "Progress": true,
+            "ShaderPass": "DISSOLVE",
             "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
+                    "Type": "ALPHA"
+                },
                 {
                     "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_04.dds",
                     "Type": "MASK"
@@ -40,8 +88,137 @@
                     "Type": "NOISE"
                 }
             ],
-            "Time": 4.0,
-            "Type": "EFFECT"
+            "Time": 1.0,
+            "Transform": [
+                1.2000000476837158,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.2000000476837158,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.2000000476837158,
+                0.0,
+                -0.30000001192092896,
+                0.5,
+                0.10000000149011612,
+                1.0
+            ],
+            "Type": "EFFECT",
+            "World": true
+        },
+        {
+            "Color": [
+                1.0,
+                1.0,
+                1.0,
+                2.0
+            ],
+            "DelayTime": 0.4000000059604645,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.17000000178813934
+                },
+                {
+                    "Name": "ColorTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 1.2000000476837158
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "AlphaUVScale",
+                    "Value": [
+                        0.6000000238418579,
+                        0.5,
+                        0.4000000059604645,
+                        0.4000000059604645
+                    ]
+                },
+                {
+                    "Name": "MaskUVScale",
+                    "Value": [
+                        1.0,
+                        1.5,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        -0.30000001192092896,
+                        -2.0,
+                        0.4000000059604645,
+                        0.4000000059604645
+                    ]
+                }
+            ],
+            "LoopTime": 0,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Cylinder_02.model",
+            "PreTransform": [
+                0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006000000052154064,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Progress": true,
+            "ShaderPass": "DISSOLVE",
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
+                    "Type": "ALPHA"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_04.dds",
+                    "Type": "MASK"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
+                    "Type": "NOISE"
+                }
+            ],
+            "Time": 1.0,
+            "Transform": [
+                -1.199998378753662,
+                0.0,
+                -0.0019111623987555504,
+                0.0,
+                0.0,
+                1.1999999284744263,
+                0.0,
+                0.0,
+                0.0019111623987555504,
+                0.0,
+                -1.199998378753662,
+                0.0,
+                0.30000001192092896,
+                0.5,
+                0.10000000149011612,
+                1.0
+            ],
+            "Type": "EFFECT",
+            "World": true
         }
     ],
     "Name": "EffectTesting545"

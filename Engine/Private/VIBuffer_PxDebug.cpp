@@ -79,6 +79,9 @@ void CVIBuffer_PxDebug::Update_PxDebug(const PxRenderBuffer& _PxRenderBuffer)
 	m_iNumRenderLines = _PxRenderBuffer.getNbLines();
 	for (_uint i = 0; i < m_iNumRenderLines; ++i)
 	{
+		if (m_iNumVertices / 2 <= i)
+			break;
+
 		/* Start Point */
 		pVertices[i * 2].vPosition = _float3(pLines[i].pos0.x, pLines[i].pos0.y, pLines[i].pos0.z);
 		pVertices[i * 2].vColor.x = ((pLines[i].color0 >> 16) & 0xFF) / 255.0f; // R

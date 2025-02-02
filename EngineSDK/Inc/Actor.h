@@ -13,7 +13,8 @@ typedef struct tagShapeData
 	SHAPE_DESC*		pShapeDesc = nullptr;
 	_float4x4		LocalOffsetMatrix = {};
 	_bool			isTrigger = false;
-
+	_bool			isSceneQuery = false;
+	_bool			isVisual = true;
 	ACTOR_MATERIAL	eMaterial = ACTOR_MATERIAL::DEFAULT;
 	_uint			iShapeUse = 0;
 	FILTER_DATA		FilterData = {};

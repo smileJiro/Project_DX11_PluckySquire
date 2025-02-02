@@ -84,7 +84,7 @@ void CCamera_Target::Set_NextArmData(ARM_DATA* _pData)
 	if (nullptr == m_pArm)
 		return;
 
-	m_pArm->Set_NextArmData(_pData);
+	m_pArm->Set_NextArmData(_pData, 0);
 }
 
 void CCamera_Target::Action_Mode(_float _fTimeDelta)

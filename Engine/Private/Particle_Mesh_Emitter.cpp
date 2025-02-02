@@ -150,6 +150,11 @@ HRESULT CParticle_Mesh_Emitter::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
+	if (false == m_isWorld)
+	{
+		for (auto& pParticle : m_ParticleMeshes)
+			pParticle->Set_SpawnMatrix(m_pParentMatrices[COORDINATE_3D]);
+	}
 
 	return S_OK;
 }
@@ -167,8 +172,8 @@ void CParticle_Mesh_Emitter::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
 
-	if (m_isActive)
-		m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_EFFECT, this);
+	if (m_isActive && m_iAccLoop)
+		m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_PARTICLE, this);
 
 		//m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
 
@@ -206,16 +211,24 @@ void CParticle_Mesh_Emitter::Reset()
 
 }
 
+void CParticle_Mesh_Emitter::On_Event()
+{
+}
+
+void CParticle_Mesh_Emitter::Off_Event()
+{
+}
+
 HRESULT CParticle_Mesh_Emitter::Bind_ShaderResources()
 {
-	if (m_isFollowParent)
+	if (m_isWorld)
 	{
 		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
 			return E_FAIL;
 	}
 	else
 	{
-		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_IdentityMatrix)))
+		if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 			return E_FAIL;
 	}
 
@@ -373,6 +386,7 @@ HRESULT CParticle_Mesh_Emitter::Cleanup_DeadReferences()
 	return S_OK;
 }
 
+#ifdef _DEBUG
 void CParticle_Mesh_Emitter::Tool_Setting()
 {
 	if (m_ParticleMeshes.size())
@@ -397,7 +411,10 @@ void CParticle_Mesh_Emitter::Tool_Update(_float _fTimeDelta)
 	{
 		m_ParticleMeshes[0]->Tool_Update(_fTimeDelta);
 
-		m_isToolChanged = m_ParticleMeshes[0]->Is_ToolChanged();
+		if (false == m_isToolChanged)
+			m_isToolChanged = m_ParticleMeshes[0]->Is_ToolChanged();
+
+
 	}
 	else
 	{
@@ -498,6 +515,7 @@ HRESULT CParticle_Mesh_Emitter::Save(json& _jsonOut)
 }
 
 
+
 HRESULT CParticle_Mesh_Emitter::Ready_Meshes(ifstream& _inFile, _uint _iNumInstance)
 {
 	_inFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
@@ -525,3 +543,4 @@ CParticle_Mesh_Emitter* CParticle_Mesh_Emitter::Create(ID3D11Device* _pDevice, I
 
 	return pInstance;
 }
+#endif

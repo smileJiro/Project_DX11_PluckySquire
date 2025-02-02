@@ -234,6 +234,19 @@ void CLevel_Trigger_Tool::Show_CurTriggerInfo()
 		ImGui::SameLine();
 		_string EventTag = m_pGameInstance->WStringToString(dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_CameraTriggerEventTag());
 		ImGui::Text("%s     ", EventTag.c_str());
+
+		// Exit Return
+		ImGui::Text("Exit Enable Return Type:");
+		for (auto& ReturnTag : m_ExitReturnTags) {
+			if (ReturnTag.first == (dynamic_cast<CCamera_Trigger*>(m_pCurTrigger->second)->Get_ReturnMask() & ReturnTag.first)) {
+				if (0x00 == ReturnTag.first)
+					continue;
+
+				_string Name = m_pGameInstance->WStringToString(ReturnTag.second);
+				ImGui::Text("%s | ", Name.c_str());
+				ImGui::SameLine();
+			}
+		}
 	}
 		break;
 	}
@@ -421,6 +434,34 @@ void CLevel_Trigger_Tool::Show_CameraTriggerListBox()
 	}
 }
 
+void CLevel_Trigger_Tool::Show_ExitReturnMaskListBox()
+{
+	ImGui::NewLine();
+	ImGui::SetNextItemWidth(120.0f);
+
+	if (m_ExitReturnTags.size() <= 0)
+		return;
+
+	_string Name = m_pGameInstance->WStringToString(m_ExitReturnTags[m_iExitReturnIndex].second);
+
+	if (ImGui::BeginCombo("##ExitReturn", Name.c_str())) {
+		for (_int i = 0; i < m_ExitReturnTags.size(); ++i) {
+			_bool bSelected = (m_iExitReturnIndex == i);
+
+			if (ImGui::Selectable(m_pGameInstance->WStringToString(m_ExitReturnTags[i].second).c_str(), bSelected)) {
+				m_iExitReturnIndex = i;
+
+				m_iExitReturnMask |= m_ExitReturnTags[m_iExitReturnIndex].first;
+			}
+
+			if (bSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
 void CLevel_Trigger_Tool::Set_TriggerBasicInfo()
 {
 	ImGui::NewLine();
@@ -552,7 +593,7 @@ void CLevel_Trigger_Tool::Set_TriggerInfoByType()
 	// Set Info
 	switch (m_iTriggerType) {
 	case TRIGGER_TYPE::CAMERA_TRIGGER:
-		
+	{
 		// CameraTrigger Type
 		ImGui::Text("Camera Trigger Tag");
 		if (m_iCameraTriggerType <= m_CameraTriggerTags.size() - 1) {
@@ -562,16 +603,40 @@ void CLevel_Trigger_Tool::Set_TriggerInfoByType()
 		}
 		Show_CameraTriggerListBox();
 
-		
+
 		// EventTag
 		ImGui::Text("Event Tag Input:  %s", m_szEventTag);
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(-1);
 		ImGui::InputText("##EventTag", m_szEventTemp, MAX_PATH);
-		
+
 		if (ImGui::Button("Set Tag")) {
 			strcpy_s(m_szEventTag, m_szEventTemp);
 		}
+
+		// Exit Return Mask
+		ImGui::Text("Exit Return Type:");
+		if (m_iExitReturnIndex <= m_ExitReturnTags.size() - 1) {
+			ImGui::SameLine();
+
+			for (auto& ReturnTag : m_ExitReturnTags) {
+				if (ReturnTag.first == (m_iExitReturnMask & ReturnTag.first)) {
+					if (0x00 == ReturnTag.first)
+						continue;
+
+					_string Name = m_pGameInstance->WStringToString(ReturnTag.second);
+					ImGui::Text("%s || ", Name.c_str());
+					ImGui::SameLine();
+				}
+			}
+		}
+
+		Show_ExitReturnMaskListBox();
+
+		ImGui::SameLine();
+		if (ImGui::Button("Clear Exit Return Type"))
+			m_iExitReturnMask &= EXIT_RETURN_MASK::NONE;
+	}
 		break;
 	}
 
@@ -741,6 +806,7 @@ HRESULT CLevel_Trigger_Tool::Create_Camera_Trigger()
 
 	Desc.iCameraTriggerType = m_iCameraTriggerType;
 	Desc.szEventTag = m_pGameInstance->StringToWString(m_szEventTag);
+	Desc.iReturnMask = m_iExitReturnMask;
 
 	Desc.eShapeType = m_eShapeType;
 	Desc.vHalfExtents = m_vHalfExtents;
@@ -865,6 +931,35 @@ void CLevel_Trigger_Tool::Initialize_ListBoxName()
 		}
 
 		m_CameraTriggerTags.push_back(wszTagName);
+	}
+
+	for (_int i = 0; i < 5; ++i) {
+		_uint iID = {};
+
+		switch (i) {
+		case 0:
+			wszTagName = TEXT("NONE");
+			iID = 0x00;
+			break;
+		case 1:
+			wszTagName = TEXT("RIGHT");
+			iID = 0x01;
+			break;
+		case 2:
+			wszTagName = TEXT("LEFT");
+			iID = 0x02;
+			break;
+		case 3:
+			wszTagName = TEXT("UP");
+			iID = 0x04;
+			break;
+		case 4:
+			wszTagName = TEXT("DOWN");
+			iID = 0x08;
+			break;
+		}
+
+		m_ExitReturnTags.push_back(make_pair(iID, wszTagName));
 	}
 }
 
@@ -1035,6 +1130,9 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 
 			_string szEventTag = m_pGameInstance->WStringToString(dynamic_cast<CCamera_Trigger*>(Trigger.second)->Get_CameraTriggerEventTag());
 			Trigger_json["Camera Trigger Event Tag"] = szEventTag;
+
+			_uint iReturnMask = dynamic_cast<CCamera_Trigger*>(Trigger.second)->Get_ReturnMask();
+			Trigger_json["Exit Return Mask"] = iReturnMask;
 			break;
 		}
 
@@ -1098,10 +1196,13 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 			_uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
 			_string szEventTag = Trigger_json["Camera Trigger Event Tag"];
 
+			_uint iReturnMask = Trigger_json["Exit Return Mask"];
+
 			CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
 			Desc.iCameraTriggerType = iCameraTriggerType;
 			Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
+			Desc.iReturnMask = iReturnMask;
 
 			Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
 			Desc.vHalfExtents = Data.vHalfExtents;

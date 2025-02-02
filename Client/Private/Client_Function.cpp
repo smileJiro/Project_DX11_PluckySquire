@@ -124,14 +124,28 @@ namespace Client
 
 	}
 
-	void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag)
+	void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID)
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::CAMERATRIGGER_EVENT;
-		tEvent.Parameters.resize(2);
+		tEvent.Parameters.resize(3);
 		
 		tEvent.Parameters[0] = (DWORD_PTR)_iCameraTriggerType;
 		tEvent.Parameters[1] = (DWORD_PTR)new _wstring(_szEventTag);
+		tEvent.Parameters[2] = (DWORD_PTR)_iTriggerID;
+		
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::CAMERATRIGGER_EXIT_EVENT;
+		tEvent.Parameters.resize(2);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iTriggerID;
+		tEvent.Parameters[1] = (DWORD_PTR)_isReturn;
+
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 

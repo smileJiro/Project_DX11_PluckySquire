@@ -22,7 +22,7 @@ HRESULT CCamera_Trigger::Initialize(void* _pArg)
 
 	m_iCameraTriggerType = pDesc->iCameraTriggerType;
 	m_szEventTag = pDesc->szEventTag;
-	m_isReturn = pDesc->isReturn;
+	m_iReturnMask = pDesc->iReturnMask;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
