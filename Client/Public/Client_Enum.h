@@ -12,7 +12,6 @@ namespace Client
 
 	enum PRIORITY_3D
 	{
-		PR3D_BOOK2D =		0,
 		PR3D_PRIORITY =		10,
 		PR3D_SHADOW =		20,
 		PR3D_NONBLEND =		30,

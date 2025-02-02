@@ -51,7 +51,6 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 
 void C2DDefault_RenderObject::Priority_Update(_float fTimeDelta)
 {
-	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
 
 }
 

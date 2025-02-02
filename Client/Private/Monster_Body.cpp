@@ -102,8 +102,6 @@ HRESULT CMonster_Body::Ready_Desc(void** _pArg)
 		{
 			BodyDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 			BodyDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
-			BodyDesc->iRenderGroupID_2D = RG_3D;
-			BodyDesc->iPriorityID_2D = PR3D_BOOK2D;
 		}
 		else if (COORDINATE_3D == BodyDesc->eStartCoord)
 		{
@@ -122,8 +120,6 @@ HRESULT CMonster_Body::Ready_Desc(void** _pArg)
 		BodyDesc->iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
 		/* ÅÂ¿õ : ·»´õ·¯ °ü·Ã Ãß°¡ */
-		BodyDesc->iRenderGroupID_2D = RG_3D;
-		BodyDesc->iPriorityID_2D = PR3D_BOOK2D;
 		BodyDesc->iRenderGroupID_3D = RG_3D;
 		BodyDesc->iPriorityID_3D = PR3D_NONBLEND;
 	}

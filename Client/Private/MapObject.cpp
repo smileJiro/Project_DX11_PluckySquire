@@ -127,16 +127,21 @@ void CMapObject::Priority_Update(_float _fTimeDelta)
 }
 void CMapObject::Update(_float _fTimeDelta)
 {
+
+    
     CModelObject::Update(_fTimeDelta);
 }
 
 void CMapObject::Late_Update(_float _fTimeDelta)
 {
+    /* Update Parent Matrix */
+    CPartObject::Late_Update(_fTimeDelta);
+
+
     /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
-    /* Update Parent Matrix */
-    CPartObject::Late_Update(_fTimeDelta);
+
 }
 
 HRESULT CMapObject::Render()

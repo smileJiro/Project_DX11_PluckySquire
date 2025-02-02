@@ -49,7 +49,6 @@ void CShopPanel_BG::Child_Update(_float _fTimeDelta)
 
 void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 {
-	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
 }
 
 HRESULT CShopPanel_BG::Render()
