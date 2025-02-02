@@ -69,8 +69,9 @@ void CModelObject::Late_Update(_float _fTimeDelta)
 {
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
-        //if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_Position(), m_fFrustumCullingRange))
+        if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
             m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
+            
     }
     //else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
     //{
@@ -213,7 +214,11 @@ void CModelObject::Update(_float _fTimeDelta)
     if(m_bPlayingAnim)
         m_pControllerModel->Play_Animation(_fTimeDelta, m_bReverseAnimation);
     else
-        m_pControllerModel->Play_Animation(0, m_bReverseAnimation);
+    {
+        if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
+            m_pControllerModel->Play_Animation(0, m_bReverseAnimation);
+    }
+       
 
 	__super::Update(_fTimeDelta);
 }

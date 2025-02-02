@@ -55,7 +55,7 @@ HRESULT CPhysx_Manager::Initialize()
 
 	/* 충돌 필터에 대한 세팅 ()*/
 	PxFilterData FilterData;
-	FilterData.word0 = 0x08;
+	FilterData.word0 = 0x04;
 	FilterData.word1 = 0x01 | 0x02; // 이렇게 추가하고 몬스터도 다이나믹으로 돌려보던지 한번 근데 아마 좀 많이 바꿔야할거야 ㅋㅋㅋㅋㅋ
 
 	PxU32 iNumShapes = m_pTestDesk->getNbShapes();
@@ -98,7 +98,6 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
-
 	//m_fTImeAcc : 지난 시뮬레이션 이후로 지난 시간.
 	//m_fFixtedTimeStep : 고정된 시간 간격. 1/60초
 	//1. 지난 시뮬이후로 1/60초 이상이 지났으면 시뮬레이션 해야 함.
