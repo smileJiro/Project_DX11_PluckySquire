@@ -584,6 +584,7 @@
     <ClInclude Include="..\Public\ShopPanel_YesNo.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerBody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -888,6 +889,7 @@
     <ClCompile Include="..\Private\ShopPanel_YesNo.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

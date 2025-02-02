@@ -189,7 +189,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
     {
         MSG_BOX("CPlayer Body Creation Failed");
@@ -539,10 +539,18 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
 
 _bool CPlayer::Is_OnGround()
 {
-    if (XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)) <= 0.8f)
-		return true;
-    else
-        return false;
+    _float3 vOrigin, vRayDirection{ 1,0,0 };
+	XMStoreFloat3(&vOrigin, Get_FinalPosition()); 
+    vOrigin.x -= 2.f;
+    _float3* vOutPos  = new _float3;   
+    CActorObject* pOutActor;
+    if (m_pGameInstance->RayCast_Nearest(vOrigin, vRayDirection, 0.2f, vOutPos, &pOutActor))
+    {
+        if(pOutActor != this)
+			return true;
+    }
+    delete vOutPos;
+	return false;
 }
 
 _float CPlayer::Get_UpForce()
