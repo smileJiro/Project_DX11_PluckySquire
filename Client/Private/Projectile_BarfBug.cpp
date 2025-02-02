@@ -23,9 +23,21 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 {
     PROJECTILE_BARFBUG_DESC* pDesc = static_cast<PROJECTILE_BARFBUG_DESC*>(_pArg);
 
+    //투사체는 쓰는 객체가 Desc 넣어줌.
+    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->isCoordChangeEnable = true;
+    pDesc->iNumPartObjects = PART_LAST;
+
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 1000.f;
+
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+
+
+    pDesc->fLifeTime = 5.f;
     m_fLifeTime = pDesc->fLifeTime;
 
-    //투사체는 쓰는 객체가 Desc 넣어줌.
 
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;

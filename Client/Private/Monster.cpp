@@ -74,9 +74,12 @@ HRESULT CMonster::Render()
 
 void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
+	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup && _Other.pActorUserData->pOwner != this)
 	{
-		
+		if (ACTOR_TYPE::KINEMATIC == m_pActorCom->Get_ActorType())
+		{
+			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
+		}
 	}
 }
 
@@ -86,7 +89,13 @@ void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	
+	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
+	{
+		if (ACTOR_TYPE::DYNAMIC == m_pActorCom->Get_ActorType())
+		{
+			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
+		}
+	}
 }
 
 void CMonster::Attack()
@@ -256,8 +265,7 @@ HRESULT CMonster::Ready_ActorDesc(void* _pArg)
 
 void CMonster::Free()
 {
-	if (nullptr != m_pTarget)
-		Safe_Release(m_pTarget);
+	Safe_Release(m_pTarget);
 
 	Safe_Release(m_pFSM);
 	Safe_Release(m_pDetectionField);
