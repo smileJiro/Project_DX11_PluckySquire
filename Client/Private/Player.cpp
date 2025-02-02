@@ -302,14 +302,18 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
         for (auto& pxPairData : _ContactPointDatas)
         {
             _vector vMyPos = Get_FinalPosition();
-           
-
-            if (vMyPos.m128_f32[1] + m_fFootLength >= pxPairData.position.y
-                && vMyPos.m128_f32[1] <= pxPairData.position.y)
-            {
-                m_bOnGround = true;
-                return;
-            }
+			//발 범위에 안닿으면 무시
+            if (vMyPos.m128_f32[1] + m_fFootLength < pxPairData.position.y
+                || vMyPos.m128_f32[1] > pxPairData.position.y)
+                continue;
+            //천장이면 무시
+			if (pxPairData.normal.y  < 0)
+				continue;
+            //닿은 곳의 경사가 너무 급하면 무시
+            if (pxPairData.normal.y < m_fStepSlopeThreshold)
+                continue;
+            m_bOnGround = true;
+            return;
         }
     }
 }

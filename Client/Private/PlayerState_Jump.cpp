@@ -59,13 +59,9 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* m_fAirRunSpeed, _fTimeDelta);
 		else
 			m_pOwner->Stop_Rotate();
-		//Upforce가 0이상일 때, 
-		if (fUpForce > 0)
-		{
-			m_bRising = true;
-		}
+
 		//UpForce가 0이하일 때,
-		else if (fUpForce <= 0)
+		if (fUpForce <= 0)
 		{
 			//방금 떨어지기 시작했을 때
 			if (m_bRising)
