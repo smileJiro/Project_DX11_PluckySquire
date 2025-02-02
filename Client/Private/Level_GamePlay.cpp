@@ -305,8 +305,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
-	// Load CutSceneData
+	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData();
+	CCamera_Manager::GetInstance()->Load_ArmData();
 
 	return S_OK;
 }

@@ -1083,11 +1083,13 @@ HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelI
                 {
                     _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
                     _string szEventTag = Trigger_json["Camera Trigger Event Tag"];
-                    
+                    _uint iReturnMask = Trigger_json["Exit Return Mask"];
+
                     CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
                     Desc.iCameraTriggerType = iCameraTriggerType;
                     Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
+                    Desc.iReturnMask = iReturnMask;
 
                     Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
                     Desc.vHalfExtents = Data.vHalfExtents;

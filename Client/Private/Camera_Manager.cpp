@@ -126,12 +126,12 @@ void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
 	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Change_Target(_pTargetWorldMatrix);
 }
 
-void CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName)
+_bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 {
 	if (nullptr == m_Cameras[TARGET])
-		return;
+		return false;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName);
+	return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
 }
 
 _bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pInitialData)
@@ -140,6 +140,14 @@ _bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_
 		return false;
 
 	return dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName, _pInitialData);
+}
+
+void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
+{
+	if (nullptr == m_Cameras[TARGET])
+		return;
+
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
 }
 
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)
@@ -160,6 +168,41 @@ void CCamera_Manager::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fSha
 
 void CCamera_Manager::Load_ArmData()
 {
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Test.bin";
+
+	std::ifstream inFile(wszLoadPath, std::ios::binary);
+	if (!inFile) {
+		string str = "파일을 열 수 없습니다.";
+		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+	}
+
+	_uint iSize = {};
+	inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+
+	for (_uint i = 0; i < iSize; ++i) {
+
+		ARM_DATA tData;
+
+		// Arm Tag 읽기
+		_uint strLength = {};
+		inFile.read(reinterpret_cast<char*>(&strLength), sizeof(_uint));
+		_wstring ArmTag;
+		ArmTag.resize(strLength);
+		inFile.read(reinterpret_cast<char*>(&ArmTag[0]), strLength * sizeof(wchar_t));
+
+		inFile.read(reinterpret_cast<char*>(&tData.fLength), sizeof(_float));
+		inFile.read(reinterpret_cast<char*>(&tData.fLengthTime), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.iLengthRatioType), sizeof(_uint));
+
+		inFile.read(reinterpret_cast<char*>(&tData.fMoveTimeAxisY), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fMoveTimeAxisRight), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisY), sizeof(_float2));
+		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisRight), sizeof(_float2));
+
+		inFile.read(reinterpret_cast<char*>(&tData.vDesireArm), sizeof(_float3));
+
+		CCamera_Manager::GetInstance()->Add_ArmData(ArmTag, tData);
+	}
 }
 
 void CCamera_Manager::Load_CutSceneData()

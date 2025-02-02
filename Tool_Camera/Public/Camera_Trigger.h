@@ -15,13 +15,23 @@ public:
 		CAMERA_TRIGGER_TYPE_END
 	};
 
+	enum EXIT_RETURN_MASK
+	{
+		NONE = 0x00,
+		RIGHT = 0x01,
+		LEFT = 0x02,
+		UP = 0x04,
+		DOWN = 0x08,
+		RETURN_MASK_END
+	};
+
 public:
 	typedef struct tagCamerTriggerDesc : public CTriggerObject::TRIGGEROBJECT_DESC
 	{
 		_uint			iCameraTriggerType = {};
 		_wstring		szEventTag = {};
 
-		_bool			isReturn = { false };
+		_uint			iReturnMask = {};
 	}CAMERA_TRIGGER_DESC;
 
 private:
@@ -39,6 +49,7 @@ public:
 public:
 	_uint						Get_CameraTriggerType() { return m_iCameraTriggerType; }
 	_wstring					Get_CameraTriggerEventTag() { return m_szEventTag; }
+	_uint						Get_ReturnMask() { return m_iReturnMask; }
 
 	void						Set_CameraTriggerType(_uint _iCameraTriggerType) { m_iCameraTriggerType = _iCameraTriggerType; }
 	void						Set_CameraTriggerEventTag(_wstring _wsEventTag) { m_szEventTag = _wsEventTag; }
@@ -52,7 +63,9 @@ private:
 	_uint						m_iCameraTriggerType = { CAMERA_TRIGGER_TYPE_END };
 	_wstring					m_szEventTag = {};			// CutScene이나 Arm 이름 같은 거
 
-	_bool						m_isReturn = { false };		// Exit 후 Defautl Arm 벡터로 돌아갈 건지 말 건지
+	//_bool						m_isReturn = { false };		// Exit 후 Defautl Arm 벡터로 돌아갈 건지 말 건지
+
+	_uint						m_iReturnMask = {};
 
 public:
 	static CCamera_Trigger*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

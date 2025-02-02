@@ -1,0 +1,27 @@
+[
+    {
+        "Camera Trigger Event Tag": "A",
+        "Camera Trigger Type": 0,
+        "Exit Return Mask": 13,
+        "Fillter My Group": 128,
+        "Fillter Other Group Mask": 2,
+        "Half Extents": [
+            2.0,
+            0.5,
+            2.0
+        ],
+        "Position": [
+            3.6298463344573975,
+            0.33333492279052734,
+            -0.9748883247375488
+        ],
+        "Radius": 0.5,
+        "Rotation": [
+            -0.0,
+            0.0,
+            -0.0
+        ],
+        "Shape Type": 0,
+        "Trigger Type": 0
+    }
+]
