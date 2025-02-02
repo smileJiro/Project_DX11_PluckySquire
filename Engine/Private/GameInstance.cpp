@@ -151,7 +151,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	/* 현재는 임시적으로 Physx_Manager가 Scene Update를 돌리며 테스트 예정. 
 	추후 콜리전 매니저 설계시 scene 관리방식 변경. */
-	m_pPhysx_Manager->Update(fTimeDelta);
+	m_pLevel_Manager->Update(fTimeDelta);
+	
 	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 
 	
@@ -160,7 +161,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 {
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update 수행 후, DeadObject Safe_Release() + erase();
-	m_pLevel_Manager->Update(fTimeDelta);
+	
 
 #ifdef _DEBUG
 	m_pImgui_Manager->Imgui_Debug_Render();
@@ -1201,6 +1202,15 @@ _bool CGameInstance::RayCast_Nearest(const _float3& _vOrigin, const _float3& _vR
 
 	return m_pPhysx_Manager->RayCast_Nearest(_vOrigin, _vRayDir, _fMaxDistance, _pOutPos, _ppOutActorObject);
 }
+
+_bool CGameInstance::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<_float3>& _OutPositions)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->RayCast(_vOrigin, _vRayDir, _fMaxDistance, _OutActors, _OutPositions);
+}
+
 
 void CGameInstance::Set_Physx_DebugRender(_bool _isDebugRender)
 {

@@ -30,27 +30,33 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 	//바닥일 때
 	if (m_pOwner->Is_OnGround())
 	{
+
 		m_pOwner->Stop_Rotate();
 		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
 		{
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
 		}
-		//바닥에 방금 닿음
-		if (m_bGrounded == false)
+		if (false == m_bRising)
 		{
-			m_bGrounded = true;
-			Switch_JumpAnimation(LAND);
+			//바닥에 방금 닿음
+			if (false == m_bGrounded)
+			{
+				m_bGrounded = true;
+				Switch_JumpAnimation(LAND);
+			}
+			else
+				m_pOwner->Set_State(CPlayer::IDLE);
 		}
-		else
-			m_pOwner->Set_State(CPlayer::IDLE);
+
 
 	}
 	//공중일때
 	else
 	{
+
 		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
-			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir), _fTimeDelta);
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* m_fAirRunSpeed, _fTimeDelta);
 		else
 			m_pOwner->Stop_Rotate();
 		//Upforce가 0이상일 때, 

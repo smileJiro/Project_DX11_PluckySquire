@@ -126,8 +126,6 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				NormalDesc.tTransform2DDesc.vInitialPosition = _float3(fPos.x, fPos.y, 0.0f);
 				NormalDesc.is2DImport = true;
 
-				//NormalDesc.iRenderGroupID_2D = RG_2D;
-				//NormalDesc.iPriorityID_2D = PR3D_BOOK2D;
 				NormalDesc.iModelPrototypeLevelID_2D = CSection_Manager::GetInstance()->Get_SectionLeveID();
 				NormalDesc.isCoordChangeEnable = false;
 				NormalDesc.eStartCoord = COORDINATE_2D;

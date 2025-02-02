@@ -69,7 +69,7 @@ void CDialog::Update(_float _fTimeDelta)
 
 void CDialog::Late_Update(_float _fTimeDelta)
 {
-	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
+
 }
 
 HRESULT CDialog::Render()

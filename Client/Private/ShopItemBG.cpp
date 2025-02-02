@@ -55,7 +55,7 @@ void CShopItemBG::Child_Update(_float _fTimeDelta)
 
 void CShopItemBG::Child_LateUpdate(_float _fTimeDelta)
 {
-	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_BOOK2D);
+
 }
 
 HRESULT CShopItemBG::Render()

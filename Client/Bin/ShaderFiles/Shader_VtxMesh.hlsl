@@ -69,7 +69,7 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    float4 vMtrlDiffuse = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f);
+    float4 vMtrlDiffuse = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 2.0f);
     if (vMtrlDiffuse.a < 0.1f)
         discard;
     
