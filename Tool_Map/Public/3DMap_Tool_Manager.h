@@ -14,11 +14,8 @@ BEGIN(Map_Tool)
 
 
 class CMapObject;
-//class CEditableCell;
-//class CNavigationVertex;
 class CModelFile_Manager;
 class CImguiLogger;
-//class CCellContainor;
 class CTask_Manager;
 
 

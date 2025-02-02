@@ -4,6 +4,7 @@
 #include "MapObject.h"
 #include "Map_2D.h"
 #include "Section_Manager.h"
+#include "Engine_Macro.h"
 
 CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection(_pDevice, _pContext)
@@ -169,6 +170,21 @@ HRESULT CSection_2D::Register_RenderGroup_ToRenderer()
 
 
 	return m_pMap->Copy_DefaultMap_ToRenderTarget();
+}
+
+HRESULT CSection_2D::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
+{
+	HRESULT hr = __super::Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
+	if (SUCCEEDED(hr) && nullptr != m_pMap)
+	{
+		_float2 fRenderTargetSize = m_pMap->Get_RenderTarget_Size();
+
+		fRenderTargetSize.x /= (_float)DEFAULT_SIZE_BOOK2D_X;
+		fRenderTargetSize.y /= (_float)DEFAULT_SIZE_BOOK2D_Y;
+		_pGameObject->Set_Scale(fRenderTargetSize.x, fRenderTargetSize.y,1.f);
+	}
+
+		return E_NOTIMPL;
 }
 
 ID3D11RenderTargetView* CSection_2D::Get_RTV_FromRenderTarget()
