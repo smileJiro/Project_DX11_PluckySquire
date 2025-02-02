@@ -205,6 +205,26 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 	return isResult;
 }
 
+_bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<_float3>& _OutPositions)
+{
+	PxRaycastHit hitBuffer[10]; // 최대 10개까지 저장
+	PxRaycastBuffer hit(hitBuffer, 10); // 버퍼 설정
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+
+	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit,
+		PxHitFlag::eDEFAULT, PxQueryFilterData(), nullptr);
+
+	for (PxU32 i = 0; i < hit.nbTouches; i++) {
+		PxRigidActor* pActor = hit.touches[i].actor;
+		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+		_OutActors.push_back(nullptr != pActorUserData ? pActorUserData->pOwner : nullptr);
+		_OutPositions.push_back(_float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z });
+	}
+	return isResult;
+}
+
 HRESULT CPhysx_Manager::Initialize_Foundation()
 {
 	/* Create PxFoundation */

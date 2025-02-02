@@ -453,7 +453,8 @@ private:
 	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
 	_float m_fCenterHeight = 0.5;
-
+	_float m_fFootLength = 0.25;
+	_bool m_bOnGround = false;
 
 	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
