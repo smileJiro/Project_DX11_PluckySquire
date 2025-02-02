@@ -226,6 +226,10 @@ public: /* For. Physx_Manager*/
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
 	_bool				RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
+	//OutActors, OutPositions에 충돌된 오브젝트와 위치를 저장.
+//충돌된 액터에 user data로 ActorObject를 넣지 않았으면 nullptr이 들어감.
+// - 2.02 김지완 추가
+	_bool				RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<_float3>& _OutPositions);
 	void				Set_Physx_DebugRender(_bool _isDebugRender);
 public: /* For. Frustum */
 	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);

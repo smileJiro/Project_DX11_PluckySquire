@@ -37,14 +37,18 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
 		}
-		//바닥에 방금 닿음
-		if (m_bGrounded == false)
+		if (false == m_bRising)
 		{
-			m_bGrounded = true;
-			Switch_JumpAnimation(LAND);
+			//바닥에 방금 닿음
+			if (false == m_bGrounded)
+			{
+				m_bGrounded = true;
+				Switch_JumpAnimation(LAND);
+			}
+			else
+				m_pOwner->Set_State(CPlayer::IDLE);
 		}
-		/*else
-			m_pOwner->Set_State(CPlayer::IDLE);*/
+
 
 	}
 	//공중일때
