@@ -37,6 +37,7 @@
 
 #include "ModelObject.h"
 #include "Player.h"
+#include "PlayerBody.h"
 #include "PlayerSword.h"
 #include "TestTerrain.h"
 
@@ -307,6 +308,9 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"),
         CPlayerSword::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
+        CPlayerBody::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     /* Monster */
 
