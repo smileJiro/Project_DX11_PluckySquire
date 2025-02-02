@@ -32,7 +32,7 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	virtual void Attack(_float _fTimeDelta) override;
+	virtual void Attack() override;
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 

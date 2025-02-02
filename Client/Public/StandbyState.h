@@ -4,12 +4,12 @@
 BEGIN(Client)
 
 
-//처음 인식 상태 (있다면 애니메이션 재생)
-class CAlertState final : public CState
+//다음 동작을 결정하는 경계 상태
+class CStandbyState final : public CState
 {
 private:
-	CAlertState();
-	virtual ~CAlertState() = default;
+	CStandbyState();
+	virtual ~CStandbyState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -19,8 +19,13 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+private:
+	_float m_fAccTime = { 0.f };
+	_bool m_isDelay = { false };
+	_bool m_isCool = { false };
+
 public:
-	static CAlertState* Create(void* _pArg);
+	static CStandbyState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

@@ -183,7 +183,7 @@ void CButterGrump::Change_Animation()
     }
 }
 
-void CButterGrump::Attack(_float _fTimeDelta)
+void CButterGrump::Attack()
 {
     _float3 vScale, vPosition;
     _float4 vRotation;

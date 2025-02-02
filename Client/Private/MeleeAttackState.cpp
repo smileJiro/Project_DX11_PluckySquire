@@ -56,7 +56,7 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
 		}
 		m_pOwner->Change_Dir();
-		m_pOwner->Attack(_fTimeDelta);
+		m_pOwner->Attack();
 	}
 }
 
