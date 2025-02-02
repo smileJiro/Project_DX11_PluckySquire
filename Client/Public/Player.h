@@ -454,6 +454,7 @@ private:
 private:
 	_float m_fCenterHeight = 0.5;
 	_float m_fFootLength = 0.25;
+	_float m_fStepSlopeThreshold = 0.5;
 	_bool m_bOnGround = false;
 
 	CStateMachine* m_pStateMachine = nullptr;

@@ -64,7 +64,7 @@ public:
 
 public:
 	virtual void Change_Animation() override;
-	virtual void Attack(_float _fTimeDelta) override;
+	virtual void Attack() override;
 	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void Play_Intro();
 

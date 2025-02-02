@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "DetectionField.h"
-#include "DebugDraw_For_Client.h"
 #include "Monster.h"
 #include "GameInstance.h"
+#include "DebugDraw_For_Client.h"
 
 CDetectionField::CDetectionField(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -28,12 +28,15 @@ HRESULT CDetectionField::Initialize(void* _pArg)
 	m_fOffset = pDesc->fOffset;
 	m_pOwner = pDesc->pOwner;
 	m_pTarget = pDesc->pTarget;
-	m_pDraw = pDesc->pDraw;
-	
+
 	if (nullptr != m_pTarget)
 		Safe_AddRef(m_pTarget);
+
+#ifdef _DEBUG
+	m_pDraw = pDesc->pDraw;
 	if (nullptr != m_pDraw)
 		Safe_AddRef(m_pDraw);
+#endif // _DEBUG
 
 	return S_OK;
 }
@@ -154,8 +157,10 @@ void CDetectionField::Free()
 {
 	m_pOwner = nullptr;
 	Safe_Release(m_pTarget);
-	Safe_Release(m_pDraw);
 
+#ifdef _DEBUG
+	Safe_Release(m_pDraw);
+#endif // _DEBUG
 
 	__super::Free();
 }

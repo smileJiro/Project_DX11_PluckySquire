@@ -37,7 +37,11 @@ private:
 	vector<CBone*>		m_Bones;
 	_float4x4			m_PreTransformMatrix = {};
 
+
 private:
+	virtual void					On_Event() override;
+	virtual void					Off_Event() override;
+
 	HRESULT					Bind_ShaderResources();
 	HRESULT					Bind_Material(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
 
@@ -68,7 +72,8 @@ public:
 private:
 	_string						m_strModelPath;
 
-private:
+
+
 	HRESULT Ready_Meshes(ifstream& _inFile, _uint _iNumInstance);
 
 

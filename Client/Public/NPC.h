@@ -54,7 +54,7 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	virtual void Attack(_float _fTimeDelta);
+	virtual void Attack();
 
 public:
 	virtual void				Change_Animation() {};

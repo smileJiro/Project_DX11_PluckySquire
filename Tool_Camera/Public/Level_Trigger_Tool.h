@@ -16,6 +16,16 @@ class CLevel_Trigger_Tool final : public CLevel
 		TRIGGER_TYPE_END
 	};
 
+	enum EXIT_RETURN_MASK
+	{
+		NONE = 0x00,
+		RIGHT = 0x01,
+		LEFT = 0x02,
+		UP = 0x04,
+		DOWN = 0x08,
+		RETURN_MASK_END
+	};
+
 private:
 	CLevel_Trigger_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CLevel_Trigger_Tool() = default;
@@ -58,11 +68,14 @@ private:
 	vector<_wstring>	m_ShapeTags;
 	vector<pair<_uint, _wstring>>	m_ObjectGroupTags;
 	vector<_wstring>	m_CameraTriggerTags;				// Camera Trigger
+	vector<pair<_uint, wstring>>	m_ExitReturnTags;
 
 	// ========== Camera Trigger
 	_uint				m_iCameraTriggerType = {};
 	_char				m_szEventTag[MAX_PATH] = { "" };
 	_char				m_szEventTemp[MAX_PATH] = { "" };
+	_uint				m_iExitReturnMask = {};
+	_uint				m_iExitReturnIndex = {};		// List Box º±≈√«— Index
 
 	// Save Load
 	vector<_string>		m_JsonFilePaths;
@@ -82,6 +95,7 @@ private:
 	void				Show_MyObjectGroup();
 	void				Show_OtherGroup();
 	void				Show_CameraTriggerListBox();			// Camera Trigger
+	void				Show_ExitReturnMaskListBox();			// Camera Trigger
 
 	void				Set_TriggerBasicInfo();
 	void				Set_TriggerInfoByType();

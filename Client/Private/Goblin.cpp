@@ -106,7 +106,7 @@ HRESULT CGoblin::Render()
     return S_OK;
 }
 
-void CGoblin::Attack(_float _fTimeDelta)
+void CGoblin::Attack()
 {
     Set_AnimChangeable(true);
 }

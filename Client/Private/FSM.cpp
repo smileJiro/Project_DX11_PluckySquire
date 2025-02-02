@@ -5,6 +5,7 @@
 #include "IdleState.h"
 #include "PatrolState.h"
 #include "AlertState.h"
+#include "StandbyState.h"
 #include "ChaseWalkState.h"
 #include "MeleeAttackState.h"
 #include "RangedAttackState.h"
@@ -49,6 +50,8 @@ HRESULT CFSM::Initialize(void* _pArg)
 	m_fAlert2DRange = pDesc->fAlert2DRange;
 	m_fChase2DRange = pDesc->fChase2DRange;
 	m_fAttack2DRange = pDesc->fAttack2DRange;
+	m_fDelayTime = pDesc->fDelayTime;
+	m_fCoolTime = pDesc->fCoolTime;
 	m_pOwner = pDesc->pOwner;
 
 	return S_OK;
@@ -102,6 +105,15 @@ HRESULT CFSM::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)MONSTER_STATE::ALERT, pState);
+		break;
+
+	case Client::MONSTER_STATE::STANDBY:
+		pState = CStandbyState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::STANDBY, pState);
 		break;
 
 	case Client::MONSTER_STATE::CHASE:

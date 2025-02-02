@@ -4,7 +4,6 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Instance : public CVIBuffer
 {
-private:
 public:
 	enum SHAPE_TYPE { SPHERE, CYLINDER, BOX, TORUS, RING, CONE, SHAPE_NONE };
 	enum SETTING_TYPE { UNSET, DIRECTSET, RANDOMLINEAR, RANDOMRANGE  };
@@ -25,6 +24,8 @@ public:
 
 	virtual HRESULT Bind_BufferDesc();
 	virtual void	Reset_Buffers();
+
+	void			Set_SpawnMatrix(const _float4x4* _pWorldMatrix) { m_pSpawnMatrix = _pWorldMatrix; }
 
 public:
 	_uint	Get_NumInstance() const { return m_iNumInstances; }
@@ -63,9 +64,10 @@ protected:
 	_float*	 m_pSetLifeTimes = { nullptr };		// 세팅 수명 시간
 	_float4* m_pSetColors = { nullptr };		// 세팅 색깔
 	
+	const _float4x4* m_pSpawnMatrix = { nullptr };
 
 protected:
-	vector<class CEffect_Module*> m_Modules;
+	vector<class CTranslation_Module*> m_Modules;
 
 protected:
 	/*

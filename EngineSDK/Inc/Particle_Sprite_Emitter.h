@@ -31,8 +31,12 @@ private:
 private:
 	_float							m_fAlphaDiscard = { 0.f };
 	_float							m_fRGBDiscard = { 0.f };
+	
 
 private:
+	virtual void					On_Event() override;
+	virtual void					Off_Event() override;
+
 	HRESULT							Bind_ShaderResources();
 	virtual HRESULT					Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc) override;
 

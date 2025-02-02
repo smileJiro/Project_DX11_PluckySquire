@@ -534,7 +534,7 @@
     <ClInclude Include="..\Public\Animation.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect_Module.h">
+    <ClInclude Include="..\public\Translation_Module.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClInclude>
     <ClInclude Include="..\public\NewRenderer.h">
@@ -572,6 +572,12 @@
     </ClInclude>
     <ClInclude Include="..\public\EffectModel.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Keyframe_Module.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Module.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -809,7 +815,7 @@
     <ClCompile Include="..\Private\Animation.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect_Module.cpp">
+    <ClCompile Include="..\private\Translation_Module.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClCompile>
     <ClCompile Include="..\private\NewRenderer.cpp">
@@ -847,6 +853,12 @@
     </ClCompile>
     <ClCompile Include="..\private\EffectModel.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Keyframe_Module.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Module.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
