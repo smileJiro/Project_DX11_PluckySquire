@@ -9,6 +9,9 @@
 #include "UI_Manager.h"
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
+#include "Collision_Manager.h"
+
+
 #include "RenderGroup_MRT.h"
 #include "RenderGroup_Lights.h"
 #include "RenderGroup_Final.h"
@@ -66,10 +69,11 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
+	CCollision_Manager::GetInstance()->Update();			// 충돌 검사 수행.
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
-	// TODO :: 여기가 맞는지? 
+	// TODO :: 여기가 맞는지? >> 맞는 것 같삼.
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
 	
 	m_pGameInstance->End_Imgui();
@@ -111,7 +115,7 @@ void CMainApp::Imgui_FPS(_float _fTimeDelta)
 {
 	ImGui::Begin("FPS");
 	static _int iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
-	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_Default"));
+	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_120"));
 	m_vFPSRenderTime.y += _fTimeDelta;
 	if (m_vFPSRenderTime.x <= m_vFPSRenderTime.y)
 	{
@@ -176,29 +180,8 @@ HRESULT CMainApp::Ready_RenderGroup()
 	CRenderGroup_MRT* pRenderGroup_MRT = nullptr;
 
 
-	/* RG_3D, PR3D_BOOK2D */
-	CRenderGroup_MRT::RG_MRT_DESC RG_Book2DDesc;
-	RG_Book2DDesc.iRenderGroupID = RENDERGROUP::RG_3D;
-	RG_Book2DDesc.iPriorityID = PRIORITY_3D::PR3D_BOOK2D;
-	RG_Book2DDesc.isViewportSizeChange = true;
-	RG_Book2DDesc.strMRTTag = TEXT("MRT_Book_2D");
-	RG_Book2DDesc.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_Book2D"));
-	RG_Book2DDesc.vViewportSize = _float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y);
-	RG_Book2DDesc.isClear = true;
-	if (nullptr == RG_Book2DDesc.pDSV)
-	{
-		MSG_BOX("Book2D DSV가 없대.");
-		return E_FAIL;
-	}
-	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_Book2DDesc);
-	if (nullptr == pRenderGroup_MRT)
-	{
-		MSG_BOX("Failed Create PR3D_BOOK2D");
-		return E_FAIL;
-	}
-	if(FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_MRT->Get_RenderGroupID(), pRenderGroup_MRT->Get_PriorityID(), pRenderGroup_MRT)))
-		return E_FAIL;
-
+	
+	
 	Safe_Release(pRenderGroup_MRT);
 	pRenderGroup_MRT = nullptr;
 
@@ -379,8 +362,8 @@ HRESULT CMainApp::Ready_RenderTargets()
 	/* RTV를 모아두는 MRT를 세팅 */
 
 	/* MRT_Book_2D*/
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Book_2D"), TEXT("Target_Book_2D"))))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Book_2D"), TEXT("Target_Book_2D"))))
+	//	return E_FAIL;
 
 	/* MRT_GameObjects */
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
@@ -415,8 +398,6 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), g_iShadowWidth, g_iShadowHeight)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Book2D"), RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
-		return E_FAIL;
 
 	/* 위치 설정. */
 	_float fSizeX = (_float)g_iWinSizeX * 0.2f;
@@ -427,7 +408,6 @@ HRESULT CMainApp::Ready_RenderTargets()
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), fX, fY, fSizeX, fSizeY);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fX, fY + fSizeY * 1.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), fX, fY + fSizeY * 2.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
-	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Book_2D"), fX, fY + fSizeY * 3.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_LightDepth"), fX, fY + fSizeY * 4.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_EffectAccumulate"), fX, fY, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 
@@ -462,6 +442,7 @@ void CMainApp::Free()
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
+	CCollision_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

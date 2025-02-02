@@ -12,84 +12,56 @@ CPlayerState_Jump::CPlayerState_Jump(CPlayer* _pOwner)
 
 void CPlayerState_Jump::Update(_float _fTimeDelta)
 {
-	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	_vector vMoveDir = XMVectorZero();
-	_bool bMove = false;
+	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
-	if (m_pOwner->Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::LB))
-	{
-		m_pOwner->Set_State(CPlayer::ATTACK);
-		return;
-	}
-
-	if (KEY_PRESSING(KEY::LSHIFT))
+	if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
 	{
 		m_pOwner->Set_State(CPlayer::ROLL);
 		return;
 	}
-	if (KEY_PRESSING(KEY::W))
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
 	{
-		if (eCoord == COORDINATE_3D)
-			vMoveDir += _vector{ 0.f, 0.f, 1.f,0.f };
-		else
-			vMoveDir += _vector{ 0.f, 1.f, 0.f,0.f };
-		bMove = true;
-	}
-	if (KEY_PRESSING(KEY::A))
-	{
-		vMoveDir += _vector{ -1.f, 0.f, 0.f,0.f };
-		bMove = true;
-	}
-	if (KEY_PRESSING(KEY::S))
-	{
-		if (eCoord == COORDINATE_3D)
-			vMoveDir += _vector{ 0.f, 0.f, -1.f,0.f };
-		else
-			vMoveDir += _vector{ 0.f, -1.f, 0.f,0.f };
-
-		bMove = true;
-	}
-	if (KEY_PRESSING(KEY::D))
-	{
-		vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
-		bMove = true;
+		m_pOwner->Set_State(CPlayer::THROWSWORD);
+		return;
 	}
 
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	_float fUpForce = m_pOwner->Get_UpForce();
 	//바닥일 때
 	if (m_pOwner->Is_OnGround())
 	{
+
 		m_pOwner->Stop_Rotate();
-		if (bMove)
+		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
 		{
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
 		}
-		//바닥에 방금 닿음
-		if (m_bGrounded == false)
+		if (false == m_bRising)
 		{
-			m_bGrounded = true;
-			Switch_JumpAnimation(LAND);
+			//바닥에 방금 닿음
+			if (false == m_bGrounded)
+			{
+				m_bGrounded = true;
+				Switch_JumpAnimation(LAND);
+			}
+			else
+				m_pOwner->Set_State(CPlayer::IDLE);
 		}
-		else
-			m_pOwner->Set_State(CPlayer::IDLE);
+
 
 	}
 	//공중일때
 	else
 	{
-		if (bMove)
-			m_pOwner->Move(XMVector3Normalize(vMoveDir), _fTimeDelta);
+
+		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* m_fAirRunSpeed, _fTimeDelta);
 		else
 			m_pOwner->Stop_Rotate();
-		//Upforce가 0이상일 때, 
-		if (fUpForce > 0)
-		{
 
-			m_bRising = true;
-		}
 		//UpForce가 0이하일 때,
-		else if (fUpForce <= 0)
+		if (fUpForce <= 0)
 		{
 			//방금 떨어지기 시작했을 때
 			if (m_bRising)

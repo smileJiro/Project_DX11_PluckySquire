@@ -36,6 +36,8 @@ HRESULT CDialog::Initialize(void* _pArg)
 
 	m_isRender = true;
 
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+
 	return S_OK;
 }
 
@@ -67,14 +69,7 @@ void CDialog::Update(_float _fTimeDelta)
 
 void CDialog::Late_Update(_float _fTimeDelta)
 {
-	//__super::Late_Update(_fTimeDelta);
-	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
-	//Register_RenderGroup(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_SECTION_START);
 
-	if (true == m_isRender)
-	{
-		//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-	}
 }
 
 HRESULT CDialog::Render()
@@ -344,7 +339,7 @@ void CDialog::Free()
 
 	//}
 
-
+	//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	__super::Free();
 	
 }

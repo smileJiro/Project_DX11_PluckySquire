@@ -54,12 +54,10 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	{
 		if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
-			//추적 (시야범위 만들면 수정 할 예정)
+			//추적
 			m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_FinalPosition(), XMVectorGetY(m_pOwner->Get_FinalPosition())), _fTimeDelta);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 			//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
 			m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta * 2.f);
-			//m_pOwner->Get_ControllerTransform()->Go_Straight(_fTimeDelta);
 		}
 		else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{

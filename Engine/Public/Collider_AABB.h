@@ -7,7 +7,7 @@ class ENGINE_DLL CCollider_AABB final : public CCollider
 public:
 	typedef struct tagColliderAABBDesc : public CCollider::COLLIDER_DESC
 	{
-		// 가로 세로 총 길이
+		// 가로 세로 반길이
 		_float2 vExtents = {};
 	}COLLIDER_AABB_DESC;
 private:
@@ -40,7 +40,7 @@ public:
 	// Get 
 	_float2					Get_FinalExtents() const { return m_vFinalExtents; }
 private:
-	_float2					m_vExtents = {};
+	_float2					m_vExtents = {}; // 가로 세로 반길이
 	_float2					m_vFinalExtents = {};
 
 public:

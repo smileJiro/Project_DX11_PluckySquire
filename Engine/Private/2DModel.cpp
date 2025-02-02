@@ -114,7 +114,7 @@ void C2DModel::Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)
 	m_Animation2Ds[_iIdx]->Set_Loop(_bIsLoop);
 }
 
-void C2DModel::Set_Animation(_uint _iIdx)
+void C2DModel::Set_Animation(_uint _iIdx, _bool _bReverse)
 {
 	_int iTemp = (_int)m_Animation2Ds.size() - 1;
 	if (iTemp < (_int)_iIdx)
@@ -125,7 +125,7 @@ void C2DModel::Set_Animation(_uint _iIdx)
 	m_iCurAnimIdx = _iIdx;
 }
 
-void C2DModel::Switch_Animation(_uint _iIdx)
+void C2DModel::Switch_Animation(_uint _iIdx, _bool _bReverse)
 {
 	_int iTemp = (_int)m_Animation2Ds.size() - 1;
 	if (iTemp < (_int)_iIdx)
@@ -134,7 +134,7 @@ void C2DModel::Switch_Animation(_uint _iIdx)
 		return;
 	}
 	m_iCurAnimIdx = _iIdx;
-	m_Animation2Ds[m_iCurAnimIdx]->Reset();
+	m_Animation2Ds[m_iCurAnimIdx]->Reset(_bReverse);
 }
 
 void C2DModel::To_NextAnimation()
@@ -198,24 +198,14 @@ HRESULT C2DModel::Render(CShader* _pShader, _uint _iShaderPass)
 	return S_OK;
 }
 
-_bool C2DModel::Play_Animation(_float _fTimeDelta)
+_bool C2DModel::Play_Animation(_float _fTimeDelta, _bool _vReverse)
 {
 	if (Is_AnimModel())
 	{
-		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta);
+		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta, _vReverse);
 	}
 	return false;
 }
-
-_bool C2DModel::Play_Animation_Reverse(_float _fTimeDelta)
-{
-	if (Is_AnimModel())
-	{
-		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation_Reverse(_fTimeDelta);
-	}
-	return false;
-}
-
 
 C2DModel* C2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath)
 {

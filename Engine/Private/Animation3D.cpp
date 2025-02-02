@@ -72,18 +72,19 @@ HRESULT CAnimation3D::Initialize(ifstream& inFile, const C3DModel* pModel)
 	return S_OK;
 }
 
-bool CAnimation3D::Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta)
+bool CAnimation3D::Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta, _bool _bReverse)
 {
 
-	if (m_fCurrentTrackPosition > m_fDuration)
+	if ((_bReverse && m_fCurrentTrackPosition < 0)
+		|| (false == _bReverse && m_fCurrentTrackPosition > m_fDuration))
 	{
 		if (true == m_bLoop)
 		{
-			Reset();
+			Reset(_bReverse);
 		}
 		else
 		{
-			m_fCurrentTrackPosition = m_fDuration;
+			m_fCurrentTrackPosition =  _bReverse ? 0 : m_fDuration;
 			return true;
 		}
 	}
@@ -91,20 +92,22 @@ bool CAnimation3D::Update_TransformationMatrices(const vector<class CBone*>& Bon
 
 	for (size_t i = 0; i < m_iNumChannels; i++)
 	{
-		m_vecChannel[i]->Update_TransformationMatrix(m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[i], Bones);
+		m_vecChannel[i]->Update_TransformationMatrix(m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[i], Bones, _bReverse);
 	}
-	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta* m_fSpeedMagnifier;
+	if (_bReverse)
+		m_fCurrentTrackPosition -= m_fTickPerSecond * fTimeDelta * m_fSpeedMagnifier;
+	else
+		m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * m_fSpeedMagnifier;
 
 
 	return false;
 }
-
-bool CAnimation3D::Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& mapAnimTransLeftFrame)
+bool CAnimation3D::Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& mapAnimTransLeftFrame, _bool _bReverse)
 {
 	float _fAnimTransitionTrackPos = m_fAnimTransitionTime * m_fTickPerSecond;
 	if (m_fCurrentTrackPosition >= _fAnimTransitionTrackPos)
 	{
-		Reset();
+		Reset(_bReverse);
 		return true;
 	}
 	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * m_fSpeedMagnifier;
@@ -126,11 +129,12 @@ bool CAnimation3D::Update_AnimTransition(const vector<class CBone*>& Bones, _flo
 	return false;
 }
 
-void CAnimation3D::Reset()
+void CAnimation3D::Reset(_bool _bReverse)
 {
-	__super::Reset();
-	ZeroMemory(m_CurrentKeyFrameIndices.data(), 0);
+	__super::Reset(_bReverse);
+	m_fCurrentTrackPosition = _bReverse ? m_fDuration : 0;
 }
+
 
 void CAnimation3D::Get_CurrentFrame(map<_uint,KEYFRAME>* pOutKeyFrames) const
 {

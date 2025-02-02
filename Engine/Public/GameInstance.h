@@ -3,7 +3,6 @@
 #include "Renderer.h" // Renderer Enum 사용을 위해, Base.h는 포함되어있음.
 #include "Prototype_Manager.h"// Prototype_Manager.h 안에 Component들 헤더 인클루드 되어있음.
 #include "Key_Manager.h"
-#include "Collision_Manager.h"
 #include "PipeLine.h"
 #include "Shadow.h"
 
@@ -26,7 +25,6 @@ public: /* For.GameInstance */
 	HRESULT				Render_Begin(const _float4& vClearColor = _float4(0.f, 0.f, 1.f, 1.f));
 	HRESULT				Draw();
 	HRESULT				Render_End();
-	void				Set_CurLevelID(_uint _iLevelID);
 	HWND				Get_HWND() const { return m_hWnd; }
 	HINSTANCE			Get_HINSTANCE() const { return m_hInstance; }
 	_uint				Get_ViewportWidth() const { return m_iViewportWidth; }
@@ -132,6 +130,7 @@ public: /* For. Collision_Manager */
 public: /* For. Font_Manager s*/
 	HRESULT				Add_Font(const _wstring& _strFontTag, const _tchar* _pFontFilePath);
 	HRESULT				Render_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f));
+	HRESULT				Render_Scaling_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f), _float _fScale = 1.f);
 
 public: /* For. Target_Manager */
 	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
@@ -144,6 +143,8 @@ public: /* For. Target_Manager */
 	HRESULT				Clear_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool isClear = true);
 	ID3D11ShaderResourceView* Get_RT_SRV(const _wstring& _strTargetTag);
 	_float2				Get_RT_Size(const _wstring& _strTargetTag);
+	HRESULT				Erase_RenderTarget(const _wstring& _strTargetTag);
+	HRESULT				Erase_MRT(const _wstring& _strMRTTag);
 #ifdef _DEBUG
 	HRESULT				Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY);	/* 렌더타겟을 디버그용으로 렌더하기위한 함수 */
 	HRESULT				Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect);			/* 디버그 렌더 함수 */
@@ -225,6 +226,10 @@ public: /* For. Physx_Manager*/
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
 	_bool				RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
+	//OutActors, OutPositions에 충돌된 오브젝트와 위치를 저장.
+//충돌된 액터에 user data로 ActorObject를 넣지 않았으면 nullptr이 들어감.
+// - 2.02 김지완 추가
+	_bool				RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<_float3>& _OutPositions);
 	void				Set_Physx_DebugRender(_bool _isDebugRender);
 public: /* For. Frustum */
 	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);
@@ -240,7 +245,6 @@ private:
 	class CKey_Manager* m_pKey_Manager = nullptr;
 	class CPipeLine* m_pPipeLine = nullptr;
 	class CLight_Manager* m_pLight_Manager = nullptr;
-	class CCollision_Manager* m_pCollision_Manager = nullptr;
 	class CFont_Manager* m_pFont_Manager = nullptr;
 	class CTarget_Manager* m_pTarget_Manager = nullptr;
 	class CShadow* m_pShadow = nullptr;

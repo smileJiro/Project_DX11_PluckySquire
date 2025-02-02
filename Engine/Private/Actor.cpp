@@ -77,6 +77,7 @@ HRESULT CActor::Initialize(void* _pArg)
 	PxScene* pScene = m_pGameInstance->Get_Physx_Scene();
 	pScene->addActor(*m_pActor);
 
+
 	return S_OK;
 }
 
@@ -223,6 +224,16 @@ void CActor::Set_GlobalPose(const _float3& _vPos)
 	PxTransform CurTransform = m_pActor->getGlobalPose();
 	CurTransform.p = { _vPos.x, _vPos.y , _vPos.z };
 	m_pActor->setGlobalPose(CurTransform);
+}
+
+void CActor::Set_PxActorDisable()
+{
+	m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
+}
+
+void CActor::Set_PxActorEnable()
+{
+	m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
 }
 
 HRESULT CActor::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)

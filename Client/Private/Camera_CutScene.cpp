@@ -86,13 +86,13 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 	if (nullptr == m_pCurCutScene || true == m_isStartCutScene || true == m_isFinishCutScene)
 		return;
 
-	_vector vPosition;
+	//_vector vPosition;
 
 	m_pCurCutScene->first.y += _fTimeDelta;
 	_float fRatio = m_pCurCutScene->first.y / m_pCurCutScene->first.x;
 
 	if (fRatio > 1.f) {
-		_uint iLastIndex = m_pCurCutScene->second.size() - 1;
+		_uint iLastIndex = (_uint)m_pCurCutScene->second.size() - 1;
 		
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_pCurCutScene->second[iLastIndex].vPosition), 1.f));
 		_vector vAt = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_pCurCutScene->second[iLastIndex].vAtOffset);

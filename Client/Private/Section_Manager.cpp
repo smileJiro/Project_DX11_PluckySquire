@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 
 #include "Section_2D.h"
+#include "Collision_Manager.h"
 
 IMPLEMENT_SINGLETON(CSection_Manager)
 CSection_Manager::CSection_Manager()
@@ -75,6 +76,9 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 
 HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 {
+    if(m_pCurSection)
+        CCollision_Manager::GetInstance()->Register_Section(m_pCurSection->Get_SectionName());
+
     return S_OK;
 }
 
@@ -285,6 +289,8 @@ void CSection_Manager::Clear_Sections()
         Safe_Release(Pair.second);
     m_CurActiveSections.clear();
     m_CurLevelSections.clear();
+    m_pCurSection = nullptr;
+    CCollision_Manager::GetInstance()->Clear_GroupFilter();
 }
 
 HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPath)

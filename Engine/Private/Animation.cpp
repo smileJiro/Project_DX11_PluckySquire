@@ -7,11 +7,12 @@ CAnimation::CAnimation(const CAnimation& _Prototype)
 {
 }
 
-void CAnimation::Reset()
+void CAnimation::Reset(_bool _bReverse)
 {
-	Set_Progress(0.f);
+	Set_Progress(_bReverse ? 1.f : 0.f);
 	for (auto& pAnimEvent : m_AnimEvents)
 	{
 		pAnimEvent->bIsTriggered = false;
 	}
 }
+

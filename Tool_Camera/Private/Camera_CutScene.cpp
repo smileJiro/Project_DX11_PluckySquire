@@ -70,7 +70,7 @@ void CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INIT
 	if (nullptr == m_pCurCutScene)
 		return;
 
-	m_iSectorNum = m_pCurCutScene->size();
+	m_iSectorNum = (_uint)m_pCurCutScene->size();
 	m_wszCurCutSceneTag = _wszCutSceneName;
 
 	for (auto& Sector : *m_pCurCutScene) {

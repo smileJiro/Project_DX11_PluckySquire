@@ -178,7 +178,9 @@ void CMap_2D::Free()
 {
 	m_pGameInstance->Erase_RenderGroup_New(RENDERGROUP::RG_2D,m_iPriorityID);
 	m_pGameInstance->Erase_DSV_ToRenderer(m_strDSVKey);
-	//m_pGameInstance->rt, mrt 삭제필요
+	// TODO :: 0131 박예슬 m_pGameInstance->rt, mrt 삭제필요
+	m_pGameInstance->Erase_RenderTarget(m_strRTKey);
+	m_pGameInstance->Erase_MRT(m_strMRTKey);
 	Safe_Release(m_pDSV);
 	Safe_Release(m_pRenderTarget);
 	Safe_Release(m_pTextureCom);

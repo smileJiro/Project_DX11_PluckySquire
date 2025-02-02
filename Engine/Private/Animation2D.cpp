@@ -137,7 +137,7 @@ HRESULT CAnimation2D::Bind_ShaderResource(CShader* _pShader)
 	return S_OK;
 }
 
-_bool CAnimation2D::Play_Animation(_float _fTimeDelta)
+_bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 {
 	if (m_fCurrentFrameTime >= (1 / m_fFramesPerSecond))
 	{
@@ -155,7 +155,7 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 		//루프면 처음으로
 		if (m_bLoop)
 		{
-			Reset();
+			Reset(_bReverse);
 		}
 		//루프 아니면 마지막인채로 유지
 		else
@@ -169,15 +169,7 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta)
 	return false;
 }
 
-_bool CAnimation2D::Play_Animation_Reverse(_float _fTimeDelta)
-{
-	return _bool();
-}
 
-void CAnimation2D::Reset()
-{
-	__super::Reset();
-}
 
 void CAnimation2D::Add_SpriteFrame(CSpriteFrame* _pSpriteFrame, _uint _iFrameRun)
 {

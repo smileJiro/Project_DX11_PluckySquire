@@ -26,10 +26,6 @@ namespace Client
 	void Event_Set_Kinematic(CActor_Dynamic* _pActorObject, _bool _bValue);
 	void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag);
 
-	
-
-
-
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 
 	std::string MatrixToString(_float4x4 vMatrix);

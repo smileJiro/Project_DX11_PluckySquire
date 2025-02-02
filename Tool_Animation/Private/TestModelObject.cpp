@@ -155,6 +155,8 @@ _float CTestModelObject::Get_Progress()
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_Progerss();
     case Engine::COORDINATE_3D:
         return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_Progress();
+    default:
+        return -1.f;
     }
    
 }
@@ -169,6 +171,8 @@ _float CTestModelObject::Get_AnimSpeedMagnifier(COORDINATE _eCoord, _uint iAnimI
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(_eCoord))->Get_AnimSpeedMagnifier(iAnimIndex);
     case Engine::COORDINATE_3D:
         return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(_eCoord))->Get_AnimSpeedMagnifier(iAnimIndex);
+    default:
+        return -1.f;
     }
 }
 
@@ -182,6 +186,8 @@ _bool CTestModelObject::Is_LoopAnimation(COORDINATE _eCoord, _uint iAnimIndex)
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(_eCoord))->Is_LoopAnimation(iAnimIndex);
     case Engine::COORDINATE_3D:
         return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(_eCoord))->Is_LoopAnimation(iAnimIndex);
+    default:
+        return false;
     }
 }
 
@@ -195,6 +201,8 @@ void CTestModelObject::Get_AnimatinNames(list<string>& _Names)
         return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_AnimationNames(_Names);
     case Engine::COORDINATE_3D:
         return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Get_AnimationNames(_Names);
+    default:
+        return;
     }
 }
 
@@ -210,6 +218,8 @@ HRESULT CTestModelObject::Export_Model(ofstream& _outfile, const _char* _szDirPa
 	    return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Export_Model(_outfile);
     case Engine::COORDINATE_3D:
 	    return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Export_Model(_outfile);
+    default:
+        return E_FAIL;
     }
     return S_OK;
 }

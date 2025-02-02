@@ -16,6 +16,8 @@ CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
 HRESULT CPhysx_Manager::Initialize()
 {
+
+
 	// Event CallBack Class 
 	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
 	if (nullptr == m_pPhysx_EventCallBack)
@@ -53,8 +55,8 @@ HRESULT CPhysx_Manager::Initialize()
 
 	/* 충돌 필터에 대한 세팅 ()*/
 	PxFilterData FilterData;
-	FilterData.word0 = 0x08;
-	FilterData.word1 = 0x02 | 0x04; // 이렇게 추가하고 몬스터도 다이나믹으로 돌려보던지 한번 근데 아마 좀 많이 바꿔야할거야 ㅋㅋㅋㅋㅋ
+	FilterData.word0 = 0x04;
+	FilterData.word1 = 0x01 | 0x02; // 이렇게 추가하고 몬스터도 다이나믹으로 돌려보던지 한번 근데 아마 좀 많이 바꿔야할거야 ㅋㅋㅋㅋㅋ
 
 	PxU32 iNumShapes = m_pTestDesk->getNbShapes();
 
@@ -96,7 +98,6 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
-
 	//m_fTImeAcc : 지난 시뮬레이션 이후로 지난 시간.
 	//m_fFixtedTimeStep : 고정된 시간 간격. 1/60초
 	//1. 지난 시뮬이후로 1/60초 이상이 지났으면 시뮬레이션 해야 함.
@@ -117,11 +118,11 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 				m_pPhysx_EventCallBack->Update();
 
 #ifdef _DEBUG
-		if (true == m_isDebugRender)
-		{
-			const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-			m_pVIBufferCom->Update_PxDebug(RenderBuffer);
-		}
+			if (true == m_isDebugRender)
+			{
+				const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+				m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+			}
 #endif // _DEBUG
 		}
 
@@ -204,6 +205,26 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 	return isResult;
 }
 
+_bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<_float3>& _OutPositions)
+{
+	PxRaycastHit hitBuffer[10]; // 최대 10개까지 저장
+	PxRaycastBuffer hit(hitBuffer, 10); // 버퍼 설정
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+
+	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit,
+		PxHitFlag::eDEFAULT, PxQueryFilterData(), nullptr);
+
+	for (PxU32 i = 0; i < hit.nbTouches; i++) {
+		PxRigidActor* pActor = hit.touches[i].actor;
+		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+		_OutActors.push_back(nullptr != pActorUserData ? pActorUserData->pOwner : nullptr);
+		_OutPositions.push_back(_float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z });
+	}
+	return isResult;
+}
+
 HRESULT CPhysx_Manager::Initialize_Foundation()
 {
 	/* Create PxFoundation */
@@ -254,12 +275,20 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	SceneDesc.cpuDispatcher = m_pPxDefaultCpuDispatcher;
 	SceneDesc.filterShader = TWFilterShader;//TWFilterShader; //PxDefaultSimulationFilterShader;//; // 일단 기본값으로 생성 해보자.
 	SceneDesc.simulationEventCallback = m_pPhysx_EventCallBack; // 일단 기본값으로 생성 해보자.
-	
+	SceneDesc.broadPhaseType = PxBroadPhaseType::eMBP;
+
 	/* Create Scene */
 	m_pPxScene = m_pPxPhysics->createScene(SceneDesc);
 	if (nullptr == m_pPxScene)
 		return E_FAIL;
+	PxBounds3 regionBounds(PxVec3(-300.0f, -300.0f, -300.0f), PxVec3(300.0f, 300.0f, 300.0f));
+	// PxBroadPhaseRegion 생성
+	PxBroadPhaseRegion region;
+	region.bounds = regionBounds;
+	region.userData = nullptr; // 사용자 데이터가 필요하지 않으면 nullptr
 
+	// Region 추가
+	m_pPxScene->addBroadPhaseRegion(region);
 	/* Setting Pvd */
 	PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
 	if (pvdClient)
@@ -308,6 +337,8 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		case Engine::ACTOR_MATERIAL::STICKY: // 질퍽한
 			vMaterialDesc = { 0.8f, 0.7f, 0.1f };
 			break;
+		case Engine::ACTOR_MATERIAL::PLAYER: // 플레이어용
+			vMaterialDesc = { 0.8f, 5.f, 0.0f };
 		default:
 			break;
 		}

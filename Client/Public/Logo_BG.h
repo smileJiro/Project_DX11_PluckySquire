@@ -35,6 +35,7 @@ protected:
 private:
 	void					ProcesssByIndex(_int _iIndex );
 
+
 protected:
 	virtual HRESULT			Ready_Components() override;
 	void					isRender() { false == m_isRender ? m_isRender = true : m_isRender = false; }

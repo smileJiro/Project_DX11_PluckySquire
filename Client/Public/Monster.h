@@ -1,14 +1,16 @@
 #pragma once
 #include "Character.h"
+#include "AnimEventReceiver.h"
 
 BEGIN(Engine)
+class CAnimEventGenerator;
 class CDebugDraw_For_Client;
 END
 
 BEGIN(Client)
 class CFSM;
 class CDetectionField;
-class CMonster abstract : public CCharacter
+class CMonster abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
 	enum MONSTERPART { PART_BODY, PART_EFFECT, PART_WEAPON,  PART_END };
@@ -55,6 +57,15 @@ public:
 		return m_e2DDirection; 
 	}
 
+	_bool IsDelay() 
+	{
+		return m_isDelay;
+	}
+	_bool IsCool()
+	{
+		return m_isCool;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -69,7 +80,8 @@ public:
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
 public:
-	virtual void Attack(_float _fTimeDelta);
+	virtual void Attack();
+	virtual void Turn_Animation(_bool _isCW) {};
 
 public:
 	virtual void				Change_Animation() {};
@@ -104,8 +116,12 @@ protected:
 	_uint		m_iPreState = {};
 	CGameObject* m_pTarget = { nullptr };
 	CFSM* m_pFSM = { nullptr };
+	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
 	CDetectionField* m_pDetectionField = { nullptr };
+
+#ifdef _DEBUG
 	CDebugDraw_For_Client* m_pDraw = { nullptr };
+#endif // _DEBUG
 	
 	_float m_fAlertRange = { 0.f };
 	_float m_fChaseRange = { 0.f };

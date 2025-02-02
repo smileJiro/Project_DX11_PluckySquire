@@ -13,35 +13,18 @@ CPlayerState_Idle::CPlayerState_Idle(CPlayer* _pOwner)
 
 void CPlayerState_Idle::Update(_float _fTimeDelta)
 {
-	if (m_pOwner->Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::LB))
-	{
-		m_pOwner->Set_State(CPlayer::ATTACK);
-		return;
-	}
+	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
-	/* Test Move Code */
-	if (KEY_PRESSING(KEY::SPACE))
-	{
-		m_pOwner->Set_State(CPlayer::JUMP);
-		return;
-	}
-	if (KEY_PRESSING(KEY::LSHIFT))
-	{
-		m_pOwner->Set_State(CPlayer::ROLL);
-		return;
-	}
-	_bool bMove = false;
-	if (KEY_PRESSING(KEY::W))
-		bMove = true;
-	else if (KEY_PRESSING(KEY::A))
-		bMove = true;
-	else if (KEY_PRESSING(KEY::S))
-		bMove = true;
-	else if (KEY_PRESSING(KEY::D))
-		bMove = true;
-
-	if (bMove)
+	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 		m_pOwner->Set_State(CPlayer::RUN);
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+		m_pOwner->Set_State(CPlayer::ATTACK);
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
+		m_pOwner->Set_State(CPlayer::JUMP);
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+		m_pOwner->Set_State(CPlayer::ROLL);
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+		m_pOwner->Set_State(CPlayer::THROWSWORD);
 
 }
 

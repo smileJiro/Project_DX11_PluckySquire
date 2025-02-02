@@ -48,14 +48,14 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 		if (COORDINATE_3D == m_pTestModelObj->Get_CurCoord())
 		{
 			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
-			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2f);
 			m_fZoomMultiplier = min(m_fZoomMultiplier, 3.f);
 			m_pTargetCam->Set_Fovy(m_fZoomMultiplier * m_fDefault3DCamFovY);
 		}
 		else
 		{
 			m_fZoomMultiplier += fMove * m_f2DZoomSpeed * _fTimeDelta;
-			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2);
+			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2f);
 			m_pTestModelObj->Set_2DProjMatrix(XMMatrixOrthographicLH((_float)m_fDefault2DCamSize.x * m_fZoomMultiplier, (_float)m_fDefault2DCamSize.y * m_fZoomMultiplier, 0.0f, 1.0f));
 		}
 	}
@@ -264,7 +264,7 @@ void CLevel_AnimTool::Update_AnimEventImgui()
 					pairAnimEvt.second.erase(pairAnimEvt.second.begin() + iTmpIndex);
 					break;
 				}
-				iTmpIndex -= pairAnimEvt.second.size();
+				iTmpIndex -= (_int)pairAnimEvt.second.size();
 			}
 		}
 	}
@@ -305,7 +305,7 @@ void CLevel_AnimTool::Update_AnimEventImgui()
 				tEvent = &pairAnimEvt.second[iTmpIdx];
 				break;
 			}
-			iTmpIdx -= pairAnimEvt.second.size();
+			iTmpIdx -= (_int)pairAnimEvt.second.size();
 		}
 		if (tEvent)
 		{
@@ -326,7 +326,7 @@ void CLevel_AnimTool::Update_AnimEventImgui()
 			if (ImGui::InputFloat("Progress", &fProgress))
 			{
 				fProgress = max(0, fProgress);
-				fProgress = fmin(fProgress, 1);
+				fProgress = fmin(fProgress, 1.f);
 				tEvent->fProgress = fProgress;
 			}
 
@@ -605,12 +605,12 @@ HRESULT CLevel_AnimTool::Export_AnimEvents(const wstring& _wstrPath)
 	{
 		MSG_BOX("파일 열기 실패.");
 	}
-	_uint iAnimIndexCount = m_AnimEvents.size();
+	_uint iAnimIndexCount = (_uint)m_AnimEvents.size();
 	outFile.write(reinterpret_cast<char*>(&iAnimIndexCount), sizeof(_uint));
 	for (auto& pairAnimEvt : m_AnimEvents)
 	{
 		_uint iAnimIndex = pairAnimEvt.first;
-		_uint iEventCount = pairAnimEvt.second.size();
+		_uint iEventCount = (_uint)pairAnimEvt.second.size();
 		outFile.write(reinterpret_cast<char*>(&iAnimIndex), sizeof(_uint));
 		outFile.write(reinterpret_cast<char*>(&iEventCount), sizeof(_uint));
 		for (auto& tEvent : pairAnimEvt.second)

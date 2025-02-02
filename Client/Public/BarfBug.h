@@ -1,5 +1,10 @@
 #pragma once
 #include "Monster.h"
+
+BEGIN(Engine)
+class CCollider;
+END
+BEGIN(Client)
 class CBarfBug final : public CMonster
 {
 public:
@@ -65,9 +70,13 @@ public:
 public:
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	virtual void Change_Animation() override;
-	virtual void Attack(_float _fTimeDelta) override;
+	virtual void Attack() override;
+	virtual void Turn_Animation(_bool _isCW) override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
+
+private:
+	CCollider* m_pColliderCom = nullptr;
 private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
@@ -79,3 +88,4 @@ public:
 	virtual void			Free() override;
 };
 
+END

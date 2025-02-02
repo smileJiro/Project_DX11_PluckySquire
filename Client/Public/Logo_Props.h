@@ -22,11 +22,13 @@ public:
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
-	virtual HRESULT			Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT) override;
-
+	virtual HRESULT			Render() override;
+	virtual void			Child_Update(_float _fTimeDelta) ;
+	virtual void			Child_LateUpdate(_float _fTimeDelta) ;
 
 private:
 	_tchar					m_tTest[MAX_PATH] = {};
+	_int					m_iTextureCount;
 
 	
 

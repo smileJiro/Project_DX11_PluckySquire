@@ -8,7 +8,21 @@ class CCollider; // test
 END
 BEGIN(Client)
 class CStateMachine;
-
+enum PLAYER_KEY
+{
+	PLAYER_KEY_MOVE,
+	PLAYER_KEY_JUMP,
+	PLAYER_KEY_ATTACK,
+	PLAYER_KEY_ROLL,
+	PLAYER_KEY_THROWSWORD,
+	PLAYER_KEY_INTERACT,
+	PLAYER_KEY_LAST
+};
+typedef struct tagPlayerKeyResult
+{
+	_vector vMoveDir = {0,0,0};
+	_bool bKeyStates[PLAYER_KEY_LAST] = {false,};
+}PLAYER_KEY_RESULT;
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -25,6 +39,7 @@ public:
 		RUN,
 		JUMP,
 		ATTACK,
+		JUMP_ATTACK,
 		ROLL,
 		THROWSWORD,
 		STATE_LAST
@@ -389,14 +404,22 @@ public:
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 
+public: /* 2D Ãæµ¹ */
+	void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-	void Move(_vector _vDir,_float _fTimeDelta);
+	void Move(_vector _vForce,_float _fTimeDelta);
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Stop_Rotate();
 	void Stop_Move();
 	void	ThrowSword();
 	void Jump();
+	void Add_Impuls(_vector _vForce);
+	void Rotate_To(_vector _vDirection);
+	PLAYER_KEY_RESULT Player_KeyInput();
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
@@ -406,17 +429,18 @@ public:
 	_bool Is_SwordEquiped();
 	_bool Is_CarryingObject();
 	_vector Get_CenterPosition();
+	_vector Get_LookDirection();
+	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
 	void Set_2DDirection(E_DIRECTION _eEDir);
+	void Set_3DTargetDirection(_fvector _vDir);
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
-public: // Test code ÅÂ¿õ
-	HRESULT					Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
 
 private:
 
@@ -429,10 +453,15 @@ private:
 	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
 	_float m_fCenterHeight = 0.5;
+	_float m_fFootLength = 0.25;
+	_float m_fStepSlopeThreshold = 0.5;
+	_bool m_bOnGround = false;
+
 	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
-	_vector m_vLookBefore = {};
+	_vector m_vLookBefore = {0,0,-1};
+	_vector m_v3DTargetDirection = { 0,0,-1 };
 
 	class CPlayerSword* m_pSword = nullptr;
 

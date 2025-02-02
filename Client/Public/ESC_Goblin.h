@@ -9,7 +9,8 @@ END
 
 class CESC_Goblin : public CSettingPanel
 {
-
+public:
+	enum STATE { STATE_WAIT, STATE_UP, STATE_MWAIT, STATE_DOWN, STATE_END };
 
 protected:
 	explicit CESC_Goblin(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -26,6 +27,8 @@ public:
 
 
 private:
+	STATE					m_eState = { STATE_WAIT };
+	_bool					m_bPreRender;
 	_float					m_fMoveGoblinTime = { 0.0f };
 	_float					m_fWaitGoblinTime = { 0.0f };
 

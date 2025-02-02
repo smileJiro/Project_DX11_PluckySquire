@@ -13,78 +13,34 @@ CPlayerState_Run::CPlayerState_Run(CPlayer* _pOwner)
 
 void CPlayerState_Run::Update(_float _fTimeDelta)
 {
-	COORDINATE eCoord =  m_pOwner->Get_CurCoord();
-
-	if (m_pOwner->Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::LB))
+	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 	{
-		m_pOwner->Set_State(CPlayer::ATTACK);
-		return;
-	}
-	if (m_pOwner->Is_SwordEquiped() && MOUSE_DOWN(MOUSE_KEY::RB))
-	{
-		m_pOwner->Set_State(CPlayer::THROWSWORD);
-		
-		return;
-	}
-
-	_vector vMoveDir = XMVectorZero();
-	_bool bMove = false;
-	if (KEY_PRESSING(KEY::W))
-	{
-		if (eCoord == COORDINATE_3D)
-			vMoveDir += _vector{ 0.f, 0.f, 1.f,0.f };
-		else
-			vMoveDir += _vector{ 0.f, 1.f, 0.f,0.f };
-		bMove = true;
-	}
-	if (KEY_PRESSING(KEY::A))
-	{
-		vMoveDir += _vector{ -1.f, 0.f, 0.f,0.f };
-		bMove = true;
-	}
-	if (KEY_PRESSING(KEY::S))
-	{
-		if (eCoord == COORDINATE_3D)
-			vMoveDir += _vector{ 0.f, 0.f, -1.f,0.f };
-		else
-			vMoveDir += _vector{ 0.f, -1.f, 0.f,0.f };
-
-		bMove = true;
-	}
-	if (KEY_PRESSING(KEY::D))
-	{
-		vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
-		bMove = true;
-	}
-
-
-	if (bMove)
-	{
-		m_pOwner->Move(XMVector3Normalize(vMoveDir), _fTimeDelta);
-		if (KEY_PRESSING(KEY::SPACE))
-		{
-			m_pOwner->Set_State(CPlayer::JUMP);
-			return;
-		}
-		if (KEY_PRESSING(KEY::LSHIFT))
-		{
-			m_pOwner->Set_State(CPlayer::ROLL);
-			return;
-		}
-
+		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* m_fSpeed, _fTimeDelta);
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{
-			E_DIRECTION eNewDir =  To_EDirection(vMoveDir);
+			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
 			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
 			m_pOwner->Set_2DDirection(eNewDir);
 			Switch_RunAnimation2D(eFDir);
 		}
+
+		if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+			m_pOwner->Set_State(CPlayer::ATTACK);
+		else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
+			m_pOwner->Set_State(CPlayer::JUMP);
+		else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+			m_pOwner->Set_State(CPlayer::ROLL);
+		else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+			m_pOwner->Set_State(CPlayer::THROWSWORD);
 	}
 	else
 	{
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
+
+
 
 
 }

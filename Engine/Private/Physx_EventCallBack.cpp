@@ -32,12 +32,12 @@ void CPhysx_EventCallBack::onContact(const PxContactPairHeader& pairHeader, cons
 			continue;
 		
 		COLL_INFO CollInfo_0;
-		CollInfo_0.pActorUserData = pActorUserData_1;
-		CollInfo_0.pShapeUserData = pShapeUserData_1;
+		CollInfo_0.pActorUserData = pActorUserData_0;
+		CollInfo_0.pShapeUserData = pShapeUserData_0;
 
 		COLL_INFO CollInfo_1;
-		CollInfo_1.pActorUserData = pActorUserData_0;
-		CollInfo_1.pShapeUserData = pShapeUserData_0;
+		CollInfo_1.pActorUserData = pActorUserData_1;
+		CollInfo_1.pShapeUserData = pShapeUserData_1;
 
 		/* 충돌에 대한공통 정보 */
 		vector<PxContactPairPoint> ContactPoints;

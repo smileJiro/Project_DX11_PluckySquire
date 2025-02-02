@@ -67,11 +67,17 @@ void CMonster::Late_Update(_float _fTimeDelta)
 
 HRESULT CMonster::Render()
 {
+
+
 	return S_OK;
 }
 
 void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
+	{
+		
+	}
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -80,9 +86,10 @@ void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+	
 }
 
-void CMonster::Attack(_float _fTimeDelta)
+void CMonster::Attack()
 {
 }
 
@@ -203,46 +210,46 @@ void CMonster::Active_OnDisable()
 
 HRESULT CMonster::Ready_ActorDesc(void* _pArg)
 {
-	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(_pArg);
+	//MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(_pArg);
 
-	pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
-	CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
+	//pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+	//CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
-	/* Actor의 주인 오브젝트 포인터 */
-	ActorDesc->pOwner = this;
+	///* Actor의 주인 오브젝트 포인터 */
+	//ActorDesc->pOwner = this;
 
-	/* Actor의 회전축을 고정하는 파라미터 */
-	ActorDesc->FreezeRotation_XYZ[0] = true;
-	ActorDesc->FreezeRotation_XYZ[1] = false;
-	ActorDesc->FreezeRotation_XYZ[2] = true;
+	///* Actor의 회전축을 고정하는 파라미터 */
+	//ActorDesc->FreezeRotation_XYZ[0] = true;
+	//ActorDesc->FreezeRotation_XYZ[1] = false;
+	//ActorDesc->FreezeRotation_XYZ[2] = true;
 
-	/* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
-	ActorDesc->FreezePosition_XYZ[0] = false;
-	ActorDesc->FreezePosition_XYZ[1] = false;
-	ActorDesc->FreezePosition_XYZ[2] = false;
+	///* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
+	//ActorDesc->FreezePosition_XYZ[0] = false;
+	//ActorDesc->FreezePosition_XYZ[1] = false;
+	//ActorDesc->FreezePosition_XYZ[2] = false;
 
-	/* 사용하려는 Shape의 형태를 정의 */
-	SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-	ShapeDesc->fHalfHeight = 0.5f;
-	ShapeDesc->fRadius = 0.5f;
+	///* 사용하려는 Shape의 형태를 정의 */
+	//SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
+	//ShapeDesc->fHalfHeight = 0.5f;
+	//ShapeDesc->fRadius = 0.5f;
 
-	/* 해당 Shape의 Flag에 대한 Data 정의 */
-	SHAPE_DATA* ShapeData = new SHAPE_DATA;
-	ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-	ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-	ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-	ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+	///* 해당 Shape의 Flag에 대한 Data 정의 */
+	//SHAPE_DATA* ShapeData = new SHAPE_DATA;
+	//ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+	//ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+	//ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+	//ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+	//XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
-	/* 최종으로 결정 된 ShapeData를 PushBack */
-	ActorDesc->ShapeDatas.push_back(*ShapeData);
+	///* 최종으로 결정 된 ShapeData를 PushBack */
+	//ActorDesc->ShapeDatas.push_back(*ShapeData);
 
-	/* 충돌 필터에 대한 세팅 ()*/
-	ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-	ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+	///* 충돌 필터에 대한 세팅 ()*/
+	//ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
+	//ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
-	/* Actor Component Finished */
-	pDesc->pActorDesc = ActorDesc;
+	///* Actor Component Finished */
+	//pDesc->pActorDesc = ActorDesc;
 
 	return S_OK;
 }
@@ -252,9 +259,11 @@ void CMonster::Free()
 	if (nullptr != m_pTarget)
 		Safe_Release(m_pTarget);
 
-	Safe_Release(m_pDraw);
 	Safe_Release(m_pFSM);
 	Safe_Release(m_pDetectionField);
+#ifdef _DEBUG
+	Safe_Release(m_pDraw);
+#endif // _DEBUG
 
 	__super::Free();
 }

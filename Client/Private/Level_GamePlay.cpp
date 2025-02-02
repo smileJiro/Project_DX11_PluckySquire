@@ -8,6 +8,7 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 #include "Section_Manager.h"
+#include "Collision_Manager.h"
 
 #include "Player.h"
 #include "TestTerrain.h"
@@ -65,11 +66,37 @@ HRESULT CLevel_GamePlay::Initialize()
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
+
+
+	/* Collision Test */
+
+	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER_PROJECTILE);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::TRIGGER_OBJECT);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MAPOBJECT);
+
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
+
+
+	// 그룹필터 제거
+	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
+	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+
+
 	return S_OK;
 }
 
 void CLevel_GamePlay::Update(_float _fTimeDelta)
 {
+	// 피직스 업데이트 
+	m_pGameInstance->Physx_Update(_fTimeDelta);
+
+
+
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
@@ -134,7 +161,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
 
-		_vector vMousePos = XMVectorSet(pt.x, pt.y, 0.f, 1.f);
+		_vector vMousePos = XMVectorSet((_float)pt.x, (_float)pt.y, 0.f, 1.f);
 
 		_uint		iNumViewports = { 1 };
 		D3D11_VIEWPORT		ViewportDesc{};
@@ -601,20 +628,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 			}
 			break;
 
-			//case CUI::SETTINGPANEL::SETTING_ESCGOBLIN:
-			//{
-			//	CGameObject* pSettingPanel = { nullptr };
-			//	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
-			//	pDesc.fY = g_iWinSizeY / 4.2f;
-			//	pDesc.fSizeX = 124.f;
-			//	pDesc.fSizeY = 108.f;
-			//	pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCGOBLIN;
-			//
-			//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
-			//		return E_FAIL;
-			//
-			//}
-			//break;
+			case CUI::SETTINGPANEL::SETTING_ESCGOBLIN:
+			{
+				CGameObject* pSettingPanel = { nullptr };
+				pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
+				pDesc.fY = g_iWinSizeY / 4.2f;
+				pDesc.fSizeX = 124.f;
+				pDesc.fSizeY = 108.f;
+				pDesc.eSettingPanelKind = CUI::SETTINGPANEL::SETTING_ESCGOBLIN;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), pDesc.iCurLevelID, _strLayerTag, &pSettingPanel, &pDesc)))
+					return E_FAIL;
+
+			}
+			break;
 
 			
 			}
@@ -664,13 +691,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
-	CNPC::NPC_DESC NPCDesc;
-
-	NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-		return E_FAIL;
+	//CNPC::NPC_DESC NPCDesc;
+	//
+	//NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

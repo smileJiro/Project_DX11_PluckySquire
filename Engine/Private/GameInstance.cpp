@@ -151,7 +151,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	/* 현재는 임시적으로 Physx_Manager가 Scene Update를 돌리며 테스트 예정. 
 	추후 콜리전 매니저 설계시 scene 관리방식 변경. */
-	m_pPhysx_Manager->Update(fTimeDelta);
+	m_pLevel_Manager->Update(fTimeDelta);
+	
 	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
 
 	
@@ -160,7 +161,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 {
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update 수행 후, DeadObject Safe_Release() + erase();
-	m_pLevel_Manager->Update(fTimeDelta);
+	
 
 #ifdef _DEBUG
 	m_pImgui_Manager->Imgui_Debug_Render();
@@ -193,16 +194,6 @@ HRESULT CGameInstance::Draw()
 HRESULT CGameInstance::Render_End()
 {
 	return m_pGraphic_Device->Present();
-}
-
-
-void CGameInstance::Set_CurLevelID(_uint _iLevelID)
-{
-	/* 레벨 인덱스 전달해줘야하는 매니저들 여기서 전달. */
-	if (nullptr == m_pCollision_Manager)
-		return;
-
-	m_pCollision_Manager->Set_CurLevelID(_iLevelID);
 }
 
 _float CGameInstance::Compute_Random_Normal()
@@ -751,6 +742,14 @@ HRESULT CGameInstance::Render_Font(const _wstring& _strFontTag, const _tchar* _p
 	return m_pFont_Manager->Render_Font(_strFontTag, _pText, _vPosition, _vColor, _fRotation, _vOrigin);
 }
 
+HRESULT CGameInstance::Render_Scaling_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation, const _float2& _vOrigin, _float _fScale)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Render_Scaling_Font(_strFontTag, _pText, _vPosition, _vColor, _fRotation, _vOrigin, _fScale);
+}
+
 HRESULT CGameInstance::Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut)
 {
 	if (nullptr == m_pTarget_Manager)
@@ -833,6 +832,22 @@ _float2 CGameInstance::Get_RT_Size(const _wstring& _strTargetTag)
 	}
 
 	return m_pTarget_Manager->Get_RT_Size(_strTargetTag);
+}
+
+HRESULT CGameInstance::Erase_RenderTarget(const _wstring& _strTargetTag)
+{
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	return m_pTarget_Manager->Erase_RenderTarget(_strTargetTag);
+}
+
+HRESULT CGameInstance::Erase_MRT(const _wstring& _strMRTTag)
+{
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	return m_pTarget_Manager->Erase_MRT(_strMRTTag);
 }
 
 const _float4x4* CGameInstance::Get_Shadow_Transform_Ptr(CShadow::D3DTRANSFORMSTATE _eState)
@@ -1188,6 +1203,15 @@ _bool CGameInstance::RayCast_Nearest(const _float3& _vOrigin, const _float3& _vR
 	return m_pPhysx_Manager->RayCast_Nearest(_vOrigin, _vRayDir, _fMaxDistance, _pOutPos, _ppOutActorObject);
 }
 
+_bool CGameInstance::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<_float3>& _OutPositions)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->RayCast(_vOrigin, _vRayDir, _fMaxDistance, _OutActors, _OutPositions);
+}
+
+
 void CGameInstance::Set_Physx_DebugRender(_bool _isDebugRender)
 {
 	if (nullptr == m_pPhysx_Manager)
@@ -1276,7 +1300,6 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	else
 		Safe_Release(m_pNewRenderer);
 
-	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);

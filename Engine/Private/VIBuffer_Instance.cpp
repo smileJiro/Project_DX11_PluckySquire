@@ -1624,7 +1624,7 @@ void CVIBuffer_Instance::Tool_Add_Module()
 					CTranslation_Module* pModule = CTranslation_Module::Create((CTranslation_Module::MODULE_TYPE)n, Moduleitems[n]);
 					if (nullptr != pModule)
 					{
-						pModule->Set_Order(m_Modules.size());
+						pModule->Set_Order((_int)m_Modules.size());
 						m_Modules.push_back(pModule);
 
 						sort(m_Modules.begin(), m_Modules.end(), [](const CTranslation_Module* pSrc, const CTranslation_Module* pDst)

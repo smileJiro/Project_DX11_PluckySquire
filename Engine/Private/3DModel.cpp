@@ -163,17 +163,17 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 	return _pShader->Bind_SRV(_pConstantName, pSRV);
 }
 
-_bool C3DModel::Play_Animation(_float fTimeDelta)
+_bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 {
 	_bool bReturn = false;
 	//뼈들의 변환행렬을 갱신
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
 	{
-		bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
+		bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta,bReverse);
 	}
 	else
 	{
-		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame))
+		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame, bReverse))
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
 	}
 
@@ -184,12 +184,6 @@ _bool C3DModel::Play_Animation(_float fTimeDelta)
 
  	return bReturn;
 }
-
-_bool C3DModel::Play_Animation_Reverse(_float fTimeDelta)
-{
-	return _bool();
-}
-
 
 _uint C3DModel::Get_MeshIndex(const _char* _szName) const
 {
@@ -306,7 +300,7 @@ void C3DModel::Set_AnimationLoop(_uint iIdx, _bool bIsLoop)
 	m_Animations[iIdx]->Set_Loop(bIsLoop);
 }
 
-void C3DModel::Set_Animation(_uint iIdx)
+void C3DModel::Set_Animation(_uint iIdx, _bool _bReverse)
 {
 	_int iTemp = (_int)m_Animations.size() - 1;
 	if (iTemp < (_int)iIdx)
@@ -316,11 +310,11 @@ void C3DModel::Set_Animation(_uint iIdx)
 	}
 	m_iCurrentAnimIndex = iIdx;
 	m_iPrevAnimIndex = iIdx;
-	m_Animations[m_iCurrentAnimIndex]->Reset();
+	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
 }
 
 
-void C3DModel::Switch_Animation(_uint iIdx)
+void C3DModel::Switch_Animation(_uint iIdx, _bool _bReverse)
 {
 	_int iTemp = (_int)m_Animations.size() - 1;
 	if(iTemp < (_int)iIdx)
@@ -332,7 +326,7 @@ void C3DModel::Switch_Animation(_uint iIdx)
 	m_iCurrentAnimIndex = iIdx;
 	m_mapAnimTransLeftFrame.clear();
 
-	m_Animations[m_iCurrentAnimIndex]->Reset();
+	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
 
 	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
 
