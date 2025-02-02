@@ -1,6 +1,6 @@
 #include "VIBuffer_Point_Particle.h"
 #include "GameInstance.h"
-#include "Effect_Module.h"
+#include "Translation_Module.h"
 
 CVIBuffer_Point_Particle::CVIBuffer_Point_Particle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer_Instance(_pDevice, _pContext)
@@ -202,6 +202,20 @@ void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 		{
 			// 시간이 충족되면 Spawn합니다.
 			pVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
+			// LifeTime의 설정은 Spawn시기에 맞게 설정합니다.
+			pVertices[m_iSpawnIndex].vLifeTime.y = m_fAccSpawnTime - m_fSpawnTime;
+
+			if (m_pSpawnMatrix)
+			{
+				_matrix matSpawn = XMLoadFloat4x4(m_pSpawnMatrix);
+				for (_int i = 0; i < 3; ++i)
+					matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
+
+				XMStoreFloat4(&pVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vRight), matSpawn));
+				XMStoreFloat4(&pVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vUp), matSpawn));
+				XMStoreFloat4(&pVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vLook), matSpawn));
+				XMStoreFloat4(&pVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&pVertices[m_iSpawnIndex].vTranslation), matSpawn));
+			}
 
 			m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
 			m_fAccSpawnTime -= m_fSpawnTime;
@@ -235,37 +249,52 @@ void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 	}
 	else if (BURST == m_eSpawnType)
 	{
-		if (m_fSpawnTime <= m_fAccSpawnTime)
+
+		if (m_iSpawnIndex != m_iNumInstances)
 		{
+
 			for (_int i = 0; i < m_iNumInstances; i++)
 			{
-				if (m_iSpawnIndex != m_iNumInstances)
+				pVertices[i] = m_pInstanceVertices[i];
+				pVertices[i].vLifeTime.y = 0.f;
+
+				if (m_pSpawnMatrix)
 				{
-					pVertices[i] = m_pInstanceVertices[i];
-					pVertices[i].vLifeTime.y = 0.f;
+					_matrix matSpawn = XMLoadFloat4x4(m_pSpawnMatrix);
+					for (_int i = 0; i < 3; ++i)
+						matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
 
-					m_iSpawnIndex = m_iNumInstances;
+					XMStoreFloat4(&pVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vRight), matSpawn));
+					XMStoreFloat4(&pVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vUp), matSpawn));
+					XMStoreFloat4(&pVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vLook), matSpawn));
+					XMStoreFloat4(&pVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&pVertices[m_iSpawnIndex].vTranslation), matSpawn));
 				}
-
-				for (auto& pModule : m_Modules)
-				{
-					if (pModule->Is_Init())
-						continue;
-
-					pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
-				}
-
-				XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
-				XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
-				pVertices[i].vLifeTime.y += _fTimeDelta;
-
-				// TODO : Kill or Revive 등..
-				if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
-				{
-					pVertices[i] = m_pInstanceVertices[i];
-				}
-
 			}
+			m_iSpawnIndex = m_iNumInstances;
+		}
+
+		for (_int i = 0; i < m_iNumInstances; i++)
+		{
+			
+
+			for (auto& pModule : m_Modules)
+			{
+				if (pModule->Is_Init())
+					continue;
+
+				pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
+			}
+
+			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
+			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
+			pVertices[i].vLifeTime.y += _fTimeDelta;
+
+			// TODO : Kill or Revive 등..
+			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
+			{
+				pVertices[i] = m_pInstanceVertices[i];
+			}
+
 		}		
 	}
 

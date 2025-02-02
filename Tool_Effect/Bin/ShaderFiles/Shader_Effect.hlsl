@@ -4,38 +4,24 @@
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_DiffuseTexture, g_NormalTexture;
-Texture2D g_MaskTexture;
-Texture2D g_NoiseTexture;
+
+
 Texture2D g_ShaderMaterial_0, g_ShaderMaterial_1, g_ShaderMaterial_2, g_ShaderMaterial_3, g_ShaderMaterial_4;
 Texture2D g_ShaderMaterial_5, g_ShaderMaterial_6, g_ShaderMaterial_7, g_ShaderMaterial_8, g_ShaderMaterial_9;
 float g_fFarZ = 1000.f;
 int g_iFlag = 0;
 
-// Light
-vector g_vLightDir = float4(1.f, -1.f, 1.f, 0.f);
-vector g_vLightDiffuse = float4(1.f, 1.f, 1.f, 1.f);
-vector g_vLightAmbient = float4(1.f, 1.f, 1.f, 1.f);
-vector g_vLightSpecular = float4(1.f, 1.f, 1.f, 1.f);
-vector g_vMtrlAmbient = float4(0.3f, 0.3f, 0.3f, 1.f);
+
+float g_fAlphaTest, g_fColorTest;
+
+Texture2D g_AlphaTexture, g_MaskTexture, g_NoiseTexture;
+float4 g_AlphaUVScale, g_MaskUVScale, g_NoiseUVScale;
+
 
 // Shader Value 
 float g_fTimeAcc = 0.0f;
-float2 g_vScrollSpeed = 0.0f;
-float2 g_vScrollSpeed_Mask = 0.0f;
-float g_fPlayTimeRatio = 0.0f;
-float3 g_vColor;
-float g_Alpha;
-float4 g_vColor_1 = { 0.0f, 0.0f, 0.0f, 0.0f };
-float4 g_vColor_2 = { 1.0f, 1.0f, 1.0f, 1.0f };
-float4 g_vEmissiveColor = { 0.0f, 0.0f, 0.0f, 0.0f };
+float4 g_vColor;
 
-vector g_vCamPosition;
-
-// Constant 
-float g_fBrightnessThreshold = 0.5f;
-float g_fBloomWeights = 1.0f;
-float g_fWaveSpeed = 2.f;
-float g_fWaveFrequency = 1.f;
 float g_fWaveAmplitude = 0.1f;
 
 // Weight에 대한 식은 총 4개
@@ -115,50 +101,66 @@ struct PS_OUT
     float2 vDistortion : SV_TARGET2;
 };
 
-struct PS_OUT_WEIGHTEDBLENDED
+struct PS_COLOR
 {
-    float4 vAccumulate : SV_TARGET0;
-    float vRevealage : SV_TARGET1;
+    float4 vDiffuse : SV_TARGET0;
 };
 
 
-PS_OUT_WEIGHTEDBLENDED PS_MAIN(PS_IN In)
+
+
+PS_COLOR PS_MAIN(PS_IN In)
 {
-    PS_OUT_WEIGHTEDBLENDED Out = (PS_OUT_WEIGHTEDBLENDED) 0;
+    PS_COLOR Out = (PS_COLOR) 0;
+
+    Out.vDiffuse = g_vColor;
     
-    if (g_fTimeAcc < length(In.vTexcoord))
+    return Out;
+}
+
+float g_fDissolveThreshold, g_fDissolveEdgeWidth, g_fDissolveEdgeIntensity, g_fDissolveFactor;
+float4 g_vDissolveColor;
+
+PS_COLOR PS_DISSOLVE(PS_IN In)
+{
+    PS_COLOR Out = (PS_COLOR) 0;
+    
+    float fAlpha = g_AlphaTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_AlphaUVScale.x, g_AlphaUVScale.y) + float2(g_AlphaUVScale.z, g_AlphaUVScale.w) * g_fTimeAcc)).r;
+    float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y) + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc)).r;
+    fAlpha = fMaskAlpha * fAlpha;
+    
+    float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y) + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) * g_fTimeAcc)).r;
+    float fDissolveFactor = step(g_fTimeAcc * g_fDissolveFactor, fDissolve);
+    if (fDissolveFactor < 0.05f)
         discard;
     
-    float4 vMask = g_MaskTexture.Sample(PointSampler, In.vTexcoord);
-    float vNoise = g_NoiseTexture.Sample(PointSampler, In.vTexcoord).r;
+    float3 vColor = g_vColor.rgb * fDissolveFactor;
+    fAlpha = g_vColor.a * fAlpha * fDissolveFactor;
     
-      // 디졸브 연산
-    float fDissolveAlpha = smoothstep(g_fTimeAcc - 0.1f, g_fTimeAcc, vNoise);
+    if (fAlpha < g_fAlphaTest)
+        discard;
+    if (length(vColor) < g_fColorTest)
+        discard;
 
-    // 가장자리 효과 적용
-    float edgeFactor = smoothstep(g_fTimeAcc - 1.f * 0.5, g_fTimeAcc, vNoise);
-    float4 edgeColor = float4(1.f, 1.f, 1.f, 1.f) * edgeFactor;
+       
+    Out.vDiffuse.rgb = vColor;
+    Out.vDiffuse.a = fAlpha;
+    
+    return Out;
+}
 
-    // 최종 색상 적용
-    float4 finalColor = lerp(edgeColor, float4(g_vColor, g_Alpha), fDissolveAlpha);
-    finalColor.a *= fDissolveAlpha; // 알파 채널 적용
+
+PS_COLOR PS_DISSOLVE_UV(PS_IN In)
+{
+    PS_COLOR Out = (PS_COLOR) 0;
+    
+    //float fNoise = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord).r;
+    //float fDissolveFactor = step(fNoise, g_fTimeAcc);
+    //fDissolveFactor = min(fDissolveFactor, step(length(In.vTexcoord), g_fTimeAcc));
         
-    float fAlpha = length(vMask.rgb) * 0.33f * g_Alpha * finalColor.a;
+    //float3 vColor = g_vColor * fDissolveFactor;
+    //float fAlpha = g_fAlpha * fDissolveFactor;
     
-    float fWeight = FUNC_WEIGHT3(In.vProjPos.w, 1.f);
-    
-    Out.vAccumulate.rgb = finalColor.rgb * fAlpha * fWeight;
-    Out.vAccumulate.a = fAlpha * fWeight;
-    Out.vRevealage = fAlpha * clamp(log(0.6f + fAlpha), 0.25f, 0.6f);
-    
-    //float fAlpha = length(vMask.rgb) * 0.33f * g_Alpha;
-    
-    //float fWeight = FUNC_WEIGHT3(In.vProjPos.w, 1.f);
-    
-    //Out.vAccumulate.rgb = g_vColor * fAlpha  * fWeight;
-    //Out.vAccumulate.a = fAlpha * fWeight;
-    //Out.vRevealage = fAlpha * clamp(log(0.6f + fAlpha), 0.25f, 0.6f);
-
     return Out;
 }
 
@@ -168,17 +170,71 @@ technique11 DefaultTechnique
     pass DefaultPass // 0
     {
         SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_WriteNone, 0);
-        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
+    pass Dissolve // 1
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DISSOLVE();
+    }
+
+    pass Dissolve_UV // 2
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DISSOLVE_UV();
+    }
 
 }
+
+/* Blended weight */
+//    if (g_fTimeAcc < length(In.vTexcoord))
+//        discard;
+    
+//float4 vMask = g_MaskTexture.Sample(PointSampler, In.vTexcoord);
+    
+//float3 vColor = g_vColor * vMask.rgb;
+//float fAlpha = g_fAlpha * vMask.a;
+    
+//float fWeight = FUNC_WEIGHT3(In.vProjPos.w, 1.f);
+    
+//    Out.vAccumulate.rgb = vColor * fAlpha *
+//fWeight;
+//    Out.vAccumulate.a = fAlpha *
+//fWeight;
+//    Out.vRevealage = fAlpha * clamp(log(0.6f + fAlpha), 0.25f, 0.6f);
+    
+/* Dissolve edge*/
+
+    //float fAlpha = g_AlphaTexture.Sample(LinearSampler, In.vTexcoord.x * g_AlphaUVScale).r;
+    //float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * g_MaskUVScale).r;
+    //fAlpha = fMaskAlpha * fAlpha;
+    
+    //float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * g_NoiseUVScale).r;
+    //float fEdgeFactor = smoothstep(0.f, 0.3f, (fDissolve - g_fTimeAcc));
+    //float fEdgeGlow = smoothstep(0.f, 0.3f, (fDissolve - g_fTimeAcc)) * 1.0f;
+   
+    //float3 vColor = lerp(float3(0.0f, 0.281f, 0.348f), g_vColor.rgb, fEdgeFactor);
+    //fAlpha += fEdgeFactor + fEdgeGlow;
+    //if (fAlpha < g_fAlphaTest)
+    //    discard;
+    //if (length(vColor) < g_fColorTest)
+    //    discard;
 
 
 // Effect Scroll

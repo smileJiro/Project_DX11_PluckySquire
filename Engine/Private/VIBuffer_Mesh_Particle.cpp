@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "Engine_Function.h"
 #include "iostream"
-#include "Effect_Module.h"
+#include "Translation_Module.h"
 
 CVIBuffer_Mesh_Particle::CVIBuffer_Mesh_Particle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer_Instance(_pDevice, _pContext)
@@ -203,6 +203,7 @@ void CVIBuffer_Mesh_Particle::Update(_float _fTimeDelta)
 		{
 			// 시간이 충족되면 Spawn합니다.
 			pVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
+			pVertices[m_iSpawnIndex].vLifeTime.y = m_fAccSpawnTime - m_fSpawnTime;
 
 			m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
 			m_fAccSpawnTime -= m_fSpawnTime;
@@ -236,38 +237,36 @@ void CVIBuffer_Mesh_Particle::Update(_float _fTimeDelta)
 	}
 	else if (BURST == m_eSpawnType)
 	{
-		if (m_fSpawnTime <= m_fAccSpawnTime)
+		for (_int i = 0; i < m_iNumInstances; i++)
 		{
-			for (_int i = 0; i < m_iNumInstances; i++)
+			if (m_iSpawnIndex != m_iNumInstances)
 			{
-				if (m_iSpawnIndex != m_iNumInstances)
-				{
-					pVertices[i] = m_pInstanceVertices[i];
-					pVertices[i].vLifeTime.y = 0.f;
+				pVertices[i] = m_pInstanceVertices[i];
+				pVertices[i].vLifeTime.y = 0.f;
 
-					m_iSpawnIndex = m_iNumInstances;
-				}
-
-				for (auto& pModule : m_Modules)
-				{
-					if (pModule->Is_Init())
-						continue;
-
-					pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
-				}
-
-				XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
-				XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
-				pVertices[i].vLifeTime.y += _fTimeDelta;
-
-				// TODO : Kill or Revive 등..
-				if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
-				{
-					pVertices[i] = m_pInstanceVertices[i];
-				}
-
+				m_iSpawnIndex = m_iNumInstances;
 			}
+
+			for (auto& pModule : m_Modules)
+			{
+				if (pModule->Is_Init())
+					continue;
+
+				pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
+			}
+
+			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
+			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
+			pVertices[i].vLifeTime.y += _fTimeDelta;
+
+			// TODO : Kill or Revive 등..
+			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
+			{
+				pVertices[i] = m_pInstanceVertices[i];
+			}
+
 		}
+	
 	}
 
 	m_pContext->Unmap(m_pVBInstance, 0);

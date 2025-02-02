@@ -49,11 +49,14 @@
     <Filter Include="11. RenderGroups\Final">
       <UniqueIdentifier>{f519b7fc-9230-4060-be2e-2909d8e106e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="11. RenderGroups\AfterEffect">
-      <UniqueIdentifier>{9985c30b-22c8-4099-917b-952e3557976f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="11. RenderGroups\Light">
       <UniqueIdentifier>{651a45b4-352e-44a1-a86d-d439e5d84bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="11. RenderGroups\AfterParticle">
+      <UniqueIdentifier>{9985c30b-22c8-4099-917b-952e3557976f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="11. RenderGroups\AfterEffect">
+      <UniqueIdentifier>{08c27ed1-4257-4f37-a6e3-bd38fd17dd09}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,11 +105,14 @@
     <ClInclude Include="..\public\ETool_RenderGroup_Final.h">
       <Filter>11. RenderGroups\Final</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ETool_RenderGroup_AfterEffect.h">
-      <Filter>11. RenderGroups\AfterEffect</Filter>
+    <ClInclude Include="..\public\ETool_RenderGroup_AfterParticle.h">
+      <Filter>11. RenderGroups\AfterParticle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ETool_RenderGroup_Lights.h">
       <Filter>11. RenderGroups\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ETool_RenderGroup_AfterEffect.h">
+      <Filter>11. RenderGroups\AfterEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -156,11 +162,14 @@
     <ClCompile Include="..\private\ETool_RenderGroup_Final.cpp">
       <Filter>11. RenderGroups\Final</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ETool_RenderGroup_AfterEffect.cpp">
-      <Filter>11. RenderGroups\AfterEffect</Filter>
+    <ClCompile Include="..\private\ETool_RenderGroup_AfterParticle.cpp">
+      <Filter>11. RenderGroups\AfterParticle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ETool_RenderGroup_Lights.cpp">
       <Filter>11. RenderGroups\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ETool_RenderGroup_AfterEffect.cpp">
+      <Filter>11. RenderGroups\AfterEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

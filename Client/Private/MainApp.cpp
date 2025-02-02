@@ -48,10 +48,6 @@ HRESULT CMainApp::Initialize()
 	/* Client Manager Initialize */
 	Initialize_Client_Manager();
 
-	CEmitter::SetID_2D(RG_2D);
-	CEmitter::SetID_3D(RG_3D);
-	CEmitter::SetID_Effect(PR3D_EFFECT);
-
 	if (FAILED(SetUp_StartLevel(LEVEL_STATIC))) // Logo로 초기화 Setup 하더라도 Loading에 반드시 들어가게되어있음.SetUp_StartLevel 참고.
 		return E_FAIL;
 

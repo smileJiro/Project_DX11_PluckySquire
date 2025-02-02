@@ -156,15 +156,16 @@
                     ]
                 }
             },
+            "DelayTime": 0.0,
             "Discard_A": 0.0,
             "Discard_RGB": 0.6530001163482666,
             "Event": 0,
             "LoopTime": 0,
-            "Parent": true,
             "Progress": true,
             "Texture": "../Bin/Resources/Textures/Particles/T_FX_CMN_Dust_01.dds",
-            "Time": 0.0,
-            "Type": "SPRITE"
+            "Time": 3.4028234663852886e+38,
+            "Type": "SPRITE",
+            "World": false
         }
     ],
     "Name": "Portal"

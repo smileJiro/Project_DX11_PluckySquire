@@ -37,7 +37,7 @@ public:
 	virtual HRESULT				Render() override;
 
 public:
-	void						Play_Effect(_uint _iEventID);
+	void						Active_Effect(_uint _iEventID, _bool _isActive);
 
 private:
 	vector<class CEmitter*> m_Emitters;
@@ -52,7 +52,7 @@ public:
 public:
 	HRESULT						Add_New_Emitter(CEmitter::EFFECT_TYPE _eType, void* _pArg);
 	void						Tool_Update(_float _fTimeDelta);
-	void						Tool_Reset(_int _iEvent);
+	void						Tool_Reset(_uint _iEvent);
 public:
 	void						Set_Texture(class CTexture* _pTextureCom, _uint _iType = 0);
 
@@ -61,12 +61,13 @@ public:
 
 private:
 	_string						m_strFilePath;
-	CEmitter*			m_pNowItem = { nullptr };
+	CEmitter*					m_pNowItem = { nullptr };
 
 	_int						m_iInputNumInstances = { 0 };
+	_uint						m_iToolEventID = { 0 };
 	_float						m_fToolAccTime = { 0.f };
 	_float						m_fToolRepeatTime = { 8.f };
-
+	_float						m_fDebugTimeScale = { 1.f };
 private:
 	void						Tool_ShowList();
 	void						Tool_InputText();

@@ -138,7 +138,7 @@ void CTransform::Turn(_float _fTimeDelta, _fvector _vAxis)
 _bool CTransform::Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _float _fRatio)
 {
     _vector vCross = XMVector3Cross(Get_State(CTransform::STATE_LOOK), _vDesireDir);
-    _vector vDot = XMVector3Dot(XMVector3Normalize(Get_State(CTransform::STATE_LOOK)), XMVector3Normalize(vDesireDir));
+    _vector vDot = XMVector3Dot(XMVector3Normalize(Get_State(CTransform::STATE_LOOK)), XMVector3Normalize(_vDesireDir));
     _float fCrossLength = XMVectorGetX(XMVector3Length(vCross));
 
     _float fRotationValue = 1.f;
@@ -150,7 +150,7 @@ _bool CTransform::Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _
 
     if (fCrossLength < 0.0001f) {
         if (XMVectorGetX(vDot) > 0) {
-            Set_Look(vDesireDir);
+            Set_Look(_vDesireDir);
             return true;
         }
     }
