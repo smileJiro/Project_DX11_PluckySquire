@@ -37,6 +37,7 @@
 
 #include "NPC.h"
 
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
@@ -95,8 +96,6 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
-
-
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
@@ -106,14 +105,24 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
-		/* Section Test */
-		CSection_Manager::GetInstance()->SetActive_Section(TEXT("Section_Test"), false);
 
-		///* Pooling Test */
-		//_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		////CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
-		//
-		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
+		// DXGI 팩토리 생성
+		IDXGIFactory4* pFactory;
+		CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+
+		// 기본 GPU 어댑터 가져오기
+		IDXGIAdapter3* pAdapter;
+		pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
+
+		// VRAM 사용량 쿼리
+		DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
+		pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
+
+		// 결과 출력 (MB 단위)
+		SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
+		SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
+
+		int a = 0;
 	}
 
 	// Change Camera Free  Or Target

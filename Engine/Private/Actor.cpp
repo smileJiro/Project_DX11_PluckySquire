@@ -257,9 +257,13 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
 	if (nullptr == pPhysics)
 		return E_FAIL;
-	PxShapeFlags ShapeFlags = _ShapeData.isTrigger ?
-		(PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eTRIGGER_SHAPE) :
-		(PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
+
+	PxShapeFlags ShapeFlags = _ShapeData.isTrigger ? PxShapeFlag::eTRIGGER_SHAPE : PxShapeFlag::eSIMULATION_SHAPE;
+
+	if (true == _ShapeData.isSceneQuery)
+		ShapeFlags |= PxShapeFlag::eSCENE_QUERY_SHAPE;
+	if(true == _ShapeData.isVisual)
+		ShapeFlags |= PxShapeFlag::eVISUALIZATION;
 
 
 	PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(_ShapeData.eMaterial);
@@ -298,6 +302,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	break;
 	case Engine::SHAPE_TYPE::COOKING:
 	{
+		ShapeFlags &= ~PxShapeFlag::eVISUALIZATION; // 쿠킹 전용 쉐잎은렌더 데이터 생성 x 
 
 		SHAPE_COOKING_DESC* pDesc = static_cast<SHAPE_COOKING_DESC*>(_ShapeData.pShapeDesc);
 
