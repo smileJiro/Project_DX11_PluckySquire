@@ -61,6 +61,9 @@ public:/* Default PhysX */
 
 	_float3						Get_GlobalPose();
 	void						Set_GlobalPose(const _float3& _vPos);
+
+	void						Set_PxActorDisable();
+	void						Set_PxActorEnable();
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);
