@@ -366,8 +366,8 @@ HRESULT CMainApp::Ready_RenderTargets()
 	/* RTV를 모아두는 MRT를 세팅 */
 
 	/* MRT_Book_2D*/
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Book_2D"), TEXT("Target_Book_2D"))))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Book_2D"), TEXT("Target_Book_2D"))))
+	//	return E_FAIL;
 
 	/* MRT_GameObjects */
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
