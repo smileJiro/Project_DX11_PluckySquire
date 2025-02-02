@@ -184,29 +184,8 @@ HRESULT CMainApp::Ready_RenderGroup()
 	CRenderGroup_MRT* pRenderGroup_MRT = nullptr;
 
 
-	/* RG_3D, PR3D_BOOK2D */
-	CRenderGroup_MRT::RG_MRT_DESC RG_Book2DDesc;
-	RG_Book2DDesc.iRenderGroupID = RENDERGROUP::RG_3D;
-	RG_Book2DDesc.iPriorityID = PRIORITY_3D::PR3D_BOOK2D;
-	RG_Book2DDesc.isViewportSizeChange = true;
-	RG_Book2DDesc.strMRTTag = TEXT("MRT_Book_2D");
-	RG_Book2DDesc.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_Book2D"));
-	RG_Book2DDesc.vViewportSize = _float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y);
-	RG_Book2DDesc.isClear = true;
-	if (nullptr == RG_Book2DDesc.pDSV)
-	{
-		MSG_BOX("Book2D DSV°¡ ¾ø´ë.");
-		return E_FAIL;
-	}
-	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_Book2DDesc);
-	if (nullptr == pRenderGroup_MRT)
-	{
-		MSG_BOX("Failed Create PR3D_BOOK2D");
-		return E_FAIL;
-	}
-	if(FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_MRT->Get_RenderGroupID(), pRenderGroup_MRT->Get_PriorityID(), pRenderGroup_MRT)))
-		return E_FAIL;
-
+	
+	
 	Safe_Release(pRenderGroup_MRT);
 	pRenderGroup_MRT = nullptr;
 

@@ -184,8 +184,6 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    //BodyDesc.iRenderGroupID_2D = RG_3D;
-    //BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
@@ -209,8 +207,6 @@ HRESULT CPlayer::Ready_PartObjects()
     SwordDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    SwordDesc.iRenderGroupID_2D = RG_3D;
-    SwordDesc.iPriorityID_2D = PR3D_BOOK2D;
     SwordDesc.iRenderGroupID_3D = RG_3D;
     SwordDesc.iPriorityID_3D = PR3D_NONBLEND;
     SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
