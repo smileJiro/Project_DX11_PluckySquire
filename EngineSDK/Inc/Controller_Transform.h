@@ -38,8 +38,8 @@ public: /* 2D, 3D */
 	_bool					Go_Right(_float _fTimeDelta);
 	_bool					Go_Up(_float _fTimeDelta);
 	_bool					Go_Down(_float _fTimeDelta);
-	void						Go_Direction(_vector _vDirection, _float _fTimeDelta);
-	void						Go_Direction(_vector _vDirection, _float _fSpeed, _float _fTimeDelta);
+	void					Go_Direction(_vector _vDirection, _float _fTimeDelta);
+	void					Go_Direction(_vector _vDirection, _float _fSpeed, _float _fTimeDelta);
 
 	void					Rotation(_float _fRadian, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 항등상태를 기준으로 지정한 각도로 회전한다.
 	void					RotationXYZ(const _float3& _vRadianXYZ);
@@ -60,8 +60,8 @@ public: /* 3D */
 public:
 	// Get
 	COORDINATE				Get_CurCoord() const { return m_eCurCoord; }
-	CTransform* Get_Transform() const;
-	CTransform* Get_Transform(COORDINATE _eCoordinate) const;
+	CTransform*				Get_Transform() const;
+	CTransform*				Get_Transform(COORDINATE _eCoordinate) const;
 	_matrix					Get_WorldMatrix() const;
 	_matrix					Get_WorldMatrix(COORDINATE _eCoordinate) const;
 	const _float4x4* Get_WorldMatrix_Ptr() const;
@@ -76,6 +76,8 @@ public:
 	void					Set_WorldMatrix(const _float4x4& _WorldMatrix);
 	void					Set_Scale(_float _fX, _float _fY, _float _fZ);
 	void					Set_Scale(const _float3& _vScale);
+	void					Set_Scale(COORDINATE _eCoord, _float _fX, _float _fY, _float _fZ);
+	void					Set_Scale(COORDINATE _eCoord, const _float3& _vScale);
 	void					Set_State(CTransform::STATE _eState, _fvector _vState);
 	void					Set_State(CTransform::STATE _eState, const _float4& _vState);
 	void					Set_SpeedPerSec(_float _fSpeedPerSec);
