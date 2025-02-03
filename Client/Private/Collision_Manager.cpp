@@ -89,6 +89,11 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
                     {
                         pLeftObject->On_Collision2D_Stay(pLeftCollider, pRightCollider, pRightObject);
                         pRightObject->On_Collision2D_Stay(pRightCollider, pLeftCollider, pLeftObject);
+
+                        if (true == pLeftCollider->Is_Block())
+                            pLeftCollider->Block(pRightCollider);
+                        else if (true == pRightCollider->Is_Block())
+                            pRightCollider->Block(pLeftCollider);
                     }
                 }
                 else
@@ -99,6 +104,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
                         pLeftObject->On_Collision2D_Enter(pLeftCollider, pRightCollider, pRightObject);
                         pRightObject->On_Collision2D_Enter(pRightCollider, pLeftCollider, pLeftObject);
                         iter->second = true; // 이전 프레임정보를 업데이트
+
                     }
                 }
             }
