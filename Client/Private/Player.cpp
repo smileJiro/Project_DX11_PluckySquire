@@ -121,7 +121,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
 
 	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 17.f;	
+	m_tStat[COORDINATE_3D].fJumpPower = 14.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
@@ -266,12 +266,10 @@ void CPlayer::Update(_float _fTimeDelta)
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
 
-    __super::Update(_fTimeDelta); /* Part Object Update */
 	if (COORDINATE_3D == Get_CurCoord())
         Rotate_To(m_v3DTargetDirection);
-    m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    m_bOnGround = false;
-
+    __super::Update(_fTimeDelta); /* Part Object Update */
+     m_bOnGround = false;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -383,7 +381,7 @@ void CPlayer::Move(_vector _vForce, _float _fTimeDelta)
 
     if (COORDINATE_3D == Get_CurCoord())
     {
-	    m_v3DTargetDirection = XMVector4Normalize(_vForce);
+        m_v3DTargetDirection = XMVector4Normalize(_vForce);
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
         _vector vVeclocity = _vForce /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
         vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
@@ -391,7 +389,7 @@ void CPlayer::Move(_vector _vForce, _float _fTimeDelta)
     }
     else
     {
-        m_pControllerTransform->Go_Direction(XMVector4Normalize( _vForce), _fTimeDelta);
+        m_pControllerTransform->Go_Direction(XMVector4Normalize(_vForce), _fTimeDelta);
     }
 }
 
@@ -403,7 +401,7 @@ void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
         if (COORDINATE_3D == Get_CurCoord())
         {
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-            
+
             _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
             vLook = XMVectorSetY(vLook * fVelocity /** _fTimeDelta*/, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
             pDynamicActor->Set_LinearVelocity(vLook);
@@ -411,41 +409,10 @@ void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
         else
         {
             _vector vDir = EDir_To_Vector(m_e2DDirection_E);
-            m_pControllerTransform->Go_Direction(vDir, fVelocity,_fTimeDelta);
+            m_pControllerTransform->Go_Direction(vDir, fVelocity, _fTimeDelta);
         }
     }
 
-}
-
-void CPlayer::Stop_Rotate()
-{
-
-    ACTOR_TYPE eActorType = Get_ActorType();
-    if (ACTOR_TYPE::DYNAMIC == eActorType)
-    {
-        if (COORDINATE_3D == Get_CurCoord())
-        {
-            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-            pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
-        }
-    }
-}
-
-void CPlayer::Stop_Move()
-{
-    ACTOR_TYPE eActorType = Get_ActorType();
-    if (ACTOR_TYPE::DYNAMIC == eActorType)
-    {
-        if (COORDINATE_3D == Get_CurCoord())
-        {
-            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-            pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
-        }
-        else
-        {
-
-        }
-    }
 }
 
 
@@ -461,44 +428,7 @@ void CPlayer::Jump()
         m_pActorCom->Add_Impulse(_float3(0.0f, m_tStat[COORDINATE_3D].fJumpPower, 0.0f));
 }
 
-void CPlayer::Add_Impuls(_vector vForce)
-{
-    _float3 f3Force;
-    XMStoreFloat3(&f3Force, vForce);
-    m_pActorCom->Add_Impulse(f3Force);
-}
 
-void CPlayer::Rotate_To(_vector _vDirection)
-{
-    CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-
-    _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    _float3 vLookDiff; XMStoreFloat3(&vLookDiff, _vDirection - vLook);
-    _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, _vDirection - m_vLookBefore);
-    if (XMVector3Equal(_vDirection, XMVectorZero()))
-    {
-        _vDirection = vLook;
-    }
-    if (XMVector3NearEqual(_vDirection, vLook, XMVectorReplicate(1e-6f)))
-    {
-        pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
-    }
-    else if ((vLookDiff.x * vLookDiffBefore.x) < 0
-        || (vLookDiff.z * vLookDiffBefore.z) < 0)
-    {
-        pDynamicActor->Set_Rotation(_vDirection);
-        pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
-    }
-    else
-    {
-        _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDirection));
-        if (XMVector3Equal(vAxis, XMVectorZero()))
-            vAxis = XMVectorSet(0, 1, 0, 0);
-        pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(1080));
-
-    }
-
-}
 
 
 PLAYER_KEY_RESULT CPlayer::Player_KeyInput()

@@ -79,7 +79,7 @@ void CPlayerState_Run::Exit()
 	{
 		m_pOwner->Stop_Rotate();
 	}
-	m_pOwner->Stop_Move();
+
 }
 
 void CPlayerState_Run::Switch_RunAnimation2D(F_DIRECTION _eFDir)
