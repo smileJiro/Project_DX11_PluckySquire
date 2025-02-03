@@ -45,7 +45,14 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 	//{
 	//	Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 	//}
-	Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
+
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	{
+		m_pOwner->Attack();
+		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
+	}
 
 	////공격 범위 벗어나고 추적 범위 내면 Chase 전환
 	//if (fDis > Get_CurCoordRange(MONSTER_STATE::ATTACK) && fDis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
