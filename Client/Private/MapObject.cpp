@@ -35,7 +35,9 @@ HRESULT CMapObject::Initialize(void* _pArg)
             pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
             pDesc->strModelPrototypeTag_2D = StringToWstring(tInfo.strModelName);
             //pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
-
+            //_float2 fRadio = { pDesc->fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, pDesc->fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
+            //fImageSize.x *= fRadio.x;
+            //fImageSize.y *= fRadio.y;
         }
     }
     // MODELOBJ
@@ -59,7 +61,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
             return E_FAIL;
 
         XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-
+        // : ¼öÁ¤
         _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
 
         XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));

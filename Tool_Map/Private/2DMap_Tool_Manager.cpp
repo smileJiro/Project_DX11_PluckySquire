@@ -1378,11 +1378,11 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 		Desc.iMapSizeWidth = RTSIZE_BOOK2D_X;
 		Desc.iMapSizeHeight = RTSIZE_BOOK2D_Y;
 
-		Desc.iIndexSIzeX = iTileXSize;
-		Desc.iIndexSIzeY = iTileYSize;
+
 		Desc.iIndexCountX = iTileWidthInTiles;
 		Desc.iIndexCountY = iTileHeightInTiles;
-
+		Desc.iIndexSIzeX = RTSIZE_BOOK2D_X / iTileWidthInTiles;
+		Desc.iIndexSIzeY = RTSIZE_BOOK2D_Y / iTileHeightInTiles;
 		CGameObject* pGameObject = nullptr;
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTile_RenderObject"),
 			LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
