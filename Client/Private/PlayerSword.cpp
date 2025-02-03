@@ -24,7 +24,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
     Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
 
-    pDesc->isCoordChangeEnable = true;
+    pDesc->isCoordChangeEnable = false;
     pDesc->strModelPrototypeTag_3D = TEXT("latch_sword");
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;

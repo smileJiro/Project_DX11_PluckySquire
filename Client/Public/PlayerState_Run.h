@@ -16,7 +16,7 @@ public:
 	void Switch_RunAnimation2D(F_DIRECTION _eFDir);
 
 private:
-	_float m_fSpeed = 10.f;
+	_float m_fSpeed = 7.f;
 };
 
 END

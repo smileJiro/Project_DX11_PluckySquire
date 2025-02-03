@@ -76,8 +76,7 @@ HRESULT CContainerObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _p
     {
         if (nullptr != pPartObject)
         {
-            if (FAILED(pPartObject->Change_Coordinate(_eCoordinate, nullptr)))
-                return E_FAIL;
+            pPartObject->Change_Coordinate(_eCoordinate, nullptr);
         }
     }
     //if (FAILED(m_PartObjects[PART_BODY]->Change_Coordinate(_eCoordinate, nullptr)))
