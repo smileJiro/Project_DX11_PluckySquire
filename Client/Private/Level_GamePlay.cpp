@@ -10,6 +10,7 @@
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
 
+#include "MainTable.h"
 #include "Player.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
@@ -48,6 +49,7 @@ HRESULT CLevel_GamePlay::Initialize()
 {
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
+	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
@@ -67,8 +69,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
-
-
 
 	/* Collision Test */
 
@@ -240,6 +240,18 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
+{
+	CMainTable::ACTOROBJECT_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+		LEVEL_GAMEPLAY, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -716,10 +728,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.0f, 0.35f, -19.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+	//	return E_FAIL;
 
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);

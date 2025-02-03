@@ -8,6 +8,8 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 
+/* For. Main Table */
+#include "MainTable.h"
 /* For. Trigger*/
 #include "Camera_Trigger.h"
 
@@ -277,6 +279,12 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+    /* For. Prototype_GameObject_MainTable */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+        CMainTable::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
     // ============ Triger
     /* For. Prototype_GameObject_Camera_Trigger */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"),
@@ -1001,6 +1009,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
             NormalDesc.isCoordChangeEnable = false;
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
+            NormalDesc.isCulling = false;
             NormalDesc.eStartCoord = COORDINATE_3D;
             NormalDesc.tTransform3DDesc.isMatrix = true;
             NormalDesc.tTransform3DDesc.matWorld = vWorld;

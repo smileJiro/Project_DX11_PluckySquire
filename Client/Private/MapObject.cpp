@@ -23,15 +23,19 @@ HRESULT CMapObject::Initialize_Prototype()
 HRESULT CMapObject::Initialize(void* _pArg)
 {
 
-    if (_pArg != nullptr)
-    {
-        MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
-        m_matWorld = pDesc->tTransform3DDesc.matWorld;
+    if (nullptr == _pArg)
+        return E_FAIL;
 
+    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
+
+    if (nullptr == pDesc)
+        return E_FAIL;
+
+    #pragma region 기본 필수 Desc 채우기
+        // 2D Import Object의 경우, Section_Manager의 2DModel 정보를 가져와서 채워줘야 한다.
         if (pDesc->is2DImport)
         {
             auto tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(pDesc->i2DModelIndex);
-            // 콜라이더, 소팅, 액티브, 오버라이드 등은 나중에... 일단 띄워놓기만 합니다.
             pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
             pDesc->strModelPrototypeTag_2D = StringToWstring(tInfo.strModelName);
             //pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
@@ -39,11 +43,13 @@ HRESULT CMapObject::Initialize(void* _pArg)
             //fImageSize.x *= fRadio.x;
             //fImageSize.y *= fRadio.y;
         }
-    }
-    // MODELOBJ
-    {
-        MODELOBJECT_DESC* pDesc = static_cast<MODELOBJECT_DESC*>(_pArg);
+        m_matWorld = pDesc->tTransform3DDesc.matWorld;
+        m_isCulling = pDesc->isCulling;
+    #pragma endregion
 
+    //CModelObject::Initialize()의 Component 생성 구현부는 필요하나, 이후 super 클래스 Init 로직을 타기 전에 처리해야 하는 정보가 있기 때문에, 부득이 뺴서 구현.
+    //                                                                    (생성된 모델을 확인하여야 쿠킹 셰잎 생성이 가능하다.)
+    #pragma region CModelObject::Initialize(pArg); 재구현부
         // Save 
         m_iShaderPasses[COORDINATE_2D] = pDesc->iShaderPass_2D;
         m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
@@ -65,57 +71,63 @@ HRESULT CMapObject::Initialize(void* _pArg)
         _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
 
         XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
-    }
-    
+    #pragma endregion
+
+  
+    // 구조체는 if문 내부에 넣어서 포인터로 던지면, 사라지므로. 밖에 선언
     CActor::ACTOR_DESC ActorDesc;
     SHAPE_COOKING_DESC ShapeCookingDesc = {};
     SHAPE_DATA ShapeData;
 
-    if (nullptr != m_pControllerModel)
-    {
-        CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
-
-        if (nullptr != pModel)
+    // 모델에 쿠킹 셰잎 정보가 있으면, 액터 정보를 ModelDesc에 포함시킨다.
+    #pragma region CActorObject::Initialize(pArg) 준비작업 
+        if (nullptr != m_pControllerModel)
         {
-            if (static_cast<C3DModel*>(pModel)->Has_CookingCollider())
+            CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+
+            if (nullptr != pModel)
             {
+                if (static_cast<C3DModel*>(pModel)->Has_CookingCollider())
+                {
 
-                MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
+                    MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
 
-                pDesc->eActorType = ACTOR_TYPE::STATIC;
+                    pDesc->eActorType = ACTOR_TYPE::STATIC;
 
-                ActorDesc.pOwner = this;
+                    ActorDesc.pOwner = this;
 
-                ActorDesc.FreezeRotation_XYZ[0] = true;
-                ActorDesc.FreezeRotation_XYZ[1] = true;
-                ActorDesc.FreezeRotation_XYZ[2] = true;
+                    ActorDesc.FreezeRotation_XYZ[0] = true;
+                    ActorDesc.FreezeRotation_XYZ[1] = true;
+                    ActorDesc.FreezeRotation_XYZ[2] = true;
 
-                ActorDesc.FreezePosition_XYZ[0] = false;
-                ActorDesc.FreezePosition_XYZ[1] = false;
-                ActorDesc.FreezePosition_XYZ[2] = false;
+                    ActorDesc.FreezePosition_XYZ[0] = false;
+                    ActorDesc.FreezePosition_XYZ[1] = false;
+                    ActorDesc.FreezePosition_XYZ[2] = false;
 
-                ShapeCookingDesc.isLoad = true;
-                ShapeCookingDesc.isSave = false;
-                ShapeData.eShapeType = SHAPE_TYPE::COOKING;
-                ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
-                ShapeData.pShapeDesc = &ShapeCookingDesc;
-                ShapeData.isTrigger = false;
-                _float3 fScale =
-                    _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
-                        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
-                        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
-                _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
-                XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, matScale);
-                ActorDesc.ShapeDatas.push_back(ShapeData);
-                pDesc->pActorDesc = &ActorDesc;
+                    ShapeCookingDesc.isLoad = true;
+                    ShapeCookingDesc.isSave = false;
+                    ShapeData.eShapeType = SHAPE_TYPE::COOKING;
+                    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+                    ShapeData.pShapeDesc = &ShapeCookingDesc;
+                    ShapeData.isTrigger = false;
+                    _float3 fScale =
+                        _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
+                            XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
+                            XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
+                    _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
+                    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, matScale);
+                    ActorDesc.ShapeDatas.push_back(ShapeData);
+                    pDesc->pActorDesc = &ActorDesc;
 
-                ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-                ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
-            
+                    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
+                
+                }
             }
         }
-    }
+    #pragma endregion
 
+    // 이후 CModelObject를 제외한 super 클래스 initialize를 다시 태운다.
     if (FAILED(CPartObject::Initialize(_pArg)))
         return E_FAIL;
 
@@ -175,17 +187,10 @@ void CMapObject::Late_Update(_float _fTimeDelta)
     /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
-        if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
+        if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
         {
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
-
-
         }
-        else
-        {
-
-        }
-           
     }
             
 

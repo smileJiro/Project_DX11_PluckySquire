@@ -206,6 +206,7 @@
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\Collision_Manager.h" />
+    <ClInclude Include="..\public\MainTable.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
@@ -323,6 +324,7 @@
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
+    <ClCompile Include="..\private\MainTable.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
