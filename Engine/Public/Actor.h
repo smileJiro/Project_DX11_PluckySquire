@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+
 typedef struct tagFilterData
 {
 	_uint MyGroup = 0;
