@@ -65,7 +65,7 @@ private:
 	_uint									m_eCurrentCameraType = { CAMERA_TYPE_END };
 
 private:
-	void				Add_ArmData(_wstring wszArmTag, ARM_DATA _pData);
+	void				Add_ArmData(_wstring wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
 	void				Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData);
 
 public:
