@@ -10,10 +10,12 @@
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
 
+#include "MainTable.h"
 #include "Player.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
 #include "BarfBug.h"
+#include "Projectile_BarfBug.h"
 #include "JumpBug.h"
 #include "BirdMonster.h"
 #include "Goblin.h"
@@ -37,6 +39,7 @@
 
 #include "NPC.h"
 
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
@@ -46,6 +49,7 @@ HRESULT CLevel_GamePlay::Initialize()
 {
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
+	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
@@ -65,8 +69,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
-
-
 
 	/* Collision Test */
 
@@ -95,8 +97,6 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
-
-
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
@@ -106,14 +106,24 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
-		/* Section Test */
-		CSection_Manager::GetInstance()->SetActive_Section(TEXT("Section_Test"), false);
 
-		///* Pooling Test */
-		//_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		////CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
-		//
-		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
+		// DXGI 팩토리 생성
+		IDXGIFactory4* pFactory;
+		CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+
+		// 기본 GPU 어댑터 가져오기
+		IDXGIAdapter3* pAdapter;
+		pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
+
+		// VRAM 사용량 쿼리
+		DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
+		pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
+
+		// 결과 출력 (MB 단위)
+		SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
+		SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
+
+		int a = 0;
 	}
 
 	// Change Camera Free  Or Target
@@ -230,6 +240,18 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
+{
+	CMainTable::ACTOROBJECT_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+		LEVEL_GAMEPLAY, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -651,25 +673,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	}
 
 
-	//CUI::UIOBJDESC pHeartDesc = {};
-	//pHeartDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	//pHeartDesc.fX = g_iWinSizeX /2.f;
-	//pHeartDesc.fY = g_iWinSizeY /2.f + 10.f;
-	//pHeartDesc.fSizeX = 128.f;
-	//pHeartDesc.fSizeY = 128.f;
-	//
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pHeartDesc)))
-	//	return E_FAIL;
-	
-
-#pragma region 로고씬
-
-
-
-#pragma endregion 로고씬
-
-
 	pDesc.fX = g_iWinSizeX / 2.f / 2.f ;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
 	pDesc.fSizeX = 1208.f * 0.7f / 2.f;
@@ -692,13 +695,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
-	//CNPC::NPC_DESC NPCDesc;
-	//
-	//NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-	//	return E_FAIL;
+	CNPC::NPC_DESC NPCDesc;
+
+	NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -723,7 +728,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
-	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-7.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.0f, 0.35f, -19.0f);
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
@@ -761,6 +766,17 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
 	//	return E_FAIL;
+
+		/*  Projectile  */
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
+
+	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
+	pProjDesc->iCurLevelID = LEVEL_GAMEPLAY;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
 
 	return S_OK;
 }

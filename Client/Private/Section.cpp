@@ -45,7 +45,6 @@ HRESULT CSection::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint
         return E_FAIL;
 
     _pGameObject->Set_Include_Section_Name(m_strName);
-
     return S_OK;
 }
 

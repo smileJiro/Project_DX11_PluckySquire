@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ESC_Goblin.h"
+#include "UI_Manager.h"
 
 
 
@@ -49,6 +50,11 @@ void CESC_Goblin::Update(_float _fTimeDelta)
 		false == m_isRender ? m_isRender = true : m_isRender = false;
 	}
 
+	if (KEY_DOWN(KEY::E) && 0 == Uimgr->Get_SettingPanelIndex() && true == m_isRender)
+	{
+		m_bPreRender = m_isRender;
+		false == m_isRender ? m_isRender = true : m_isRender = false;
+	}
 	//m_bPreRender = m_isRender;
 
 	if (m_isRender == true)
@@ -122,10 +128,7 @@ void CESC_Goblin::Update(_float _fTimeDelta)
 			m_eState = STATE_WAIT;
 			m_fWaitGoblinTime = 0.f;
 		}
-		
-		
 	}
-
 	m_bPreRender = m_isRender;
 }
 	

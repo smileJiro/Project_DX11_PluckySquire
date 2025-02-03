@@ -133,7 +133,6 @@ bool CPhysx_EventCallBack::IsOwnerObjectValid(CActorObject* pOwner)
 }
 void CPhysx_EventCallBack::Update()
 {
-	
 	for (auto& Pair : m_StayTrigger)
 	{
 		_bool isEmpty = false;

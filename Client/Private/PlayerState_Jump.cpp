@@ -54,9 +54,8 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 	//공중일때
 	else
 	{
-
 		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
-			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* m_fAirRunSpeed, _fTimeDelta);
+			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir)* m_fAirRunSpeed);
 		else
 			m_pOwner->Stop_Rotate();
 

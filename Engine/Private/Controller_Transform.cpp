@@ -239,6 +239,20 @@ void CController_Transform::Set_Scale(const _float3& _vScale)
 	m_pTransforms[m_eCurCoord]->Set_Scale(_vScale);
 }
 
+void CController_Transform::Set_Scale(COORDINATE _eCoord, _float _fX, _float _fY, _float _fZ)
+{
+	if (nullptr == m_pTransforms[_eCoord])
+		return;
+	m_pTransforms[_eCoord]->Set_Scale(_fX, _fY, _fZ);
+}
+
+void CController_Transform::Set_Scale(COORDINATE _eCoord, const _float3& _vScale)
+{
+	if (nullptr == m_pTransforms[_eCoord])
+		return;
+	m_pTransforms[_eCoord]->Set_Scale(_vScale);
+}
+
 void CController_Transform::Set_State(CTransform::STATE _eState, _fvector _vState)
 {
 	m_pTransforms[m_eCurCoord]->Set_State(_eState, _vState);

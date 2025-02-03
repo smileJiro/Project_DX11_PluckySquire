@@ -8,6 +8,8 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 
+/* For. Main Table */
+#include "MainTable.h"
 /* For. Trigger*/
 #include "Camera_Trigger.h"
 
@@ -32,6 +34,7 @@
 /* For. UI*/
 
 /* For. NPC*/
+#include "Npc_Body.h"
 #include "NPC_Store.h"
 
 
@@ -276,6 +279,12 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+    /* For. Prototype_GameObject_MainTable */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+        CMainTable::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
     // ============ Triger
     /* For. Prototype_GameObject_Camera_Trigger */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"),
@@ -318,6 +327,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"),
         CMonster_Body::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+	/* For. Prototype_GameObject_Monster_Body */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_NPC_Body"),
+		CNpc_Body::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
      /* For. Prototype_GameObject_Beetle */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"),
@@ -392,19 +406,19 @@ HRESULT CLoader::Loading_Level_Logo()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/_BACK_T_TitleBG.dds"), 1))))
 		return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/2DMap/mountain_white_flower_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower1"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_02.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/2DMap/mountain_white_flower_02.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_ink_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_ink_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink1"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_ink_02.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_ink_02.dds"), 1))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -666,7 +680,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-    // TEST
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ParentShopPannel"),
 		CShopPanel::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -996,6 +1009,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
             NormalDesc.isCoordChangeEnable = false;
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
+            NormalDesc.isCulling = false;
             NormalDesc.eStartCoord = COORDINATE_3D;
             NormalDesc.tTransform3DDesc.isMatrix = true;
             NormalDesc.tTransform3DDesc.matWorld = vWorld;

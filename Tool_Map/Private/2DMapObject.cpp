@@ -40,11 +40,17 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 		return E_FAIL;
 
 	_float2 fImageSize = m_pTextureCom->Get_Size();
-	m_fY += fImageSize.y * 0.5f;
-	m_pControllerTransform->Set_Scale(fImageSize.x , fImageSize.y , 1.f );
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX, -m_fY, 0.f, 1.f));
+	_float2 fRadio = { pDesc->fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, pDesc->fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
+	fImageSize.x *= fRadio.x;
+	fImageSize.y *= fRadio.y;
+	m_fX *= fRadio.x;
+	m_fY *= -fRadio.y;
+	m_fY -= fImageSize.y * 0.5f;
+	m_pControllerTransform->Set_Scale(fImageSize.x , fImageSize.y, 1.f );
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX, m_fY, 0.f, 1.f));
 	m_fRenderTargetSize = pDesc->fRenderTargetSize;
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)pDesc->fRenderTargetSize.x, (_float)pDesc->fRenderTargetSize.y, 0.0f, 1.0f));
+
 
 	return S_OK;
 }
@@ -78,7 +84,7 @@ HRESULT C2DMapObject::Render()
 
 void C2DMapObject::Set_OffsetPos(_float2 _fPos)
 {
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX  + (_fPos.x), -m_fY + (-_fPos.y), 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX  + (_fPos.x), m_fY + (-_fPos.y), 0.f, 1.f));
 }
 
 _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
@@ -97,14 +103,14 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 
 	_vector fPosition = Get_FinalPosition();
 	_float fPosX = XMVectorGetX(fPosition) + (m_fRenderTargetSize.x * 0.5f);
-	_float fPosY = (XMVectorGetY(fPosition) * -1.f) + (m_fRenderTargetSize.y * 0.5f);
+	_float fPosY = ((-XMVectorGetY(fPosition)) + (m_fRenderTargetSize.y * 0.5f));
 
 	_float3 fScale = Get_FinalScale(); // 태웅 : 함수 이름이 바껴서 수정했음. 혹시나 문제가있다면 이걸수정하시오 트랜스폼컨트롤러 get_scale 로
 
-	_float fLeft = fPosX - fScale.x / 2;
-	_float fRight = fPosX + fScale.x / 2;
-	_float fTop = fPosY - fScale.y / 2;
-	_float fBottom = fPosY + fScale.y / 2;
+	_float fLeft = fPosX - fScale.x / 2.f;
+	_float fRight = fPosX + fScale.x / 2.f;
+	_float fTop = fPosY - fScale.y / 2.f;
+	_float fBottom = fPosY + fScale.y / 2.f;
 	if (ContainWstring(m_strKey, L"rock"))
 	{
 		int a=1;
@@ -116,13 +122,18 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 HRESULT C2DMapObject::Export(HANDLE hFile)
 {
 
-	_vector vPos = Get_FinalPosition();
+	//_vector vPos = Get_FinalPosition();
 
 	DWORD		dwByte(0);
 	_uint		iModelIndex = nullptr != m_pModelInfo ? m_pModelInfo->Get_ModelIndex() : 0;
-	_float2		fPos = {XMVectorGetX(vPos),XMVectorGetY(vPos) };
+	_float2		fPos = {m_fX, m_fY};
 	_bool		isOverride = false;
 
+	_float2 fImageSize = m_pTextureCom->Get_Size();
+	//_float2 fRadio = { m_fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, m_fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
+	//fImageSize.x *= fRadio.x;
+	//fImageSize.y *= fRadio.y;
+	//fPos.y -= fImageSize.y * 0.5f;
 	WriteFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
 	WriteFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 	WriteFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
@@ -166,9 +177,14 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 
 
 	_float2 fImageSize = m_pTextureCom->Get_Size();
-	m_pControllerTransform->Set_Scale(fImageSize.x, fImageSize.y, 1.f);
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fPos.x, fPos.y, 0.f, 1.f));
 	m_fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X ,(_float)RTSIZE_BOOK2D_Y };
+	_float2 fRadio = { m_fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, m_fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
+	fImageSize.x *= fRadio.x;
+	fImageSize.y *= fRadio.y;
+	m_fX = fPos.x;
+	m_fY = fPos.y;
+	m_pControllerTransform->Set_Scale(fImageSize.x, fImageSize.y, 1.f);
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fPos.x, fPos.y + (fImageSize.y * 0.5f), 0.f, 1.f));
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)m_fRenderTargetSize.x, m_fRenderTargetSize.y, 0.0f, 1.0f));
 
 	return S_OK;

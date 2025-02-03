@@ -41,10 +41,10 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 10.f;
     pDesc->fAlert2DRange = 500.f;
-    pDesc->fChase2DRange = 1200.f;
+    pDesc->fChase2DRange = 1500.f;
     pDesc->fAttack2DRange = 1000.f;
-    pDesc->fDelayTime = 5.f;
-    pDesc->fCoolTime = 10.f;
+    pDesc->fDelayTime = 1.f;
+    pDesc->fCoolTime = 3.f;
 
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
@@ -105,28 +105,6 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     }
     Safe_Delete(pDesc->pActorDesc);
 
-
-    /*  Projectile  */
-    Pooling_DESC Pooling_Desc;
-    Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-    Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
-
-    CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
-    pProjDesc->fLifeTime = 5.f;
-    pProjDesc->eStartCoord = COORDINATE_3D;
-    pProjDesc->isCoordChangeEnable = true;
-    pProjDesc->iNumPartObjects = PART_LAST;
-    pProjDesc->iCurLevelID = m_iCurLevelID;
-
-    pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pProjDesc->tTransform2DDesc.fSpeedPerSec = 1000.f;
-
-    pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
-
-    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
-
     return S_OK;
 }
 
@@ -184,6 +162,11 @@ void CBarfBug::Update(_float _fTimeDelta)
 
 void CBarfBug::Late_Update(_float _fTimeDelta)
 {
+
+#ifdef _DEBUG
+    if(COORDINATE_3D == Get_CurCoord())
+        m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND, this);
+#endif
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -192,6 +175,8 @@ HRESULT CBarfBug::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
+    m_pDetectionField->Render();
+
     m_pColliderCom->Render();
 #endif // _DEBUG
 
@@ -452,7 +437,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -509,9 +494,10 @@ HRESULT CBarfBug::Ready_Components()
     /* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
-    AABBDesc.vExtents = { 75.f, 100.f };
+    AABBDesc.vExtents = { 50.f, 100.f };
     AABBDesc.vScale = { 1.0f, 1.0f };
-    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
+    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
+    AABBDesc.isBlock = true;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;

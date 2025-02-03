@@ -34,6 +34,8 @@ private :
 		MODEL_LIST,
 		SELECT_MAP,
 		SAVE_LIST,
+		TRIGGER_LIST,
+		TRIGGER_EVENT_LIST,
 		LIST_END
 	};
 private:
@@ -42,7 +44,13 @@ private:
 		_tchar szName[MAX_PATH];
 		_uint  iObjKey;
 	}MAP_OBJ;
-
+public :
+	typedef struct tagTriggerEvent
+	{
+		_string strEventName = "";
+		_uint	uTriggerCondition = 0;
+		_uint	uTriggerEvent = 0;
+	}TRIGGER_EVENT;
 private:
 	C2DMap_Tool_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	~C2DMap_Tool_Manager() = default;
@@ -65,7 +73,8 @@ private:
 	void				Map_Import_Imgui(_bool _isLock = false);
 	void				Model_Edit_Imgui(_bool _isLock = false);
 	void				SaveLoad_Imgui(_bool _isLock = false);
-
+	void				TriggerSetting_Imgui(_bool bLock = false);
+	void				TriggerEvent_Imgui(_bool bLock = false);
 #pragma endregion
 
 #pragma region Object Tool Method
@@ -109,12 +118,14 @@ private:
 	
 	_wstring						m_arrSelectName[LIST_END];
 
-
 	vector<C2DMapObjectInfo*>		m_ObjectInfoLists;
+	vector<TRIGGER_EVENT>			m_TriggerEvents;
 	vector<_wstring>				m_SaveFileLists;
 
 	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
 	C2DMapObject*					m_pPickingObject = nullptr;
+	class C2DTrigger_Sample*		m_pPickingTrigger = nullptr;
+	_int							m_SelectTriggerEventIdx = -1;
 
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
 	_char							m_szSaveFileName[MAX_PATH];

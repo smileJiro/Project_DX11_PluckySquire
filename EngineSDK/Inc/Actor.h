@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+
 typedef struct tagFilterData
 {
 	_uint MyGroup = 0;
@@ -13,7 +14,8 @@ typedef struct tagShapeData
 	SHAPE_DESC*		pShapeDesc = nullptr;
 	_float4x4		LocalOffsetMatrix = {};
 	_bool			isTrigger = false;
-
+	_bool			isSceneQuery = false;
+	_bool			isVisual = true;
 	ACTOR_MATERIAL	eMaterial = ACTOR_MATERIAL::DEFAULT;
 	_uint			iShapeUse = 0;
 	FILTER_DATA		FilterData = {};
@@ -87,6 +89,9 @@ public:
 	HRESULT						Set_ShapeLocalOffsetQuaternion(_int _iShapeIndex, const _float4& _vQuat); // 쿼터니언
 	HRESULT						Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float3& _vPitchYawRoll); // xyz 회전량 넣으면 쿼터니언으로 변환해서 넣음.
 	HRESULT						Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc); // shape 크기변경
+	HRESULT						Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable);
+	HRESULT						Set_AllShapeEnable(_bool _isEnable);
+
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;

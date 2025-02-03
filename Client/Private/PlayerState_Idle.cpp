@@ -30,8 +30,8 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 
 void CPlayerState_Idle::Enter()
 {
-	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (COORDINATE_2D == eCoord)
 	{
 		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
@@ -54,7 +54,10 @@ void CPlayerState_Idle::Enter()
 	}
 
 	else
+	{
+		m_pOwner->Stop_Move();
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_01_GT);
+	}
 
 
 
