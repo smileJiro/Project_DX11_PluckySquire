@@ -130,12 +130,6 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle">
       <UniqueIdentifier>{2bccbdcc-f487-4cc0-ac5f-2f61ef4de991}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\09. RenderTargets">
-      <UniqueIdentifier>{c6f2ce8e-acda-4bcb-b691-3d92d5e7ee0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\09. RenderTargets\Manager">
-      <UniqueIdentifier>{b8b92195-49d1-43e8-bd2b-cd0f39b298c2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Rect\Rect_Vertical">
       <UniqueIdentifier>{1e2760b5-d438-4278-91c9-293c036ad287}</UniqueIdentifier>
     </Filter>

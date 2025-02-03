@@ -100,6 +100,9 @@
     <Filter Include="01. ToolApp_Managers\Event">
       <UniqueIdentifier>{42200b2a-0a0e-420e-be25-5d3a30236f4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\2D\2DTrigger_Sample">
+      <UniqueIdentifier>{45070a33-09a7-4123-95a3-009b611822de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -210,6 +213,9 @@
     <ClInclude Include="..\Public\Model_Tool_Manager.h">
       <Filter>01. ToolApp_Managers\3D\3DModelTool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\2DTrigger_Sample.h">
+      <Filter>03. GameObject\2D\2DTrigger_Sample</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -312,6 +318,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Model_Tool_Manager.cpp">
       <Filter>01. ToolApp_Managers\3D\3DModelTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DTrigger_Sample.cpp">
+      <Filter>03. GameObject\2D\2DTrigger_Sample</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@
   "SortingPropertis": {
    "Sorting_Offset_Pos": {
     "X": 0.0,
-    "Y": 42.0
+    "Y": 0.0
    }
   },
   "TextureName": "mountain_white_flower_01"
@@ -44,17 +44,20 @@
   "TextureName": "mountain_bush_01"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Attackable"
+  },
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 546.0,
-     "Y": 546.0
+     "X": 42.0,
+     "Y": 42.0
     },
     "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": 0.0
+     "X": 2.0,
+     "Y": 79.0
     }
    },
    "ColliderType": "Collider_AABB"
@@ -112,12 +115,12 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 302.0,
-     "Y": 302.0
+     "X": 136.0,
+     "Y": 136.0
     },
     "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": 0.0
+     "X": -1.0,
+     "Y": 12.0
     }
    },
    "ColliderType": "Collider_AABB"
@@ -142,12 +145,12 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 346.0,
-     "Y": 346.0
+     "X": 45.0,
+     "Y": 45.0
     },
     "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": 0.0
+     "X": -6.0,
+     "Y": 44.0
     }
    },
    "ColliderType": "Collider_AABB"
@@ -172,12 +175,12 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 246.0,
-     "Y": 246.0
+     "X": 27.0,
+     "Y": 27.0
     },
     "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": 0.0
+     "X": -1.0,
+     "Y": 49.0
     }
    },
    "ColliderType": "Collider_AABB"
@@ -199,12 +202,12 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 398.0,
-     "Y": 398.0
+     "X": 375.0,
+     "Y": 375.0
     },
     "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": 0.0
+     "X": 2.0,
+     "Y": -1.0
     }
    },
    "ColliderType": "Collider_AABB"
@@ -229,7 +232,7 @@
   "SortingPropertis": {
    "Sorting_Offset_Pos": {
     "X": 0.0,
-    "Y": 64.0
+    "Y": 0.0
    }
   },
   "TextureName": "tree_green_broken_trunk"
@@ -239,16 +242,13 @@
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
-    "Collider_Extent": {
-     "X": 574.0,
-     "Y": 574.0
-    },
     "Collider_Offset_Pos": {
      "X": 0.0,
      "Y": 0.0
-    }
+    },
+    "Collider_Radius": 292.0
    },
-   "ColliderType": "Collider_AABB"
+   "ColliderType": "Collider_Squere"
   },
   "ModelType": "NonAnim",
   "SearchTag": "largemossrock",
