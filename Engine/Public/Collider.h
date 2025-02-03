@@ -14,6 +14,7 @@ public:
 		_float2			vPosition = {};
 		_float2			vOffsetPosition = {};
 		_float2			vScale = { 1.0f, 1.0f };
+		_bool			isBlock = false;
 	}COLLIDER_DESC;
 protected:
 	CCollider(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -30,7 +31,7 @@ public:
 public:
 	virtual _bool			Is_Collision(CCollider* _pOther) = 0;
 	virtual void			Update_OwnerTransform() = 0;
-
+	virtual void			Block(CCollider* _pOther); // 블록등록한 애들이 otherobject를 밀어내게 .Circle, AABB 각각 밀어내기 코드가 존재해야겠지/...
 public:
 	// Get
 	TYPE					Get_Type() const { return m_eType; }
@@ -45,6 +46,7 @@ protected:
 protected:
 	_uint					m_iColliderID = 0;
 	TYPE					m_eType = TYPE::TYPE_LAST;
+	_bool					m_isBlock = false;
 
 protected:
 	CGameObject*			m_pOwner = nullptr;
@@ -52,6 +54,7 @@ protected:
 	_float2					m_vPosition = {};
 	_float2					m_vOffsetPosition = {};
 	_float2					m_vScale = {};
+
 
 #ifdef _DEBUG
 protected:

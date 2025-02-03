@@ -648,6 +648,38 @@ HRESULT CActor::Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType
 	return S_OK;
 }
 
+HRESULT CActor::Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable)
+{
+	if (m_Shapes.size() <= _iShapeIndex)
+		return E_FAIL;
+
+	if (nullptr == m_Shapes[_iShapeIndex])
+		return E_FAIL;
+
+	if (true == _isEnable)
+		m_pActor->attachShape(*m_Shapes[_iShapeIndex]);
+	else
+		m_pActor->detachShape(*m_Shapes[_iShapeIndex]);
+
+	return S_OK;
+}
+
+HRESULT CActor::Set_AllShapeEnable(_bool _isEnable)
+{
+	if (true == _isEnable)
+	{
+		for (auto& pShape : m_Shapes)
+			m_pActor->attachShape(*pShape);
+	}
+	else
+	{
+		for (auto& pShape : m_Shapes)
+			m_pActor->detachShape(*pShape);
+	}
+
+	return S_OK;
+}
+
 
 
 void CActor::Active_OnEnable()
