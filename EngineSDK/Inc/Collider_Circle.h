@@ -25,6 +25,9 @@ public:
 public:
 	_bool						Is_Collision(CCollider* _pOther) override;
 	void						Update_OwnerTransform() override;
+	void						Block(CCollider* _pOther);
+	void						Block_AABB(CCollider_AABB* _pOther);
+	void						Block_Circle(CCollider_Circle* _pOther);
 
 private:
 	_bool						Is_Collision_Circle(CCollider_Circle* _pOther);

@@ -24,8 +24,13 @@ public:
 	HRESULT			Render() override;
 #endif // _DEBUG
 
-private:
+public:
 	_bool			Is_Collision(CCollider* _pOther) override;
+	void			Block(CCollider* _pOther);
+	void			Block_AABB(CCollider_AABB* _pOther);
+	void			Block_Circle(CCollider_Circle* _pOther);
+
+public:
 	void			Update_OwnerTransform() override;
 
 private:
