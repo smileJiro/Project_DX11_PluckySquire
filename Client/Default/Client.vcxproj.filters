@@ -425,7 +425,6 @@
     <ClInclude Include="..\Public\PlayerState_Attack.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Boss_HomingBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
@@ -571,7 +570,6 @@
     <ClInclude Include="..\Public\Logo_Props.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_ThrowSword.h" />
     <ClInclude Include="..\public\Collision_Manager.h">
       <Filter>93.CollisionManager</Filter>
     </ClInclude>
@@ -587,9 +585,17 @@
     <ClInclude Include="..\Public\ShopPanel_YesNo.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerBody.h" />
     <ClInclude Include="..\Public\StandbyState.h">
       <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerBody.h">
+      <Filter>02.GameObjects\TestPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Character.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
+      <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -733,7 +739,6 @@
     <ClCompile Include="..\Private\PlayerState_Attack.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp">
       <Filter>02.GameObjects\Monster\Boss</Filter>
     </ClCompile>
@@ -879,7 +884,6 @@
     <ClCompile Include="..\Private\Logo_Props.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp">
       <Filter>93.CollisionManager</Filter>
     </ClCompile>
@@ -895,9 +899,17 @@
     <ClCompile Include="..\Private\ShopPanel_YesNo.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerBody.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp">
       <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerBody.cpp">
+      <Filter>02.GameObjects\TestPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp">
+      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

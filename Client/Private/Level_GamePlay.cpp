@@ -66,8 +66,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
-
-
 	/* Collision Test */
 
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
