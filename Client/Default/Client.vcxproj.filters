@@ -274,6 +274,9 @@
     <Filter Include="02.GameObjects\SampleBook">
       <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MainTable">
+      <UniqueIdentifier>{25fd5475-9ebe-44bd-bbee-d5b4f8d1ad20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -591,6 +594,9 @@
     <ClInclude Include="..\Public\StandbyState.h">
       <Filter>03.Components\FSM\State\Standby</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MainTable.h">
+      <Filter>02.GameObjects\MainTable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -898,6 +904,9 @@
     <ClCompile Include="..\Private\PlayerBody.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp">
       <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MainTable.cpp">
+      <Filter>02.GameObjects\MainTable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

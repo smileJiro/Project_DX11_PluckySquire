@@ -47,31 +47,6 @@ HRESULT CPhysx_Manager::Initialize()
 	XMStoreFloat4x4(&matTest, XMMatrixIdentity());
 	PxTransform transform(PxVec3(0.0f, -9.5f, 0.0f)); // 위치: (0, 0, 0)
 
-	// PxRigidStatic 객체 생성
-	m_pTestDesk = m_pPxPhysics->createRigidStatic(transform);
-	PxBoxGeometry boxGeometry(PxVec3(100.0f, 10.0f, 100.0f));
-	PxRigidActorExt::createExclusiveShape(*m_pTestDesk, boxGeometry, *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
-	m_pTestDesk->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
-
-	/* 충돌 필터에 대한 세팅 ()*/
-	PxFilterData FilterData;
-	FilterData.word0 = 0x04;
-	FilterData.word1 = 0x01 | 0x02; // 이렇게 추가하고 몬스터도 다이나믹으로 돌려보던지 한번 근데 아마 좀 많이 바꿔야할거야 ㅋㅋㅋㅋㅋ
-
-	PxU32 iNumShapes = m_pTestDesk->getNbShapes();
-
-	vector<PxShape*> pShapes;
-	pShapes.resize(iNumShapes);
-	m_pTestDesk->getShapes(pShapes.data(), iNumShapes);
-
-	for (auto& pShape : pShapes)
-	{
-		pShape->setSimulationFilterData(FilterData);
-	}
-
-	m_pPxScene->addActor(*m_pTestDesk);
-
-	//
 	// 필요한 시각화 기능 활성화
 #ifdef _DEBUG
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
