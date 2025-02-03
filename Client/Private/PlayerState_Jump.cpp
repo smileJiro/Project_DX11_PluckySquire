@@ -57,7 +57,7 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
 		{
 			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
-			
+			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
 		}
 		else
 			m_pOwner->Stop_Rotate();
@@ -83,7 +83,7 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 				list<CActorObject*> hitActors;
 				list<_float3> hitPositions;
 
-				if (m_pGameInstance->RayCast(vOrigin, vRayDir, 100, hitActors, hitPositions))
+				if (m_pGameInstance->RayCast(vOrigin, vRayDir, 1.5, hitActors, hitPositions))
 				{
 					_float fClamberHeightCurrent = -1;
 					auto& iterPosition = hitPositions.begin();

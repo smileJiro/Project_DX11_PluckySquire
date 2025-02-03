@@ -126,8 +126,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
-	//
-    
+
     return S_OK;
 }
 
@@ -267,7 +266,7 @@ void CPlayer::Update(_float _fTimeDelta)
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
 	if (COORDINATE_3D == Get_CurCoord())
-        Rotate_To(m_v3DTargetDirection);
+        Rotate_To(m_v3DTargetDirection, m_fGroundRotateSpeed);
     __super::Update(_fTimeDelta); /* Part Object Update */
      m_bOnGround = false;
 }
@@ -378,7 +377,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 void CPlayer::Attack()
 {
     Stop_Move();
-    Add_Impuls(Get_3DTargetDirection() * 15);
+    Add_Impuls(Get_3DTargetDirection() * m_fAttackForwardingForce);
 }
 
 void CPlayer::Move(_vector _vForce, _float _fTimeDelta)
