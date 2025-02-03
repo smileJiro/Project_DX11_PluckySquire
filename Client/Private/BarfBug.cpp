@@ -41,10 +41,10 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 10.f;
     pDesc->fAlert2DRange = 500.f;
-    pDesc->fChase2DRange = 1200.f;
+    pDesc->fChase2DRange = 1500.f;
     pDesc->fAttack2DRange = 1000.f;
-    pDesc->fDelayTime = 5.f;
-    pDesc->fCoolTime = 10.f;
+    pDesc->fDelayTime = 1.f;
+    pDesc->fCoolTime = 3.f;
 
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
@@ -162,6 +162,11 @@ void CBarfBug::Update(_float _fTimeDelta)
 
 void CBarfBug::Late_Update(_float _fTimeDelta)
 {
+
+#ifdef _DEBUG
+    if(COORDINATE_3D == Get_CurCoord())
+        m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND, this);
+#endif
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -170,6 +175,8 @@ HRESULT CBarfBug::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
+    m_pDetectionField->Render();
+
     m_pColliderCom->Render();
 #endif // _DEBUG
 

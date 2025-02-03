@@ -161,6 +161,8 @@ void CSettingPanel::Choose_Menu(_float _fTimeDelta)
 		{
 			iter.second->Child_Update(_fTimeDelta);
 		}
+
+
 		
 		isRender();
 		isFontPrint();
