@@ -40,6 +40,9 @@ public:
 	_float2					Get_Position() const { return m_vPosition; }
 	_bool					Is_Block() const { return m_isBlock; }
 	// Set 
+#ifdef _DEBUG
+	void					Set_DebugColor(const _float4& _vDebugColor) { m_vDebugColor = _vDebugColor; }
+#endif // _DEBUG
 
 protected:
 	static _uint			s_iNextColliderID;
