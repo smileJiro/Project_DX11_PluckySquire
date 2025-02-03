@@ -54,19 +54,19 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 		return;
 
 	//일단 적용해봄
-	if(COORDINATE_3D == m_pOwner->Get_CurCoord())
-	{
-		if (true == m_isTurn)
-		{
-			m_pOwner->Rotate_To(XMLoadFloat3(&m_vRotate));
-			//각속도 0이면
-			if (XMVectorGetY(XMVectorEqual(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity(), XMVectorZero())))
-			{
-				m_isTurn = false;
-			}
-			return;
-		}
-	}
+	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
+	//{
+	//	if (true == m_isTurn)
+	//	{
+	//		m_pOwner->Rotate_To(XMLoadFloat3(&m_vRotate));
+	//		//각속도 0이면
+	//		if (XMVectorGetY(XMVectorEqual(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity(), XMVectorZero())))
+	//		{
+	//			m_isTurn = false;
+	//		}
+	//		return;
+	//	}
+	//}
 
 	if (true == m_isMove)
 		m_fAccTime += _fTimeDelta;
@@ -133,9 +133,9 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			//기본적으로 추적중에 y값 상태 변화는 없다고 가정
 
 			_vector vDir = Set_PatrolDirection(_iDir);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
-			//m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-			m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
+			m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
+			m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+			//m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
 		}
 	}
 
