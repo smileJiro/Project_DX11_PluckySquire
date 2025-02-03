@@ -31,13 +31,14 @@ public:
 public:
 	virtual _bool			Is_Collision(CCollider* _pOther) = 0;
 	virtual void			Update_OwnerTransform() = 0;
-	virtual void			Block(CCollider* _pOther); // 블록등록한 애들이 otherobject를 밀어내게 .Circle, AABB 각각 밀어내기 코드가 존재해야겠지/...
+	virtual void			Block(CCollider* _pOther) { return; }// 블록등록한 애들이 otherobject를 밀어내게 .Circle, AABB 각각 밀어내기 코드가 존재해야겠지/...
 public:
 	// Get
 	TYPE					Get_Type() const { return m_eType; }
 	_uint					Get_ColliderID() const { return m_iColliderID; }
 	CGameObject*			Get_Owner() const { return m_pOwner; }
 	_float2					Get_Position() const { return m_vPosition; }
+	_bool					Is_Block() const { return m_isBlock; }
 	// Set 
 
 protected:

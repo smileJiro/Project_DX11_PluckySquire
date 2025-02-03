@@ -154,9 +154,10 @@ HRESULT CPlayer::Ready_Components()
    /* Test 2D Collider */
    CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
    AABBDesc.pOwner = this;
-   AABBDesc.fRadius = 100.f;
+   AABBDesc.fRadius = 50.f;
    AABBDesc.vScale = { 1.0f, 1.0f };
-   AABBDesc.vOffsetPosition = { 0.f, AABBDesc.fRadius };
+   AABBDesc.vOffsetPosition = { 0.f,  AABBDesc.fRadius  };
+   AABBDesc.isBlock = false;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
        TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
        return E_FAIL; 
@@ -270,6 +271,8 @@ void CPlayer::Update(_float _fTimeDelta)
     __super::Update(_fTimeDelta); /* Part Object Update */
      m_bOnGround = false;
 }
+
+// 충돌 체크 후 container의 transform을 밀어냈어. 
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
