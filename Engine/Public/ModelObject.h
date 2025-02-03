@@ -80,6 +80,7 @@ public:
 		}
 	}
 
+
 protected:
 	CController_Model*		m_pControllerModel = nullptr;
 	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D ·»´õ¸µ Àü¿ë VP */
@@ -94,7 +95,7 @@ protected:
 	_uint					m_iRenderGroupID_3D = 0;
 	_uint					m_iPriorityID_3D = 0;
 	_bool					m_bPlayingAnim = true;	
-	_bool                m_bReverseAnimation = false;
+	_bool					m_bReverseAnimation = false;
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

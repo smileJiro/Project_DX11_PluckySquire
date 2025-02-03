@@ -60,7 +60,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[2] = false;
 
     SHAPE_COOKING_DESC ShapeCookingDesc = {};
-    ShapeCookingDesc.isLoad = false;
+    ShapeCookingDesc.isLoad = true;
     ShapeCookingDesc.isSave = false;
     //ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
     //ShapeCookingDesc.strFilePath += "3DCollider/";

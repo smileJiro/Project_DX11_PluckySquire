@@ -75,6 +75,8 @@ public:	/* Section_2D ±â´É. */
 	HRESULT								Register_RenderGroup_ToRenderer();
 
 public:
+	virtual HRESULT Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 0) override;
+
 	ID3D11RenderTargetView*				Get_RTV_FromRenderTarget();
 	ID3D11ShaderResourceView*			Get_SRV_FromRenderTarget();
 	ID3D11ShaderResourceView*			Get_SRV_FromTexture(_uint _iTextureIndex);
