@@ -21,7 +21,7 @@ private:
 	_float m_f3DForwardSpeed = 15.f;
 	_float m_f2DForwardSpeed = 700.f;
 
-    _float m_f3DMotionCancelProgress = 0.35f;
+    _float m_f3DMotionCancelProgress = 0.5f;
     _float m_f2DMotionCancelProgress = 0.8f;
     _float m_f3DForwardingProgress = 0.15f;
     _float m_f2DForwardingProgress = 0.5f;

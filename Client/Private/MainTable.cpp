@@ -40,7 +40,7 @@ HRESULT CMainTable::Initialize(void* _pArg)
     ShapeData.pShapeDesc = &ShapeDesc;             
     ShapeData.eShapeType = SHAPE_TYPE::BOX;     
     ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  
-    ShapeData.isSceneQuery = false;
+    ShapeData.isSceneQuery = true;
     //ShapeData.isVisual = false;
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);

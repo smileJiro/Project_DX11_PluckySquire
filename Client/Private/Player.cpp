@@ -10,6 +10,7 @@
 #include "PlayerState_Attack.h"
 #include "PlayerState_Jump.h"
 #include "PlayerState_Roll.h"
+#include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
@@ -121,7 +122,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
 
 	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 14.f;	
+	m_tStat[COORDINATE_3D].fJumpPower = 10.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
@@ -140,6 +141,7 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
+    Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -259,11 +261,9 @@ void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
 
-
     //// TestCode : еб©У
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
-
 
 	if (COORDINATE_3D == Get_CurCoord())
         Rotate_To(m_v3DTargetDirection);
@@ -371,6 +371,12 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     return S_OK;
 }
 
+
+void CPlayer::Attack()
+{
+    Stop_Move();
+    Add_Impuls(Get_3DTargetDirection() * 15);
+}
 
 void CPlayer::Move(_vector _vForce, _float _fTimeDelta)
 {
@@ -549,6 +555,14 @@ _vector CPlayer::Get_CenterPosition()
         return Get_FinalPosition() + _vector{0,m_fCenterHeight, 0};
 }
 
+_vector CPlayer::Get_HeadPosition()
+{
+    if (COORDINATE_2D == Get_CurCoord())
+        return Get_FinalPosition();
+    else
+        return Get_FinalPosition() + _vector{ 0,m_fHeadHeight, 0 };
+}
+
 _vector CPlayer::Get_LookDirection()
 {
 	COORDINATE eCoord = Get_CurCoord();
@@ -590,6 +604,9 @@ void CPlayer::Set_State(STATE _eState)
 		break;
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
+        break;
+        case Client::CPlayer::CLAMBER:
+        m_pStateMachine->Transition_To(new CPlayerState_Clamber(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;

@@ -76,6 +76,10 @@ HRESULT CCollider::Render()
     return S_OK;
 }
 
+void CCollider::Block(CCollider* _pOther)
+{
+}
+
 void CCollider::Free()
 {
     m_pOwner = nullptr;
