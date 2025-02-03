@@ -76,7 +76,7 @@ HRESULT CCollider_AABB::Render()
 
     static BoundingBox BoundingBox = {};
     BoundingBox.Center = _float3(m_vPosition.x, m_vPosition.y, 0.0f);
-    BoundingBox.Extents = _float3(m_vExtents.x, m_vExtents.y, 0.0f);
+    BoundingBox.Extents = _float3(m_vFinalExtents.x, m_vFinalExtents.y, 0.0f);
     DX::Draw(m_pBatch, BoundingBox, XMLoadFloat4(&m_vDebugColor));
 
     m_pBatch->End();

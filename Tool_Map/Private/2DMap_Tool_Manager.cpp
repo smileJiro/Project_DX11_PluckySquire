@@ -18,6 +18,7 @@
 #include "2DTile_RenderObject.h"
 #include "2DDefault_RenderObject.h"
 #include "2DMapObject.h"
+#include "2DTrigger_Sample.h"
 #include <commdlg.h>
 using namespace std::filesystem;
 
@@ -119,6 +120,8 @@ void C2DMap_Tool_Manager::Update_Imgui_Logic()
 	Map_Import_Imgui();
 	Model_Edit_Imgui();
 	SaveLoad_Imgui();
+	TriggerSetting_Imgui();
+	TriggerEvent_Imgui();
 }
 
 
@@ -130,13 +133,43 @@ void C2DMap_Tool_Manager::Input_Logic()
 
 	if (nullptr != hWnd && !io.WantCaptureMouse)
 	{
+
+		if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
+		{
+			C2DTrigger_Sample::TRIGGER_2D_DESC TriggerDesc = {};
+			TriggerDesc.tTransform2DDesc.vInitialPosition = {10.f,10.f,1.f};
+			TriggerDesc.tTransform2DDesc.vInitialScaling = {1.f,1.f,1.f};
+			//TriggerDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
+			TriggerDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+			TriggerDesc.eStartCoord = COORDINATE_2D;
+			TriggerDesc.isCoordChangeEnable = false;
+
+
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTrigger"),
+				LEVEL_TOOL_2D_MAP,
+				L"Layer_Trigger",
+				&pGameObject,
+				(void*)&TriggerDesc)))
+			{
+				//_string strNotExistTextureMessage = WstringToString(_wstring(L"2D Texture Info not Exist ->") + NormalDesc.strProtoTag);
+				//LOG_TYPE(strNotExistTextureMessage, LOG_ERROR);
+				//NotExistTextures.push_back(strNotExistTextureMessage);
+			}
+		
+		}
 		if(ImGui::IsKeyPressed(ImGuiKey_MouseLeft) && nullptr != m_DefaultRenderObject && m_DefaultRenderObject->Is_2DMode())
 		{
-			m_pPickingObject = Picking_2DMap();
+			C2DMapObject* pPickingObject = Picking_2DMap();
+			m_pPickingObject = pPickingObject;
 		}
-		if (!io.WantCaptureKeyboard && ImGui::IsKeyPressed(ImGuiKey_C) && nullptr != m_DefaultRenderObject && m_DefaultRenderObject->Is_2DMode())
+		if (!io.WantCaptureKeyboard && ImGui::IsKeyPressed(ImGuiKey_C) && nullptr != m_DefaultRenderObject)
 		{
-			m_DefaultRenderObject->Toggle_Mode();
+			_bool is2DMode = m_DefaultRenderObject->Toggle_Mode();
+			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_2D_MAP, L"Layer_Camera", 0);
+			if (nullptr != pGameObject)
+
+				pGameObject->Set_Active(!is2DMode);
 		}
 		if (ImGui::IsKeyPressed(ImGuiKey_Delete) && nullptr != m_DefaultRenderObject && m_DefaultRenderObject->Is_2DMode())
 		{
@@ -454,7 +487,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		}
 	}
 
-	if (ImGui::Button("SampleBook Mode Toggle") || ImGui::IsKeyPressed(ImGuiKey_C))
+	if (ImGui::Button("SampleBook Mode Toggle"))
 	{
 		_bool is2DMode = m_DefaultRenderObject->Toggle_Mode();
 		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_2D_MAP, L"Layer_Camera", 0);
@@ -1130,6 +1163,308 @@ void C2DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 
 
 	}
+
+	ImGui::End();
+}
+void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
+{
+	ImGui::Begin("Trigger");
+	{
+		Begin_Draw_ColorButton("Save_FileStyle", (ImVec4)ImColor::HSV(0.3f, 0.6f, 0.6f));
+		if (ImGui::Button("Trigger Save"))
+		{
+			//Save_Trigger(L"../../Client/Bin/SettingFile/", L"Trigger");
+		}
+		ImGui::SameLine();
+		if (ImGui::BeginPopup("Save_Popup"))
+		{
+			ImGui::InputText("##Save File Name", m_szSaveFileName, MAX_PATH);
+			ImGui::SameLine();
+			Begin_Draw_ColorButton("Save_", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
+			if (ImGui::Button("Save"))
+			{
+			}
+			End_Draw_ColorButton();
+
+			ImGui::EndPopup();
+		}
+		End_Draw_ColorButton();
+		Begin_Draw_ColorButton("Load_FileStyle", (ImVec4)ImColor::HSV(0.7f, 0.6f, 0.6f));
+		if (ImGui::Button("Trigger Load"))
+		{
+			ImGui::OpenPopup("Load_Popup");
+		}
+		if (ImGui::BeginPopup("Load_Popup"))
+		{
+			ImGui::Text("All those Mesh Object will be deleted.");
+			ImGui::Text("Do you want to proceed?");
+			Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
+			if (ImGui::Button("OK"))
+			{
+				//Load_Trigger(L"../../Client/Bin/SettingFile/", L"Trigger");
+				ImGui::CloseCurrentPopup();
+			}
+			End_Draw_ColorButton();
+			ImGui::SameLine();
+			Begin_Draw_ColorButton("NO_Style", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+			if (ImGui::Button("NO"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			End_Draw_ColorButton();
+
+			ImGui::EndPopup();
+		}
+		End_Draw_ColorButton();
+
+
+
+
+		ImGui::SeparatorText("Trigger List");
+		if (ImGui::BeginListBox("##Trigger List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+		{
+			auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP,L"Layer_Trigger");
+			if (pLayer)
+			{
+				auto& TriggerList = pLayer->Get_GameObjects();
+				_uint iLoop = 0;
+
+				for_each(TriggerList.begin(), TriggerList.end(), [this, &iLoop](CGameObject* pGameObject) {
+					_string strName = _string("Trigger_" + to_string(iLoop));
+					_wstring wstrName = StringToWstring(strName);
+					C2DTrigger_Sample* pTriggerObject = static_cast<C2DTrigger_Sample*>(pGameObject);
+					if (pTriggerObject)
+					{
+						if (ImGui::Selectable(strName.c_str(), wstrName == m_arrSelectName[TRIGGER_LIST])) {
+							if (wstrName != m_arrSelectName[TRIGGER_LIST])
+							{
+								m_arrSelectName[TRIGGER_LIST] = wstrName;
+								m_pPickingTrigger = pTriggerObject;
+							}
+						}
+					}
+					iLoop++;
+					});
+			}
+
+			ImGui::EndListBox();
+		}
+
+
+
+		Begin_Draw_ColorButton("Clear_All_ObjectStyle", (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));
+		if (!bLock && ImGui::Button("Clear All Trigger", ImVec2(-FLT_MIN, 1.7f * ImGui::GetTextLineHeightWithSpacing())))
+		{
+			ImGui::OpenPopup("Clear_Popup");
+		}
+
+		if (ImGui::BeginPopup("Clear_Popup"))
+		{
+			ImGui::Text("All those Trigger will be deleted.");
+			ImGui::Text("Do you want to proceed?");
+			Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
+			if (ImGui::Button("OK"))
+			{
+				m_TriggerEvents.clear();
+				ImGui::CloseCurrentPopup();
+			}
+			End_Draw_ColorButton();
+			ImGui::SameLine();
+			Begin_Draw_ColorButton("NO_Style", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+			if (ImGui::Button("NO"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			End_Draw_ColorButton();
+
+			ImGui::EndPopup();
+		}
+		End_Draw_ColorButton();
+
+		if (nullptr != m_pPickingTrigger)
+		{
+			string strTriggerKey = m_pPickingTrigger->Get_TriggerKey();
+			_int iTriggerIdx = 0;
+			auto iter = find_if(m_TriggerEvents.begin(), m_TriggerEvents.end(), [&iTriggerIdx, &strTriggerKey](TRIGGER_EVENT& tEvent)->_bool {
+				_bool bReturn = tEvent.strEventName == strTriggerKey;
+				if (!bReturn)
+					iTriggerIdx++;
+				return bReturn;
+				});
+			if (iter == m_TriggerEvents.end())
+			{
+				iTriggerIdx = -1;
+			}
+			_vector vPos = m_pPickingTrigger->Get_FinalPosition();
+			_float2 fPos = { XMVectorGetX(vPos),XMVectorGetY(vPos) };
+			_float3 fScale = m_pPickingTrigger->Get_FinalScale();
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::DragFloat("##TriggerPosX", &fPos.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
+			{
+				vPos = XMVectorSetX(vPos, fPos.x);
+				m_pPickingTrigger->Set_Position(vPos);
+
+			}
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::DragFloat("##TriggerPosY", &fPos.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
+			{
+				vPos = XMVectorSetY(vPos, fPos.y);
+				m_pPickingTrigger->Set_Position(vPos);
+			}
+			ImGui::SameLine();
+			ImGui::Text("Trigger Position");
+
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::DragFloat("##TriggerScaleX", &fScale.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
+				m_pPickingTrigger->Set_Scale(fScale);
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::DragFloat("##TriggerScaleY", &fScale.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
+				m_pPickingTrigger->Set_Scale(fScale);
+			ImGui::SameLine();
+			ImGui::Text("Trigger Scale");
+
+			ImGui::SeparatorText("Trigger Event List");
+			if (ImGui::BeginListBox("##Trigger Selected Event List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+			{
+				_uint iLoop = 0;
+				for (auto tTriggerEvent : m_TriggerEvents)
+				{
+					if (ImGui::Selectable(tTriggerEvent.strEventName.c_str(), iLoop == iTriggerIdx))
+					{
+						if (iLoop != iTriggerIdx)
+						{
+							m_pPickingTrigger->Set_TriggerKey(tTriggerEvent.strEventName);
+						}
+					}
+					iLoop++;
+				}
+
+				ImGui::EndListBox();
+			}
+
+		}
+	}
+
+	ImGui::End();
+}
+
+void C2DMap_Tool_Manager::TriggerEvent_Imgui(_bool bLock)
+{
+	ImGui::Begin("Trigger Event");
+	{
+		string m_strConditionNames[] = { "Collision Enter", 
+											"Collision",
+											"Collision Exit", };
+		string m_strEventNames[] = { "Object Spawn", 
+										"CutScene Event",
+										"Map_Change",
+										"Popup_UI",
+									};
+
+
+		ImGui::SeparatorText("Trigger Event List");
+		if (ImGui::BeginListBox("##Trigger Event List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+		{
+			_uint iLoop = 0;
+			for (auto tTriggerEvent : m_TriggerEvents)
+			{
+				if (ImGui::Selectable(tTriggerEvent.strEventName == "" ? "None" : tTriggerEvent.strEventName.c_str(), iLoop == m_SelectTriggerEventIdx))
+				{
+					if (iLoop != m_SelectTriggerEventIdx)
+					{
+						m_arrSelectName[TRIGGER_EVENT_LIST] = StringToWstring(tTriggerEvent.strEventName);
+						m_SelectTriggerEventIdx = iLoop;
+					}
+				}
+				iLoop++;
+			}
+
+			ImGui::EndListBox();
+		}
+
+
+
+		Begin_Draw_ColorButton("Create_TriggerEventStyle", (ImVec4)ImColor::HSV(0.3f, 0.6f, 0.6f));
+		if (ImGui::Button("Trigger Event Create"))
+		{
+			TRIGGER_EVENT tEvent = { "TriggerEvent_" + std::to_string(m_TriggerEvents.size()) , 0, 0 };
+			m_TriggerEvents.push_back(tEvent);
+
+			m_arrSelectName[TRIGGER_EVENT_LIST] = StringToWstring(tEvent.strEventName);
+			m_SelectTriggerEventIdx = (_int)m_TriggerEvents.size() - 1;
+		}
+
+		End_Draw_ColorButton();
+		ImGui::SameLine();
+		Begin_Draw_ColorButton("Delete_TriggerEventStyle", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Trigger Event Delete"))
+		{
+			if (-1 != m_SelectTriggerEventIdx)
+				m_TriggerEvents.erase(m_TriggerEvents.begin() + m_SelectTriggerEventIdx);
+
+			m_SelectTriggerEventIdx = m_TriggerEvents.size() - 1 < m_SelectTriggerEventIdx ? (_int)m_TriggerEvents.size() : m_SelectTriggerEventIdx;
+		}
+		End_Draw_ColorButton();
+
+		if (m_SelectTriggerEventIdx != -1)
+		{
+			TRIGGER_EVENT& tEvent = m_TriggerEvents[m_SelectTriggerEventIdx];
+
+
+			ImGui::SeparatorText("Event Name");
+			_char szName[MAX_PATH] = {};
+
+			strcpy_s(szName, tEvent.strEventName.c_str());
+
+			if (ImGui::InputText("##NewName", szName, MAX_PATH))
+			{
+				tEvent.strEventName = szName;
+			}
+			ImGui::SeparatorText("Condition Type");
+
+			if (ImGui::BeginListBox("##Trigger Condition List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+			{
+				_uint iLoop = 0;
+				for (auto strConditionName : m_strConditionNames)
+				{
+					if (ImGui::Selectable(strConditionName.c_str(), iLoop == tEvent.uTriggerCondition))
+					{
+						if (iLoop != tEvent.uTriggerCondition)
+						{
+							tEvent.uTriggerCondition = iLoop;
+						}
+					}
+					iLoop++;
+				}
+
+				ImGui::EndListBox();
+			}
+			ImGui::SeparatorText("Event Type");
+
+			if (ImGui::BeginListBox("##Trigger EventType List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+			{
+				_uint iLoop = 0;
+				for (auto strEventName : m_strEventNames)
+				{
+					if (ImGui::Selectable(strEventName.c_str(), iLoop == tEvent.uTriggerEvent))
+					{
+						if (iLoop != tEvent.uTriggerEvent)
+						{
+							tEvent.uTriggerEvent = iLoop;
+						}
+					}
+					iLoop++;
+				}
+
+				ImGui::EndListBox();
+			}
+
+		}
+
+	}
+
 
 	ImGui::End();
 }
