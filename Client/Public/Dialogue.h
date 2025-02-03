@@ -43,8 +43,8 @@ public:
 public:
     struct Animation
     {
-        _int duration = 1000;   // 지속 시간 (밀리초)
-        _int speed = 350;      // 속도 (타자기 효과 등)
+        _int duration = 1000;   // 지속 시간
+        _int speed = 350;      // 속도
     };
 
     struct DialogLine

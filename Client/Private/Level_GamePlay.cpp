@@ -661,25 +661,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	}
 
 
-	//CUI::UIOBJDESC pHeartDesc = {};
-	//pHeartDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	//pHeartDesc.fX = g_iWinSizeX /2.f;
-	//pHeartDesc.fY = g_iWinSizeY /2.f + 10.f;
-	//pHeartDesc.fSizeX = 128.f;
-	//pHeartDesc.fSizeY = 128.f;
-	//
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pHeartDesc)))
-	//	return E_FAIL;
-	
-
-#pragma region ·Î°í¾À
-
-
-
-#pragma endregion ·Î°í¾À
-
-
 	pDesc.fX = g_iWinSizeX / 2.f / 2.f ;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
 	pDesc.fSizeX = 1208.f * 0.7f / 2.f;
@@ -702,13 +683,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
-	//CNPC::NPC_DESC NPCDesc;
-	//
-	//NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-	//	return E_FAIL;
+	CNPC::NPC_DESC NPCDesc;
+
+	NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
