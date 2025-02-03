@@ -146,16 +146,13 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pObject_Manager->Update(fTimeDelta);
-	m_pCamera_Manager->Update(fTimeDelta);
+	//m_pCamera_Manager->Update(fTimeDelta);
 
 
 	/* 현재는 임시적으로 Physx_Manager가 Scene Update를 돌리며 테스트 예정. 
 	추후 콜리전 매니저 설계시 scene 관리방식 변경. */
-	m_pLevel_Manager->Update(fTimeDelta);
-	
-	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
+	m_pLevel_Manager->Update(fTimeDelta); // 현재 여기서 Physx 돌리고있음.
 
-	
 }
 
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)

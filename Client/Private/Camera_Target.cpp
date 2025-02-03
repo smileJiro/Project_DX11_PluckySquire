@@ -79,11 +79,15 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
 	ARM_DATA* pArmData = new ARM_DATA();
 
 	pArmData->fLength = _pData.fLength;
+	pArmData->fLengthTime = _pData.fLengthTime;
+	pArmData->iLengthRatioType = _pData.iLengthRatioType;
+
 	pArmData->fMoveTimeAxisY = _pData.fMoveTimeAxisY;
 	pArmData->fMoveTimeAxisRight = _pData.fMoveTimeAxisRight;
-	pArmData->fLengthTime = _pData.fLengthTime;
 	pArmData->fRotationPerSecAxisY = _pData.fRotationPerSecAxisY;
 	pArmData->fRotationPerSecAxisRight = _pData.fRotationPerSecAxisRight;
+
+	pArmData->vDesireArm = _pData.vDesireArm;
 
 	m_ArmDatas.emplace(_wszArmTag, pArmData);
 }
@@ -93,17 +97,26 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 	m_pCurArm->Change_Target(_pTargetWorldMatrix);
 }
 
-void CCamera_Target::Set_NextArmData(_wstring _wszNextArmName)
+_bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 {
 	ARM_DATA* pData = Find_ArmData(_wszNextArmName);
 
 	if (nullptr == pData)
-		return;
+		return false;
 
+	if (nullptr == m_pCurArm)
+		return false;
+
+	m_pCurArm->Set_NextArmData(pData, _iTriggerID);
+	return true;
+}
+
+void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
+{
 	if (nullptr == m_pCurArm)
 		return;
 
-	m_pCurArm->Set_NextArmData(pData);
+	m_pCurArm->Set_PreArmDataState(_iTriggerID, _isReturn);
 }
 
 void CCamera_Target::Key_Input(_float _fTimeDelta)
@@ -162,7 +175,7 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_NextArm(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
-		return;
+		//return;
 	}
 
 	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(_fTimeDelta);
@@ -181,7 +194,15 @@ void CCamera_Target::Look_Target(_float fTimeDelta)
 
 void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 {
+	if (true == m_pCurArm->Move_To_PreArm(_fTimeDelta)) {
+		m_eCameraMode = DEFAULT;
+		//return;
+	}
 
+	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(_fTimeDelta);
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	Look_Target(_fTimeDelta);
 }
 
 ARM_DATA* CCamera_Target::Find_ArmData(_wstring _wszArmTag)

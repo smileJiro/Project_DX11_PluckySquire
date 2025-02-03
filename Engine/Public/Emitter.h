@@ -29,6 +29,7 @@ public:
 	static void SetID_3D(_int _iID) { s_iRG_3D = _iID; }
 	static void SetID_2D(_int _iID) { s_iRG_2D = _iID; }
 	static void SetID_Effect(_int _iID) { s_iRGP_EFFECT = _iID; }
+	static void SetID_Particle(_int _iID) { s_iRGP_PARTICLE = _iID; }
 
 public:
 	virtual HRESULT				Initialize_Prototype(const json& _jsonInfo);
@@ -38,18 +39,18 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta) override;
 
 public:
-	virtual	void				Reset(); 
+	virtual	void				Reset() = 0; 
 
 public:
-	const EFFECT_TYPE Get_Type() const { return m_eEffectType; }
-	_uint				Get_EventID() const { return m_iEventID; }
+	const EFFECT_TYPE			Get_Type() const { return m_eEffectType; }
+	_uint						Get_EventID() const { return m_iEventID; }
 
 protected:
 	static _int			s_iRG_3D;
 	static _int			s_iRG_2D;
 	static _int			s_iRGP_EFFECT;
+	static _int			s_iRGP_PARTICLE;
 
-	_float4x4			m_IdentityMatrix = {};
 
 
 protected:
@@ -58,20 +59,23 @@ protected:
 protected:
 	EFFECT_TYPE	m_eEffectType = { NONE };			// Sprite or Mesh?
 	_uint			m_iShaderPass = 0;					// Particle 설정 여부에 따라서 Pass도 바뀐다.
-	_bool			m_isFollowParent = { true };		// System에 따라 위치가 결정? World 좌표 그대로로 설정? 여부
-	/*_bool			m_isProgress = { true };*/			
-	// 이벤트로 인해 Particle 진행여부는 Active로 판단.
+	_bool			m_isWorld = { true };		// System에 따라 위치가 결정? World 좌표 그대로로 설정? 여부
+			
+	// 이벤트로 인한 Particle 진행여부는 Active로 판단.
 	_uint			m_iEventID = { 0 };					// 파티클이 진행될 ID
 	_float			m_fEventTime = { 0.f };				// 이벤트 총 진행시간
 	_float			m_fAccTime = { 0.f };				// 진행시간
-	_uint			m_iLoopTime = { 0 };				// 루프 횟수, 0 일경우 = 무한루프
-	_uint			m_iAccLoop = { 0 };
-
-
+	_float			m_fDelayTime = { 0.f };				// Delay 시간
+	_uint			m_iLoopTime = { 1 };				// 루프 횟수
+	_uint			m_iAccLoop = { 0 };					// Delay가 지나면 ++, 
+	_float4x4		m_LoadMatrix;
 
 protected:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
+
+	virtual void On_Event() = 0;
+	virtual void Off_Event() = 0;
 
 protected:
 	virtual HRESULT Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc);

@@ -1,13 +1,17 @@
 #include "TriggerObject.h"
 #include "GameInstance.h"
 
+_int CTriggerObject::g_iNextID = -1;
+
 CTriggerObject::CTriggerObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CActorObject(_pDevice, _pContext)
+    , m_iTriggerID{ g_iNextID++ }
 {
 }
 
 CTriggerObject::CTriggerObject(const CTriggerObject& _Prototype)
     : CActorObject(_Prototype)
+    , m_iTriggerID{ g_iNextID++ }
 {
 }
 

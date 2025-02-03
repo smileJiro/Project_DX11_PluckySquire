@@ -280,7 +280,6 @@ void CLevel_Camera_Tool::Show_CameraTool()
 		tData.iLengthRatioType = m_iLengthRatioType;
 		tData.fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x), XMConvertToRadians(m_fRotationPerSecAxisY.y) };
 		tData.fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x), XMConvertToRadians(m_fRotationPerSecAxisRight.y)};
-		tData.isReturn = m_isReturn;
 
 		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
 		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
@@ -1002,8 +1001,6 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::SameLine();
 	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
 
-	ImGui::Checkbox("IS RETURN?", &m_isReturn);
-
 	ImGui::NewLine();
 }
 
@@ -1024,7 +1021,6 @@ void CLevel_Camera_Tool::Edit_CopyArm()
 	pData->iLengthRatioType = { m_iLengthRatioType };
 	pData->fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x),   XMConvertToRadians(m_fRotationPerSecAxisY.y) };
 	pData->fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x),   XMConvertToRadians(m_fRotationPerSecAxisRight.y) };
-	pData->isReturn = m_isReturn;
 	// Show Data
 }
 
@@ -1966,7 +1962,6 @@ void CLevel_Camera_Tool::Save_Data_Arm()
 		outFile.write(reinterpret_cast<const char*>(&Data.second->fRotationPerSecAxisRight), sizeof(_float2));
 	
 		outFile.write(reinterpret_cast<const char*>(&Data.second->vDesireArm), sizeof(_float3));
-		outFile.write(reinterpret_cast<const char*>(&Data.second->isReturn), sizeof(_bool));
 	}
 
 	_wstring FullPath = wszSavePath + wszSaveName + TEXT(".bin");
@@ -2102,7 +2097,7 @@ void CLevel_Camera_Tool::Load_Data_Arm()
 		
 		ARM_DATA tData;
 	
-		// CutScene Tag 읽기
+		// Arm Tag 읽기
 		_uint strLength = {};
 		inFile.read(reinterpret_cast<char*>(&strLength), sizeof(_uint));
 		_wstring ArmTag;
@@ -2119,7 +2114,6 @@ void CLevel_Camera_Tool::Load_Data_Arm()
 		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisRight), sizeof(_float2));
 		
 		inFile.read(reinterpret_cast<char*>(&tData.vDesireArm), sizeof(_float3));
-		inFile.read(reinterpret_cast<char*>(&tData.isReturn), sizeof(_bool));
 
 		CCamera_Manager_Tool::GetInstance()->Add_ArmData(ArmTag, tData);
 	}

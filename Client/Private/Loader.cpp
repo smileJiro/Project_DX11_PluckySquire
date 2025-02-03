@@ -392,19 +392,19 @@ HRESULT CLoader::Loading_Level_Logo()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/_BACK_T_TitleBG.dds"), 1))))
 		return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/2DMap/mountain_white_flower_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower1"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_02.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/2DMap/mountain_white_flower_02.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_ink_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_ink_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink1"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_ink_02.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_ink_02.dds"), 1))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -1091,11 +1091,13 @@ HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelI
                 {
                     _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
                     _string szEventTag = Trigger_json["Camera Trigger Event Tag"];
-                    
+                    _uint iReturnMask = Trigger_json["Exit Return Mask"];
+
                     CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
 
                     Desc.iCameraTriggerType = iCameraTriggerType;
                     Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
+                    Desc.iReturnMask = iReturnMask;
 
                     Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
                     Desc.vHalfExtents = Data.vHalfExtents;

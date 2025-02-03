@@ -14,6 +14,7 @@
 #include "TestTerrain.h"
 #include "Beetle.h"
 #include "BarfBug.h"
+#include "Projectile_BarfBug.h"
 #include "JumpBug.h"
 #include "BirdMonster.h"
 #include "Goblin.h"
@@ -36,6 +37,7 @@
 #include "ShopItemBG.h"
 
 #include "NPC.h"
+
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -93,8 +95,6 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
-
-
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
@@ -104,14 +104,24 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
-		/* Section Test */
-		CSection_Manager::GetInstance()->SetActive_Section(TEXT("Section_Test"), false);
 
-		///* Pooling Test */
-		//_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		////CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
-		//
-		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
+		// DXGI 팩토리 생성
+		IDXGIFactory4* pFactory;
+		CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+
+		// 기본 GPU 어댑터 가져오기
+		IDXGIAdapter3* pAdapter;
+		pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
+
+		// VRAM 사용량 쿼리
+		DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
+		pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
+
+		// 결과 출력 (MB 단위)
+		SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
+		SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
+
+		int a = 0;
 	}
 
 	// Change Camera Free  Or Target
@@ -308,8 +318,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
-	// Load CutSceneData
+	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData();
+	CCamera_Manager::GetInstance()->Load_ArmData();
 
 	return S_OK;
 }
@@ -720,10 +731,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
-	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-7.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.0f, 0.35f, -19.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
 
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
@@ -759,11 +770,26 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
 	//	return E_FAIL;
 
+		/*  Projectile  */
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
+
+	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
+	pProjDesc->iCurLevelID = LEVEL_GAMEPLAY;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
+
 	return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
+	CEmitter::SetID_2D(RG_2D);
+	CEmitter::SetID_3D(RG_3D);
+	CEmitter::SetID_Particle(PR3D_EFFECT);
+
 	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
 
 	Desc.eStartCoord = COORDINATE_3D;
