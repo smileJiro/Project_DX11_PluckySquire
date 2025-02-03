@@ -15,8 +15,8 @@ public:
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 private:
 	_vector m_vDirection;
-    _float m_fForwardSpeedMax = 25.f;
-    _float m_fForwardSpeedMin = 10.f;
+    _float m_fForwardSpeedMax = 12.f;
+    _float m_fForwardSpeedMin = 5.f;
     _float m_f3DForwardStartProgress = 0.0;
     _float m_f3DForwardEndProgress = 0.52;
     _float m_f2DForwardStartProgress = 0;

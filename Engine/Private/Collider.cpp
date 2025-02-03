@@ -53,9 +53,9 @@ HRESULT CCollider::Initialize(void* _pArg)
     m_vPosition = pDesc->vPosition;
     m_vOffsetPosition = pDesc->vOffsetPosition;
     m_vScale = pDesc->vScale;
+    m_isBlock = pDesc->isBlock;
 
     // Add Desc 
-
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
@@ -75,6 +75,7 @@ HRESULT CCollider::Render()
 
     return S_OK;
 }
+
 
 void CCollider::Free()
 {

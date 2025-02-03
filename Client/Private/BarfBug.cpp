@@ -105,28 +105,6 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     }
     Safe_Delete(pDesc->pActorDesc);
 
-
-    /*  Projectile  */
-    Pooling_DESC Pooling_Desc;
-    Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-    Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
-
-    CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
-    pProjDesc->fLifeTime = 5.f;
-    pProjDesc->eStartCoord = COORDINATE_3D;
-    pProjDesc->isCoordChangeEnable = true;
-    pProjDesc->iNumPartObjects = PART_LAST;
-    pProjDesc->iCurLevelID = m_iCurLevelID;
-
-    pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pProjDesc->tTransform2DDesc.fSpeedPerSec = 1000.f;
-
-    pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
-
-    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
-
     return S_OK;
 }
 
@@ -452,7 +430,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -509,9 +487,10 @@ HRESULT CBarfBug::Ready_Components()
     /* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
-    AABBDesc.vExtents = { 75.f, 100.f };
+    AABBDesc.vExtents = { 50.f, 100.f };
     AABBDesc.vScale = { 1.0f, 1.0f };
-    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
+    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
+    AABBDesc.isBlock = true;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;

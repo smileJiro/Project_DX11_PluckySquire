@@ -8,6 +8,8 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 
+/* For. Main Table */
+#include "MainTable.h"
 /* For. Trigger*/
 #include "Camera_Trigger.h"
 
@@ -276,6 +278,12 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+    /* For. Prototype_GameObject_MainTable */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+        CMainTable::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
     // ============ Triger
     /* For. Prototype_GameObject_Camera_Trigger */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"),

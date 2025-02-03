@@ -411,14 +411,12 @@ public: /* 2D Ãæµ¹ */
 
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-	void Move(_vector _vForce,_float _fTimeDelta);
+
+
+	void Move(_vector _vForce, _float _fTimeDelta);
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
-	void Stop_Rotate();
-	void Stop_Move();
-	void	ThrowSword();
 	void Jump();
-	void Add_Impuls(_vector _vForce);
-	void Rotate_To(_vector _vDirection);
+	void	ThrowSword();
 	PLAYER_KEY_RESULT Player_KeyInput();
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
@@ -460,7 +458,7 @@ private:
 	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
-	_vector m_vLookBefore = {0,0,-1};
+
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 
 	class CPlayerSword* m_pSword = nullptr;
