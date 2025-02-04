@@ -6,7 +6,7 @@ class CPlayerState_Attack :
     public CPlayerState
 {
 public:
-    CPlayerState_Attack(CPlayer* _pOwner, E_DIRECTION _eDirection);
+    CPlayerState_Attack(CPlayer* _pOwner);
 
     // CPlayerState을(를) 통해 상속됨
     void Update(_float _fTimeDelta) override;
@@ -15,7 +15,7 @@ public:
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 	void Switch_To_AttackAnimation(_uint iComboCount);
 private:
-	E_DIRECTION m_eDirection;
+	_vector m_vDirection;
     _uint m_iComboCount = 0;
     _bool m_bCombo = false;
 	_float m_f3DForwardSpeed = 15.f;

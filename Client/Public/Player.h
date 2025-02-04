@@ -461,7 +461,7 @@ private:
 	_bool m_bOnGround = false;
 	_vector m_vClamberPosition;
 	_float m_fAttackForwardingForce = 15.f;
-	_float m_fGroundRotateSpeed = 1080;
+	_float m_fGroundRotateSpeed = 360;
 
 	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;

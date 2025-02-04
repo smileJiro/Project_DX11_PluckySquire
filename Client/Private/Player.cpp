@@ -67,7 +67,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_CAPSULE_DESC ShapeDesc = {};
     ShapeDesc.fRadius = m_fFootLength;
     ShapeDesc.fHalfHeight = m_fCenterHeight - m_fFootLength;
-    
+	//SHAPE_BOX_DESC ShapeDesc = {};
+	//ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
+
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -265,9 +267,9 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
-	if (COORDINATE_3D == Get_CurCoord())
-        Rotate_To(m_v3DTargetDirection, m_fGroundRotateSpeed);
+
     __super::Update(_fTimeDelta); /* Part Object Update */
+    m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
      m_bOnGround = false;
 }
 
@@ -294,6 +296,10 @@ HRESULT CPlayer::Render()
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     int a = 0;
+    for (auto& i : _ContactPointDatas)
+    {
+        cout<<"Contatc Enter Normal: " << i.normal.x << ", "<< i.normal.y << "," << i.normal.z<<endl;
+    }
 }
 
 void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -315,6 +321,25 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
                 continue;
             m_bOnGround = true;
             return;
+        }
+    }
+    for (auto& pariPoints : _ContactPointDatas)
+    {
+        _vector vWallNormal = { pariPoints.normal.x,pariPoints.normal.y,pariPoints.normal.z };
+        if (abs(pariPoints.normal.y) < m_fStepSlopeThreshold)
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+            //해결책 6번
+   //         _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
+   //         pDynamicActor->Set_Rotation(m_v3DTargetDirection);
+			//pDynamicActor->Set_LinearVelocity(vOldVelocity);
+			//return;
+
+            //해결책 7번
+            _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
+            _float fDot = XMVectorGetX( XMVector4Dot(vWallNormal, XMVector3Normalize( vOldVelocity)));
+            _vector vNewVelociaty = vOldVelocity + abs(fDot) * vWallNormal * XMVector4Length(vOldVelocity);
+            pDynamicActor->Set_LinearVelocity(vNewVelociaty);
         }
     }
 }
@@ -486,7 +511,8 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
         tResult.vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
         tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
     }
-
+    if(tResult.bKeyStates[PLAYER_KEY_MOVE])
+        tResult.vMoveDir = XMVector3Normalize(tResult.vMoveDir);
     return tResult;
 }
 
@@ -599,7 +625,7 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Jump(this));
         break;
     case Client::CPlayer::ATTACK:
-        m_pStateMachine->Transition_To(new CPlayerState_Attack(this, m_e2DDirection_E));
+        m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
         break;
     case Client::CPlayer::ROLL:
         m_pStateMachine->Transition_To(new CPlayerState_Roll(this, m_v3DTargetDirection));

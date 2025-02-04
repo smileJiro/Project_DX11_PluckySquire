@@ -6,10 +6,10 @@
 #include "Player.h"
 #include "StateMachine.h"
 
-CPlayerState_Attack::CPlayerState_Attack(CPlayer* _pOwner, E_DIRECTION _eDirection)
+CPlayerState_Attack::CPlayerState_Attack(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::ATTACK)
 {
-	m_eDirection = _eDirection;
+
 }
 
 void CPlayerState_Attack::Update(_float _fTimeDelta)
@@ -25,8 +25,11 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 	_float fProgress =m_pOwner->Get_AnimProgress();
 	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
 	_float fForwardingProgress = eCoord == COORDINATE_2D ? m_f2DForwardingProgress : m_f3DForwardingProgress;
+    if (COORDINATE_3D == eCoord)
+        m_pOwner->Rotate_To(XMVector3Normalize(m_vDirection), 1080);
 	if (fProgress >= fMotionCancelProgress)
 	{
+
         if (m_bCombo)
         {
             m_iComboCount++;
@@ -56,7 +59,10 @@ void CPlayerState_Attack::Enter()
 {
     COORDINATE eCoord = m_pOwner->Get_CurCoord();
 
-
+	if (COORDINATE_3D == eCoord)
+	    m_vDirection = m_pOwner->Get_3DTargetDirection();
+    else
+		m_vDirection = EDir_To_Vector(m_pOwner->Get_2DDirection());
 	Switch_To_AttackAnimation(m_iComboCount);
 }
 

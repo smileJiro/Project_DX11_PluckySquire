@@ -16,7 +16,7 @@ CCharacter::CCharacter(const CCharacter& _Prototype)
 void CCharacter::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
-    m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+  
 }
 
 void CCharacter::Late_Update(_float _fTimeDelta)
