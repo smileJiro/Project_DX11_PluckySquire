@@ -94,7 +94,7 @@ void CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
         _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, _vDirection));
         if (XMVector3Equal(vAxis, XMVectorZero()))
             vAxis = XMVectorSet(0, 1, 0, 0);
-        pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(_fSpeed));
+        pDynamicActor->Set_AngularVelocity(vAxis * _fSpeed);
 
     }
 }

@@ -58,6 +58,7 @@ void CMonster::Priority_Update(_float _fTimeDelta)
 void CMonster::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta); /* Part Object Update */
+	m_vLookBefore = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
 }
 
 void CMonster::Late_Update(_float _fTimeDelta)

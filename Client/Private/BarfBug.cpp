@@ -180,7 +180,8 @@ HRESULT CBarfBug::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-    m_pDetectionField->Render();
+    if (COORDINATE_3D == Get_CurCoord())
+        m_pDetectionField->Render();
 
     if (COORDINATE_2D == Get_CurCoord())
         m_pColliderCom->Render();
@@ -348,10 +349,16 @@ void CBarfBug::Attack()
 
 void CBarfBug::Turn_Animation(_bool _isCW)
 {
-    if(true == _isCW)
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TURN_RIGHT);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    if (true == _isCW)
+        AnimIdx = TURN_RIGHT;
     else
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TURN_LEFT);
+        AnimIdx = TURN_LEFT;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
 }
 
 void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)

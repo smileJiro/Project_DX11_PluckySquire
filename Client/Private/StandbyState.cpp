@@ -74,7 +74,7 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 				//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
 				//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
-				m_pOwner->Rotate_To(vDir);
+				m_pOwner->Rotate_To(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
 				if (fResult < 0)
 					isCW = false;
