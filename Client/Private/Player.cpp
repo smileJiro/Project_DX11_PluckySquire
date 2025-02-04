@@ -277,6 +277,16 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
+    if (m_bContactWall)
+    {
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        //해결책 6번
+        _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
+        pDynamicActor->Set_Rotation(m_v3DTargetDirection);
+        pDynamicActor->Set_LinearVelocity(vOldVelocity);
+        m_bContactWall = false;
+    }
+
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -323,23 +333,21 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
             return;
         }
     }
+ //   cout << "Ground : " << m_bOnGround << endl;
     for (auto& pariPoints : _ContactPointDatas)
     {
         _vector vWallNormal = { pariPoints.normal.x,pariPoints.normal.y,pariPoints.normal.z };
         if (abs(pariPoints.normal.y) < m_fStepSlopeThreshold)
         {
-            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-            //해결책 6번
-   //         _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
-   //         pDynamicActor->Set_Rotation(m_v3DTargetDirection);
-			//pDynamicActor->Set_LinearVelocity(vOldVelocity);
-			//return;
+
+            m_bContactWall = true;
+        	return;
 
             //해결책 7번
-            _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
-            _float fDot = XMVectorGetX( XMVector4Dot(vWallNormal, XMVector3Normalize( vOldVelocity)));
-            _vector vNewVelociaty = vOldVelocity + abs(fDot) * vWallNormal * XMVector4Length(vOldVelocity);
-            pDynamicActor->Set_LinearVelocity(vNewVelociaty);
+            //_vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
+            //_float fDot = XMVectorGetX( XMVector4Dot(vWallNormal, XMVector3Normalize( vOldVelocity)));
+            //_vector vNewVelociaty = vOldVelocity + abs(fDot) * vWallNormal * XMVector4Length(vOldVelocity);
+            //pDynamicActor->Set_LinearVelocity(vNewVelociaty);
         }
     }
 }
