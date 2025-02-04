@@ -131,19 +131,23 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		//기본적으로 추적중에 y값 상태 변화는 없다고 가정
 		_vector vDir = XMVector3Normalize(Set_PatrolDirection(_iDir));
 
-		if (true == m_isTurn)
+		if (true == m_isTurn && false == m_isMove)
 		{
 			if (m_pOwner->Rotate_To(vDir, XMConvertToDegrees(m_pOwner->Get_ControllerTransform()->Get_RotationPerSec())))
 			{
 				m_isMove = true;
+				
 				m_pOwner->Change_Animation();
 			}
-			//각속도 0이면
-			/*if (0.f == XMVectorGetY(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity()))
+			else
 			{
-				m_isMove = true;
-				m_pOwner->Change_Animation();
-			}*/
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
+				if (fResult < 0)
+					isCW = false;
+
+				m_pOwner->Turn_Animation(isCW);
+			}
 		}
 
 		if (true == m_isMove)
@@ -253,42 +257,42 @@ _vector CPatrolState::Set_PatrolDirection(_int _iDir)
 		case 0:
 			vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "상" << endl;
+			//cout << "상" << endl;
 			break;
 		case 1:
 			vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "우상" << endl;
+			//cout << "우상" << endl;
 			break;
 		case 2:
 			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "우" << endl;
+			//cout << "우" << endl;
 			break;
 		case 3:
 			vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "우하" << endl;
+			//cout << "우하" << endl;
 			break;
 		case 4:
 			vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "하" << endl;
+			//cout << "하" << endl;
 			break;
 		case 5:
 			vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "좌하" << endl;
+			//cout << "좌하" << endl;
 			break;
 		case 6:
 			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "좌" << endl;
+			//cout << "좌" << endl;
 			break;
 		case 7:
 			vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "좌상" << endl;
+			//cout << "좌상" << endl;
 			break;
 		default:
 			break;

@@ -70,11 +70,12 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 			if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 			{
 				_bool isCW = true;
-				_vector vDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
+				_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 				//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
 				//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
-				m_pOwner->Rotate_To(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
+				//m_pOwner->Rotate_To(XMVectorSetY(vDir, 0.f), XMConvertToDegrees(m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()));
+				m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
 				if (fResult < 0)
 					isCW = false;
