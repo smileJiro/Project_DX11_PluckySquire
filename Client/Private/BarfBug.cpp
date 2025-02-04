@@ -93,8 +93,12 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAnimEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("2DAnimEventGenerator"), m_pAnimEventGenerator);
 
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
@@ -155,7 +159,8 @@ void CBarfBug::Update(_float _fTimeDelta)
     }
 
     //// TestCode : 태웅
-    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
+    if (COORDINATE_2D == Get_CurCoord())
+        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -175,9 +180,11 @@ HRESULT CBarfBug::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-    m_pDetectionField->Render();
+    if (COORDINATE_3D == Get_CurCoord())
+        m_pDetectionField->Render();
 
-    m_pColliderCom->Render();
+    if (COORDINATE_2D == Get_CurCoord())
+        m_pColliderCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -342,10 +349,16 @@ void CBarfBug::Attack()
 
 void CBarfBug::Turn_Animation(_bool _isCW)
 {
-    if(true == _isCW)
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TURN_RIGHT);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    if (true == _isCW)
+        AnimIdx = TURN_RIGHT;
     else
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TURN_LEFT);
+        AnimIdx = TURN_LEFT;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
 }
 
 void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
@@ -390,6 +403,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             if(false == m_isDelay)
             {
                 Set_AnimChangeable(true);
+                Delay_On();
             }
             break;
 
@@ -403,7 +417,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 {
     CBarfBug::MONSTER_DESC* pDesc = static_cast<CBarfBug::MONSTER_DESC*>(_pArg);
     
-    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
@@ -421,8 +435,8 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.5f;
-    ShapeDesc->fRadius = 0.5f;
+    ShapeDesc->fHalfHeight = 0.4f;
+    ShapeDesc->fRadius = 0.7f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
