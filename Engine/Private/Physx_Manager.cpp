@@ -26,8 +26,8 @@ HRESULT CPhysx_Manager::Initialize()
 	if (FAILED(Initialize_Foundation()))
 		return E_FAIL;
 
-	//if (FAILED(Initialize_PVD()))
-	//	return E_FAIL;
+	if (FAILED(Initialize_PVD()))
+		return E_FAIL;
 	
 	if (FAILED(Initialize_Physics()))
 		return E_FAIL;
@@ -188,8 +188,7 @@ _bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, 
 	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
 	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
 
-	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit,
-		PxHitFlag::eDEFAULT, PxQueryFilterData(), nullptr);
+	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit);
 
 	for (PxU32 i = 0; i < hit.nbTouches; i++) {
 		PxRigidActor* pActor = hit.touches[i].actor;
@@ -273,15 +272,15 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 
 	// Region 추가
 	m_pPxScene->addBroadPhaseRegion(region);
-//	/* Setting Pvd */
-//	PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
-//#if defined(_DEBUG)
-//	if (pvdClient) {
-//		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, false);
-//		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, false);
-//		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, false);
-//	}
-//#endif
+	/* Setting Pvd */
+	PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
+#if defined(_DEBUG)
+	if (pvdClient) {
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, false);
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, false);
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, false);
+	}
+#endif
 #pragma region 추가적인 이벤트 처리나 flag 설정이 필요한 경우
 	/* 추가적인 이벤트 처리나 flag 설정이 필요한 경우 */
 	//// flags 설정
@@ -402,17 +401,17 @@ void CPhysx_Manager::Free()
 	if (m_pPxPhysics)
 		m_pPxPhysics->release();
 
-	//// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
-	//if (m_pPxPvd)
-	//{
-	//	m_pPxPvd->disconnect(); // PVD 연결 해제
-	//
-	//	if (auto pTransport = m_pPxPvd->getTransport())
-	//	{
-	//		m_pPxPvd->release();
-	//		pTransport->release();
-	//	}
-	//}
+	// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
+	if (m_pPxPvd)
+	{
+		m_pPxPvd->disconnect(); // PVD 연결 해제
+	
+		if (auto pTransport = m_pPxPvd->getTransport())
+		{
+			m_pPxPvd->release();
+			pTransport->release();
+		}
+	}
 
 	// 6. Foundation 정리
 	if (m_pPxFoundation)

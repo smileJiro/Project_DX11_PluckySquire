@@ -606,6 +606,9 @@
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -924,6 +927,9 @@
       <Filter>02.GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>

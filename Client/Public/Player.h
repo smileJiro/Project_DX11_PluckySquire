@@ -42,6 +42,7 @@ public:
 		JUMP_ATTACK,
 		ROLL,
 		THROWSWORD,
+		CLAMBER,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -412,7 +413,7 @@ public: /* 2D 충돌 */
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
-
+	void Attack();
 	void Move(_vector _vForce, _float _fTimeDelta);
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();
@@ -427,6 +428,8 @@ public: /* 2D 충돌 */
 	_bool Is_SwordEquiped();
 	_bool Is_CarryingObject();
 	_vector Get_CenterPosition();
+	_vector  Get_HeadPosition();
+	_float Get_HeadHeight() { return m_fHeadHeight; }
 	_vector Get_LookDirection();
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 
@@ -436,6 +439,7 @@ public: /* 2D 충돌 */
 	void Set_State(STATE _eState);
 	void Set_2DDirection(E_DIRECTION _eEDir);
 	void Set_3DTargetDirection(_fvector _vDir);
+	void Set_ClamberPosition(_fvector _vPos) { m_vClamberPosition = _vPos; }
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
@@ -451,9 +455,13 @@ private:
 	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
 	_float m_fCenterHeight = 0.5;
+	_float m_fHeadHeight = 1.0;
 	_float m_fFootLength = 0.25;
 	_float m_fStepSlopeThreshold = 0.5;
 	_bool m_bOnGround = false;
+	_vector m_vClamberPosition;
+	_float m_fAttackForwardingForce = 15.f;
+	_float m_fGroundRotateSpeed = 360;
 
 	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
