@@ -129,7 +129,6 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 void CPlayerState_Jump::Enter()
 {
 	m_pOwner->Jump();
-
 	Switch_JumpAnimation(UP);
 }
 

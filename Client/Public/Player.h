@@ -432,6 +432,7 @@ public: /* 2D Ãæµ¹ */
 	_float Get_HeadHeight() { return m_fHeadHeight; }
 	_vector Get_LookDirection();
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
+	STATE Get_CurrentStateID();
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);

@@ -249,42 +249,42 @@ _vector CPatrolState::Set_PatrolDirection(_int _iDir)
 		case 0:
 			vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "»ó" << endl;
+			//cout << "»ó" << endl;
 			break;
 		case 1:
 			vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "¿ì»ó" << endl;
+			//cout << "¿ì»ó" << endl;
 			break;
 		case 2:
 			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "¿ì" << endl;
+			//cout << "¿ì" << endl;
 			break;
 		case 3:
 			vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "¿ìÇÏ" << endl;
+			//cout << "¿ìÇÏ" << endl;
 			break;
 		case 4:
 			vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "ÇÏ" << endl;
+			//cout << "ÇÏ" << endl;
 			break;
 		case 5:
 			vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "ÁÂÇÏ" << endl;
+			//cout << "ÁÂÇÏ" << endl;
 			break;
 		case 6:
 			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "ÁÂ" << endl;
+			//cout << "ÁÂ" << endl;
 			break;
 		case 7:
 			vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			cout << "ÁÂ»ó" << endl;
+			//cout << "ÁÂ»ó" << endl;
 			break;
 		default:
 			break;

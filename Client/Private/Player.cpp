@@ -88,11 +88,10 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA BoxShapeData;
     BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
     BoxShapeData.pShapeDesc = &BoxDesc;
-    XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, 0.025, 0.0f));
+    XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, 0.05, 0.0f));
     BoxShapeData.isTrigger = false;                    
-    BoxShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+    BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
-	
 
     //충돌 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
@@ -124,7 +123,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
 
 	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 12.f;	
+	m_tStat[COORDINATE_3D].fJumpPower = 10.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
@@ -149,8 +148,6 @@ HRESULT CPlayer::Ready_Components()
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
-
-
 
    /* Test 2D Collider */
    CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
@@ -267,6 +264,13 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
+    if (STATE::JUMP == Get_CurrentStateID())
+    {
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
+        cout << "Velocity : " << vOldVelocity.m128_f32[0] << "," << vOldVelocity.m128_f32[1] << "," << vOldVelocity.m128_f32[2] << endl;
+    }
+
     //cout << "m_bOnGround :" << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
@@ -310,10 +314,10 @@ HRESULT CPlayer::Render()
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     int a = 0;
-    for (auto& i : _ContactPointDatas)
-    {
-        cout << "Contatc Enter :" << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << endl;
-    }
+    //for (auto& i : _ContactPointDatas)
+    //{
+    //    cout << "Contatc Enter :" << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << endl;
+    //}
 }
 
 void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -350,7 +354,7 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     int a = 0;
-    cout << "Contatc Exit :" << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID()<< endl;
+   // cout << "Contatc Exit :" << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID()<< endl;
 
 }
 
@@ -460,7 +464,13 @@ void CPlayer::Jump()
         //m_f2DUpForce = m_tStat[COORDINATE_2D].fJumpPower;
     }
     else
-        m_pActorCom->Add_Impulse(_float3(0.0f, m_tStat[COORDINATE_3D].fJumpPower, 0.0f));
+    {
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        _vector vVelocity = pDynamicActor->Get_LinearVelocity();
+        vVelocity = XMVectorSetY(vVelocity, XMVectorGetY(vVelocity) + m_tStat[COORDINATE_3D].fJumpPower);
+        pDynamicActor->Set_LinearVelocity(vVelocity);
+
+    }
 }
 
 
@@ -603,6 +613,11 @@ _vector CPlayer::Get_LookDirection()
         return EDir_To_Vector(m_e2DDirection_E);
     else
         return XMVector4Normalize( m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+}
+
+CPlayer::STATE CPlayer::Get_CurrentStateID()
+{
+	return m_pStateMachine->Get_CurrentState()->Get_StateID();
 }
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
