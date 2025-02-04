@@ -36,7 +36,7 @@ public:
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
-	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData);
+	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
 	
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
@@ -50,7 +50,7 @@ private:
 	_float						m_fSmoothSpeed = {};
 
 	// Arm
-	map<_wstring, ARM_DATA*>	m_ArmDatas;
+	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
 	CCameraArm*					m_pCurArm = { nullptr };
 
 private:
@@ -63,7 +63,7 @@ private:
 	void						Move_To_PreArm(_float _fTimeDelta);
 
 private:
-	ARM_DATA*					Find_ArmData(_wstring _wszArmTag);
+	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
 
 public:
 	static CCamera_Target*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

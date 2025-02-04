@@ -187,7 +187,7 @@ void CMapObject::Late_Update(_float _fTimeDelta)
     /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
-        if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
+        if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
         {
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
         }

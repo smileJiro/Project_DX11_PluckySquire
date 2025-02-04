@@ -71,25 +71,12 @@ void CCamera_Target::Add_CurArm(CCameraArm* _pCameraArm)
 	m_pCurArm = _pCameraArm;
 }
 
-void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
+void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
 	if (nullptr != Find_ArmData(_wszArmTag))
 		return;
 
-	ARM_DATA* pArmData = new ARM_DATA();
-
-	pArmData->fLength = _pData.fLength;
-	pArmData->fLengthTime = _pData.fLengthTime;
-	pArmData->iLengthRatioType = _pData.iLengthRatioType;
-
-	pArmData->fMoveTimeAxisY = _pData.fMoveTimeAxisY;
-	pArmData->fMoveTimeAxisRight = _pData.fMoveTimeAxisRight;
-	pArmData->fRotationPerSecAxisY = _pData.fRotationPerSecAxisY;
-	pArmData->fRotationPerSecAxisRight = _pData.fRotationPerSecAxisRight;
-
-	pArmData->vDesireArm = _pData.vDesireArm;
-
-	m_ArmDatas.emplace(_wszArmTag, pArmData);
+	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
 }
 
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
@@ -99,7 +86,7 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 
 _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 {
-	ARM_DATA* pData = Find_ArmData(_wszNextArmName);
+	pair<ARM_DATA*, SUB_DATA*>* pData = Find_ArmData(_wszNextArmName);
 
 	if (nullptr == pData)
 		return false;
@@ -107,7 +94,14 @@ _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID
 	if (nullptr == m_pCurArm)
 		return false;
 
-	m_pCurArm->Set_NextArmData(pData, _iTriggerID);
+	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
+
+	if (nullptr != pData->second) {
+
+		Start_Zoom(pData->second->fZoomTime, (CCamera::ZOOM_LEVEL)pData->second->iZoomLevel, (CCamera::RATIO_TYPE)pData->second->iZoomRatioType);
+		Start_Changing_AtOffset(pData->second->fAtOffsetTime, XMLoadFloat3(&pData->second->vAtOffset), pData->second->iAtRatioType);
+	}
+
 	return true;
 }
 
@@ -205,14 +199,14 @@ void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 	Look_Target(_fTimeDelta);
 }
 
-ARM_DATA* CCamera_Target::Find_ArmData(_wstring _wszArmTag)
+pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)
 {
 	auto iter = m_ArmDatas.find(_wszArmTag);
 
 	if (iter == m_ArmDatas.end())
 		return nullptr;
 
-	return iter->second;
+	return &(iter->second);
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -243,8 +237,10 @@ CGameObject* CCamera_Target::Clone(void* pArg)
 
 void CCamera_Target::Free()
 {
-	for (auto& ArmData : m_ArmDatas)
-		Safe_Delete(ArmData.second);
+	for (auto& ArmData : m_ArmDatas) {
+		Safe_Delete(ArmData.second.first);
+		Safe_Delete(ArmData.second.second);
+	}
 	m_ArmDatas.clear();
 
 	Safe_Release(m_pCurArm);

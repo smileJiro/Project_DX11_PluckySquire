@@ -154,7 +154,7 @@ HRESULT CShopPanel_BG::Ready_Components()
 
 
 
-	}
+	} 
 	
 	return S_OK;
 }

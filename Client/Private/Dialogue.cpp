@@ -49,7 +49,45 @@ void CDialog::Update(_float _fTimeDelta)
 		if (Uimgr->Get_DialogueLineIndex() <= Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
 		{
 			Uimgr->Set_DialogueLineIndex(Uimgr->Get_DialogueLineIndex() + 1);
+
+			_float2 vPos = {};
+
+			//vPos.x = m_pControllerTransform->Get_State(CTransform::STATE_POSITION).m128_f32[0];
+			//vPos.y = m_pControllerTransform->Get_State(CTransform::STATE_POSITION).m128_f32[1];
 			
+			//if (COORDINATE::COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+			//{
+				switch (Uimgr->Get_DialogueLine(TEXT("dialog_01"), Uimgr->Get_DialogueLineIndex()).location)
+				{
+				case LOC_DEFAULT:
+				{
+					vPos.x = RTSIZE_BOOK2D_X / 10.f;
+					vPos.y = RTSIZE_BOOK2D_Y / 10.f;
+				}
+				break;
+
+				case LOC_MIDDLE:
+				{
+
+				}
+				break;
+
+				case LOC_MIDLEFT:
+				{
+
+				}
+				break;
+				}
+			//}
+			//else if (COORDINATE::COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			//{
+			//
+			//}
+			
+
+			//vPos.x = vPos.x + g_iWinSizeX * 0.5f;
+			//vPos.y = -vPos.y + g_iWinSizeY * 0.5f;
+			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 
 			if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
 			{
@@ -237,7 +275,8 @@ HRESULT CDialog::DisplayText()
 		//vTextPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
 
 
-		vTextPos = _float2(g_iWinSizeX / 1.25f, g_iWinSizeY  * 1.77f);
+		//vTextPos = _float2(g_iWinSizeX / 1.25f, g_iWinSizeY  * 1.77f);
+		vTextPos = _float2(g_iWinSizeX / 1.25f, g_iWinSizeY * 1.77f);
 	}
 	break;
 
