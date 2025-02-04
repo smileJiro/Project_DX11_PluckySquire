@@ -501,9 +501,6 @@
     <ClInclude Include="..\Public\SampleBook.h">
       <Filter>02.GameObjects\SampleBook</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\2DDefault_RenderObject.h">
-      <Filter>02.GameObjects\SampleBook</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Section.h">
       <Filter>04.Section</Filter>
     </ClInclude>
@@ -606,6 +603,7 @@
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -824,9 +822,6 @@
     <ClCompile Include="..\Private\SampleBook.cpp">
       <Filter>02.GameObjects\SampleBook</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
-      <Filter>02.GameObjects\SampleBook</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Section.cpp">
       <Filter>04.Section</Filter>
     </ClCompile>
@@ -926,6 +921,7 @@
     <ClCompile Include="..\Private\BarfBug.cpp">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -4,6 +4,7 @@
   "ActivePropertis": {
    "ActiveType": "ActiveType_Breakable"
   },
+  "BackGround": false,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "TD_Flower_BP_C01",
@@ -21,6 +22,7 @@
   "ActivePropertis": {
    "ActiveType": "ActiveType_Breakable"
   },
+  "BackGround": false,
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
@@ -48,6 +50,7 @@
   "ActivePropertis": {
    "ActiveType": "ActiveType_Attackable"
   },
+  "BackGround": false,
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
@@ -78,39 +81,43 @@
   "ActivePropertis": {
    "ActiveType": "ActiveType_Patrol"
   },
+  "BackGround": false,
   "Collider": false,
   "ModelType": "Anim",
   "SearchTag": "ButterflyBlue",
   "Sorting": false,
-  "TextureName": ""
+  "TextureName": "Butterfly_Blue"
  },
  {
   "Active": true,
   "ActivePropertis": {
    "ActiveType": "ActiveType_Patrol"
   },
+  "BackGround": false,
   "Collider": false,
   "ModelType": "Anim",
   "SearchTag": "ButterflyOrange",
   "Sorting": false,
-  "TextureName": "butterfly_orange_fly_02"
+  "TextureName": "Butterfly_Orange"
  },
  {
   "Active": true,
   "ActivePropertis": {
    "ActiveType": "ActiveType_Patrol"
   },
+  "BackGround": false,
   "Collider": false,
   "ModelType": "Anim",
   "SearchTag": "ButterflyWhite",
   "Sorting": false,
-  "TextureName": "butterfly_white_fly_02"
+  "TextureName": "Butterfly_White"
  },
  {
   "Active": true,
   "ActivePropertis": {
    "ActiveType": "ActiveType_Breakable"
   },
+  "BackGround": false,
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
@@ -141,6 +148,7 @@
   "ActivePropertis": {
    "ActiveType": "ActiveType_Dialog"
   },
+  "BackGround": false,
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
@@ -171,6 +179,7 @@
   "ActivePropertis": {
    "ActiveType": "ActiveType_Dialog"
   },
+  "BackGround": false,
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
@@ -198,6 +207,7 @@
  },
  {
   "Active": false,
+  "BackGround": false,
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
@@ -225,6 +235,7 @@
  },
  {
   "Active": false,
+  "BackGround": false,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "treegreenbrokentrunk",
@@ -239,6 +250,7 @@
  },
  {
   "Active": false,
+  "BackGround": false,
   "Collider": true,
   "ColliderPropertis": {
    "ColliderInfo": {
@@ -263,10 +275,191 @@
  },
  {
   "Active": false,
+  "BackGround": false,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "TopDownDecal_Ink",
   "Sorting": false,
   "TextureName": "ink_splat_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "latch_house_door",
+  "Sorting": false,
+  "TextureName": "latch_house_door"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "latch_house_exterior",
+  "Sorting": false,
+  "TextureName": "latch_house_exterior"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "latch_house_fence",
+  "Sorting": false,
+  "TextureName": "latch_house_fence"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "latch_house_interior",
+  "Sorting": false,
+  "TextureName": "latch_house_interior"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "moonbeard_house_carrot",
+  "Sorting": false,
+  "TextureName": "moonbeard_house_carrot"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "moonbeard_house_interior",
+  "Sorting": false,
+  "TextureName": "moonbeard_house_interior"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "Anim",
+  "SearchTag": "moonbread_house_exterior",
+  "Sorting": false,
+  "TextureName": "MBHouse_DoorOpen_0001_X02"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "moonbeard_house_mushroom",
+  "Sorting": false,
+  "TextureName": "moonbeard_house_mushroom"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "moonbeard_house_rake",
+  "Sorting": false,
+  "TextureName": "moonbeard_house_rake"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "frog_green_idle_01",
+  "Sorting": false,
+  "TextureName": "frog_green_idle_01"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_background_01",
+  "Sorting": false,
+  "TextureName": "honey_peaks_background_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_foregroud_tree_01",
+  "Sorting": false,
+  "TextureName": "honey_peaks_foregroud_tree_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_foregroud_tree_02",
+  "Sorting": false,
+  "TextureName": "honey_peaks_foregroud_tree_02"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_foregroud_tree_03",
+  "Sorting": false,
+  "TextureName": "honey_peaks_foregroud_tree_03"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_foregroud_tree_04",
+  "Sorting": false,
+  "TextureName": "honey_peaks_foregroud_tree_04"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_foregroud_tree_05",
+  "Sorting": false,
+  "TextureName": "honey_peaks_foregroud_tree_05"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_platform_01",
+  "Sorting": false,
+  "TextureName": "honey_peaks_platform_01"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_platform_02",
+  "Sorting": false,
+  "TextureName": "honey_peaks_platform_02"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "tome_tower_01",
+  "Sorting": false,
+  "TextureName": "tome_tower_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "honey_peaks_tree",
+  "Sorting": false,
+  "TextureName": "honey_peaks_tree"
  }
 ]

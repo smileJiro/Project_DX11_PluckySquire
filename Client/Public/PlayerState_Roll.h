@@ -17,9 +17,9 @@ private:
 	_vector m_vDirection;
     _float m_fForwardSpeedMax = 17.f;
     _float m_fForwardSpeedMin = 2.f;
-    _float m_f3DForwardStartProgress = 0.0;
-    _float m_f3DForwardEndProgress = 0.52;
-    _float m_f2DForwardStartProgress = 0;
+    _float m_f3DForwardStartProgress = 0.f;
+    _float m_f3DForwardEndProgress = 0.52f;
+    _float m_f2DForwardStartProgress = 0.f;
     _float m_f2DForwardEndProgress = 1;
     _float m_f3DMotionCancelProgress = 0.52f;
     _float m_f2DMotionCancelProgress = 0.8f;
