@@ -44,7 +44,7 @@ public:
 	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
 public:
-	void						Set_NextArmData(ARM_DATA* _pData);		// Event 처리 하면 사라지고 바로 Arm에 넣을 수도
+	void						Set_NextArmData(ARM_DATA* _pArmData, SUB_DATA* _pSubData);		// Event 처리 하면 사라지고 바로 Arm에 넣을 수도
 
 private:
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
@@ -57,6 +57,9 @@ private:
 
 	// TargetPos
 	_float3						m_vTargetPos = {};
+
+	//// Sub Data
+	//SUB_DATA*					m_pCurSubData = { nullptr };
 
 private:
 	void						Action_Mode(_float _fTimeDelta);

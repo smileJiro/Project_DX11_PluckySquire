@@ -34,6 +34,7 @@
 /* For. UI*/
 
 /* For. NPC*/
+#include "Npc_Body.h"
 #include "NPC_Store.h"
 
 
@@ -326,6 +327,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"),
         CMonster_Body::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+	/* For. Prototype_GameObject_Monster_Body */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_NPC_Body"),
+		CNpc_Body::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
      /* For. Prototype_GameObject_Beetle */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"),
@@ -674,7 +680,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-    // TEST
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ParentShopPannel"),
 		CShopPanel::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -731,7 +736,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
 
-    //Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
+    Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

@@ -6,10 +6,10 @@
 #include "Player.h"
 #include "StateMachine.h"
 
-CPlayerState_Attack::CPlayerState_Attack(CPlayer* _pOwner, E_DIRECTION _eDirection)
+CPlayerState_Attack::CPlayerState_Attack(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::ATTACK)
 {
-	m_eDirection = _eDirection;
+
 }
 
 void CPlayerState_Attack::Update(_float _fTimeDelta)
@@ -25,49 +25,32 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 	_float fProgress =m_pOwner->Get_AnimProgress();
 	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
 	_float fForwardingProgress = eCoord == COORDINATE_2D ? m_f2DForwardingProgress : m_f3DForwardingProgress;
+    if (COORDINATE_3D == eCoord)
+        m_pOwner->Rotate_To(XMVector3Normalize(m_vDirection), 1080);
 	if (fProgress >= fMotionCancelProgress)
 	{
-		if (m_bCombo)
-		{
-			m_iComboCount++;
-			if (2 >= m_iComboCount)
-			{
-                Switch_To_AttackAnimation(m_iComboCount);
-                if (COORDINATE_3D == eCoord)
-                    m_pOwner->Add_Impuls(m_pOwner->Get_LookDirection() * m_f3DForwardSpeed);
 
-			}
-			m_bCombo = false;
-		}
+        if (m_bCombo)
+        {
+            m_iComboCount++;
+            if (2 >= m_iComboCount)
+            {
+                Switch_To_AttackAnimation(m_iComboCount);
+
+            }
+            m_bCombo = false;
+        }
         else
         {
             if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
                 m_pOwner->Set_State(CPlayer::JUMP);
             else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
-                m_pOwner->Set_State(CPlayer::ROLL); 
+                m_pOwner->Set_State(CPlayer::ROLL);
             else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
                 m_pOwner->Set_State(CPlayer::THROWSWORD);
             else if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
                 m_pOwner->Set_State(CPlayer::RUN);
-
         }
-
-	}
-	else if(fProgress >= fForwardingProgress)
-	{
-		//m_pOwner->Stop_Move();
-	}
-	else
-	{
-        //switch (eCoord)
-        //{
-        //case Engine::COORDINATE_2D:
-        //    m_pOwner->Move(EDir_To_Vector(m_eDirection), _fTimeDelta);
-        //    break;
-        //case Engine::COORDINATE_3D:
-        //    m_pOwner->Move_Forward(m_f3DForwardSpeed, _fTimeDelta);
-        //    break;
-        //}
 	}
 	
 }
@@ -76,8 +59,10 @@ void CPlayerState_Attack::Enter()
 {
     COORDINATE eCoord = m_pOwner->Get_CurCoord();
 
-    if(COORDINATE_3D == eCoord)
-        m_pOwner->Add_Impuls(m_pOwner->Get_3DTargetDirection() * m_f3DForwardSpeed);
+	if (COORDINATE_3D == eCoord)
+	    m_vDirection = m_pOwner->Get_3DTargetDirection();
+    else
+		m_vDirection = EDir_To_Vector(m_pOwner->Get_2DDirection());
 	Switch_To_AttackAnimation(m_iComboCount);
 }
 

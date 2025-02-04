@@ -164,30 +164,12 @@ void CMapObject::Update(_float _fTimeDelta)
 
 void CMapObject::Late_Update(_float _fTimeDelta)
 {
-    //switch (m_pControllerTransform->Get_CurCoord())
-    //{
-    //case Engine::COORDINATE_2D:
-    //    if (nullptr != m_pParentMatrices[COORDINATE_2D])
-    //        XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_2D]));
-    //    else
-    //        XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D));
-    //    break;
-    //case Engine::COORDINATE_3D:
-    //    if (nullptr != m_pParentMatrices[COORDINATE_3D])
-    //        XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
-    //    else
-    //        XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
-    //    break;
-    //default:
-    //    break;
-    //}
-
     CGameObject::Late_Update_Component(_fTimeDelta);
 
     /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
-        if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
+        if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
         {
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
         }

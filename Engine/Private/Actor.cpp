@@ -447,8 +447,8 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	FilterData.word1 = _ShapeData.FilterData.OtherGroupMask;
 
 	pShape->setSimulationFilterData(FilterData);
-	//pShape->setContactOffset(0.05f);
-	//pShape->setRestOffset(0.01f);
+	//pShape->setContactOffset(1.f);
+	//pShape->setRestOffset(0.1f);
 	SHAPE_USERDATA* pShapeUserData = new SHAPE_USERDATA;
 	pShapeUserData->iShapeInstanceID = m_pGameInstance->Create_ShapeID();
 	pShapeUserData->iShapeUse = _ShapeData.iShapeUse;
@@ -458,7 +458,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	m_pActor->attachShape(*pShape);
 	m_Shapes.push_back(pShape);
 	pShape->acquireReference(); // Add_Ref
-
+	
 	// 이건 생성 시점에 추가된 ref를 감소
 	pShape->release();
 
@@ -650,6 +650,7 @@ HRESULT CActor::Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType
 
 HRESULT CActor::Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable)
 {
+
 	if (m_Shapes.size() <= _iShapeIndex)
 		return E_FAIL;
 

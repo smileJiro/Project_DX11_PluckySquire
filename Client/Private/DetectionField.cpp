@@ -44,7 +44,7 @@ HRESULT CDetectionField::Initialize(void* _pArg)
 void CDetectionField::Late_Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-	m_pGameInstance->Add_DebugComponent_New(this);
+	//m_pGameInstance->Add_DebugComponent_New(this);
 #endif
 }
 

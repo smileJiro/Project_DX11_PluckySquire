@@ -23,7 +23,11 @@ public:
 	void		Cleanup_DeadReferences(); 
 	void		SetActive_GameObjects(_bool _isActive);
 	void		Clear_GameObjects();
-
+	template <typename Comparator>
+	void	Sort_Objects(Comparator _funcCompair)
+	{
+		m_GameObjects.sort(_funcCompair);
+	}
 public:
 	// Get
 	const list<class CGameObject*>& Get_GameObjects() { return m_GameObjects; }

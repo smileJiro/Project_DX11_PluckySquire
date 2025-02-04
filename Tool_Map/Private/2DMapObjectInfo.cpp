@@ -105,15 +105,11 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 		{
 			m_isModelCreate = true;
 			m_pModel = static_cast<C2DModel*>(pModel);
-			if (m_eModelType == MODEL_NONANIM)
-			{
-				CSpriteFrame* pFrame = m_pModel->Get_SpriteFrame();
+			m_pTexture = m_pModel->Get_Texture();
 
-				if (nullptr != pFrame)
-				{
-					m_pTexture = pFrame->Get_Texture();
-					m_isToolRendering = true;
-				}
+			if (m_pTexture != nullptr)
+			{
+				m_isToolRendering = true;
 			}
 		}
 		else
@@ -174,6 +170,25 @@ ID3D11ShaderResourceView* C2DMapObjectInfo::Get_SRV(_float2* _pReturnSize)
 		*_pReturnSize = m_pTexture->Get_Size();
 	;
 	return m_pTexture->Get_SRV(0);
+}
+
+void C2DMapObjectInfo::Set_Model(C2DModel* _pModel)
+{
+	if (_pModel != nullptr)
+	{
+		m_isModelCreate = true;
+		m_pModel = static_cast<C2DModel*>(_pModel);
+		m_pTexture = _pModel->Get_Texture();
+		if (m_pTexture != nullptr)
+		{
+			const _wstring* pTextureName = m_pTexture->Get_SRVName(0);
+			if(nullptr != pTextureName)
+			m_strTextureName = WstringToString(*pTextureName);
+			m_eModelType = (MAPOBJ_MODEL_TYPE)_pModel->Get_AnimType();
+
+			m_isToolRendering = true;
+		}
+	}
 }
 
 

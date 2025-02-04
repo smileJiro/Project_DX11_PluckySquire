@@ -152,9 +152,11 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
             return E_FAIL;
 
         pSection_2D->Register_RenderGroup_ToRenderer();
-        //pSection_2D->Sort_Layer([](CGameObject* pLeftGameObject, CGameObject* pRightGameObject) {
-        //    
-        //    });
+
+        pSection_2D->Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
+            return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
+            });
+
         if (nullptr != pSection)
         {
             if(FAILED(pSection->Add_RenderGroup_GameObjects()))

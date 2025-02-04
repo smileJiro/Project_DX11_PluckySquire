@@ -16,8 +16,8 @@ class C2DMapObjectInfo final : public CBase
 public :
 	enum MAPOBJ_MODEL_TYPE
 	{
-		MODEL_ANIM,
 		MODEL_NONANIM,
+		MODEL_ANIM,
 		MODEL_END,
 	};
 
@@ -106,7 +106,7 @@ public :
 	_bool						Is_Delete() { return m_isDelete; };
 	void						Set_Delete(_bool _isDelete) { m_isDelete = _isDelete; }
 
-
+	void						Set_Model(C2DModel* _pModel);
 
 private :
 
@@ -127,9 +127,9 @@ private :
 	_bool						m_isModelCreate	= false;
 	_bool						m_isToolRendering = false;
 
-	MAPOBJ_MODEL_TYPE			m_eModelType;
-	MAPOBJ_ACTIVE_TYPE			m_eActiveType;
-	MAPOBJ_2D_COLLIDIER_TYPE	m_eColliderType;
+	MAPOBJ_MODEL_TYPE			m_eModelType = MAPOBJ_MODEL_TYPE::MODEL_NONANIM;
+	MAPOBJ_ACTIVE_TYPE			m_eActiveType = MAPOBJ_ACTIVE_TYPE::ACTIVE_END;
+	MAPOBJ_2D_COLLIDIER_TYPE	m_eColliderType = MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_END;
 
 	_bool						m_isSorting = false;
 	_float2						m_fSortingPosition = {};

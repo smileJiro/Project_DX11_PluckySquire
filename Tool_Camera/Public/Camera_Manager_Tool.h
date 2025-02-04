@@ -38,12 +38,12 @@ public:
 	_vector				Get_CameraVector(CTransform::STATE _eState);						// 현재 카메라 Right, Up, Look, Pos 가져오는 함수
 	_uint				Get_CameraType() { return m_eCurrentCameraType; }
 	void				Get_ArmNames(vector<_wstring>* _vecArmNames);
-	ARM_DATA*			Get_ArmData(_wstring _wszArmName);
-	map<_wstring, ARM_DATA*>* Get_ArmDatas() { return &m_ArmDatas; };
+	pair<ARM_DATA*, SUB_DATA*>*			Get_ArmData(_wstring _wszArmName);
+	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>* Get_ArmDatas() { return &m_ArmDatas; };
 
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
-	void				Add_ArmData(_wstring wszArmTag, ARM_DATA _pData);
+	void				Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
 	void				Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene);
 
 	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);		// 카메라 모드 전환(아마 Target Camera만 적용)							
@@ -60,7 +60,7 @@ public:
 public:
 	//void				Add_NextArm_Info(_wstring _wszArmTag, ARM_DATA _pData);
 	void				Edit_ArmInfo(_wstring _wszArmTag);			// Copy Arm에 넣어서 초록색인 상태로 수정
-	void				Reset_CurrentArmPos(_vector vArm, _float fLength);
+	void				Reset_CurrentArm(_fvector vArm, _float fLength, _fvector _vAtOffset, _int _iZoomLevel);
 
 	_float				Get_ArmLength();
 	_float3				Get_CurrentArmVector();
@@ -78,10 +78,10 @@ private:
 
 	class CCameraArm*						m_pCurrentArm = { nullptr };
 
-	map<_wstring, ARM_DATA*>				m_ArmDatas;				// Data 저장
+	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>				m_ArmDatas;				// Data 저장
 
 private:
-	ARM_DATA*			Find_ArmData(_wstring _wszArmTag);
+	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
 	
 public:
 	virtual void		Free() override;
