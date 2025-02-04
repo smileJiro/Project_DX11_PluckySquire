@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_C09_TalkingItSucks_Loop_0008_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1369.0,
+        "Y": 856.0
+      },
+      "BakedSourceDimension": {
+        "X": 212.0,
+        "Y": 260.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_C09_5152-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C09_5152/Textures/Thrash_C09_5152-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 171.0,
+          "Y": 258.0,
+          "Z": 0.7714844,
+          "W": 0.20922852
+        },
+        {
+          "X": -39.0,
+          "Y": 258.0,
+          "Z": 0.6689453,
+          "W": 0.20922852
+        },
+        {
+          "X": -39.0,
+          "Y": 0.0,
+          "Z": 0.6689453,
+          "W": 0.2722168
+        },
+        {
+          "X": 171.0,
+          "Y": 0.0,
+          "Z": 0.7714844,
+          "W": 0.2722168
+        },
+        {
+          "X": 171.0,
+          "Y": 258.0,
+          "Z": 0.7714844,
+          "W": 0.20922852
+        },
+        {
+          "X": -39.0,
+          "Y": 0.0,
+          "Z": 0.6689453,
+          "W": 0.2722168
+        }
+      ]
+    }
+  }
+]

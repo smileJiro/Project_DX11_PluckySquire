@@ -1,0 +1,41 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Idle_staff",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Idle_staff_0001_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Idle_staff_0001_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Idle_staff_0002_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Idle_staff_0002_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Idle_staff_0003_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Idle_staff_0003_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Idle_staff_0004_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Idle_staff_0004_X04.0"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

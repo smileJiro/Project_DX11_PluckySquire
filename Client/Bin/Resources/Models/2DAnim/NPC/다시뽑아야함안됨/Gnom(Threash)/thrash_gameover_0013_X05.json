@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "thrash_gameover_0013_X05",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -27.0,
+              "Y": 0.0,
+              "Z": 407.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 1308.0,
+            "Y": 10.0,
+            "Z": 878.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "ECAC3E754B55CADB3D930BAD804F1195"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "thrash_gameover_0013_X05",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 1064.0
+      },
+      "BakedSourceDimension": {
+        "X": 1310.0,
+        "Y": 880.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_gameover-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Textures/thrash_gameover-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'thrash_gameover_0013_X05:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0013_X05.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 627.0,
+          "Y": 846.0,
+          "Z": 0.31982422,
+          "W": 0.26000977
+        },
+        {
+          "X": -681.0,
+          "Y": 846.0,
+          "Z": 0.00048828125,
+          "W": 0.26000977
+        },
+        {
+          "X": -681.0,
+          "Y": -32.0,
+          "Z": 0.00048828125,
+          "W": 0.47436523
+        },
+        {
+          "X": 627.0,
+          "Y": -32.0,
+          "Z": 0.31982422,
+          "W": 0.47436523
+        },
+        {
+          "X": 627.0,
+          "Y": 846.0,
+          "Z": 0.31982422,
+          "W": 0.26000977
+        },
+        {
+          "X": -681.0,
+          "Y": -32.0,
+          "Z": 0.00048828125,
+          "W": 0.47436523
+        }
+      ]
+    }
+  }
+]

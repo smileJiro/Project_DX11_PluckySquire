@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "Texture2D",
+    "Name": "gnom_jump_rise_right_0007_X02",
+    "Class": "UScriptClass'Texture2D'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "ImportedSize": {
+        "X": 350,
+        "Y": 350
+      },
+      "LightingGuid": "83A0A0D9-40D4877C-2DEC06A9-29BC1E9D",
+      "LODGroup": "TEXTUREGROUP_Project01",
+      "Downscale": {
+        "bCooked": true,
+        "Default": 0.0,
+        "Value": 0.0
+      },
+      "NeverStream": true
+    },
+    "SizeX": 352,
+    "SizeY": 352,
+    "PackedData": 1,
+    "PixelFormat": "PF_DXT5",
+    "FirstMipToSerialize": 0,
+    "Mips": [
+      {
+        "BulkData": {
+          "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+          "ElementCount": 123904,
+          "SizeOnDisk": 123904,
+          "OffsetInFile": "0x1ED66"
+        },
+        "SizeX": 352,
+        "SizeY": 352,
+        "SizeZ": 1
+      }
+    ]
+  }
+]

@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_DrinkPop_0034_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 733.0
+      },
+      "BakedSourceDimension": {
+        "X": 286.0,
+        "Y": 382.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'moonbeard_drinkpop_-0'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Textures/moonbeard_drinkpop_-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 118.0,
+          "Y": 350.0,
+          "Z": 0.13964844,
+          "W": 0.17919922
+        },
+        {
+          "X": -166.0,
+          "Y": 350.0,
+          "Z": 0.0009765625,
+          "W": 0.17919922
+        },
+        {
+          "X": -166.0,
+          "Y": -30.0,
+          "Z": 0.0009765625,
+          "W": 0.27197266
+        },
+        {
+          "X": 118.0,
+          "Y": -30.0,
+          "Z": 0.13964844,
+          "W": 0.27197266
+        },
+        {
+          "X": 118.0,
+          "Y": 350.0,
+          "Z": 0.13964844,
+          "W": 0.17919922
+        },
+        {
+          "X": -166.0,
+          "Y": -30.0,
+          "Z": 0.0009765625,
+          "W": 0.27197266
+        }
+      ]
+    }
+  }
+]

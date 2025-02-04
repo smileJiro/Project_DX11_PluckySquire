@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_2",
+    "Outer": "Thrash_salute_into_0009_X03",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 1.0,
+              "Y": 0.0,
+              "Z": 134.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 282.0,
+            "Y": 10.0,
+            "Z": 297.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "F4896A7B403768CCF7AAA18C251B5EF2"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_salute_into_0009_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 869.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 284.0,
+        "Y": 299.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_c6-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Textures/thrash_c6-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_salute_into_0009_X03:BodySetup_2'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0009_X03.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 142.0,
+          "Y": 283.0,
+          "Z": 0.5625,
+          "W": 0.001953125
+        },
+        {
+          "X": -140.0,
+          "Y": 283.0,
+          "Z": 0.4248047,
+          "W": 0.001953125
+        },
+        {
+          "X": -140.0,
+          "Y": -14.0,
+          "Z": 0.4248047,
+          "W": 0.2919922
+        },
+        {
+          "X": 142.0,
+          "Y": -14.0,
+          "Z": 0.5625,
+          "W": 0.2919922
+        },
+        {
+          "X": 142.0,
+          "Y": 283.0,
+          "Z": 0.5625,
+          "W": 0.001953125
+        },
+        {
+          "X": -140.0,
+          "Y": -14.0,
+          "Z": 0.4248047,
+          "W": 0.2919922
+        }
+      ]
+    }
+  }
+]

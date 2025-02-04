@@ -1,0 +1,118 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "thrash_gameover",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0001_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0001_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0002_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0002_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0003_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0003_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0004_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0004_X05.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0005_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0005_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0006_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0006_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0007_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0007_X05.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0008_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0008_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0009_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0009_X05.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0010_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0010_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0011_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0011_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0012_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0012_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0013_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0013_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0014_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0014_X05.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_gameover_0015_X05'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/GameOver/Frames/thrash_gameover_0015_X05.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

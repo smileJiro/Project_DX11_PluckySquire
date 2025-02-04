@@ -1,0 +1,244 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Ch06_MixOut",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0014_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0015_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0015_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0016_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0016_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0017_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0018_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0018_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0019_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0019_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0020_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0020_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0021_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0021_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0022_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0022_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0023_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0023_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0024_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0024_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0025_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0025_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0026_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0026_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0027_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0027_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0028_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0028_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0029_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0029_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0030_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0030_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0031_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0031_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0032_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0032_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_MixOut_0033_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_MixOut_0033_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

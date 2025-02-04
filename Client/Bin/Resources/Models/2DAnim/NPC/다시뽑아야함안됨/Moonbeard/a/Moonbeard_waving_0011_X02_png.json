@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Moonbeard_waving_0011_X02_png",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 218.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 418.0,
+            "Y": 10.0,
+            "Z": 497.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "BADF0AA243BF7F9F55136B9815E41771"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_waving_0011_X02_png",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1476.0,
+        "Y": 488.0
+      },
+      "BakedSourceDimension": {
+        "X": 420.0,
+        "Y": 499.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Moonbeard_waving_0'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/Waving/Textures/Moonbeard_waving_0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Moonbeard_waving_0011_X02_png:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/Waving/Frames/Moonbeard_waving_0011_X02_png.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 209.0,
+          "Y": 467.0,
+          "Z": 0.92529297,
+          "W": 0.23876953
+        },
+        {
+          "X": -209.0,
+          "Y": 467.0,
+          "Z": 0.7211914,
+          "W": 0.23876953
+        },
+        {
+          "X": -209.0,
+          "Y": -30.0,
+          "Z": 0.7211914,
+          "W": 0.4814453
+        },
+        {
+          "X": 209.0,
+          "Y": -30.0,
+          "Z": 0.92529297,
+          "W": 0.4814453
+        },
+        {
+          "X": 209.0,
+          "Y": 467.0,
+          "Z": 0.92529297,
+          "W": 0.23876953
+        },
+        {
+          "X": -209.0,
+          "Y": -30.0,
+          "Z": 0.7211914,
+          "W": 0.4814453
+        }
+      ]
+    }
+  }
+]

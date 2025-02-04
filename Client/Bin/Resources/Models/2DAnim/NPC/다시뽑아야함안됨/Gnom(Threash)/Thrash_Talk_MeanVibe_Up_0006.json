@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Talk_MeanVibe_Up_0006",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 7.0,
+              "Y": 0.0,
+              "Z": 123.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 230.0,
+            "Y": 10.0,
+            "Z": 276.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "29D3384D42B69AD3438041B47D7ECD0A"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Talk_MeanVibe_Up_0006",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 732.0,
+        "Y": 1765.0
+      },
+      "BakedSourceDimension": {
+        "X": 232.0,
+        "Y": 278.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Talk_MeanVibe_Up_0006:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_MeanVibe_Up_0006.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 122.0,
+          "Y": 261.0,
+          "Z": 0.23510742,
+          "W": 0.43115234
+        },
+        {
+          "X": -108.0,
+          "Y": 261.0,
+          "Z": 0.17895508,
+          "W": 0.43115234
+        },
+        {
+          "X": -108.0,
+          "Y": -15.0,
+          "Z": 0.17895508,
+          "W": 0.49853516
+        },
+        {
+          "X": 122.0,
+          "Y": -15.0,
+          "Z": 0.23510742,
+          "W": 0.49853516
+        },
+        {
+          "X": 122.0,
+          "Y": 261.0,
+          "Z": 0.23510742,
+          "W": 0.43115234
+        },
+        {
+          "X": -108.0,
+          "Y": -15.0,
+          "Z": 0.17895508,
+          "W": 0.49853516
+        }
+      ]
+    }
+  }
+]

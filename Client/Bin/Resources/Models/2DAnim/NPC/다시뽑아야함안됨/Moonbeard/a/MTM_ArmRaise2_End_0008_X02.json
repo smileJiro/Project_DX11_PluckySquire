@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "MTM_ArmRaise2_End_0008_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1855.0,
+        "Y": 2444.0
+      },
+      "BakedSourceDimension": {
+        "X": 406.0,
+        "Y": 577.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'MTM_C09_129130-1'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Textures/MTM_C09_129130-1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 219.0,
+          "Y": 546.0,
+          "Z": 0.5517578,
+          "W": 0.5969238
+        },
+        {
+          "X": -185.0,
+          "Y": 546.0,
+          "Z": 0.453125,
+          "W": 0.5969238
+        },
+        {
+          "X": -185.0,
+          "Y": -29.0,
+          "Z": 0.453125,
+          "W": 0.7373047
+        },
+        {
+          "X": 219.0,
+          "Y": -29.0,
+          "Z": 0.5517578,
+          "W": 0.7373047
+        },
+        {
+          "X": 219.0,
+          "Y": 546.0,
+          "Z": 0.5517578,
+          "W": 0.5969238
+        },
+        {
+          "X": -185.0,
+          "Y": -29.0,
+          "Z": 0.453125,
+          "W": 0.7373047
+        }
+      ]
+    }
+  }
+]

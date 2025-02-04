@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Ch06_WeedKillerBomb_Give",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_WeedKillerBomb_Give_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_WeedKillerBomb_Give_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_WeedKillerBomb_Give_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_WeedKillerBomb_Give_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_WeedKillerBomb_Give_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_WeedKillerBomb_Give_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_WeedKillerBomb_Give_0004_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_WeedKillerBomb_Give_0004_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_WeedKillerBomb_Give_0005_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_WeedKillerBomb_Give_0005_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_WeedKillerBomb_Give_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_WeedKillerBomb_Give_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Ch06_WeedKillerBomb_Give_0007_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Frames/Moonbeard_Ch06_WeedKillerBomb_Give_0007_X03.0"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

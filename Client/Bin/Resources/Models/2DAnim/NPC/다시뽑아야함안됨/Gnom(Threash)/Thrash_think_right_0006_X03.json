@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_think_right_0006_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 625.0,
+        "Y": 542.0
+      },
+      "BakedSourceDimension": {
+        "X": 159.0,
+        "Y": 266.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Textures/Thrash_1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 59.0,
+          "Y": 252.0,
+          "Z": 0.38232422,
+          "W": 0.26513672
+        },
+        {
+          "X": -98.0,
+          "Y": 252.0,
+          "Z": 0.30566406,
+          "W": 0.26513672
+        },
+        {
+          "X": -98.0,
+          "Y": -12.0,
+          "Z": 0.30566406,
+          "W": 0.39404297
+        },
+        {
+          "X": 59.0,
+          "Y": -12.0,
+          "Z": 0.38232422,
+          "W": 0.39404297
+        },
+        {
+          "X": 59.0,
+          "Y": 252.0,
+          "Z": 0.38232422,
+          "W": 0.26513672
+        },
+        {
+          "X": -98.0,
+          "Y": -12.0,
+          "Z": 0.30566406,
+          "W": 0.39404297
+        }
+      ]
+    }
+  }
+]

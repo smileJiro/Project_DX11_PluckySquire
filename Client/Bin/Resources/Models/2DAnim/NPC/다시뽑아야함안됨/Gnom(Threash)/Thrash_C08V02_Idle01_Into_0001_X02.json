@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_C08V02_Idle01_Into_0001_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -12.0,
+              "Y": 0.0,
+              "Z": 125.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 148.0,
+            "Y": 10.0,
+            "Z": 268.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "4A1FB3EE47ABA23966561384C679F1F2"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_C08V02_Idle01_Into_0001_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2523.0,
+        "Y": 2861.0
+      },
+      "BakedSourceDimension": {
+        "X": 150.0,
+        "Y": 270.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_C08_P0708-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C08_P0708/Textures/Thrash_C08_P0708-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_C08V02_Idle01_Into_0001_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C08_P0708/Frames/Thrash_C08V02_Idle01_Into_0001_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 62.0,
+          "Y": 259.0,
+          "Z": 0.65234375,
+          "W": 0.69873047
+        },
+        {
+          "X": -86.0,
+          "Y": 259.0,
+          "Z": 0.61621094,
+          "W": 0.69873047
+        },
+        {
+          "X": -86.0,
+          "Y": -9.0,
+          "Z": 0.61621094,
+          "W": 0.76416016
+        },
+        {
+          "X": 62.0,
+          "Y": -9.0,
+          "Z": 0.65234375,
+          "W": 0.76416016
+        },
+        {
+          "X": 62.0,
+          "Y": 259.0,
+          "Z": 0.65234375,
+          "W": 0.69873047
+        },
+        {
+          "X": -86.0,
+          "Y": -9.0,
+          "Z": 0.61621094,
+          "W": 0.76416016
+        }
+      ]
+    }
+  }
+]

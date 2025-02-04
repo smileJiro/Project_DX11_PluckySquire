@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Talk_Upward_Right_0014",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -14.5,
+              "Y": 0.0,
+              "Z": 118.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 165.0,
+            "Y": 10.0,
+            "Z": 254.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "D6F435AD47CFD93BEE2B85B7B2A154A5"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Talk_Upward_Right_0014",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1140.0,
+        "Y": 341.0
+      },
+      "BakedSourceDimension": {
+        "X": 167.0,
+        "Y": 256.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Talk_Upward_Right_0014:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_Upward_Right_0014.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 68.0,
+          "Y": 245.0,
+          "Z": 0.31884766,
+          "W": 0.083496094
+        },
+        {
+          "X": -97.0,
+          "Y": 245.0,
+          "Z": 0.27856445,
+          "W": 0.083496094
+        },
+        {
+          "X": -97.0,
+          "Y": -9.0,
+          "Z": 0.27856445,
+          "W": 0.14550781
+        },
+        {
+          "X": 68.0,
+          "Y": -9.0,
+          "Z": 0.31884766,
+          "W": 0.14550781
+        },
+        {
+          "X": 68.0,
+          "Y": 245.0,
+          "Z": 0.31884766,
+          "W": 0.083496094
+        },
+        {
+          "X": -97.0,
+          "Y": -9.0,
+          "Z": 0.27856445,
+          "W": 0.14550781
+        }
+      ]
+    }
+  }
+]

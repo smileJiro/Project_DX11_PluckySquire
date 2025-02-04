@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_pull_loop_0004_X01",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 36.0,
+              "Y": 0.0,
+              "Z": 89.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 332.0,
+            "Y": 10.0,
+            "Z": 209.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "C9876EAE48A5F522FF7970858D65E3F7"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_pull_loop_0004_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1702.0,
+        "Y": 219.0
+      },
+      "BakedSourceDimension": {
+        "X": 334.0,
+        "Y": 211.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_pull_-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06_Excavator/Textures/thrash_pull_-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_pull_loop_0004_X01:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06_Excavator/Frames/Thrash_pull_loop_0004_X01.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 202.0,
+          "Y": 194.0,
+          "Z": 0.99365234,
+          "W": 0.21484375
+        },
+        {
+          "X": -130.0,
+          "Y": 194.0,
+          "Z": 0.83154297,
+          "W": 0.21484375
+        },
+        {
+          "X": -130.0,
+          "Y": -15.0,
+          "Z": 0.83154297,
+          "W": 0.4189453
+        },
+        {
+          "X": 202.0,
+          "Y": -15.0,
+          "Z": 0.99365234,
+          "W": 0.4189453
+        },
+        {
+          "X": 202.0,
+          "Y": 194.0,
+          "Z": 0.99365234,
+          "W": 0.21484375
+        },
+        {
+          "X": -130.0,
+          "Y": -15.0,
+          "Z": 0.83154297,
+          "W": 0.4189453
+        }
+      ]
+    }
+  }
+]

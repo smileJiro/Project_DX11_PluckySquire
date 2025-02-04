@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_Slipping_Down_0006",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -4.5,
+              "Y": 0.0,
+              "Z": 97.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 259.0,
+            "Y": 10.0,
+            "Z": 269.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "6D1EA1F842415C2D0E18C4A1B86769A0"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Slipping_Down_0006",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 527.0,
+        "Y": 1499.0
+      },
+      "BakedSourceDimension": {
+        "X": 261.0,
+        "Y": 271.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_C07_slipping-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C07_Slipping/Textures/Thrash_C07_slipping-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Slipping_Down_0006:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C07_Slipping/Frames/Thrash_Slipping_Down_0006.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 125.0,
+          "Y": 232.0,
+          "Z": 0.38427734,
+          "W": 0.36621094
+        },
+        {
+          "X": -134.0,
+          "Y": 232.0,
+          "Z": 0.2578125,
+          "W": 0.36621094
+        },
+        {
+          "X": -134.0,
+          "Y": -37.0,
+          "Z": 0.2578125,
+          "W": 0.43188477
+        },
+        {
+          "X": 125.0,
+          "Y": -37.0,
+          "Z": 0.38427734,
+          "W": 0.43188477
+        },
+        {
+          "X": 125.0,
+          "Y": 232.0,
+          "Z": 0.38427734,
+          "W": 0.36621094
+        },
+        {
+          "X": -134.0,
+          "Y": -37.0,
+          "Z": 0.2578125,
+          "W": 0.43188477
+        }
+      ]
+    }
+  }
+]

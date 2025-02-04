@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_2",
+    "Outer": "Thrash_emotions_into_0010_X03",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -13.5,
+              "Y": 0.0,
+              "Z": 124.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 227.0,
+            "Y": 10.0,
+            "Z": 280.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "4D6BBD9848572FA608DAB7885DC6562D"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_emotions_into_0010_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 469.0,
+        "Y": 3276.0
+      },
+      "BakedSourceDimension": {
+        "X": 229.0,
+        "Y": 282.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_C6_02-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Textures/thrash_C6_02-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_emotions_into_0010_X03:BodySetup_2'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_into_0010_X03.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 100.0,
+          "Y": 264.0,
+          "Z": 0.34033203,
+          "W": 0.8000488
+        },
+        {
+          "X": -127.0,
+          "Y": 264.0,
+          "Z": 0.22949219,
+          "W": 0.8000488
+        },
+        {
+          "X": -127.0,
+          "Y": -16.0,
+          "Z": 0.22949219,
+          "W": 0.8684082
+        },
+        {
+          "X": 100.0,
+          "Y": -16.0,
+          "Z": 0.34033203,
+          "W": 0.8684082
+        },
+        {
+          "X": 100.0,
+          "Y": 264.0,
+          "Z": 0.34033203,
+          "W": 0.8000488
+        },
+        {
+          "X": -127.0,
+          "Y": -16.0,
+          "Z": 0.22949219,
+          "W": 0.8684082
+        }
+      ]
+    }
+  }
+]

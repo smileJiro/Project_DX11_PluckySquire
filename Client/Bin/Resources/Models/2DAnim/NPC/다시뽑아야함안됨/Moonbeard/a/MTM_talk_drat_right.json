@@ -1,0 +1,209 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "MTM_talk_drat_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0006_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0006_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0014_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0015_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0015_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0016_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0016_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0017_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0018_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0018_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0019_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0019_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0020_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0020_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0021_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0021_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0022_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0022_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0023_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0023_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0024_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0024_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0025_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0025_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0026_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0026_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0027_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0027_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_talk_drat_right_0028_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_talk_drat_right_0028_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

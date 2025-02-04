@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_C06_Jump_0005_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -31.5,
+              "Y": 0.0,
+              "Z": 89.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 179.0,
+            "Y": 10.0,
+            "Z": 210.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "D11800E14E72A4BE09533EB157D17F90"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_C06_Jump_0005_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1252.0,
+        "Y": 981.0
+      },
+      "BakedSourceDimension": {
+        "X": 181.0,
+        "Y": 212.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_C06_P7172-1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Textures/Thrash_C06_P7172-1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_C06_Jump_0005_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_Jump_0005_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 58.0,
+          "Y": 194.0,
+          "Z": 0.69921875,
+          "W": 0.4794922
+        },
+        {
+          "X": -121.0,
+          "Y": 194.0,
+          "Z": 0.6118164,
+          "W": 0.4794922
+        },
+        {
+          "X": -121.0,
+          "Y": -16.0,
+          "Z": 0.6118164,
+          "W": 0.58203125
+        },
+        {
+          "X": 58.0,
+          "Y": -16.0,
+          "Z": 0.69921875,
+          "W": 0.58203125
+        },
+        {
+          "X": 58.0,
+          "Y": 194.0,
+          "Z": 0.69921875,
+          "W": 0.4794922
+        },
+        {
+          "X": -121.0,
+          "Y": -16.0,
+          "Z": 0.6118164,
+          "W": 0.58203125
+        }
+      ]
+    }
+  }
+]

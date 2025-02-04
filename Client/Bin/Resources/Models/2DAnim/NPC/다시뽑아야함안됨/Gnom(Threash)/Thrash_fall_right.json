@@ -1,0 +1,48 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_fall_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_fall_right_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_fall_right_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_fall_right_0002_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_fall_right_0002_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_fall_right_0003_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_fall_right_0003_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_fall_right_0004_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_fall_right_0004_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_fall_right_0005_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_fall_right_0005_X01.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

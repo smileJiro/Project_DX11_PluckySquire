@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_Ch06_WeedKillerBomb_Give_0001_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 354.0,
+        "Y": 1129.0
+      },
+      "BakedSourceDimension": {
+        "X": 332.0,
+        "Y": 540.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Moonbeard_C07-0'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Textures/Moonbeard_C07-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 137.0,
+          "Y": 508.0,
+          "Z": 0.16723633,
+          "W": 0.2758789
+        },
+        {
+          "X": -193.0,
+          "Y": 508.0,
+          "Z": 0.08666992,
+          "W": 0.2758789
+        },
+        {
+          "X": -193.0,
+          "Y": -30.0,
+          "Z": 0.08666992,
+          "W": 0.40722656
+        },
+        {
+          "X": 137.0,
+          "Y": -30.0,
+          "Z": 0.16723633,
+          "W": 0.40722656
+        },
+        {
+          "X": 137.0,
+          "Y": 508.0,
+          "Z": 0.16723633,
+          "W": 0.2758789
+        },
+        {
+          "X": -193.0,
+          "Y": -30.0,
+          "Z": 0.08666992,
+          "W": 0.40722656
+        }
+      ]
+    }
+  }
+]

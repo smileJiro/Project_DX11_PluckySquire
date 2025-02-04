@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "gnom_idle_right_0003_X04_Sprite",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceDimension": {
+        "X": 1024.0,
+        "Y": 1024.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'gnom_idle_right_0003_X04'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Idle/gnom_idle_right_0003_X04.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 63.0,
+          "Y": 260.0,
+          "Z": 0.56152344,
+          "W": 0.33984375
+        },
+        {
+          "X": -87.0,
+          "Y": 260.0,
+          "Z": 0.41503906,
+          "W": 0.33984375
+        },
+        {
+          "X": -87.0,
+          "Y": -9.0,
+          "Z": 0.41503906,
+          "W": 0.60253906
+        },
+        {
+          "X": 63.0,
+          "Y": -9.0,
+          "Z": 0.56152344,
+          "W": 0.60253906
+        },
+        {
+          "X": 63.0,
+          "Y": 260.0,
+          "Z": 0.56152344,
+          "W": 0.33984375
+        },
+        {
+          "X": -87.0,
+          "Y": -9.0,
+          "Z": 0.41503906,
+          "W": 0.60253906
+        }
+      ]
+    }
+  }
+]

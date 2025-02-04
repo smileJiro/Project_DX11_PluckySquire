@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Talk_NoPass_Down_0008",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 13.5,
+              "Y": 0.0,
+              "Z": 117.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 229.0,
+            "Y": 10.0,
+            "Z": 266.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "FDC67F7B47F747F9C31108A63572257A"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Talk_NoPass_Down_0008",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2478.0,
+        "Y": 1669.0
+      },
+      "BakedSourceDimension": {
+        "X": 231.0,
+        "Y": 268.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Talk_NoPass_Down_0008:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_NoPass_Down_0008.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 128.0,
+          "Y": 250.0,
+          "Z": 0.6611328,
+          "W": 0.40771484
+        },
+        {
+          "X": -101.0,
+          "Y": 250.0,
+          "Z": 0.6052246,
+          "W": 0.40771484
+        },
+        {
+          "X": -101.0,
+          "Y": -16.0,
+          "Z": 0.6052246,
+          "W": 0.47265625
+        },
+        {
+          "X": 128.0,
+          "Y": -16.0,
+          "Z": 0.6611328,
+          "W": 0.47265625
+        },
+        {
+          "X": 128.0,
+          "Y": 250.0,
+          "Z": 0.6611328,
+          "W": 0.40771484
+        },
+        {
+          "X": -101.0,
+          "Y": -16.0,
+          "Z": 0.6052246,
+          "W": 0.47265625
+        }
+      ]
+    }
+  }
+]

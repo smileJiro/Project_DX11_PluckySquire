@@ -1,0 +1,19 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "MTM_KnockedBack_Idle_Flipbook",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_KnockedBack_0020_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_KnockedBack_0020_X02.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

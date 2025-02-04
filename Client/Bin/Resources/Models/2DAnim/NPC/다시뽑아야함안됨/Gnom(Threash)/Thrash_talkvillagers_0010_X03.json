@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_2",
+    "Outer": "Thrash_talkvillagers_0010_X03",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 1.5,
+              "Y": 0.0,
+              "Z": 120.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 231.0,
+            "Y": 10.0,
+            "Z": 270.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "6EC580A64A8A3F71DA85D3B9CF44033E"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_talkvillagers_0010_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 532.0,
+        "Y": 2168.0
+      },
+      "BakedSourceDimension": {
+        "X": 233.0,
+        "Y": 272.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_C6_02-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Textures/thrash_C6_02-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_talkvillagers_0010_X03:BodySetup_2'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0010_X03.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 117.0,
+          "Y": 255.0,
+          "Z": 0.37304688,
+          "W": 0.529541
+        },
+        {
+          "X": -114.0,
+          "Y": 255.0,
+          "Z": 0.2602539,
+          "W": 0.529541
+        },
+        {
+          "X": -114.0,
+          "Y": -15.0,
+          "Z": 0.2602539,
+          "W": 0.595459
+        },
+        {
+          "X": 117.0,
+          "Y": -15.0,
+          "Z": 0.37304688,
+          "W": 0.595459
+        },
+        {
+          "X": 117.0,
+          "Y": 255.0,
+          "Z": 0.37304688,
+          "W": 0.529541
+        },
+        {
+          "X": -114.0,
+          "Y": -15.0,
+          "Z": 0.2602539,
+          "W": 0.595459
+        }
+      ]
+    }
+  }
+]

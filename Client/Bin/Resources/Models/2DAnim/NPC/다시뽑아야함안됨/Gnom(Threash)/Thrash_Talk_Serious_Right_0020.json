@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Talk_Serious_Right_0020",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 1.5,
+              "Y": 0.0,
+              "Z": 123.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 151.0,
+            "Y": 10.0,
+            "Z": 265.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "A410A09A4C17055ECB8C2897A3200B99"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Talk_Serious_Right_0020",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 611.0,
+        "Y": 271.0
+      },
+      "BakedSourceDimension": {
+        "X": 153.0,
+        "Y": 267.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Talk_Serious_Right_0020:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_Serious_Right_0020.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 77.0,
+          "Y": 256.0,
+          "Z": 0.3725586,
+          "W": 0.1328125
+        },
+        {
+          "X": -74.0,
+          "Y": 256.0,
+          "Z": 0.29882812,
+          "W": 0.1328125
+        },
+        {
+          "X": -74.0,
+          "Y": -9.0,
+          "Z": 0.29882812,
+          "W": 0.26220703
+        },
+        {
+          "X": 77.0,
+          "Y": -9.0,
+          "Z": 0.3725586,
+          "W": 0.26220703
+        },
+        {
+          "X": 77.0,
+          "Y": 256.0,
+          "Z": 0.3725586,
+          "W": 0.1328125
+        },
+        {
+          "X": -74.0,
+          "Y": -9.0,
+          "Z": 0.29882812,
+          "W": 0.26220703
+        }
+      ]
+    }
+  }
+]

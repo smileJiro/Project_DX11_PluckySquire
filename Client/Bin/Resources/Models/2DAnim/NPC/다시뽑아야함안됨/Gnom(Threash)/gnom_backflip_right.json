@@ -1,0 +1,209 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "gnom_backflip_right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0001_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0001_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0002_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0002_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0003_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0003_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0004_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0004_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0005_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0005_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0006_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0006_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0007_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0007_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0008_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0008_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0009_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0009_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0010_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0010_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0011_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0011_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0012_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0012_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0013_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0013_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0014_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0014_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0015_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0015_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0016_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0016_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0017_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0017_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0018_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0018_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0019_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0019_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0020_X01_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0020_X01_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0021_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0021_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0022_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0022_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0023_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0023_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0024_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0024_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0025_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0025_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0026_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0026_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0027_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0027_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'gnom_backflip_right_0028_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0028_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

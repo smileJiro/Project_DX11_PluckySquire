@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Talk_GoodbyeKrong_right_0007_X03",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 25.5,
+              "Y": 0.0,
+              "Z": 125.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 209.0,
+            "Y": 10.0,
+            "Z": 269.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "8005D9AE48648E992A1E5B834A910C5A"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Talk_GoodbyeKrong_right_0007_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 3417.0,
+        "Y": 289.0
+      },
+      "BakedSourceDimension": {
+        "X": 211.0,
+        "Y": 271.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Talk_GoodbyeKrong_right_0007_X03:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_GoodbyeKrong_right_0007_X03.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 130.0,
+          "Y": 260.0,
+          "Z": 0.88549805,
+          "W": 0.07080078
+        },
+        {
+          "X": -79.0,
+          "Y": 260.0,
+          "Z": 0.83447266,
+          "W": 0.07080078
+        },
+        {
+          "X": -79.0,
+          "Y": -9.0,
+          "Z": 0.83447266,
+          "W": 0.13647461
+        },
+        {
+          "X": 130.0,
+          "Y": -9.0,
+          "Z": 0.88549805,
+          "W": 0.13647461
+        },
+        {
+          "X": 130.0,
+          "Y": 260.0,
+          "Z": 0.88549805,
+          "W": 0.07080078
+        },
+        {
+          "X": -79.0,
+          "Y": -9.0,
+          "Z": 0.83447266,
+          "W": 0.13647461
+        }
+      ]
+    }
+  }
+]

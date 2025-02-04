@@ -1,0 +1,76 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "MTM_LandV02",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0007_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0007_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0008_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0008_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_LandV02_0009_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_LandV02_0009_X04.0"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_C06_talk01transition",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_C06_talk01transition_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_talk01transition_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_C06_talk01transition_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_talk01transition_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_C06_talk01transition_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_talk01transition_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_C06_talk01transition_0004_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_talk01transition_0004_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_C06_talk01transition_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_talk01transition_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_C06_talk01transition_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_talk01transition_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_C06_talk01transition_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_talk01transition_0007_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

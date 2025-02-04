@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_TumbaDance_0018",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -7.0,
+              "Y": 0.0,
+              "Z": 124.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 152.0,
+            "Y": 10.0,
+            "Z": 267.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "F79D28EC44AFE9720C9C279468695618"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_TumbaDance_0018",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 818.0
+      },
+      "BakedSourceDimension": {
+        "X": 154.0,
+        "Y": 269.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_tumbadance-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/TumbaDance/Textures/thrash_tumbadance-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_TumbaDance_0018:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/TumbaDance/Frames/Thrash_TumbaDance_0018.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 69.0,
+          "Y": 258.0,
+          "Z": 0.30078125,
+          "W": 0.39990234
+        },
+        {
+          "X": -83.0,
+          "Y": 258.0,
+          "Z": 0.00390625,
+          "W": 0.39990234
+        },
+        {
+          "X": -83.0,
+          "Y": -9.0,
+          "Z": 0.00390625,
+          "W": 0.53027344
+        },
+        {
+          "X": 69.0,
+          "Y": -9.0,
+          "Z": 0.30078125,
+          "W": 0.53027344
+        },
+        {
+          "X": 69.0,
+          "Y": 258.0,
+          "Z": 0.30078125,
+          "W": 0.39990234
+        },
+        {
+          "X": -83.0,
+          "Y": -9.0,
+          "Z": 0.00390625,
+          "W": 0.53027344
+        }
+      ]
+    }
+  }
+]

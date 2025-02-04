@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Talk_Surprised_up_0009_X03",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -1.0,
+              "Y": 0.0,
+              "Z": 129.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 230.0,
+            "Y": 10.0,
+            "Z": 286.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "D266E872453C76E918A9499D3ECA30F5"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Talk_Surprised_up_0009_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 498.0,
+        "Y": 1771.0
+      },
+      "BakedSourceDimension": {
+        "X": 232.0,
+        "Y": 288.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Talk_Surprised_up_0009_X03:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_Surprised_up_0009_X03.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 114.0,
+          "Y": 272.0,
+          "Z": 0.17797852,
+          "W": 0.4326172
+        },
+        {
+          "X": -116.0,
+          "Y": 272.0,
+          "Z": 0.12182617,
+          "W": 0.4326172
+        },
+        {
+          "X": -116.0,
+          "Y": -14.0,
+          "Z": 0.12182617,
+          "W": 0.5024414
+        },
+        {
+          "X": 114.0,
+          "Y": -14.0,
+          "Z": 0.17797852,
+          "W": 0.5024414
+        },
+        {
+          "X": 114.0,
+          "Y": 272.0,
+          "Z": 0.17797852,
+          "W": 0.4326172
+        },
+        {
+          "X": -116.0,
+          "Y": -14.0,
+          "Z": 0.12182617,
+          "W": 0.5024414
+        }
+      ]
+    }
+  }
+]

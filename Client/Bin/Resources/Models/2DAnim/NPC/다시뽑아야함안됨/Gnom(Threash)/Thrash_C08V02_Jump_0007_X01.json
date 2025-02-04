@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_C08V02_Jump_0007_X01",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -36.5,
+              "Y": 0.0,
+              "Z": 335.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 339.0,
+            "Y": 10.0,
+            "Z": 437.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "035B4D0C46BC01AF4E4C2BB02D6F1A44"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_C08V02_Jump_0007_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1398.0,
+        "Y": 1344.0
+      },
+      "BakedSourceDimension": {
+        "X": 341.0,
+        "Y": 439.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_C08_P0708-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C08_P0708/Textures/Thrash_C08_P0708-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_C08V02_Jump_0007_X01:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C08_P0708/Frames/Thrash_C08V02_Jump_0007_X01.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 133.0,
+          "Y": 554.0,
+          "Z": 0.4243164,
+          "W": 0.32836914
+        },
+        {
+          "X": -206.0,
+          "Y": 554.0,
+          "Z": 0.34155273,
+          "W": 0.32836914
+        },
+        {
+          "X": -206.0,
+          "Y": 117.0,
+          "Z": 0.34155273,
+          "W": 0.4350586
+        },
+        {
+          "X": 133.0,
+          "Y": 117.0,
+          "Z": 0.4243164,
+          "W": 0.4350586
+        },
+        {
+          "X": 133.0,
+          "Y": 554.0,
+          "Z": 0.4243164,
+          "W": 0.32836914
+        },
+        {
+          "X": -206.0,
+          "Y": 117.0,
+          "Z": 0.34155273,
+          "W": 0.4350586
+        }
+      ]
+    }
+  }
+]

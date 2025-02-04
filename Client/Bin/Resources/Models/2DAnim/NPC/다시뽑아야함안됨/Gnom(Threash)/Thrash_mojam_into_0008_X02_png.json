@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_mojam_into_0008_X02_png",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 49.5,
+              "Y": 0.0,
+              "Z": 134.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 241.0,
+            "Y": 10.0,
+            "Z": 302.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "B6FB5F50461C51A76EA3D4A1CBAD6AD9"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_mojam_into_0008_X02_png",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 248.0,
+        "Y": 1693.0
+      },
+      "BakedSourceDimension": {
+        "X": 243.0,
+        "Y": 304.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_mojam_0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Mojam/Textures/thrash_mojam_0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_mojam_into_0008_X02_png:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Mojam/Frames/Thrash_mojam_into_0008_X02_png.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 170.0,
+          "Y": 285.0,
+          "Z": 0.23925781,
+          "W": 0.82714844
+        },
+        {
+          "X": -71.0,
+          "Y": 285.0,
+          "Z": 0.12158203,
+          "W": 0.82714844
+        },
+        {
+          "X": -71.0,
+          "Y": -17.0,
+          "Z": 0.12158203,
+          "W": 0.9746094
+        },
+        {
+          "X": 170.0,
+          "Y": -17.0,
+          "Z": 0.23925781,
+          "W": 0.9746094
+        },
+        {
+          "X": 170.0,
+          "Y": 285.0,
+          "Z": 0.23925781,
+          "W": 0.82714844
+        },
+        {
+          "X": -71.0,
+          "Y": -17.0,
+          "Z": 0.12158203,
+          "W": 0.9746094
+        }
+      ]
+    }
+  }
+]

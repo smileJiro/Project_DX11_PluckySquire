@@ -1,0 +1,83 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Zap_Loop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0003_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0006_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0006_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0007_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0007_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0008_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0008_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Loop_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Loop_0010_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

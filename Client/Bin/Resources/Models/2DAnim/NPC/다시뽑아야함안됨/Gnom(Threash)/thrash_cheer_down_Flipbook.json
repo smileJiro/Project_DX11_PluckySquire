@@ -1,0 +1,111 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "thrash_cheer_down_Flipbook",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0004_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0005_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0005_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0008_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0009_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0011_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0013_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'thrash_cheer_down_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_cheer_down_0014_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

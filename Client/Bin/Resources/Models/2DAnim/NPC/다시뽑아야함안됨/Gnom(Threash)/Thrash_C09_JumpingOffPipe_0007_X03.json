@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_C09_JumpingOffPipe_0007_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 1062.0
+      },
+      "BakedSourceDimension": {
+        "X": 228.0,
+        "Y": 252.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_C09_5152-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C09_5152/Textures/Thrash_C09_5152-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 517.0,
+          "Y": 362.0,
+          "Z": 0.111328125,
+          "W": 0.25952148
+        },
+        {
+          "X": 291.0,
+          "Y": 362.0,
+          "Z": 0.0009765625,
+          "W": 0.25952148
+        },
+        {
+          "X": 291.0,
+          "Y": 112.0,
+          "Z": 0.0009765625,
+          "W": 0.32055664
+        },
+        {
+          "X": 517.0,
+          "Y": 112.0,
+          "Z": 0.111328125,
+          "W": 0.32055664
+        },
+        {
+          "X": 517.0,
+          "Y": 362.0,
+          "Z": 0.111328125,
+          "W": 0.25952148
+        },
+        {
+          "X": 291.0,
+          "Y": 112.0,
+          "Z": 0.0009765625,
+          "W": 0.32055664
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "thrash_talk_happy_down_0002_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -15.0,
+              "Y": 0.0,
+              "Z": 122.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 228.0,
+            "Y": 10.0,
+            "Z": 277.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "6D2635D54FE1A9497B2CB2830FF8DE4A"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "thrash_talk_happy_down_0002_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 233.0,
+        "Y": 563.0
+      },
+      "BakedSourceDimension": {
+        "X": 230.0,
+        "Y": 279.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_spritefile-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Textures/thrash_spritefile-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'thrash_talk_happy_down_0002_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Epilogue/Frames/thrash_talk_happy_down_0002_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 99.0,
+          "Y": 261.0,
+          "Z": 0.22558594,
+          "W": 0.27539062
+        },
+        {
+          "X": -129.0,
+          "Y": 261.0,
+          "Z": 0.11425781,
+          "W": 0.27539062
+        },
+        {
+          "X": -129.0,
+          "Y": -16.0,
+          "Z": 0.11425781,
+          "W": 0.41064453
+        },
+        {
+          "X": 99.0,
+          "Y": -16.0,
+          "Z": 0.22558594,
+          "W": 0.41064453
+        },
+        {
+          "X": 99.0,
+          "Y": 261.0,
+          "Z": 0.22558594,
+          "W": 0.27539062
+        },
+        {
+          "X": -129.0,
+          "Y": -16.0,
+          "Z": 0.11425781,
+          "W": 0.41064453
+        }
+      ]
+    }
+  }
+]

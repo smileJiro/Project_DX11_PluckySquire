@@ -1,0 +1,111 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_TalkGeneric_Right",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0002'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0002.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0003'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0003.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0004'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0004.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0005'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0005.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0006_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0006_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0007'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0007.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0008'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0008.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0009'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0009.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0010'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0010.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0011'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0011.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0012'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0012.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0013'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0013.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_TalkGeneric_Right_0014'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Additional/Frames/Moonbeard_TalkGeneric_Right_0014.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

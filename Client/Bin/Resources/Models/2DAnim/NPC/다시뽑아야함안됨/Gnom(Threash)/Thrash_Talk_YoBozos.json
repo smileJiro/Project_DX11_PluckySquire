@@ -1,0 +1,125 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_Talk_YoBozos",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0003_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0004_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0008_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0009_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0009_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0010_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0010_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0011_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0013_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0014_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0014_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0015_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0015_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_Talk_YoBozos_0016_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0016_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_C07_wave_out",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_out_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_out_0001_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_out_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_out_0002_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_out_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_out_0003_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_out_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_out_0004_X02.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

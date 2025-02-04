@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Moonbeard_Ch03_Runetooth_Talk_0009",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 161.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 264.0,
+            "Y": 10.0,
+            "Z": 383.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "D671C8B541B302250306558E3A30B69B"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_Ch03_Runetooth_Talk_0009",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 539.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 266.0,
+        "Y": 385.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'moonbeard_c03_runetooth--1'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/C03/Textures/moonbeard_c03_runetooth--1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Moonbeard_Ch03_Runetooth_Talk_0009:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/C03/Frames/Moonbeard_Ch03_Runetooth_Talk_0009.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 132.0,
+          "Y": 353.0,
+          "Z": 0.78515625,
+          "W": 0.0009765625
+        },
+        {
+          "X": -132.0,
+          "Y": 353.0,
+          "Z": 0.52734375,
+          "W": 0.0009765625
+        },
+        {
+          "X": -132.0,
+          "Y": -30.0,
+          "Z": 0.52734375,
+          "W": 0.18798828
+        },
+        {
+          "X": 132.0,
+          "Y": -30.0,
+          "Z": 0.78515625,
+          "W": 0.18798828
+        },
+        {
+          "X": 132.0,
+          "Y": 353.0,
+          "Z": 0.78515625,
+          "W": 0.0009765625
+        },
+        {
+          "X": -132.0,
+          "Y": -30.0,
+          "Z": 0.52734375,
+          "W": 0.18798828
+        }
+      ]
+    }
+  }
+]

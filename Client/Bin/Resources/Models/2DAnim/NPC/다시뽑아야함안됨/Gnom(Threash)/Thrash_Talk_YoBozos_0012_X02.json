@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Talk_YoBozos_0012_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 1.0,
+              "Y": 0.0,
+              "Z": 166.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 288.0,
+            "Y": 10.0,
+            "Z": 362.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "DE80B2C849987FA8B9FDC98B3B1411FF"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Talk_YoBozos_0012_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 290.0,
+        "Y": 364.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Talk_YoBozos_0012_X02:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_YoBozos_0012_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 145.0,
+          "Y": 347.0,
+          "Z": 0.07080078,
+          "W": 0.00048828125
+        },
+        {
+          "X": -143.0,
+          "Y": 347.0,
+          "Z": 0.00048828125,
+          "W": 0.00048828125
+        },
+        {
+          "X": -143.0,
+          "Y": -15.0,
+          "Z": 0.00048828125,
+          "W": 0.08886719
+        },
+        {
+          "X": 145.0,
+          "Y": -15.0,
+          "Z": 0.07080078,
+          "W": 0.08886719
+        },
+        {
+          "X": 145.0,
+          "Y": 347.0,
+          "Z": 0.07080078,
+          "W": 0.00048828125
+        },
+        {
+          "X": -143.0,
+          "Y": -15.0,
+          "Z": 0.00048828125,
+          "W": 0.08886719
+        }
+      ]
+    }
+  }
+]

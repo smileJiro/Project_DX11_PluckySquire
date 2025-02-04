@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "Texture2D",
+    "Name": "moonbeard_c07-3",
+    "Class": "UScriptClass'Texture2D'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "ImportedSize": {
+        "X": 512,
+        "Y": 1024
+      },
+      "LightingGuid": "2D3F7221-4D44A055-5EF46A8C-00C7353A",
+      "LODGroup": "TEXTUREGROUP_Project01",
+      "Downscale": {
+        "bCooked": true,
+        "Default": 0.0,
+        "Value": 0.0
+      },
+      "NeverStream": true
+    },
+    "SizeX": 512,
+    "SizeY": 1024,
+    "PackedData": 1,
+    "PixelFormat": "PF_DXT5",
+    "FirstMipToSerialize": 0,
+    "Mips": [
+      {
+        "BulkData": {
+          "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+          "ElementCount": 524288,
+          "SizeOnDisk": 524288,
+          "OffsetInFile": "0x80935"
+        },
+        "SizeX": 512,
+        "SizeY": 1024,
+        "SizeZ": 1
+      }
+    ]
+  }
+]

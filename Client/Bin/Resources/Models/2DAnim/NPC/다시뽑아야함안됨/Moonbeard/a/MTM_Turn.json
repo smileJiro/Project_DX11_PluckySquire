@@ -1,0 +1,69 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "MTM_Turn",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_0006_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_0006_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_0008_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

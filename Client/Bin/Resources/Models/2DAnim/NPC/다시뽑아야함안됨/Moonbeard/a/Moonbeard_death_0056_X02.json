@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_death_0056_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1908.0,
+        "Y": 860.0
+      },
+      "BakedSourceDimension": {
+        "X": 356.0,
+        "Y": 852.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'moonbeard_chp_08_seq_11-0'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Textures/moonbeard_chp_08_seq_11-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 182.0,
+          "Y": 709.0,
+          "Z": 0.55249023,
+          "W": 0.21020508
+        },
+        {
+          "X": -172.0,
+          "Y": 709.0,
+          "Z": 0.46606445,
+          "W": 0.21020508
+        },
+        {
+          "X": -172.0,
+          "Y": -141.0,
+          "Z": 0.46606445,
+          "W": 0.4177246
+        },
+        {
+          "X": 182.0,
+          "Y": -141.0,
+          "Z": 0.55249023,
+          "W": 0.4177246
+        },
+        {
+          "X": 182.0,
+          "Y": 709.0,
+          "Z": 0.55249023,
+          "W": 0.21020508
+        },
+        {
+          "X": -172.0,
+          "Y": -141.0,
+          "Z": 0.46606445,
+          "W": 0.4177246
+        }
+      ]
+    }
+  }
+]

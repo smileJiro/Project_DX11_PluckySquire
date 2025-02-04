@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_C06_talk03_0006_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -21.5,
+              "Y": 0.0,
+              "Z": 144.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 147.0,
+            "Y": 10.0,
+            "Z": 307.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "A896E01D4F63166BF0B30A928B8AFAAD"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_C06_talk03_0006_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2241.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 149.0,
+        "Y": 309.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_C06_P7172-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Textures/Thrash_C06_P7172-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_C06_talk03_0006_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06_P7172/Frames/Thrash_C06_talk03_0006_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 52.0,
+          "Y": 298.0,
+          "Z": 0.58325195,
+          "W": 0.0009765625
+        },
+        {
+          "X": -95.0,
+          "Y": 298.0,
+          "Z": 0.5473633,
+          "W": 0.0009765625
+        },
+        {
+          "X": -95.0,
+          "Y": -9.0,
+          "Z": 0.5473633,
+          "W": 0.1508789
+        },
+        {
+          "X": 52.0,
+          "Y": -9.0,
+          "Z": 0.58325195,
+          "W": 0.1508789
+        },
+        {
+          "X": 52.0,
+          "Y": 298.0,
+          "Z": 0.58325195,
+          "W": 0.0009765625
+        },
+        {
+          "X": -95.0,
+          "Y": -9.0,
+          "Z": 0.5473633,
+          "W": 0.1508789
+        }
+      ]
+    }
+  }
+]

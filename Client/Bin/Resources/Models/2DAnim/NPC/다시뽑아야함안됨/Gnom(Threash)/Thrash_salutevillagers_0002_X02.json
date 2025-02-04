@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_2",
+    "Outer": "Thrash_salutevillagers_0002_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 2.0,
+              "Y": 0.0,
+              "Z": 126.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 288.0,
+            "Y": 10.0,
+            "Z": 281.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "063094894EFC1C7E1B37E4B58E44F8E2"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_salutevillagers_0002_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1545.0,
+        "Y": 1473.0
+      },
+      "BakedSourceDimension": {
+        "X": 290.0,
+        "Y": 283.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_C6_02-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Textures/thrash_C6_02-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_salutevillagers_0002_X02:BodySetup_2'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0002_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 146.0,
+          "Y": 267.0,
+          "Z": 0.8955078,
+          "W": 0.35986328
+        },
+        {
+          "X": -142.0,
+          "Y": 267.0,
+          "Z": 0.7548828,
+          "W": 0.35986328
+        },
+        {
+          "X": -142.0,
+          "Y": -14.0,
+          "Z": 0.7548828,
+          "W": 0.4284668
+        },
+        {
+          "X": 146.0,
+          "Y": -14.0,
+          "Z": 0.8955078,
+          "W": 0.4284668
+        },
+        {
+          "X": 146.0,
+          "Y": 267.0,
+          "Z": 0.8955078,
+          "W": 0.35986328
+        },
+        {
+          "X": -142.0,
+          "Y": -14.0,
+          "Z": 0.7548828,
+          "W": 0.4284668
+        }
+      ]
+    }
+  }
+]

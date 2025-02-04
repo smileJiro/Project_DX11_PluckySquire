@@ -1,0 +1,97 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_emotions_loop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0003_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0004_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0005_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0005_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0006_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0006_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0007_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0007_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0008_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0008_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0009_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0009_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0010_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0010_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0011_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0011_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_emotions_loop_0012_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_emotions_loop_0012_X01.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

@@ -55,7 +55,8 @@ public:
 		SKILLSHOP_THROWATTBADGE,
 		SKILLSHOP_SCROLLITEM,
 		SKILLSHOP_BULB,
-		SKILLSHOP_END
+		SKILLSHOP_END,
+		
 	};
 
 	enum LOGOPROP
@@ -78,7 +79,7 @@ public:
 		 _wstring strLayerTag;
 		 _uint			iTextureCount = { 0 };					// 어떤 스킬의 어떤 레벨의 텍스쳐 이니?
 		SETTINGPANEL	eSettingPanelKind = { SETTING_END };				// 세팅 패널에서 어떤 파츠(종류)이니
-		SHOPPANEL		eShopPanelKind = { SHOP_END };					// 상점 패널에서 어떤 파츠(종류)이니
+		SHOPPANEL		eShopPanelKind = { SHOP_DEFAULT };					// 상점 패널에서 어떤 파츠(종류)이니
 
 		_uint			iSkillLevel = { 0 };				// 스킬의 레벨
 		_uint			iShopItemCount = { 0 }; 			// 텍스쳐를 연결하기 위한
@@ -119,7 +120,8 @@ public:
 protected:
 	virtual HRESULT Ready_Components();
 	HRESULT			Bind_ShaderResources();
-	void			Change_BookScale();
+	void			Change_BookScale_ForShop(_float2 _vRTSize);
+	void			Change_BookScale_ForDialogue(_float2 vRTSize);
 
 
 public:
@@ -131,7 +133,7 @@ protected:
 	CTexture*		m_pTextureCom = {nullptr};
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	_uint			m_iShaderPasses[COORDINATE_LAST] = {};
-
+	CUI::SHOPPANEL	m_eShopPanel = CUI::SHOPPANEL::SHOP_DEFAULT;
 
 	_bool			m_isRender = { true };
 	

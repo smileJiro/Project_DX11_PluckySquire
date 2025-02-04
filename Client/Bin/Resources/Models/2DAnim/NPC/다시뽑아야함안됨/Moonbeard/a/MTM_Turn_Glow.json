@@ -1,0 +1,202 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "MTM_Turn_Glow",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0001_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0001_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0002_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0002_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0003_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0003_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0008_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0008_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0011_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0011_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0012_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0012_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0013_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0013_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0014_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0014_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0015_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0015_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0016_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0016_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0017_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0017_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0018_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0018_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0019_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0019_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0020_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0020_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0021_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0021_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0022_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0022_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0023_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0023_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0024_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0024_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0025_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0025_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0026_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0026_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'MTM_Turn_Glow_0027_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C09_129130/Frames/MTM_Turn_Glow_0027_X04.0"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

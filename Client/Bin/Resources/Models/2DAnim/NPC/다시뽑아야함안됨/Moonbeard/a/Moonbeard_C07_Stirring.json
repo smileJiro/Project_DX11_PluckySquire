@@ -1,0 +1,166 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_C07_Stirring",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0001'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0001.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0002'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0002.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0003'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0003.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0004'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0004.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0005'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0005.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0006'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0006.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0007'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0007.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0008'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0008.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0009'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0009.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0010'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0010.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0011'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0011.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0012'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0012.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0013'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0013.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0014'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0014.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0015'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0015.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0016'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0016.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0017'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0017.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0018'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0018.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0019'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0019.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0020'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0020.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0021'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0021.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_Stirring_0022'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_Stirring_0022.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

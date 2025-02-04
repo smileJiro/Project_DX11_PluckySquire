@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_PullsSwordV02_0058",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -47.0,
+              "Y": 0.0,
+              "Z": 123.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 240.0,
+            "Y": 10.0,
+            "Z": 287.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "ABB8AD1348E2B8994EE288BFA02EF8C6"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_PullsSwordV02_0058",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 245.0,
+        "Y": 318.0
+      },
+      "BakedSourceDimension": {
+        "X": 242.0,
+        "Y": 289.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'C03_P0506_Thrash_PullSwordV02-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C03_P0506/Textures/C03_P0506_Thrash_PullSwordV02-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_PullsSwordV02_0058:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C03_P0506/Frames/Thrash_PullsSwordV02_0058.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 73.0,
+          "Y": 267.0,
+          "Z": 0.47460938,
+          "W": 0.15576172
+        },
+        {
+          "X": -167.0,
+          "Y": 267.0,
+          "Z": 0.24023438,
+          "W": 0.15576172
+        },
+        {
+          "X": -167.0,
+          "Y": -20.0,
+          "Z": 0.24023438,
+          "W": 0.29589844
+        },
+        {
+          "X": 73.0,
+          "Y": -20.0,
+          "Z": 0.47460938,
+          "W": 0.29589844
+        },
+        {
+          "X": 73.0,
+          "Y": 267.0,
+          "Z": 0.47460938,
+          "W": 0.15576172
+        },
+        {
+          "X": -167.0,
+          "Y": -20.0,
+          "Z": 0.24023438,
+          "W": 0.29589844
+        }
+      ]
+    }
+  }
+]

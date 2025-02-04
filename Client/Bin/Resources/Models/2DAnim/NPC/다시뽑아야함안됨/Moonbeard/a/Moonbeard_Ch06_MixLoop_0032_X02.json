@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_Ch06_MixLoop_0032_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1001.0,
+        "Y": 2657.0
+      },
+      "BakedSourceDimension": {
+        "X": 280.0,
+        "Y": 479.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Moonbeard_C07-0'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Textures/Moonbeard_C07-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 136.0,
+          "Y": 441.0,
+          "Z": 0.3125,
+          "W": 0.6489258
+        },
+        {
+          "X": -142.0,
+          "Y": 441.0,
+          "Z": 0.2446289,
+          "W": 0.6489258
+        },
+        {
+          "X": -142.0,
+          "Y": -36.0,
+          "Z": 0.2446289,
+          "W": 0.76538086
+        },
+        {
+          "X": 136.0,
+          "Y": -36.0,
+          "Z": 0.3125,
+          "W": 0.76538086
+        },
+        {
+          "X": 136.0,
+          "Y": 441.0,
+          "Z": 0.3125,
+          "W": 0.6489258
+        },
+        {
+          "X": -142.0,
+          "Y": -36.0,
+          "Z": 0.2446289,
+          "W": 0.76538086
+        }
+      ]
+    }
+  }
+]

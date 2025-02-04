@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Talk_TotallyUncool_Right_0017",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -4.5,
+              "Y": 0.0,
+              "Z": 125.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 147.0,
+            "Y": 10.0,
+            "Z": 268.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "7C9E44BF4F6940BCE24CB1B800BF5962"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Talk_TotallyUncool_Right_0017",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2389.0,
+        "Y": 3037.0
+      },
+      "BakedSourceDimension": {
+        "X": 149.0,
+        "Y": 270.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Talk_TotallyUncool_Right_0017:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Talk_TotallyUncool_Right_0017.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 69.0,
+          "Y": 259.0,
+          "Z": 0.61938477,
+          "W": 0.7416992
+        },
+        {
+          "X": -78.0,
+          "Y": 259.0,
+          "Z": 0.5834961,
+          "W": 0.7416992
+        },
+        {
+          "X": -78.0,
+          "Y": -9.0,
+          "Z": 0.5834961,
+          "W": 0.8071289
+        },
+        {
+          "X": 69.0,
+          "Y": -9.0,
+          "Z": 0.61938477,
+          "W": 0.8071289
+        },
+        {
+          "X": 69.0,
+          "Y": 259.0,
+          "Z": 0.61938477,
+          "W": 0.7416992
+        },
+        {
+          "X": -78.0,
+          "Y": -9.0,
+          "Z": 0.5834961,
+          "W": 0.8071289
+        }
+      ]
+    }
+  }
+]

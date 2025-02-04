@@ -1,0 +1,132 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Thinking_Down",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0001_X10_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0001_X10_Sprite.0"
+          },
+          "FrameRun": 10
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0002_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0002_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0003_X04_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0003_X04_Sprite.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0004_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0004_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0005_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0005_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0006_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0006_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0007_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0007_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0008_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0008_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0009_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0009_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0010_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0010_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0011_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0011_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0012_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0012_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0013_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0013_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0014_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0014_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0015_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0015_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0016_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0016_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Thinking_Down_0017_X03_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Thinking/Moonbeard_Thinking_Down_0017_X03_Sprite.0"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

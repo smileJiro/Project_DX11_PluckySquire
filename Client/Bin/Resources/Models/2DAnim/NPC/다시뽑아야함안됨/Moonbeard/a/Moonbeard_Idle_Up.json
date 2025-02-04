@@ -1,0 +1,41 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Idle_Up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Idle_Up_0001_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Idle_Up_0001_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Idle_Up_0002_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Idle_Up_0002_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Idle_Up_0003_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Idle_Up_0003_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Idle_Up_0004_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Idle_Up_0004_X04.0"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]

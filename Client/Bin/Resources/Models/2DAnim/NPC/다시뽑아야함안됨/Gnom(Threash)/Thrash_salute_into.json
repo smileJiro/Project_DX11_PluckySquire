@@ -1,0 +1,132 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_salute_into",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0003_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0003_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0004_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0004_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0007_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0008_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0008_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0009_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0009_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0010_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0011_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0012_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0013_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0013_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0014_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0015_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0015_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0016_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0016_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salute_into_0017_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salute_into_0017_X02.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

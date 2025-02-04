@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_Shocked_up_0002_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -56.0,
+              "Y": 0.0,
+              "Z": 154.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 336.0,
+            "Y": 10.0,
+            "Z": 336.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "B72B636D4B93009A99976591F0D7ADB6"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Shocked_up_0002_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 338.0,
+        "Y": 338.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_C6_02-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Textures/thrash_C6_02-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Shocked_up_0002_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_Shocked_up_0002_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 112.0,
+          "Y": 322.0,
+          "Z": 0.16503906,
+          "W": 0.00048828125
+        },
+        {
+          "X": -224.0,
+          "Y": 322.0,
+          "Z": 0.0009765625,
+          "W": 0.00048828125
+        },
+        {
+          "X": -224.0,
+          "Y": -14.0,
+          "Z": 0.0009765625,
+          "W": 0.08251953
+        },
+        {
+          "X": 112.0,
+          "Y": -14.0,
+          "Z": 0.16503906,
+          "W": 0.08251953
+        },
+        {
+          "X": 112.0,
+          "Y": 322.0,
+          "Z": 0.16503906,
+          "W": 0.00048828125
+        },
+        {
+          "X": -224.0,
+          "Y": -14.0,
+          "Z": 0.0009765625,
+          "W": 0.08251953
+        }
+      ]
+    }
+  }
+]

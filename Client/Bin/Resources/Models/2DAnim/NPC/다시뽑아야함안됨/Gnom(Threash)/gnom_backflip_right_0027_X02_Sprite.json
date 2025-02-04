@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "gnom_backflip_right_0027_X02_Sprite",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceDimension": {
+        "X": 1024.0,
+        "Y": 1024.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'gnom_backflip_right_0027_X02'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Backflip/gnom_backflip_right_0027_X02.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 49.0,
+          "Y": 246.0,
+          "Z": 0.54785156,
+          "W": 0.35351562
+        },
+        {
+          "X": -98.0,
+          "Y": 246.0,
+          "Z": 0.40429688,
+          "W": 0.35351562
+        },
+        {
+          "X": -98.0,
+          "Y": -22.0,
+          "Z": 0.40429688,
+          "W": 0.6152344
+        },
+        {
+          "X": 49.0,
+          "Y": -22.0,
+          "Z": 0.54785156,
+          "W": 0.6152344
+        },
+        {
+          "X": 49.0,
+          "Y": 246.0,
+          "Z": 0.54785156,
+          "W": 0.35351562
+        },
+        {
+          "X": -98.0,
+          "Y": -22.0,
+          "Z": 0.40429688,
+          "W": 0.6152344
+        }
+      ]
+    }
+  }
+]

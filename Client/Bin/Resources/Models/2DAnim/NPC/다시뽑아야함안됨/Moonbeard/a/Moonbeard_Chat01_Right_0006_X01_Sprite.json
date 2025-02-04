@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_Chat01_Right_0006_X01_Sprite",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceDimension": {
+        "X": 600.0,
+        "Y": 600.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Moonbeard_Chat01_Right_0006_X01'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/Chat_01/Moonbeard_Chat01_Right_0006_X01.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 142.0,
+          "Y": 360.0,
+          "Z": 0.7366667,
+          "W": 0.060000002
+        },
+        {
+          "X": -125.0,
+          "Y": 360.0,
+          "Z": 0.2916667,
+          "W": 0.060000002
+        },
+        {
+          "X": -125.0,
+          "Y": -31.0,
+          "Z": 0.2916667,
+          "W": 0.7116667
+        },
+        {
+          "X": 142.0,
+          "Y": -31.0,
+          "Z": 0.7366667,
+          "W": 0.7116667
+        },
+        {
+          "X": 142.0,
+          "Y": 360.0,
+          "Z": 0.7366667,
+          "W": 0.060000002
+        },
+        {
+          "X": -125.0,
+          "Y": -31.0,
+          "Z": 0.2916667,
+          "W": 0.7116667
+        }
+      ]
+    }
+  }
+]

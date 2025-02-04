@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_Ch06_CrushroomHold_0003_X04",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1127.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 381.0,
+        "Y": 534.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Moonbeard_C07-0'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/C06/Textures/Moonbeard_C07-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 170.0,
+          "Y": 502.0,
+          "Z": 0.36791992,
+          "W": 0.00048828125
+        },
+        {
+          "X": -209.0,
+          "Y": 502.0,
+          "Z": 0.27539062,
+          "W": 0.00048828125
+        },
+        {
+          "X": -209.0,
+          "Y": -30.0,
+          "Z": 0.27539062,
+          "W": 0.1303711
+        },
+        {
+          "X": 170.0,
+          "Y": -30.0,
+          "Z": 0.36791992,
+          "W": 0.1303711
+        },
+        {
+          "X": 170.0,
+          "Y": 502.0,
+          "Z": 0.36791992,
+          "W": 0.00048828125
+        },
+        {
+          "X": -209.0,
+          "Y": -30.0,
+          "Z": 0.27539062,
+          "W": 0.1303711
+        }
+      ]
+    }
+  }
+]

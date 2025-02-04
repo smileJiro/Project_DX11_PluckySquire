@@ -1,0 +1,132 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_talkvillagers",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0001_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0001_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0003_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0004_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0004_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0005_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0005_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0007_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0007_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0008_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0008_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0009_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0009_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0010_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0010_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0011_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0011_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0012_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0012_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0013_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0013_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0014_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0014_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0015_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0015_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0016_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0016_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_talkvillagers_0017_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_talkvillagers_0017_X03.1"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

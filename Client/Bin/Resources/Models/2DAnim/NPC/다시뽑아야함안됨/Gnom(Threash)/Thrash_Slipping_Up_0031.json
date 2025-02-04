@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Thrash_Slipping_Up_0031",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -4.5,
+              "Y": 0.0,
+              "Z": 97.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 277.0,
+            "Y": 10.0,
+            "Z": 310.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "96AAE4DB4E6B6E3D381D7B8FA2E1DA5C"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Slipping_Up_0031",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1133.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 279.0,
+        "Y": 312.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Thrash_C07_slipping-0'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C07_Slipping/Textures/Thrash_C07_slipping-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Slipping_Up_0031:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/C07_Slipping/Frames/Thrash_Slipping_Up_0031.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 134.0,
+          "Y": 252.0,
+          "Z": 0.68896484,
+          "W": 0.00048828125
+        },
+        {
+          "X": -143.0,
+          "Y": 252.0,
+          "Z": 0.55371094,
+          "W": 0.00048828125
+        },
+        {
+          "X": -143.0,
+          "Y": -58.0,
+          "Z": 0.55371094,
+          "W": 0.076171875
+        },
+        {
+          "X": 134.0,
+          "Y": -58.0,
+          "Z": 0.68896484,
+          "W": 0.076171875
+        },
+        {
+          "X": 134.0,
+          "Y": 252.0,
+          "Z": 0.68896484,
+          "W": 0.00048828125
+        },
+        {
+          "X": -143.0,
+          "Y": -58.0,
+          "Z": 0.55371094,
+          "W": 0.076171875
+        }
+      ]
+    }
+  }
+]

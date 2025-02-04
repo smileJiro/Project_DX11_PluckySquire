@@ -1,0 +1,70 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_attack_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_attack_up_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_attack_up_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_attack_up_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_attack_up_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_attack_up_0003_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_attack_up_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_attack_up_0004_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_attack_up_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_attack_up_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_attack_up_0005_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_attack_up_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_attack_up_0006_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_attack_up_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_attack_up_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_attack_up_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/SpriteSheet_V02/Frames/Thrash_attack_up_0008_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ],
+      "CollisionSource": "EFlipbookCollisionMode::EachFrameCollision"
+    }
+  }
+]

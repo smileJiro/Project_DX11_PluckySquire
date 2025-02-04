@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "gnom_jump_rise_right_0001_X02_Sprite",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceDimension": {
+        "X": 350.0,
+        "Y": 350.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'gnom_jump_rise_right_0001_X02'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Jump/jump_rise/gnom_jump_rise_right_0001_X02.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 106.0,
+          "Y": 219.0,
+          "Z": 0.80285716,
+          "W": 0.14857143
+        },
+        {
+          "X": -66.0,
+          "Y": 219.0,
+          "Z": 0.31142858,
+          "W": 0.14857143
+        },
+        {
+          "X": -66.0,
+          "Y": -9.0,
+          "Z": 0.31142858,
+          "W": 0.8
+        },
+        {
+          "X": 106.0,
+          "Y": -9.0,
+          "Z": 0.80285716,
+          "W": 0.8
+        },
+        {
+          "X": 106.0,
+          "Y": 219.0,
+          "Z": 0.80285716,
+          "W": 0.14857143
+        },
+        {
+          "X": -66.0,
+          "Y": -9.0,
+          "Z": 0.31142858,
+          "W": 0.8
+        }
+      ]
+    }
+  }
+]

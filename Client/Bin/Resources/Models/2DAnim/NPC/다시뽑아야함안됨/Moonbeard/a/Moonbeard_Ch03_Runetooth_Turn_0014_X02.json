@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Moonbeard_Ch03_Runetooth_Turn_0014_X02",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -42.5,
+              "Y": 0.0,
+              "Z": 217.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 353.0,
+            "Y": 10.0,
+            "Z": 495.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "8FB5B1904E2F7F4FFC3C71940ED1AEA2"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_Ch03_Runetooth_Turn_0014_X02",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 398.0,
+        "Y": 1015.0
+      },
+      "BakedSourceDimension": {
+        "X": 355.0,
+        "Y": 497.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'moonbeard_c03_runetooth--0'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/C03/Textures/moonbeard_c03_runetooth--0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Moonbeard_Ch03_Runetooth_Turn_0014_X02:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/C03/Frames/Moonbeard_Ch03_Runetooth_Turn_0014_X02.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 134.0,
+          "Y": 465.0,
+          "Z": 0.3671875,
+          "W": 0.49609375
+        },
+        {
+          "X": -219.0,
+          "Y": 465.0,
+          "Z": 0.19482422,
+          "W": 0.49609375
+        },
+        {
+          "X": -219.0,
+          "Y": -30.0,
+          "Z": 0.19482422,
+          "W": 0.73779297
+        },
+        {
+          "X": 134.0,
+          "Y": -30.0,
+          "Z": 0.3671875,
+          "W": 0.73779297
+        },
+        {
+          "X": 134.0,
+          "Y": 465.0,
+          "Z": 0.3671875,
+          "W": 0.49609375
+        },
+        {
+          "X": -219.0,
+          "Y": -30.0,
+          "Z": 0.19482422,
+          "W": 0.73779297
+        }
+      ]
+    }
+  }
+]

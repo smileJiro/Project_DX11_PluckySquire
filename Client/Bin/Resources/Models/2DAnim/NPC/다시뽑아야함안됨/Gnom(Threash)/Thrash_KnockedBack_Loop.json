@@ -1,0 +1,69 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_KnockedBack_Loop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_KnockedBack_Loop_0001'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C09_129130/Frames/Thrash_KnockedBack_Loop_0001.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_KnockedBack_Loop_0002'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C09_129130/Frames/Thrash_KnockedBack_Loop_0002.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_KnockedBack_Loop_0003'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C09_129130/Frames/Thrash_KnockedBack_Loop_0003.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_KnockedBack_Loop_0004'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C09_129130/Frames/Thrash_KnockedBack_Loop_0004.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_KnockedBack_Loop_0005'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C09_129130/Frames/Thrash_KnockedBack_Loop_0005.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_KnockedBack_Loop_0006'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C09_129130/Frames/Thrash_KnockedBack_Loop_0006.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_KnockedBack_Loop_0007'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C09_129130/Frames/Thrash_KnockedBack_Loop_0007.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_KnockedBack_Loop_0008'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C09_129130/Frames/Thrash_KnockedBack_Loop_0008.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

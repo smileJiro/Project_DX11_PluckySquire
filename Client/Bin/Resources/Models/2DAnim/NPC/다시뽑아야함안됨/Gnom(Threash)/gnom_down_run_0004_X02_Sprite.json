@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "gnom_down_run_0004_X02_Sprite",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceDimension": {
+        "X": 1024.0,
+        "Y": 1024.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'gnom_down_run_0004_X02'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Run/gnom_down_run_0004_X02.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 116.0,
+          "Y": 236.0,
+          "Z": 0.61328125,
+          "W": 0.36328125
+        },
+        {
+          "X": -113.0,
+          "Y": 236.0,
+          "Z": 0.38964844,
+          "W": 0.36328125
+        },
+        {
+          "X": -113.0,
+          "Y": -16.0,
+          "Z": 0.38964844,
+          "W": 0.609375
+        },
+        {
+          "X": 116.0,
+          "Y": -16.0,
+          "Z": 0.61328125,
+          "W": 0.609375
+        },
+        {
+          "X": 116.0,
+          "Y": 236.0,
+          "Z": 0.61328125,
+          "W": 0.36328125
+        },
+        {
+          "X": -113.0,
+          "Y": -16.0,
+          "Z": 0.38964844,
+          "W": 0.609375
+        }
+      ]
+    }
+  }
+]

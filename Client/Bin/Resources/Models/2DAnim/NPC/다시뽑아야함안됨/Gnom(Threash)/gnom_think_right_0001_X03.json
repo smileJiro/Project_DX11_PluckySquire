@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "Texture2D",
+    "Name": "gnom_think_right_0001_X03",
+    "Class": "UScriptClass'Texture2D'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "ImportedSize": {
+        "X": 1024,
+        "Y": 1024
+      },
+      "LightingGuid": "111DBB14-4E4A762C-CEEAC8BF-8ACFDE7C",
+      "LODGroup": "TEXTUREGROUP_Project01",
+      "Downscale": {
+        "bCooked": true,
+        "Default": 0.0,
+        "Value": 0.0
+      },
+      "NeverStream": true
+    },
+    "SizeX": 1024,
+    "SizeY": 1024,
+    "PackedData": 1,
+    "PixelFormat": "PF_DXT5",
+    "FirstMipToSerialize": 0,
+    "Mips": [
+      {
+        "BulkData": {
+          "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+          "ElementCount": 1048576,
+          "SizeOnDisk": 1048576,
+          "OffsetInFile": "0x100945"
+        },
+        "SizeX": 1024,
+        "SizeY": 1024,
+        "SizeZ": 1
+      }
+    ]
+  }
+]

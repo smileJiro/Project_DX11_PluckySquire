@@ -1,0 +1,111 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Chat01_Up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0006_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0006_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0011_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Chat01_Up_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/SpriteSheet/Frames/Moonbeard_Chat01_Up_0014_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

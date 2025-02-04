@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Moonbeard_Walk_Down_0002_X02_Sprite",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceDimension": {
+        "X": 600.0,
+        "Y": 600.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'Moonbeard_Walk_Down_0002_X02'",
+        "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Down_0002_X02.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 121.0,
+          "Y": 359.0,
+          "Z": 0.7016667,
+          "W": 0.061666667
+        },
+        {
+          "X": -116.0,
+          "Y": 359.0,
+          "Z": 0.30666667,
+          "W": 0.061666667
+        },
+        {
+          "X": -116.0,
+          "Y": -29.0,
+          "Z": 0.30666667,
+          "W": 0.7083334
+        },
+        {
+          "X": 121.0,
+          "Y": -29.0,
+          "Z": 0.7016667,
+          "W": 0.7083334
+        },
+        {
+          "X": 121.0,
+          "Y": 359.0,
+          "Z": 0.7016667,
+          "W": 0.061666667
+        },
+        {
+          "X": -116.0,
+          "Y": -29.0,
+          "Z": 0.30666667,
+          "W": 0.7083334
+        }
+      ]
+    }
+  }
+]

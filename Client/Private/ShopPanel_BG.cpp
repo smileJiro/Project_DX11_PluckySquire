@@ -56,14 +56,14 @@ void CShopPanel_BG::Child_Update(_float _fTimeDelta)
 
 void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 {
-	//if (true == m_isRender)
-	//	Register_RenderGroup(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_UI);
+	if (true == m_isRender)
+		Register_RenderGroup(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_UI);
 }
 
 HRESULT CShopPanel_BG::Render()
 {
 	if (true == m_isRender)
-		__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
 
 	return S_OK;
 }
@@ -72,9 +72,13 @@ void CShopPanel_BG::isRender()
 {
 	if (m_isRender == false)
 	{
+
+		/* 나중에 수정 필요 */
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
 		m_isRender = true;
 		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-		Change_BookScale();
+		Change_BookScale_ForShop(RTSize);
 		//m_pControllerTransform->Set_Scale(m_vOriginSize.x, m_vOriginSize.y, 1.f);
 		//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
 		
@@ -167,12 +171,8 @@ HRESULT CShopPanel_BG::Ready_Components()
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_IconBG"),
 			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 			return E_FAIL;
-
 	}
 	break;
-
-
-
 	} 
 	
 	return S_OK;

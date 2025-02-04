@@ -1,0 +1,62 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Zap_Into",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Into_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Into_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Into_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Into_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Into_0003_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Into_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Into_0004_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Into_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Into_0005_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Into_0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Into_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Into_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Zap_Into_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Ch08_Seq11/Frames/Moonbeard_Zap_Into_0007_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

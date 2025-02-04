@@ -1,0 +1,69 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_C07_wave_loop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_loop_0001_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_loop_0001_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_loop_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_loop_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_loop_0003_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_loop_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_loop_0004_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_loop_0004_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_loop_0005_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_loop_0005_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_loop_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_loop_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_loop_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_loop_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_C07_wave_loop_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/C07/Frames/Moonbeard_C07_wave_loop_0008_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

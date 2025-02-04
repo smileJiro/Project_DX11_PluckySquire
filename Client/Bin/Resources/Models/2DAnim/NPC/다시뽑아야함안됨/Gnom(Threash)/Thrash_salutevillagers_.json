@@ -1,0 +1,188 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Thrash_salutevillagers_",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0001_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0002_X02.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0003_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0003_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0004_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0004_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0005_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0005_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0006_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0006_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0007_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0007_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0008_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0008_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0009_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0009_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0010_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0010_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0011_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0011_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0012_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0012_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0013_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0013_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0014_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0014_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0015_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0015_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0016_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0016_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0017_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0017_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0018_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0018_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0019_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0019_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0020_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0020_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0021_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0021_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0022_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0022_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0023_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0023_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0024_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0024_X03.1"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Thrash_salutevillagers_0025_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Gnom/C06/Frames/Thrash_salutevillagers_0025_X03.1"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

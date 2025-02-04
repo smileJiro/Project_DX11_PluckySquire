@@ -1,0 +1,167 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_Walk_Up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0001_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0001_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0002_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0002_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0003_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0003_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0004_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0004_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0005_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0005_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0006_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0006_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0007_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0007_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0008_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0008_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0009_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0009_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0010_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0010_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0011_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0011_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0012_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0012_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0013_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0013_X02_Sprite.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0014_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0014_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0015_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0015_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0016_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0016_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0017_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0017_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0018_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0018_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0019_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0019_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0020_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0020_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0021_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0021_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_Walk_Up_0022_X02_Sprite'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/Walk/Moonbeard_Walk_Up_0022_X02_Sprite.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

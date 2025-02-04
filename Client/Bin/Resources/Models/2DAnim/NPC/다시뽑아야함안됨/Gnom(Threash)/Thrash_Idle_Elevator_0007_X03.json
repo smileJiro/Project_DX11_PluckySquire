@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_3",
+    "Outer": "Thrash_Idle_Elevator_0007_X03",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 3.5,
+              "Y": 0.0,
+              "Z": 123.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 147.0,
+            "Y": 10.0,
+            "Z": 264.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "127C8A2D480BC9540B7CF293EAFB3E34"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Thrash_Idle_Elevator_0007_X03",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1227.0,
+        "Y": 269.0
+      },
+      "BakedSourceDimension": {
+        "X": 149.0,
+        "Y": 266.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'thrash_additional-1'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Textures/thrash_additional-1.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Thrash_Idle_Elevator_0007_X03:BodySetup_3'",
+        "ObjectPath": "/Game/Characters/Friends/Gnom/Additional/Frames/Thrash_Idle_Elevator_0007_X03.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 77.0,
+          "Y": 255.0,
+          "Z": 0.6713867,
+          "W": 0.13183594
+        },
+        {
+          "X": -70.0,
+          "Y": 255.0,
+          "Z": 0.5996094,
+          "W": 0.13183594
+        },
+        {
+          "X": -70.0,
+          "Y": -9.0,
+          "Z": 0.5996094,
+          "W": 0.2607422
+        },
+        {
+          "X": 77.0,
+          "Y": -9.0,
+          "Z": 0.6713867,
+          "W": 0.2607422
+        },
+        {
+          "X": 77.0,
+          "Y": 255.0,
+          "Z": 0.6713867,
+          "W": 0.13183594
+        },
+        {
+          "X": -70.0,
+          "Y": -9.0,
+          "Z": 0.5996094,
+          "W": 0.2607422
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,587 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Moonbeard_DrinkPop",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0005_X06'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0005_X06.0"
+          },
+          "FrameRun": 6
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0007_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0007_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0014_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0015_X07'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0015_X07.0"
+          },
+          "FrameRun": 7
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0016_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0016_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0017_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0018_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0018_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0019_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0019_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0020_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0020_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0021_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0021_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0022_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0022_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0023_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0023_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0024_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0024_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0025_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0025_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0026_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0026_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0027_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0027_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0028_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0028_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0029_X08'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0029_X08.0"
+          },
+          "FrameRun": 8
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0030_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0030_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0031_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0031_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0032_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0032_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0033_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0033_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0034_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0034_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0035_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0035_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0036_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0036_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0037_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0037_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0038_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0038_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0039_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0039_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0040_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0040_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0041_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0041_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0042_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0042_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0043_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0043_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0044_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0044_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0045_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0045_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0046_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0046_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0047_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0047_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0048_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0048_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0049_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0049_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0050_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0050_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0051_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0051_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0052_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0052_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0053_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0053_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0054_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0054_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0055_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0055_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0056_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0056_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0057_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0057_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0058_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0058_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0059_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0059_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0060_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0060_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0061_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0061_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0062_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0062_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0063_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0063_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0064_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0064_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0065_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0065_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0066_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0066_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0067_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0067_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0068_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0068_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0069_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0069_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0070_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0070_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0071_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0071_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0072_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0072_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0073_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0073_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0074_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0074_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0075_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0075_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0076_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0076_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0077_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0077_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0078_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0078_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0079_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0079_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0080_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0080_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0081_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0081_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Moonbeard_DrinkPop_0082_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Moonbeard/DrinkPop/Frames/Moonbeard_DrinkPop_0082_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]
