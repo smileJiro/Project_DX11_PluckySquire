@@ -21,7 +21,7 @@ private:
 private:
     _bool m_bRising = true;
     _bool m_bGrounded = false;
-    _float m_fAirRunSpeed = 7.f;
+    _float m_fAirRunSpeed = 10.f;
 
     _float m_f2DHeight = 0.f;
     _float m_f2DUpForce = 0.f;

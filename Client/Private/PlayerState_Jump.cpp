@@ -32,8 +32,9 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 	{
 
 		m_pOwner->Stop_Rotate();
-		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
+		if (false == m_bRising && tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
 		{
+			cout << "Jump To RUn" << endl;
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
 		}
@@ -129,8 +130,8 @@ void CPlayerState_Jump::Update(_float _fTimeDelta)
 void CPlayerState_Jump::Enter()
 {
 	m_pOwner->Jump();
-
 	Switch_JumpAnimation(UP);
+	cout << "jump enter" << endl;
 }
 
 void CPlayerState_Jump::Exit()

@@ -326,6 +326,9 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		case Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE: // Ä³¸¯ÅÍ Ä¸½¶(¸¶Âû²¨Áü)
 			vMaterialDesc = { 0, 0, 0 };
 			break;
+		case Engine::ACTOR_MATERIAL::NORESTITUTION: // ³ë¹Ý¹ß·Â
+			vMaterialDesc = { 0.7f, 0.8f,0.f };
+			break;
 		default:
 			break;
 		}
