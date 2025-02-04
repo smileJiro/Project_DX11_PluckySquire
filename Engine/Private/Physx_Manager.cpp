@@ -322,11 +322,13 @@ HRESULT CPhysx_Manager::Initialize_Material()
 			break;
 		case Engine::ACTOR_MATERIAL::STICKY: // 질퍽한
 			vMaterialDesc = { 0.8f, 0.7f, 0.1f };
+			break;
 		case Engine::ACTOR_MATERIAL::NOFRICTION: // 노마찰
 			vMaterialDesc = { 0.f, 0.f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::PLAYER: // 플레이어용
 			vMaterialDesc = { 0.8f, 0.7f, 0.0f };
+			break;
 		default:
 			break;
 		}
