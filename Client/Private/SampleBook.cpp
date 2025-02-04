@@ -57,18 +57,25 @@ void CSampleBook::Priority_Update(_float _fTimeDelta)
 
 void CSampleBook::Update(_float _fTimeDelta)
 {
-    //if (KEY_DOWN(KEY::SPACE))
-    //{
-    //    Set_Animation(8);
-    //    //m_fTestOffset *= -1.f;
-    //}
+    if (KEY_DOWN(KEY::M))
+    {
+        Set_ReverseAnimation(false);
+        Set_Animation(8);
+        //m_fTestOffset *= -1.f;
+    }            
+    if (KEY_DOWN(KEY::N))
+    {
+        Set_ReverseAnimation(true);
+        Set_Animation(8);
+    }
 
-    if (m_bPlayingAnim)
-        m_pControllerModel->Play_Animation(_fTimeDelta );
-    else
-        m_pControllerModel->Play_Animation(0);
 
-    CPartObject::Update(_fTimeDelta);
+    //if (m_bPlayingAnim)
+    //    m_pControllerModel->Play_Animation(_fTimeDelta );
+    //else
+    //    m_pControllerModel->Play_Animation(0);
+
+    __super::Update(_fTimeDelta);
 }
 
 void CSampleBook::Late_Update(_float _fTimeDelta)

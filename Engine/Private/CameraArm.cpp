@@ -300,22 +300,25 @@ _bool CCameraArm::Check_IsNear_ToDesireArm(_float _fTimeDelta)
 {
     _float fDot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(XMLoadFloat3(&m_vArm)), XMVector3Normalize(XMLoadFloat3(&m_pNextArmData->vDesireArm))));
     _float fAngle = acos(fDot);
-
-    if (XMConvertToDegrees(fAngle) < 1.f) {
-        _vector vArm = XMVector3Normalize(XMVectorLerp(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), 0.2f));
+    _float f = XMConvertToDegrees(fAngle);
+ 
+    if (XMConvertToDegrees(fAngle) < 10.f) {
+        _vector vArm = XMVector3Normalize(XMVectorLerp(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), 0.05f));
         XMStoreFloat3(&m_vArm, (vArm));
         m_pTransform->Set_Look(vArm);
 
-        cout << "1도 아래 " << endl;
         return true;
     }
-    else if(XMConvertToDegrees(fAngle) < 5.f) {
-        m_fRotationValue = m_pGameInstance->Lerp(m_fRotationValue, 0.1f, 0.1f);
-        cout << "5도 아래 " << endl;
-        return false;
-    }
+    //else if(XMConvertToDegrees(fAngle) < 10.f) {
 
-    return _bool();
+    //    if()
+
+    //    m_fRotationValue = m_pGameInstance->Lerp(m_fRotationValue, 0.1f, 0.1f);
+  
+    //    return false;
+    //}
+
+    return false;
 }
 
 _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
@@ -329,6 +332,7 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
         m_pNextArmData->fMoveTimeAxisY.y = 0.f;
         m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
         m_fRotationValue = 1.f;
+
     }
 
     // Y축 회전
@@ -385,17 +389,17 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
         if (m_pNextArmData->fLengthTime.y >= m_pNextArmData->fLengthTime.x) {
             m_pNextArmData->fLengthTime.y = 0.f;
             m_iMovementFlags |= DONE_LENGTH_MOVE;
-            cout << "=======응~" << endl;
         }
         else {
             m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_pNextArmData->fLength, fRatio);
         }
-
-        cout << " ㅋㅋ 너 때문임? " << endl;
     }
 
-    if (ALL_DONE_MOVEMENT == (m_iMovementFlags & ALL_DONE_MOVEMENT)) {
+    if ((ALL_DONE_MOVEMENT == (m_iMovementFlags & ALL_DONE_MOVEMENT))) {
         m_iMovementFlags = RESET_FLAG;
+        m_fRotationValue = 1.f;
+        m_pNextArmData->fMoveTimeAxisY.y = 0.f;
+        m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
 
         return true;
     }
@@ -413,7 +417,6 @@ _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
         m_vArm = m_PreArms.back().vPreArm;
         m_fLength = m_PreArms.back().fPreLength;
         m_pTransform->Set_Look(XMVector3Normalize(XMLoadFloat3(&m_vArm)));
-        cout << "ㅋㅋㅋ 씨발" << endl;
         m_PreArms.pop_back();
 
         return true;

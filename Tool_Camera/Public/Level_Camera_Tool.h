@@ -36,14 +36,9 @@ private:
 	_uint				m_iSelectedArmNum = {};
 	_wstring			m_wszSelectedArm = {};
 
-	// 
-	_float				m_fMoveTimeAxisY = {};
-	_float				m_fMoveTimeAxisRight = {};
-	_float				m_fLengthTime = {};
-	_float2				m_fRotationPerSecAxisY{};
-	_float2				m_fRotationPerSecAxisRight{};
-	_float				m_fLength = {};
-	_uint				m_iLengthRatioType = {};
+	ARM_DATA			m_tArmData = {};
+	SUB_DATA			m_tSubData = {};
+	_bool				m_isUseSubData = {};
 
 	_float3				m_vResetArmPos = {};
 
@@ -106,8 +101,8 @@ private:
 	_bool									m_isArmData = { false };
 	_bool									m_isForClient = { false };
 	_bool									m_isShowPopUp = { false };
-	vector<_string>							m_BinaryFilePaths;
-	_int									m_iCurrentBinaryFileIndex = { 0 };
+	vector<_string>							m_JsonFilePaths;
+	_int									m_iCurrentJsonFileIndex = { 0 };
 	_char									m_szSaveName[MAX_PATH] = { "" };
 
 	// Initial Data
@@ -146,6 +141,7 @@ private:
 	void				Set_Zoom();
 	void				Set_AtOffsetInfo();
 	void				Set_ShakeInfo();
+	void				Set_CurInfo();
 
 	// CutScene
 	void				Set_KeyFrameInfo();

@@ -242,6 +242,7 @@
     <ClInclude Include="..\public\NPC_Store.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerBody.h" />
+    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
     <ClInclude Include="..\Public\PlayerState_Roll.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h" />
     <ClInclude Include="..\Public\PlayerSword.h" />
@@ -357,6 +358,7 @@
     <ClCompile Include="..\private\NPC_Store.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerBody.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
     <ClCompile Include="..\Private\PlayerState_Roll.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp" />
     <ClCompile Include="..\Private\PlayerSword.cpp" />

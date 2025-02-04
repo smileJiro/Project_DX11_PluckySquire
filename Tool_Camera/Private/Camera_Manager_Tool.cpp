@@ -35,8 +35,10 @@ void CCamera_Manager_Tool::Render()
 
 void CCamera_Manager_Tool::Clear()
 {
-	for (auto& ArmData : m_ArmDatas)
-		Safe_Delete(ArmData.second);
+	for (auto& ArmData : m_ArmDatas) {
+		Safe_Delete(ArmData.second.first);
+		Safe_Delete(ArmData.second.second);
+	}
 	m_ArmDatas.clear();
 
 	for (auto& Camera : m_Cameras) {
@@ -64,9 +66,9 @@ void CCamera_Manager_Tool::Get_ArmNames(vector<_wstring>* _vecArmNames)
 	}
 }
 
-ARM_DATA* CCamera_Manager_Tool::Get_ArmData(_wstring _wszArmName)
+pair<ARM_DATA*, SUB_DATA*>* CCamera_Manager_Tool::Get_ArmData(_wstring _wszArmName)
 {
-	ARM_DATA* pData = Find_ArmData(_wszArmName);
+	pair<ARM_DATA*, SUB_DATA*>* pData = Find_ArmData(_wszArmName);
 
 	if (nullptr == pData)
 		return nullptr;
@@ -130,13 +132,13 @@ void CCamera_Manager_Tool::Change_CameraTarget(const _float4x4* _pTargetWorldMat
 
 void CCamera_Manager_Tool::Set_NextArmData(_wstring _wszNextArmName)
 {
-	ARM_DATA* pData = Find_ArmData(_wszNextArmName);
+	pair<ARM_DATA*, SUB_DATA*>* pData = Find_ArmData(_wszNextArmName);
 
 	if (nullptr == pData)
 		return;
 
 	if (nullptr != m_Cameras[TARGET] && TARGET == m_eCurrentCameraType) {
-		dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(pData);
+		dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(pData->first, pData->second);
 	}
 }
 
@@ -174,19 +176,14 @@ void CCamera_Manager_Tool::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float 
 //	Add_ArmData(_wszArmTag, _pData);
 //}
 
-void CCamera_Manager_Tool::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
+void CCamera_Manager_Tool::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
 	if (nullptr == Find_ArmData(_wszArmTag)) {
-		ARM_DATA* pArmData = new ARM_DATA();
-
-		pArmData->fLength = _pData.fLength;
-		pArmData->fMoveTimeAxisY = _pData.fMoveTimeAxisY;
-		pArmData->fMoveTimeAxisRight = _pData.fMoveTimeAxisRight;
-		pArmData->fLengthTime = _pData.fLengthTime;
-		pArmData->fRotationPerSecAxisY = _pData.fRotationPerSecAxisY;
-		pArmData->fRotationPerSecAxisRight = _pData.fRotationPerSecAxisRight;
-
-		m_ArmDatas.emplace(_wszArmTag, pArmData);
+		m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
+	}
+	else {
+		Safe_Delete(_pArmData);
+		Safe_Delete(_pSubData);
 	}
 }
 
@@ -202,10 +199,13 @@ void CCamera_Manager_Tool::Edit_ArmInfo(_wstring _wszArmTag)
 {
 }
 
-void CCamera_Manager_Tool::Reset_CurrentArmPos(_vector vArm, _float fLength)
+void CCamera_Manager_Tool::Reset_CurrentArm(_fvector vArm, _float fLength, _fvector _vAtOffset, _int _iZoomLevel)
 {
 	m_pCurrentArm->Set_Length(fLength);
 	m_pCurrentArm->Set_ArmVector(vArm);
+
+	m_Cameras[TARGET]->Set_AtOffset(_vAtOffset);
+	m_Cameras[TARGET]->Set_ZoomLevel(_iZoomLevel);
 }
 
 _float CCamera_Manager_Tool::Get_ArmLength()
@@ -256,22 +256,24 @@ void CCamera_Manager_Tool::Set_CurrentArm(CCameraArm* _pCameraArm)
 //	return iter->second;
 //}
 
-ARM_DATA* CCamera_Manager_Tool::Find_ArmData(_wstring _wszArmTag)
+pair<ARM_DATA*, SUB_DATA*>* CCamera_Manager_Tool::Find_ArmData(_wstring _wszArmTag)
 {
 	auto iter = m_ArmDatas.find(_wszArmTag);
 
 	if (iter == m_ArmDatas.end())
 		return nullptr;
 
-	return iter->second;
+	return &(iter->second);
 }
 
 void CCamera_Manager_Tool::Free()
 {
 	Safe_Release(m_pGameInstance);
 
-	for (auto& ArmData : m_ArmDatas)
-		Safe_Delete(ArmData.second);
+	for (auto& ArmData : m_ArmDatas) {
+		Safe_Delete(ArmData.second.first);
+		Safe_Delete(ArmData.second.second);
+	}
 	m_ArmDatas.clear();
 
 	for (auto& Camera : m_Cameras)
