@@ -133,9 +133,9 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			//기본적으로 추적중에 y값 상태 변화는 없다고 가정
 
 			_vector vDir = Set_PatrolDirection(_iDir);
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
-			m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-			//m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
+			//m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+			m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
 		}
 	}
 

@@ -93,8 +93,12 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAnimEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("2DAnimEventGenerator"), m_pAnimEventGenerator);
 
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
@@ -152,6 +156,11 @@ void CBarfBug::Update(_float _fTimeDelta)
             CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+    }
+
+    if (KEY_DOWN(KEY::NUMPAD5))
+    {
+        Add_Force(XMVectorSet(m_pControllerTransform->Get_SpeedPerSec(), 0.f, 0.f, 0.f));
     }
 
     //// TestCode : 태웅
@@ -390,6 +399,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             if(false == m_isDelay)
             {
                 Set_AnimChangeable(true);
+                Delay_On();
             }
             break;
 
@@ -403,7 +413,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 {
     CBarfBug::MONSTER_DESC* pDesc = static_cast<CBarfBug::MONSTER_DESC*>(_pArg);
     
-    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
