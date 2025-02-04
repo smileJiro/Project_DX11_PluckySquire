@@ -309,6 +309,9 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		switch ((ACTOR_MATERIAL)i)
 		{
 		case Engine::ACTOR_MATERIAL::DEFAULT: // 일반 오브젝트 
+			//02.04 김지완 수정
+			//임시로 마찰력 다 없애놓음. 맵 오브젝트랑 충돌 시 마찰없애기 위해.
+			// 맵 오브젝트들을 NOFRICTOIN으로 변경하면 좋을듯?
 			vMaterialDesc = { 0.f, 0.f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::SLIPPERY: // 미끄러운
