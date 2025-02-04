@@ -133,13 +133,17 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 
 		if (true == m_isTurn)
 		{
-			m_pOwner->Rotate_To(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
-			//각속도 0이면
-			if (0.f == XMVectorGetY(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity()))
+			if (m_pOwner->Rotate_To(vDir, XMConvertToDegrees(m_pOwner->Get_ControllerTransform()->Get_RotationPerSec())))
 			{
 				m_isMove = true;
 				m_pOwner->Change_Animation();
 			}
+			//각속도 0이면
+			/*if (0.f == XMVectorGetY(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity()))
+			{
+				m_isMove = true;
+				m_pOwner->Change_Animation();
+			}*/
 		}
 
 		if (true == m_isMove)

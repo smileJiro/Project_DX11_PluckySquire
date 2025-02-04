@@ -435,7 +435,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.4f;
+    ShapeDesc->fHalfHeight = 0.2f;
     ShapeDesc->fRadius = 0.7f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -446,8 +446,20 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
+    //마찰용 박스
+    SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
+    BoxDesc->vHalfExtents = { 0.5f, 0.1f, 0.5f };
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    SHAPE_DATA* BoxShapeData = new SHAPE_DATA;
+    BoxShapeData->pShapeDesc = BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    BoxShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+    BoxShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    BoxShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&BoxShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
     /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
+    ActorDesc->ShapeDatas.push_back(*BoxShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
