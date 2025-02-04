@@ -309,7 +309,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		switch ((ACTOR_MATERIAL)i)
 		{
 		case Engine::ACTOR_MATERIAL::DEFAULT: // ÀÏ¹Ý ¿ÀºêÁ§Æ® 
-			vMaterialDesc = { 0.f, 0.f, 0.1f };
+			vMaterialDesc = { 0.7f, 0.8f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::SLIPPERY: // ¹Ì²ô·¯¿î
 			vMaterialDesc = { 0.05f, 0.05f, 0.1f };
@@ -319,18 +319,21 @@ HRESULT CPhysx_Manager::Initialize_Material()
 			break;
 		case Engine::ACTOR_MATERIAL::STICKY: // ÁúÆÜÇÑ
 			vMaterialDesc = { 0.8f, 0.7f, 0.1f };
+			break;
 		case Engine::ACTOR_MATERIAL::NOFRICTION: // ³ë¸¶Âû
 			vMaterialDesc = { 0.f, 0.f, 0.1f };
 			break;
-		case Engine::ACTOR_MATERIAL::PLAYER: // ÇÃ·¹ÀÌ¾î¿ë
-			vMaterialDesc = { 0.8f, 0.7f, 0.0f };
+		case Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE: // Ä³¸¯ÅÍ Ä¸½¶(¸¶Âû²¨Áü)
+			vMaterialDesc = { 0, 0, 0 };
+			break;
 		default:
 			break;
 		}
 
 		m_pPxMaterial[i] = m_pPxPhysics->createMaterial(vMaterialDesc.x, vMaterialDesc.y, vMaterialDesc.z);
+		if (Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE == (ACTOR_MATERIAL)i)
+			m_pPxMaterial[i]->setFlag(PxMaterialFlag::eDISABLE_FRICTION, true);
 	}
-
 	return S_OK;
 }
 

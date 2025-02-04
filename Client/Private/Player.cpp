@@ -74,7 +74,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::NOFRICTION;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
 
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
@@ -90,7 +90,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BoxShapeData.pShapeDesc = &BoxDesc;
     XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, 0.025, 0.0f));
     BoxShapeData.isTrigger = false;                    
-    BoxShapeData.eMaterial = ACTOR_MATERIAL::PLAYER;
+    BoxShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
 	
 
@@ -124,7 +124,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
 
 	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 10.f;	
+	m_tStat[COORDINATE_3D].fJumpPower = 12.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
@@ -270,7 +270,7 @@ void CPlayer::Update(_float _fTimeDelta)
     //cout << "m_bOnGround :" << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-     m_bOnGround = false;
+    m_bOnGround = false;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
