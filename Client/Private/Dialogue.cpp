@@ -85,8 +85,8 @@ void CDialog::Update(_float _fTimeDelta)
 			//}
 			
 
-			//vPos.x = vPos.x + g_iWinSizeX * 0.5f;
-			//vPos.y = -vPos.y + g_iWinSizeY * 0.5f;
+				vPos.x = vPos.x + g_iWinSizeX * 0.5f;
+				vPos.y = -vPos.y + g_iWinSizeY * 0.5f;
 			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 
 			if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())

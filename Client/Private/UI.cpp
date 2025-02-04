@@ -23,7 +23,7 @@ HRESULT CUI::Initialize_Prototype()
 
 HRESULT CUI::Initialize(void* pArg)
 {
-	if(FAILED(__super::Initialize(pArg)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	//if (FAILED(Ready_Components()))
@@ -89,6 +89,22 @@ HRESULT CUI::Bind_ShaderResources()
 
 	return S_OK;
 }
+
+void CUI::Change_BookScale()
+{
+	_float3 vScaleSize;
+	_float2 vCalSize;
+
+	vScaleSize = m_pControllerTransform->Get_Scale();
+	vCalSize = _float2(m_vOriginSize.x * vScaleSize.x, m_vOriginSize.y * vScaleSize.y);
+
+
+
+	m_pControllerTransform->Set_Scale(COORDINATE_2D, vCalSize.x, vCalSize.y, 1.f);
+
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
+}
+
 
 
 void CUI::Free()

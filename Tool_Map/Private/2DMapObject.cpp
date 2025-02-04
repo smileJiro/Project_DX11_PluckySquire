@@ -45,7 +45,7 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 	fImageSize.y *= fRadio.y;
 	m_fX *= fRadio.x;
 	m_fY *= -fRadio.y;
-	m_fY -= fImageSize.y * 0.5f;
+	m_fY += fImageSize.y * 0.5f;
 	m_pControllerTransform->Set_Scale(fImageSize.x , fImageSize.y, 1.f );
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX, m_fY, 0.f, 1.f));
 	m_fRenderTargetSize = pDesc->fRenderTargetSize;
