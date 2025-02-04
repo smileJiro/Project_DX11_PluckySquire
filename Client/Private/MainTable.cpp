@@ -24,7 +24,7 @@ HRESULT CMainTable::Initialize(void* _pArg)
 
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->tTransform3DDesc.vInitialPosition = { 0.0f, -9.5f, 0.0f };
+    pDesc->tTransform3DDesc.vInitialPosition = { 0.0f, -9.65f, 0.0f };
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     pDesc->eActorType = ACTOR_TYPE::STATIC;
     CActor::ACTOR_DESC ActorDesc;
