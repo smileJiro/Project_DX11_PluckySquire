@@ -99,9 +99,21 @@ void CCharacter::Rotate_To(_vector _vDirection)
     }
 }
 
-void CCharacter::Move_To(_fvector _vPosition)
+_bool CCharacter::Move_To(_fvector _vPosition)
 {
+    static _float fEpsilon = 0.5f;
+    CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+    _vector vDir = _vPosition - Get_FinalPosition();
+    _float fLength = XMVectorGetX(XMVector3Length(vDir));
+    if (fEpsilon >= fLength)
+    {
+        pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
+        return true;
+    }
 
+    pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec());
+
+    return false;
 }
 
 

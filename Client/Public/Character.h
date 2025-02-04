@@ -31,7 +31,8 @@ public:
 	void Add_Impuls(_vector _vForce);
 	void Add_Force(_vector _vForce);
 	void Rotate_To(_vector _vDirection);
-	void Move_To(_fvector _vPosition);
+	_bool Move_To(_fvector _vPosition);
+
 protected:
 	STAT m_tStat[COORDINATE::COORDINATE_LAST];
 	_vector m_vLookBefore = { 0,0,-1 };

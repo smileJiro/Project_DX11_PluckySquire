@@ -158,13 +158,9 @@ void CBarfBug::Update(_float _fTimeDelta)
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     }
 
-    if (KEY_DOWN(KEY::NUMPAD5))
-    {
-        Add_Force(XMVectorSet(m_pControllerTransform->Get_SpeedPerSec(), 0.f, 0.f, 0.f));
-    }
-
     //// TestCode : 태웅
-    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
+    if (COORDINATE_2D == Get_CurCoord())
+        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -186,7 +182,8 @@ HRESULT CBarfBug::Render()
 #ifdef _DEBUG
     m_pDetectionField->Render();
 
-    m_pColliderCom->Render();
+    if (COORDINATE_2D == Get_CurCoord())
+        m_pColliderCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -431,8 +428,8 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.5f;
-    ShapeDesc->fRadius = 0.5f;
+    ShapeDesc->fHalfHeight = 0.4f;
+    ShapeDesc->fRadius = 0.7f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;

@@ -135,7 +135,9 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			_vector vDir = Set_PatrolDirection(_iDir);
 			//m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
 			//m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-			m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
+			m_pOwner->Rotate_To(vDir);
+			//m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
+			m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
 		}
 	}
 
@@ -307,9 +309,9 @@ void CPatrolState::Check_Bound(_float _fTimeDelta)
 	_float3 vPos;
 	_bool isOut = false;
 	//델타타임으로 다음 위치 예상해서 막기
-	//XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_PatrolDirection(m_iDir) * _fTimeDelta);
+	XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_PatrolDirection(m_iDir) * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta);
 	//나갔을 때 반대방향으로
-	XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+	//XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.z > vPos.z || m_tPatrolBound.vMax.z < vPos.z)
