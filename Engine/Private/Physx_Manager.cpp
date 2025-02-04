@@ -309,7 +309,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		switch ((ACTOR_MATERIAL)i)
 		{
 		case Engine::ACTOR_MATERIAL::DEFAULT: // 일반 오브젝트 
-			vMaterialDesc = { 0.7f, 0.5f, 0.1f };
+			vMaterialDesc = { 0.f, 0.f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::SLIPPERY: // 미끄러운
 			vMaterialDesc = { 0.05f, 0.05f, 0.1f };
@@ -319,9 +319,11 @@ HRESULT CPhysx_Manager::Initialize_Material()
 			break;
 		case Engine::ACTOR_MATERIAL::STICKY: // 질퍽한
 			vMaterialDesc = { 0.8f, 0.7f, 0.1f };
+		case Engine::ACTOR_MATERIAL::NOFRICTION: // 노마찰
+			vMaterialDesc = { 0.f, 0.f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::PLAYER: // 플레이어용
-			vMaterialDesc = { 0.8f, 5.f, 0.0f };
+			vMaterialDesc = { 0.8f, 0.7f, 0.0f };
 		default:
 			break;
 		}

@@ -460,7 +460,7 @@ private:
 	_float m_fStepSlopeThreshold = 0.5;
 	_bool m_bOnGround = false;
 	_vector m_vClamberPosition;
-	_float m_fAttackForwardingForce = 15.f;
+	_float m_fAttackForwardingForce = 9.f;
 	_float m_fGroundRotateSpeed = 360;
 	_bool m_bContactWall = false;
 

@@ -68,7 +68,7 @@ void CCharacter::Add_Force(_vector _vForce)
     m_pActorCom->Add_Force(f3Force);
 }
 
-void CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
+_bool CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 
@@ -78,16 +78,20 @@ void CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
     if (XMVector3Equal(_vDirection, XMVectorZero()))
     {
         _vDirection = vLook;
+        return true;
     }
-    if (XMVector3NearEqual(_vDirection, vLook, XMVectorReplicate(1e-6f)))
+    if (XMVector3NearEqual(_vDirection, vLook, XMVectorReplicate(0.001)))
     {
+        pDynamicActor->Set_Rotation(_vDirection);
         pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+        return true;
     }
     else if ((vLookDiff.x * vLookDiffBefore.x) < 0
         || (vLookDiff.z * vLookDiffBefore.z) < 0)
     {
         pDynamicActor->Set_Rotation(_vDirection);
         pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+        return true;
     }
     else
     {
@@ -95,7 +99,7 @@ void CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
         if (XMVector3Equal(vAxis, XMVectorZero()))
             vAxis = XMVectorSet(0, 1, 0, 0);
         pDynamicActor->Set_AngularVelocity(vAxis * XMConvertToRadians(_fSpeed));
-
+        return false;
     }
 }
 

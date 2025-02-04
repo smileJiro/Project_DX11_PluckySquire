@@ -21,6 +21,10 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 	_float fForwardStartProgress = eCoord == COORDINATE_2D ? m_f2DForwardStartProgress : m_f3DForwardStartProgress;
 	_float fForwardEndProgress= eCoord == COORDINATE_2D ? m_f2DForwardEndProgress : m_f3DForwardEndProgress;
 	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
+
+	if (COORDINATE_3D == eCoord)
+		m_pOwner->Rotate_To(XMVector3Normalize(m_vDirection), 1080);
+
 	if (fProgress >= fMotionCancelProgress)
 	{
 		PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
@@ -67,13 +71,14 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 
 void CPlayerState_Roll::Enter()
 {
-	
+
     COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	_bool bSwrodEquiped = m_pOwner->Is_SwordEquiped();
 
     if (COORDINATE_2D == eCoord)
     {
 		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
+		m_vDirection = EDir_To_Vector(m_pOwner->Get_2DDirection());
         switch (eFDir)
         {
         case Client::F_DIRECTION::LEFT:
@@ -101,6 +106,7 @@ void CPlayerState_Roll::Enter()
     }
     else
     {
+		m_vDirection = m_pOwner->Get_3DTargetDirection();
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_DODGE_GT);
     }
 }

@@ -74,7 +74,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::PLAYER;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::NOFRICTION;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
 
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
@@ -82,17 +82,17 @@ HRESULT CPlayer::Initialize(void* _pArg)
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
- //   //마찰용 박스
- //   SHAPE_BOX_DESC BoxDesc = {};
-	//BoxDesc.vHalfExtents = { 0.5f, 0.8f, 0.5f };
- //   SHAPE_DATA BoxShapeData;
- //   BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
- //   BoxShapeData.pShapeDesc = &BoxDesc;
- //   XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, m_fCenterHeight, 0.0f));
- //   BoxShapeData.isTrigger = false;                    
- //   BoxShapeData.eMaterial = ACTOR_MATERIAL::PLAYER;
- //   ActorDesc.ShapeDatas.push_back(BoxShapeData);
-	//
+    //마찰용 박스
+    SHAPE_BOX_DESC BoxDesc = {};
+	BoxDesc.vHalfExtents = { 0.12f, 0.05f, 0.12f };
+    SHAPE_DATA BoxShapeData;
+    BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
+    BoxShapeData.pShapeDesc = &BoxDesc;
+    XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, 0.025, 0.0f));
+    BoxShapeData.isTrigger = false;                    
+    BoxShapeData.eMaterial = ACTOR_MATERIAL::PLAYER;
+    ActorDesc.ShapeDatas.push_back(BoxShapeData);
+	
 
     //충돌 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
@@ -267,7 +267,7 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
-
+    //cout << "m_bOnGround :" << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
      m_bOnGround = false;
@@ -277,15 +277,19 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
-    if (m_bContactWall)
-    {
-        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        //해결책 6번
-        _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
-        pDynamicActor->Set_Rotation(m_v3DTargetDirection);
-        pDynamicActor->Set_LinearVelocity(vOldVelocity);
-        m_bContactWall = false;
-    }
+    //if (m_bOnGround)
+    //    cout << "Ground : " << "True" << endl;
+    //else
+    //    cout << "Ground : " << "False" << endl;
+    //if (m_bContactWall)
+    //{
+    //    CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+    //    //해결책 6번
+    //    _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
+    //    pDynamicActor->Set_Rotation(m_v3DTargetDirection);
+    //    pDynamicActor->Set_LinearVelocity(vOldVelocity);
+    //    m_bContactWall = false;
+    //}
 
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
@@ -308,53 +312,46 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
     int a = 0;
     for (auto& i : _ContactPointDatas)
     {
-        cout<<"Contatc Enter Normal: " << i.normal.x << ", "<< i.normal.y << "," << i.normal.z<<endl;
+        cout << "Contatc Enter :" << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << endl;
     }
 }
 
 void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    if (false == m_bOnGround)
+     for (auto& pxPairData : _ContactPointDatas)
     {
-        for (auto& pxPairData : _ContactPointDatas)
-        {
-            _vector vMyPos = Get_FinalPosition();
-			//발 범위에 안닿으면 무시
-            if (vMyPos.m128_f32[1] + m_fFootLength < pxPairData.position.y
-                || vMyPos.m128_f32[1] > pxPairData.position.y)
-                continue;
-            //천장이면 무시
-			if (pxPairData.normal.y  < 0)
-				continue;
-            //닿은 곳의 경사가 너무 급하면 무시
-            if (pxPairData.normal.y < m_fStepSlopeThreshold)
-                continue;
-            m_bOnGround = true;
-            return;
-        }
+         _vector vContactNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
+        //cout << "Contatc Stay :" << pxPairData .normal.y<< endl;
+         if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
+         {
+             m_bContactWall = true;
+         }
+        _vector vMyPos = Get_FinalPosition();
+        //발 범위에 안닿으면 무시
+        if (vMyPos.m128_f32[1] + m_fFootLength < pxPairData.position.y
+            || vMyPos.m128_f32[1] > pxPairData.position.y)
+            continue;
+        //천장이면 무시
+        if (pxPairData.normal.y < 0)
+            continue;
+        //닿은 곳의 경사가 너무 급하면 무시
+        if (pxPairData.normal.y < m_fStepSlopeThreshold)
+            continue;
+        m_bOnGround = true;
+        return;
     }
- //   cout << "Ground : " << m_bOnGround << endl;
+
     for (auto& pariPoints : _ContactPointDatas)
     {
-        _vector vWallNormal = { pariPoints.normal.x,pariPoints.normal.y,pariPoints.normal.z };
-        if (abs(pariPoints.normal.y) < m_fStepSlopeThreshold)
-        {
 
-            m_bContactWall = true;
-        	return;
-
-            //해결책 7번
-            //_vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
-            //_float fDot = XMVectorGetX( XMVector4Dot(vWallNormal, XMVector3Normalize( vOldVelocity)));
-            //_vector vNewVelociaty = vOldVelocity + abs(fDot) * vWallNormal * XMVector4Length(vOldVelocity);
-            //pDynamicActor->Set_LinearVelocity(vNewVelociaty);
-        }
     }
 }
 
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     int a = 0;
+    cout << "Contatc Exit :" << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID()<< endl;
+
 }
 
 void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
