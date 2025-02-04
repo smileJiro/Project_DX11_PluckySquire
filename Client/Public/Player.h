@@ -26,6 +26,12 @@ typedef struct tagPlayerKeyResult
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
+	enum SHAPE_USE
+	{
+		SHAPE_BODY = 0,
+		SHAPE_FOOT = 1,
+		SHAPE_TRIGER =2
+	};
 	enum PLAYER_PART
 	{
 		PLAYER_PART_SWORD= 1,
@@ -422,7 +428,7 @@ public: /* 2D 충돌 */
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
-	_bool Is_OnGround();
+	_bool Is_OnGround() {return m_bOnGround;}
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_bool Is_SwordEquiped();
@@ -432,6 +438,7 @@ public: /* 2D 충돌 */
 	_float Get_HeadHeight() { return m_fHeadHeight; }
 	_vector Get_LookDirection();
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
+	STATE Get_CurrentStateID();
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -460,7 +467,7 @@ private:
 	_float m_fStepSlopeThreshold = 0.5;
 	_bool m_bOnGround = false;
 	_vector m_vClamberPosition;
-	_float m_fAttackForwardingForce = 15.f;
+	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360;
 	_bool m_bContactWall = false;
 
