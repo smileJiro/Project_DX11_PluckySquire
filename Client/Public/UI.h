@@ -118,7 +118,8 @@ public:
 
 protected:
 	virtual HRESULT Ready_Components();
-	HRESULT Bind_ShaderResources();
+	HRESULT			Bind_ShaderResources();
+	void			Change_BookScale();
 
 
 public:
@@ -139,6 +140,7 @@ protected:
 	_float			m_fGreen = { 0.f };
 	_float			m_fBlue = { 0.f };
 	_tchar			m_tFont[MAX_PATH] = {};
+	_float2			m_vOriginSize = {0.f, 0.f};
 
 
 

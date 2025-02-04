@@ -260,5 +260,13 @@
    }
   },
   "TextureName": "large_moss_rock"
+ },
+ {
+  "Active": false,
+  "Collider": false,
+  "ModelType": "NonAnim",
+  "SearchTag": "TopDownDecal_Ink",
+  "Sorting": false,
+  "TextureName": "ink_splat_01"
  }
 ]

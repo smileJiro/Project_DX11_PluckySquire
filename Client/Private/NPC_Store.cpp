@@ -66,6 +66,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"), &tAnimEventDesc));
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(300.f, -300.f, 0.f, 1.f));
 
 	
 	//CActor::ACTOR_DESC ActorDesc;
@@ -130,18 +131,13 @@ void CNPC_Store::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Store::Update(_float _fTimeDelta)
 {
-	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
+	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
 	
 	__super::Update(_fTimeDelta);
 }
 
 void CNPC_Store::Late_Update(_float _fTimeDelta)
 {
-
-	if (true == OnCOllsion2D_Enter())
-	{
-		// 애니메이션 변경
-	}
 	
 
 	__super::Late_Update(_fTimeDelta);
@@ -301,9 +297,10 @@ HRESULT CNPC_Store::Ready_Components()
 {
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = { 65.f, 65.f };
+	AABBDesc.vExtents = { 180.f, 180.f };
 	AABBDesc.vScale = { 1.0f, 1.0f };
-	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
+	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.2f };
+	AABBDesc.isBlock = true;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
 		return E_FAIL;
