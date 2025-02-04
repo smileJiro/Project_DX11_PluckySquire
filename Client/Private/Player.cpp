@@ -10,6 +10,7 @@
 #include "PlayerState_Attack.h"
 #include "PlayerState_Jump.h"
 #include "PlayerState_Roll.h"
+#include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
@@ -66,7 +67,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_CAPSULE_DESC ShapeDesc = {};
     ShapeDesc.fRadius = m_fFootLength;
     ShapeDesc.fHalfHeight = m_fCenterHeight - m_fFootLength;
-    
+	//SHAPE_BOX_DESC ShapeDesc = {};
+	//ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
+
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -121,12 +124,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
 
 	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 14.f;	
+	m_tStat[COORDINATE_3D].fJumpPower = 10.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
 
-	//
-    
+
     return S_OK;
 }
 
@@ -140,6 +142,7 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
+    Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -260,15 +263,13 @@ void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
 
-
     //// TestCode : 태웅
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
 
-	if (COORDINATE_3D == Get_CurCoord())
-        Rotate_To(m_v3DTargetDirection);
     __super::Update(_fTimeDelta); /* Part Object Update */
+    m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
      m_bOnGround = false;
 }
 
@@ -276,6 +277,16 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
+    if (m_bContactWall)
+    {
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        //해결책 6번
+        _vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
+        pDynamicActor->Set_Rotation(m_v3DTargetDirection);
+        pDynamicActor->Set_LinearVelocity(vOldVelocity);
+        m_bContactWall = false;
+    }
+
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -295,6 +306,10 @@ HRESULT CPlayer::Render()
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     int a = 0;
+    for (auto& i : _ContactPointDatas)
+    {
+        cout<<"Contatc Enter Normal: " << i.normal.x << ", "<< i.normal.y << "," << i.normal.z<<endl;
+    }
 }
 
 void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -316,6 +331,23 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
                 continue;
             m_bOnGround = true;
             return;
+        }
+    }
+ //   cout << "Ground : " << m_bOnGround << endl;
+    for (auto& pariPoints : _ContactPointDatas)
+    {
+        _vector vWallNormal = { pariPoints.normal.x,pariPoints.normal.y,pariPoints.normal.z };
+        if (abs(pariPoints.normal.y) < m_fStepSlopeThreshold)
+        {
+
+            m_bContactWall = true;
+        	return;
+
+            //해결책 7번
+            //_vector vOldVelocity = pDynamicActor->Get_LinearVelocity();
+            //_float fDot = XMVectorGetX( XMVector4Dot(vWallNormal, XMVector3Normalize( vOldVelocity)));
+            //_vector vNewVelociaty = vOldVelocity + abs(fDot) * vWallNormal * XMVector4Length(vOldVelocity);
+            //pDynamicActor->Set_LinearVelocity(vNewVelociaty);
         }
     }
 }
@@ -374,6 +406,12 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     return S_OK;
 }
 
+
+void CPlayer::Attack()
+{
+    Stop_Move();
+    Add_Impuls(Get_3DTargetDirection() * m_fAttackForwardingForce);
+}
 
 void CPlayer::Move(_vector _vForce, _float _fTimeDelta)
 {
@@ -481,7 +519,8 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
         tResult.vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
         tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
     }
-
+    if(tResult.bKeyStates[PLAYER_KEY_MOVE])
+        tResult.vMoveDir = XMVector3Normalize(tResult.vMoveDir);
     return tResult;
 }
 
@@ -552,6 +591,14 @@ _vector CPlayer::Get_CenterPosition()
         return Get_FinalPosition() + _vector{0,m_fCenterHeight, 0};
 }
 
+_vector CPlayer::Get_HeadPosition()
+{
+    if (COORDINATE_2D == Get_CurCoord())
+        return Get_FinalPosition();
+    else
+        return Get_FinalPosition() + _vector{ 0,m_fHeadHeight, 0 };
+}
+
 _vector CPlayer::Get_LookDirection()
 {
 	COORDINATE eCoord = Get_CurCoord();
@@ -586,13 +633,16 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Jump(this));
         break;
     case Client::CPlayer::ATTACK:
-        m_pStateMachine->Transition_To(new CPlayerState_Attack(this, m_e2DDirection_E));
+        m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
         break;
     case Client::CPlayer::ROLL:
         m_pStateMachine->Transition_To(new CPlayerState_Roll(this, m_v3DTargetDirection));
 		break;
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
+        break;
+        case Client::CPlayer::CLAMBER:
+        m_pStateMachine->Transition_To(new CPlayerState_Clamber(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;

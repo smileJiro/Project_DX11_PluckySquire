@@ -25,6 +25,11 @@ private:
 
     _float m_f2DHeight = 0.f;
     _float m_f2DUpForce = 0.f;
+
+    _vector m_vClamberPosition = { 0,-1,0 };
+	_float m_fArmLength = 0.7f;
+	_float m_fArmHeight = 0.6f;
+    _float m_fAirRotateSpeed = 40;
 };
 
 END
