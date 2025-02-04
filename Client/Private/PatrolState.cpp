@@ -137,7 +137,6 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			//각속도 0이면
 			if (0.f == XMVectorGetY(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity()))
 			{
-				m_isTurn = false;
 				m_isMove = true;
 				m_pOwner->Change_Animation();
 			}
@@ -203,6 +202,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		if (m_fMoveDistance <= m_fAccDistance)
 		{
 			m_fAccDistance = 0.f;
+			m_isTurn = false;
 			m_isMove = false;
 
 			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
