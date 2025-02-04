@@ -591,6 +591,9 @@
     <ClInclude Include="..\Public\StandbyState.h">
       <Filter>03.Components\FSM\State\Standby</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Npc_Body.h">
+      <Filter>02.GameObjects\NPC</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\MainTable.h">
       <Filter>02.GameObjects\MainTable</Filter>
     </ClInclude>
@@ -910,6 +913,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StandbyState.cpp">
       <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Body.cpp">
+      <Filter>02.GameObjects\NPC</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MainTable.cpp">
       <Filter>02.GameObjects\MainTable</Filter>

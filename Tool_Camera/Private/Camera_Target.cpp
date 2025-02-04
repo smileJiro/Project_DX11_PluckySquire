@@ -76,15 +76,21 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 	m_pArm->Change_Target(_pTargetWorldMatrix);
 }
 
-void CCamera_Target::Set_NextArmData(ARM_DATA* _pData)
+void CCamera_Target::Set_NextArmData(ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
-	if (nullptr == _pData)
+	if (nullptr == _pArmData)
 		return;
 
 	if (nullptr == m_pArm)
 		return;
 
-	m_pArm->Set_NextArmData(_pData, 0);
+	m_pArm->Set_NextArmData(_pArmData, 0);
+
+	// Sub Data ผ๖วเ
+	if (nullptr != _pSubData) {
+		Start_Zoom(_pSubData->fZoomTime, (CCamera::ZOOM_LEVEL)_pSubData->iZoomLevel, (CCamera::RATIO_TYPE)_pSubData->iZoomRatioType);
+		Start_Changing_AtOffset(_pSubData->fAtOffsetTime, XMLoadFloat3(&_pSubData->vAtOffset), _pSubData->iAtRatioType);
+	}
 }
 
 void CCamera_Target::Action_Mode(_float _fTimeDelta)
@@ -114,7 +120,7 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
 	if (true == m_pArm->Move_To_NextArm(_fTimeDelta)) {
-		m_pArm->Set_DesireVector();
+		//m_pArm->Set_DesireVector();
 		m_eCameraMode = DEFAULT;
 		return;
 	}

@@ -1,6 +1,6 @@
 #pragma once
 #include "Base.h"
-
+#include "Layer.h"
 BEGIN(Engine)
 class CGameObject;
 class CLayer;
@@ -60,8 +60,7 @@ public:
 		if (!Has_Exist_Layer(_iLayerIndex))
 			return;
 
-		auto& GameObjects = m_Layers[_iLayerIndex]->Get_GameObjects();
-		sort(GameObjects.begin(), GameObjects.end(), _funcCompair);
+		m_Layers[_iLayerIndex]->Sort_Objects(_funcCompair);
 	}
 
 	CLayer* Get_Include_Layer(CGameObject* _pGameObject);

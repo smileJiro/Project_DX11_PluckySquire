@@ -30,6 +30,7 @@ public:
 	void Stop_Move();
 	void Add_Impuls(_vector _vForce);
 	void Add_Force(_vector _vForce);
+	void Move_To(_fvector _vPosition);
 	void Rotate_To(_vector _vDirection, _float _fSpeed);
 protected:
 	STAT m_tStat[COORDINATE::COORDINATE_LAST];

@@ -447,8 +447,8 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	FilterData.word1 = _ShapeData.FilterData.OtherGroupMask;
 
 	pShape->setSimulationFilterData(FilterData);
-	pShape->setContactOffset(1.f);
-	pShape->setRestOffset(0.1f);
+	//pShape->setContactOffset(1.f);
+	//pShape->setRestOffset(0.1f);
 	SHAPE_USERDATA* pShapeUserData = new SHAPE_USERDATA;
 	pShapeUserData->iShapeInstanceID = m_pGameInstance->Create_ShapeID();
 	pShapeUserData->iShapeUse = _ShapeData.iShapeUse;

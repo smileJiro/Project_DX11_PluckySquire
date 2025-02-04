@@ -27,19 +27,8 @@ HRESULT CNPC::Initialize(void* _pArg)
 
 	m_iMainIndex = pDesc->iMainIndex;
 	m_iSubIndex = pDesc->iSubIndex;
-
-
-	//플레이어 위치 가져오기
-	//m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
-	//if (nullptr == m_pTarget)
-	//{
-	//#ifdef _DEBUG
-	//	cout << "MONSTERINIT : NO PLAYER" << endl;
-	//#endif // _DEBUG
-	//	return S_OK;
-	//}
-	//
-	//Safe_AddRef(m_pTarget);
+	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
+	Safe_AddRef(m_pTarget);
 
 	return S_OK;
 }
@@ -52,18 +41,17 @@ void CNPC::Priority_Update(_float _fTimeDelta)
 
 void CNPC::Update(_float _fTimeDelta)
 {
-	CGameObject::Update_Component(_fTimeDelta); /* Component Update */
 	__super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CNPC::Late_Update(_float _fTimeDelta)
 {
-	CGameObject::Late_Update_Component(_fTimeDelta); /* Component Late_Update */
 	__super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
 HRESULT CNPC::Render()
 {
+
 	return S_OK;
 }
 
@@ -80,30 +68,6 @@ HRESULT CNPC::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 		Set_2D_Direction(F_DIRECTION::DOWN);
 
 	return S_OK;
-}
-
-void CNPC::Change_Dir()
-{
-	//플레이어와의 각도를 구해 방향 전환 (시야각이 있을 때 기준)
-	//_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-	//_vector vDir = XMVector3Normalize(m_pTarget->Get_Position() -> Get_Position());
-	//_vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-	//_float fAngle = XMConvertToDegrees(acosf(XMVectorGetX(XMVector3Dot(vDir, vLook))));
-	//_float fResult = XMVectorGetX(XMVector3Cross(vUp, XMVector3Cross(vLook, vDir)));
-	//if (0 > fResult)
-	//{
-	//	fAngle = 360 - fAngle;
-	//}
-	//
-	//
-	//if (315.f < fResult || 45.f >= fResult)
-	//	Set_2D_Direction(F_DIRECTION::UP);
-	//else if (45.f < fResult || 135.f >= fResult)
-	//	Set_2D_Direction(F_DIRECTION::RIGHT);
-	//else if (135.f < fResult || 225.f >= fResult)
-	//	Set_2D_Direction(F_DIRECTION::DOWN);
-	//else if (225.f < fResult || 315.f >= fResult)
-	//	Set_2D_Direction(F_DIRECTION::LEFT);
 }
 
 void CNPC::Set_2D_Direction(F_DIRECTION _eDir)
@@ -181,6 +145,7 @@ void CNPC::Free()
 		Safe_Release(m_pTarget);
 
 	Safe_Release(m_pFSM);
-
+	Safe_Release(m_pAnimEventGenerator);
+	Safe_Release(m_pColliderCom);
 	__super::Free();
 }

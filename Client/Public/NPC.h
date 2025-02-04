@@ -1,9 +1,16 @@
 #pragma once
 #include "Character.h"
+#include "AnimEventReceiver.h"
+
+BEGIN(Engine)
+class CAnimEventGenerator;
+class CCollider;
+END
+
 
 BEGIN(Client)
 class CFSM;
-class CNPC abstract : public CCharacter
+class CNPC abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
 	enum NPCPART { PART_BODY, PART_EFFECT, PART_WEAPON,  PART_END };
@@ -104,6 +111,13 @@ protected:
 
 	_uint			m_iMainIndex = { 0 };
 	_uint			m_iSubIndex = { 0 };
+	_bool			m_isColision = { false };
+	_bool			m_isCollision2D = { false };
+	_bool			m_isPreCollision2D = { false };
+
+	vector<CGameObject*>	m_pNpcObject;
+	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
 
 public:
 	HRESULT Cleanup_DeadReferences() override;
@@ -115,6 +129,10 @@ protected:
 	virtual HRESULT Ready_ActorDesc(void* _pArg) = 0;
 	virtual HRESULT Ready_Components() = 0;
 	virtual HRESULT Ready_PartObjects() = 0;
+
+	virtual _bool OnCOllsion2D_Enter() = 0;
+	virtual _bool OnCOllsion2D_Stay() = 0;
+	virtual _bool OnCOllsion2D_Exit() = 0;
 
 
 public:

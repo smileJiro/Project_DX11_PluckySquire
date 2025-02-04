@@ -99,6 +99,11 @@ void CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
     }
 }
 
+void CCharacter::Move_To(_fvector _vPosition)
+{
+
+}
+
 
 void CCharacter::Free()
 {

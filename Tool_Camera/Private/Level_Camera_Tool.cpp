@@ -245,10 +245,18 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 HRESULT CLevel_Camera_Tool::Ready_DataFiles()
 {
 	std::filesystem::path path;
-	path = "../Bin/Resources/DataFiles/";
+	
+	path = "../Bin/Resources/DataFiles/ArmData/";
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
-		if (entry.path().extension() == ".bin") {
-			m_BinaryFilePaths.push_back(entry.path().string());
+		if (entry.path().extension() == ".json") {
+			m_JsonFilePaths.push_back(entry.path().string());
+		}
+	}
+
+	path = "../Bin/Resources/DataFiles/CutSceneData/";
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+		if (entry.path().extension() == ".json") {
+			m_JsonFilePaths.push_back(entry.path().string());
 		}
 	}
 
@@ -270,18 +278,29 @@ void CLevel_Camera_Tool::Show_CameraTool()
 
 	// Add CopyArm
 	Input_NextArm_Info();
-	if (ImGui::Button("Add Next Arm Info")) {
-		
-		ARM_DATA tData;
-		tData.fLength = m_fLength;
-		tData.fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
-		tData.fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
-		tData.fLengthTime = { m_fLengthTime, 0.f };
-		tData.iLengthRatioType = m_iLengthRatioType;
-		tData.fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x), XMConvertToRadians(m_fRotationPerSecAxisY.y) };
-		tData.fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x), XMConvertToRadians(m_fRotationPerSecAxisRight.y)};
+	ImGui::Checkbox("Use SubData", &m_isUseSubData);
 
-		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(m_szCopyArmName), tData);
+	if (ImGui::Button("Add Next Arm Info")) {
+
+		ARM_DATA* pData = new ARM_DATA();
+		*pData = m_tArmData;
+		pData->fRotationPerSecAxisY = { XMConvertToRadians(m_tArmData.fRotationPerSecAxisY.x), XMConvertToRadians(m_tArmData.fRotationPerSecAxisY.y) };
+		pData->fRotationPerSecAxisRight = { XMConvertToRadians(m_tArmData.fRotationPerSecAxisRight.x), XMConvertToRadians(m_tArmData.fRotationPerSecAxisRight.y) };
+
+		SUB_DATA* pSubData = nullptr;
+
+		if (true == m_isUseSubData) {
+			pSubData = new SUB_DATA();
+
+			pSubData->fZoomTime = m_fZoomTime;
+			pSubData->iZoomLevel = m_iZoomLevel - 1;
+			pSubData->iZoomRatioType = m_iRatioType;
+			pSubData->fAtOffsetTime = m_fAtOffsetTime;
+			pSubData->vAtOffset = { m_vNextAtOffset };
+			pSubData->iAtRatioType = { m_iAtOffsetRatioType };
+		}
+
+		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(m_szCopyArmName), pData, pSubData);
 		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
 	}
 
@@ -290,6 +309,11 @@ void CLevel_Camera_Tool::Show_CameraTool()
 
 	if (ImGui::Button("Edit CopyArm")) {
 		Edit_CopyArm();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Set Cur Arm Info")) {
+		Set_CurInfo();
 	}
 
 	// Zoom
@@ -433,7 +457,7 @@ void CLevel_Camera_Tool::Show_SelectedArmData()
 	ImGui::Text("Selected Arm Data");
 	ImGui::Separator();
 
-	ARM_DATA* pData = CCamera_Manager_Tool::GetInstance()->Get_ArmData(m_ArmNames[m_iSelectedArmNum]);
+	pair<ARM_DATA*, SUB_DATA*>* pData = CCamera_Manager_Tool::GetInstance()->Get_ArmData(m_ArmNames[m_iSelectedArmNum]);
 
 	if (nullptr == pData)
 		return;
@@ -445,19 +469,57 @@ void CLevel_Camera_Tool::Show_SelectedArmData()
 	//ImGui::SetNextItemWidth(-1);
 	//ImGui::InputText("##SelectedArm Tag",  m_ArmNames[m_iSelectedArmNum], MAX_PATH);
 
-	ImGui::Text("SelectedArm Length Time: %.2f        ", pData->fLengthTime.x);
+	ImGui::Text("SelectedArm Length Time: %.2f        ", pData->first->fLengthTime.x);
 
-	ImGui::Text("Move Time AxisY: %.2f    ", pData->fMoveTimeAxisY.x);
+	ImGui::Text("Move Time AxisY: %.2f    ", pData->first->fMoveTimeAxisY.x);
 
-	ImGui::Text("Move Time AxisRight: %.2f", pData->fMoveTimeAxisRight.x);
+	ImGui::Text("Move Time AxisRight: %.2f", pData->first->fMoveTimeAxisRight.x);
 
 
-	ImGui::Text("Min Rotation Per Sec AixsY: %.2f        ", XMConvertToDegrees(pData->fRotationPerSecAxisY.x));
-	ImGui::Text("Max Rotation Per Sec AixsY: %.2f        ", XMConvertToDegrees(pData->fRotationPerSecAxisY.y));
+	ImGui::Text("Min Rotation Per Sec AixsY: %.2f        ", XMConvertToDegrees(pData->first->fRotationPerSecAxisY.x));
+	ImGui::Text("Max Rotation Per Sec AixsY: %.2f        ", XMConvertToDegrees(pData->first->fRotationPerSecAxisY.y));
 	ImGui::NewLine();
-	ImGui::Text("Min Rotation Per Sec AixsRight: %.2f        ", XMConvertToDegrees(pData->fRotationPerSecAxisRight.x));
-	ImGui::Text("Max Rotation Per Sec AixsRight: %.2f        ", XMConvertToDegrees(pData->fRotationPerSecAxisRight.y));
+	ImGui::Text("Min Rotation Per Sec AixsRight: %.2f        ", XMConvertToDegrees(pData->first->fRotationPerSecAxisRight.x));
+	ImGui::Text("Max Rotation Per Sec AixsRight: %.2f        ", XMConvertToDegrees(pData->first->fRotationPerSecAxisRight.y));
 
+	if (nullptr == pData->second)
+		return;
+
+	ImGui::Text("Zoom Time : % .2f        ", pData->second->fZoomTime);
+
+	ImGui::Text("Zoom Level : %d    ", pData->second->iZoomLevel + 1);
+
+	switch (pData->second->iZoomRatioType) {
+	case CCamera::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN       ");
+		break;
+
+	case CCamera::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT      ");
+		break;
+
+	case CCamera::LERP:
+		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	}
+
+	ImGui::Text("Offset Time : % .2f        ", pData->second->fAtOffsetTime);
+
+	ImGui::Text("AtOffset:  %.2f, %.2f, %.2f ", pData->second->vAtOffset.x, pData->second->vAtOffset.y, pData->second->vAtOffset.z);
+
+	switch (pData->second->iAtRatioType) {
+	case CCamera::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN       ");
+		break;
+
+	case CCamera::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT      ");
+		break;
+
+	case CCamera::LERP:
+		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	}
 
 	ImGui::NewLine();
 }
@@ -841,11 +903,11 @@ void CLevel_Camera_Tool::Show_SaveLoadFileWindow()
 	ImGui::Checkbox("CutScene Data", &m_isCutSceneData);
 
 	ImGui::BeginChild("Files", ImVec2(400, 150), true);  // true는 border 표시
-	for (int i = 0; i < m_BinaryFilePaths.size(); ++i)
+	for (int i = 0; i < m_JsonFilePaths.size(); ++i)
 	{
-		if (ImGui::Selectable(m_BinaryFilePaths[i].c_str(), m_iCurrentBinaryFileIndex == i))
+		if (ImGui::Selectable(m_JsonFilePaths[i].c_str(), m_iCurrentJsonFileIndex == i))
 		{
-			m_iCurrentBinaryFileIndex = i;
+			m_iCurrentJsonFileIndex = i;
 		}
 	}
 	ImGui::EndChild();
@@ -930,26 +992,26 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::NewLine();
 	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
 	ImGui::SameLine();
-	ImGui::Text("Add Copy Arm");
+	ImGui::Text("Add Arm");
 	ImGui::Separator();
 
-	ImGui::Text("Copy Arm Tag Input:      ", m_fLengthTime);
+	ImGui::Text("Arm Tag Input:      ");
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
 	ImGui::InputText("##CopyArm Tag", m_szCopyArmName, MAX_PATH);
 
-	ImGui::Text("Length: %.2f             ", m_fLength);
+	ImGui::Text("Length: %.2f             ", m_tArmData.fLength);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Length Info", &m_fLength, 0.05f, 0.f, 30.f);
+	ImGui::DragFloat("##Length Info", &m_tArmData.fLength, 0.05f, 0.f, 30.f);
 
-	ImGui::Text("Length Time: %.2f        ", m_fLengthTime);
+	ImGui::Text("Length Time: %.2f        ", m_tArmData.fLengthTime.x);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Length Time", &m_fLengthTime, 0.05f, 0.f, 10.f);
+	ImGui::DragFloat("##Length Time", &m_tArmData.fLengthTime.x, 0.05f, 0.f, 10.f);
 
 	//Type
-	switch (m_iLengthRatioType) {
+	switch (m_tArmData.iLengthRatioType) {
 	case CCamera::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN   ");
 		break;
@@ -965,43 +1027,46 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 
 	ImGui::SameLine();
 	if (ImGui::Button("Length EASE IN")) {
-		m_iLengthRatioType = CCamera::EASE_IN;
+		m_tArmData.iLengthRatioType = CCamera::EASE_IN;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Length EASE OUT")) {
-		m_iLengthRatioType = CCamera::EASE_OUT;
+		m_tArmData.iLengthRatioType = CCamera::EASE_OUT;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Length LERP")) {
-		m_iLengthRatioType = CCamera::LERP;
+		m_tArmData.iLengthRatioType = CCamera::LERP;
 	}
 
-	ImGui::Text("Move Time AxisY: %.2f    ", m_fMoveTimeAxisY);
+	ImGui::Text("Move Time AxisY: %.2f    ", m_tArmData.fMoveTimeAxisY.x);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Move Time Y", &m_fMoveTimeAxisY, 0.05f, 0.f, 10.f);
+	ImGui::DragFloat("##Move Time Y", &m_tArmData.fMoveTimeAxisY.x, 0.05f, 0.f, 10.f);
 
-	ImGui::Text("Move Time AxisRight: %.2f", m_fMoveTimeAxisRight);
+	ImGui::Text("Move Time AxisRight: %.2f", m_tArmData.fMoveTimeAxisRight.x);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Move Time Right", &m_fMoveTimeAxisRight, 0.05f, 0.f, 10.f);
+	ImGui::DragFloat("##Move Time Right", &m_tArmData.fMoveTimeAxisRight.x, 0.05f, 0.f, 10.f);
 
 	
-	ImGui::Text("Min RPS AxisY: %.2f      ", m_fRotationPerSecAxisY.x);
+	ImGui::Text("Min RPS AxisY: %.2f      ", m_tArmData.fRotationPerSecAxisY.x);
 	ImGui::SameLine();
-	ImGui::DragFloat("##Min Rotation Per Sec AxisY", &m_fRotationPerSecAxisY.x, 0.1f, -360.f, 360.f);
-	ImGui::Text("Max RPS AxisY: %.2f      ", m_fRotationPerSecAxisY.y);
+	ImGui::DragFloat("##Min Rotation Per Sec AxisY", &m_tArmData.fRotationPerSecAxisY.x, 0.1f, -360.f, 360.f);
+	ImGui::Text("Max RPS AxisY: %.2f      ", m_tArmData.fRotationPerSecAxisY.y);
 	ImGui::SameLine();
-	ImGui::DragFloat("##Max Rotation Per Sec AxisY", &m_fRotationPerSecAxisY.y, 0.1f, -360.f, 360.f);
+	ImGui::DragFloat("##Max Rotation Per Sec AxisY", &m_tArmData.fRotationPerSecAxisY.y, 0.1f, -360.f, 360.f);
 
-	ImGui::Text("Min RPS AxisRight: %.2f  ", m_fRotationPerSecAxisRight.x);
+	ImGui::Text("Min RPS AxisRight: %.2f  ", m_tArmData.fRotationPerSecAxisRight.x);
 	ImGui::SameLine();
-	ImGui::DragFloat("##Min Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.x, 0.1f, -360.f, 360.f);
-	ImGui::Text("Max RPS AxisRight: %.2f  ", m_fRotationPerSecAxisRight.y);
+	ImGui::DragFloat("##Min Rotation Per Sec AxisRight", &m_tArmData.fRotationPerSecAxisRight.x, 0.1f, -360.f, 360.f);
+	ImGui::Text("Max RPS AxisRight: %.2f  ", m_tArmData.fRotationPerSecAxisRight.y);
 	ImGui::SameLine();
-	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
+	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_tArmData.fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
 
 	ImGui::NewLine();
+
+	// Sub Data
+
 }
 
 void CLevel_Camera_Tool::Edit_CopyArm()
@@ -1009,19 +1074,43 @@ void CLevel_Camera_Tool::Edit_CopyArm()
 	if (m_ArmNames.size() <= 0)
 		return;
 
-	ARM_DATA* pData = CCamera_Manager_Tool::GetInstance()->Get_ArmData(m_ArmNames[m_iSelectedArmNum]);
+	pair<ARM_DATA*, SUB_DATA*>* pData = CCamera_Manager_Tool::GetInstance()->Get_ArmData(m_ArmNames[m_iSelectedArmNum]);
 
 	if (nullptr == pData)
 		return;
 
-	pData->fMoveTimeAxisY = { m_fMoveTimeAxisY, 0.f };
-	pData->fMoveTimeAxisRight = { m_fMoveTimeAxisRight, 0.f };
-	pData->fLengthTime = { m_fLengthTime, 0.f };
-	pData->fLength = { m_fLength };
-	pData->iLengthRatioType = { m_iLengthRatioType };
-	pData->fRotationPerSecAxisY = { XMConvertToRadians(m_fRotationPerSecAxisY.x),   XMConvertToRadians(m_fRotationPerSecAxisY.y) };
-	pData->fRotationPerSecAxisRight = { XMConvertToRadians(m_fRotationPerSecAxisRight.x),   XMConvertToRadians(m_fRotationPerSecAxisRight.y) };
-	// Show Data
+	*(*pData).first = m_tArmData;
+	pData->first->fRotationPerSecAxisY = { XMConvertToRadians(m_tArmData.fRotationPerSecAxisY.x),   XMConvertToRadians(m_tArmData.fRotationPerSecAxisY.y) };
+	pData->first->fRotationPerSecAxisRight = { XMConvertToRadians(m_tArmData.fRotationPerSecAxisRight.x),   XMConvertToRadians(m_tArmData.fRotationPerSecAxisRight.y) };
+	
+	// Sub Data
+	if (true == m_isUseSubData) {
+		if (nullptr != pData->second) {
+			pData->second->fZoomTime = m_fZoomTime;
+			pData->second->iZoomLevel = m_iZoomLevel - 1;
+			pData->second->iZoomRatioType = m_iRatioType;
+			
+			pData->second->fAtOffsetTime = m_fAtOffsetTime;
+			pData->second->vAtOffset = m_vNextAtOffset;
+			pData->second->iAtRatioType = m_iAtOffsetRatioType;
+		}
+		else {
+			SUB_DATA* pSubData = new SUB_DATA();
+
+			pSubData->fZoomTime = m_fZoomTime;
+			pSubData->iZoomLevel = m_iZoomLevel - 1;
+			pSubData->iZoomRatioType = m_iRatioType;
+	
+			pSubData->fAtOffsetTime = m_fAtOffsetTime;
+			pSubData->vAtOffset = m_vNextAtOffset;
+			pSubData->iAtRatioType = m_iAtOffsetRatioType;
+
+			pData->second = pSubData;
+		}
+	}
+	else {
+		// 아무 일도 하지 않음...아마도
+	}
 }
 
 
@@ -1061,7 +1150,8 @@ void CLevel_Camera_Tool::Reset_CurrentArmPos()
 	ImGui::SameLine();
 
 	if (ImGui::Button("Rest Pos")) {
-		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArmPos(XMLoadFloat3(&m_vResetArmPos), 12.f);
+		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArm(XMLoadFloat3(&m_vResetArmPos), 12.f, XMVectorSet(0.f, 3.f, 0.f, 0.f), 5);
+		//CCamera_Manager_Tool::GetInstance()->Reset_CurrentArmPos(XMLoadFloat3(&m_vResetArmPos), 12.f);
 	}
 }
 
@@ -1282,6 +1372,30 @@ void CLevel_Camera_Tool::Set_ShakeInfo()
 			break;
 		}
 	}
+}
+
+void CLevel_Camera_Tool::Set_CurInfo()
+{
+	pair<ARM_DATA*, SUB_DATA*>* pData = CCamera_Manager_Tool::GetInstance()->Get_ArmData(m_ArmNames[m_iSelectedArmNum]);
+
+	if (nullptr == pData)
+		return;
+
+	m_tArmData = *(pData->first);
+
+	m_tArmData.fRotationPerSecAxisRight = { XMConvertToDegrees(m_tArmData.fRotationPerSecAxisRight.x), XMConvertToDegrees(m_tArmData.fRotationPerSecAxisRight.y) };
+	m_tArmData.fRotationPerSecAxisY = { XMConvertToDegrees(m_tArmData.fRotationPerSecAxisY.x), XMConvertToDegrees(m_tArmData.fRotationPerSecAxisY.y) };
+
+	if (nullptr == pData->second)
+		return;
+
+	m_fZoomTime = pData->second->fZoomTime;
+	m_iZoomLevel = pData->second->iZoomLevel + 1;
+	m_iRatioType = pData->second->iZoomRatioType;
+
+	m_fAtOffsetTime = pData->second->fAtOffsetTime;
+	m_vNextAtOffset = pData->second->vAtOffset;
+	m_iAtOffsetRatioType = pData->second->iAtRatioType;
 }
 
 void CLevel_Camera_Tool::Create_KeyFrame()
@@ -1817,155 +1931,205 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 		if (nullptr == pData)
 			return;
 		
-		// Save
-		_wstring wszSavePath = L"../../Client/Bin/DataFiles/Camera/CutSceneData/";
-		_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
-
-		std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);
-
-		if (!outFile) {
-			std::cerr << "파일 열기 실패." << std::endl;
-		}
-
-		_uint iSize = (_uint)pData->size();
-		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+		json Result = json::array();
 
 		for (auto& CutSceneData : *pData) {
 
-			// CutScene Tag 길이 저장
-			_uint strLength = (_uint)CutSceneData.first.length();
-			outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
-			outFile.write(reinterpret_cast<const char*>(CutSceneData.first.c_str()), strLength * sizeof(wchar_t));
+			json CutScene_json;
 
-			// Time 저장
-			outFile.write(reinterpret_cast<const char*>(&CutSceneData.second.first), sizeof(_float2));
+			// CutScene Tag 저장
+			_string szCutSceneTag = m_pGameInstance->WStringToString(CutSceneData.first);
+			CutScene_json["CutScene Tag"] = szCutSceneTag;
 
+			// Total Time 저장
+			CutScene_json["CutScene Time"] = { CutSceneData.second.first.x, CutSceneData.second.first.y };
+		
 			// Data Struct 저장
-			iSize = (_uint)CutSceneData.second.second.size();
-			outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
-
+			CutScene_json["Datas"] = json::array();
 			for (auto& Data : CutSceneData.second.second) {
-				outFile.write(reinterpret_cast<const char*>(&Data.vPosition), sizeof(_float3));
-				outFile.write(reinterpret_cast<const char*>(&Data.vRotation), sizeof(_float3));
-				outFile.write(reinterpret_cast<const char*>(&Data.vAtOffset), sizeof(_float3));
-				outFile.write(reinterpret_cast<const char*>(&Data.fFovy), sizeof(_float));
+				json Data_json;
+
+				Data_json["Position"] = { Data.vPosition.x, Data.vPosition.y, Data.vPosition.z };
+				Data_json["Rotation"] = { Data.vRotation.x, Data.vRotation.y, Data.vRotation.z };
+				Data_json["AtOffset"] = { Data.vAtOffset.x, Data.vAtOffset.y, Data.vAtOffset.z };
+				Data_json["Fovy"] = Data.fFovy;
+
+				CutScene_json["Datas"].push_back(Data_json);
 			}
+
+			Result.push_back(CutScene_json);
 		}
 
-		_wstring FullPath = wszSavePath + wszSaveName + TEXT(".bin");
-		m_BinaryFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
-	}
-	else {
-		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/";
+		_wstring wszSavePath = L"../../Client/Bin/DataFiles/Camera/CutSceneData/";
 		_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
 
-		std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);
+		ofstream file(wszSavePath + wszSaveName + TEXT(".json"));
 
-		if (!outFile) {
-			std::cerr << "파일 열기 실패." << std::endl;
+		if (!file.is_open())
+		{
+			MSG_BOX("파일을 저장할 수 없습니다.");
+			file.close();
+			return;
 		}
 
+		file << Result.dump(4);
+		file.close();
+
+
+		_wstring FullPath = wszSavePath + wszSaveName + TEXT(".json");
+		m_JsonFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
+	}
+	else {
+
+		json Result;
+		
 		// KeyFrame
-		_uint iSize = (_uint)m_KeyFrames.size();
-		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+		Result["KeyFrame"] = json::array();
 
 		for (auto& KeyFrame : m_KeyFrames) {
-			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.vPosition), sizeof(_float3));
-			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.fTimeStamp), sizeof(_float));
-			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.iZoomLevel), sizeof(_uint));
-			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.iZoomRatioType), sizeof(_uint));
-			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.vAtOffset), sizeof(_float3));
-			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.bLookTarget), sizeof(_bool));
-			outFile.write(reinterpret_cast<const char*>(&KeyFrame.first.iAtRatioType), sizeof(_uint));
+
+			json KeyFrame_json;
+
+			KeyFrame_json["Position"] = { KeyFrame.first.vPosition.x, KeyFrame.first.vPosition.y, KeyFrame.first.vPosition.z };
+			KeyFrame_json["TimeStamp"] = KeyFrame.first.fTimeStamp;
+			KeyFrame_json["Zoom_Level"] = KeyFrame.first.iZoomLevel;
+			KeyFrame_json["Zoom_RatioType"] = KeyFrame.first.iZoomRatioType;
+			KeyFrame_json["AtOffset"] = { KeyFrame.first.vAtOffset.x, KeyFrame.first.vAtOffset.y, KeyFrame.first.vAtOffset.z };
+			KeyFrame_json["Is_LookTarget"] = KeyFrame.first.bLookTarget;
+			KeyFrame_json["At_RatioType"] = KeyFrame.first.iAtRatioType;
+
+			Result["KeyFrame"].push_back(KeyFrame_json);
 		}
-		
+
 		// CutScene
-		iSize = (_uint)m_CutScenes.size();
-		outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+		Result["CutScene"] = json::array();
 
 		for (auto& CutScene : m_CutScenes) {
-			
-			// CutScene Tag 길이 저장
-			_uint strLength = (_uint)CutScene.first.length();
-			outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
-			outFile.write(reinterpret_cast<const char*>(CutScene.first.c_str()), strLength * sizeof(wchar_t));
 
-			// CutScene Sector 개수 저장
-			_uint iSectorNum = (_uint)CutScene.second.size();
-			outFile.write(reinterpret_cast<const char*>(&iSectorNum), sizeof(_uint));
+			json CutScene_json;
+
+			// CutScene Tag
+			CutScene_json["CutScene_Tag"] = m_pGameInstance->WStringToString(CutScene.first);
 
 			// Sector
+			CutScene_json["Sector"] = json::array();
 			for (auto& Sector : CutScene.second) {
+
+				json Sector_json;
 
 				vector<CUTSCENE_KEYFRAME>* pKeyFrames = Sector->Get_KeyFrames();
 
 				// Sector Type 저장(Spline, Linear)
-				_uint iSectorType = Sector->Get_SectorType();
-				outFile.write(reinterpret_cast<const char*>(&iSectorType), sizeof(_uint));
+				Sector_json["Sector_Type"] = Sector->Get_SectorType();
 
 				// Sector Duration 저장
-				_float fSectorDuration = Sector->Get_SectorDuration();
-				outFile.write(reinterpret_cast<const char*>(&fSectorDuration), sizeof(_float));
-
-				// KeyFrame 개수 저장
-				_uint iKeyFrameSize = (_uint)(*pKeyFrames).size();
-				outFile.write(reinterpret_cast<const char*>(&iKeyFrameSize), sizeof(_uint));
-
+				Sector_json["Sector_Duration"] = Sector->Get_SectorDuration();
+	
+				// KeyFrame
+				Sector_json["KeyFrames"] = json::array();
 				for (auto& KeyFrame : *pKeyFrames) {
-					outFile.write(reinterpret_cast<const char*>(&KeyFrame.vPosition), sizeof(_float3));
-					outFile.write(reinterpret_cast<const char*>(&KeyFrame.fTimeStamp), sizeof(_float));
-					outFile.write(reinterpret_cast<const char*>(&KeyFrame.iZoomLevel), sizeof(_uint));
-					outFile.write(reinterpret_cast<const char*>(&KeyFrame.iZoomRatioType), sizeof(_uint));
-					outFile.write(reinterpret_cast<const char*>(&KeyFrame.vAtOffset), sizeof(_float3));
-					outFile.write(reinterpret_cast<const char*>(&KeyFrame.bLookTarget), sizeof(_bool));
-					outFile.write(reinterpret_cast<const char*>(&KeyFrame.iAtRatioType), sizeof(_uint));
+
+					json KeyFrame_json;
+
+					KeyFrame_json["Position"] = { KeyFrame.vPosition.x, KeyFrame.vPosition.y,KeyFrame.vPosition.z };
+					KeyFrame_json["TimeStamp"] = KeyFrame.fTimeStamp;
+					KeyFrame_json["Zoom_Level"] = KeyFrame.iZoomLevel;
+					KeyFrame_json["Zoom_RatioType"] = KeyFrame.iZoomRatioType;
+					KeyFrame_json["AtOffset"] = { KeyFrame.vAtOffset.x, KeyFrame.vAtOffset.y,KeyFrame.vAtOffset.z };
+					KeyFrame_json["Is_LookTarget"] = KeyFrame.bLookTarget;
+					KeyFrame_json["At_RatioType"] = KeyFrame.iAtRatioType;
+
+					Sector_json["KeyFrames"].push_back(KeyFrame_json);
 				}
+
+				CutScene_json["Sector"].push_back(Sector_json);
 			}
+
+			Result["CutScene"].push_back(CutScene_json);
 		}
-		
-		_wstring FullPath = wszSavePath + wszSaveName + TEXT(".bin");
-		m_BinaryFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
+
+		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/";
+		_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
+
+		ofstream file(wszSavePath + wszSaveName + TEXT(".json"));
+
+		if (!file.is_open())
+		{
+			MSG_BOX("파일을 저장할 수 없습니다.");
+			file.close();
+			return;
+		}
+
+		file << Result.dump(4);
+		file.close();
+
+		_wstring FullPath = wszSavePath + wszSaveName + TEXT(".json");
+		m_JsonFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
 	}
 }
 
 void CLevel_Camera_Tool::Save_Data_Arm()
 {
-	_wstring wszSavePath = L"../Bin/Resources/DataFiles/ArmData/";
-	_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
-
-	std::ofstream outFile(wszSavePath + wszSaveName + TEXT(".bin"), std::ios::binary);
-
-	if (!outFile) {
-		std::cerr << "파일 열기 실패." << std::endl;
-	}
+	json Result = json::array();
 
 	// Arm Data
-	map<_wstring, ARM_DATA*>* pDatas = CCamera_Manager_Tool::GetInstance()->Get_ArmDatas();
-
-	_uint iSize = (_uint)pDatas->size();
-	outFile.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>* pDatas = CCamera_Manager_Tool::GetInstance()->Get_ArmDatas();
 
 	for (auto& Data : *pDatas) {
 
-		// Arm Tag 길이 저장
-		_uint strLength = (_uint)Data.first.length();
-		outFile.write(reinterpret_cast<const char*>(&strLength), sizeof(_uint));
-		outFile.write(reinterpret_cast<const char*>(Data.first.c_str()), strLength * sizeof(wchar_t));
+		json Trigger_json;
 
-		outFile.write(reinterpret_cast<const char*>(&Data.second->fLength), sizeof(_float));
-		outFile.write(reinterpret_cast<const char*>(&Data.second->fLengthTime), sizeof(_float2));
-		outFile.write(reinterpret_cast<const char*>(&Data.second->iLengthRatioType), sizeof(_uint));
+		// Arm Data
+		Trigger_json["Arm_Tag"] = m_pGameInstance->WStringToString(Data.first);
+		Trigger_json["Arm_Data"]["Arm_Length"] = Data.second.first->fLength;
+		Trigger_json["Arm_Data"]["Arm_Time"] = { Data.second.first->fLengthTime.x, Data.second.first->fLengthTime.y };
+		Trigger_json["Arm_Data"]["Arm_Length_RatioType"] = Data.second.first->iLengthRatioType;
+
+		Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"] = { Data.second.first->fMoveTimeAxisY.x, Data.second.first->fMoveTimeAxisY.y };
+		Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"] = { Data.second.first->fMoveTimeAxisRight.x, Data.second.first->fMoveTimeAxisRight.y };
+		Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"] = { Data.second.first->fRotationPerSecAxisY.x, Data.second.first->fRotationPerSecAxisY.y };
+		Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"] = { Data.second.first->fRotationPerSecAxisRight.x, Data.second.first->fRotationPerSecAxisRight.y };
+
+		Trigger_json["Arm_Data"]["Desire_Arm"] = { Data.second.first->vDesireArm.x, Data.second.first->vDesireArm.y, Data.second.first->vDesireArm.z };
 		
-		outFile.write(reinterpret_cast<const char*>(&Data.second->fMoveTimeAxisY), sizeof(_float2));
-		outFile.write(reinterpret_cast<const char*>(&Data.second->fMoveTimeAxisRight), sizeof(_float2));
-		outFile.write(reinterpret_cast<const char*>(&Data.second->fRotationPerSecAxisY), sizeof(_float2));
-		outFile.write(reinterpret_cast<const char*>(&Data.second->fRotationPerSecAxisRight), sizeof(_float2));
-	
-		outFile.write(reinterpret_cast<const char*>(&Data.second->vDesireArm), sizeof(_float3));
+		// Sub Data
+		_bool IsUseSubData = { true };
+
+		if (nullptr == Data.second.second)
+			IsUseSubData = false;
+
+		Trigger_json["Sub_Data"]["Use_SubData"] = IsUseSubData;
+
+		if (true == IsUseSubData) {
+			Trigger_json["Sub_Data"]["Zoom_Time"] = Data.second.second->fZoomTime;
+			Trigger_json["Sub_Data"]["Zoom_Level"] = Data.second.second->iZoomLevel;
+			Trigger_json["Sub_Data"]["Zoom_RatioType"] = Data.second.second->iZoomRatioType;
+
+			Trigger_json["Sub_Data"]["AtOffset_Time"] = Data.second.second->fAtOffsetTime;
+			Trigger_json["Sub_Data"]["AtOffset"] = { Data.second.second->vAtOffset.x, Data.second.second->vAtOffset.y, Data.second.second->vAtOffset.z };
+			Trigger_json["Sub_Data"]["AtOffset_RatioType"] = Data.second.second->iAtRatioType;
+		}
+
+		Result.push_back(Trigger_json);
 	}
 
-	_wstring FullPath = wszSavePath + wszSaveName + TEXT(".bin");
-	m_BinaryFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
+	_wstring wszSavePath = L"../Bin/Resources/DataFiles/ArmData/";
+	_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
+
+	ofstream file(wszSavePath + wszSaveName + TEXT(".json"));
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 저장할 수 없습니다.");
+		file.close();
+		return;
+	}
+
+	file << Result.dump(4);
+	file.close();
+
+	_wstring FullPath = wszSavePath + wszSaveName + TEXT(".json");
+	m_JsonFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
 }
 
 void CLevel_Camera_Tool::Load_Data_CutScene()
@@ -1974,105 +2138,100 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 
 	}
 	else {
-		_wstring wszLoadPath = m_pGameInstance->StringToWString(m_BinaryFilePaths[m_iCurrentBinaryFileIndex]);
-		
-		std::ifstream inFile(wszLoadPath, std::ios::binary);
-		if (!inFile) {
-			string str = "파일을 열 수 없습니다.";
-			MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+		_wstring wszLoadPath = m_pGameInstance->StringToWString(m_JsonFilePaths[m_iCurrentJsonFileIndex]);
+
+		ifstream file(wszLoadPath);
+
+		if (!file.is_open())
+		{
+			MSG_BOX("파일을 열 수 없습니다.");
+			file.close();
+			return;
 		}
-		
+
+		json Result;
+		file >> Result;
+		file.close();
+
 		// KeyFrame
-		_uint iSize = {};
-		inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+		if (Result.contains("KeyFrame") && Result["KeyFrame"].is_array()) {
 
-		for (_uint i = 0; i < iSize; ++i) {
-			CUTSCENE_KEYFRAME tKeyFrame;
+			for (auto& KeyFrame_json : Result["KeyFrame"]) {
+				CUTSCENE_KEYFRAME tKeyFrame;
+				
+				tKeyFrame.vPosition = { KeyFrame_json["Position"][0].get<_float>(), KeyFrame_json["Position"][1].get<_float>(), KeyFrame_json["Position"][2].get<_float>() };
+				tKeyFrame.fTimeStamp = KeyFrame_json["TimeStamp"];
+				tKeyFrame.iZoomLevel = KeyFrame_json["Zoom_Level"];
+				tKeyFrame.iZoomRatioType = KeyFrame_json["Zoom_RatioType"];
+				tKeyFrame.vAtOffset = { KeyFrame_json["AtOffset"][0].get<_float>(), KeyFrame_json["AtOffset"][1].get<_float>(), KeyFrame_json["AtOffset"][2].get<_float>() };
+				tKeyFrame.bLookTarget = KeyFrame_json["Is_LookTarget"];
+				tKeyFrame.iAtRatioType = KeyFrame_json["At_RatioType"];
 
-			inFile.read(reinterpret_cast<char*>(&tKeyFrame.vPosition), sizeof(_float3));
-			inFile.read(reinterpret_cast<char*>(&tKeyFrame.fTimeStamp), sizeof(_float));
-			inFile.read(reinterpret_cast<char*>(&tKeyFrame.iZoomLevel), sizeof(_uint));
-			inFile.read(reinterpret_cast<char*>(&tKeyFrame.iZoomRatioType), sizeof(_uint));
-			inFile.read(reinterpret_cast<char*>(&tKeyFrame.vAtOffset), sizeof(_float3));
-			inFile.read(reinterpret_cast<char*>(&tKeyFrame.bLookTarget), sizeof(_bool));
-			inFile.read(reinterpret_cast<char*>(&tKeyFrame.iAtRatioType), sizeof(_uint));
-			
-			CGameObject* pCube = Create_Cube();
-			pCube->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f));
-			m_KeyFrames.push_back({ tKeyFrame, pCube });
+				CGameObject* pCube = Create_Cube();
+				pCube->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f));
+				m_KeyFrames.push_back({ tKeyFrame, pCube });
+			}
 		}
 
 		// CutScene
-		inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
 
-		for (_uint i = 0; i < iSize; ++i) {
-			
-			// CutScene Tag 읽기
-			_uint strLength = {};
-			inFile.read(reinterpret_cast<char*>(&strLength), sizeof(_uint));
-			_wstring CutSceneTag;
-			CutSceneTag.resize(strLength);
-			inFile.read(reinterpret_cast<char*>(&CutSceneTag[0]), strLength * sizeof(wchar_t));
+		if (Result.contains("CutScene") && Result["CutScene"].is_array()) {
 
-			// CutScene Sector 개수 저장
-			_uint iSectorNum = {};
-			inFile.read(reinterpret_cast<char*>(&iSectorNum), sizeof(_uint));
+			for (auto& CutScene_json : Result["CutScene"]) {
 
-			// Sector
-			for (_uint j = 0; j < iSectorNum; ++j) {
+				// CutScene Tag
+				_string szCutSceneTag = CutScene_json["CutScene_Tag"];
 
-				// Sector Type 저장(Spline, Linear)
-				_uint iSectorType = {};
-				inFile.read(reinterpret_cast<char*>(&iSectorType), sizeof(_uint));
+				// Sector
+				if (CutScene_json.contains("Sector") && CutScene_json["Sector"].is_array()) {
+					for (auto& Sector_json : CutScene_json["Sector"]) {
 
-				// Sector Duration 저장 
-				_float fSectorDuration = {};
-				inFile.read(reinterpret_cast<char*>(&fSectorDuration), sizeof(_float));
+						CCutScene_Sector::CUTSCENE_SECTOR_DESC Desc{};
 
-				CCutScene_Sector::CUTSCENE_SECTOR_DESC Desc{};
+						Desc.iSectorType = Sector_json["Sector_Type"];
+						Desc.fSectorDuration = Sector_json["Sector_Duration"];
 
-				Desc.iSectorType = iSectorType;
-				Desc.fSectorDuration = fSectorDuration;
+						CCutScene_Sector* pSector = CCutScene_Sector::Create(m_pDevice, m_pContext, &Desc);
 
-				CCutScene_Sector* pSector = CCutScene_Sector::Create(m_pDevice, m_pContext, &Desc);
+						// KeyFrame
+						if (Sector_json.contains("KeyFrames") && Sector_json["KeyFrames"].is_array()) {
+							for (auto& KeyFrame_json : Sector_json["KeyFrames"]) {
 
-				// KeyFrame 개수 저장
-				_uint iKeyFrameSize = {};
-				inFile.read(reinterpret_cast<char*>(&iKeyFrameSize), sizeof(_uint));
+								CUTSCENE_KEYFRAME tKeyFrame = {};
 
-				for (_uint k = 0; k < iKeyFrameSize; ++k) {
+								tKeyFrame.vPosition = { KeyFrame_json["Position"][0].get<_float>(), KeyFrame_json["Position"][1].get<_float>(), KeyFrame_json["Position"][2].get<_float>() };
+								tKeyFrame.fTimeStamp = KeyFrame_json["TimeStamp"];
+								tKeyFrame.iZoomLevel = KeyFrame_json["Zoom_Level"];
+								tKeyFrame.iZoomRatioType = KeyFrame_json["Zoom_RatioType"];
+								tKeyFrame.vAtOffset = { KeyFrame_json["AtOffset"][0].get<_float>(), KeyFrame_json["AtOffset"][1].get<_float>(), KeyFrame_json["AtOffset"][2].get<_float>() };
+								tKeyFrame.bLookTarget = KeyFrame_json["Is_LookTarget"];
+								tKeyFrame.iAtRatioType = KeyFrame_json["At_RatioType"];
 
-					CUTSCENE_KEYFRAME tKeyFrame = {};
+								pSector->Add_KeyFrame(tKeyFrame);
+							}
 
-					inFile.read(reinterpret_cast<char*>(&tKeyFrame.vPosition), sizeof(_float3));
-					inFile.read(reinterpret_cast<char*>(&tKeyFrame.fTimeStamp), sizeof(_float));
-					inFile.read(reinterpret_cast<char*>(&tKeyFrame.iZoomLevel), sizeof(_uint));
-					inFile.read(reinterpret_cast<char*>(&tKeyFrame.iZoomRatioType), sizeof(_uint));
-					inFile.read(reinterpret_cast<char*>(&tKeyFrame.vAtOffset), sizeof(_float3));
-					inFile.read(reinterpret_cast<char*>(&tKeyFrame.bLookTarget), sizeof(_bool));
-					inFile.read(reinterpret_cast<char*>(&tKeyFrame.iAtRatioType), sizeof(_uint));
-					
-					pSector->Add_KeyFrame(tKeyFrame);
-				}
+							_bool isSameTag = false;
+							// m_CutScenes에 추가
+							for (auto& CutScene : m_CutScenes) {
+								if (CutScene.first == m_pGameInstance->StringToWString(szCutSceneTag)) {
+									isSameTag = true;
+								}
+							}
 
-				_bool isSameTag = false;
-				// m_CutScenes에 추가
-				for (auto& CutScene : m_CutScenes) {
-					if (CutScene.first == CutSceneTag) {
-						isSameTag = true;
+							if (true == isSameTag) {
+								auto iter = m_CutScenes.find(m_pGameInstance->StringToWString(szCutSceneTag));
+								iter->second.push_back(pSector);
+							}
+							else {
+								vector<CCutScene_Sector*> vecSector;
+								vecSector.push_back(pSector);
+
+								m_CutScenes.emplace(m_pGameInstance->StringToWString(szCutSceneTag), vecSector);
+								m_CutSceneTags.push_back(m_pGameInstance->StringToWString(szCutSceneTag));
+							}
+						}
+
 					}
-				}
-
-				if (true == isSameTag) {
-					auto iter = m_CutScenes.find(CutSceneTag);
-					iter->second.push_back(pSector);
-				}
-				else {
-					vector<CCutScene_Sector*> vecSector;
-					vecSector.push_back(pSector);
-
-					m_CutScenes.emplace(CutSceneTag, vecSector);
-					m_CutSceneTags.push_back(CutSceneTag);
 				}
 			}
 		}
@@ -2081,41 +2240,58 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 
 void CLevel_Camera_Tool::Load_Data_Arm()
 {
-	_wstring wszLoadPath = m_pGameInstance->StringToWString(m_BinaryFilePaths[m_iCurrentBinaryFileIndex]);
+	_wstring wszLoadPath = m_pGameInstance->StringToWString(m_JsonFilePaths[m_iCurrentJsonFileIndex]);
 
-	std::ifstream inFile(wszLoadPath, std::ios::binary);
-	if (!inFile) {
-		string str = "파일을 열 수 없습니다.";
-		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+	ifstream file(wszLoadPath);
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 열 수 없습니다.");
+		file.close();
+		return;
 	}
 
-	// Arm Data
-	_uint iSize = {};
-	inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+	json Result;
+	file >> Result;
+	file.close();
 
-	for (_uint i = 0; i < iSize; ++i) {
-		
-		ARM_DATA tData;
+	json Trigger_json;
+
+	for (auto& Trigger_json : Result) {
+
+		_string szArmTag = Trigger_json["Arm_Tag"];
+
+		// Arm Data
+		ARM_DATA* tArmData = new ARM_DATA();
+
+		tArmData->fLength = Trigger_json["Arm_Data"]["Arm_Length"];
+		tArmData->fLengthTime = { Trigger_json["Arm_Data"]["Arm_Time"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_Time"][1].get<_float>() };
+		tArmData->iLengthRatioType = Trigger_json["Arm_Data"]["Arm_Length_RatioType"];
+				
+		tArmData->fMoveTimeAxisY = { Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"][1].get<_float>() };
+		tArmData->fMoveTimeAxisRight = { Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"][1].get<_float>() };
+		tArmData->fRotationPerSecAxisY = { Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"][1].get<_float>() };
+		tArmData->fRotationPerSecAxisRight = { Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"][1].get<_float>() };
+				
+		tArmData->vDesireArm = { Trigger_json["Arm_Data"]["Desire_Arm"][0].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][1].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][2].get<_float>() };
 	
-		// Arm Tag 읽기
-		_uint strLength = {};
-		inFile.read(reinterpret_cast<char*>(&strLength), sizeof(_uint));
-		_wstring ArmTag;
-		ArmTag.resize(strLength);
-		inFile.read(reinterpret_cast<char*>(&ArmTag[0]), strLength * sizeof(wchar_t));
+		// Sub Data
+		_bool IsUseSubData = Trigger_json["Sub_Data"]["Use_SubData"];
+		SUB_DATA* pSubData = nullptr;
 
-		inFile.read(reinterpret_cast<char*>(&tData.fLength), sizeof(_float));
-		inFile.read(reinterpret_cast<char*>(&tData.fLengthTime), sizeof(_float2));
-		inFile.read(reinterpret_cast<char*>(&tData.iLengthRatioType), sizeof(_uint));
-		
-		inFile.read(reinterpret_cast<char*>(&tData.fMoveTimeAxisY), sizeof(_float2));
-		inFile.read(reinterpret_cast<char*>(&tData.fMoveTimeAxisRight), sizeof(_float2));
-		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisY), sizeof(_float2));
-		inFile.read(reinterpret_cast<char*>(&tData.fRotationPerSecAxisRight), sizeof(_float2));
-		
-		inFile.read(reinterpret_cast<char*>(&tData.vDesireArm), sizeof(_float3));
+		if (true == IsUseSubData) {
+			pSubData = new SUB_DATA();
 
-		CCamera_Manager_Tool::GetInstance()->Add_ArmData(ArmTag, tData);
+			pSubData->fZoomTime = Trigger_json["Sub_Data"]["Zoom_Time"];
+			pSubData->iZoomLevel = Trigger_json["Sub_Data"]["Zoom_Level"];
+			pSubData->iZoomRatioType = Trigger_json["Sub_Data"]["Zoom_RatioType"];
+					
+			pSubData->fAtOffsetTime = Trigger_json["Sub_Data"]["AtOffset_Time"];
+			pSubData->vAtOffset = { Trigger_json["Sub_Data"]["AtOffset"][0].get<_float>(), Trigger_json["Sub_Data"]["AtOffset"][1].get<_float>(), Trigger_json["Sub_Data"]["AtOffset"][2].get<_float>() };
+			pSubData->iAtRatioType = Trigger_json["Sub_Data"]["AtOffset_RatioType"];
+		}
+
+		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(szArmTag), tArmData, pSubData);
 	}
 
 	CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);

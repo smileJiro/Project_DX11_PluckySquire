@@ -181,7 +181,7 @@ HRESULT CSection_2D::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _u
 
 		fRenderTargetSize.x /= (_float)DEFAULT_SIZE_BOOK2D_X;
 		fRenderTargetSize.y /= (_float)DEFAULT_SIZE_BOOK2D_Y;
-		_pGameObject->Set_Scale(fRenderTargetSize.x, fRenderTargetSize.y,1.f);
+		_pGameObject->Set_Scale(COORDINATE_2D, fRenderTargetSize.x, fRenderTargetSize.y,1.f);
 	}
 
 		return E_NOTIMPL;

@@ -225,14 +225,14 @@ namespace Engine
 
 	typedef struct tagCameraSubDataDesc
 	{
-		_float2				fZoomTime = {};
+		_float				fZoomTime = {};
 		_uint				iZoomLevel = {};
 		_uint				iZoomRatioType = {};
 
-		_float2				fAtOffsetTime = {};
+		_float				fAtOffsetTime = {};
 		_float3				vAtOffset = {};
 		_uint				iAtRatioType = {};
-	} CAMERA_SUBDATA;			// 쓸지 말지 모름
+	} SUB_DATA;
 
 	typedef struct tagCameraArmReturnDataDesc
 	{
