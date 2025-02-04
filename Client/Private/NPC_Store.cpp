@@ -130,7 +130,7 @@ void CNPC_Store::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Store::Update(_float _fTimeDelta)
 {
-	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
+	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
 	
 	__super::Update(_fTimeDelta);
 }
@@ -304,6 +304,7 @@ HRESULT CNPC_Store::Ready_Components()
 	AABBDesc.vExtents = { 65.f, 65.f };
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
+	AABBDesc.isBlock = true;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
 		return E_FAIL;

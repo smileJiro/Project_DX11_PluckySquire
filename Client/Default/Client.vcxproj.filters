@@ -369,9 +369,6 @@
     <ClInclude Include="..\Public\MeleeAttackState.h">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BarfBug.h">
-      <Filter>02.GameObjects\Monster\BarfBug</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\RangedAttackState.h">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClInclude>
@@ -395,9 +392,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\ESC_HeartPoint.h">
       <Filter>02.GameObjects\UI\01. SettingPanel\00. HeartPoint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Projectile_BarfBug.h">
-      <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
@@ -606,6 +600,12 @@
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Projectile_BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -676,9 +676,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\MeleeAttackState.cpp">
       <Filter>03.Components\FSM\State\Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BarfBug.cpp">
-      <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RangedAttackState.cpp">
       <Filter>03.Components\FSM\State\Attack</Filter>
@@ -925,6 +922,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BarfBug.cpp">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
