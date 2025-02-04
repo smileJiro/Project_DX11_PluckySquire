@@ -309,10 +309,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		switch ((ACTOR_MATERIAL)i)
 		{
 		case Engine::ACTOR_MATERIAL::DEFAULT: // 일반 오브젝트 
-			//02.04 김지완 수정
-			//임시로 마찰력 다 없애놓음. 맵 오브젝트랑 충돌 시 마찰없애기 위해.
-			// 맵 오브젝트들을 NOFRICTOIN으로 변경하면 좋을듯?
-			vMaterialDesc = { 0.f, 0.f, 0.1f };
+			vMaterialDesc = { 0.7f, 0.8f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::SLIPPERY: // 미끄러운
 			vMaterialDesc = { 0.05f, 0.05f, 0.1f };
@@ -326,16 +323,17 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		case Engine::ACTOR_MATERIAL::NOFRICTION: // 노마찰
 			vMaterialDesc = { 0.f, 0.f, 0.1f };
 			break;
-		case Engine::ACTOR_MATERIAL::PLAYER: // 플레이어용
-			vMaterialDesc = { 0.8f, 0.7f, 0.0f };
+		case Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE: // 캐릭터 캡슐(마찰꺼짐)
+			vMaterialDesc = { 0, 0, 0 };
 			break;
 		default:
 			break;
 		}
 
 		m_pPxMaterial[i] = m_pPxPhysics->createMaterial(vMaterialDesc.x, vMaterialDesc.y, vMaterialDesc.z);
+		if (Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE == (ACTOR_MATERIAL)i)
+			m_pPxMaterial[i]->setFlag(PxMaterialFlag::eDISABLE_FRICTION, true);
 	}
-
 	return S_OK;
 }
 
