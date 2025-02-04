@@ -14,6 +14,7 @@ public :
 		_uint i2DModelIndex = 0;
 		_bool isOverride  = false;
 		_bool is2DImport = false;
+		_bool isCulling = true;
 	}MAPOBJ_DESC;
 private:
 	CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -55,7 +56,7 @@ private :
 
 	// magenta
 	_float4							m_fDefaultDiffuseColor = { 1.f, 0.f, 1.f, 1.f };
-
+	_bool							m_isCulling = true;
 
 public:
 	static CMapObject*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
