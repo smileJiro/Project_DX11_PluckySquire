@@ -26,6 +26,12 @@ typedef struct tagPlayerKeyResult
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
+	enum SHAPE_USE
+	{
+		SHAPE_BODY = 0,
+		SHAPE_FOOT = 1,
+		SHAPE_TRIGER =2
+	};
 	enum PLAYER_PART
 	{
 		PLAYER_PART_SWORD= 1,
@@ -422,7 +428,7 @@ public: /* 2D Ãæµ¹ */
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
-	_bool Is_OnGround();
+	_bool Is_OnGround() {return m_bOnGround;}
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_bool Is_SwordEquiped();
