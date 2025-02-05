@@ -6,6 +6,7 @@ class CMesh;
 class CMaterial;
 class CBone;
 class CAnimation3D;
+class CShader;
 class ENGINE_DLL C3DModel : public CModel
 {
 public:
@@ -28,13 +29,13 @@ protected:
 public:
 	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider);
 	virtual HRESULT			Initialize(void* _pArg) override;
-	virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass) override;
+	virtual HRESULT			Render(CShader* _pShader, _uint _iShaderPass) override;
 
 public:
-	HRESULT					Bind_Material(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
-	HRESULT					Bind_Matrices(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
+	HRESULT					Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
+	HRESULT					Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
 	virtual _bool			Play_Animation(_float fTimeDelta, _bool bReverse = false) override;
-
+	HRESULT					Bind_Material_PixelConstBuffer(_uint _iMaterialIndex,  CShader* _pShader);
 public:
 	// Get
 	_uint					Get_NumMeshes() const { return m_iNumMeshes; }
@@ -53,7 +54,7 @@ public:
 	//Get
 	virtual _uint			Get_AnimCount() override;
 	virtual _uint			Get_CurrentAnimIndex() override { return m_iCurrentAnimIndex; }
-	virtual _float		Get_CurrentAnimProgeress() override;
+	virtual _float			Get_CurrentAnimProgeress() override;
 	// Set
 	virtual void			Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
 	virtual void			Set_Animation(_uint iIdx, _bool _bReverse = false)override;
