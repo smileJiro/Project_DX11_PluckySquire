@@ -19,6 +19,7 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 	{
 		m_Animation2Ds.push_back(pAnim->Clone());
 	}
+	Safe_AddRef(m_pNonAnimSprite);
 
 }
 
@@ -159,7 +160,7 @@ const _matrix* C2DModel::Get_CurrentSpriteTransform()
 	else if (NONANIM == m_eAnimType)
 		return m_pNonAnimSprite->Get_Transform();
 	return nullptr;
-}
+ }
 
 _uint C2DModel::Get_AnimCount()
 {

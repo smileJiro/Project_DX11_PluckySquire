@@ -155,7 +155,7 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
 
         pSection_2D->Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
             return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
-            });
+            },CSection_2D::SECTION_2D_RENDERGROUP::SECTION_2D_OBJECT);
 
         if (nullptr != pSection)
         {
@@ -165,6 +165,17 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
     }
 
     return S_OK;
+}
+
+_float2 CSection_Manager::Get_Section_RenderTarget_Size(const _wstring _strSectionKey)
+{
+    CSection* pSection = Find_Section(_strSectionKey);
+    if (nullptr == pSection)
+        return _float2(-1.f, -1.f);
+    CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(pSection);
+    if (nullptr == pSection_2D)
+        return _float2(-1.f, -1.f);
+    return pSection_2D->Get_RenderTarget_Size();
 }
 
 HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
@@ -322,6 +333,7 @@ HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPa
             m_2DModelInfos[iIndex].isActive = ChildJson["Active"];
             m_2DModelInfos[iIndex].isCollider = ChildJson["Collider"];
             m_2DModelInfos[iIndex].isSorting = ChildJson["Sorting"];
+            m_2DModelInfos[iIndex].isBackGround = ChildJson["BackGround"];
 
             if (m_isActive &&
                 ChildJson.contains("ActivePropertis") &&

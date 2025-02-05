@@ -47,7 +47,7 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
-VS_OUT VS_SPRITEANIM(VS_IN In)
+VS_OUT VS_SPRITE2D(VS_IN In)
 {
     VS_OUT Out = (VS_OUT) 0;
 
@@ -187,12 +187,12 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_COLOR();
     }
 
-    pass SpriteAnim
+    pass Sprite2D
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_SPRITEANIM();
+        VertexShader = compile vs_5_0 VS_SPRITE2D();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }

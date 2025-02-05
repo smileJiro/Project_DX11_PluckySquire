@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ShopItemBG.h"
+#include "Section_2D.h"
 
 
 
@@ -23,8 +24,12 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
-	
+	m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
 
+	pDesc->fX = RTSIZE_BOOK2D_X * 0.5f;
+	pDesc->fY = RTSIZE_BOOK2D_Y * 0.5f;
+	pDesc->fSizeX = (_float)RTSIZE_BOOK2D_X;
+	pDesc->fSizeY = (_float)RTSIZE_BOOK2D_Y;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -39,7 +44,7 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 
 	return S_OK;
 }
@@ -55,7 +60,8 @@ void CShopItemBG::Child_Update(_float _fTimeDelta)
 
 void CShopItemBG::Child_LateUpdate(_float _fTimeDelta)
 {
-
+	if (true == m_isRender)
+		Register_RenderGroup(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_UI);
 }
 
 HRESULT CShopItemBG::Render()
@@ -89,9 +95,18 @@ void CShopItemBG::isRender()
 	if (m_isRender == false)
 	{
 		m_isRender = true;
+		/* 변경해야함. */
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+		Change_BookScale_ForShopItem(RTSize);
+		
 	}
 	else if (m_isRender == true)
+	{
 		m_isRender = false;
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+	}
+		
 }
 
 HRESULT CShopItemBG::Ready_Components()

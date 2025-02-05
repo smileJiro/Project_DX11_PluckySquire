@@ -238,12 +238,6 @@
     <Filter Include="94.RenderGroups%28Custom%29\AfterEffect">
       <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Trigger">
-      <UniqueIdentifier>{2a7a1cb9-e639-4be6-a19f-65aeae8e850a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Trigger\Camera_Trigger">
-      <UniqueIdentifier>{b758ccb4-7151-48b1-99b9-1eeef86e1bab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\2D">
       <UniqueIdentifier>{0791b9f7-464c-4734-9777-7e162be1d4c9}</UniqueIdentifier>
     </Filter>
@@ -276,6 +270,9 @@
     </Filter>
     <Filter Include="02.GameObjects\MainTable">
       <UniqueIdentifier>{25fd5475-9ebe-44bd-bbee-d5b4f8d1ad20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. TriggerManager">
+      <UniqueIdentifier>{01c9cacb-3329-4753-ba74-b0632caf502d}</UniqueIdentifier>
     </Filter>
     <Filter Include="97.ShaderFiles\PBR">
       <UniqueIdentifier>{ba8ec215-6826-4b57-944f-cbd6d6f43b40}</UniqueIdentifier>
@@ -372,6 +369,9 @@
     <ClInclude Include="..\Public\MeleeAttackState.h">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\RangedAttackState.h">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClInclude>
@@ -396,6 +396,9 @@
     <ClInclude Include="..\Public\ESC_HeartPoint.h">
       <Filter>02.GameObjects\UI\01. SettingPanel\00. HeartPoint</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Projectile_BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h">
@@ -413,7 +416,7 @@
     <ClInclude Include="..\Public\PlayerState_Idle.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_Jump.h">
+    <ClInclude Include="..\Public\PlayerState_JumpUp.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Run.h">
@@ -504,9 +507,6 @@
     <ClInclude Include="..\Public\SampleBook.h">
       <Filter>02.GameObjects\SampleBook</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\2DDefault_RenderObject.h">
-      <Filter>02.GameObjects\SampleBook</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Section.h">
       <Filter>04.Section</Filter>
     </ClInclude>
@@ -536,9 +536,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Roll.h">
       <Filter>03.Components\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Camera_Trigger.h">
-      <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerSword.h">
       <Filter>02.GameObjects\TestPlayer</Filter>
@@ -603,12 +600,20 @@
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Projectile_BarfBug.h">
-      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    <ClInclude Include="..\Public\Trigger_Manager.h">
+      <Filter>92. TriggerManager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
+    <ClInclude Include="..\Public\PlayerState_Clamber.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpDown.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h" />
   </ItemGroup>
   <ItemGroup>
@@ -681,6 +686,9 @@
     <ClCompile Include="..\Private\MeleeAttackState.cpp">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BarfBug.cpp">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\RangedAttackState.cpp">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClCompile>
@@ -737,7 +745,7 @@
     <ClCompile Include="..\Private\PlayerState_Idle.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_Jump.cpp">
+    <ClCompile Include="..\Private\PlayerState_JumpUp.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Run.cpp">
@@ -828,9 +836,6 @@
     <ClCompile Include="..\Private\SampleBook.cpp">
       <Filter>02.GameObjects\SampleBook</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
-      <Filter>02.GameObjects\SampleBook</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Section.cpp">
       <Filter>04.Section</Filter>
     </ClCompile>
@@ -860,9 +865,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Roll.cpp">
       <Filter>03.Components\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Camera_Trigger.cpp">
-      <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerSword.cpp">
       <Filter>02.GameObjects\TestPlayer</Filter>
@@ -927,9 +929,17 @@
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BarfBug.cpp">
-      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    <ClCompile Include="..\Private\Trigger_Manager.cpp">
+      <Filter>92. TriggerManager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
   </ItemGroup>
   <ItemGroup>

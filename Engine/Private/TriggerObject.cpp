@@ -24,10 +24,15 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
 {
     CTriggerObject::TRIGGEROBJECT_DESC* pDesc = static_cast<CTriggerObject::TRIGGEROBJECT_DESC*>(_pArg);
 
-    pDesc->eStartCoord = COORDINATE_3D;
+    //pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+
+    m_iTriggerType = pDesc->iTriggerType;
+    m_szEventTag = pDesc->szEventTag;
+    m_eConditionType = pDesc->eConditionType;
+    //m_eCoordiNate = pDesc->eCoordiNate; StartCoordinate가 있는데?
 
     pDesc->eActorType = ACTOR_TYPE::STATIC;
     CActor::ACTOR_DESC ActorDesc;
@@ -57,6 +62,7 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
 
     ShapeData.eShapeType = pDesc->eShapeType;
     ShapeData.isTrigger = true;
+    ShapeData.isSceneQuery = true;
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -79,6 +85,90 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
 void CTriggerObject::Late_Update(_float _fTimeDelta)
 {
     CGameObject::Late_Update_Component(_fTimeDelta);
+}
+
+void CTriggerObject::Set_CustomData(_wstring _Key, any _pValue)
+{
+    m_CustomDatas[_Key] = _pValue;
+}
+
+any CTriggerObject::Get_CustomData(_wstring _Key)
+{
+    if (m_CustomDatas.find(_Key) != m_CustomDatas.end()) {
+        return m_CustomDatas[_Key];
+    }
+
+    return nullptr;
+}
+
+void CTriggerObject::Resister_EnterHandler(function<void(_uint, _int, _wstring)> _Handler)
+{
+    m_EnterHandler = _Handler;
+}
+
+void CTriggerObject::Resister_StayHandler(function<void(_uint, _int, _wstring)> _Handler)
+{
+    m_StayHandler = _Handler;
+}
+
+void CTriggerObject::Resister_ExitHandler(function<void(_uint, _int, _wstring)> _Handler)
+{
+    m_ExitHandler = _Handler;
+}
+
+void CTriggerObject::Resister_ExitHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler)
+{
+    m_CollisionExitHandler = _Handler;
+}
+
+void CTriggerObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    if (false != m_EnterHandler) {
+        m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
+    }
+}
+
+void CTriggerObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    if (false != m_StayHandler) {
+        m_StayHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
+    }
+}
+
+void CTriggerObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    if (false != m_ExitHandler) {
+        m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
+    }
+
+    if (false != m_CollisionExitHandler) {
+        m_CollisionExitHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
+    }
+}
+
+CTriggerObject* CTriggerObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+    CTriggerObject* pInstance = new CTriggerObject(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Created : CTriggerObject");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+CGameObject* CTriggerObject::Clone(void* _pArg)
+{
+    CTriggerObject* pInstance = new CTriggerObject(*this);
+    if (FAILED(pInstance->Initialize(_pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CTriggerObject");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
 }
 
 void CTriggerObject::Free()

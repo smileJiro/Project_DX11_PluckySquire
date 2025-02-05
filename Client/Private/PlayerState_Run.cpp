@@ -13,6 +13,20 @@ CPlayerState_Run::CPlayerState_Run(CPlayer* _pOwner)
 
 void CPlayerState_Run::Update(_float _fTimeDelta)
 {
+	_float fUpForce = m_pOwner->Get_UpForce();
+	_bool bOnGround = m_pOwner->Is_OnGround();
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	if (COORDINATE_3D == eCoord)
+	{
+		_float fUpForce = m_pOwner->Get_UpForce();
+		_bool bOnGround = m_pOwner->Is_OnGround();
+		if (false == bOnGround && 0 > fUpForce)
+		{
+			m_pOwner->Set_State(CPlayer::JUMP_DOWN);
+			return;
+		}
+	}
+
 	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 	{
@@ -26,15 +40,16 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 			Switch_RunAnimation2D(eFDir);
 		}
 		if (COORDINATE_3D == eCoord)
-			m_pOwner->Rotate_To(XMVector3Normalize(tKeyResult.vMoveDir), 1080);
+			m_pOwner->Rotate_To(XMVector3Normalize(tKeyResult.vMoveDir), m_fRotateSpeed);
 		if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
-			m_pOwner->Set_State(CPlayer::JUMP);
+			m_pOwner->Set_State(CPlayer::JUMP_UP);
 		else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
 			m_pOwner->Set_State(CPlayer::ROLL);
 		else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
+		return;
 	}
 	else
 	{

@@ -177,10 +177,7 @@ HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
     pDesc->pActorDesc = ActorDesc;
 
     /* Shapedata 할당해제 */
-    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    {
-        Safe_Delete(ShapeData);
-    }
+    Safe_Delete(ShapeData);
 
     return S_OK;
 }
@@ -204,7 +201,7 @@ HRESULT CProjectile_BarfBug::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
     BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::TEST_PROJECTILE;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);

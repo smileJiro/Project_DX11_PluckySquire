@@ -9,6 +9,7 @@
 #include "Camera_CutScene.h"
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
+#include "Trigger_Manager.h"
 
 #include "MainTable.h"
 #include "Player.h"
@@ -160,11 +161,8 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
 
-
-
-	if (KEY_DOWN(KEY::U)) {
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
-		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("B_InitialData"));
+	if (KEY_DOWN(KEY::T)) {
+		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/ArmTrigger.json"));
 	}
 
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
@@ -353,15 +351,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 		return E_FAIL;
 
 
-	//CPlayer* pPlayer = { nullptr };
-	//pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
-	//
-	//if (nullptr == Uimgr->Get_Player())
-	//{
-	//	CUI_Manager::GetInstance()->Set_Player(pPlayer);
-	//}
+	CPlayer* pPlayer = { nullptr };
+	pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
+
+	if (nullptr == Uimgr->Get_Player())
+	{
+		CUI_Manager::GetInstance()->Set_Player(pPlayer);
+		
+	}
 	
-	//Safe_Release(pPlayer);
+	
 
 	return S_OK;
 }
@@ -397,10 +396,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
 
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
-		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
-		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
 		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
@@ -674,19 +669,20 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		}
 	}
 
-
-	pDesc.fX = g_iWinSizeX / 2.f / 2.f ;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
-	pDesc.fSizeX = 1208.f * 0.7f / 2.f;
-	pDesc.fSizeY = 268.f * 0.7f;
+	// 윈도우 기준으로 좌표 잡으면 당연히 안됨... 지금까지 된게 이상한거임
+	pDesc.fX = 0.f; // 전체 사이즈 / RTSIZE 끝으로 변경
+	pDesc.fY = 0.f;// 전체 사이즈 / RTSIZE 끝으로 변경
+	pDesc.fSizeX = 2328.f;
+	pDesc.fSizeY = 504.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	pDesc.fX = g_iWinSizeX / 2.f / 2.f;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
-	pDesc.fSizeX = 256.f * 0.7f / 2.f;
-	pDesc.fSizeY = 256.f * 0.7f;
+	// 윈도우 기준으로 좌표 잡으면 당연히 안됨... 지금까지 된게 이상한거임22
+	pDesc.fX = DEFAULT_SIZE_BOOK2D_X / RATIO_BOOK2D_X;
+	pDesc.fY = DEFAULT_SIZE_BOOK2D_Y / RATIO_BOOK2D_Y;
+	pDesc.fSizeX = 512.f;
+	pDesc.fSizeY = 512.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
@@ -724,7 +720,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	CBarfBug::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -23.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))

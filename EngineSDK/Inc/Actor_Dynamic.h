@@ -31,6 +31,8 @@ public:
 	virtual void				Set_AngularVelocity(_fvector _vAngularVelocity);
 	virtual void				Set_Rotation(_fvector _vAxis, _float _fRadian);
 	virtual void				Set_Rotation(_fvector _vLook);
+	virtual void				Set_LinearDamping(_float _fValue);
+	virtual void				Set_AngularDamping(_float _fValue);
 	virtual void				Add_Force(const _float3& _vForce);// ÀÏ¹ÝÀûÀÎ Èû
 	virtual void				Add_Impulse(const _float3& _vForce); // °­ÇÑ Èû
 

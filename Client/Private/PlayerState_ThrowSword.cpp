@@ -20,7 +20,7 @@ void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 		m_pOwner->Set_State(CPlayer::RUN);
 	else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
-		m_pOwner->Set_State(CPlayer::JUMP);
+		m_pOwner->Set_State(CPlayer::JUMP_UP);
 	else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
 		m_pOwner->Set_State(CPlayer::ROLL);
 

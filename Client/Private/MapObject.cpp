@@ -35,16 +35,10 @@ HRESULT CMapObject::Initialize(void* _pArg)
         // 2D Import Object의 경우, Section_Manager의 2DModel 정보를 가져와서 채워줘야 한다.
         if (pDesc->is2DImport)
         {
-            auto tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(pDesc->i2DModelIndex);
-            pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-            pDesc->strModelPrototypeTag_2D = StringToWstring(tInfo.strModelName);
-            //pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
-            //_float2 fRadio = { pDesc->fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, pDesc->fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
-            //fImageSize.x *= fRadio.x;
-            //fImageSize.y *= fRadio.y;
+            m_isSorting = pDesc->isSorting;
         }
         m_matWorld = pDesc->tTransform3DDesc.matWorld;
-        m_isCulling = pDesc->isCulling;
+        m_is3DCulling = pDesc->is3DCulling;
     #pragma endregion
 
     //CModelObject::Initialize()의 Component 생성 구현부는 필요하나, 이후 super 클래스 Init 로직을 타기 전에 처리해야 하는 정보가 있기 때문에, 부득이 뺴서 구현.
@@ -57,8 +51,6 @@ HRESULT CMapObject::Initialize(void* _pArg)
         m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
         m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
 
-        m_iRenderGroupID_2D = pDesc->iRenderGroupID_2D;
-        m_iPriorityID_2D = pDesc->iPriorityID_2D;
         m_iRenderGroupID_3D = pDesc->iRenderGroupID_3D;
         m_iPriorityID_3D = pDesc->iPriorityID_3D;
 
@@ -66,11 +58,6 @@ HRESULT CMapObject::Initialize(void* _pArg)
         if (FAILED(CModelObject::Ready_Components(pDesc)))
             return E_FAIL;
 
-        XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-        // : 수정
-        _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
-
-        XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
     #pragma endregion
 
   
@@ -131,6 +118,15 @@ HRESULT CMapObject::Initialize(void* _pArg)
     if (FAILED(CPartObject::Initialize(_pArg)))
         return E_FAIL;
 
+    if (Get_CurCoord() == COORDINATE_2D)
+    {
+        auto pModel = Get_ModelController()->Get_Model(COORDINATE_2D);
+        if (pModel->Get_AnimType() == CModel::ANIM)
+        {
+            Set_AnimationLoop(COORDINATE_2D, 0, true);
+            Set_Animation(0);
+        }
+    }
 
     return S_OK;
 }
@@ -141,25 +137,7 @@ void CMapObject::Priority_Update(_float _fTimeDelta)
 }
 void CMapObject::Update(_float _fTimeDelta)
 {
-    switch (m_pControllerTransform->Get_CurCoord())
-    {
-    case Engine::COORDINATE_2D:
-        if (nullptr != m_pParentMatrices[COORDINATE_2D])
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_2D]));
-        else
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D));
-        break;
-    case Engine::COORDINATE_3D:
-        if (nullptr != m_pParentMatrices[COORDINATE_3D])
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
-        else
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
-        break;
-    default:
-        break;
-    }
-
-    CGameObject::Update_Component(_fTimeDelta);
+    __super::Update(_fTimeDelta);
 }
 
 void CMapObject::Late_Update(_float _fTimeDelta)
@@ -169,7 +147,7 @@ void CMapObject::Late_Update(_float _fTimeDelta)
     /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
-        if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
+        if (!m_is3DCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
         {
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
         }

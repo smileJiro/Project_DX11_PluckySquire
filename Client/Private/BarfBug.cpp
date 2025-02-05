@@ -435,16 +435,31 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.4f;
+    ShapeDesc->fHalfHeight = 0.2f;
     ShapeDesc->fRadius = 0.7f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 1.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    //마찰용 박스
+    SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
+    BoxDesc->vHalfExtents = { 0.3f, 0.1f, 0.3f };
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    //SHAPE_DATA* ShapeData = new SHAPE_DATA;
+    ShapeData->pShapeDesc = BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc->vHalfExtents.y, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -457,10 +472,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
     pDesc->pActorDesc = ActorDesc;
 
     /* Shapedata 할당해제 */
-    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    {
-        Safe_Delete(ShapeData);
-    }
+    Safe_Delete(ShapeData);
 
     return S_OK;
 }
@@ -494,7 +506,7 @@ HRESULT CBarfBug::Ready_Components()
     DetectionDesc.fRange = m_fAlertRange;
     DetectionDesc.fFOVX = 90.f;
     DetectionDesc.fFOVY = 30.f;
-    DetectionDesc.fOffset = 0.5f;
+    DetectionDesc.fOffset = 1.f;
     DetectionDesc.pOwner = this;
     DetectionDesc.pTarget = m_pTarget;
 #ifdef _DEBUG

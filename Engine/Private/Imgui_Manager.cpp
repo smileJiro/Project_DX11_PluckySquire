@@ -229,10 +229,11 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_RT_FullScreen()
 						{
 
 							pSelectImage = m_pGameInstance->Get_RT_SRV(pRenderTarget->Get_Name());
-							if (0 == strcmp(strRTName.c_str(), "Target_Book_2D"))
-								imageSize = { 768.f, 216.f };
-							else
-								imageSize = { 800.f, 450.f };
+							_float2 fRenderTargetSize = pRenderTarget->Get_Size();
+							_float fDefaultwidth = 800.f;
+							_float fYRatio = fRenderTargetSize.y * (fDefaultwidth / (_float)fRenderTargetSize.x);
+
+							imageSize = { fDefaultwidth, fYRatio };
 
 							if (nullptr != pSelectImage)
 								ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
