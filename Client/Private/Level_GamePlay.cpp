@@ -98,8 +98,14 @@ HRESULT CLevel_GamePlay::Initialize()
 	CRayShape::RAYSHAPE_DESC Desc;
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 5.f, -23.0f);
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-28.0f, 0.f, -17.0f); //가로 6 세로 5
 	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	Desc.fRadius = 10.f;
+	Desc.fHalfHeight = 10.f;
+	Desc.vOffsetTrans = { 0.f,Desc.fHalfHeight * 0.5f,0.f };
+	Desc.fRotAngle = 90.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), LEVEL_GAMEPLAY, TEXT("Layer_Terrain"), &Desc)))
 		return E_FAIL;
