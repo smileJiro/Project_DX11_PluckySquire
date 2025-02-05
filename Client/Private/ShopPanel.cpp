@@ -68,8 +68,22 @@ void CShopPanel::Update(_float _fTimeDelta)
 		m_iPreindex = iIndex;
 	}
 
-	Update_KeyInput(_fTimeDelta, iIndex);
+	
+		Update_KeyInput(_fTimeDelta, iIndex);
+		
+	
+	
 
+
+
+
+	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+	if (true == Uimgr->Get_ShopUpdate())
+	{
+		Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
+		Uimgr->Set_ShopUpdate(false);
+	}
+	
 
 	
 }
@@ -166,20 +180,53 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 	{
 		_bool YesorNo = CUI_Manager::GetInstance()->Get_StoreYesOrno();
 
+		_float2 BGPos = Uimgr->Get_ShopPos();
+		/* 나중에 수정 필요 */
+		_float2 vMiddlePoint = { RTSIZE_BOOK2D_X / 2 , RTSIZE_BOOK2D_Y / 2 };
+		_float2 vCalPos = { 0.f, 0.f };
+		/* 나중에 수정 필요 */
+		_float2 vRTSize = { RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y };
+
+
+		_float2 vPos = { 0.f, 0.f };
+
+		vPos.x = BGPos.x + vRTSize.x * 0.085f;
+		vPos.y = BGPos.y - vRTSize.y * 0.153f;
+
+		vCalPos.x = vMiddlePoint.x + vPos.x;
+		vCalPos.y = vMiddlePoint.y - vPos.y;
+
+
 
 		if (true == YesorNo)
 		{
 			wsprintf(m_tFont, TEXT("예"));
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX * 1.65f, g_iWinSizeY * 1.45f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f), 0.f, _float2(0.f, 0.f), 1.5f);
+			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 			wsprintf(m_tFont, TEXT("아니요"));
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX * 1.65f, g_iWinSizeY * 1.6f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f), 0.f, _float2(0.f, 0.f), 1.5f);
+
+			vPos.x = BGPos.x + vRTSize.x * 0.085f;
+			vPos.y = BGPos.y - vRTSize.y * 0.215f;
+
+			vCalPos.x = vMiddlePoint.x + vPos.x;
+			vCalPos.y = vMiddlePoint.y - vPos.y;
+
+
+			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 		else if (false == YesorNo)
 		{
 			wsprintf(m_tFont, TEXT("예"));
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX * 1.65f, g_iWinSizeY * 1.45f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f), 0.f, _float2(0.f, 0.f), 1.5f);
+			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 			wsprintf(m_tFont, TEXT("아니요"));
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), m_tFont, _float2(g_iWinSizeX * 1.65f, g_iWinSizeY * 1.6f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f), 0.f, _float2(0.f, 0.f), 1.5f);
+
+			vPos.x = BGPos.x + vRTSize.x * 0.085f;
+			vPos.y = BGPos.y - vRTSize.y * 0.215f;
+
+			vCalPos.x = vMiddlePoint.x + vPos.x;
+			vCalPos.y = vMiddlePoint.y - vPos.y;
+
+
+			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
 
@@ -569,6 +616,88 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 	return S_OK;
 }
 
+void CShopPanel::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
+{
+
+	_float2 vCalPos = { 0.f, 0.f };
+
+	for (_int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
+	{
+		if (0 == i)
+		{
+			for (int j = 0; j < Uimgr->Get_ShopItems()[i].size(); ++j)
+			{
+				if (0 == j)
+				{
+					vCalPos.x = _vBGPos.x;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f;
+				}
+				else if (1 == j)
+				{
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f;
+				}
+				else if (2 == j)
+				{
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.05f;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f;
+				}
+
+				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+			}
+			
+		}
+		else if (1 == i)
+		{
+			for (int j = 0; j < Uimgr->Get_ShopItems()[i].size(); ++j)
+			{
+				if (0 == j)
+				{
+					vCalPos.x = _vBGPos.x;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.03f;
+				}
+				else if (1 == j)
+				{
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.03f;
+				}
+				else if (2 == j)
+				{
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.05f;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.03f;
+				}
+
+				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+			}
+		}
+		else if (2 == i)
+		{
+			for (int j = 0; j < Uimgr->Get_ShopItems()[i].size(); ++j)
+			{
+				if (0 == j)
+				{
+					vCalPos.x = _vBGPos.x;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
+				}
+				else if (1 == j)
+				{
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
+				}
+				else if (2 == j)
+				{
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.05f;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
+				}
+
+				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+			}
+		}
+	}
+}
+
+
+
 HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag)
 {
 	if (5 != CUI_Manager::GetInstance()->Get_ShopItems().size())
@@ -582,198 +711,200 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 			CUI::UIOBJDESC eShopDesc;
 
 
-			//switch (i)
-			//{
-			//case 0:
-			//{
-			//	vector<CShopItemBG*> _vItemBG;
-			//	eShopDesc.iCurLevelID = iCurLevel;
-			//	eShopDesc.fX = 0.f;
-			//	eShopDesc.fY = 0.f;
-			//	eShopDesc.fSizeX = 1720.f;
-			//	eShopDesc.fSizeY = 220.f;
-			//	eShopDesc.iShopItemCount = i;
-			//	eShopDesc.iSkillLevel = 0;
-			//	eShopDesc.isChooseItem = true;
-			//	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
-			//
-			//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			//		return E_FAIL;
-			//
-			//	CShopItemBG* pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			//
-			//	_vItemBG.push_back(pItemBG);
-			//
-			//	eShopDesc.iCurLevelID = iCurLevel;
-			//	eShopDesc.fX = 0.f;
-			//	eShopDesc.fY = 0.f;
-			//	eShopDesc.fSizeX = 256.f;
-			//	eShopDesc.fSizeY = 256.f;
-			//	eShopDesc.iShopItemCount = i;
-			//	eShopDesc.iSkillLevel = 0;
-			//	eShopDesc.isChooseItem = true;
-			//	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_SCROLLITEM;
-			//
-			//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			//		return E_FAIL;
-			//
-			//	pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			//
-			//	_vItemBG.push_back(pItemBG);
-			//
-			//	eShopDesc.iCurLevelID = iCurLevel;
-			//	eShopDesc.fX = 0.f;
-			//	eShopDesc.fY = 0.f;
-			//	eShopDesc.fSizeX = 120.f;
-			//	eShopDesc.fSizeY = 144.f;
-			//	eShopDesc.iShopItemCount = i;
-			//	eShopDesc.iSkillLevel = 0;
-			//	eShopDesc.isChooseItem = true;
-			//	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
-			//
-			//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			//		return E_FAIL;
-			//
-			//	pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			//
-			//	_vItemBG.push_back(pItemBG);
-			//	CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
-			////
-			//}
-			//break;
-			//
-			//case 1:
-			//{
-			////	vector<CShopItemBG*> _vItemBG;
-			////	eShopDesc.iCurLevelID = iCurLevel;
-			////	eShopDesc.fX = 0.f;
-			////	eShopDesc.fY = 0.f;
-			////	eShopDesc.fSizeX = 1720.f;
-			////	eShopDesc.fSizeY = 220.f;
-			////	eShopDesc.iShopItemCount = i;
-			////	eShopDesc.iSkillLevel = 0;
-			////	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
-			////
-			////	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			////		return E_FAIL;
-			////
-			////	CShopItemBG* pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			////	_vItemBG.push_back(pItemBG);
-			////
-			////	eShopDesc.iCurLevelID = iCurLevel;
-			////	eShopDesc.fX = 0.f;
-			////	eShopDesc.fY = 0.f;
-			////	eShopDesc.fSizeX = 256.f;
-			////	eShopDesc.fSizeY = 256.f;
-			////	eShopDesc.iShopItemCount = i;
-			////	eShopDesc.iSkillLevel = 2;
-			////	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
-			////
-			////	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			////		return E_FAIL;
-			////
-			////	pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			////	_vItemBG.push_back(pItemBG);
-			////
-			////
-			////	eShopDesc.iCurLevelID = iCurLevel;
-			////	eShopDesc.fX = 0.f;
-			////	eShopDesc.fY = 0.f;
-			////	eShopDesc.fSizeX = 120.f;
-			////	eShopDesc.fSizeY = 144.f;
-			////	eShopDesc.iShopItemCount = i;
-			////	eShopDesc.iSkillLevel = 0;
-			////	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
-			////
-			////	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			////		return E_FAIL;
-			////
-			////	pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			////	_vItemBG.push_back(pItemBG);
-			////
-			////
-			////	CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
-			//
-			//}
-			//break;
-			//
-			//case 2:
-			//{
-			////	vector<CShopItemBG*> _vItemBG;
-			////	eShopDesc.iCurLevelID = iCurLevel;
-			////	eShopDesc.fX = 0.f;
-			////	eShopDesc.fY = 0.f;
-			////	eShopDesc.fSizeX = 1720.f;
-			////	eShopDesc.fSizeY = 220.f;
-			////	eShopDesc.iShopItemCount = i;
-			////	eShopDesc.iSkillLevel = 0;
-			////	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
-			////
-			////	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			////		return E_FAIL;
-			////
-			////	CShopItemBG* pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			////	_vItemBG.push_back(pItemBG);
-			////
-			////
-			////
-			////	eShopDesc.iCurLevelID = iCurLevel;
-			////	eShopDesc.fX = 0.f;
-			////	eShopDesc.fY = 0.f;
-			////	eShopDesc.fSizeX = 256.f;
-			////	eShopDesc.fSizeY = 256.f;
-			////	eShopDesc.iShopItemCount = i;
-			////	eShopDesc.iSkillLevel = 0;
-			////	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_JUMPATTACKBADGE;
-			////
-			////	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			////		return E_FAIL;
-			////
-			////	pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			////	_vItemBG.push_back(pItemBG);
-			////
-			////
-			////
-			////
-			////	eShopDesc.iCurLevelID = iCurLevel;
-			////	eShopDesc.fX = 0.f;
-			////	eShopDesc.fY = 0.f;
-			////	eShopDesc.fSizeX = 1720.f;
-			////	eShopDesc.fSizeY = 220.f;
-			////	eShopDesc.iShopItemCount = i;
-			////	eShopDesc.iSkillLevel = 0;
-			////	eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
-			////
-			////	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
-			////		return E_FAIL;
-			////
-			////	pItemBG = static_cast<CShopItemBG*>(pShopItem);
-			////	_vItemBG.push_back(pItemBG);
-			////
-			////
-			////	CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
-			//
-			//}
-			//break;
-			//
-			//case 3:
-			//{
-			//	vector<CShopItemBG*> _vItemBG;
-			//
-			//}
-			//break;
-			//
-			//case 4:
-			//{
-			//	vector<CShopItemBG*> _vItemBG;
-			//
-			//}
-			//break;
-			//
-			//}
-		}
-	}
+			switch (i)
+			{
+			case 0:
+			{
+				vector<CShopItemBG*> _vItemBG;
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 1720.f * 0.8f;
+				eShopDesc.fSizeY = 220.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.isChooseItem = true;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
 
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				CShopItemBG* pItemBG = static_cast<CShopItemBG*>(pShopItem);
+
+				_vItemBG.push_back(pItemBG);
+
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 256.f * 0.8f;
+				eShopDesc.fSizeY = 256.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.isChooseItem = true;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_SCROLLITEM;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				pItemBG = static_cast<CShopItemBG*>(pShopItem);
+
+				_vItemBG.push_back(pItemBG);
+
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 120.f * 0.8f;
+				eShopDesc.fSizeY = 144.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.isChooseItem = true;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+
+				pItemBG = static_cast<CShopItemBG*>(pShopItem);
+
+				_vItemBG.push_back(pItemBG);
+				CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
+
+			}
+			break;
+			
+			case 1:
+			{
+				vector<CShopItemBG*> _vItemBG;
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 1720.f * 0.8f;
+				eShopDesc.fSizeY = 220.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
+			
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+			
+				CShopItemBG* pItemBG = static_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+			
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 256.f * 0.8f;
+				eShopDesc.fSizeY = 256.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 2;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
+			
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+			
+				pItemBG = static_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+			
+			
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 120.f * 0.8f;
+				eShopDesc.fSizeY = 144.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
+			
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+			
+				pItemBG = static_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+			
+			
+				CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
+			
+			}
+			break;
+			
+			case 2:
+			{
+				vector<CShopItemBG*> _vItemBG;
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 1720.f * 0.8f;
+				eShopDesc.fSizeY = 220.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
+			
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+			
+				CShopItemBG* pItemBG = static_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+			
+			
+			
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 256.f * 0.8f;
+				eShopDesc.fSizeY = 256.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_JUMPATTACKBADGE;
+			
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+			
+				pItemBG = static_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+			
+			
+			
+			
+				eShopDesc.iCurLevelID = iCurLevel;
+				eShopDesc.fX = 0.f;
+				eShopDesc.fY = 0.f;
+				eShopDesc.fSizeX = 120.f * 0.8f;
+				eShopDesc.fSizeY = 144.f * 0.8f;
+				eShopDesc.iShopItemCount = i;
+				eShopDesc.iSkillLevel = 0;
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
+			
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+					return E_FAIL;
+			
+				pItemBG = static_cast<CShopItemBG*>(pShopItem);
+				_vItemBG.push_back(pItemBG);
+			
+			
+				CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
+			
+			}
+			break;
+			
+			case 3:
+			{
+				vector<CShopItemBG*> _vItemBG;
+			
+			}
+			break;
+			
+			case 4:
+			{
+				vector<CShopItemBG*> _vItemBG;
+			
+			}
+			break;
+			
+			}
+			
+		}
+
+		
+	}
 	return S_OK;
 }
 
@@ -783,87 +914,7 @@ HRESULT CShopPanel::Ready_Components()
 }
 
 
-void CShopPanel::Change_BookScale_ForShopItem(_float2 _vRTSize)
-{
-	_float3 vScaleSize;
-	_float2 vCalSize;
-	vScaleSize = m_pControllerTransform->Get_Scale();
-	_float2 BGPos = { 0.f, 0.f };
-	BGPos.x = Uimgr->Get_ShopPanels()[0]->Get_FX();
-	BGPos.y = Uimgr->Get_ShopPanels()[0]->Get_FY();
 
-	switch (m_eSkillShopIcon)
-	{
-	case SKILLSHOP_BG: 
-	{
-		if (this == Uimgr->Get_ShopItems()[0][0])
-		{
-			m_fX;
-			m_fY = BGPos.y - _vRTSize.y * vScaleSize.y * 0.8f;
-			int a = 0;
-		}
-		else if (this == Uimgr->Get_ShopItems()[1][0])
-		{
-
-		}
-		else if (this == Uimgr->Get_ShopItems()[2][0])
-		{
-
-		}
-
-		
-	}
-	break;
-
-	case SKILLSHOP_JUMPATTACKBADGE: 
-	{
-
-	}
-	break;
-
-	case SKILLSHOP_SPINATTACKBADGE: 
-	{
-
-	}
-	break;
-
-	case SKILLSHOP_ATTACKPLUSBADGE: 
-	{
-
-	}
-	break;
-
-	case SKILLSHOP_THROWATTBADGE: 
-	{
-
-	}
-	break;
-
-	case SKILLSHOP_SCROLLITEM: 
-	{
-
-	}
-	break;
-
-	case SKILLSHOP_BULB: 
-	{
-
-	}
-	break;
-
-	}
-
-	vCalSize = _float2(m_vOriginSize.x * vScaleSize.x, m_vOriginSize.y * vScaleSize.y);
-
-	m_pControllerTransform->Set_Scale(COORDINATE_2D, vCalSize.x, vCalSize.y, 1.f);
-
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
-
-	//XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-	//XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y, 0.0f, 1.0f));
-
-
-}
 
 CShopPanel* CShopPanel::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

@@ -24,29 +24,29 @@ void CUI_Manager::Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel)
 void CUI_Manager::Delete_ShopItems(_uint _index)
 {
 
-	_float fY = m_ShopItems[_index][0]->Get_FY();
-	_float NewfY = { 0.f };
-
-	//_float BGfX = g_iWinSizeX / 2.f; // 배경
-	//_float BDfX = g_iWinSizeX / 3.5f; // 스킬아이콘
-	//_float BUfX = g_iWinSizeX - g_iWinSizeX / 3.f; // 전구
-
-	_float BGfX = g_iWinSizeX / 2.f / 2.f;
-	_float BDfX = g_iWinSizeX / 3.5f / 1.6f;
-	_float BUfX = (g_iWinSizeX - g_iWinSizeX / 3.f) / 2.2f;
-
-
-	BGfX = BGfX - g_iWinSizeX * 0.5f;
-	BDfX = BDfX - g_iWinSizeX * 0.5f;
-	BUfX = BUfX - g_iWinSizeX * 0.5f;
-
-	_float fIdx0 = g_iWinSizeY / 4.f;
-	_float fIdx1 = g_iWinSizeY / 2.75f;
-	_float fIdx2 = g_iWinSizeY - g_iWinSizeY / 1.9f;
-
-	fIdx0 = -fIdx0 + g_iWinSizeY * 0.5f;
-	fIdx1 = -fIdx1 + g_iWinSizeY * 0.5f;
-	fIdx2 = -fIdx2 + g_iWinSizeY * 0.5f;
+	//_float fY = m_ShopItems[_index][0]->Get_FY();
+	//_float NewfY = { 0.f };
+	//
+	////_float BGfX = g_iWinSizeX / 2.f; // 배경
+	////_float BDfX = g_iWinSizeX / 3.5f; // 스킬아이콘
+	////_float BUfX = g_iWinSizeX - g_iWinSizeX / 3.f; // 전구
+	//
+	//_float BGfX = g_iWinSizeX / 2.f / 2.f;
+	//_float BDfX = g_iWinSizeX / 3.5f / 1.6f;
+	//_float BUfX = (g_iWinSizeX - g_iWinSizeX / 3.f) / 2.2f;
+	//
+	//
+	//BGfX = BGfX - g_iWinSizeX * 0.5f;
+	//BDfX = BDfX - g_iWinSizeX * 0.5f;
+	//BUfX = BUfX - g_iWinSizeX * 0.5f;
+	//
+	//_float fIdx0 = g_iWinSizeY / 4.f;
+	//_float fIdx1 = g_iWinSizeY / 2.75f;
+	//_float fIdx2 = g_iWinSizeY - g_iWinSizeY / 1.9f;
+	//
+	//fIdx0 = -fIdx0 + g_iWinSizeY * 0.5f;
+	//fIdx1 = -fIdx1 + g_iWinSizeY * 0.5f;
+	//fIdx2 = -fIdx2 + g_iWinSizeY * 0.5f;
 
 
 	for (int i = 0; i < m_ShopItems[_index].size(); ++i)
@@ -56,35 +56,36 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 	}
 
 	m_ShopItems.erase(m_ShopItems.begin() + _index);
+	m_isUpdateShopPanel = true;
 
-	//_float fHeight = 135.f; // 한 줄의 높이 (고정)
-	_float fHeight = 103.f; // 한 줄의 높이 (고정)
-	_float baseY = g_iWinSizeY / 4.f;    // 첫 번째 줄의 기준 Y 좌표 (예: 화면 중앙 기준)
+	///_float fHeight = 135.f; // 한 줄의 높이 (고정)
+	//float fHeight = 103.f; // 한 줄의 높이 (고정)
+	//float baseY = g_iWinSizeY / 4.f;    // 첫 번째 줄의 기준 Y 좌표 (예: 화면 중앙 기준)
 
 
-	for (int i = 0; i < m_ShopItems.size(); ++i)
-	{
-		for (int j = 0; j < m_ShopItems[i].size(); ++j)
-		{
-			_float newY = baseY - (i * fHeight); 
-
-			if (0 == j)
-			{
-				m_ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION,
-					XMVectorSet(BGfX, newY, 0.f, 1.f));
-			}
-			else if (1 == j)
-			{
-				m_ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION,
-					XMVectorSet(BDfX, newY, 0.f, 1.f));
-			}
-			else if (2 == j)
-			{
-				m_ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION,
-					XMVectorSet(BUfX, newY, 0.f, 1.f));
-			}
-		}
-	}
+	//for (int i = 0; i < m_ShopItems.size(); ++i)
+	//{
+	//	for (int j = 0; j < m_ShopItems[i].size(); ++j)
+	//	{
+	//		_float newY = baseY - (i * fHeight); 
+	//
+	//		if (0 == j)
+	//		{
+	//			m_ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION,
+	//				XMVectorSet(BGfX, newY, 0.f, 1.f));
+	//		}
+	//		else if (1 == j)
+	//		{
+	//			m_ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION,
+	//				XMVectorSet(BDfX, newY, 0.f, 1.f));
+	//		}
+	//		else if (2 == j)
+	//		{
+	//			m_ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION,
+	//				XMVectorSet(BUfX, newY, 0.f, 1.f));
+	//		}
+	//	}
+	//}
 }
 
 void CUI_Manager::Set_ChooseItem(_int _iIndex)
