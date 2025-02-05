@@ -55,16 +55,13 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 		strModelTag,
 		L"Prototype_Component_Shader_VtxPosTex");
 
-	pDesc->Build_2D_Transform(m_fDefaultPosition, fRatio);
+	pDesc->Build_2D_Transform(m_fDefaultPosition);
 
 	
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(
-		m_fDefaultPosition.x, m_fDefaultPosition.y, 0.f, 1.f));
-	m_pControllerTransform->Set_Scale(fRatio.x, fRatio.y, 1.f);
 	XMStoreFloat4x4(&m_ProjMatrix,
 		XMMatrixOrthographicLH((_float)m_fRenderTargetSize.x,
 			m_fRenderTargetSize.y, 0.0f, 1.0f));
@@ -111,14 +108,40 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 	_float fRelativeY = (_fCursorPos.y - fOffY) / fConvertRenderTargetSize.y;
 
 	_float2 fRealPos = { fRelativeX * m_fRenderTargetSize.x , fRelativeY * m_fRenderTargetSize.y };
+	//fRealPos.x -= m_fRenderTargetSize.x * 0.5f;
+	//fRealPos.y = -fRealPos.y + m_fRenderTargetSize.x * 0.5f;
+	//_vector fPosition = Get_FinalPosition();
+	//_float fPosX = XMVectorGetX(fPosition) + (m_fRenderTargetSize.x * 0.5f);
+	//_float fPosY = ((-XMVectorGetY(fPosition)) + (m_fRenderTargetSize.y * 0.5f));
+	//
+	
+	
+	CModel* pModel = Get_Model(COORDINATE_2D);
+	if (nullptr == pModel)
+		return false;
+	C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
 
-	_vector fPosition = Get_FinalPosition();
-	_float fPosX = XMVectorGetX(fPosition) + (m_fRenderTargetSize.x * 0.5f);
-	_float fPosY = ((-XMVectorGetY(fPosition)) + (m_fRenderTargetSize.y * 0.5f));
+	_float4x4 matWorld = {};
+	
+	_matrix matResult = *p2DModel->Get_CurrentSpriteTransform();
 
-	_float3 fScale = Get_FinalScale(); // 태웅 : 함수 이름이 바껴서 수정했음. 혹시나 문제가있다면 이걸수정하시오 트랜스폼컨트롤러 get_scale 로
+	_matrix matRatioScalling = XMMatrixScaling((_float)RATIO_BOOK2D_X, (_float)RATIO_BOOK2D_Y, 1.f);
 
-	_float fLeft = fPosX - fScale.x / 2.f;
+	matResult = matResult * matRatioScalling * XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_2D]);
+
+	XMStoreFloat4x4(&matWorld, matResult);
+
+	_float fPosX = matWorld.m[3][0] + m_fRenderTargetSize.x * 0.5f;
+	_float fPosY = -matWorld.m[3][1] + m_fRenderTargetSize.y * 0.5f;
+
+	_float2 fScale = _float2(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&matWorld.m[0]))),
+		XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&matWorld.m[1]))));
+
+
+	//_float3 fScale = Get_FinalScale(); // 태웅 : 함수 이름이 바껴서 수정했음. 혹시나 문제가있다면 이걸수정하시오 트랜스폼컨트롤러 get_scale 로
+	//fScale.x *= RATIO_BOOK2D_X;
+	//fScale.y *= RATIO_BOOK2D_Y;
+;	_float fLeft = fPosX - fScale.x / 2.f;
 	_float fRight = fPosX + fScale.x / 2.f;
 	_float fTop = fPosY - fScale.y / 2.f;
 	_float fBottom = fPosY + fScale.y / 2.f;
@@ -157,14 +180,12 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 	_uint		iModelIndex = 0;
 	_float2		fPos = { };
 	_bool		isOverride = false;
-
 	ReadFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
 	ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 	ReadFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
 
+	m_fDefaultPosition = fPos;
 	m_fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X ,(_float)RTSIZE_BOOK2D_Y };
-	_float2 fRatio = { m_fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, m_fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
-
 
 	m_pModelInfo = _ModelInfos[iModelIndex];
 
@@ -173,7 +194,7 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 		StringToWstring(m_pModelInfo->Get_ModelName()),
 		L"Prototype_Component_Shader_VtxPosTex");
 
-	Desc.Build_2D_Transform(fPos, fRatio);
+	Desc.Build_2D_Transform(m_fDefaultPosition);
 
 
 	if (FAILED(__super::Initialize(&Desc)))
