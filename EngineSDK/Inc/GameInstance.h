@@ -5,6 +5,7 @@
 #include "Key_Manager.h"
 #include "PipeLine.h"
 #include "Shadow.h"
+#include "GlobalFunction_Manager.h"
 
 BEGIN(Engine)
 
@@ -205,7 +206,10 @@ public: /* For. GlobalFunction_Manager */
 	_bool				MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix);
 	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);		//노말벡터 기준으로 방향 벡터 간 각도 구함 (0-360도 간)
 	_float				Clamp_Degrees(_float _fDegrees);		//0~360도 사이로 만듦
-
+	template<typename T_CONSTANT>
+	HRESULT				CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer);
+	template<typename T_CONSTANT>
+	HRESULT				UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer);
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();
 	CCamera*			Get_Camera(_uint _eType);
@@ -272,4 +276,23 @@ public:
 	virtual void Free() override;
 };
 
+template<typename T_CONSTANT>
+inline HRESULT CGameInstance::CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer)
+{
+	if (nullptr == m_pGlobalFunction_Manager)
+		return E_FAIL;
+
+	return m_pGlobalFunction_Manager->CreateConstBuffer(_tConstantBufferData, _eUsage, _ppOutConstantBuffer);
+}
+
+template<typename T_CONSTANT>
+inline HRESULT CGameInstance::UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer)
+{
+	if (nullptr == m_pGlobalFunction_Manager)
+		return E_FAIL;
+
+	return m_pGlobalFunction_Manager->UpdateConstBuffer(_tConstantBufferData, _pConstantBuffer);
+}
+
 END
+

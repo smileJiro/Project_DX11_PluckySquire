@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "GameInstance.h"
 
 CMaterial::CMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
@@ -68,10 +69,66 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 
 		}
 	}
+
+	if (FAILED(Ready_PixelConstBuffer()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
+HRESULT CMaterial::Bind_PixelConstBuffer(CShader* _pShader)
+{
+	if (nullptr == _pShader)
+		return E_FAIL;
 
+	return _pShader->Bind_ConstBuffer("BasicPixelConstData", m_pPixeConstBuffer);
+}
+
+HRESULT CMaterial::Ready_PixelConstBuffer()
+{
+	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+	{
+		_uint iNumSRVs = 0;
+		if (nullptr == m_MaterialTextures[i])
+			iNumSRVs = 0;
+		else
+			iNumSRVs = m_MaterialTextures[i]->Get_NumSRVs();
+		switch ((aiTextureType)i)
+		{
+		case aiTextureType_NONE:
+			break;
+		case aiTextureType_DIFFUSE:
+			m_tPixelConstData.useAlbedoMap = iNumSRVs; // 1이상이면 true고 0이면 false니까.
+			break;
+		case aiTextureType_EMISSIVE:
+			m_tPixelConstData.useEmissiveMap = iNumSRVs;
+			break;
+		case aiTextureType_NORMALS:
+			m_tPixelConstData.useNormalMap = iNumSRVs;
+			break;
+		case aiTextureType_METALNESS:
+			m_tPixelConstData.useMetallicMap = iNumSRVs;
+			break;
+		case aiTextureType_DIFFUSE_ROUGHNESS:
+			m_tPixelConstData.useRoughnessMap = iNumSRVs;
+			break;
+		case aiTextureType_AMBIENT_OCCLUSION:
+			m_tPixelConstData.useAOMap = iNumSRVs;
+			break;
+		case aiTextureType_UNKNOWN:
+			m_tPixelConstData.useORMHMap = iNumSRVs;
+			break;
+		default:
+			break;
+		}
+
+	}
+	// Create ConstantBuffer
+	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tPixelConstData, D3D11_USAGE_DEFAULT, &m_pPixeConstBuffer)))
+		return E_FAIL;
+
+	return S_OK;
+}
 
 CMaterial* CMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* szDirPath, ifstream& inFile)
 {
@@ -87,6 +144,8 @@ CMaterial* CMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 void CMaterial::Free()
 {
+	Safe_Release(m_pPixeConstBuffer);
+
 	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
 		Safe_Release(m_MaterialTextures[i]);
 

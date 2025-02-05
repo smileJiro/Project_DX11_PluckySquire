@@ -27,15 +27,17 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 {
     
     MODELOBJECT_DESC* pDesc = static_cast<MODELOBJECT_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
-    pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    pDesc->strModelPrototypeTag_3D = TEXT("book");
-    pDesc->iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
-    pDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+
+    pDesc->Build_3D_Model(pDesc->iCurLevelID,
+        L"book",
+        L"Prototype_Component_Shader_VtxAnimMesh",
+        (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP
+        );
+    pDesc->tTransform3DDesc.vInitialPosition = _float3(2.f, 0.f, -17.3f);
     pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
+    
     pDesc->iRenderGroupID_3D = RG_3D;
     pDesc->iPriorityID_3D = PR3D_NONBLEND;
 
@@ -44,8 +46,6 @@ HRESULT CSampleBook::Initialize(void* _pArg)
     Set_AnimationLoop(COORDINATE_3D, 8, false);
     Set_AnimationLoop(COORDINATE_3D, 9, true);
     Set_Animation(0);
-
-    Set_Position(XMVectorSet(2.f,0.f,-17.3f,1.f));
 
     return S_OK;
 }
@@ -73,12 +73,6 @@ void CSampleBook::Update(_float _fTimeDelta)
             Set_Animation(8);
         }
     }
-
-
-    //if (m_bPlayingAnim)
-    //    m_pControllerModel->Play_Animation(_fTimeDelta );
-    //else
-    //    m_pControllerModel->Play_Animation(0);
 
     __super::Update(_fTimeDelta);
 }
@@ -182,8 +176,19 @@ _bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
     switch (_eAction)
     {
         case Client::CSampleBook::PREVIOUS:
+            if(!SECTION_MGR->Has_Prev_Section())
+                return false;
+            m_eCurAction = PREVIOUS;
+
             break;
         case Client::CSampleBook::NEXT:
+            if (!SECTION_MGR->Has_Next_Section())
+                return false;
+            m_eCurAction = NEXT;
+
+
+            //Event_ChangeBossState
+
             break;
         case Client::CSampleBook::LAST:
             break;
@@ -191,9 +196,7 @@ _bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
             break;
     }
 
-    SECTION_MGR->Has_Next_Section();
-    SECTION_MGR->Has_Prev_Section();
-
+    
 
     return true;
 }

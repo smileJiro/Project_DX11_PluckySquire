@@ -32,6 +32,7 @@ namespace Client
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);
 	//void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn = true);
 
+	//void Event_Book_Section_Change_Start(const _tchar* _strNextSectionKey, );
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 
