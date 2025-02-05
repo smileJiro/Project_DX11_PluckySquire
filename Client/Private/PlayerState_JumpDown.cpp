@@ -33,68 +33,84 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 		}
 		else
 			m_pOwner->Set_State(CPlayer::IDLE);
+
+		return;
 	}
-	else
+
+	// 이하 공중일 때
+
+	if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
 	{
-		//공중 움직임
-		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
-		{
-			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
-			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
-		}
-		else
-			m_pOwner->Stop_Rotate();
+		m_pOwner->Set_State(CPlayer::ROLL);
+		return;
+	}
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+	{
+		m_pOwner->Set_State(CPlayer::THROWSWORD);
+		return;
+	}
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+	{
+		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+		return;
+	}
+
+	if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
+	{
 		//기어오르기 체크
-		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
+		_vector vPlayerPos = m_pOwner->Get_FinalPosition();
+		_float fHeadHeight = m_pOwner->Get_HeadHeight();
+		_vector vRayOrigin = vPlayerPos + _vector{ 0,fHeadHeight,0 } + m_pOwner->Get_LookDirection() * m_fArmLength;
+		_float3 vOrigin;
+		XMStoreFloat3(&vOrigin, vRayOrigin);
+		_float3 vRayDir = { 0,-1,0 };
+		list<CActorObject*> hitActors;
+		list<_float3> hitPositions;
+
+		if (m_pGameInstance->RayCast(vOrigin, vRayDir, 1.5, hitActors, hitPositions))
 		{
-			_vector vPlayerPos = m_pOwner->Get_FinalPosition();
-			_float fHeadHeight = m_pOwner->Get_HeadHeight();
-			_vector vRayOrigin = vPlayerPos + _vector{ 0,fHeadHeight,0 } + m_pOwner->Get_LookDirection() * m_fArmLength;
-			_float3 vOrigin;
-			XMStoreFloat3(&vOrigin, vRayOrigin);
-			_float3 vRayDir = { 0,-1,0 };
-			list<CActorObject*> hitActors;
-			list<_float3> hitPositions;
-
-			if (m_pGameInstance->RayCast(vOrigin, vRayDir, 1.5, hitActors, hitPositions))
+			_float fClamberHeightCurrent = -1;
+			auto& iterPosition = hitPositions.begin();
+			for (auto& pActor : hitActors)
 			{
-				_float fClamberHeightCurrent = -1;
-				auto& iterPosition = hitPositions.begin();
-				for (auto& pActor : hitActors)
+				if (m_pOwner != pActor)
 				{
-					if (m_pOwner != pActor)
+					if (iterPosition->y > fClamberHeightCurrent)
 					{
-						if (iterPosition->y > fClamberHeightCurrent)
-						{
-							fClamberHeightCurrent = iterPosition->y;
-						}
+						fClamberHeightCurrent = iterPosition->y;
 					}
-					iterPosition++;
 				}
+				iterPosition++;
+			}
 
-				//바닥이 몸통 범위 안에 있다.
-				if (fClamberHeightCurrent > 0)
+			//바닥이 몸통 범위 안에 있다.
+			if (fClamberHeightCurrent > 0)
+			{
+				_float fClamberHeightBefore = XMVectorGetY(m_vClamberPosition);
+				_float fArmHeight = XMVectorGetY(vPlayerPos) + m_fArmHeight;
+				//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
+				//-> 기어오르기
+				if (fArmHeight< fClamberHeightCurrent
+					&& fArmHeight > fClamberHeightBefore)
 				{
-					_float fClamberHeightBefore = XMVectorGetY(m_vClamberPosition);
-					_float fArmHeight = XMVectorGetY(vPlayerPos) + m_fArmHeight;
-					//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
-					//-> 기어오르기
-					if (fArmHeight< fClamberHeightCurrent
-						&& fArmHeight > fClamberHeightBefore)
-					{
-						m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
-						m_pOwner->Set_ClamberPosition(m_vClamberPosition);
-						m_pOwner->Set_State(CPlayer::CLAMBER);
-						return;
-					}
-					else
-					{
-						m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
-					}
+					m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
+					m_pOwner->Set_ClamberPosition(m_vClamberPosition);
+					m_pOwner->Set_State(CPlayer::CLAMBER);
+					return;
+				}
+				else
+				{
+					m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
 				}
 			}
 		}
+
+		//공중 무빙
+		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
+		m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
 	}
+	else
+		m_pOwner->Stop_Rotate();
 }
 
 void CPlayerState_JumpDown::Enter()

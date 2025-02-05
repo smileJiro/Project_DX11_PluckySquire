@@ -10,6 +10,7 @@
 #include "PlayerState_Attack.h"
 #include "PlayerState_JumpUp.h"
 #include "PlayerState_JumpDown.h"
+#include "PlayerState_JumpAttack.h"
 #include "PlayerState_Roll.h"
 #include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
@@ -610,6 +611,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::JUMP_DOWN:
         m_pStateMachine->Transition_To(new CPlayerState_JumpDown(this));
+        break;
+    case Client::CPlayer::JUMP_ATTACK:
+        m_pStateMachine->Transition_To(new CPlayerState_JumpAttack(this));
         break;
     case Client::CPlayer::ATTACK:
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
