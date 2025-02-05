@@ -12,6 +12,11 @@ CPlayerBody::CPlayerBody(const CPlayerBody& _Prototype)
 {
 }
 
+HRESULT CPlayerBody::Render()
+{
+    return __super::Render();
+}
+
 CModelObject* CPlayerBody::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CPlayerBody* pInstance = new CPlayerBody(_pDevice, _pContext);

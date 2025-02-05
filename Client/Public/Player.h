@@ -432,6 +432,7 @@ public: /* 2D Ãæµ¹ */
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
 	_bool Is_OnGround() {return m_bOnGround;}
 	_bool Is_SneakMode() {return m_bSneakMode;}
+	_bool Is_Sneaking();
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_bool Is_SwordEquiped();

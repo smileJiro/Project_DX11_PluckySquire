@@ -131,6 +131,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
      
+
     return S_OK;
 }
 
@@ -198,7 +199,7 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
     }
-
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_ReverseAnimation(true);
 	//Part Sword
 	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
 	SwordDesc.pParent = this;
@@ -522,6 +523,12 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     return tResult;
 }
 
+
+_bool CPlayer::Is_Sneaking()
+{
+
+    return _bool();
+}
 
 _float CPlayer::Get_UpForce()
 {
