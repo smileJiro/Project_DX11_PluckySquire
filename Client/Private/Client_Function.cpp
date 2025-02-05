@@ -124,30 +124,82 @@ namespace Client
 
 	}
 
-	void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID)
+	void Event_Trigger_Enter(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag)
 	{
 		EVENT tEvent;
-		tEvent.eType = EVENT_TYPE::CAMERATRIGGER_EVENT;
+		tEvent.eType = EVENT_TYPE::TRIGGER_ENTER_EVENT;
 		tEvent.Parameters.resize(3);
-		
-		tEvent.Parameters[0] = (DWORD_PTR)_iCameraTriggerType;
-		tEvent.Parameters[1] = (DWORD_PTR)new _wstring(_szEventTag);
-		tEvent.Parameters[2] = (DWORD_PTR)_iTriggerID;
-		
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iTriggerType;
+		tEvent.Parameters[1] = (DWORD_PTR)_iTriggerID;
+		tEvent.Parameters[2] = (DWORD_PTR)new _wstring(_szEventTag);
+
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn)
+	void Event_Trigger_Stay(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag)
 	{
 		EVENT tEvent;
-		tEvent.eType = EVENT_TYPE::CAMERATRIGGER_EXIT_EVENT;
-		tEvent.Parameters.resize(2);
+		tEvent.eType = EVENT_TYPE::TRIGGER_STAY_EVENT;
+		tEvent.Parameters.resize(3);
 
-		tEvent.Parameters[0] = (DWORD_PTR)_iTriggerID;
-		tEvent.Parameters[1] = (DWORD_PTR)_isReturn;
+		tEvent.Parameters[0] = (DWORD_PTR)_iTriggerType;
+		tEvent.Parameters[1] = (DWORD_PTR)_iTriggerID;
+		tEvent.Parameters[2] = (DWORD_PTR)new _wstring(_szEventTag);
 
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
+
+	void Event_Trigger_Exit(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::TRIGGER_EXIT_EVENT;
+		tEvent.Parameters.resize(3);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iTriggerType;
+		tEvent.Parameters[1] = (DWORD_PTR)_iTriggerID;
+		tEvent.Parameters[2] = (DWORD_PTR)new _wstring(_szEventTag);
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	void Event_Trigger_Exit_ByCollision(_uint _iTriggerType, _int _iTriggerID, _bool _isReturn)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::TRIGGER_EXIT_BYCOLLISION_EVENT;
+		tEvent.Parameters.resize(3);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iTriggerType;
+		tEvent.Parameters[1] = (DWORD_PTR)_iTriggerID;
+		tEvent.Parameters[2] = (DWORD_PTR)_isReturn;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID)
+	//{
+	//	EVENT tEvent;
+	//	tEvent.eType = EVENT_TYPE::CAMERATRIGGER_EVENT;
+	//	tEvent.Parameters.resize(3);
+	//	
+	//	tEvent.Parameters[0] = (DWORD_PTR)_iCameraTriggerType;
+	//	tEvent.Parameters[1] = (DWORD_PTR)new _wstring(_szEventTag);
+	//	tEvent.Parameters[2] = (DWORD_PTR)_iTriggerID;
+	//	
+	//	CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	//}
+
+	//void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn)
+	//{
+	//	EVENT tEvent;
+	//	tEvent.eType = EVENT_TYPE::CAMERATRIGGER_EXIT_EVENT;
+	//	tEvent.Parameters.resize(2);
+
+	//	tEvent.Parameters[0] = (DWORD_PTR)_iTriggerID;
+	//	tEvent.Parameters[1] = (DWORD_PTR)_isReturn;
+
+	//	CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	//}
 
 	std::wstring StringToWstring(const std::string& _str)
 	{

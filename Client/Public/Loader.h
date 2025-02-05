@@ -57,7 +57,6 @@ private:
 	HRESULT Load_Directory_Effects(LEVEL_ID _iLevID, const _tchar* _szJsonFilePath);
 
 	HRESULT Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName);
-	HRESULT Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath);
 
 public:
 	static CLoader* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID);
