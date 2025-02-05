@@ -87,6 +87,7 @@ CRenderGroup_2D* CRenderGroup_2D::Create(ID3D11Device* _pDevice, ID3D11DeviceCon
 
 void CRenderGroup_2D::Free()
 {
-
+    for (_uint i = 0; i < LAST; i++)
+        Safe_Release(m_arr2DShaders[i]);
     __super::Free();
 }

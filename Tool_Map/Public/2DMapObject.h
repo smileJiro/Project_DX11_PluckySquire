@@ -42,6 +42,7 @@ public:
 	void			Set_OffsetPos(_float2 _fPos);
 	_bool			IsCursor_In(_float2 _fCursorPos);
 	const _wstring& Get_Key() { return m_strKey; }
+	const _string& Get_ModelName() { return m_pModelInfo->Get_ModelName(); }
 	_bool			Is_ModelLoad() { return m_isModelLoad; }
 
 	HRESULT			Export(HANDLE hFile);
@@ -59,6 +60,7 @@ private:
 	C2DMapObjectInfo* m_pModelInfo;
 
 	_wstring		m_strKey = {};
+	_string			m_strModelName = {};
 	_float2			m_fTextureOffsetSize;
 	_float2			m_fRenderTargetSize; 
 	_bool			m_isModelLoad = false;
