@@ -79,6 +79,10 @@ public:
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
+
 public:
 	virtual void Attack();
 	virtual void Turn_Animation(_bool _isCW) {};
@@ -137,6 +141,10 @@ protected:
 	_bool m_isCool = { false };
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
+
+	//Àå¾Ö¹° Å½Áö
+	_bool m_isDetect_Block = { false };
+	_uint m_iDetect_Block_Count = { 0 };
 
 	F_DIRECTION m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
 

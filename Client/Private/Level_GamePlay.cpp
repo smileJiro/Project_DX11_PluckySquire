@@ -27,6 +27,8 @@
 #include "Soldier_Bomb.h"
 #include "ButterGrump.h"
 
+#include "RayShape.h"
+
 
 #include "MapObject.h"
 
@@ -90,6 +92,17 @@ HRESULT CLevel_GamePlay::Initialize()
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
 	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+
+
+	//RayShape Test
+	CRayShape::RAYSHAPE_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+
+	Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 5.f, -23.0f);
+	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), LEVEL_GAMEPLAY, TEXT("Layer_Terrain"), &Desc)))
+		return E_FAIL;
 
 
 	return S_OK;

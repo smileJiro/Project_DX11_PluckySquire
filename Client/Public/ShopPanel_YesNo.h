@@ -30,6 +30,7 @@ public:
 
 private:
 	void					isRender();
+	void					Cal_ShopYesNOPos(_float2 _vRTSize, _float2 _vBGPos);
 
 protected:
 	virtual HRESULT			Ready_Components() override;
