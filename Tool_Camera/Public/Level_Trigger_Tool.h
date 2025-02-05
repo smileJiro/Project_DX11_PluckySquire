@@ -12,7 +12,12 @@ class CLevel_Trigger_Tool final : public CLevel
 {
 	enum TRIGGER_TYPE
 	{
-		CAMERA_TRIGGER,
+		ARM_TRIGGER,
+		CUTSCENE_TRIGGER,
+		FREEZE_X_TRIGGER,
+		FREEZE_Y_TRIGGER,
+		TELEPORT_TRIGGER,
+		EVENT_TRIGGER,
 		TRIGGER_TYPE_END
 	};
 
@@ -25,6 +30,19 @@ class CLevel_Trigger_Tool final : public CLevel
 		DOWN = 0x08,
 		RETURN_MASK_END
 	};
+
+	typedef struct tagTriggerObjectData
+	{
+		_uint				iShapeType = {};
+		_float3				vHalfExtents = {};
+		_float				fRadius = {};
+
+		_uint				iFillterMyGroup = {};
+		_uint				iFillterOtherGroupMask = {};
+
+		_uint				iTriggerType = {};
+		_wstring			szEventTag = {};
+	} TRIGGEROBJECT_DATA;
 
 private:
 	CLevel_Trigger_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -59,6 +77,7 @@ private:
 	_uint				m_iTotalOtherGroupMask = {};		// || 연산 후 Total
 
 	_uint				m_iTriggerType = {};
+	_char				m_szEventTag[MAX_PATH] = { "" };
 
 	_bool				m_isCreate = { false };
 	_bool				m_isEdit = { false };
@@ -67,12 +86,9 @@ private:
 	vector<_wstring>	m_TriggerTags;
 	vector<_wstring>	m_ShapeTags;
 	vector<pair<_uint, _wstring>>	m_ObjectGroupTags;
-	vector<_wstring>	m_CameraTriggerTags;				// Camera Trigger
 	vector<pair<_uint, wstring>>	m_ExitReturnTags;
 
 	// ========== Camera Trigger
-	_uint				m_iCameraTriggerType = {};
-	_char				m_szEventTag[MAX_PATH] = { "" };
 	_char				m_szEventTemp[MAX_PATH] = { "" };
 	_uint				m_iExitReturnMask = {};
 	_uint				m_iExitReturnIndex = {};		// List Box 선택한 Index
@@ -94,25 +110,21 @@ private:
 	void				Show_ShapeTypeListBox();
 	void				Show_MyObjectGroup();
 	void				Show_OtherGroup();
-	void				Show_CameraTriggerListBox();			// Camera Trigger
 	void				Show_ExitReturnMaskListBox();			// Camera Trigger
 
 	void				Set_TriggerBasicInfo();
 	void				Set_TriggerInfoByType();
 
-	void				Create_Trigger();
+	HRESULT				Create_Trigger();
 	void				Delete_Trigger();
 	void				Edit_Trigger();
 	void				Set_CurTrigger();
-
-	// Camera Trigger
-	HRESULT				Create_Camera_Trigger();
 
 private:
 	void				Initialize_ListBoxName();
 	void				Picking();
 	void				Get_RayInfo(_vector* _pRayPos, _vector* _pRayDir);
-	pair<TRIGGEROBJECT_DATA, CTriggerObject*>* Get_SelectedTrigger();
+	pair<CLevel_Trigger_Tool::TRIGGEROBJECT_DATA, CTriggerObject*>* Get_SelectedTrigger();
 
 	void				Save_TriggerData();
 	void				Load_TriggerData();

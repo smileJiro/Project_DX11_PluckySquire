@@ -9,6 +9,7 @@
 #include "Camera_CutScene.h"
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
+#include "Trigger_Manager.h"
 
 #include "MainTable.h"
 #include "Player.h"
@@ -160,11 +161,8 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
 
-
-
-	if (KEY_DOWN(KEY::U)) {
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
-		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("B_InitialData"));
+	if (KEY_DOWN(KEY::T)) {
+		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/ArmTrigger.json"));
 	}
 
 	if (MOUSE_DOWN(MOUSE_KEY::MB))

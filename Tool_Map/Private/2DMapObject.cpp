@@ -30,7 +30,6 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 	_float2 fRatio = { m_fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, m_fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
 	
 	m_strKey = pDesc->strProtoTag;
-	_wstring strModelTag = L"";
 	
 	
 	m_fDefaultPosition = pDesc->fDefaultPosition;
@@ -44,15 +43,15 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 
 
 	if (nullptr == pDesc->pInfo)
-		strModelTag = L"None_Model";
-	else if(pDesc->isLoad)
-		strModelTag = m_strKey = StringToWstring(pDesc->pInfo->Get_ModelName());
+		m_strModelName = L"None_Model";
+	else if (pDesc->isLoad)
+		m_strModelName = m_strKey = StringToWstring(pDesc->pInfo->Get_ModelName());
 	else
-		strModelTag = StringToWstring(pDesc->pInfo->Get_ModelName());
+		m_strModelName = StringToWstring(pDesc->pInfo->Get_ModelName());
 
 	pDesc->Build_2D_Model(
 		LEVEL_TOOL_2D_MAP,
-		strModelTag,
+		m_strModelName,
 		L"Prototype_Component_Shader_VtxPosTex");
 
 	pDesc->Build_2D_Transform(m_fDefaultPosition);
@@ -188,7 +187,7 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 	m_fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X ,(_float)RTSIZE_BOOK2D_Y };
 
 	m_pModelInfo = _ModelInfos[iModelIndex];
-
+	m_strModelName = StringToWstring(_ModelInfos[iModelIndex]->Get_ModelName());
 	Desc.Build_2D_Model(
 	LEVEL_TOOL_2D_MAP,
 		StringToWstring(m_pModelInfo->Get_ModelName()),

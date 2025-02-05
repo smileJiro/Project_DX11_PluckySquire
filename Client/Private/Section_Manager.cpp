@@ -155,7 +155,7 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
 
         pSection_2D->Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
             return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
-            });
+            },CSection_2D::SECTION_2D_RENDERGROUP::SECTION_2D_OBJECT);
 
         if (nullptr != pSection)
         {

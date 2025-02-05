@@ -4,7 +4,7 @@
   "ActivePropertis": {
    "ActiveType": "ActiveType_Breakable"
   },
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "TD_Flower_BP_C01",
@@ -235,7 +235,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "treegreenbrokentrunk",
@@ -275,7 +275,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "TopDownDecal_Ink",
@@ -311,7 +311,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "latch_house_interior",
@@ -329,7 +329,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "moonbeard_house_interior",
@@ -446,7 +446,7 @@
  },
  {
   "Active": false,
-  "BackGround": true,
+  "BackGround": false,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "tome_tower_01",
