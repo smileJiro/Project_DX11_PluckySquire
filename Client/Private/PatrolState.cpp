@@ -133,7 +133,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 
 		if (true == m_isTurn && false == m_isMove)
 		{
-			if (m_pOwner->Rotate_To(vDir, XMConvertToDegrees(m_pOwner->Get_ControllerTransform()->Get_RotationPerSec())))
+			if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 			{
 				m_isMove = true;
 				
