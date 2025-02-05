@@ -41,7 +41,7 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 		}
 		else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
 		{
-			m_pOwner->Set_State(CPlayer::JUMP);
+			m_pOwner->Set_State(CPlayer::JUMP_UP);
 			return;
 		}
 		else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])

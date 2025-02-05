@@ -55,6 +55,7 @@ public:
 	_float2 Get_DefaultPosition() { return m_fDefaultPosition; }
 
 private:
+	_float4x4 m_ProjMatrix, m_ViewMatrix;
 	C2DMapObjectInfo* m_pModelInfo;
 
 	_wstring		m_strKey = {};

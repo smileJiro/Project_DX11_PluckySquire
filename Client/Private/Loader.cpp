@@ -1003,7 +1003,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
             NormalDesc.isCoordChangeEnable = false;
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
-            NormalDesc.isCulling = false;
+            NormalDesc.is3DCulling = false;
             NormalDesc.eStartCoord = COORDINATE_3D;
             NormalDesc.tTransform3DDesc.isMatrix = true;
             NormalDesc.tTransform3DDesc.matWorld = vWorld;
