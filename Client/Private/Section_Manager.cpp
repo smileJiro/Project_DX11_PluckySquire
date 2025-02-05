@@ -14,6 +14,9 @@ CSection_Manager::CSection_Manager()
 
 HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
+
+    m_iCurActiveSectionIndex = m_iMaxCurActiveSectionCount / 2;
+
     if (nullptr == _pDevice)
         return E_FAIL;
     if (nullptr == _pContext)
@@ -188,7 +191,7 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 
         m_pCurSection = (*iter).second;
 
-        Section_Active(m_pCurSection->Get_SectionName(), (m_iMaxCurActiveSectionCount / 2));
+        Section_Active(m_pCurSection->Get_SectionName(), m_iCurActiveSectionIndex);
 
     
 

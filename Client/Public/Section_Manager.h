@@ -60,11 +60,45 @@ public :
 		return m_pCurSection->Get_RenderGroupKey(_iOutputGroupID, _iOutputPriorityID);
 	}
 
-	// 현재 활성화된 섹션에 다음 섹션이 잇는가? 검사 (책용)
-	_bool							Has_Next_Section() { return nullptr != m_CurActiveSections[(m_iMaxCurActiveSectionCount / 2) + 1]; };
-	// 현재 활성화된 섹션에 이전 섹션이 있는가? 검사 (책용)
-	_bool							Has_Prev_Section() { return nullptr != m_CurActiveSections[(m_iMaxCurActiveSectionCount / 2) - 1]; };
+	// 현재 활성화된 섹션에 다음 / 이전 섹션이 잇는가? 검사 (책용)
+	_bool							Has_Next_Section() { 
+		if (m_iMaxCurActiveSectionCount <= m_iCurActiveSectionIndex + 1) 
+			return false;
+		return nullptr != m_CurActiveSections[(m_iCurActiveSectionIndex) + 1]; };
+	_bool							Has_Prev_Section() { 
+		if (0 >= m_iCurActiveSectionIndex - 1)
+			return false;
+		return nullptr != m_CurActiveSections[(m_iCurActiveSectionIndex) - 1]; };
 
+
+	// 현재 활성화된 섹션 기준으로 다음/이전 키 가져오기.(책용)
+	const _wstring* Get_Next_Section_Key() {
+		if (!Has_Next_Section())
+			return nullptr;
+		return &m_CurActiveSections[m_iCurActiveSectionIndex + 1]->Get_SectionName();
+	}
+	const _wstring* Get_Prev_Section_Key() { 
+		if (!Has_Prev_Section())
+			return nullptr;
+		return &m_CurActiveSections[m_iCurActiveSectionIndex - 1]->Get_SectionName(); }
+
+
+	// 현재 활성화된 섹션 기준으로 다음/이전 섹션으로 이동 (책용)
+	HRESULT							Change_Next_Section()
+	{
+		if (!Has_Next_Section())
+			return E_FAIL;
+		return Change_CurSection(m_CurActiveSections[m_iCurActiveSectionIndex + 1]->Get_SectionName());
+	};
+	HRESULT							Change_Prev_Section()
+	{
+		if (!Has_Prev_Section())
+			return E_FAIL;
+		return Change_CurSection(m_CurActiveSections[m_iCurActiveSectionIndex - 1]->Get_SectionName());
+		
+	};
+
+	
 
 
 #pragma endregion
@@ -104,6 +138,7 @@ private:
 	// index  m_iMaxCurActiveSectionCount / 2 -> Main Section(CurSection)
 	vector<CSection*>				m_CurActiveSections;
 	_uint							m_iMaxCurActiveSectionCount = 5;
+	_uint							m_iCurActiveSectionIndex;
 
 
 #pragma region 임시, 2D모델 Info
