@@ -33,7 +33,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
         L"Prototype_Component_Shader_VtxAnimMesh",
         (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP
         );
-    pDesc->tTransform3DDesc.vInitialPosition = _float3(2.f, 0.f, 17.3f);
+    pDesc->tTransform3DDesc.vInitialPosition = _float3(2.f, 0.f, -17.3f);
     pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
