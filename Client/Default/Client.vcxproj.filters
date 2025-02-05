@@ -277,6 +277,9 @@
     <Filter Include="02.GameObjects\MainTable">
       <UniqueIdentifier>{25fd5475-9ebe-44bd-bbee-d5b4f8d1ad20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Trigger\RayShape">
+      <UniqueIdentifier>{b4edec48-894b-483e-9ef0-06a389a7395a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -613,6 +616,9 @@
     <ClInclude Include="..\Public\PlayerState_JumpDown.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RayShape.h">
+      <Filter>02.GameObjects\Trigger\RayShape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -936,6 +942,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RayShape.cpp">
+      <Filter>02.GameObjects\Trigger\RayShape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

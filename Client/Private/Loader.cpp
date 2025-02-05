@@ -79,7 +79,7 @@
 // Sample
 #include "SampleBook.h"
 
-//#include "DebugDraw_For_Client.h"
+#include "RayShape.h"
 
 
 
@@ -288,6 +288,10 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_Camera_Trigger */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"),
         CCamera_Trigger::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"),
+        CRayShape::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     

@@ -266,7 +266,6 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
-	cout << Get_UpForce() << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     m_bOnGround = false;
