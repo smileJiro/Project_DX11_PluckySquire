@@ -28,6 +28,7 @@ public:
 
 	void Throw(_fvector _vDirection);
 	_bool Is_Flying() { return m_IsFlying; }
+	void Switch_Grip(_bool _bForehand);
 private:
 	_float m_fThrowingPower = 15.f;
 	_vector m_vThrowDirection = {};

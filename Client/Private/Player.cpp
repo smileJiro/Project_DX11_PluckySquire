@@ -102,7 +102,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.isTrigger = true;                    
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //¿©±âÀÓ
     SHAPE_SPHERE_DESC SphereDesc = {};
-	SphereDesc.fRadius = 1.f;
+	SphereDesc.fRadius = 0.5f;
     ShapeData.pShapeDesc = &SphereDesc;
 
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -223,6 +223,7 @@ HRESULT CPlayer::Ready_PartObjects()
     }
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
 	Set_PartActive(PLAYER_PART_SWORD, false);
+    m_pSword->Switch_Grip(true);
 
 	//Part Glove
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
@@ -585,6 +586,7 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
+
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
 }
 
@@ -655,6 +657,10 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
 void CPlayer::Set_3DTargetDirection(_fvector _vDir)
 {
     m_v3DTargetDirection = XMVector4Normalize( _vDir);
+}
+void CPlayer::Switch_SwordGrip(_bool _bForehand)
+{
+	m_pSword->Switch_Grip(_bForehand);
 }
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {
