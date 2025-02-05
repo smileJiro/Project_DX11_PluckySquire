@@ -10,6 +10,7 @@
 #include "PlayerState_Attack.h"
 #include "PlayerState_JumpUp.h"
 #include "PlayerState_JumpDown.h"
+#include "PlayerState_JumpAttack.h"
 #include "PlayerState_Roll.h"
 #include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
@@ -101,7 +102,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.isTrigger = true;                    
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //¿©±âÀÓ
     SHAPE_SPHERE_DESC SphereDesc = {};
-	SphereDesc.fRadius = 1.f;
+	SphereDesc.fRadius = 0.5f;
     ShapeData.pShapeDesc = &SphereDesc;
 
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -180,7 +181,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -212,7 +213,7 @@ HRESULT CPlayer::Ready_PartObjects()
     SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     SwordDesc.iRenderGroupID_3D = RG_3D;
     SwordDesc.iPriorityID_3D = PR3D_NONBLEND;
-    SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
@@ -222,6 +223,7 @@ HRESULT CPlayer::Ready_PartObjects()
     }
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
 	Set_PartActive(PLAYER_PART_SWORD, false);
+    m_pSword->Switch_Grip(true);
 
 	//Part Glove
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
@@ -253,7 +255,6 @@ HRESULT CPlayer::Ready_PartObjects()
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
-
     CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
@@ -585,6 +586,7 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
+
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
 }
 
@@ -609,6 +611,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::JUMP_DOWN:
         m_pStateMachine->Transition_To(new CPlayerState_JumpDown(this));
+        break;
+    case Client::CPlayer::JUMP_ATTACK:
+        m_pStateMachine->Transition_To(new CPlayerState_JumpAttack(this));
         break;
     case Client::CPlayer::ATTACK:
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
@@ -652,6 +657,10 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
 void CPlayer::Set_3DTargetDirection(_fvector _vDir)
 {
     m_v3DTargetDirection = XMVector4Normalize( _vDir);
+}
+void CPlayer::Switch_SwordGrip(_bool _bForehand)
+{
+	m_pSword->Switch_Grip(_bForehand);
 }
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {

@@ -7,6 +7,32 @@ namespace Engine
 	class CActorObject;
 	class CActor;
 
+	typedef struct tagMaterialDefault
+	{
+		XMFLOAT3	Albedo = XMFLOAT3(1.0f, 1.0f, 1.0f); // 12byte
+		float		Roughness = 0.0f;					 // 16byte(o)
+		float		Metallic = 0.0f;						 // 4byte
+		XMFLOAT3	dummy;								 // 16byte(o)
+	}MATERIAL_PS;
+	typedef struct tagBasicPixelConstData // 동적변화가 없는 애들위주로.
+	{
+		MATERIAL_PS Material; // 32Byte
+
+		int			useAlbedoMap = 0;
+		int			useNormalMap = 0;
+		int			useAOMap = 0;
+		int			useMetallicMap = 0;		// 16Byte
+
+		int			useRoughnessMap = 0;
+		int			useEmissiveMap = 0;
+		int			useORMHMap = 0;			// Oclusion, Roughness, Metalic, Height
+		int			invertNormalMapY = 0;	// 16Byte  // LH, RH 에 따라 Y 축 반전이 필요한 경우가 있음.
+		//float		dummy;					
+
+		// float expose = 1.0f;
+		// float gamma = 1.0f; // 추후 hdr 톤매핑 시 사용.
+	}CONST_PS;
+
 	typedef struct tagActorUserData
 	{
 		CActorObject*				pOwner = nullptr;
@@ -270,18 +296,6 @@ namespace Engine
 		_float3				vAtOffset = {};
 		_uint				iZoomLevel = {};
 	} CUTSCENE_INITIAL_DATA;
-#pragma endregion
-
-#pragma region Trigger 관련
-	typedef struct tagTriggerObjectData
-	{
-		_uint				iShapeType = {};
-		_float3				vHalfExtents = {};
-		_float				fRadius = {};
-
-		_uint				iFillterMyGroup = {};
-		_uint				iFillterOtherGroupMask = {};
-	} TRIGGEROBJECT_DATA;
 #pragma endregion
 
 #pragma region Binary 관련

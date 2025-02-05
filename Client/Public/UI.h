@@ -1,6 +1,7 @@
 #pragma once
 #include "UIObject.h"
 #include "GameInstance.h"
+#include "Player.h"
 //
 
 
@@ -10,8 +11,6 @@ class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
-
-
 class CUI : public Engine::CUIObject
 {
 public:

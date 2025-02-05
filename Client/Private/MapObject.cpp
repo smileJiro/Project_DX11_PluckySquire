@@ -137,25 +137,7 @@ void CMapObject::Priority_Update(_float _fTimeDelta)
 }
 void CMapObject::Update(_float _fTimeDelta)
 {
-    switch (m_pControllerTransform->Get_CurCoord())
-    {
-    case Engine::COORDINATE_2D:
-        if (nullptr != m_pParentMatrices[COORDINATE_2D])
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_2D]));
-        else
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D));
-        break;
-    case Engine::COORDINATE_3D:
-        if (nullptr != m_pParentMatrices[COORDINATE_3D])
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
-        else
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
-        break;
-    default:
-        break;
-    }
-
-    CGameObject::Update_Component(_fTimeDelta);
+    __super::Update(_fTimeDelta);
 }
 
 void CMapObject::Late_Update(_float _fTimeDelta)

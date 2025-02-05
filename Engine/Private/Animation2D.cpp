@@ -46,7 +46,7 @@ HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 		return E_FAIL;
 	_inFile.read(reinterpret_cast<char*>(&m_matSpriteTransform), sizeof(_matrix));
 	return S_OK;
-}
+}//39.8, 47.0
 HRESULT CSpriteFrame::Bind_ShaderResource(CShader* _pShader)
 {
 	if (FAILED(m_pTexture->Bind_ShaderResource(_pShader, "g_DiffuseTexture")))

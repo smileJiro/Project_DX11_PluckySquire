@@ -10,6 +10,7 @@
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
+#include "Trigger_Manager.h"
 
 
 #include "RenderGroup_MRT.h"
@@ -141,9 +142,11 @@ HRESULT CMainApp::Initialize_Client_Manager()
 		return E_FAIL;
 	if (FAILED(CCamera_Manager::GetInstance()->Initialize()))
 		return E_FAIL;
-	if(FAILED(CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+	if (FAILED(CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 	if (FAILED(CSection_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+	if (FAILED(CTrigger_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -331,9 +334,15 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
 
+	/* Target_ORMH */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ORMH"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+
 	/* Target_Depth */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
+
+
 
 	/* Target_Shade */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
@@ -443,6 +452,7 @@ void CMainApp::Free()
 	CUI_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
 	CCollision_Manager::DestroyInstance();
+	CTrigger_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

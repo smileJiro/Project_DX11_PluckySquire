@@ -54,21 +54,21 @@ void CCharacter::Stop_Move()
     }
 }
 
-void CCharacter::Add_Impuls(_vector _vForce)
+void CCharacter::Add_Impuls(_fvector _vForce)
 {
     _float3 f3Force;
     XMStoreFloat3(&f3Force, _vForce);
     m_pActorCom->Add_Impulse(f3Force);
 }
 
-void CCharacter::Add_Force(_vector _vForce)
+void CCharacter::Add_Force(_fvector _vForce)
 {
     _float3 f3Force;
     XMStoreFloat3(&f3Force, _vForce);
     m_pActorCom->Add_Force(f3Force);
 }
 
-_bool CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
+_bool CCharacter::Rotate_To(_fvector _vDirection, _float _fSpeed)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 
@@ -77,7 +77,6 @@ _bool CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
     _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, _vDirection - m_vLookBefore);
     if (XMVector3Equal(_vDirection, XMVectorZero()))
     {
-        _vDirection = vLook;
         return true;
     }
     if (XMVector3NearEqual(_vDirection, vLook, XMVectorReplicate(0.001)))
@@ -103,7 +102,7 @@ _bool CCharacter::Rotate_To(_vector _vDirection, _float _fSpeed)
     }
 }
 
-_bool CCharacter::Rotate_To_Radians(_vector _vDirection, _float _fSpeed)
+_bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 

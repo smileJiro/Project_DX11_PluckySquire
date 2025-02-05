@@ -105,6 +105,7 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 {
 	_float2 vCalSize;
 
+
 	if (SHOPPANEL::SHOP_BG != m_eShopPanel)
 	{
 		_float2 BGPos = { 0.f, 0.f };
@@ -114,29 +115,29 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 
 		switch ((_uint)m_eShopPanel)
 		{
-		case SHOP_DIALOGUEBG: { m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y; }
-							break;
+		case SHOP_DIALOGUEBG:	{ m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y; }
+		break;
 
-		case SHOP_CHOOSEBG: { m_fX = BGPos.x + _vRTSize.x * RATIO_BOOK2D_X * 0.3f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y; }
-						  break;
+		case SHOP_CHOOSEBG:		{ m_fX = BGPos.x + _vRTSize.x * RATIO_BOOK2D_X * 0.3f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y; }
+		break;
 
-		case SHOP_BULB: { m_fX = BGPos.x + _vRTSize.x * RATIO_BOOK2D_X * 0.3f;	m_fY = BGPos.y - _vRTSize.y * RATIO_BOOK2D_Y * 0.8f; }
-					  break;
+		case SHOP_BULB:			{ m_fX = BGPos.x + _vRTSize.x * RATIO_BOOK2D_X * 0.3f;	m_fY = BGPos.y - _vRTSize.y * RATIO_BOOK2D_Y * 0.8f; }
+		break;
+		
+		case SHOP_ESCBG:		{ m_fX = BGPos.x - _vRTSize.x * RATIO_BOOK2D_X * 0.2f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
+		break;
 
-		case SHOP_ESCBG: { m_fX = BGPos.x - _vRTSize.x * RATIO_BOOK2D_X * 0.2f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
-					   break;
-
-		case SHOP_BACKESC: { m_fX = BGPos.x - _vRTSize.x * RATIO_BOOK2D_X * 0.2f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
-						 break;
-
-		case SHOP_BACKARROW: { m_fX = BGPos.x - _vRTSize.x * RATIO_BOOK2D_X * 0.3f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
-						   break;
-
-		case SHOP_ENTERBG: { m_fX = BGPos.x + _vRTSize.x * RATIO_BOOK2D_X * 0.2f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
-						 break;
-
-		case SHOP_ENTER: { m_fX = BGPos.x + _vRTSize.x * RATIO_BOOK2D_X * 0.2f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
-					   break;
+		case SHOP_BACKESC:		{ m_fX = BGPos.x - _vRTSize.x * RATIO_BOOK2D_X * 0.2f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
+		break;
+		
+		case SHOP_BACKARROW:	{ m_fX = BGPos.x - _vRTSize.x  * RATIO_BOOK2D_X * 0.3f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
+		break;
+		
+		case SHOP_ENTERBG:		{ m_fX = BGPos.x + _vRTSize.x * RATIO_BOOK2D_X * 0.2f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
+		break;
+		
+		case SHOP_ENTER:		{ m_fX = BGPos.x + _vRTSize.x * RATIO_BOOK2D_X * 0.2f;	m_fY = BGPos.y + _vRTSize.y * RATIO_BOOK2D_Y * 1.35f; }
+		break;
 		}
 	}
 
@@ -146,19 +147,23 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
 
-	//XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-	//XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y, 0.0f, 1.0f));
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)_vRTSize.x, (_float)_vRTSize.y, 0.0f, 1.0f));
 }
 
 void CUI::Change_BookScale_ForDialogue(_float2 vRTSize)
 {
+	_float3 vScaleSize;
+	_float2 vCalSize;
+
+
+
 }
 
 
 
 void CUI::Free()
 {
-
 	Safe_Release(m_pShaderComs[COORDINATE_2D]);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);

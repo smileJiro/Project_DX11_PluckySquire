@@ -161,15 +161,36 @@ void CCameraArm::Set_WorldMatrix()
 
 void CCameraArm::Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID)
 {
+    // 초기화
+    if (nullptr != m_pNextArmData) {
+        m_pNextArmData->fMoveTimeAxisY.y = 0.f;
+        m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
+        m_pNextArmData->fLengthTime.y = 0.f;
+    }
+    m_fRotationValue = 1.f;
+    m_iMovementFlags = RESET_FLAG;
+
     m_pNextArmData = _pData;
     m_fStartLength = m_fLength;
 
+    for (auto& PreArm : m_PreArms) {
+        if (_iTriggerID == PreArm.first.iTriggerID) {
+            if (true == PreArm.second) {
+                PreArm.second = false;
+                m_fReturnTime.y = 0.f;
+
+                return;
+            }
+        }
+    }
+
     RETURN_ARMDATA tData;
+
     tData.vPreArm = m_vArm;
     tData.fPreLength = m_fLength;
     tData.iTriggerID = _iTriggerID;
 
-    m_PreArms.push_back(tData);
+    m_PreArms.push_back(make_pair(tData, false));
 }
 
 void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
@@ -177,10 +198,12 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
     if (true == _isReturn) {
         for (auto iterator = m_PreArms.rbegin(); iterator != m_PreArms.rend(); ++iterator) {
             // Trigger ID와 Exit 조건 일치 확인
-            if (iterator->iTriggerID == _iTriggerID) {
+            if (iterator->first.iTriggerID == _iTriggerID) {
 
                 m_vStartArm = m_vArm;
                 m_fStartLength = m_fLength;
+                m_iCurTriggerID = _iTriggerID;
+                iterator->second = true;        // Return 중이란 의미
                 return;
             }
         }
@@ -189,7 +212,7 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
     else {
         for (auto iterator = m_PreArms.rbegin(); iterator != m_PreArms.rend(); ++iterator) {
             // Trigger ID와 Exit 조건 일치 확인
-            if (iterator->iTriggerID == _iTriggerID) {
+            if (iterator->first.iTriggerID == _iTriggerID) {
 
                 // deque에서 해당 상태 제거
                 m_PreArms.erase((iterator + 1).base());
@@ -332,7 +355,6 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
         m_pNextArmData->fMoveTimeAxisY.y = 0.f;
         m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
         m_fRotationValue = 1.f;
-
     }
 
     // Y축 회전
@@ -414,16 +436,17 @@ _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
     if (fRatio > 1.f) {
         m_fReturnTime.y = 0.f;
 
-        m_vArm = m_PreArms.back().vPreArm;
-        m_fLength = m_PreArms.back().fPreLength;
+        m_vArm = m_PreArms.back().first.vPreArm;
+        m_fLength = m_PreArms.back().first.fPreLength;
+        m_PreArms.back().second = false;
         m_pTransform->Set_Look(XMVector3Normalize(XMLoadFloat3(&m_vArm)));
         m_PreArms.pop_back();
 
         return true;
     }
 
-    _vector vArm = XMVector3Normalize(XMVectorLerp(XMLoadFloat3(&m_vStartArm), XMLoadFloat3(&m_PreArms.back().vPreArm), fRatio));
-    m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_PreArms.back().fPreLength, fRatio);
+    _vector vArm = XMVector3Normalize(XMVectorLerp(XMLoadFloat3(&m_vStartArm), XMLoadFloat3(&m_PreArms.back().first.vPreArm), fRatio));
+    m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_PreArms.back().first.fPreLength, fRatio);
 
     XMStoreFloat3(&m_vArm, XMVector3Normalize(vArm));
     m_pTransform->Set_Look(vArm);

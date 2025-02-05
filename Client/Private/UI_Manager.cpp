@@ -234,7 +234,7 @@ HRESULT CUI_Manager::Level_Enter(_int _iChangeLevelID)
 void CUI_Manager::Free()
 {
 	
-	
+	Safe_Release(m_pPlayer);
 
 	for (auto iter : m_pSettingPanels)
 	{
@@ -262,9 +262,6 @@ void CUI_Manager::Free()
 		Safe_Release(m_LogoProps[i]);
 	}
 	m_LogoProps.clear();
-
-
-	Safe_Release(m_pPlayer);
 
 	vector<CDialog::DialogData>().swap(m_DialogDatas);
 

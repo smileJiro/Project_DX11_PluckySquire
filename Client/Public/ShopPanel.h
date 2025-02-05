@@ -40,7 +40,7 @@ private:
 	_int					isInPanelItem(_float2 _vMousePos);
 	void					Update_KeyInput(_float _fTimeDelta, _int _index = -1);
 
-	HRESULT					Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag);
+	HRESULT					Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag, _float2 _vRTSize);
 	HRESULT					Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag);
 	
 

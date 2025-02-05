@@ -51,25 +51,25 @@ void CLogo_Choose::Late_Update(_float _fTimeDelta)
 HRESULT CLogo_Choose::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 {	
 
-
-	if (!m_isRender)
-		return S_OK;
-
-	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture", _iTextureindex)))
-		return E_FAIL;
-
-	m_pShaderComs[COORDINATE_2D]->Begin((_uint)_eShaderPass);
-	m_pVIBufferCom->Bind_BufferDesc();
-	m_pVIBufferCom->Render();
+	__super::Render();
+	//if (!m_isRender)
+	//	return S_OK;
+	//
+	//if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+	//	return E_FAIL;
+	//
+	//if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture", _iTextureindex)))
+	//	return E_FAIL;
+	//
+	//m_pShaderComs[COORDINATE_2D]->Begin((_uint)_eShaderPass);
+	//m_pVIBufferCom->Bind_BufferDesc();
+	//m_pVIBufferCom->Render();
 	
 
 	return S_OK;

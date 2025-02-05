@@ -238,12 +238,6 @@
     <Filter Include="94.RenderGroups%28Custom%29\AfterEffect">
       <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Trigger">
-      <UniqueIdentifier>{2a7a1cb9-e639-4be6-a19f-65aeae8e850a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Trigger\Camera_Trigger">
-      <UniqueIdentifier>{b758ccb4-7151-48b1-99b9-1eeef86e1bab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\2D">
       <UniqueIdentifier>{0791b9f7-464c-4734-9777-7e162be1d4c9}</UniqueIdentifier>
     </Filter>
@@ -276,6 +270,12 @@
     </Filter>
     <Filter Include="02.GameObjects\MainTable">
       <UniqueIdentifier>{25fd5475-9ebe-44bd-bbee-d5b4f8d1ad20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. TriggerManager">
+      <UniqueIdentifier>{01c9cacb-3329-4753-ba74-b0632caf502d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ShaderFiles\PBR">
+      <UniqueIdentifier>{ba8ec215-6826-4b57-944f-cbd6d6f43b40}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Trigger\RayShape">
       <UniqueIdentifier>{b4edec48-894b-483e-9ef0-06a389a7395a}</UniqueIdentifier>
@@ -540,9 +540,6 @@
     <ClInclude Include="..\Public\PlayerState_Roll.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera_Trigger.h">
-      <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PlayerSword.h">
       <Filter>02.GameObjects\TestPlayer</Filter>
     </ClInclude>
@@ -606,6 +603,9 @@
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Trigger_Manager.h">
+      <Filter>92. TriggerManager</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
@@ -616,6 +616,8 @@
     <ClInclude Include="..\Public\PlayerState_JumpDown.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
+    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
     <ClInclude Include="..\public\RayShape.h">
       <Filter>02.GameObjects\Trigger\RayShape</Filter>
     </ClInclude>
@@ -870,9 +872,6 @@
     <ClCompile Include="..\Private\PlayerState_Roll.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Camera_Trigger.cpp">
-      <Filter>02.GameObjects\Trigger\Camera_Trigger</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerSword.cpp">
       <Filter>02.GameObjects\TestPlayer</Filter>
     </ClCompile>
@@ -936,6 +935,9 @@
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Trigger_Manager.cpp">
+      <Filter>92. TriggerManager</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
       <Filter>03.Components\PlayerState</Filter>
@@ -943,6 +945,8 @@
     <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
     <ClCompile Include="..\private\RayShape.cpp">
       <Filter>02.GameObjects\Trigger\RayShape</Filter>
     </ClCompile>
@@ -992,6 +996,9 @@
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect_Anim.hlsl">
       <Filter>97.ShaderFiles\Effect</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_PBRPractice.hlsl">
+      <Filter>97.ShaderFiles\PBR</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

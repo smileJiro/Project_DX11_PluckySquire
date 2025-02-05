@@ -127,10 +127,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 
 				CMapObject::MAPOBJ_DESC NormalDesc = {};
 				NormalDesc.is2DImport = true;
-				
 				NormalDesc.Build_2D_Model(CSection_Manager::GetInstance()->Get_SectionLeveID()
 					, StringToWstring(tInfo.strModelName)
 					, L"Prototype_Component_Shader_VtxPosTex"
+					,(_uint)PASS_VTXPOSTEX::SPRITE2D
 				);
 				NormalDesc.Build_2D_Transform(fPos);
 
@@ -157,7 +157,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				if (nullptr != pGameObject)
 				{
 					pGameObject->Set_Active(false);
-					Add_GameObject_ToSectionLayer(pGameObject);
+					auto eRenderLayer = SECTION_2D_OBJECT;
+					if (true == tInfo.isBackGround)
+						eRenderLayer = SECTION_2D_BACKGROUND;
+						Add_GameObject_ToSectionLayer(pGameObject, eRenderLayer);
 				}
 			}
 			CloseHandle(hFile);

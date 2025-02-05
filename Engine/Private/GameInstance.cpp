@@ -13,7 +13,6 @@
 #include "Sound_Manager.h"
 #include "Json_Manager.h"
 #include "Imgui_Manager.h"
-#include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
 #include "Physx_Manager.h"
 #include "NewRenderer.h"
