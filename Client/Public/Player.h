@@ -476,7 +476,6 @@ private:
 	_vector m_vClamberPosition;
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360;
-	_bool m_bContactWall = false;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 	_bool m_bSneakMode = false;

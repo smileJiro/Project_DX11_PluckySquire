@@ -15,6 +15,7 @@ public:
 
 	void Switch_RunAnimation2D(F_DIRECTION _eFDir);
 	void Switch_RunAnimation3D(_bool _bStealth);
+    _bool Is_Sneaking() { return m_bSneakBefore; }
 
 private:
 	_float m_fSpeed = 7.f;
