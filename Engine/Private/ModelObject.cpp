@@ -32,8 +32,6 @@ HRESULT CModelObject::Initialize(void* _pArg)
     m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
     m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
 
-    m_iRenderGroupID_2D = pDesc->iRenderGroupID_2D;
-    m_iPriorityID_2D = pDesc->iPriorityID_2D;
     m_iRenderGroupID_3D = pDesc->iRenderGroupID_3D;
     m_iPriorityID_3D = pDesc->iPriorityID_3D;
     // Add
@@ -45,17 +43,6 @@ HRESULT CModelObject::Initialize(void* _pArg)
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
-
-
-    // View Matrix는 IdentityMatrix
-    XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-
-    // Projection Matrix는 Viewport Desc 를 기반으로 생성.
-    // 2025-01-16 박예슬 수정 : Viewport Desc -> Rendertarget Size
-    _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
-    
-    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
-
 
     return S_OK;
 }
@@ -72,12 +59,6 @@ void CModelObject::Late_Update(_float _fTimeDelta)
         m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
             
     }
-    //else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-    //{
-    //    m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_2D, m_iPriorityID_2D, this);
-    //}
-
-
 
     /* Update Parent Matrix */
     __super::Late_Update(_fTimeDelta);
@@ -319,20 +300,16 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
     {
     case Engine::COORDINATE_2D:
         _matrix matLocal = *static_cast<C2DModel*>(m_pControllerModel->Get_Model(COORDINATE_2D))->Get_CurrentSpriteTransform();
-		_matrix matWorld = matLocal*XMLoadFloat4x4( &m_WorldMatrices[COORDINATE_2D]) ;
+        _matrix matRatioScalling = XMMatrixScaling((_float)RATIO_BOOK2D_X, (_float)RATIO_BOOK2D_Y, 1.f);
+        matLocal *= matRatioScalling;
+
+        _matrix matWorld = matLocal*XMLoadFloat4x4( &m_WorldMatrices[COORDINATE_2D]) ;
+
         _float4x4 matWorld4x4;
         XMStoreFloat4x4(&matWorld4x4 ,matWorld);
         if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
             return E_FAIL;
-
-        if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-            return E_FAIL;
-
-        /* 추후 우리 그리고자하는 렌더 타겟 사이즈로 projectionMatrix 를 변경해줘야함. */
-        _float2 vSize = m_pGameInstance->Get_RT_Size(TEXT("Target_Book_2D")); // 렌더타겟 사이즈 받아오는 함수는 만들어뒀음. 2D 3D 공간
-        XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)vSize.x, (_float)vSize.y, 0.0f, 1.0f));
-        if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-            return E_FAIL;
+        // 뷰, 투영 액세스 금지 !
         break;
     case Engine::COORDINATE_3D:
         if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))

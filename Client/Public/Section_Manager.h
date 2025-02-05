@@ -41,18 +41,37 @@ public:
 
 	HRESULT							Section_AddRenderGroup_Process();
 
-public :
-	HRESULT							Change_CurSection(const _wstring _strSectionKey);
-	_bool							Is_CurSection	(CGameObject* _pGameObject);
-	const _wstring*					Get_SectionKey	(CGameObject* _pGameObject);
-	_int							Get_SectionLeveID() { return m_iCurLevelID; }
+	_float2							Get_Section_RenderTarget_Size(const _wstring _strSectionKey);
 
+public :
+#pragma region 	활성화 섹션 관련 함수.
+
+	// 활성화 섹션 변경. (자동으로 이전, 다음 섹션을 연결짓는다.)
+	HRESULT							Change_CurSection(const _wstring _strSectionKey);
+	// 현재 활성화된 메인 섹션에 있는지 검사한다. 
+	_bool							Is_CurSection(CGameObject* _pGameObject);
+	// 해당 객체가 등록된 섹션을 찾고, 있다면 그 섹션 키를 반환한다.
+	const _wstring*					Get_SectionKey(CGameObject* _pGameObject);
+	// 현재 섹션의 렌더그룹 키를 반환한다. 
 	_bool							Get_CurSectionRenderGroupKey(_uint& _iOutputGroupID, _uint& _iOutputPriorityID)
 	{
 		if (nullptr == m_pCurSection)
 			return false;
 		return m_pCurSection->Get_RenderGroupKey(_iOutputGroupID, _iOutputPriorityID);
 	}
+
+	// 현재 활성화된 섹션에 다음 섹션이 잇는가? 검사 (책용)
+	_bool							Has_Next_Section() { return nullptr != m_CurActiveSections[(m_iMaxCurActiveSectionCount / 2) + 1]; };
+	// 현재 활성화된 섹션에 이전 섹션이 있는가? 검사 (책용)
+	_bool							Has_Prev_Section() { return nullptr != m_CurActiveSections[(m_iMaxCurActiveSectionCount / 2) - 1]; };
+
+
+
+#pragma endregion
+
+	_int							Get_SectionLeveID() { return m_iCurLevelID; }
+
+
 
 public:
 	// Get
@@ -81,8 +100,9 @@ private:
 	_int							m_iCurLevelID = -1;
 	map<_wstring, CSection*>		m_CurLevelSections;
 	CSection*						m_pCurSection = nullptr;
+	
+	// index  m_iMaxCurActiveSectionCount / 2 -> Main Section(CurSection)
 	vector<CSection*>				m_CurActiveSections;
-
 	_uint							m_iMaxCurActiveSectionCount = 5;
 
 
@@ -100,6 +120,7 @@ public :
 		_string strColliderType;
 		_bool isActive = false;
 		_bool isSorting = false;
+		_bool isBackGround = false;
 		_bool isCollider = false;
 		_float2 fSorting_Offset_Pos = {};
 		_float2 fCollider_Offset_Pos = {};

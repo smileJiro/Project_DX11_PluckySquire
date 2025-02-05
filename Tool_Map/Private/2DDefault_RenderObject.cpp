@@ -134,7 +134,6 @@ void C2DDefault_RenderObject::Set_Texture_Mode(const _string& _strTextureName)
 	if (nullptr == m_pTextureCom)
 	{ 
 		MSG_BOX("Map Load Texture Create Fail !");
-		return;
 	}
 
 }

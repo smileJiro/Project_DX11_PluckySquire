@@ -235,7 +235,7 @@ void CVIBuffer_Mesh_Particle::Update(_float _fTimeDelta)
 	}
 	else if (BURST == m_eSpawnType)
 	{
-		for (_int i = 0; i < m_iNumInstances; i++)
+		for (_uint i = 0; i < m_iNumInstances; i++)
 		{
 			if (m_iSpawnIndex != m_iNumInstances)
 			{

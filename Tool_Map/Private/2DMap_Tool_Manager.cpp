@@ -391,8 +391,8 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 				{
 					C2DMapObject::MAPOBJ_2D_DESC NormalDesc = {};
 					NormalDesc.strProtoTag = StringToWstring(Pair.first);
-					NormalDesc.fX = Pair.second.x;
-					NormalDesc.fY = Pair.second.y;
+					NormalDesc.fDefaultPosition.x = Pair.second.x;
+					NormalDesc.fDefaultPosition.y = Pair.second.y;
 					NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 					NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 
@@ -497,27 +497,26 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 
 	if (nullptr != m_pPickingObject)
 	{
-		_vector vPos = m_pPickingObject->Get_FinalPosition();
 		_wstring strKey = m_pPickingObject->Get_Key();
-		_float2 fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
+		_float2 fPos = m_pPickingObject->Get_DefaultPosition();
 		//m_pPickingObject->Get_FinalPosition();
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
 		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");
 		ImGui::SetNextItemWidth(100.f);
 		if (ImGui::DragFloat("##ObjectPosX", &fPos.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
 		{
-			m_pPickingObject->Set_PositionX(fPos.x - m_fOffsetPos.x);
+			m_pPickingObject->Set_DefaultPosition(fPos);
 			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
 		}
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(100.f);
 		if (ImGui::DragFloat("##ObjectPosY", &fPos.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
 		{
-			m_pPickingObject->Set_PositionY(fPos.y + m_fOffsetPos.y);
+			m_pPickingObject->Set_DefaultPosition(fPos);
 			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
 		}
 		ImGui::SameLine();
-		ImGui::Text("Offset Pos");
+		ImGui::Text("Position");
 
 	}
 
@@ -787,12 +786,14 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			ImGui::SeparatorText("Model Info");
 
 			_string strSearchTag = m_pPickingInfo->Get_SearchTag().c_str();
-			_string strTextureName = m_pPickingInfo->Get_TextureName().c_str();
+			_string strTextureName = m_pPickingInfo->Get_ModelName().c_str();
 			_bool isCollider = m_pPickingInfo->Is_Collider();
 			_bool isActive = m_pPickingInfo->Is_Active();
 			_bool isSorting = m_pPickingInfo->Is_Sorting();
 			_bool isModelLoad = m_pPickingInfo->Is_ModelLoad();
 			_bool isToolRendering = m_pPickingInfo->Is_ToolRendering();
+			_bool isBackGround = m_pPickingInfo->Is_BackGround();
+
 			if (isToolRendering)
 			{
 				_float2 fDefaultSize = { 128.f, 128.f };
@@ -870,14 +871,16 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 								else
 								{
 									m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(strFileName.c_str()), pModel);
-
-									m_pPickingInfo->Set_Model((C2DModel*)pModel);
-
+									C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
+									m_pPickingInfo->Set_Model(p2DModel);
+									m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
 								}
 							}
 							else
 							{
 								m_pPickingInfo->Set_Model((C2DModel*)pProtoModel);
+								m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
+
 							}
 
 						}
@@ -893,9 +896,8 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					if (StyleButton(MINI, "Object Create"))
 					{
 						C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
-						NormalDesc.strProtoTag = StringToWstring(m_pPickingInfo->Get_TextureName());
-						NormalDesc.fX = m_fOffsetPos.x;
-						NormalDesc.fY = m_fOffsetPos.y;
+						NormalDesc.strProtoTag = StringToWstring(m_pPickingInfo->Get_ModelName());
+						NormalDesc.fDefaultPosition = {0.f,0.f};
 						NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 						NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 
@@ -911,11 +913,10 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 						{
 							// 생성실패
 						}
-						else{
+						else
+						{
 
 							m_pPickingObject = static_cast<C2DMapObject*>(pGameObject);
-							m_pPickingObject->Set_PositionX(-m_fOffsetPos.x);
-							m_pPickingObject->Set_PositionY(m_fOffsetPos.y);
 							m_pPickingObject->Set_OffsetPos(m_fOffsetPos);
 						}
 
@@ -939,6 +940,8 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			ImGui::SameLine();
 			if (ImGui::Checkbox("Collider", &isCollider))
 				m_pPickingInfo->Set_Collider(isCollider);
+			if (ImGui::Checkbox("BackGround", &isBackGround))
+				m_pPickingInfo->Set_BackGround(isBackGround);
 
 
 			if (isSorting)
@@ -2194,7 +2197,7 @@ void C2DMap_Tool_Manager::Object_Clear(_bool _bSelected)
 {
 	if (_bSelected)
 		LOG_TYPE("Object Clear", LOG_DELETE);
-
+	m_pPickingObject = nullptr;
 	CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
 	if (pLayer != nullptr)
 	{

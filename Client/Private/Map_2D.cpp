@@ -84,11 +84,12 @@ HRESULT CMap_2D::Register_RenderGroup_ToRenderer()
 
 	CRenderGroup_2D* pRenderGroup_MRT = nullptr;
 
-	CRenderGroup_2D::RG_MRT_DESC RG_Map2DDesc;
+	CRenderGroup_2D::RG_2D_DESC RG_Map2DDesc;
 	RG_Map2DDesc.iRenderGroupID = RENDERGROUP::RG_2D;
 	RG_Map2DDesc.iPriorityID = m_iPriorityID;
 	RG_Map2DDesc.isViewportSizeChange = true;
 	RG_Map2DDesc.strMRTTag = m_strMRTKey;
+	RG_Map2DDesc.fRenderTargetSize = m_fRenderTargetSize;
 	m_pDSV = RG_Map2DDesc.pDSV = m_pGameInstance->Find_DSV(m_strDSVKey);
 
 	RG_Map2DDesc.vViewportSize = m_fRenderTargetSize;
