@@ -154,6 +154,14 @@ void CPlayerSword::Throw( _fvector _vDirection)
     m_pActorCom->Set_AngularVelocity(vAngularVelocity);
 }
 
+void CPlayerSword::Switch_Grip(_bool _bForehand)
+{
+	if (_bForehand)
+		m_pControllerTransform->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+	else
+	    m_pControllerTransform->Rotation(XMConvertToRadians(0.f), _vector{ 0,1,0,0 });
+}
+
 CPlayerSword* CPlayerSword::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CPlayerSword* pInstance = new CPlayerSword(_pDevice, _pContext);

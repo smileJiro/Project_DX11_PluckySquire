@@ -27,7 +27,7 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 
 	if (fProgress >= fMotionCancelProgress)
 	{
-		PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
 		if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 		{

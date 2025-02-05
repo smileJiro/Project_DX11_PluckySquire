@@ -132,7 +132,7 @@ bool CAnimation3D::Update_AnimTransition(const vector<class CBone*>& Bones, _flo
 void CAnimation3D::Reset(_bool _bReverse)
 {
 	__super::Reset(_bReverse);
-	m_fCurrentTrackPosition = _bReverse ? m_fDuration : 0;
+	//m_fCurrentTrackPosition = _bReverse ? m_fDuration : 0;
 }
 
 

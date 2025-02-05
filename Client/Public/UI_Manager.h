@@ -52,6 +52,7 @@ private:
 	_int								m_iCurrnetLineIndex = { 0 };
 	_bool								m_isPortraitRender = { false };
 	_float2								m_vDialoguePos = { 0.f, 0.f };
+	_float2								m_vShopPos = { 0.f, 0.f };
 
 
 
@@ -70,6 +71,8 @@ public:
 	vector<vector<CShopItemBG*>>		Get_ShopItems() { return m_ShopItems; }
 	_bool								Get_isESC() { return m_isESC; }
 	void								Set_isEsc(_bool _isEsc) { m_isESC = _isEsc; }
+	_float2								Get_ShopPos() { return m_vShopPos; }
+	void								Set_ShopPos(_float2 _vShopPos) { m_vShopPos = _vShopPos; }
 	_bool								Get_ConfirmStore() { return m_isConfirmStore; }
 	void								Set_ConfirmStore(_bool _Confirm) { m_isConfirmStore = _Confirm; }
 	_bool								Get_StoreYesOrno() { return m_isStoreYesORNo; }

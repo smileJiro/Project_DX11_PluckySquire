@@ -88,11 +88,11 @@ inline HRESULT CGlobalFunction_Manager::CreateConstBuffer(const T_CONSTANT& _tCo
 template<typename T_CONSTANT>
 inline HRESULT CGlobalFunction_Manager::UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer)
 {
-	if (nullptr == *_ppOutConstantBuffer)
+	if (nullptr == _pConstantBuffer)
 		return E_FAIL;
 
 	D3D11_BUFFER_DESC Desc;
-	(*_ppOutConstantBuffer)->GetDesc(&Desc);
+	_pConstantBuffer->GetDesc(&Desc);
 	if (D3D11_USAGE_DEFAULT == Desc.Usage)
 	{
 		MSG_BOX("ConstantBuffer Usage 가 Default라 Update ConstBuffer 불가.");
@@ -100,11 +100,11 @@ inline HRESULT CGlobalFunction_Manager::UpdateConstBuffer(const T_CONSTANT& _tCo
 	}
 
 	D3D11_MAPPED_SUBRESOURCE ms;
-	if (FAILED(m_pContext->Map(_pConstantBuffer, nullptr, D3D11_MAP_WRITE_DISCARD, nullptr, &ms)))
+	if (FAILED(m_pContext->Map(_pConstantBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms)))
 		return E_FAIL;
 
 	memcpy(ms.pData, &_tConstantBufferData, sizeof(_tConstantBufferData));
-	m_pContext->Unmap(_pConstantBuffer, nullptr);
+	m_pContext->Unmap(_pConstantBuffer, NULL);
 
 	return S_OK;
 }

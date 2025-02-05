@@ -16,6 +16,10 @@ public:
 private:
     _float m_fJumpAttackRisingForce = 6.f;
     _bool m_bRising = true;
+    _bool m_bGrounded = false;
+
+    _float m_f3DMotionCancelProgress = 0.258;
+    _float m_f2DMotionCancelProgress = 0.258;
 };
 
 END

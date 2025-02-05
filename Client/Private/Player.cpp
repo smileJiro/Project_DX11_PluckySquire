@@ -102,7 +102,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.isTrigger = true;                    
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
     SHAPE_SPHERE_DESC SphereDesc = {};
-	SphereDesc.fRadius = 1.f;
+	SphereDesc.fRadius = 0.5f;
     ShapeData.pShapeDesc = &SphereDesc;
 
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -223,6 +223,7 @@ HRESULT CPlayer::Ready_PartObjects()
     }
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
 	Set_PartActive(PLAYER_PART_SWORD, false);
+    m_pSword->Switch_Grip(true);
 
 	//Part Glove
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
@@ -462,11 +463,10 @@ void CPlayer::Jump()
 
 
 
-PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
+PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
-	PLAYER_KEY_RESULT tResult;
+	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bKeyStates), end(tResult.bKeyStates), false);
-
 
     if (Is_SwordEquiped())
     {
@@ -480,9 +480,14 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
     //점프
     if (KEY_PRESSING(KEY::SPACE))
         tResult.bKeyStates[PLAYER_KEY_JUMP] = true;
-    //구르기
+    //구르기 & 잠입
     if (KEY_PRESSING(KEY::LSHIFT))
-        tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
+    {
+        if (Is_SneakMode())
+            tResult.bKeyStates[PLAYER_KEY_SNEAK] = true;
+        else
+            tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
+    }
 
     COORDINATE eCoord = Get_CurCoord();
     //이동
@@ -585,6 +590,7 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
+
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
 }
 
@@ -632,6 +638,11 @@ void CPlayer::Set_State(STATE _eState)
     }
 }
 
+void CPlayer::Set_StealthMode(_bool _bNewMode)
+{
+    m_bSneakMode = _bNewMode; 
+}
+
 
 
 void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
@@ -655,6 +666,10 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
 void CPlayer::Set_3DTargetDirection(_fvector _vDir)
 {
     m_v3DTargetDirection = XMVector4Normalize( _vDir);
+}
+void CPlayer::Set_SwordGrip(_bool _bForehand)
+{
+	m_pSword->Switch_Grip(_bForehand);
 }
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {
@@ -722,7 +737,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
-
+    if (KEY_DOWN(KEY::N))
+    {
+		Set_StealthMode(!m_bSneakMode);
+    }
 
 }
 
