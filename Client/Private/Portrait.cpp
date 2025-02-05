@@ -30,7 +30,7 @@ HRESULT CPortrait::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_isRender = true;
+	m_isRender = false;
 
 	//_float2 vSize;
 	//vSize = m_pTextureCom->Get_Size();
@@ -54,20 +54,24 @@ void CPortrait::Update(_float _fTimeDelta)
 {
 	m_isRender = Uimgr->Get_PortraitRender();
 
-	Uimgr->Set_DialogId(TEXT("dialog_01"));
-	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+	if (true == m_isRender)
+	{
+		Uimgr->Set_DialogId(TEXT("dialog_01"));
+		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
 
-	//Uimgr->Get_DialogueLine()
-	if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
-		return;
+		//Uimgr->Get_DialogueLine()
+		if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
+			return;
 
-	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
-	m_ePortraitFace = (CDialog::PORTRAITNAME)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
+		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+		m_ePortraitFace = (CDialog::PORTRAITNAME)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
 
 
-	/* 추후 진행에따라 변경을 해야한다. */
-	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-	ChangePosition(m_isRender, RTSize);
+		/* 추후 진행에따라 변경을 해야한다. */
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		ChangePosition(m_isRender, RTSize);
+	}
+
 
 
 }

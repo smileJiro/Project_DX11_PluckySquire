@@ -78,10 +78,7 @@ void CShopPanel_BG::isRender()
 
 		m_isRender = true;
 		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-		Change_BookScale_ForShop(RTSize);
-		//m_pControllerTransform->Set_Scale(m_vOriginSize.x, m_vOriginSize.y, 1.f);
-		//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
-		
+		Change_BookScale_ForShop(RTSize);	
 
 	}
 	else if (m_isRender == true)

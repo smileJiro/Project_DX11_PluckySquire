@@ -165,7 +165,6 @@ void CUI::Change_BookScale_ForDialogue(_float2 vRTSize)
 
 void CUI::Free()
 {
-	Safe_Release(m_pPlayer);
 	Safe_Release(m_pShaderComs[COORDINATE_2D]);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);

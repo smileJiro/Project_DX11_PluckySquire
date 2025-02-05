@@ -143,8 +143,6 @@ protected:
 	_tchar			m_tFont[MAX_PATH] = {};
 	_float2			m_vOriginSize = {0.f, 0.f};
 
-	CPlayer*		m_pPlayer = { nullptr };
-
 
 
 

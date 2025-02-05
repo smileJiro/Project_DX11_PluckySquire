@@ -42,9 +42,7 @@ HRESULT CDialog::Initialize(void* _pArg)
 
 	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
 
-	m_isRender = true;
-	m_pPlayer = Uimgr->Get_Player();
-	Safe_AddRef(m_pPlayer);
+	m_isRender = false;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 	return S_OK;
@@ -62,8 +60,12 @@ void CDialog::Update(_float _fTimeDelta)
 
 
 	// 다이얼로그 변경 시 이용 스위치이나 뭘듯 해야할듯
-	Uimgr->Set_DialogId(TEXT("dialog_01"));
-	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+	if (true == m_isRender)
+	{
+		Uimgr->Set_DialogId(TEXT("dialog_01"));
+		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+	}
+
 
 
 }
@@ -332,7 +334,12 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		Uimgr->Set_DialogueLineIndex(Uimgr->Get_DialogueLineIndex() + 1);
 
 		_float2 vPos = {};
-
+		if (false == m_isRender)
+		{
+			m_isRender = true;
+			Uimgr->Set_PortraitRender(m_isRender);
+		}
+		
 		
 		switch (Uimgr->Get_DialogueLine(TEXT("dialog_01"), Uimgr->Get_DialogueLineIndex()).location) 
 		{
@@ -396,7 +403,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
 		{
 			m_isRender = false;
-			Uimgr->Set_PortraitRender(false);
+			Uimgr->Set_PortraitRender(m_isRender);
 		}
 	}
 }

@@ -359,9 +359,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 	if (nullptr == Uimgr->Get_Player())
 	{
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
+		
 	}
 	
-	//Safe_Release(pPlayer);
+	
 
 	return S_OK;
 }

@@ -50,7 +50,7 @@ private:
 	
 	_tchar								m_tDialogId[MAX_PATH] = {};
 	_int								m_iCurrnetLineIndex = { 0 };
-	_bool								m_isPortraitRender = { true };
+	_bool								m_isPortraitRender = { false };
 	_float2								m_vDialoguePos = { 0.f, 0.f };
 
 
