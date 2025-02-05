@@ -30,6 +30,8 @@ public:
 
 private:
 	void					isRender();
+	void					Cal_ShopBGPos(_float2 _vRTSize);
+	void					Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos);
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -41,8 +43,10 @@ public:
 	HRESULT					Cleanup_DeadReferences() override;
 
 
+
 protected:
 	_uint					m_iTextureCount = { 0 };
+	_float2					m_BGPos = { 0.f, 0.f };
 
 
 

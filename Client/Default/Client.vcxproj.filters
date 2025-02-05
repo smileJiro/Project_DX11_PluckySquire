@@ -277,6 +277,9 @@
     <Filter Include="97.ShaderFiles\PBR">
       <UniqueIdentifier>{ba8ec215-6826-4b57-944f-cbd6d6f43b40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Trigger\RayShape">
+      <UniqueIdentifier>{b4edec48-894b-483e-9ef0-06a389a7395a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -615,6 +618,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h" />
+    <ClInclude Include="..\public\RayShape.h">
+      <Filter>02.GameObjects\Trigger\RayShape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -941,6 +947,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
+    <ClCompile Include="..\private\RayShape.cpp">
+      <Filter>02.GameObjects\Trigger\RayShape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
