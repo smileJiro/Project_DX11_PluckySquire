@@ -101,7 +101,7 @@ HRESULT CMonster_Body::Ready_Desc(void** _pArg)
 		if (COORDINATE_2D == BodyDesc->eStartCoord)
 		{
 			BodyDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-			BodyDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+			BodyDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 		}
 		else if (COORDINATE_3D == BodyDesc->eStartCoord)
 		{
@@ -116,7 +116,7 @@ HRESULT CMonster_Body::Ready_Desc(void** _pArg)
 		BodyDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 		BodyDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
 
-		BodyDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+		BodyDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 		BodyDesc->iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
 		/* 태웅 : 렌더러 관련 추가 */
