@@ -43,7 +43,8 @@ public:
 	{
 		IDLE,
 		RUN,
-		JUMP,
+		JUMP_UP,
+		JUMP_DOWN,
 		ATTACK,
 		JUMP_ATTACK,
 		ROLL,
@@ -461,6 +462,7 @@ private:
 	HRESULT					Ready_PartObjects();
 	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
+	//Variables
 	_float m_fCenterHeight = 0.5;
 	_float m_fHeadHeight = 1.0;
 	_float m_fFootLength = 0.25;
@@ -470,20 +472,18 @@ private:
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360;
 	_bool m_bContactWall = false;
-
-	CStateMachine* m_pStateMachine = nullptr;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
-	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
-
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 
+	//Components
+	CStateMachine* m_pStateMachine = nullptr;
+	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
+	CCollider* m_pColliderCom = nullptr;
+
+	//Parts
 	class CPlayerSword* m_pSword = nullptr;
 
 	CGameObject* m_pCarryingObject = nullptr;
-
-private:
-	CCollider* m_pColliderCom = nullptr;
-
 
 
 public:

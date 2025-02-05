@@ -832,8 +832,8 @@ void CShopPanel::Change_BookScale_ForShopItem(_float2 _vRTSize)
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
 
-	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y, 0.0f, 1.0f));
+	//XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	//XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y, 0.0f, 1.0f));
 
 
 }

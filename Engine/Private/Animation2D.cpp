@@ -4,6 +4,11 @@
 //1  0
 //2 4
 CSpriteFrame::CSpriteFrame()
+	: m_vSpriteStartUV(0, 0)
+	, m_vSpriteEndUV(0, 0)
+	, m_pTexture(nullptr)
+	, m_fPixelsPerUnrealUnit(1.0f)
+	, m_matSpriteTransform(XMMatrixIdentity())
 {
 }
 CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
