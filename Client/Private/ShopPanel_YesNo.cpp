@@ -30,12 +30,18 @@ HRESULT CShopPanel_YesNo::Initialize(void* _pArg)
 
 	m_iTextureCount = pDesc->iTextureCount;
 	m_eShopPanel = pDesc->eShopPanelKind;
-	m_isRender = true;
+	m_isRender = false;
+
+	_float2 vCalScale = { 0.f, 0.f };
+	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
+	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
+
+	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+	
 
 	return S_OK;
 }
@@ -46,7 +52,7 @@ void CShopPanel_YesNo::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel_YesNo::Child_Update(_float _fTimeDelta)
 {
-	//isRender();
+	isRender();
 }
 
 void CShopPanel_YesNo::Child_LateUpdate(_float _fTimeDelta)
@@ -54,12 +60,16 @@ void CShopPanel_YesNo::Child_LateUpdate(_float _fTimeDelta)
 	if (true == Uimgr->Get_StoreYesOrno())
 	{
 
+		// TODO :: 나중에 수정해야한다. 각 넓이는 가변적이기 때문에.
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
+		Cal_ShopYesNOPos(RTSize, Uimgr->Get_ShopPos());
 	}
 }
 
 HRESULT CShopPanel_YesNo::Render()
 {
-	if (true == m_isRender && (true == Uimgr->Get_ConfirmStore()))
+	if (true == m_isRender && true == Uimgr->Get_ConfirmStore())
 		__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
 
 	return S_OK;
@@ -70,9 +80,23 @@ void CShopPanel_YesNo::isRender()
 	if (m_isRender == false)
 	{
 		m_isRender = true;
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 	}
 	else if (m_isRender == true)
+	{
 		m_isRender = false;
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+	}
+}
+
+void CShopPanel_YesNo::Cal_ShopYesNOPos(_float2 _vRTSize, _float2 _vBGPos)
+{
+	_float2 vPos = { 0.f, 0.f };
+
+	vPos.x = _vBGPos.x + _vRTSize.x * 0.10f;
+	vPos.y = _vBGPos.y - _vRTSize.x * 0.06f;
+
+	Get_Transform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 }
 
 HRESULT CShopPanel_YesNo::Ready_Components()

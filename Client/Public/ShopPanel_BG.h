@@ -46,6 +46,7 @@ public:
 
 protected:
 	_uint					m_iTextureCount = { 0 };
+	_float2					m_BGPos = { 0.f, 0.f };
 
 
 
