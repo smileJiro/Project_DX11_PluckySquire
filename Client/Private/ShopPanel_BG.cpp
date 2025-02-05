@@ -23,7 +23,7 @@ HRESULT CShopPanel_BG::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
-	m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
+	//m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
 
 	pDesc->fX = RTSIZE_BOOK2D_X * 0.5f;
 	pDesc->fY = RTSIZE_BOOK2D_Y * 0.5f;

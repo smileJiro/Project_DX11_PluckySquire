@@ -195,6 +195,8 @@ HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	{
 		_uint iFrameRun = jKeyFrame["FrameRun"];
 
+		if (jKeyFrame["Sprite"].is_null())
+			continue;
 		string strSpriteFileName = jKeyFrame["Sprite"]["ObjectName"];
 		_uint iStart = (_uint)(strSpriteFileName.find_first_of('\'')) + 1;
 		_uint iCount = (_uint)strSpriteFileName.find_last_of('\'') - iStart;

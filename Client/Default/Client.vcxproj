@@ -184,7 +184,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Public\2DDefault_RenderObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
@@ -301,7 +300,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp">

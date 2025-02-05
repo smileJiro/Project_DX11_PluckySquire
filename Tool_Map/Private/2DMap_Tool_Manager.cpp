@@ -220,6 +220,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		if (GetOpenFileName(&ofn))
 		{
 			Object_Clear(false);
+			m_fOffsetPos = { 0.f,0.f };
 			LOG_TYPE(_wstring(L"=====  2D Map Read Start  -> ") + szName, LOG_LOAD);
 
 			string arrAxisKey[3] = { "X","Y","Z" };
@@ -390,8 +391,8 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 				{
 					C2DMapObject::MAPOBJ_2D_DESC NormalDesc = {};
 					NormalDesc.strProtoTag = StringToWstring(Pair.first);
-					NormalDesc.fX = Pair.second.x;
-					NormalDesc.fY = Pair.second.y;
+					NormalDesc.fDefaultPosition.x = Pair.second.x;
+					NormalDesc.fDefaultPosition.y = Pair.second.y;
 					NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 					NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 
@@ -422,13 +423,11 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 
 	}
 
-	static _float2 fOffsetPos;
-
-	ImGui::Text("Offset: %.2f, %.2f", fOffsetPos.x, fOffsetPos.y);
+	ImGui::Text("Offset: %.2f, %.2f", m_fOffsetPos.x, m_fOffsetPos.y);
 	ImGui::SameLine();
 
 	ImGui::SetNextItemWidth(50.0f);
-	if (ImGui::DragFloat("##X", &fOffsetPos.x, 10.f))
+	if (ImGui::DragFloat("##X", &m_fOffsetPos.x, 10.f))
 	{
 		auto Layer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
 		if (nullptr != Layer)
@@ -436,7 +435,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 			auto GameObjects = Layer->Get_GameObjects();
 			for (auto& pGameObject : GameObjects)
 			{
-				static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(fOffsetPos);
+				static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(m_fOffsetPos);
 			}
 		}
 	}
@@ -444,7 +443,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);
-	if (ImGui::DragFloat("##Y", &fOffsetPos.y, 10.f))
+	if (ImGui::DragFloat("##Y", &m_fOffsetPos.y, 10.f))
 	{
 		auto Layer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
 		if (nullptr != Layer)
@@ -452,7 +451,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 			auto GameObjects = Layer->Get_GameObjects();
 			for (auto& pGameObject : GameObjects)
 			{
-				static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(fOffsetPos);
+				static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(m_fOffsetPos);
 			}
 		}
 	}
@@ -498,27 +497,26 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 
 	if (nullptr != m_pPickingObject)
 	{
-		_vector vPos = m_pPickingObject->Get_FinalPosition();
 		_wstring strKey = m_pPickingObject->Get_Key();
-		_float2 fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
-		m_pPickingObject->Get_FinalPosition();
+		_float2 fPos = m_pPickingObject->Get_DefaultPosition();
+		//m_pPickingObject->Get_FinalPosition();
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
 		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");
 		ImGui::SetNextItemWidth(100.f);
 		if (ImGui::DragFloat("##ObjectPosX", &fPos.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
 		{
-			m_pPickingObject->Set_PositionX(fPos.x);
-			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(fOffsetPos);
+			m_pPickingObject->Set_DefaultPosition(fPos);
+			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
 		}
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(100.f);
 		if (ImGui::DragFloat("##ObjectPosY", &fPos.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
 		{
-			m_pPickingObject->Set_PositionY(-fPos.y);
-			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(fOffsetPos);
+			m_pPickingObject->Set_DefaultPosition(fPos);
+			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
 		}
 		ImGui::SameLine();
-		ImGui::Text("Offset Pos");
+		ImGui::Text("Position");
 
 	}
 
@@ -650,7 +648,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 		}
 #pragma endregion
 
-		
+
 
 		if (ImGui::BeginListBox("##Model List", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
 		{
@@ -658,6 +656,8 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 				_char szName[MAX_PATH] = {};
 				_string strSearchTag = pInfo->Get_SearchTag();
 				_bool isCurTag = StringToWstring(strSearchTag) == m_arrSelectName[MODEL_LIST];
+				if (strSearchTag == "")
+					strSearchTag = "empty";
 				if (ImGui::Selectable(strSearchTag.c_str(), isCurTag))
 				{
 					if (isCurTag)
@@ -676,7 +676,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			ImGui::EndListBox();
 		}
 		Begin_Draw_ColorButton("##Add_Model_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
-		if(StyleButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE::MINI,"Add Model Info"))
+		if (StyleButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE::MINI, "Add Model Info"))
 		{
 			_string strOriginNewTag = "NewModel_";
 			_uint iNewTagNumber = 1;
@@ -786,12 +786,14 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			ImGui::SeparatorText("Model Info");
 
 			_string strSearchTag = m_pPickingInfo->Get_SearchTag().c_str();
-			_string strTextureName = m_pPickingInfo->Get_TextureName().c_str();
+			_string strTextureName = m_pPickingInfo->Get_ModelName().c_str();
 			_bool isCollider = m_pPickingInfo->Is_Collider();
 			_bool isActive = m_pPickingInfo->Is_Active();
 			_bool isSorting = m_pPickingInfo->Is_Sorting();
 			_bool isModelLoad = m_pPickingInfo->Is_ModelLoad();
 			_bool isToolRendering = m_pPickingInfo->Is_ToolRendering();
+			_bool isBackGround = m_pPickingInfo->Is_BackGround();
+
 			if (isToolRendering)
 			{
 				_float2 fDefaultSize = { 128.f, 128.f };
@@ -825,16 +827,63 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 				ImGui::SetNextItemWidth(200.0f);
 				ImGui::Text("Model Load :");
 				ImGui::SameLine();
-				if(isModelLoad)
+				if (isModelLoad)
 					ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "OK");
 				else
 					ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "NO");
 
 				if (!isModelLoad)
 				{
-					if (ImGui::Button("Add .2dModel"))
+					if (ImGui::Button("Add .model2d"))
 					{
-						int a = 1;
+						_tchar originalDir[MAX_PATH];
+						GetCurrentDirectory(MAX_PATH, originalDir);
+
+						_wstring strModelPath = L"..\\..\\Client\\Bin\\Resources\\Models\\2DMapObject";
+
+						OPENFILENAME ofn = {};
+						_tchar szName[MAX_PATH] = {};
+						ofn.lStructSize = sizeof(OPENFILENAME);
+						ofn.hwndOwner = g_hWnd;
+						ofn.lpstrFile = szName;
+						ofn.nMaxFile = sizeof(szName);
+						ofn.lpstrFilter = L".model2d\0*.model2d\0";
+						ofn.nFilterIndex = 0;
+						ofn.lpstrFileTitle = nullptr;
+						ofn.nMaxFileTitle = 0;
+						wstring strPath = strModelPath;
+						ofn.lpstrInitialDir = strPath.c_str();
+						ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+						if (GetOpenFileName(&ofn))
+						{
+							const string strFileName = WstringToString(Get_FileName_From_Path(szName).first);
+							const string strPath = WstringToString(szName);
+							CBase* pProtoModel = m_pGameInstance->Find_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(strFileName));
+							if (pProtoModel == nullptr)
+							{
+								CModel* pModel = C2DModel::Create(m_pDevice, m_pContext, strPath.c_str());
+
+								if (nullptr == pModel)
+								{
+									MSG_BOX("2D Model Create Failed");
+								}
+								else
+								{
+									m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(strFileName.c_str()), pModel);
+									C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
+									m_pPickingInfo->Set_Model(p2DModel);
+									m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
+								}
+							}
+							else
+							{
+								m_pPickingInfo->Set_Model((C2DModel*)pProtoModel);
+								m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
+
+							}
+
+						}
 					}
 					ImGui::SameLine();
 				}
@@ -842,13 +891,46 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 				{
 					ImGui::SetNextItemWidth(200.0f);
 					ImGui::Text("Model File Name : %s", strTextureName.c_str());
+
+					Begin_Draw_ColorButton("Object_Create_Style", (ImVec4(0.32f, 0.56f, 0.f, 1.f)));
+					if (StyleButton(MINI, "Object Create"))
+					{
+						C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
+						NormalDesc.strProtoTag = StringToWstring(m_pPickingInfo->Get_ModelName());
+						NormalDesc.fDefaultPosition = {0.f,0.f};
+						NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
+						NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+
+						NormalDesc.pInfo = m_pPickingInfo;
+
+
+						CGameObject* pGameObject = nullptr;
+						if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
+							LEVEL_TOOL_2D_MAP,
+							L"Layer_2DMapObject",
+							&pGameObject,
+							(void*)&NormalDesc)))
+						{
+							// 생성실패
+						}
+						else
+						{
+
+							m_pPickingObject = static_cast<C2DMapObject*>(pGameObject);
+							m_pPickingObject->Set_OffsetPos(m_fOffsetPos);
+						}
+
+					}
+					End_Draw_ColorButton();
+
+
 				}
 
-				
+
 			}
 			ImGui::EndGroup();
 
-		
+
 			ImGui::SeparatorText("Model Option");
 			if (ImGui::Checkbox("Sorting", &isSorting))
 				m_pPickingInfo->Set_Sorting(isActive);
@@ -858,6 +940,8 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			ImGui::SameLine();
 			if (ImGui::Checkbox("Collider", &isCollider))
 				m_pPickingInfo->Set_Collider(isCollider);
+			if (ImGui::Checkbox("BackGround", &isBackGround))
+				m_pPickingInfo->Set_BackGround(isBackGround);
 
 
 			if (isSorting)
@@ -899,7 +983,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 							mousePos.y >= imagePos.y && mousePos.y <= imagePos.y + fDefaultSize.y);
 
 						if (isMouseOverImage && ImGui::IsMouseDown(0))
-							m_pPickingInfo->Set_Sorting_Pos({ (mousePos.x - imagePos.x) / fRatio - (fOffSize.x * 0.5f), (mousePos.y - imagePos.y) /fRatio - (fOffSize.y * 0.5f) });
+							m_pPickingInfo->Set_Sorting_Pos({ (mousePos.x - imagePos.x) / fRatio - (fOffSize.x * 0.5f), (mousePos.y - imagePos.y) / fRatio - (fOffSize.y * 0.5f) });
 
 						ImVec2 DrawPos = { fSortingPos.x * fRatio + imagePos.x + (fDefaultSize.x * 0.5f),fSortingPos.y * fRatio + imagePos.y + (fDefaultSize.y * 0.5f) };
 						drawList->AddCircleFilled(DrawPos, 5.f, IM_COL32(255, 0, 0, 255));
@@ -923,7 +1007,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 				if (ImGui::BeginListBox("##ActiveType", ImVec2(-FLT_MIN, C2DMapObjectInfo::MAPOBJ_ACTIVE_TYPE::ACTIVE_END * ImGui::GetTextLineHeightWithSpacing())))
 				{
 					_uint iSelectIndex = 0;
-					for (auto& strActiveTag : m_arrActiveTypeString) 
+					for (auto& strActiveTag : m_arrActiveTypeString)
 					{
 						if (ImGui::Selectable(strActiveTag.c_str(), eActiveType == iSelectIndex))
 							if (eActiveType != iSelectIndex)
@@ -950,17 +1034,17 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 				if (ImGui::RadioButton("Square", isSquare))
 					m_pPickingInfo->Set_ColliderType(C2DMapObjectInfo::MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_SQUARE);
 
-					//PosOffset
+				//PosOffset
 				if (!isNone)
 				{
-					_float2 fOffsetPos = m_pPickingInfo->Get_Collider_Offset_Pos();
+					_float2 m_fOffsetPos = m_pPickingInfo->Get_Collider_Offset_Pos();
 					ImGui::SetNextItemWidth(50.f);
-					if (ImGui::InputFloat("##PosX", &fOffsetPos.x, 0.f, 0.f, "x:%.1f"))
-						m_pPickingInfo->Set_Collider_Offset_Pos(fOffsetPos);
+					if (ImGui::InputFloat("##PosX", &m_fOffsetPos.x, 0.f, 0.f, "x:%.1f"))
+						m_pPickingInfo->Set_Collider_Offset_Pos(m_fOffsetPos);
 					ImGui::SameLine();
 					ImGui::SetNextItemWidth(50.f);
-					if (ImGui::InputFloat("##PosY", &fOffsetPos.y, 0.f, 0.f, "y:%.1f"))
-						m_pPickingInfo->Set_Collider_Offset_Pos(fOffsetPos);
+					if (ImGui::InputFloat("##PosY", &m_fOffsetPos.y, 0.f, 0.f, "y:%.1f"))
+						m_pPickingInfo->Set_Collider_Offset_Pos(m_fOffsetPos);
 					ImGui::SameLine();
 					ImGui::Text("Offset Pos");
 					_float fRadius = m_pPickingInfo->Get_Collider_Radius();
@@ -970,7 +1054,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					{
 						//Extent,
 						ImGui::SetNextItemWidth(50.f);
-						if(ImGui::InputFloat("##ExtentX", &fExtent.x, 0.f, 0.f, "x:%.1f"))
+						if (ImGui::InputFloat("##ExtentX", &fExtent.x, 0.f, 0.f, "x:%.1f"))
 							m_pPickingInfo->Set_Collider_Extent(fExtent);
 						ImGui::SameLine();
 						ImGui::SetNextItemWidth(50.f);
@@ -984,7 +1068,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					{
 						//Radius
 						ImGui::SetNextItemWidth(110.f);
-						if(ImGui::InputFloat("Radius",&fRadius,0.f,0.f,"%.1f"))
+						if (ImGui::InputFloat("Radius", &fRadius, 0.f, 0.f, "%.1f"))
 							m_pPickingInfo->Set_Collider_Radius(fRadius);
 
 					}
@@ -1010,19 +1094,19 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 								ImVec2(fDefaultSize.x, fDefaultSize.y)
 							);
 
-							ImGui::Dummy({ padding.x * 2.f, padding.y * 0.5f});
+							ImGui::Dummy({ padding.x * 2.f, padding.y * 0.5f });
 
 							ImDrawList* drawList = ImGui::GetWindowDrawList();
-							ImVec2 DefaultDrawPosMin = { imagePos.x, imagePos.y};
+							ImVec2 DefaultDrawPosMin = { imagePos.x, imagePos.y };
 							ImVec2 DefaultDrawPosMax = { imagePos.x + fDefaultSize.x, imagePos.y + fDefaultSize.y };
 							drawList->AddRect(DefaultDrawPosMin, DefaultDrawPosMax, IM_COL32(222, 222, 222, 255), 0.0f, ImDrawFlags_None, 3.0f);
 							ImGui::SetNextItemWidth(50.f);
-							if (ImGui::DragFloat("##PosX", &fOffsetPos.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
-								m_pPickingInfo->Set_Collider_Offset_Pos(fOffsetPos);
+							if (ImGui::DragFloat("##PosX", &m_fOffsetPos.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
+								m_pPickingInfo->Set_Collider_Offset_Pos(m_fOffsetPos);
 							ImGui::SameLine();
 							ImGui::SetNextItemWidth(50.f);
-							if (ImGui::DragFloat("##PosY", &fOffsetPos.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
-								m_pPickingInfo->Set_Collider_Offset_Pos(fOffsetPos);
+							if (ImGui::DragFloat("##PosY", &m_fOffsetPos.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
+								m_pPickingInfo->Set_Collider_Offset_Pos(m_fOffsetPos);
 							ImGui::SameLine();
 							ImGui::Text("Offset Pos");
 							if (isAABB)
@@ -1030,8 +1114,8 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 								_float2 fDrawExtent = fExtent;
 								fDrawExtent.x *= fRatio;
 								fDrawExtent.y *= fRatio;
-								ImVec2 DrawPosMin = { imagePos.x + fOffsetPos.x + (fDefaultSize.x * 0.5f) - (fDrawExtent.x * 0.5f), imagePos.y + fOffsetPos.y + (fDefaultSize.y * 0.5f) - (fDrawExtent.y * 0.5f) };
-								ImVec2 DrawPosMax = { imagePos.x + fOffsetPos.x + (fDefaultSize.x * 0.5f) + (fDrawExtent.x * 0.5f), imagePos.y + fOffsetPos.y + (fDefaultSize.y * 0.5f) + (fDrawExtent.y * 0.5f) };
+								ImVec2 DrawPosMin = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f) - (fDrawExtent.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f) - (fDrawExtent.y * 0.5f) };
+								ImVec2 DrawPosMax = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f) + (fDrawExtent.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f) + (fDrawExtent.y * 0.5f) };
 								drawList->AddRect(DrawPosMin, DrawPosMax, IM_COL32(255, 0, 0, 255), 0.0f, ImDrawFlags_None, 2.0f);
 								ImGui::SetNextItemWidth(50.f);
 								if (ImGui::DragFloat("##ExtentX", &fExtent.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
@@ -1046,7 +1130,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 							if (isSquare)
 							{
-								ImVec2 DrawPos = { imagePos.x + fOffsetPos.x + (fDefaultSize.x * 0.5f), imagePos.y + fOffsetPos.y + (fDefaultSize.y * 0.5f)};
+								ImVec2 DrawPos = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f)};
 								drawList->AddCircle(DrawPos, fRadius * fRatio, IM_COL32(255, 0, 0, 255));
 								ImGui::SetNextItemWidth(110.f);
 								if (ImGui::DragFloat("Radius", &fRadius, 1.f, -FLT_MAX, FLT_MAX, "%.1f"))
@@ -2113,7 +2197,7 @@ void C2DMap_Tool_Manager::Object_Clear(_bool _bSelected)
 {
 	if (_bSelected)
 		LOG_TYPE("Object Clear", LOG_DELETE);
-
+	m_pPickingObject = nullptr;
 	CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
 	if (pLayer != nullptr)
 	{

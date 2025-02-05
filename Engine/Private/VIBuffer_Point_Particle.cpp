@@ -253,7 +253,7 @@ void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 		if (m_iSpawnIndex != m_iNumInstances)
 		{
 
-			for (_int i = 0; i < m_iNumInstances; i++)
+			for (_uint i = 0; i < m_iNumInstances; i++)
 			{
 				pVertices[i] = m_pInstanceVertices[i];
 				pVertices[i].vLifeTime.y = 0.f;
@@ -261,7 +261,7 @@ void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 				if (m_pSpawnMatrix)
 				{
 					_matrix matSpawn = XMLoadFloat4x4(m_pSpawnMatrix);
-					for (_int i = 0; i < 3; ++i)
+					for (_uint i = 0; i < 3; ++i)
 						matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
 
 					XMStoreFloat4(&pVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vRight), matSpawn));
@@ -273,7 +273,7 @@ void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
 			m_iSpawnIndex = m_iNumInstances;
 		}
 
-		for (_int i = 0; i < m_iNumInstances; i++)
+		for (_uint i = 0; i < m_iNumInstances; i++)
 		{
 			
 

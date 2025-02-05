@@ -21,9 +21,17 @@ HRESULT CUI::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CUI::Initialize(void* pArg)
+HRESULT CUI::Initialize(void* _pArg)
 {
-	if (FAILED(__super::Initialize(pArg)))
+
+	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
+
+
+	m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
+
+
+
+	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
 	//if (FAILED(Ready_Components()))
@@ -51,11 +59,14 @@ HRESULT CUI::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
+	if (L"" == m_strSectionName)
+	{
+		if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+			return E_FAIL;
 
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
+		if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
+	}
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture", _iTextureindex)))
 		return E_FAIL;
@@ -92,7 +103,6 @@ HRESULT CUI::Bind_ShaderResources()
 
 void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 {
-	_float3 vScaleSize;
 	_float2 vCalSize;
 
 	vScaleSize = m_pControllerTransform->Get_Scale();

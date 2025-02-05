@@ -17,6 +17,7 @@ public:
 
 private:
 	_float m_fSpeed = 7.f;
+    _float m_fRotateSpeed = 1080.f;
 };
 
 END

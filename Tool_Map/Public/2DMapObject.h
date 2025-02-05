@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Map_Tool_Defines.h"
-#include "UIObject.h"
+#include "ModelObject.h"
 #include "2DMapObjectInfo.h"
 
 BEGIN(Engine)
@@ -13,14 +13,16 @@ END
 
 BEGIN(Map_Tool)
 
-class C2DMapObject final : public CUIObject
+class C2DMapObject final : public CModelObject
 {
 public :
 
 public:
-	typedef struct tag2DMapObjectDesc : CUIObject::UIOBJECT_DESC
+	typedef struct tag2DMapObjectDesc : CModelObject::MODELOBJECT_DESC
 	{
+		_bool		isLoad = true;
 		_wstring	strProtoTag;
+		_float2		fDefaultPosition = {0.f, 0.f};
 		_float2		fRenderTargetSize;
 		C2DMapObjectInfo* pInfo = nullptr;
 	}MAPOBJ_2D_DESC;
@@ -49,10 +51,10 @@ public:
 	
 	HRESULT Update_Model_Index();
 	
+	void	Set_DefaultPosition(_float2 _fPosition) { m_fDefaultPosition = _fPosition; }
+	_float2 Get_DefaultPosition() { return m_fDefaultPosition; }
+
 private:
-	CShader*		m_pShader = { nullptr };
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
-	CTexture*		m_pTextureCom = { nullptr };
 	C2DMapObjectInfo* m_pModelInfo;
 
 	_wstring		m_strKey = {};
@@ -60,9 +62,8 @@ private:
 	_float2			m_fRenderTargetSize; 
 	_bool			m_isModelLoad = false;
 	
-private:
-	HRESULT Ready_Components(MAPOBJ_2D_DESC* Desc);
-	HRESULT Bind_ShaderResources();
+	_float2			m_fDefaultPosition = {};
+
 public:
 	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HANDLE _hFile, vector<C2DMapObjectInfo*>& _ModelInfos);

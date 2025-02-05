@@ -26,7 +26,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 			Switch_RunAnimation2D(eFDir);
 		}
 		if (COORDINATE_3D == eCoord)
-			m_pOwner->Rotate_To(XMVector3Normalize(tKeyResult.vMoveDir), 1080);
+			m_pOwner->Rotate_To(XMVector3Normalize(tKeyResult.vMoveDir), m_fRotateSpeed);
 		if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
@@ -35,6 +35,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::ROLL);
 		else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
+		return;
 	}
 	else
 	{

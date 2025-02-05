@@ -136,6 +136,7 @@ private:
 	_string		m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_END];
 	_string		m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_END];
 
+	_float2		m_fOffsetPos = { 0.f, 0.f };
 
 public:
 	virtual void Free();

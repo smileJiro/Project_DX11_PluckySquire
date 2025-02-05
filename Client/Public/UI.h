@@ -100,10 +100,10 @@ public:
 
 public:
 	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
-	virtual void Priority_Update(_float fTimeDelta);
-	virtual void Update(_float fTimeDelta);
-	virtual void Late_Update(_float fTimeDelta);
+	virtual HRESULT Initialize(void* _pArg);
+	virtual void Priority_Update(_float _fTimeDelta);
+	virtual void Update(_float _fTimeDelta);
+	virtual void Late_Update(_float _fTimeDelta);
 	virtual HRESULT Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT);
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
 

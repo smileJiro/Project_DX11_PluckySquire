@@ -398,10 +398,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	Desc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
 
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
-		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
-		return E_FAIL;
-
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
 		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
 		return E_FAIL;
@@ -674,7 +670,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		}
 	}
 
-
+	// 윈도우 기준으로 좌표 잡으면 당연히 안됨... 지금까지 된게 이상한거임
 	pDesc.fX = g_iWinSizeX / 2.f / 2.f ;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
 	pDesc.fSizeX = 1208.f * 0.7f / 2.f;
@@ -683,6 +679,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	// 윈도우 기준으로 좌표 잡으면 당연히 안됨... 지금까지 된게 이상한거임22
 	pDesc.fX = g_iWinSizeX / 2.f / 2.f;
 	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
 	pDesc.fSizeX = 256.f * 0.7f / 2.f;

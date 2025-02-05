@@ -188,6 +188,17 @@ void CActor_Dynamic::Set_Rotation(_fvector _vLook)
 	pDynamicActor->setGlobalPose(newTransform, m_isActive); 
 }
 
+void CActor_Dynamic::Set_LinearDamping(_float _fValue)
+{
+	static_cast<PxRigidDynamic*>(m_pActor)->setLinearDamping(_fValue);
+
+}
+
+void CActor_Dynamic::Set_AngularDamping(_float _fValue)
+{
+	static_cast<PxRigidDynamic*>(m_pActor)->setAngularDamping(_fValue);
+}
+
 void CActor_Dynamic::Add_Force(const _float3& _vForce)
 {
 	static_cast<PxRigidDynamic*>(m_pActor)->addForce(PxVec3(_vForce.x, _vForce.y, _vForce.z), PxForceMode::eFORCE, m_isActive);

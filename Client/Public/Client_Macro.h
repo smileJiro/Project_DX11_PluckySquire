@@ -18,5 +18,6 @@ namespace Client
 #define MAP_3D_DEFAULT_PATH L"../Bin/MapSaveFiles/3D/"
 
 #define Uimgr CUI_Manager::GetInstance()
+#define SECTION_MGR CSection_Manager::GetInstance()
 
 }

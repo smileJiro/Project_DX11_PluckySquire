@@ -285,10 +285,7 @@ HRESULT CNPC_Store::Ready_ActorDesc(void* _pArg)
 	pDesc->pActorDesc = ActorDesc;
 
 	/* Shapedata 할당해제 */
-	for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-	{
-		Safe_Delete(ShapeData);
-	}
+	Safe_Delete(ShapeData);
 
 	return S_OK;
 }
@@ -299,8 +296,7 @@ HRESULT CNPC_Store::Ready_Components()
 	AABBDesc.pOwner = this;
 	AABBDesc.vExtents = { 180.f, 180.f };
 	AABBDesc.vScale = { 1.0f, 1.0f };
-	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.2f };
-	AABBDesc.isBlock = true;
+	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
 		return E_FAIL;
