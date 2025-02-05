@@ -16,7 +16,7 @@ HRESULT CSection_2D::Initialize(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
 	if (_pDesc == nullptr)
 		return E_FAIL;
 	if (1 == _pDesc->iLayerGroupCount)
-		_pDesc->iLayerGroupCount = SECTION_2D_RENDERGROUP_LAST;
+		_pDesc->iLayerGroupCount = SECTION_2D_RENDERGROUP::SECTION_2D_RENDERGROUP_LAST;
 
 
 	if (FAILED(__super::Initialize(_pDesc)))
@@ -122,19 +122,34 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 				ReadFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
 
+				const auto& tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(iModelIndex);
+
+
 				CMapObject::MAPOBJ_DESC NormalDesc = {};
-				NormalDesc.i2DModelIndex = iModelIndex;
-				NormalDesc.tTransform2DDesc.vInitialPosition = _float3(fPos.x, fPos.y, 0.0f);
 				NormalDesc.is2DImport = true;
+				
+				NormalDesc.Build_2D_Model(CSection_Manager::GetInstance()->Get_SectionLeveID()
+					, StringToWstring(tInfo.strModelName)
+					, L"Prototype_Component_Shader_VtxPosTex"
+				);
+				NormalDesc.Build_2D_Transform(fPos);
 
-				NormalDesc.iModelPrototypeLevelID_2D = CSection_Manager::GetInstance()->Get_SectionLeveID();
-				NormalDesc.isCoordChangeEnable = false;
-				NormalDesc.eStartCoord = COORDINATE_2D;
+				NormalDesc.isSorting = tInfo.isSorting;
+				NormalDesc.isCollider = tInfo.isCollider;
+				NormalDesc.isActive = tInfo.isActive;
+				
+				NormalDesc.strActiveType = tInfo.strActiveType;
+				NormalDesc.strColliderType = tInfo.strColliderType;
+				
+				NormalDesc.fSorting_Offset_Pos = tInfo.fSorting_Offset_Pos;
 
+				NormalDesc.fCollider_Offset_Pos = tInfo.fCollider_Offset_Pos;
+				NormalDesc.fCollider_Extent = tInfo.fCollider_Extent;
+				NormalDesc.fCollider_Radius = tInfo.fCollider_Radius;
 				CGameObject* pGameObject = nullptr;
 
 				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-					NormalDesc.iModelPrototypeLevelID_2D,
+					NormalDesc.iCurLevelID,
 					L"Layer_2DMapObject",
 					&pGameObject,
 					(void*)&NormalDesc);
@@ -174,17 +189,19 @@ HRESULT CSection_2D::Register_RenderGroup_ToRenderer()
 
 HRESULT CSection_2D::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
+	// Model
+	// 컨테이너 
 	HRESULT hr = __super::Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
-	if (SUCCEEDED(hr) && nullptr != m_pMap)
-	{
-		_float2 fRenderTargetSize = m_pMap->Get_RenderTarget_Size();
+	//if (SUCCEEDED(hr) && nullptr != m_pMap)
+	//{
+	//	_float2 fRenderTargetSize = m_pMap->Get_RenderTarget_Size();
 
-		fRenderTargetSize.x /= (_float)DEFAULT_SIZE_BOOK2D_X;
-		fRenderTargetSize.y /= (_float)DEFAULT_SIZE_BOOK2D_Y;
-		_pGameObject->Set_Scale(COORDINATE_2D, fRenderTargetSize.x, fRenderTargetSize.y,1.f);
-	}
+	//	fRenderTargetSize.x /= (_float)DEFAULT_SIZE_BOOK2D_X;
+	//	fRenderTargetSize.y /= (_float)DEFAULT_SIZE_BOOK2D_Y;
+	//	_pGameObject->Set_Scale(COORDINATE_2D, fRenderTargetSize.x, fRenderTargetSize.y,1.f);
+	//}
 
-		return E_NOTIMPL;
+	return hr;
 }
 
 ID3D11RenderTargetView* CSection_2D::Get_RTV_FromRenderTarget()

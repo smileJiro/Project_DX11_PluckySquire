@@ -40,8 +40,8 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
-		//공격 전환
-		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		//공격 준비로 전환
+		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 		return;
 	}
 
@@ -55,9 +55,11 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 		if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
 			//추적
-			m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_FinalPosition(), XMVectorGetY(m_pOwner->Get_FinalPosition())), _fTimeDelta);
+			//m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_FinalPosition(), XMVectorGetY(m_pOwner->Get_FinalPosition())), _fTimeDelta);
 			//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
-			m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta * 2.f);
+			//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta * 2.f);
+			m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
+			m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 		}
 		else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{

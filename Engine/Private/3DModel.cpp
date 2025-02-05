@@ -325,11 +325,8 @@ void C3DModel::Switch_Animation(_uint iIdx, _bool _bReverse)
 	m_iPrevAnimIndex = m_iCurrentAnimIndex;
 	m_iCurrentAnimIndex = iIdx;
 	m_mapAnimTransLeftFrame.clear();
-
 	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
-
 	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
-
 }
 
 void C3DModel::To_NextAnimation()

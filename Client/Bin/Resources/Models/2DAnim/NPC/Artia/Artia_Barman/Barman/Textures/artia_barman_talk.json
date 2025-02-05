@@ -1,0 +1,117 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "artia_barman_talk",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0001_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0002_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0003_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0004_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0005_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0006_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0007_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0008_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0009_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0010_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0011_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0012_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0013_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0014_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_talk_0015_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_talk_0015_X02.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

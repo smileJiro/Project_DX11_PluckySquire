@@ -20,6 +20,7 @@ public:
 	virtual void Exit() {};
 	virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) {};
 
+	CPlayer::STATE Get_StateID() { return m_eStateID; }
 protected:
 	CPlayer::STATE m_eStateID;
 	CGameInstance* m_pGameInstance =  nullptr ;

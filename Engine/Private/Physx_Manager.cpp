@@ -26,8 +26,8 @@ HRESULT CPhysx_Manager::Initialize()
 	if (FAILED(Initialize_Foundation()))
 		return E_FAIL;
 
-	//if (FAILED(Initialize_PVD()))
-	//	return E_FAIL;
+	if (FAILED(Initialize_PVD()))
+		return E_FAIL;
 	
 	if (FAILED(Initialize_Physics()))
 		return E_FAIL;
@@ -188,8 +188,7 @@ _bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, 
 	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
 	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
 
-	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit,
-		PxHitFlag::eDEFAULT, PxQueryFilterData(), nullptr);
+	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit);
 
 	for (PxU32 i = 0; i < hit.nbTouches; i++) {
 		PxRigidActor* pActor = hit.touches[i].actor;
@@ -273,15 +272,15 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 
 	// Region 추가
 	m_pPxScene->addBroadPhaseRegion(region);
-//	/* Setting Pvd */
-//	PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
-//#if defined(_DEBUG)
-//	if (pvdClient) {
-//		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, false);
-//		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, false);
-//		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, false);
-//	}
-//#endif
+	/* Setting Pvd */
+	PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
+#if defined(_DEBUG)
+	if (pvdClient) {
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, false);
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, false);
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, false);
+	}
+#endif
 #pragma region 추가적인 이벤트 처리나 flag 설정이 필요한 경우
 	/* 추가적인 이벤트 처리나 flag 설정이 필요한 경우 */
 	//// flags 설정
@@ -310,7 +309,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		switch ((ACTOR_MATERIAL)i)
 		{
 		case Engine::ACTOR_MATERIAL::DEFAULT: // 일반 오브젝트 
-			vMaterialDesc = { 0.7f, 0.5f, 0.1f };
+			vMaterialDesc = { 0.7f, 0.8f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::SLIPPERY: // 미끄러운
 			vMaterialDesc = { 0.05f, 0.05f, 0.1f };
@@ -321,15 +320,23 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		case Engine::ACTOR_MATERIAL::STICKY: // 질퍽한
 			vMaterialDesc = { 0.8f, 0.7f, 0.1f };
 			break;
-		case Engine::ACTOR_MATERIAL::PLAYER: // 플레이어용
-			vMaterialDesc = { 0.8f, 5.f, 0.0f };
+		case Engine::ACTOR_MATERIAL::NOFRICTION: // 노마찰
+			vMaterialDesc = { 0.f, 0.f, 0.1f };
+			break;
+		case Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE: // 캐릭터 캡슐(마찰꺼짐)
+			vMaterialDesc = { 0, 0, 0 };
+			break;
+		case Engine::ACTOR_MATERIAL::NORESTITUTION: // 노반발력
+			vMaterialDesc = { 0.7f, 0.8f,0.f };
+			break;
 		default:
 			break;
 		}
 
 		m_pPxMaterial[i] = m_pPxPhysics->createMaterial(vMaterialDesc.x, vMaterialDesc.y, vMaterialDesc.z);
+		if (Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE == (ACTOR_MATERIAL)i)
+			m_pPxMaterial[i]->setFlag(PxMaterialFlag::eDISABLE_FRICTION, true);
 	}
-
 	return S_OK;
 }
 
@@ -402,17 +409,17 @@ void CPhysx_Manager::Free()
 	if (m_pPxPhysics)
 		m_pPxPhysics->release();
 
-	//// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
-	//if (m_pPxPvd)
-	//{
-	//	m_pPxPvd->disconnect(); // PVD 연결 해제
-	//
-	//	if (auto pTransport = m_pPxPvd->getTransport())
-	//	{
-	//		m_pPxPvd->release();
-	//		pTransport->release();
-	//	}
-	//}
+	// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
+	if (m_pPxPvd)
+	{
+		m_pPxPvd->disconnect(); // PVD 연결 해제
+	
+		if (auto pTransport = m_pPxPvd->getTransport())
+		{
+			m_pPxPvd->release();
+			pTransport->release();
+		}
+	}
 
 	// 6. Foundation 정리
 	if (m_pPxFoundation)

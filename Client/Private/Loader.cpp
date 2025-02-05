@@ -79,9 +79,8 @@
 
 // Sample
 #include "SampleBook.h"
-#include "2DDefault_RenderObject.h"
 
-#include "DebugDraw_For_Client.h"
+//#include "DebugDraw_For_Client.h"
 
 
 
@@ -461,8 +460,11 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAnimEvent"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/barfBug_Rig/BarfBug_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
         return E_FAIL;
 
     #ifdef _DEBUG
@@ -511,14 +513,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DialoguePortrait"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Character_Icon/dialogue_icon_%d.dds"), 17))))
-        return E_FAIL;
-
-
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SampleMap"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Map/SampleMap.dds"), 1))))
-		return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
-        C2DDefault_RenderObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
@@ -1008,7 +1002,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
             NormalDesc.isCoordChangeEnable = false;
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
-            NormalDesc.isCulling = false;
+            NormalDesc.is3DCulling = false;
             NormalDesc.eStartCoord = COORDINATE_3D;
             NormalDesc.tTransform3DDesc.isMatrix = true;
             NormalDesc.tTransform3DDesc.matWorld = vWorld;

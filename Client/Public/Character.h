@@ -30,8 +30,11 @@ public:
 	void Stop_Move();
 	void Add_Impuls(_vector _vForce);
 	void Add_Force(_vector _vForce);
-	void Rotate_To(_vector _vDirection);
-	void Move_To(_fvector _vPosition);
+	_bool Move_To(_fvector _vPosition);
+
+	//속도는 degree로 줘야함 (초당), 목표 방향에 도달시 true 리턴
+	_bool Rotate_To(_vector _vDirection, _float _fSpeed);
+	_bool Rotate_To_Radians(_vector _vDirection, _float _fSpeed);
 protected:
 	STAT m_tStat[COORDINATE::COORDINATE_LAST];
 	_vector m_vLookBefore = { 0,0,-1 };

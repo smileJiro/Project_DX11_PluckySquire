@@ -8,13 +8,30 @@ BEGIN(Client)
 class CMapObject final :  public CModelObject
 {
 public :
-	// TODO :: 2D맵오브젝트 추가정보.
 	typedef struct tagMapObjectDesc : public CModelObject::MODELOBJECT_DESC
 	{
-		_uint i2DModelIndex = 0;
+
+		//3D
 		_bool isOverride  = false;
+		_bool is3DCulling = true;
+
+		//2D
 		_bool is2DImport = false;
-		_bool isCulling = true;
+
+		_bool isActive = false;
+		_bool isSorting = false;
+		_bool isCollider = false;
+
+
+		_string strActiveType;
+		_string strColliderType;
+
+		_float2 fSorting_Offset_Pos = {};
+		_float2 fCollider_Offset_Pos = {};
+		_float2 fCollider_Extent = {};
+		_float	fCollider_Radius = 0.f;
+
+
 	}MAPOBJ_DESC;
 private:
 	CMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -56,7 +73,8 @@ private :
 
 	// magenta
 	_float4							m_fDefaultDiffuseColor = { 1.f, 0.f, 1.f, 1.f };
-	_bool							m_isCulling = true;
+	_bool							m_is3DCulling = true;
+	_bool							m_isSorting = true;
 
 public:
 	static CMapObject*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -413,7 +413,7 @@
     <ClInclude Include="..\Public\PlayerState_Idle.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_Jump.h">
+    <ClInclude Include="..\Public\PlayerState_JumpUp.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Run.h">
@@ -502,9 +502,6 @@
       <Filter>02.GameObjects\MapObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SampleBook.h">
-      <Filter>02.GameObjects\SampleBook</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\2DDefault_RenderObject.h">
       <Filter>02.GameObjects\SampleBook</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Section.h">
@@ -602,6 +599,16 @@
     </ClInclude>
     <ClInclude Include="..\Public\Trigger_Manager.h">
       <Filter>92. TriggerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
+    <ClInclude Include="..\Public\PlayerState_Clamber.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpDown.h">
+      <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -733,7 +740,7 @@
     <ClCompile Include="..\Private\PlayerState_Idle.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_Jump.cpp">
+    <ClCompile Include="..\Private\PlayerState_JumpUp.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Run.cpp">
@@ -822,9 +829,6 @@
       <Filter>02.GameObjects\MapObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SampleBook.cpp">
-      <Filter>02.GameObjects\SampleBook</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
       <Filter>02.GameObjects\SampleBook</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Section.cpp">
@@ -922,6 +926,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\Trigger_Manager.cpp">
       <Filter>92. TriggerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
+      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -58,6 +58,7 @@ void CMonster::Priority_Update(_float _fTimeDelta)
 void CMonster::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta); /* Part Object Update */
+	m_vLookBefore = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
 }
 
 void CMonster::Late_Update(_float _fTimeDelta)
@@ -74,13 +75,7 @@ HRESULT CMonster::Render()
 
 void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup && _Other.pActorUserData->pOwner != this)
-	{
-		if (ACTOR_TYPE::KINEMATIC == m_pActorCom->Get_ActorType())
-		{
-			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
-		}
-	}
+
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -89,13 +84,7 @@ void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
-	{
-		if (ACTOR_TYPE::DYNAMIC == m_pActorCom->Get_ActorType())
-		{
-			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
-		}
-	}
+
 }
 
 void CMonster::Attack()
@@ -211,7 +200,12 @@ void CMonster::Active_OnEnable()
 void CMonster::Active_OnDisable()
 {
 	// 1. 몬스터 할거 하고
-
+	m_fAccTime = { 0.f };
+	m_isDelay = { false };
+	m_fDelayTime = { 0.f };
+	m_isCool = { false };
+	m_fCoolTime = { 0.f };
+	m_iAttackCount = { 0 };
 
 	// 2. PxActor 비활성화 
 	CActorObject::Active_OnDisable();

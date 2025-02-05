@@ -23,6 +23,13 @@ HRESULT CShopPanel_BG::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
+	//m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
+
+	pDesc->fX = RTSIZE_BOOK2D_X * 0.5f;
+	pDesc->fY = RTSIZE_BOOK2D_Y * 0.5f;
+	pDesc->fSizeX = (_float)RTSIZE_BOOK2D_X;
+	pDesc->fSizeY = (_float)RTSIZE_BOOK2D_Y;
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
@@ -33,7 +40,7 @@ HRESULT CShopPanel_BG::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	
 
 	return S_OK;
 }
@@ -49,12 +56,14 @@ void CShopPanel_BG::Child_Update(_float _fTimeDelta)
 
 void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 {
+	if (true == m_isRender)
+		Register_RenderGroup(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_UI);
 }
 
 HRESULT CShopPanel_BG::Render()
 {
 	if (true == m_isRender)
-		__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
 
 	return S_OK;
 }
@@ -63,10 +72,24 @@ void CShopPanel_BG::isRender()
 {
 	if (m_isRender == false)
 	{
+
+		/* 나중에 수정 필요 */
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
 		m_isRender = true;
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+		Change_BookScale_ForShop(RTSize);
+		//m_pControllerTransform->Set_Scale(m_vOriginSize.x, m_vOriginSize.y, 1.f);
+		//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
+		
+
 	}
 	else if (m_isRender == true)
+	{
 		m_isRender = false;
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+	}
+		
 }
 
 HRESULT CShopPanel_BG::Ready_Components()
@@ -148,12 +171,8 @@ HRESULT CShopPanel_BG::Ready_Components()
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_IconBG"),
 			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 			return E_FAIL;
-
 	}
 	break;
-
-
-
 	} 
 	
 	return S_OK;
