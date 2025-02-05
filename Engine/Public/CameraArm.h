@@ -105,8 +105,9 @@ private:
 	_uint				m_iMovementFlags = RESET_FLAG;
 
 	// Return
-	deque<RETURN_ARMDATA> m_PreArms;
-	_float2				m_fReturnTime = { 2.f, 0.f };
+	deque<pair<RETURN_ARMDATA, _bool>> m_PreArms;		// Return Data, 현재 Return 중인지 아닌지 Check
+	_float2				m_fReturnTime = { 1.f, 0.f };
+	_int				m_iCurTriggerID = {};
 
 	// Line
 #ifdef _DEBUG

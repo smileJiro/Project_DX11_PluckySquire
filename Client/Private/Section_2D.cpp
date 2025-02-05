@@ -16,7 +16,7 @@ HRESULT CSection_2D::Initialize(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
 	if (_pDesc == nullptr)
 		return E_FAIL;
 	if (1 == _pDesc->iLayerGroupCount)
-		_pDesc->iLayerGroupCount = SECTION_2D_RENDERGROUP_LAST;
+		_pDesc->iLayerGroupCount = SECTION_2D_RENDERGROUP::SECTION_2D_RENDERGROUP_LAST;
 
 
 	if (FAILED(__super::Initialize(_pDesc)))
@@ -122,12 +122,29 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 				ReadFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
 
+				const auto& tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(iModelIndex);
+
+
 				CMapObject::MAPOBJ_DESC NormalDesc = {};
-				NormalDesc.i2DModelIndex = iModelIndex;
 				NormalDesc.is2DImport = true;
-				NormalDesc.iCurLevelID = CSection_Manager::GetInstance()->Get_SectionLeveID();
+				NormalDesc.Build_2D_Model(CSection_Manager::GetInstance()->Get_SectionLeveID()
+					, StringToWstring(tInfo.strModelName)
+					, L"Prototype_Component_Shader_VtxPosTex"
+				);
 				NormalDesc.Build_2D_Transform(fPos);
 
+				NormalDesc.isSorting = tInfo.isSorting;
+				NormalDesc.isCollider = tInfo.isCollider;
+				NormalDesc.isActive = tInfo.isActive;
+				
+				NormalDesc.strActiveType = tInfo.strActiveType;
+				NormalDesc.strColliderType = tInfo.strColliderType;
+				
+				NormalDesc.fSorting_Offset_Pos = tInfo.fSorting_Offset_Pos;
+
+				NormalDesc.fCollider_Offset_Pos = tInfo.fCollider_Offset_Pos;
+				NormalDesc.fCollider_Extent = tInfo.fCollider_Extent;
+				NormalDesc.fCollider_Radius = tInfo.fCollider_Radius;
 				CGameObject* pGameObject = nullptr;
 
 				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
@@ -139,7 +156,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				if (nullptr != pGameObject)
 				{
 					pGameObject->Set_Active(false);
-					Add_GameObject_ToSectionLayer(pGameObject);
+					auto eRenderLayer = SECTION_2D_OBJECT;
+					if (true == tInfo.isBackGround)
+						eRenderLayer = SECTION_2D_BACKGROUND;
+						Add_GameObject_ToSectionLayer(pGameObject, eRenderLayer);
 				}
 			}
 			CloseHandle(hFile);

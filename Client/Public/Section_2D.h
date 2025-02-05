@@ -18,7 +18,7 @@ public:
 	{
 		PLAYMAP,
 		NARRAION,
-		SECTION_2D_PALY_TYPE_LAST
+		SECTION_2D_PLAY_TYPE_LAST
 	};
 
 	enum BOOK_2D_TYPE
@@ -31,8 +31,9 @@ public:
 
 	enum SECTION_2D_RENDERGROUP
 	{
-		//SECTION_2D_BACKGROUND,
+		SECTION_2D_BACKGROUND,
 		SECTION_2D_OBJECT,
+		SECTION_2D_UI,
 		SECTION_2D_RENDERGROUP_LAST,
 	};
 
@@ -75,7 +76,7 @@ public:	/* Section_2D ±â´É. */
 	HRESULT								Register_RenderGroup_ToRenderer();
 
 public:
-	virtual HRESULT Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 0) override;
+	virtual HRESULT Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = SECTION_2D_OBJECT) override;
 
 	ID3D11RenderTargetView*				Get_RTV_FromRenderTarget();
 	ID3D11ShaderResourceView*			Get_SRV_FromRenderTarget();

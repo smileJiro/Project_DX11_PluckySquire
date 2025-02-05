@@ -8,7 +8,8 @@
 #include "PlayerState_Idle.h"
 #include "PlayerState_Run.h"
 #include "PlayerState_Attack.h"
-#include "PlayerState_Jump.h"
+#include "PlayerState_JumpUp.h"
+#include "PlayerState_JumpDown.h"
 #include "PlayerState_Roll.h"
 #include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
@@ -43,7 +44,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720);
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
-
 
     /* 너무 길어서 함수로 묶고싶다 하시는분들은 주소값 사용하는 데이터들 동적할당 하셔야합니다. 아래처럼 지역변수로 하시면 날라가니 */
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
@@ -126,11 +126,10 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
 
 	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 15.f;	
+	m_tStat[COORDINATE_3D].fJumpPower = 10.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
-
-
+     
     return S_OK;
 }
 
@@ -198,7 +197,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
     }
-   // static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_ReverseAnimation(true);
 
 	//Part Sword
 	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
@@ -259,6 +257,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
     CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
+
 void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
@@ -267,7 +266,7 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
-
+	cout << Get_UpForce() << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     m_bOnGround = false;
@@ -457,7 +456,7 @@ void CPlayer::Jump()
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
         _vector vVelocity = pDynamicActor->Get_LinearVelocity();
         pDynamicActor->Add_Impulse(_float3{ 0, m_tStat[COORDINATE_3D].fJumpPower ,0 });
-        pDynamicActor->Set_LinearDamping(2);
+        //pDynamicActor->Set_LinearDamping(2);
     }
 }
 
@@ -606,8 +605,11 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::RUN:
         m_pStateMachine->Transition_To(new CPlayerState_Run(this));
         break;
-    case Client::CPlayer::JUMP:
-        m_pStateMachine->Transition_To(new CPlayerState_Jump(this));
+    case Client::CPlayer::JUMP_UP:
+        m_pStateMachine->Transition_To(new CPlayerState_JumpUp(this));
+        break;
+    case Client::CPlayer::JUMP_DOWN:
+        m_pStateMachine->Transition_To(new CPlayerState_JumpDown(this));
         break;
     case Client::CPlayer::ATTACK:
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));

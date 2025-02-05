@@ -122,13 +122,13 @@ _bool CCharacter::Rotate_To_Radians(_vector _vDirection, _float _fSpeed)
         pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
         return true;
     }
-    else if ((vLookDiff.x * vLookDiffBefore.x) < 0
+   /* else if ((vLookDiff.x * vLookDiffBefore.x) < 0
         || (vLookDiff.z * vLookDiffBefore.z) < 0)
     {
         pDynamicActor->Set_Rotation(vDirection);
         pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
         return true;
-    }
+    }*/
     else if (XMVectorGetY(XMVector3Cross(vLook, vDirection)) * XMVectorGetY(XMVector3Cross(m_vLookBefore, vDirection)) < 0)
     {
         pDynamicActor->Set_Rotation(vDirection);

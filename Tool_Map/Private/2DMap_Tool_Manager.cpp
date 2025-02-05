@@ -10,8 +10,6 @@
 #include "gizmo/ImGuizmo.h"
 #include "Imgui_Manager.h"
 #include "NavigationVertex.h"
-#include "EditableCell.h"
-//#include "CellContainor.h"
 #include "Event_Manager.h"
 #include "Task_Manager.h"
 #include "Engine_Defines.h"
@@ -498,9 +496,11 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 	if (nullptr != m_pPickingObject)
 	{
 		_wstring strKey = m_pPickingObject->Get_Key();
+		_wstring strModelName = m_pPickingObject->Get_ModelName();
 		_float2 fPos = m_pPickingObject->Get_DefaultPosition();
 		//m_pPickingObject->Get_FinalPosition();
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
+		ImGui::Text("Model Name : %s", WstringToString(strModelName).c_str());
 		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");
 		ImGui::SetNextItemWidth(100.f);
 		if (ImGui::DragFloat("##ObjectPosX", &fPos.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
@@ -1680,7 +1680,7 @@ C2DMapObject* C2DMap_Tool_Manager::Picking_2DMap()
 			for (auto& pObject : Objects)
 			{
 				C2DMapObject* pMapObject = static_cast<C2DMapObject*>(pObject);
-				if (pMapObject->IsCursor_In(fCursorPos))
+				if (pMapObject->IsCursor_In(fCursorPos) && pMapObject != m_pPickingObject)
 					return pMapObject;
 			}
 		}

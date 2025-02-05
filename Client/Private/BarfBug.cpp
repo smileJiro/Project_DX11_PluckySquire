@@ -43,7 +43,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fAlert2DRange = 500.f;
     pDesc->fChase2DRange = 1500.f;
     pDesc->fAttack2DRange = 1000.f;
-    pDesc->fDelayTime = 2.f;
+    pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
 

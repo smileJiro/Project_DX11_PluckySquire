@@ -8,7 +8,7 @@
 CUI::CUI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CUIObject{ pDevice, pContext }
 {
-	
+
 }
 
 CUI::CUI(const CUI& Prototype)
@@ -103,7 +103,6 @@ HRESULT CUI::Bind_ShaderResources()
 
 void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 {
-	_float3 vScaleSize;
 	_float2 vCalSize;
 
 
@@ -112,7 +111,7 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 		_float2 BGPos = { 0.f, 0.f };
 		BGPos.x = Uimgr->Get_ShopPanels()[0]->Get_FX();
 		BGPos.y = Uimgr->Get_ShopPanels()[0]->Get_FY();
-		
+
 
 		switch ((_uint)m_eShopPanel)
 		{
@@ -170,7 +169,7 @@ void CUI::Free()
 	Safe_Release(m_pVIBufferCom);
 
 	__super::Free();
-	
+
 
 
 }
