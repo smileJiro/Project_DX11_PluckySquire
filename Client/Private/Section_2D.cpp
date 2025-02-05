@@ -130,6 +130,7 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				NormalDesc.Build_2D_Model(CSection_Manager::GetInstance()->Get_SectionLeveID()
 					, StringToWstring(tInfo.strModelName)
 					, L"Prototype_Component_Shader_VtxPosTex"
+					,(_uint)PASS_VTXPOSTEX::SPRITE2D
 				);
 				NormalDesc.Build_2D_Transform(fPos);
 

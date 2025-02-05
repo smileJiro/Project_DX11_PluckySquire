@@ -448,6 +448,7 @@ public: /* 2D Ãæµ¹ */
 	void Set_2DDirection(E_DIRECTION _eEDir);
 	void Set_3DTargetDirection(_fvector _vDir);
 	void Set_ClamberPosition(_fvector _vPos) { m_vClamberPosition = _vPos; }
+	void Switch_SwordGrip(_bool _bForehand);
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 

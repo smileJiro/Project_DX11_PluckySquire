@@ -392,10 +392,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	//TODO :: SAMPLE
 
 	CModelObject::MODELOBJECT_DESC Desc = {};
-
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
-
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
 		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
