@@ -8,7 +8,7 @@ class CCollider; // test
 END
 BEGIN(Client)
 class CStateMachine;
-enum PLAYER_KEY
+enum PLAYER_INPUT
 {
 	PLAYER_KEY_MOVE,
 	PLAYER_KEY_JUMP,
@@ -16,14 +16,14 @@ enum PLAYER_KEY
 	PLAYER_KEY_ROLL,
 	PLAYER_KEY_THROWSWORD,
 	PLAYER_KEY_INTERACT,
-	PLAYER_KEY_STEALTH,
+	PLAYER_KEY_SNEAK,
 	PLAYER_KEY_LAST
 };
-typedef struct tagPlayerKeyResult
+typedef struct tagPlayerInputResult
 {
 	_vector vMoveDir = {0,0,0};
 	_bool bKeyStates[PLAYER_KEY_LAST] = {false,};
-}PLAYER_KEY_RESULT;
+}PLAYER_INPUT_RESULT;
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -426,12 +426,12 @@ public: /* 2D Ãæµ¹ */
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();
 	void	ThrowSword();
-	PLAYER_KEY_RESULT Player_KeyInput();
+	PLAYER_INPUT_RESULT Player_KeyInput();
 	//Get
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
 	_bool Is_OnGround() {return m_bOnGround;}
-	_bool Is_StealthMode() {return m_bStealthMode;}
+	_bool Is_SneakMode() {return m_bSneakMode;}
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_bool Is_SwordEquiped();
@@ -478,7 +478,7 @@ private:
 	_bool m_bContactWall = false;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	_vector m_v3DTargetDirection = { 0,0,-1 };
-	_bool m_bStealthMode = false;
+	_bool m_bSneakMode = false;
 
 	//Components
 	CStateMachine* m_pStateMachine = nullptr;

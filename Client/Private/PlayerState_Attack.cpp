@@ -14,7 +14,7 @@ CPlayerState_Attack::CPlayerState_Attack(CPlayer* _pOwner)
 
 void CPlayerState_Attack::Update(_float _fTimeDelta)
 {
-    PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+    PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
     if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
     {

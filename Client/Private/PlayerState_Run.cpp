@@ -27,10 +27,13 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		}
 	}
 
-	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	_bool bSneak = tKeyResult.bKeyStates[PLAYER_KEY_SNEAK];
 	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 	{
-		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* m_fSpeed, _fTimeDelta);
+		_float fMoveSpeed = bSneak ? m_fSneakSpeed : m_fSpeed;
+		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
+
 		COORDINATE eCoord = m_pOwner->Get_CurCoord();
 		if (COORDINATE_2D == eCoord)
 		{
@@ -39,8 +42,16 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 			m_pOwner->Set_2DDirection(eNewDir);
 			Switch_RunAnimation2D(eFDir);
 		}
-		if (COORDINATE_3D == eCoord)
+		else
+		{
 			m_pOwner->Rotate_To(XMVector3Normalize(tKeyResult.vMoveDir), m_fRotateSpeed);
+			if (bSneak != m_bSneakBefore)
+			{
+				Switch_RunAnimation3D(bSneak);
+				m_bSneakBefore = bSneak;
+			}
+		}
+
 		if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
@@ -69,14 +80,8 @@ void CPlayerState_Run::Enter()
 	}
 	else
 	{
-		_bool bSword = m_pOwner->Is_SwordEquiped();
-		_bool bCarrying = m_pOwner->Is_CarryingObject();
-		if (bSword)
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_SWORD_01_GT);
-		else if (bCarrying)
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
-		else
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
+		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+		Switch_RunAnimation3D(tKeyResult.bKeyStates[PLAYER_KEY_SNEAK]);
 	}
 
 }
@@ -129,6 +134,23 @@ void CPlayerState_Run::Switch_RunAnimation2D(F_DIRECTION _eFDir)
 	case Client::F_DIRECTION::F_DIR_LAST:
 	default:
 		break;
+	}
+}
+
+void CPlayerState_Run::Switch_RunAnimation3D(_bool _bStealth)
+{
+	if (_bStealth)
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_STEALTH_RUN_GT);
+	else
+	{
+		_bool bSword = m_pOwner->Is_SwordEquiped();
+		_bool bCarrying = m_pOwner->Is_CarryingObject();
+		if (bSword)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_SWORD_01_GT);
+		else if (bCarrying)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
+		else
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
 	}
 }
 

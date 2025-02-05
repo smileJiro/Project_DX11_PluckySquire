@@ -463,9 +463,9 @@ void CPlayer::Jump()
 
 
 
-PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
+PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
-	PLAYER_KEY_RESULT tResult;
+	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bKeyStates), end(tResult.bKeyStates), false);
 
     if (Is_SwordEquiped())
@@ -483,8 +483,8 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
     //구르기 & 잠입
     if (KEY_PRESSING(KEY::LSHIFT))
     {
-        if (Is_StealthMode())
-            tResult.bKeyStates[PLAYER_KEY_STEALTH] = true;
+        if (Is_SneakMode())
+            tResult.bKeyStates[PLAYER_KEY_SNEAK] = true;
         else
             tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
     }
@@ -640,7 +640,7 @@ void CPlayer::Set_State(STATE _eState)
 
 void CPlayer::Set_StealthMode(_bool _bNewMode)
 {
-    m_bStealthMode = _bNewMode; 
+    m_bSneakMode = _bNewMode; 
 }
 
 
@@ -739,7 +739,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::N))
     {
-		Set_StealthMode(!m_bStealthMode);
+		Set_StealthMode(!m_bSneakMode);
     }
 
 }

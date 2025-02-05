@@ -20,7 +20,7 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		return;
 	}
 
-	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	 
 	if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
 	{
@@ -37,7 +37,7 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 		return;
 	}
-	if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
+	if (tKeyResult.bKeyStates[PLAYER_INPUT::PLAYER_KEY_MOVE])
 	{
 		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
 		m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);

@@ -15,7 +15,7 @@ void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 {
 	if (m_pOwner->Is_SwordEquiped())
 		return;
-	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
 	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
 		m_pOwner->Set_State(CPlayer::RUN);

@@ -14,11 +14,13 @@ public:
     virtual void Exit() override;
 
 	void Switch_RunAnimation2D(F_DIRECTION _eFDir);
+	void Switch_RunAnimation3D(_bool _bStealth);
 
 private:
 	_float m_fSpeed = 7.f;
-	_float m_fStealthSpeed = 3.5.f;
     _float m_fRotateSpeed = 1080.f;
+	_float m_fSneakSpeed = 3.0f;
+	_bool m_bSneakBefore = false;
 };
 
 END
