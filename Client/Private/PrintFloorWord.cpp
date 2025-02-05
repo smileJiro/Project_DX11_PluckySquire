@@ -42,22 +42,11 @@ void CPrintFloorWord::Priority_Update(_float _fTimeDelta)
 
 void CPrintFloorWord::Update(_float _fTimeDelta)
 {
-	if (true == m_isActive)
-	{
-		// 플레이어 체력 동기화 진행.
 
-		__super::Update(_fTimeDelta);
-	}
-	
-	
-
-	
 }
 
 void CPrintFloorWord::Late_Update(_float _fTimeDelta)
 {
-	if (true == m_isRender && false == CUI_Manager::GetInstance()->Get_isESC())
-		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CPrintFloorWord::Render()
