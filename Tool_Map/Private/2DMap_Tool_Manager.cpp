@@ -50,6 +50,7 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_PATROL] = "ActiveType_Patrol";
 	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_ATTACKABLE] = "ActiveType_Attackable";
 	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_DIALOG] = "ActiveType_Dialog";
+	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_MODEL_CLOSE] = "ActiveType_Model_Close";
 
 	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_AABB] = "Collider_AABB";
 	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_SQUARE] = "Collider_Squere";
@@ -135,8 +136,8 @@ void C2DMap_Tool_Manager::Input_Logic()
 		if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
 		{
 			C2DTrigger_Sample::TRIGGER_2D_DESC TriggerDesc = {};
-			TriggerDesc.tTransform2DDesc.vInitialPosition = {10.f,10.f,1.f};
-			TriggerDesc.tTransform2DDesc.vInitialScaling = {1.f,1.f,1.f};
+			TriggerDesc.tTransform2DDesc.vInitialPosition = {0.f,0.f,1.f};
+			TriggerDesc.tTransform2DDesc.vInitialScaling = {100.f,100.f,1.f};
 			//TriggerDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 			TriggerDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 			TriggerDesc.eStartCoord = COORDINATE_2D;
@@ -933,7 +934,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 			ImGui::SeparatorText("Model Option");
 			if (ImGui::Checkbox("Sorting", &isSorting))
-				m_pPickingInfo->Set_Sorting(isActive);
+				m_pPickingInfo->Set_Sorting(isSorting);
 			ImGui::SameLine();
 			if (ImGui::Checkbox("Active", &isActive))
 				m_pPickingInfo->Set_Active(isActive);
