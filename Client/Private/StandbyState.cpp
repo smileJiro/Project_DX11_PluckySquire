@@ -69,18 +69,29 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 			//공격 못하면 가만히 있으면서 타겟 따라 회전 + 애니메이션
 			if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 			{
+				_bool isTurn = true;
 				_bool isCW = true;
 				_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 				//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
 				//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
 				//m_pOwner->Rotate_To(XMVectorSetY(vDir, 0.f), XMConvertToDegrees(m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()));
-				m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
-				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
-				if (fResult < 0)
-					isCW = false;
+				
+				//다 돌았으면 회전 애니메이션 재생 안하도록
+				if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+					isTurn = false;
 
-				m_pOwner->Turn_Animation(isCW);
+				//회전 애니메이션 넣으면 드드득 거림
+				/*if (true == isTurn)
+				{
+					_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
+					if (fResult < 0)
+						isCW = false;
+
+					m_pOwner->Turn_Animation(isCW);
+				}
+				else
+					m_pOwner->Change_Animation();*/
 			}
 			else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
 			{
