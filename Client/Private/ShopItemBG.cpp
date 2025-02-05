@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ShopItemBG.h"
+#include "Section_2D.h"
 
 
 
@@ -43,7 +44,7 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 
 	return S_OK;
 }

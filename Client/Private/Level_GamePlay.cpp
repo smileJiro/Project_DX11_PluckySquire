@@ -351,15 +351,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 		return E_FAIL;
 
 
-	//CPlayer* pPlayer = { nullptr };
-	//pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
-	//
-	//if (nullptr == Uimgr->Get_Player())
-	//{
-	//	CUI_Manager::GetInstance()->Set_Player(pPlayer);
-	//}
+	CPlayer* pPlayer = { nullptr };
+	pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
+
+	if (nullptr == Uimgr->Get_Player())
+	{
+		CUI_Manager::GetInstance()->Set_Player(pPlayer);
+		
+	}
 	
-	//Safe_Release(pPlayer);
+	
 
 	return S_OK;
 }
@@ -666,19 +667,19 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	}
 
 	// 윈도우 기준으로 좌표 잡으면 당연히 안됨... 지금까지 된게 이상한거임
-	pDesc.fX = g_iWinSizeX / 2.f / 2.f ;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
-	pDesc.fSizeX = 1208.f * 0.7f / 2.f;
-	pDesc.fSizeY = 268.f * 0.7f;
+	pDesc.fX = 0.f; // 전체 사이즈 / RTSIZE 끝으로 변경
+	pDesc.fY = 0.f;// 전체 사이즈 / RTSIZE 끝으로 변경
+	pDesc.fSizeX = 2328.f;
+	pDesc.fSizeY = 504.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
 	// 윈도우 기준으로 좌표 잡으면 당연히 안됨... 지금까지 된게 이상한거임22
-	pDesc.fX = g_iWinSizeX / 2.f / 2.f;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
-	pDesc.fSizeX = 256.f * 0.7f / 2.f;
-	pDesc.fSizeY = 256.f * 0.7f;
+	pDesc.fX = DEFAULT_SIZE_BOOK2D_X / RATIO_BOOK2D_X;
+	pDesc.fY = DEFAULT_SIZE_BOOK2D_Y / RATIO_BOOK2D_Y;
+	pDesc.fSizeX = 512.f;
+	pDesc.fSizeY = 512.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;

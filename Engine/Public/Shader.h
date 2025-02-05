@@ -22,7 +22,7 @@ public:
 	HRESULT Bind_Matrices(const _char* _pConstantName, const _float4x4* _pMatrix, _uint _iNumMatrices); /* 매트릭스 배열을 바인딩하는 함수. */
 	HRESULT Bind_SRV(const _char* _pConstantName, ID3D11ShaderResourceView* _pSRV);
 	HRESULT Bind_SRVs(const _char* _pConstantName, vector<ID3D11ShaderResourceView*>& _SRVs);
-
+	HRESULT Bind_ConstBuffer(const _char* _pConstantBufferName, ID3D11Buffer* _pConstantBuffer);
 
 private:
 	ID3DX11Effect*				m_pEffect = { nullptr };

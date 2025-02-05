@@ -183,6 +183,19 @@ HRESULT CShader::Bind_SRVs(const _char* _pConstantName, vector<ID3D11ShaderResou
     return S_OK;
 }
 
+HRESULT CShader::Bind_ConstBuffer(const _char* _pConstantBufferName, ID3D11Buffer* _pConstantBuffer)
+{
+    ID3DX11EffectConstantBuffer* pConstantBuffer = m_pEffect->GetConstantBufferByName(_pConstantBufferName);
+    if (nullptr == pConstantBuffer)
+    {
+        MSG_BOX("Failed Bind ConstBuffer");
+        return E_FAIL;
+    }
+        
+
+    return pConstantBuffer->SetConstantBuffer(_pConstantBuffer);
+}
+
 CShader* CShader::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* _pElementsDesc, const _uint _iNumElements)
 {
     CShader* pInstance = new CShader(_pDevice, _pContext);

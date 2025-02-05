@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ShopPanel_BG.h"
+#include "Section_2D.h"
 
 
 
@@ -25,10 +26,10 @@ HRESULT CShopPanel_BG::Initialize(void* _pArg)
 
 	//m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
 
-	pDesc->fX = RTSIZE_BOOK2D_X * 0.5f;
-	pDesc->fY = RTSIZE_BOOK2D_Y * 0.5f;
-	pDesc->fSizeX = (_float)RTSIZE_BOOK2D_X;
-	pDesc->fSizeY = (_float)RTSIZE_BOOK2D_Y;
+	//pDesc->fX = RTSIZE_BOOK2D_X * 0.5f;
+	//pDesc->fY = RTSIZE_BOOK2D_Y * 0.5f;
+	//pDesc->fSizeX = (_float)RTSIZE_BOOK2D_X;
+	//pDesc->fSizeY = (_float)RTSIZE_BOOK2D_Y;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -77,11 +78,8 @@ void CShopPanel_BG::isRender()
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
 		m_isRender = true;
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-		Change_BookScale_ForShop(RTSize);
-		//m_pControllerTransform->Set_Scale(m_vOriginSize.x, m_vOriginSize.y, 1.f);
-		//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY * 0.5f, 0.f, 1.f));
-		
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+		Change_BookScale_ForShop(RTSize);	
 
 	}
 	else if (m_isRender == true)

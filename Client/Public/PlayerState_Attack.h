@@ -13,6 +13,7 @@ public:
     virtual void Enter() override;
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+private:
 	void Switch_To_AttackAnimation(_uint iComboCount);
 private:
 	_vector m_vDirection;

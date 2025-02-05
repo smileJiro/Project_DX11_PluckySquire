@@ -492,7 +492,7 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 		tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
 		tModelObjDesc.eStartCoord = COORDINATE_2D;
 		tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 		break;
 	case AnimTool::CLevel_AnimTool::LOAD_LAST:
 		break;

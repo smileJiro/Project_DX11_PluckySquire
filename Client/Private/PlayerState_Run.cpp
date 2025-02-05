@@ -15,12 +15,17 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 {
 	_float fUpForce = m_pOwner->Get_UpForce();
 	_bool bOnGround = m_pOwner->Is_OnGround();
-	if (false == bOnGround && 0 > fUpForce)
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	if (COORDINATE_3D == eCoord)
 	{
-		m_pOwner->Set_State(CPlayer::JUMP_DOWN);
-		return;
+		_float fUpForce = m_pOwner->Get_UpForce();
+		_bool bOnGround = m_pOwner->Is_OnGround();
+		if (false == bOnGround && 0 > fUpForce)
+		{
+			m_pOwner->Set_State(CPlayer::JUMP_DOWN);
+			return;
+		}
 	}
-
 
 	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
