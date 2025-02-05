@@ -243,6 +243,7 @@
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerBody.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h" />
+    <ClInclude Include="..\Public\PlayerState_JumpDown.h" />
     <ClInclude Include="..\Public\PlayerState_Roll.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h" />
     <ClInclude Include="..\Public\PlayerSword.h" />
@@ -273,7 +274,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
-    <ClInclude Include="..\Public\PlayerState_Jump.h" />
+    <ClInclude Include="..\Public\PlayerState_JumpUp.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
     <ClInclude Include="..\Public\Pooling_Manager.h" />
     <ClInclude Include="..\public\Projectile_BarfBug.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerBody.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
+    <ClCompile Include="..\Private\PlayerState_JumpDown.cpp" />
     <ClCompile Include="..\Private\PlayerState_Roll.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp" />
     <ClCompile Include="..\Private\PlayerSword.cpp" />
@@ -388,7 +390,7 @@
     <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\Private\PlayerState.cpp" />
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
-    <ClCompile Include="..\Private\PlayerState_Jump.cpp" />
+    <ClCompile Include="..\Private\PlayerState_JumpUp.cpp" />
     <ClCompile Include="..\Private\PlayerState_Run.cpp" />
     <ClCompile Include="..\Private\Pooling_Manager.cpp" />
     <ClCompile Include="..\private\Projectile_BarfBug.cpp" />
