@@ -64,6 +64,22 @@ void CModelObject::Late_Update(_float _fTimeDelta)
     __super::Late_Update(_fTimeDelta);
 }
 
+HRESULT CModelObject::Render_WorldPosMap()
+{
+    //m_pGameInstance->Render_Begin();
+    //// 1. 자기 자신에 해당하는 RT 및 MRT를 생성한다. 이때 사이즈는 자기 자신이 추후 바인딩 할 Section RTV와 동일해야한다. 
+
+    //// 2. 자기 자신이 생성한 MRT를 바인딩하고, 자기 자신의 World 매트릭스만 바인딩 하고 렌더를 수행한다.
+
+    //// 3. 쉐이더에서는 자기 자신의 버텍스에 저장된 texcoord 좌표를 기준으로 렌더타겟에 worldpos를 저장한다. 
+
+    //// 4. 저장된 RT는 일단 TargetManager가 들고있긴 할텐데.... 이게 의미가 있나 키값도 또 만들려면 번거롭고 Section 이름과 일치도 되어야하는데. 
+    //
+
+    //m_pGameInstance->Render_End();
+    return S_OK;
+}
+
 HRESULT CModelObject::Render()
 {
 

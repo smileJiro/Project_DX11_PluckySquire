@@ -42,7 +42,7 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 	virtual HRESULT			Render_Shadow() override;
-
+	virtual HRESULT			Render_WorldPosMap() override;
 
 	_bool					Book_Action(BOOK_PAGE_ACTION _eAction);
 	void					PageAction_End(COORDINATE _eCoord, _uint iAnimIdx);
