@@ -49,6 +49,7 @@ private:
 
 
 
+
 private:
 	
 	CRenderTarget*				m_pRenderTarget = nullptr;

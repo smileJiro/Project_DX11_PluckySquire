@@ -78,7 +78,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.iShapeUse = SHAPE_BODY;
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight + 0.1, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -463,11 +463,10 @@ void CPlayer::Jump()
 
 
 
-PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
+PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
-	PLAYER_KEY_RESULT tResult;
+	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bKeyStates), end(tResult.bKeyStates), false);
-
 
     if (Is_SwordEquiped())
     {
@@ -481,9 +480,14 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
     //점프
     if (KEY_PRESSING(KEY::SPACE))
         tResult.bKeyStates[PLAYER_KEY_JUMP] = true;
-    //구르기
+    //구르기 & 잠입
     if (KEY_PRESSING(KEY::LSHIFT))
-        tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
+    {
+        if (Is_SneakMode())
+            tResult.bKeyStates[PLAYER_KEY_SNEAK] = true;
+        else
+            tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
+    }
 
     COORDINATE eCoord = Get_CurCoord();
     //이동
@@ -634,6 +638,11 @@ void CPlayer::Set_State(STATE _eState)
     }
 }
 
+void CPlayer::Set_StealthMode(_bool _bNewMode)
+{
+    m_bSneakMode = _bNewMode; 
+}
+
 
 
 void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
@@ -658,7 +667,7 @@ void CPlayer::Set_3DTargetDirection(_fvector _vDir)
 {
     m_v3DTargetDirection = XMVector4Normalize( _vDir);
 }
-void CPlayer::Switch_SwordGrip(_bool _bForehand)
+void CPlayer::Set_SwordGrip(_bool _bForehand)
 {
 	m_pSword->Switch_Grip(_bForehand);
 }
@@ -728,7 +737,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
-
+    if (KEY_DOWN(KEY::N))
+    {
+		Set_StealthMode(!m_bSneakMode);
+    }
 
 }
 
