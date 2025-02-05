@@ -1,6 +1,7 @@
 #pragma once
 #include "UIObject.h"
 #include "GameInstance.h"
+#include "Player.h"
 //
 
 
@@ -10,8 +11,6 @@ class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
-
-
 class CUI : public Engine::CUIObject
 {
 public:
@@ -143,6 +142,8 @@ protected:
 	_float			m_fBlue = { 0.f };
 	_tchar			m_tFont[MAX_PATH] = {};
 	_float2			m_vOriginSize = {0.f, 0.f};
+
+	CPlayer*		m_pPlayer = { nullptr };
 
 
 

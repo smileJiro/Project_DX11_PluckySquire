@@ -31,6 +31,19 @@ HRESULT CPortrait::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_isRender = true;
+
+	//_float2 vSize;
+	//vSize = m_pTextureCom->Get_Size();
+
+	//m_fSizeX = vSize.x;
+	//m_fSizeY = vSize.y;
+	
+	_float2 vCalScale = { 0.f, 0.f };
+	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
+	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
+
+	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
+
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
 	return S_OK;
@@ -51,7 +64,10 @@ void CPortrait::Update(_float _fTimeDelta)
 	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
 	m_ePortraitFace = (CDialog::PORTRAITNAME)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
 
-	ChangePosition(m_isRender);
+
+	/* 추후 진행에따라 변경을 해야한다. */
+	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+	ChangePosition(m_isRender, RTSize);
 
 
 }
@@ -64,7 +80,7 @@ HRESULT CPortrait::Render()
 {
 	if (true == m_isRender)
 	{
-		__super::Render((_int)m_ePortraitFace, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		__super::Render((_int)m_ePortraitFace, PASS_VTXPOSTEX::DEFAULT);
 	}
 		
 	return S_OK;
@@ -75,25 +91,36 @@ HRESULT CPortrait::DisplayPortrait()
 	return S_OK;
 }
 
-void CPortrait::ChangePosition(_bool _isRender)
+void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 {
 	if (false == _isRender)
 		return;
 
-	_float2 vTexPos = _float2(0.f, 0.f);
+	_float2 vTexPos = Uimgr->Get_DialoguePos();
+	
 	const auto& currentLine = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex());
 
 	switch (currentLine.location)
 	{
 	case CDialog::LOC_DEFAULT:  // 가운데 아래
 	{
-		// 3D rlwns
+		// 3D 세팅
+		//if (3D)
+		//{
+		//	_float2 vPos = { 0.f, 0.f };
+		//
+		//	vPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
+		//}
 		//vTextPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
 
 		//2D 
-		vTexPos = _float2(g_iWinSizeX / 2.f / 3.9f, g_iWinSizeY - g_iWinSizeY / 5.4f);
-		vTexPos.x = vTexPos.x - g_iWinSizeX * 0.5f;
-		vTexPos.y = -vTexPos.y + g_iWinSizeY * 0.5f;
+	//else
+	//{
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.15f;
+		vTexPos.y = vTexPos.y;
+	//
+	// }
+		
 	}
 	break;
 

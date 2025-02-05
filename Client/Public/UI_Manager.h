@@ -51,7 +51,7 @@ private:
 	_tchar								m_tDialogId[MAX_PATH] = {};
 	_int								m_iCurrnetLineIndex = { 0 };
 	_bool								m_isPortraitRender = { true };
-
+	_float2								m_vDialoguePos = { 0.f, 0.f };
 
 
 
@@ -86,6 +86,8 @@ public:
 
 	vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
 	CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
+	_float2								Get_DialoguePos() { return m_vDialoguePos; }
+	void								Set_DialoguePos(_float2 _vDialoguePos) { m_vDialoguePos = _vDialoguePos; }
 
 
 

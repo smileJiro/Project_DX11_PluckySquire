@@ -23,9 +23,10 @@ HRESULT CDialog::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
+
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
-
 
 
 	if (FAILED(Ready_Components()))
@@ -34,10 +35,18 @@ HRESULT CDialog::Initialize(void* _pArg)
 	if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data.json"))))
 		return E_FAIL;
 
+
+	_float2 vCalScale = { 0.f, 0.f };
+	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
+	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
+
+	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
+
 	m_isRender = true;
+	m_pPlayer = Uimgr->Get_Player();
+	Safe_AddRef(m_pPlayer);
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-	//Change_BookScale_ForShop();
 	return S_OK;
 }
 
@@ -46,55 +55,9 @@ void CDialog::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::B))
 	{
-		if (Uimgr->Get_DialogueLineIndex() <= Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
-		{
-			Uimgr->Set_DialogueLineIndex(Uimgr->Get_DialogueLineIndex() + 1);
-
-			_float2 vPos = {};
-
-			//vPos.x = m_pControllerTransform->Get_State(CTransform::STATE_POSITION).m128_f32[0];
-			//vPos.y = m_pControllerTransform->Get_State(CTransform::STATE_POSITION).m128_f32[1];
-			
-			//if (COORDINATE::COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
-			//{
-				switch (Uimgr->Get_DialogueLine(TEXT("dialog_01"), Uimgr->Get_DialogueLineIndex()).location)
-				{
-				case LOC_DEFAULT:
-				{
-					vPos.x = RTSIZE_BOOK2D_X / 10.f;
-					vPos.y = RTSIZE_BOOK2D_Y / 10.f;
-				}
-				break;
-
-				case LOC_MIDDLE:
-				{
-
-				}
-				break;
-
-				case LOC_MIDLEFT:
-				{
-
-				}
-				break;
-				}
-			//}
-			//else if (COORDINATE::COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
-			//{
-			//
-			//}
-			
-
-				vPos.x = vPos.x + g_iWinSizeX * 0.5f;
-				vPos.y = -vPos.y + g_iWinSizeY * 0.5f;
-			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
-
-			if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
-			{
-				m_isRender = false;
-				Uimgr->Set_PortraitRender(false);
-			}
-		}
+		// 이건 각 스테이지 마다 RTSIZE가 변경될 수 있다. 가변적으로 사용하여야한다.
+		_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
 	}
 
 
@@ -118,7 +81,10 @@ HRESULT CDialog::Render()
 
 		if (Uimgr->Get_DialogueLineIndex() < Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		{
-			DisplayText();
+			// TODO :: 나중에 바꿔야함, 해당 값은 가변적이다.
+			_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
+			DisplayText(vRTSize);
 		}
 	}
 		
@@ -209,14 +175,15 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 	return S_OK;
 }
 
-HRESULT CDialog::DisplayText()
+HRESULT CDialog::DisplayText(_float2 _vRTSize)
 {
 	if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		return E_FAIL;
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-	_float2 vTextPos = _float2(0.f, 0.f);
+	_float2 vTextPos3D = _float2(0.f, 0.f);
+	_float2 vTextPos2D = Uimgr->Get_DialoguePos();
 
 
 
@@ -271,45 +238,80 @@ HRESULT CDialog::DisplayText()
 	{
 	case LOC_DEFAULT:  // 가운데 아래
 	{	
-		// 3D rlwns
-		//vTextPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
+		/*
+		 ////    3D 기준    ////
+		 if (3D)
+		 {
+
+		 vTextPos3D = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
+			// 대상 이름 출력
+			wsprintf(m_tFont, currentLine.Talker.c_str());
+			pGameInstance->Render_Font(TEXT("Font28"), m_tFont, vTextPos2D, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+
+			// 대화 내용 출력
+			wsprintf(m_tFont, strDisplaytext.c_str());
+			pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos2D.x - 120.f, vTextPos2D.y + 120.f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+
+			Safe_Release(pGameInstance);
+			return;
+		 }
+		 else (2D)
+		 {
+		 }
+		*/
+
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.1f;
 
 
-		//vTextPos = _float2(g_iWinSizeX / 1.25f, g_iWinSizeY  * 1.77f);
-		vTextPos = _float2(g_iWinSizeX / 1.25f, g_iWinSizeY * 1.77f);
+		vTextPos2D = vPos;
+
+
 	}
 	break;
 
-	case LOC_MIDDLE:   // 정 가운데
-	{
-		vTextPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
-	}
-	break;
-
-	case LOC_MIDLEFT:  // 가운데 좌측
-	{
-		vTextPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
-	}
-	break;
-
-	case LOC_MIDRIGHT: // 가운데 우측
-	{
-		vTextPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
-	}
-	break;
+	//case LOC_MIDDLE:   // 정 가운데
+	//{
+	//	vTextPos2D = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+	//}
+	//break;
+	//
+	//case LOC_MIDLEFT:  // 가운데 좌측
+	//{
+	//	vTextPos2D = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+	//}
+	//break;
+	//
+	//case LOC_MIDRIGHT: // 가운데 우측
+	//{
+	//	vTextPos2D = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+	//}
+	//break;
 	}
 
 	// 2D 기준
+	_float2 vCalPos = { 0.f, 0.f };
+	// 중점
+	_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
 
+
+	vCalPos.x = vMidPoint.x + vTextPos2D.x;
+	vCalPos.y = vMidPoint.y - vTextPos2D.y;
 
 
 	// 대상 이름 출력
 	wsprintf(m_tFont, currentLine.Talker.c_str());
-	pGameInstance->Render_Font(TEXT("Font54"), m_tFont, vTextPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font28"), m_tFont, vCalPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	
+
+	vCalPos.x += _vRTSize.x * 0.03f;
+	vCalPos.y -= +_vRTSize.y * 0.1f;
+
 	// 대화 내용 출력
 	wsprintf(m_tFont, strDisplaytext.c_str());
-	pGameInstance->Render_Font(TEXT("Font40"), m_tFont, _float2(vTextPos.x - 120.f, vTextPos.y + 120.f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vCalPos.x - 120.f, vCalPos.y + 120.f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	
 	Safe_Release(pGameInstance);
 
@@ -319,6 +321,84 @@ HRESULT CDialog::DisplayText()
 
 
 
+}
+
+// Json->Location에 따른 위치 변경
+void CDialog::NextDialogue(_float2 _RTSize)
+{
+	// 2D 기준
+	if (Uimgr->Get_DialogueLineIndex() <= Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
+	{
+		Uimgr->Set_DialogueLineIndex(Uimgr->Get_DialogueLineIndex() + 1);
+
+		_float2 vPos = {};
+
+		
+		switch (Uimgr->Get_DialogueLine(TEXT("dialog_01"), Uimgr->Get_DialogueLineIndex()).location) 
+		{
+		case LOC_DEFAULT:
+		{
+			/* 예시 */
+			//if (0 > m_pNpc->Get_State(CTransform::STATE_POSITION))
+			//{
+			//	vPos.x = _RTSize.x - _RTSize.x * 1.25f;
+			//	vPos.y = _RTSize.y - _RTSize.y * 1.35f;
+			//}
+			//else
+			//{
+
+			// vPos는 플레이어의 포지션으로 가져와서 한다.
+			// 일단은 가져오는 기반이 없으니 이렇게 먼저 진행하자.
+			// 이렇게 하면 플레이어 기반으로 x값을 조정하고 Y값도 플레이어의 기반으로 y값을 조정한다.
+			// 계산된 좌표를 uimgr에 넣고 초상화에 적용한다.
+
+			vPos.x = Uimgr->Get_Player()->Get_Transform()->Get_State(CTransform_2D::STATE_POSITION).m128_f32[0];
+			vPos.y = Uimgr->Get_Player()->Get_Transform()->Get_State(CTransform_2D::STATE_POSITION).m128_f32[1];
+
+			vPos.y -= _RTSize.y * 0.13f;
+
+			//vPos.x -= vPos.x * 1.25f;
+			//vPos.y -= vPos.y * 1.35f;
+			int a = 0;
+
+				//vPos.x = _RTSize.x - _RTSize.x * 1.25f;
+				//vPos.y = _RTSize.y - _RTSize.y * 1.35f;
+			//}
+			
+		}
+		break;
+
+		case LOC_MIDDLE:
+		{
+
+		}
+		break;
+
+		case LOC_MIDLEFT:
+		{
+
+		}
+		break;
+		}
+		//}
+		//else if (COORDINATE::COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+		//{
+		//
+		//}
+
+		Uimgr->Set_DialoguePos(vPos);
+		m_vCurPos = vPos;
+
+		//vPos.x = vPos.x + RTSIZE_BOOK2D_X * 0.5f;
+		//vPos.y = -vPos.y + RTSIZE_BOOK2D_Y * 0.5f;
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
+
+		if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(TEXT("dialog_01"))[0].lines.size())
+		{
+			m_isRender = false;
+			Uimgr->Set_PortraitRender(false);
+		}
+	}
 }
 
 

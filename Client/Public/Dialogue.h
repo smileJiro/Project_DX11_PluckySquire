@@ -78,12 +78,14 @@ public:
 
 private:
     HRESULT     LoadFromJson(const std::wstring& filePath); // 데이터 로드
-    HRESULT      DisplayText(); // 타이핑 되게하자.
+    HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
+    void        NextDialogue(_float2 _RTSize);
 
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터
     _int                m_iCurrentLineIndex = 0; // 현재 출력 중인 라인의 인덱스 (id)
     _tchar			    m_tDialogIndex[MAX_PATH] = {};
+    _float2             m_vCurPos = { 0.f, 0.f };
 
     //vector<DialogData>  m_DialogDatas;
 

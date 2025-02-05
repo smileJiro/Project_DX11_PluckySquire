@@ -25,10 +25,10 @@ HRESULT CShopPanel_BG::Initialize(void* _pArg)
 
 	//m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
 
-	pDesc->fX = RTSIZE_BOOK2D_X * 0.5f;
-	pDesc->fY = RTSIZE_BOOK2D_Y * 0.5f;
-	pDesc->fSizeX = (_float)RTSIZE_BOOK2D_X;
-	pDesc->fSizeY = (_float)RTSIZE_BOOK2D_Y;
+	//pDesc->fX = RTSIZE_BOOK2D_X * 0.5f;
+	//pDesc->fY = RTSIZE_BOOK2D_Y * 0.5f;
+	//pDesc->fSizeX = (_float)RTSIZE_BOOK2D_X;
+	//pDesc->fSizeY = (_float)RTSIZE_BOOK2D_Y;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
