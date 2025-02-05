@@ -23,10 +23,43 @@ public:
 		_uint iShaderPass_3D = {};
 		_float fFrustumCullingRange = 2.0f;
 
-		_uint iRenderGroupID_2D = 0;
-		_uint iPriorityID_2D = 0;
 		_uint iRenderGroupID_3D = 0;
 		_uint iPriorityID_3D = 0;
+
+
+	#pragma region Build Method
+	void Build_2D_Model(_uint _iLevelID, const 
+		_wstring _strProtoModelTag, 
+		const _wstring _strProtoShaderTag,
+		_uint _iShaderPass = 0, 
+		_bool _isCoordChangeEnable = false)
+	{
+		isCoordChangeEnable = _isCoordChangeEnable;
+		eStartCoord = COORDINATE_2D;
+		iCurLevelID = _iLevelID;
+		iModelPrototypeLevelID_2D = _iLevelID;
+		strModelPrototypeTag_2D = _strProtoModelTag;
+		strShaderPrototypeTag_2D = _strProtoShaderTag;
+		iShaderPass_2D = _iShaderPass;
+	}
+
+	void Build_3D_Model(_uint _iLevelID, const _wstring _strProtoModelTag, 
+		const _wstring _strProtoShaderTag,
+		_uint _iShaderPass = 0, 
+		_bool _isCoordChangeEnable = false)
+	{
+		isCoordChangeEnable = _isCoordChangeEnable;
+		eStartCoord = COORDINATE_3D;
+		iCurLevelID = _iLevelID;
+		iModelPrototypeLevelID_3D = _iLevelID;
+		strModelPrototypeTag_3D = _strProtoModelTag;
+		strShaderPrototypeTag_3D = _strProtoShaderTag;
+		iShaderPass_3D = _iShaderPass;
+	}
+	#pragma endregion
+
+
+
 	}MODELOBJECT_DESC;
 
 protected:
@@ -53,7 +86,7 @@ public:
 public:
 	// Get
 	_uint					Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
-	CModel*			Get_Model(COORDINATE _eCoord);
+	CModel*					Get_Model(COORDINATE _eCoord);
 
 	// Set
 	void					Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
@@ -83,7 +116,6 @@ public:
 
 protected:
 	CController_Model*		m_pControllerModel = nullptr;
-	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D ·»´õ¸µ Àü¿ë VP */
 
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};

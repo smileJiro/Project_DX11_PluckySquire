@@ -59,7 +59,7 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 			//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
 			//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta * 2.f);
 			m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
-			m_pOwner->Rotate_To(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
+			m_pOwner->Rotate_To(vDir, XMConvertToDegrees(m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()));
 		}
 		else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 		{

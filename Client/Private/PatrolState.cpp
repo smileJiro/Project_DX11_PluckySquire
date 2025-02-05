@@ -131,15 +131,22 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		//기본적으로 추적중에 y값 상태 변화는 없다고 가정
 		_vector vDir = XMVector3Normalize(Set_PatrolDirection(_iDir));
 
-		if (true == m_isTurn)
+		if (true == m_isTurn && false == m_isMove)
 		{
-			m_pOwner->Rotate_To(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
-			//각속도 0이면
-			if (0.f == XMVectorGetY(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity()))
+			if (m_pOwner->Rotate_To(vDir, XMConvertToDegrees(m_pOwner->Get_ControllerTransform()->Get_RotationPerSec())))
 			{
-				m_isTurn = false;
 				m_isMove = true;
+				
 				m_pOwner->Change_Animation();
+			}
+			else
+			{
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
+				if (fResult < 0)
+					isCW = false;
+
+				m_pOwner->Turn_Animation(isCW);
 			}
 		}
 
@@ -203,6 +210,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		if (m_fMoveDistance <= m_fAccDistance)
 		{
 			m_fAccDistance = 0.f;
+			m_isTurn = false;
 			m_isMove = false;
 
 			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);

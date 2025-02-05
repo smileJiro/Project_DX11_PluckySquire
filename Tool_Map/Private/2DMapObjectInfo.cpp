@@ -19,11 +19,12 @@ C2DMapObjectInfo::C2DMapObjectInfo(const C2DMapObjectInfo& Prototype)
 HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString)
 {
 	m_strSearchTag = _InfoJson["SearchTag"];
-	m_strTextureName = _InfoJson["TextureName"];
+	m_strModelName = _InfoJson["TextureName"];
 	_string strModelText = _InfoJson["ModelType"];
 	m_isActive = _InfoJson["Active"];
 	m_isCollider = _InfoJson["Collider"];
 	m_isSorting = _InfoJson["Sorting"];
+	//m_isBackGround = _InfoJson["BackGround"];
 
 	for (_uint i = 0; i < MODEL_END; ++i)
 	{
@@ -100,7 +101,7 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 #ifdef _DEBUG
 	if (m_strSearchTag != "")
 	{
-		CBase* pModel = m_pGameInstance->Find_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(m_strTextureName));
+		CBase* pModel = m_pGameInstance->Find_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(m_strModelName));
 		if (pModel != nullptr)
 		{
 			m_isModelCreate = true;
@@ -124,11 +125,12 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 HRESULT C2DMapObjectInfo::Export(json& _OutputJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString)
 {
 	_OutputJson["SearchTag"] = m_strSearchTag;
-	_OutputJson["TextureName"] = m_strTextureName;
+	_OutputJson["TextureName"] = m_strModelName;
 	_OutputJson["ModelType"] = _arrModelTypeString[m_eModelType];
 	_OutputJson["Active"] = m_isActive;
 	_OutputJson["Collider"] = m_isCollider;
 	_OutputJson["Sorting"] = m_isSorting;
+	_OutputJson["BackGround"] = m_isBackGround;
 	if (m_isActive)
 	{
 		_OutputJson["ActivePropertis"]["ActiveType"] = _arrActiveTypeString[m_eActiveType];
@@ -183,7 +185,7 @@ void C2DMapObjectInfo::Set_Model(C2DModel* _pModel)
 		{
 			const _wstring* pTextureName = m_pTexture->Get_SRVName(0);
 			if(nullptr != pTextureName)
-			m_strTextureName = WstringToString(*pTextureName);
+			m_strModelName = WstringToString(*pTextureName);
 			m_eModelType = (MAPOBJ_MODEL_TYPE)_pModel->Get_AnimType();
 
 			m_isToolRendering = true;

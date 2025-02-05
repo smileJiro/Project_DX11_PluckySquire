@@ -19,6 +19,7 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 	{
 		m_Animation2Ds.push_back(pAnim->Clone());
 	}
+	Safe_AddRef(m_pNonAnimSprite);
 
 }
 

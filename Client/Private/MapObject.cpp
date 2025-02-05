@@ -36,12 +36,10 @@ HRESULT CMapObject::Initialize(void* _pArg)
         if (pDesc->is2DImport)
         {
             auto tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(pDesc->i2DModelIndex);
-            pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-            pDesc->strModelPrototypeTag_2D = StringToWstring(tInfo.strModelName);
-            //pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
-            //_float2 fRadio = { pDesc->fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, pDesc->fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
-            //fImageSize.x *= fRadio.x;
-            //fImageSize.y *= fRadio.y;
+
+            pDesc->Build_2D_Model(pDesc->iCurLevelID,
+                StringToWstring(tInfo.strModelName),
+                L"Prototype_Component_Shader_VtxPosTex");
         }
         m_matWorld = pDesc->tTransform3DDesc.matWorld;
         m_isCulling = pDesc->isCulling;
@@ -57,8 +55,6 @@ HRESULT CMapObject::Initialize(void* _pArg)
         m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
         m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
 
-        m_iRenderGroupID_2D = pDesc->iRenderGroupID_2D;
-        m_iPriorityID_2D = pDesc->iPriorityID_2D;
         m_iRenderGroupID_3D = pDesc->iRenderGroupID_3D;
         m_iPriorityID_3D = pDesc->iPriorityID_3D;
 
@@ -66,11 +62,6 @@ HRESULT CMapObject::Initialize(void* _pArg)
         if (FAILED(CModelObject::Ready_Components(pDesc)))
             return E_FAIL;
 
-        XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-        // : ¼öÁ¤
-        _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
-
-        XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
     #pragma endregion
 
   
@@ -131,6 +122,15 @@ HRESULT CMapObject::Initialize(void* _pArg)
     if (FAILED(CPartObject::Initialize(_pArg)))
         return E_FAIL;
 
+    if (Get_CurCoord() == COORDINATE_2D)
+    {
+        auto pModel = Get_ModelController()->Get_Model(COORDINATE_2D);
+        if (pModel->Get_AnimType() == CModel::ANIM)
+        {
+            Set_AnimationLoop(COORDINATE_2D, 0, true);
+            Set_Animation(0);
+        }
+    }
 
     return S_OK;
 }

@@ -507,9 +507,6 @@
     <ClInclude Include="..\Public\SampleBook.h">
       <Filter>02.GameObjects\SampleBook</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\2DDefault_RenderObject.h">
-      <Filter>02.GameObjects\SampleBook</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Section.h">
       <Filter>04.Section</Filter>
     </ClInclude>
@@ -606,10 +603,16 @@
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_JumpDown.h" />
+    <ClInclude Include="..\Public\PlayerState_JumpDown.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -831,9 +834,6 @@
     <ClCompile Include="..\Private\SampleBook.cpp">
       <Filter>02.GameObjects\SampleBook</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\2DDefault_RenderObject.cpp">
-      <Filter>02.GameObjects\SampleBook</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Section.cpp">
       <Filter>04.Section</Filter>
     </ClCompile>
@@ -930,10 +930,13 @@
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_JumpDown.cpp" />
+    <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

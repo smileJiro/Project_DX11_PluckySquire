@@ -49,7 +49,7 @@ protected:
 
 protected:
 	CUI::SHOPPANEL			Get_ShopPanel() { return m_eShopPanel; }
-
+	void					Change_BookScale_ForShopItem(_float2 _vRTSize);
 
 public:
 	static CShopPanel*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -66,7 +66,7 @@ public:
 
 
 protected:
-	CUI::SHOPPANEL		m_eShopPanel = CUI::SHOPPANEL::SHOP_DEFAULT;
+
 	SKILLSHOP			m_eSkillShopIcon = SKILLSHOP_END;
 	_bool				m_isChooseItem = { false };
 

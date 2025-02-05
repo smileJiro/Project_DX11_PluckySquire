@@ -59,14 +59,19 @@ void CSampleBook::Update(_float _fTimeDelta)
 {
     if (KEY_DOWN(KEY::M))
     {
-        Set_ReverseAnimation(false);
-        Set_Animation(8);
-        //m_fTestOffset *= -1.f;
+        if (Book_Action(NEXT))
+        {
+            Set_ReverseAnimation(false);
+            Set_Animation(8);
+        }
     }            
     if (KEY_DOWN(KEY::N))
     {
-        Set_ReverseAnimation(true);
-        Set_Animation(8);
+        if (Book_Action(PREVIOUS))
+        {
+            Set_ReverseAnimation(true);
+            Set_Animation(8);
+        }
     }
 
 
@@ -170,6 +175,27 @@ HRESULT CSampleBook::Render()
 HRESULT CSampleBook::Render_Shadow()
 {
     return S_OK;
+}
+
+_bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
+{
+    switch (_eAction)
+    {
+        case Client::CSampleBook::PREVIOUS:
+            break;
+        case Client::CSampleBook::NEXT:
+            break;
+        case Client::CSampleBook::LAST:
+            break;
+        default:
+            break;
+    }
+
+    SECTION_MGR->Has_Next_Section();
+    SECTION_MGR->Has_Prev_Section();
+
+
+    return true;
 }
 
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
