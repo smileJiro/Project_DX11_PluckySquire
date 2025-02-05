@@ -52,6 +52,16 @@ void CTestModelObject::Late_Update(_float _fTimeDelta)
 	CPartObject::Late_Update(_fTimeDelta);
 }
 
+HRESULT CTestModelObject::Render()
+{
+    if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    {
+        m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix",&m_ViewMatrix);
+        m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix",&m_ProjMatrix);
+    }
+    return __super::Render();
+}
+
 HRESULT CTestModelObject::Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc)
 {
     _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();

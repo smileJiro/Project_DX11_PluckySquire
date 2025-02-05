@@ -32,7 +32,7 @@ public:
 	HRESULT							Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
 	
 	// 2. 현재 활성화된 Section에 Object 추가/삭제
-	HRESULT							Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 0);
+	HRESULT							Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 1);
 	HRESULT							Remove_GameObject_ToCurSectionLayer(CGameObject* _pGameObject);
 	
 	// 3. 원하는 Section 활성, 비활성 
@@ -114,18 +114,20 @@ HRESULT Ready_CurLevelSectionModels(const _wstring& _strJsonPath);
 public :
 	typedef struct tag2DModelInfo
 	{
+
+		_bool isActive		= false;
+		_bool isSorting		= false;
+		_bool isBackGround	= false;
+		_bool isCollider	= false;
 		_string strModelName;
 		_string strModelType;
 		_string strActiveType;
 		_string strColliderType;
-		_bool isActive = false;
-		_bool isSorting = false;
-		_bool isBackGround = false;
-		_bool isCollider = false;
 		_float2 fSorting_Offset_Pos = {};
 		_float2 fCollider_Offset_Pos = {};
-		_float	fCollider_Radius = 0.f;
 		_float2 fCollider_Extent = {};
+		_float	fCollider_Radius = 0.f;
+
 	}MODEL_2D_INFO;
 private  :
 	vector<MODEL_2D_INFO> m_2DModelInfos;

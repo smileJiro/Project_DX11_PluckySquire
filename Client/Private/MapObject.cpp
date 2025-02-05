@@ -35,14 +35,10 @@ HRESULT CMapObject::Initialize(void* _pArg)
         // 2D Import Object의 경우, Section_Manager의 2DModel 정보를 가져와서 채워줘야 한다.
         if (pDesc->is2DImport)
         {
-            auto tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(pDesc->i2DModelIndex);
-
-            pDesc->Build_2D_Model(pDesc->iCurLevelID,
-                StringToWstring(tInfo.strModelName),
-                L"Prototype_Component_Shader_VtxPosTex");
+            m_isSorting = pDesc->isSorting;
         }
         m_matWorld = pDesc->tTransform3DDesc.matWorld;
-        m_isCulling = pDesc->isCulling;
+        m_is3DCulling = pDesc->is3DCulling;
     #pragma endregion
 
     //CModelObject::Initialize()의 Component 생성 구현부는 필요하나, 이후 super 클래스 Init 로직을 타기 전에 처리해야 하는 정보가 있기 때문에, 부득이 뺴서 구현.
@@ -169,7 +165,7 @@ void CMapObject::Late_Update(_float _fTimeDelta)
     /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
-        if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
+        if (!m_is3DCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
         {
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
         }
