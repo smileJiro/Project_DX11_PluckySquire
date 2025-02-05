@@ -87,6 +87,33 @@ void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 }
 
+void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		++m_iDetect_Block_Count;
+		//처음만 처리
+		if(1 == m_iDetect_Block_Count)
+			m_isDetect_Block = true;
+		cout <<"P"<< m_iDetect_Block_Count << endl;
+	}
+}
+
+void CMonster::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
+void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		--m_iDetect_Block_Count;
+		if(0 == m_iDetect_Block_Count)
+			m_isDetect_Block = false;
+		cout <<"M"<< m_iDetect_Block_Count << endl;
+	}
+}
+
 void CMonster::Attack()
 {
 }

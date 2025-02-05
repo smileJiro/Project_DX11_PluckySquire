@@ -74,6 +74,7 @@ public:
 	virtual void			Update(_float fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render_Shadow() { return S_OK; }
+	virtual HRESULT			Render_WorldPosMap();
 	virtual HRESULT			Render() override;
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
@@ -98,6 +99,7 @@ public:
 	_uint					Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
 	void					Set_PlayingAnim(_bool _bPlaying);
 	void					Set_ReverseAnimation(_bool _bReverse) { m_bReverseAnimation = _bReverse; }
+	_bool					Is_ReverseAnimation() { return m_bReverseAnimation; }
 
 	void					Change_RenderGroup(COORDINATE _eCoord, _uint _iGroupKey, _uint _iPriorityKey)
 	{ 

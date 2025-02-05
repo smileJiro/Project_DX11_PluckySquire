@@ -12,13 +12,13 @@ CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	//바닥일 때
 	if (m_pOwner->Is_OnGround())
 	{
 
 		m_pOwner->Stop_Rotate();
-		if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
+		if (tKeyResult.bKeyStates[PLAYER_INPUT::PLAYER_KEY_MOVE])
 		{
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
@@ -55,7 +55,7 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 		return;
 	}
 
-	if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
+	if (tKeyResult.bKeyStates[PLAYER_INPUT::PLAYER_KEY_MOVE])
 	{
 		//기어오르기 체크
 		_vector vPlayerPos = m_pOwner->Get_FinalPosition();
