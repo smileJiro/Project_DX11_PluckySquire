@@ -468,7 +468,6 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
 	PLAYER_KEY_RESULT tResult;
     fill(begin(tResult.bKeyStates), end(tResult.bKeyStates), false);
 
-
     if (Is_SwordEquiped())
     {
         //기본공격
@@ -481,9 +480,14 @@ PLAYER_KEY_RESULT CPlayer::Player_KeyInput()
     //점프
     if (KEY_PRESSING(KEY::SPACE))
         tResult.bKeyStates[PLAYER_KEY_JUMP] = true;
-    //구르기
+    //구르기 & 잠입
     if (KEY_PRESSING(KEY::LSHIFT))
-        tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
+    {
+        if (Is_StealthMode())
+            tResult.bKeyStates[PLAYER_KEY_STEALTH] = true;
+        else
+            tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
+    }
 
     COORDINATE eCoord = Get_CurCoord();
     //이동
@@ -634,6 +638,11 @@ void CPlayer::Set_State(STATE _eState)
     }
 }
 
+void CPlayer::Set_StealthMode(_bool _bNewMode)
+{
+    m_bStealthMode = _bNewMode; 
+}
+
 
 
 void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
@@ -658,7 +667,7 @@ void CPlayer::Set_3DTargetDirection(_fvector _vDir)
 {
     m_v3DTargetDirection = XMVector4Normalize( _vDir);
 }
-void CPlayer::Switch_SwordGrip(_bool _bForehand)
+void CPlayer::Set_SwordGrip(_bool _bForehand)
 {
 	m_pSword->Switch_Grip(_bForehand);
 }
@@ -728,7 +737,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
-
+    if (KEY_DOWN(KEY::N))
+    {
+		Set_StealthMode(!m_bStealthMode);
+    }
 
 }
 

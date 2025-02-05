@@ -69,7 +69,7 @@ void CPlayerState_JumpAttack::Enter()
 	}
 	else
 	{
-		m_pOwner->Switch_SwordGrip(false);
+		m_pOwner->Set_SwordGrip(false);
 		m_pOwner->Add_Impuls(_vector{0,m_fJumpAttackRisingForce ,0});
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMPATTACK_RISE);
 	}
@@ -84,7 +84,7 @@ void CPlayerState_JumpAttack::Exit()
 	}
 	else
 	{
-		m_pOwner->Switch_SwordGrip(true);
+		m_pOwner->Set_SwordGrip(true);
 	}
 }
 

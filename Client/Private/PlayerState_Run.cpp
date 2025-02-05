@@ -56,10 +56,6 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
-
-
-
-
 }
 
 void CPlayerState_Run::Enter()
