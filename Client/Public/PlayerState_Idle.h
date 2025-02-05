@@ -12,7 +12,7 @@ public:
     void Update(_float _fTimeDelta) override;
     virtual void Enter() override;
     virtual void Exit() override;
-
+	_bool Is_Sneaking() { return m_bSneakBefore; }
 private:
     void Switch_IdleAnimation2D(F_DIRECTION _eFDir);
     void Switch_IdleAnimation3D(_bool _bStealth);

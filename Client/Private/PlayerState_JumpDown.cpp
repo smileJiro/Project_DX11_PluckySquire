@@ -58,52 +58,8 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 	if (tKeyResult.bKeyStates[PLAYER_INPUT::PLAYER_KEY_MOVE])
 	{
 		//기어오르기 체크
-		_vector vPlayerPos = m_pOwner->Get_FinalPosition();
-		_float fHeadHeight = m_pOwner->Get_HeadHeight();
-		_vector vRayOrigin = vPlayerPos + _vector{ 0,fHeadHeight,0 } + m_pOwner->Get_LookDirection() * m_fArmLength;
-		_float3 vOrigin;
-		XMStoreFloat3(&vOrigin, vRayOrigin);
-		_float3 vRayDir = { 0,-1,0 };
-		list<CActorObject*> hitActors;
-		list<_float3> hitPositions;
-
-		if (m_pGameInstance->RayCast(vOrigin, vRayDir, 1.5, hitActors, hitPositions))
-		{
-			_float fClamberHeightCurrent = -1;
-			auto& iterPosition = hitPositions.begin();
-			for (auto& pActor : hitActors)
-			{
-				if (m_pOwner != pActor)
-				{
-					if (iterPosition->y > fClamberHeightCurrent)
-					{
-						fClamberHeightCurrent = iterPosition->y;
-					}
-				}
-				iterPosition++;
-			}
-
-			//바닥이 몸통 범위 안에 있다.
-			if (fClamberHeightCurrent > 0)
-			{
-				_float fClamberHeightBefore = XMVectorGetY(m_vClamberPosition);
-				_float fArmHeight = XMVectorGetY(vPlayerPos) + m_fArmHeight;
-				//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
-				//-> 기어오르기
-				if (fArmHeight< fClamberHeightCurrent
-					&& fArmHeight > fClamberHeightBefore)
-				{
-					m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
-					m_pOwner->Set_ClamberPosition(m_vClamberPosition);
-					m_pOwner->Set_State(CPlayer::CLAMBER);
-					return;
-				}
-				else
-				{
-					m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
-				}
-			}
-		}
+		if (Try_Clamber())
+			return;
 
 		//공중 무빙
 		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
@@ -186,4 +142,55 @@ void CPlayerState_JumpDown::Switch_To_JumpDownAnimation()
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT);
 
 
+}
+
+_bool CPlayerState_JumpDown::Try_Clamber()
+{
+	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
+	_float fHeadHeight = m_pOwner->Get_HeadHeight();
+	_vector vRayOrigin = vPlayerPos + _vector{ 0,fHeadHeight,0 } + m_pOwner->Get_LookDirection() * m_fArmLength;
+	_float3 vOrigin;
+	XMStoreFloat3(&vOrigin, vRayOrigin);
+	_float3 vRayDir = { 0,-1,0 };
+	list<CActorObject*> hitActors;
+	list<_float3> hitPositions;
+
+	if (m_pGameInstance->RayCast(vOrigin, vRayDir, 1.5, hitActors, hitPositions))
+	{
+		_float fClamberHeightCurrent = -1;
+		auto& iterPosition = hitPositions.begin();
+		for (auto& pActor : hitActors)
+		{
+			if (m_pOwner != pActor)
+			{
+				if (iterPosition->y > fClamberHeightCurrent)
+				{
+					fClamberHeightCurrent = iterPosition->y;
+				}
+			}
+			iterPosition++;
+		}
+
+		//바닥이 몸통 범위 안에 있다.
+		if (fClamberHeightCurrent > 0)
+		{
+			_float fClamberHeightBefore = XMVectorGetY(m_vClamberPosition);
+			_float fArmHeight = XMVectorGetY(vPlayerPos) + m_fArmHeight;
+			//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
+			//-> 기어오르기
+			if (fArmHeight< fClamberHeightCurrent
+				&& fArmHeight > fClamberHeightBefore)
+			{
+				m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
+				m_pOwner->Set_ClamberPosition(m_vClamberPosition);
+				m_pOwner->Set_State(CPlayer::CLAMBER);
+				return true;
+			}
+			else
+			{
+				m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
+			}
+		}
+	}
+	return false;
 }
