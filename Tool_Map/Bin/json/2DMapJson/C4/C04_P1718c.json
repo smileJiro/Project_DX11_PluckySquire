@@ -1,0 +1,2145 @@
+[
+  {
+    "Type": "ArrowComponent",
+    "Name": "Player Jump Vector Indicator",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:Player Jump Vector Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.8"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      }
+    }
+  },
+  {
+    "Type": "ArrowComponent",
+    "Name": "PlayerJumpRotationIndicator",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'ArrowComponent'",
+    "Template": {
+      "ObjectName": "ArrowComponent'Default__Portal_BP_C:PlayerJumpRotationIndicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.9"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.51"
+      }
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "A_sfx_portal_active_loop",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Portal_BP_C:A_sfx_portal_active_loop_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.11"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "AudioComponent",
+    "Name": "Audio Component",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'AudioComponent'",
+    "Template": {
+      "ObjectName": "AudioComponent'Default__Portal_BP_C:Audio Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.10"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      }
+    }
+  },
+  {
+    "Type": "BillboardComponent",
+    "Name": "Billboard",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'BillboardComponent'",
+    "Template": {
+      "ObjectName": "BillboardComponent'Portal_BP_C:Billboard_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Portal_BookEffect_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.5"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 5860.0,
+        "Y": 1720.0,
+        "Z": 1.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.19"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.19"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.19"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.19"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerVolume",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BP_C:TriggerVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.13"
+    },
+    "Properties": {
+      "BoxExtent": {
+        "X": 300.0,
+        "Y": 150.0,
+        "Z": 600.0
+      },
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.43"
+            },
+            "FunctionName": "BndEvt__Portal_BP_TriggerVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": []
+      },
+      "RelativeLocation": {
+        "X": 35340.0,
+        "Y": 13185.0,
+        "Z": 21500.0
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BookEffect_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.6"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Portal_BookEffect_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.7"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__Portal_BookEffect_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.8"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      },
+      "RelativeLocation": {
+        "X": -200.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__Portal_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.15"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Portal_BookEffect_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.9"
+    }
+  },
+  {
+    "Type": "InstancedFoliageActor",
+    "Name": "InstancedFoliageActor_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'InstancedFoliageActor'",
+    "Properties": {
+      "RootComponent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.InstancedFoliageActor_0.RootComponent0'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.44"
+      }
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "C04_P1718c",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'C04_P1718c:PersistentLevel.Model_3'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.20"
+      },
+      "StreamingTextureGuids": [
+        "D5F387A5-475254AB-A5269586-19542C26",
+        "6AFA5825-4991AEE3-ECDD3B8B-D5345888",
+        "176EE41E-465BFAB6-AEB85FBB-C9FCAD8F",
+        "9C995DBB-453D9568-054E658F-761F0E1F",
+        "DE7F91FA-4D57CF4C-A115CABE-2AF1225E"
+      ],
+      "LevelBuildDataId": "89E9F90E-4C7BEA69-A1FFD5A3-FA72DFD8",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'C04_P1718c:PersistentLevel.WorldSettings_1'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.69"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'C04_P1718c:PersistentLevel.WorldSettings_1'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.69"
+      },
+      null,
+      {
+        "ObjectName": "InstancedFoliageActor'C04_P1718c:PersistentLevel.InstancedFoliageActor_0'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.14"
+      },
+      {
+        "ObjectName": "MinigameController_BP_C'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.19"
+      },
+      {
+        "ObjectName": "Portal_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.43"
+      },
+      {
+        "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Engine/Maps/Entry",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'C04_P1718c:PersistentLevel.Model_3'",
+      "ObjectPath": "/Game/Levels/C04/C04_P1718c.20"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Portal_BookEffect_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.10"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_3",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Colour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.147027,
+            "G": 0.55834,
+            "B": 1.0,
+            "A": 1.0,
+            "Hex": "6BC5FF"
+          },
+          "ExpressionGUID": "00CD460C-495C6B8B-38DCA081-E90F425E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Portal_BookEffect_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.11"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.62"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_C04_P1718c_FloatioGame",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/_Persistent/MainLevel.MainLevel",
+        "SubPathString": "PersistentLevel.Book_MAIN"
+      },
+      "LevelSizePixels": {
+        "X": 11520.0,
+        "Y": 3240.0
+      },
+      "PageRenderScale": "EPageRenderScale::MidZoom",
+      "SpreadType": "EPageSpreadType::Double",
+      "ScrollType": "EScrollType::ZoomedPan",
+      "BackgroundColour": {
+        "R": 0.147027,
+        "G": 0.55834,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "6BC5FF"
+      },
+      "LevelWidth": 3.0,
+      "LevelHeight": 1.5,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.GameVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.6"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.59"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.56"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.57"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.58"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.KillVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.7"
+      },
+      "StoryPanels": [
+        {
+          "OrderInSequence": 0,
+          "StoryPanel": null
+        },
+        {
+          "OrderInSequence": 1,
+          "StoryPanel": null
+        }
+      ],
+      "CameraPanTime": [
+        0.5,
+        0.5
+      ],
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.GameBackground'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.55"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.28"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.54"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.32"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.41"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Textures/FX_bookportal_v02-0.FX_bookportal_v02-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0001.FX_BookPortalV02_0001",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0002.FX_BookPortalV02_0002",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0003.FX_BookPortalV02_0003",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0004.FX_BookPortalV02_0004",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0005.FX_BookPortalV02_0005",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0006.FX_BookPortalV02_0006",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0007.FX_BookPortalV02_0007",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0008.FX_BookPortalV02_0008",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0009.FX_BookPortalV02_0009",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0010.FX_BookPortalV02_0010",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0011.FX_BookPortalV02_0011",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0012.FX_BookPortalV02_0012",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0013.FX_BookPortalV02_0013",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0014.FX_BookPortalV02_0014",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0015.FX_BookPortalV02_0015",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0016.FX_BookPortalV02_0016",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0017.FX_BookPortalV02_0017",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0018.FX_BookPortalV02_0018",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0019.FX_BookPortalV02_0019",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0020.FX_BookPortalV02_0020",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0021.FX_BookPortalV02_0021",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0022.FX_BookPortalV02_0022",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0023.FX_BookPortalV02_0023",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0024.FX_BookPortalV02_0024",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0025.FX_BookPortalV02_0025",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0026.FX_BookPortalV02_0026",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0027.FX_BookPortalV02_0027",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0028.FX_BookPortalV02_0028",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0029.FX_BookPortalV02_0029",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0030.FX_BookPortalV02_0030",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0031.FX_BookPortalV02_0031",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0032.FX_BookPortalV02_0032",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0033.FX_BookPortalV02_0033",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0034.FX_BookPortalV02_0034",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0035.FX_BookPortalV02_0035",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0036.FX_BookPortalV02_0036",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0037.FX_BookPortalV02_0037",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0038.FX_BookPortalV02_0038",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0039.FX_BookPortalV02_0039",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0040.FX_BookPortalV02_0040",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0041.FX_BookPortalV02_0041",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0042.FX_BookPortalV02_0042",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0043.FX_BookPortalV02_0043",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0044.FX_BookPortalV02_0044",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0045.FX_BookPortalV02_0045",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0046.FX_BookPortalV02_0046",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0047.FX_BookPortalV02_0047",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0048.FX_BookPortalV02_0048",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0049.FX_BookPortalV02_0049",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02_0050.FX_BookPortalV02_0050",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/FX/Animations/Book_Portal_V02/Frames/FX_BookPortalV02.FX_BookPortalV02",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.38"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.35"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_3",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "56529E2B-46FEDE5B-849941A6-255777BB",
+    "LightmassSettings": [
+      {
+        "bUseTwoSidedLighting": false,
+        "bShadowIndirectOnly": false,
+        "bUseEmissiveForStaticLighting": false,
+        "bUseVertexNormalForHemisphereGather": false,
+        "EmissiveLightFalloffExponent": 8.0,
+        "EmissiveLightExplicitInfluenceRadius": 0.0,
+        "EmissiveBoost": 1.0,
+        "DiffuseBoost": 1.0,
+        "FullyOccludedSamplesFraction": 1.0
+      }
+    ]
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Portal_BookEffect_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.12"
+    }
+  },
+  {
+    "Type": "NavigationSystemConfig",
+    "Name": "NavigationSystemConfig_0",
+    "Outer": "WorldSettings_1",
+    "Class": "UScriptClass'NavigationSystemConfig'",
+    "Properties": {
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "EntryNiagaraVFXComponent",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:EntryNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.16"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "ExitNiagaraVFXComponent",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:ExitNiagaraVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.17"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.1"
+      }
+    }
+  },
+  {
+    "Type": "NiagaraComponent",
+    "Name": "Niagara PFX Component",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'NiagaraComponent'",
+    "Template": {
+      "ObjectName": "NiagaraComponent'Default__Portal_BP_C:Niagara PFX Component'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.18"
+    },
+    "Properties": {
+      "OverrideParameters": {},
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__Portal_BookEffect_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.13"
+    },
+    "Properties": {
+      "AccumulatedTime": 1.1020372,
+      "CachedFrameIndex": 11,
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookPortalOverlay",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Portal_BookEffect_BP_C:FlipbookPortalOverlay_GEN_VARIABLE'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.14"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      },
+      "UCSSerializationIndex": 0,
+      "bNetAddressable": true,
+      "CreationMethod": "EComponentCreationMethod::SimpleConstructionScript"
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Portal_BookEffect_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.15"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Portal_BookEffect_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Portal_BookEffect_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.17"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "EntryVFXComponent",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:EntryVFXComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.19"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.1"
+      }
+    }
+  },
+  {
+    "Type": "ParticleSystemComponent",
+    "Name": "ParticleSystemComponent",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'ParticleSystemComponent'",
+    "Template": {
+      "ObjectName": "ParticleSystemComponent'Default__Portal_BP_C:ParticleSystemComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.20"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.21"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Portal_BookEffect_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.18"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.22"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Portal_BookEffect_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.19"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "Portal_BookEffect_BP_C",
+    "Name": "Portal_BP4_2_Effect_19077.785156",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.Portal_BookEffect_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BookEffect_BP_C'Default__Portal_BookEffect_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.4"
+    },
+    "Properties": {
+      "FlipbookPortalOverlay": {
+        "ObjectName": "PaperFlipbookComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.FlipbookPortalOverlay'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.27"
+      },
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.BoxComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.9"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.SphereComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.52"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.31"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.30"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.26"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.StampHat'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.60"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.SlideCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.10"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.67"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.65"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.66"
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.18"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.53"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.5"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.29"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.21"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.13"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.16"
+      },
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.29"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.31"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.30"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.26"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.63"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.64"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.61"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.40"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.37"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.19"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.327633
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.FlipbookPortalOverlay'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.27"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "Portal_BP_C",
+    "Name": "Portal_BP4_2",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/Portal_BP.Portal_BP_C'",
+    "Template": {
+      "ObjectName": "Portal_BP_C'Default__Portal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.7"
+    },
+    "Properties": {
+      "A_sfx_portal_active_loop": {
+        "ObjectName": "AudioComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.A_sfx_portal_active_loop'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.2"
+      },
+      "Billboard": {
+        "ObjectName": "BillboardComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Billboard'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.4"
+      },
+      "TriggerVolume": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      },
+      "ParticleSystemComponent": {
+        "ObjectName": "ParticleSystemComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.ParticleSystemComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.34"
+      },
+      "PFXComponent": {
+        "ObjectName": "NiagaraComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Niagara PFX Component'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.25"
+      },
+      "PlayerJumpStartIndicator": {
+        "ObjectName": "SphereComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Player Jump Start Indicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.50"
+      },
+      "PlayerJumpTargetIndicator": {
+        "ObjectName": "SphereComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.51"
+      },
+      "PlayerJumpVectorIndicator": {
+        "ObjectName": "ArrowComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Player Jump Vector Indicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.0"
+      },
+      "PlayerJumpRotationIndicator": {
+        "ObjectName": "ArrowComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.1"
+      },
+      "EntryVFXComponent": {
+        "ObjectName": "ParticleSystemComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.EntryVFXComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.33"
+      },
+      "EntryNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.EntryNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.23"
+      },
+      "ExitNiagaraVFXComponent": {
+        "ObjectName": "NiagaraComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.ExitNiagaraVFXComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.24"
+      },
+      "AudioComponent": {
+        "ObjectName": "AudioComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Audio Component'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.3"
+      },
+      "CannonPortalRangeSphere": {
+        "ObjectName": "SphereComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.CannonPortalRangeSphere'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.47"
+      },
+      "PlayerJumpPreviewMesh": {
+        "ObjectName": "SkeletalMeshComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.PlayerJumpPreviewMesh'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.46"
+      },
+      "EnemyDetectionVolume": {
+        "ObjectName": "SphereComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.EnemyDetectionVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.48"
+      },
+      "IdleParticlePosition": {
+        "ObjectName": "SphereComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Idle Particles Position'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.49"
+      },
+      "TriggerSize": {
+        "X": 300.0,
+        "Y": 150.0,
+        "Z": 600.0
+      },
+      "BookPortalLocation": {
+        "X": -200.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "PortalVectors": null,
+      "PortalLocation_OnBook": "EPortalLocation::RightEdge",
+      "PortalLocation_OnDesk": "EPortalLocation::RightEdge",
+      "BookEffect": {
+        "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+      },
+      "DeskPFXTransform": {
+        "Translation": {
+          "X": -200.0,
+          "Y": 0.0,
+          "Z": 120.0
+        }
+      },
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.12"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.39"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.36"
+      },
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.19"
+      },
+      "RootComponent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      },
+      "BlueprintCreatedComponents": [
+        {
+          "ObjectName": "BillboardComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Billboard'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.4"
+        },
+        {
+          "ObjectName": "AudioComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.A_sfx_portal_active_loop'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.2"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "RootComponent0",
+    "Outer": "InstancedFoliageActor_0",
+    "Class": "UScriptClass'SceneComponent'"
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": 29585.0,
+        "Y": 13125.0,
+        "Z": 21500.0
+      }
+    }
+  },
+  {
+    "Type": "SkeletalMeshComponent",
+    "Name": "PlayerJumpPreviewMesh",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'SkeletalMeshComponent'",
+    "Template": {
+      "ObjectName": "SkeletalMeshComponent'Default__Portal_BP_C:PlayerJumpPreviewMesh'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.28"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "ArrowComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.PlayerJumpRotationIndicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.1"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "CannonPortalRangeSphere",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:CannonPortalRangeSphere'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.29"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "EnemyDetectionVolume",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:EnemyDetectionVolume'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.30"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.43"
+            },
+            "FunctionName": "EnemyDetectionVolumeBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.43"
+            },
+            "FunctionName": "EnemyDetectionVolumeEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Idle Particles Position",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Idle Particles Position'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.31"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.Player Jump Target Indicator'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.51"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Start Indicator",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Start Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.32"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Player Jump Target Indicator",
+    "Outer": "Portal_BP4_2",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BP_C:Player Jump Target Indicator'",
+      "ObjectPath": "/Game/Blueprints/Level/Portal_BP.33"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "BoxComponent'C04_P1718c:PersistentLevel.Portal_BP4_2.TriggerVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.8"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Portal_BookEffect_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.24"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Portal_BookEffect_BP_C'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156'",
+              "ObjectPath": "/Game/Levels/C04/C04_P1718c.42"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Portal_BookEffect_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.25"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.29"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.31"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.30"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.26"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      },
+      "RelativeScale3D": {
+        "X": 124.2,
+        "Y": 41.399998,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.MaterialInstanceDynamic_3'",
+          "ObjectPath": "/Game/Levels/C04/C04_P1718c.17"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      },
+      "RelativeScale3D": {
+        "X": 124.2,
+        "Y": 41.399998,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": 1670.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 117.2,
+        "Y": 1.0,
+        "Z": 5.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      },
+      "RelativeLocation": {
+        "X": -5810.0,
+        "Y": 0.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 32.399998,
+        "Z": 5.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      },
+      "RelativeLocation": {
+        "X": 5810.0,
+        "Y": 0.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 1.0,
+        "Y": 32.399998,
+        "Z": 5.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_C04_P1718c_FloatioGame",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P1718c:PersistentLevel.MGC_C04_P1718c_FloatioGame.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.45"
+      },
+      "RelativeLocation": {
+        "X": 0.0,
+        "Y": -1670.0,
+        "Z": 50.0
+      },
+      "RelativeScale3D": {
+        "X": 117.2,
+        "Y": 1.0,
+        "Z": 5.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__Portal_BookEffect_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P1718c:PersistentLevel.Portal_BP4_2_Effect_19077.785156.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.11"
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Portal_BookEffect_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Portal_BookEffect_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Portal_BookEffect_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.29"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Portal_BookEffect_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.30"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Portal_BookEffect_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.31"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Portal_BookEffect_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.32"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "Portal_BP4_2_Effect_19077.785156",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Portal_BookEffect_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/GAME/Spawned/Portal_BookEffect_BP.33"
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "C04_P1718c",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'C04_P1718c:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/C04/C04_P1718c.15"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings_1",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "bEnableNavigationSystem": false,
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemConfig'C04_P1718c:PersistentLevel.WorldSettings_1.NavigationSystemConfig_0'",
+        "ObjectPath": "/Game/Levels/C04/C04_P1718c.22"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]
