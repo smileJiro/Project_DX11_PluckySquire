@@ -37,7 +37,7 @@ HRESULT CDialog::Initialize(void* _pArg)
 	m_isRender = true;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-	Change_BookScale();
+	//Change_BookScale_ForShop();
 	return S_OK;
 }
 

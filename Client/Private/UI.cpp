@@ -103,6 +103,7 @@ HRESULT CUI::Bind_ShaderResources()
 
 void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 {
+	_float3 vScaleSize;
 	_float2 vCalSize;
 
 	vScaleSize = m_pControllerTransform->Get_Scale();
