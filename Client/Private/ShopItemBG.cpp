@@ -94,6 +94,7 @@ void CShopItemBG::isRender()
 	if (m_isRender == false)
 	{
 		m_isRender = true;
+		/* 변경해야함. */
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 		Change_BookScale_ForShopItem(RTSize);
