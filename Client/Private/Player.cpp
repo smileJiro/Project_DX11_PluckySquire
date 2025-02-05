@@ -10,6 +10,7 @@
 #include "PlayerState_Attack.h"
 #include "PlayerState_JumpUp.h"
 #include "PlayerState_JumpDown.h"
+#include "PlayerState_JumpAttack.h"
 #include "PlayerState_Roll.h"
 #include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
@@ -180,7 +181,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -212,7 +213,7 @@ HRESULT CPlayer::Ready_PartObjects()
     SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     SwordDesc.iRenderGroupID_3D = RG_3D;
     SwordDesc.iPriorityID_3D = PR3D_NONBLEND;
-    SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
@@ -253,7 +254,6 @@ HRESULT CPlayer::Ready_PartObjects()
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
-
     CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
@@ -266,7 +266,6 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
-	cout << Get_UpForce() << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     m_bOnGround = false;
@@ -610,6 +609,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::JUMP_DOWN:
         m_pStateMachine->Transition_To(new CPlayerState_JumpDown(this));
+        break;
+    case Client::CPlayer::JUMP_ATTACK:
+        m_pStateMachine->Transition_To(new CPlayerState_JumpAttack(this));
         break;
     case Client::CPlayer::ATTACK:
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));

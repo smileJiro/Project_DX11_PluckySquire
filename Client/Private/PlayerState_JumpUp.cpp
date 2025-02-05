@@ -32,7 +32,11 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::THROWSWORD);
 		return;
 	}
-
+	else if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+	{
+		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+		return;
+	}
 	if (tKeyResult.bKeyStates[PLAYER_KEY::PLAYER_KEY_MOVE])
 	{
 		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
