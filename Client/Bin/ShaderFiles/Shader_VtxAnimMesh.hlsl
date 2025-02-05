@@ -1,12 +1,30 @@
 #include "../../../EngineSDK/hlsl/Engine_Shader_Define.hlsli"
 #include "../../../EngineSDK/hlsl/Engine_Shader_Function.hlsli"
 
+
+/* PS ConstBuffer */ 
+cbuffer BasicPixelConstData : register(b0)
+{
+    Material_PS Material;       // 32
+    
+    int useAlbedoMap;
+    int useNormalMap;
+    int useAOMap;
+    int useMetallicMap;         // 16
+    
+    int useRoughnessMap;
+    int useEmissiveMap;
+    int useORMHMap;
+    int invertNormalMapY;       // 16
+}
+
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 /* Bone Matrix */
 float4x4 g_BoneMatrices[256];
 Texture2D g_DiffuseTexture;
 Texture2D g_NormalTexture;
+Texture2D g_ORMHTexture;
 
 float g_fFarZ = 1000.f;
 int g_iFlag = 0;

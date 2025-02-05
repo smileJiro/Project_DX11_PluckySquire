@@ -111,13 +111,17 @@ HRESULT C3DModel::Initialize(void* _pArg)
 	return S_OK;
 }
 
-HRESULT C3DModel::Render(CShader* _Shader, _uint _iShaderPass)
+HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 {
 	/* Mesh ¥‹¿ß ∑ª¥ı. */
 	for (_uint i = 0; i < m_iNumMeshes; ++i)
 	{
 		_uint iMaterialIndex = m_Meshes[i]->Get_MaterialIndex();
-		if (FAILED(Bind_Material(_Shader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
+
+		if(FAILED(Bind_Material_PixelConstBuffer(iMaterialIndex, _pShader)))
+			return E_FAIL;
+
+		if (FAILED(Bind_Material(_pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
 		{
 			//continue;
 		}
@@ -125,13 +129,13 @@ HRESULT C3DModel::Render(CShader* _Shader, _uint _iShaderPass)
 		/* Bind Bone Matrices */
 		if (Is_AnimModel())
 		{
-			if (FAILED(Bind_Matrices(_Shader, "g_BoneMatrices", i)))
+			if (FAILED(Bind_Matrices(_pShader, "g_BoneMatrices", i)))
 				return E_FAIL;
 		}
 
 
 		/* Shader Pass */
-		_Shader->Begin(_iShaderPass);
+		_pShader->Begin(_iShaderPass);
 
 		/* Bind Mesh Vertex Buffer */
 		m_Meshes[i]->Bind_BufferDesc();
@@ -183,6 +187,14 @@ _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 		pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
 
  	return bReturn;
+}
+
+HRESULT C3DModel::Bind_Material_PixelConstBuffer(_uint _iMaterialIndex, CShader* _pShader)
+{
+	if (m_Materials.size() <= _iMaterialIndex)
+		return E_FAIL;
+
+	return m_Materials[_iMaterialIndex]->Bind_PixelConstBuffer(_pShader);
 }
 
 _uint C3DModel::Get_MeshIndex(const _char* _szName) const

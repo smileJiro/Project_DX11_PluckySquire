@@ -277,6 +277,9 @@
     <Filter Include="02.GameObjects\MainTable">
       <UniqueIdentifier>{25fd5475-9ebe-44bd-bbee-d5b4f8d1ad20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ShaderFiles\PBR">
+      <UniqueIdentifier>{ba8ec215-6826-4b57-944f-cbd6d6f43b40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -606,6 +609,7 @@
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -926,6 +930,7 @@
     <ClCompile Include="..\Private\BarfBug.cpp">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -972,6 +977,9 @@
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect_Anim.hlsl">
       <Filter>97.ShaderFiles\Effect</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_PBRPractice.hlsl">
+      <Filter>97.ShaderFiles\PBR</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
