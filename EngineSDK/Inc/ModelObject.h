@@ -31,7 +31,7 @@ public:
 	void Build_2D_Model(_uint _iLevelID, const 
 		_wstring _strProtoModelTag, 
 		const _wstring _strProtoShaderTag,
-		_uint _iShaderPass = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM,
+		_uint _iShaderPass = 0, 
 		_bool _isCoordChangeEnable = false)
 	{
 		isCoordChangeEnable = _isCoordChangeEnable;

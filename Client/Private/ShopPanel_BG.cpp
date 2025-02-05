@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ShopPanel_BG.h"
+#include "Section_2D.h"
 
 
 
@@ -77,7 +78,7 @@ void CShopPanel_BG::isRender()
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
 		m_isRender = true;
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 		Change_BookScale_ForShop(RTSize);	
 
 	}
