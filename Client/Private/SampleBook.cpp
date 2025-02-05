@@ -171,6 +171,38 @@ HRESULT CSampleBook::Render_Shadow()
     return S_OK;
 }
 
+HRESULT CSampleBook::Render_WorldPosMap()
+{
+    m_pGameInstance->Render_Begin();
+    // 1. 자기 자신에 해당하는 RT 및 MRT를 생성한다. 이때 사이즈는 자기 자신이 추후 바인딩 할 Section RTV와 동일해야한다. 
+    /* Target_WorldPosMap_Book */
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_WorldPosMap_Book"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_WorldPosMap_Book"), TEXT("Target_WorldPosMap_Book"))))
+        return E_FAIL;
+    // 2. 자기 자신이 생성한 MRT를 바인딩하고, 자기 자신의 World 매트릭스만 바인딩 하고 렌더를 수행한다.
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
+        return E_FAIL;
+    // 3. 쉐이더에서는 자기 자신의 버텍스에 저장된 texcoord 좌표를 기준으로 렌더타겟에 worldpos를 저장한다. 
+    /* Shader Pass */
+    //m_pShaderComs[COORDINATE_3D]->Begin(PASS_VTXMESH::WORLDPOS);
+
+    /* Bind Mesh Vertex Buffer */
+    C3DModel* p3DModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(COORDINATE_3D));
+    if (nullptr == p3DModel)
+        return E_FAIL;
+
+    p3DModel->Get_Mesh(10);
+    p3DModel->Get_Mesh(11);
+    //m_Meshes[i]->Bind_BufferDesc();
+    //m_Meshes[i]->Render();
+    // 4. 저장된 RT는 일단 TargetManager가 들고있긴 할텐데.... 이게 의미가 있나 키값도 또 만들려면 번거롭고 Section 이름과 일치도 되어야하는데. 
+    
+
+    m_pGameInstance->Render_End();
+    return S_OK;
+}
+
 _bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
 {
     switch (_eAction)

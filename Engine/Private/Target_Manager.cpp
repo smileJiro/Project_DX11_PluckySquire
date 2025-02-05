@@ -94,7 +94,7 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStenci
         m_pContext->ClearDepthStencilView(_pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
     m_pContext->OMSetRenderTargets(iNumRenderTargets, pRenderTargets, nullptr == _pDSV ? m_pOriginalDSV : _pDSV);
-
+    
     return S_OK;
 }
 
