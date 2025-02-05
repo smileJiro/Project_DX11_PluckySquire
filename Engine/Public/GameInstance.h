@@ -291,7 +291,7 @@ inline HRESULT CGameInstance::UpdateConstBuffer(const T_CONSTANT& _tConstantBuff
 	if (nullptr == m_pGlobalFunction_Manager)
 		return E_FAIL;
 
-	return m_pGlobalFunction_Manager->UpdateConstBuffer(_tConstantBufferData, _ppOutConstantBuffer);
+	return m_pGlobalFunction_Manager->UpdateConstBuffer(_tConstantBufferData, _pConstantBuffer);
 }
 
 END

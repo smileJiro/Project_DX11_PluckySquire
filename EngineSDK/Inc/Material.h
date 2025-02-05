@@ -56,7 +56,7 @@ protected:
 	// 텍스쳐를 담는 벡터를 보관하는 배열.
 	CTexture*					m_MaterialTextures[AI_TEXTURE_TYPE_MAX];
 
-protected:
+protected: /* Shader에 바인딩하는 ConstBuffer */
 	CONST_PS					m_tPixelConstData = {};
 	ID3D11Buffer*				m_pPixeConstBuffer = nullptr;
 
