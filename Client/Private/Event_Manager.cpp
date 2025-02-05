@@ -18,7 +18,6 @@
 #include "Actor_Dynamic.h"
 
 #include "Camera_Manager.h"
-#include "Camera_Trigger.h"
 #include "Camera_Target.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
@@ -459,7 +458,7 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 	_bool isReturn = _tEvent.Parameters[2];
 
 	switch (iTriggerType) {
-	case CCamera_Trigger::ARM_TRIGGER:
+	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
 	{
 		CCamera_Manager::GetInstance()->Set_PreArmDataState(iTriggerID, isReturn);
 
