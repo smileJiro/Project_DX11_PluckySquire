@@ -30,6 +30,8 @@ public:
 
 private:
 	void					isRender();
+	void					Cal_ShopBGPos(_float2 _vRTSize);
+	void					Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos);
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -39,6 +41,7 @@ public:
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
+
 
 
 protected:

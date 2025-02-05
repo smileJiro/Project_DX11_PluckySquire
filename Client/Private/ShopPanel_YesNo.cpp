@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ShopPanel_YesNo.h"
 #include "UI_Manager.h"
+#include "Section_2D.h"
 
 
 
@@ -34,7 +35,7 @@ HRESULT CShopPanel_YesNo::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 
 	return S_OK;
 }
