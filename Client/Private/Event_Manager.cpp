@@ -113,17 +113,30 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 	}
 	break;
 	case Client::EVENT_TYPE::SET_KINEMATIC:
+	{
 		Execute_Set_Kinematic(_tEvent);
-		break;
-	case Client::EVENT_TYPE::CAMERATRIGGER_EVENT:
-	{
-		Execute_CameraTrigger(_tEvent);
 	}
 		break;
-	case Client::EVENT_TYPE::CAMERATRIGGER_EXIT_EVENT:
+	case Client::EVENT_TYPE::TRIGGER_ENTER_EVENT:
 	{
-		Execute_CameraTriggerExit(_tEvent);
+		Execute_Trigger_Enter(_tEvent);
 	}
+		break;
+	case Client::EVENT_TYPE::TRIGGER_STAY_EVENT:
+	{
+		Execute_Trigger_Stay(_tEvent);
+	}
+		break;
+	case Client::EVENT_TYPE::TRIGGER_EXIT_EVENT:
+	{
+		Execute_Trigger_Exit(_tEvent);
+	}
+	break;
+	case Client::EVENT_TYPE::TRIGGER_EXIT_BYCOLLISION_EVENT:
+	{
+		Execute_Trigger_Exit_ByCollision(_tEvent);
+	}
+	break;
 	default:
 		break;
 	}
@@ -344,31 +357,35 @@ HRESULT CEvent_Manager::Execute_ChangeBossState(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Execute_CameraTrigger(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 {
 	_uint iCameraTriggerType = (_uint)_tEvent.Parameters[0];
+	_int iTriggerID = _tEvent.Parameters[1];
+	_wstring* pStr = (_wstring*)_tEvent.Parameters[2];
 	
-	if (CCamera_Trigger::CAMERA_TRIGGER_TYPE_END == iCameraTriggerType)
-		return E_FAIL;
-
-	_wstring* pStr = (_wstring*)_tEvent.Parameters[1];
-	_int iTriggerID = _tEvent.Parameters[2];
-
 	if (nullptr == pStr)
 		return E_FAIL;
 
 	switch (iCameraTriggerType) {
-	case CCamera_Trigger::CUTSCENE_TRIGGER:
-		if(true == CCamera_Manager::GetInstance()->Set_NextCutSceneData(*pStr))
-			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
-		break;
-	case CCamera_Trigger::ARM_TRIGGER:
+	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
+	{
 		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(*pStr, iTriggerID))
 			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+	}
 		break;
-	case CCamera_Trigger::FREEZE_X:
+	case (_uint)TRIGGER_TYPE::CUTSCENE_TRIGGER:
+	{
+		if (true == CCamera_Manager::GetInstance()->Set_NextCutSceneData(*pStr))
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+	}
 		break;
-	case CCamera_Trigger::FREEZE_Z:
+	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::FREEZE_Y_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
 		break;
 	}
 
@@ -377,30 +394,79 @@ HRESULT CEvent_Manager::Execute_CameraTrigger(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Execute_CameraTriggerExit(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_Trigger_Stay(const EVENT& _tEvent)
 {
 	_uint iCameraTriggerType = (_uint)_tEvent.Parameters[0];
+	_int iTriggerID = _tEvent.Parameters[1];
+	_wstring* pStr = (_wstring*)_tEvent.Parameters[2];
 
-	if (CCamera_Trigger::CAMERA_TRIGGER_TYPE_END == iCameraTriggerType)
+	if (nullptr == pStr)
 		return E_FAIL;
 
-	_int iTriggerID = _tEvent.Parameters[0];
-	_bool isReturn = _tEvent.Parameters[1];
+	switch (iCameraTriggerType) {
+	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::CUTSCENE_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::FREEZE_Y_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
+		break;
+	}
+
+	Safe_Delete(pStr);
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Trigger_Exit(const EVENT& _tEvent)
+{
+	_uint iCameraTriggerType = (_uint)_tEvent.Parameters[0];
+	_int iTriggerID = _tEvent.Parameters[1];
+	_wstring* pStr = (_wstring*)_tEvent.Parameters[2];
+
+	if (nullptr == pStr)
+		return E_FAIL;
 
 	switch (iCameraTriggerType) {
-	case CCamera_Trigger::CUTSCENE_TRIGGER:
+	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
 		break;
-	case CCamera_Trigger::ARM_TRIGGER:
+	case (_uint)TRIGGER_TYPE::CUTSCENE_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::FREEZE_Y_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
+		break;
+	}
 
+	Safe_Delete(pStr);
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
+{
+	_uint iTriggerType = (_uint)_tEvent.Parameters[0];;
+	_int iTriggerID = _tEvent.Parameters[1];
+	_bool isReturn = _tEvent.Parameters[2];
+
+	switch (iTriggerType) {
+	case CCamera_Trigger::ARM_TRIGGER:
+	{
 		CCamera_Manager::GetInstance()->Set_PreArmDataState(iTriggerID, isReturn);
 
 		if (true == isReturn)
 			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::RETURN_TO_PREARM);
+	}
 
-		break;
-	case CCamera_Trigger::FREEZE_X:
-		break;
-	case CCamera_Trigger::FREEZE_Z:
 		break;
 	}
 

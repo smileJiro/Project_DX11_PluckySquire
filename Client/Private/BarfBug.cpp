@@ -176,8 +176,8 @@ HRESULT CBarfBug::Render()
 
 #ifdef _DEBUG
     m_pDetectionField->Render();
-
-    m_pColliderCom->Render();
+    if(COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+        m_pColliderCom->Render();
 #endif // _DEBUG
 
     /* Font Render */

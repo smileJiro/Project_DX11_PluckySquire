@@ -202,7 +202,6 @@
     <ClInclude Include="..\Public\Boss_PurpleBall.h" />
     <ClInclude Include="..\Public\Boss_YellowBall.h" />
     <ClInclude Include="..\Public\Camera_CutScene.h" />
-    <ClInclude Include="..\Public\Camera_Trigger.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\Collision_Manager.h" />
@@ -266,6 +265,7 @@
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
     <ClInclude Include="..\Public\Soldier_Spear.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
+    <ClInclude Include="..\Public\Trigger_Manager.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
     <ClInclude Include="..\public\Monster.h">
@@ -320,7 +320,6 @@
     <ClCompile Include="..\Private\Boss_PurpleBall.cpp" />
     <ClCompile Include="..\Private\Boss_YellowBall.cpp" />
     <ClCompile Include="..\Private\Camera_CutScene.cpp" />
-    <ClCompile Include="..\Private\Camera_Trigger.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
@@ -381,6 +380,7 @@
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
     <ClCompile Include="..\Private\Soldier_Spear.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
+    <ClCompile Include="..\Private\Trigger_Manager.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
     <ClCompile Include="..\private\Monster.cpp" />

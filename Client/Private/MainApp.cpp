@@ -10,6 +10,7 @@
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
+#include "Trigger_Manager.h"
 
 
 #include "RenderGroup_MRT.h"
@@ -141,9 +142,11 @@ HRESULT CMainApp::Initialize_Client_Manager()
 		return E_FAIL;
 	if (FAILED(CCamera_Manager::GetInstance()->Initialize()))
 		return E_FAIL;
-	if(FAILED(CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+	if (FAILED(CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 	if (FAILED(CSection_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+	if (FAILED(CTrigger_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -443,6 +446,7 @@ void CMainApp::Free()
 	CUI_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
 	CCollision_Manager::DestroyInstance();
+	CTrigger_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();
