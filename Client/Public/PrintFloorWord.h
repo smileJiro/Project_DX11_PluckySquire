@@ -7,6 +7,7 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
+BEGIN(Client)
 class CPrintFloorWord : public CFloorWord
 {
 
@@ -35,6 +36,10 @@ public:
 	HRESULT					Cleanup_DeadReferences() override;
 
 
+private:
+	_float2					m_vRenderPos = { 0.f, 0.f };
+	_tchar					m_tFloorWord[MAX_PATH] = {};
 
 };
 
+END

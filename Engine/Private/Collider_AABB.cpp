@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 #include "DebugDraw.h"
 
+
 CCollider_AABB::CCollider_AABB(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCollider(_pDevice, _pContext)
 {
@@ -67,8 +68,8 @@ HRESULT CCollider_AABB::Render()
 {
     m_pEffect->SetWorld(XMMatrixIdentity());
     m_pEffect->SetView(XMMatrixIdentity());
-    _float2 vRTSize = m_pGameInstance->Get_RT_Size(TEXT("Target_Book_2D"));
-    m_pEffect->SetProjection(XMMatrixOrthographicLH(vRTSize.x, vRTSize.y, 0.0f, 1.0f));
+    // 지금 플레이어의 섹션의 해상도를 가져올 방법이 없어 //
+    m_pEffect->SetProjection(XMMatrixOrthographicLH(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y, 0.0f, 1.0f));
     m_pEffect->Apply(m_pContext);
     m_pContext->IASetInputLayout(m_pInputLayout);
 

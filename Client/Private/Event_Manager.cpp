@@ -389,8 +389,14 @@ HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+	{
+		CCamera_Manager::GetInstance()->Set_Freeze(CCamera_Target::FREEZE_X);
+	}
 		break;
-	case (_uint)TRIGGER_TYPE::FREEZE_Y_TRIGGER:
+	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
+	{
+		CCamera_Manager::GetInstance()->Set_Freeze(CCamera_Target::FREEZE_Z);
+	}
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;
@@ -419,7 +425,7 @@ HRESULT CEvent_Manager::Execute_Trigger_Stay(const EVENT& _tEvent)
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
 		break;
-	case (_uint)TRIGGER_TYPE::FREEZE_Y_TRIGGER:
+	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;
@@ -447,8 +453,14 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit(const EVENT& _tEvent)
 	case (_uint)TRIGGER_TYPE::CUTSCENE_TRIGGER:
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+	{
+		CCamera_Manager::GetInstance()->Set_Freeze(CCamera_Target::RESET);
+	}
 		break;
-	case (_uint)TRIGGER_TYPE::FREEZE_Y_TRIGGER:
+	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
+	{
+		CCamera_Manager::GetInstance()->Set_Freeze(CCamera_Target::RESET);
+	}
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;

@@ -30,6 +30,7 @@ HRESULT CCamera_Target::Initialize(void* _pArg)
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
 	m_eCameraMode = pDesc->eCameraMode;
 	m_vAtOffset = pDesc->vAtOffset;
+	m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -73,7 +74,7 @@ void CCamera_Target::Add_Arm(CCameraArm* _pCameraArm)
 
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 {
-	m_pArm->Change_Target(_pTargetWorldMatrix);
+	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 }
 
 void CCamera_Target::Set_NextArmData(ARM_DATA* _pArmData, SUB_DATA* _pSubData)
@@ -111,7 +112,7 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 
 void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 {
-	_vector vCameraPos = m_pArm->Calculate_CameraPos(_fTimeDelta);
+	_vector vCameraPos = Calculate_CameraPos();
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
 	Look_Target(_fTimeDelta);
@@ -125,7 +126,7 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 		return;
 	}
 
-	_vector vCameraPos = m_pArm->Calculate_CameraPos(_fTimeDelta);
+	_vector vCameraPos = Calculate_CameraPos();
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
 	Look_Target(_fTimeDelta);
@@ -133,12 +134,24 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 
 void CCamera_Target::Look_Target(_float _fTimeDelta)
 {
-	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
+	_vector vTargetPos = XMLoadFloat4x4(m_pTargetWorldMatrix).r[TARGET_POS];
 	
 	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 
 	XMStoreFloat3(&m_vTargetPos, vAt);
+}
+
+_vector CCamera_Target::Calculate_CameraPos()
+{
+	_vector vTargetPos;
+
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	vTargetPos = vTargetPos; // +XMLoadFloat3(&m_vPosOffset);
+
+	_vector vCameraPos = vTargetPos + (m_pArm->Get_Length() * m_pArm->Get_ArmVector());
+
+	return vCameraPos;
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

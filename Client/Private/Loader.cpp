@@ -7,6 +7,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_2D.h"
 
 /* For. Main Table */
 #include "MainTable.h"
@@ -37,6 +38,8 @@
 /* For. NPC*/
 #include "Npc_Body.h"
 #include "NPC_Store.h"
+#include "FloorWord.h"
+#include "PrintFloorWord.h"
 
 
 #include "ModelObject.h"
@@ -284,6 +287,26 @@ HRESULT CLoader::Loading_Level_Static()
         CMainTable::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    // ============ Camera
+    /* For. Prototype_GameObject_Camera_Free */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+        CCamera_Free::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_Target */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
+        CCamera_Target::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_CutScene */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_CutScene"),
+        CCamera_CutScene::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_2D */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
+        CCamera_2D::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     // ============ Triger
     /* For. Prototype_GameObject_Camera_Trigger */
@@ -634,22 +657,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
-    // ============ Camera
-    /* For. Prototype_GameObject_Camera_Free */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
-        CCamera_Free::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Camera_Target */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
-        CCamera_Target::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Camera_CutScene */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_CutScene"),
-        CCamera_CutScene::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
     /* For. Prototype_GameObject_MapObject */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
@@ -732,6 +739,16 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_PurpleBall"),
         CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_FloorWord"),
+		CFloorWord::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_PrintFloorWord"),
+		CPrintFloorWord::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
     // 액터 들어가는넘. 뺌.
     //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
