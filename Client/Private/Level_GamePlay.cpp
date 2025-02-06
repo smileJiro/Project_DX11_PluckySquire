@@ -719,7 +719,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		}
 	}
 
-	// 윈도우 기준으로 좌표 잡으면 당연히 안됨... 지금까지 된게 이상한거임
 	pDesc.fX = 0.f; // 전체 사이즈 / RTSIZE 끝으로 변경
 	pDesc.fY = 0.f;// 전체 사이즈 / RTSIZE 끝으로 변경
 	pDesc.fSizeX = 2328.f;
@@ -728,13 +727,25 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	// 윈도우 기준으로 좌표 잡으면 당연히 안됨... 지금까지 된게 이상한거임22
 	pDesc.fX = DEFAULT_SIZE_BOOK2D_X / RATIO_BOOK2D_X;
 	pDesc.fY = DEFAULT_SIZE_BOOK2D_Y / RATIO_BOOK2D_Y;
 	pDesc.fSizeX = 512.f;
 	pDesc.fSizeY = 512.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	/* 테스트 용 */
+	/* (0.0) ~ MAXSIZE 기준으로 fX, fY 를 설정하여야합니다. */
+	/* 해당 부분은 객체가 투명하며 오직 글자 렌더만 사용합니다. */
+	//CGameObject* pPrintFloorWord = { nullptr };
+	//pDesc.fX = 996.f;
+	//pDesc.fY = -30.f;
+	//pDesc.fSizeX = 0.f;
+	//pDesc.fSizeY = 0.f;
+	//
+	//
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
 

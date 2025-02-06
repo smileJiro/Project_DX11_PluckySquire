@@ -7,8 +7,29 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
+BEGIN(Client)
+
+class CPrintFloorWord;
 class CFloorWord : public CUI
 {
+
+public:
+	struct Highlight
+	{
+		wstring strSubstring;
+		float fDefultSize;
+		float fHighlightSize;
+	};
+
+
+	struct FLOORTEXT
+	{
+		float fPosX;
+		float fPosY;
+		wstring strText;
+		Highlight tHightLight;
+
+	};
 
 
 protected:
@@ -19,6 +40,7 @@ protected:
 public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* _pArg) override;
+	virtual HRESULT			Initialize_Child(void* _pArg);
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
@@ -34,7 +56,13 @@ public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
 
+private:
+	HRESULT					Load_Json(const wstring& filePath, const _wstring& _strLayerTag);
 
+
+private:
+	_bool					m_isMake = { false };
 
 };
 
+END
