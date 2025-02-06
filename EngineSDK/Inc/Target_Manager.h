@@ -37,6 +37,7 @@ public:
 	_float2											Get_RT_Size(const _wstring& _strTargetTag);
 	map<const _wstring, CRenderTarget*>&			Get_RenderTargets() { return m_RenderTargets; }
 	map<const _wstring, list<CRenderTarget*>>&		Get_MRTs() { return m_MRTs; }
+
 private:
 	ID3D11Device*									m_pDevice = nullptr;
 	ID3D11DeviceContext*							m_pContext = nullptr;

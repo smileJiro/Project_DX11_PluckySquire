@@ -133,25 +133,27 @@ bool CPhysx_EventCallBack::IsOwnerObjectValid(CActorObject* pOwner)
 }
 void CPhysx_EventCallBack::Update()
 {
-	for (auto& Pair : m_StayTrigger)
+	map<_ulonglong, pair<COLL_INFO, COLL_INFO>>::iterator iter;
+	
+	for (iter = m_StayTrigger.begin(); iter != m_StayTrigger.end();)
 	{
 		_bool isEmpty = false;
-		if (nullptr == Pair.second.first.pActorUserData || nullptr == Pair.second.second.pActorUserData)
+		if (nullptr == iter->second.first.pActorUserData || nullptr == iter->second.second.pActorUserData)
 		{
 			/* 만약 UserData가 삭제되었다면, 이는 어디선가 객체가 소멸했다는 의미임. */
-			Erase_StayTrigger(Pair.first, &isEmpty);
-			if (true == isEmpty)
+			Erase_StayTrigger(iter->first, &iter, &isEmpty);
+			if (true == isEmpty || iter == m_StayTrigger.end())
 				return;
 
 			continue;
 		}
 
-		CActorObject* pTriggerObject = Pair.second.first.pActorUserData->pOwner;
-		CActorObject* pOtherObject = Pair.second.second.pActorUserData->pOwner;
+		CActorObject* pTriggerObject = iter->second.first.pActorUserData->pOwner;
+		CActorObject* pOtherObject = iter->second.second.pActorUserData->pOwner;
 		if (false == IsOwnerObjectValid(pTriggerObject) || false == IsOwnerObjectValid(pOtherObject))
 		{
-			Erase_StayTrigger(Pair.first, &isEmpty);
-			if (true == isEmpty)
+ 			Erase_StayTrigger(iter->first, &iter, &isEmpty);
+			if (true == isEmpty || iter == m_StayTrigger.end())
 				return;
 
 			continue;
@@ -159,16 +161,18 @@ void CPhysx_EventCallBack::Update()
 
 		if(false == pTriggerObject->Is_Active() || false == pOtherObject->Is_Active())
 		{
-			Erase_StayTrigger(Pair.first, &isEmpty);
-			if (true == isEmpty)
+			Erase_StayTrigger(iter->first, &iter, &isEmpty);
+			if (true == isEmpty || iter == m_StayTrigger.end())
 				return;
 
 			continue;
 		}
 		
 		/* 예외처리 모두 통과 시 */
-		pTriggerObject->OnTrigger_Stay(Pair.second.first, Pair.second.second);
+		pTriggerObject->OnTrigger_Stay(iter->second.first, iter->second.second);
+		++iter;
 	}
+
 
 }
 void CPhysx_EventCallBack::Add_StayTrigger(_ulonglong _ID, const COLL_INFO& _TriggerInfo, const COLL_INFO& _OtherInfo)
@@ -178,14 +182,14 @@ void CPhysx_EventCallBack::Add_StayTrigger(_ulonglong _ID, const COLL_INFO& _Tri
 
 	m_StayTrigger.emplace(_ID, make_pair(_TriggerInfo, _OtherInfo));
 }
-void CPhysx_EventCallBack::Erase_StayTrigger(_ulonglong _ID, _bool* _isEmpty)
+void CPhysx_EventCallBack::Erase_StayTrigger(_ulonglong _ID, map<_ulonglong, pair<COLL_INFO, COLL_INFO>>::iterator* _pOutNextiter, _bool* _isEmpty)
 {
 	auto& iter = m_StayTrigger.find(_ID);
 	if (iter == m_StayTrigger.end())
 		return;
 
-	iter = m_StayTrigger.erase(iter);
-
+	if (nullptr != _pOutNextiter)
+		*_pOutNextiter = m_StayTrigger.erase(iter);
 
 	if (nullptr != _isEmpty)
 		*_isEmpty = m_StayTrigger.empty();

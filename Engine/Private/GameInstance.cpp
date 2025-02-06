@@ -17,6 +17,9 @@
 #include "Physx_Manager.h"
 #include "NewRenderer.h"
 #include "Frustum.h"
+#include "GlobalFunction_Manager.h"
+
+
 #include "Physx_EventCallBack.h"
 #include "Layer.h"
 #include "ModelObject.h"
@@ -45,6 +48,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pPhysx_Manager)
 		return E_FAIL;
 
+	m_pD3DUtils = CD3DUtils::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pD3DUtils)
+		return E_FAIL;
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pLight_Manager)
@@ -83,10 +89,6 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pLevel_Manager = CLevel_Manager::Create();
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
-
-	//m_pCollision_Manager = CCollision_Manager::Create();
-	//if (nullptr == m_pCollision_Manager)
-	//	return E_FAIL;
 
 	m_pTimer_Manager = CTimer_Manager::Create();
 	if (nullptr == m_pTimer_Manager)
@@ -1293,6 +1295,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pShadow);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
+	Safe_Release(m_pD3DUtils);
 	Safe_Release(m_pTarget_Manager);
 
 	/* 임시 코드 */

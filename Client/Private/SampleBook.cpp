@@ -5,6 +5,7 @@
 #include "3DModel.h"
 #include "Section_Manager.h"
 #include "AnimEventGenerator.h"
+#include "RenderGroup_WorldPos.h"
 
 
 CSampleBook::CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -66,16 +67,92 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 
+
+/* Start World Position Map Process */
+#pragma region 1. Create RTV, MRT, DSV, RenderGroup
+	{
+		/* Target_WorldPosMap_Book */
+		if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_WorldPosMap_Book"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_WorldPosMap_Book"), TEXT("Target_WorldPosMap_Book"))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_WorldPosMap_Book"), RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
+			return E_FAIL;
+
+		CRenderGroup_WorldPos::RG_MRT_DESC Desc;
+		Desc.iRenderGroupID = RG_WORLDPOSMAP;
+		Desc.iPriorityID = PRWORLD_MAINBOOK;
+		Desc.isClear = false;
+		Desc.isViewportSizeChange = true;
+		Desc.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_WorldPosMap_Book"));
+		Desc.strMRTTag = TEXT("MRT_WorldPosMap_Book");
+		Desc.vViewportSize = { RTSIZE_BOOK2D_X , RTSIZE_BOOK2D_Y };
+		CRenderGroup_WorldPos* pRenderGroup_WorldPos = CRenderGroup_WorldPos::Create(m_pDevice, m_pContext, &Desc);
+		if (nullptr == pRenderGroup_WorldPos)
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_WorldPos->Get_RenderGroupID(), pRenderGroup_WorldPos->Get_PriorityID(), pRenderGroup_WorldPos)))
+			return E_FAIL;
+		Safe_Release(pRenderGroup_WorldPos);
+	}
+#pragma endregion // 1
+
+
+#pragma region 2. Create Read Only Texture (Staging)
+	{
+		D3D11_TEXTURE2D_DESC desc = {};
+		desc.Width = RTSIZE_BOOK2D_X; // 원본 텍스처 너비
+		desc.Height = RTSIZE_BOOK2D_Y; // 원본 텍스처 높이
+		desc.MipLevels = 1;
+		desc.ArraySize = 1;
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 원본 텍스처와 동일한 포맷
+		desc.SampleDesc.Count = 1;
+		desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
+		desc.BindFlags = 0; // 바인딩 없음
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		m_pDevice->CreateTexture2D(&desc, nullptr, &m_pStagingTexture);
+	}
+#pragma endregion // 2
+
+
+#pragma region 3. Only One Time Render
+	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, this);
+#pragma endregion // 3
+
 	return S_OK;
 }
 
 void CSampleBook::Priority_Update(_float _fTimeDelta)
 {
+	// 맵핑하여 데이터 접근
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	m_pContext->Map(m_pStagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource);
+
+	// 원하는 픽셀 좌표 (픽셀 좌표는 UV 좌표를 변환해서 계산)
+	int pixelX = 0; // X 좌표
+	int pixelY = 0; // Y 좌표
+
+	// RowPitch는 한 줄의 바이트 수를 나타냄
+	float* data = static_cast<float*>(mappedResource.pData);
+
+	// 픽셀 위치 계산 (4 floats per pixel)
+	int rowPitchInPixels = mappedResource.RowPitch / sizeof(float) / 4;
+	int index = pixelY * rowPitchInPixels + pixelX;
+
+	// float4 데이터 읽기
+	float r = data[index * 4 + 0]; // Red 채널
+	float g = data[index * 4 + 1]; // Green 채널
+	float b = data[index * 4 + 2]; // Blue 채널
+	float a = data[index * 4 + 3]; // Alpha 채널
+
+	// 맵핑 해제
+	m_pContext->Unmap(m_pStagingTexture, 0);
+
 	__super::Priority_Update(_fTimeDelta);
 }
 
 void CSampleBook::Update(_float _fTimeDelta)
 {
+	
 	if (KEY_DOWN(KEY::M))
 	{
 		if (Book_Action(NEXT))
@@ -228,33 +305,42 @@ HRESULT CSampleBook::Render_Shadow()
 
 HRESULT CSampleBook::Render_WorldPosMap()
 {
-    m_pGameInstance->Render_Begin();
-    // 1. 자기 자신에 해당하는 RT 및 MRT를 생성한다. 이때 사이즈는 자기 자신이 추후 바인딩 할 Section RTV와 동일해야한다. 
-    /* Target_WorldPosMap_Book */
-    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_WorldPosMap_Book"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_WorldPosMap_Book"), TEXT("Target_WorldPosMap_Book"))))
-        return E_FAIL;
-    // 2. 자기 자신이 생성한 MRT를 바인딩하고, 자기 자신의 World 매트릭스만 바인딩 하고 렌더를 수행한다.
-    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
-        return E_FAIL;
-    // 3. 쉐이더에서는 자기 자신의 버텍스에 저장된 texcoord 좌표를 기준으로 렌더타겟에 worldpos를 저장한다. 
-    /* Shader Pass */
-    //m_pShaderComs[COORDINATE_3D]->Begin(PASS_VTXMESH::WORLDPOS);
+#pragma region 1. 책의 메인 페이지 좌, 우 메쉬를 찾아서 렌더.
+	if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
+		return E_FAIL;
 
-    /* Bind Mesh Vertex Buffer */
-    C3DModel* p3DModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(COORDINATE_3D));
-    if (nullptr == p3DModel)
-        return E_FAIL;
+	C3DModel* p3DModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(COORDINATE_3D));
+	if (nullptr == p3DModel)
+		return E_FAIL;
 
-    p3DModel->Get_Mesh(10);
-    p3DModel->Get_Mesh(11);
-    //m_Meshes[i]->Bind_BufferDesc();
-    //m_Meshes[i]->Render();
-    // 4. 저장된 RT는 일단 TargetManager가 들고있긴 할텐데.... 이게 의미가 있나 키값도 또 만들려면 번거롭고 Section 이름과 일치도 되어야하는데. 
-    
+	CMesh* pLeftMesh = p3DModel->Get_Mesh(CUR_LEFT);
+	CMesh* pRightMesh = p3DModel->Get_Mesh(CUR_RIGHT);
 
-    m_pGameInstance->Render_End();
+	_float2 vStartCoord = { 0.0f, 0.0f };
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+	p3DModel->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", CUR_LEFT);
+	m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXANIMMESH::WORLDPOSMAP_BOOK);
+	pLeftMesh->Bind_BufferDesc();
+	pLeftMesh->Render();
+
+	vStartCoord = { 0.5f, 0.0f };
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+	p3DModel->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", CUR_RIGHT);
+	m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXANIMMESH::WORLDPOSMAP_BOOK);
+	pRightMesh->Bind_BufferDesc();
+	pRightMesh->Render();
+#pragma endregion // 1
+
+
+#pragma region 2. 읽기 전용 텍스쳐에 WorldMapPos를 복사.
+	ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(TEXT("Target_WorldPosMap_Book"));
+	ID3D11Resource* pResource = nullptr;
+	pSRV->GetResource(&pResource);
+	m_pContext->CopyResource(m_pStagingTexture, pResource);
+	Safe_Release(pResource);
+#pragma endregion // 2
+
+	
     return S_OK;
 }
 
@@ -371,6 +457,7 @@ CGameObject* CSampleBook::Clone(void* _pArg)
 
 void CSampleBook::Free()
 {
+	Safe_Release(m_pStagingTexture);
 
 	__super::Free();
 }

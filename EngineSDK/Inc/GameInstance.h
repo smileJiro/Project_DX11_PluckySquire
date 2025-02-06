@@ -5,7 +5,7 @@
 #include "Key_Manager.h"
 #include "PipeLine.h"
 #include "Shadow.h"
-#include "GlobalFunction_Manager.h"
+#include "D3DUtils.h"
 
 BEGIN(Engine)
 
@@ -242,6 +242,12 @@ public: /* For. Physx_Manager*/
 public: /* For. Frustum */
 	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);
 
+public: /* For. D3DUtils */
+	template<typename T_CONSTANT>
+	HRESULT				CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer);
+	template<typename T_CONSTANT>
+	HRESULT				UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer);
+
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -263,6 +269,7 @@ private:
 	class CCamera_Manager_Engine* m_pCamera_Manager = nullptr;
 	class CPhysx_Manager* m_pPhysx_Manager = nullptr;
 	class CFrustum* m_pFrustum = nullptr;
+	class CD3DUtils* m_pD3DUtils = nullptr;
 private:
 	HWND m_hWnd = nullptr;
 	HINSTANCE m_hInstance = nullptr;
@@ -283,19 +290,19 @@ public:
 template<typename T_CONSTANT>
 inline HRESULT CGameInstance::CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer)
 {
-	if (nullptr == m_pGlobalFunction_Manager)
+	if (nullptr == m_pD3DUtils)
 		return E_FAIL;
 
-	return m_pGlobalFunction_Manager->CreateConstBuffer(_tConstantBufferData, _eUsage, _ppOutConstantBuffer);
+	return m_pD3DUtils->CreateConstBuffer(_tConstantBufferData, _eUsage, _ppOutConstantBuffer);
 }
 
 template<typename T_CONSTANT>
 inline HRESULT CGameInstance::UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer)
 {
-	if (nullptr == m_pGlobalFunction_Manager)
+	if (nullptr == m_pD3DUtils)
 		return E_FAIL;
 
-	return m_pGlobalFunction_Manager->UpdateConstBuffer(_tConstantBufferData, _pConstantBuffer);
+	return m_pD3DUtils->UpdateConstBuffer(_tConstantBufferData, _pConstantBuffer);
 }
 
 END
