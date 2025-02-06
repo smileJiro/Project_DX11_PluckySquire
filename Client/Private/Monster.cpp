@@ -31,6 +31,9 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fDelayTime = pDesc->fDelayTime;
 	m_fCoolTime = pDesc->fCoolTime;
 
+	if (true == pDesc->isSneakMode)
+		m_isSneakMode = true;
+
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 

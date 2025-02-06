@@ -25,6 +25,7 @@ public:
 		_float fAttack2DRange;
 		_float fDelayTime;
 		_float fCoolTime;
+		_bool isSneakMode = false;
 	}MONSTER_DESC;
 
 protected:
@@ -55,6 +56,16 @@ public:
 	F_DIRECTION Get_2DDirection() 
 	{ 
 		return m_e2DDirection; 
+	}
+
+	void Set_SneakMode(_bool _isSneak)
+	{
+		m_isSneakMode = _isSneak;
+	}
+
+	_bool Get_SneakMode()
+	{
+		return m_isSneakMode;
 	}
 
 	_bool IsDelay() 
@@ -141,6 +152,9 @@ protected:
 	_bool m_isCool = { false };
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
+
+	//잠입 모드
+	_bool m_isSneakMode = { false };
 
 	//장애물 탐지
 	_bool m_isDetect_Block = { false };
