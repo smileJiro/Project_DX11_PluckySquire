@@ -62,7 +62,11 @@ HRESULT CDetectionField::Render()
 	_float Near;
 	m_pGameInstance->MatrixDecompose(&vScale, &vRot, &vPos, m_pOwner->Get_WorldMatrix());
 	Near = vScale.z;
-	BoundingFrustum Frustum(vPos, vRot, tanf(m_fFOVX / 2.f), -tanf(m_fFOVX / 2.f), tanf(m_fFOVY / 2.f), -tanf(m_fFOVY / 2.f), m_fOffset, m_fOffset + m_fRange);	//근평면 거리 다시 잡아야할듯
+
+	//가로 세로 시야각 바꿔서 넣어야 원하는대로 그려지는듯?
+	_float fRightSlope = tanf(m_fFOVY * 0.5f);
+	_float fTopSlope = tanf(m_fFOVX * 0.5f);
+	BoundingFrustum Frustum(vPos, vRot, fRightSlope, -1.f * fRightSlope, fTopSlope, -1.f * fTopSlope, m_fOffset, m_fOffset + m_fRange);	//근평면 거리 다시 잡아야할듯
 	_float4 vColor;
 	XMStoreFloat4(&vColor, (false == m_isColl) ? XMVectorSet(0.f, 1.f, 0.f, 1.f) : XMVectorSet(1.f, 0.f, 0.f, 1.f));
 	m_pDraw->Render_Frustum(Frustum, vColor);
@@ -84,23 +88,25 @@ _bool CDetectionField::IsTarget_In_Detection()
 	if (m_fRange >= m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition()))
 	{
 		//이후 각도로 판단 (예외처리는....)
-		_float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
-		_float fLookAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
-		_float fRightAngle = m_pGameInstance->Clamp_Degrees(fLookAngle + m_fFOVX / 2.f);
-		_float fLeftAngle = m_pGameInstance->Clamp_Degrees(fLookAngle - m_fFOVX / 2.f);
-		_float fUpAngle = m_pGameInstance->Clamp_Degrees(fLookAngle + m_fFOVY / 2.f);
-		_float fDownAngle = m_pGameInstance->Clamp_Degrees(fLookAngle - m_fFOVY / 2.f);
+		_float fAngleX = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetY(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f));
+		_float fAngleY = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetX(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f));
+		_float fLookAngleX = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetY(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), 0.f));
+		_float fLookAngleY = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetX(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), 0.f));
+		_float fRightAngle = m_pGameInstance->Clamp_Degrees(fLookAngleX + m_fFOVX / 2.f);
+		_float fLeftAngle = m_pGameInstance->Clamp_Degrees(fLookAngleX - m_fFOVX / 2.f);
+		_float fUpAngle = m_pGameInstance->Clamp_Degrees(fLookAngleY + m_fFOVY / 2.f);
+		_float fDownAngle = m_pGameInstance->Clamp_Degrees(fLookAngleY - m_fFOVY / 2.f);
 
 		//x 시야각 먼저 체크
 		_bool isIn_FOVX = false;
 		//왼쪽의 각도가 더 큰 경우는 0도를 사이에 걸쳤을 경우
 		if (fLeftAngle > fRightAngle)
 		{
-			if (fLeftAngle <= fAngle || fRightAngle >= fAngle)
+			if (fLeftAngle <= fAngleX || fRightAngle >= fAngleX)
 				isIn_FOVX = true;
 		}
 
-		else if (fRightAngle >= fAngle && fLeftAngle <= fAngle)
+		else if (fRightAngle >= fAngleX && fLeftAngle <= fAngleX)
 		{
 			isIn_FOVX = true;
 		}
@@ -112,11 +118,11 @@ _bool CDetectionField::IsTarget_In_Detection()
 			//아래쪽의 각도가 더 큰 경우는 0도를 사이에 걸쳤을 경우
 			if (fDownAngle > fUpAngle)
 			{
-				if (fDownAngle <= fAngle || fUpAngle >= fAngle)
+				if (fDownAngle <= fAngleY || fUpAngle >= fAngleY)
 					m_isColl = true;
 			}
 
-			else if (fUpAngle >= fAngle && fDownAngle <= fAngle)
+			else if (fUpAngle >= fAngleY && fDownAngle <= fAngleY)
 			{
 				m_isColl = true;
 			}

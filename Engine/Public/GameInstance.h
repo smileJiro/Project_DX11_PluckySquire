@@ -206,6 +206,10 @@ public: /* For. GlobalFunction_Manager */
 	_bool				MatrixDecompose(_float3* _vScale, _float4* _vQuaternion, _float3* _vPosition, FXMMATRIX _Matrix);
 	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);		//노말벡터 기준으로 방향 벡터 간 각도 구함 (0-360도 간)
 	_float				Clamp_Degrees(_float _fDegrees);		//0~360도 사이로 만듦
+
+	//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
+	_uint					Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);	
+
 	template<typename T_CONSTANT>
 	HRESULT				CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer);
 	template<typename T_CONSTANT>

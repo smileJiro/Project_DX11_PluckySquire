@@ -80,6 +80,7 @@ public:
 	// Get
 	const vector<PxShape*>&		Get_Shapes() { return m_Shapes; }
 	ACTOR_TYPE					Get_ActorType() const { return m_eActorType; }
+	PxRigidActor*					Get_RigidActor() const { return m_pActor; }
 
 	// Set 
 	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix); // 특별한 경우 아니면 사용을 비권장하겠음. 버그있는듯함.

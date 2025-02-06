@@ -37,6 +37,8 @@ public:
 
 	_float				Clamp_Degrees(_float _fDegrees);		//0~360도 사이로 만듦
 
+	_uint					Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);		//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
+
 private:
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
