@@ -37,7 +37,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 	m_iMainIndex = pDesc->iMainIndex;
-	m_iMainIndex = pDesc->iMainIndex;
+	m_iSubIndex = pDesc->iSubIndex;
 	
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))

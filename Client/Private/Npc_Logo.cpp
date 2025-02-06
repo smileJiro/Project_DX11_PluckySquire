@@ -3,9 +3,7 @@
 #include "ModelObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
-#include "Collision_Manager.h"
 #include "UI_Manager.h"
-#include "StateMachine.h"
 
 CNPC_Logo::CNPC_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CNPC(_pDevice, _pContext)
@@ -26,18 +24,18 @@ HRESULT CNPC_Logo::Initialize_Prototype()
 
 HRESULT CNPC_Logo::Initialize(void* _pArg)
 {
-	CNPC_Logo::NPC_DESC* pDesc = static_cast<CNPC_Logo::NPC_DESC*>(_pArg);
+	NPC_DESC* pDesc = static_cast<NPC_DESC*>(_pArg);
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = true;
 	pDesc->iNumPartObjects = PART_END;
-
+	pDesc->iCurLevelID = LEVEL_LOGO;
 	pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
 
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
-	m_iMainIndex = pDesc->iMainIndex;
-	m_iMainIndex = pDesc->iMainIndex;
+	//m_iMainIndex = pDesc->iMainIndex;
+	//m_iMainIndex = pDesc->iMainIndex;
 	
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
@@ -54,12 +52,12 @@ HRESULT CNPC_Logo::Initialize(void* _pArg)
 
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-
+	
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Martina_idle01, true);
-	pModelObject->Set_Animation(ANIM_2D::Martina_idle01);
+	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Pip_idle_down, true);
+	pModelObject->Set_Animation(ANIM_2D::Pip_idle_down);
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -69,59 +67,6 @@ HRESULT CNPC_Logo::Initialize(void* _pArg)
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Logo::On_AnimEnd, this , placeholders::_1, placeholders::_2));
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(g_iWinSizeX - g_iWinSizeX / 2.35f, g_iWinSizeY / 14.f, 0.f, 1.f));
-
-	
-	//CActor::ACTOR_DESC ActorDesc;
-	//
-	///* Actor의 주인 오브젝트 포인터 */
-	//ActorDesc.pOwner = this;
-	//
-	///* Actor의 회전축을 고정하는 파라미터 */
-	//ActorDesc.FreezeRotation_XYZ[0] = false;
-	//ActorDesc.FreezeRotation_XYZ[1] = false;
-	//ActorDesc.FreezeRotation_XYZ[2] = false;
-	//
-	///* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
-	//ActorDesc.FreezePosition_XYZ[0] = false;
-	//ActorDesc.FreezePosition_XYZ[1] = false;
-	//ActorDesc.FreezePosition_XYZ[2] = false;
-	//
-	///* 사용하려는 Shape의 형태를 정의 */
-	//SHAPE_CAPSULE_DESC ShapeDesc = {};
-	//ShapeDesc.fHalfHeight = 0.25f;
-	//ShapeDesc.fRadius = 0.25f;
-	//
-	///* 해당 Shape의 Flag에 대한 Data 정의 */
-	//SHAPE_DATA ShapeData;
-	//ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-	//ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-	//ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-	//ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-	//XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
-	//
-	///* 최종으로 결정 된 ShapeData를 PushBack */
-	//ActorDesc.ShapeDatas.push_back(ShapeData);
-	//
-	///* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
-	//ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-	//ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
-	//XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
-	//SHAPE_SPHERE_DESC SphereDesc = {};
-	//SphereDesc.fRadius = 1.f;
-	//ShapeData.pShapeDesc = &SphereDesc;
-	//ActorDesc.ShapeDatas.push_back(ShapeData);
-	//
-	///* 충돌 필터에 대한 세팅 ()*/
-	//ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	//ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
-	//
-	//pDesc->pActorDesc = &ActorDesc;
-	//
-	//
-	//__super::Initialize(pDesc);
-	//Ready_PartObjects();
-	
-
 
 	return S_OK;
 }
@@ -133,34 +78,26 @@ void CNPC_Logo::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Logo::Update(_float _fTimeDelta)
 {
-	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
-	
 	__super::Update(_fTimeDelta);
 }
 
 void CNPC_Logo::Late_Update(_float _fTimeDelta)
 {
 	
-
 	__super::Late_Update(_fTimeDelta);
-
-	//CGameObject* pPlayer;
-
-	/* 테스트용 코드*/
 	if (KEY_DOWN(KEY::J))
 	{
-		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_MenuOpen);
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Gameover_Pip_Idle);
 	}
-
-	//if (static_cast<CModelObject*>(m_PartObjects[PART_BODY])->)
-
-
+	
+	m_PartObjects[PART_BODY]->Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 }
 
 HRESULT CNPC_Logo::Render()
 {
-	//__super::Render();
-	m_pColliderCom->Render();
+	int a = 0;
+	//Register_RenderGroup()
+
 	return S_OK;
 }
 
@@ -179,80 +116,11 @@ void CNPC_Logo::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, co
 	int a = 0;
 }
 
-_bool CNPC_Logo::OnCOllsion2D_Enter()
-{
-	// 이전에 false 였고 현재 true 인경우
-	//m_isPreCollision2D 가 false
-	//m_isCollision2D 가 true
-	// 인터렉션창을 띄운다.
-	
-
-	m_isPreCollision2D = m_isCollision2D;
-
-	return false;
-}
-
-_bool CNPC_Logo::OnCOllsion2D_Stay()
-{
-	// 이전에 true 였고 지금도 true면 들어오는건 false, // 애니메이션 유지
-		//m_isPreCollision2D 가 true
-	//m_isCollision2D 가 true
-	// 인터렉션창을 띄운다.
-	// E를 누르면 아이템 상점을 띄운다.
-
-
-	return false;
-}
-
-_bool CNPC_Logo::OnCOllsion2D_Exit()
-{
-
-	// 이전에 true였고 현재 false 인경우
-			//m_isPreCollision2D 가 true
-	//m_isCollision2D 가 false
-	// 인터렉션창을 끈다.
-
-
-	m_isPreCollision2D = m_isCollision2D;
-
-	return false;
-}
 
 
 void CNPC_Logo::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	if (iAnimIdx != m_iPreState)
-	{
-		switch (ANIM_2D(iAnimIdx))
-		{
-		case ANIM_2D::Martina_MenuExit_Into:
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-			break;
 
-		case ANIM_2D::Martina_MenuOpen:
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-			break;
-
-		case ANIM_2D::Martina_Puschase01:
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-			break;
-
-		case ANIM_2D::Martina_NoMoney01_into:
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-			break;
-
-		case ANIM_2D::Martina_talk:
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
-			break;
-
-		case ANIM_2D::Martina_idle01:
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-			break;
-
-		default:
-			break;
-		}
-	}
 }
 
 
@@ -308,14 +176,7 @@ HRESULT CNPC_Logo::Ready_ActorDesc(void* _pArg)
 
 HRESULT CNPC_Logo::Ready_Components()
 {
-	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
-	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = { 180.f, 180.f };
-	AABBDesc.vScale = { 1.0f, 1.0f };
-	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-		TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
-		return E_FAIL;
+	
 
 	return S_OK;
 }
@@ -328,7 +189,7 @@ HRESULT CNPC_Logo::Ready_PartObjects()
 	NPCBodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
 	NPCBodyDesc.iCurLevelID = m_iCurLevelID;
 	NPCBodyDesc.isCoordChangeEnable = false;
-	NPCBodyDesc.strModelPrototypeTag_2D = TEXT("NPC_Store");
+	NPCBodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_NPC_Pip_2DAnimation");
 	//NPCBodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
 	NPCBodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 	//NPCBodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
@@ -347,7 +208,7 @@ HRESULT CNPC_Logo::Ready_PartObjects()
 	//NPCBodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
 	m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_NPC_Body"), &NPCBodyDesc));
-	if (nullptr == m_PartObjects[PART_BODY])
+ 	if (nullptr == m_PartObjects[PART_BODY])
 		return E_FAIL;
 
 	return S_OK;
