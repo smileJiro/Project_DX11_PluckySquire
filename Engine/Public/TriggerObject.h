@@ -20,6 +20,7 @@ public:
 		SHAPE_TYPE					eShapeType = { SHAPE_TYPE::LAST };
 		_float3						vHalfExtents = { 0.5f, 0.5f, 0.5f };	// Box
 		_float						fRadius = { 0.5f };						// Sphere
+		_float3						vRotation = {};	// Box
 	
 		_uint						iFillterMyGroup = {};
 		_uint						iFillterOtherGroupMask = {};
@@ -37,6 +38,11 @@ protected:
 public:
 	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
 	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+	
+	virtual HRESULT				Initialize_3D_Trigger(TRIGGEROBJECT_DESC* _pDesc);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+	virtual HRESULT				Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+
+
 	virtual void				Late_Update(_float _fTimeDelta);
 
 public:

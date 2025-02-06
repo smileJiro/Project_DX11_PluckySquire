@@ -4,6 +4,7 @@
 #include "Controller_Model.h"
 #include "3DModel.h"
 #include "Section_Manager.h"
+#include "AnimEventGenerator.h"
 
 
 CSampleBook::CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -47,7 +48,23 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	Set_AnimationLoop(COORDINATE_3D, 9, true);
 	Set_Animation(0);
 
+
+	Bind_AnimEventFunc("Player_Change_Action", bind(&CSampleBook::PageAction_Call_PlayerEvent, this));
+
 	Register_OnAnimEndCallBack(bind(&CSampleBook::PageAction_End, this, placeholders::_1, placeholders::_2));
+
+
+	/* Com_AnimEventGenerator */
+	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+	tAnimEventDesc.pReceiver = this;
+	tAnimEventDesc.pSenderModel = Get_Model(COORDINATE_3D);
+	m_pAnimEventGenerator = 
+		static_cast<CAnimEventGenerator*> 
+		(m_pGameInstance->
+			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
+	
+	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
 
 	return S_OK;
 }
@@ -278,13 +295,52 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 	if (ACTION_LAST != m_eCurAction)
 	{
 		if (NEXT == m_eCurAction)
-			SECTION_MGR->Change_Next_Section();
+		{
+			if (SECTION_MGR->Has_Next_Section())
+				Evnet_Book_MainPage_Change(SECTION_MGR->Get_Next_Section_Key()->c_str());
+		}
 		else if (PREVIOUS == m_eCurAction)
+		{
+			// 이거 애니메이션 마지막프레임이 실행되는것 때문에, 앞으로가기와 뒤로가기의
+			// 실제 섹션 변경시점을 다르게 해줘야 할거같음 지금상황에선 어쩔수없이.
+			// 애니메이션이 못생긴걸 탓합니다. 
+			//if (SECTION_MGR->Has_Prev_Section())
+			//	Evnet_Book_MainPage_Change(SECTION_MGR->Get_Prev_Section_Key()->c_str());
 			SECTION_MGR->Change_Prev_Section();
+		}
 		Set_Animation(0);
 		m_eCurAction = ACTION_LAST;
 	}
 #pragma endregion
+}
+
+void CSampleBook::PageAction_Call_PlayerEvent()
+{
+	CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, L"Layer_Player", 0);
+
+	if (nullptr != pGameObject)
+	{
+		const _wstring* strMoveSectionName = nullptr;
+		if (FAILED(SECTION_MGR->Remove_GameObject_ToCurSectionLayer(pGameObject)))
+			return;
+
+		if (NEXT == m_eCurAction)
+		{
+			if (SECTION_MGR->Has_Next_Section())
+				strMoveSectionName = SECTION_MGR->Get_Next_Section_Key();
+		}
+		else if (PREVIOUS == m_eCurAction)
+		{
+			if (SECTION_MGR->Has_Prev_Section())
+				strMoveSectionName = SECTION_MGR->Get_Prev_Section_Key();
+		}
+		
+		if (nullptr != strMoveSectionName)
+		{
+			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(*strMoveSectionName,pGameObject)))
+				return;
+		}
+	}
 }
 
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
