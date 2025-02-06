@@ -82,7 +82,10 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 
 void CCamera_Target::Set_Freeze(_uint _iFreezeMask)
 {
-	m_iFreezeMask |= _iFreezeMask;
+	if (RESET == _iFreezeMask)
+		m_iFreezeMask &= _iFreezeMask;
+	else
+		m_iFreezeMask |= _iFreezeMask;
 }
 
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
@@ -187,6 +190,9 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 	}
 	if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
 		vCameraPos = XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos));
+	}
+	if (RESET == m_iFreezeMask) {
+		int a = 0;
 	}
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
