@@ -121,7 +121,10 @@ void CCamera_Target::Defualt_Move(_float fTimeDelta)
 
 void CCamera_Target::Look_Target(_float fTimeDelta)
 {
+	_vector vTargetPos;
 
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	m_pControllerTransform->LookAt_3D(XMVectorSetW(vTargetPos, 1.f));
 }
 
 _vector CCamera_Target::Calculate_CameraPos()
