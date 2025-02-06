@@ -106,12 +106,21 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 		else
 			Camera->Set_Active(false);
 
-		if (FREE == _iCurrentCameraType) {
+		switch (_iCurrentCameraType) {
+		case FREE:
+		{
 			if (nullptr == m_Cameras[TARGET])
 				return;
-			CController_Transform* pTargetConTrans = m_Cameras[TARGET]->Get_ControllerTransform();
-			CController_Transform* pFreeConTrans = m_Cameras[FREE]->Get_ControllerTransform();
-			pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());
+			CController_Transform* pTargetamTrans = m_Cameras[TARGET]->Get_ControllerTransform();
+			CController_Transform* pFreeCamTrans = m_Cameras[FREE]->Get_ControllerTransform();
+			pFreeCamTrans->Set_WorldMatrix(pTargetamTrans->Get_WorldMatrix());
+		}
+			break;
+		case TARGET:
+		{
+			dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Switch_CameraView();
+		}
+			break;
 		}
 	}
 
@@ -150,20 +159,41 @@ void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
 }
 
+void CCamera_Manager::Set_Freeze(_uint _iFreezeType)
+{
+	if (nullptr == m_Cameras[TARGET])
+		return;
+
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_Freeze(_iFreezeType);
+}
+
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)
 {
+	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)_iZoomLevel, (CCamera::RATIO_TYPE)_iRatioType);
 }
 
 void CCamera_Manager::Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType)
 {
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Changing_AtOffset(_fOffsetTime, _vNextOffset, _iRatioType);
 }
 
 void CCamera_Manager::Start_Shake_ByTime(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime, _uint _iShakeType, _float _fDelayTime)
 {
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Shake_ByTime(_fShakeTime, _fShakeForce, _fShakeCycleTime, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
 }
 
 void CCamera_Manager::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _uint _iShakeCount, _uint _iShakeType, _float _fDelayTime)
 {
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Shake_ByCount(_fShakeTime, _fShakeForce, _iShakeCount, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
 }
 
 void CCamera_Manager::Load_ArmData()

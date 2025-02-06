@@ -1,0 +1,24 @@
+{
+	"Texts": [
+		{
+			"PosX": 996,
+			"PosY": -3,
+			"Text": "숲으로 가는 입구가\n부르고 있습니다...",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		},
+		{
+			"PosX": 0,
+			"PosY": 0,
+			"Text": "마당에서 떠들석한\n소리가 났어요.",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		}
+	]
+}0

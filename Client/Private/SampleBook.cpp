@@ -123,29 +123,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 
 void CSampleBook::Priority_Update(_float _fTimeDelta)
 {
-	// 맵핑하여 데이터 접근
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	m_pContext->Map(m_pStagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource);
-
-	// 원하는 픽셀 좌표 (픽셀 좌표는 UV 좌표를 변환해서 계산)
-	int pixelX = 0; // X 좌표
-	int pixelY = 0; // Y 좌표
-
-	// RowPitch는 한 줄의 바이트 수를 나타냄
-	float* data = static_cast<float*>(mappedResource.pData);
-
-	// 픽셀 위치 계산 (4 floats per pixel)
-	int rowPitchInPixels = mappedResource.RowPitch / sizeof(float) / 4;
-	int index = pixelY * rowPitchInPixels + pixelX;
-
-	// float4 데이터 읽기
-	float r = data[index * 4 + 0]; // Red 채널
-	float g = data[index * 4 + 1]; // Green 채널
-	float b = data[index * 4 + 2]; // Blue 채널
-	float a = data[index * 4 + 3]; // Alpha 채널
-
-	// 맵핑 해제
-	m_pContext->Unmap(m_pStagingTexture, 0);
+	
 
 	__super::Priority_Update(_fTimeDelta);
 }
@@ -340,7 +318,7 @@ HRESULT CSampleBook::Render_WorldPosMap()
 	Safe_Release(pResource);
 #pragma endregion // 2
 
-	
+	CSection_Manager::GetInstance()->Set_BookWorldPosMapTexture(m_pStagingTexture);
     return S_OK;
 }
 

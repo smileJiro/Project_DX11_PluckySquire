@@ -67,8 +67,7 @@ HRESULT CCollider_Circle::Render()
 {
     m_pEffect->SetWorld(XMMatrixIdentity());
     m_pEffect->SetView(XMMatrixIdentity());
-    _float2 vRTSize = m_pGameInstance->Get_RT_Size(TEXT("Target_Book_2D"));
-    m_pEffect->SetProjection(XMMatrixOrthographicLH(vRTSize.x, vRTSize.y, 0.0f, 1.0f));
+    m_pEffect->SetProjection(XMMatrixOrthographicLH(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y, 0.0f, 1.0f));
     m_pEffect->Apply(m_pContext);
     m_pContext->IASetInputLayout(m_pInputLayout);
 

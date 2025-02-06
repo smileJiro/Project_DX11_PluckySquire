@@ -2,6 +2,7 @@
 #include "PrintFloorWord.h"
 #include "GameInstance.h"
 #include "UI_Manager.h"
+#include "Section_2D.h"
 
 
 
@@ -23,15 +24,20 @@ HRESULT CPrintFloorWord::Initialize_Prototype()
 
 HRESULT CPrintFloorWord::Initialize(void* _pArg)
 {
-	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
+ 	FLOORTEXT* pDesc = static_cast<FLOORTEXT*>(_pArg);
 
-	if (FAILED(__super::Initialize(pDesc)))
+	m_vRenderPos.x = pDesc->fPosX;
+	m_vRenderPos.y = pDesc->fPosY;
+
+	wsprintf(m_tFloorWord, pDesc->strText.c_str());
+
+	if (FAILED(__super::Initialize_Child(pDesc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_BACKGROUND);
 
 	return S_OK;
 }
@@ -42,28 +48,29 @@ void CPrintFloorWord::Priority_Update(_float _fTimeDelta)
 
 void CPrintFloorWord::Update(_float _fTimeDelta)
 {
-	if (true == m_isActive)
-	{
-		// 플레이어 체력 동기화 진행.
 
-		__super::Update(_fTimeDelta);
-	}
-	
-	
-
-	
 }
 
 void CPrintFloorWord::Late_Update(_float _fTimeDelta)
 {
-	if (true == m_isRender && false == CUI_Manager::GetInstance()->Get_isESC())
-		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CPrintFloorWord::Render()
 {
-	if (true == m_isRender && false == CUI_Manager::GetInstance()->Get_isESC())
-		__super::Render();
+	/* TODO :: 현재 RT 사이즈는 가변적이다. 추후 변경해야한다. */
+
+
+	// 2D 기준
+	_float2 vCalPos = { 0.f, 0.f };
+	// 중점
+	_float2 vMidPoint = { RTSIZE_BOOK2D_X / 2.f, RTSIZE_BOOK2D_Y / 2.f };
+
+
+	vCalPos.x = vMidPoint.x + m_vRenderPos.x;
+	vCalPos.y = vMidPoint.y - m_vRenderPos.y;
+
+
+	m_pGameInstance->Render_Font(TEXT("Font28"), m_tFloorWord, vCalPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
 	return S_OK;
 }
@@ -72,21 +79,6 @@ HRESULT CPrintFloorWord::Render()
 
 HRESULT CPrintFloorWord::Ready_Components()
 {
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-		return E_FAIL;
-
-	/* Com_VIBuffer */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-		return E_FAIL;
-
-	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_KEYQ"),
-		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
-
-
 	return S_OK;
 }
 
