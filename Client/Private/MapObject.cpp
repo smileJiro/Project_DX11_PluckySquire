@@ -150,6 +150,14 @@ void CMapObject::Late_Update(_float _fTimeDelta)
         if (!m_is3DCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
         {
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
+
+            //if(nullptr != m_pActorCom)
+            //    m_pActorCom->Set_ShapeRayCastFlag(true);
+        }
+        else
+        {
+            //if (nullptr != m_pActorCom)
+            //    m_pActorCom->Set_ShapeRayCastFlag(false);
         }
     }
             

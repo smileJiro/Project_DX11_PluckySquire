@@ -113,6 +113,44 @@ VS_OUT VS_MAIN_RENDERTARGET_UV(VS_IN In)
     return Out;
 }
 
+struct VS_WORLDOUT
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
+    float4 vWorldPos : TEXCOORD1;
+};
+
+VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
+{
+    VS_WORLDOUT Out = (VS_WORLDOUT) 0;
+    matrix matWV, matWVP;
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    float BlendWeightW = 1.0 - (In.vBlendWeights.x + In.vBlendWeights.y + In.vBlendWeights.z);
+
+    matrix matBones = mul(g_BoneMatrices[In.vBlendIndicse.x], In.vBlendWeights.x) +
+        mul(g_BoneMatrices[In.vBlendIndicse.y], In.vBlendWeights.y) +
+        mul(g_BoneMatrices[In.vBlendIndicse.z], In.vBlendWeights.z) +
+        mul(g_BoneMatrices[In.vBlendIndicse.w], In.vBlendWeights.w);
+    
+    vector vPosition = mul(float4(In.vPosition, 1.0), matBones);
+    vector vNormal = mul(float4(In.vNormal, 0.0), matBones);
+    vector vTangent = mul(float4(In.vTangent, 0.0), matBones);
+    
+    // uv를 를 직접 position으로 사용
+    float4 vNDCCoord = float4(In.vTexcoord.xy, 0.0f, 1.0f);
+    vNDCCoord.x *= 0.5f;
+    vNDCCoord.x += g_fStartUV.x;
+    vNDCCoord = float4(vNDCCoord.xy * 2.0f - 1.0f, 0.0f, 1.0f);
+    vNDCCoord.y *= -1.0f;
+    
+    Out.vPosition = vNDCCoord;
+    Out.vTexcoord = In.vTexcoord;
+    Out.vWorldPos = mul(vPosition, g_WorldMatrix);
+
+    return Out;
+}
 
 // PixelShader //
 struct PS_IN
@@ -170,7 +208,23 @@ PS_OUT_LIGHTDEPTH PS_MAIN_LIGHTDEPTH(PS_IN In)
     return Out;
 }
 
+struct PS_WORLDIN
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
+    float4 vWorldPos : TEXCOORD1;
+};
+struct PS_WORLDOUT
+{
+    float4 vWorldPos : SV_TARGET0;
+};
 
+PS_WORLDOUT PS_WORLDPOSMAP(PS_WORLDIN In)
+{
+    PS_WORLDOUT Out = (PS_WORLDOUT) 0;
+    Out.vWorldPos = In.vWorldPos;
+    return Out;
+}
 
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
@@ -227,6 +281,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
+    pass BookWorldPosMap // 5
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_BOOKWORLDPOSMAP();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
     }
 
 }

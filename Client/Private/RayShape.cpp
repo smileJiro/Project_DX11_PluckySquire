@@ -137,7 +137,7 @@ HRESULT CRayShape::Ready_ActorDesc(void* _pArg)
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     /* 충돌 필터에 대한 세팅 (일단 맵오브젝트로 설정해둠)*/
-    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::RAY_OBJECT;
     ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
     /* Actor Component Finished */

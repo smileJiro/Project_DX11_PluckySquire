@@ -1,20 +1,11 @@
 [
  {
-  "Active": true,
-  "ActivePropertis": {
-   "ActiveType": "ActiveType_Breakable"
-  },
+  "Active": false,
   "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "TD_Flower_BP_C01",
-  "Sorting": true,
-  "SortingPropertis": {
-   "Sorting_Offset_Pos": {
-    "X": 0.0,
-    "Y": 0.0
-   }
-  },
+  "Sorting": false,
   "TextureName": "mountain_white_flower_01"
  },
  {
@@ -85,7 +76,13 @@
   "Collider": false,
   "ModelType": "Anim",
   "SearchTag": "ButterflyBlue",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "Butterfly_Blue"
  },
  {
@@ -97,7 +94,13 @@
   "Collider": false,
   "ModelType": "Anim",
   "SearchTag": "ButterflyOrange",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "Butterfly_Orange"
  },
  {
@@ -109,7 +112,13 @@
   "Collider": false,
   "ModelType": "Anim",
   "SearchTag": "ButterflyWhite",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "Butterfly_White"
  },
  {
@@ -239,13 +248,7 @@
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "treegreenbrokentrunk",
-  "Sorting": true,
-  "SortingPropertis": {
-   "Sorting_Offset_Pos": {
-    "X": 0.0,
-    "Y": 0.0
-   }
-  },
+  "Sorting": false,
   "TextureName": "tree_green_broken_trunk"
  },
  {
@@ -292,12 +295,34 @@
   "TextureName": "latch_house_door"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Model_Close"
+  },
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 553.0,
+     "Y": 553.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 13.0,
+     "Y": 19.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
   "ModelType": "NonAnim",
   "SearchTag": "latch_house_exterior",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "latch_house_exterior"
  },
  {
@@ -321,10 +346,29 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 90.0,
+     "Y": 90.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 23.0,
+     "Y": 62.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
   "ModelType": "NonAnim",
   "SearchTag": "moonbeard_house_carrot",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "moonbeard_house_carrot"
  },
  {
@@ -337,12 +381,31 @@
   "TextureName": "moonbeard_house_interior"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": "ActiveType_Model_Close"
+  },
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 28.0
+    },
+    "Collider_Radius": 420.0
+   },
+   "ColliderType": "Collider_Squere"
+  },
   "ModelType": "Anim",
   "SearchTag": "moonbread_house_exterior",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "MBHouse_DoorOpen_0001_X02"
  },
  {
@@ -351,12 +414,18 @@
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "moonbeard_house_mushroom",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "moonbeard_house_mushroom"
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "moonbeard_house_rake",
@@ -369,7 +438,13 @@
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "frog_green_idle_01",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "frog_green_idle_01"
  },
  {
@@ -383,7 +458,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "honey_peaks_foregroud_tree_01",
@@ -392,7 +467,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "honey_peaks_foregroud_tree_02",
@@ -401,7 +476,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "honey_peaks_foregroud_tree_03",
@@ -410,7 +485,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "honey_peaks_foregroud_tree_04",
@@ -419,7 +494,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": "NonAnim",
   "SearchTag": "honey_peaks_foregroud_tree_05",
@@ -456,10 +531,29 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": -109.0,
+     "Y": -109.0
+    },
+    "Collider_Offset_Pos": {
+     "X": -5.0,
+     "Y": 47.0
+    }
+   },
+   "ColliderType": "Collider_AABB"
+  },
   "ModelType": "NonAnim",
   "SearchTag": "honey_peaks_tree",
-  "Sorting": false,
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
   "TextureName": "honey_peaks_tree"
  }
 ]

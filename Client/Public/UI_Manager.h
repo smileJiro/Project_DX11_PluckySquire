@@ -37,6 +37,7 @@ private:
 	_bool								m_isMakeShop = { false };
 	_bool								m_isESC = { false };
 	_bool								m_isConfirmStore = { false };
+	_bool								m_isUpdateShopPanel = { true };
 	_bool								m_isLogoChooseStage = { false };
 
 	_int								m_iPreIndex = { 0 };
@@ -81,6 +82,8 @@ public:
 	void								Set_SettingPanelIndex(_int _index) { m_iSettingPanelIndex = _index; }
 	_int								Get_LogoIndex() { return m_iLogoIndex; }
 	void								Set_LogoIndex(_int _index) { m_iLogoIndex = _index; }
+	_bool								Get_ShopUpdate() { return m_isUpdateShopPanel; }
+	void								Set_ShopUpdate(_bool _isUpdate) { m_isUpdateShopPanel = _isUpdate; }
 	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs) { m_ShopItems.push_back(_ItemBGs); }
 	void								pushBack_ShopItemBGs(CShopItemBG* _pBGs) { m_pShopItemBGs.push_back(_pBGs); }
 	void								Set_ChooseItem(_int _iIndex);

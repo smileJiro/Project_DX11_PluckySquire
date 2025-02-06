@@ -28,6 +28,7 @@ namespace Client
 	void Event_Trigger_Stay(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_Exit(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_Exit_ByCollision(_uint _iTriggerType, _int _iTriggerID, _bool _isReturn = true);
+	void Evnet_Book_MainPage_Change(const _tchar* _strSectionTag);
 	
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);
 	//void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn = true);

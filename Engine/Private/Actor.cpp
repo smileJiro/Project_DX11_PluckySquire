@@ -236,6 +236,14 @@ void CActor::Set_PxActorEnable()
 	m_pActor->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
 }
 
+void CActor::Set_SceneQueryFlag(_bool _bEnable)
+{
+	for (auto& pShape : m_Shapes)
+	{
+		pShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, _bEnable);
+	}
+}
+
 HRESULT CActor::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
 	// Actor 쪽 작업 방식.
@@ -679,6 +687,13 @@ HRESULT CActor::Set_AllShapeEnable(_bool _isEnable)
 	}
 
 	return S_OK;
+}
+
+void CActor::Set_ShapeRayCastFlag(_bool _isRayCast)
+{
+	for (auto& pShape : m_Shapes)
+		pShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, _isRayCast);
+
 }
 
 

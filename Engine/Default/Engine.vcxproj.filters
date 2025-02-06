@@ -280,6 +280,9 @@
     <Filter Include="01.Utility\03.Objects\Effect\Emitter\Module">
       <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\96.D3DUtils">
+      <UniqueIdentifier>{d4356aa0-e49f-4339-aca3-67d29a98dd5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -573,6 +576,9 @@
     <ClInclude Include="..\public\Effect_Module.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\D3DUtils.h">
+      <Filter>01.Utility\96.D3DUtils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -853,6 +859,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Effect_Module.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\D3DUtils.cpp">
+      <Filter>01.Utility\96.D3DUtils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

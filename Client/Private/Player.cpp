@@ -131,6 +131,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
      
+
     return S_OK;
 }
 
@@ -198,7 +199,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
     }
-
 	//Part Sword
 	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
 	SwordDesc.pParent = this;
@@ -255,6 +255,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
+
     CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
@@ -267,6 +268,9 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
+
+
+
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     m_bOnGround = false;
@@ -276,6 +280,21 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
+    // Test
+    if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    {
+        _float2 v2DPos = {};
+        XMStoreFloat2(&v2DPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+        _vector vWorld2DPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(v2DPos);
+        if (XMVectorGetX(vWorld2DPos) == 0.0f && XMVectorGetY(vWorld2DPos) == 0.0f && XMVectorGetZ(vWorld2DPos) == 0.0f)
+        {
+            int i = 0;
+        }
+        CCamera* pCamera = CCamera_Manager::GetInstance()->Get_CurrentCamera();
+        pCamera->Set_Position(XMVectorSetY(vWorld2DPos, 10.0f));
+        int a = 0;
+    }
+
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -294,7 +313,29 @@ HRESULT CPlayer::Render()
 
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    int a = 0;
+    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+    switch (eShapeUse)
+    {
+    case Client::CPlayer::SHAPE_BODY:
+        for (auto& pxPairData : _ContactPointDatas)
+        {
+            if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+            {
+                _vector vContactNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
+                if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
+                {
+                    _Other.pActorUserData->pOwner->Set_SceneQueryFlag(true);
+                    break;
+                }
+            }
+
+        }
+        break;
+    case Client::CPlayer::SHAPE_FOOT:
+        break;
+	case Client::CPlayer::SHAPE_TRIGER:
+		break;
+    }
 
 }
 
@@ -304,23 +345,12 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     switch (eShapeUse)
     {
     case Client::CPlayer::SHAPE_BODY:
-        for (auto& pxPairData : _ContactPointDatas)
-        {
-            _vector vContactNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
-            if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
-            {
-                m_bContactWall = true;
-            }
-        }
+
         break;
     case Client::CPlayer::SHAPE_FOOT:
         for (auto& pxPairData : _ContactPointDatas)
         {
             _vector vMyPos = Get_FinalPosition();
-            ////발 범위에 안닿으면 무시
-            //if (vMyPos.m128_f32[1] + m_fFootLength < pxPairData.position.y
-            //    || vMyPos.m128_f32[1] > pxPairData.position.y)
-            //    continue;
             //천장이면 무시
             if (pxPairData.normal.y < 0)
                 continue;
@@ -341,7 +371,30 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    int a = 0;
+    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+    switch (eShapeUse)
+    {
+    case Client::CPlayer::SHAPE_BODY:
+        for (auto& pxPairData : _ContactPointDatas)
+        {
+            if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+            {
+                _vector vContactNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
+                if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
+                {
+                    _Other.pActorUserData->pOwner->Set_SceneQueryFlag(false);
+                    break;
+                }
+            }
+
+        }
+        break;
+    case Client::CPlayer::SHAPE_FOOT:
+        break;
+    case Client::CPlayer::SHAPE_TRIGER:
+        break;
+    }
+
 
 }
 
@@ -522,6 +575,17 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     return tResult;
 }
 
+
+_bool CPlayer::Is_Sneaking()
+{
+    STATE eState = Get_CurrentStateID();
+    if (STATE::IDLE == eState)
+         return static_cast<CPlayerState_Idle*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
+    else if (STATE::RUN == eState)
+        return  static_cast<CPlayerState_Run*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
+    else
+        return false;
+}
 
 _float CPlayer::Get_UpForce()
 {

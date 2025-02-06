@@ -205,6 +205,7 @@
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\Collision_Manager.h" />
+    <ClInclude Include="..\Public\FloorWord.h" />
     <ClInclude Include="..\public\MainTable.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
@@ -249,12 +250,14 @@
     <ClInclude Include="..\Public\PlayerSword.h" />
     <ClInclude Include="..\Public\Popuff.h" />
     <ClInclude Include="..\Public\Portrait.h" />
+    <ClInclude Include="..\Public\PrintFloorWord.h" />
     <ClInclude Include="..\Public\Rat.h" />
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\Public\RenderGroup_2D.h" />
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
     <ClInclude Include="..\Public\RenderGroup_Final.h" />
     <ClInclude Include="..\public\RenderGroup_Lights.h" />
+    <ClInclude Include="..\public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\public\Section.h" />
     <ClInclude Include="..\public\Section_2D.h" />
@@ -327,6 +330,7 @@
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
+    <ClCompile Include="..\Private\FloorWord.cpp" />
     <ClCompile Include="..\private\MainTable.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
@@ -368,12 +372,14 @@
     <ClCompile Include="..\Private\PlayerSword.cpp" />
     <ClCompile Include="..\Private\Popuff.cpp" />
     <ClCompile Include="..\Private\Portrait.cpp" />
+    <ClCompile Include="..\Private\PrintFloorWord.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\RenderGroup_2D.cpp" />
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
     <ClCompile Include="..\private\RenderGroup_Lights.cpp" />
+    <ClCompile Include="..\private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\private\Section.cpp" />
     <ClCompile Include="..\private\Section_2D.cpp" />

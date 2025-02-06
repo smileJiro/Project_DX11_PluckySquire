@@ -660,6 +660,7 @@ HRESULT CLevel_Trigger_Tool::Create_Trigger()
 			Safe_AddRef(pTrigger);
 		}
 	}
+	return S_OK;
 }
 
 void CLevel_Trigger_Tool::Delete_Trigger()
@@ -1066,6 +1067,7 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 		_float3 vPosition = Trigger.second->Get_ActorCom()->Get_GlobalPose();
 		
 		json Trigger_json;
+		auto& Collider_Json = Trigger_json["Collider_Info"];
 		Trigger_json["Trigger_Type"] = Trigger.second->Get_TriggerType();
 
 		_string szEventTag = m_pGameInstance->WStringToString(dynamic_cast<CTriggerObject*>(Trigger.second)->Get_TriggerEventTag());
@@ -1073,17 +1075,17 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 		Trigger_json["Trigger_Coordinate"] = Trigger.second->Get_CurCoord();
 		Trigger_json["Trigger_ConditionType"] = Trigger.second->Get_ConditionType();
 
-		Trigger_json["Position"] = { vPosition.x, vPosition.y, vPosition.z };
-		
+		Collider_Json["Position"] = { vPosition.x, vPosition.y, vPosition.z };
+
 		const vector<PxShape*>& Shapes = Trigger.second->Get_ActorCom()->Get_Shapes();
 		PxTransform ShapeTransform = Shapes[0]->getLocalPose();
 		ShapeTransform.q;
 		_float3 vRotation = Quaternion_ToEuler({ ShapeTransform.q.x, ShapeTransform.q.y, ShapeTransform.q.z, ShapeTransform.q.w });
-		Trigger_json["Rotation"] = { XMConvertToDegrees(vRotation.x), XMConvertToDegrees(vRotation.y), XMConvertToDegrees(vRotation.z) };
-		
-		Trigger_json["ShapeType"] = (_uint)Trigger.first.iShapeType;
-		Trigger_json["HalfExtents"] = { Trigger.first.vHalfExtents.x, Trigger.first.vHalfExtents.y, Trigger.first.vHalfExtents.z };
-		Trigger_json["Radius"] = Trigger.first.fRadius;
+		Collider_Json["Rotation"] = { XMConvertToDegrees(vRotation.x), XMConvertToDegrees(vRotation.y), XMConvertToDegrees(vRotation.z) };
+
+		Collider_Json["ShapeType"] = (_uint)Trigger.first.iShapeType;
+		Collider_Json["HalfExtents"] = { Trigger.first.vHalfExtents.x, Trigger.first.vHalfExtents.y, Trigger.first.vHalfExtents.z };
+		Collider_Json["Radius"] = Trigger.first.fRadius;
 
 		Trigger_json["Fillter_MyGroup"] = Trigger.first.iFillterMyGroup;
 		Trigger_json["Fillter_OtherGroupMask"] = Trigger.first.iFillterOtherGroupMask;
@@ -1141,17 +1143,19 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 	for (auto& Trigger_json : Result) {
 		CTriggerObject::TRIGGEROBJECT_DESC Desc;
 
+		auto& Collider_Json = Trigger_json["Collider_Info"];
+
 		Desc.iTriggerType = Trigger_json["Trigger_Type"];
 		Desc.szEventTag = m_pGameInstance->StringToWString(Trigger_json["Trigger_EventTag"]);
 		Desc.eStartCoord = Trigger_json["Trigger_Coordinate"];
 		Desc.eConditionType = Trigger_json["Trigger_ConditionType"];
 
-		Desc.tTransform3DDesc.vInitialPosition = { Trigger_json["Position"][0].get<_float>(),  Trigger_json["Position"][1].get<_float>() , Trigger_json["Position"][2].get<_float>() };
-		_float3 vRotation = { Trigger_json["Rotation"][0].get<_float>(),  Trigger_json["Rotation"][1].get<_float>() , Trigger_json["Rotation"][2].get<_float>() };
+		Desc.tTransform3DDesc.vInitialPosition = { Collider_Json["Position"][0].get<_float>(),  Collider_Json["Position"][1].get<_float>() , Collider_Json["Position"][2].get<_float>() };
+		_float3 vRotation = { Collider_Json["Rotation"][0].get<_float>(),  Collider_Json["Rotation"][1].get<_float>() , Collider_Json["Rotation"][2].get<_float>() };
 
-		Desc.eShapeType = Trigger_json["ShapeType"];
-		Desc.vHalfExtents = { Trigger_json["HalfExtents"][0].get<_float>(),  Trigger_json["HalfExtents"][1].get<_float>() , Trigger_json["HalfExtents"][2].get<_float>() };
-		Desc.fRadius = Trigger_json["Radius"];
+		Desc.eShapeType = Collider_Json["ShapeType"];
+		Desc.vHalfExtents = { Collider_Json["HalfExtents"][0].get<_float>(),  Collider_Json["HalfExtents"][1].get<_float>() , Collider_Json["HalfExtents"][2].get<_float>() };
+		Desc.fRadius = Collider_Json["Radius"];
 
 		Desc.iFillterMyGroup = Trigger_json["Fillter_MyGroup"];
 		Desc.iFillterOtherGroupMask = Trigger_json["Fillter_OtherGroupMask"];

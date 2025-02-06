@@ -117,10 +117,9 @@ public:
 
 
 protected:
-	virtual HRESULT Ready_Components();
-	HRESULT			Bind_ShaderResources();
-	void			Change_BookScale_ForShop(_float2 _vRTSize);
-	void			Change_BookScale_ForDialogue(_float2 vRTSize);
+	virtual HRESULT			Ready_Components();
+	HRESULT					Bind_ShaderResources();
+	void					Change_BookScale_ForShop(_float2 _vRTSize);
 
 
 public:
