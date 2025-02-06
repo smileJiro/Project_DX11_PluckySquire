@@ -432,6 +432,7 @@ public: /* 2D Ãæµ¹ */
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
 	_bool Is_OnGround() {return m_bOnGround;}
 	_bool Is_SneakMode() {return m_bSneakMode;}
+	_bool Is_Sneaking();
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_bool Is_SwordEquiped();
@@ -475,7 +476,6 @@ private:
 	_vector m_vClamberPosition;
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360;
-	_bool m_bContactWall = false;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 	_bool m_bSneakMode = false;

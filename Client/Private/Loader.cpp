@@ -470,6 +470,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
         return E_FAIL;
+        if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BookPageActionEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
+        return E_FAIL;
 
     #ifdef _DEBUG
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DebugDraw_For_Client"),

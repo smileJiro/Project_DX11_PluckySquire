@@ -1,8 +1,14 @@
 #pragma once
 #include "ModelObject.h"
+#include "AnimEventReceiver.h"
+
+BEGIN(Engine)
+class CAnimEventGenerator;
+END
+
 BEGIN(Client)
 
-class CSampleBook final : public CModelObject
+class CSampleBook final : public CModelObject, public IAnimEventReceiver
 {
 public:
 	enum BOOK_PAGE_ACTION
@@ -46,10 +52,13 @@ public:
 
 	_bool					Book_Action(BOOK_PAGE_ACTION _eAction);
 	void					PageAction_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void					PageAction_Call_PlayerEvent();
 
+public :
 
 
 private :
+	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
 	ID3D11Texture2D*		m_pStagingTexture = nullptr;
 

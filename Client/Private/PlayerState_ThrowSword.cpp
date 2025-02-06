@@ -28,7 +28,17 @@ void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 
 void CPlayerState_ThrowSword::Enter()
 {
-    m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_GT);
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	switch (eCoord)
+	{
+	case Engine::COORDINATE_2D:
+		break;
+	case Engine::COORDINATE_3D:
+	    m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_GT);
+		break;
+	default:
+		break;
+	}
 }
 
 void CPlayerState_ThrowSword::Exit()

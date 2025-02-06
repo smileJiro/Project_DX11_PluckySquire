@@ -65,6 +65,8 @@ void CAnimEventGenerator::Update(_float fTimeDelta)
 	{
 		if (tEvnt.bIsTriggered)
 			continue;
+
+		// TODO :: 애니메이션 역재생일 경우 이벤트가 바로 실행됨. 확인해줘야 할듯.
 		if (m_pSenderModel->Get_CurrentAnimProgeress() >= tEvnt.fProgress)
 		{
 			m_pReceiver->Invoke(tEvnt.strFuncName);

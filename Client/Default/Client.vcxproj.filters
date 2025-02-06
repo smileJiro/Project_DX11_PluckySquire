@@ -277,8 +277,13 @@
     <Filter Include="97.ShaderFiles\PBR">
       <UniqueIdentifier>{ba8ec215-6826-4b57-944f-cbd6d6f43b40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord">
+      <UniqueIdentifier>{5da31b5a-443d-4563-9471-219ed56959d2}</UniqueIdentifier>
     <Filter Include="94.RenderGroups%28Custom%29\WorldPos">
       <UniqueIdentifier>{21bef96e-904c-4c92-a5cb-988c87a95a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord">
+      <UniqueIdentifier>{70e90ba6-55ed-4e3e-975a-616aa3fcc798}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -619,6 +624,12 @@
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h" />
     <ClInclude Include="..\public\RayShape.h" />
+    <ClInclude Include="..\Public\FloorWord.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PrintFloorWord.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
+    <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
     </ClInclude>
@@ -948,6 +959,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
+    <ClCompile Include="..\private\RayShape.cpp" />
+    <ClCompile Include="..\Private\FloorWord.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PrintFloorWord.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>

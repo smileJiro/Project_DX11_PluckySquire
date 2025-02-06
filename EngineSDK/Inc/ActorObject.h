@@ -35,8 +35,9 @@ public:
 public:
 	// Get 
 	ACTOR_TYPE					Get_ActorType() const { return m_pActorCom->Get_ActorType(); }
-	CActor*						Get_ActorCom() const { return m_pActorCom; }
+	CActor*							Get_ActorCom() const { return m_pActorCom; }
 	// Set
+	void									Set_SceneQueryFlag(_bool _bEnable);
 protected:
 	CActor*						m_pActorCom = nullptr;
 
