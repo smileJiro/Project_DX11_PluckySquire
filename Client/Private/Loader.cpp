@@ -7,6 +7,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_2D.h"
 
 /* For. Main Table */
 #include "MainTable.h"
@@ -284,6 +285,26 @@ HRESULT CLoader::Loading_Level_Static()
         CMainTable::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    // ============ Camera
+    /* For. Prototype_GameObject_Camera_Free */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+        CCamera_Free::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_Target */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
+        CCamera_Target::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_CutScene */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_CutScene"),
+        CCamera_CutScene::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_2D */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
+        CCamera_2D::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     // ============ Triger
     /* For. Prototype_GameObject_Camera_Trigger */
@@ -630,22 +651,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
-    // ============ Camera
-    /* For. Prototype_GameObject_Camera_Free */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
-        CCamera_Free::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Camera_Target */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
-        CCamera_Target::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Camera_CutScene */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_CutScene"),
-        CCamera_CutScene::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
 
     /* For. Prototype_GameObject_MapObject */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),

@@ -19,8 +19,7 @@ CCameraArm::CCameraArm(const CCameraArm& Prototype)
     , m_wszArmTag(TEXT("CopyArm"))
     , m_vRotation(Prototype.m_vRotation)
     , m_fLength(Prototype.m_fLength)
-    , m_pTargetWorldMatrix(Prototype.m_pTargetWorldMatrix)
-    //, m_eArmType(COPY)
+    //, m_pTargetWorldMatrix(Prototype.m_pTargetWorldMatrix)
 {
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
@@ -35,9 +34,8 @@ HRESULT CCameraArm::Initialize(void* pArg)
     m_vRotation = pDesc->vRotation;
     m_fLength = pDesc->fLength;
     m_wszArmTag = pDesc->wszArmTag;
-    //m_eArmType = pDesc->eArmType;
-    
-    m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
+
+    //m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 
     m_pTransform = CTransform_3D::Create(m_pDevice, m_pContext);
     if (nullptr == m_pTransform)
@@ -83,31 +81,31 @@ void CCameraArm::Late_Update(_float fTimeDelta)
 #ifdef _DEBUG
 void CCameraArm::Render_Arm()
 {
-    m_pEffect->SetWorld(XMMatrixIdentity());
-    m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
-    m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
+  //  m_pEffect->SetWorld(XMMatrixIdentity());
+  //  m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
+  //  m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
 
-    m_pEffect->Apply(m_pContext);
+  //  m_pEffect->Apply(m_pContext);
 
-    m_pContext->OMSetDepthStencilState(m_pDepthStencilState, 0);
-    m_pContext->IASetInputLayout(m_pInputLayout);
+  //  m_pContext->OMSetDepthStencilState(m_pDepthStencilState, 0);
+  //  m_pContext->IASetInputLayout(m_pInputLayout);
 
-    m_pBatch->Begin();
+  //  m_pBatch->Begin();
 
-    _vector vTargetPos;
+  //  _vector vTargetPos;
 
-    memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
-    vTargetPos = vTargetPos; // +XMLoadFloat3(&m_vPosOffset);
+  ////  memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+  //  vTargetPos = vTargetPos; // +XMLoadFloat3(&m_vPosOffset);
 
-    _vector vCameraPos = vTargetPos + (m_fLength * XMLoadFloat3(&m_vArm));
-    _vector vColor = {};
+  //  _vector vCameraPos = vTargetPos + (m_fLength * XMLoadFloat3(&m_vArm));
+  //  _vector vColor = {};
 
-    m_pBatch->DrawLine(
-        VertexPositionColor(vTargetPos, vColor),  // 衛濛薄, 說除儀
-        VertexPositionColor(vCameraPos, vColor)     // 部薄, 說除儀
-    );
+  //  m_pBatch->DrawLine(
+  //      VertexPositionColor(vTargetPos, vColor),  // 衛濛薄, 說除儀
+  //      VertexPositionColor(vCameraPos, vColor)     // 部薄, 說除儀
+  //  );
 
-    m_pBatch->End();
+  //  m_pBatch->End();
 }
 #endif
 
@@ -222,18 +220,18 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
     }
 }
 
-_vector CCameraArm::Calculate_CameraPos(_float fTimeDelta)
-{
-    _vector vTargetPos;
-
-    memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
-    vTargetPos = vTargetPos; // +XMLoadFloat3(&m_vPosOffset);
-
-    _vector vCameraPos = vTargetPos + (m_fLength * XMLoadFloat3(&m_vArm));
-
-    return vCameraPos;
-   // m_pGameInstance->Set_CameraPos(vCameraPos, vTargetPos);
-}
+//_vector CCameraArm::Calculate_CameraPos(_float fTimeDelta)
+//{
+//    _vector vTargetPos;
+//
+//    memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+//    vTargetPos = vTargetPos; // +XMLoadFloat3(&m_vPosOffset);
+//
+//    _vector vCameraPos = vTargetPos + (m_fLength * XMLoadFloat3(&m_vArm));
+//
+//    return vCameraPos;
+//   // m_pGameInstance->Set_CameraPos(vCameraPos, vTargetPos);
+//}
 
 #ifdef _DEBUG
 void CCameraArm::Set_Rotation(_vector _vRotation)

@@ -7,6 +7,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_2D.h"
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
 #include "Trigger_Manager.h"
@@ -131,7 +132,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 		IDXGIAdapter3* pAdapter;
 		pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
 
-		// VRAM »ç¿ë·® Äõ¸®
+		// VRAM »ç¿ëc·® Äõ¸®
 		DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
 		pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
 
@@ -279,6 +280,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Map()
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
+	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	if (nullptr == pPlayer)
+		return E_FAIL;
+
 	CGameObject* pCamera = nullptr;
 
 	// Free Camera
@@ -295,7 +300,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	Desc.eZoomLevel = CCamera::LEVEL_6;
 	Desc.iCameraType = CCamera_Manager::FREE;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
@@ -304,9 +309,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
 
-	TargetDesc.fSmoothSpeed = 5.f;
+	TargetDesc.fSmoothSpeed = 7.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
 	TargetDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
+	TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -317,7 +323,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
 	TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
@@ -337,12 +343,36 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
 	CutSceneDesc.iCameraType = CCamera_Manager::CUTSCENE;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_CutScene"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_CutScene"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &CutSceneDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::CUTSCENE, dynamic_cast<CCamera*>(pCamera));
 	
+	// 2D Camera
+	//CCamera_2D::CAMERA_2D_DESC Target2DDesc{};
+
+	//Target2DDesc.fSmoothSpeed = 5.f;
+	//Target2DDesc.eCameraMode = CCamera_2D::DEFAULT;
+	//Target2DDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
+
+	//Target2DDesc.fFovy = XMConvertToRadians(60.f);
+	//Target2DDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	//Target2DDesc.fNear = 0.1f;
+	//Target2DDesc.fFar = 1000.f;
+	//Target2DDesc.vEye = _float3(0.f, 10.f, -7.f);
+	//Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
+	//Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
+	//Target2DDesc.iCameraType = CCamera_Manager::TARGET_2D;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
+	//	LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
+	//	return E_FAIL;
+
+	//CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
+
+	//Create_Arm();
+
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	// Load CutSceneData, ArmData
@@ -825,8 +855,7 @@ void CLevel_GamePlay::Create_Arm()
 	Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
 	Desc.fLength = 7.f;
 	Desc.wszArmTag = TEXT("Player_Arm");
-	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-	
+
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
 	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
