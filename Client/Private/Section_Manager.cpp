@@ -434,6 +434,8 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
         for (auto ChildJson : ChapterJson)
         {
             
+
+
             CSection_2D* pSection_2D = CSection_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
             if (nullptr == pSection_2D)
             {
@@ -442,6 +444,9 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
             } 
             m_iPriorityGenKey += 10;
             
+
+    
+
             if (m_CurLevelSections.empty())
                 strStartSectionKey = pSection_2D->Get_SectionName();
             m_CurLevelSections.try_emplace(pSection_2D->Get_SectionName(), pSection_2D);

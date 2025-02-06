@@ -159,8 +159,11 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 
 HRESULT CNPC_Store::Render()
 {
-	//__super::Render();
-	m_pColliderCom->Render();
+#ifdef _DEBUG
+	if(COORDINATE_2D ==Get_CurCoord())
+		m_pColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif // _DEBUG
+
 	return S_OK;
 }
 

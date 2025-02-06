@@ -48,6 +48,7 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 
 void CPlayerState_JumpUp::Enter()
 {
+	m_pOwner->LookDirectionXZ_Dynamic(m_pOwner->Get_3DTargetDirection());
 	m_pOwner->Jump();
 	Switch_JumpAnimation();
 }

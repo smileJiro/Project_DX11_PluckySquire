@@ -24,15 +24,16 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
 {
     CTriggerObject::TRIGGEROBJECT_DESC* pDesc = static_cast<CTriggerObject::TRIGGEROBJECT_DESC*>(_pArg);
 
+    CActor::ACTOR_DESC* ActorDesc = nullptr;
 
     if (COORDINATE_3D == pDesc->eStartCoord)
     {
-        if (FAILED(Initialize_3D_Trigger(pDesc)))
+        if (FAILED(Initialize_3D_Trigger(&ActorDesc, pDesc)))
             return E_FAIL;
     }
     else if (COORDINATE_2D == pDesc->eStartCoord)
     {
-        if (FAILED(Initialize_2D_Trigger(pDesc)))
+        if (FAILED(Initialize_2D_Trigger(&ActorDesc, pDesc)))
             return E_FAIL;
     }
 
@@ -41,10 +42,13 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
         return E_FAIL;
     }
 
+    ActorDesc->pOwner = nullptr;
+    Safe_Delete(ActorDesc);
+
     return S_OK;
 }
 
-HRESULT CTriggerObject::Initialize_3D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
+HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, TRIGGEROBJECT_DESC* _pDesc)
 {
     _pDesc->isCoordChangeEnable = false;
     _pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
@@ -56,10 +60,10 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
     //m_eCoordiNate = _pDesc->eCoordiNate; StartCoordinate가 있는데?
 
     _pDesc->eActorType = ACTOR_TYPE::STATIC;
-    CActor::ACTOR_DESC ActorDesc;
+    *_pActorDesc = new CActor::ACTOR_DESC();
 
     /* Actor의 주인 오브젝트 포인터 */
-    ActorDesc.pOwner = this;
+    (*_pActorDesc)->pOwner = this;
 
     // Static이라서 FreezeRotation, FreezePosition은 채우지 않음
 
@@ -86,19 +90,19 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
     ShapeData.isSceneQuery = true;
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc.ShapeDatas.push_back(ShapeData);
+    (*_pActorDesc)->ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc.tFilterData.MyGroup = _pDesc->iFillterMyGroup;
-    ActorDesc.tFilterData.OtherGroupMask = _pDesc->iFillterOtherGroupMask;
+    (*_pActorDesc)->tFilterData.MyGroup = _pDesc->iFillterMyGroup;
+    (*_pActorDesc)->tFilterData.OtherGroupMask = _pDesc->iFillterOtherGroupMask;
 
     /* Actor Component Finished */
-    _pDesc->pActorDesc = &ActorDesc;
+    _pDesc->pActorDesc = (*_pActorDesc);
 
     return S_OK;
 }
 
-HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
+HRESULT CTriggerObject::Initialize_2D_Trigger(CActor::ACTOR_DESC** _pActorDesc, TRIGGEROBJECT_DESC* _pDesc)
 {
     return S_OK;
 }
