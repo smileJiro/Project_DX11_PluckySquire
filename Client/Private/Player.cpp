@@ -255,6 +255,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
+
     CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
@@ -267,6 +268,9 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
+
+
+
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     m_bOnGround = false;
@@ -276,6 +280,21 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
+    // Test
+    if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+    {
+        _float2 v2DPos = {};
+        XMStoreFloat2(&v2DPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+        _vector vWorld2DPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(v2DPos);
+        if (XMVectorGetX(vWorld2DPos) == 0.0f && XMVectorGetY(vWorld2DPos) == 0.0f && XMVectorGetZ(vWorld2DPos) == 0.0f)
+        {
+            int i = 0;
+        }
+        CCamera* pCamera = CCamera_Manager::GetInstance()->Get_CurrentCamera();
+        pCamera->Set_Position(XMVectorSetY(vWorld2DPos, 10.0f));
+        int a = 0;
+    }
+
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 

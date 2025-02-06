@@ -689,6 +689,13 @@ HRESULT CActor::Set_AllShapeEnable(_bool _isEnable)
 	return S_OK;
 }
 
+void CActor::Set_ShapeRayCastFlag(_bool _isRayCast)
+{
+	for (auto& pShape : m_Shapes)
+		pShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, _isRayCast);
+
+}
+
 
 
 void CActor::Active_OnEnable()

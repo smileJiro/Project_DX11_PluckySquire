@@ -7,6 +7,8 @@ namespace Client
 		RG_2D = 1000,
 		RG_3D = 2000,
 
+
+		RG_WORLDPOSMAP = 9000,
 		RG_LAST,
 	};
 
@@ -41,7 +43,14 @@ namespace Client
 		PR2D_LAST =				999
 	};
 
+	enum PRIORITY_WORLDPOSMAP
+	{
+		PRWORLD_MAINBOOK =		0,
+		PRWORLD_SKETCH_START =	100,
 
+		PRWORLD_SKETCH_END =	300,
+		PRWORLD_LAST =			999
+	};
 
 	enum LEVEL_ID 
 	{
@@ -63,7 +72,7 @@ namespace Client
 		PLAYER_PROJECTILE =			0x10,
 		MONSTER_PROJECTILE =		0x20,
 		TRIGGER_OBJECT =		    0x40,
-								 // 0x80
+		RAY_OBJECT =						0x80,
 								 // 0x100
 								 // 0x200 
 
@@ -96,7 +105,7 @@ namespace Client
 		ARM_TRIGGER,
 		CUTSCENE_TRIGGER,
 		FREEZE_X_TRIGGER,
-		FREEZE_Y_TRIGGER,
+		FREEZE_Z_TRIGGER,
 		TELEPORT_TRIGGER,
 		EVENT_TRIGGER,
 

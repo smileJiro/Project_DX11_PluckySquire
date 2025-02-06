@@ -74,6 +74,24 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
+//	m_pPxScene->simulate(m_fFixtedTimeStep);
+//	m_fTimeAcc -= m_fFixtedTimeStep;
+//
+//	//fetch 끝났는지 확인
+//	if (m_pPxScene->fetchResults(true))
+//	{
+//		if (nullptr != m_pPhysx_EventCallBack)
+//			m_pPhysx_EventCallBack->Update();
+//
+//#ifdef _DEBUG
+//		if (true == m_isDebugRender)
+//		{
+//			const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+//			m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+//		}
+//#endif // _DEBUG
+//	}
+
 	//m_fTImeAcc : 지난 시뮬레이션 이후로 지난 시간.
 	//m_fFixtedTimeStep : 고정된 시간 간격. 1/60초
 	//1. 지난 시뮬이후로 1/60초 이상이 지났으면 시뮬레이션 해야 함.

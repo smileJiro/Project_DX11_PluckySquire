@@ -204,8 +204,26 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	case (_uint)TRIGGER_TYPE::CUTSCENE_TRIGGER:
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+	{
+		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+			});
+
+		_pTrigger->Resister_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		Event_Trigger_Exit(_iTriggerType, _iTriggerID, _szEventTag);
+		});
+	}
 		break;
-	case (_uint)TRIGGER_TYPE::FREEZE_Y_TRIGGER:
+	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
+	{
+		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+			});
+
+		_pTrigger->Resister_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			Event_Trigger_Exit(_iTriggerType, _iTriggerID, _szEventTag);
+			});
+	}
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;

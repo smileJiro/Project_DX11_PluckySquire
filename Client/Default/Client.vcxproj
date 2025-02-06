@@ -200,6 +200,7 @@
     <ClInclude Include="..\Public\Boss_HomingBall.h" />
     <ClInclude Include="..\Public\Boss_PurpleBall.h" />
     <ClInclude Include="..\Public\Boss_YellowBall.h" />
+    <ClInclude Include="..\Public\Camera_2D.h" />
     <ClInclude Include="..\Public\Camera_CutScene.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
@@ -256,6 +257,7 @@
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
     <ClInclude Include="..\Public\RenderGroup_Final.h" />
     <ClInclude Include="..\public\RenderGroup_Lights.h" />
+    <ClInclude Include="..\public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\public\Section.h" />
     <ClInclude Include="..\public\Section_2D.h" />
@@ -323,6 +325,7 @@
     <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
     <ClCompile Include="..\Private\Boss_PurpleBall.cpp" />
     <ClCompile Include="..\Private\Boss_YellowBall.cpp" />
+    <ClCompile Include="..\Private\Camera_2D.cpp" />
     <ClCompile Include="..\Private\Camera_CutScene.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
@@ -376,6 +379,7 @@
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
     <ClCompile Include="..\private\RenderGroup_Lights.cpp" />
+    <ClCompile Include="..\private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\private\Section.cpp" />
     <ClCompile Include="..\private\Section_2D.cpp" />

@@ -30,6 +30,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
 	m_eCameraMode = pDesc->eCameraMode;
 	m_vAtOffset = pDesc->vAtOffset;
+	m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -79,9 +80,27 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
 }
 
+void CCamera_Target::Set_Freeze(_uint _iFreezeMask)
+{
+	m_iFreezeMask |= _iFreezeMask;
+}
+
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 {
-	m_pCurArm->Change_Target(_pTargetWorldMatrix);
+	m_pTargetWorldMatrix = _pTargetWorldMatrix;
+}
+
+void CCamera_Target::Switch_CameraView()
+{
+	if (nullptr == m_pCurArm)
+		return;
+
+	memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	_vector vCameraPos = XMLoadFloat3(&m_vPreTargetPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+	
+	Look_Target(XMLoadFloat3(&m_vPreTargetPos), 0.f);
 }
 
 _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -157,12 +176,23 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	}
 }
 
-void CCamera_Target::Defualt_Move(_float fTimeDelta)
+void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 {
-	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(fTimeDelta);
+	_vector vTargetPos;
+	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
+	_vector vCurPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+
+	if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
+		vCameraPos = XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos));
+	}
+	if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
+		vCameraPos = XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos));
+	}
+
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	Look_Target(fTimeDelta);
+	//if (RESET == (m_iFreezeMask | RESET)) 
+	Look_Target(vTargetPos, _fTimeDelta);
 }
 
 void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
@@ -172,17 +202,18 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 		//return;
 	}
 
-	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(_fTimeDelta);
+	_vector vTargetPos;
+	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	Look_Target(_fTimeDelta);
+	Look_Target(vTargetPos, _fTimeDelta);
 }
 
-void CCamera_Target::Look_Target(_float fTimeDelta)
+void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 {
-	_vector vTargetPos = m_pCurArm->Get_TargetState(CCameraArm::POS);
+	//_vector vTargetPos = XMLoadFloat4x4(m_pTargetWorldMatrix).r[TARGET_POS];
 
-	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
+	_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 
@@ -193,10 +224,27 @@ void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 		//return;
 	}
 
-	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(_fTimeDelta);
+	_vector vTargetPos;
+	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	Look_Target(_fTimeDelta);
+	Look_Target(vTargetPos, _fTimeDelta);
+}
+
+_vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta)
+{
+	_vector vTargetPos;
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+   
+	_vector vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos, m_fSmoothSpeed * _fTimeDelta);
+    
+	if (nullptr != _pLerpTargetPos)
+		*_pLerpTargetPos = vCurPos;
+
+	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	XMStoreFloat3(&m_vPreTargetPos, vCurPos);
+
+	return vCameraPos;
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)
