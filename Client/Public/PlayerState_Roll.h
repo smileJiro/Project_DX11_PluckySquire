@@ -6,7 +6,7 @@ class CPlayerState_Roll :
     public CPlayerState
 {
 public:
-    CPlayerState_Roll(CPlayer* _pOwner, _fvector _vDirection);
+    CPlayerState_Roll(CPlayer* _pOwner);
 
     // CPlayerState을(를) 통해 상속됨
     void Update(_float _fTimeDelta) override;

@@ -12,8 +12,16 @@ public:
     void Update(_float _fTimeDelta) override;
     virtual void Enter() override;
     virtual void Exit() override;
-
+    virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)override;
 private:
-    _vector m_vClamberPosition = { 0,0,0 };
+
+    //벽 기어오르기 관련
+    _vector m_vClamberEndPosition = { 0,0,0 };
+    _vector m_vClamberStartPosition = { 0,0,0 };
+    _vector m_vClamberNormal= { 0,0,0 };
+
+    _float m_fArmHeight = 0;
+    _float m_fHeadHeight = 0;
+    _float m_fArmLength = 0;
 };
 END

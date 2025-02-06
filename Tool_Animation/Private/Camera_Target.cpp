@@ -30,6 +30,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
 	m_eCameraMode = pDesc->eCameraMode;
 	m_vAtOffset = pDesc->vAtOffset;
+	m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -73,7 +74,7 @@ void CCamera_Target::Add_Arm(CCameraArm* _pCameraArm)
 
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 {
-	m_pArm->Change_Target(_pTargetWorldMatrix);
+	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 }
 
 void CCamera_Target::Key_Input(_float _fTimeDelta)
@@ -112,18 +113,30 @@ void CCamera_Target::Action_Mode(_float fTimeDelta)
 
 void CCamera_Target::Defualt_Move(_float fTimeDelta)
 {
-	_vector vCameraPos = m_pArm->Calculate_CameraPos(fTimeDelta);
+	_vector vCameraPos = Calculate_CameraPos();
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	_vector vTargetPos = m_pArm->Get_TargetState(CCameraArm::POS);
-
-	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
-	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+	Look_Target(fTimeDelta);
 }
 
 void CCamera_Target::Look_Target(_float fTimeDelta)
 {
+	_vector vTargetPos;
 
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	m_pControllerTransform->LookAt_3D(XMVectorSetW(vTargetPos, 1.f));
+}
+
+_vector CCamera_Target::Calculate_CameraPos()
+{
+	_vector vTargetPos;
+
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	vTargetPos = vTargetPos; // +XMLoadFloat3(&m_vPosOffset);
+
+	_vector vCameraPos = vTargetPos + (m_pArm->Get_Length() * m_pArm->Get_ArmVector());
+
+	return vCameraPos;
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

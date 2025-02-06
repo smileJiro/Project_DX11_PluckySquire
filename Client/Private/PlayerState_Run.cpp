@@ -20,7 +20,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	{
 		_float fUpForce = m_pOwner->Get_UpForce();
 		_bool bOnGround = m_pOwner->Is_OnGround();
-		if (false == bOnGround && 0 > fUpForce)
+		if (false == bOnGround && -0.001 > fUpForce)
 		{
 			m_pOwner->Set_State(CPlayer::JUMP_DOWN);
 			return;

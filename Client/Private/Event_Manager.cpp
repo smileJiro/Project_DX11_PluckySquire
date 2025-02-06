@@ -141,6 +141,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Book_MainPage_Change(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::SET_SCENEQUERYFLAG:
+	{
+		Execute_SetSceneQueryFlag(_tEvent);
+	}
+	break;
 	default:
 		break;
 	}
@@ -486,6 +491,15 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 		break;
 	}
 
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
+{
+	CActorObject* pActor = (CActorObject*)_tEvent.Parameters[0];
+	_uint iShapeID = (_uint)_tEvent.Parameters[1];
+	_bool bEnable = (_bool)_tEvent.Parameters[2];
+	pActor->Get_ActorCom()->Get_Shapes()[iShapeID]->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
 	return S_OK;
 }
 

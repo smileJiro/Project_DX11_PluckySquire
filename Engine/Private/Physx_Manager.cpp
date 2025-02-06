@@ -199,7 +199,7 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 	return isResult;
 }
 
-_bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<_float3>& _OutPositions)
+_bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
 {
 	PxRaycastHit hitBuffer[10]; // 최대 10개까지 저장
 	PxRaycastBuffer hit(hitBuffer, 10); // 버퍼 설정
@@ -213,7 +213,9 @@ _bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, 
 		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
 
 		_OutActors.push_back(nullptr != pActorUserData ? pActorUserData->pOwner : nullptr);
-		_OutPositions.push_back(_float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z });
+
+		_OutRaycastHits.push_back({ _float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z }
+		, _float3{hit.touches[i].normal.x,hit.touches[i].normal.y,hit.touches[i].normal.z}});
 	}
 	return isResult;
 }
