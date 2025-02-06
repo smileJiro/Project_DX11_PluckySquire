@@ -78,7 +78,9 @@ void CShopPanel::Update(_float _fTimeDelta)
 
 
 	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-	if (true == Uimgr->Get_ShopUpdate())
+
+	/* 테스트용으로 m_isRender true 조건값 추가*/
+	if (true == Uimgr->Get_ShopUpdate() || true == m_isRender)
 	{
 		Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
 		Uimgr->Set_ShopUpdate(false);

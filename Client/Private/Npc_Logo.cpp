@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "NPC_Store.h"
+#include "NPC_Logo.h"
 #include "ModelObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
@@ -7,26 +7,26 @@
 #include "UI_Manager.h"
 #include "StateMachine.h"
 
-CNPC_Store::CNPC_Store(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CNPC_Logo::CNPC_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CNPC(_pDevice, _pContext)
 {
 }
 
-CNPC_Store::CNPC_Store(const CNPC_Store& _Prototype)
+CNPC_Logo::CNPC_Logo(const CNPC_Logo& _Prototype)
 	:CNPC(_Prototype)
 {
 }
 
 
 
-HRESULT CNPC_Store::Initialize_Prototype()
+HRESULT CNPC_Logo::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CNPC_Store::Initialize(void* _pArg)
+HRESULT CNPC_Logo::Initialize(void* _pArg)
 {
-	CNPC_Store::NPC_DESC* pDesc = static_cast<CNPC_Store::NPC_DESC*>(_pArg);
+	CNPC_Logo::NPC_DESC* pDesc = static_cast<CNPC_Logo::NPC_DESC*>(_pArg);
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = true;
 	pDesc->iNumPartObjects = PART_END;
@@ -64,11 +64,11 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
-	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"), &tAnimEventDesc));
+	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_LOGO, TEXT("Prototype_Component_NPC_Pip_2DAnimation"), &tAnimEventDesc));
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(300.f, -300.f, 0.f, 1.f));
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Logo::On_AnimEnd, this , placeholders::_1, placeholders::_2));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(g_iWinSizeX - g_iWinSizeX / 2.35f, g_iWinSizeY / 14.f, 0.f, 1.f));
 
 	
 	//CActor::ACTOR_DESC ActorDesc;
@@ -126,19 +126,19 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CNPC_Store::Priority_Update(_float _fTimeDelta)
+void CNPC_Logo::Priority_Update(_float _fTimeDelta)
 {
 	__super::Priority_Update(_fTimeDelta);
 }
 
-void CNPC_Store::Update(_float _fTimeDelta)
+void CNPC_Logo::Update(_float _fTimeDelta)
 {
 	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
 	
 	__super::Update(_fTimeDelta);
 }
 
-void CNPC_Store::Late_Update(_float _fTimeDelta)
+void CNPC_Logo::Late_Update(_float _fTimeDelta)
 {
 	
 
@@ -157,29 +157,29 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 
 }
 
-HRESULT CNPC_Store::Render()
+HRESULT CNPC_Logo::Render()
 {
 	//__super::Render();
 	m_pColliderCom->Render();
 	return S_OK;
 }
 
-void CNPC_Store::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+void CNPC_Logo::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 	int a = 0;
 }
 
-void CNPC_Store::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+void CNPC_Logo::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 	int a = 0;
 }
 
-void CNPC_Store::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+void CNPC_Logo::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 	int a = 0;
 }
 
-_bool CNPC_Store::OnCOllsion2D_Enter()
+_bool CNPC_Logo::OnCOllsion2D_Enter()
 {
 	// 이전에 false 였고 현재 true 인경우
 	//m_isPreCollision2D 가 false
@@ -192,7 +192,7 @@ _bool CNPC_Store::OnCOllsion2D_Enter()
 	return false;
 }
 
-_bool CNPC_Store::OnCOllsion2D_Stay()
+_bool CNPC_Logo::OnCOllsion2D_Stay()
 {
 	// 이전에 true 였고 지금도 true면 들어오는건 false, // 애니메이션 유지
 		//m_isPreCollision2D 가 true
@@ -204,7 +204,7 @@ _bool CNPC_Store::OnCOllsion2D_Stay()
 	return false;
 }
 
-_bool CNPC_Store::OnCOllsion2D_Exit()
+_bool CNPC_Logo::OnCOllsion2D_Exit()
 {
 
 	// 이전에 true였고 현재 false 인경우
@@ -219,7 +219,7 @@ _bool CNPC_Store::OnCOllsion2D_Exit()
 }
 
 
-void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+void CNPC_Logo::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	if (iAnimIdx != m_iPreState)
 	{
@@ -256,9 +256,9 @@ void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 }
 
 
-HRESULT CNPC_Store::Ready_ActorDesc(void* _pArg)
+HRESULT CNPC_Logo::Ready_ActorDesc(void* _pArg)
 {
-	CNPC_Store::NPC_DESC* pDesc = static_cast<CNPC_Store::NPC_DESC*>(_pArg);
+	CNPC_Logo::NPC_DESC* pDesc = static_cast<CNPC_Logo::NPC_DESC*>(_pArg);
 
 	pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
 	CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
@@ -306,7 +306,7 @@ HRESULT CNPC_Store::Ready_ActorDesc(void* _pArg)
 	return S_OK;
 }
 
-HRESULT CNPC_Store::Ready_Components()
+HRESULT CNPC_Logo::Ready_Components()
 {
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
@@ -320,7 +320,7 @@ HRESULT CNPC_Store::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CNPC_Store::Ready_PartObjects()
+HRESULT CNPC_Logo::Ready_PartObjects()
 {
 
 	CModelObject::MODELOBJECT_DESC NPCBodyDesc{};
@@ -356,9 +356,9 @@ HRESULT CNPC_Store::Ready_PartObjects()
 
 
 
-CNPC_Store* CNPC_Store::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CNPC_Logo* CNPC_Logo::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CNPC_Store* pInstance = new CNPC_Store(_pDevice, _pContext);
+	CNPC_Logo* pInstance = new CNPC_Logo(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -370,13 +370,13 @@ CNPC_Store* CNPC_Store::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 	return pInstance;
 }
 
-CGameObject* CNPC_Store::Clone(void* _pArg)
+CGameObject* CNPC_Logo::Clone(void* _pArg)
 {
-	CNPC_Store* pInstance = new CNPC_Store(*this);
+	CNPC_Logo* pInstance = new CNPC_Logo(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Clone CNPC_Store Failed");
+		MSG_BOX("Clone CNPC_Logo Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -384,12 +384,12 @@ CGameObject* CNPC_Store::Clone(void* _pArg)
 	return pInstance;
 }
 
-void CNPC_Store::Free()
+void CNPC_Logo::Free()
 {
 	__super::Free();
 }
 
-HRESULT CNPC_Store::Cleanup_DeadReferences()
+HRESULT CNPC_Logo::Cleanup_DeadReferences()
 {
 	return S_OK;
 }

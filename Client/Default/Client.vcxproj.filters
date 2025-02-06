@@ -279,7 +279,7 @@
     </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord">
       <UniqueIdentifier>{5da31b5a-443d-4563-9471-219ed56959d2}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\WorldPos">
       <UniqueIdentifier>{21bef96e-904c-4c92-a5cb-988c87a95a6f}</UniqueIdentifier>
     </Filter>
@@ -288,6 +288,9 @@
     </Filter>
     <Filter Include="02.GameObjects\Camera\2D">
       <UniqueIdentifier>{0382aa76-b8cc-4245-96df-52630b06afcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\01. LogoNpc">
+      <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -637,10 +640,13 @@
     </ClInclude>
     <ClInclude Include="..\Public\PrintFloorWord.h">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Logo.h">
+      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -974,7 +980,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\PrintFloorWord.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
@@ -982,6 +988,9 @@
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\Camera_2D.cpp">
       <Filter>02.GameObjects\Camera\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Logo.cpp">
+      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

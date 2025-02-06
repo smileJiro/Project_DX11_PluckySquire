@@ -2,20 +2,10 @@
 #include "Npc.h"
 
 BEGIN(Client)
-class CNPC_Store final: public CNPC
+class CNPC_Logo final: public CNPC
 {
 
 public:
-	enum ANIMATION
-	{
-		IDLE,
-		MENUOPEN,
-		PURCHASE01,
-		NOMONEY,
-		LAST
-	};
-
-
 	enum ANIM_2D
 	{
 		Martina_MenuExit_Into,
@@ -34,9 +24,9 @@ public:
 
 
 private:
-	CNPC_Store(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CNPC_Store(const CNPC_Store& _Prototype);
-	virtual ~CNPC_Store() = default;
+	CNPC_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CNPC_Logo(const CNPC_Logo& _Prototype);
+	virtual ~CNPC_Logo() = default;
 
 
 
@@ -64,7 +54,7 @@ protected:
 	virtual _bool OnCOllsion2D_Exit() override;
 
 public:
-	static CNPC_Store*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CNPC_Logo*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*		Clone(void* _pArg) override; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void				Free() override;
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)

@@ -239,6 +239,7 @@
     <ClInclude Include="..\Public\Monster_Body.h" />
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\Npc_Body.h" />
+    <ClInclude Include="..\Public\Npc_Logo.h" />
     <ClInclude Include="..\public\NPC_Store.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerBody.h" />
@@ -361,6 +362,7 @@
     <ClCompile Include="..\Private\Monster_Body.cpp" />
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\Npc_Body.cpp" />
+    <ClCompile Include="..\Private\Npc_Logo.cpp" />
     <ClCompile Include="..\private\NPC_Store.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerBody.cpp" />
