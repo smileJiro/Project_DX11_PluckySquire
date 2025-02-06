@@ -128,7 +128,7 @@ private :
 	vector<_string>								m_RePackaging;
 	vector<pair<_wstring,CMapObject*>>			m_RepackNeededModels;
 
-	_wstring									m_strUmapJsonPath = L"..\\Bin\\json\\3DMapJson\\";
+	_wstring									m_strUmapJsonPath = L"../Bin/json/3DMapJson/";
 
 	TASK										m_tCurWork;
 

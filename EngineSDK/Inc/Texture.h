@@ -46,7 +46,20 @@ public:
 		m_SRVNames.push_back(strSRVName);
 		m_iNumSRVs++;
 	}
+#ifdef _DEBUG
+	HRESULT Delete_Texture( _uint _iIndex)
+	{
+		if (_iIndex >= m_SRVs.size())
+			return E_FAIL;
+		Safe_Release(m_SRVs[_iIndex]);
+		m_SRVs.erase(m_SRVs.begin() + _iIndex);
 
+		if (_iIndex < m_SRVNames.size())
+			m_SRVNames.erase(m_SRVNames.begin() + _iIndex);
+		m_iNumSRVs--;
+		return S_OK;
+	}
+#endif // _DEBUG
 	void	Add_SRVName(const _wstring& _wstrName)
 	{
 		m_SRVNames.push_back(_wstrName);

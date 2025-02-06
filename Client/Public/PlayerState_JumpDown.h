@@ -16,6 +16,7 @@ public:
 private:
     void Switch_To_JumpDownAnimation();
 
+	_bool Try_Clamber();
 private:
     _bool m_bGrounded = false;
     _float m_fAirRunSpeed = 10.f;

@@ -42,6 +42,7 @@ private:
 
 	HRESULT					Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag, _float2 _vRTSize);
 	HRESULT					Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag);
+	void					Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos);
 	
 
 protected:
@@ -49,7 +50,6 @@ protected:
 
 protected:
 	CUI::SHOPPANEL			Get_ShopPanel() { return m_eShopPanel; }
-	void					Change_BookScale_ForShopItem(_float2 _vRTSize);
 
 public:
 	static CShopPanel*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

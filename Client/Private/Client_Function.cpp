@@ -176,6 +176,17 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Evnet_Book_MainPage_Change(const _tchar* _strSectionTag)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::BOOK_MAINPAGE_CHANGE;
+		tEvent.Parameters.resize(1);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_strSectionTag;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID)
 	//{
 	//	EVENT tEvent;

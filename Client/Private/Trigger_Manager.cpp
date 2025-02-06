@@ -42,60 +42,123 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 	file.close();
 
 	for (auto& Trigger_json : Result) {
+
 		CTriggerObject::TRIGGEROBJECT_DESC Desc;
 
-		Desc.iTriggerType = Trigger_json["Trigger_Type"];
-		Desc.szEventTag = m_pGameInstance->StringToWString(Trigger_json["Trigger_EventTag"]);
-		Desc.eStartCoord = (COORDINATE)Trigger_json["Trigger_Coordinate"];
-		Desc.eConditionType = (CTriggerObject::TRIGGER_CONDITION)Trigger_json["Trigger_ConditionType"];
+		#pragma region 1. Trigger 공통 정보 로드
 
-		Desc.tTransform3DDesc.vInitialPosition = { Trigger_json["Position"][0].get<_float>(),  Trigger_json["Position"][1].get<_float>() , Trigger_json["Position"][2].get<_float>() };
-		_float3 vRotation = { Trigger_json["Rotation"][0].get<_float>(),  Trigger_json["Rotation"][1].get<_float>() , Trigger_json["Rotation"][2].get<_float>() };
+			Desc.eStartCoord = (COORDINATE)Trigger_json["Trigger_Coordinate"];
+			Desc.iTriggerType = Trigger_json["Trigger_Type"];
+			Desc.szEventTag = m_pGameInstance->StringToWString(Trigger_json["Trigger_EventTag"]);
+			Desc.eConditionType = (CTriggerObject::TRIGGER_CONDITION)Trigger_json["Trigger_ConditionType"];
 
-		Desc.eShapeType = (SHAPE_TYPE)Trigger_json["ShapeType"];
-		Desc.vHalfExtents = { Trigger_json["HalfExtents"][0].get<_float>(),  Trigger_json["HalfExtents"][1].get<_float>() , Trigger_json["HalfExtents"][2].get<_float>() };
-		Desc.fRadius = Trigger_json["Radius"];
+			Desc.iFillterMyGroup = Trigger_json["Fillter_MyGroup"];
+			Desc.iFillterOtherGroupMask = Trigger_json["Fillter_OtherGroupMask"];
 
-		Desc.iFillterMyGroup = Trigger_json["Fillter_MyGroup"];
-		Desc.iFillterOtherGroupMask = Trigger_json["Fillter_OtherGroupMask"];
+		#pragma endregion
 
-		CGameObject* pTrigger = nullptr;
+		#pragma region 2. Coord별 Desc 편집
+			if (COORDINATE_3D == Desc.eStartCoord)
+			{
+				if (FAILED(Fill_Trigger_3D_Desc(Trigger_json, Desc)))
+					return E_FAIL;
+			}
+			else if (COORDINATE_2D == Desc.eStartCoord)
+			{
+				if (FAILED(Fill_Trigger_2D_Desc(Trigger_json, Desc)))
+					return E_FAIL;
+			}
+		#pragma endregion
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TriggerObject"), LEVEL_GAMEPLAY, TEXT("Layer_Trigger"), &pTrigger, &Desc))) {
-			MSG_BOX("Failed To Load TriggerObject");
-			return E_FAIL;
-		}
+		#pragma region 3. 트리거 객체 생성
+			CGameObject* pTrigger = nullptr;
 
-		// Rotation
-		_matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(vRotation.z));
-		dynamic_cast<CTriggerObject*>(pTrigger)->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_eProtoLevelId, TEXT("Prototype_GameObject_TriggerObject"), _eObjectLevelId, TEXT("Layer_Trigger"), &pTrigger, &Desc))) {
+				MSG_BOX("Failed To Load TriggerObject");
+				return E_FAIL;
+			}
+		#pragma endregion
 
-
-		// Custom Data
-		_string szKey;
-		_uint iReturnMask;
-
-		switch (Desc.iTriggerType) {
-		case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
-		{
-			if (Trigger_json.contains("Arm_Info")) {
-				json exitReturnMask = Trigger_json["Arm_Info"]["Exit_Return_Mask"];
-
-				for (auto& [key, value] : exitReturnMask.items()) {
-					szKey = key;
-					iReturnMask = value;
+		#pragma region 4. 객체 외부초기화
+			if (nullptr != pTrigger)
+			{
+				if (COORDINATE_3D == Desc.eStartCoord)
+				{														// 무조건 CTriggerObject가 부모라고 판단. 
+					if (FAILED(After_Initialize_Trigger_3D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc)))
+						return E_FAIL;
+				}
+				else if (COORDINATE_2D == Desc.eStartCoord)
+				{
+					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc)))
+						return E_FAIL;
 				}
 			}
+		#pragma endregion
 
-			dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iReturnMask);
-		}
-			break;
-		}
+		#pragma region 5. 핸들러 등록
+			Resister_Event_Handler(Desc.iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger));
+		#pragma endregion
 
-		Resister_Event_Handler(Desc.iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger));
 	}
 
 	return S_OK;
+}
+
+HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
+{
+	json& ColliderInfoJson = _TriggerJson["Collider_Info"];
+
+	_tDesc.eShapeType = (SHAPE_TYPE)ColliderInfoJson["ShapeType"];
+	_tDesc.tTransform3DDesc.vInitialPosition = { ColliderInfoJson["Position"][0].get<_float>(),  ColliderInfoJson["Position"][1].get<_float>() , ColliderInfoJson["Position"][2].get<_float>() };
+	_tDesc.vRotation = { ColliderInfoJson["Rotation"][0].get<_float>(),  ColliderInfoJson["Rotation"][1].get<_float>() , ColliderInfoJson["Rotation"][2].get<_float>() };
+	_tDesc.vHalfExtents = { ColliderInfoJson["HalfExtents"][0].get<_float>(),  ColliderInfoJson["HalfExtents"][1].get<_float>() , ColliderInfoJson["HalfExtents"][2].get<_float>() };
+	_tDesc.fRadius = ColliderInfoJson["Radius"];
+
+	return S_OK;
+}
+
+HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
+{
+
+	// Rotation
+	_matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(_tDesc.vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(_tDesc.vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(_tDesc.vRotation.z));
+	dynamic_cast<CTriggerObject*>(_pTriggerObject)->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
+
+
+	// Custom Data
+	_string szKey;
+	_uint iReturnMask;
+
+	switch (_tDesc.iTriggerType) {
+	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
+	{
+		if (_TriggerJson.contains("Arm_Info")) {
+			json exitReturnMask = _TriggerJson["Arm_Info"]["Exit_Return_Mask"];
+
+			for (auto& [key, value] : exitReturnMask.items()) {
+				szKey = key;
+				iReturnMask = value;
+			}
+		}
+
+		dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iReturnMask);
+	}
+	break;
+	}
+
+	return E_NOTIMPL;
+}
+
+
+HRESULT CTrigger_Manager::Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
+{
+	return S_OK;
+}
+
+
+HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
+{
+	return E_NOTIMPL;
 }
 
 void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger)

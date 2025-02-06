@@ -50,7 +50,24 @@ public:
 		// 일반적으로 SRV는 이곳이 원본일 것임. AddRef() 안한다.
 		return S_OK;
 	}
+#ifdef _DEBUG
+	HRESULT Add_Texture(aiTextureType _eTextureType)
+	{
+		if (nullptr != m_MaterialTextures[_eTextureType])
+			return E_FAIL;
+		m_MaterialTextures[_eTextureType] = CTexture::Create(m_pDevice, m_pContext);
 
+		return S_OK;
+	}
+
+	HRESULT Delete_Texture(aiTextureType _eTextureType, _uint _iIndex)
+	{
+		if (nullptr == m_MaterialTextures[_eTextureType])
+			m_MaterialTextures[_eTextureType] = CTexture::Create(m_pDevice, m_pContext);
+		m_MaterialTextures[_eTextureType]->Delete_Texture(_iIndex);
+		return S_OK;
+	}
+#endif // _DEBUG
 	HRESULT Bind_PixelConstBuffer(CShader* _pShader);
 protected:
 	// 텍스쳐를 담는 벡터를 보관하는 배열.

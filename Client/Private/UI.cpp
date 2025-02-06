@@ -151,14 +151,8 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)_vRTSize.x, (_float)_vRTSize.y, 0.0f, 1.0f));
 }
 
-void CUI::Change_BookScale_ForDialogue(_float2 vRTSize)
-{
-	_float3 vScaleSize;
-	_float2 vCalSize;
 
 
-
-}
 
 
 
