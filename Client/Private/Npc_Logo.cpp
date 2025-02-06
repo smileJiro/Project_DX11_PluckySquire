@@ -50,10 +50,6 @@ HRESULT CNPC_Logo::Initialize(void* _pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-	
-
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
 	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Pip_idle_down, true);
