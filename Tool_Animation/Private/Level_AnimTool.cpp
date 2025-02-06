@@ -406,6 +406,7 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 
 	TargetDesc.fSmoothSpeed = 5.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
+	TargetDesc.pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -426,7 +427,7 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 	Desc.vRotation = { XMConvertToRadians(30.f), XMConvertToRadians(0.f), 0.f };
 	Desc.fLength = 30.f;
 	Desc.wszArmTag = TEXT("Cam_Arm");
-	Desc.pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
 	m_pTargetCam->Add_Arm(pArm);
