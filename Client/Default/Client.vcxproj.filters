@@ -630,6 +630,7 @@
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\Public\Camera_2D.h">
       <Filter>02.GameObjects\Camera\2D</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\Public\FloorWord.h">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord</Filter>
@@ -977,6 +978,7 @@
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+    </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\Camera_2D.cpp">
       <Filter>02.GameObjects\Camera\2D</Filter>
