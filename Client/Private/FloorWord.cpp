@@ -43,11 +43,11 @@ HRESULT CFloorWord::Initialize(void* _pArg)
 
 	// FloorWord는 해당 레벨에서 진행하는 모든 애들을 가지고 있는다.
 	// FloorWord는 이니셜라이즈할때 자식을 만들며, 자식을 만들때 json과 파싱하여 각각 글자를 가지고 있게 한다.
-	// FloorWord는 자식을 모두 업데이트를 돌리면서 플레이어와의 위치를 계속 파악을한다.
+			// --FloorWord는 자식을 모두 업데이트를 돌리면서 플레이어와의 위치를 계속 파악을한다.
 	
 	// PrintWord는 해당 레벨에서만 사용한다.
-	// PrintWord는 업데이트를 돌면서 플레이어와의 위치를 계속 파악을한다.
-	// PrintWord는 플레이어가 특정 거리 안으로 들어올 경우 Fadein을 진행한다.
+			// --PrintWord는 업데이트를 돌면서 플레이어와의 위치를 계속 파악을한다.
+			// --PrintWord는 플레이어가 특정 거리 안으로 들어올 경우 Fadein을 진행한다.
 	
 
 	return S_OK;

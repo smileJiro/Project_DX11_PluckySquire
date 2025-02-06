@@ -187,6 +187,17 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID,_bool _bEnable)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::SET_SCENEQUERYFLAG;
+		tEvent.Parameters.resize(3);
+		tEvent.Parameters[0] = (DWORD_PTR)_pActor;
+		tEvent.Parameters[1] = (DWORD_PTR)_iShapeID;
+		tEvent.Parameters[2] = (DWORD_PTR)_bEnable;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID)
 	//{
 	//	EVENT tEvent;

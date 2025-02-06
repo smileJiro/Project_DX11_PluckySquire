@@ -141,6 +141,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Book_MainPage_Change(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::SET_SCENEQUERYFLAG:
+	{
+		Execute_SetSceneQueryFlag(_tEvent);
+	}
+	break;
 	default:
 		break;
 	}
@@ -364,7 +369,7 @@ HRESULT CEvent_Manager::Execute_ChangeBossState(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 {
 	_uint iCameraTriggerType = (_uint)_tEvent.Parameters[0];
-	_int iTriggerID = _tEvent.Parameters[1];
+	_int iTriggerID = (_int)_tEvent.Parameters[1];
 	_wstring* pStr = (_wstring*)_tEvent.Parameters[2];
 	
 	if (nullptr == pStr)
@@ -407,7 +412,7 @@ HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Execute_Trigger_Stay(const EVENT& _tEvent)
 {
 	_uint iCameraTriggerType = (_uint)_tEvent.Parameters[0];
-	_int iTriggerID = _tEvent.Parameters[1];
+	_int iTriggerID = (_int)_tEvent.Parameters[1];
 	_wstring* pStr = (_wstring*)_tEvent.Parameters[2];
 
 	if (nullptr == pStr)
@@ -436,7 +441,7 @@ HRESULT CEvent_Manager::Execute_Trigger_Stay(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Execute_Trigger_Exit(const EVENT& _tEvent)
 {
 	_uint iCameraTriggerType = (_uint)_tEvent.Parameters[0];
-	_int iTriggerID = _tEvent.Parameters[1];
+	_int iTriggerID = (_int)_tEvent.Parameters[1];
 	_wstring* pStr = (_wstring*)_tEvent.Parameters[2];
 
 	if (nullptr == pStr)
@@ -471,8 +476,8 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 {
 	_uint iTriggerType = (_uint)_tEvent.Parameters[0];;
-	_int iTriggerID = _tEvent.Parameters[1];
-	_bool isReturn = _tEvent.Parameters[2];
+	_int iTriggerID = (_int)_tEvent.Parameters[1];
+	_bool isReturn = (_bool)_tEvent.Parameters[2];
 
 	switch (iTriggerType) {
 	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
@@ -486,6 +491,15 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 		break;
 	}
 
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
+{
+	CActorObject* pActor = (CActorObject*)_tEvent.Parameters[0];
+	_uint iShapeID = (_uint)_tEvent.Parameters[1];
+	_bool bEnable = (_bool)_tEvent.Parameters[2];
+	pActor->Get_ActorCom()->Get_Shapes()[iShapeID]->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
 	return S_OK;
 }
 

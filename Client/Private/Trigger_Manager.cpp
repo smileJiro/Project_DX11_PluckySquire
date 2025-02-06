@@ -146,7 +146,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTrigge
 	break;
 	}
 
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 

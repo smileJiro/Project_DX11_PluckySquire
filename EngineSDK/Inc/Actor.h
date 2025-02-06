@@ -66,7 +66,7 @@ public:/* Default PhysX */
 
 	void						Set_PxActorDisable();
 	void						Set_PxActorEnable();
-	void						Set_SceneQueryFlag(_bool _bEnable);
+
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);
@@ -93,7 +93,8 @@ public:
 	HRESULT						Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc); // shape 크기변경
 	HRESULT						Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable);
 	HRESULT						Set_AllShapeEnable(_bool _isEnable);
-	void						Set_ShapeRayCastFlag(_bool _isRayCast);
+	void								Set_ShapeRayCastFlag(_bool _isRayCast);
+
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;
