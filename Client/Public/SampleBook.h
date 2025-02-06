@@ -51,7 +51,7 @@ public:
 
 private :
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
-	
+	ID3D11Texture2D*		m_pStagingTexture = nullptr;
 
 public:
 	static CSampleBook* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
