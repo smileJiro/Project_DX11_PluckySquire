@@ -270,14 +270,21 @@ void CPlayer::Update(_float _fTimeDelta)
 
 
 
-    cout << "m_bOnGround : " << m_bOnGround << endl;
+    //cout << "m_bOnGround : " << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
 
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == Get_CurCoord())
     {
-        if (false == static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping());
+        _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
+        cout << "bSleep : " << bSleep;
+        if (false == bSleep)
+        {
+
             m_bOnGround = false;
+        }
+
+
     }
     else
     {
@@ -307,6 +314,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
     }
 
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+    cout << endl;
 }
 
 HRESULT CPlayer::Render()
@@ -341,6 +349,7 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
         }
         break;
     case Client::CPlayer::SHAPE_FOOT:
+        cout << "   COntatct Enter";
         break;
 	case Client::CPlayer::SHAPE_TRIGER:
 		break;
@@ -386,10 +395,12 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
             if (pxPairData.normal.y < m_fStepSlopeThreshold)
                 continue;
             m_bOnGround = true;
+            //cout << "  Contact";
             return;
         }
         break;
     case Client::CPlayer::SHAPE_TRIGER:
+
         break;
     default:
         break;
@@ -399,6 +410,7 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+ 
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
@@ -417,6 +429,7 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
         }
         break;
     case Client::CPlayer::SHAPE_FOOT:
+        cout << "   COntatct Exit";
         break;
     case Client::CPlayer::SHAPE_TRIGER:
         break;

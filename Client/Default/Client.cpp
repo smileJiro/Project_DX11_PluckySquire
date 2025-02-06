@@ -102,7 +102,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             pGameInstance->Update_TimeDelta(TEXT("Timer_Default"));
             //pMainApp->Progress(pGameInstance->Get_TimeDelta(TEXT("Timer_Default")));
             fTimeAcc += pGameInstance->Get_TimeDelta(TEXT("Timer_Default"));
-            if (fTimeAcc >= 1.0f / 60.f)
+            if (/*fTimeAcc >= 1.0f / 60.f*/ true)
             {
                 static LARGE_INTEGER start = {};
                 static LARGE_INTEGER end = {};
