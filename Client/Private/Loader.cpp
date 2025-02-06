@@ -37,6 +37,8 @@
 /* For. NPC*/
 #include "Npc_Body.h"
 #include "NPC_Store.h"
+#include "FloorWord.h"
+#include "PrintFloorWord.h"
 
 
 #include "ModelObject.h"
@@ -732,6 +734,16 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Boss_PurpleBall"),
         CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_FloorWord"),
+		CFloorWord::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_PrintFloorWord"),
+		CPrintFloorWord::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
     // 액터 들어가는넘. 뺌.
     //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
