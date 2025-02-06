@@ -168,18 +168,19 @@ void CActor_Dynamic::Set_Rotation(_fvector _vAxis, _float _fRadian)
 
 void CActor_Dynamic::Set_Rotation(_fvector _vLook)
 {
+	_vector vLook = XMVector3Normalize(_vLook);
 	PxRigidDynamic* pDynamicActor = static_cast<PxRigidDynamic*>(m_pActor);
 	PxTransform currentTransform = pDynamicActor->getGlobalPose();
 	PxVec3 currentPosition = currentTransform.p;
 
 	_vector vForward = _vector{0,0,1,0};
 	PxQuat newRotation;
-	if (XMVector3NearEqual(vForward, _vLook, XMVectorReplicate(1e-6f))) {
+	if (XMVector3NearEqual(vForward, vLook, XMVectorReplicate(1e-6f))) {
 		newRotation = PxQuat(PxIdentity); // 동일한 방향이면 단위 쿼터니언 반환
 	}
 
-	_float fAngle = acos(XMVectorGetX(XMVector3Dot(vForward, _vLook))); // 라디안 값
-	if (XMVectorGetX(_vLook) < 0)
+	_float fAngle = acos(XMVectorGetX(XMVector3Dot(vForward, vLook))); // 라디안 값
+	if (XMVectorGetX(vLook) < 0)
 		fAngle = -fAngle;
 	PxVec3 pxAxis = PxVec3(0, 1,0);
 	newRotation = PxQuat(fAngle, pxAxis);

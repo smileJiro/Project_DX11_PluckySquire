@@ -6,6 +6,7 @@ class CGameObject;
 class CLevel;
 class CBase;
 class CActor_Dynamic;
+class CActorObject;
 END
 
 BEGIN(Client)
@@ -28,6 +29,7 @@ namespace Client
 	void Event_Trigger_Stay(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_Exit(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_Exit_ByCollision(_uint _iTriggerType, _int _iTriggerID, _bool _isReturn = true);
+	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
 	
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);
 	//void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn = true);

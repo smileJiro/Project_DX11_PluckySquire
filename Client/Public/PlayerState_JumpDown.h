@@ -19,13 +19,15 @@ private:
 	_bool Try_Clamber();
 private:
     _bool m_bGrounded = false;
-    _float m_fAirRunSpeed = 10.f;
+
 
     //벽 기어오르기 관련
-    _vector m_vClamberPosition = { 0,-1,0 };
-    _float m_fArmLength = 0.7f;
-    _float m_fArmHeight = 0.6f;
-    _float m_fAirRotateSpeed = 40;
+    _float m_fWallYPosition = -1;
+	_vector m_vClamberEndPosition= { 0,0,0 };
+    _float m_fArmYPositionBefore = -1;
+    _float m_fArmHeight = 0;
+    _float m_fHeadHeight = 0;
+    _float m_fArmLength = 0;
 };
 
 END

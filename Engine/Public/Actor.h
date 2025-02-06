@@ -66,7 +66,7 @@ public:/* Default PhysX */
 
 	void						Set_PxActorDisable();
 	void						Set_PxActorEnable();
-	void						Set_SceneQueryFlag(_bool _bEnable);
+
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);

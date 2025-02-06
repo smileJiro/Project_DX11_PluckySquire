@@ -43,6 +43,7 @@ namespace Engine
 	{
 		_uint						iShapeInstanceID = 0;
 		_uint						iShapeUse = 0;
+		_uint						iShapeIndex = 0;
 	}SHAPE_USERDATA;
 
 	typedef struct tagCollisionInfo
@@ -370,6 +371,12 @@ namespace Engine
 		vector<FBX_ANIMATION> vecAnimations;
 		vector<FBX_MATERIAL> vecMaterials;
 	}ANIM_FBX;
+
+	typedef struct tagRaycastHit
+	{
+		_float3 vPosition;
+		_float3 vNormal;
+	}RAYCASTHIT;
 #pragma endregion
 
 	
