@@ -186,7 +186,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 #endif // _DEBUG
 
 	if (KEY_DOWN(KEY::T)) {
-		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/ArmTrigger.json"));
+		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/Test.json"));
 	}
 
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
