@@ -72,7 +72,7 @@ namespace Client
 		PLAYER_PROJECTILE =			0x10,
 		MONSTER_PROJECTILE =		0x20,
 		TRIGGER_OBJECT =		    0x40,
-								 // 0x80
+		RAY_OBJECT =						0x80,
 								 // 0x100
 								 // 0x200 
 

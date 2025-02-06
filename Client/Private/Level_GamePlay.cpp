@@ -98,9 +98,19 @@ HRESULT CLevel_GamePlay::Initialize()
 	CRayShape::RAYSHAPE_DESC Desc;
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 5.f, -23.0f);
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
 	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
+	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	Desc.fRadius = 3.f;
+	Desc.fHalfHeight = 2.f;
+	Desc.vOffsetTrans = { 0.f,Desc.fHalfHeight * 0.5f,0.f };
+	Desc.fRotAngle = 90.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), LEVEL_GAMEPLAY, TEXT("Layer_Terrain"), &Desc)))
+		return E_FAIL;
+
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-23.9f, 0.32f, -16.9f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), LEVEL_GAMEPLAY, TEXT("Layer_Terrain"), &Desc)))
 		return E_FAIL;
 
@@ -730,7 +740,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	CBarfBug::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -23.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -23.0f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -17.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
