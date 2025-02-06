@@ -220,6 +220,41 @@ const _wstring* CSection_Manager::Get_SectionKey(CGameObject* _pGameObject)
     return pReturn;
 }
 
+_vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition)
+{
+    // 맵핑하여 데이터 접근
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    m_pContext->Map(m_pBookWorldPosMap, 0, D3D11_MAP_READ, 0, &mappedResource);
+
+    // 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
+    _int iWidth = mappedResource.RowPitch / sizeof(_float) / 4;
+    _int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
+
+    // 원하는 픽셀 좌표 (픽셀 좌표는 UV 좌표를 변환해서 계산)
+    _int iPixelX = (_int)std::ceil(_v2DTransformPosition.x) + iWidth / 2;            // X 좌표
+    _int iPixelY = (_int)(std::ceil(_v2DTransformPosition.y) * -1.0f) + iHeight / 2; // Y 좌표
+
+    // RowPitch는 한 줄의 바이트 수를 나타냄
+    _float* fData = static_cast<_float*>(mappedResource.pData);
+
+    // 픽셀 위치 계산 (4 floats per pixel)
+    _int rowPitchInPixels = mappedResource.RowPitch / sizeof(_float) / 4;
+    _int iIndex = iPixelY * rowPitchInPixels + iPixelX;
+
+    if (iWidth * iHeight <= iIndex || 0 > iIndex)
+        return XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+    // float4 데이터 읽기
+    _float x = fData[iIndex * 4 + 0]; // Red 채널
+    _float y = fData[iIndex * 4 + 1]; // Green 채널
+    _float z = fData[iIndex * 4 + 2]; // Blue 채널
+    //_float w = fData[iIndex * 4 + 3]; // Alpha 채널
+
+    // 맵핑 해제
+    m_pContext->Unmap(m_pBookWorldPosMap, 0);
+
+    return XMVectorSet(x, y, z, 1.0f);
+}
+
 ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstring& _strSectionTag)
 {
     /* Section 2D 인경우만 사용가능하다 */
@@ -423,6 +458,8 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 void CSection_Manager::Free()
 {
     Clear_Sections();
+
+    Safe_Release(m_pBookWorldPosMap);
 
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
