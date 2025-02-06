@@ -210,10 +210,6 @@ public: /* For. GlobalFunction_Manager */
 	//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
 	_uint					Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);	
 
-	template<typename T_CONSTANT>
-	HRESULT				CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer);
-	template<typename T_CONSTANT>
-	HRESULT				UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer);
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();
 	CCamera*			Get_Camera(_uint _eType);
