@@ -103,22 +103,24 @@ public :
 
 #pragma endregion
 
-	_int							Get_SectionLeveID() { return m_iCurLevelID; }
-
-
-
+public:
+	_vector Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition);
 public:
 	// Get
+	_int							Get_SectionLeveID() { return m_iCurLevelID; }
 	ID3D11RenderTargetView*			Get_RTV_FromRenderTarget(const _wstring& _strSectionTag);
-
 	ID3D11ShaderResourceView*		Get_SRV_FromRenderTarget(const _wstring& _strSectionTag);
 	ID3D11ShaderResourceView*		Get_SRV_FromRenderTarget(_uint _iCurActiveIndex);
 	ID3D11ShaderResourceView*		Get_SRV_FromRenderTarget();
-
 	ID3D11ShaderResourceView*		Get_SRV_FromTexture(const _wstring& _strSectionTag, _uint _iTextureIndex = 0);
-
-
 	_uint							Get_MaxCurActiveSectionCount() { return m_iMaxCurActiveSectionCount; }
+
+	// Set
+	void							Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap) { 
+		if (nullptr != m_pBookWorldPosMap)
+			Safe_Release(m_pBookWorldPosMap);
+
+		m_pBookWorldPosMap = _pBookWorldPosMap; }
 
 private:
 	void							Section_Active(const _wstring& _strSectionTag, _uint iCurSectionIndex);
@@ -140,7 +142,8 @@ private:
 	_uint							m_iMaxCurActiveSectionCount = 5;
 	_uint							m_iCurActiveSectionIndex;
 
-
+private: /* For. WorldPosMap */
+	ID3D11Texture2D*				m_pBookWorldPosMap = nullptr; // 더 좋은 위치가 있다면 추후 스케치 스페이스까지 추가하고 변경해주삼.(02.06 태웅)
 #pragma region 임시, 2D모델 Info
 
 

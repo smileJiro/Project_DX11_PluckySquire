@@ -81,6 +81,7 @@ public:
 	// Get
 	const vector<PxShape*>&		Get_Shapes() { return m_Shapes; }
 	ACTOR_TYPE					Get_ActorType() const { return m_eActorType; }
+	PxRigidActor*					Get_RigidActor() const { return m_pActor; }
 
 	// Set 
 	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix); // 특별한 경우 아니면 사용을 비권장하겠음. 버그있는듯함.
@@ -92,7 +93,7 @@ public:
 	HRESULT						Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc); // shape 크기변경
 	HRESULT						Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable);
 	HRESULT						Set_AllShapeEnable(_bool _isEnable);
-
+	void						Set_ShapeRayCastFlag(_bool _isRayCast);
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;

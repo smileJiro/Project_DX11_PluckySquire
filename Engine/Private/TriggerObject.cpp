@@ -24,17 +24,38 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
 {
     CTriggerObject::TRIGGEROBJECT_DESC* pDesc = static_cast<CTriggerObject::TRIGGEROBJECT_DESC*>(_pArg);
 
-    //pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
-    pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-    m_iTriggerType = pDesc->iTriggerType;
-    m_szEventTag = pDesc->szEventTag;
-    m_eConditionType = pDesc->eConditionType;
-    //m_eCoordiNate = pDesc->eCoordiNate; StartCoordinate가 있는데?
+    if (COORDINATE_3D == pDesc->eStartCoord)
+    {
+        if (FAILED(Initialize_3D_Trigger(pDesc)))
+            return E_FAIL;
+    }
+    else if (COORDINATE_2D == pDesc->eStartCoord)
+    {
+        if (FAILED(Initialize_2D_Trigger(pDesc)))
+            return E_FAIL;
+    }
 
-    pDesc->eActorType = ACTOR_TYPE::STATIC;
+    if (FAILED(__super::Initialize(pDesc))) {
+        MSG_BOX("Trigger Initialize Falied");
+        return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+HRESULT CTriggerObject::Initialize_3D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
+{
+    _pDesc->isCoordChangeEnable = false;
+    _pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    _pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+
+    m_iTriggerType = _pDesc->iTriggerType;
+    m_szEventTag = _pDesc->szEventTag;
+    m_eConditionType = _pDesc->eConditionType;
+    //m_eCoordiNate = _pDesc->eCoordiNate; StartCoordinate가 있는데?
+
+    _pDesc->eActorType = ACTOR_TYPE::STATIC;
     CActor::ACTOR_DESC ActorDesc;
 
     /* Actor의 주인 오브젝트 포인터 */
@@ -49,18 +70,18 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
 
-    switch (pDesc->eShapeType) {
+    switch (_pDesc->eShapeType) {
     case SHAPE_TYPE::BOX:
-        ShapeBoxDesc.vHalfExtents = pDesc->vHalfExtents;
-        ShapeData.pShapeDesc = &ShapeBoxDesc;  
+        ShapeBoxDesc.vHalfExtents = _pDesc->vHalfExtents;
+        ShapeData.pShapeDesc = &ShapeBoxDesc;
         break;
     case SHAPE_TYPE::SPHERE:
-        ShapeSpereDesc.fRadius = pDesc->fRadius;
+        ShapeSpereDesc.fRadius = _pDesc->fRadius;
         ShapeData.pShapeDesc = &ShapeSpereDesc;
         break;
     }
 
-    ShapeData.eShapeType = pDesc->eShapeType;
+    ShapeData.eShapeType = _pDesc->eShapeType;
     ShapeData.isTrigger = true;
     ShapeData.isSceneQuery = true;
 
@@ -68,17 +89,17 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc.tFilterData.MyGroup = pDesc->iFillterMyGroup;
-    ActorDesc.tFilterData.OtherGroupMask = pDesc->iFillterOtherGroupMask;
+    ActorDesc.tFilterData.MyGroup = _pDesc->iFillterMyGroup;
+    ActorDesc.tFilterData.OtherGroupMask = _pDesc->iFillterOtherGroupMask;
 
     /* Actor Component Finished */
-    pDesc->pActorDesc = &ActorDesc;
+    _pDesc->pActorDesc = &ActorDesc;
 
-    if (FAILED(__super::Initialize(pDesc))) {
-        MSG_BOX("Trigger Initialize Falied");
-        return E_FAIL;
-    }
+    return S_OK;
+}
 
+HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
+{
     return S_OK;
 }
 
