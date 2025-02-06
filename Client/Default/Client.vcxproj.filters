@@ -279,7 +279,7 @@
     </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord">
       <UniqueIdentifier>{5da31b5a-443d-4563-9471-219ed56959d2}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\WorldPos">
       <UniqueIdentifier>{21bef96e-904c-4c92-a5cb-988c87a95a6f}</UniqueIdentifier>
     </Filter>
@@ -637,10 +637,31 @@
     </ClInclude>
     <ClInclude Include="..\Public\PrintFloorWord.h">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_AlertState.h">
+      <Filter>03.Components\FSM\State\Alert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_AwareState.h">
+      <Filter>03.Components\FSM\State\Alert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_AttackState.h">
+      <Filter>03.Components\FSM\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_ChaseState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_InvestigateState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -974,7 +995,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\PrintFloorWord.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
@@ -982,6 +1003,27 @@
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\Camera_2D.cpp">
       <Filter>02.GameObjects\Camera\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_IdleState.cpp">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_AlertState.cpp">
+      <Filter>03.Components\FSM\State\Alert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_AwareState.cpp">
+      <Filter>03.Components\FSM\State\Alert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_ChaseState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_AttackState.cpp">
+      <Filter>03.Components\FSM\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_InvestigateState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

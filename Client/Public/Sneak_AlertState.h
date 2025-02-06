@@ -4,12 +4,12 @@
 BEGIN(Client)
 
 
-//처음 인식 상태 (있다면 애니메이션 재생)
-class CAlertState final : public CState
+//플레이어가 시야 내에 들어와서 인식 (애니메이션 재생)
+class CSneak_AlertState final : public CState
 {
 private:
-	CAlertState();
-	virtual ~CAlertState() = default;
+	CSneak_AlertState();
+	virtual ~CSneak_AlertState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -19,11 +19,8 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
-private:
-	_bool m_isTurn = { false };
-
 public:
-	static CAlertState* Create(void* _pArg);
+	static CSneak_AlertState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;
