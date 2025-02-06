@@ -119,7 +119,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
         MSG_BOX("CPlayer super Initialize Failed");
         return E_FAIL;
     }
-
+    static_cast<CActor_Dynamic*> (m_pActorCom)->Set_SleepThreshold(0);
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
@@ -270,18 +270,27 @@ void CPlayer::Update(_float _fTimeDelta)
 
 
 
-
+    cout << "m_bOnGround : " << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
 
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    
-    m_bOnGround = false;
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        if (false == static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping());
+            m_bOnGround = false;
+    }
+    else
+    {
+        m_bOnGround = false;
+    }
+
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
+
     // Test
     if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
     {

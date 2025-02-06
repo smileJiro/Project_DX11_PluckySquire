@@ -110,6 +110,17 @@ void CActor_Dynamic::Set_Dynamic()
 	pDynamic->setGlobalPose(pxTransform);
 }
 
+void CActor_Dynamic::Set_SleepThreshold(_float _fThreshold)
+{
+	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
+	pDynamic->setSleepThreshold(_fThreshold);
+}
+
+_bool CActor_Dynamic::Is_Sleeping()
+{
+	return static_cast<PxRigidDynamic*>(m_pActor)->isSleeping();
+}
+
 _vector CActor_Dynamic::Get_LinearVelocity()
 {
 	PxVec3 vPxVec = static_cast<PxRigidDynamic*>(m_pActor)->getLinearVelocity();
