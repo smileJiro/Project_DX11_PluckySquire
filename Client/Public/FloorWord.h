@@ -12,8 +12,14 @@ BEGIN(Client)
 class CPrintFloorWord;
 class CFloorWord : public CUI
 {
-
+//public:
+//	typedef struct tagFloorWordDesc : public CUI::UIOBJECT_DESC
+//	{
+//		const _tchar* poapdfkpasdfko
+//
+//	};
 public:
+
 	struct Highlight
 	{
 		wstring strSubstring;

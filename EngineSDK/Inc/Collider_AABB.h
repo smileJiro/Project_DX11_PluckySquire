@@ -22,7 +22,7 @@ public:
 	void			Late_Update(_float _fTimeDelta) override;
 
 #ifdef _DEBUG
-	HRESULT			Render() override;
+	HRESULT			Render(_float2 _fRenderTargetSize) override;
 #endif // _DEBUG
 
 public:
