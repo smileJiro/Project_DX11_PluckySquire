@@ -64,8 +64,10 @@ HRESULT CDetectionField::Render()
 	Near = vScale.z;
 
 	//가로 세로 시야각 바꿔서 넣어야 원하는대로 그려지는듯?
-	_float fRightSlope = tanf(m_fFOVY * 0.5f);
-	_float fTopSlope = tanf(m_fFOVX * 0.5f);
+	_float fRightSlope = tanf(XMConvertToRadians(m_fFOVX * 0.5f));
+	_float fTopSlope = tanf(XMConvertToRadians(m_fFOVY * 0.5f));
+	cout << "Right : " << fRightSlope << endl;
+	cout << "Top : " << fTopSlope << endl;
 	BoundingFrustum Frustum(vPos, vRot, fRightSlope, -1.f * fRightSlope, fTopSlope, -1.f * fTopSlope, m_fOffset, m_fOffset + m_fRange);	//근평면 거리 다시 잡아야할듯
 	_float4 vColor;
 	XMStoreFloat4(&vColor, (false == m_isColl) ? XMVectorSet(0.f, 1.f, 0.f, 1.f) : XMVectorSet(1.f, 0.f, 0.f, 1.f));

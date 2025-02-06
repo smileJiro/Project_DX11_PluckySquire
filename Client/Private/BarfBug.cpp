@@ -519,7 +519,7 @@ HRESULT CBarfBug::Ready_Components()
     /* Com_DetectionField */
     CDetectionField::DETECTIONFIELDDESC DetectionDesc;
     DetectionDesc.fRange = m_fAlertRange;
-    DetectionDesc.fFOVX = 120.f;
+    DetectionDesc.fFOVX = 90.f;
     DetectionDesc.fFOVY = 30.f;
     DetectionDesc.fOffset = 0.f;
     DetectionDesc.pOwner = this;
