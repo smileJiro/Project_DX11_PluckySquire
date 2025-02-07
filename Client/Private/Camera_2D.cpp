@@ -212,12 +212,12 @@ void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 
 	if (fRatio >= 1.f) {
 		m_fFlippingTime.y = 0.f;
-		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.968761384, 21.5310783, -22.8536606, 1.00000000));
+		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.968761384f, 21.5310783f, -22.8536606f, 1.f));
 	
 		m_eCameraMode = FLIPPING_PAUSE;
 	}
 
-	_vector vPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), XMVectorSet(0.968761384, 21.5310783, -22.8536606, 1.00000000), fRatio);
+	_vector vPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), XMVectorSet(0.968761384f, 21.5310783f, -22.8536606f, 1.f), fRatio);
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vPos);
 }

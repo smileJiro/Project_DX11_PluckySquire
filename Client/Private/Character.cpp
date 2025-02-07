@@ -79,7 +79,7 @@ _bool CCharacter::Rotate_To(_fvector _vDirection, _float _fSpeed)
     {
         return true;
     }
-    if (XMVector3NearEqual(vDirection, vLook, XMVectorReplicate(0.001)))
+    if (XMVector3NearEqual(vDirection, vLook, XMVectorReplicate(0.001f)))
     {
         pDynamicActor->Set_Rotation(vDirection);
         pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
@@ -115,7 +115,7 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
         return true;
     }
 
-    if (XMVector3NearEqual(vDirection, vLook, XMVectorReplicate(0.0001)))
+    if (XMVector3NearEqual(vDirection, vLook, XMVectorReplicate(0.0001f)))
     {
         pDynamicActor->Set_Rotation(vDirection);
         pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
