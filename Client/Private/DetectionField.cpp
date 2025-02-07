@@ -63,7 +63,6 @@ HRESULT CDetectionField::Render()
 	m_pGameInstance->MatrixDecompose(&vScale, &vRot, &vPos, m_pOwner->Get_WorldMatrix());
 	Near = vScale.z;
 
-	//가로 세로 시야각 바꿔서 넣어야 원하는대로 그려지는듯?
 	_float fRightSlope = tanf(XMConvertToRadians(m_fFOVX * 0.5f));
 	_float fTopSlope = tanf(XMConvertToRadians(m_fFOVY * 0.5f));
 	BoundingFrustum Frustum(vPos, vRot, fRightSlope, -1.f * fRightSlope, fTopSlope, -1.f * fTopSlope, m_fOffset, m_fOffset + m_fRange);	//근평면 거리 다시 잡아야할듯

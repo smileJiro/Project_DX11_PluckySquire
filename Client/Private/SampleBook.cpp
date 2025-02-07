@@ -253,23 +253,9 @@ HRESULT CSampleBook::Render()
 							MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
 						break;
 					}
-					else 
-					{
-						if (CUR_LEFT == i || CUR_RIGHT == i)
-							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
-						else if (NEXT_LEFT == i || NEXT_RIGHT == i)
-						{
-							if (SECTION_MGR->Has_Next_Section())
-								pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Next_Section_Key()));
-							else
-								if (FAILED(pModel->Bind_Material(pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
-									continue;
-						}
-						else
-							MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
-					}
 					// 나머지 케이스는				다음 -> 다음 (다음이 없으면, 기본 마테리얼 디퓨즈.)
 					//								현재 -> 현재 
+					// PREVIOUS 의 경우 m_isAction 전까찌는 일반 렌더(break 안태움 ! )
 				case Client::CSampleBook::NEXT:
 				case Client::CSampleBook::ACTION_LAST:
 				default:

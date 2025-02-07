@@ -218,7 +218,7 @@ void CAnimation2D::Set_Progress(_float _fProgerss)
 _uint CAnimation2D::Get_AccumulativeSubFrameCount(_uint _iFrameIndex)
 {
 	_uint iAccumulativeSubFrames = 0;
-	for (_uint i = 0; i <= _iFrameIndex; i++)
+	for (_uint i = 0; i < _iFrameIndex; i++)
 	{
 		iAccumulativeSubFrames += m_SpriteFrames[i].second;
 	}

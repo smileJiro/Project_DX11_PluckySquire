@@ -70,6 +70,10 @@ private:
 	_float2						m_fFlippingTime = {};
 	_float3						m_vStartPos = {};
 
+	// Book
+	_bool						m_isBook = { true };
+	_float						m_fFixedY = {};
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
