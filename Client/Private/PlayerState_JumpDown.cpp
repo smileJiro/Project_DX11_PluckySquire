@@ -7,6 +7,9 @@
 CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_DOWN)
 {
+	 m_fArmHeight = m_pOwner->Get_ArmHeight();
+	 m_fHeadHeight = m_pOwner->Get_HeadHeight();
+	 m_fArmLength = m_pOwner->Get_ArmLength();
 }
 
 void CPlayerState_JumpDown::Update(_float _fTimeDelta)
@@ -62,8 +65,8 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 			return;
 
 		//공중 무빙
-		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
-		m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
+		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_pOwner->Get_AirRunSpeed());
+		m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_pOwner->Get_AirRotationSpeed());
 	}
 	else
 		m_pOwner->Stop_Rotate();
@@ -72,6 +75,9 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 void CPlayerState_JumpDown::Enter()
 {
 	Switch_To_JumpDownAnimation();
+
+	m_fArmYPositionBefore = XMVectorGetY(m_pOwner->Get_FinalPosition()) + m_pOwner->Get_ArmHeight();
+	m_fWallYPosition = -1;
 }
 
 void CPlayerState_JumpDown::Exit()
@@ -147,50 +153,96 @@ void CPlayerState_JumpDown::Switch_To_JumpDownAnimation()
 _bool CPlayerState_JumpDown::Try_Clamber()
 {
 	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
-	_float fHeadHeight = m_pOwner->Get_HeadHeight();
-	_vector vRayOrigin = vPlayerPos + _vector{ 0,fHeadHeight,0 } + m_pOwner->Get_LookDirection() * m_fArmLength;
-	_float3 vOrigin;
-	XMStoreFloat3(&vOrigin, vRayOrigin);
-	_float3 vRayDir = { 0,-1,0 };
-	list<CActorObject*> hitActors;
-	list<_float3> hitPositions;
 
-	if (m_pGameInstance->RayCast(vOrigin, vRayDir, 1.5, hitActors, hitPositions))
+	//벽이 아직 감지되지 않음 -> 벽 감지
+	if (m_fWallYPosition < 0)
 	{
-		_float fClamberHeightCurrent = -1;
-		auto& iterPosition = hitPositions.begin();
-		for (auto& pActor : hitActors)
+		//벽 감지하기
+		_float3 vOrigin;
+		XMStoreFloat3(&vOrigin, vPlayerPos + _vector{ 0,m_fHeadHeight,0 } + m_pOwner->Get_LookDirection() * m_fArmLength);
+		_float3 vRayDir = { 0,-1,0 };
+		list<CActorObject*> hitActors;
+		list<RAYCASTHIT> raycasthits;
+		_float fSlopeThreshold = m_pOwner->Get_StepSlopeThreshold();
+		if (m_pGameInstance->RayCast(vOrigin, vRayDir, m_fHeadHeight, hitActors, raycasthits))
 		{
-			if (m_pOwner != pActor)
+			auto& iterHitPoint = raycasthits.begin();
+			for (auto& pActor : hitActors)
 			{
-				if (iterPosition->y > fClamberHeightCurrent)
+				if (iterHitPoint->vNormal.y < fSlopeThreshold)
 				{
-					fClamberHeightCurrent = iterPosition->y;
+					iterHitPoint++;
+					continue;
 				}
+				if (m_pOwner != pActor)
+				{
+					if (iterHitPoint->vPosition.y > m_fWallYPosition)
+					{
+						m_fWallYPosition = iterHitPoint->vPosition.y;
+						m_vClamberEndPosition = { iterHitPoint->vPosition.x, iterHitPoint->vPosition.y, iterHitPoint->vPosition.z };
+						_vector vTmp = XMVectorSetY(m_vClamberEndPosition, XMVectorGetY( vPlayerPos));
+					}
+				}
+				iterHitPoint++;
 			}
-			iterPosition++;
-		}
 
-		//바닥이 몸통 범위 안에 있다.
-		if (fClamberHeightCurrent > 0)
-		{
-			_float fClamberHeightBefore = XMVectorGetY(m_vClamberPosition);
-			_float fArmHeight = XMVectorGetY(vPlayerPos) + m_fArmHeight;
-			//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
-			//-> 기어오르기
-			if (fArmHeight< fClamberHeightCurrent
-				&& fArmHeight > fClamberHeightBefore)
-			{
-				m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
-				m_pOwner->Set_ClamberPosition(m_vClamberPosition);
-				m_pOwner->Set_State(CPlayer::CLAMBER);
-				return true;
-			}
-			else
-			{
-				m_vClamberPosition = { vOrigin.x, fClamberHeightCurrent, vOrigin.z };
-			}
 		}
 	}
+	//벽이 이미 감지됨 -> 팔 높이를 넘어가는지 체크
+	else
+	{
+		//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
+		//-> 기어오르기
+		_float fArmYPositionCurrent = XMVectorGetY(vPlayerPos) + m_fArmHeight;
+		if (m_fArmYPositionBefore> m_fWallYPosition
+			&& fArmYPositionCurrent <= m_fWallYPosition)
+		{
+
+			_float3 vOrigin;
+			XMStoreFloat3(&vOrigin, vPlayerPos + _vector{ 0,m_fArmHeight,0 } );
+			_float3 vRayDir; 
+			_vector vLook = m_pOwner->Get_LookDirection();
+			XMStoreFloat3(&vRayDir, vLook);
+			list<CActorObject*> hitActors;
+			list<RAYCASTHIT> raycasthits;
+			_vector vWallNormal = { 0,0,0,-1 };
+			_vector vNewWallNormal;
+			//WallNormal 찾기
+			if (m_pGameInstance->RayCast(vOrigin, vRayDir, m_fArmLength + 1.f, hitActors, raycasthits))
+			{
+				auto& iterHitPoint = raycasthits.begin();
+				for (auto& pActor : hitActors)
+				{
+					if (pActor == m_pOwner)
+						continue;
+					if (-1 == XMVectorGetW(vWallNormal)) //이전 벽 노말이 저장되지 않았을 때
+					{
+						vWallNormal = { iterHitPoint->vNormal.x,iterHitPoint->vNormal.y,iterHitPoint->vNormal.z,0 };
+						continue;
+					}
+					else
+						vNewWallNormal = { iterHitPoint->vNormal.x,iterHitPoint->vNormal.y,iterHitPoint->vNormal.z,0 };
+					_float fDotBefore = XMVectorGetX(XMVector3Dot(vWallNormal, vLook));
+					_float fDotAfter = XMVectorGetX(XMVector3Dot(vNewWallNormal, vLook));
+					if (fDotBefore < fDotAfter)
+					{
+						vWallNormal = vNewWallNormal;
+					}
+					iterHitPoint++;
+				}
+			}
+			m_pOwner->Set_ClamberEndPosition(m_vClamberEndPosition);
+			m_pOwner->Set_WallNormal(vWallNormal);
+			m_pOwner->Set_State(CPlayer::CLAMBER);
+			return true;
+		}
+		else
+		{
+			m_fArmYPositionBefore = fArmYPositionCurrent;
+		}
+		
+	}
+
+
 	return false;
 }

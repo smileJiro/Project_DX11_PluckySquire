@@ -113,6 +113,8 @@ HRESULT CLevel_Camera_Tool::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
+	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0);
+
 	CGameObject* pCamera = nullptr;
 
 	// Free Camera
@@ -141,6 +143,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGa
 	TargetDesc.fSmoothSpeed = 5.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
 	TargetDesc.vAtOffset = { 0.f, 3.f, 0.f };
+	TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -411,10 +414,8 @@ void CLevel_Camera_Tool::Create_Arms()
 	Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
 	Desc.fLength = 12.f;
 	Desc.wszArmTag = TEXT("Player_Arm");
-	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
-
 
 	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET));
 

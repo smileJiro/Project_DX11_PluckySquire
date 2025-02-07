@@ -182,6 +182,7 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 
 _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 {
+	m_bReverseAnimation = bReverse;
 	_bool bReturn = false;
 	//뼈들의 변환행렬을 갱신
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)

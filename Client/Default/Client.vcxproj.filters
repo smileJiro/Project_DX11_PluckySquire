@@ -58,9 +58,6 @@
     <Filter Include="01.Levels\00.Loading\Loader\CriticalSectionGuard">
       <UniqueIdentifier>{da37aacd-cfdc-43c9-8bdd-b37114e67aaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\TestPlayer">
-      <UniqueIdentifier>{ae177609-321a-4bf1-ac22-18b52b14a6df}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\TestTerrain">
       <UniqueIdentifier>{b4fcc4ee-0579-4fd9-acd6-6c477523958c}</UniqueIdentifier>
     </Filter>
@@ -279,12 +276,21 @@
     </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord">
       <UniqueIdentifier>{5da31b5a-443d-4563-9471-219ed56959d2}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\WorldPos">
       <UniqueIdentifier>{21bef96e-904c-4c92-a5cb-988c87a95a6f}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord">
       <UniqueIdentifier>{70e90ba6-55ed-4e3e-975a-616aa3fcc798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera\2D">
+      <UniqueIdentifier>{0382aa76-b8cc-4245-96df-52630b06afcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player">
+      <UniqueIdentifier>{ae177609-321a-4bf1-ac22-18b52b14a6df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\01. LogoNpc">
+      <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -343,7 +349,7 @@
       <Filter>01.Levels\01.Static</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Player.h">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TestTerrain.h">
       <Filter>02.GameObjects\TestTerrain</Filter>
@@ -547,7 +553,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerSword.h">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Soldier_Bomb.h">
       <Filter>02.GameObjects\Monster\Soldier</Filter>
@@ -601,7 +607,7 @@
       <Filter>02.GameObjects\MainTable</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerBody.h">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>02.GameObjects</Filter>
@@ -615,25 +621,36 @@
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpDown.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h" />
+    <ClInclude Include="..\public\RayShape.h" />
+    <ClInclude Include="..\Public\Camera_2D.h">
+      <Filter>02.GameObjects\Camera\2D</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\Public\FloorWord.h">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PrintFloorWord.h">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Logo.h">
+      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -671,7 +688,7 @@
       <Filter>01.Levels\01.Static</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TestTerrain.cpp">
       <Filter>02.GameObjects\TestTerrain</Filter>
@@ -887,7 +904,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerSword.cpp">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Soldier_Bomb.cpp">
       <Filter>02.GameObjects\Monster\Soldier</Filter>
@@ -941,7 +958,7 @@
       <Filter>02.GameObjects\MainTable</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerBody.cpp">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02.GameObjects</Filter>
@@ -952,14 +969,12 @@
     <ClCompile Include="..\Private\Trigger_Manager.cpp">
       <Filter>92. TriggerManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp">
@@ -967,10 +982,23 @@
     </ClCompile>
     <ClCompile Include="..\Private\PrintFloorWord.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RayShape.cpp" />
+    <ClCompile Include="..\Private\Camera_2D.cpp">
+      <Filter>02.GameObjects\Camera\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Logo.cpp">
+      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

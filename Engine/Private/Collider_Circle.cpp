@@ -63,12 +63,11 @@ void CCollider_Circle::Late_Update(_float _fTimeDelta)
 
 }
 
-HRESULT CCollider_Circle::Render()
+HRESULT CCollider_Circle::Render(_float2 _fRenderTargetSize)
 {
     m_pEffect->SetWorld(XMMatrixIdentity());
     m_pEffect->SetView(XMMatrixIdentity());
-    //_float2 vRTVSize = m_pGameInstance->Get_RT_Size(m_pOwner->Get_Include_Section_Name()); // 섹션키가 안들어간 객체가있어서 문제임 
-    m_pEffect->SetProjection(XMMatrixOrthographicLH(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y, 0.0f, 1.0f));
+    m_pEffect->SetProjection(XMMatrixOrthographicLH(_fRenderTargetSize.x, _fRenderTargetSize.y, 0.0f, 1.0f));
     m_pEffect->Apply(m_pContext);
     m_pContext->IASetInputLayout(m_pInputLayout);
 

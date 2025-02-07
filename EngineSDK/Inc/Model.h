@@ -28,12 +28,14 @@ public:
 	virtual _uint Get_CurrentAnimIndex() abstract;
 	virtual _float Get_CurrentAnimProgeress() abstract;
 	virtual CAnimation* Get_Animation(_uint iAnimIndex) abstract;
+	_bool Is_ReversingAnimation() { return m_bReverseAnimation; }
 	ANIM_TYPE Get_AnimType() { return m_eAnimType; }
 
 
 	_bool Is_AnimModel() { return m_eAnimType == ANIM_TYPE::ANIM; };
 protected:
 	ANIM_TYPE				m_eAnimType = ANIM_TYPE::LAST;
+	_bool m_bReverseAnimation = false;
 public:
 	virtual void Free() override;
 };

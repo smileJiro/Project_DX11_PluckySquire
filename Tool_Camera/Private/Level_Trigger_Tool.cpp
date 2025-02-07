@@ -823,8 +823,8 @@ void CLevel_Trigger_Tool::Initialize_ListBoxName()
 		case TRIGGER_TYPE::FREEZE_X_TRIGGER:
 			wszTagName = TEXT("FREEZE_X_TRIGGER");
 			break;
-		case TRIGGER_TYPE::FREEZE_Y_TRIGGER:
-			wszTagName = TEXT("FREEZE_Y_TRIGGER");
+		case TRIGGER_TYPE::FREEZE_Z_TRIGGER:
+			wszTagName = TEXT("FREEZE_Z_TRIGGER");
 			break;
 		case TRIGGER_TYPE::TELEPORT_TRIGGER:
 			wszTagName = TEXT("TELEPORT_TRIGGER");

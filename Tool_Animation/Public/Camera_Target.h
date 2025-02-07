@@ -29,6 +29,8 @@ public:
 		CAMERA_MODE				eCameraMode;
 		_float3					vAtOffset;
 		_float					fSmoothSpeed;
+
+		const _float4x4* pTargetWorldMatrix = { nullptr };
 	}CAMERA_TARGET_DESC;
 
 private:
@@ -53,6 +55,8 @@ public:
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
 private:
+	const _float4x4*					m_pTargetWorldMatrix = { nullptr };
+
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	_int						m_iNextCameraMode = { -1 };
 
@@ -71,6 +75,8 @@ private:
 	void						Action_Mode(_float fTimeDelta);
 	void						Defualt_Move(_float fTimeDelta);
 	void						Look_Target(_float fTimeDelta);
+
+	_vector				Calculate_CameraPos();
 
 public:
 	static CCamera_Target*		Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

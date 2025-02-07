@@ -199,11 +199,12 @@ HRESULT C2DModel::Render(CShader* _pShader, _uint _iShaderPass)
 	return S_OK;
 }
 
-_bool C2DModel::Play_Animation(_float _fTimeDelta, _bool _vReverse)
+_bool C2DModel::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 {
+	m_bReverseAnimation = _bReverse;
 	if (Is_AnimModel())
 	{
-		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta, _vReverse);
+		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta, _bReverse);
 	}
 	return false;
 }
