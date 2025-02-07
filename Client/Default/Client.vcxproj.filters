@@ -286,6 +286,15 @@
     <Filter Include="02.GameObjects\Camera\2D">
       <UniqueIdentifier>{0382aa76-b8cc-4245-96df-52630b06afcc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MapObject\2D">
+      <UniqueIdentifier>{cea4083d-2cbd-4636-ac5d-7af5b9d4d11a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\3D">
+      <UniqueIdentifier>{5420c52f-3c9d-4434-aca2-baaa3e772e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\0. Super">
+      <UniqueIdentifier>{38021f23-ac14-4a82-a2c1-7a769a1ef0a4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{ae177609-321a-4bf1-ac22-18b52b14a6df}</UniqueIdentifier>
     </Filter>
@@ -464,7 +473,6 @@
     <ClInclude Include="..\Public\ESC_Goblin.h">
       <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Boss_EnergyBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
@@ -652,6 +660,15 @@
     <ClInclude Include="..\Public\Npc_Logo.h">
       <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02.GameObjects\MapObject\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -818,7 +835,6 @@
     <ClCompile Include="..\Private\ESC_Goblin.cpp">
       <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Boss_EnergyBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
@@ -999,6 +1015,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Npc_Logo.cpp">
       <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>02.GameObjects\MapObject\0. Super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

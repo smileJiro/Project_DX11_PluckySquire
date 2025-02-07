@@ -27,9 +27,9 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_arrCookingColliderData(_Prototype.m_arrCookingColliderData)
 {
 
-	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
+	for (_uint i = 0; i < aiTextureType_UNKNOWN; i++)
 	{
-		for (_uint j= 0; j< AI_TEXTURE_TYPE_MAX; j++)
+		for (_uint j= 0; j< aiTextureType_UNKNOWN; j++)
 		{
 			m_arrTextureBindingIndex[i][j] = _Prototype.m_arrTextureBindingIndex[i][j];
 		}

@@ -84,6 +84,8 @@ private:
 
 	void				Load_SaveFileList();
 
+	void				Load_String();
+
 	void				Object_Clear(_bool _bSelected = true);
 
 	void				Save_Popup();
@@ -131,10 +133,10 @@ private:
 	_char							m_szSaveFileName[MAX_PATH];
 
 	C2DDefault_RenderObject*		m_DefaultRenderObject;
-
-	_string		m_arrModelTypeString[C2DMapObjectInfo::MODEL_END];
-	_string		m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_END];
-	_string		m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_END];
+	
+	vector<_string>					m_ModelTypeTexts;
+	vector<_string>					m_ActiveTypeTexts;
+	vector<_string>					m_ColliderTypeTexts;
 
 	_float2		m_fOffsetPos = { 0.f, 0.f };
 
