@@ -114,6 +114,12 @@
     <ClInclude Include="..\public\ETool_RenderGroup_AfterEffect.h">
       <Filter>11. RenderGroups\AfterEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_DownSample.h">
+      <Filter>11. RenderGroups\AfterEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Blur.h">
+      <Filter>11. RenderGroups\AfterEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -171,6 +177,12 @@
     <ClCompile Include="..\private\ETool_RenderGroup_AfterEffect.cpp">
       <Filter>11. RenderGroups\AfterEffect</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\RenderGroup_DownSample.cpp">
+      <Filter>11. RenderGroups\AfterEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Blur.cpp">
+      <Filter>11. RenderGroups\AfterEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -191,6 +203,12 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPoint.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_CsTest.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\DataFiles\Effects\TestEffect.json">
@@ -199,13 +217,10 @@
     <None Include="..\Bin\DataFiles\Effects\TestParticleSystem.json">
       <Filter>96. JsonFiles</Filter>
     </None>
-    <None Include="..\Bin\DataFiles\Effects\TestParticleSystem22.json">
-      <Filter>96. JsonFiles</Filter>
-    </None>
-    <None Include="..\Bin\DataFiles\Effects\TestParticleSystem3.json">
-      <Filter>96. JsonFiles</Filter>
-    </None>
     <None Include="..\Bin\DataFiles\Effects\Portal.json">
+      <Filter>96. JsonFiles</Filter>
+    </None>
+    <None Include="..\Bin\DataFiles\Effects\Dodge.json">
       <Filter>96. JsonFiles</Filter>
     </None>
   </ItemGroup>

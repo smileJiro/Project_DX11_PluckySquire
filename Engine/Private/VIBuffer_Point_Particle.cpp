@@ -1,6 +1,7 @@
 #include "VIBuffer_Point_Particle.h"
 #include "GameInstance.h"
 #include "Translation_Module.h"
+#include "Keyframe_Module.h"
 
 CVIBuffer_Point_Particle::CVIBuffer_Point_Particle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer_Instance(_pDevice, _pContext)
@@ -100,7 +101,7 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 	m_InstanceBufferDesc.StructureByteStride = m_iInstanceStride;
 	m_InstanceBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	m_InstanceBufferDesc.MiscFlags = 0;
-
+	
 	m_pInstanceVertices = new VTXPOINTINSTANCE[m_iNumInstances];
 	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
 
@@ -146,13 +147,11 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 		return E_FAIL;	
 
 	// Spawn 설정
-	if (_jsonBufferInfo.contains("Spawn"))
-	{
-		m_eSpawnType = _jsonBufferInfo["Spawn"]["Type"];
-		m_fSpawnTime = _jsonBufferInfo["Spawn"]["Time"];
-		//if (_jsonBufferInfo["Spawn"].contains("Count"))
-		//	m_iSpawnCount = _jsonBufferInfo["Spawn"]["Count"];
-	}
+	//if (_jsonBufferInfo.contains("Spawn"))
+	//{
+	//	//m_eSpawnType = _jsonBufferInfo["Spawn"]["Type"];
+	//	m_fSpawnTime = _jsonBufferInfo["Spawn"]["Time"];
+	//}
 
 
 
@@ -166,11 +165,31 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 
 #pragma endregion
 
-	if (FAILED(Ready_Modules(_jsonBufferInfo)))
-		return E_FAIL;
 
-	if (FAILED(Initialize_Particles()))
-		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Point_Particle::Initialize_Module(CEffect_Module* _pModule)
+{
+	CEffect_Module::DATA_APPLY eData = _pModule->Get_ApplyType();
+	CEffect_Module::MODULE_TYPE eType = _pModule->Get_Type();
+
+	if (CEffect_Module::MODULE_TYPE::MODULE_KEYFRAME == eType)
+	{
+		if (CEffect_Module::DATA_APPLY::COLOR == eData)
+		{
+			_pModule->Update_ColorKeyframe((_float*)m_pInstanceVertices, m_iNumInstances, 18, 16, 32);
+		}
+	}
+	else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
+	{
+		if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
+		{
+			_pModule->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 26, 29, 16, 32);
+		}
+	}
 
 
 	return S_OK;
@@ -188,124 +207,155 @@ HRESULT CVIBuffer_Point_Particle::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CVIBuffer_Point_Particle::Update(_float _fTimeDelta)
+void CVIBuffer_Point_Particle::Begin_Update(_float _fTimeDelta)
 {
-	m_fAccSpawnTime += _fTimeDelta;
+	//m_fAccSpawnTime += _fTimeDelta;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
 	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-	VTXPOINTINSTANCE* pVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
+	m_pUpdateVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
 
-	if (SPAWN == m_eSpawnType)
+	//if (SPAWN == m_eSpawnType)
+	//{
+	//	while (m_fSpawnTime <= m_fAccSpawnTime)
+	//	{
+	//		// TODO: 임시 코드입니다.
+	//		if (m_pUpdateVertices[m_iSpawnIndex].vLifeTime.y > 0.01f)
+	//		{
+	//			m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
+	//			m_fAccSpawnTime -= m_fSpawnTime;
+	//			continue;
+	//		}
+	//		// 시간이 충족되면 Spawn합니다.
+	//		m_pUpdateVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
+	//		// LifeTime의 설정은 Spawn시기에 맞게 설정합니다.
+	//		m_pUpdateVertices[m_iSpawnIndex].vLifeTime.y = m_fAccSpawnTime - m_fSpawnTime;
+
+	//		if (m_pSpawnMatrix)
+	//		{
+	//			_matrix matSpawn = XMLoadFloat4x4(m_pSpawnMatrix);
+	//			for (_int i = 0; i < 3; ++i)
+	//				matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
+
+	//			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight), matSpawn));
+	//			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp), matSpawn));
+	//			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook), matSpawn));
+	//			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation), matSpawn));
+	//		}
+
+	//		m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
+	//		m_fAccSpawnTime -= m_fSpawnTime;
+	//	}
+	//}
+	//else if (BURST == m_eSpawnType)
+	//{
+	//}
+}
+
+void CVIBuffer_Point_Particle::Spawn_Burst(_float _fTimeDelta, const _float4x4* _pSpawnMatrix)
+{
+	for (_int i = 0; i < m_iNumInstances; i++)
 	{
-		while (m_fSpawnTime <= m_fAccSpawnTime)
+		m_pUpdateVertices[i] = m_pInstanceVertices[i];
+		m_pUpdateVertices[i].vLifeTime.y = 0.f;
+
+		if (_pSpawnMatrix)
 		{
-			// 시간이 충족되면 Spawn합니다.
-			pVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
-			// LifeTime의 설정은 Spawn시기에 맞게 설정합니다.
-			pVertices[m_iSpawnIndex].vLifeTime.y = m_fAccSpawnTime - m_fSpawnTime;
+			_matrix matSpawn = XMLoadFloat4x4(_pSpawnMatrix);
+			for (_int i = 0; i < 3; ++i)
+				matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
 
-			if (m_pSpawnMatrix)
-			{
-				_matrix matSpawn = XMLoadFloat4x4(m_pSpawnMatrix);
-				for (_int i = 0; i < 3; ++i)
-					matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation), matSpawn));
+		}
+	}
+	
+	//m_iSpawnIndex = m_iNumInstances;
+}
 
-				XMStoreFloat4(&pVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vRight), matSpawn));
-				XMStoreFloat4(&pVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vUp), matSpawn));
-				XMStoreFloat4(&pVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vLook), matSpawn));
-				XMStoreFloat4(&pVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&pVertices[m_iSpawnIndex].vTranslation), matSpawn));
-			}
+void CVIBuffer_Point_Particle::Spawn_Rate(_float _fTimeDelta, _float _fSpawnRate, const _float4x4* _pSpawnMatrix)
+{
+	_float fSpawnThreshold = 60.f / max(_fSpawnRate, 0.01f);
+	m_fSpawnRemainTime += _fTimeDelta;
 
+	while (fSpawnThreshold <= m_fSpawnRemainTime)
+	{
+		// Pooling 혹은 Kill 여부에 따라
+		// Kill = -1 * FloatMax, Pool = 0.f
+		if (m_pUpdateVertices[m_iSpawnIndex].vLifeTime.y < 0.f)
+		{
 			m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
-			m_fAccSpawnTime -= m_fSpawnTime;
+			m_fSpawnRemainTime -= fSpawnThreshold;
+			continue;
 		}
 
-		for (_uint i = 0; i < m_iNumInstances; ++i)
+		// 시간이 충족되면 Spawn합니다.
+		m_pUpdateVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
+		// LifeTime의 설정은 Spawn시기에 맞게 설정합니다.
+		m_pUpdateVertices[m_iSpawnIndex].vLifeTime.y = m_fSpawnRemainTime - fSpawnThreshold;
+
+		if (_pSpawnMatrix)
 		{
-			if (D3D11_FLOAT32_MAX == pVertices[i].vLifeTime.y)
-				continue;
+			_matrix matSpawn = XMLoadFloat4x4(_pSpawnMatrix);
+			for (_int i = 0; i < 3; ++i)
+				matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
 
-			for (auto& pModule : m_Modules)
-			{
-				if (pModule->Is_Init())
-					continue;
-
-				pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
-			}
-
-			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
-			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
-			pVertices[i].vLifeTime.y += _fTimeDelta;
-
-			// TODO : Kill or Revive 등..
-			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
-			{
-				pVertices[i] = m_pInstanceVertices[i];
-			}
-			
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation), matSpawn));
 		}
-		
+
+		m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
+		m_fSpawnRemainTime -= fSpawnThreshold;
 	}
-	else if (BURST == m_eSpawnType)
+}
+
+void CVIBuffer_Point_Particle::Update_Buffer(_float _fTimeDelta, _bool _isPooling)
+{
+	for (_int i = 0; i < m_iNumInstances; i++)
 	{
-
-		if (m_iSpawnIndex != m_iNumInstances)
+		if (0.f < m_pUpdateVertices[i].vLifeTime.y)
 		{
+			m_pUpdateVertices[i].vLifeTime.y += _fTimeDelta;
 
-			for (_int i = 0; i < m_iNumInstances; i++)
+			XMStoreFloat3(&m_pUpdateVertices[i].vVelocity, XMLoadFloat3(&m_pUpdateVertices[i].vVelocity) + XMLoadFloat3(&m_pUpdateVertices[i].vAcceleration) * _fTimeDelta);
+			XMStoreFloat4(&m_pUpdateVertices[i].vTranslation, XMLoadFloat4(&m_pUpdateVertices[i].vTranslation) + XMLoadFloat3(&m_pUpdateVertices[i].vVelocity) * _fTimeDelta);
+
+			if (m_pUpdateVertices[i].vLifeTime.y > m_pUpdateVertices[i].vLifeTime.x)
 			{
-				pVertices[i] = m_pInstanceVertices[i];
-				pVertices[i].vLifeTime.y = 0.f;
+				m_pUpdateVertices[i] = m_pInstanceVertices[i];
+				ZeroMemory(&m_pUpdateVertices[i].vRight, sizeof(_float4));
+				ZeroMemory(&m_pUpdateVertices[i].vUp, sizeof(_float4));
+				ZeroMemory(&m_pUpdateVertices[i].vLook, sizeof(_float4));
 
-				if (m_pSpawnMatrix)
+				if (false == _isPooling)
 				{
-					_matrix matSpawn = XMLoadFloat4x4(m_pSpawnMatrix);
-					for (_int i = 0; i < 3; ++i)
-						matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
-
-					XMStoreFloat4(&pVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vRight), matSpawn));
-					XMStoreFloat4(&pVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vUp), matSpawn));
-					XMStoreFloat4(&pVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&pVertices[m_iSpawnIndex].vLook), matSpawn));
-					XMStoreFloat4(&pVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&pVertices[m_iSpawnIndex].vTranslation), matSpawn));
+					m_pUpdateVertices[i].vLifeTime.y = D3D11_FLOAT32_MAX * -1.f;
 				}
+
 			}
-			m_iSpawnIndex = m_iNumInstances;
 		}
 
-		for (_int i = 0; i < m_iNumInstances; i++)
-		{
-			
-
-			for (auto& pModule : m_Modules)
-			{
-				if (pModule->Is_Init())
-					continue;
-
-				pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
-			}
-
-			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
-			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
-			pVertices[i].vLifeTime.y += _fTimeDelta;
-
-			// TODO : Kill or Revive 등..
-			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
-			{
-				pVertices[i] = m_pInstanceVertices[i];
-			}
-
-		}		
 	}
+
+}
+
+void CVIBuffer_Point_Particle::End_Update(_float _fTimeDelta)
+{
+	
 
 	m_pContext->Unmap(m_pVBInstance, 0);
 
 }
 
+
 void CVIBuffer_Point_Particle::Reset_Buffers()
 {
 	m_iSpawnIndex = 0;
-	m_fAccSpawnTime = 0.f;
+	m_fSpawnRemainTime = 0.f;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
 
@@ -315,9 +365,10 @@ void CVIBuffer_Point_Particle::Reset_Buffers()
 
 	for (size_t i = 0; i < m_iNumInstances; i++)
 	{
+		// TODO : 
 		//if (SPAWN == m_eSpawnType)
 		{
-			pVertices[i].vLifeTime.y = D3D11_FLOAT32_MAX;
+			pVertices[i].vLifeTime.y = 0.f;
 			ZeroMemory(&pVertices[i].vRight, sizeof(_float4));
 			ZeroMemory(&pVertices[i].vUp, sizeof(_float4));
 			ZeroMemory(&pVertices[i].vLook, sizeof(_float4));
@@ -330,6 +381,25 @@ void CVIBuffer_Point_Particle::Reset_Buffers()
 	}
 
 	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Point_Particle::Update_Translation(_float _fTimeDelta, CEffect_Module* _pTranslationModule)
+{
+	_pTranslationModule->Update_Translations(_fTimeDelta, (_float*)m_pUpdateVertices, m_iNumInstances, 12, 26, 29, 16, 32);
+
+	//for (_int i = 0; i < m_iNumInstances; ++i)
+	//	_pTranslationModule->Update_Translations(_fTimeDelta, &m_pUpdateVertices[i].vTranslation, &m_pUpdateVertices[i].vVelocity, &m_pUpdateVertices[i].vAcceleration);
+}
+
+void CVIBuffer_Point_Particle::Update_ColorKeyframe(CEffect_Module* _pColorModule)
+{
+	_pColorModule->Update_ColorKeyframe((_float*)m_pUpdateVertices, m_iNumInstances, 18, 16, 32);
+}
+
+void CVIBuffer_Point_Particle::Update_ScaleKeyframe(CEffect_Module* _pColorModule)
+{
+	_pColorModule->Update_ScaleKeyframe((_float*)m_pUpdateVertices, m_iNumInstances, 0, 4, 8, 16, 32);
+
 }
 
 void CVIBuffer_Point_Particle::Set_UV(_Out_ _float4* _pOutUV, _float _fIndex)
@@ -434,27 +504,13 @@ void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex)
 		Set_UV(&m_pInstanceVertices[_iIndex].vUV, 0);
 	}
 
+	//m_pInstanceVertices[_iIndex].vVelocity = _float3(m_pGameInstance->Compute_Random(-1.f, 1.f), m_pGameInstance->Compute_Random(-1.f, 1.f), m_pGameInstance->Compute_Random(-1.f, 1.f));
+
 
 
 	m_pInstanceVertices[_iIndex].vColor = Compute_ColorValue();
 }
 
-HRESULT CVIBuffer_Point_Particle::Initialize_Particles()
-{
-	for (auto& pModule : m_Modules)
-	{
-		if (false == pModule->Is_Init())
-			continue;
-
-		for (_uint i = 0; i < m_iNumInstances; ++i)
-		{
-			pModule->Update_Translations(0.f, &m_pInstanceVertices[i].vTranslation, &m_pInstanceVertices[i].vVelocity, &m_pInstanceVertices[i].vAcceleration);
-		}
-	}
-	
-
-	return S_OK;
-}
 
 
 
@@ -515,11 +571,12 @@ void CVIBuffer_Point_Particle::Tool_Reset_Instance()
 		Set_Instance(i);
 	}
 
-	if (FAILED(Initialize_Particles()))
+	// TODO: Initialize 하는 부분
+	/*if (FAILED(Initialize_Particles()))
 	{
 		MSG_BOX("Module 초기화 실패!!");
 		return;
-	}
+	}*/
 	
 	Reset_Buffers();
 
@@ -603,11 +660,6 @@ void CVIBuffer_Point_Particle::Tool_Reset_Buffers()
 		return;
 	}
 
-	if (FAILED(Initialize_Particles()))
-	{
-		MSG_BOX("Module 초기화 실패!!");
-		return;
-	}
 
 	Reset_Buffers();
 
@@ -621,8 +673,6 @@ void CVIBuffer_Point_Particle::Tool_Update(_float _fTimeDelta)
 {
 	Tool_Adjust_Shape();
 	Tool_Adjust_DefaultData();
-
-	Tool_Modules();
 
 
 }
@@ -744,9 +794,6 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances)
 #pragma endregion
 
 	if (FAILED(__super::Initialize(nullptr)))
-		return E_FAIL;
-
-	if (FAILED(Initialize_Particles()))
 		return E_FAIL;
 
 

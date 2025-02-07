@@ -115,6 +115,7 @@ HRESULT CShader::Bind_RawValue(const _char* _pConstantName, const void* _pData, 
     return pVariable->SetRawValue(_pData, 0, _iLength);
 }
 
+
 HRESULT CShader::Bind_Matrix(const _char* _pConstantName, const _float4x4* _pMatrix)
 {
     // 상수 데이터 변수의 이름과 전송하고자하는 데이터를 매개변수로 받는다. 

@@ -213,6 +213,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Collider_AABB.h" />
     <ClInclude Include="..\public\Collider_Circle.h" />
     <ClInclude Include="..\Public\Component.h" />
+    <ClInclude Include="..\public\Compute_Shader.h" />
     <ClInclude Include="..\Public\ContainerObject.h" />
     <ClInclude Include="..\public\Controller_Model.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -230,6 +231,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\NewRenderer.h" />
     <ClInclude Include="..\public\Emitter.h" />
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
+    <ClInclude Include="..\public\SpriteEffect_Emitter.h" />
     <ClInclude Include="..\public\Translation_Module.h" />
     <ClInclude Include="..\public\Effect_System.h" />
     <ClInclude Include="..\public\Particle_Sprite_Emitter.h" />
@@ -291,6 +293,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Mesh_Particle.h" />
     <ClInclude Include="..\public\VIBuffer_Point_Particle.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
+    <ClInclude Include="..\Public\VIBuffer_Point.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect_Vertical.h" />
     <ClInclude Include="..\public\VIBuffer_Terrain.h" />
   </ItemGroup>
@@ -314,6 +317,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Collider_AABB.cpp" />
     <ClCompile Include="..\private\Collider_Circle.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
+    <ClCompile Include="..\private\Compute_Shader.cpp" />
     <ClCompile Include="..\Private\ContainerObject.cpp" />
     <ClCompile Include="..\private\Controller_Model.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -331,6 +335,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\NewRenderer.cpp" />
     <ClCompile Include="..\private\Emitter.cpp" />
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />
+    <ClCompile Include="..\private\SpriteEffect_Emitter.cpp" />
     <ClCompile Include="..\private\Translation_Module.cpp" />
     <ClCompile Include="..\private\Effect_System.cpp" />
     <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp" />
@@ -387,6 +392,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\VIBuffer_Mesh_Particle.cpp" />
     <ClCompile Include="..\private\VIBuffer_Point_Particle.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Point.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect_Vertical.cpp" />
     <ClCompile Include="..\private\VIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Public\Engine_Struct.cpp" />

@@ -28,6 +28,12 @@ sampler			PointSampler = sampler_state
 	AddressV = wrap;
 };
 
+sampler MirrorSampler = sampler_state
+{
+    Filter = MIN_MAG_MIP_POINT;
+    AddressU = Mirror;
+    AddressV = Mirror;
+};
 
 RasterizerState		RS_Default
 {
@@ -127,6 +133,7 @@ BlendState BS_WeightAccumulate
 {
     BlendEnable[0] = true;
     BlendEnable[1] = true;
+    BlendEnable[2] = true;
 
     SrcBlend[0] = ONE;
     DestBlend[0] = ONE;
@@ -139,11 +146,23 @@ BlendState BS_WeightAccumulate
     DestBlend[1] = INV_SRC_COLOR;
     BlendOp[1] = Add;
 
-
+    SrcBlend[2] = ONE;
+    DestBlend[2] = ONE;
+    BlendOp[2] = Add;
+    SrcBlendAlpha[2] = ONE;
+    DestBlendAlpha[2] = ONE;
+    BlendOpAlpha[2] = Add;
     
 };
 
+BlendState BS_InvAlphaBlend
+{
+    BlendEnable[0] = true;
 
+    SrcBlend = INV_SRC_ALPHA;
+    DestBlend = SRC_ALPHA;
+    BlendOp = Add;
+};
 
 
 

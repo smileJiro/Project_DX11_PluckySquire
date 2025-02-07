@@ -3,6 +3,7 @@
 #include "VIBuffer_Mesh_Particle.h"
 #include "Material.h"
 #include "Bone.h"
+#include "Effect_Module.h"
 
 CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CEmitter(_pDevice, _pContext)
@@ -150,11 +151,11 @@ HRESULT CParticle_Mesh_Emitter::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	if (false == m_isWorld)
-	{
-		for (auto& pParticle : m_ParticleMeshes)
-			pParticle->Set_SpawnMatrix(m_pParentMatrices[COORDINATE_3D]);
-	}
+	//if (false == m_isWorld)
+	//{
+	//	for (auto& pParticle : m_ParticleMeshes)
+	//		pParticle->Set_SpawnMatrix(m_pParentMatrices[COORDINATE_3D]);
+	//}
 
 	return S_OK;
 }
@@ -211,22 +212,93 @@ void CParticle_Mesh_Emitter::Reset()
 
 }
 
-void CParticle_Mesh_Emitter::On_Event()
-{
-}
 
-void CParticle_Mesh_Emitter::Off_Event()
+
+void CParticle_Mesh_Emitter::Update_Emitter(_float _fTimeDelta)
 {
+	if (0 ==  m_ParticleMeshes.size())
+		return;
+
+	for (_int i = 0; i < m_ParticleMeshes.size(); ++i)
+	{
+		// Map
+		m_ParticleMeshes[i]->Begin_Update(_fTimeDelta);
+
+		// Spawn
+		if (STOP_SPAWN != m_eNowEvent)
+		{
+			if (SPAWN_RATE == m_eSpawnType)
+			{
+				if (RELATIVE_POSITION == m_eSpawnPosition)
+					m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"], nullptr);
+				else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+					m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"],
+						&m_WorldMatrices[COORDINATE_3D]);
+
+			}
+			else if (BURST_SPAWN == m_eSpawnType)
+			{
+				if (RELATIVE_POSITION == m_eSpawnPosition)
+					m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"], nullptr);
+				else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+					m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"],
+						&m_WorldMatrices[COORDINATE_3D]);
+
+				m_eNowEvent = STOP_SPAWN;
+				m_fInactiveDelayTime = m_fActiveTime;
+			}
+		}
+
+		// Module
+		for (auto pModule : m_Modules)
+		{
+			if (pModule->Is_Init())
+				continue;
+
+			CEffect_Module::DATA_APPLY eData = pModule->Get_ApplyType();
+			CEffect_Module::MODULE_TYPE eType = pModule->Get_Type();
+
+			if (CEffect_Module::MODULE_TYPE::MODULE_KEYFRAME == eType)
+			{
+				if (CEffect_Module::DATA_APPLY::COLOR == eData)
+				{
+					m_ParticleMeshes[i]->Update_ColorKeyframe(pModule);
+				}
+
+				else if (CEffect_Module::DATA_APPLY::SCALE == eData)
+				{
+					m_ParticleMeshes[i]->Update_ScaleKeyframe(pModule);
+				}
+			}
+			else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
+			{
+				if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
+				{
+					m_ParticleMeshes[i]->Update_Translation(_fTimeDelta, pModule);
+				}
+			}
+		}
+
+		// Kill Or Revive
+		if (KILL == m_ePooling)
+			m_ParticleMeshes[i]->Update_Buffer(_fTimeDelta, false);
+		else if (REVIVE == m_ePooling)
+			m_ParticleMeshes[i]->Update_Buffer(_fTimeDelta, true);
+
+		// UnMap
+		m_ParticleMeshes[i]->End_Update(_fTimeDelta);
+	}
+
 }
 
 HRESULT CParticle_Mesh_Emitter::Bind_ShaderResources()
 {
-	if (m_isWorld)
+	if (RELATIVE_POSITION == m_eSpawnPosition)
 	{
 		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
 			return E_FAIL;
 	}
-	else
+	else if (ABSOLUTE_POSITION == m_eSpawnPosition)
 	{
 		if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 			return E_FAIL;

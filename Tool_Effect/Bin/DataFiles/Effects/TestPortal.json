@@ -1,0 +1,235 @@
+{
+    "Emitters": [
+        {
+            "Buffer": {
+                "Color": {
+                    "Arg1": [
+                        0.07000000029802322,
+                        1.600000023841858,
+                        1.0,
+                        0.800000011920929
+                    ],
+                    "Arg2": [
+                        0.949999988079071,
+                        1.899999976158142,
+                        1.2999999523162842,
+                        0.800000011920929
+                    ],
+                    "SetType": "RANDOMLINEAR"
+                },
+                "Count": 200,
+                "LifeTime": {
+                    "Arg1": 2.0,
+                    "Arg2": 2.5,
+                    "SetType": "RANDOMLINEAR"
+                },
+                "Position": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "UNSET"
+                },
+                "Rotation": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "UNSET"
+                },
+                "Scale": {
+                    "Arg1": [
+                        0.029999999329447746,
+                        0.05999999865889549,
+                        0.029999999329447746
+                    ],
+                    "Arg2": [
+                        0.05000000074505806,
+                        0.10000000149011612,
+                        0.05000000074505806
+                    ],
+                    "SetType": "RANDOMLINEAR"
+                },
+                "ShapeLocation": {
+                    "HandleRadius": 0.10000000149011612,
+                    "LargeRadius": 1.0,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Shape": "TORUS",
+                    "U_Distribution": 0.0,
+                    "V_Distribution": 0.0
+                },
+                "Spawn": {
+                    "Time": 0.2200000137090683,
+                    "Type": "SPAWN"
+                },
+                "UVSet": {
+                    "Anim": false,
+                    "Count": 1.0,
+                    "Random": false,
+                    "Start": 0.0,
+                    "Time": 0.0,
+                    "UV": [
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            "DelayTime": 0.0,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "RGBTest",
+                    "Value": 1.0299999713897705
+                }
+            ],
+            "LoopTime": 0,
+            "Modules": [
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float3": [
+                            {
+                                "Name": "Amount",
+                                "Value": [
+                                    0.0,
+                                    2.5,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Name": "Origin",
+                                "Value": [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ]
+                    },
+                    "Init": false,
+                    "Module": "POINT_ACCELERATION",
+                    "Order": 2,
+                    "Type": "MODULE_TRANSLATION"
+                },
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 1.5
+                            }
+                        ]
+                    },
+                    "Init": false,
+                    "Module": "DRAG",
+                    "Order": 3,
+                    "Type": "MODULE_TRANSLATION"
+                },
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 0.03999999910593033
+                            }
+                        ]
+                    },
+                    "Init": false,
+                    "Module": "LIMIT_ACCELERATION",
+                    "Order": 4,
+                    "Type": "MODULE_TRANSLATION"
+                },
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Offset",
+                                "Value": 0.30000001192092896
+                            }
+                        ],
+                        "Float3": [
+                            {
+                                "Name": "Axis",
+                                "Value": [
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Name": "Random Offset",
+                                "Value": [
+                                    0.30000001192092896,
+                                    0.30000001192092896,
+                                    0.0
+                                ]
+                            }
+                        ]
+                    },
+                    "Init": true,
+                    "Module": "POSITION_BY_NUMBER",
+                    "Order": 5,
+                    "Type": "MODULE_TRANSLATION"
+                }
+            ],
+            "Progress": true,
+            "ShaderPass": "VELOCITY_BILLBOARD",
+            "Texture": "../Bin/Resources/Textures/Particles/T_FX_CMN_Dust_01.dds",
+            "Time": 1000.0,
+            "Transform": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "SPRITE",
+            "World": false
+        }
+    ],
+    "Name": "Portaltest"
+}

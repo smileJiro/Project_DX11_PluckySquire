@@ -8,7 +8,7 @@ public:
 	enum SHAPE_TYPE { SPHERE, CYLINDER, BOX, TORUS, RING, CONE, SHAPE_NONE };
 	enum SETTING_TYPE { UNSET, DIRECTSET, RANDOMLINEAR, RANDOMRANGE  };
 	enum PARTICLE_DATA { P_SCALE, P_ROTATION, P_POSITION, P_LIFETIME, P_COLOR, DATAEND };
-	enum SPAWN_TYPE {BURST, SPAWN };
+	//enum SPAWN_TYPE {BURST, SPAWN };
 	
 
 protected:
@@ -19,13 +19,21 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* _pArg);
-	virtual void	Update(_float _fTimeDelta) = 0;
+	virtual HRESULT	Initialize_Module(class CEffect_Module* _pModule) = 0;
+
+	virtual void	Begin_Update(_float _fTimeDelta) = 0;
+	virtual void	Spawn_Burst(_float _fTimeDelta, const _float4x4* _pSpawnMatrix) = 0;
+	virtual void	Spawn_Rate(_float _fTimeDelta, _float _fSpawnRate, const _float4x4* _pSpawnMatrix) = 0;
+	virtual void	Update_Buffer(_float _fTimeDelta, _bool _isPooling) = 0;
+	virtual void	End_Update(_float _fTimeDelta) = 0;
 	virtual HRESULT Render();
+
+	virtual	void	Update_Translation(_float _fTimeDelta, class CEffect_Module* _pTranslationModule) = 0;
+	virtual void	Update_ColorKeyframe(class CEffect_Module* _pColorModule) = 0;
+	virtual void	Update_ScaleKeyframe(class CEffect_Module* _pColorModule) = 0;
 
 	virtual HRESULT Bind_BufferDesc();
 	virtual void	Reset_Buffers();
-
-	void			Set_SpawnMatrix(const _float4x4* _pWorldMatrix) { m_pSpawnMatrix = _pWorldMatrix; }
 
 public:
 	_uint	Get_NumInstance() const { return m_iNumInstances; }
@@ -43,9 +51,10 @@ protected:
 
 
 protected:
-	SPAWN_TYPE					m_eSpawnType = BURST;
-	_float						m_fAccSpawnTime = 0.f;
-	_float						m_fSpawnTime = 0.f;
+	//SPAWN_TYPE					m_eSpawnType = BURST;
+	//_float						m_fAccSpawnTime = 0.f;
+	//_float						m_fSpawnTime = 0.f;
+	_float						m_fSpawnRemainTime = 0.f;
 	_uint						m_iSpawnIndex = 0;
 
 protected:
@@ -64,10 +73,6 @@ protected:
 	_float*	 m_pSetLifeTimes = { nullptr };		// 세팅 수명 시간
 	_float4* m_pSetColors = { nullptr };		// 세팅 색깔
 	
-	const _float4x4* m_pSpawnMatrix = { nullptr };
-
-protected:
-	vector<class CTranslation_Module*> m_Modules;
 
 protected:
 	/*
@@ -97,9 +102,6 @@ protected:
 	HRESULT		Set_Float2Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float2* _pSaveDatas);
 	HRESULT		Set_Float3Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float3* _pSaveDatas);
 	HRESULT		Set_Float4Data(PARTICLE_DATA eData, const json& _jsonInfo, const _char* _szTag, _float4* _pSaveDatas);
-
-protected:
-	HRESULT		Ready_Modules(const json _jsonInfo);
 
 
 protected:
@@ -136,10 +138,6 @@ protected:
 protected:
 	void				 Tool_Adjust_DefaultData();
 	void				 Tool_Adjust_Shape();
-
-	void				 Tool_Modules();
-	void				 Tool_Add_Module();
-	void				 Tool_Adjust_Modules();
 
 	void				 Tool_Create_ShapeData();
 	virtual void		 Tool_Reset_Instance() {}
@@ -195,12 +193,12 @@ NLOHMANN_JSON_SERIALIZE_ENUM(CVIBuffer_Instance::SETTING_TYPE, {
 
 	});
 
-NLOHMANN_JSON_SERIALIZE_ENUM(CVIBuffer_Instance::SPAWN_TYPE, {
-{CVIBuffer_Instance::SPAWN_TYPE::BURST, "BURST"},
-{CVIBuffer_Instance::SPAWN_TYPE::SPAWN, "SPAWN"},
-
-
-	});
+//NLOHMANN_JSON_SERIALIZE_ENUM(CVIBuffer_Instance::SPAWN_TYPE, {
+//{CVIBuffer_Instance::SPAWN_TYPE::BURST, "BURST"},
+//{CVIBuffer_Instance::SPAWN_TYPE::SPAWN, "SPAWN"},
+//
+//
+//	});
 
 
 END

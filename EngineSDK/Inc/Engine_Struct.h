@@ -162,6 +162,9 @@ namespace Engine
 	{
 		_float3 vPosition;
 		_float2 vSize;	
+
+		static const unsigned int					iNumElements = { 2 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	} VTXPOINT;
 
 	/* Sprite(Point) Particle¿« ¿ŒΩ∫≈œΩÃ */

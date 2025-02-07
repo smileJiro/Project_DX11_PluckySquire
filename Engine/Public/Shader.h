@@ -23,7 +23,6 @@ public:
 	HRESULT Bind_SRV(const _char* _pConstantName, ID3D11ShaderResourceView* _pSRV);
 	HRESULT Bind_SRVs(const _char* _pConstantName, vector<ID3D11ShaderResourceView*>& _SRVs);
 
-
 private:
 	ID3DX11Effect*				m_pEffect = { nullptr };
 	_uint						m_iNumLayouts = { 0 }; // NumLayouts == NumPasses

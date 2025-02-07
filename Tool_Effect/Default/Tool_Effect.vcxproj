@@ -159,6 +159,8 @@
     <ClInclude Include="..\public\Level_EffectLoading.h" />
     <ClInclude Include="..\public\MainEffectTool.h" />
     <ClInclude Include="..\public\Object_Background.h" />
+    <ClInclude Include="..\Public\RenderGroup_Blur.h" />
+    <ClInclude Include="..\public\RenderGroup_DownSample.h" />
     <ClInclude Include="..\public\SkyBox.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
@@ -178,6 +180,8 @@
     <ClCompile Include="..\private\Level_EffectLoading.cpp" />
     <ClCompile Include="..\private\MainEffectTool.cpp" />
     <ClCompile Include="..\private\Object_Background.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Blur.cpp" />
+    <ClCompile Include="..\private\RenderGroup_DownSample.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -192,19 +196,20 @@
     <Image Include="Tool_Effect.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_CsTest.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPoint.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Bin\DataFiles\Effects\Dodge.json" />
     <None Include="..\Bin\DataFiles\Effects\Portal.json" />
     <None Include="..\Bin\DataFiles\Effects\TestEffect.json" />
     <None Include="..\Bin\DataFiles\Effects\TestParticleSystem.json" />
-    <None Include="..\Bin\DataFiles\Effects\TestParticleSystem22.json" />
-    <None Include="..\Bin\DataFiles\Effects\TestParticleSystem3.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

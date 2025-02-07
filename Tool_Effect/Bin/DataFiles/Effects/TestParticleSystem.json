@@ -23,31 +23,6 @@
                     "Arg2": 15.0,
                     "SetType": "DIRECTSET"
                 },
-                "Module": [
-                    {
-                        "Amount": 4.0,
-                        "Axis": [
-                            0.0,
-                            1.0,
-                            0.0
-                        ],
-                        "Init": false,
-                        "Order": 1,
-                        "Origin Point": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Pull Amount": 30.0,
-                        "Type": "VORTEX_ACCELERATION"
-                    },
-                    {
-                        "Amount": 1.0,
-                        "Init": false,
-                        "Order": 2,
-                        "Type": "DRAG"
-                    }
-                ],
                 "Position": {
                     "Arg1": [
                         0.0,
@@ -125,15 +100,43 @@
                     ]
                 }
             },
-            "Discard_A": 0.0,
-            "Discard_RGB": 0.0,
+            "DelayTime": 0.0,
             "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "RGBTest",
+                    "Value": 0.0
+                }
+            ],
             "LoopTime": 0,
-            "Parent": false,
             "Progress": true,
+            "ShaderPass": "DEFAULT",
             "Texture": "../Bin/Resources/Textures/Particles/blue.dds",
-            "Time": 4.0,
-            "Type": "SPRITE"
+            "Time": 15.0,
+            "Transform": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "SPRITE",
+            "World": true
         }
     ],
     "Name": "Testing"

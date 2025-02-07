@@ -16,7 +16,6 @@ private:
 	virtual ~CParticle_Mesh_Emitter() = default;
 
 public:
-	//HRESULT						Initialize_Prototype(const _char* _szModelPath, const _tchar* _szInfoPath);
 	HRESULT						Initialize_Prototype(const json& _jsonInfo);
 	virtual HRESULT				Initialize(void* _pArg) override;
 	virtual void				Priority_Update(_float _fTimeDelta) override;
@@ -39,8 +38,7 @@ private:
 
 
 private:
-	virtual void					On_Event() override;
-	virtual void					Off_Event() override;
+	virtual void					Update_Emitter(_float _fTimeDelta) override;
 
 	HRESULT					Bind_ShaderResources();
 	HRESULT					Bind_Material(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);

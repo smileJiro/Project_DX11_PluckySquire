@@ -399,6 +399,10 @@ HRESULT CMainApp::Ready_RenderTargets()
 		return E_FAIL;
 
 
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), g_iShadowWidth, g_iShadowHeight)))
+		return E_FAIL;
+
+
 	/* 위치 설정. */
 	_float fSizeX = (_float)g_iWinSizeX * 0.2f;
 	_float fSizeY = (_float)g_iWinSizeY * 0.2f;

@@ -12,10 +12,20 @@ private:
 
 public:
 	HRESULT Initialize_Prototype(ifstream& _inFile, const json& _jsonBufferInfo, _fmatrix _PreTransformMatrix);
-	virtual HRESULT Initialize(void* _pArg) override;
-	virtual void	Update(_float _fTimeDelta) override;
+	virtual HRESULT	Initialize_Module(class CEffect_Module* _pModule) override;
 
+	virtual HRESULT Initialize(void* _pArg) override;
+	virtual void	Begin_Update(_float _fTimeDelta) override;
+	virtual void	Spawn_Burst(_float _fTimeDelta, const _float4x4* _pSpawnMatrix) override;
+	virtual void	Spawn_Rate(_float _fTimeDelta, _float _fSpawnRate, const _float4x4* _pSpawnMatrix) override;
+	virtual void	Update_Buffer(_float _fTimeDelta, _bool _isPooling) override;
+	virtual void	End_Update(_float _fTimeDelta) override;
 	virtual void	Reset_Buffers() override;
+
+	virtual	void	Update_Translation(_float _fTimeDelta, class CEffect_Module* _pTranslationModule) override;
+	virtual void	Update_ColorKeyframe(class CEffect_Module* _pColorModule) override;
+	virtual void	Update_ScaleKeyframe(class CEffect_Module* _pColorModule) override;
+
 
 public:
 	// Get
@@ -36,6 +46,7 @@ private:
 
 private:
 	VTXMESHINSTANCE* m_pInstanceVertices = { nullptr };
+	VTXMESHINSTANCE* m_pUpdateVertices = { nullptr };
 
 private:
 	HRESULT Ready_VertexBuffer(ifstream& _inFile, _fmatrix _PreTransformMatrix);

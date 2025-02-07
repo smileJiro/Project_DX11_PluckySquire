@@ -16,6 +16,10 @@ public:
 		const _tchar* szModelShaderTags = L"";
 		_uint iEffectShaderLevel = 0;
 		const _tchar* szEffectShaderTags = L"";
+		_uint iSingleSpriteShaderLevel = 0;
+		const _tchar* szSingleSpriteShaderTags = L"";
+		_uint iSingleSpriteBufferLevel = 0;
+		const _tchar* szSingleSpriteBufferTags = L"";
 
 		//vector<_uint> EmitterShaderLevels;
 		//vector<const _tchar*> ShaderTags;
@@ -37,8 +41,8 @@ public:
 	virtual HRESULT				Render() override;
 
 public:
-	void						Active_Effect(_uint _iEventID, _bool _isActive);
-
+	void						Active_Effect(_bool _isActive, _bool _isReset = true, _uint _iEventID = 0);
+	void						Stop_Spawn(_float _fDelayTime, _uint _iEventID = 0);
 private:
 	vector<class CEmitter*> m_Emitters;
 
@@ -60,13 +64,13 @@ public:
 	HRESULT						Save_File();
 
 private:
-	_string						m_strFilePath;
+	_string						m_strFilePath = "../Bin/DataFiles/Effects/Untitle.json";
 	CEmitter*					m_pNowItem = { nullptr };
 
 	_int						m_iInputNumInstances = { 0 };
 	_uint						m_iToolEventID = { 0 };
 	_float						m_fToolAccTime = { 0.f };
-	_float						m_fToolRepeatTime = { 8.f };
+	_float						m_fToolRepeatTime = { 3.f };
 	_float						m_fDebugTimeScale = { 1.f };
 private:
 	void						Tool_ShowList();
@@ -83,6 +87,7 @@ END
 BEGIN(Engine)
 NLOHMANN_JSON_SERIALIZE_ENUM(CEmitter::EFFECT_TYPE, {
 {CEmitter::EFFECT_TYPE::SPRITE, "SPRITE"},
+{CEmitter::EFFECT_TYPE::SINGLE_SPRITE, "SINGLE_SPRITE"},
 {CEmitter::EFFECT_TYPE::MESH, "MESH"},
 {CEmitter::EFFECT_TYPE::EFFECT, "EFFECT"}
 	});

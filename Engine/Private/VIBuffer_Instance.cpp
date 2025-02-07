@@ -1,6 +1,7 @@
 #include "VIBuffer_Instance.h"
 #include "GameInstance.h"
-#include "Translation_Module.h"
+#include "Effect_Module.h"
+
 
 CVIBuffer_Instance::CVIBuffer_Instance(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer(_pDevice, _pContext)
@@ -15,8 +16,8 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& _Prototype)
 	, m_iNumIndexCountPerInstance(_Prototype.m_iNumIndexCountPerInstance)
 	, m_iInstanceStride(_Prototype.m_iInstanceStride)
 
-	, m_eSpawnType(_Prototype.m_eSpawnType)
-	, m_fSpawnTime(_Prototype.m_fSpawnTime)
+	//, m_eSpawnType(_Prototype.m_eSpawnType)
+	//, m_fSpawnTime(_Prototype.m_fSpawnTime)
 	, m_eShapeType(_Prototype.m_eShapeType)
 	, m_ShapeDatas(_Prototype.m_ShapeDatas)
 	, m_SetDatas(_Prototype.m_SetDatas)
@@ -28,11 +29,7 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& _Prototype)
 	, m_vShapeScale(_Prototype.m_vShapeScale)
 	, m_vShapeRotation(_Prototype.m_vShapeRotation)
 	, m_vShapePosition(_Prototype.m_vShapePosition)
-	, m_Modules(_Prototype.m_Modules)
-
 {
-	for (auto& pModule : m_Modules)
-		Safe_AddRef(pModule);
 }
 
 HRESULT CVIBuffer_Instance::Initialize_Prototype()
@@ -105,6 +102,7 @@ HRESULT CVIBuffer_Instance::Render()
 	return S_OK;
 }
 
+
 HRESULT CVIBuffer_Instance::Bind_BufferDesc()
 {
 	ID3D11Buffer* pVertexBuffer[] = {
@@ -134,6 +132,7 @@ HRESULT CVIBuffer_Instance::Bind_BufferDesc()
 
 void CVIBuffer_Instance::Reset_Buffers()
 {
+	
 }
 
 
@@ -703,28 +702,6 @@ HRESULT CVIBuffer_Instance::Set_Float4Data(PARTICLE_DATA eData, const json& _jso
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Instance::Ready_Modules(const json _jsonInfo)
-{
-	if (_jsonInfo.contains("Module"))
-	{
-		for (_int i = 0; i < _jsonInfo["Module"].size(); ++i)
-		{
-			CTranslation_Module* pModule = CTranslation_Module::Create(_jsonInfo["Module"][i]);
-			if (nullptr == pModule)
-				return E_FAIL;
-			
-			m_Modules.push_back(pModule);
-		}
-	}
-
-	sort(m_Modules.begin(), m_Modules.end(), [](const CTranslation_Module* pSrc, const CTranslation_Module* pDst)
-		{
-			return pSrc->Get_Order() < pDst->Get_Order();
-		}
-	);
-
-	return S_OK;
-}
 
 
 void CVIBuffer_Instance::Free()
@@ -740,8 +717,6 @@ void CVIBuffer_Instance::Free()
 		Safe_Delete_Array(m_pSetColors);
 	}
 	
-	for (auto& pModule : m_Modules)
-		Safe_Release(pModule);
 
 	__super::Free();
 }
@@ -786,8 +761,8 @@ HRESULT CVIBuffer_Instance::Save_Buffer(json& _jsonBufferInfo)
 		_jsonBufferInfo["Color"]["Arg2"].push_back(*((_float*)(&m_pSetColors[1]) + i));
 	}
 
-	_jsonBufferInfo["Spawn"]["Type"] = m_eSpawnType;
-	_jsonBufferInfo["Spawn"]["Time"] = m_fSpawnTime;
+	//_jsonBufferInfo["Spawn"]["Type"] = m_eSpawnType;
+	//_jsonBufferInfo["Spawn"]["Time"] = m_fSpawnTime;
 	//_jsonBufferInfo["Spawn"]["Count"] = m_iSpawnCount;
 
 	_jsonBufferInfo["Scale"]["SetType"] = m_SetDatas[P_SCALE];
@@ -801,15 +776,6 @@ HRESULT CVIBuffer_Instance::Save_Buffer(json& _jsonBufferInfo)
 	_jsonBufferInfo["Color"]["Arg1"].push_back(m_pSetColors[0].w);
 	_jsonBufferInfo["Color"]["Arg2"].push_back(m_pSetColors[1].w);
 
-	for (auto& pModule : m_Modules)
-	{
-		json jsonModuleInfo;
-
-		if (FAILED(pModule->Save_Module(jsonModuleInfo)))
-			return E_FAIL;
-
-		_jsonBufferInfo["Module"].push_back(jsonModuleInfo);
-	}
 
 	return S_OK;
 }
@@ -817,7 +783,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 {
 	if (ImGui::TreeNode("Defaults"))
 	{
-		if (ImGui::TreeNode("Spawn"))
+		/*if (ImGui::TreeNode("Spawn"))
 		{
 			const _char* items[] = {"Burst", "Spawn"};
 			static _int item_selected_idx = 0;
@@ -855,7 +821,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			}
 
 			ImGui::TreePop();
-		}
+		}*/
 
 		if (ImGui::TreeNode("Change Counts"))
 		{
@@ -1592,143 +1558,6 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 	}
 }
 
-void CVIBuffer_Instance::Tool_Modules()
-{
-	// Add Module
-	Tool_Add_Module();
-	// Adjust Module
-	Tool_Adjust_Modules();
-}
-
-void CVIBuffer_Instance::Tool_Add_Module()
-{
-	if (ImGui::TreeNode("Add Module"))
-	{
-		const _char* Moduleitems[] = { "NONE", "POINT_VELOCITY", "LINEAR_VELOCITY", "INIT_ACCELERATION",
-"GRAVITY", "DRAG", "VORTEX_ACCELERATION", "POINT_ACCELERATION", "LIMIT_ACCELERATION"};
-
-		static _int item_selected_idx = 0;
-		const char* combo_preview_value = Moduleitems[item_selected_idx];
-
-		if (ImGui::BeginCombo("Module Type", combo_preview_value))
-		{
-
-			for (int n = 0; n < IM_ARRAYSIZE(Moduleitems); n++)
-			{
-				const bool is_selected = (item_selected_idx == n);
-
-				if (ImGui::Selectable(Moduleitems[n], is_selected))
-				{
-					item_selected_idx = n;
-					
-					CTranslation_Module* pModule = CTranslation_Module::Create((CTranslation_Module::MODULE_TYPE)n, Moduleitems[n]);
-					if (nullptr != pModule)
-					{
-						pModule->Set_Order((_int)m_Modules.size());
-						m_Modules.push_back(pModule);
-
-						sort(m_Modules.begin(), m_Modules.end(), [](const CTranslation_Module* pSrc, const CTranslation_Module* pDst)
-							{
-								return pSrc->Get_Order() < pDst->Get_Order();
-							}
-						);
-
-						Tool_Reset_Buffers();
-					}
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-
-		ImGui::TreePop();
-	}
-
-}
-
-void CVIBuffer_Instance::Tool_Adjust_Modules()
-{
-	if (ImGui::TreeNode("Module Lists"))
-	{
-		if (ImGui::BeginListBox("List"))
-		{
-			if (ImGui::ArrowButton("Order Up", ImGuiDir::ImGuiDir_Up))
-			{
-				if (0 < m_iNowModuleIndex && 1 < m_Modules.size())
-				{
-					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex - 1]);
-				
-					for (_int i = 0; i < m_Modules.size(); ++i)
-					{
-						m_Modules[i]->Set_Order(i);
-					}
-				}
-			}
-			ImGui::SameLine();
-			if (ImGui::ArrowButton("Order Down", ImGuiDir::ImGuiDir_Down))
-			{
-				if (m_Modules.size() - 1 > m_iNowModuleIndex && 1 < m_Modules.size())
-				{
-					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex + 1]);
-
-					for (_int i = 0; i < m_Modules.size(); ++i)
-					{
-						m_Modules[i]->Set_Order(i);
-					}
-
-				}
-			}
-
-			int n = 0;
-			for (auto& pModule : m_Modules)
-			{
-				const bool is_selected = (m_iNowModuleIndex == n);
-				if (ImGui::Selectable(pModule->Get_TypeName().c_str(), is_selected))
-				{
-					m_iNowModuleIndex = is_selected ? -1 : n; 
-				}
-
-				if (is_selected)
-					ImGui::SetItemDefaultFocus(); 
-				++n;
-			}
-			ImGui::EndListBox();
-		}
-
-		if (-1 != m_iNowModuleIndex)
-		{
-			if (ImGui::Button("Delete Module"))
-			{
-				Safe_Release(m_Modules[m_iNowModuleIndex]);
-
-				auto iter = m_Modules.begin() + m_iNowModuleIndex;
-				m_Modules.erase(iter);
-
-				m_iNowModuleIndex = -1;
-
-				Tool_Reset_Buffers();
-			}
-		}
-
-
-		ImGui::TreePop();
-	}
-	
-	if (-1 != m_iNowModuleIndex)
-	{
-		if (ImGui::TreeNode("Adjust Modules"))
-		{
-			m_Modules[m_iNowModuleIndex]->Tool_Module_Update();
-
-
-			ImGui::TreePop();
-		}
-
-		if (m_Modules[m_iNowModuleIndex]->Is_Changed())
-			Tool_Reset_Buffers();
-	}
-}
 
 void CVIBuffer_Instance::Tool_Create_ShapeData()
 {

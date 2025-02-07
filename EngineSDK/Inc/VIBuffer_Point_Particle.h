@@ -5,6 +5,9 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Point_Particle : public CVIBuffer_Instance
 {
+public:
+	enum EFFECT_SHADERPASS { DEFAULT_BILLBOARD, ROTATION_BILLBOARD, VELOCITY_BILLBOARD, };
+
 private:
 	CVIBuffer_Point_Particle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CVIBuffer_Point_Particle(const CVIBuffer_Point_Particle& _Prototype);
@@ -12,13 +15,24 @@ private:
 
 public:
 	HRESULT Initialize_Prototype(const json& _jsonBufferInfo);
-	virtual HRESULT Initialize(void* _pArg) override;
-	virtual void	Update(_float _fTimeDelta) override;
+	virtual HRESULT	Initialize_Module(class CEffect_Module* _pModule) override;
 
+	virtual HRESULT Initialize(void* _pArg) override;
+	virtual void	Begin_Update(_float _fTimeDelta) override;
+	virtual void	Spawn_Burst(_float _fTimeDelta, const _float4x4* _pSpawnMatrix);
+	virtual void	Spawn_Rate(_float _fTimeDelta, _float _fSpawnRate, const _float4x4* _pSpawnMatrix);
+	virtual void	Update_Buffer(_float _fTimeDelta, _bool _isPooling) override;
+	virtual void	End_Update(_float _fTimeDelta) override;
 	virtual void	Reset_Buffers() override;			// Buffer을 처음 시점으로 바꾼다.. 
+
+	virtual	void	Update_Translation(_float _fTimeDelta, class CEffect_Module* _pTranslationModule) override;
+	virtual void	Update_ColorKeyframe(class CEffect_Module* _pColorModule) override;
+	virtual void	Update_ScaleKeyframe(class CEffect_Module* _pColorModule) override;
+
 
 private:
 	VTXPOINTINSTANCE* m_pInstanceVertices = { nullptr };
+	VTXPOINTINSTANCE* m_pUpdateVertices = { nullptr };
 
 	// UV 정보
 	// 모든 Atlas는 위에서 아래, 좌에서 우로 향한다는 가정.
@@ -31,12 +45,12 @@ private:
 	_float2			  m_vUVPerAnim = { 1.f, 1.f };
 
 
+
 private:
 	void			  Set_UV(_Out_ _float4* _pOutUV, _float _fIndex);
 	void			  Set_Position(_int _iIndex);
 	void			  Set_Instance(_int _iIndex);
 
-	HRESULT			 Initialize_Particles();
 
 public:
 	static CVIBuffer_Point_Particle* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonBufferInfo);

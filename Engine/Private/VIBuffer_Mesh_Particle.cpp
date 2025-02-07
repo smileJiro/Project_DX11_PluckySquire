@@ -150,13 +150,13 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const j
 		return E_FAIL;
 
 	// Spawn 설정
-	if (_jsonBufferInfo.contains("Spawn"))
-	{
-		m_eSpawnType = _jsonBufferInfo["Spawn"]["Type"];
-		m_fSpawnTime = _jsonBufferInfo["Spawn"]["Time"];
-		//if (_jsonBufferInfo["Spawn"].contains("Count"))
-		//	m_iSpawnCount = _jsonBufferInfo["Spawn"]["Count"];
-	}
+	//if (_jsonBufferInfo.contains("Spawn"))
+	//{
+	//	//m_eSpawnType = _jsonBufferInfo["Spawn"]["Type"];
+	//	m_fSpawnTime = _jsonBufferInfo["Spawn"]["Time"];
+	//	//if (_jsonBufferInfo["Spawn"].contains("Count"))
+	//	//	m_iSpawnCount = _jsonBufferInfo["Spawn"]["Count"];
+	//}
 
 	for (_uint i = 0; i < m_iNumInstances; ++i)
 	{
@@ -169,13 +169,16 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const j
 
 #pragma endregion
 
-	if (FAILED(Ready_Modules(_jsonBufferInfo)))
-		return E_FAIL;
 
 	if (FAILED(Initialize_Particles()))
 		return E_FAIL;
 
 
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Mesh_Particle::Initialize_Module(CEffect_Module* _pModule)
+{
 	return S_OK;
 }
 
@@ -187,93 +190,194 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CVIBuffer_Mesh_Particle::Update(_float _fTimeDelta)
+void CVIBuffer_Mesh_Particle::Begin_Update(_float _fTimeDelta)
 {
-	m_fAccSpawnTime += _fTimeDelta;
-
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
 	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-	VTXMESHINSTANCE* pVertices = static_cast<VTXMESHINSTANCE*>(SubResource.pData);
+	m_pUpdateVertices = static_cast<VTXMESHINSTANCE*>(SubResource.pData);
+}
 
-	if (SPAWN == m_eSpawnType)
+void CVIBuffer_Mesh_Particle::Spawn_Burst(_float _fTimeDelta, const _float4x4* _pSpawnMatrix)
+{
+	for (_int i = 0; i < m_iNumInstances; i++)
 	{
-		while (m_fSpawnTime <= m_fAccSpawnTime)
-		{
-			// 시간이 충족되면 Spawn합니다.
-			pVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
-			pVertices[m_iSpawnIndex].vLifeTime.y = m_fAccSpawnTime - m_fSpawnTime;
+		m_pUpdateVertices[i] = m_pInstanceVertices[i];
+		m_pUpdateVertices[i].vLifeTime.y = 0.f;
 
+		if (_pSpawnMatrix)
+		{
+			_matrix matSpawn = XMLoadFloat4x4(_pSpawnMatrix);
+			for (_int i = 0; i < 3; ++i)
+				matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
+
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation), matSpawn));
+		}
+	}
+}
+
+void CVIBuffer_Mesh_Particle::Spawn_Rate(_float _fTimeDelta, _float _fSpawnRate, const _float4x4* _pSpawnMatrix)
+{
+	_float fSpawnThreshold = 60.f / max(_fSpawnRate, 0.01f);
+	m_fSpawnRemainTime += _fTimeDelta;
+
+	while (fSpawnThreshold <= m_fSpawnRemainTime)
+	{		
+		// Pooling 혹은 Kill 여부에 따라
+		// Kill = -1 * FloatMax, Pool = 0.f
+		if (m_pUpdateVertices[m_iSpawnIndex].vLifeTime.y < -1.f)
+		{
 			m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
-			m_fAccSpawnTime -= m_fSpawnTime;
+			m_fSpawnRemainTime -= fSpawnThreshold;
+			continue;
 		}
 
-		for (_uint i = 0; i < m_iNumInstances; ++i)
+		// 시간이 충족되면 Spawn합니다.
+		m_pUpdateVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
+		// LifeTime의 설정은 Spawn시기에 맞게 설정합니다.
+		m_pUpdateVertices[m_iSpawnIndex].vLifeTime.y = m_fSpawnRemainTime - fSpawnThreshold;
+
+		if (_pSpawnMatrix)
 		{
-			if (D3D11_FLOAT32_MAX == pVertices[i].vLifeTime.y)
-				continue;
+			_matrix matSpawn = XMLoadFloat4x4(_pSpawnMatrix);
+			for (_int i = 0; i < 3; ++i)
+				matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
 
-			for (auto& pModule : m_Modules)
-			{
-				if (pModule->Is_Init())
-					continue;
-
-				pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
-			}
-
-			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
-			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
-			pVertices[i].vLifeTime.y += _fTimeDelta;
-
-			// TODO : Kill or Revive 등..
-			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
-			{
-				pVertices[i] = m_pInstanceVertices[i];
-			}
-
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vUp), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vLook), matSpawn));
+			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation, XMVector3TransformCoord(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vTranslation), matSpawn));
 		}
 
+		m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
+		m_fSpawnRemainTime -= fSpawnThreshold;
 	}
-	else if (BURST == m_eSpawnType)
+}
+
+void CVIBuffer_Mesh_Particle::Update_Buffer(_float _fTimeDelta, _bool _isPooling)
+{
+	for (_int i = 0; i < m_iNumInstances; i++)
 	{
-		for (_int i = 0; i < m_iNumInstances; i++)
+		if (0.f < m_pUpdateVertices[i].vLifeTime.y)
 		{
-			if (m_iSpawnIndex != m_iNumInstances)
+			m_pUpdateVertices[i].vLifeTime.y += _fTimeDelta;
+
+			XMStoreFloat3(&m_pUpdateVertices[i].vVelocity, XMLoadFloat3(&m_pUpdateVertices[i].vVelocity) + XMLoadFloat3(&m_pUpdateVertices[i].vAcceleration) * _fTimeDelta);
+			XMStoreFloat4(&m_pUpdateVertices[i].vTranslation, XMLoadFloat4(&m_pUpdateVertices[i].vTranslation) + XMLoadFloat3(&m_pUpdateVertices[i].vVelocity) * _fTimeDelta);
+
+			if (m_pUpdateVertices[i].vLifeTime.y > m_pUpdateVertices[i].vLifeTime.x)
 			{
-				pVertices[i] = m_pInstanceVertices[i];
-				pVertices[i].vLifeTime.y = 0.f;
+				m_pUpdateVertices[i] = m_pInstanceVertices[i];
+				ZeroMemory(&m_pUpdateVertices[i].vRight, sizeof(_float4));
+				ZeroMemory(&m_pUpdateVertices[i].vUp, sizeof(_float4));
+				ZeroMemory(&m_pUpdateVertices[i].vLook, sizeof(_float4));
 
-				m_iSpawnIndex = m_iNumInstances;
+				if (false == _isPooling)
+				{
+					m_pUpdateVertices[i].vLifeTime.y = D3D11_FLOAT32_MAX * -1.f;
+				}
+
 			}
-
-			for (auto& pModule : m_Modules)
-			{
-				if (pModule->Is_Init())
-					continue;
-
-				pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
-			}
-
-			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
-			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
-			pVertices[i].vLifeTime.y += _fTimeDelta;
-
-			// TODO : Kill or Revive 등..
-			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
-			{
-				pVertices[i] = m_pInstanceVertices[i];
-			}
-
 		}
-	
+
 	}
+}
+
+void CVIBuffer_Mesh_Particle::End_Update(_float _fTimeDelta)
+{
 
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
+//
+//void CVIBuffer_Mesh_Particle::Update(_float _fTimeDelta)
+//{
+//	m_fAccSpawnTime += _fTimeDelta;
+//
+//	D3D11_MAPPED_SUBRESOURCE		SubResource{};
+//	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+//	VTXMESHINSTANCE* pVertices = static_cast<VTXMESHINSTANCE*>(SubResource.pData);
+//
+//	if (SPAWN == m_eSpawnType)
+//	{
+//		while (m_fSpawnTime <= m_fAccSpawnTime)
+//		{
+//			// 시간이 충족되면 Spawn합니다.
+//			pVertices[m_iSpawnIndex] = m_pInstanceVertices[m_iSpawnIndex];
+//			pVertices[m_iSpawnIndex].vLifeTime.y = m_fAccSpawnTime - m_fSpawnTime;
+//
+//			m_iSpawnIndex = (m_iSpawnIndex + 1) % m_iNumInstances;
+//			m_fAccSpawnTime -= m_fSpawnTime;
+//		}
+//
+//		for (_uint i = 0; i < m_iNumInstances; ++i)
+//		{
+//			if (D3D11_FLOAT32_MAX == pVertices[i].vLifeTime.y)
+//				continue;
+//
+//			//for (auto& pModule : m_Modules)
+//			//{
+//			//	if (pModule->Is_Init())
+//			//		continue;
+//
+//			//	pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
+//			//}
+//
+//			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
+//			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
+//			pVertices[i].vLifeTime.y += _fTimeDelta;
+//
+//			// TODO : Kill or Revive 등..
+//			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
+//			{
+//				pVertices[i] = m_pInstanceVertices[i];
+//			}
+//
+//		}
+//
+//	}
+//	else if (BURST == m_eSpawnType)
+//	{
+//		for (_int i = 0; i < m_iNumInstances; i++)
+//		{
+//			if (m_iSpawnIndex != m_iNumInstances)
+//			{
+//				pVertices[i] = m_pInstanceVertices[i];
+//				pVertices[i].vLifeTime.y = 0.f;
+//
+//				m_iSpawnIndex = m_iNumInstances;
+//			}
+//
+//			//for (auto& pModule : m_Modules)
+//			//{
+//			//	if (pModule->Is_Init())
+//			//		continue;
+//
+//			//	pModule->Update_Translations(_fTimeDelta, &pVertices[i].vTranslation, &pVertices[i].vVelocity, &pVertices[i].vAcceleration);
+//			//}
+//
+//			XMStoreFloat3(&pVertices[i].vVelocity, XMLoadFloat3(&pVertices[i].vVelocity) + XMLoadFloat3(&pVertices[i].vAcceleration) * _fTimeDelta);
+//			XMStoreFloat4(&pVertices[i].vTranslation, XMLoadFloat4(&pVertices[i].vTranslation) + XMLoadFloat3(&pVertices[i].vVelocity) * _fTimeDelta);
+//			pVertices[i].vLifeTime.y += _fTimeDelta;
+//
+//			// TODO : Kill or Revive 등..
+//			if (pVertices[i].vLifeTime.y > pVertices[i].vLifeTime.x)
+//			{
+//				pVertices[i] = m_pInstanceVertices[i];
+//			}
+//
+//		}
+//	
+//	}
+//
+//	m_pContext->Unmap(m_pVBInstance, 0);
+//}
 
 void CVIBuffer_Mesh_Particle::Reset_Buffers()
 {
 	m_iSpawnIndex = 0;
-	m_fAccSpawnTime = 0.f;
+	m_fSpawnRemainTime = 0.f;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
 
@@ -285,7 +389,7 @@ void CVIBuffer_Mesh_Particle::Reset_Buffers()
 	{
 		//if (SPAWN == m_eSpawnType)
 		{
-			pVertices[i].vLifeTime.y = D3D11_FLOAT32_MAX;
+			pVertices[i].vLifeTime.y = -0.1f;
 			ZeroMemory(&pVertices[i].vRight, sizeof(_float4));
 			ZeroMemory(&pVertices[i].vUp, sizeof(_float4));
 			ZeroMemory(&pVertices[i].vLook, sizeof(_float4));
@@ -298,6 +402,18 @@ void CVIBuffer_Mesh_Particle::Reset_Buffers()
 	}
 
 	m_pContext->Unmap(m_pVBInstance, 0);
+}
+
+void CVIBuffer_Mesh_Particle::Update_Translation(_float _fTimeDelta, CEffect_Module* _pTranslationModule)
+{
+}
+
+void CVIBuffer_Mesh_Particle::Update_ColorKeyframe(CEffect_Module* _pColorModule)
+{
+}
+
+void CVIBuffer_Mesh_Particle::Update_ScaleKeyframe(CEffect_Module* _pColorModule)
+{
 }
 
 HRESULT CVIBuffer_Mesh_Particle::Ready_VertexBuffer(ifstream& _inFile, _fmatrix _PreTransformMatrix)
@@ -444,7 +560,7 @@ void CVIBuffer_Mesh_Particle::Set_Position(_int _iIndex)
 
 HRESULT CVIBuffer_Mesh_Particle::Initialize_Particles()
 {
-	for (auto& pModule : m_Modules)
+	/*for (auto& pModule : m_Modules)
 	{
 		if (false == pModule->Is_Init())
 			continue;
@@ -453,7 +569,7 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Particles()
 		{
 			pModule->Update_Translations(0.f, &m_pInstanceVertices[i].vTranslation, &m_pInstanceVertices[i].vVelocity, &m_pInstanceVertices[i].vAcceleration);
 		}
-	}
+	}*/
 
 
 	return S_OK;
@@ -734,8 +850,6 @@ void CVIBuffer_Mesh_Particle::Tool_Update(_float _fTimeDelta)
 {
 	Tool_Adjust_Shape();
 	Tool_Adjust_DefaultData();
-
-	Tool_Modules();
 }
 
 HRESULT CVIBuffer_Mesh_Particle::Save_Buffer(json& _jsonBufferInfo)

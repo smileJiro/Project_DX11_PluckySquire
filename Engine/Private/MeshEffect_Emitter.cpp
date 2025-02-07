@@ -2,10 +2,14 @@
 #include "EffectModel.h"
 #include "GameInstance.h"
 
+#include "Effect_Module.h"
+#include "Keyframe_Module.h"
+
 CMeshEffect_Emitter::CMeshEffect_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CEmitter(_pDevice, _pContext)
 {
 	m_eEffectType = EFFECT;
+	m_Textures.resize(TEXTURE_END, nullptr);
 }
 
 CMeshEffect_Emitter::CMeshEffect_Emitter(const CMeshEffect_Emitter& _Prototype)
@@ -13,19 +17,18 @@ CMeshEffect_Emitter::CMeshEffect_Emitter(const CMeshEffect_Emitter& _Prototype)
 	, m_pEffectModelCom(_Prototype.m_pEffectModelCom)
 	, m_Textures(_Prototype.m_Textures)
 	, m_vColor(_Prototype.m_vColor)
-	, m_eShaderPass(_Prototype.m_eShaderPass)
-	, m_FloatDatas(_Prototype.m_FloatDatas)
-	, m_Float2Datas(_Prototype.m_Float2Datas)
-	, m_Float4Datas(_Prototype.m_Float4Datas)
+	//, m_eShaderPass(_Prototype.m_eShaderPass)
 #ifdef _DEBUG
 	, m_strModelPath(_Prototype.m_strModelPath)
 	, m_PreTransformMatrix(_Prototype.m_PreTransformMatrix)
+	, m_vDefaultColor(_Prototype.m_vDefaultColor)
 #endif
 {
 	Safe_AddRef(m_pEffectModelCom);
 	
 	for (auto& pTexture : m_Textures)
 		Safe_AddRef(pTexture);
+
 }
 
 HRESULT CMeshEffect_Emitter::Initialize_Prototype(const json& _jsonInfo)
@@ -33,7 +36,6 @@ HRESULT CMeshEffect_Emitter::Initialize_Prototype(const json& _jsonInfo)
 	if (FAILED(__super::Initialize_Prototype(_jsonInfo)))
 		return E_FAIL;
 
-	m_Textures.resize(TEXTURE_END, nullptr);
 
 	_float4x4 PreTransformMatrix;
 	if (false == _jsonInfo.contains("PreTransform"))
@@ -62,58 +64,20 @@ HRESULT CMeshEffect_Emitter::Initialize_Prototype(const json& _jsonInfo)
 		}
 	}
 
-	if (_jsonInfo.contains("Float"))
-	{
-		for (_int i = 0; i < _jsonInfo["Float"].size(); ++i)
-		{
-			_string str = _jsonInfo["Float"][i]["Name"];
-			_float fValue = _jsonInfo["Float"][i]["Value"];
-			m_FloatDatas.emplace(str, fValue);
-		}
-	}
-
-	if (_jsonInfo.contains("Float2"))
-	{
-		for (_int i = 0; i < _jsonInfo["Float2"].size(); ++i)
-		{
-			_string str = _jsonInfo["Float2"][i]["Name"];
-			_float2 vValue;
-			vValue.x = _jsonInfo["Float2"][i]["Value"][0];
-			vValue.y = _jsonInfo["Float2"][i]["Value"][1];
-
-			m_Float2Datas.emplace(str, vValue);
-		}
-	}
-
-	if (_jsonInfo.contains("Float4"))
-	{
-		for (_int i = 0; i < _jsonInfo["Float4"].size(); ++i)
-		{
-			_string str = _jsonInfo["Float4"][i]["Name"];
-			_float4 vValue;
-			vValue.x = _jsonInfo["Float4"][i]["Value"][0];
-			vValue.y = _jsonInfo["Float4"][i]["Value"][1];
-			vValue.z = _jsonInfo["Float4"][i]["Value"][2];
-			vValue.w = _jsonInfo["Float4"][i]["Value"][3];
-
-			m_Float4Datas.emplace(str, vValue);
-		}
-	}
-
-
 	if (_jsonInfo.contains("ShaderPass"))
-		m_eShaderPass = _jsonInfo["ShaderPass"];
+	{
+		EFFECT_SHADERPASS eShaderPass = _jsonInfo["ShaderPass"];
+		m_iShaderPass = eShaderPass;
+	}
 
 	if (FAILED(Load_TextureInfo(_jsonInfo)))
 		return E_FAIL;
-
-	
-
 
 
 #ifdef _DEBUG
 	m_strModelPath = strModelPath;
 	m_PreTransformMatrix = PreTransformMatrix;
+	m_vDefaultColor = m_vColor;
 #endif
 	return S_OK;
 }
@@ -122,7 +86,6 @@ HRESULT CMeshEffect_Emitter::Initialize(void* _pArg)
 {
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
-
 
 	return S_OK;
 }
@@ -134,11 +97,11 @@ void CMeshEffect_Emitter::Priority_Update(_float _fTimeDelta)
 void CMeshEffect_Emitter::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
+
 }
 
 void CMeshEffect_Emitter::Late_Update(_float _fTimeDelta)
 {
-	// World Matrix 설정을 어떻게 해야할까 ? 
 	__super::Late_Update(_fTimeDelta);
 
 	if (m_isActive && m_iAccLoop)
@@ -159,8 +122,7 @@ HRESULT CMeshEffect_Emitter::Render()
 	{
 		//m_pEffectModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)
 
-		// TODO: PASS 설정
-		if (FAILED(m_pShaderCom->Begin(m_eShaderPass)))
+		if (FAILED(m_pShaderCom->Begin(m_iShaderPass)))
 			return E_FAIL;
 
 		m_pEffectModelCom->Render(i);
@@ -176,22 +138,45 @@ void CMeshEffect_Emitter::Reset()
 
 }
 
-void CMeshEffect_Emitter::On_Event()
-{
-}
 
-void CMeshEffect_Emitter::Off_Event()
+void CMeshEffect_Emitter::Update_Emitter(_float _fTimeDelta)
 {
+	if (nullptr == m_pEffectModelCom)
+		return;
+
+	for (auto& pModule : m_Modules)
+	{
+		CEffect_Module::DATA_APPLY eData = pModule->Get_ApplyType();
+		CEffect_Module::MODULE_TYPE eType = pModule->Get_Type();
+
+		if (CEffect_Module::MODULE_TYPE::MODULE_KEYFRAME == eType)
+		{
+			if (CEffect_Module::DATA_APPLY::COLOR == eData)
+			{
+				pModule->Update_ColorKeyframe(m_fAccTime, &m_vColor);
+			}
+
+			else if (CEffect_Module::DATA_APPLY::SCALE == eData)
+			{
+				const _float4x4* pWorldMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr();
+				pModule->Update_ScaleKeyframe(m_fAccTime, ((_float4*)(pWorldMatrix)), ((_float4*)(pWorldMatrix) + 1), ((_float4*)(pWorldMatrix) + 2));
+			}
+		}
+		else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
+		{
+
+		}
+	}
 }
 
 HRESULT CMeshEffect_Emitter::Bind_ShaderResources()
 {
-	if (m_isWorld)
+	if (RELATIVE_POSITION == m_eSpawnPosition)
 	{
 		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
 			return E_FAIL;
 	}
-	else
+	else if (ABSOLUTE_POSITION == m_eSpawnPosition)
 	{
 		if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 			return E_FAIL;
@@ -203,9 +188,6 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
 		return E_FAIL;
 
-	// Default Color
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
-		return E_FAIL;
 
 	if (FAILED(Bind_ShaderValue_ByPass()))
 		return E_FAIL;
@@ -216,7 +198,7 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderResources()
 
 HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 {
-	switch (m_eShaderPass)
+	switch (m_iShaderPass)
 	{
 	case DEFAULT:
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
@@ -240,10 +222,14 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
+			return E_FAIL;
 		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
 			return E_FAIL;
+
+
 		if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
 			return E_FAIL;
 		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
@@ -257,6 +243,65 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		//	return E_FAIL;
 		//if (FAILED(Bind_Float2("NoiseUVScale", "g_NoiseUVScale")))
 		//	return E_FAIL;
+
+		break;
+	}
+
+	case BLOOM:
+	{
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+			return E_FAIL;
+		if (FAILED(Bind_Texture(ALPHA, "g_AlphaTexture")))
+			return E_FAIL;
+		if (FAILED(Bind_Texture(MASK, "g_MaskTexture")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
+			return E_FAIL;
+
+		break;
+	}
+	case BLOOM_DISSOLVE:
+	{
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+			return E_FAIL;
+		if (FAILED(Bind_Texture(ALPHA, "g_AlphaTexture")))
+			return E_FAIL;
+		if (FAILED(Bind_Texture(MASK, "g_MaskTexture")))
+			return E_FAIL;
+		if (FAILED(Bind_Texture(NOISE, "g_NoiseTexture")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
+			return E_FAIL;
 
 		break;
 	}
@@ -279,31 +324,17 @@ HRESULT CMeshEffect_Emitter::Bind_Texture(TEXTURE_TYPE _eType, const _char* _szC
 	return S_OK;
 }
 
-HRESULT CMeshEffect_Emitter::Bind_Float(const _char* _szDataName, const _char* _szConstantName)
-{
-	return m_pShaderCom->Bind_RawValue(_szConstantName, &m_FloatDatas[_szDataName], sizeof(_float));
-}
-
-HRESULT CMeshEffect_Emitter::Bind_Float2(const _char* _szDataName, const _char* _szConstantName)
-{
-	return m_pShaderCom->Bind_RawValue(_szConstantName, &m_Float2Datas[_szDataName], sizeof(_float2));
-}
-
-HRESULT CMeshEffect_Emitter::Bind_Float4(const _char* _szDataName, const _char* _szConstantName)
-{
-	return m_pShaderCom->Bind_RawValue(_szConstantName, &m_Float4Datas[_szDataName], sizeof(_float4));
-}
-
-
 
 HRESULT CMeshEffect_Emitter::Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc)
 {
 	if (FAILED(__super::Ready_Components(_pDesc)))
 		return E_FAIL;
 
-	m_Components.emplace(L"Com_Effect", m_pEffectModelCom);
-	Safe_AddRef(m_pEffectModelCom);
-
+	if (nullptr != m_pEffectModelCom)
+	{
+		m_Components.emplace(L"Com_Effect", m_pEffectModelCom);
+		Safe_AddRef(m_pEffectModelCom);
+	}
 
 	return S_OK;
 }
@@ -364,6 +395,7 @@ void CMeshEffect_Emitter::Free()
 	for (auto& pTexture : m_Textures)
 		Safe_Release(pTexture);
 
+
 	__super::Free();
 }
 
@@ -414,10 +446,11 @@ HRESULT CMeshEffect_Emitter::Save(json& _jsonOut)
 
 	for (_int i = 0; i < 4; ++i)
 	{
-		_jsonOut["Color"].push_back(*((_float*)(&m_vColor) + i));
+		_jsonOut["Color"].push_back(*((_float*)(&m_vDefaultColor) + i));
 	}
 
-	_jsonOut["ShaderPass"] = m_eShaderPass;
+	EFFECT_SHADERPASS eShaderPass = (EFFECT_SHADERPASS)m_iShaderPass;
+	_jsonOut["ShaderPass"] = eShaderPass;
 
 	for (_int i = 0; i < TEXTURE_END; ++i)
 	{
@@ -430,35 +463,6 @@ HRESULT CMeshEffect_Emitter::Save(json& _jsonOut)
 			_jsonOut["Textures"].push_back(jsonInfo);
 		}
 	}
-
-	for (auto& Pair : m_FloatDatas)
-	{
-		json jsonInfo;
-		jsonInfo["Name"] = Pair.first.c_str();
-		jsonInfo["Value"] = Pair.second;
-		_jsonOut["Float"].push_back(jsonInfo);
-	}
-
-	for (auto& Pair : m_Float2Datas)
-	{
-		json jsonInfo;
-		jsonInfo["Name"] = Pair.first.c_str();
-		jsonInfo["Value"].push_back(Pair.second.x);
-		jsonInfo["Value"].push_back(Pair.second.y);
-		_jsonOut["Float2"].push_back(jsonInfo);
-	}
-
-	for (auto& Pair : m_Float4Datas)
-	{
-		json jsonInfo;
-		jsonInfo["Name"] = Pair.first.c_str();
-		jsonInfo["Value"].push_back(Pair.second.x);
-		jsonInfo["Value"].push_back(Pair.second.y);
-		jsonInfo["Value"].push_back(Pair.second.z);
-		jsonInfo["Value"].push_back(Pair.second.w);
-		_jsonOut["Float4"].push_back(jsonInfo);
-	}
-
 
 
 	return S_OK;
@@ -485,7 +489,11 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 	{
 		if (ImGui::TreeNode("Color"))
 		{
-			ImGui::DragFloat4("Default Color", (_float*)(&m_vColor), 0.01f);
+			ImGui::Text("Now Color : %.4f, %.4f, %.4f, %.4f", m_vColor.x, m_vColor.y, m_vColor.z, m_vColor.w);
+			if (ImGui::DragFloat4("Default Color", (_float*)(&m_vDefaultColor), 0.01f))
+			{
+				m_vColor = m_vDefaultColor;
+			}
 
 
 			ImGui::TreePop();
@@ -493,13 +501,14 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 
 		if (ImGui::TreeNode("Pass"))
 		{
-			const _char* items[] = { "Default", "Dissolve", "Dissolve With UV" };
+
+			const _char* items[] = { "Default", "Dissolve", "Bloom", "Bloom_Dissolve" };
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
-			if (ImGui::BeginCombo("Effect Type", combo_preview_value))
+			if (ImGui::BeginCombo("Shader Type", combo_preview_value))
 			{
-				item_selected_idx = m_eShaderPass;
+				item_selected_idx = m_iShaderPass;
 				ImGui::SetItemDefaultFocus();
 
 				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
@@ -509,11 +518,9 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 					if (ImGui::Selectable(items[n], is_selected))
 					{
 						item_selected_idx = n;
-						if (m_eShaderPass != n)
+						if (m_iShaderPass != n)
 						{
-							m_eShaderPass = (EFFECT_SHADERPASS)n;
-							m_FloatDatas.clear();
-							m_Float2Datas.clear();
+							m_iShaderPass = (EFFECT_SHADERPASS)n;
 						}
 					}
 					if (is_selected)
@@ -524,38 +531,124 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("Float"))
+		
+		if (ImGui::TreeNode("Modules"))
 		{
-			static _char szInput[MAX_PATH] = "";
-			 
-
-			for (auto& Pair : m_FloatDatas)
+			if (ImGui::BeginListBox("List"))
 			{
-				ImGui::DragFloat(Pair.first.c_str(), (_float*)&Pair.second, 0.01f);
+				if (ImGui::ArrowButton("Order Up", ImGuiDir::ImGuiDir_Up))
+				{
+					if (0 < m_iNowModuleIndex && 1 < m_Modules.size())
+					{
+						swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex - 1]);
+
+						for (_int i = 0; i < m_Modules.size(); ++i)
+						{
+							m_Modules[i]->Set_Order(i);
+						}
+					}
+				}
+				ImGui::SameLine();
+				if (ImGui::ArrowButton("Order Down", ImGuiDir::ImGuiDir_Down))
+				{
+					if (m_Modules.size() - 1 > m_iNowModuleIndex && 1 < m_Modules.size())
+					{
+						swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex + 1]);
+
+						for (_int i = 0; i < m_Modules.size(); ++i)
+						{
+							m_Modules[i]->Set_Order(i);
+						}
+
+					}
+				}
+
+				int n = 0;
+				for (auto& pModule : m_Modules)
+				{
+					const bool is_selected = (m_iNowModuleIndex == n);
+					if (ImGui::Selectable(pModule->Get_TypeName().c_str(), is_selected))
+					{
+						m_iNowModuleIndex = is_selected ? -1 : n;
+					}
+
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+					++n;
+				}
+
+				if (-1 != m_iNowModuleIndex)
+				{
+					if (ImGui::Button("Delete Module"))
+					{
+						Safe_Release(m_Modules[m_iNowModuleIndex]);
+
+						auto iter = m_Modules.begin() + m_iNowModuleIndex;
+						m_Modules.erase(iter);
+
+						m_iNowModuleIndex = -1;
+					}
+				}
+
+				ImGui::EndListBox();
+
+				if (ImGui::TreeNode("Add Keyframe Module"))
+				{
+					//const _char* Moduleitems[] = { "COLOR_KEYFRAME", "SCALE_KEYFRAME"};
+					//const _char* Moduleitems[] = CKeyframe_Module::g_szModuleNames[2];
+					static _int item_selected_idx = 0;
+					const char* combo_preview_value = CKeyframe_Module::g_szModuleNames[item_selected_idx];
+
+					if (ImGui::BeginCombo("Keyframe Module", combo_preview_value))
+					{
+						for (int n = 0; n < IM_ARRAYSIZE(CKeyframe_Module::g_szModuleNames); n++)
+						{
+							const bool is_selected = (item_selected_idx == n);
+
+							if (ImGui::Selectable(CKeyframe_Module::g_szModuleNames[n], is_selected))
+							{
+								item_selected_idx = n;
+
+								CKeyframe_Module* pModule = CKeyframe_Module::Create((CKeyframe_Module::MODULE_NAME)n, 1);
+								if (nullptr != pModule)
+								{
+									pModule->Set_Order((_int)m_Modules.size());
+									m_Modules.push_back(pModule);
+
+									sort(m_Modules.begin(), m_Modules.end(), [](const CEffect_Module* pSrc, const CEffect_Module* pDst)
+										{
+											return pSrc->Get_Order() < pDst->Get_Order();
+										}
+									);
+								}
+							}
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();
+						}
+						ImGui::EndCombo();
+					}
+
+					ImGui::TreePop();
+				}
+
+
+				if (-1 != m_iNowModuleIndex && m_iNowModuleIndex < m_Modules.size())
+				{
+					if (ImGui::TreeNode("Adjust Modules"))
+					{
+						m_Modules[m_iNowModuleIndex]->Tool_Module_Update();
+
+						ImGui::TreePop();
+					}
+				}
 			}
+
+
 
 			ImGui::TreePop();
 		}
-	
-		if (ImGui::TreeNode("Float2"))
-		{
-			for (auto& Pair : m_Float2Datas)
-			{
-				ImGui::DragFloat2(Pair.first.c_str(), (_float*)&Pair.second, 0.01f);
-			}
 
-			ImGui::TreePop();
-		}
 
-		if (ImGui::TreeNode("Float4"))
-		{
-			for (auto& Pair : m_Float4Datas)
-			{
-				ImGui::DragFloat4(Pair.first.c_str(), (_float*)&Pair.second, 0.01f);
-			}
-
-			ImGui::TreePop();
-		}
 	
 		if (ImGui::TreeNode("Show Textures"))
 		{
@@ -563,7 +656,7 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 			{
 				if (nullptr != m_Textures[ALPHA])
 				{
-					ImVec2 imageSize(100, 100); // 이미지 크기 설정
+					ImVec2 imageSize(300, 300); // 이미지 크기 설정
 					ID3D11ShaderResourceView* pSelectImage = m_Textures[ALPHA]->Get_SRV(0);
 					if (nullptr != pSelectImage)
 					{
@@ -584,7 +677,7 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 			{
 				if (nullptr != m_Textures[MASK])
 				{
-					ImVec2 imageSize(100, 100); // 이미지 크기 설정
+					ImVec2 imageSize(300, 300); // 이미지 크기 설정
 					ID3D11ShaderResourceView* pSelectImage = m_Textures[MASK]->Get_SRV(0);
 					if (nullptr != pSelectImage)
 					{
@@ -605,7 +698,7 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 			{
 				if (nullptr != m_Textures[NOISE])
 				{
-					ImVec2 imageSize(100, 100); // 이미지 크기 설정
+					ImVec2 imageSize(300, 300); // 이미지 크기 설정
 					ID3D11ShaderResourceView* pSelectImage = m_Textures[NOISE]->Get_SRV(0);
 					if (nullptr != pSelectImage)
 					{
@@ -628,11 +721,33 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 	}
 	else
 	{
+		static _char szInputPath[MAX_PATH] = "../Bin/Resources/Models/FX/";
+		ImGui::InputText("Import Model Path", szInputPath, MAX_PATH);
+		if (ImGui::Button("Create_Buffer"))
+		{
+			_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
+			m_pEffectModelCom = CEffectModel::Create(m_pDevice, m_pContext, szInputPath, matPretransform);
+
+			XMStoreFloat4x4(&m_PreTransformMatrix, matPretransform);
+
+			if (nullptr != m_pEffectModelCom)
+			{
+				m_Components.emplace(L"Com_Effect", m_pEffectModelCom);
+				m_strModelPath = szInputPath;
+			}
+		}
 	}
 }
 CMeshEffect_Emitter* CMeshEffect_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg)
 {
-	return nullptr;
+	CMeshEffect_Emitter* pInstance = new CMeshEffect_Emitter(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Failed to Created : CMeshEffect_Emitter");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
 }
 #endif
