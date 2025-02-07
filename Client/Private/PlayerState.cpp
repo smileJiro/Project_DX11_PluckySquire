@@ -2,7 +2,6 @@
 #include "PlayerState.h"
 #include "GameInstance.h"
 
-
 CPlayerState::CPlayerState(CPlayer* _pOwner, CPlayer::STATE _eState)
 	:CBase()
 	, m_eStateID(_eState)

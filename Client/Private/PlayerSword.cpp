@@ -50,7 +50,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     /* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
     ActorDesc.FreezePosition_XYZ[0] = false;
     ActorDesc.FreezePosition_XYZ[1] = true;
-    ActorDesc.FreezePosition_XYZ[2] = false;
+    ActorDesc.FreezePosition_XYZ[2]  = false;
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC ShapeDesc = {};

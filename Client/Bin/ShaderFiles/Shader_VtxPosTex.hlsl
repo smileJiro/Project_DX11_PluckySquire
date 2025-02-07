@@ -139,6 +139,24 @@ PS_OUT PS_UIALPHA(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_DIALOGUE_BG_COLOR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+    
+    if (1.f == Out.vColor.r && 1.f == Out.vColor.g && 1.f == Out.vColor.b)
+    {
+        Out.vColor.rgb = g_vColors.rgb;
+    }
+    
+    if (Out.vColor.a < 0.01f)
+        discard;
+    
+    return Out;
+
+}
+
 
 PS_OUT PS_MIX_COLOR(PS_IN In)
 {
@@ -239,6 +257,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MIX_COLOR();
+    }
+
+    pass DIALOGUE_BG_COLOR
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DIALOGUE_BG_COLOR();
     }
 
 }
