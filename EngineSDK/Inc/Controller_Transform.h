@@ -18,6 +18,7 @@ public:
 		CTransform_2D::TRANSFORM_2D_DESC	tTransform2DDesc = {};
 		// 2D Transform의 Desc, 사용하지 않는다면 채우지 않아도 됌.
 		CTransform_3D::TRANSFORM_3D_DESC	tTransform3DDesc = {};
+
 #pragma region Build Method
 		void Build_2D_Transform(_float2 _fPos, _float2 _fScale = { 1.f,1.f }, _float _fMoveSpeed = 10.f,
 			_float _fRotationSpeed = 0.f, _float fRotation = 0.f)
@@ -28,6 +29,14 @@ public:
 			tTransform2DDesc.vInitialScaling = { _fScale.x, _fScale.y, 1.0f };
 			tTransform2DDesc.fInitialRotation = fRotation;
 		}
+
+		void Build_3D_Transform(_float4x4 _matWorld)
+		{
+			tTransform3DDesc.isMatrix = true;
+			tTransform3DDesc.matWorld = _matWorld;
+		}
+
+
 #pragma endregion
 
 	}CON_TRANSFORM_DESC;

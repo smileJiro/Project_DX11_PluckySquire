@@ -5,6 +5,7 @@
 #include "Map_2D.h"
 #include "Section_Manager.h"
 #include "Engine_Macro.h"
+#include "MapObjectFactory.h"
 
 CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection(_pDevice, _pContext)
@@ -110,57 +111,27 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 
 			if (FAILED(Ready_Map_2D(&Desc, _iPriorityKey)))
 				return E_FAIL;
+
 			ReadFile(hFile, &iObjectCount, sizeof(_uint), &dwByte, nullptr);
 
 			for (_uint i = 0;i < iObjectCount; ++i)
 			{
-				_uint		iModelIndex = 0;
-				_float2		fPos = {};
-				_bool		isOverride = false;
-
-				ReadFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
-				ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
-				ReadFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
-
-				const auto& tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(iModelIndex);
-
-
-				C2DMapObject::MAPOBJ_DESC NormalDesc = {};
-				NormalDesc.is2DImport = true;
-				NormalDesc.Build_2D_Model(CSection_Manager::GetInstance()->Get_SectionLeveID()
-					, StringToWstring(tInfo.strModelName)
-					, L"Prototype_Component_Shader_VtxPosTex"
-					,(_uint)PASS_VTXPOSTEX::SPRITE2D
-				);
-				NormalDesc.Build_2D_Transform(fPos);
-
-				NormalDesc.isSorting = tInfo.isSorting;
-				NormalDesc.isCollider = tInfo.isCollider;
-				NormalDesc.isActive = tInfo.isActive;
-				
-				NormalDesc.eActiveType = tInfo.eActiveType;
-				NormalDesc.eColliderType = tInfo.eColliderType;
-				
-				NormalDesc.fSorting_Offset_Pos = tInfo.fSorting_Offset_Pos;
-
-				NormalDesc.fCollider_Offset_Pos = tInfo.fCollider_Offset_Pos;
-				NormalDesc.fCollider_Extent = tInfo.fCollider_Extent;
-				NormalDesc.fCollider_Radius = tInfo.fCollider_Radius;
-				CGameObject* pGameObject = nullptr;
-
-				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
-					NormalDesc.iCurLevelID,
-					L"Layer_2DMapObject",
-					&pGameObject,
-					(void*)&NormalDesc);
-
+				C2DMapObject* pGameObject = 
+					CMapObjectFactory::Bulid_2DObject<C2DMapObject>(
+						(LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID(),
+															m_pGameInstance, 
+															hFile);
 				if (nullptr != pGameObject)
 				{
 					pGameObject->Set_Active(false);
+					Event_CreateObject(pGameObject->Get_CurLevelID(), L"Layer_2DMapObject", pGameObject);
+
 					auto eRenderLayer = SECTION_2D_OBJECT;
-					if (true == tInfo.isBackGround)
+
+					if (pGameObject->Is_BackGround())
 						eRenderLayer = SECTION_2D_BACKGROUND;
-						Add_GameObject_ToSectionLayer(pGameObject, eRenderLayer);
+					
+					Add_GameObject_ToSectionLayer(pGameObject, eRenderLayer);
 				}
 			}
 			CloseHandle(hFile);

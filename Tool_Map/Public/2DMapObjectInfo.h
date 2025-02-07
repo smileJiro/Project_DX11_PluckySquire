@@ -104,6 +104,7 @@ private :
 	_bool						m_isActive		= false;
 	_bool						m_isCollider	= false;
 	_bool						m_isBackGround	= false;
+	_bool						m_isSorting = false;
 
 	_bool						m_isModelCreate	= false;
 	_bool						m_isToolRendering = false;
@@ -112,7 +113,6 @@ private :
 	_uint						m_eActiveType = 0;
 	_uint						m_eColliderType = 0;
 
-	_bool						m_isSorting = false;
 	_float2						m_fSortingPosition = {};
 
 	_float2						m_fColliderOffsetPos = {};

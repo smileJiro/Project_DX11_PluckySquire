@@ -41,6 +41,7 @@
 #include "SettingPanel.h"
 #include "ESC_HeartPoint.h"
 #include "ShopItemBG.h"
+#include "MapObjectFactory.h"
 
 #include "NPC.h"
 
@@ -920,71 +921,16 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
 		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
+
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
-			_char		szSaveMeshName[MAX_PATH];
-			_float4x4	vWorld = {};
-
-
-			isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-			isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
-
-
-			C3DMapObject::MAPOBJ_3D_DESC NormalDesc = {};
-			NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
-			NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
-			NormalDesc.isCoordChangeEnable = false;
-			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
-			NormalDesc.eStartCoord = COORDINATE_3D;
-			NormalDesc.tTransform3DDesc.isMatrix = true;
-			NormalDesc.tTransform3DDesc.matWorld = vWorld;
-			CGameObject* pGameObject = nullptr;
-			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
-				LEVEL_GAMEPLAY,
-				strLayerTag,
-				&pGameObject,
-				(void*)&NormalDesc);
-
-			if (pGameObject)
-			{
-				DWORD	dwByte(0);
-				_uint iOverrideCount = 0;
-				C3DModel::COLOR_SHADER_MODE eTextureType;
-				_float4 fDefaultDiffuseColor;
-
-
-				isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-				C3DMapObject* pMapObject = static_cast<C3DMapObject*>(pGameObject);
-				
-				pMapObject->Set_Color_Shader_Mode(eTextureType);
-
-				switch (eTextureType)
-				{
-				case Engine::C3DModel::COLOR_DEFAULT:
-				case Engine::C3DModel::MIX_DIFFUSE:
-				{
-					isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-					pMapObject->Set_Diffuse_Color(fDefaultDiffuseColor);
-				}
-				break;
-				default:
-					break;
-				}
-
-				isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
-				if (0 < iOverrideCount)
-				{
-					for (_uint i = 0; i < iOverrideCount; i++)
-					{
-						_uint iMaterialIndex, iTexTypeIndex, iTexIndex;
-						isTempReturn = ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
-						isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
-						isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
-
-						pMapObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
-					}
-				}
-			}
+			C3DMapObject* pGameObject =
+				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
+					(LEVEL_ID)LEVEL_GAMEPLAY,
+					m_pGameInstance,
+					hFile);
+			if (nullptr != pGameObject)
+				Event_CreateObject(LEVEL_GAMEPLAY, strLayerTag.c_str(), pGameObject);
 		}
 	}
 	CloseHandle(hFile);

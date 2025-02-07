@@ -47,7 +47,7 @@ private:
 	HRESULT	Execute_Trigger_Exit(const EVENT& _tEvent);
 	HRESULT	Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent);
 	
-	HRESULT	Execute_Book_MainPage_Change(const EVENT& _tEvent);
+	HRESULT	Execute_BOOK_MAIN_SECTION_CHANGE(const EVENT& _tEvent);
 
 private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);

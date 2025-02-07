@@ -361,7 +361,7 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 		if (NEXT == m_eCurAction)
 		{
 			if (SECTION_MGR->Has_Next_Section())
-				Evnet_Book_MainPage_Change(SECTION_MGR->Get_Next_Section_Key()->c_str());
+				Event_Book_Main_Section_Change(SECTION_MGR->Get_Next_Section_Key()->c_str());
 		}
 		else if (PREVIOUS == m_eCurAction)
 		{
@@ -369,9 +369,10 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 			// 실제 섹션 변경시점을 다르게 해줘야 할거같음 지금상황에선 어쩔수없이.
 			// 애니메이션이 못생긴걸 탓합니다. 
 			//if (SECTION_MGR->Has_Prev_Section())
-			//	Evnet_Book_MainPage_Change(SECTION_MGR->Get_Prev_Section_Key()->c_str());
+			//	Event_Book_Main_Section_Change(SECTION_MGR->Get_Prev_Section_Key()->c_str());
 			SECTION_MGR->Change_Prev_Section();
 		}
+
 		Set_Animation(0);
 		m_eCurAction = ACTION_LAST;
 	}

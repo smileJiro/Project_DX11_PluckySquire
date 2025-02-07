@@ -28,7 +28,13 @@ HRESULT C2DMapObject::Initialize(void* _pArg)
     if (pDesc->is2DImport)
     {
         m_isSorting = pDesc->isSorting;
+        m_isBackGround = pDesc->isBackGround;
+        m_isCollider = pDesc->isCollider;
+        m_isActive = pDesc->isActive;
     }
+
+
+
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
