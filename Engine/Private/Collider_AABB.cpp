@@ -69,6 +69,8 @@ HRESULT CCollider_AABB::Render()
     m_pEffect->SetWorld(XMMatrixIdentity());
     m_pEffect->SetView(XMMatrixIdentity());
     // 지금 플레이어의 섹션의 해상도를 가져올 방법이 없어 //
+    
+    //_float2 vRTVSize = m_pGameInstance->Get_RT_Size(m_pOwner->Get_Include_Section_Name());
     m_pEffect->SetProjection(XMMatrixOrthographicLH(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y, 0.0f, 1.0f));
     m_pEffect->Apply(m_pContext);
     m_pContext->IASetInputLayout(m_pInputLayout);
