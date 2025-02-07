@@ -607,7 +607,7 @@ _bool CPlayer::Is_Sneaking()
 {
     STATE eState = Get_CurrentStateID();
     if (STATE::IDLE == eState)
-         return static_cast<CPlayerState_Idle*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
+        return true;
     else if (STATE::RUN == eState)
         return  static_cast<CPlayerState_Run*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
     else
