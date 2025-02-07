@@ -38,6 +38,8 @@ private:
 	CNPC_Store(const CNPC_Store& _Prototype);
 	virtual ~CNPC_Store() = default;
 
+
+
 public:
 	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
 	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
@@ -50,7 +52,7 @@ public:
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+
 
 protected:
 	virtual HRESULT Ready_ActorDesc(void* _pArg) override;
@@ -66,6 +68,9 @@ public:
 	virtual CGameObject*		Clone(void* _pArg) override; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void				Free() override;
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
+
+private:
+	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 protected:
 	//virtual HRESULT Ready_Components();

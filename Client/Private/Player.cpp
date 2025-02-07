@@ -270,14 +270,14 @@ void CPlayer::Update(_float _fTimeDelta)
 
 
 
-    //cout << "m_bOnGround : " << m_bOnGround << endl;
+    ////cout << "m_bOnGround : " << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
 
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == Get_CurCoord())
     {
         _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
-        cout << "bSleep : " << bSleep;
+        //cout << "bSleep : " << bSleep;
         if (false == bSleep)
         {
 
@@ -314,7 +314,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
     }
 
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
-    cout << endl;
+    //cout << endl;
 }
 
 HRESULT CPlayer::Render()
@@ -349,7 +349,7 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
         }
         break;
     case Client::CPlayer::SHAPE_FOOT:
-        cout << "   COntatct Enter";
+        //cout << "   COntatct Enter";
         break;
 	case Client::CPlayer::SHAPE_TRIGER:
 		break;
@@ -363,26 +363,13 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     switch (eShapeUse)
     {
     case Client::CPlayer::SHAPE_BODY:
-        for (auto& pxPairData : _ContactPointDatas)
-        {
-            if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
-            {
-                _vector vLook = Get_LookDirection();
-                _vector vNewWallNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
-                _float fDotBefore = XMVectorGetX( XMVector3Dot(m_vWallNormal, vLook));
-				_float fDotAfter = XMVectorGetX(XMVector3Dot(vNewWallNormal, vLook));
-                //한 프레임에 여러 벽이 닿아있을 때, 어떤 벽의 노말을 저장할까?
-                // -> 이전 벽 노말보다 룩 방향과 더 비슷할 때
-                // 전에 닿았던 벽의 노말이 저장돼있는데, 현재 닿았던 벽의 노말보다 룩에 가까우면 어쩌지?
-                //->Update이후에 WallNormal의 w를 -1로 세팅하고, 새로운 벽에 닿았을 때 .
-                //이전 프레임에는 닿았지만, 이번 프레임에는 안닿은 벽의 노말이 저장돼있을 때, 
-                // 이전 프레임에 닿은 벽의 노말이 현재 닿은 벽의 노말보다 룩에 가까울 경우 어떡하지?
-                if (fDotBefore < fDotAfter)
-                {
-                    m_vWallNormal = vNewWallNormal;
-                }
-            }
-        }
+        //for (auto& pxPairData : _ContactPointDatas)
+        //{
+        //    if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+        //    {
+
+        //    }
+        //}
         break;
     case Client::CPlayer::SHAPE_FOOT:
         for (auto& pxPairData : _ContactPointDatas)
@@ -395,7 +382,7 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
             if (pxPairData.normal.y < m_fStepSlopeThreshold)
                 continue;
             m_bOnGround = true;
-            //cout << "  Contact";
+            ////cout << "  Contact";
             return;
         }
         break;
@@ -429,7 +416,7 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
         }
         break;
     case Client::CPlayer::SHAPE_FOOT:
-        cout << "   COntatct Exit";
+        //cout << "   COntatct Exit";
         break;
     case Client::CPlayer::SHAPE_TRIGER:
         break;
@@ -788,10 +775,15 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
 	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 	if (_bKinematic)
     {
+        pDynamicActor->Late_Update(0);
         pDynamicActor->Set_Kinematic();
+
     }
 	else
-		pDynamicActor->Set_Dynamic();
+    {
+        pDynamicActor->Update(0);
+        pDynamicActor->Set_Dynamic();
+    }
 }
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {

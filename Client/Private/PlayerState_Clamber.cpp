@@ -29,10 +29,11 @@ void CPlayerState_Clamber::Enter()
 
 	m_vClamberNormal = m_pOwner->Get_WallNormal();
 	m_vClamberEndPosition = m_pOwner->Get_ClamberEndPosition();
+	m_vClamberEndPosition = XMVectorSetW(m_vClamberEndPosition, 1);
 	m_vClamberStartPosition = m_vClamberEndPosition + m_vClamberNormal * m_fArmLength + _vector{0,-m_fArmHeight,0};
+	m_vClamberStartPosition = XMVectorSetW(m_vClamberStartPosition,1);
 	m_pOwner->Set_Position(m_vClamberStartPosition);
-	_vector vLookAt = m_vClamberStartPosition - XMVectorSetY(m_vClamberNormal,0);
-	m_pOwner->Get_Transform()->LookAt_3D(vLookAt);
+	m_pOwner->LookDirectionXZ_Kinematic(-m_vClamberNormal);
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_CLAMBER_01_EDIT_NEWRIG);
 }
 
@@ -46,7 +47,7 @@ void CPlayerState_Clamber::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 	if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_CLAMBER_01_EDIT_NEWRIG == iAnimIdx)
 	{
-		m_pOwner->Set_Position(m_pOwner->Get_RootBonePosition());
+		m_pOwner->Set_Position(m_vClamberEndPosition);
 		m_pOwner->Set_Kinematic(false);
 		m_pOwner->Set_State(CPlayer::IDLE);
 	}

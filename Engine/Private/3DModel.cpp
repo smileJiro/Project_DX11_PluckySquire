@@ -126,6 +126,19 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 			//continue;
 		}
 
+		if (FAILED(Bind_Material(_pShader, "g_NormalTexture", i, aiTextureType_NORMALS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_NORMALS])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_ORMHTexture", i, aiTextureType_UNKNOWN, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_UNKNOWN])))
+		{
+			int a = 0;
+		}
+		else
+		{
+			int a = 0;
+		}
+
 		/* Bind Bone Matrices */
 		if (Is_AnimModel())
 		{

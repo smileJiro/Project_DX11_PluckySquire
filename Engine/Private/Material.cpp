@@ -93,6 +93,7 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 			iNumSRVs = 0;
 		else
 			iNumSRVs = m_MaterialTextures[i]->Get_NumSRVs();
+
 		switch ((aiTextureType)i)
 		{
 		case aiTextureType_NONE:
@@ -116,6 +117,8 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 			m_tPixelConstData.useAOMap = iNumSRVs;
 			break;
 		case aiTextureType_UNKNOWN:
+			if (iNumSRVs != 0)
+				int a = 0;
 			m_tPixelConstData.useORMHMap = iNumSRVs;
 			break;
 		default:

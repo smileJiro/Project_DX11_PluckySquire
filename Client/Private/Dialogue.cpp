@@ -360,6 +360,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			// 이렇게 하면 플레이어 기반으로 x값을 조정하고 Y값도 플레이어의 기반으로 y값을 조정한다.
 			// 계산된 좌표를 uimgr에 넣고 초상화에 적용한다.
 
+
+			/* TODO :: 이 부분을 파라미터로 들어온 NPC의 좌표 기준으로 맞춘다. */
 			vPos.x = Uimgr->Get_Player()->Get_Transform()->Get_State(CTransform_2D::STATE_POSITION).m128_f32[0];
 			vPos.y = Uimgr->Get_Player()->Get_Transform()->Get_State(CTransform_2D::STATE_POSITION).m128_f32[1];
 

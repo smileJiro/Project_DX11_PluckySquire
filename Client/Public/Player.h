@@ -460,6 +460,7 @@ public: /* 2D 충돌 */
 	void Set_StealthMode(_bool _bNewMode);
 	void Set_2DDirection(E_DIRECTION _eEDir);
 	void Set_3DTargetDirection(_fvector _vDir);
+	void Set_WallNormal(_fvector _vNormal) { m_vWallNormal = _vNormal; }
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
@@ -480,7 +481,7 @@ private:
 	_float m_fCenterHeight = 0.5;
 	_float m_fHeadHeight = 1.0;
 	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
-	_float m_fArmLength = 0.4f;// 벽 타기 범위
+	_float m_fArmLength = 0.325f;// 벽 타기 범위
 	_float m_fFootLength = 0.25;
 	_float m_fStepSlopeThreshold = 0.3f;
 	_bool m_bOnGround = false;
@@ -490,7 +491,7 @@ private:
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 	_bool m_bSneakMode = false;
 	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
-	_vector m_vWallNormal= { 0,0,1 };//접촉한 벽의 법선
+	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
 	_float m_fAirRotateSpeed = 40;
 	_float m_fAirRunSpeed = 10.f;
 

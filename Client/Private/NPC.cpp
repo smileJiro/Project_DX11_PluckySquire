@@ -102,7 +102,7 @@ HRESULT CNPC::Cleanup_DeadReferences()
 	{
 		Safe_Release(m_pTarget);
 		m_pTarget = nullptr;
-		m_pFSM->CleanUp();
+	
 	}
 
 	return S_OK;
@@ -143,8 +143,6 @@ void CNPC::Free()
 {
 	if (nullptr != m_pTarget)
 		Safe_Release(m_pTarget);
-
-	Safe_Release(m_pFSM);
 	Safe_Release(m_pAnimEventGenerator);
 	Safe_Release(m_pColliderCom);
 	__super::Free();

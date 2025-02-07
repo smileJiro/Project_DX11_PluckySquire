@@ -5,6 +5,7 @@
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
 #include "UI_Manager.h"
+#include "StateMachine.h"
 
 CNPC_Store::CNPC_Store(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CNPC(_pDevice, _pContext)
@@ -15,6 +16,8 @@ CNPC_Store::CNPC_Store(const CNPC_Store& _Prototype)
 	:CNPC(_Prototype)
 {
 }
+
+
 
 HRESULT CNPC_Store::Initialize_Prototype()
 {
@@ -34,7 +37,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 	m_iMainIndex = pDesc->iMainIndex;
-	m_iMainIndex = pDesc->iMainIndex;
+	m_iSubIndex = pDesc->iSubIndex;
 	
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
@@ -57,15 +60,14 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 
 	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Martina_idle01, true);
 	pModelObject->Set_Animation(ANIM_2D::Martina_idle01);
-	pModelObject->Register_OnAnimEndCallBack(bind(&CNPC_Store::Animation_End, this, placeholders::_1, placeholders::_2));
-	//Bind_AnimEventFunc("Idle", bind(&CNPC_Store::IDLE, this));
-	/* Com_AnimEventGenerator */
+
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"), &tAnimEventDesc));
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(300.f, -300.f, 0.f, 1.f));
 
 	
@@ -150,6 +152,8 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_MenuOpen);
 	}
 
+	//if (static_cast<CModelObject*>(m_PartObjects[PART_BODY])->)
+
 
 }
 
@@ -217,31 +221,43 @@ _bool CNPC_Store::OnCOllsion2D_Exit()
 	return false;
 }
 
-void CNPC_Store::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
+
+void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-
-	switch ((CNPC_Store::ANIM_2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+	if (iAnimIdx != m_iPreState)
 	{
-
-	case Martina_idle01:
-		if (false == m_isDelay)
+		switch (ANIM_2D(iAnimIdx))
 		{
-			Set_AnimChangeable(true);
-		}
-		break;
-	case Martina_MenuOpen:
-		if (false == m_isDelay)
-		{
+		case ANIM_2D::Martina_MenuExit_Into:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
 
-			Set_AnimChangeable(true);
-		}
-		break;
+		case ANIM_2D::Martina_MenuOpen:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
 
-	default:
-		break;
+		case ANIM_2D::Martina_Puschase01:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
+
+		case ANIM_2D::Martina_NoMoney01_into:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
+
+		case ANIM_2D::Martina_talk:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+			break;
+
+		case ANIM_2D::Martina_idle01:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
+
+		default:
+			break;
+		}
 	}
 }
+
 
 HRESULT CNPC_Store::Ready_ActorDesc(void* _pArg)
 {

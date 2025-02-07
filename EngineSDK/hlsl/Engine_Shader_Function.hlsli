@@ -1,12 +1,14 @@
-float3 TangentToWorld_Normal(float3 _vNormalMapValue, float3 _vNormal, float3 _vTangent)
+float3 Get_WorldNormal(float3 _vNormalMapValue, float3 _vNormal, float3 _vTangent, int invertNormalMapY)
 {
     // Convert UV range to [-1, 1]
     _vNormalMapValue = _vNormalMapValue * 2.0f - 1.0f;
 
     // Normalize inputs
+    _vNormalMapValue.y = invertNormalMapY > 0 ? _vNormalMapValue.y * -1.0f : _vNormalMapValue.y;
+    _vNormal.y = invertNormalMapY ? -_vNormal.y : _vNormal.y;
     float3 vNormal = normalize(_vNormal);
-    float3 vTangent = normalize(_vTangent);
-    float3 vBiTangent = normalize(cross(vNormal, vTangent)); // 좌표계 확인 필요
+    float3 vTangent = normalize(_vTangent - dot(_vTangent, vNormal) * vNormal);
+    float3 vBiTangent = cross(vNormal, vTangent); // 좌표계 확인 필요
 
     // TBN matrix
     float3x3 TBN = float3x3(vTangent, vBiTangent, vNormal);

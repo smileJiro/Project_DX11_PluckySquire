@@ -197,7 +197,42 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 		if (m_fArmYPositionBefore> m_fWallYPosition
 			&& fArmYPositionCurrent <= m_fWallYPosition)
 		{
+
+			_float3 vOrigin;
+			XMStoreFloat3(&vOrigin, vPlayerPos + _vector{ 0,m_fArmHeight,0 } );
+			_float3 vRayDir; 
+			_vector vLook = m_pOwner->Get_LookDirection();
+			XMStoreFloat3(&vRayDir, vLook);
+			list<CActorObject*> hitActors;
+			list<RAYCASTHIT> raycasthits;
+			_vector vWallNormal = { 0,0,0,-1 };
+			_vector vNewWallNormal;
+			//WallNormal 찾기
+			if (m_pGameInstance->RayCast(vOrigin, vRayDir, m_fArmLength + 1.f, hitActors, raycasthits))
+			{
+				auto& iterHitPoint = raycasthits.begin();
+				for (auto& pActor : hitActors)
+				{
+					if (pActor == m_pOwner)
+						continue;
+					if (-1 == XMVectorGetW(vWallNormal)) //이전 벽 노말이 저장되지 않았을 때
+					{
+						vWallNormal = { iterHitPoint->vNormal.x,iterHitPoint->vNormal.y,iterHitPoint->vNormal.z,0 };
+						continue;
+					}
+					else
+						vNewWallNormal = { iterHitPoint->vNormal.x,iterHitPoint->vNormal.y,iterHitPoint->vNormal.z,0 };
+					_float fDotBefore = XMVectorGetX(XMVector3Dot(vWallNormal, vLook));
+					_float fDotAfter = XMVectorGetX(XMVector3Dot(vNewWallNormal, vLook));
+					if (fDotBefore < fDotAfter)
+					{
+						vWallNormal = vNewWallNormal;
+					}
+					iterHitPoint++;
+				}
+			}
 			m_pOwner->Set_ClamberEndPosition(m_vClamberEndPosition);
+			m_pOwner->Set_WallNormal(vWallNormal);
 			m_pOwner->Set_State(CPlayer::CLAMBER);
 			return true;
 		}

@@ -33,13 +33,14 @@
 #include "Logo_Props.h"
 #include "Logo.h"
 #include "ShopPanel_YesNo.h"
+#include "FloorWord.h"
+#include "PrintFloorWord.h"
 /* For. UI*/
 
 /* For. NPC*/
 #include "Npc_Body.h"
 #include "NPC_Store.h"
-#include "FloorWord.h"
-#include "PrintFloorWord.h"
+#include "Npc_Logo.h"
 
 
 #include "ModelObject.h"
@@ -360,7 +361,7 @@ HRESULT CLoader::Loading_Level_Static()
         CMonster_Body::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-	/* For. Prototype_GameObject_Monster_Body */
+	/* For. Prototype_GameObject_NPC_Body */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_NPC_Body"),
 		CNpc_Body::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -458,6 +459,10 @@ HRESULT CLoader::Loading_Level_Logo()
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_NPC_Pip_2DAnimation"),
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/Pip/Pip.model2D")))))
+		return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_LogoBG"), CLogo_BG::Create(m_pDevice, m_pContext))))
@@ -466,6 +471,8 @@ HRESULT CLoader::Loading_Level_Logo()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_Logo"), CLogo::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Obejct_NPC_Logo"), CNPC_Logo::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -714,8 +721,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     
     ///////////////////////////////// UI /////////////////////////////////
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), CNPC_Store::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), 
+        CNPC_Store::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
     /* Boss */
 
