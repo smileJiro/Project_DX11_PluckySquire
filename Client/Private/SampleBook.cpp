@@ -7,6 +7,8 @@
 #include "AnimEventGenerator.h"
 #include "RenderGroup_WorldPos.h"
 
+#include "Camera_Manager.h"
+#include "Camera_2D.h"
 
 CSampleBook::CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -135,16 +137,37 @@ void CSampleBook::Update(_float _fTimeDelta)
 	{
 		if (Book_Action(NEXT))
 		{
-			Set_ReverseAnimation(false);
-			Set_Animation(8);
+			m_isAction = true;
+			//Set_ReverseAnimation(false);
+			//Set_Animation(8);
 		}
 	}
 	if (KEY_DOWN(KEY::N))
 	{
 		if (Book_Action(PREVIOUS))
 		{
-			Set_ReverseAnimation(true);
-			Set_Animation(8);
+			m_isAction = true;
+		/*	Set_ReverseAnimation(true);
+			Set_Animation(8);*/
+		}
+	}
+
+	if (CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()) {
+		if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
+
+			if (Book_Action(NEXT))
+			{
+				Set_ReverseAnimation(false);
+				Set_Animation(8);
+			}
+
+			if (Book_Action(PREVIOUS))
+			{
+				Set_ReverseAnimation(true);
+				Set_Animation(8);
+			}
+
+			m_isAction = false;
 		}
 	}
 
@@ -324,6 +347,7 @@ HRESULT CSampleBook::Render_WorldPosMap()
 
 _bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
 {
+	CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
 
 	if (ACTION_LAST != m_eCurAction)
 		return false;
@@ -372,6 +396,8 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 			//	Event_Book_Main_Section_Change(SECTION_MGR->Get_Prev_Section_Key()->c_str());
 			SECTION_MGR->Change_Prev_Section();
 		}
+		
+		Event_Book_Main_Change(CCamera_Manager::GetInstance()->Get_CameraType());
 
 		Set_Animation(0);
 		m_eCurAction = ACTION_LAST;

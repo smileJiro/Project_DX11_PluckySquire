@@ -19,6 +19,7 @@
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "Camera_2D.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -138,12 +139,17 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 	break;
 	case Client::EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE:
 	{
-		Execute_BOOK_MAIN_SECTION_CHANGE(_tEvent);
+		Execute_Book_Main_Section_Change(_tEvent);
 	}
 	break;
 	case Client::EVENT_TYPE::SET_SCENEQUERYFLAG:
 	{
 		Execute_SetSceneQueryFlag(_tEvent);
+	}
+	break;
+	case Client::EVENT_TYPE::BOOK_MAIN_CHANGE:
+	{
+		Execute_Book_Main_Change(_tEvent);
 	}
 	break;
 	default:
@@ -503,10 +509,25 @@ HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Execute_BOOK_MAIN_SECTION_CHANGE(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_Book_Main_Section_Change(const EVENT& _tEvent)
 {
 	_wstring strLayerTag = reinterpret_cast<const _tchar*>(_tEvent.Parameters[0]);
 	return SECTION_MGR->Change_CurSection(strLayerTag);
+}
+
+HRESULT CEvent_Manager::Execute_Book_Main_Change(const EVENT& _tEvent)
+{
+	_uint iCameraType = (_uint)_tEvent.Parameters[0];
+
+	switch (iCameraType) {
+	case CCamera_Manager::TARGET:
+		break;
+	case CCamera_Manager::TARGET_2D:
+		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_DOWN);
+		break;
+	}
+
+	return S_OK;
 }
 
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)

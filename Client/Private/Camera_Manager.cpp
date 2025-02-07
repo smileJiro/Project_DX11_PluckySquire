@@ -5,6 +5,7 @@
 
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_2D.h"
 
 IMPLEMENT_SINGLETON(CCamera_Manager)
 
@@ -31,6 +32,24 @@ _vector CCamera_Manager::Get_CameraVector(CTransform::STATE _eState)
 {
 	CController_Transform* pConTrans = m_Cameras[m_eCurrentCameraType]->Get_ControllerTransform();
 	return pConTrans->Get_State(_eState);
+}
+
+_uint CCamera_Manager::Get_CameraMode(_uint _iCameraType)
+{
+	if (TARGET != _iCameraType && TARGET_2D != _iCameraType)
+		return INT16_MAX;
+
+	if (TARGET == _iCameraType)
+		return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Get_CameraMode();
+	else if (TARGET_2D == _iCameraType)
+		return dynamic_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Get_CameraMode();
+
+	return _uint();
+}
+
+_uint CCamera_Manager::Get_CurCameraMode()
+{
+	return _uint();
 }
 #ifdef _DEBUG
 
@@ -88,7 +107,9 @@ void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 	if (TARGET == m_eCurrentCameraType) {
 		dynamic_cast<CCamera_Target*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
 	}
-	else
+	else if (TARGET_2D == m_eCurrentCameraType) {
+		dynamic_cast<CCamera_2D*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
+	}
 		return;
 }
 

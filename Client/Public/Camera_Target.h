@@ -44,6 +44,9 @@ public:
 #ifdef _DEBUG
 	_float3						Get_ArmRotation();
 #endif
+public:
+	_uint						Get_CameraMode() { return m_eCameraMode; }
+	virtual INITIAL_DATA		Get_InitialData() override;
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
@@ -56,8 +59,6 @@ public:
 
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
-
-	virtual INITIAL_DATA		Get_InitialData() override;
 
 private:
 	const _float4x4*			m_pTargetWorldMatrix = { nullptr };

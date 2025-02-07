@@ -187,6 +187,17 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_Book_Main_Change(_uint _iCameraType)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::BOOK_MAIN_CHANGE;
+		tEvent.Parameters.resize(1);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iCameraType;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID,_bool _bEnable)
 	{
 		EVENT tEvent;
