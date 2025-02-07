@@ -18,8 +18,8 @@ public:
 		_bool isCollider = false;
 
 
-		_string strActiveType;
-		_string strColliderType;
+		_uint eActiveType;
+		_uint eColliderType;
 
 		_float2 fSorting_Offset_Pos = {};
 		_float2 fCollider_Offset_Pos = {};

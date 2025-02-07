@@ -138,8 +138,8 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				NormalDesc.isCollider = tInfo.isCollider;
 				NormalDesc.isActive = tInfo.isActive;
 				
-				NormalDesc.strActiveType = tInfo.strActiveType;
-				NormalDesc.strColliderType = tInfo.strColliderType;
+				NormalDesc.eActiveType = tInfo.eActiveType;
+				NormalDesc.eColliderType = tInfo.eColliderType;
 				
 				NormalDesc.fSorting_Offset_Pos = tInfo.fSorting_Offset_Pos;
 
