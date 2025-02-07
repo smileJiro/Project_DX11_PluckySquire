@@ -84,6 +84,8 @@ private:
 
 	void				Load_SaveFileList();
 
+	void				Load_String();
+
 	void				Object_Clear(_bool _bSelected = true);
 
 	void				Save_Popup();

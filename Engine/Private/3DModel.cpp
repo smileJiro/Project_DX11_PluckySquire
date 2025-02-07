@@ -130,10 +130,6 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 		{
 			int a = 0;
 		}
-		if (FAILED(Bind_Material(_pShader, "g_ORMHTexture", i, aiTextureType_UNKNOWN, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_UNKNOWN])))
-		{
-			int a = 0;
-		}
 		else
 		{
 			int a = 0;
