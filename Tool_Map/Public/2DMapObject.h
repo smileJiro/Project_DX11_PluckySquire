@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CShader;
 class CTexture;
 class CVIBuffer_Rect;
+class CCollider;
 END
 
 
@@ -58,6 +59,7 @@ public:
 private:
 	_float4x4 m_ProjMatrix, m_ViewMatrix;
 	C2DMapObjectInfo* m_pModelInfo;
+	CCollider* m_pColliderCom = { nullptr };
 
 	_wstring		m_strKey = {};
 	_wstring		m_strModelName = {};

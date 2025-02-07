@@ -934,12 +934,13 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 	{
 		_uint		iObjectCnt = 0;
 		_char		szLayerTag[MAX_PATH];
-		wstring		strLayerTag;
+		_string		strLayerTag;
+		_wstring		wstrLayerTag;
 
 		isTempReturn = ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
-
-		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
+		strLayerTag = szLayerTag;
+		wstrLayerTag = m_pGameInstance->StringToWString(strLayerTag);
 
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
@@ -949,7 +950,7 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 					m_pGameInstance,
 					hFile);
 			if (nullptr != pGameObject)
-				Event_CreateObject(LEVEL_GAMEPLAY, strLayerTag.c_str(), pGameObject);
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, wstrLayerTag.c_str(), pGameObject);
 		}
 	}
 	CloseHandle(hFile);

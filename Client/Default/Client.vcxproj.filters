@@ -297,7 +297,7 @@
     </Filter>
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{ae177609-321a-4bf1-ac22-18b52b14a6df}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="03.Components\Sneak_DetectionField">
       <UniqueIdentifier>{f6c42eee-acf8-4f6c-9743-0655c7697d90}</UniqueIdentifier>
     </Filter>
@@ -318,6 +318,9 @@
     </Filter>
     <Filter Include="91.MapObjectFactory">
       <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\2D\0. Super">
+      <UniqueIdentifier>{b9229a37-ad55-422f-9e39-3e7347e6b1e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -699,9 +702,6 @@
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\2DMapObject.h">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\3DMapObject.h">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
@@ -710,6 +710,16 @@
     </ClInclude>
     <ClInclude Include="..\Public\MapObjectFactory.h">
       <Filter>91.MapObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
+    <ClInclude Include="..\Public\2DMapActionObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapObject.h">
+      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1079,14 +1089,21 @@
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\2DMapObject.cpp">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\3DMapObject.cpp">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_JotMain.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
+    <ClCompile Include="..\Private\2DMapActionObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapDefaultObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
