@@ -245,11 +245,11 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
 {
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_Component_Collider_Circle"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         CCollider_Circle::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_Component_Collider_AABB"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         CCollider_AABB::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));

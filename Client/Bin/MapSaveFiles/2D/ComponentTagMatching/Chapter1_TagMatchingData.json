@@ -23,7 +23,7 @@
     },
     "Collider_Radius": 76.80000305175781
    },
-   "ColliderType": 1
+   "ColliderType": 0
   },
   "ModelType": 1,
   "SearchTag": "bush",
@@ -46,15 +46,15 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 42.0,
-     "Y": 42.0
+     "X": 68.0,
+     "Y": 68.0
     },
     "Collider_Offset_Pos": {
-     "X": 2.0,
-     "Y": 79.0
+     "X": 6.0,
+     "Y": 229.0
     }
    },
-   "ColliderType": 0
+   "ColliderType": 1
   },
   "ModelType": 1,
   "SearchTag": "TD_Tree_BP",
@@ -139,7 +139,7 @@
      "Y": 12.0
     }
    },
-   "ColliderType": 0
+   "ColliderType": 1
   },
   "ModelType": 1,
   "SearchTag": "barrel",
@@ -166,11 +166,11 @@
      "Y": 45.0
     },
     "Collider_Offset_Pos": {
-     "X": -6.0,
-     "Y": 44.0
+     "X": -17.0,
+     "Y": 137.0
     }
    },
-   "ColliderType": 0
+   "ColliderType": 1
   },
   "ModelType": 1,
   "SearchTag": "townsign",
@@ -198,10 +198,10 @@
     },
     "Collider_Offset_Pos": {
      "X": -1.0,
-     "Y": 49.0
+     "Y": 98.0
     }
    },
-   "ColliderType": 0
+   "ColliderType": 1
   },
   "ModelType": 1,
   "SearchTag": "actionsignpost",
@@ -229,7 +229,7 @@
      "Y": -1.0
     }
    },
-   "ColliderType": 0
+   "ColliderType": 1
   },
   "ModelType": 1,
   "SearchTag": "treegreenfallen",
@@ -263,7 +263,7 @@
     },
     "Collider_Radius": 292.0
    },
-   "ColliderType": 1
+   "ColliderType": 0
   },
   "ModelType": 1,
   "SearchTag": "largemossrock",
@@ -304,15 +304,15 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 553.0,
-     "Y": 553.0
+     "X": 568.0,
+     "Y": 568.0
     },
     "Collider_Offset_Pos": {
-     "X": 13.0,
-     "Y": 19.0
+     "X": 79.0,
+     "Y": 151.0
     }
    },
-   "ColliderType": 0
+   "ColliderType": 1
   },
   "ModelType": 1,
   "SearchTag": "latch_house_exterior",
@@ -354,11 +354,11 @@
      "Y": 90.0
     },
     "Collider_Offset_Pos": {
-     "X": 23.0,
-     "Y": 62.0
+     "X": 54.0,
+     "Y": 140.0
     }
    },
-   "ColliderType": 0
+   "ColliderType": 1
   },
   "ModelType": 1,
   "SearchTag": "moonbeard_house_carrot",
@@ -391,11 +391,11 @@
    "ColliderInfo": {
     "Collider_Offset_Pos": {
      "X": 0.0,
-     "Y": 28.0
+     "Y": 222.0
     },
     "Collider_Radius": 420.0
    },
-   "ColliderType": 1
+   "ColliderType": 0
   },
   "ModelType": 0,
   "SearchTag": "moonbread_house_exterior",
@@ -535,15 +535,15 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": -109.0,
-     "Y": -109.0
+     "X": 144.0,
+     "Y": 144.0
     },
     "Collider_Offset_Pos": {
-     "X": -5.0,
-     "Y": 47.0
+     "X": -53.0,
+     "Y": 478.0
     }
    },
-   "ColliderType": 0
+   "ColliderType": 1
   },
   "ModelType": 1,
   "SearchTag": "honey_peaks_tree",
