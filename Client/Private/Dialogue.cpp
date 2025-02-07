@@ -93,7 +93,26 @@ HRESULT CDialog::Render()
 			FirstCalPos(vRTSize);
 		}
 
-		__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		if (0 != Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG)
+		{
+			__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		}
+		else
+		{
+			_float4 vColor = _float4(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Red / 255.f,
+									Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Green / 255.f,
+									Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Blue / 255.f,
+									 1.f);
+
+			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &vColor, sizeof(_float4))))
+				return E_FAIL;
+
+			__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::DIALOGUE_BG_COLOR);
+		}
+
+
+
+		
 
 		if (Uimgr->Get_DialogueLineIndex() < Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		{
@@ -160,6 +179,20 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 					if (line.contains("BG") && line["BG"].is_number_integer())
 					{
 						dialogLine.BG = line["BG"].get<int>();
+					}
+
+					// 배경의 RGB 색상
+					if (line.contains("Red") && line["Red"].is_number_integer())
+					{
+						dialogLine.Red = line["Red"].get<int>();
+					}
+					if (line.contains("Green") && line["Green"].is_number_integer())
+					{
+						dialogLine.Green = line["Green"].get<int>();
+					}
+					if (line.contains("Blue") && line["Blue"].is_number_integer())
+					{
+						dialogLine.Blue = line["Blue"].get<int>();
 					}
 						
 					// 다이얼로그 위치 enum 참조
@@ -288,11 +321,17 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	}
 	break;
 
-	//case LOC_MIDDLE:   // 정 가운데
-	//{
-	//	vTextPos2D = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
-	//}
-	//break;
+	case LOC_MIDHIGH:   // 가운데 위에
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.1f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	break;
 	//
 	//case LOC_MIDLEFT:  // 가운데 좌측
 	//{
@@ -395,9 +434,12 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		}
 		break;
 
-		case LOC_MIDDLE:
+		case LOC_MIDHIGH:
 		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
 
+			vPos.y += _RTSize.y * 0.25f;
 		}
 		break;
 
@@ -457,9 +499,12 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		}
 		break;
 
-		case LOC_MIDDLE:
+		case LOC_MIDHIGH:
 		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
 
+			vPos.y += _RTSize.y * 0.25f;
 		}
 		break;
 
