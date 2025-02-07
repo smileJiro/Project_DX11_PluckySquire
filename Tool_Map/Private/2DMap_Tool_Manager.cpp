@@ -2290,6 +2290,7 @@ void C2DMap_Tool_Manager::Load_String()
 		return;
 	}
 	json ActiveJson;
+	inputFile >> ActiveJson;
 	if (ActiveJson.is_array())
 	{
 		m_ActiveTypeTexts.reserve(ActiveJson.size());

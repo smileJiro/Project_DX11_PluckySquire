@@ -268,9 +268,6 @@
     <Filter Include="02.GameObjects\MainTable">
       <UniqueIdentifier>{25fd5475-9ebe-44bd-bbee-d5b4f8d1ad20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="92. TriggerManager">
-      <UniqueIdentifier>{01c9cacb-3329-4753-ba74-b0632caf502d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.ShaderFiles\PBR">
       <UniqueIdentifier>{ba8ec215-6826-4b57-944f-cbd6d6f43b40}</UniqueIdentifier>
     </Filter>
@@ -309,6 +306,12 @@
     </Filter>
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain">
       <UniqueIdentifier>{441416e8-4de7-4552-b5ef-b2d6f2278881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92.TriggerManager">
+      <UniqueIdentifier>{01c9cacb-3329-4753-ba74-b0632caf502d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="91.MapObjectFactory">
+      <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -633,7 +636,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Trigger_Manager.h">
-      <Filter>92. TriggerManager</Filter>
+      <Filter>92.TriggerManager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
@@ -680,6 +683,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\UI_JotMain.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObjectFactory.h">
+      <Filter>91.MapObjectFactory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -995,7 +1001,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Trigger_Manager.cpp">
-      <Filter>92. TriggerManager</Filter>
+      <Filter>92.TriggerManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
       <Filter>03.Components\PlayerState</Filter>

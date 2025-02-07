@@ -13,9 +13,10 @@ public:
 		//2D
 		_bool is2DImport = false;
 
-		_bool isActive = false;
-		_bool isSorting = false;
-		_bool isCollider = false;
+		_bool isActive			= false;
+		_bool isBackGround		= false;
+		_bool isSorting			= false;
+		_bool isCollider		= false;
 
 
 		_uint eActiveType;
@@ -41,10 +42,19 @@ public:
 	virtual HRESULT					Render() override;
 	virtual HRESULT					Render_Shadow() override;
 
+
+public :
+	_bool							Is_Active() { return m_isActive; };
+	_bool							Is_Collider() { return m_isCollider; };
+	_bool							Is_Sorting() { return m_isSorting; };
+	_bool							Is_BackGround() { return m_isBackGround; };
+
 private:
 	_float4x4						m_matWorld = {};
 
-
+	_bool							m_isActive = false;
+	_bool							m_isCollider = false;
+	_bool							m_isBackGround = false;
 	_bool							m_isSorting = true;
 
 public:

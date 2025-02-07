@@ -237,6 +237,7 @@
     <ClInclude Include="..\Public\Logo_Choose.h" />
     <ClInclude Include="..\Public\Logo_Props.h" />
     <ClInclude Include="..\Public\MapObject.h" />
+    <ClInclude Include="..\Public\MapObjectFactory.h" />
     <ClInclude Include="..\Public\Map_2D.h" />
     <ClInclude Include="..\Public\Monster_Body.h" />
     <ClInclude Include="..\Public\NPC.h" />

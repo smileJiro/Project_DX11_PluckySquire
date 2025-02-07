@@ -52,10 +52,11 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 #ifdef _DEBUG
 	Key_Input(fTimeDelta);
 #endif
-
 	Switching(fTimeDelta);
 
+	Action_SetUp_ByMode();
 	Action_Mode(fTimeDelta);
+
 	__super::Compute_PipeLineMatrices();
 }
 
@@ -136,9 +137,51 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case RETURN_TO_DEFUALT:
 		Return_To_Default(_fTimeDelta);
 		break;
-	case FLIPPING:
-		Fliping(_fTimeDelta);
+	case FLIPPING_UP:
+		Flipping_Up(_fTimeDelta);
 		break;
+	case FLIPPING_PAUSE:
+		//Flipping_Pause(_fTimeDelta);
+		break;
+	case FLIPPING_DOWN:
+		Flipping_Down(_fTimeDelta);
+		break;
+	}
+}
+
+void CCamera_2D::Action_SetUp_ByMode()
+{
+	if (m_ePreCameraMode != m_eCameraMode) {
+	
+		switch (m_eCameraMode) {
+		case DEFAULT:
+			break;
+		case MOVE_TO_DESIREPOS:
+			break;
+		case MOVE_TO_SHOP:
+			break;
+		case RETURN_TO_DEFUALT:
+			break;
+		case FLIPPING_UP:
+		{
+			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+			m_fFlippingTime = { 1.f, 0.f };
+		}
+			break;
+		case FLIPPING_DOWN:
+		{
+			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+			m_fFlippingTime = { 1.f, 0.f };
+
+			// 어디 볼지는 지금은 무조건 player 위치인데 위치랑 카메라가 못 가는 곳에 따라서
+			// 조정이 필요함
+			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+			XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+		}
+			break;
+		}
+
+		m_ePreCameraMode = m_eCameraMode;
 	}
 }
 
@@ -163,8 +206,40 @@ void CCamera_2D::Return_To_Default(_float _fTimeDelta)
 {
 }
 
-void CCamera_2D::Fliping(_float _fTimeDelta)
+void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 {
+	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_IN);
+
+	if (fRatio >= 1.f) {
+		m_fFlippingTime.y = 0.f;
+		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.968761384, 21.5310783, -22.8536606, 1.00000000));
+	
+		m_eCameraMode = FLIPPING_PAUSE;
+	}
+
+	_vector vPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), XMVectorSet(0.968761384, 21.5310783, -22.8536606, 1.00000000), fRatio);
+
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vPos);
+}
+
+void CCamera_2D::Flipping_Pause(_float _fTimeDelta)
+{
+}
+
+void CCamera_2D::Flipping_Down(_float _fTimeDelta)
+{
+	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_IN);
+
+	if (fRatio >= 1.f) {
+		m_fFlippingTime.y = 0.f;
+		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_v2DTargetWorldPos), 1.f));
+
+		m_eCameraMode = DEFAULT;
+	}
+
+	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_v2DTargetWorldPos), fRatio);
+
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
 }
 
 void CCamera_2D::Look_Target(_float fTimeDelta)
@@ -248,14 +323,14 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 
 
 
-	//_float fLength = m_pCurArm->Get_Length();
+	_float fLength = m_pCurArm->Get_Length();
 
-	//if (KEY_DOWN(KEY::F)) {
-	//	m_pCurArm->Set_Length(fLength - 0.5f);
-	//}
-	//if (KEY_DOWN(KEY::G)){
-	//	m_pCurArm->Set_Length(fLength + 0.5f);
-	//}
+	if (KEY_DOWN(KEY::F)) {
+		m_pCurArm->Set_Length(fLength - 0.5f);
+	}
+	if (KEY_DOWN(KEY::G)){
+		m_pCurArm->Set_Length(fLength + 0.5f);
+	}
 
 	//if (KEY_DOWN(KEY::LEFT)) {  // y
 	//	m_vAtOffset.y -= 0.5f;
