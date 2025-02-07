@@ -43,8 +43,7 @@ public:
 		iShaderPass_2D = _iShaderPass;
 	}
 
-	void Build_3D_Model(_uint _iLevelID, 
-		const _wstring _strProtoModelTag, 
+	void Build_3D_Model(_uint _iLevelID, const _wstring _strProtoModelTag, 
 		const _wstring _strProtoShaderTag,
 		_uint _iShaderPass = 0, 
 		_bool _isCoordChangeEnable = false)

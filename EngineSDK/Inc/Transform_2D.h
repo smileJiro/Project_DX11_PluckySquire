@@ -6,8 +6,7 @@ class ENGINE_DLL CTransform_2D final : public CTransform
 public:
 	typedef struct tagTransform2DDesc : public CTransform::TRANSFORM_DESC
 	{
-
-		_float		fInitialRotation = 0.f;
+		_float fInitialRotation = 0.f;
 	}TRANSFORM_2D_DESC;
 
 private:
