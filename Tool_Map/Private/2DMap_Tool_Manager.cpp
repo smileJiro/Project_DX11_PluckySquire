@@ -41,28 +41,13 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	ZeroMemory(m_szSaveFileName, sizeof(m_szSaveFileName));
 
 
-
-
-	m_arrModelTypeString[C2DMapObjectInfo::MODEL_ANIM] = "Anim";
-	m_arrModelTypeString[C2DMapObjectInfo::MODEL_NONANIM] = "NonAnim";
-
-	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_BREAKABLE] = "ActiveType_Breakable";
-	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_PATROL] = "ActiveType_Patrol";
-	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_ATTACKABLE] = "ActiveType_Attackable";
-	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_DIALOG] = "ActiveType_Dialog";
-	m_arrActiveTypeString[C2DMapObjectInfo::ACTIVE_MODEL_CLOSE] = "ActiveType_Model_Close";
-
-	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_AABB] = "Collider_AABB";
-	m_arrColliderTypeString[C2DMapObjectInfo::COLLIDER_SQUARE] = "Collider_Squere";
-
-
-
 	// 임구이 크기 설정
 	ImGui::SetNextWindowSizeConstraints(ImVec2(600, 1200), ImVec2(FLT_MAX, FLT_MAX));
 
 	// 모델 리스트 불러오기
 	Load_SaveFileList();
 	Load_2DModelList();
+	Load_String();
 
 	m_pGameInstance->Set_DebugRender(false);
 
@@ -817,7 +802,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			}
 			ImGui::BeginGroup();
 			{
-				C2DMapObjectInfo::MAPOBJ_MODEL_TYPE eType = m_pPickingInfo->Get_ModelType();
+				CModel::ANIM_TYPE eType = (CModel::ANIM_TYPE)m_pPickingInfo->Get_ModelType();
 
 
 				ImGui::Text("Model Search Tag");
@@ -1003,16 +988,16 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			}
 			if (isActive)
 			{
-				C2DMapObjectInfo::MAPOBJ_ACTIVE_TYPE eActiveType = m_pPickingInfo->Get_ActiveType();
+				_uint eActiveType = m_pPickingInfo->Get_ActiveType();
 				ImGui::SeparatorText("Active Type");
-				if (ImGui::BeginListBox("##ActiveType", ImVec2(-FLT_MIN, C2DMapObjectInfo::MAPOBJ_ACTIVE_TYPE::ACTIVE_END * ImGui::GetTextLineHeightWithSpacing())))
+				if (ImGui::BeginListBox("##ActiveType", ImVec2(-FLT_MIN, (_uint)m_ActiveTypeTexts.size() * ImGui::GetTextLineHeightWithSpacing())))
 				{
 					_uint iSelectIndex = 0;
-					for (auto& strActiveTag : m_arrActiveTypeString)
+					for (auto& strActiveTag : m_ActiveTypeTexts)
 					{
 						if (ImGui::Selectable(strActiveTag.c_str(), eActiveType == iSelectIndex))
 							if (eActiveType != iSelectIndex)
-								m_pPickingInfo->Set_ActiveType((C2DMapObjectInfo::MAPOBJ_ACTIVE_TYPE)iSelectIndex);
+								m_pPickingInfo->Set_ActiveType(iSelectIndex);
 						iSelectIndex++;
 					}
 					ImGui::EndListBox();
@@ -1021,19 +1006,19 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 			if (isCollider)
 			{
-				C2DMapObjectInfo::MAPOBJ_2D_COLLIDIER_TYPE eColliderType = m_pPickingInfo->Get_ColliderType();
-				_bool isNone = eColliderType == C2DMapObjectInfo::MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_END;
-				_bool isAABB = eColliderType == C2DMapObjectInfo::MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_AABB;
-				_bool isSquare = eColliderType == C2DMapObjectInfo::MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_SQUARE;
+				CCollider::TYPE eColliderType = (CCollider::TYPE)m_pPickingInfo->Get_ColliderType();
+				_bool isNone = eColliderType == CCollider::TYPE::TYPE_LAST;
+				_bool isAABB = eColliderType == CCollider::TYPE::AABB_2D;
+				_bool isSquare = eColliderType == CCollider::TYPE::CIRCLE_2D;
 				ImGui::SeparatorText("Collider Setting");
 				if (ImGui::RadioButton("None", isNone))
-					m_pPickingInfo->Set_ColliderType(C2DMapObjectInfo::MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_END);
+					m_pPickingInfo->Set_ColliderType(CCollider::TYPE::TYPE_LAST);
 				ImGui::SameLine();
 				if (ImGui::RadioButton("AABB", isAABB))
-					m_pPickingInfo->Set_ColliderType(C2DMapObjectInfo::MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_AABB);
+					m_pPickingInfo->Set_ColliderType(CCollider::TYPE::AABB_2D);
 				ImGui::SameLine();
 				if (ImGui::RadioButton("Square", isSquare))
-					m_pPickingInfo->Set_ColliderType(C2DMapObjectInfo::MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_SQUARE);
+					m_pPickingInfo->Set_ColliderType(CCollider::TYPE::CIRCLE_2D);
 
 				//PosOffset
 				if (!isNone)
@@ -2243,7 +2228,7 @@ void C2DMap_Tool_Manager::Load_2DModelList()
 		{
 			if (ChildJson.is_object())
 			{
-				C2DMapObjectInfo* pInfo = C2DMapObjectInfo::Create(ChildJson, m_arrModelTypeString, m_arrActiveTypeString, m_arrColliderTypeString);
+				C2DMapObjectInfo* pInfo = C2DMapObjectInfo::Create(ChildJson);
 
 				m_ObjectInfoLists.push_back(pInfo);
 				pInfo->Set_ModelIndex(iIndex);
@@ -2260,7 +2245,7 @@ void C2DMap_Tool_Manager::Save_2DModelList()
 	for (auto pModelInfo : m_ObjectInfoLists)
 	{
 		json ObjJson;
-		if (SUCCEEDED(pModelInfo->Export(ObjJson, m_arrModelTypeString, m_arrActiveTypeString, m_arrColliderTypeString)))
+		if (SUCCEEDED(pModelInfo->Export(ObjJson)))
 			Outputjson.push_back(ObjJson);
 	}
 	_wstring wstrPath = MAP_2D_DEFAULT_PATH;
@@ -2288,6 +2273,39 @@ void C2DMap_Tool_Manager::Load_SaveFileList()
 			m_SaveFileLists.push_back(strKey);
 		}
 	}
+}
+
+void C2DMap_Tool_Manager::Load_String()
+{
+
+#pragma region Active
+
+
+	_wstring strModelPath = L"../../Client/Bin/MapSaveFiles/2D/Default2DOption/Active_Data.json";
+	std::ifstream inputFile(strModelPath);
+
+	if (!inputFile.is_open()) 
+	{
+		throw std::runtime_error("json Error : Active_Data.json");
+		return;
+	}
+	json ActiveJson;
+	inputFile >> ActiveJson;
+	if (ActiveJson.is_array())
+	{
+		m_ActiveTypeTexts.reserve(ActiveJson.size());
+		for (auto& ChildJson : ActiveJson)
+			m_ActiveTypeTexts.push_back(ChildJson["ActiveName"]);
+	}
+#pragma endregion
+	m_ModelTypeTexts.resize(CModel::ANIM_TYPE::LAST);
+	m_ColliderTypeTexts.resize(CCollider::TYPE_LAST);
+
+	m_ColliderTypeTexts[CCollider::AABB_2D] = "Collider_AABB";
+	m_ColliderTypeTexts[CCollider::CIRCLE_2D] = "Collider_CIRCLE";
+
+	m_ModelTypeTexts[(_uint)CModel::ANIM_TYPE::ANIM] = "Anim";
+	m_ModelTypeTexts[(_uint)CModel::ANIM_TYPE::NONANIM] = "NonAnim";
 }
 
 

@@ -113,7 +113,7 @@ void CShopPanel_BG::Cal_ShopBGPos(_float2 _vRTSize)
 	vPos.x = Uimgr->Get_Player()->Get_Transform()->Get_State(CTransform_2D::STATE_POSITION).m128_f32[0];
 	vPos.y = Uimgr->Get_Player()->Get_Transform()->Get_State(CTransform_2D::STATE_POSITION).m128_f32[1];
 
-	vPos.x -= _vRTSize.x * 0.2f;
+	vPos.x -= _vRTSize.x * 0.15f;
 	vPos.y += _vRTSize.y * 0.11f;
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));

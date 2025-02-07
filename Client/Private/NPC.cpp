@@ -2,6 +2,7 @@
 #include "NPC.h"
 #include "GameInstance.h"
 #include "FSM.h"
+#include "UI_Manager.h"
 
 CNPC::CNPC(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -28,6 +29,7 @@ HRESULT CNPC::Initialize(void* _pArg)
 	m_iMainIndex = pDesc->iMainIndex;
 	m_iSubIndex = pDesc->iSubIndex;
 	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
+	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
 	Safe_AddRef(m_pTarget);
 
 	return S_OK;
@@ -70,6 +72,32 @@ HRESULT CNPC::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 	return S_OK;
 }
 
+void CNPC::Throw_Dialogue()
+{
+
+	Uimgr->Set_DialogId(m_strDialogueIndex);
+
+	_float4 vPos = {};
+
+	if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+	{
+		vPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
+	}
+	else if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+	{
+		vPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+			m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[1],
+			m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[2],
+			1.f);
+	}
+
+	Uimgr->Set_DialoguePos(vPos);
+	Uimgr->Set_DisplayDialogue(true);
+	Uimgr->Set_PortraitRender(true);
+
+
+}
+
 void CNPC::Set_2D_Direction(F_DIRECTION _eDir)
 {
 	m_e2DDirection = _eDir;
@@ -102,7 +130,7 @@ HRESULT CNPC::Cleanup_DeadReferences()
 	{
 		Safe_Release(m_pTarget);
 		m_pTarget = nullptr;
-		m_pFSM->CleanUp();
+
 	}
 
 	return S_OK;
@@ -143,8 +171,6 @@ void CNPC::Free()
 {
 	if (nullptr != m_pTarget)
 		Safe_Release(m_pTarget);
-
-	Safe_Release(m_pFSM);
 	Safe_Release(m_pAnimEventGenerator);
 	Safe_Release(m_pColliderCom);
 	__super::Free();

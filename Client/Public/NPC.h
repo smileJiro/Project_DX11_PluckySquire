@@ -9,7 +9,7 @@ END
 
 
 BEGIN(Client)
-class CFSM;
+class CStateMachine;
 class CNPC abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -17,8 +17,9 @@ public:
 
 	typedef struct tagNPCDesc : public CCharacter::CHARACTER_DESC
 	{
-		_uint iMainIndex;
-		_uint iSubIndex = 0;
+		_uint	iMainIndex;
+		_uint	iSubIndex = 0;
+		_tchar	strDialogueIndex[MAX_PATH];
 		
 	}NPC_DESC;
 
@@ -90,11 +91,13 @@ protected:
 		m_fAccTime = 0.f;
 	}
 
+	virtual void				Throw_Dialogue();
+
+
 protected:
 	_uint			m_iState = {};
 	_uint			m_iPreState = {};
 	CGameObject*	m_pTarget = { nullptr };
-	CFSM*			m_pFSM = { nullptr };
 	_float			m_fAlertRange = { 0.f };
 	_float			m_fChaseRange = { 0.f };
 	_float			m_fAttackRange = { 0.f };
@@ -115,9 +118,13 @@ protected:
 	_bool			m_isCollision2D = { false };
 	_bool			m_isPreCollision2D = { false };
 
+	_tchar			m_strDialogueIndex[MAX_PATH] = {};
+	_bool			m_isColPlayer = { false };
+
 	vector<CGameObject*>	m_pNpcObject;
 	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
+	CStateMachine* m_pStateMachine = nullptr;
 
 public:
 	HRESULT Cleanup_DeadReferences() override;
@@ -129,11 +136,6 @@ protected:
 	virtual HRESULT Ready_ActorDesc(void* _pArg) = 0;
 	virtual HRESULT Ready_Components() = 0;
 	virtual HRESULT Ready_PartObjects() = 0;
-
-	virtual _bool OnCOllsion2D_Enter() = 0;
-	virtual _bool OnCOllsion2D_Stay() = 0;
-	virtual _bool OnCOllsion2D_Exit() = 0;
-
 
 public:
 	virtual CGameObject* Clone(void* _pArg) = 0;

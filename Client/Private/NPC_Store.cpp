@@ -5,6 +5,9 @@
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
 #include "UI_Manager.h"
+#include "StateMachine.h"
+
+
 
 CNPC_Store::CNPC_Store(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CNPC(_pDevice, _pContext)
@@ -15,6 +18,8 @@ CNPC_Store::CNPC_Store(const CNPC_Store& _Prototype)
 	:CNPC(_Prototype)
 {
 }
+
+
 
 HRESULT CNPC_Store::Initialize_Prototype()
 {
@@ -34,7 +39,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 	m_iMainIndex = pDesc->iMainIndex;
-	m_iMainIndex = pDesc->iMainIndex;
+	m_iSubIndex = pDesc->iSubIndex;
 	
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
@@ -57,16 +62,15 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 
 	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Martina_idle01, true);
 	pModelObject->Set_Animation(ANIM_2D::Martina_idle01);
-	pModelObject->Register_OnAnimEndCallBack(bind(&CNPC_Store::Animation_End, this, placeholders::_1, placeholders::_2));
-	//Bind_AnimEventFunc("Idle", bind(&CNPC_Store::IDLE, this));
-	/* Com_AnimEventGenerator */
+
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"), &tAnimEventDesc));
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(300.f, -300.f, 0.f, 1.f));
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
 
 	
 	//CActor::ACTOR_DESC ActorDesc;
@@ -150,6 +154,16 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_MenuOpen);
 	}
 
+	if (KEY_DOWN(KEY::E) && true == m_isColPlayer)
+	{
+		Throw_Dialogue();
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+
+		
+	}
+
+	//if (static_cast<CModelObject*>(m_PartObjects[PART_BODY])->)
+
 
 }
 
@@ -163,85 +177,59 @@ HRESULT CNPC_Store::Render()
 	return S_OK;
 }
 
-void CNPC_Store::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+void CNPC_Store::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	m_isColPlayer = true;
+}
+
+void CNPC_Store::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 	int a = 0;
 }
 
-void CNPC_Store::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+void CNPC_Store::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	int a = 0;
+	m_isColPlayer = false;
 }
 
-void CNPC_Store::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+
+
+void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	int a = 0;
-}
-
-_bool CNPC_Store::OnCOllsion2D_Enter()
-{
-	// 이전에 false 였고 현재 true 인경우
-	//m_isPreCollision2D 가 false
-	//m_isCollision2D 가 true
-	// 인터렉션창을 띄운다.
-	
-
-	m_isPreCollision2D = m_isCollision2D;
-
-	return false;
-}
-
-_bool CNPC_Store::OnCOllsion2D_Stay()
-{
-	// 이전에 true 였고 지금도 true면 들어오는건 false, // 애니메이션 유지
-		//m_isPreCollision2D 가 true
-	//m_isCollision2D 가 true
-	// 인터렉션창을 띄운다.
-	// E를 누르면 아이템 상점을 띄운다.
-
-
-	return false;
-}
-
-_bool CNPC_Store::OnCOllsion2D_Exit()
-{
-
-	// 이전에 true였고 현재 false 인경우
-			//m_isPreCollision2D 가 true
-	//m_isCollision2D 가 false
-	// 인터렉션창을 끈다.
-
-
-	m_isPreCollision2D = m_isCollision2D;
-
-	return false;
-}
-
-void CNPC_Store::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
-{
-	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-
-	switch ((CNPC_Store::ANIM_2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+	if (iAnimIdx != m_iPreState)
 	{
-
-	case Martina_idle01:
-		if (false == m_isDelay)
+		switch (ANIM_2D(iAnimIdx))
 		{
-			Set_AnimChangeable(true);
-		}
-		break;
-	case Martina_MenuOpen:
-		if (false == m_isDelay)
-		{
+		case ANIM_2D::Martina_MenuExit_Into:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
 
-			Set_AnimChangeable(true);
-		}
-		break;
+		case ANIM_2D::Martina_MenuOpen:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
 
-	default:
-		break;
+		case ANIM_2D::Martina_Puschase01:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
+
+		case ANIM_2D::Martina_NoMoney01_into:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
+
+		case ANIM_2D::Martina_talk:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+			break;
+
+		case ANIM_2D::Martina_idle01:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
+
+		default:
+			break;
+		}
 	}
 }
+
 
 HRESULT CNPC_Store::Ready_ActorDesc(void* _pArg)
 {
@@ -297,9 +285,10 @@ HRESULT CNPC_Store::Ready_Components()
 {
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = { 180.f, 180.f };
+	AABBDesc.vExtents = { 70.f, 70.f };
 	AABBDesc.vScale = { 1.0f, 1.0f };
-	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
+	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
+	//AABBDesc.vOffsetPosition = { 0.f, 0.f };
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
 		return E_FAIL;
@@ -373,6 +362,7 @@ CGameObject* CNPC_Store::Clone(void* _pArg)
 
 void CNPC_Store::Free()
 {
+	Safe_Release(m_pColliderCom);
 	__super::Free();
 }
 

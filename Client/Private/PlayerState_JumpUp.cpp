@@ -75,7 +75,7 @@ void CPlayerState_JumpUp::Switch_JumpAnimation()
 {
 
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	_bool bSword = m_pOwner->Is_SwordEquiped();
+	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
 
 	if (COORDINATE_2D == eCoord)

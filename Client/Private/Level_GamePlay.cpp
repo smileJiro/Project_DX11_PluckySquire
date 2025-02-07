@@ -31,7 +31,8 @@
 #include "RayShape.h"
 
 
-#include "MapObject.h"
+#include "2DMapObject.h"
+#include "3DMapObject.h"
 
 
 //#include "UI.h"
@@ -40,6 +41,7 @@
 #include "SettingPanel.h"
 #include "ESC_HeartPoint.h"
 #include "ShopItemBG.h"
+#include "MapObjectFactory.h"
 
 #include "NPC.h"
 
@@ -184,10 +186,6 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
-
-	if (KEY_DOWN(KEY::T)) {
-		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/Test.json"));
-	}
 
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
@@ -338,8 +336,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
-
-	Create_Arm();
+	
+	_float3 vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
+	_float fLength = 7.f;
+	Create_Arm((_uint)COORDINATE_3D, pCamera, vRotation, fLength);
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
@@ -360,29 +360,33 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::CUTSCENE, dynamic_cast<CCamera*>(pCamera));
 	
 	// 2D Camera
-	//CCamera_2D::CAMERA_2D_DESC Target2DDesc{};
+	CCamera_2D::CAMERA_2D_DESC Target2DDesc{};
 
-	//Target2DDesc.fSmoothSpeed = 5.f;
-	//Target2DDesc.eCameraMode = CCamera_2D::DEFAULT;
-	//Target2DDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
+	Target2DDesc.fSmoothSpeed = 5.f;
+	Target2DDesc.eCameraMode = CCamera_2D::DEFAULT;
+	Target2DDesc.vAtOffset = _float3(0.0f, 0.f, 0.0f);
+	Target2DDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_2D);
 
-	//Target2DDesc.fFovy = XMConvertToRadians(60.f);
-	//Target2DDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	//Target2DDesc.fNear = 0.1f;
-	//Target2DDesc.fFar = 1000.f;
-	//Target2DDesc.vEye = _float3(0.f, 10.f, -7.f);
-	//Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
-	//Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
-	//Target2DDesc.iCameraType = CCamera_Manager::TARGET_2D;
+	Target2DDesc.fFovy = XMConvertToRadians(60.f);
+	Target2DDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	Target2DDesc.fNear = 0.1f;
+	Target2DDesc.fFar = 1000.f;
+	Target2DDesc.vEye = _float3(0.f, 10.f, -7.f);
+	Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
+	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
+	Target2DDesc.iCameraType = CCamera_Manager::TARGET_2D;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
-	//	LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
+		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Target2DDesc)))
+		return E_FAIL;
 
-	//CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
 
-	//Create_Arm();
+	vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
+	fLength = 12.5f;
+	Create_Arm((_uint)COORDINATE_2D, pCamera, vRotation, fLength);
 
+	// Set Cur Camera
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	// Load CutSceneData, ArmData
@@ -749,6 +753,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	pDesc.fSizeX = 256.f / 4.f;
+	pDesc.fSizeY = 256.f / 4.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+	
+
 	return S_OK;
 }
 
@@ -761,6 +772,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
@@ -867,26 +879,31 @@ HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-void CLevel_GamePlay::Create_Arm()
+void CLevel_GamePlay::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength)
 {
 	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
 	if (nullptr == pPlayer)
 		return;
-	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
 
 	CCameraArm::CAMERA_ARM_DESC Desc{};
 
 	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 7.f;
+	Desc.vRotation = _vRotation;
+	Desc.fLength = _fLength;
 	Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
-	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-
-	pTarget->Add_CurArm(pArm);
+	switch (_iCoordinateType) {
+	case (_uint)COORDINATE_3D:
+		dynamic_cast<CCamera_Target*>(_pCamera)->Add_CurArm(pArm);
+		break;
+	case (_uint)COORDINATE_2D:
+		dynamic_cast<CCamera_2D*>(_pCamera)->Add_CurArm(pArm);
+		break;
+	}
 }
 
 HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
@@ -923,71 +940,16 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
 		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
+
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
-			_char		szSaveMeshName[MAX_PATH];
-			_float4x4	vWorld = {};
-
-
-			isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-			isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
-
-
-			CMapObject::MAPOBJ_DESC NormalDesc = {};
-			NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
-			NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
-			NormalDesc.isCoordChangeEnable = false;
-			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
-			NormalDesc.eStartCoord = COORDINATE_3D;
-			NormalDesc.tTransform3DDesc.isMatrix = true;
-			NormalDesc.tTransform3DDesc.matWorld = vWorld;
-			CGameObject* pGameObject = nullptr;
-			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-				LEVEL_GAMEPLAY,
-				strLayerTag,
-				&pGameObject,
-				(void*)&NormalDesc);
-
-			if (pGameObject)
-			{
-				DWORD	dwByte(0);
-				_uint iOverrideCount = 0;
-				C3DModel::COLOR_SHADER_MODE eTextureType;
-				_float4 fDefaultDiffuseColor;
-
-
-				isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-				static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
-
-				switch (eTextureType)
-				{
-				case Engine::C3DModel::COLOR_DEFAULT:
-				case Engine::C3DModel::MIX_DIFFUSE:
-				{
-					isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-					static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
-				}
-				break;
-				default:
-					break;
-				}
-
-				isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
-				if (0 < iOverrideCount)
-				{
-					CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
-					for (_uint i = 0; i < iOverrideCount; i++)
-					{
-						_uint iMaterialIndex, iTexTypeIndex, iTexIndex;
-						isTempReturn = ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
-						isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
-						isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
-
-						pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
-					}
-				}
-				//pGameObject->Set_WorldMatrix(vWorld);
-			}
+			C3DMapObject* pGameObject =
+				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
+					(LEVEL_ID)LEVEL_GAMEPLAY,
+					m_pGameInstance,
+					hFile);
+			if (nullptr != pGameObject)
+				Event_CreateObject(LEVEL_GAMEPLAY, strLayerTag.c_str(), pGameObject);
 		}
 	}
 	CloseHandle(hFile);

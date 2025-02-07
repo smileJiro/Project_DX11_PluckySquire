@@ -65,21 +65,6 @@ void CNpc_Body::Active_OnEnable()
 	// 1. PxActor 활성화 (활성화 시점에는 먼저 켜고)
 	CActorObject::Active_OnEnable();
 
-
-
-	// 2. 몬스터 할거 하고
-//	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
-//	if (nullptr == m_pTarget)
-//	{
-//#ifdef _DEBUG
-//		cout << "MONSTERINIT : NO PLAYER" << endl;
-//#endif // _DEBUG
-//		return;
-//	}
-// 
-//	Safe_AddRef(m_pTarget);
-
-
 }
 
 void CNpc_Body::Active_OnDisable()
@@ -124,7 +109,7 @@ HRESULT CNpc_Body::Ready_Desc(void** _pArg)
 		BodyDesc->iPriorityID_3D = PR3D_NONBLEND;
 	}
 
-	
+
 
 	return S_OK;
 }

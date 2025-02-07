@@ -165,9 +165,6 @@
     <ClInclude Include="..\Public\Level_Trigger_Tool.h">
       <Filter>01. Levels\03. Trigger_Tool</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MapObject.h">
-      <Filter>02. GameObjects\MapObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_Lights.h">
       <Filter>03. RenderGroup\Lights</Filter>
     </ClInclude>
@@ -176,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
       <Filter>03. RenderGroup\AfterEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02. GameObjects\MapObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -248,9 +248,6 @@
     <ClCompile Include="..\Private\Level_Trigger_Tool.cpp">
       <Filter>01. Levels\03. Trigger_Tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MapObject.cpp">
-      <Filter>02. GameObjects\MapObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_Lights.cpp">
       <Filter>03. RenderGroup\Lights</Filter>
     </ClCompile>
@@ -259,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
       <Filter>03. RenderGroup\AfterEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>02. GameObjects\MapObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

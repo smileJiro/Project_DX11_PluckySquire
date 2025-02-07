@@ -176,13 +176,24 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Evnet_Book_MainPage_Change(const _tchar* _strSectionTag)
+	void Event_Book_Main_Section_Change(const _tchar* _strSectionTag)
 	{
 		EVENT tEvent;
-		tEvent.eType = EVENT_TYPE::BOOK_MAINPAGE_CHANGE;
+		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE;
 		tEvent.Parameters.resize(1);
 
 		tEvent.Parameters[0] = (DWORD_PTR)_strSectionTag;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	void Event_Book_Main_Change(_uint _iCameraType)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::BOOK_MAIN_CHANGE;
+		tEvent.Parameters.resize(1);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iCameraType;
 
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
