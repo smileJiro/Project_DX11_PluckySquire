@@ -243,13 +243,31 @@ HRESULT CSampleBook::Render()
 					// 이전 페이지로 진행 중이라면, 현재 페이지 -> 바뀌어야 할 페이지(이전 페이지)
 					//								다음 페이지 -> 바뀌기 전 페이지(현재 페이지)
 				case Client::CSampleBook::PREVIOUS:
-					if (CUR_LEFT == i || CUR_RIGHT == i)
-						pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Prev_Section_Key()));
-					else if (NEXT_LEFT == i || NEXT_RIGHT == i)
-						pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
+					if (!m_isAction)
+					{
+						if (CUR_LEFT == i || CUR_RIGHT == i)
+							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Prev_Section_Key()));
+						else if (NEXT_LEFT == i || NEXT_RIGHT == i)
+							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
+						else 
+							MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
+						break;
+					}
 					else 
-						MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
-					break;
+					{
+						if (CUR_LEFT == i || CUR_RIGHT == i)
+							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
+						else if (NEXT_LEFT == i || NEXT_RIGHT == i)
+						{
+							if (SECTION_MGR->Has_Next_Section())
+								pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Next_Section_Key()));
+							else
+								if (FAILED(pModel->Bind_Material(pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+									continue;
+						}
+						else
+							MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
+					}
 					// 나머지 케이스는				다음 -> 다음 (다음이 없으면, 기본 마테리얼 디퓨즈.)
 					//								현재 -> 현재 
 				case Client::CSampleBook::NEXT:
