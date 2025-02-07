@@ -9,7 +9,7 @@ END
 
 
 BEGIN(Client)
-class CFSM;
+class CStateMachine;
 class CNPC abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -94,7 +94,6 @@ protected:
 	_uint			m_iState = {};
 	_uint			m_iPreState = {};
 	CGameObject*	m_pTarget = { nullptr };
-	CFSM*			m_pFSM = { nullptr };
 	_float			m_fAlertRange = { 0.f };
 	_float			m_fChaseRange = { 0.f };
 	_float			m_fAttackRange = { 0.f };
@@ -118,6 +117,7 @@ protected:
 	vector<CGameObject*>	m_pNpcObject;
 	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
+	CStateMachine* m_pStateMachine = nullptr;
 
 public:
 	HRESULT Cleanup_DeadReferences() override;

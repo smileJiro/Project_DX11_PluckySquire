@@ -184,6 +184,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\2DMapObject.h" />
+    <ClInclude Include="..\Public\3DMapObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
@@ -239,6 +241,7 @@
     <ClInclude Include="..\Public\Monster_Body.h" />
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\Npc_Body.h" />
+    <ClInclude Include="..\Public\Npc_Logo.h" />
     <ClInclude Include="..\public\NPC_Store.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerBody.h" />
@@ -307,6 +310,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\2DMapObject.cpp" />
+    <ClCompile Include="..\Private\3DMapObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp">
@@ -361,6 +366,7 @@
     <ClCompile Include="..\Private\Monster_Body.cpp" />
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\Npc_Body.cpp" />
+    <ClCompile Include="..\Private\Npc_Logo.cpp" />
     <ClCompile Include="..\private\NPC_Store.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerBody.cpp" />

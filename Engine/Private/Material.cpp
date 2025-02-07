@@ -86,13 +86,14 @@ HRESULT CMaterial::Bind_PixelConstBuffer(CShader* _pShader)
 
 HRESULT CMaterial::Ready_PixelConstBuffer()
 {
-	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+	for (_uint i = 0; i < aiTextureType_UNKNOWN; ++i)
 	{
 		_uint iNumSRVs = 0;
 		if (nullptr == m_MaterialTextures[i])
 			iNumSRVs = 0;
 		else
 			iNumSRVs = m_MaterialTextures[i]->Get_NumSRVs();
+
 		switch ((aiTextureType)i)
 		{
 		case aiTextureType_NONE:
@@ -116,6 +117,8 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 			m_tPixelConstData.useAOMap = iNumSRVs;
 			break;
 		case aiTextureType_UNKNOWN:
+			if (iNumSRVs != 0)
+				int a = 0;
 			m_tPixelConstData.useORMHMap = iNumSRVs;
 			break;
 		default:
@@ -146,7 +149,7 @@ void CMaterial::Free()
 {
 	Safe_Release(m_pPixeConstBuffer);
 
-	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+	for (_uint i = 0; i < aiTextureType_UNKNOWN; ++i)
 		Safe_Release(m_MaterialTextures[i]);
 
 	__super::Free();

@@ -483,10 +483,10 @@ private:
 	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
 	_float m_fFootLength = 0.25;
-	_float m_fStepSlopeThreshold = 0.3;
+	_float m_fStepSlopeThreshold = 0.3f;
 	_bool m_bOnGround = false;
 	_float m_fAttackForwardingForce = 12.f;
-	_float m_fGroundRotateSpeed = 360;
+	_float m_fGroundRotateSpeed = 360.f;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 	_bool m_bSneakMode = false;

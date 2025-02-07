@@ -33,13 +33,14 @@
 #include "Logo_Props.h"
 #include "Logo.h"
 #include "ShopPanel_YesNo.h"
+#include "FloorWord.h"
+#include "PrintFloorWord.h"
 /* For. UI*/
 
 /* For. NPC*/
 #include "Npc_Body.h"
 #include "NPC_Store.h"
-#include "FloorWord.h"
-#include "PrintFloorWord.h"
+#include "Npc_Logo.h"
 
 
 #include "ModelObject.h"
@@ -54,7 +55,8 @@
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
-#include "MapObject.h"
+#include "2DMapObject.h"
+#include "3DMapObject.h"
 #include "DetectionField.h"
 
 /* For. Monster */
@@ -332,8 +334,12 @@ HRESULT CLoader::Loading_Level_Static()
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-        CMapObject::Create(m_pDevice, m_pContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
+        C2DMapObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
+        C3DMapObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
@@ -355,7 +361,7 @@ HRESULT CLoader::Loading_Level_Static()
         CMonster_Body::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-	/* For. Prototype_GameObject_Monster_Body */
+	/* For. Prototype_GameObject_NPC_Body */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_NPC_Body"),
 		CNpc_Body::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -453,6 +459,10 @@ HRESULT CLoader::Loading_Level_Logo()
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_NPC_Pip_2DAnimation"),
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/Pip/Pip.model2D")))))
+		return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_LogoBG"), CLogo_BG::Create(m_pDevice, m_pContext))))
@@ -461,6 +471,8 @@ HRESULT CLoader::Loading_Level_Logo()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_Logo"), CLogo::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Obejct_NPC_Logo"), CNPC_Logo::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -657,12 +669,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
-    /* For. Prototype_GameObject_MapObject */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),
-        CModelObject::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-    /* For. Prototype_GameObject_MapObject */
-
+    /* For. Prototype_GameObject_SampleBook */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
         CSampleBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -714,8 +721,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     
     ///////////////////////////////// UI /////////////////////////////////
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), CNPC_Store::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), 
+        CNPC_Store::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
     /* Boss */
 
@@ -1021,17 +1029,18 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
 
 
-            CMapObject::MAPOBJ_DESC NormalDesc = {};
+            C3DMapObject::MAPOBJ_3D_DESC NormalDesc = {};
+
             NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
             NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
             NormalDesc.isCoordChangeEnable = false;
             NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
-            NormalDesc.is3DCulling = false;
+            NormalDesc.isCulling = false;
             NormalDesc.eStartCoord = COORDINATE_3D;
             NormalDesc.tTransform3DDesc.isMatrix = true;
             NormalDesc.tTransform3DDesc.matWorld = vWorld;
             CGameObject* pGameObject = nullptr;
-            m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+            m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
                 _eObjectLevelId,
                 strLayerTag,
                 &pGameObject,
@@ -1046,15 +1055,16 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 
 
                 isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-                static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
+                C3DMapObject* pMapObject = static_cast<C3DMapObject*>(pGameObject);
 
+                pMapObject->Set_Color_Shader_Mode(eTextureType);
                 switch (eTextureType)
                 {
                 case Engine::C3DModel::COLOR_DEFAULT:
                 case Engine::C3DModel::MIX_DIFFUSE:
                 {
                     isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-                    static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
+                    pMapObject->Set_Diffuse_Color(fDefaultDiffuseColor);
                 }
                 break;
                 default:
@@ -1064,7 +1074,6 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
                 isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
                 if (0 < iOverrideCount)
                 {
-                    CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
                     for (_uint i = 0; i < iOverrideCount; i++)
                     {
                         _uint iMaterialIndex, iTexTypeIndex, iTexIndex;
@@ -1072,10 +1081,9 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
                         isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
                         isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
 
-                        pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
+                        pMapObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
                     }
                 }
-                //pGameObject->Set_WorldMatrix(vWorld);
             }
         }
     }

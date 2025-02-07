@@ -52,8 +52,8 @@ private:
 
 	typedef struct tagPackagingMaterial
 	{
-		_uint iNumSRVs[AI_TEXTURE_TYPE_MAX];
-		vector<pair<_string, _uint>> SRVNames[AI_TEXTURE_TYPE_MAX];
+		_uint iNumSRVs[aiTextureType_UNKNOWN];
+		vector<pair<_string, _uint>> SRVNames[aiTextureType_UNKNOWN];
 
 	}MATERIAL;
 
