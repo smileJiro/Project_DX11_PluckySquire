@@ -238,6 +238,7 @@
     <ClInclude Include="..\Public\Logo_Choose.h" />
     <ClInclude Include="..\Public\Logo_Props.h" />
     <ClInclude Include="..\Public\MapObject.h" />
+    <ClInclude Include="..\Public\MapObjectFactory.h" />
     <ClInclude Include="..\Public\Map_2D.h" />
     <ClInclude Include="..\Public\Monster_Body.h" />
     <ClInclude Include="..\Public\NPC.h" />
@@ -273,6 +274,16 @@
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
     <ClInclude Include="..\Public\ShopPanel_YesNo.h" />
+    <ClInclude Include="..\Public\Sneak_AlertState.h" />
+    <ClInclude Include="..\Public\Sneak_AttackState.h" />
+    <ClInclude Include="..\Public\Sneak_AwareState.h" />
+    <ClInclude Include="..\Public\Sneak_ChaseState.h" />
+    <ClInclude Include="..\Public\Sneak_DetectionField.h" />
+    <ClInclude Include="..\Public\Sneak_IdleState.h" />
+    <ClInclude Include="..\Public\Sneak_InvestigateState.h" />
+    <ClInclude Include="..\Public\Sneak_PatrolState.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
     <ClInclude Include="..\Public\Soldier_Spear.h" />
@@ -304,6 +315,7 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
     <ClInclude Include="..\Public\UI.h" />
+    <ClInclude Include="..\Public\UI_JotMain.h" />
     <ClInclude Include="..\public\UI_Manager.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
@@ -400,6 +412,16 @@
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_BG.cpp" />
     <ClCompile Include="..\Private\ShopPanel_YesNo.cpp" />
+    <ClCompile Include="..\Private\Sneak_AlertState.cpp" />
+    <ClCompile Include="..\Private\Sneak_AttackState.cpp" />
+    <ClCompile Include="..\Private\Sneak_AwareState.cpp" />
+    <ClCompile Include="..\Private\Sneak_ChaseState.cpp" />
+    <ClCompile Include="..\Private\Sneak_DetectionField.cpp" />
+    <ClCompile Include="..\Private\Sneak_IdleState.cpp" />
+    <ClCompile Include="..\Private\Sneak_InvestigateState.cpp" />
+    <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
     <ClCompile Include="..\Private\Soldier_Spear.cpp" />
@@ -417,7 +439,9 @@
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
     <ClCompile Include="..\private\SettingPanelBG.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
-    <ClCompile Include="..\Private\Level_GamePlay.cpp" />
+    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Level_Static.cpp" />
@@ -432,6 +456,7 @@
     <ClCompile Include="..\private\TestTerrain.cpp" />
     <ClCompile Include="..\Private\Transition.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
+    <ClCompile Include="..\Private\UI_JotMain.cpp" />
     <ClCompile Include="..\private\UI_Manager.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

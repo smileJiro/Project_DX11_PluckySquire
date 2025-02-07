@@ -62,6 +62,8 @@ private :
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
 	ID3D11Texture2D*		m_pStagingTexture = nullptr;
 
+	_bool					m_isAction = { false };
+
 public:
 	static CSampleBook* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

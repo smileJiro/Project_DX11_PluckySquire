@@ -41,6 +41,7 @@
 #include "SettingPanel.h"
 #include "ESC_HeartPoint.h"
 #include "ShopItemBG.h"
+#include "MapObjectFactory.h"
 
 #include "NPC.h"
 
@@ -752,6 +753,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	pDesc.fSizeX = 256.f / 4.f;
+	pDesc.fSizeY = 256.f / 4.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+	
+
 	return S_OK;
 }
 
@@ -764,6 +772,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
@@ -791,12 +800,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-18.0f, 0.35f, -17.0f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
+
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.0f, 0.35f, -19.0f);
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
 
-	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -17.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
@@ -927,71 +940,16 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
 		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
+
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
-			_char		szSaveMeshName[MAX_PATH];
-			_float4x4	vWorld = {};
-
-
-			isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-			isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
-
-
-			C3DMapObject::MAPOBJ_3D_DESC NormalDesc = {};
-			NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
-			NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
-			NormalDesc.isCoordChangeEnable = false;
-			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
-			NormalDesc.eStartCoord = COORDINATE_3D;
-			NormalDesc.tTransform3DDesc.isMatrix = true;
-			NormalDesc.tTransform3DDesc.matWorld = vWorld;
-			CGameObject* pGameObject = nullptr;
-			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
-				LEVEL_GAMEPLAY,
-				strLayerTag,
-				&pGameObject,
-				(void*)&NormalDesc);
-
-			if (pGameObject)
-			{
-				DWORD	dwByte(0);
-				_uint iOverrideCount = 0;
-				C3DModel::COLOR_SHADER_MODE eTextureType;
-				_float4 fDefaultDiffuseColor;
-
-
-				isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-				C3DMapObject* pMapObject = static_cast<C3DMapObject*>(pGameObject);
-				
-				pMapObject->Set_Color_Shader_Mode(eTextureType);
-
-				switch (eTextureType)
-				{
-				case Engine::C3DModel::COLOR_DEFAULT:
-				case Engine::C3DModel::MIX_DIFFUSE:
-				{
-					isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-					pMapObject->Set_Diffuse_Color(fDefaultDiffuseColor);
-				}
-				break;
-				default:
-					break;
-				}
-
-				isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
-				if (0 < iOverrideCount)
-				{
-					for (_uint i = 0; i < iOverrideCount; i++)
-					{
-						_uint iMaterialIndex, iTexTypeIndex, iTexIndex;
-						isTempReturn = ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
-						isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
-						isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
-
-						pMapObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
-					}
-				}
-			}
+			C3DMapObject* pGameObject =
+				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
+					(LEVEL_ID)LEVEL_GAMEPLAY,
+					m_pGameInstance,
+					hFile);
+			if (nullptr != pGameObject)
+				Event_CreateObject(LEVEL_GAMEPLAY, strLayerTag.c_str(), pGameObject);
 		}
 	}
 	CloseHandle(hFile);

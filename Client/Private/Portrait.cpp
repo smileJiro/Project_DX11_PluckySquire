@@ -101,7 +101,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 	if (false == _isRender)
 		return;
 
-	_float2 vTexPos = Uimgr->Get_DialoguePos();
+	_float3 vTexPos = Uimgr->Get_CalDialoguePos();
 	
 	const auto& currentLine = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex());
 
@@ -131,19 +131,19 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 
 	case CDialog::LOC_MIDDLE:   // 沥 啊款单
 	{
-		vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		//vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
 	}
 	break;
 
 	case CDialog::LOC_MIDLEFT:  // 啊款单 谅螟
 	{
-		vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		//vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
 	}
 	break;
 
 	case CDialog::LOC_MIDRIGHT: // 啊款单 快螟
 	{
-		vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		//vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
 	}
 	break;
 	}

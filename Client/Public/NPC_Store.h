@@ -1,6 +1,8 @@
 #pragma once
 #include "Npc.h"
 
+
+
 BEGIN(Client)
 class CNPC_Store final: public CNPC
 {
@@ -49,19 +51,15 @@ public:
 	virtual HRESULT				Render();
 
 public:
-	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 
 protected:
 	virtual HRESULT Ready_ActorDesc(void* _pArg) override;
 	virtual HRESULT Ready_Components() override;
 	virtual HRESULT Ready_PartObjects() override;
-
-	virtual _bool OnCOllsion2D_Enter() override;
-	virtual _bool OnCOllsion2D_Stay() override;
-	virtual _bool OnCOllsion2D_Exit() override;
 
 public:
 	static CNPC_Store*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -71,9 +69,12 @@ public:
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-
 protected:
 	//virtual HRESULT Ready_Components();
+
+
+
+
 };
 
 END

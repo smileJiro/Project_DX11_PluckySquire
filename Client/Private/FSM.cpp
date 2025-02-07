@@ -9,6 +9,13 @@
 #include "ChaseWalkState.h"
 #include "MeleeAttackState.h"
 #include "RangedAttackState.h"
+#include "Sneak_IdleState.h"
+//#include "Sneak_PatrolState.h"
+#include "Sneak_AlertState.h"
+#include "Sneak_AwareState.h"
+#include "Sneak_InvestigateState.h"
+#include "Sneak_ChaseState.h"
+#include "Sneak_AttackState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -179,6 +186,73 @@ HRESULT CFSM::Set_State(_uint _iState)
 
 	m_pCurState->State_Enter();
 	m_pOwner->Set_State(_iState);
+
+	return S_OK;
+}
+
+HRESULT CFSM::Add_SneakState()
+{
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
+	CState* pState = nullptr;
+	CState::STATEDESC Desc;
+	Desc.fAlertRange = m_fAlertRange;
+	Desc.fChaseRange = m_fChaseRange;
+	Desc.fAttackRange = m_fAttackRange;
+	Desc.fAlert2DRange = m_fAlert2DRange;
+	Desc.fChase2DRange = m_fChase2DRange;
+	Desc.fAttack2DRange = m_fAttack2DRange;
+	
+	pState = CSneak_IdleState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_IDLE, pState);
+
+	//pState = CSneak_PatrolState::Create(&Desc);
+	//if (nullptr == pState)
+	//	return E_FAIL;
+	//pState->Set_Owner(m_pOwner);
+	//pState->Set_FSM(this);
+	//m_States.emplace((_uint)MONSTER_STATE::SNEAK_PATROL, pState);
+	//Set_PatrolBound();
+
+	pState = CSneak_AwareState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_AWARE, pState);
+
+	pState = CSneak_InvestigateState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_INVESTIGATE, pState);
+
+	pState = CSneak_AlertState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_ALERT, pState);
+
+	pState = CSneak_ChaseState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_CHASE, pState);
+
+	pState = CSneak_AttackState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_ATTACK, pState);
 
 	return S_OK;
 }

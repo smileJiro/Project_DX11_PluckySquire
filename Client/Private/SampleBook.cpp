@@ -7,6 +7,8 @@
 #include "AnimEventGenerator.h"
 #include "RenderGroup_WorldPos.h"
 
+#include "Camera_Manager.h"
+#include "Camera_2D.h"
 
 CSampleBook::CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -135,16 +137,39 @@ void CSampleBook::Update(_float _fTimeDelta)
 	{
 		if (Book_Action(NEXT))
 		{
-			Set_ReverseAnimation(false);
-			Set_Animation(8);
+			m_isAction = true;
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
+			//Set_ReverseAnimation(false);
+			//Set_Animation(8);
 		}
 	}
 	if (KEY_DOWN(KEY::N))
 	{
 		if (Book_Action(PREVIOUS))
 		{
-			Set_ReverseAnimation(true);
-			Set_Animation(8);
+			m_isAction = true;
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
+		/*	Set_ReverseAnimation(true);
+			Set_Animation(8);*/
+		}
+	}
+
+	if (CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()) {
+		if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
+
+			if (m_eCurAction == NEXT)
+			{
+				Set_ReverseAnimation(false);
+				Set_Animation(8);
+			}
+
+			if (m_eCurAction == PREVIOUS)
+			{
+				Set_ReverseAnimation(true);
+				Set_Animation(8);
+			}
+
+			m_isAction = false;
 		}
 	}
 
@@ -218,15 +243,19 @@ HRESULT CSampleBook::Render()
 					// 이전 페이지로 진행 중이라면, 현재 페이지 -> 바뀌어야 할 페이지(이전 페이지)
 					//								다음 페이지 -> 바뀌기 전 페이지(현재 페이지)
 				case Client::CSampleBook::PREVIOUS:
-					if (CUR_LEFT == i || CUR_RIGHT == i)
-						pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Prev_Section_Key()));
-					else if (NEXT_LEFT == i || NEXT_RIGHT == i)
-						pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
-					else 
-						MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
-					break;
+					if (!m_isAction)
+					{
+						if (CUR_LEFT == i || CUR_RIGHT == i)
+							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Prev_Section_Key()));
+						else if (NEXT_LEFT == i || NEXT_RIGHT == i)
+							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
+						else 
+							MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
+						break;
+					}
 					// 나머지 케이스는				다음 -> 다음 (다음이 없으면, 기본 마테리얼 디퓨즈.)
 					//								현재 -> 현재 
+					// PREVIOUS 의 경우 m_isAction 전까찌는 일반 렌더(break 안태움 ! )
 				case Client::CSampleBook::NEXT:
 				case Client::CSampleBook::ACTION_LAST:
 				default:
@@ -361,7 +390,7 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 		if (NEXT == m_eCurAction)
 		{
 			if (SECTION_MGR->Has_Next_Section())
-				Evnet_Book_MainPage_Change(SECTION_MGR->Get_Next_Section_Key()->c_str());
+				Event_Book_Main_Section_Change(SECTION_MGR->Get_Next_Section_Key()->c_str());
 		}
 		else if (PREVIOUS == m_eCurAction)
 		{
@@ -369,9 +398,12 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 			// 실제 섹션 변경시점을 다르게 해줘야 할거같음 지금상황에선 어쩔수없이.
 			// 애니메이션이 못생긴걸 탓합니다. 
 			//if (SECTION_MGR->Has_Prev_Section())
-			//	Evnet_Book_MainPage_Change(SECTION_MGR->Get_Prev_Section_Key()->c_str());
+			//	Event_Book_Main_Section_Change(SECTION_MGR->Get_Prev_Section_Key()->c_str());
 			SECTION_MGR->Change_Prev_Section();
 		}
+		
+		Event_Book_Main_Change(CCamera_Manager::GetInstance()->Get_CameraType());
+
 		Set_Animation(0);
 		m_eCurAction = ACTION_LAST;
 	}
