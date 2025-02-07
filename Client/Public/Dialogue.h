@@ -53,6 +53,10 @@ public:
         wstring Talker;  // 말하는 놈 : 이름 및 초상화를 설정하자.
         wstring text;     // 대화 내용
         _int   BG;     // 배경
+        _int Red;
+        _int Green;
+        _int Blue;
+        
         LOC  location = LOC_DEFAULT;    // 위치 설정
         PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
         Animation animation;   // 애니메이션 정보

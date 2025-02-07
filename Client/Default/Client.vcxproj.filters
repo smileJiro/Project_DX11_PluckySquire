@@ -322,6 +322,15 @@
     <Filter Include="05.Interact">
       <UniqueIdentifier>{6f7c500f-8dd0-45d5-9288-58dfccb1c72d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Item">
+      <UniqueIdentifier>{e99d4142-b01f-4107-b0e6-76300adbb590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Item\Manager">
+      <UniqueIdentifier>{f161f807-a9d6-422f-b0f8-628fdb80b8b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
+      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -723,6 +732,16 @@
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
+    <ClInclude Include="..\Public\Item_Manager.h">
+      <Filter>02.GameObjects\Item\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Item.h">
+      <Filter>02.GameObjects\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC_DJMoonBeard.h">
+      <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1108,6 +1127,16 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
+    <ClCompile Include="..\Private\Item_Manager.cpp">
+      <Filter>02.GameObjects\Item\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Item.cpp">
+      <Filter>02.GameObjects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp">
+      <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

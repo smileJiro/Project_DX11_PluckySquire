@@ -42,6 +42,7 @@
 /* For. NPC*/
 #include "Npc_Body.h"
 #include "NPC_Store.h"
+#include "NPC_DJMoonBeard.h"
 
 
 
@@ -649,6 +650,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_DJMoonBeard"),
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
+		return E_FAIL;
 
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -732,6 +736,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
     ///////////////////////////////// UI /////////////////////////////////
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), 
         CNPC_Store::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_NPC_DJMoonbeard"),
+		CNPC_DJMoonBeard::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
     /* Boss */

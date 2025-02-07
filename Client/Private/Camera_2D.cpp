@@ -78,6 +78,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 
+		m_fFixedY = XMVectorGetY(vTargetPos);
+
 		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 		Look_Target(0.f);
@@ -208,7 +210,7 @@ void CCamera_2D::Return_To_Default(_float _fTimeDelta)
 
 void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 {
-	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_OUT);
+	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= 1.f) {
 		m_fFlippingTime.y = 0.f;
@@ -259,6 +261,10 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 
+	if (true == m_isBook) {
+		vTargetPos = XMVectorSetY(vTargetPos, m_fFixedY);
+	}
+
 	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 
 	return vCameraPos;
@@ -275,6 +281,8 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
+
+		m_fFixedY = XMVectorGetY(vTargetPos);
 
 		_vector vLookAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vLookAt, 1.f));

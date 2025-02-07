@@ -57,7 +57,7 @@ void CPortrait::Update(_float _fTimeDelta)
 
 	if (true == m_isRender)
 	{
-		Uimgr->Set_DialogId(TEXT("dialog_01"));
+		//Uimgr->Set_DialogId(TEXT("dialog_01"));
 		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
 
 		//Uimgr->Get_DialogueLine()

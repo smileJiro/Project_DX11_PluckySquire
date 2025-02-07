@@ -93,7 +93,26 @@ HRESULT CDialog::Render()
 			FirstCalPos(vRTSize);
 		}
 
-		__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		if (0 != Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG)
+		{
+			__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		}
+		else
+		{
+			_float4 vColor = _float4(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Red / 255.f,
+									Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Green / 255.f,
+									Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Blue / 255.f,
+									 1.f);
+
+			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &vColor, sizeof(_float4))))
+				return E_FAIL;
+
+			__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::DIALOGUE_BG_COLOR);
+		}
+
+
+
+		
 
 		if (Uimgr->Get_DialogueLineIndex() < Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		{
@@ -160,6 +179,20 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 					if (line.contains("BG") && line["BG"].is_number_integer())
 					{
 						dialogLine.BG = line["BG"].get<int>();
+					}
+
+					// 배경의 RGB 색상
+					if (line.contains("Red") && line["Red"].is_number_integer())
+					{
+						dialogLine.Red = line["Red"].get<int>();
+					}
+					if (line.contains("Green") && line["Green"].is_number_integer())
+					{
+						dialogLine.Green = line["Green"].get<int>();
+					}
+					if (line.contains("Blue") && line["Blue"].is_number_integer())
+					{
+						dialogLine.Blue = line["Blue"].get<int>();
 					}
 						
 					// 다이얼로그 위치 enum 참조

@@ -209,6 +209,8 @@
     <ClInclude Include="..\public\Collision_Manager.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
     <ClInclude Include="..\Public\Interactable.h" />
+    <ClInclude Include="..\Public\Item.h" />
+    <ClInclude Include="..\Public\Item_Manager.h" />
     <ClInclude Include="..\public\MainTable.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
@@ -244,6 +246,7 @@
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\Npc_Body.h" />
     <ClInclude Include="..\Public\Npc_Logo.h" />
+    <ClInclude Include="..\Public\NPC_DJMoonBeard.h" />
     <ClInclude Include="..\public\NPC_Store.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerBody.h" />
@@ -350,6 +353,8 @@
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
+    <ClCompile Include="..\Private\Item.cpp" />
+    <ClCompile Include="..\Private\Item_Manager.cpp" />
     <ClCompile Include="..\Private\Interactable.cpp" />
     <ClCompile Include="..\private\MainTable.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
@@ -382,6 +387,7 @@
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\Npc_Body.cpp" />
     <ClCompile Include="..\Private\Npc_Logo.cpp" />
+    <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp" />
     <ClCompile Include="..\private\NPC_Store.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerBody.cpp" />
