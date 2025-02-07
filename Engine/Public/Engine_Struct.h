@@ -289,13 +289,14 @@ namespace Engine
 		_float				fFovy = {};
 	} CUTSCENE_DATA;
 
-	typedef struct tagCutSceneInitialData
+	typedef struct tagInitialData
 	{
 		_float3				vPosition = {};
-
-		_float3				vAtOffset = {};
+		_float3				vAt = {};
 		_uint				iZoomLevel = {};
-	} CUTSCENE_INITIAL_DATA;
+
+		_float				fInitialTime = {};
+	} INITIAL_DATA;
 #pragma endregion
 
 #pragma region Binary ฐüทร

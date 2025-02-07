@@ -280,21 +280,6 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
-    // Test
-    if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-    {
-        _float2 v2DPos = {};
-        XMStoreFloat2(&v2DPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
-        _vector vWorld2DPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(v2DPos);
-        if (XMVectorGetX(vWorld2DPos) == 0.0f && XMVectorGetY(vWorld2DPos) == 0.0f && XMVectorGetZ(vWorld2DPos) == 0.0f)
-        {
-            int i = 0;
-        }
-        CCamera* pCamera = CCamera_Manager::GetInstance()->Get_CurrentCamera();
-        pCamera->Set_Position(XMVectorSetY(vWorld2DPos, 10.0f));
-        int a = 0;
-    }
-
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -439,8 +424,12 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
 
-    if (COORDINATE_2D == Get_CurCoord())
+    if (COORDINATE_2D == Get_CurCoord()) {
         Set_2DDirection(E_DIRECTION::DOWN);
+        CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
+    }
+    else
+        CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
 
     Set_State(IDLE);
 
