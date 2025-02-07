@@ -57,32 +57,5 @@
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "A",
         "Trigger_Type": 2
-    },
-    {
-        "Collider_Info": {
-            "HalfExtents": [
-                7.099999904632568,
-                0.5,
-                4.099999904632568
-            ],
-            "Position": [
-                -7.337918758392334,
-                0.33333396911621094,
-                4.067999839782715
-            ],
-            "Radius": 0.5,
-            "Rotation": [
-                -0.0,
-                0.0,
-                -0.0
-            ],
-            "ShapeType": 0
-        },
-        "Fillter_MyGroup": 128,
-        "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
-        "Trigger_Coordinate": 1,
-        "Trigger_EventTag": "A",
-        "Trigger_Type": 3
     }
 ]

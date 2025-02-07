@@ -36,7 +36,7 @@ public:
 #endif
 
 public:
-	void						Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pTargetPos = nullptr);
+	void						Set_NextCutScene(_wstring _wszCutSceneName, INITIAL_DATA* _pTargetPos = nullptr);
 	void						Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene);
 
 private:
@@ -53,9 +53,9 @@ private:
 
 	// Target
 	_float3										m_vTargetPos = {};
-	CUTSCENE_INITIAL_DATA						m_tInitialData = {};
-	_bool										m_isInitialData = { false };
-	_float2										m_InitialTime = { 0.3f, 0.f };
+	//INITIAL_DATA								m_tInitialData = {};
+	//_bool										m_isInitialData = { false };
+	//_float2										m_InitialTime = { 0.3f, 0.f };
 
 #ifdef _DEBUG
 	_float3										m_vSimulationPos = {};
@@ -74,7 +74,7 @@ private:
 	void						After_CutScene(_float _fTimeDelta);
 
 	void						Process_Movement(_float _fTimeDelta);
-	void						Initialize_CameraInfo(CUTSCENE_INITIAL_DATA* _pTargetPos);
+	void						Initialize_CameraInfo(INITIAL_DATA* _pTargetPos);
 
 	void						Save_Data();
 	void						Save_BinaryData();
