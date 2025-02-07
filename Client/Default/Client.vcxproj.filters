@@ -313,6 +313,9 @@
     <Filter Include="91.MapObjectFactory">
       <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
+      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -687,6 +690,9 @@
     <ClInclude Include="..\Public\MapObjectFactory.h">
       <Filter>91.MapObjectFactory</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NPC_DJMoonBeard.h">
+      <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1045,6 +1051,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_JotMain.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp">
+      <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
