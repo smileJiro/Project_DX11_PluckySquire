@@ -14,6 +14,7 @@
 #include "PlayerState_Roll.h"
 #include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
+#include "PlayerState_SpinAttack.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
@@ -534,27 +535,41 @@ void CPlayer::Jump()
 PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
 	PLAYER_INPUT_RESULT tResult;
-    fill(begin(tResult.bKeyStates), end(tResult.bKeyStates), false);
+    fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
 
     if (Is_SwordHandling())
     {
         //기본공격
         if (MOUSE_DOWN(MOUSE_KEY::LB))
-			tResult.bKeyStates[PLAYER_KEY_ATTACK] = true;
+        {
+            tResult.bInputStates[PLAYER_KEY_ATTACK] = true;
+        }
         //칼 던지기
         else if (MOUSE_DOWN(MOUSE_KEY::RB))
-			tResult.bKeyStates[PLAYER_KEY_THROWSWORD] = true;
+        {
+            tResult.bInputStates[PLAYER_KEY_THROWSWORD] = true;
+        }
+        else if (Is_OnGround())
+        {
+            KEY_STATE eKeyState = m_pGameInstance->GetKeyState(KEY::Q);
+            if (KEY_STATE::DOWN == eKeyState)
+			    tResult.bInputStates[PLAYER_KEY_SPINATTACK] = true;
+            else if (KEY_STATE::PRESSING == eKeyState)
+                tResult.bInputStates[PLAYER_KEY_SPINCHARGING] = true;
+            else if (KEY_STATE::UP == eKeyState)
+                tResult.bInputStates[PLAYER_KEY_SPINLAUNCH] = true;
+        }
     }
     //점프
     if (KEY_PRESSING(KEY::SPACE))
-        tResult.bKeyStates[PLAYER_KEY_JUMP] = true;
+        tResult.bInputStates[PLAYER_KEY_JUMP] = true;
     //구르기 & 잠입
-    if (KEY_PRESSING(KEY::LSHIFT))
+    else if (KEY_PRESSING(KEY::LSHIFT))
     {
         if (Is_SneakMode())
-            tResult.bKeyStates[PLAYER_KEY_SNEAK] = true;
+            tResult.bInputStates[PLAYER_KEY_SNEAK] = true;
         else
-            tResult.bKeyStates[PLAYER_KEY_ROLL] = true;
+            tResult.bInputStates[PLAYER_KEY_ROLL] = true;
     }
 
     COORDINATE eCoord = Get_CurCoord();
@@ -565,12 +580,12 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
             tResult.vMoveDir += _vector{ 0.f, 0.f, 1.f,0.f };
         else
             tResult.vMoveDir += _vector{ 0.f, 1.f, 0.f,0.f };
-        tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
+        tResult.bInputStates[PLAYER_INPUT_MOVE] = true;
     }
     if (KEY_PRESSING(KEY::A))
     {
         tResult.vMoveDir += _vector{ -1.f, 0.f, 0.f,0.f };
-        tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
+        tResult.bInputStates[PLAYER_INPUT_MOVE] = true;
     }
     if (KEY_PRESSING(KEY::S))
     {
@@ -578,15 +593,16 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
             tResult.vMoveDir += _vector{ 0.f, 0.f, -1.f,0.f };
         else
             tResult.vMoveDir += _vector{ 0.f, -1.f, 0.f,0.f };
-        tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
+        tResult.bInputStates[PLAYER_INPUT_MOVE] = true;
     }
     if (KEY_PRESSING(KEY::D))
     {
         tResult.vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
-        tResult.bKeyStates[PLAYER_KEY_MOVE] = true;
+        tResult.bInputStates[PLAYER_INPUT_MOVE] = true;
     }
-    if(tResult.bKeyStates[PLAYER_KEY_MOVE])
+    if (tResult.bInputStates[PLAYER_INPUT_MOVE])
         tResult.vMoveDir = XMVector3Normalize(tResult.vMoveDir);
+    
     return tResult;
 }
 
@@ -710,8 +726,11 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
         break;
-        case Client::CPlayer::CLAMBER:
+    case Client::CPlayer::CLAMBER:
         m_pStateMachine->Transition_To(new CPlayerState_Clamber(this));
+        break;
+    case Client::CPlayer::SPINATTACK:
+        m_pStateMachine->Transition_To(new CPlayerState_SpinAttack(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
