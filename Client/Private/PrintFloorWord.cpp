@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "Section_2D.h"
+#include "UI_Manager.h"
 
 
 
@@ -48,6 +49,16 @@ void CPrintFloorWord::Priority_Update(_float _fTimeDelta)
 
 void CPrintFloorWord::Update(_float _fTimeDelta)
 {
+	_float fThisPosX = m_vRenderPos.x;
+	_float fPlayerPosX = Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
+
+	
+	if (250.f > fabs(fThisPosX - fPlayerPosX) && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		m_isFadeIn = true;
+	}
+
+	Add_Amount(_fTimeDelta);
 
 }
 
@@ -70,7 +81,7 @@ HRESULT CPrintFloorWord::Render()
 	vCalPos.y = vMidPoint.y - m_vRenderPos.y;
 
 
-	m_pGameInstance->Render_Font(TEXT("Font28"), m_tFloorWord, vCalPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	m_pGameInstance->Render_Font(TEXT("Font28"), m_tFloorWord, vCalPos, XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
 
 	return S_OK;
 }
@@ -119,6 +130,20 @@ void CPrintFloorWord::Free()
 HRESULT CPrintFloorWord::Cleanup_DeadReferences()
 {
 	return S_OK;
+}
+
+void CPrintFloorWord::Add_Amount(_float _fTimeDelta)
+{
+	if (true == m_isFadeIn && false == m_isFadeInComplete)
+	{
+		m_fAmount += _fTimeDelta * 1.8f;
+
+		if (m_fAmount > 1.f)
+		{
+			m_fAmount = 1.f;
+			m_isFadeInComplete = true;
+		}
+	}
 }
 
 //HRESULT CPrintFloorWord::Cleanup_DeadReferences()

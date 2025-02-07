@@ -37,9 +37,14 @@ public:
 
 
 private:
+	void					Add_Amount(_float _fTimeDelta);
+
+private:
 	_float2					m_vRenderPos = { 0.f, 0.f };
 	_tchar					m_tFloorWord[MAX_PATH] = {};
-
+	_float					m_fAmount = { 0.f };
+	_bool					m_isFadeIn = { false };
+	_bool					m_isFadeInComplete = { false };
 };
 
 END
