@@ -28,6 +28,11 @@ public:
 			tTransform2DDesc.vInitialScaling = { _fScale.x, _fScale.y, 1.0f };
 			tTransform2DDesc.fInitialRotation = fRotation;
 		}
+		void Build_3D_Transform(_float4x4 _matWorld)
+		{
+			tTransform3DDesc.matWorld = _matWorld;
+			tTransform3DDesc.isMatrix = true;
+		}
 #pragma endregion
 
 	}CON_TRANSFORM_DESC;
