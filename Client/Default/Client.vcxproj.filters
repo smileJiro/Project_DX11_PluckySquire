@@ -292,6 +292,9 @@
     <Filter Include="02.GameObjects\NPC\01. LogoNpc">
       <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\99. TEST_NPC">
+      <UniqueIdentifier>{6b81b8a5-a804-493a-8b27-4ce5cfa0487c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

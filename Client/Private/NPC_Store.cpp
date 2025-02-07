@@ -7,6 +7,8 @@
 #include "UI_Manager.h"
 #include "StateMachine.h"
 
+
+
 CNPC_Store::CNPC_Store(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CNPC(_pDevice, _pContext)
 {
@@ -68,7 +70,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(300.f, -300.f, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
 
 	
 	//CActor::ACTOR_DESC ActorDesc;
@@ -152,6 +154,12 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_MenuOpen);
 	}
 
+	if (KEY_DOWN(KEY::E) && true == m_isColPlayer)
+	{
+		Throw_Dialogue();
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+	}
+
 	//if (static_cast<CModelObject*>(m_PartObjects[PART_BODY])->)
 
 
@@ -167,20 +175,22 @@ HRESULT CNPC_Store::Render()
 	return S_OK;
 }
 
-void CNPC_Store::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+void CNPC_Store::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	m_isColPlayer = true;
+}
+
+void CNPC_Store::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 	int a = 0;
 }
 
-void CNPC_Store::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+void CNPC_Store::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	int a = 0;
+	m_isColPlayer = false;
 }
 
-void CNPC_Store::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
-	int a = 0;
-}
+
 
 _bool CNPC_Store::OnCOllsion2D_Enter()
 {
@@ -313,9 +323,10 @@ HRESULT CNPC_Store::Ready_Components()
 {
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = { 180.f, 180.f };
+	AABBDesc.vExtents = { 70.f, 70.f };
 	AABBDesc.vScale = { 1.0f, 1.0f };
-	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
+	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
+	//AABBDesc.vOffsetPosition = { 0.f, 0.f };
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
 		return E_FAIL;
@@ -389,6 +400,7 @@ CGameObject* CNPC_Store::Clone(void* _pArg)
 
 void CNPC_Store::Free()
 {
+	Safe_Release(m_pColliderCom);
 	__super::Free();
 }
 

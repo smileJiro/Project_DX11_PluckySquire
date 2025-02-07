@@ -109,7 +109,7 @@ HRESULT CNpc_Body::Ready_Desc(void** _pArg)
 		BodyDesc->iPriorityID_3D = PR3D_NONBLEND;
 	}
 
-	
+
 
 	return S_OK;
 }

@@ -15,7 +15,7 @@ CLevel_Logo::CLevel_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 HRESULT CLevel_Logo::Initialize()
 {
 	Ready_Layer_UI(TEXT("Layer_UI"));
-	Ready_Layer_NPC(TEXT("Layer_NPC"));
+	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 
  	return S_OK;
 }
