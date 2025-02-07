@@ -304,6 +304,12 @@
     <Filter Include="02.GameObjects\NPC\99. TEST_NPC">
       <UniqueIdentifier>{6b81b8a5-a804-493a-8b27-4ce5cfa0487c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation">
+      <UniqueIdentifier>{ea4268ec-e206-417e-ae3b-254a0e2ac7a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain">
+      <UniqueIdentifier>{441416e8-4de7-4552-b5ef-b2d6f2278881}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -672,6 +678,9 @@
     <ClInclude Include="..\Public\3DMapObject.h">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_JotMain.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1027,6 +1036,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\3DMapObject.cpp">
       <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_JotMain.cpp">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
