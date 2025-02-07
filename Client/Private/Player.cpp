@@ -131,7 +131,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
      
-
+	m_ePlayerMode = PLAYER_MODE_NORMAL;
     return S_OK;
 }
 
@@ -548,7 +548,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bKeyStates), end(tResult.bKeyStates), false);
 
-    if (Is_SwordEquiped())
+    if (Is_SwordHandling())
     {
         //기본공격
         if (MOUSE_DOWN(MOUSE_KEY::LB))
@@ -639,14 +639,9 @@ _float CPlayer::Get_AnimProgress()
     return 0;
 }
 
-_bool CPlayer::Is_SwordEquiped()
+_bool CPlayer::Is_SwordHandling()
 {
-    return m_pSword->Is_Active() && (false == m_pSword->Is_Flying());
-}
-
-_bool CPlayer::Is_CarryingObject()
-{
-    return nullptr != m_pCarryingObject;
+    return Is_SwordMode() && m_pSword->Is_Active() && (m_pSword->Is_SwordHandling());
 }
 
 _vector CPlayer::Get_CenterPosition()
@@ -737,10 +732,29 @@ void CPlayer::Set_State(STATE _eState)
     }
 }
 
-void CPlayer::Set_StealthMode(_bool _bNewMode)
+void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 {
-    m_bSneakMode = _bNewMode; 
+    if (m_ePlayerMode != _eNewMode)
+    {
+        m_ePlayerMode = _eNewMode;
+        switch (m_ePlayerMode)
+        {
+        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_NORMAL:
+			UnEquip_Part(PLAYER_PART_SWORD);
+            break;
+        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD:
+			Equip_Part(PLAYER_PART_SWORD);
+            break;
+        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SNEAK:
+            UnEquip_Part(PLAYER_PART_SWORD);
+            break;
+        default:
+            break;
+        }
+    }
 }
+
+
 
 
 
@@ -837,10 +851,8 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::F2))
     {
-		if(Get_PartObject(PLAYER_PART_SWORD)->Is_Active())
-		    UnEquip_Part(PLAYER_PART_SWORD);
-        else
-			Equip_Part(PLAYER_PART_SWORD);
+        PLAYER_MODE eNextMode = (PLAYER_MODE)((m_ePlayerMode + 1) % PLAYER_MODE_LAST);
+        Set_Mode(eNextMode);
     }
 
     if (KEY_DOWN(KEY::F4))
@@ -851,10 +863,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
-    if (KEY_DOWN(KEY::N))
-    {
-		Set_StealthMode(!m_bSneakMode);
-    }
+
 
 }
 

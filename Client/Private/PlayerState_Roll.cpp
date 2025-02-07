@@ -69,7 +69,7 @@ void CPlayerState_Roll::Enter()
 {
 
     COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	_bool bSwrodEquiped = m_pOwner->Is_SwordEquiped();
+	_bool bSwrodEquiped = m_pOwner->Is_SwordHandling();
 
     if (COORDINATE_2D == eCoord)
     {

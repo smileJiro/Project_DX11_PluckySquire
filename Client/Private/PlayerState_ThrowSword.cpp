@@ -13,7 +13,7 @@ CPlayerState_ThrowSword::CPlayerState_ThrowSword(CPlayer* _pOwner)
 
 void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 {
-	if (m_pOwner->Is_SwordEquiped())
+	if (m_pOwner->Is_SwordHandling())
 		return;
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 
