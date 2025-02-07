@@ -41,7 +41,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
 		//공격 준비로 전환
-		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ATTACK, m_pFSM);
 		return;
 	}
 
@@ -52,21 +52,9 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	}
 	else
 	{
-		if(COORDINATE_3D == m_pOwner->Get_CurCoord())
-		{
-			//추적
-			//m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_FinalPosition(), XMVectorGetY(m_pOwner->Get_FinalPosition())), _fTimeDelta);
-			//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
-			//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta * 2.f);
-			m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
-			m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
-		}
-		else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
-		{
-			//방향전환
-			m_pOwner->Change_Dir();
-			m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-		}
+		//소리 난 위치로 장애물 피해서 추적
+		m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
+		m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 	}
 }
 

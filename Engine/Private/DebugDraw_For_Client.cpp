@@ -60,6 +60,22 @@ HRESULT CDebugDraw_For_Client::Render_Frustum(BoundingFrustum& _Frustum, _float4
 
 	return S_OK;
 }
+HRESULT CDebugDraw_For_Client::Render_Ring(_fvector _vPosition, _fvector _vMajorAxis, _fvector _vMinorAxis, _gvector _vDebugColor)
+{
+	m_pEffect->SetWorld(XMMatrixIdentity());
+	m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
+	m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
+	m_pEffect->Apply(m_pContext);
+	m_pContext->IASetInputLayout(m_pInputLayout);
+
+	m_pBatch->Begin();
+
+	DX::DrawRing(m_pBatch, _vPosition, _vMajorAxis, _vMinorAxis, _vDebugColor);
+
+	m_pBatch->End();
+
+	return S_OK;
+}
 #endif
 
 

@@ -31,24 +31,47 @@ void CSneak_AwareState::State_Enter()
 
 void CSneak_AwareState::State_Update(_float _fTimeDelta)
 {
-	if (nullptr == m_pTarget)
-		return;
 	if (nullptr == m_pOwner)
 		return;
 	
-	_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
-	if (dis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+	if (nullptr != m_pTarget)
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
-		return;
-	}
-	if (dis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
-	{
-		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
-	}
-	else
-	{
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
+		if (m_pOwner->IsTarget_In_Detection())
+		{
+			//------테스트
+			_vector vTargetDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
+			_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+			_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(vTargetDir));
+			_float3 vOutPos;
+			CActorObject* pActor = nullptr;
+			if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
+			{
+				if (!(OBJECT_GROUP::RAY_OBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup))
+				{
+					//플레이어가 레이 오브젝트보다 가까우면 인식
+					if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos) - m_pOwner->Get_FinalPosition()))
+					{
+						Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ALERT, m_pFSM);
+						return;
+					}
+				}
+			}
+			//레이 충돌 안했을 때(장애물이 없었을 때)
+			else
+			{
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ALERT, m_pFSM);
+				return;
+			}
+			//---------
+		}
+
+		//플레이어가 인식되지 않았을 경우 소리가 나면 경계추적으로 전환 
+		if (m_pOwner->IsTarget_In_Sneak_Detection())
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
+			return;
+		}
 	}
 }
 

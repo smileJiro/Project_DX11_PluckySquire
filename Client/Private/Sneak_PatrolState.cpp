@@ -77,55 +77,45 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 		//적 발견 시 ALERT 전환
 		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 		{	
-			if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+			if (m_pOwner->IsTarget_In_Detection())
 			{
-				_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
-				if (fDis <= m_fAlert2DRange)
+				//------테스트
+				_vector vTargetDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
+				_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+				_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(vTargetDir));
+				_float3 vOutPos;
+				CActorObject* pActor = nullptr;
+				if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::SNEAK_ALERT), &vOutPos, &pActor))
 				{
-					Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
-					return;
-				}
-			}
-			else if (COORDINATE_3D == m_pOwner->Get_CurCoord())
-			{
-				if (m_pOwner->IsTarget_In_Detection())
-				{
-					//------테스트
-					_vector vTargetDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
-					_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
-					_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(vTargetDir));
-					_float3 vOutPos;
-					CActorObject* pActor = nullptr;
-					if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
-					{//ACTOR_TYPE::STATIC != pActor->Get_ActorType() && 
-						if (!(OBJECT_GROUP::RAY_OBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup))
+					if (!(OBJECT_GROUP::RAY_OBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup))
+					{
+						//플레이어가 레이 오브젝트보다 가까우면 인식
+						if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos) - m_pOwner->Get_FinalPosition()))
 						{
-							//플레이어가 레이 오브젝트보다 가까우면 인식
-							if(2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos)-m_pOwner->Get_FinalPosition()))
-							{
-								Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
-								return;
-							}
+							Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ALERT, m_pFSM);
+							return;
 						}
 					}
-					//---------
-
-					/*Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
-					return;*/
 				}
+				//레이 충돌 안했을 때(장애물이 없었을 때)
+				else
+				{
+					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ALERT, m_pFSM);
+					return;
+				}
+				//---------
 			}
 		}
 	}
 
-	/*순찰 이동 로직*/
-	//랜덤으로 방향 설정
-	
+
+	//정해진 웨이포인트에서 순찰
 	if (false == m_isTurn)
 	{
 		Determine_Direction();
 	}
 	
-	//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
+	//정해진 웨이포인트가 아니면 복귀 해야함
 	Check_Bound(_fTimeDelta);
 
 	//이동
@@ -141,86 +131,37 @@ void CSneak_PatrolState::State_Exit()
 
 void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 {
-	//회전중인 거도 해야할듯 일단 이동만 해봄
-	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	if (0 > _iDir || 7 < _iDir)
+		return;
+
+	//기본적으로 추적중에 y값 상태 변화는 없다고 가정
+	_vector vDir = XMVector3Normalize(Set_Sneak_PatrolDirection(_iDir));
+
+	if (true == m_isTurn && false == m_isMove)
 	{
-		if (0 > _iDir || 7 < _iDir)
-			return;
-
-		//기본적으로 추적중에 y값 상태 변화는 없다고 가정
-		_vector vDir = XMVector3Normalize(Set_Sneak_PatrolDirection(_iDir));
-
-		if (true == m_isTurn && false == m_isMove)
+		if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 		{
-			if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
-			{
-				m_isMove = true;
-				
-				m_pOwner->Change_Animation();
-			}
-			else
-			{
-				_bool isCW = true;
-				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
-				if (fResult < 0)
-					isCW = false;
+			m_isMove = true;
 
-				m_pOwner->Turn_Animation(isCW);
-			}
+			m_pOwner->Change_Animation();
 		}
-
-		if (true == m_isMove)
+		else
 		{
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
-			//m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-			//m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
-			m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
+			_bool isCW = true;
+			_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
+			if (fResult < 0)
+				isCW = false;
+
+			m_pOwner->Turn_Animation(isCW);
 		}
 	}
 
-	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	if (true == m_isMove)
 	{
-		if (0 > _iDir || 3 < _iDir)
-			return;
-
-		if (true == m_isTurn)
-		{
-			m_pOwner->Set_2D_Direction(m_eDir);
-
-			m_isTurn = false;
-			m_isMove = true;
-		}
-
-		if (true == m_isMove)
-		{
-			m_pOwner->Get_ControllerTransform()->Go_Direction(Set_Sneak_PatrolDirection(_iDir), _fTimeDelta);
-			
-			switch (m_eDir)
-			{
-			case Client::F_DIRECTION::LEFT:
-				m_pOwner->Get_ControllerTransform()->Go_Left(_fTimeDelta);
-				break;
-
-			case Client::F_DIRECTION::RIGHT:
-				m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
-				break;
-
-			case Client::F_DIRECTION::UP:
-				m_pOwner->Get_ControllerTransform()->Go_Up(_fTimeDelta);
-				break;
-
-			case Client::F_DIRECTION::DOWN:
-				m_pOwner->Get_ControllerTransform()->Go_Down(_fTimeDelta);
-				break;
-
-			case Client::F_DIRECTION::F_DIR_LAST:
-				return;
-				break;
-
-			default:
-				break;
-			}
-		}
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
+		//m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+		//m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
+		m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
 	}
 
 	if (true == m_isMove)
@@ -232,7 +173,7 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 			m_isTurn = false;
 			m_isMove = false;
 
-			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 		}
 	}
 }
@@ -244,17 +185,8 @@ void CSneak_PatrolState::Determine_Direction()
 
 	while (true)
 	{
-		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
-		{
-			//8 방향 중 랜덤 방향 지정
-			m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
-		}
-
-		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
-		{
-			//4 방향 중 랜덤 방향 지정
-			m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 4.f)));
-		}
+		//8 방향 중 랜덤 방향 지정
+		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
 
 		if (m_iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
 		{
@@ -269,84 +201,52 @@ void CSneak_PatrolState::Determine_Direction()
 _vector CSneak_PatrolState::Set_Sneak_PatrolDirection(_int _iDir)
 {
 	_vector vDir = {};
-	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	switch (_iDir)
 	{
-		switch (_iDir)
-		{
-		case 0:
-			vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			//cout << "상" << endl;
-			break;
-		case 1:
-			vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			//cout << "우상" << endl;
-			break;
-		case 2:
-			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			//cout << "우" << endl;
-			break;
-		case 3:
-			vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			//cout << "우하" << endl;
-			break;
-		case 4:
-			vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			//cout << "하" << endl;
-			break;
-		case 5:
-			vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			//cout << "좌하" << endl;
-			break;
-		case 6:
-			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			//cout << "좌" << endl;
-			break;
-		case 7:
-			vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-			//cout << "좌상" << endl;
-			break;
-		default:
-			break;
-		}
+	case 0:
+		vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
+		//cout << "상" << endl;
+		break;
+	case 1:
+		vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
+		//cout << "우상" << endl;
+		break;
+	case 2:
+		vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
+		//cout << "우" << endl;
+		break;
+	case 3:
+		vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
+		//cout << "우하" << endl;
+		break;
+	case 4:
+		vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
+		//cout << "하" << endl;
+		break;
+	case 5:
+		vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
+		//cout << "좌하" << endl;
+		break;
+	case 6:
+		vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
+		//cout << "좌" << endl;
+		break;
+	case 7:
+		vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
+		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
+		//cout << "좌상" << endl;
+		break;
+	default:
+		break;
 	}
-	//방향전환 시켜야함
-	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
-	{
-		switch (_iDir)
-		{
-		case 0:
-			vDir = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::UP;
-			//cout << "상" << endl;
-			break;
-		case 1:
-			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::RIGHT;
-			//cout << "우" << endl;
-			break;
-		case 2:
-			vDir = XMVectorSet(0.f, -1.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::DOWN;
-			//cout << "하" << endl;
-			break;
-		case 3:
-			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::LEFT;
-			//cout << "좌" << endl;
-			break;
-		default:
-			break;
-		}
-	}
-
+	
 	return vDir;
 }
 

@@ -109,6 +109,12 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 							}
 						}
 					}
+					//레이 충돌 안했을 때(장애물이 없었을 때)
+					else
+					{
+						Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+						return;
+					}
 					//---------
 
 					/*Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);

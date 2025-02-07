@@ -35,6 +35,8 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
+	//플레이어 한테 직선으로 와야하는데 장애물이 있는 경우 장애물을 돌아서 혹은 길을 따라 이동해야함
+
 	_vector vDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
 	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
@@ -45,28 +47,19 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 		return;
 	}
 
-	//추적 범위 벗어나면 IDLE 전환
+	//추적 범위 벗어나면 가까운 웨이포인트로 복귀하고 IDLE 전환
 	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 	}
 	else
 	{
-		if(COORDINATE_3D == m_pOwner->Get_CurCoord())
-		{
-			//추적
-			//m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_FinalPosition(), XMVectorGetY(m_pOwner->Get_FinalPosition())), _fTimeDelta);
-			//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
-			//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta * 2.f);
-			m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
-			m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
-		}
-		else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
-		{
-			//방향전환
-			m_pOwner->Change_Dir();
-			m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-		}
+		//추적
+		//m_pOwner->Get_ControllerTransform()->MoveToTarget(XMVectorSetY(m_pTarget->Get_FinalPosition(), XMVectorGetY(m_pOwner->Get_FinalPosition())), _fTimeDelta);
+		//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(vDir);
+		//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta * 2.f);
+		m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
+		m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 	}
 }
 

@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "DetectionField.h"
+#include "Sneak_DetectionField.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -163,6 +164,14 @@ void CMonster::Change_Dir()
 _bool CMonster::IsTarget_In_Detection()
 {
 	return m_pDetectionField->IsTarget_In_Detection();
+}
+
+_bool CMonster::IsTarget_In_Sneak_Detection()
+{
+	if (false == m_isSneakMode)
+		return false;
+
+	return m_pSneak_DetectionField->IsTarget_In_SneakDetection();
 }
 
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)

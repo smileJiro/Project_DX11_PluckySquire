@@ -10,6 +10,7 @@ END
 BEGIN(Client)
 class CFSM;
 class CDetectionField;
+class CSneak_DetectionField;
 class CMonster abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -103,6 +104,7 @@ public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void						Change_Dir();
 	_bool						IsTarget_In_Detection();
+	_bool						IsTarget_In_Sneak_Detection();
 
 protected:
 	void Delay_On() 
@@ -133,6 +135,7 @@ protected:
 	CFSM* m_pFSM = { nullptr };
 	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
 	CDetectionField* m_pDetectionField = { nullptr };
+	CSneak_DetectionField* m_pSneak_DetectionField = { nullptr };
 
 #ifdef _DEBUG
 	CDebugDraw_For_Client* m_pDraw = { nullptr };

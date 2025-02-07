@@ -36,19 +36,23 @@ void CSneak_AlertState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 	
-	_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
-	if (dis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+	if(m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
-		return;
-	}
-	if (dis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
-	{
-		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
-	}
-	else
-	{
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
+		if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ATTACK, m_pFSM);
+			return;
+		}
+		if (fDis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_CHASE, m_pFSM);
+		}
+		//구역 밖으로 나가면 못 쫓음
+		else
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+		}
 	}
 }
 

@@ -4,7 +4,6 @@
 #include "Sneak_IdleState.h"
 #include "Monster.h"
 #include "FSM.h"
-#include "Player.h"
 
 CSneak_IdleState::CSneak_IdleState()
 {
@@ -48,7 +47,8 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 			_float3 vOutPos;
 			CActorObject* pActor = nullptr;
 			if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
-			{//ACTOR_TYPE::STATIC != pActor->Get_ActorType() && 
+			{
+				//
 				if (!(OBJECT_GROUP::RAY_OBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup))
 				{
 					//플레이어가 레이 오브젝트보다 가까우면 인식
@@ -59,11 +59,17 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 					}
 				}
 			}
+			//레이 충돌 안했을 때(장애물이 없었을 때)
+			else
+			{
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ALERT, m_pFSM);
+				return;
+			}
 			//---------
 		}
 
 		//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
-		if (static_cast<CPlayer*>(m_pTarget)->Is_SneakMode())
+		if (m_pOwner->IsTarget_In_Sneak_Detection())
 		{
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 			return;
@@ -72,7 +78,7 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 	
 	if (m_fDelayTime <= m_fAccTime)
 	{
-		//Event_ChangeMonsterState(MONSTER_STATE::PATROL, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_PATROL, m_pFSM);
 	}
 
 }
