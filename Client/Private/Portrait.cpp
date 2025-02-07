@@ -121,7 +121,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 		//2D 
 	//else
 	//{
-		vTexPos.x = vTexPos.x - _RTSize.x * 0.15f;
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.146f;
 		vTexPos.y = vTexPos.y;
 	//
 	// }
@@ -129,9 +129,10 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 	}
 	break;
 
-	case CDialog::LOC_MIDDLE:   // 沥 啊款单
+	case CDialog::LOC_MIDHIGH:   // 沥 啊款单
 	{
-		//vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.146f;
+		vTexPos.y = vTexPos.y;
 	}
 	break;
 

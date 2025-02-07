@@ -7,7 +7,7 @@
 					"Portrait": 0,
 					"Talker": "바이올렛",
 					"BG": 3,
-					"location": 0,
+					"location": 1,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -21,7 +21,7 @@
 					"Portrait": 2,
 					"Talker": "마티나",
 					"BG": 2,
-					"location": 0,
+					"location": 1,
 					"animation": {
 						"duration": 1000,
 						"speed": 350

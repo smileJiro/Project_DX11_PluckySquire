@@ -321,11 +321,17 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	}
 	break;
 
-	//case LOC_MIDDLE:   // 정 가운데
-	//{
-	//	vTextPos2D = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
-	//}
-	//break;
+	case LOC_MIDHIGH:   // 가운데 위에
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.1f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	break;
 	//
 	//case LOC_MIDLEFT:  // 가운데 좌측
 	//{
@@ -428,9 +434,12 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		}
 		break;
 
-		case LOC_MIDDLE:
+		case LOC_MIDHIGH:
 		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
 
+			vPos.y += _RTSize.y * 0.25f;
 		}
 		break;
 
@@ -490,9 +499,12 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		}
 		break;
 
-		case LOC_MIDDLE:
+		case LOC_MIDHIGH:
 		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
 
+			vPos.y += _RTSize.y * 0.25f;
 		}
 		break;
 

@@ -13,7 +13,7 @@ BEGIN(Client)
 class CDialog : public CUI
 {
 public:
-    enum LOC { LOC_DEFAULT, LOC_MIDDLE, LOC_MIDLEFT, LOC_MIDRIGHT, LOC_END };
+    enum LOC { LOC_DEFAULT, LOC_MIDHIGH, LOC_MIDLEFT, LOC_MIDRIGHT, LOC_END };
 
     enum PORTRAITNAME
     {
