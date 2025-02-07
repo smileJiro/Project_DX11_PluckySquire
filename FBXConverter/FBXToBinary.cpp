@@ -101,6 +101,15 @@ HRESULT CFbxToBinary::Write_Meshe(const aiMesh* pAIMesh, ofstream& outFile)
 	//cout << pAIMesh->mNumVertices << endl;
 	outFile.write(reinterpret_cast<const char*>(&pAIMesh->mNumFaces), sizeof(_uint));
 	//cout << pAIMesh->mNumFaces << endl;
+
+			//_uint iNumUVChannalCount = 0;
+
+			//for (_uint i = 0; i < 8 ; ++i)
+			//	if (0 < pAIMesh->mNumUVComponents)
+			//		iNumUVChannalCount++;
+
+			//outFile.write(reinterpret_cast<const char*>(&iNumUVChannalCount), sizeof(_uint));
+
 	for (size_t i = 0; i < pAIMesh->mNumVertices; i++)
 	{
 		outFile.write(reinterpret_cast<const char*>(&pAIMesh->mVertices[i]), sizeof(_float3));
@@ -108,6 +117,11 @@ HRESULT CFbxToBinary::Write_Meshe(const aiMesh* pAIMesh, ofstream& outFile)
 		outFile.write(reinterpret_cast<const char*>(&pAIMesh->mNormals[i]), sizeof(_float3));
 		//cout << pAIMesh->mNormals[i].x << " " << pAIMesh->mNormals[i].y << " " << pAIMesh->mNormals[i].z << endl;
 		outFile.write(reinterpret_cast<const char*>(&pAIMesh->mTextureCoords[0][i]), sizeof(_float2));		//cout << pAIMesh->mTextureCoords[0][i].x << " " << pAIMesh->mTextureCoords[0][i].y << endl;
+
+				//for (_uint j = 0; j < iNumUVChannalCount; j++)
+				//{
+				//	outFile.write(reinterpret_cast<const char*>(&pAIMesh->mTextureCoords[j][i]), sizeof(_float2));		//cout << pAIMesh->mTextureCoords[0][i].x << " " << pAIMesh->mTextureCoords[0][i].y << endl;
+				//}
 		outFile.write(reinterpret_cast<const char*>(&pAIMesh->mTangents[i]), sizeof(_float3));
 		//cout << pAIMesh->mTangents[i].x << " " << pAIMesh->mTangents[i].y << " " << pAIMesh->mTangents[i].z << endl;
 	}
@@ -160,7 +174,7 @@ HRESULT CFbxToBinary::Write_Meshe(const aiMesh* pAIMesh, ofstream& outFile)
 //55, 44
 HRESULT CFbxToBinary::Write_Material(const aiMaterial* pAIMaterial, ofstream& outFile)
 {
-	for (_uint texTypeIdx = 1; texTypeIdx < AI_TEXTURE_TYPE_MAX; texTypeIdx++)
+	for (_uint texTypeIdx = 1; texTypeIdx < aiTextureType_UNKNOWN; texTypeIdx++)
 	{
 		_uint numTextures = pAIMaterial->GetTextureCount(aiTextureType(texTypeIdx));
 		outFile.write(reinterpret_cast<const char*>(&numTextures), sizeof(_uint));

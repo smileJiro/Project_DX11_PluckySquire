@@ -82,7 +82,7 @@ public :
 	_bool						Has_CookingCollider() { return m_isCookingCollider; }
 
 protected:
-	_uint						m_arrTextureBindingIndex[AI_TEXTURE_TYPE_MAX][AI_TEXTURE_TYPE_MAX];
+	_uint						m_arrTextureBindingIndex[aiTextureType_UNKNOWN][aiTextureType_UNKNOWN];
 
 	_uint						m_iNumMeshes = 0;
 	vector<CMesh*>				m_Meshes;

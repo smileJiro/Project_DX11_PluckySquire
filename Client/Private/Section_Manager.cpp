@@ -367,7 +367,7 @@ HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPa
         for (auto ChildJson : ChapterJson)
         {
             m_2DModelInfos[iIndex].strModelName = ChildJson["TextureName"];
-            m_2DModelInfos[iIndex].strModelType = ChildJson["ModelType"];
+            m_2DModelInfos[iIndex].eModelType = ChildJson["ModelType"];
             m_2DModelInfos[iIndex].isActive = ChildJson["Active"];
             m_2DModelInfos[iIndex].isCollider = ChildJson["Collider"];
             m_2DModelInfos[iIndex].isSorting = ChildJson["Sorting"];
@@ -377,14 +377,14 @@ HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPa
                 ChildJson.contains("ActivePropertis") &&
                 ChildJson["ActivePropertis"].contains("ActiveType"))
             {
-                m_2DModelInfos[iIndex].strActiveType = ChildJson["ActivePropertis"]["ActiveType"];
+                m_2DModelInfos[iIndex].eActiveType = ChildJson["ActivePropertis"]["ActiveType"];
             }
 
             if (m_2DModelInfos[iIndex].isCollider && ChildJson.contains("ColliderPropertis"))
             {
                 auto ColliderPropertis = ChildJson["ColliderPropertis"];
                 if (ColliderPropertis.contains("ColliderType"))
-                    m_2DModelInfos[iIndex].strColliderType = ColliderPropertis["ColliderType"];
+                    m_2DModelInfos[iIndex].eColliderType = ColliderPropertis["ColliderType"];
                 if (ColliderPropertis.contains("ColliderInfo"))
                 {
                     auto ColliderInfo = ColliderPropertis["ColliderInfo"];

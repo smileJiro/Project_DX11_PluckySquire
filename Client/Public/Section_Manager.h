@@ -153,14 +153,14 @@ public :
 	typedef struct tag2DModelInfo
 	{
 
-		_bool isActive		= false;
-		_bool isSorting		= false;
-		_bool isBackGround	= false;
-		_bool isCollider	= false;
+		_bool	isActive		= false;
+		_bool	isSorting		= false;
+		_bool	isBackGround	= false;
+		_bool	isCollider	= false;
 		_string strModelName;
-		_string strModelType;
-		_string strActiveType;
-		_string strColliderType;
+		_uint	eModelType;
+		_uint	eActiveType;
+		_uint	eColliderType;
 		_float2 fSorting_Offset_Pos = {};
 		_float2 fCollider_Offset_Pos = {};
 		_float2 fCollider_Extent = {};

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Section_2D.h"
 #include "GameInstance.h"
-#include "MapObject.h"
+#include "2DMapObject.h"
 #include "Map_2D.h"
 #include "Section_Manager.h"
 #include "Engine_Macro.h"
@@ -125,7 +125,7 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				const auto& tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(iModelIndex);
 
 
-				CMapObject::MAPOBJ_DESC NormalDesc = {};
+				C2DMapObject::MAPOBJ_DESC NormalDesc = {};
 				NormalDesc.is2DImport = true;
 				NormalDesc.Build_2D_Model(CSection_Manager::GetInstance()->Get_SectionLeveID()
 					, StringToWstring(tInfo.strModelName)
@@ -138,8 +138,8 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				NormalDesc.isCollider = tInfo.isCollider;
 				NormalDesc.isActive = tInfo.isActive;
 				
-				NormalDesc.strActiveType = tInfo.strActiveType;
-				NormalDesc.strColliderType = tInfo.strColliderType;
+				NormalDesc.eActiveType = tInfo.eActiveType;
+				NormalDesc.eColliderType = tInfo.eColliderType;
 				
 				NormalDesc.fSorting_Offset_Pos = tInfo.fSorting_Offset_Pos;
 
@@ -148,7 +148,7 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				NormalDesc.fCollider_Radius = tInfo.fCollider_Radius;
 				CGameObject* pGameObject = nullptr;
 
-				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
 					NormalDesc.iCurLevelID,
 					L"Layer_2DMapObject",
 					&pGameObject,

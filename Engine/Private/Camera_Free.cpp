@@ -67,6 +67,21 @@ void CCamera_Free::Late_Update(_float fTimeDelta)
 	__super::Compute_PipeLineMatrices();
 }
 
+INITIAL_DATA CCamera_Free::Get_InitialData()
+{
+	INITIAL_DATA tData;
+
+	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+
+	
+	_vector vAt = XMLoadFloat3(&tData.vPosition) + m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+	XMStoreFloat3(&tData.vAt, XMVectorSetW(vAt, 1.f));
+
+	tData.iZoomLevel = m_iCurZoomLevel;
+
+	return tData;
+}
+
 void CCamera_Free::Key_Input(_float fTimeDelta)
 {
 	if (KEY_PRESSING((KEY)m_iModeKey[0]))

@@ -3,6 +3,7 @@
 #include "Engine_Defines.h"
 #include "GameInstance.h"
 #include "Animation2D.h"
+#include "Collider.h"
 
 C2DMapObjectInfo::C2DMapObjectInfo()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -16,21 +17,16 @@ C2DMapObjectInfo::C2DMapObjectInfo(const C2DMapObjectInfo& Prototype)
 }
 
 
-HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString)
+HRESULT C2DMapObjectInfo::Initialize(json _InfoJson)
 {
 	m_strSearchTag = _InfoJson["SearchTag"];
 	m_strModelName = _InfoJson["TextureName"];
-	_string strModelText = _InfoJson["ModelType"];
 	m_isActive = _InfoJson["Active"];
 	m_isCollider = _InfoJson["Collider"];
 	m_isSorting = _InfoJson["Sorting"];
-	//m_isBackGround = _InfoJson["BackGround"];
+	m_isBackGround = _InfoJson["BackGround"];
 
-	for (_uint i = 0; i < MODEL_END; ++i)
-	{
-		if (_arrModelTypeString[i] == strModelText)
-			m_eModelType = (MAPOBJ_MODEL_TYPE)i;
-	}
+	m_eModelType = _InfoJson["ModelType"];;
 
 	if (m_isActive)
 	{
@@ -40,12 +36,7 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 			_InfoJson["ActivePropertis"].contains("ActiveType")
 			)
 		{
-			_string ActiveTypeTag = _InfoJson["ActivePropertis"]["ActiveType"];
-			for (_uint i = 0; i < ACTIVE_END; ++i)
-			{
-				if (_arrActiveTypeString[i] == ActiveTypeTag)
-					m_eActiveType = (MAPOBJ_ACTIVE_TYPE)i;
-			}
+			m_eActiveType = _InfoJson["ActivePropertis"]["ActiveType"];
 		}
 	}
 	if (m_isCollider)
@@ -57,12 +48,7 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 			auto ColliderPropertis = _InfoJson["ColliderPropertis"];
 			if (ColliderPropertis.contains("ColliderType"))
 			{
-				_string ColliderTypeTag = ColliderPropertis["ColliderType"];
-				for (_uint i = 0; i < COLLIDER_END; ++i)
-				{
-					if (_arrColliderTypeString[i] == ColliderTypeTag)
-						m_eColliderType = (MAPOBJ_2D_COLLIDIER_TYPE)i;
-				}
+				m_eColliderType = ColliderPropertis["ColliderType"];
 			}
 			if (ColliderPropertis.contains("ColliderInfo"))
 			{
@@ -73,11 +59,11 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 
 				switch (m_eColliderType)
 				{
-					case Map_Tool::C2DMapObjectInfo::COLLIDER_AABB:
+				case CCollider::AABB_2D:
 					if (ColliderInfo.contains("Collider_Extent"))
 						m_fColliderExtent = { ColliderInfo["Collider_Extent"]["X"],ColliderInfo["Collider_Extent"]["Y"] };
 						break;
-					case Map_Tool::C2DMapObjectInfo::COLLIDER_SQUARE:
+				case CCollider::CIRCLE_2D:
 						if (ColliderInfo.contains("Collider_Radius"))
 							m_fColliderRadius = ColliderInfo["Collider_Radius"];
 						break;
@@ -122,33 +108,34 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson, _string* _arrModelTypeStrin
 	return S_OK;
 }
 
-HRESULT C2DMapObjectInfo::Export(json& _OutputJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString)
+HRESULT C2DMapObjectInfo::Export(json& _OutputJson)
 {
 	_OutputJson["SearchTag"] = m_strSearchTag;
 	_OutputJson["TextureName"] = m_strModelName;
-	_OutputJson["ModelType"] = _arrModelTypeString[m_eModelType];
+	_OutputJson["ModelType"] = m_eModelType;
 	_OutputJson["Active"] = m_isActive;
 	_OutputJson["Collider"] = m_isCollider;
 	_OutputJson["Sorting"] = m_isSorting;
 	_OutputJson["BackGround"] = m_isBackGround;
 	if (m_isActive)
 	{
-		_OutputJson["ActivePropertis"]["ActiveType"] = _arrActiveTypeString[m_eActiveType];
+		_OutputJson["ActivePropertis"]["ActiveType"] = m_eActiveType;
 	}
 	if (m_isCollider)
 	{
-		_OutputJson["ColliderPropertis"]["ColliderType"] = _arrColliderTypeString[m_eColliderType];
-		if (m_eColliderType != COLLIDER_END)
+		_OutputJson["ColliderPropertis"]["ColliderType"] = m_eColliderType;
+		if (m_eColliderType != CCollider::TYPE_LAST)
 		{
+
 			_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Offset_Pos"]["X"] = m_fColliderOffsetPos.x;
 			_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Offset_Pos"]["Y"] = m_fColliderOffsetPos.y;
 			switch (m_eColliderType)
 			{
-				case Map_Tool::C2DMapObjectInfo::COLLIDER_AABB:
+				case CCollider::AABB_2D:
 					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["X"] = m_fColliderExtent.y;
 					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["Y"] = m_fColliderExtent.y;
 					break;
-				case Map_Tool::C2DMapObjectInfo::COLLIDER_SQUARE:
+				case CCollider::CIRCLE_2D:
 					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Radius"] = m_fColliderRadius;
 					break;
 			}
@@ -186,7 +173,7 @@ void C2DMapObjectInfo::Set_Model(C2DModel* _pModel)
 			const _wstring* pTextureName = m_pTexture->Get_SRVName(0);
 			if(nullptr != pTextureName)
 			m_strModelName = WstringToString(*pTextureName);
-			m_eModelType = (MAPOBJ_MODEL_TYPE)_pModel->Get_AnimType();
+			m_eModelType = _pModel->Get_AnimType();
 
 			m_isToolRendering = true;
 		}
@@ -194,11 +181,11 @@ void C2DMapObjectInfo::Set_Model(C2DModel* _pModel)
 }
 
 
-C2DMapObjectInfo* C2DMapObjectInfo::Create(json _InfoJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString)
+C2DMapObjectInfo* C2DMapObjectInfo::Create(json _InfoJson)
 {
 	C2DMapObjectInfo* pInstance = new C2DMapObjectInfo();
 
-	if (FAILED(pInstance->Initialize(_InfoJson, _arrModelTypeString, _arrActiveTypeString, _arrColliderTypeString)))
+	if (FAILED(pInstance->Initialize(_InfoJson)))
 	{
 		MSG_BOX("Failed to Created : C2DMapObjectInfo");
 		Safe_Release(pInstance);

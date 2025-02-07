@@ -392,7 +392,7 @@ HRESULT CMapObject::Save_Override_Material(HANDLE _hFile)
      
         for (_uint iMaterialIndex = 0; iMaterialIndex < pMaterials.size(); ++iMaterialIndex)
         {
-            for (_uint iTexTypeIndex = 1; iTexTypeIndex < AI_TEXTURE_TYPE_MAX; ++iTexTypeIndex)
+            for (_uint iTexTypeIndex = 1; iTexTypeIndex < aiTextureType_UNKNOWN; ++iTexTypeIndex)
             {
                 _uint iTexIndex = Get_TextureIdx(iTexTypeIndex, iMaterialIndex);
                 if (0 < iTexIndex)

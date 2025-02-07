@@ -27,9 +27,9 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_arrCookingColliderData(_Prototype.m_arrCookingColliderData)
 {
 
-	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
+	for (_uint i = 0; i < aiTextureType_UNKNOWN; i++)
 	{
-		for (_uint j= 0; j< AI_TEXTURE_TYPE_MAX; j++)
+		for (_uint j= 0; j< aiTextureType_UNKNOWN; j++)
 		{
 			m_arrTextureBindingIndex[i][j] = _Prototype.m_arrTextureBindingIndex[i][j];
 		}
@@ -124,6 +124,19 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 		if (FAILED(Bind_Material(_pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
 		{
 			//continue;
+		}
+
+		if (FAILED(Bind_Material(_pShader, "g_NormalTexture", i, aiTextureType_NORMALS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_NORMALS])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_BASE_COLOR])))
+		{
+			int a = 0;
+		}
+		else
+		{
+			int a = 0;
 		}
 
 		/* Bind Bone Matrices */

@@ -22,9 +22,7 @@ cbuffer BasicPixelConstData : register(b0)
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 /* Bone Matrix */
 float4x4 g_BoneMatrices[256];
-Texture2D g_DiffuseTexture;
-Texture2D g_NormalTexture;
-Texture2D g_ORMHTexture;
+Texture2D g_DiffuseTexture, g_NormalTexture, g_ORMHTexture; // PBR
 
 float g_fFarZ = 1000.f;
 int g_iFlag = 0;
@@ -167,7 +165,8 @@ struct PS_OUT
 {
     float4 vDiffuse : SV_TARGET0;
     float4 vNormal : SV_TARGET1;
-    float4 vDepth : SV_TARGET2;
+    float4 vORMH : SV_TARGET2;
+    float4 vDepth : SV_TARGET3;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
