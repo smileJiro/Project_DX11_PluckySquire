@@ -8,6 +8,8 @@
 BEGIN(Engine)
 class CTexture;
 class CVIBuffer_Rect;
+class CModelObject;
+class CController_Model;
 END
 
 BEGIN(Client)
@@ -141,6 +143,8 @@ protected:
 	_float			m_fBlue = { 0.f };
 	_tchar			m_tFont[MAX_PATH] = {};
 	_float2			m_vOriginSize = {0.f, 0.f};
+
+	CController_Model* m_pModelCom[COORDINATE_LAST] = { nullptr };
 
 
 

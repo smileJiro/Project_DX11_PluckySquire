@@ -753,6 +753,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	pDesc.fSizeX = 256.f / 4.f;
+	pDesc.fSizeY = 256.f / 4.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+	
+
 	return S_OK;
 }
 
@@ -793,12 +800,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-18.0f, 0.35f, -17.0f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
+
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.0f, 0.35f, -19.0f);
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
 
-	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -17.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))

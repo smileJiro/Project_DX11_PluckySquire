@@ -3,13 +3,11 @@
 
 BEGIN(Client)
 
-
-//처음 인식 상태 (있다면 애니메이션 재생)
-class CAlertState final : public CState
+class CSneak_IdleState final : public CState
 {
 private:
-	CAlertState();
-	virtual ~CAlertState() = default;
+	CSneak_IdleState();
+	virtual ~CSneak_IdleState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -20,10 +18,11 @@ public:
 	virtual void State_Exit() override;
 
 private:
-	_bool m_isTurn = { false };
+	_float m_fAccTime = { 0.f };
+	_float m_fDelayTime = {};
 
 public:
-	static CAlertState* Create(void* _pArg);
+	static CSneak_IdleState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

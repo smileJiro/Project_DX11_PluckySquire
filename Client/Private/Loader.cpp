@@ -35,12 +35,14 @@
 #include "ShopPanel_YesNo.h"
 #include "FloorWord.h"
 #include "PrintFloorWord.h"
+#include "Npc_Logo.h"
+#include "UI_JotMain.h"
 /* For. UI*/
 
 /* For. NPC*/
 #include "Npc_Body.h"
 #include "NPC_Store.h"
-#include "Npc_Logo.h"
+
 
 
 #include "ModelObject.h"
@@ -59,6 +61,7 @@
 #include "3DMapObject.h"
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
+#include "Sneak_DetectionField.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -472,7 +475,9 @@ HRESULT CLoader::Loading_Level_Logo()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_Logo"), CLogo::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Obejct_NPC_Logo"), CNPC_Logo::Create(m_pDevice, m_pContext))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_NPC_Logo"), CNPC_Logo::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_JOT"), CUI_JotMain::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
@@ -498,6 +503,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Sneak_DetectionField"),
+        CSneak_DetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"),

@@ -4,12 +4,12 @@
 BEGIN(Client)
 
 
-//처음 인식 상태 (있다면 애니메이션 재생)
-class CAlertState final : public CState
+//공격 범위가 인식 범위보다 큰 원거리 공격 상태
+class CSneak_AttackState final : public CState
 {
 private:
-	CAlertState();
-	virtual ~CAlertState() = default;
+	CSneak_AttackState();
+	virtual ~CSneak_AttackState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -19,11 +19,8 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
-private:
-	_bool m_isTurn = { false };
-
 public:
-	static CAlertState* Create(void* _pArg);
+	static CSneak_AttackState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

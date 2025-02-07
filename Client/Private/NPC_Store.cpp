@@ -158,6 +158,8 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 	{
 		Throw_Dialogue();
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+
+		
 	}
 
 	//if (static_cast<CModelObject*>(m_PartObjects[PART_BODY])->)
@@ -190,46 +192,6 @@ void CNPC_Store::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOther
 	m_isColPlayer = false;
 }
 
-
-
-_bool CNPC_Store::OnCOllsion2D_Enter()
-{
-	// 이전에 false 였고 현재 true 인경우
-	//m_isPreCollision2D 가 false
-	//m_isCollision2D 가 true
-	// 인터렉션창을 띄운다.
-	
-
-	m_isPreCollision2D = m_isCollision2D;
-
-	return false;
-}
-
-_bool CNPC_Store::OnCOllsion2D_Stay()
-{
-	// 이전에 true 였고 지금도 true면 들어오는건 false, // 애니메이션 유지
-		//m_isPreCollision2D 가 true
-	//m_isCollision2D 가 true
-	// 인터렉션창을 띄운다.
-	// E를 누르면 아이템 상점을 띄운다.
-
-
-	return false;
-}
-
-_bool CNPC_Store::OnCOllsion2D_Exit()
-{
-
-	// 이전에 true였고 현재 false 인경우
-			//m_isPreCollision2D 가 true
-	//m_isCollision2D 가 false
-	// 인터렉션창을 끈다.
-
-
-	m_isPreCollision2D = m_isCollision2D;
-
-	return false;
-}
 
 
 void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

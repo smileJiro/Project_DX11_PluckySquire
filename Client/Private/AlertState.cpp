@@ -39,7 +39,22 @@ void CAlertState::State_Update(_float _fTimeDelta)
 	_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 	if (dis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+		{
+			//굳이 멤버변수로 써야하나
+			m_isTurn = true;
+			_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
+
+			//다 돌았으면 회전 애니메이션 재생 안하도록
+			if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+				m_isTurn = false;
+
+			if (false == m_isTurn)
+				Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		}
+		else
+			Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		
 		return;
 	}
 	if (dis <= Get_CurCoordRange(MONSTER_STATE::CHASE))

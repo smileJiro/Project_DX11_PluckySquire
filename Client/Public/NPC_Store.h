@@ -61,10 +61,6 @@ protected:
 	virtual HRESULT Ready_Components() override;
 	virtual HRESULT Ready_PartObjects() override;
 
-	virtual _bool OnCOllsion2D_Enter() override;
-	virtual _bool OnCOllsion2D_Stay() override;
-	virtual _bool OnCOllsion2D_Exit() override;
-
 public:
 	static CNPC_Store*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*		Clone(void* _pArg) override; // Clone() 프로토 타입이나 객체의 복사시 사용된다.

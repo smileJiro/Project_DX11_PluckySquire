@@ -137,11 +137,6 @@ protected:
 	virtual HRESULT Ready_Components() = 0;
 	virtual HRESULT Ready_PartObjects() = 0;
 
-	virtual _bool OnCOllsion2D_Enter() = 0;
-	virtual _bool OnCOllsion2D_Stay() = 0;
-	virtual _bool OnCOllsion2D_Exit() = 0;
-
-
 public:
 	virtual CGameObject* Clone(void* _pArg) = 0;
 	virtual void Free() override;
