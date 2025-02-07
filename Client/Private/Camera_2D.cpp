@@ -165,13 +165,13 @@ void CCamera_2D::Action_SetUp_ByMode()
 		case FLIPPING_UP:
 		{
 			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
-			m_fFlippingTime = { 1.f, 0.f };
+			m_fFlippingTime = { 0.5f, 0.f };
 		}
 			break;
 		case FLIPPING_DOWN:
 		{
 			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
-			m_fFlippingTime = { 1.f, 0.f };
+			m_fFlippingTime = { 0.5f, 0.f };
 
 			// 어디 볼지는 지금은 무조건 player 위치인데 위치랑 카메라가 못 가는 곳에 따라서
 			// 조정이 필요함
@@ -208,7 +208,7 @@ void CCamera_2D::Return_To_Default(_float _fTimeDelta)
 
 void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 {
-	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_IN);
+	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_OUT);
 
 	if (fRatio >= 1.f) {
 		m_fFlippingTime.y = 0.f;
@@ -228,16 +228,20 @@ void CCamera_2D::Flipping_Pause(_float _fTimeDelta)
 
 void CCamera_2D::Flipping_Down(_float _fTimeDelta)
 {
-	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_IN);
+	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_OUT);
 
 	if (fRatio >= 1.f) {
 		m_fFlippingTime.y = 0.f;
-		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_v2DTargetWorldPos), 1.f));
+
+		_vector vCameraPos = Calculate_CameraPos(_fTimeDelta);
+		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 		m_eCameraMode = DEFAULT;
 	}
 
-	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_v2DTargetWorldPos), fRatio);
+	_vector vCameraPos = Calculate_CameraPos(_fTimeDelta);
+
+	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), vCameraPos, fRatio);
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
 }
