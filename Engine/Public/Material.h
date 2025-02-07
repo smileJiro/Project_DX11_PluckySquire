@@ -71,7 +71,7 @@ public:
 	HRESULT Bind_PixelConstBuffer(CShader* _pShader);
 protected:
 	// 텍스쳐를 담는 벡터를 보관하는 배열.
-	CTexture*					m_MaterialTextures[AI_TEXTURE_TYPE_MAX];
+	CTexture*					m_MaterialTextures[aiTextureType_UNKNOWN];
 
 protected: /* Shader에 바인딩하는 ConstBuffer */
 	CONST_PS					m_tPixelConstData = {};

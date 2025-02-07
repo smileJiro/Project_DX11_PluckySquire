@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CAnimEventGenerator;
 class CCollider; // test
+class CModelObject;
 END
 BEGIN(Client)
 class CStateMachine;
@@ -422,7 +423,7 @@ public: /* 2D 충돌 */
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
 	void Attack();
-	void Move(_vector _vForce, _float _fTimeDelta);
+	void Move(_fvector _vForce, _float _fTimeDelta);
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();
 	void	ThrowSword();
@@ -443,6 +444,14 @@ public: /* 2D 충돌 */
 	_vector Get_LookDirection();
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 	STATE Get_CurrentStateID();
+	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
+	_vector Get_WallNormal() { return m_vWallNormal; }
+	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
+	_vector Get_RootBonePosition();
+	_float Get_ArmHeight() { return m_fArmHeight; }
+	_float Get_ArmLength() { return m_fArmLength; }
+	_float Get_AirRotationSpeed() { return m_fAirRotateSpeed; }
+	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -451,11 +460,12 @@ public: /* 2D 충돌 */
 	void Set_StealthMode(_bool _bNewMode);
 	void Set_2DDirection(E_DIRECTION _eEDir);
 	void Set_3DTargetDirection(_fvector _vDir);
-	void Set_ClamberPosition(_fvector _vPos) { m_vClamberPosition = _vPos; }
+	void Set_WallNormal(_fvector _vNormal) { m_vWallNormal = _vNormal; }
+	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
 	void Set_SwordGrip(_bool _bForehand);
+	void Set_Kinematic(_bool _bKinematic);
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
-
 
 private:
 
@@ -470,15 +480,20 @@ private:
 	//Variables
 	_float m_fCenterHeight = 0.5;
 	_float m_fHeadHeight = 1.0;
+	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
+	_float m_fArmLength = 0.325f;// 벽 타기 범위
 	_float m_fFootLength = 0.25;
-	_float m_fStepSlopeThreshold = 0.5;
+	_float m_fStepSlopeThreshold = 0.3f;
 	_bool m_bOnGround = false;
-	_vector m_vClamberPosition;
 	_float m_fAttackForwardingForce = 12.f;
-	_float m_fGroundRotateSpeed = 360;
+	_float m_fGroundRotateSpeed = 360.f;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 	_bool m_bSneakMode = false;
+	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
+	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
+	_float m_fAirRotateSpeed = 40;
+	_float m_fAirRunSpeed = 10.f;
 
 	//Components
 	CStateMachine* m_pStateMachine = nullptr;
@@ -487,6 +502,8 @@ private:
 
 	//Parts
 	class CPlayerSword* m_pSword = nullptr;
+	CModelObject* m_pBody = nullptr;
+	CModelObject* m_pGlove= nullptr;
 
 	CGameObject* m_pCarryingObject = nullptr;
 

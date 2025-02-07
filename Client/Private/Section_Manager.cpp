@@ -367,7 +367,7 @@ HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPa
         for (auto ChildJson : ChapterJson)
         {
             m_2DModelInfos[iIndex].strModelName = ChildJson["TextureName"];
-            m_2DModelInfos[iIndex].strModelType = ChildJson["ModelType"];
+            m_2DModelInfos[iIndex].eModelType = ChildJson["ModelType"];
             m_2DModelInfos[iIndex].isActive = ChildJson["Active"];
             m_2DModelInfos[iIndex].isCollider = ChildJson["Collider"];
             m_2DModelInfos[iIndex].isSorting = ChildJson["Sorting"];
@@ -377,14 +377,14 @@ HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPa
                 ChildJson.contains("ActivePropertis") &&
                 ChildJson["ActivePropertis"].contains("ActiveType"))
             {
-                m_2DModelInfos[iIndex].strActiveType = ChildJson["ActivePropertis"]["ActiveType"];
+                m_2DModelInfos[iIndex].eActiveType = ChildJson["ActivePropertis"]["ActiveType"];
             }
 
             if (m_2DModelInfos[iIndex].isCollider && ChildJson.contains("ColliderPropertis"))
             {
                 auto ColliderPropertis = ChildJson["ColliderPropertis"];
                 if (ColliderPropertis.contains("ColliderType"))
-                    m_2DModelInfos[iIndex].strColliderType = ColliderPropertis["ColliderType"];
+                    m_2DModelInfos[iIndex].eColliderType = ColliderPropertis["ColliderType"];
                 if (ColliderPropertis.contains("ColliderInfo"))
                 {
                     auto ColliderInfo = ColliderPropertis["ColliderInfo"];
@@ -434,6 +434,8 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
         for (auto ChildJson : ChapterJson)
         {
             
+
+
             CSection_2D* pSection_2D = CSection_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
             if (nullptr == pSection_2D)
             {
@@ -442,6 +444,9 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
             } 
             m_iPriorityGenKey += 10;
             
+
+    
+
             if (m_CurLevelSections.empty())
                 strStartSectionKey = pSection_2D->Get_SectionName();
             m_CurLevelSections.try_emplace(pSection_2D->Get_SectionName(), pSection_2D);

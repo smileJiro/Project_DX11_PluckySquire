@@ -75,21 +75,40 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
 void CPlayerSword::Update(_float _fTimeDelta)
 {
-    if (m_IsFlying)
-    {
-        m_fOutingForce -= m_fCentripetalForce * _fTimeDelta;
-        _vector vDir = m_vThrowDirection;
-        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        if (m_fOutingForce < 0)
-        {
-            _vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-            _vector vTargetPos = m_pPlayer->Get_CenterPosition();
-            XMVectorSetY(vTargetPos, XMVectorGetY(vTargetPos) + 0.5f);
-            vDir = XMVector3Normalize(vTargetPos - vPosition);
-        }
+  if (m_IsFlying)
+{
+      if (m_bReceive)
+      {
+          m_bReceive = false;
+          m_IsFlying = false;
+          COORDINATE eCoord = Get_CurCoord();
+          if (COORDINATE_3D == eCoord)
+          {
+              Set_ParentMatrix(eCoord, m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
+              C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
+              Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
+              _matrix matWorld = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180));
+              m_pControllerTransform->Set_WorldMatrix(matWorld);
 
-        pDynamicActor->Set_LinearVelocity(vDir * abs(m_fOutingForce));
+              static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
+          }
+      }
+      else
+      {
+          m_fOutingForce -= m_fCentripetalForce * _fTimeDelta;
+          _vector vDir = m_vThrowDirection;
+          CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+          if (m_fOutingForce < 0)
+          {
+              _vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+              _vector vTargetPos = m_pPlayer->Get_CenterPosition();
+              XMVectorSetY(vTargetPos, XMVectorGetY(vTargetPos) + 0.5f);
+              vDir = XMVector3Normalize(vTargetPos - vPosition);
+          }
 
+          pDynamicActor->Set_LinearVelocity(vDir * abs(m_fOutingForce));
+
+      }
     }
 
 	__super::Update(_fTimeDelta);
@@ -104,23 +123,10 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
 {
     if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
     {
-        if (0 > m_fOutingForce )
+        if (m_IsFlying && 0 > m_fOutingForce)
         {
-            m_IsFlying = false;
+            m_bReceive = true;
             m_fOutingForce = 0;
-            COORDINATE eCoord = Get_CurCoord();
-            if (COORDINATE_3D == eCoord)
-            {
-                Set_ParentMatrix(eCoord,m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
-                C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
-                Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
-                _matrix matWorld = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180));
-                m_pControllerTransform->Set_WorldMatrix(matWorld);
-
-                 static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
-
-            }
-
         }
     }
 
@@ -140,6 +146,7 @@ void CPlayerSword::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 void CPlayerSword::Throw( _fvector _vDirection)
 {
     m_IsFlying = true;
+    m_bReceive = false;
     m_fOutingForce = m_fThrowingPower;
     m_vThrowDirection = _vDirection;
     m_pSocketMatrix = nullptr;

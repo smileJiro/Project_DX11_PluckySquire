@@ -31,7 +31,8 @@
 #include "RayShape.h"
 
 
-#include "MapObject.h"
+#include "2DMapObject.h"
+#include "3DMapObject.h"
 
 
 //#include "UI.h"
@@ -936,7 +937,7 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 			isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
 
 
-			CMapObject::MAPOBJ_DESC NormalDesc = {};
+			C3DMapObject::MAPOBJ_3D_DESC NormalDesc = {};
 			NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
 			NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
 			NormalDesc.isCoordChangeEnable = false;
@@ -945,7 +946,7 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 			NormalDesc.tTransform3DDesc.isMatrix = true;
 			NormalDesc.tTransform3DDesc.matWorld = vWorld;
 			CGameObject* pGameObject = nullptr;
-			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
 				LEVEL_GAMEPLAY,
 				strLayerTag,
 				&pGameObject,
@@ -960,7 +961,9 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 
 
 				isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-				static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
+				C3DMapObject* pMapObject = static_cast<C3DMapObject*>(pGameObject);
+				
+				pMapObject->Set_Color_Shader_Mode(eTextureType);
 
 				switch (eTextureType)
 				{
@@ -968,7 +971,7 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 				case Engine::C3DModel::MIX_DIFFUSE:
 				{
 					isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-					static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
+					pMapObject->Set_Diffuse_Color(fDefaultDiffuseColor);
 				}
 				break;
 				default:
@@ -978,7 +981,6 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 				isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
 				if (0 < iOverrideCount)
 				{
-					CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
 					for (_uint i = 0; i < iOverrideCount; i++)
 					{
 						_uint iMaterialIndex, iTexTypeIndex, iTexIndex;
@@ -986,10 +988,9 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 						isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
 						isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
 
-						pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
+						pMapObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
 					}
 				}
-				//pGameObject->Set_WorldMatrix(vWorld);
 			}
 		}
 	}

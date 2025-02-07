@@ -39,6 +39,7 @@ private:
 	_float m_fRotationForce = 50.f;
 	class CPlayer* m_pPlayer = nullptr;
 	_bool m_IsFlying = false;
+	_bool m_bReceive = false;
 public:
 	static CPlayerSword* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

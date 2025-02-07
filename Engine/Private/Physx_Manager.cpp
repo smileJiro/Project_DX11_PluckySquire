@@ -199,7 +199,7 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 	return isResult;
 }
 
-_bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<_float3>& _OutPositions)
+_bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
 {
 	PxRaycastHit hitBuffer[10]; // 최대 10개까지 저장
 	PxRaycastBuffer hit(hitBuffer, 10); // 버퍼 설정
@@ -213,7 +213,9 @@ _bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, 
 		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
 
 		_OutActors.push_back(nullptr != pActorUserData ? pActorUserData->pOwner : nullptr);
-		_OutPositions.push_back(_float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z });
+
+		_OutRaycastHits.push_back({ _float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z }
+		, _float3{hit.touches[i].normal.x,hit.touches[i].normal.y,hit.touches[i].normal.z}});
 	}
 	return isResult;
 }
@@ -406,26 +408,45 @@ void CPhysx_Manager::Free()
 	//if (m_pGroundPlane)
 	//	m_pGroundPlane->release();
 	if (m_pTestDesk)
+	{
 		m_pTestDesk->release();
+		m_pPxScene = nullptr;
+	}
 
 	// 2. Scene 및 Dispatcher 정리
 	if (m_pPxScene)
+	{
 		m_pPxScene->release();
+		m_pPxScene = nullptr;
+	}
+		
 	if (m_pPxDefaultCpuDispatcher)
+	{
 		m_pPxDefaultCpuDispatcher->release();
+		m_pPxDefaultCpuDispatcher = nullptr;
+	}
 
 	// 3. Material 정리
 	for (_uint i = 0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
 	{
 		if (m_pPxMaterial[i])
+		{
 			m_pPxMaterial[i]->release();
+			m_pPxMaterial[i] = nullptr;
+		}
 	}
 
 	// 4. Cooking 및 Physics 정리
 	if (m_pPxCooking)
+	{
 		m_pPxCooking->release();
+		m_pPxCooking = nullptr;
+	}
 	if (m_pPxPhysics)
+	{
 		m_pPxPhysics->release();
+		m_pPxPhysics = nullptr;
+	}
 
 	// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
 	if (m_pPxPvd)
@@ -435,13 +456,18 @@ void CPhysx_Manager::Free()
 		if (auto pTransport = m_pPxPvd->getTransport())
 		{
 			m_pPxPvd->release();
+			m_pPxPvd = nullptr;
 			pTransport->release();
+			pTransport = nullptr;
 		}
 	}
 
 	// 6. Foundation 정리
 	if (m_pPxFoundation)
+	{
 		m_pPxFoundation->release();
+		m_pPxFoundation = nullptr;
+	}
 
 	// 게임 및 DirectX 리소스 해제
 	Safe_Release(m_pPhysx_EventCallBack);

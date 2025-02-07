@@ -402,10 +402,10 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 
 			if (ImGui::BeginListBox("##TextureEnumNameList", ImVec2(200.f, 5 * ImGui::GetTextLineHeightWithSpacing())))
 			{
-				_uint iIndex = 0;
-				for (const auto& strEnumName : arrEnumText)
+				_uint iIndex = 1;
+				for (_uint i = 1 ; i < aiTextureType_UNKNOWN ; ++i)
 				{
-					if (ImGui::Selectable(strEnumName.c_str(), iIndex == __iSelectTextureTypeIndex))
+					if (ImGui::Selectable(arrEnumText[i].c_str(), iIndex == __iSelectTextureTypeIndex))
 					{
 						if (iIndex != __iSelectTextureTypeIndex)
 						{
@@ -491,7 +491,7 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 
 		vector<CMapObject::TEXTURE_INFO> Textures;
 
-		for (_uint iTextureType = 0; iTextureType < AI_TEXTURE_TYPE_MAX; iTextureType++)
+		for (_uint iTextureType = 0; iTextureType < aiTextureType_UNKNOWN; iTextureType++)
 		{
 			ImGui::NewLine();
 

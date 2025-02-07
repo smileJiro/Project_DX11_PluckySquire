@@ -58,9 +58,6 @@
     <Filter Include="01.Levels\00.Loading\Loader\CriticalSectionGuard">
       <UniqueIdentifier>{da37aacd-cfdc-43c9-8bdd-b37114e67aaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\TestPlayer">
-      <UniqueIdentifier>{ae177609-321a-4bf1-ac22-18b52b14a6df}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\TestTerrain">
       <UniqueIdentifier>{b4fcc4ee-0579-4fd9-acd6-6c477523958c}</UniqueIdentifier>
     </Filter>
@@ -279,7 +276,7 @@
     </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord">
       <UniqueIdentifier>{5da31b5a-443d-4563-9471-219ed56959d2}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\WorldPos">
       <UniqueIdentifier>{21bef96e-904c-4c92-a5cb-988c87a95a6f}</UniqueIdentifier>
     </Filter>
@@ -288,6 +285,21 @@
     </Filter>
     <Filter Include="02.GameObjects\Camera\2D">
       <UniqueIdentifier>{0382aa76-b8cc-4245-96df-52630b06afcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\2D">
+      <UniqueIdentifier>{cea4083d-2cbd-4636-ac5d-7af5b9d4d11a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\3D">
+      <UniqueIdentifier>{5420c52f-3c9d-4434-aca2-baaa3e772e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\0. Super">
+      <UniqueIdentifier>{38021f23-ac14-4a82-a2c1-7a769a1ef0a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player">
+      <UniqueIdentifier>{ae177609-321a-4bf1-ac22-18b52b14a6df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\01. LogoNpc">
+      <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -346,7 +358,7 @@
       <Filter>01.Levels\01.Static</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Player.h">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TestTerrain.h">
       <Filter>02.GameObjects\TestTerrain</Filter>
@@ -461,7 +473,6 @@
     <ClInclude Include="..\Public\ESC_Goblin.h">
       <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MapObject.h" />
     <ClInclude Include="..\Public\Boss_EnergyBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
@@ -550,7 +561,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerSword.h">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Soldier_Bomb.h">
       <Filter>02.GameObjects\Monster\Soldier</Filter>
@@ -604,7 +615,7 @@
       <Filter>02.GameObjects\MainTable</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerBody.h">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>02.GameObjects</Filter>
@@ -618,14 +629,12 @@
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpDown.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\PlayerState_Clamber.h" />
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\Public\Camera_2D.h">
@@ -637,10 +646,28 @@
     </ClInclude>
     <ClInclude Include="..\Public\PrintFloorWord.h">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Logo.h">
+      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02.GameObjects\MapObject\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -678,7 +705,7 @@
       <Filter>01.Levels\01.Static</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TestTerrain.cpp">
       <Filter>02.GameObjects\TestTerrain</Filter>
@@ -808,7 +835,6 @@
     <ClCompile Include="..\Private\ESC_Goblin.cpp">
       <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MapObject.cpp" />
     <ClCompile Include="..\Private\Boss_EnergyBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
@@ -894,7 +920,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerSword.cpp">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Soldier_Bomb.cpp">
       <Filter>02.GameObjects\Monster\Soldier</Filter>
@@ -948,7 +974,7 @@
       <Filter>02.GameObjects\MainTable</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerBody.cpp">
-      <Filter>02.GameObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02.GameObjects</Filter>
@@ -959,14 +985,12 @@
     <ClCompile Include="..\Private\Trigger_Manager.cpp">
       <Filter>92. TriggerManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
     <ClCompile Include="..\Private\PlayerState_Clamber.cpp" />
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp">
@@ -974,7 +998,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\PrintFloorWord.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp">
       <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
@@ -982,6 +1006,24 @@
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\Camera_2D.cpp">
       <Filter>02.GameObjects\Camera\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Clamber.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Logo.cpp">
+      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MapObject.cpp">
+      <Filter>02.GameObjects\MapObject\0. Super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

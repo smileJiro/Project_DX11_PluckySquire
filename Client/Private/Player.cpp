@@ -119,7 +119,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
         MSG_BOX("CPlayer super Initialize Failed");
         return E_FAIL;
     }
-
+    static_cast<CActor_Dynamic*> (m_pActorCom)->Set_SleepThreshold(0);
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
@@ -127,7 +127,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
 
 	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 10.f;	
+	m_tStat[COORDINATE_3D].fJumpPower = 11.f;	
     m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
 	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
      
@@ -193,7 +193,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
+    m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
     {
         MSG_BOX("CPlayer Body Creation Failed");
@@ -230,7 +230,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 	BodyDesc.eActorType = ACTOR_TYPE::LAST;
 	BodyDesc.pActorDesc = nullptr;
-    m_PartObjects[PLAYER_PART_GLOVE] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove =static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
     {
         MSG_BOX("CPlayer Glove Creation Failed");
@@ -270,10 +270,27 @@ void CPlayer::Update(_float _fTimeDelta)
 
 
 
-
+    ////cout << "m_bOnGround : " << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
+
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    m_bOnGround = false;
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
+        //cout << "bSleep : " << bSleep;
+        if (false == bSleep)
+        {
+
+            m_bOnGround = false;
+        }
+
+
+    }
+    else
+    {
+        m_bOnGround = false;
+    }
+
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -281,6 +298,7 @@ void CPlayer::Update(_float _fTimeDelta)
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+    //cout << endl;
 }
 
 HRESULT CPlayer::Render()
@@ -309,14 +327,13 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
                 _vector vContactNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
                 if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
                 {
-                    _Other.pActorUserData->pOwner->Set_SceneQueryFlag(true);
-                    break;
+                    Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
                 }
             }
-
         }
         break;
     case Client::CPlayer::SHAPE_FOOT:
+        //cout << "   COntatct Enter";
         break;
 	case Client::CPlayer::SHAPE_TRIGER:
 		break;
@@ -330,7 +347,13 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     switch (eShapeUse)
     {
     case Client::CPlayer::SHAPE_BODY:
+        //for (auto& pxPairData : _ContactPointDatas)
+        //{
+        //    if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+        //    {
 
+        //    }
+        //}
         break;
     case Client::CPlayer::SHAPE_FOOT:
         for (auto& pxPairData : _ContactPointDatas)
@@ -343,10 +366,12 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
             if (pxPairData.normal.y < m_fStepSlopeThreshold)
                 continue;
             m_bOnGround = true;
+            ////cout << "  Contact";
             return;
         }
         break;
     case Client::CPlayer::SHAPE_TRIGER:
+
         break;
     default:
         break;
@@ -356,6 +381,7 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+ 
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
@@ -367,14 +393,14 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
                 _vector vContactNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
                 if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
                 {
-                    _Other.pActorUserData->pOwner->Set_SceneQueryFlag(false);
-                    break;
+                    Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
                 }
             }
 
         }
         break;
     case Client::CPlayer::SHAPE_FOOT:
+        //cout << "   COntatct Exit";
         break;
     case Client::CPlayer::SHAPE_TRIGER:
         break;
@@ -440,10 +466,10 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 void CPlayer::Attack()
 {
     Stop_Move();
-    Add_Impuls(Get_3DTargetDirection() * m_fAttackForwardingForce);
+    Add_Impuls(Get_LookDirection() * m_fAttackForwardingForce);
 }
 
-void CPlayer::Move(_vector _vForce, _float _fTimeDelta)
+void CPlayer::Move(_fvector _vForce, _float _fTimeDelta)
 {
     ACTOR_TYPE eActorType = Get_ActorType();
 
@@ -569,7 +595,7 @@ _bool CPlayer::Is_Sneaking()
 {
     STATE eState = Get_CurrentStateID();
     if (STATE::IDLE == eState)
-         return static_cast<CPlayerState_Idle*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
+        return true;
     else if (STATE::RUN == eState)
         return  static_cast<CPlayerState_Run*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
     else
@@ -641,6 +667,14 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 	return m_pStateMachine->Get_CurrentState()->Get_StateID();
 }
 
+_vector CPlayer::Get_RootBonePosition()
+{
+    return _vector();
+}
+
+
+
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 
@@ -676,7 +710,7 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
         break;
     case Client::CPlayer::ROLL:
-        m_pStateMachine->Transition_To(new CPlayerState_Roll(this, m_v3DTargetDirection));
+        m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
 		break;
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
@@ -723,6 +757,21 @@ void CPlayer::Set_3DTargetDirection(_fvector _vDir)
 void CPlayer::Set_SwordGrip(_bool _bForehand)
 {
 	m_pSword->Switch_Grip(_bForehand);
+}
+void CPlayer::Set_Kinematic(_bool _bKinematic)
+{
+	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+	if (_bKinematic)
+    {
+        pDynamicActor->Late_Update(0);
+        pDynamicActor->Set_Kinematic();
+
+    }
+	else
+    {
+        pDynamicActor->Update(0);
+        pDynamicActor->Set_Dynamic();
+    }
 }
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {

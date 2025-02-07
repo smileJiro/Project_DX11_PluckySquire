@@ -187,6 +187,7 @@ HRESULT CCollision_Manager::Add_Collider(const _wstring& _strSectionKey, OBJECT_
 
     (*pColliders)[iGroupIndex].push_back(_pCollider);
     Safe_AddRef(_pCollider);
+    return S_OK;
 }
 
 _uint CCollision_Manager::Convert_GroupID_ToIndex(_uint _iGroupID)
