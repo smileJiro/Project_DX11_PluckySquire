@@ -138,6 +138,7 @@ void CSampleBook::Update(_float _fTimeDelta)
 		if (Book_Action(NEXT))
 		{
 			m_isAction = true;
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
 			//Set_ReverseAnimation(false);
 			//Set_Animation(8);
 		}
@@ -147,6 +148,7 @@ void CSampleBook::Update(_float _fTimeDelta)
 		if (Book_Action(PREVIOUS))
 		{
 			m_isAction = true;
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
 		/*	Set_ReverseAnimation(true);
 			Set_Animation(8);*/
 		}
@@ -155,13 +157,13 @@ void CSampleBook::Update(_float _fTimeDelta)
 	if (CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()) {
 		if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
 
-			if (Book_Action(NEXT))
+			if (m_eCurAction == NEXT)
 			{
 				Set_ReverseAnimation(false);
 				Set_Animation(8);
 			}
 
-			if (Book_Action(PREVIOUS))
+			if (m_eCurAction == PREVIOUS)
 			{
 				Set_ReverseAnimation(true);
 				Set_Animation(8);
@@ -347,7 +349,6 @@ HRESULT CSampleBook::Render_WorldPosMap()
 
 _bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
 {
-	CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
 
 	if (ACTION_LAST != m_eCurAction)
 		return false;

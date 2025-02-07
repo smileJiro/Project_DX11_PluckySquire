@@ -49,6 +49,14 @@ _uint CCamera_Manager::Get_CameraMode(_uint _iCameraType)
 
 _uint CCamera_Manager::Get_CurCameraMode()
 {
+	if (TARGET != m_eCurrentCameraType && TARGET_2D != m_eCurrentCameraType)
+		return INT16_MAX;
+
+	if (TARGET == m_eCurrentCameraType)
+		return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Get_CameraMode();
+	else if (TARGET_2D == m_eCurrentCameraType)
+		return dynamic_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Get_CameraMode();
+
 	return _uint();
 }
 #ifdef _DEBUG

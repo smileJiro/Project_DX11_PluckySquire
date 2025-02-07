@@ -126,6 +126,8 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 					pGameObject->Set_Active(false);
 					Event_CreateObject(pGameObject->Get_CurLevelID(), L"Layer_2DMapObject", pGameObject);
 
+					Safe_AddRef(pGameObject);
+
 					auto eRenderLayer = SECTION_2D_OBJECT;
 
 					if (pGameObject->Is_BackGround())
