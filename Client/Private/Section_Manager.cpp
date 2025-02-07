@@ -243,11 +243,39 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
 
     if (iWidth * iHeight <= iIndex || 0 > iIndex)
         return XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    
+    _uint iDefaultIndex = iIndex * 4;
+
     // float4 데이터 읽기
-    _float x = fData[iIndex * 4 + 0]; // Red 채널
-    _float y = fData[iIndex * 4 + 1]; // Green 채널
-    _float z = fData[iIndex * 4 + 2]; // Blue 채널
+    _float x = fData[iDefaultIndex]; // Red 채널
+    _float y = fData[iDefaultIndex + 1]; // Green 채널
+    _float z = fData[iDefaultIndex + 2]; // Blue 채널
     //_float w = fData[iIndex * 4 + 3]; // Alpha 채널
+
+    if (0.f == x &&
+        0.f == y &&
+        0.f == z
+        )
+    {
+        _vector vLerpPos =  XMVectorLerp(XMVectorSet(
+            fData[iDefaultIndex - 4],
+            fData[iDefaultIndex - 3],
+            fData[iDefaultIndex - 2],
+            fData[iDefaultIndex - 1]
+        ),
+            XMVectorSet(
+                fData[iDefaultIndex + 4],
+                fData[iDefaultIndex + 5],
+                fData[iDefaultIndex + 6],
+                fData[iDefaultIndex + 7]
+            ), 0.5f);
+
+        x = XMVectorGetX(vLerpPos);
+        y = XMVectorGetY(vLerpPos);
+        z = XMVectorGetZ(vLerpPos);
+    }
+
 
     // 맵핑 해제
     m_pContext->Unmap(m_pBookWorldPosMap, 0);
