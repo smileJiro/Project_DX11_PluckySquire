@@ -301,6 +301,9 @@
     <Filter Include="02.GameObjects\NPC\01. LogoNpc">
       <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Interact">
+      <UniqueIdentifier>{6f7c500f-8dd0-45d5-9288-58dfccb1c72d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -669,6 +672,12 @@
     <ClInclude Include="..\Public\3DMapObject.h">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_SpinAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interactable.h">
+      <Filter>05.Interact</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1024,6 +1033,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\3DMapObject.cpp">
       <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_SpinAttack.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interactable.cpp">
+      <Filter>05.Interact</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

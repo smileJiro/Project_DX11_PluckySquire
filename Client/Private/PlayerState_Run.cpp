@@ -28,8 +28,8 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	}
 
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-	_bool bSneak = tKeyResult.bKeyStates[PLAYER_KEY_SNEAK];
-	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
+	_bool bSneak = tKeyResult.bInputStates[PLAYER_KEY_SNEAK];
+	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 	{
 		_float fMoveSpeed = bSneak ? m_fSneakSpeed : m_fSpeed;
 		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
@@ -52,13 +52,15 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 			}
 		}
 
-		if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+		if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_SPINATTACK])
+			m_pOwner->Set_State(CPlayer::SPINATTACK);
+		else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 			m_pOwner->Set_State(CPlayer::ROLL);
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
 		return;
 	}
@@ -80,8 +82,8 @@ void CPlayerState_Run::Enter()
 	}
 	else
 	{
-		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-		Switch_RunAnimation3D(tKeyResult.bKeyStates[PLAYER_KEY_SNEAK]);
+		 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
+		Switch_RunAnimation3D(tKeyResult.bInputStates[PLAYER_KEY_SNEAK]);
 	}
 
 }

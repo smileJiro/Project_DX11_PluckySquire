@@ -11,19 +11,23 @@ BEGIN(Client)
 class CStateMachine;
 enum PLAYER_INPUT
 {
-	PLAYER_KEY_MOVE,
+	PLAYER_INPUT_MOVE,
 	PLAYER_KEY_JUMP,
 	PLAYER_KEY_ATTACK,
 	PLAYER_KEY_ROLL,
 	PLAYER_KEY_THROWSWORD,
 	PLAYER_KEY_INTERACT,
 	PLAYER_KEY_SNEAK,
+	PLAYER_KEY_SPINATTACK,
+	PLAYER_KEY_SPINCHARGING,
+	PLAYER_KEY_SPINLAUNCH,
 	PLAYER_KEY_LAST
 };
 typedef struct tagPlayerInputResult
 {
 	_vector vMoveDir = {0,0,0};
-	_bool bKeyStates[PLAYER_KEY_LAST] = {false,};
+	_bool bInputStates[PLAYER_KEY_LAST] = {false,};
+
 }PLAYER_INPUT_RESULT;
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
@@ -59,6 +63,7 @@ public:
 		ROLL,
 		THROWSWORD,
 		CLAMBER,
+		SPINATTACK,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -460,6 +465,8 @@ public: /* 2D 충돌 */
 	_float Get_ArmLength() { return m_fArmLength; }
 	_float Get_AirRotationSpeed() { return m_fAirRotateSpeed; }
 	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
+	_float Get_MoveSpeed(COORDINATE _eCoord) { return m_tStat[_eCoord].fMoveSpeed; }
+	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
 
 	//Set
@@ -498,6 +505,7 @@ private:
 	_float m_fAirRotateSpeed = 40;
 	_float m_fAirRunSpeed = 10.f;
 	_bool m_bOnGround = false;
+	_uint m_iSpinAttackLevel = 1;
 	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
 	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
 	_vector m_v3DTargetDirection = { 0,0,-1 };

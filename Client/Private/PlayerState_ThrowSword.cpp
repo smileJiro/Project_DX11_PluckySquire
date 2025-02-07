@@ -15,13 +15,13 @@ void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 {
 	if (m_pOwner->Is_SwordHandling())
 		return;
-	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 
-	if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
+	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		m_pOwner->Set_State(CPlayer::RUN);
-	else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
+	else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
 		m_pOwner->Set_State(CPlayer::JUMP_UP);
-	else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+	else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 		m_pOwner->Set_State(CPlayer::ROLL);
 
 }

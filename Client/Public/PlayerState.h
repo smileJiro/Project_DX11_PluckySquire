@@ -2,6 +2,7 @@
 
 #include "Transition.h"
 #include "Player.h"
+
 BEGIN(Engine)
 class CGameInstance;
 

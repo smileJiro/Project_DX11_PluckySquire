@@ -20,24 +20,24 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		return;
 	}
 
-	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 	 
-	if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+	if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 	{
 		m_pOwner->Set_State(CPlayer::ROLL);
 		return;
 	}
-	else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+	else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
 	{
 		m_pOwner->Set_State(CPlayer::THROWSWORD);
 		return;
 	}
-	else if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+	else if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
 	{
 		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 		return;
 	}
-	if (tKeyResult.bKeyStates[PLAYER_INPUT::PLAYER_KEY_MOVE])
+	if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 	{
 		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
 		m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
