@@ -106,7 +106,7 @@ private:
 	_char									m_szSaveName[MAX_PATH] = { "" };
 
 	// Initial Data
-	CUTSCENE_INITIAL_DATA					m_tInitialData = {};
+	INITIAL_DATA							m_tInitialData = {};
 
 	// Trigger Tool
 

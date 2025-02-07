@@ -92,7 +92,7 @@ void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 		return;
 }
 
-void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
+void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInitialData, _float _fInitialTime)
 {
 	if (nullptr == m_Cameras[_iCurrentCameraType])
 		return;
@@ -105,25 +105,28 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 			Camera->Set_Active(true);
 		else
 			Camera->Set_Active(false);
-
-		switch (_iCurrentCameraType) {
-		case FREE:
-		{
-			if (nullptr == m_Cameras[TARGET])
-				return;
-			CController_Transform* pTargetamTrans = m_Cameras[TARGET]->Get_ControllerTransform();
-			CController_Transform* pFreeCamTrans = m_Cameras[FREE]->Get_ControllerTransform();
-			pFreeCamTrans->Set_WorldMatrix(pTargetamTrans->Get_WorldMatrix());
-		}
-			break;
-		case TARGET:
-		{
-			dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Switch_CameraView();
-		}
-			break;
-		}
 	}
 
+	switch (_iCurrentCameraType) {
+	case FREE:
+	{
+		if (nullptr == m_Cameras[TARGET])
+			return;
+		CController_Transform* pTargetamTrans = m_Cameras[TARGET]->Get_ControllerTransform();
+		CController_Transform* pFreeCamTrans = m_Cameras[FREE]->Get_ControllerTransform();
+		pFreeCamTrans->Set_WorldMatrix(pTargetamTrans->Get_WorldMatrix());
+	}
+	break;
+	}
+
+	if (true == _isInitialData) {
+		INITIAL_DATA CurInitialData = m_Cameras[m_eCurrentCameraType]->Get_InitialData();
+		CurInitialData.fInitialTime = _fInitialTime;
+		m_Cameras[_iCurrentCameraType]->Switch_CameraView(&CurInitialData);
+	}
+	else 
+		m_Cameras[_iCurrentCameraType]->Switch_CameraView(nullptr);
+	
 	m_eCurrentCameraType = _iCurrentCameraType;
 }
 
@@ -143,12 +146,12 @@ _bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerI
 	return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
 }
 
-_bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pInitialData)
+_bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName)
 {
 	if (nullptr == m_Cameras[CUTSCENE])
 		return false;
 
-	return dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName, _pInitialData);
+	return dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName);
 }
 
 void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)

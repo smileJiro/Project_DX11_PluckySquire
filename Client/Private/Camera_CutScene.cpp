@@ -57,7 +57,7 @@ void CCamera_CutScene::Late_Update(_float _fTimeDelta)
 	__super::Compute_PipeLineMatrices();
 }
 
-_bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pTargetPos)
+_bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName)
 {
 	m_pCurCutScene = Find_CutScene(_wszCutSceneName);
 
@@ -66,7 +66,6 @@ _bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INI
 
 	m_isStartCutScene = true;
 	
-	Initialize_CameraInfo(_pTargetPos);
 
 	return true;
 }
@@ -79,6 +78,57 @@ void CCamera_CutScene::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vect
 		return;
 
 	m_CutSceneDatas.emplace(_wszCutSceneTag, _CutSceneData);
+}
+
+void CCamera_CutScene::Switch_CameraView(INITIAL_DATA* _pInitialData)
+{
+	if (nullptr == m_pCurCutScene)
+		return;
+
+	if (nullptr == _pInitialData) {
+		// 초기 보는 곳 설정(첫 dummy Frame)
+
+		CUTSCENE_DATA tCutSceneData = m_pCurCutScene->second[0];
+
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMLoadFloat3(&tCutSceneData.vPosition));
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tCutSceneData.vAtOffset), 1.f));
+		m_vTargetPos = { 0.f, 0.f, 0.f };
+		m_vAtOffset = tCutSceneData.vAtOffset;
+
+		// 초기 Zoom Level 설정
+		//m_iCurZoomLevel = tCutSceneData.iZoomLevel;
+		m_fFovy = tCutSceneData.fFovy;
+	}
+	else {
+		m_tInitialData = *_pInitialData;
+		m_isInitialData = true;
+		m_InitialTime.x = 0.3f;
+		// 초기 위치 설정
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMLoadFloat3(&m_tInitialData.vPosition));
+
+		// 초기 보는 곳 설정
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
+		m_vTargetPos = m_tInitialData.vAt;
+		m_vAtOffset = { 0.f, 0.f, 0.f };
+
+		// 초기 Zoom Level 설정
+		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
+		m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
+	}
+}
+
+INITIAL_DATA CCamera_CutScene::Get_InitialData()
+{
+	INITIAL_DATA tData;
+
+	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+
+	_vector vAt = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+	XMStoreFloat3(&tData.vAt, vAt);
+
+	tData.iZoomLevel = m_iCurZoomLevel;
+
+	return tData;
 }
 
 void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
@@ -123,7 +173,7 @@ void CCamera_CutScene::Change_Sector()
 	// 이거 필요한가? 어차ㅠ피 바로 ++로 바꾸는데 아무튼
 
 	// 초기 LookAt 설정
-	Initialize_CameraInfo(nullptr);
+	Switch_CameraView(nullptr);
 }
 
 pair<_float2, vector<CUTSCENE_DATA>>* CCamera_CutScene::Find_CutScene(_wstring _wszCutSceneName)
@@ -157,6 +207,8 @@ void CCamera_CutScene::Before_CutScene(_float _fTimeDelta)
 
 		_vector vPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), XMLoadFloat3(&tData.vPosition), fRatio);
 		_float fFovy = m_pGameInstance->Lerp(m_ZoomLevels[m_tInitialData.iZoomLevel], tData.fFovy, fRatio);
+		// Data의 첫번째 vAtOffset은 보는 곳임
+		// 근데 At은 왜 Lerp를 안 했지? 나중에 이상하면 고치기
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tData.vAtOffset), 1.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
@@ -184,43 +236,6 @@ void CCamera_CutScene::After_CutScene(_float _fTimeDelta)
 		m_fSimulationTime.y = 0.f;
 		
 	}*/
-}
-
-void CCamera_CutScene::Initialize_CameraInfo(CUTSCENE_INITIAL_DATA* _pTargetPos)
-{
-	if (nullptr == m_pCurCutScene)
-		return;
-
-	if (nullptr == _pTargetPos) {
-		// 초기 보는 곳 설정(첫 dummy Frame)
-
-		CUTSCENE_DATA tCutSceneData = m_pCurCutScene->second[0];
-
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMLoadFloat3(&tCutSceneData.vPosition));
-		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tCutSceneData.vAtOffset), 1.f));
-		m_vTargetPos = { 0.f, 0.f, 0.f };
-		m_vAtOffset = tCutSceneData.vAtOffset;
-
-		// 초기 Zoom Level 설정
-		//m_iCurZoomLevel = tCutSceneData.iZoomLevel;
-		m_fFovy = tCutSceneData.fFovy;
-	}
-	else {
-		m_tInitialData = *_pTargetPos;
-		m_isInitialData = true;
-		m_InitialTime.x = 0.3f;
-		// 초기 위치 설정
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMLoadFloat3(&m_tInitialData.vPosition));
-
-		// 초기 보는 곳 설정
-		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAtOffset), 1.f));
-		m_vTargetPos = m_tInitialData.vAtOffset;
-		m_vAtOffset = { 0.f, 0.f, 0.f };
-
-		// 초기 Zoom Level 설정
-		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
-		m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
-	}
 }
 
 CCamera_CutScene* CCamera_CutScene::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -102,7 +102,7 @@ void CPlayerState_Run::Exit()
 
 void CPlayerState_Run::Switch_RunAnimation2D(F_DIRECTION _eFDir)
 {
-	_bool bSword = m_pOwner->Is_SwordEquiped();
+	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	switch (_eFDir)
 	{
@@ -143,7 +143,7 @@ void CPlayerState_Run::Switch_RunAnimation3D(_bool _bStealth)
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_STEALTH_RUN_GT);
 	else
 	{
-		_bool bSword = m_pOwner->Is_SwordEquiped();
+		_bool bSword = m_pOwner->Is_SwordHandling();
 		_bool bCarrying = m_pOwner->Is_CarryingObject();
 		if (bSword)
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_SWORD_01_GT);

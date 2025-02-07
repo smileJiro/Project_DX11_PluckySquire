@@ -9,6 +9,8 @@ BEGIN(Client)
 class CCamera_2D : public CCamera
 {
 public:
+	enum TARGET_STATE { TARGET_RIGHT, TARGET_UP, TARGET_LOOK, TARGET_POS, TARGET_STATE_END };
+
 	enum CAMERA_2D_MODE 
 	{ 
 		DEFAULT, 
@@ -24,6 +26,8 @@ public:
 		CAMERA_2D_MODE			eCameraMode = { DEFAULT };
 		_float3					vAtOffset = { 0.f, 0.f, 0.f };
 		_float					fSmoothSpeed = {};
+
+		const _float4x4* pTargetWorldMatrix = { nullptr };
 	}CAMERA_2D_DESC;
 
 private:
@@ -41,20 +45,35 @@ public:
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 
+	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
+
+	virtual INITIAL_DATA		Get_InitialData() override;
+
 private:
+	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
 	CAMERA_2D_MODE				m_eCameraMode = { CAMERA_2D_MODE_END };
 	CCameraArm*					m_pCurArm = { nullptr };
 
 	_float						m_fSmoothSpeed = {};
 
+	// TargetPos로 변환한 값 저장
+	_float3						m_v2DTargetWorldPos = {};
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
-	void						Defualt_Move(_float fTimeDelta);
+	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_DesirePos(_float _fTimeDelta);
 	void						Move_To_Shop(_float _fTimeDelta);
 	void						Return_To_Default(_float _fTimeDelta);
 	void						Fliping(_float _fTimeDelta);
 	void						Look_Target(_float fTimeDelta);
+
+	_vector						Calculate_CameraPos(_float _fTimeDelta);
+	virtual	void				Switching(_float _fTimeDelta) override;
+
+#ifdef _DEBUG
+	void						Key_Input(_float _fTimeDelta);
+#endif
 
 public:
 	static CCamera_2D*			Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -709,18 +709,18 @@ void CLevel_Camera_Tool::Set_InitialData()
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
 	ImGui::DragFloat("##InitialDataPosZ", &m_tInitialData.vPosition.z, 0.1f);
 
-	ImGui::Text("LookAt Pos: %.2f, %.2f, %.2f", m_tInitialData.vAtOffset.x, m_tInitialData.vAtOffset.y, m_tInitialData.vAtOffset.z);
+	ImGui::Text("LookAt Pos: %.2f, %.2f, %.2f", m_tInitialData.vAt.x, m_tInitialData.vAt.y, m_tInitialData.vAt.z);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##InitialDataAtX", &m_tInitialData.vAtOffset.x, 0.1f);
+	ImGui::DragFloat("##InitialDataAtX", &m_tInitialData.vAt.x, 0.1f);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##InitialDataAtY", &m_tInitialData.vAtOffset.y, 0.1f);
+	ImGui::DragFloat("##InitialDataAtY", &m_tInitialData.vAt.y, 0.1f);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##InitialDataAtZ", &m_tInitialData.vAtOffset.z, 0.1f);
+	ImGui::DragFloat("##InitialDataAtZ", &m_tInitialData.vAt.z, 0.1f);
 
 	ImGui::Text("Frame Zoom Level: %d\t   ", m_tInitialData.iZoomLevel);
 	ImGui::SameLine();

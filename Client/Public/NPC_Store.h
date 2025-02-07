@@ -1,6 +1,8 @@
 #pragma once
 #include "Npc.h"
 
+
+
 BEGIN(Client)
 class CNPC_Store final: public CNPC
 {
@@ -49,9 +51,9 @@ public:
 	virtual HRESULT				Render();
 
 public:
-	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 
 protected:
@@ -71,9 +73,12 @@ public:
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-
 protected:
 	//virtual HRESULT Ready_Components();
+
+
+
+
 };
 
 END

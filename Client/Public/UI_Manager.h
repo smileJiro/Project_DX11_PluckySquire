@@ -52,7 +52,9 @@ private:
 	_tchar								m_tDialogId[MAX_PATH] = {};
 	_int								m_iCurrnetLineIndex = { 0 };
 	_bool								m_isPortraitRender = { false };
-	_float2								m_vDialoguePos = { 0.f, 0.f };
+	_bool								m_isDisplayDialogue = { false };
+	_float4								m_vDialoguePos = { 0.f, 0.f, 0.f, 1.f };
+	_float3								m_vCalDialoguePos = { 0.f, 0.f, 0.f };
 	_float2								m_vShopPos = { 0.f, 0.f };
 
 
@@ -92,8 +94,12 @@ public:
 
 	vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
 	CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
-	_float2								Get_DialoguePos() { return m_vDialoguePos; }
-	void								Set_DialoguePos(_float2 _vDialoguePos) { m_vDialoguePos = _vDialoguePos; }
+	_float4								Get_DialoguePos() { return m_vDialoguePos; }
+	void								Set_DialoguePos(_float4 _vDialoguePos) { m_vDialoguePos = _vDialoguePos; }
+	_float3								Get_CalDialoguePos() { return m_vCalDialoguePos; }
+	void								Set_CalDialoguePos(_float3 _vPos) { m_vCalDialoguePos = _vPos; }
+	void								Set_DisplayDialogue(_bool _Display) { m_isDisplayDialogue = _Display; }
+	_bool								Get_DisplayDialogue() { return m_isDisplayDialogue; }
 
 
 

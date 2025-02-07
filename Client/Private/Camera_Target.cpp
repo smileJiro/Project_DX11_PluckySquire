@@ -52,6 +52,8 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 
+	Switching(fTimeDelta);
+
 	Action_Mode(fTimeDelta);
 	__super::Compute_PipeLineMatrices();
 }
@@ -82,8 +84,12 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 
 void CCamera_Target::Set_Freeze(_uint _iFreezeMask)
 {
-	if (RESET == _iFreezeMask)
+	if (RESET == _iFreezeMask) {
 		m_iFreezeMask &= _iFreezeMask;
+		m_fFreezeExitTime.y = 0.f;
+		m_bFreezeExit = true;
+		m_fFreezeExitTime.x = 1.8f;
+	}
 	else
 		m_iFreezeMask |= _iFreezeMask;
 }
@@ -93,17 +99,52 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 }
 
-void CCamera_Target::Switch_CameraView()
+void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
 {
 	if (nullptr == m_pCurArm)
 		return;
 
-	memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
-	_vector vCameraPos = XMLoadFloat3(&m_vPreTargetPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
+	if (nullptr == _pInitialData) {
+		memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+		_vector vCameraPos = XMLoadFloat3(&m_vPreTargetPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 
-	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
-	
-	Look_Target(XMLoadFloat3(&m_vPreTargetPos), 0.f);
+		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
+
+		Look_Target(XMLoadFloat3(&m_vPreTargetPos) + XMLoadFloat3(&m_vAtOffset), 0.f);
+	}
+	// 초기 위치부터 다음위치까지 Lerp를 해야 함
+	else {
+		m_tInitialData = *_pInitialData;
+		m_isInitialData = true;
+		m_InitialTime = { _pInitialData->fInitialTime, 0.f };
+
+		// 초기 위치 설정
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tInitialData.vPosition), 1.f));
+
+		// 초기 보는 곳 설정
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
+
+		// 초기 Zoom Level 설정
+		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
+		m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
+	}
+}
+
+INITIAL_DATA CCamera_Target::Get_InitialData()
+{
+	INITIAL_DATA tData;
+
+	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+
+	_vector vTargetPos;
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+	XMStoreFloat3(&tData.vAt, vAt);
+
+	tData.iZoomLevel = m_iCurZoomLevel;
+
+	return tData;
 }
 
 _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -160,6 +201,9 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 
 void CCamera_Target::Action_Mode(_float _fTimeDelta)
 {
+	if (true == m_isInitialData)
+		return;
+
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
@@ -185,14 +229,27 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
 	_vector vCurPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-	if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
-		vCameraPos = XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos));
-	}
-	if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
-		vCameraPos = XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos));
-	}
 	if (RESET == m_iFreezeMask) {
-		int a = 0;
+		if (true == m_bFreezeExit) {
+
+			m_fFreezeExitTime.y += _fTimeDelta;
+			_float fRatio = m_fFreezeExitTime.y / m_fFreezeExitTime.x;
+
+			if (fRatio >= 1.f) {
+				m_fFreezeExitTime.y = 0.f;
+				m_bFreezeExit = false;
+			}
+			else
+				vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
+		}
+	}
+	else {
+		if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
+			vCameraPos = XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos));
+		}
+		if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
+			vCameraPos = XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos));
+		}
 	}
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
@@ -251,6 +308,53 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 	XMStoreFloat3(&m_vPreTargetPos, vCurPos);
 
 	return vCameraPos;
+}
+
+void CCamera_Target::Switching(_float _fTimeDelta)
+{
+	if (false == m_isInitialData)
+		return;
+
+	//m_InitialTime.y += _fTimeDelta;
+	//_float fRatio = m_InitialTime.y / m_InitialTime.x;
+
+	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN);
+
+	if (fRatio > 1.f) {
+		_vector vTargetPos;
+		memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
+
+		_vector vLookAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(vLookAt, 1.f));
+
+		m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
+
+		memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+
+		m_InitialTime.y = 0.f;
+		m_isInitialData = false;
+		return;
+	}
+	
+	// Pos
+	_vector vTargetPos;
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	_vector vResulPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
+	
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vResulPos, 1.f));
+
+	// LookAt
+	_vector vLookAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+	_vector vResultLookAt = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vAt), vLookAt, fRatio);
+
+	m_pControllerTransform->LookAt_3D(XMVectorSetW(vResultLookAt, 1.f));
+
+	// Zoom Level
+	_float fFovy = m_pGameInstance->Lerp(m_ZoomLevels[m_tInitialData.iZoomLevel], m_ZoomLevels[m_iCurZoomLevel], fRatio);
+	m_fFovy = fFovy;
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)
