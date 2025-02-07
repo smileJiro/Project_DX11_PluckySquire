@@ -16,6 +16,7 @@ public:
 private:
 
     //벽 기어오르기 관련
+	_float m_fAnimRatio = 0;
     _vector m_vClamberEndPosition = { 0,0,0,1};
     _vector m_vClamberStartPosition = { 0,0,0,1 };
     _vector m_vClamberNormal= { 0,0,0,0 };
@@ -23,5 +24,8 @@ private:
     _float m_fArmHeight = 0;
     _float m_fHeadHeight = 0;
     _float m_fArmLength = 0;
+
+    _float m_fLerpStartProgress = 0;
+    _float m_fLerpEndProgress = 1;
 };
 END
