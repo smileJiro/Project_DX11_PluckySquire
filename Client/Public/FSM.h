@@ -43,6 +43,7 @@ public:
 	virtual HRESULT Change_State(_uint _iState);
 	virtual HRESULT Set_State(_uint _iState);
 
+	HRESULT Add_SneakState();
 
 protected:
 	CState* m_pCurState = { nullptr };

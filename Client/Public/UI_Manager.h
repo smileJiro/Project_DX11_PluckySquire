@@ -37,6 +37,7 @@ private:
 	_bool								m_isMakeShop = { false };
 	_bool								m_isESC = { false };
 	_bool								m_isConfirmStore = { false };
+	_bool								m_isUpdateShopPanel = { true };
 	_bool								m_isLogoChooseStage = { false };
 
 	_int								m_iPreIndex = { 0 };
@@ -50,8 +51,11 @@ private:
 	
 	_tchar								m_tDialogId[MAX_PATH] = {};
 	_int								m_iCurrnetLineIndex = { 0 };
-	_bool								m_isPortraitRender = { true };
-
+	_bool								m_isPortraitRender = { false };
+	_bool								m_isDisplayDialogue = { false };
+	_float4								m_vDialoguePos = { 0.f, 0.f, 0.f, 1.f };
+	_float3								m_vCalDialoguePos = { 0.f, 0.f, 0.f };
+	_float2								m_vShopPos = { 0.f, 0.f };
 
 
 
@@ -70,6 +74,8 @@ public:
 	vector<vector<CShopItemBG*>>		Get_ShopItems() { return m_ShopItems; }
 	_bool								Get_isESC() { return m_isESC; }
 	void								Set_isEsc(_bool _isEsc) { m_isESC = _isEsc; }
+	_float2								Get_ShopPos() { return m_vShopPos; }
+	void								Set_ShopPos(_float2 _vShopPos) { m_vShopPos = _vShopPos; }
 	_bool								Get_ConfirmStore() { return m_isConfirmStore; }
 	void								Set_ConfirmStore(_bool _Confirm) { m_isConfirmStore = _Confirm; }
 	_bool								Get_StoreYesOrno() { return m_isStoreYesORNo; }
@@ -78,6 +84,8 @@ public:
 	void								Set_SettingPanelIndex(_int _index) { m_iSettingPanelIndex = _index; }
 	_int								Get_LogoIndex() { return m_iLogoIndex; }
 	void								Set_LogoIndex(_int _index) { m_iLogoIndex = _index; }
+	_bool								Get_ShopUpdate() { return m_isUpdateShopPanel; }
+	void								Set_ShopUpdate(_bool _isUpdate) { m_isUpdateShopPanel = _isUpdate; }
 	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs) { m_ShopItems.push_back(_ItemBGs); }
 	void								pushBack_ShopItemBGs(CShopItemBG* _pBGs) { m_pShopItemBGs.push_back(_pBGs); }
 	void								Set_ChooseItem(_int _iIndex);
@@ -86,6 +94,12 @@ public:
 
 	vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
 	CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
+	_float4								Get_DialoguePos() { return m_vDialoguePos; }
+	void								Set_DialoguePos(_float4 _vDialoguePos) { m_vDialoguePos = _vDialoguePos; }
+	_float3								Get_CalDialoguePos() { return m_vCalDialoguePos; }
+	void								Set_CalDialoguePos(_float3 _vPos) { m_vCalDialoguePos = _vPos; }
+	void								Set_DisplayDialogue(_bool _Display) { m_isDisplayDialogue = _Display; }
+	_bool								Get_DisplayDialogue() { return m_isDisplayDialogue; }
 
 
 

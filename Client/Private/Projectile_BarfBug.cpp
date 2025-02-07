@@ -23,9 +23,21 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 {
     PROJECTILE_BARFBUG_DESC* pDesc = static_cast<PROJECTILE_BARFBUG_DESC*>(_pArg);
 
+    //투사체는 쓰는 객체가 Desc 넣어줌.
+    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->isCoordChangeEnable = true;
+    pDesc->iNumPartObjects = PART_LAST;
+
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 1000.f;
+
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+
+
+    pDesc->fLifeTime = 5.f;
     m_fLifeTime = pDesc->fLifeTime;
 
-    //투사체는 쓰는 객체가 Desc 넣어줌.
 
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
@@ -143,17 +155,16 @@ HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
     ActorDesc->FreezePosition_XYZ[2] = false;
 
     /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.5f;
+    SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
     ShapeDesc->fRadius = 0.5f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -166,10 +177,7 @@ HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
     pDesc->pActorDesc = ActorDesc;
 
     /* Shapedata 할당해제 */
-    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    {
-        Safe_Delete(ShapeData);
-    }
+    Safe_Delete(ShapeData);
 
     return S_OK;
 }
@@ -193,7 +201,7 @@ HRESULT CProjectile_BarfBug::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
     BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::TEST_PROJECTILE;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
@@ -208,6 +216,9 @@ HRESULT CProjectile_BarfBug::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

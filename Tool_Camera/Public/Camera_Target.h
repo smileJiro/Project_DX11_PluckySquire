@@ -13,12 +13,15 @@ class CCamera_Target final : public CCamera
 {
 public:
 	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, CAMERA_MODE_END };
+	enum TARGET_STATE { TARGET_RIGHT, TARGET_UP, TARGET_LOOK, TARGET_POS, TARGET_STATE_END };
 
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_MODE				eCameraMode;
 		_float3					vAtOffset;
 		_float					fSmoothSpeed;
+
+		const _float4x4* pTargetWorldMatrix = { nullptr };
 	}CAMERA_TARGET_DESC;
 
 
@@ -44,9 +47,11 @@ public:
 	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
 public:
-	void						Set_NextArmData(ARM_DATA* _pData);		// Event 처리 하면 사라지고 바로 Arm에 넣을 수도
+	void						Set_NextArmData(ARM_DATA* _pArmData, SUB_DATA* _pSubData);		// Event 처리 하면 사라지고 바로 Arm에 넣을 수도
 
 private:
+	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
+
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	_int						m_iNextCameraMode = { -1 };
 
@@ -58,11 +63,16 @@ private:
 	// TargetPos
 	_float3						m_vTargetPos = {};
 
+	//// Sub Data
+	//SUB_DATA*					m_pCurSubData = { nullptr };
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Look_Target(_float _fTimeDelta);
+
+	_vector						Calculate_CameraPos();
 
 public:
 	static CCamera_Target*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

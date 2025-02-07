@@ -7,9 +7,13 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_2D.h"
+
+/* For. Main Table */
+#include "MainTable.h"
 
 /* For. Trigger*/
-#include "Camera_Trigger.h"
+
 
 /* For. UI*/
 #include "Pick_Bulb.h"
@@ -29,10 +33,17 @@
 #include "Logo_Props.h"
 #include "Logo.h"
 #include "ShopPanel_YesNo.h"
+#include "FloorWord.h"
+#include "PrintFloorWord.h"
+#include "Npc_Logo.h"
+#include "UI_JotMain.h"
 /* For. UI*/
 
 /* For. NPC*/
+#include "Npc_Body.h"
 #include "NPC_Store.h"
+#include "NPC_DJMoonBeard.h"
+
 
 
 #include "ModelObject.h"
@@ -47,8 +58,12 @@
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
-#include "MapObject.h"
+#include "2DMapDefaultObject.h"
+#include "2DMapActionObject.h"
+#include "3DMapObject.h"
+#include "MapObjectFactory.h"
 #include "DetectionField.h"
+#include "Sneak_DetectionField.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -75,9 +90,8 @@
 
 // Sample
 #include "SampleBook.h"
-#include "2DDefault_RenderObject.h"
 
-#include "DebugDraw_For_Client.h"
+#include "RayShape.h"
 
 
 
@@ -276,10 +290,40 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+    /* For. Prototype_GameObject_MainTable */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+        CMainTable::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    // ============ Camera
+    /* For. Prototype_GameObject_Camera_Free */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
+        CCamera_Free::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_Target */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
+        CCamera_Target::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_CutScene */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_CutScene"),
+        CCamera_CutScene::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_2D */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
+        CCamera_2D::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     // ============ Triger
     /* For. Prototype_GameObject_Camera_Trigger */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"),
-        CCamera_Trigger::Create(m_pDevice, m_pContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TriggerObject"),
+        CTriggerObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"),
+        CRayShape::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     
@@ -296,8 +340,16 @@ HRESULT CLoader::Loading_Level_Static()
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-        CMapObject::Create(m_pDevice, m_pContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
+        C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DActionMapObject"),
+        C2DMapActionObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
+        C3DMapObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
@@ -318,6 +370,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"),
         CMonster_Body::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+	/* For. Prototype_GameObject_NPC_Body */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_NPC_Body"),
+		CNpc_Body::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
      /* For. Prototype_GameObject_Beetle */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"),
@@ -392,19 +449,19 @@ HRESULT CLoader::Loading_Level_Logo()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/_BACK_T_TitleBG.dds"), 1))))
 		return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/2DMap/mountain_white_flower_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_WhiteFlower1"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/Map/mountain_white_flower_02.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/2DMap/mountain_white_flower_02.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink0"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_ink_01.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_ink_01.dds"), 1))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo_Tree1_ink1"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/Map/tree_green_ink_02.dds"), 1))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Object/2DMap/tree_green_ink_02.dds"), 1))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -412,6 +469,10 @@ HRESULT CLoader::Loading_Level_Logo()
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_NPC_Pip_2DAnimation"),
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/Pip/Pip.model2D")))))
+		return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_LogoBG"), CLogo_BG::Create(m_pDevice, m_pContext))))
@@ -420,6 +481,10 @@ HRESULT CLoader::Loading_Level_Logo()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_Logo"), CLogo::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_NPC_Logo"), CNPC_Logo::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_JOT"), CUI_JotMain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -445,9 +510,18 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Sneak_DetectionField"),
+        CSneak_DetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAnimEvent"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/barfBug_Rig/BarfBug_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
+        return E_FAIL;
+        if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BookPageActionEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
         return E_FAIL;
 
     #ifdef _DEBUG
@@ -496,14 +570,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DialoguePortrait"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Character_Icon/dialogue_icon_%d.dds"), 17))))
-        return E_FAIL;
-
-
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_SampleMap"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Map/SampleMap.dds"), 1))))
-		return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
-        C2DDefault_RenderObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
@@ -589,6 +655,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_DJMoonBeard"),
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
+		return E_FAIL;
 
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -618,28 +687,7 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
-    // ============ Camera
-    /* For. Prototype_GameObject_Camera_Free */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
-        CCamera_Free::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Camera_Target */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
-        CCamera_Target::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Camera_CutScene */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_CutScene"),
-        CCamera_CutScene::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_MapObject */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_MapObject"),
-        CModelObject::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-    /* For. Prototype_GameObject_MapObject */
-
+    /* For. Prototype_GameObject_SampleBook */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
         CSampleBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -666,7 +714,6 @@ HRESULT CLoader::Loading_Level_GamePlay()
 		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-    // TEST
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ParentShopPannel"),
 		CShopPanel::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -692,8 +739,12 @@ HRESULT CLoader::Loading_Level_GamePlay()
 
     
     ///////////////////////////////// UI /////////////////////////////////
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), CNPC_Store::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), 
+        CNPC_Store::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_NPC_DJMoonbeard"),
+		CNPC_DJMoonBeard::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
     /* Boss */
 
@@ -718,12 +769,20 @@ HRESULT CLoader::Loading_Level_GamePlay()
         CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_FloorWord"),
+		CFloorWord::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_PrintFloorWord"),
+		CPrintFloorWord::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
     // 액터 들어가는넘. 뺌.
     //Map_Object_Create(LEVEL_GAMEPLAY, LEVEL_GAMEPLAY, L"Chapter_04_Default_Desk.mchc");
 
     Map_Object_Create(LEVEL_STATIC, LEVEL_GAMEPLAY, L"Room_Enviroment.mchc");
-
-    //Create_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/"));
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -983,148 +1042,16 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
         strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
         for (size_t i = 0; i < iObjectCnt; i++)
         {
-            _char		szSaveMeshName[MAX_PATH];
-            _float4x4	vWorld = {};
-
-
-            isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-            isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
-
-
-            CMapObject::MAPOBJ_DESC NormalDesc = {};
-            NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
-            NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
-            NormalDesc.isCoordChangeEnable = false;
-            NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
-            NormalDesc.eStartCoord = COORDINATE_3D;
-            NormalDesc.tTransform3DDesc.isMatrix = true;
-            NormalDesc.tTransform3DDesc.matWorld = vWorld;
-            CGameObject* pGameObject = nullptr;
-            m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-                _eObjectLevelId,
-                strLayerTag,
-                &pGameObject,
-                (void*)&NormalDesc);
-
-            if (pGameObject)
-            {
-                DWORD	dwByte(0);
-                _uint iOverrideCount = 0;
-                C3DModel::COLOR_SHADER_MODE eTextureType;
-                _float4 fDefaultDiffuseColor;
-
-
-                isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-                static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
-
-                switch (eTextureType)
-                {
-                case Engine::C3DModel::COLOR_DEFAULT:
-                case Engine::C3DModel::MIX_DIFFUSE:
-                {
-                    isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-                    static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
-                }
-                break;
-                default:
-                    break;
-                }
-
-                isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
-                if (0 < iOverrideCount)
-                {
-                    CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
-                    for (_uint i = 0; i < iOverrideCount; i++)
-                    {
-                        _uint iMaterialIndex, iTexTypeIndex, iTexIndex;
-                        isTempReturn = ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
-                        isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
-                        isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
-
-                        pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
-                    }
-                }
-                //pGameObject->Set_WorldMatrix(vWorld);
-            }
+            C3DMapObject* pGameObject =
+                CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
+                    (LEVEL_ID)_eObjectLevelId,
+                    m_pGameInstance,
+                    hFile, false, true);
+            if (nullptr != pGameObject)
+                m_pGameInstance->Add_GameObject_ToLayer(_eObjectLevelId, strLayerTag.c_str(), pGameObject);
         }
     }
     CloseHandle(hFile);
-    return S_OK;
-}
-
-HRESULT CLoader::Create_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath)
-{
-    std::filesystem::path path;
-    //path = "../Bin/Resources/DataFiles/";
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(_szFilePath)) {
-        if (entry.path().extension() == ".json") {
-           
-            ifstream file(entry.path());
-
-            if (!file.is_open())
-            {
-                MSG_BOX("파일을 열 수 없습니다.");
-                file.close();
-                return E_FAIL;
-            }
-
-            json Result;
-            file >> Result;
-            file.close();
-
-            for (auto& Trigger_json : Result) {
-                TRIGGEROBJECT_DATA Data = {};
-
-                _uint iTriggerType = Trigger_json["Trigger Type"];
-                _float3 vPosition = { Trigger_json["Position"][0].get<_float>(),  Trigger_json["Position"][1].get<_float>() , Trigger_json["Position"][2].get<_float>() };
-                _float3 vRotation = { Trigger_json["Rotation"][0].get<_float>(),  Trigger_json["Rotation"][1].get<_float>() , Trigger_json["Rotation"][2].get<_float>() };
-
-                Data.iShapeType = Trigger_json["Shape Type"];
-                Data.vHalfExtents = { Trigger_json["Half Extents"][0].get<_float>(),  Trigger_json["Half Extents"][1].get<_float>() , Trigger_json["Half Extents"][2].get<_float>() };
-                Data.fRadius = Trigger_json["Radius"];
-
-                Data.iFillterMyGroup = Trigger_json["Fillter My Group"];
-                Data.iFillterOtherGroupMask = Trigger_json["Fillter Other Group Mask"];
-
-                switch (iTriggerType) {
-                case (_uint)TRIGGER_TYPE::CAMERA_TRIGGER:
-                {
-                    _uint iCameraTriggerType = Trigger_json["Camera Trigger Type"];
-                    _string szEventTag = Trigger_json["Camera Trigger Event Tag"];
-                    
-                    CCamera_Trigger::CAMERA_TRIGGER_DESC Desc;
-
-                    Desc.iCameraTriggerType = iCameraTriggerType;
-                    Desc.szEventTag = m_pGameInstance->StringToWString(szEventTag);
-
-                    Desc.eShapeType = (SHAPE_TYPE)Data.iShapeType;
-                    Desc.vHalfExtents = Data.vHalfExtents;
-                    Desc.fRadius = Data.fRadius;
-
-                    Desc.iFillterMyGroup = Data.iFillterMyGroup;
-                    Desc.iFillterOtherGroupMask = Data.iFillterOtherGroupMask;
-
-                    Desc.tTransform3DDesc.vInitialPosition = vPosition;
-
-                    CGameObject* pTrigger = nullptr;
-
-                    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Trigger"), LEVEL_GAMEPLAY, TEXT("Layer_Trigger"), &pTrigger, &Desc))) {
-                        MSG_BOX("Failed To Load Camera Trigger");
-                        return E_FAIL;
-                    }
-
-                    // Rotation
-                    _matrix RotationMat = XMMatrixRotationX(XMConvertToRadians(vRotation.x)) * XMMatrixRotationY(XMConvertToRadians(vRotation.y)) * XMMatrixRotationZ(XMConvertToRadians(vRotation.z));
-                    dynamic_cast<CTriggerObject*>(pTrigger)->Get_ActorCom()->Set_ShapeLocalOffsetMatrix(0, RotationMat);
-
-                   // dynamic_cast<CTriggerObject*>(pTrigger)->Set_TriggerType(m_iTriggerType);
-                }
-                break;
-                }
-            }
-        }
-    }
-
     return S_OK;
 }
 

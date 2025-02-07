@@ -14,6 +14,7 @@
 #include "SampleBook.h"
 #include "BackGround.h"
 #include "2DModel.h"
+#include "2DTrigger_Sample.h"
 
 #include <filesystem>
 #include <iostream>
@@ -244,6 +245,13 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
 {
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        CCollider_Circle::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+        CCollider_AABB::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_Component_Texture_None_Model"),
@@ -285,8 +293,11 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
         C2DMapObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-        if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
         CSampleBook::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTrigger"),
+        C2DTrigger_Sample::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

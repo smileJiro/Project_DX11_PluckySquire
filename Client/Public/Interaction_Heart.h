@@ -37,7 +37,8 @@ public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
 
-
+private:
+	void					Cal_HeartPos();
 
 };
 

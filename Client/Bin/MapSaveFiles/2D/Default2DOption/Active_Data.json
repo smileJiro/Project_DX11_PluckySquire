@@ -1,0 +1,17 @@
+[
+  {
+    "ActiveName": "ActiveType_Breakable"
+  },
+  {
+    "ActiveName": "ActiveType_Patrol"
+  },
+  {
+    "ActiveName": "ActiveType_Attackable"
+  },
+  {
+    "ActiveName": "ActiveType_Dialog"
+  },
+  {
+    "ActiveName": "ActiveType_Model_Close"
+  }
+]

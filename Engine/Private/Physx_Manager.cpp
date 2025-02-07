@@ -47,40 +47,16 @@ HRESULT CPhysx_Manager::Initialize()
 	XMStoreFloat4x4(&matTest, XMMatrixIdentity());
 	PxTransform transform(PxVec3(0.0f, -9.5f, 0.0f)); // 위치: (0, 0, 0)
 
-	// PxRigidStatic 객체 생성
-	m_pTestDesk = m_pPxPhysics->createRigidStatic(transform);
-	PxBoxGeometry boxGeometry(PxVec3(100.0f, 10.0f, 100.0f));
-	PxRigidActorExt::createExclusiveShape(*m_pTestDesk, boxGeometry, *m_pPxMaterial[(_uint)ACTOR_MATERIAL::DEFAULT]);
-	m_pTestDesk->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
-
-	/* 충돌 필터에 대한 세팅 ()*/
-	PxFilterData FilterData;
-	FilterData.word0 = 0x04;
-	FilterData.word1 = 0x01 | 0x02; // 이렇게 추가하고 몬스터도 다이나믹으로 돌려보던지 한번 근데 아마 좀 많이 바꿔야할거야 ㅋㅋㅋㅋㅋ
-
-	PxU32 iNumShapes = m_pTestDesk->getNbShapes();
-
-	vector<PxShape*> pShapes;
-	pShapes.resize(iNumShapes);
-	m_pTestDesk->getShapes(pShapes.data(), iNumShapes);
-
-	for (auto& pShape : pShapes)
-	{
-		pShape->setSimulationFilterData(FilterData);
-	}
-
-	m_pPxScene->addActor(*m_pTestDesk);
-
-	//
 	// 필요한 시각화 기능 활성화
+#ifdef _DEBUG
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f); // 충돌 형태 시각화
-	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eJOINT_LOCAL_FRAMES, 1.0f); // 관절 로컬 프레임
-	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
+	//m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
 
+#endif // _DEBUG
 
 	/* Debug */
-	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 10000000);
+	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 3000000);
 	if (nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
@@ -98,6 +74,24 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
+//	m_pPxScene->simulate(m_fFixtedTimeStep);
+//	m_fTimeAcc -= m_fFixtedTimeStep;
+//
+//	//fetch 끝났는지 확인
+//	if (m_pPxScene->fetchResults(true))
+//	{
+//		if (nullptr != m_pPhysx_EventCallBack)
+//			m_pPhysx_EventCallBack->Update();
+//
+//#ifdef _DEBUG
+//		if (true == m_isDebugRender)
+//		{
+//			const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+//			m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+//		}
+//#endif // _DEBUG
+//	}
+
 	//m_fTImeAcc : 지난 시뮬레이션 이후로 지난 시간.
 	//m_fFixtedTimeStep : 고정된 시간 간격. 1/60초
 	//1. 지난 시뮬이후로 1/60초 이상이 지났으면 시뮬레이션 해야 함.
@@ -205,22 +199,23 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 	return isResult;
 }
 
-_bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<_float3>& _OutPositions)
+_bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
 {
 	PxRaycastHit hitBuffer[10]; // 최대 10개까지 저장
 	PxRaycastBuffer hit(hitBuffer, 10); // 버퍼 설정
 	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
 	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
 
-	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit,
-		PxHitFlag::eDEFAULT, PxQueryFilterData(), nullptr);
+	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit);
 
 	for (PxU32 i = 0; i < hit.nbTouches; i++) {
 		PxRigidActor* pActor = hit.touches[i].actor;
 		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
 
 		_OutActors.push_back(nullptr != pActorUserData ? pActorUserData->pOwner : nullptr);
-		_OutPositions.push_back(_float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z });
+
+		_OutRaycastHits.push_back({ _float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z }
+		, _float3{hit.touches[i].normal.x,hit.touches[i].normal.y,hit.touches[i].normal.z}});
 	}
 	return isResult;
 }
@@ -266,11 +261,19 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	/* Setting Desc */
 	PxSceneDesc SceneDesc(m_pPxPhysics->getTolerancesScale());
 	SceneDesc.gravity = PxVec3(0.0f, -9.81f * 3.0f, 0.0f);
-
+	SceneDesc.solverType = PxSolverType::eTGS;
 	/* Create Dispatcher */
-	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(s_iNumThreads);
+
+	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(4);
 	if (nullptr == m_pPxDefaultCpuDispatcher)
 		return E_FAIL;
+
+
+	PxSceneLimits limits;
+	limits.maxNbActors = 1000;     // 예상 액터 수
+	limits.maxNbBodies = 100;      // 동적 바디 수
+	limits.maxNbRegions = 4;       // 브로드페이스 영역 수
+	SceneDesc.limits = limits;
 
 	SceneDesc.cpuDispatcher = m_pPxDefaultCpuDispatcher;
 	SceneDesc.filterShader = TWFilterShader;//TWFilterShader; //PxDefaultSimulationFilterShader;//; // 일단 기본값으로 생성 해보자.
@@ -281,7 +284,7 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	m_pPxScene = m_pPxPhysics->createScene(SceneDesc);
 	if (nullptr == m_pPxScene)
 		return E_FAIL;
-	PxBounds3 regionBounds(PxVec3(-300.0f, -300.0f, -300.0f), PxVec3(300.0f, 300.0f, 300.0f));
+	PxBounds3 regionBounds(PxVec3(-100.0f, -100.0f, -100.0f), PxVec3(100.0f, 100.0f, 100.0f));
 	// PxBroadPhaseRegion 생성
 	PxBroadPhaseRegion region;
 	region.bounds = regionBounds;
@@ -291,13 +294,13 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	m_pPxScene->addBroadPhaseRegion(region);
 	/* Setting Pvd */
 	PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
-	if (pvdClient)
-	{
-		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
-		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
-		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+#if defined(_DEBUG)
+	if (pvdClient) {
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, false);
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, false);
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, false);
 	}
-
+#endif
 #pragma region 추가적인 이벤트 처리나 flag 설정이 필요한 경우
 	/* 추가적인 이벤트 처리나 flag 설정이 필요한 경우 */
 	//// flags 설정
@@ -312,7 +315,7 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	//MySimulationEventCallback* callback = new MySimulationEventCallback();
 	//sceneDesc.simulationEventCallback = callback;
 #pragma endregion
-	m_pPxScene->simulate(m_fFixtedTimeStep);
+
 	return S_OK;
 }
 
@@ -326,7 +329,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		switch ((ACTOR_MATERIAL)i)
 		{
 		case Engine::ACTOR_MATERIAL::DEFAULT: // 일반 오브젝트 
-			vMaterialDesc = { 0.7f, 0.5f, 0.1f };
+			vMaterialDesc = { 0.7f, 0.8f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::SLIPPERY: // 미끄러운
 			vMaterialDesc = { 0.05f, 0.05f, 0.1f };
@@ -337,15 +340,23 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		case Engine::ACTOR_MATERIAL::STICKY: // 질퍽한
 			vMaterialDesc = { 0.8f, 0.7f, 0.1f };
 			break;
-		case Engine::ACTOR_MATERIAL::PLAYER: // 플레이어용
-			vMaterialDesc = { 0.8f, 5.f, 0.0f };
+		case Engine::ACTOR_MATERIAL::NOFRICTION: // 노마찰
+			vMaterialDesc = { 0.f, 0.f, 0.1f };
+			break;
+		case Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE: // 캐릭터 캡슐(마찰꺼짐)
+			vMaterialDesc = { 0, 0, 0 };
+			break;
+		case Engine::ACTOR_MATERIAL::NORESTITUTION: // 노반발력
+			vMaterialDesc = { 0.7f, 0.8f,0.f };
+			break;
 		default:
 			break;
 		}
 
 		m_pPxMaterial[i] = m_pPxPhysics->createMaterial(vMaterialDesc.x, vMaterialDesc.y, vMaterialDesc.z);
+		if (Engine::ACTOR_MATERIAL::CHARACTER_CAPSULE == (ACTOR_MATERIAL)i)
+			m_pPxMaterial[i]->setFlag(PxMaterialFlag::eDISABLE_FRICTION, true);
 	}
-
 	return S_OK;
 }
 
@@ -397,42 +408,66 @@ void CPhysx_Manager::Free()
 	//if (m_pGroundPlane)
 	//	m_pGroundPlane->release();
 	if (m_pTestDesk)
+	{
 		m_pTestDesk->release();
+		m_pPxScene = nullptr;
+	}
 
 	// 2. Scene 및 Dispatcher 정리
 	if (m_pPxScene)
+	{
 		m_pPxScene->release();
+		m_pPxScene = nullptr;
+	}
+		
 	if (m_pPxDefaultCpuDispatcher)
+	{
 		m_pPxDefaultCpuDispatcher->release();
+		m_pPxDefaultCpuDispatcher = nullptr;
+	}
 
 	// 3. Material 정리
 	for (_uint i = 0; i < (_uint)ACTOR_MATERIAL::CUSTOM; ++i)
 	{
 		if (m_pPxMaterial[i])
+		{
 			m_pPxMaterial[i]->release();
+			m_pPxMaterial[i] = nullptr;
+		}
 	}
 
 	// 4. Cooking 및 Physics 정리
 	if (m_pPxCooking)
+	{
 		m_pPxCooking->release();
+		m_pPxCooking = nullptr;
+	}
 	if (m_pPxPhysics)
+	{
 		m_pPxPhysics->release();
+		m_pPxPhysics = nullptr;
+	}
 
 	// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
 	if (m_pPxPvd)
 	{
 		m_pPxPvd->disconnect(); // PVD 연결 해제
-
+	
 		if (auto pTransport = m_pPxPvd->getTransport())
 		{
 			m_pPxPvd->release();
+			m_pPxPvd = nullptr;
 			pTransport->release();
+			pTransport = nullptr;
 		}
 	}
 
 	// 6. Foundation 정리
 	if (m_pPxFoundation)
+	{
 		m_pPxFoundation->release();
+		m_pPxFoundation = nullptr;
+	}
 
 	// 게임 및 DirectX 리소스 해제
 	Safe_Release(m_pPhysx_EventCallBack);

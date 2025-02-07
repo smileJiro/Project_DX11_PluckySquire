@@ -53,9 +53,23 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
+	//일단 적용해봄
+	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
+	//{
+	//	if (true == m_isTurn)
+	//	{
+	//		m_pOwner->Rotate_To(XMLoadFloat3(&m_vRotate), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
+	//		//각속도 0이면
+	//		if (XMVectorGetY(XMVectorEqual(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity(), XMVectorZero())))
+	//		{
+	//			m_isTurn = false;
+	//		}
+	//		return;
+	//	}
+	//}
+
 	if (true == m_isMove)
 		m_fAccTime += _fTimeDelta;
-
 
 	if (nullptr != m_pTarget)
 	{
@@ -77,8 +91,34 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 			{
 				if (m_pOwner->IsTarget_In_Detection())
 				{
-					Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
-					return;
+					//------테스트
+					_vector vTargetDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
+					_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+					_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(vTargetDir));
+					_float3 vOutPos;
+					CActorObject* pActor = nullptr;
+					if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
+					{//ACTOR_TYPE::STATIC != pActor->Get_ActorType() && 
+						if (!(OBJECT_GROUP::RAY_OBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup))
+						{
+							//플레이어가 레이 오브젝트보다 가까우면 인식
+							if(2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos)-m_pOwner->Get_FinalPosition()))
+							{
+								Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+								return;
+							}
+						}
+					}
+					//레이 충돌 안했을 때(장애물이 없었을 때)
+					else
+					{
+						Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+						return;
+					}
+					//---------
+
+					/*Event_ChangeMonsterState(MONSTER_STATE::ALERT, m_pFSM);
+					return;*/
 				}
 			}
 		}
@@ -87,7 +127,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	/*순찰 이동 로직*/
 	//랜덤으로 방향 설정
 	
-	if (false == m_isMove)
+	if (false == m_isTurn)
 	{
 		Determine_Direction();
 	}
@@ -103,24 +143,45 @@ void CPatrolState::State_Exit()
 {
 	m_fAccTime = 0.f;
 	m_fAccDistance = 0.f;
+	m_isTurn = false;
 }
 
 void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 {
 	//회전중인 거도 해야할듯 일단 이동만 해봄
-
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		if (0 > _iDir || 7 < _iDir)
 			return;
 
+		//기본적으로 추적중에 y값 상태 변화는 없다고 가정
+		_vector vDir = XMVector3Normalize(Set_PatrolDirection(_iDir));
+
+		if (true == m_isTurn && false == m_isMove)
+		{
+			if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			{
+				m_isMove = true;
+				
+				m_pOwner->Change_Animation();
+			}
+			else
+			{
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
+				if (fResult < 0)
+					isCW = false;
+
+				m_pOwner->Turn_Animation(isCW);
+			}
+		}
+
 		if (true == m_isMove)
 		{
-			//기본적으로 추적중에 y값 상태 변화는 없다고 가정
-
-			_vector vDir = Set_PatrolDirection(_iDir);
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
-			m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+			//m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
+			//m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+			//m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
+			m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
 		}
 	}
 
@@ -129,10 +190,18 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		if (0 > _iDir || 3 < _iDir)
 			return;
 
+		if (true == m_isTurn)
+		{
+			m_pOwner->Set_2D_Direction(m_eDir);
+
+			m_isTurn = false;
+			m_isMove = true;
+		}
+
 		if (true == m_isMove)
 		{
 			m_pOwner->Get_ControllerTransform()->Go_Direction(Set_PatrolDirection(_iDir), _fTimeDelta);
-			m_pOwner->Set_2D_Direction(m_eDir);
+			
 			switch (m_eDir)
 			{
 			case Client::F_DIRECTION::LEFT:
@@ -167,6 +236,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		if (m_fMoveDistance <= m_fAccDistance)
 		{
 			m_fAccDistance = 0.f;
+			m_isTurn = false;
 			m_isMove = false;
 
 			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
@@ -197,7 +267,7 @@ void CPatrolState::Determine_Direction()
 		{
 			m_iPrevDir = m_iDir;
 			m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-			m_isMove = true;
+			m_isTurn = true;
 			break;
 		}
 	}
@@ -292,7 +362,9 @@ void CPatrolState::Check_Bound(_float _fTimeDelta)
 	_float3 vPos;
 	_bool isOut = false;
 	//델타타임으로 다음 위치 예상해서 막기
-	XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_PatrolDirection(m_iDir) * _fTimeDelta);
+	XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_PatrolDirection(m_iDir) * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta);
+	//나갔을 때 반대방향으로
+	//XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.z > vPos.z || m_tPatrolBound.vMax.z < vPos.z)

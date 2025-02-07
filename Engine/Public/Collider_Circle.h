@@ -20,11 +20,14 @@ public:
 	HRESULT						Initialize(void* _pArg) override;
 	void						Update(_float _fTimeDelta) override;
 	void						Late_Update(_float _fTimeDelta) override;
-	HRESULT						Render() override;
+	HRESULT						Render(_float2 _fRenderTargetSize) override;
 
 public:
 	_bool						Is_Collision(CCollider* _pOther) override;
 	void						Update_OwnerTransform() override;
+	void						Block(CCollider* _pOther);
+	void						Block_AABB(CCollider_AABB* _pOther);
+	void						Block_Circle(CCollider_Circle* _pOther);
 
 private:
 	_bool						Is_Collision_Circle(CCollider_Circle* _pOther);

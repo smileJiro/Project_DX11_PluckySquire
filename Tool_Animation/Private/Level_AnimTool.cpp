@@ -406,6 +406,9 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 
 	TargetDesc.fSmoothSpeed = 5.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
+	TargetDesc.iCameraType = 1;
+	TargetDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
+	TargetDesc.pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -413,6 +416,7 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
+	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_ANIMTOOL, _strLayerTag, (CGameObject**)&m_pTargetCam, &TargetDesc)))
@@ -423,10 +427,10 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 
 	XMStoreFloat3(&Desc.vArm, vTargetLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = { XMConvertToRadians(30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 30.f;
+	Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
+	Desc.fLength = 10.f;
 	Desc.wszArmTag = TEXT("Cam_Arm");
-	Desc.pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
 	m_pTargetCam->Add_Arm(pArm);
@@ -492,7 +496,7 @@ HRESULT CLevel_AnimTool::Load_Model(LOADMODEL_TYPE _eType, wstring _wstrPath)
 		tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
 		tModelObjDesc.eStartCoord = COORDINATE_2D;
 		tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+		tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 		break;
 	case AnimTool::CLevel_AnimTool::LOAD_LAST:
 		break;

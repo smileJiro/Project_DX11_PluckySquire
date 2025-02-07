@@ -7,6 +7,32 @@ namespace Engine
 	class CActorObject;
 	class CActor;
 
+	typedef struct tagMaterialDefault
+	{
+		XMFLOAT3	Albedo = XMFLOAT3(1.0f, 1.0f, 1.0f); // 12byte
+		float		Roughness = 0.0f;					 // 16byte(o)
+		float		Metallic = 0.0f;						 // 4byte
+		XMFLOAT3	dummy;								 // 16byte(o)
+	}MATERIAL_PS;
+	typedef struct tagBasicPixelConstData // 동적변화가 없는 애들위주로.
+	{
+		MATERIAL_PS Material; // 32Byte
+
+		int			useAlbedoMap = 0;
+		int			useNormalMap = 0;
+		int			useAOMap = 0;
+		int			useMetallicMap = 0;		// 16Byte
+
+		int			useRoughnessMap = 0;
+		int			useEmissiveMap = 0;
+		int			useORMHMap = 0;			// Oclusion, Roughness, Metalic, Height
+		int			invertNormalMapY = 0;	// 16Byte  // LH, RH 에 따라 Y 축 반전이 필요한 경우가 있음.
+		//float		dummy;					
+
+		// float expose = 1.0f;
+		// float gamma = 1.0f; // 추후 hdr 톤매핑 시 사용.
+	}CONST_PS;
+
 	typedef struct tagActorUserData
 	{
 		CActorObject*				pOwner = nullptr;
@@ -17,6 +43,7 @@ namespace Engine
 	{
 		_uint						iShapeInstanceID = 0;
 		_uint						iShapeUse = 0;
+		_uint						iShapeIndex = 0;
 	}SHAPE_USERDATA;
 
 	typedef struct tagCollisionInfo
@@ -224,19 +251,25 @@ namespace Engine
 		_float2				fRotationPerSecAxisRight = {};
 
 		_float3				vDesireArm = {};		// 최종 벡터
-		_bool				isReturn = {};			// Trigger Exit 때 돌아갈 것인지
 	} ARM_DATA;
 
 	typedef struct tagCameraSubDataDesc
 	{
-		_float2				fZoomTime = {};
+		_float				fZoomTime = {};
 		_uint				iZoomLevel = {};
 		_uint				iZoomRatioType = {};
 
-		_float2				fAtOffsetTime = {};
+		_float				fAtOffsetTime = {};
 		_float3				vAtOffset = {};
 		_uint				iAtRatioType = {};
-	} CAMERA_SUBDATA;
+	} SUB_DATA;
+
+	typedef struct tagCameraArmReturnDataDesc
+	{
+		_float3				vPreArm = {};
+		_float				fPreLength = {};
+		_int				iTriggerID = {};
+	} RETURN_ARMDATA;
 
 	typedef struct tagCutSceneKeyFrameDesc
 	{
@@ -260,25 +293,14 @@ namespace Engine
 		_float				fFovy = {};
 	} CUTSCENE_DATA;
 
-	typedef struct tagCutSceneInitialData
+	typedef struct tagInitialData
 	{
 		_float3				vPosition = {};
-
-		_float3				vAtOffset = {};
+		_float3				vAt = {};
 		_uint				iZoomLevel = {};
-	} CUTSCENE_INITIAL_DATA;
-#pragma endregion
 
-#pragma region Trigger 관련
-	typedef struct tagTriggerObjectData
-	{
-		_uint				iShapeType = {};
-		_float3				vHalfExtents = {};
-		_float				fRadius = {};
-
-		_uint				iFillterMyGroup = {};
-		_uint				iFillterOtherGroupMask = {};
-	} TRIGGEROBJECT_DATA;
+		_float				fInitialTime = {};
+	} INITIAL_DATA;
 #pragma endregion
 
 #pragma region Binary 관련
@@ -353,6 +375,12 @@ namespace Engine
 		vector<FBX_ANIMATION> vecAnimations;
 		vector<FBX_MATERIAL> vecMaterials;
 	}ANIM_FBX;
+
+	typedef struct tagRaycastHit
+	{
+		_float3 vPosition;
+		_float3 vNormal;
+	}RAYCASTHIT;
 #pragma endregion
 
 	

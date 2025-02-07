@@ -10,6 +10,7 @@ END
 BEGIN(Client)
 class CFSM;
 class CDetectionField;
+class CSneak_DetectionField;
 class CMonster abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -25,6 +26,7 @@ public:
 		_float fAttack2DRange;
 		_float fDelayTime;
 		_float fCoolTime;
+		_bool isSneakMode = false;
 	}MONSTER_DESC;
 
 protected:
@@ -57,6 +59,16 @@ public:
 		return m_e2DDirection; 
 	}
 
+	void Set_SneakMode(_bool _isSneak)
+	{
+		m_isSneakMode = _isSneak;
+	}
+
+	_bool Get_SneakMode()
+	{
+		return m_isSneakMode;
+	}
+
 	_bool IsDelay() 
 	{
 		return m_isDelay;
@@ -79,6 +91,10 @@ public:
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
+
 public:
 	virtual void Attack();
 	virtual void Turn_Animation(_bool _isCW) {};
@@ -88,6 +104,7 @@ public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void						Change_Dir();
 	_bool						IsTarget_In_Detection();
+	_bool						IsTarget_In_Sneak_Detection();
 
 protected:
 	void Delay_On() 
@@ -118,6 +135,7 @@ protected:
 	CFSM* m_pFSM = { nullptr };
 	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
 	CDetectionField* m_pDetectionField = { nullptr };
+	CSneak_DetectionField* m_pSneak_DetectionField = { nullptr };
 
 #ifdef _DEBUG
 	CDebugDraw_For_Client* m_pDraw = { nullptr };
@@ -137,6 +155,13 @@ protected:
 	_bool m_isCool = { false };
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
+
+	//잠입 모드
+	_bool m_isSneakMode = { false };
+
+	//장애물 탐지
+	_bool m_isDetect_Block = { false };
+	_uint m_iDetect_Block_Count = { 0 };
 
 	F_DIRECTION m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
 

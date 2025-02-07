@@ -10,6 +10,7 @@
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
+#include "Trigger_Manager.h"
 
 
 #include "RenderGroup_MRT.h"
@@ -141,9 +142,11 @@ HRESULT CMainApp::Initialize_Client_Manager()
 		return E_FAIL;
 	if (FAILED(CCamera_Manager::GetInstance()->Initialize()))
 		return E_FAIL;
-	if(FAILED(CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+	if (FAILED(CPooling_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 	if (FAILED(CSection_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+	if (FAILED(CTrigger_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -319,9 +322,6 @@ HRESULT CMainApp::Ready_RenderGroup()
 
 HRESULT CMainApp::Ready_RenderTargets()
 {
-	/* Target Book2D */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
-		return E_FAIL;
 
 	/* Target Diffuse */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
@@ -331,24 +331,28 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Normal"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
 
+	/* Target_ORMH */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ORMH"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+
 	/* Target_Depth */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
 
-	/* Target_Shade */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	/* Target_Shade */ /* HDR */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
 
-	/* Target_Specular */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	/* Target_Specular */ /* HDR */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
 
 	/* Target_LightDepth */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_LightDepth"), g_iShadowWidth, g_iShadowHeight, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
 		return E_FAIL;
 
-	/* Target_Final */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Final"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	/* Target_Final */ /* HDR */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Final"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* Target_EffectAccumulate */
@@ -369,6 +373,8 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Normal"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_ORMH"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Depth"))))
 		return E_FAIL;
@@ -447,6 +453,7 @@ void CMainApp::Free()
 	CUI_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
 	CCollision_Manager::DestroyInstance();
+	CTrigger_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "ShopItemBG.h"
+#include "Section_2D.h"
+#include "UI_Manager.h"
 
 
 
@@ -23,8 +25,7 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
-	
-
+	m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -36,10 +37,19 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 	m_fOpaque = 0.3f;
 	m_isChooseItem = pDesc->isChooseItem;
 
+	_float2 vCalScale = { 0.f, 0.f };
+	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
+	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
+
+	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
+	m_fShopBGPos = Uimgr->Get_ShopPos();
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	
+
+	
 
 	return S_OK;
 }
@@ -50,12 +60,18 @@ void CShopItemBG::Priority_Update(_float _fTimeDelta)
 
 void CShopItemBG::Child_Update(_float _fTimeDelta)
 {
+	// TODO :: 해당 부분은 가변적이므로, 추후 변경을 해야한다.
+	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
+
 	isRender();
+	//Cal_ShopPartPos(RTSize, m_fShopBGPos);
 }
 
 void CShopItemBG::Child_LateUpdate(_float _fTimeDelta)
 {
-
+	//if (true == m_isRender)
+	//	Register_RenderGroup(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_UI);
 }
 
 HRESULT CShopItemBG::Render()
@@ -89,10 +105,33 @@ void CShopItemBG::isRender()
 	if (m_isRender == false)
 	{
 		m_isRender = true;
+		/* 변경해야함. */
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 	}
 	else if (m_isRender == true)
+	{
 		m_isRender = false;
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+	}
+		
 }
+
+//void CShopItemBG::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
+//{
+//	if (0 < Uimgr->Get_ShopItemBGs().size())
+//	{
+//		if (SKILLSHOP_BG == Uimgr->Get_ShopItems()[0][0]->Get_SkillShopIcon())
+//		{
+//			
+//		}
+//	}
+//
+//	
+//	
+//
+//
+//}
 
 HRESULT CShopItemBG::Ready_Components()
 {

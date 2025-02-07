@@ -47,7 +47,7 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
-VS_OUT VS_SPRITEANIM(VS_IN In)
+VS_OUT VS_SPRITE2D(VS_IN In)
 {
     VS_OUT Out = (VS_OUT) 0;
 
@@ -91,7 +91,7 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     
-    if (Out.vColor.a < 0.01f)
+    if (Out.vColor.a < 0.1f)
         discard;
     
     return Out;
@@ -139,6 +139,38 @@ PS_OUT PS_UIALPHA(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_DIALOGUE_BG_COLOR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+    
+    if (1.f == Out.vColor.r && 1.f == Out.vColor.g && 1.f == Out.vColor.b)
+    {
+        Out.vColor.rgb = g_vColors.rgb;
+    }
+    
+    if (Out.vColor.a < 0.01f)
+        discard;
+    
+    return Out;
+
+}
+
+
+PS_OUT PS_MIX_COLOR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+
+    Out.vColor = saturate(mul(Out.vColor,float4(g_vColors.x, g_vColors.y, g_vColors.z, g_vColors.w)));
+    
+    if (Out.vColor.a < 0.01f)
+        discard;
+    
+    return Out;
+}
 
 
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
@@ -187,12 +219,12 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_COLOR();
     }
 
-    pass SpriteAnim
+    pass Sprite2D
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_SPRITEANIM();
+        VertexShader = compile vs_5_0 VS_SPRITE2D();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
@@ -215,6 +247,26 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_UIALPHA();
+    }
+    
+    pass UI_MIXCOLOR
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MIX_COLOR();
+    }
+
+    pass DIALOGUE_BG_COLOR
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DIALOGUE_BG_COLOR();
     }
 
 }

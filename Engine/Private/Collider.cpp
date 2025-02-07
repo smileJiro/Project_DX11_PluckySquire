@@ -53,9 +53,9 @@ HRESULT CCollider::Initialize(void* _pArg)
     m_vPosition = pDesc->vPosition;
     m_vOffsetPosition = pDesc->vOffsetPosition;
     m_vScale = pDesc->vScale;
+    m_isBlock = pDesc->isBlock;
 
     // Add Desc 
-
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
@@ -72,9 +72,15 @@ void CCollider::Late_Update(_float _fTimeDelta)
 
 HRESULT CCollider::Render()
 {
+    return Render({(_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y});
+}
+
+HRESULT CCollider::Render(_float2 _fRenderTargetSize)
+{
 
     return S_OK;
 }
+
 
 void CCollider::Free()
 {

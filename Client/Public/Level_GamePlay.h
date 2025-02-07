@@ -18,6 +18,7 @@ public:
 
 public:
 	HRESULT					Ready_Lights();
+	HRESULT					Ready_Layer_MainTable(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Map();
 	HRESULT					Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget);
 	HRESULT					Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
@@ -28,7 +29,7 @@ public:
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 
 private:
-	void					Create_Arm();
+	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength);
 
 	HRESULT Map_Object_Create(_wstring _strFileName);
 

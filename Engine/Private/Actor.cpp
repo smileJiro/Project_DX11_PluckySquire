@@ -257,9 +257,13 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
 	if (nullptr == pPhysics)
 		return E_FAIL;
-	PxShapeFlags ShapeFlags = _ShapeData.isTrigger ?
-		(PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eTRIGGER_SHAPE) :
-		(PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSCENE_QUERY_SHAPE | PxShapeFlag::eSIMULATION_SHAPE);
+
+	PxShapeFlags ShapeFlags = _ShapeData.isTrigger ? PxShapeFlag::eTRIGGER_SHAPE : PxShapeFlag::eSIMULATION_SHAPE;
+
+	if (true == _ShapeData.isSceneQuery)
+		ShapeFlags |= PxShapeFlag::eSCENE_QUERY_SHAPE;
+	if(true == _ShapeData.isVisual)
+		ShapeFlags |= PxShapeFlag::eVISUALIZATION;
 
 
 	PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(_ShapeData.eMaterial);
@@ -298,6 +302,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	break;
 	case Engine::SHAPE_TYPE::COOKING:
 	{
+		ShapeFlags &= ~PxShapeFlag::eVISUALIZATION; // 쿠킹 전용 쉐잎은렌더 데이터 생성 x 
 
 		SHAPE_COOKING_DESC* pDesc = static_cast<SHAPE_COOKING_DESC*>(_ShapeData.pShapeDesc);
 
@@ -442,18 +447,19 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	FilterData.word1 = _ShapeData.FilterData.OtherGroupMask;
 
 	pShape->setSimulationFilterData(FilterData);
-	//pShape->setContactOffset(0.05f);
-	//pShape->setRestOffset(0.01f);
+	//pShape->setContactOffset(1.f);
+	//pShape->setRestOffset(0.1f);
 	SHAPE_USERDATA* pShapeUserData = new SHAPE_USERDATA;
 	pShapeUserData->iShapeInstanceID = m_pGameInstance->Create_ShapeID();
 	pShapeUserData->iShapeUse = _ShapeData.iShapeUse;
+	pShapeUserData->iShapeIndex = m_Shapes.size();
 	pShape->userData = pShapeUserData;
 	m_pGameInstance->Add_ShapeUserData(pShapeUserData);
 
 	m_pActor->attachShape(*pShape);
 	m_Shapes.push_back(pShape);
 	pShape->acquireReference(); // Add_Ref
-
+	
 	// 이건 생성 시점에 추가된 ref를 감소
 	pShape->release();
 
@@ -641,6 +647,46 @@ HRESULT CActor::Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType
 	}
 
 	return S_OK;
+}
+
+HRESULT CActor::Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable)
+{
+
+	if (m_Shapes.size() <= _iShapeIndex)
+		return E_FAIL;
+
+	if (nullptr == m_Shapes[_iShapeIndex])
+		return E_FAIL;
+
+	if (true == _isEnable)
+		m_pActor->attachShape(*m_Shapes[_iShapeIndex]);
+	else
+		m_pActor->detachShape(*m_Shapes[_iShapeIndex]);
+
+	return S_OK;
+}
+
+HRESULT CActor::Set_AllShapeEnable(_bool _isEnable)
+{
+	if (true == _isEnable)
+	{
+		for (auto& pShape : m_Shapes)
+			m_pActor->attachShape(*pShape);
+	}
+	else
+	{
+		for (auto& pShape : m_Shapes)
+			m_pActor->detachShape(*pShape);
+	}
+
+	return S_OK;
+}
+
+void CActor::Set_ShapeRayCastFlag(_bool _isRayCast)
+{
+	for (auto& pShape : m_Shapes)
+		pShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, _isRayCast);
+
 }
 
 

@@ -335,7 +335,7 @@ HRESULT CModel_PackagingObject::Export_Materials(ofstream& _OutFile, const _stri
 	//cout << m_iNumMaterials << endl;
 	for (_uint i = 0; i < m_iNumMaterials; i++)
 	{
-		for (_uint texIdx = 1; texIdx < AI_TEXTURE_TYPE_MAX; texIdx++)
+		for (_uint texIdx = 1; texIdx < aiTextureType_UNKNOWN; texIdx++)
 		{
 
 			_OutFile.write(reinterpret_cast<char*>(&m_Materials[i].iNumSRVs[texIdx]), sizeof(_uint));
@@ -415,7 +415,7 @@ HRESULT CModel_PackagingObject::Set_Sync_Material(CMapObject* _pTargetObject)
 
 		MATERIAL& tSourMaterial = m_Materials[iMaterialIndex];
 
-		for (_uint iTexTypeIndex = 1; iTexTypeIndex < AI_TEXTURE_TYPE_MAX; ++iTexTypeIndex)
+		for (_uint iTexTypeIndex = 1; iTexTypeIndex < aiTextureType_UNKNOWN; ++iTexTypeIndex)
 		{
 			tSourMaterial.SRVNames[iTexTypeIndex].clear();
 			_uint iTexIndex = 0;

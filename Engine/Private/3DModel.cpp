@@ -27,9 +27,9 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_arrCookingColliderData(_Prototype.m_arrCookingColliderData)
 {
 
-	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; i++)
+	for (_uint i = 0; i < aiTextureType_UNKNOWN; i++)
 	{
-		for (_uint j= 0; j< AI_TEXTURE_TYPE_MAX; j++)
+		for (_uint j= 0; j< aiTextureType_UNKNOWN; j++)
 		{
 			m_arrTextureBindingIndex[i][j] = _Prototype.m_arrTextureBindingIndex[i][j];
 		}
@@ -111,27 +111,44 @@ HRESULT C3DModel::Initialize(void* _pArg)
 	return S_OK;
 }
 
-HRESULT C3DModel::Render(CShader* _Shader, _uint _iShaderPass)
+HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 {
 	/* Mesh 단위 렌더. */
 	for (_uint i = 0; i < m_iNumMeshes; ++i)
 	{
 		_uint iMaterialIndex = m_Meshes[i]->Get_MaterialIndex();
-		if (FAILED(Bind_Material(_Shader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
+
+		if(FAILED(Bind_Material_PixelConstBuffer(iMaterialIndex, _pShader)))
+			return E_FAIL;
+
+		if (FAILED(Bind_Material(_pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
 		{
 			//continue;
+		}
+
+		if (FAILED(Bind_Material(_pShader, "g_NormalTexture", i, aiTextureType_NORMALS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_NORMALS])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_BASE_COLOR])))
+		{
+			int a = 0;
+		}
+		else
+		{
+			int a = 0;
 		}
 
 		/* Bind Bone Matrices */
 		if (Is_AnimModel())
 		{
-			if (FAILED(Bind_Matrices(_Shader, "g_BoneMatrices", i)))
+			if (FAILED(Bind_Matrices(_pShader, "g_BoneMatrices", i)))
 				return E_FAIL;
 		}
 
 
 		/* Shader Pass */
-		_Shader->Begin(_iShaderPass);
+		_pShader->Begin(_iShaderPass);
 
 		/* Bind Mesh Vertex Buffer */
 		m_Meshes[i]->Bind_BufferDesc();
@@ -165,6 +182,7 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 
 _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 {
+	m_bReverseAnimation = bReverse;
 	_bool bReturn = false;
 	//뼈들의 변환행렬을 갱신
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
@@ -183,6 +201,14 @@ _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 		pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
 
  	return bReturn;
+}
+
+HRESULT C3DModel::Bind_Material_PixelConstBuffer(_uint _iMaterialIndex, CShader* _pShader)
+{
+	if (m_Materials.size() <= _iMaterialIndex)
+		return E_FAIL;
+
+	return m_Materials[_iMaterialIndex]->Bind_PixelConstBuffer(_pShader);
 }
 
 _uint C3DModel::Get_MeshIndex(const _char* _szName) const
@@ -325,11 +351,8 @@ void C3DModel::Switch_Animation(_uint iIdx, _bool _bReverse)
 	m_iPrevAnimIndex = m_iCurrentAnimIndex;
 	m_iCurrentAnimIndex = iIdx;
 	m_mapAnimTransLeftFrame.clear();
-
 	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
-
 	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
-
 }
 
 void C3DModel::To_NextAnimation()

@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "DetectionField.h"
+#include "Sneak_DetectionField.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -31,6 +32,9 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fDelayTime = pDesc->fDelayTime;
 	m_fCoolTime = pDesc->fCoolTime;
 
+	if (true == pDesc->isSneakMode)
+		m_isSneakMode = true;
+
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
@@ -58,6 +62,7 @@ void CMonster::Priority_Update(_float _fTimeDelta)
 void CMonster::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta); /* Part Object Update */
+	m_vLookBefore = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
 }
 
 void CMonster::Late_Update(_float _fTimeDelta)
@@ -74,10 +79,7 @@ HRESULT CMonster::Render()
 
 void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
-	{
-		
-	}
+
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -86,7 +88,34 @@ void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	
+
+}
+
+void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		++m_iDetect_Block_Count;
+		//처음만 처리
+		if(1 == m_iDetect_Block_Count)
+			m_isDetect_Block = true;
+		cout <<"P"<< m_iDetect_Block_Count << endl;
+	}
+}
+
+void CMonster::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
+void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		--m_iDetect_Block_Count;
+		if(0 == m_iDetect_Block_Count)
+			m_isDetect_Block = false;
+		cout <<"M"<< m_iDetect_Block_Count << endl;
+	}
 }
 
 void CMonster::Attack()
@@ -135,6 +164,14 @@ void CMonster::Change_Dir()
 _bool CMonster::IsTarget_In_Detection()
 {
 	return m_pDetectionField->IsTarget_In_Detection();
+}
+
+_bool CMonster::IsTarget_In_Sneak_Detection()
+{
+	if (false == m_isSneakMode)
+		return false;
+
+	return m_pSneak_DetectionField->IsTarget_In_SneakDetection();
 }
 
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)
@@ -202,7 +239,12 @@ void CMonster::Active_OnEnable()
 void CMonster::Active_OnDisable()
 {
 	// 1. 몬스터 할거 하고
-
+	m_fAccTime = { 0.f };
+	m_isDelay = { false };
+	m_fDelayTime = { 0.f };
+	m_isCool = { false };
+	m_fCoolTime = { 0.f };
+	m_iAttackCount = { 0 };
 
 	// 2. PxActor 비활성화 
 	CActorObject::Active_OnDisable();
@@ -256,8 +298,7 @@ HRESULT CMonster::Ready_ActorDesc(void* _pArg)
 
 void CMonster::Free()
 {
-	if (nullptr != m_pTarget)
-		Safe_Release(m_pTarget);
+	Safe_Release(m_pTarget);
 
 	Safe_Release(m_pFSM);
 	Safe_Release(m_pDetectionField);

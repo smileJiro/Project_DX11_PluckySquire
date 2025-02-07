@@ -30,6 +30,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
 	m_eCameraMode = pDesc->eCameraMode;
 	m_vAtOffset = pDesc->vAtOffset;
+	m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -51,6 +52,8 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 
+	Switching(fTimeDelta);
+
 	Action_Mode(fTimeDelta);
 	__super::Compute_PipeLineMatrices();
 }
@@ -71,39 +74,106 @@ void CCamera_Target::Add_CurArm(CCameraArm* _pCameraArm)
 	m_pCurArm = _pCameraArm;
 }
 
-void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA _pData)
+void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
 	if (nullptr != Find_ArmData(_wszArmTag))
 		return;
 
-	ARM_DATA* pArmData = new ARM_DATA();
+	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
+}
 
-	pArmData->fLength = _pData.fLength;
-	pArmData->fMoveTimeAxisY = _pData.fMoveTimeAxisY;
-	pArmData->fMoveTimeAxisRight = _pData.fMoveTimeAxisRight;
-	pArmData->fLengthTime = _pData.fLengthTime;
-	pArmData->fRotationPerSecAxisY = _pData.fRotationPerSecAxisY;
-	pArmData->fRotationPerSecAxisRight = _pData.fRotationPerSecAxisRight;
-
-	m_ArmDatas.emplace(_wszArmTag, pArmData);
+void CCamera_Target::Set_Freeze(_uint _iFreezeMask)
+{
+	if (RESET == _iFreezeMask) {
+		m_iFreezeMask &= _iFreezeMask;
+		m_fFreezeExitTime.y = 0.f;
+		m_bFreezeExit = true;
+		m_fFreezeExitTime.x = 1.8f;
+	}
+	else
+		m_iFreezeMask |= _iFreezeMask;
 }
 
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 {
-	m_pCurArm->Change_Target(_pTargetWorldMatrix);
+	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 }
 
-void CCamera_Target::Set_NextArmData(_wstring _wszNextArmName)
+void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
 {
-	ARM_DATA* pData = Find_ArmData(_wszNextArmName);
-
-	if (nullptr == pData)
-		return;
-
 	if (nullptr == m_pCurArm)
 		return;
 
-	m_pCurArm->Set_NextArmData(pData);
+	// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
+	if (nullptr == _pInitialData) {
+		memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+		_vector vCameraPos = XMLoadFloat3(&m_vPreTargetPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+
+		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
+
+		Look_Target(XMLoadFloat3(&m_vPreTargetPos) + XMLoadFloat3(&m_vAtOffset), 0.f);
+	}
+	// 초기 위치부터 다음위치까지 Lerp를 해야 함
+	else {
+		m_tInitialData = *_pInitialData;
+		m_isInitialData = true;
+		m_InitialTime = { _pInitialData->fInitialTime, 0.f };
+
+		// 초기 위치 설정
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tInitialData.vPosition), 1.f));
+
+		// 초기 보는 곳 설정
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
+
+		// 초기 Zoom Level 설정
+		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
+		m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
+	}
+}
+
+INITIAL_DATA CCamera_Target::Get_InitialData()
+{
+	INITIAL_DATA tData;
+
+	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+
+	_vector vTargetPos;
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+	XMStoreFloat3(&tData.vAt, vAt);
+
+	tData.iZoomLevel = m_iCurZoomLevel;
+
+	return tData;
+}
+
+_bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
+{
+	pair<ARM_DATA*, SUB_DATA*>* pData = Find_ArmData(_wszNextArmName);
+
+	if (nullptr == pData)
+		return false;
+
+	if (nullptr == m_pCurArm)
+		return false;
+
+	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
+
+	if (nullptr != pData->second) {
+
+		Start_Zoom(pData->second->fZoomTime, (CCamera::ZOOM_LEVEL)pData->second->iZoomLevel, (CCamera::RATIO_TYPE)pData->second->iZoomRatioType);
+		Start_Changing_AtOffset(pData->second->fAtOffsetTime, XMLoadFloat3(&pData->second->vAtOffset), pData->second->iAtRatioType);
+	}
+
+	return true;
+}
+
+void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
+{
+	if (nullptr == m_pCurArm)
+		return;
+
+	m_pCurArm->Set_PreArmDataState(_iTriggerID, _isReturn);
 }
 
 void CCamera_Target::Key_Input(_float _fTimeDelta)
@@ -131,6 +201,9 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 
 void CCamera_Target::Action_Mode(_float _fTimeDelta)
 {
+	if (true == m_isInitialData)
+		return;
+
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
@@ -150,48 +223,148 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	}
 }
 
-void CCamera_Target::Defualt_Move(_float fTimeDelta)
+void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 {
-	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(fTimeDelta);
+	_vector vTargetPos;
+	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
+	_vector vCurPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+
+	if (RESET == m_iFreezeMask) {
+		if (true == m_bFreezeExit) {
+
+			m_fFreezeExitTime.y += _fTimeDelta;
+			_float fRatio = m_fFreezeExitTime.y / m_fFreezeExitTime.x;
+
+			if (fRatio >= 1.f) {
+				m_fFreezeExitTime.y = 0.f;
+				m_bFreezeExit = false;
+			}
+			else
+				vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
+		}
+	}
+	else {
+		if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
+			vCameraPos = XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos));
+		}
+		if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
+			vCameraPos = XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos));
+		}
+	}
+
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	Look_Target(fTimeDelta);
+	//if (RESET == (m_iFreezeMask | RESET)) 
+	Look_Target(vTargetPos, _fTimeDelta);
 }
 
 void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_NextArm(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
-		return;
+		//return;
 	}
 
-	_vector vCameraPos = m_pCurArm->Calculate_CameraPos(_fTimeDelta);
+	_vector vTargetPos;
+	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	Look_Target(_fTimeDelta);
+	Look_Target(vTargetPos, _fTimeDelta);
 }
 
-void CCamera_Target::Look_Target(_float fTimeDelta)
+void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 {
-	_vector vTargetPos = m_pCurArm->Get_TargetState(CCameraArm::POS);
+	//_vector vTargetPos = XMLoadFloat4x4(m_pTargetWorldMatrix).r[TARGET_POS];
 
-	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset);
+	_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 
 void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 {
+	if (true == m_pCurArm->Move_To_PreArm(_fTimeDelta)) {
+		m_eCameraMode = DEFAULT;
+		//return;
+	}
 
+	_vector vTargetPos;
+	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	Look_Target(vTargetPos, _fTimeDelta);
 }
 
-ARM_DATA* CCamera_Target::Find_ArmData(_wstring _wszArmTag)
+_vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta)
+{
+	_vector vTargetPos;
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+   
+	_vector vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos, m_fSmoothSpeed * _fTimeDelta);
+    
+	if (nullptr != _pLerpTargetPos)
+		*_pLerpTargetPos = vCurPos;
+
+	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	XMStoreFloat3(&m_vPreTargetPos, vCurPos);
+
+	return vCameraPos;
+}
+
+void CCamera_Target::Switching(_float _fTimeDelta)
+{
+	if (false == m_isInitialData)
+		return;
+
+	//m_InitialTime.y += _fTimeDelta;
+	//_float fRatio = m_InitialTime.y / m_InitialTime.x;
+
+	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN);
+
+	if (fRatio > 1.f) {
+		_vector vTargetPos;
+		memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
+
+		_vector vLookAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(vLookAt, 1.f));
+
+		m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
+
+		memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+
+		m_InitialTime.y = 0.f;
+		m_isInitialData = false;
+		return;
+	}
+	
+	// Pos
+	_vector vTargetPos;
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	_vector vResulPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
+	
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vResulPos, 1.f));
+
+	// LookAt
+	_vector vLookAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+	_vector vResultLookAt = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vAt), vLookAt, fRatio);
+
+	m_pControllerTransform->LookAt_3D(XMVectorSetW(vResultLookAt, 1.f));
+
+	// Zoom Level
+	_float fFovy = m_pGameInstance->Lerp(m_ZoomLevels[m_tInitialData.iZoomLevel], m_ZoomLevels[m_iCurZoomLevel], fRatio);
+	m_fFovy = fFovy;
+}
+
+pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)
 {
 	auto iter = m_ArmDatas.find(_wszArmTag);
 
 	if (iter == m_ArmDatas.end())
 		return nullptr;
 
-	return iter->second;
+	return &(iter->second);
 }
 
 CCamera_Target* CCamera_Target::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -222,8 +395,10 @@ CGameObject* CCamera_Target::Clone(void* pArg)
 
 void CCamera_Target::Free()
 {
-	for (auto& ArmData : m_ArmDatas)
-		Safe_Delete(ArmData.second);
+	for (auto& ArmData : m_ArmDatas) {
+		Safe_Delete(ArmData.second.first);
+		Safe_Delete(ArmData.second.second);
+	}
 	m_ArmDatas.clear();
 
 	Safe_Release(m_pCurArm);

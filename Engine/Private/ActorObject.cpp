@@ -44,11 +44,9 @@ HRESULT CActorObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewP
         if (FAILED(m_pActorCom->Change_Coordinate(_eCoordinate, _pNewPosition)))
             return E_FAIL;
     }
-
-
-
     return S_OK;
 }
+
 
 
 void CActorObject::Active_OnEnable()

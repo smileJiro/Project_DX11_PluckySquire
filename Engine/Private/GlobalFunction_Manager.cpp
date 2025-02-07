@@ -172,6 +172,19 @@ _float CGlobalFunction_Manager::Clamp_Degrees(_float _fDegrees)
 	return fResult;
 }
 
+_uint CGlobalFunction_Manager::Compare_VectorLength(_fvector _vVector1, _fvector _vVector2)
+{
+	_float fLength1 = XMVectorGetX(XMVector3Length(_vVector1));
+	_float fLength2 = XMVectorGetX(XMVector3Length(_vVector2));
+
+	if (fLength1 == fLength2)
+		return 0;
+	else if (fLength1 > fLength2)
+		return 1;
+	else
+		return 2;
+}
+
 _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 {
 	POINT ptCursorPos;

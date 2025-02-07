@@ -4,6 +4,7 @@
 #include "UI_Manager.h"
 #include "Dialogue.h"
 #include "Section_Manager.h"
+#include "Section_2D.h"
 
 CPortrait::CPortrait(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
@@ -30,8 +31,21 @@ HRESULT CPortrait::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_isRender = true;
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	m_isRender = false;
+
+	//_float2 vSize;
+	//vSize = m_pTextureCom->Get_Size();
+
+	//m_fSizeX = vSize.x;
+	//m_fSizeY = vSize.y;
+	
+	_float2 vCalScale = { 0.f, 0.f };
+	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
+	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
+
+	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 
 	return S_OK;
 }
@@ -41,17 +55,24 @@ void CPortrait::Update(_float _fTimeDelta)
 {
 	m_isRender = Uimgr->Get_PortraitRender();
 
-	Uimgr->Set_DialogId(TEXT("dialog_01"));
-	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+	if (true == m_isRender)
+	{
+		//Uimgr->Set_DialogId(TEXT("dialog_01"));
+		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
 
-	//Uimgr->Get_DialogueLine()
-	if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
-		return;
+		//Uimgr->Get_DialogueLine()
+		if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
+			return;
 
-	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
-	m_ePortraitFace = (CDialog::PORTRAITNAME)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
+		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+		m_ePortraitFace = (CDialog::PORTRAITNAME)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
 
-	ChangePosition(m_isRender);
+
+		/* 추후 진행에따라 변경을 해야한다. */
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		ChangePosition(m_isRender, RTSize);
+	}
+
 
 
 }
@@ -64,7 +85,7 @@ HRESULT CPortrait::Render()
 {
 	if (true == m_isRender)
 	{
-		__super::Render((_int)m_ePortraitFace, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		__super::Render((_int)m_ePortraitFace, PASS_VTXPOSTEX::DEFAULT);
 	}
 		
 	return S_OK;
@@ -75,43 +96,55 @@ HRESULT CPortrait::DisplayPortrait()
 	return S_OK;
 }
 
-void CPortrait::ChangePosition(_bool _isRender)
+void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 {
 	if (false == _isRender)
 		return;
 
-	_float2 vTexPos = _float2(0.f, 0.f);
+	_float3 vTexPos = Uimgr->Get_CalDialoguePos();
+	
 	const auto& currentLine = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex());
 
 	switch (currentLine.location)
 	{
 	case CDialog::LOC_DEFAULT:  // 가운데 아래
 	{
-		// 3D rlwns
+		// 3D 세팅
+		//if (3D)
+		//{
+		//	_float2 vPos = { 0.f, 0.f };
+		//
+		//	vPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
+		//}
 		//vTextPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
 
 		//2D 
-		vTexPos = _float2(g_iWinSizeX / 2.f / 3.9f, g_iWinSizeY - g_iWinSizeY / 5.4f);
-		vTexPos.x = vTexPos.x - g_iWinSizeX * 0.5f;
-		vTexPos.y = -vTexPos.y + g_iWinSizeY * 0.5f;
+	//else
+	//{
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.146f;
+		vTexPos.y = vTexPos.y;
+	//
+	// }
+		
 	}
 	break;
 
-	case CDialog::LOC_MIDDLE:   // 정 가운데
+	case CDialog::LOC_MIDHIGH:   // 정 가운데
 	{
-		vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.146f;
+		vTexPos.y = vTexPos.y;
 	}
 	break;
 
 	case CDialog::LOC_MIDLEFT:  // 가운데 좌측
 	{
-		vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		//vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
 	}
 	break;
 
 	case CDialog::LOC_MIDRIGHT: // 가운데 우측
 	{
-		vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		//vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
 	}
 	break;
 	}

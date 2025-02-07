@@ -45,6 +45,7 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 	//{
 	//	Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 	//}
+
 	Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 
 	////공격 범위 벗어나고 추적 범위 내면 Chase 전환

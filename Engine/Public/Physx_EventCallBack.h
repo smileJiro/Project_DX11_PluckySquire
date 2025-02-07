@@ -43,7 +43,7 @@ private:
 private:
 
 	void Add_StayTrigger(_ulonglong _ID, const COLL_INFO& _TriggerInfo, const COLL_INFO& _OtherInfo);
-	void Erase_StayTrigger(_ulonglong _ID, _bool* _isEmpty = nullptr);
+	void Erase_StayTrigger(_ulonglong _ID, map<_ulonglong, pair<COLL_INFO, COLL_INFO>>::iterator* _pOutNextiter = nullptr, _bool* _isEmpty = nullptr);
 private:
 	map<_ulonglong, pair<COLL_INFO, COLL_INFO>> m_StayTrigger;
 public:

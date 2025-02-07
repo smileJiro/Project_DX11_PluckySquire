@@ -16,6 +16,8 @@
 #include "Task_Manager.h"
 #include "Engine_Defines.h"
 #include <commdlg.h>
+#include <windows.h>
+#include <shellapi.h>
 using namespace std::filesystem;
 
 
@@ -811,10 +813,15 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 			{
 				m_pMapParsingManager->Register_RePackaging((*iter).second, pTargetObj);
 			}
+			
+			if (StyleButton(MINI, "Model Path Open"))
+			{
+				ShellExecute(NULL, L"open", L"explorer.exe", (*iter).second.c_str(), NULL, SW_SHOWNORMAL);
+			}
 
-			vector<CMapObject::DIFFUSE_INFO> Textures;
+			vector<CMapObject::TEXTURE_INFO> Textures;
 
-			for (_uint iTextureType = 0; iTextureType < AI_TEXTURE_TYPE_MAX; iTextureType++)
+			for (_uint iTextureType = 0; iTextureType < aiTextureType_UNKNOWN; iTextureType++)
 			{
 				if(0 < iTextureType)
 				ImGui::NewLine();
@@ -829,19 +836,22 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 					ImGui::SeparatorText(arrEnumText[iTextureType].c_str());
 
 					_uint iMaterialIdx = 0;
+
+					if (0 < iMaterialIdx)
+						ImGui::NewLine();
+
 					for (auto& tDiffuseInfo : Textures)
 					{
 						_uint iMaxDiffuseIdx = 0;
 						_uint iCurMaterial = iMaterialIdx;
-						auto iter = find_if(Textures.begin(), Textures.end(), [&iCurMaterial, &iMaxDiffuseIdx](CMapObject::DIFFUSE_INFO _tDiffuseInfo) {
+						auto iter = find_if(Textures.begin(), Textures.end(), [&iCurMaterial, &iMaxDiffuseIdx](CMapObject::TEXTURE_INFO _tDiffuseInfo) {
 							if (iCurMaterial == _tDiffuseInfo.iMaterialIndex
 								&&
-								iMaxDiffuseIdx < _tDiffuseInfo.iDiffuseIIndex
+								iMaxDiffuseIdx < _tDiffuseInfo.iTextureIndex
 								)
-								iMaxDiffuseIdx = _tDiffuseInfo.iDiffuseIIndex;
+								iMaxDiffuseIdx = _tDiffuseInfo.iTextureIndex;
 							return _tDiffuseInfo.iMaterialIndex > iCurMaterial;
 							});
-
 
 
 						if (tDiffuseInfo.iMaterialIndex == iMaterialIdx)
@@ -861,7 +871,7 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 								_tchar originalDir[MAX_PATH];
 								GetCurrentDirectory(MAX_PATH, originalDir);
 
-								_wstring strModelPath = L"..\\..\\Client\\Bin\\resources\\Models\\NonAnim\\";
+								_wstring strModelPath = L"../../Client/Bin/resources/Models/NonAnim/";
 
 								OPENFILENAME ofn = {};
 								_tchar szName[MAX_PATH] = {};
@@ -893,8 +903,8 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 											auto PairResult = Get_FileName_From_Path(strFilePath);
 
 
-											CMapObject::DIFFUSE_INFO tAddInfo;
-											tAddInfo.iDiffuseIIndex = iMaxDiffuseIdx;
+											CMapObject::TEXTURE_INFO tAddInfo;
+											tAddInfo.iTextureIndex = iMaxDiffuseIdx;
 											tAddInfo.iMaterialIndex = iMaterialIdx;
 											tAddInfo.pSRV = pSRV;
 
@@ -918,7 +928,7 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 							iMaterialIdx++;
 						}
 
-						string strButtonTag = std::to_string(tDiffuseInfo.iMaterialIndex) + "_" + std::to_string(tDiffuseInfo.iDiffuseIIndex) + "_" + arrEnumText[iTextureType];
+						string strButtonTag = std::to_string(tDiffuseInfo.iMaterialIndex) + "_" + std::to_string(tDiffuseInfo.iTextureIndex) + "_" + arrEnumText[iTextureType];
 						ImVec2 size = ImVec2(48.0f, 48.0f);
 						ImVec2 uv0 = ImVec2(0.0f, 0.0f);
 						ImVec2 uv1 = ImVec2(1.0f, 1.0f);
@@ -926,13 +936,13 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 						ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 						_uint iCurrenrTextureIndex = pTargetObj->Get_TextureIdx(iTextureType, tDiffuseInfo.iMaterialIndex);
 
-						if (tDiffuseInfo.iDiffuseIIndex == iCurrenrTextureIndex)
+						if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
 							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.6f, 0.9f, 1.0f)); // 선택된 버튼의 배경색
 
 						if (ImGui::ImageButton(strButtonTag.c_str(), (ImTextureID)tDiffuseInfo.pSRV, size, uv0, uv1, bg_col, tint_col))
-							pTargetObj->Change_TextureIdx(tDiffuseInfo.iDiffuseIIndex, iTextureType, tDiffuseInfo.iMaterialIndex);
+							pTargetObj->Change_TextureIdx(tDiffuseInfo.iTextureIndex, iTextureType, tDiffuseInfo.iMaterialIndex);
 
-						if (tDiffuseInfo.iDiffuseIIndex == iCurrenrTextureIndex)
+						if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
 							ImGui::PopStyleColor(1);
 
 						if (ImGui::IsItemHovered())

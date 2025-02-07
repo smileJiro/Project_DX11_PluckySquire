@@ -7,9 +7,8 @@
 #include "StateMachine.h"
 
 
-CPlayerState_Roll::CPlayerState_Roll(CPlayer* _pOwner, _fvector _vDirection)
+CPlayerState_Roll::CPlayerState_Roll(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::ROLL)
-	, m_vDirection(_vDirection)
 {
 }
 
@@ -21,31 +20,32 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 	_float fForwardStartProgress = eCoord == COORDINATE_2D ? m_f2DForwardStartProgress : m_f3DForwardStartProgress;
 	_float fForwardEndProgress= eCoord == COORDINATE_2D ? m_f2DForwardEndProgress : m_f3DForwardEndProgress;
 	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
+
 	if (fProgress >= fMotionCancelProgress)
 	{
-		PLAYER_KEY_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+		 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 
-		if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
+		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		{
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
 		}
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
 		{
 			m_pOwner->Set_State(CPlayer::ATTACK);
 			return;
 		}
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
 		{
-			m_pOwner->Set_State(CPlayer::JUMP);
+			m_pOwner->Set_State(CPlayer::JUMP_UP);
 			return;
 		}
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 		{
 			m_pOwner->Set_State(CPlayer::ROLL);
 			return;
 		}
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
 		{
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
 			return;
@@ -67,13 +67,14 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 
 void CPlayerState_Roll::Enter()
 {
-	
+
     COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	_bool bSwrodEquiped = m_pOwner->Is_SwordEquiped();
+	_bool bSwrodEquiped = m_pOwner->Is_SwordHandling();
 
     if (COORDINATE_2D == eCoord)
     {
 		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
+		m_vDirection = EDir_To_Vector(m_pOwner->Get_2DDirection());
         switch (eFDir)
         {
         case Client::F_DIRECTION::LEFT:
@@ -101,6 +102,13 @@ void CPlayerState_Roll::Enter()
     }
     else
     {
+		 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
+		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+			m_vDirection = m_pOwner->Get_3DTargetDirection();
+		else
+			m_vDirection = m_pOwner->Get_LookDirection();
+		m_pOwner->LookDirectionXZ_Dynamic(m_vDirection);
+		m_pOwner->Stop_Rotate();
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_DODGE_GT);
     }
 }

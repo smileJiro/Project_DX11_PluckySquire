@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+
 typedef struct tagFilterData
 {
 	_uint MyGroup = 0;
@@ -13,7 +14,8 @@ typedef struct tagShapeData
 	SHAPE_DESC*		pShapeDesc = nullptr;
 	_float4x4		LocalOffsetMatrix = {};
 	_bool			isTrigger = false;
-
+	_bool			isSceneQuery = false;
+	_bool			isVisual = true;
 	ACTOR_MATERIAL	eMaterial = ACTOR_MATERIAL::DEFAULT;
 	_uint			iShapeUse = 0;
 	FILTER_DATA		FilterData = {};
@@ -64,6 +66,7 @@ public:/* Default PhysX */
 
 	void						Set_PxActorDisable();
 	void						Set_PxActorEnable();
+
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	HRESULT						Add_Shape(const SHAPE_DATA& _ShapeData);
@@ -78,6 +81,7 @@ public:
 	// Get
 	const vector<PxShape*>&		Get_Shapes() { return m_Shapes; }
 	ACTOR_TYPE					Get_ActorType() const { return m_eActorType; }
+	PxRigidActor*					Get_RigidActor() const { return m_pActor; }
 
 	// Set 
 	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix); // 특별한 경우 아니면 사용을 비권장하겠음. 버그있는듯함.
@@ -87,6 +91,10 @@ public:
 	HRESULT						Set_ShapeLocalOffsetQuaternion(_int _iShapeIndex, const _float4& _vQuat); // 쿼터니언
 	HRESULT						Set_ShapeLocalOffsetPitchYawRoll(_int _iShapeIndex, const _float3& _vPitchYawRoll); // xyz 회전량 넣으면 쿼터니언으로 변환해서 넣음.
 	HRESULT						Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc); // shape 크기변경
+	HRESULT						Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable);
+	HRESULT						Set_AllShapeEnable(_bool _isEnable);
+	void								Set_ShapeRayCastFlag(_bool _isRayCast);
+
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;

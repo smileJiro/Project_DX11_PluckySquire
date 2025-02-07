@@ -20,8 +20,11 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta) override;
 
 public:
-	_bool						Set_NextCutScene(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pTargetPos = nullptr);
+	_bool						Set_NextCutScene(_wstring _wszCutSceneName);
 	void						Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData);
+	
+	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
+	virtual INITIAL_DATA		Get_InitialData() override;
 
 private:
 	map<_wstring, pair<_float2, vector<CUTSCENE_DATA>>>	m_CutSceneDatas;	// Sector -> CUTSCENE_DATA
@@ -34,9 +37,6 @@ private:
 
 	// Target
 	_float3										m_vTargetPos = {};
-	CUTSCENE_INITIAL_DATA						m_tInitialData = {};
-	_bool										m_isInitialData = { false };
-	_float2										m_InitialTime = { 0.3f, 0.f };
 
 	// Finish
 
@@ -48,8 +48,6 @@ private:
 
 	void						Before_CutScene(_float _fTimeDelta);
 	void						After_CutScene(_float _fTimeDelta);
-
-	void						Initialize_CameraInfo(CUTSCENE_INITIAL_DATA* _pTargetPos);
 
 public:
 	static CCamera_CutScene*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -49,6 +49,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
@@ -200,10 +201,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
     pDesc->pActorDesc = ActorDesc;
 
     /* Shapedata 할당해제 */
-    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    {
-        Safe_Delete(ShapeData);
-    }
+    Safe_Delete(ShapeData);
 
     return S_OK;
 }

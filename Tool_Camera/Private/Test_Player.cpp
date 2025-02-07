@@ -74,7 +74,7 @@ HRESULT CTest_Player::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE_ANIM;
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -82,8 +82,6 @@ HRESULT CTest_Player::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    BodyDesc.iRenderGroupID_2D = RG_3D;
-    BodyDesc.iPriorityID_2D = PR3D_BOOK2D;
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
 

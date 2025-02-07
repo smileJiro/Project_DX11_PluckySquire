@@ -30,9 +30,13 @@ public:
 	virtual void			Child_LateUpdate(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+public:
+	SKILLSHOP				Get_SkillShopIcon() { return m_eSkillShopIcon; }
 
 private:
 	void					isRender();
+	
+	
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -50,6 +54,7 @@ protected:
 
 private:
 	_float					m_fOpaque = { 0.0f };
+	_float2					m_fShopBGPos = { 0.f, 0.f };
 
 
 

@@ -25,12 +25,16 @@ public:
 	//Set
 	void							Set_Kinematic();
 	void							Set_Dynamic();
+	void							Set_SleepThreshold(_float _fThreshold);
+	_bool						Is_Sleeping();
 	virtual void				Set_LinearVelocity(_fvector _vDirection, _float _fVelocity);
 	virtual void				Set_LinearVelocity(_fvector _vVelocity);
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity);
 	virtual void				Set_AngularVelocity(_fvector _vAngularVelocity);
 	virtual void				Set_Rotation(_fvector _vAxis, _float _fRadian);
 	virtual void				Set_Rotation(_fvector _vLook);
+	virtual void				Set_LinearDamping(_float _fValue);
+	virtual void				Set_AngularDamping(_float _fValue);
 	virtual void				Add_Force(const _float3& _vForce);// ÀÏ¹ÝÀûÀÎ Èû
 	virtual void				Add_Impulse(const _float3& _vForce); // °­ÇÑ Èû
 

@@ -1,0 +1,4139 @@
+[
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TopDownRealTimeDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.2"
+    },
+    "Properties": {
+      "PropOwner": {
+        "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+      },
+      "TiltSwapOffset": {
+        "X": 2668.0,
+        "Y": 126.0
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__TopDownRealTimeDecal_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.2"
+    },
+    "Properties": {
+      "TiltSwapOffset": {
+        "X": 1156.0,
+        "Y": 2952.0
+      }
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Text_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.9"
+    }
+  },
+  {
+    "Type": "BookTiltComponent",
+    "Name": "BookTiltComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'BookTiltComponent'",
+    "Template": {
+      "ObjectName": "BookTiltComponent'Default__Text_BP_C:BookTiltComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.9"
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "BoxComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_C:BoxComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.3"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "BndEvt__BoxComponent_K2Node_ComponentBoundEvent_0_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "SlideCollider",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__TopDownRealTimeDecal_BP_C:SlideCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.4"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "SlideColliderHit"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "SlideColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "SlideColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "GameVolume",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:GameVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.21"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+            },
+            "FunctionName": "BoxBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+            },
+            "FunctionName": "BoxEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "KillVolume",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__MinigameController_BP_C:KillVolume'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+            },
+            "FunctionName": "KillVolumeOverlap"
+          },
+          {
+            "Object": {
+              "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+            },
+            "FunctionName": "BndEvt__MinigameController_BP_KillVolume_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerBox",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Text_BP_C:TriggerBox'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C04_P13:PersistentLevel.Text_01_LatchClearMind'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.91"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C04_P13:PersistentLevel.Text_01_LatchClearMind'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.91"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.75"
+      }
+    }
+  },
+  {
+    "Type": "BoxComponent",
+    "Name": "TriggerBox",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'BoxComponent'",
+    "Template": {
+      "ObjectName": "BoxComponent'Default__Text_BP_C:TriggerBox'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C04_P13:PersistentLevel.Text_02_GrabFishReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.92"
+            },
+            "FunctionName": "BoxTriggerBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "Text_BP_C'C04_P13:PersistentLevel.Text_02_GrabFishReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.92"
+            },
+            "FunctionName": "BoxTriggerEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.76"
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "C04_P1314_StoryPanel_P15a",
+    "Class": "UScriptClass'CameraComponent'",
+    "Template": {
+      "ObjectName": "CameraComponent'Default__StoryPanel_BP_C:CameraComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.Camera Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.68"
+      },
+      "RelativeLocation": {
+        "X": -1899.9999,
+        "Y": 0.0004272461,
+        "Z": 0.00036621094
+      }
+    }
+  },
+  {
+    "Type": "CameraComponent",
+    "Name": "CameraComponent",
+    "Outer": "C04_P1314_StoryPanel_P15b",
+    "Class": "UScriptClass'CameraComponent'",
+    "Template": {
+      "ObjectName": "CameraComponent'Default__StoryPanel_BP_C:CameraComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.2"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.Camera Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.69"
+      },
+      "RelativeLocation": {
+        "X": -1899.9999,
+        "Y": 0.0004272461,
+        "Z": 0.00036621094
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TopDownRealTimeDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": -25467.0,
+        "Y": 12276.0,
+        "Z": 21500.0
+      }
+    }
+  },
+  {
+    "Type": "CapsuleComponent",
+    "Name": "CapsuleComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'CapsuleComponent'",
+    "Template": {
+      "ObjectName": "CapsuleComponent'Default__TopDownRealTimeDecal_BP_C:CapsuleComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.5"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "CapsuleComponentHit"
+          }
+        ]
+      },
+      "RelativeLocation": {
+        "X": -23602.0,
+        "Y": 12418.0,
+        "Z": 21500.0
+      }
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "C04_P1314_StoryPanel_P15a",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__StoryPanel_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.3"
+    }
+  },
+  {
+    "Type": "DeskSaveComponent",
+    "Name": "DeskSaveComponent",
+    "Outer": "C04_P1314_StoryPanel_P15b",
+    "Class": "UScriptClass'DeskSaveComponent'",
+    "Template": {
+      "ObjectName": "DeskSaveComponent'Default__StoryPanel_BP_C:DeskSaveComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.3"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TopDownRealTimeDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.6"
+    },
+    "Properties": {
+      "bActive": false
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__TopDownRealTimeDecal_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.6"
+    },
+    "Properties": {
+      "bActive": false
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Text_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.11"
+    }
+  },
+  {
+    "Type": "FlipbookTimelineComponent",
+    "Name": "FlipbookTimelineComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'FlipbookTimelineComponent'",
+    "Template": {
+      "ObjectName": "FlipbookTimelineComponent'Default__Text_BP_C:FlipbookTimelineComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.11"
+    }
+  },
+  {
+    "Type": "Level",
+    "Name": "PersistentLevel",
+    "Outer": "C04_P13",
+    "Class": "UScriptClass'Level'",
+    "Properties": {
+      "Model": {
+        "ObjectName": "Model'C04_P13:PersistentLevel.Model_0'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.33"
+      },
+      "LevelBuildDataId": "B2D8E4EC-44374805-AD0506A1-9E9E18A4",
+      "WorldSettings": {
+        "ObjectName": "WorldSettings'C04_P13:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.120"
+      }
+    },
+    "Actors": [
+      {
+        "ObjectName": "WorldSettings'C04_P13:PersistentLevel.WorldSettings'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.120"
+      },
+      null,
+      {
+        "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+      },
+      {
+        "ObjectName": "Text_BP_C'C04_P13:PersistentLevel.Text_01_LatchClearMind'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.91"
+      },
+      {
+        "ObjectName": "Text_BP_C'C04_P13:PersistentLevel.Text_02_GrabFishReady'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.92"
+      },
+      {
+        "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+      },
+      {
+        "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+      },
+      {
+        "ObjectName": "StoryPanel_BP_C'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.89"
+      },
+      {
+        "ObjectName": "StoryPanel_BP_C'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.90"
+      }
+    ],
+    "URL": {
+      "Protocol": "unreal",
+      "Host": "",
+      "Port": 7777,
+      "Valid": true,
+      "Map": "/Game/Levels/MainLevel",
+      "Op": [],
+      "Portal": ""
+    },
+    "Model": {
+      "ObjectName": "Model'C04_P13:PersistentLevel.Model_0'",
+      "ObjectPath": "/Game/Levels/C04/C04_P13.33"
+    },
+    "ModelComponents": [],
+    "LevelScriptActor": null,
+    "NavListStart": null,
+    "NavListEnd": null,
+    "PrecomputedVisibilityHandler": {
+      "PrecomputedVisibilityCellBucketOriginXY": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "PrecomputedVisibilityCellSizeXY": 0.0,
+      "PrecomputedVisibilityCellSizeZ": 0.0,
+      "PrecomputedVisibilityCellBucketSizeXY": 0,
+      "PrecomputedVisibilityNumCellBuckets": 0,
+      "PrecomputedVisibilityCellBuckets": []
+    },
+    "PrecomputedVolumeDistanceField": {
+      "VolumeMaxDistance": 0.0,
+      "VolumeBox": {
+        "Min": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Max": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "IsValid": 0
+      },
+      "VolumeSizeX": 0,
+      "VolumeSizeY": 0,
+      "VolumeSizeZ": 0,
+      "Data": []
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TopDownRealTimeDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__TopDownRealTimeDecal_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.7"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Text_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.12"
+    }
+  },
+  {
+    "Type": "LocationWrapComponent",
+    "Name": "LocationWrapComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'LocationWrapComponent'",
+    "Template": {
+      "ObjectName": "LocationWrapComponent'Default__Text_BP_C:LocationWrapComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.12"
+    }
+  },
+  {
+    "Type": "MaterialInstanceDynamic",
+    "Name": "MaterialInstanceDynamic_2",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'MaterialInstanceDynamic'",
+    "Properties": {
+      "Parent": {
+        "ObjectName": "MaterialInstanceConstant'M_TopDownColoured_Inst'",
+        "ObjectPath": "/Game/Materials/BookRendering/M_TopDownColoured_Inst.0"
+      },
+      "VectorParameterValues": [
+        {
+          "ParameterInfo": {
+            "Name": "Colour",
+            "Association": "GlobalParameter",
+            "Index": -1
+          },
+          "ParameterValue": {
+            "R": 0.0,
+            "G": 0.0,
+            "B": 0.0,
+            "A": 0.0,
+            "Hex": "000000"
+          },
+          "ExpressionGUID": "00CD460C-495C6B8B-38DCA081-E90F425E"
+        }
+      ],
+      "BasePropertyOverrides": {
+        "ShadingModel": "MSM_Unlit",
+        "OpacityMaskClipValue": 0.3333
+      }
+    },
+    "LoadedMaterialResources": []
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TopDownRealTimeDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchClear.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.96"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__TopDownRealTimeDecal_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.8"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchFishGrabReady.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.103"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Text_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.13"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.110"
+      }
+    }
+  },
+  {
+    "Type": "MeshFlashComponent",
+    "Name": "MeshFlashComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'MeshFlashComponent'",
+    "Template": {
+      "ObjectName": "MeshFlashComponent'Default__Text_BP_C:MeshFlashComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.13"
+    },
+    "Properties": {
+      "FlashTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.MeshFlashComponent.FlashTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.114"
+      }
+    }
+  },
+  {
+    "Type": "MinigameController_BP_C",
+    "Name": "MGC_C04_P13_CS_FishGrabPrep",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/GAME/MinigameController_BP.MinigameController_BP_C'",
+    "Template": {
+      "ObjectName": "MinigameController_BP_C'Default__MinigameController_BP_C'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.20"
+    },
+    "Properties": {
+      "CurrentAssignedBook": {
+        "AssetPathName": "/Game/Levels/_Persistent/MainLevel.MainLevel",
+        "SubPathString": "PersistentLevel.Book_MAIN"
+      },
+      "BookID": 0,
+      "GameType": "EGameType::Story",
+      "bSavesToFileWhenSerialised": false,
+      "bSavesDeskData": false,
+      "GameVolume": {
+        "ObjectName": "BoxComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.GameVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.8"
+      },
+      "LevelBoundaryTop": {
+        "ObjectName": "StaticMeshComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.LevelBoundaryTop'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.88"
+      },
+      "LevelBoundaryBottom": {
+        "ObjectName": "StaticMeshComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.LevelBoundaryBottom'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.85"
+      },
+      "LevelBoundaryLeft": {
+        "ObjectName": "StaticMeshComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.LevelBoundaryLeft'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.86"
+      },
+      "LevelBoundaryRight": {
+        "ObjectName": "StaticMeshComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.LevelBoundaryRight'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.87"
+      },
+      "KillVolume": {
+        "ObjectName": "BoxComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.KillVolume'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.9"
+      },
+      "StoryPanels": [
+        {
+          "OrderInSequence": 0,
+          "StoryPanel": {
+            "ObjectName": "StoryPanel_BP_C'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a'",
+            "ObjectPath": "/Game/Levels/C04/C04_P13.89"
+          }
+        },
+        {
+          "OrderInSequence": 1,
+          "StoryPanel": {
+            "ObjectName": "StoryPanel_BP_C'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b'",
+            "ObjectPath": "/Game/Levels/C04/C04_P13.90"
+          }
+        }
+      ],
+      "CameraPanTime": [
+        0.5,
+        0.5
+      ],
+      "BackgroundPlane": {
+        "ObjectName": "StaticMeshComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.GameBackground'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.84"
+      },
+      "BackgroundSprite": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.BackgroundSprite'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.47"
+      },
+      "CollisionPlane": {
+        "ObjectName": "StaticMeshComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.CollisionPlane'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.83"
+      },
+      "TileMapComponent": {
+        "ObjectName": "PaperTileMapComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.UPaperTileMapComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.52"
+      },
+      "PoolingComponent": {
+        "ObjectName": "PoolingComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.PoolingComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.67"
+      },
+      "StreamedAssets": [
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_02/Story_Sequences/15_latch_mind.15_latch_mind",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_02/Story_Sequences/15_latch_mind_Sprite.15_latch_mind_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_02/Story_Sequences/15_latch_hand.15_latch_hand",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_02/Story_Sequences/15_latch_hand_Sprite.15_latch_hand_Sprite",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Textures/C4_p13_Panel1-0.C4_p13_Panel1-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0001.C4_p13_Jot1_ellipses_0001",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0002.C4_p13_Jot1_ellipses_0002",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0003.C4_p13_Jot1_ellipses_0003",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0004.C4_p13_Jot1_ellipses_0004",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0005.C4_p13_Jot1_ellipses_0005",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0006.C4_p13_Jot1_ellipses_0006",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0007.C4_p13_Jot1_ellipses_0007",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0008.C4_p13_Jot1_ellipses_0008",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0009.C4_p13_Jot1_ellipses_0009",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0010.C4_p13_Jot1_ellipses_0010",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0011.C4_p13_Jot1_ellipses_0011",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0012.C4_p13_Jot1_ellipses_0012",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0013.C4_p13_Jot1_ellipses_0013",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0014.C4_p13_Jot1_ellipses_0014",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0015.C4_p13_Jot1_ellipses_0015",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0016.C4_p13_Jot1_ellipses_0016",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0017.C4_p13_Jot1_ellipses_0017",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0018.C4_p13_Jot1_ellipses_0018",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0019.C4_p13_Jot1_ellipses_0019",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0020.C4_p13_Jot1_ellipses_0020",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0021.C4_p13_Jot1_ellipses_0021",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0022.C4_p13_Jot1_ellipses_0022",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0023.C4_p13_Jot1_ellipses_0023",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0024.C4_p13_Jot1_ellipses_0024",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0025.C4_p13_Jot1_ellipses_0025",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0026.C4_p13_Jot1_ellipses_0026",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0027.C4_p13_Jot1_ellipses_0027",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0028.C4_p13_Jot1_ellipses_0028",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0029.C4_p13_Jot1_ellipses_0029",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0030.C4_p13_Jot1_ellipses_0030",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0031.C4_p13_Jot1_ellipses_0031",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0032.C4_p13_Jot1_ellipses_0032",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0033.C4_p13_Jot1_ellipses_0033",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0034.C4_p13_Jot1_ellipses_0034",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0035.C4_p13_Jot1_ellipses_0035",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0036.C4_p13_Jot1_ellipses_0036",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0037.C4_p13_Jot1_ellipses_0037",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0038.C4_p13_Jot1_ellipses_0038",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0039.C4_p13_Jot1_ellipses_0039",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0040.C4_p13_Jot1_ellipses_0040",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0041.C4_p13_Jot1_ellipses_0041",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0042.C4_p13_Jot1_ellipses_0042",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0043.C4_p13_Jot1_ellipses_0043",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0044.C4_p13_Jot1_ellipses_0044",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0045.C4_p13_Jot1_ellipses_0045",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0046.C4_p13_Jot1_ellipses_0046",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0047.C4_p13_Jot1_ellipses_0047",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0048.C4_p13_Jot1_ellipses_0048",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses_0049.C4_p13_Jot1_ellipses_0049",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses.C4_p13_Jot1_ellipses",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Textures/genericexplosion-0.genericexplosion-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0001_X02.genericexplosion_0001_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0002_X01.genericexplosion_0002_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0003_X01.genericexplosion_0003_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0004_X01.genericexplosion_0004_X01",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0005_X02.genericexplosion_0005_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0006_X02.genericexplosion_0006_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0007_X02.genericexplosion_0007_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0008_X02.genericexplosion_0008_X02",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0009_X03.genericexplosion_0009_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0010_X03.genericexplosion_0010_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0011_X03.genericexplosion_0011_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/genericexplosion_0012_X03.genericexplosion_0012_X03",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_07/_Shared/Generic_Explosion/Frames/generic_explosion.generic_explosion",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_Jot.C4_p13_Jot1_Jot",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Textures/C4_p13_Panel2-5.C4_p13_Panel2-5",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0001.C4_p13_Jot2_0001",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Textures/C4_p13_Panel2-6.C4_p13_Panel2-6",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0002.C4_p13_Jot2_0002",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0003.C4_p13_Jot2_0003",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Textures/C4_p13_Panel2-3.C4_p13_Panel2-3",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0004.C4_p13_Jot2_0004",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Textures/C4_p13_Panel2-1.C4_p13_Panel2-1",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0005.C4_p13_Jot2_0005",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0006.C4_p13_Jot2_0006",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Textures/C4_p13_Panel2-4.C4_p13_Panel2-4",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0007.C4_p13_Jot2_0007",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0008.C4_p13_Jot2_0008",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0009.C4_p13_Jot2_0009",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Textures/C4_p13_Panel2-0.C4_p13_Panel2-0",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0010.C4_p13_Jot2_0010",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Textures/C4_p13_Panel2-2.C4_p13_Panel2-2",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0011.C4_p13_Jot2_0011",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0012.C4_p13_Jot2_0012",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0013.C4_p13_Jot2_0013",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0014.C4_p13_Jot2_0014",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0015.C4_p13_Jot2_0015",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2_0016.C4_p13_Jot2_0016",
+          "SubPathString": ""
+        },
+        {
+          "AssetPathName": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2.C4_p13_Jot2",
+          "SubPathString": ""
+        }
+      ],
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.64"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.57"
+      },
+      "RootComponent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "Model",
+    "Name": "Model_0",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'Model'",
+    "Bounds": {
+      "Origin": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "BoxExtent": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "SphereRadius": 0.0
+    },
+    "Vectors": [],
+    "Points": [],
+    "Nodes": [],
+    "Surfs": [],
+    "NumSharedSides": 4,
+    "VertexBuffer": {
+      "Vertices": []
+    },
+    "LightingGuid": "D94ACB1F-4CF23B22-CDA92ABD-DC705253",
+    "LightmassSettings": []
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TopDownRealTimeDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__TopDownRealTimeDecal_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.9"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Text_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.14"
+    }
+  },
+  {
+    "Type": "MovingPlatformComponent",
+    "Name": "MovingPlatformComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'MovingPlatformComponent'",
+    "Template": {
+      "ObjectName": "MovingPlatformComponent'Default__Text_BP_C:MovingPlatformComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.14"
+    }
+  },
+  {
+    "Type": "NavigationSystemModuleConfig",
+    "Name": "NavigationSystemModuleConfig_0",
+    "Outer": "WorldSettings",
+    "Class": "UScriptClass'NavigationSystemModuleConfig'",
+    "Properties": {
+      "bAutoSpawnMissingNavData": true,
+      "NavigationSystemClass": {
+        "AssetPathName": "/Script/NavigationSystem.NavigationSystemV1",
+        "SubPathString": ""
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TopDownRealTimeDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.10"
+    },
+    "Properties": {
+      "SourceFlipbook": {
+        "ObjectName": "PaperFlipbook'C4_p13_Jot1_ellipses'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses.0"
+      },
+      "AccumulatedTime": 1.9161506,
+      "CachedFrameIndex": 48,
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "PaperFlipbookComponent",
+    "Name": "FlipbookComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'PaperFlipbookComponent'",
+    "Template": {
+      "ObjectName": "PaperFlipbookComponent'Default__TopDownRealTimeDecal_BP_C:FlipbookComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.10"
+    },
+    "Properties": {
+      "SourceFlipbook": {
+        "ObjectName": "PaperFlipbook'C4_p13_Jot2'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2.0"
+      },
+      "AccumulatedTime": 0.9456373,
+      "CachedFrameIndex": 14,
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        }
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "BndEvt__SpriteProp_BP_FlipbookComponent_K2Node_ComponentBoundEvent_2_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.13"
+    },
+    "Properties": {
+      "SourceSprite": {
+        "ObjectName": "PaperSprite'C4_p13_Jot1_Jot'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_Jot.0"
+      },
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.11"
+    },
+    "Properties": {
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "LightComponentBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "LightComponentEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "ShadowSprite",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:ShadowSprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.12"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "SpriteComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__TopDownRealTimeDecal_BP_C:SpriteComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.13"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "CollisionResponses": {
+          "ResponseArray": [
+            {
+              "Channel": "Visibility",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Camera",
+              "Response": "ECR_Ignore"
+            },
+            {
+              "Channel": "Projectiles",
+              "Response": "ECR_Ignore"
+            }
+          ]
+        },
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentHit": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "BoxComponentHit"
+          },
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "BndEvt__SpriteComponent_K2Node_ComponentBoundEvent_1_ComponentHitSignature__DelegateSignature"
+          }
+        ]
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "BackgroundSprite",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__MinigameController_BP_C:BackgroundSprite'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.24"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.75"
+      },
+      "RelativeLocation": {
+        "X": -21630.0,
+        "Y": -5980.0,
+        "Z": -21500.0
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Panel Sprite",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:Panel Sprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.75"
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "LightInDarknessComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:LightInDarknessComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.15"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.76"
+      },
+      "RelativeLocation": {
+        "X": -21630.0,
+        "Y": -5980.0,
+        "Z": -21500.0
+      }
+    }
+  },
+  {
+    "Type": "PaperSpriteComponent",
+    "Name": "Panel Sprite",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'PaperSpriteComponent'",
+    "Template": {
+      "ObjectName": "PaperSpriteComponent'Default__Text_BP_C:Panel Sprite'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.16"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.76"
+      }
+    }
+  },
+  {
+    "Type": "PaperTileMapComponent",
+    "Name": "UPaperTileMapComponent",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'PaperTileMapComponent'",
+    "Template": {
+      "ObjectName": "PaperTileMapComponent'Default__MinigameController_BP_C:UPaperTileMapComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.26"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "C04_P1314_StoryPanel_P15a",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__StoryPanel_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "C04_P1314_StoryPanel_P15b",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__StoryPanel_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.4"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TopDownRealTimeDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__TopDownRealTimeDecal_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.14"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__MinigameController_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.27"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Text_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.17"
+    }
+  },
+  {
+    "Type": "PickupSpawningComponent",
+    "Name": "PickupSpawningComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'PickupSpawningComponent'",
+    "Template": {
+      "ObjectName": "PickupSpawningComponent'Default__Text_BP_C:PickupSpawningComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.17"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "C04_P1314_StoryPanel_P15a",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__StoryPanel_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "C04_P1314_StoryPanel_P15b",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__StoryPanel_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.5"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TopDownRealTimeDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__TopDownRealTimeDecal_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.15"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__MinigameController_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.28"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Text_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.18"
+    }
+  },
+  {
+    "Type": "PlayerInteractiveComponent",
+    "Name": "PlayerInteractiveComponentComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'PlayerInteractiveComponent'",
+    "Template": {
+      "ObjectName": "PlayerInteractiveComponent'Default__Text_BP_C:PlayerInteractiveComponentComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.18"
+    }
+  },
+  {
+    "Type": "PoolingComponent",
+    "Name": "PoolingComponent",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'PoolingComponent'",
+    "Template": {
+      "ObjectName": "PoolingComponent'Default__MinigameController_BP_C:PoolingComponent'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.29"
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "Camera Root",
+    "Outer": "C04_P1314_StoryPanel_P15a",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__StoryPanel_BP_C:Camera Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.6"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.71"
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "Camera Root",
+    "Outer": "C04_P1314_StoryPanel_P15b",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__StoryPanel_BP_C:Camera Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.6"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.72"
+      }
+    }
+  },
+  {
+    "Type": "SceneComponent",
+    "Name": "ROOT ",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'SceneComponent'",
+    "Template": {
+      "ObjectName": "SceneComponent'Default__MinigameController_BP_C:ROOT '",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.30"
+    },
+    "Properties": {
+      "RelativeLocation": {
+        "X": -24320.0,
+        "Y": 12255.0,
+        "Z": 21500.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "C04_P1314_StoryPanel_P15a",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__StoryPanel_BP_C:Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      },
+      "RelativeLocation": {
+        "X": -965.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "Root",
+    "Outer": "C04_P1314_StoryPanel_P15b",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__StoryPanel_BP_C:Root'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.10"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      },
+      "RelativeLocation": {
+        "X": 741.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TopDownRealTimeDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchClear'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.117"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__TopDownRealTimeDecal_BP_C:SphereComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.19"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false,
+        "MaxAngularVelocity": 3599.9998
+      },
+      "OnComponentBeginOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "ColliderBeginOverlap"
+          }
+        ]
+      },
+      "OnComponentEndOverlap": {
+        "InvocationList": [
+          {
+            "Object": {
+              "ObjectName": "TopDownRealTimeDecal_BP_C'C04_P13:PersistentLevel.LatchFishGrabReady'",
+              "ObjectPath": "/Game/Levels/C04/C04_P13.118"
+            },
+            "FunctionName": "ColliderEndOverlap"
+          }
+        ]
+      },
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereCollider",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Text_BP_C:SphereCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": -25467.0,
+        "Y": 11522.0,
+        "Z": 21500.0
+      }
+    }
+  },
+  {
+    "Type": "SphereComponent",
+    "Name": "SphereCollider",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'SphereComponent'",
+    "Template": {
+      "ObjectName": "SphereComponent'Default__Text_BP_C:SphereCollider'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.22"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "bInterpolateWhenSubStepping": false
+      },
+      "RelativeLocation": {
+        "X": -22900.0,
+        "Y": 11705.0,
+        "Z": 21500.0
+      }
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TopDownRealTimeDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.41"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.43"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.42"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C04_P13:PersistentLevel.LatchClear.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.39"
+        }
+      ],
+      "SpritesConfigVersion": 3
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__TopDownRealTimeDecal_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.20"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.44"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.46"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.45"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C04_P13:PersistentLevel.LatchFishGrabReady.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.40"
+        }
+      ],
+      "SpritesConfigVersion": 1
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Text_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.48"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.Panel Sprite'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.49"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "SpriteDataComponent",
+    "Name": "SpriteDataComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'SpriteDataComponent'",
+    "Template": {
+      "ObjectName": "SpriteDataComponent'Default__Text_BP_C:SpriteDataComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.23"
+    },
+    "Properties": {
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.50"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.Panel Sprite'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.51"
+        }
+      ]
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TopDownRealTimeDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "StampHat",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__TopDownRealTimeDecal_BP_C:StampHat'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.21"
+    },
+    "Properties": {
+      "AttachParent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "CollisionPlane",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:CollisionPlane'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.34"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      },
+      "RelativeScale3D": {
+        "X": 38.6,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "GameBackground",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:GameBackground'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.35"
+    },
+    "Properties": {
+      "OverrideMaterials": [
+        {
+          "ObjectName": "MaterialInstanceDynamic'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.MaterialInstanceDynamic_2'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.27"
+        }
+      ],
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      },
+      "RelativeScale3D": {
+        "X": 38.6,
+        "Y": 21.800001,
+        "Z": 1.0
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryBottom",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryBottom'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.36"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryLeft",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryLeft'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.37"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryRight",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryRight'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.38"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "StaticMeshComponent",
+    "Name": "LevelBoundaryTop",
+    "Outer": "MGC_C04_P13_CS_FishGrabPrep",
+    "Class": "UScriptClass'StaticMeshComponent'",
+    "Template": {
+      "ObjectName": "StaticMeshComponent'Default__MinigameController_BP_C:LevelBoundaryTop'",
+      "ObjectPath": "/Game/Blueprints/GAME/MinigameController_BP.39"
+    },
+    "Properties": {
+      "BodyInstance": {
+        "MaxAngularVelocity": 3599.9998
+      },
+      "AttachParent": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep.ROOT '",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.70"
+      }
+    }
+  },
+  {
+    "Type": "StoryPanel_BP_C",
+    "Name": "C04_P1314_StoryPanel_P15a",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.StoryPanel_BP_C'",
+    "Template": {
+      "ObjectName": "StoryPanel_BP_C'Default__StoryPanel_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.1"
+    },
+    "Properties": {
+      "Root": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.71"
+      },
+      "CameraRoot": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.Camera Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.68"
+      },
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.CameraComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.12"
+      },
+      "bSnapLocation": false,
+      "SequenceDelay": 0.5,
+      "DelayBeforeNextPage": 2.5,
+      "StorySequence": [
+        {
+          "DeveloperComment": "Activate Music",
+          "Time": 0.0,
+          "bChangeMusic": true,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "/Game/Audio/Music/Chapter_04/FinalMixes/LCD_MUS_C04_FISHGRABBING_INTRO_FULL.LCD_MUS_C04_FISHGRABBING_INTRO_FULL",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.0,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": []
+        },
+        {
+          "DeveloperComment": "Activate Imagery - Medtation",
+          "Time": 1.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "/Game/Levels/C04/C04_P13.C04_P13",
+                "SubPathString": "PersistentLevel.LatchClear"
+              },
+              "TextObject": null,
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "DeveloperComment": "Activate Text - Clear Mind",
+          "Time": 2.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "None",
+                "SubPathString": ""
+              },
+              "TextObject": {
+                "ObjectName": "Text_BP_C'C04_P13:PersistentLevel.Text_01_LatchClearMind'",
+                "ObjectPath": "/Game/Levels/C04/C04_P13.91"
+              },
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.16"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.60"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.53"
+      },
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+      },
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15a.Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.71"
+      }
+    }
+  },
+  {
+    "Type": "StoryPanel_BP_C",
+    "Name": "C04_P1314_StoryPanel_P15b",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.StoryPanel_BP_C'",
+    "Template": {
+      "ObjectName": "StoryPanel_BP_C'Default__StoryPanel_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Story/StoryPanel_BP.1"
+    },
+    "Properties": {
+      "Root": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.72"
+      },
+      "CameraRoot": {
+        "ObjectName": "SceneComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.Camera Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.69"
+      },
+      "CameraComponent": {
+        "ObjectName": "CameraComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.CameraComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.13"
+      },
+      "bSnapLocation": false,
+      "StorySequenceNumber": 1,
+      "SequenceDelay": 0.5,
+      "DelayBeforeNextPage": 4.0,
+      "StorySequence": [
+        {
+          "DeveloperComment": "Activate Imagery - Ready",
+          "Time": 0.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.5,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "/Game/Levels/C04/C04_P13.C04_P13",
+                "SubPathString": "PersistentLevel.LatchFishGrabReady"
+              },
+              "TextObject": null,
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::StartLoop",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "DeveloperComment": "Activate Text - Fish Grab",
+          "Time": 1.0,
+          "bChangeMusic": false,
+          "MusicEvent": {
+            "bUseMusicStems": false,
+            "MusicToPlay": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "bResumeDeskMusic": false,
+            "bMusicHasIntro": false,
+            "bClearQueuedMusic": false,
+            "MusicIntro": {
+              "AssetPathName": "None",
+              "SubPathString": ""
+            },
+            "IntroDelayOffset": 0.0,
+            "bStopStemMusic": false,
+            "StemMusicToPlay": null,
+            "StemActivationType": "EMusicStemActivationType::Activate",
+            "Stems": [],
+            "bSetStemVolume": false,
+            "StemVolume": [],
+            "bAllowRandomStartingTime": false,
+            "FadeInTime": 0.0,
+            "FadeOutTime": 1.5,
+            "DelayBetweenTracks": 0.0,
+            "TrackStartingTime": 0.0,
+            "PlayOnNextBeat": false,
+            "OverrideMGCMusic": false
+          },
+          "SoundEffect": null,
+          "bShouldTheSeqHaveVibroEffect": false,
+          "VibroEffectActionName": "",
+          "SFXLoopEvent": {
+            "SFXLoopToPlay": null,
+            "FadeInTime": 1.0,
+            "FadeOutTime": 1.5,
+            "FadeOutType": "ESFXLoopFadeOut::EndOfSequence",
+            "SpecificEntryToFadeOutAt": -1
+          },
+          "SwitchToTrigger": null,
+          "CameraShakeStrength": 0.0,
+          "bSetCameraDistance": false,
+          "CameraDistance": 0.0,
+          "CameraDistanceLerpTime": 1.0,
+          "bMoveCamera": false,
+          "CameraTranslationCurve": null,
+          "CameraTranslationDuration": 10.0,
+          "Items": [
+            {
+              "SpriteActor": {
+                "AssetPathName": "None",
+                "SubPathString": ""
+              },
+              "TextObject": {
+                "ObjectName": "Text_BP_C'C04_P13:PersistentLevel.Text_02_GrabFishReady'",
+                "ObjectPath": "/Game/Levels/C04/C04_P13.92"
+              },
+              "Visibility": "ESpriteVisibility::Visible",
+              "ActionToPerform": "EStorySequenceAction::PlayOnce",
+              "NewSprite": null,
+              "NewFlipbook": null,
+              "bFlipInX": false,
+              "PositionTimelineToRun": null,
+              "PositionTimelineLength": 1.0,
+              "RotationTimelineToRun": null,
+              "RotationTimelineLength": 1.0,
+              "ScaleTimelineToRun": null,
+              "ScaleTimelineLength": 1.0,
+              "bDoColourBlend": false,
+              "ColourBlend": {
+                "TargetColour": {
+                  "R": 1.0,
+                  "G": 1.0,
+                  "B": 1.0,
+                  "A": 1.0,
+                  "Hex": "FFFFFF"
+                },
+                "BlendTime": 0.0
+              }
+            }
+          ]
+        }
+      ],
+      "DeskSaveComponent": {
+        "ObjectName": "DeskSaveComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.DeskSaveComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.17"
+      },
+      "bConsolidatedSerialisationBool": true,
+      "GameType": "EGameType::Story",
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.61"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.54"
+      },
+      "bIsSerialised": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+      },
+      "BillboardTextures": [
+        {
+          "Colour": "EBillboardColour::None",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Blue",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Green",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Orange",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Pink",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Purple",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Red",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Teal",
+          "Texture": null
+        },
+        {
+          "Colour": "EBillboardColour::Yellow",
+          "Texture": null
+        }
+      ],
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.C04_P1314_StoryPanel_P15b.Root'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.72"
+      }
+    }
+  },
+  {
+    "Type": "Text_BP_C",
+    "Name": "Text_01_LatchClearMind",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Text_BP.Text_BP_C'",
+    "Template": {
+      "ObjectName": "Text_BP_C'Default__Text_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.7"
+    },
+    "Properties": {
+      "VO_Chapter_DataTable": {
+        "ObjectName": "DataTable'ThePluckySquire-VOStringDoc-C04_Strings'",
+        "ObjectPath": "/Game/NokNok/Narration/VoStringDocs/ThePluckySquire-VOStringDoc-C04_Strings.0"
+      },
+      "RowNames": [
+        "0102_ChapterTwoTitle",
+        "0102_ATreacherousTrail",
+        "0304_DingyLand",
+        "0304_ShortCut",
+        "0304_SonnetSwamps",
+        "1314_Narration_VenturedOn",
+        "1314_WP_DaytimeChorus",
+        "1314_Narration_Dwindle",
+        "1516_ClearMind",
+        "1516_FishGrabReady",
+        "1718_FishComposure",
+        "1718_FishGrabbed",
+        "1718_FishRelease",
+        "2324_Bugs",
+        "2324_ControlPests",
+        "2324_ElvenBow",
+        "2526_CriticalHitTutorial_1",
+        "2526_CriticalHitTutorial_2",
+        "2728_PluckySquire",
+        "2728_SquashedBugs",
+        "6364_HearBigBug",
+        "6364_ReadyBigBugBossFight",
+        "6768_BigBugBested",
+        "6768_Triumphant",
+        "7374_BrightSun",
+        "7374_Continued",
+        "7374_OutOfSwamps",
+        "0304_HeroesArrived",
+        "0304_AtArtia"
+      ],
+      "SelectedRow": "1516_ClearMind",
+      "Language": "E_Vo_Languages::NewEnumerator1",
+      "ResolvedSoundWave": {
+        "ObjectName": "SoundWave'P1314_JotClearedHisMind_EN'",
+        "ObjectPath": "/Game/NokNok/Audio/Allister/StoryVocals/EN/Chapter4/P1314_JotClearedHisMind_EN.0"
+      },
+      "TextRenderComponent": {
+        "ObjectName": "TextRenderComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.93"
+      },
+      "PanelSprite": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.Panel Sprite'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.49"
+      },
+      "Collider": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.75"
+      },
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.TriggerBox'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.10"
+      },
+      "TextColour": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "CharacterWrapWidth": 30,
+      "WrappedText": [
+        "JOT CLEARED HIS MIND. "
+      ],
+      "PageAccumulatedCharCount": [
+        22
+      ],
+      "DisplayedText": {
+        "Namespace": "C04_Strings_SB",
+        "Key": "1516_ClearMind",
+        "SourceString": "1516_ClearMind",
+        "LocalizedString": "JOT CLEARED HIS MIND."
+      },
+      "bTypewriter": true,
+      "DialogueToPlay": {
+        "ObjectName": "SoundWave'a_sfx_emptySoundTinyNothing'",
+        "ObjectPath": "/Game/NokNok/Blueprints/a_sfx_emptySoundTinyNothing.0"
+      },
+      "bFadeIn": false,
+      "bFadeOut": false,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.30"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.79"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.2"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.48"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.36"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.20"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.25"
+      },
+      "GameType": "EGameType::Story",
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.111"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.112"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.109"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.65"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.58"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.75"
+      }
+    }
+  },
+  {
+    "Type": "Text_BP_C",
+    "Name": "Text_02_GrabFishReady",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/Text_BP.Text_BP_C'",
+    "Template": {
+      "ObjectName": "Text_BP_C'Default__Text_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.7"
+    },
+    "Properties": {
+      "VO_Chapter_DataTable": {
+        "ObjectName": "DataTable'ThePluckySquire-VOStringDoc-C04_Strings'",
+        "ObjectPath": "/Game/NokNok/Narration/VoStringDocs/ThePluckySquire-VOStringDoc-C04_Strings.0"
+      },
+      "RowNames": [
+        "0102_ChapterTwoTitle",
+        "0102_ATreacherousTrail",
+        "0304_DingyLand",
+        "0304_ShortCut",
+        "0304_SonnetSwamps",
+        "1314_Narration_VenturedOn",
+        "1314_WP_DaytimeChorus",
+        "1314_Narration_Dwindle",
+        "1516_ClearMind",
+        "1516_FishGrabReady",
+        "1718_FishComposure",
+        "1718_FishGrabbed",
+        "1718_FishRelease",
+        "2324_Bugs",
+        "2324_ControlPests",
+        "2324_ElvenBow",
+        "2526_CriticalHitTutorial_1",
+        "2526_CriticalHitTutorial_2",
+        "2728_PluckySquire",
+        "2728_SquashedBugs",
+        "6364_HearBigBug",
+        "6364_ReadyBigBugBossFight",
+        "6768_BigBugBested",
+        "6768_Triumphant",
+        "7374_BrightSun",
+        "7374_Continued",
+        "7374_OutOfSwamps",
+        "0304_HeroesArrived",
+        "0304_AtArtia"
+      ],
+      "SelectedRow": "1516_FishGrabReady",
+      "Language": "E_Vo_Languages::NewEnumerator1",
+      "ResolvedSoundWave": {
+        "ObjectName": "SoundWave'P1314_NowHeWasReadyToGrab_EN'",
+        "ObjectPath": "/Game/NokNok/Audio/Allister/StoryVocals/EN/Chapter4/P1314_NowHeWasReadyToGrab_EN.0"
+      },
+      "TextRenderComponent": {
+        "ObjectName": "TextRenderComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.NewTextRenderComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.94"
+      },
+      "PanelSprite": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.Panel Sprite'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.51"
+      },
+      "Collider": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.76"
+      },
+      "BoxTrigger": {
+        "ObjectName": "BoxComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.TriggerBox'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.11"
+      },
+      "TextColour": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "CharacterWrapWidth": 15,
+      "WrappedText": [
+        "NOW HE WAS ",
+        "READY TO GRAB ",
+        "THE FISH. "
+      ],
+      "PageAccumulatedCharCount": [
+        35
+      ],
+      "DisplayedText": {
+        "Namespace": "C04_Strings_SB",
+        "Key": "1516_FishGrabReady",
+        "SourceString": "1516_FishGrabReady",
+        "LocalizedString": "NOW HE WAS READY TO GRAB THE FISH."
+      },
+      "TextScale": 1.5,
+      "LocalisedOverrides": [
+        {
+          "Language": "ELocalisationLanguage::Korean",
+          "TextScale": 1.0,
+          "LineSpacing": 30.0,
+          "KerningAdjustment": 0.0,
+          "CharacterWrapWidth": 0,
+          "Offset": {
+            "X": -100.0,
+            "Y": 0.0
+          },
+          "FontOverride": null
+        },
+        {
+          "Language": "ELocalisationLanguage::Japanese",
+          "TextScale": 1.0,
+          "LineSpacing": 0.0,
+          "KerningAdjustment": 0.0,
+          "CharacterWrapWidth": 0,
+          "Offset": {
+            "X": -100.0,
+            "Y": 0.0
+          },
+          "FontOverride": null
+        },
+        {
+          "Language": "ELocalisationLanguage::Russian",
+          "TextScale": 1.2,
+          "LineSpacing": 0.0,
+          "KerningAdjustment": 0.0,
+          "CharacterWrapWidth": 0,
+          "Offset": {
+            "X": -100.0,
+            "Y": 0.0
+          },
+          "FontOverride": null
+        },
+        {
+          "Language": "ELocalisationLanguage::French",
+          "TextScale": 1.2,
+          "LineSpacing": 0.0,
+          "KerningAdjustment": 0.0,
+          "CharacterWrapWidth": 0,
+          "Offset": {
+            "X": 0.0,
+            "Y": -100.0
+          },
+          "FontOverride": null
+        }
+      ],
+      "bTypewriter": true,
+      "DialogueToPlay": {
+        "ObjectName": "SoundWave'a_sfx_emptySoundTinyNothing'",
+        "ObjectPath": "/Game/NokNok/Blueprints/a_sfx_emptySoundTinyNothing.0"
+      },
+      "bFadeIn": false,
+      "bFadeOut": false,
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.31"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.80"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.3"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.50"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.37"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.21"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.26"
+      },
+      "GameType": "EGameType::Story",
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.115"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.116"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.113"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.66"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.59"
+      },
+      "bActive": false,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+      },
+      "RootComponent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.76"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Template": {
+      "ObjectName": "TextRenderComponent'Default__Text_BP_C:NewTextRenderComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.24"
+    },
+    "Properties": {
+      "Text": {
+        "CultureInvariantString": "JOT CLEARED HIS MIND. "
+      },
+      "TextRenderColor": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFFFFF"
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_01_LatchClearMind.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.75"
+      }
+    }
+  },
+  {
+    "Type": "TextRenderComponent",
+    "Name": "NewTextRenderComponent",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'TextRenderComponent'",
+    "Template": {
+      "ObjectName": "TextRenderComponent'Default__Text_BP_C:NewTextRenderComponent'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.24"
+    },
+    "Properties": {
+      "Text": {
+        "CultureInvariantString": "NOW HE WAS \r\nREADY TO GRAB \r\nTHE FISH. "
+      },
+      "TextRenderColor": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255,
+        "Hex": "FFFFFF"
+      },
+      "AttachParent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.Text_02_GrabFishReady.SphereCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.76"
+      },
+      "RelativeScale3D": {
+        "X": 1.5,
+        "Y": 1.5,
+        "Z": 1.5
+      }
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "LatchClear",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.22"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.23"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.24"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryRotationTimeline",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryRotationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryScaleTimeline",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryScaleTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "StoryTranslationTimeline",
+    "Outer": "LatchFishGrabReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__TopDownRealTimeDecal_BP_C:StoryTranslationTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Text_01_LatchClearMind",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.28"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "JumpedOffTimeline",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:JumpedOffTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.25"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "FlashTimeline",
+    "Outer": "MeshFlashComponent",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:MeshFlashComponent.FlashTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.26"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PickedUpTimeline",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PickedUpTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.27"
+    }
+  },
+  {
+    "Type": "TimelineComponent",
+    "Name": "PutDownTimeline",
+    "Outer": "Text_02_GrabFishReady",
+    "Class": "UScriptClass'TimelineComponent'",
+    "Template": {
+      "ObjectName": "TimelineComponent'Default__Text_BP_C:PutDownTimeline'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/Text_BP.28"
+    }
+  },
+  {
+    "Type": "TopDownRealTimeDecal_BP_C",
+    "Name": "LatchClear",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.TopDownRealTimeDecal_BP_C'",
+    "Template": {
+      "ObjectName": "TopDownRealTimeDecal_BP_C'Default__TopDownRealTimeDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'C04_P13:PersistentLevel.LatchClear.BoxComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.4"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.LatchClear.SphereComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.73"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.43"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.42"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'C04_P13:PersistentLevel.LatchClear.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.39"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'C04_P13:PersistentLevel.LatchClear.StampHat'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.81"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'C04_P13:PersistentLevel.LatchClear.SlideCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.5"
+      },
+      "bLoopFlipbook": false,
+      "bFadeIn": true,
+      "PageSwap_UprightFlipbook": {
+        "ObjectName": "PaperFlipbook'C4_p13_Jot1_ellipses'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses.0"
+      },
+      "PageSwap_FlippedFlipbook": {
+        "ObjectName": "PaperFlipbook'C4_p13_Jot1_ellipses'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot1_ellipses.0"
+      },
+      "PageSwap_UprightSprite": {
+        "ObjectName": "PaperSprite'15_latch_mind_Sprite'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_02/Story_Sequences/15_latch_mind_Sprite.1"
+      },
+      "PageSwap_FlippedSprite": {
+        "ObjectName": "PaperSprite'15_latch_mind_Sprite'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_02/Story_Sequences/15_latch_mind_Sprite.1"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchClear.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.101"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchClear.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.99"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchClear.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.100"
+      },
+      "SpriteCollisionOffset": {
+        "X": 2668.0,
+        "Y": 126.0
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C04_P13:PersistentLevel.LatchClear.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.28"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C04_P13:PersistentLevel.LatchClear.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.77"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C04_P13:PersistentLevel.LatchClear.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.0"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.41"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C04_P13:PersistentLevel.LatchClear.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.34"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C04_P13:PersistentLevel.LatchClear.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.18"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C04_P13:PersistentLevel.LatchClear.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.23"
+      },
+      "GameType": "EGameType::Story",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.41"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.43"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchClear.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.42"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C04_P13:PersistentLevel.LatchClear.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.39"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchClear.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.97"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchClear.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.98"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchClear.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.95"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P13:PersistentLevel.LatchClear.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.62"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P13:PersistentLevel.LatchClear.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.55"
+      },
+      "bActive": false,
+      "bIsSerialised": true,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.31734824
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchClear.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.14"
+      }
+    }
+  },
+  {
+    "Type": "TopDownRealTimeDecal_BP_C",
+    "Name": "LatchFishGrabReady",
+    "Outer": "PersistentLevel",
+    "Class": "BlueprintGeneratedClass'/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.TopDownRealTimeDecal_BP_C'",
+    "Template": {
+      "ObjectName": "TopDownRealTimeDecal_BP_C'Default__TopDownRealTimeDecal_BP_C'",
+      "ObjectPath": "/Game/Blueprints/Level/BOOK/TopDown/_Generic/TopDownRealTimeDecal_BP.1"
+    },
+    "Properties": {
+      "CapsuleComponent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      },
+      "BoxComponent": {
+        "ObjectName": "BoxComponent'C04_P13:PersistentLevel.LatchFishGrabReady.BoxComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.6"
+      },
+      "SphereComponent": {
+        "ObjectName": "SphereComponent'C04_P13:PersistentLevel.LatchFishGrabReady.SphereComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.74"
+      },
+      "SpriteComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.SpriteComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.46"
+      },
+      "ShadowComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.ShadowSprite'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.45"
+      },
+      "FlipbookComponent": {
+        "ObjectName": "PaperFlipbookComponent'C04_P13:PersistentLevel.LatchFishGrabReady.FlipbookComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.40"
+      },
+      "StampHat": {
+        "ObjectName": "StaticMeshComponent'C04_P13:PersistentLevel.LatchFishGrabReady.StampHat'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.82"
+      },
+      "SlideCollider": {
+        "ObjectName": "BoxComponent'C04_P13:PersistentLevel.LatchFishGrabReady.SlideCollider'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.7"
+      },
+      "bFadeIn": true,
+      "PageSwap_UprightFlipbook": {
+        "ObjectName": "PaperFlipbook'C4_p13_Jot2'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2.0"
+      },
+      "PageSwap_FlippedFlipbook": {
+        "ObjectName": "PaperFlipbook'C4_p13_Jot2'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_04/Story_Sequences/p13/Frames/C4_p13_Jot2.0"
+      },
+      "PageSwap_UprightSprite": {
+        "ObjectName": "PaperSprite'15_latch_hand_Sprite'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_02/Story_Sequences/15_latch_hand_Sprite.1"
+      },
+      "PageSwap_FlippedSprite": {
+        "ObjectName": "PaperSprite'15_latch_hand_Sprite'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_02/Story_Sequences/15_latch_hand_Sprite.1"
+      },
+      "StoryTranslationTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchFishGrabReady.StoryTranslationTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.108"
+      },
+      "StoryRotationTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchFishGrabReady.StoryRotationTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.106"
+      },
+      "StoryScaleTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchFishGrabReady.StoryScaleTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.107"
+      },
+      "SpriteCollisionOffset": {
+        "X": 1156.0,
+        "Y": 2952.0
+      },
+      "MeshFlashComponent": {
+        "ObjectName": "MeshFlashComponent'C04_P13:PersistentLevel.LatchFishGrabReady.MeshFlashComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.29"
+      },
+      "SpriteDataComponent": {
+        "ObjectName": "SpriteDataComponent'C04_P13:PersistentLevel.LatchFishGrabReady.SpriteDataComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.78"
+      },
+      "BookTiltComponent": {
+        "ObjectName": "BookTiltComponent'C04_P13:PersistentLevel.LatchFishGrabReady.BookTiltComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.1"
+      },
+      "LightInDarknessComponent": {
+        "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.LightInDarknessComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.44"
+      },
+      "MovingPlatformComponent": {
+        "ObjectName": "MovingPlatformComponent'C04_P13:PersistentLevel.LatchFishGrabReady.MovingPlatformComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.35"
+      },
+      "FlipbookTimelineComponent": {
+        "ObjectName": "FlipbookTimelineComponent'C04_P13:PersistentLevel.LatchFishGrabReady.FlipbookTimelineComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.19"
+      },
+      "LocationWrapComponent": {
+        "ObjectName": "LocationWrapComponent'C04_P13:PersistentLevel.LatchFishGrabReady.LocationWrapComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.24"
+      },
+      "GameType": "EGameType::Story",
+      "SpriteComponents": [
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.LightInDarknessComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.44"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.SpriteComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.46"
+        },
+        {
+          "ObjectName": "PaperSpriteComponent'C04_P13:PersistentLevel.LatchFishGrabReady.ShadowSprite'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.45"
+        }
+      ],
+      "FlipbookComponents": [
+        {
+          "ObjectName": "PaperFlipbookComponent'C04_P13:PersistentLevel.LatchFishGrabReady.FlipbookComponent'",
+          "ObjectPath": "/Game/Levels/C04/C04_P13.40"
+        }
+      ],
+      "PickedUpTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchFishGrabReady.PickedUpTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.104"
+      },
+      "PutDownTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchFishGrabReady.PutDownTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.105"
+      },
+      "JumpedOffTimeline": {
+        "ObjectName": "TimelineComponent'C04_P13:PersistentLevel.LatchFishGrabReady.JumpedOffTimeline'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.102"
+      },
+      "PlayerInteractiveComponent": {
+        "ObjectName": "PlayerInteractiveComponent'C04_P13:PersistentLevel.LatchFishGrabReady.PlayerInteractiveComponentComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.63"
+      },
+      "PickupSpawningComponent": {
+        "ObjectName": "PickupSpawningComponent'C04_P13:PersistentLevel.LatchFishGrabReady.PickupSpawningComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.56"
+      },
+      "bActive": false,
+      "bIsSerialised": true,
+      "MGC": {
+        "ObjectName": "MinigameController_BP_C'C04_P13:PersistentLevel.MGC_C04_P13_CS_FishGrabPrep'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.32"
+      },
+      "PrimaryActorTick": {
+        "TickInterval": 0.22079532
+      },
+      "RootComponent": {
+        "ObjectName": "CapsuleComponent'C04_P13:PersistentLevel.LatchFishGrabReady.CapsuleComponent'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.15"
+      }
+    }
+  },
+  {
+    "Type": "World",
+    "Name": "C04_P13",
+    "Class": "UScriptClass'World'",
+    "PersistentLevel": {
+      "ObjectName": "Level'C04_P13:PersistentLevel'",
+      "ObjectPath": "/Game/Levels/C04/C04_P13.22"
+    },
+    "ExtraReferencedObjects": [],
+    "StreamingLevels": []
+  },
+  {
+    "Type": "WorldSettings",
+    "Name": "WorldSettings",
+    "Outer": "PersistentLevel",
+    "Class": "UScriptClass'WorldSettings'",
+    "Properties": {
+      "NavigationSystemConfig": {
+        "ObjectName": "NavigationSystemModuleConfig'C04_P13:PersistentLevel.WorldSettings.NavigationSystemModuleConfig_0'",
+        "ObjectPath": "/Game/Levels/C04/C04_P13.38"
+      },
+      "BookmarkArray": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  }
+]

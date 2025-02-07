@@ -16,6 +16,7 @@ public:
 #ifdef _DEBUG
 public:
 	HRESULT Render_Frustum(BoundingFrustum& _Frustum, _float4& _vDebugColor);
+	HRESULT Render_Ring(_fvector _vPosition, _fvector _vMajorAxis, _fvector _vMinorAxis, _gvector _vDebugColor);
 #endif
 
 private:

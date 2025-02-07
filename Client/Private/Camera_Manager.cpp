@@ -5,6 +5,7 @@
 
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_2D.h"
 
 IMPLEMENT_SINGLETON(CCamera_Manager)
 
@@ -31,6 +32,32 @@ _vector CCamera_Manager::Get_CameraVector(CTransform::STATE _eState)
 {
 	CController_Transform* pConTrans = m_Cameras[m_eCurrentCameraType]->Get_ControllerTransform();
 	return pConTrans->Get_State(_eState);
+}
+
+_uint CCamera_Manager::Get_CameraMode(_uint _iCameraType)
+{
+	if (TARGET != _iCameraType && TARGET_2D != _iCameraType)
+		return INT16_MAX;
+
+	if (TARGET == _iCameraType)
+		return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Get_CameraMode();
+	else if (TARGET_2D == _iCameraType)
+		return dynamic_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Get_CameraMode();
+
+	return _uint();
+}
+
+_uint CCamera_Manager::Get_CurCameraMode()
+{
+	if (TARGET != m_eCurrentCameraType && TARGET_2D != m_eCurrentCameraType)
+		return INT16_MAX;
+
+	if (TARGET == m_eCurrentCameraType)
+		return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Get_CameraMode();
+	else if (TARGET_2D == m_eCurrentCameraType)
+		return dynamic_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Get_CameraMode();
+
+	return _uint();
 }
 #ifdef _DEBUG
 
@@ -67,12 +94,12 @@ void CCamera_Manager::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 	Safe_AddRef(m_Cameras[_iCurrentCameraType]);
 }
 
-void CCamera_Manager::Add_ArmData(_wstring wszArmTag, ARM_DATA _pData)
+void CCamera_Manager::Add_ArmData(_wstring wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
 	if (nullptr == m_Cameras[TARGET])
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Add_ArmData(wszArmTag, _pData);
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Add_ArmData(wszArmTag, _pArmData, _pSubData);
 }
 
 void CCamera_Manager::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData)
@@ -88,11 +115,13 @@ void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 	if (TARGET == m_eCurrentCameraType) {
 		dynamic_cast<CCamera_Target*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
 	}
-	else
+	else if (TARGET_2D == m_eCurrentCameraType) {
+		dynamic_cast<CCamera_2D*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
+	}
 		return;
 }
 
-void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
+void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInitialData, _float _fInitialTime)
 {
 	if (nullptr == m_Cameras[_iCurrentCameraType])
 		return;
@@ -105,16 +134,28 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType)
 			Camera->Set_Active(true);
 		else
 			Camera->Set_Active(false);
-
-		if (FREE == _iCurrentCameraType) {
-			if (nullptr == m_Cameras[TARGET])
-				return;
-			CController_Transform* pTargetConTrans = m_Cameras[TARGET]->Get_ControllerTransform();
-			CController_Transform* pFreeConTrans = m_Cameras[FREE]->Get_ControllerTransform();
-			pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());
-		}
 	}
 
+	switch (_iCurrentCameraType) {
+	case FREE:
+	{
+		if (nullptr == m_Cameras[TARGET])
+			return;
+		CController_Transform* pTargetamTrans = m_Cameras[TARGET]->Get_ControllerTransform();
+		CController_Transform* pFreeCamTrans = m_Cameras[FREE]->Get_ControllerTransform();
+		pFreeCamTrans->Set_WorldMatrix(pTargetamTrans->Get_WorldMatrix());
+	}
+	break;
+	}
+
+	if (true == _isInitialData) {
+		INITIAL_DATA CurInitialData = m_Cameras[m_eCurrentCameraType]->Get_InitialData();
+		CurInitialData.fInitialTime = _fInitialTime;
+		m_Cameras[_iCurrentCameraType]->Switch_CameraView(&CurInitialData);
+	}
+	else 
+		m_Cameras[_iCurrentCameraType]->Switch_CameraView(nullptr);
+	
 	m_eCurrentCameraType = _iCurrentCameraType;
 }
 
@@ -126,40 +167,122 @@ void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
 	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Change_Target(_pTargetWorldMatrix);
 }
 
-void CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName)
+_bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 {
 	if (nullptr == m_Cameras[TARGET])
-		return;
+		return false;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName);
+	return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
 }
 
-_bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pInitialData)
+_bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName)
 {
 	if (nullptr == m_Cameras[CUTSCENE])
 		return false;
 
-	return dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName, _pInitialData);
+	return dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName);
+}
+
+void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
+{
+	if (nullptr == m_Cameras[TARGET])
+		return;
+
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
+}
+
+void CCamera_Manager::Set_Freeze(_uint _iFreezeType)
+{
+	if (nullptr == m_Cameras[TARGET])
+		return;
+
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_Freeze(_iFreezeType);
 }
 
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)
 {
+	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)_iZoomLevel, (CCamera::RATIO_TYPE)_iRatioType);
 }
 
 void CCamera_Manager::Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType)
 {
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Changing_AtOffset(_fOffsetTime, _vNextOffset, _iRatioType);
 }
 
 void CCamera_Manager::Start_Shake_ByTime(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime, _uint _iShakeType, _float _fDelayTime)
 {
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Shake_ByTime(_fShakeTime, _fShakeForce, _fShakeCycleTime, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
 }
 
 void CCamera_Manager::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _uint _iShakeCount, _uint _iShakeType, _float _fDelayTime)
 {
+	if (FREE == m_eCurrentCameraType)
+		return;
+
+	m_Cameras[_eCameraType]->Start_Shake_ByCount(_fShakeTime, _fShakeForce, _iShakeCount, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
 }
 
 void CCamera_Manager::Load_ArmData()
 {
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Test.json";
+
+	ifstream file(wszLoadPath);
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 열 수 없습니다.");
+		file.close();
+		return;
+	}
+
+	json Result;
+	file >> Result;
+	file.close();
+
+	json Trigger_json;
+
+	for (auto& Trigger_json : Result) {
+
+		_string szArmTag = Trigger_json["Arm_Tag"];
+
+		// Arm Data
+		ARM_DATA* tArmData = new ARM_DATA();
+
+		tArmData->fLength = Trigger_json["Arm_Data"]["Arm_Length"];
+		tArmData->fLengthTime = { Trigger_json["Arm_Data"]["Arm_Time"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_Time"][1].get<_float>() };
+		tArmData->iLengthRatioType = Trigger_json["Arm_Data"]["Arm_Length_RatioType"];
+
+		tArmData->fMoveTimeAxisY = { Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"][1].get<_float>() };
+		tArmData->fMoveTimeAxisRight = { Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"][1].get<_float>() };
+		tArmData->fRotationPerSecAxisY = { Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"][1].get<_float>() };
+		tArmData->fRotationPerSecAxisRight = { Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"][1].get<_float>() };
+
+		tArmData->vDesireArm = { Trigger_json["Arm_Data"]["Desire_Arm"][0].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][1].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][2].get<_float>() };
+
+		// Sub Data
+		_bool IsUseSubData = Trigger_json["Sub_Data"]["Use_SubData"];
+		SUB_DATA* pSubData = nullptr;
+
+		if (true == IsUseSubData) {
+			pSubData = new SUB_DATA();
+
+			pSubData->fZoomTime = Trigger_json["Sub_Data"]["Zoom_Time"];
+			pSubData->iZoomLevel = Trigger_json["Sub_Data"]["Zoom_Level"];
+			pSubData->iZoomRatioType = Trigger_json["Sub_Data"]["Zoom_RatioType"];
+
+			pSubData->fAtOffsetTime = Trigger_json["Sub_Data"]["AtOffset_Time"];
+			pSubData->vAtOffset = { Trigger_json["Sub_Data"]["AtOffset"][0].get<_float>(), Trigger_json["Sub_Data"]["AtOffset"][1].get<_float>(), Trigger_json["Sub_Data"]["AtOffset"][2].get<_float>() };
+			pSubData->iAtRatioType = Trigger_json["Sub_Data"]["AtOffset_RatioType"];
+		}
+
+		CCamera_Manager::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(szArmTag), tArmData, pSubData);
+	}
 }
 
 void CCamera_Manager::Load_CutSceneData()

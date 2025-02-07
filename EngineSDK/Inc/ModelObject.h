@@ -23,10 +23,43 @@ public:
 		_uint iShaderPass_3D = {};
 		_float fFrustumCullingRange = 2.0f;
 
-		_uint iRenderGroupID_2D = 0;
-		_uint iPriorityID_2D = 0;
 		_uint iRenderGroupID_3D = 0;
 		_uint iPriorityID_3D = 0;
+
+
+	#pragma region Build Method
+	void Build_2D_Model(_uint _iLevelID, const 
+		_wstring _strProtoModelTag, 
+		const _wstring _strProtoShaderTag,
+		_uint _iShaderPass = (_uint)PASS_VTXPOSTEX::SPRITE2D, 
+		_bool _isCoordChangeEnable = false)
+	{
+		isCoordChangeEnable = _isCoordChangeEnable;
+		eStartCoord = COORDINATE_2D;
+		iCurLevelID = _iLevelID;
+		iModelPrototypeLevelID_2D = _iLevelID;
+		strModelPrototypeTag_2D = _strProtoModelTag;
+		strShaderPrototypeTag_2D = _strProtoShaderTag;
+		iShaderPass_2D = _iShaderPass;
+	}
+
+	void Build_3D_Model(_uint _iLevelID, const _wstring _strProtoModelTag, 
+		const _wstring _strProtoShaderTag,
+		_uint _iShaderPass = 0, 
+		_bool _isCoordChangeEnable = false)
+	{
+		isCoordChangeEnable = _isCoordChangeEnable;
+		eStartCoord = COORDINATE_3D;
+		iCurLevelID = _iLevelID;
+		iModelPrototypeLevelID_3D = _iLevelID;
+		strModelPrototypeTag_3D = _strProtoModelTag;
+		strShaderPrototypeTag_3D = _strProtoShaderTag;
+		iShaderPass_3D = _iShaderPass;
+	}
+	#pragma endregion
+
+
+
 	}MODELOBJECT_DESC;
 
 protected:
@@ -41,6 +74,7 @@ public:
 	virtual void			Update(_float fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render_Shadow() { return S_OK; }
+	virtual HRESULT			Render_WorldPosMap();
 	virtual HRESULT			Render() override;
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
@@ -53,7 +87,7 @@ public:
 public:
 	// Get
 	_uint					Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
-	CModel*			Get_Model(COORDINATE _eCoord);
+	CModel*					Get_Model(COORDINATE _eCoord);
 
 	// Set
 	void					Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
@@ -65,6 +99,7 @@ public:
 	_uint					Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
 	void					Set_PlayingAnim(_bool _bPlaying);
 	void					Set_ReverseAnimation(_bool _bReverse) { m_bReverseAnimation = _bReverse; }
+	_bool					Is_ReverseAnimation() { return m_bReverseAnimation; }
 
 	void					Change_RenderGroup(COORDINATE _eCoord, _uint _iGroupKey, _uint _iPriorityKey)
 	{ 
@@ -80,9 +115,9 @@ public:
 		}
 	}
 
+
 protected:
 	CController_Model*		m_pControllerModel = nullptr;
-	_float4x4				m_ViewMatrix{}, m_ProjMatrix{}; /* 2D ·»´õ¸µ Àü¿ë VP */
 
 	CShader*				m_pShaderComs[COORDINATE_LAST] = {};
 	_uint					m_iShaderPasses[COORDINATE_LAST] = {};
@@ -94,7 +129,7 @@ protected:
 	_uint					m_iRenderGroupID_3D = 0;
 	_uint					m_iPriorityID_3D = 0;
 	_bool					m_bPlayingAnim = true;	
-	_bool                m_bReverseAnimation = false;
+	_bool					m_bReverseAnimation = false;
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

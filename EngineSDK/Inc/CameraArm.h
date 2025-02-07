@@ -28,7 +28,7 @@ public:
 		_wstring			wszArmTag = {};
 		//ARM_TYPE			eArmType = { DEFAULT };
 
-		const _float4x4*	pTargetWorldMatrix = { nullptr };
+		//const _float4x4*	pTargetWorldMatrix = { nullptr };
 	}CAMERA_ARM_DESC;
 
 #ifdef _DEBUG
@@ -67,13 +67,14 @@ public:
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
 	_vector				Get_ArmVector() { return XMLoadFloat3(&m_vArm); }
-	_vector				Get_TargetState(TARGET_STATE _eTargetState) const { return XMLoadFloat4x4(m_pTargetWorldMatrix).r[_eTargetState]; }
+	//_vector				Get_TargetState(TARGET_STATE _eTargetState) const { return XMLoadFloat4x4(m_pTargetWorldMatrix).r[_eTargetState]; }
 	CTransform_3D*		Get_TransformCom() { return m_pTransform; }
 
-	void				Set_NextArmData(ARM_DATA* _pData);
+	void				Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID);
+	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);	// 돌아갈지 안 돌아갈지에 따라 삭제 혹은 이동
 
-	void				Change_Target(const _float4x4* _pTargetWorldMatrix) { m_pTargetWorldMatrix = _pTargetWorldMatrix; }
-	_vector				Calculate_CameraPos(_float fTimeDelta);					// Arm과 Length에 따라 카메라 위치 결정
+	//void				Change_Target(const _float4x4* _pTargetWorldMatrix) { m_pTargetWorldMatrix = _pTargetWorldMatrix; }
+	//_vector			Calculate_CameraPos(_float fTimeDelta);					// Arm과 Length에 따라 카메라 위치 결정
 	_bool				Move_To_NextArm(_float _fTimeDelta);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 
@@ -85,13 +86,17 @@ private:
 
 private:
 	// 이거 나중에 Target 월드 행렬 받으려면 Target File Tag 같은 거 필요할 수도
-	const _float4x4*	m_pTargetWorldMatrix = { nullptr };
+	//const _float4x4*	m_pTargetWorldMatrix = { nullptr };
 
 	_wstring			m_wszArmTag = {};
 	_float3				m_vArm = {};
 	_float3				m_vRotation = {};
 	_float				m_fLength = {};
+
 	_float				m_fStartLength = {};
+	_float3				m_vStartArm = {};
+
+	_float				m_fRotationValue = { 1.f };
 
 	// Desire Arm
 	ARM_DATA*			m_pNextArmData = { nullptr };
@@ -100,7 +105,9 @@ private:
 	_uint				m_iMovementFlags = RESET_FLAG;
 
 	// Return
-	stack<pair<_float, _float3>> m_ArmStaks;
+	deque<pair<RETURN_ARMDATA, _bool>> m_PreArms;		// Return Data, 현재 Return 중인지 아닌지 Check
+	_float2				m_fReturnTime = { 1.f, 0.f };
+	_int				m_iCurTriggerID = {};
 
 	// Line
 #ifdef _DEBUG
@@ -121,6 +128,7 @@ private:
 	void				Turn_ArmX(_float fAngle);
 	void				Turn_ArmY(_float fAngle);
 	_float				Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
+	_bool				Check_IsNear_ToDesireArm(_float _fTimeDelta);
 
 public:
 	static CCameraArm*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg);

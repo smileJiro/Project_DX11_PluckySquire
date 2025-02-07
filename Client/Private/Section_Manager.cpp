@@ -14,6 +14,9 @@ CSection_Manager::CSection_Manager()
 
 HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
+
+    m_iCurActiveSectionIndex = m_iMaxCurActiveSectionCount / 2;
+
     if (nullptr == _pDevice)
         return E_FAIL;
     if (nullptr == _pContext)
@@ -152,9 +155,11 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
             return E_FAIL;
 
         pSection_2D->Register_RenderGroup_ToRenderer();
-        //pSection_2D->Sort_Layer([](CGameObject* pLeftGameObject, CGameObject* pRightGameObject) {
-        //    
-        //    });
+
+        pSection_2D->Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
+            return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
+            },CSection_2D::SECTION_2D_RENDERGROUP::SECTION_2D_OBJECT);
+
         if (nullptr != pSection)
         {
             if(FAILED(pSection->Add_RenderGroup_GameObjects()))
@@ -163,6 +168,17 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
     }
 
     return S_OK;
+}
+
+_float2 CSection_Manager::Get_Section_RenderTarget_Size(const _wstring _strSectionKey)
+{
+    CSection* pSection = Find_Section(_strSectionKey);
+    if (nullptr == pSection)
+        return _float2(-1.f, -1.f);
+    CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(pSection);
+    if (nullptr == pSection_2D)
+        return _float2(-1.f, -1.f);
+    return pSection_2D->Get_RenderTarget_Size();
 }
 
 HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
@@ -175,7 +191,7 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 
         m_pCurSection = (*iter).second;
 
-        Section_Active(m_pCurSection->Get_SectionName(), (m_iMaxCurActiveSectionCount / 2));
+        Section_Active(m_pCurSection->Get_SectionName(), m_iCurActiveSectionIndex);
 
     
 
@@ -202,6 +218,69 @@ const _wstring* CSection_Manager::Get_SectionKey(CGameObject* _pGameObject)
             return &SectionPair.second->Get_SectionName();
     }
     return pReturn;
+}
+
+_vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition)
+{
+    // 맵핑하여 데이터 접근
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    m_pContext->Map(m_pBookWorldPosMap, 0, D3D11_MAP_READ, 0, &mappedResource);
+
+    // 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
+    _int iWidth = mappedResource.RowPitch / sizeof(_float) / 4;
+    _int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
+
+    // 원하는 픽셀 좌표 (픽셀 좌표는 UV 좌표를 변환해서 계산)
+    _int iPixelX = (_int)std::ceil(_v2DTransformPosition.x) + iWidth / 2;            // X 좌표
+    _int iPixelY = (_int)(std::ceil(_v2DTransformPosition.y) * -1.0f) + iHeight / 2; // Y 좌표
+
+    // RowPitch는 한 줄의 바이트 수를 나타냄
+    _float* fData = static_cast<_float*>(mappedResource.pData);
+
+    // 픽셀 위치 계산 (4 floats per pixel)
+    _int rowPitchInPixels = mappedResource.RowPitch / sizeof(_float) / 4;
+    _int iIndex = iPixelY * rowPitchInPixels + iPixelX;
+
+    if (iWidth * iHeight <= iIndex || 0 > iIndex)
+        return XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    
+    _uint iDefaultIndex = iIndex * 4;
+
+    // float4 데이터 읽기
+    _float x = fData[iDefaultIndex]; // Red 채널
+    _float y = fData[iDefaultIndex + 1]; // Green 채널
+    _float z = fData[iDefaultIndex + 2]; // Blue 채널
+    //_float w = fData[iIndex * 4 + 3]; // Alpha 채널
+
+    if (0.f == x &&
+        0.f == y &&
+        0.f == z
+        )
+    {
+        _vector vLerpPos =  XMVectorLerp(XMVectorSet(
+            fData[iDefaultIndex - 4],
+            fData[iDefaultIndex - 3],
+            fData[iDefaultIndex - 2],
+            fData[iDefaultIndex - 1]
+        ),
+            XMVectorSet(
+                fData[iDefaultIndex + 4],
+                fData[iDefaultIndex + 5],
+                fData[iDefaultIndex + 6],
+                fData[iDefaultIndex + 7]
+            ), 0.5f);
+
+        x = XMVectorGetX(vLerpPos);
+        y = XMVectorGetY(vLerpPos);
+        z = XMVectorGetZ(vLerpPos);
+    }
+
+
+    // 맵핑 해제
+    m_pContext->Unmap(m_pBookWorldPosMap, 0);
+
+    return XMVectorSet(x, y, z, 1.0f);
 }
 
 ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstring& _strSectionTag)
@@ -316,23 +395,24 @@ HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPa
         for (auto ChildJson : ChapterJson)
         {
             m_2DModelInfos[iIndex].strModelName = ChildJson["TextureName"];
-            m_2DModelInfos[iIndex].strModelType = ChildJson["ModelType"];
+            m_2DModelInfos[iIndex].eModelType = ChildJson["ModelType"];
             m_2DModelInfos[iIndex].isActive = ChildJson["Active"];
             m_2DModelInfos[iIndex].isCollider = ChildJson["Collider"];
             m_2DModelInfos[iIndex].isSorting = ChildJson["Sorting"];
+            m_2DModelInfos[iIndex].isBackGround = ChildJson["BackGround"];
 
             if (m_isActive &&
                 ChildJson.contains("ActivePropertis") &&
                 ChildJson["ActivePropertis"].contains("ActiveType"))
             {
-                m_2DModelInfos[iIndex].strActiveType = ChildJson["ActivePropertis"]["ActiveType"];
+                m_2DModelInfos[iIndex].eActiveType = ChildJson["ActivePropertis"]["ActiveType"];
             }
 
             if (m_2DModelInfos[iIndex].isCollider && ChildJson.contains("ColliderPropertis"))
             {
                 auto ColliderPropertis = ChildJson["ColliderPropertis"];
                 if (ColliderPropertis.contains("ColliderType"))
-                    m_2DModelInfos[iIndex].strColliderType = ColliderPropertis["ColliderType"];
+                    m_2DModelInfos[iIndex].eColliderType = ColliderPropertis["ColliderType"];
                 if (ColliderPropertis.contains("ColliderInfo"))
                 {
                     auto ColliderInfo = ColliderPropertis["ColliderInfo"];
@@ -382,6 +462,8 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
         for (auto ChildJson : ChapterJson)
         {
             
+
+
             CSection_2D* pSection_2D = CSection_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
             if (nullptr == pSection_2D)
             {
@@ -390,6 +472,9 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
             } 
             m_iPriorityGenKey += 10;
             
+
+    
+
             if (m_CurLevelSections.empty())
                 strStartSectionKey = pSection_2D->Get_SectionName();
             m_CurLevelSections.try_emplace(pSection_2D->Get_SectionName(), pSection_2D);
@@ -406,6 +491,8 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 void CSection_Manager::Free()
 {
     Clear_Sections();
+
+    Safe_Release(m_pBookWorldPosMap);
 
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);

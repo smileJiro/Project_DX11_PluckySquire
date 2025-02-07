@@ -13,11 +13,13 @@
 #include "Sound_Manager.h"
 #include "Json_Manager.h"
 #include "Imgui_Manager.h"
-#include "GlobalFunction_Manager.h"
 #include "Camera_Manager_Engine.h"
 #include "Physx_Manager.h"
 #include "NewRenderer.h"
 #include "Frustum.h"
+#include "GlobalFunction_Manager.h"
+
+
 #include "Physx_EventCallBack.h"
 #include "Layer.h"
 #include "ModelObject.h"
@@ -46,6 +48,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pPhysx_Manager)
 		return E_FAIL;
 
+	m_pD3DUtils = CD3DUtils::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pD3DUtils)
+		return E_FAIL;
 
 	m_pLight_Manager = CLight_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pLight_Manager)
@@ -84,10 +89,6 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_pLevel_Manager = CLevel_Manager::Create();
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
-
-	//m_pCollision_Manager = CCollision_Manager::Create();
-	//if (nullptr == m_pCollision_Manager)
-	//	return E_FAIL;
 
 	m_pTimer_Manager = CTimer_Manager::Create();
 	if (nullptr == m_pTimer_Manager)
@@ -146,16 +147,13 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pObject_Manager->Update(fTimeDelta);
-	m_pCamera_Manager->Update(fTimeDelta);
+	//m_pCamera_Manager->Update(fTimeDelta);
 
 
 	/* 현재는 임시적으로 Physx_Manager가 Scene Update를 돌리며 테스트 예정. 
 	추후 콜리전 매니저 설계시 scene 관리방식 변경. */
-	m_pLevel_Manager->Update(fTimeDelta);
-	
-	//m_pCollision_Manager->Update(); /* 충돌 검사 수행. */
+	m_pLevel_Manager->Update(fTimeDelta); // 현재 여기서 Physx 돌리고있음.
 
-	
 }
 
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
@@ -1109,6 +1107,11 @@ _float CGameInstance::Clamp_Degrees(_float _fDegrees)
 	return m_pGlobalFunction_Manager->Clamp_Degrees(_fDegrees);
 }
 
+_uint CGameInstance::Compare_VectorLength(_fvector _vVector1, _fvector _vVector2)
+{
+	return m_pGlobalFunction_Manager->Compare_VectorLength(_vVector1, _vVector2);
+}
+
 CCamera* CGameInstance::Get_CurrentCamera()
 {
 	return m_pCamera_Manager->Get_CurrentCamera();
@@ -1203,12 +1206,12 @@ _bool CGameInstance::RayCast_Nearest(const _float3& _vOrigin, const _float3& _vR
 	return m_pPhysx_Manager->RayCast_Nearest(_vOrigin, _vRayDir, _fMaxDistance, _pOutPos, _ppOutActorObject);
 }
 
-_bool CGameInstance::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<_float3>& _OutPositions)
+_bool CGameInstance::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
 {
 	if (nullptr == m_pPhysx_Manager)
 		assert(nullptr);
 
-	return m_pPhysx_Manager->RayCast(_vOrigin, _vRayDir, _fMaxDistance, _OutActors, _OutPositions);
+	return m_pPhysx_Manager->RayCast(_vOrigin, _vRayDir, _fMaxDistance, _OutActors, _OutRaycastHits);
 }
 
 
@@ -1292,6 +1295,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pShadow);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pLight_Manager);
+	Safe_Release(m_pD3DUtils);
 	Safe_Release(m_pTarget_Manager);
 
 	/* 임시 코드 */

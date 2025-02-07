@@ -1,9 +1,25 @@
 #include "../../../EngineSDK/hlsl/Engine_Shader_Define.hlsli"
 #include "../../../EngineSDK/hlsl/Engine_Shader_Function.hlsli"
 
+/* PS ConstBuffer */ 
+cbuffer BasicPixelConstData : register(b0)
+{
+    Material_PS Material; // 32
+    
+    int useAlbedoMap;
+    int useNormalMap;
+    int useAOMap;
+    int useMetallicMap; // 16
+    
+    int useRoughnessMap;
+    int useEmissiveMap;
+    int useORMHMap;
+    int invertNormalMapY; // 16
+}
+
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-Texture2D g_DiffuseTexture, g_NormalTexture;
+Texture2D g_DiffuseTexture, g_NormalTexture, g_ORMHTexture; // PBR
 
 float g_fFarZ = 1000.f;
 int g_iFlag = 0;
@@ -26,7 +42,7 @@ struct VS_OUT
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2; // 투영 변환 행렬까지 연산 시킨 포지션 정보를 ps 로 전달한다. >>> w 값을 위해. 
-    float4 vTangent : TEXCOORD3;
+    float3 vTangent : TEXCOORD3;
 };
 
 // Rendering PipeLine : Vertex Shader // 
@@ -43,6 +59,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
     Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
+    Out.vTangent = In.vTangent;
     return Out;
 }
 
@@ -54,14 +71,15 @@ struct PS_IN
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2;
-    float4 vTangent : TEXCOORD3;
+    float3 vTangent : TEXCOORD3;
 };
 
 struct PS_OUT
 {
     float4 vDiffuse : SV_TARGET0;
     float4 vNormal : SV_TARGET1;
-    float4 vDepth : SV_TARGET2;
+    float4 vORMH : SV_TARGET2;
+    float4 vDepth : SV_TARGET3;
 };
 
 /* PixelShader */
@@ -69,15 +87,17 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    float4 vMtrlDiffuse = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 2.0f);
-    if (vMtrlDiffuse.a < 0.1f)
-        discard;
+    float3 vAlbedo = useAlbedoMap ? g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f).rgb : Material.Albedo;
+    float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
+    float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(0.0f, 0.0f, 0.0f, 0.0f);
     
-    Out.vDiffuse = vMtrlDiffuse;
-    Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 1.0f/*0.f*/);
-    
-    float fFlag = g_iFlag;
-    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
+    Out.vDiffuse = float4(vAlbedo, 1.0f);
+    // 1,0,0
+    // 1, 0.5, 0.5 (양의 x 축)
+    // 0, 0.5, 0.5 (음의 x 축)
+    Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+    Out.vORMH = vORMH;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 0.0f);
     
     return Out;
 }

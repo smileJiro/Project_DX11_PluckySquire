@@ -13,30 +13,6 @@ BEGIN(Map_Tool)
 
 class C2DMapObjectInfo final : public CBase
 {
-public :
-	enum MAPOBJ_MODEL_TYPE
-	{
-		MODEL_ANIM,
-		MODEL_NONANIM,
-		MODEL_END,
-	};
-
-	enum MAPOBJ_ACTIVE_TYPE
-	{
-		ACTIVE_PATROL,
-		ACTIVE_BREAKABLE,
-		ACTIVE_ATTACKABLE,
-		ACTIVE_DIALOG,
-		ACTIVE_END
-	};
-
-
-	enum MAPOBJ_2D_COLLIDIER_TYPE
-	{
-		COLLIDER_AABB,
-		COLLIDER_SQUARE,
-		COLLIDER_END
-	};
 
 private:
 	C2DMapObjectInfo();
@@ -44,21 +20,21 @@ private:
 	virtual ~C2DMapObjectInfo() = default;
 
 public:
-	HRESULT Initialize(json _InfoJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString);
-	HRESULT Export(json& _OutputJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString);
+	HRESULT Initialize(json _InfoJson);
+	HRESULT Export(json& _OutputJson);
 
 	_float2			m_fTextureOffsetSize;
 
 public :
-	MAPOBJ_MODEL_TYPE			Get_ModelType() { return m_eModelType; };
-	void						Set_ModelType(MAPOBJ_MODEL_TYPE _eType) { m_eModelType = _eType; };
+	_uint						Get_ModelType() { return m_eModelType; };
+	void						Set_ModelType(_uint _eType) { m_eModelType = _eType; };
 
 
 	const _string&				Get_SearchTag() { return m_strSearchTag; };
 	void						Set_SearchTag(const _string& _eType) { m_strSearchTag = _eType; };
 
-	const _string&				Get_TextureName() { return m_strTextureName; };
-	void						Set_TextureName(const _string& _eType) { m_strTextureName = _eType; };
+	const _string&				Get_ModelName() { return m_strModelName; };
+	void						Set_ModelName(const _string& _eType) { m_strModelName = _eType; };
 
 
 	_bool						Is_ToolRendering() { return m_isToolRendering; };
@@ -66,16 +42,18 @@ public :
 	_bool						Is_Active() { return m_isActive; };
 	_bool						Is_Collider() { return m_isCollider; };
 	_bool						Is_Sorting() { return m_isSorting; };
+	_bool						Is_BackGround() { return m_isBackGround; };
 
 	void						Set_Active(_bool _isActive) { m_isActive = _isActive; }
 	void						Set_Collider(_bool _isCollider) { m_isCollider = _isCollider; }
 	void						Set_Sorting(_bool _isSorting) { m_isSorting = _isSorting; }
+	void						Set_BackGround(_bool _isSorting) { m_isBackGround = _isSorting; }
 
-	MAPOBJ_ACTIVE_TYPE			Get_ActiveType() { return m_eActiveType; };
-	void						Set_ActiveType(MAPOBJ_ACTIVE_TYPE _eType) { m_eActiveType = _eType; };
+	_uint						Get_ActiveType() { return m_eActiveType; };
+	void						Set_ActiveType(_uint _eType) { m_eActiveType = _eType; };
 
-	MAPOBJ_2D_COLLIDIER_TYPE	Get_ColliderType() { return m_eColliderType; };
-	void						Set_ColliderType(MAPOBJ_2D_COLLIDIER_TYPE _eType) { m_eColliderType = _eType; };
+	_uint						Get_ColliderType() { return m_eColliderType; };
+	void						Set_ColliderType(_uint _eType) { m_eColliderType = _eType; };
 	
 	ID3D11ShaderResourceView*	Get_SRV(_float2* _pReturnSize = nullptr);
 	CTexture*					Get_Texture(){ return m_pTexture; }
@@ -102,11 +80,13 @@ public :
 
 
 
+	_float2						Get_Size();
+
 
 	_bool						Is_Delete() { return m_isDelete; };
 	void						Set_Delete(_bool _isDelete) { m_isDelete = _isDelete; }
 
-
+	void						Set_Model(C2DModel* _pModel);
 
 private :
 
@@ -118,20 +98,21 @@ private :
 
 	// DATA -----------------
 	_string						m_strSearchTag = "";
-	_string						m_strTextureName = "";
+	_string						m_strModelName = "";
 
 
 	_bool						m_isActive		= false;
 	_bool						m_isCollider	= false;
+	_bool						m_isBackGround	= false;
+	_bool						m_isSorting = false;
 
 	_bool						m_isModelCreate	= false;
 	_bool						m_isToolRendering = false;
 
-	MAPOBJ_MODEL_TYPE			m_eModelType;
-	MAPOBJ_ACTIVE_TYPE			m_eActiveType;
-	MAPOBJ_2D_COLLIDIER_TYPE	m_eColliderType;
+	_uint						m_eModelType = 0;
+	_uint						m_eActiveType = 0;
+	_uint						m_eColliderType = 0;
 
-	_bool						m_isSorting = false;
 	_float2						m_fSortingPosition = {};
 
 	_float2						m_fColliderOffsetPos = {};
@@ -146,7 +127,7 @@ private :
 
 
 public:
-	static C2DMapObjectInfo* Create(json _InfoJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString);
+	static C2DMapObjectInfo* Create(json _InfoJson);
 	static C2DMapObjectInfo* Create();
 	virtual void Free() ;
 

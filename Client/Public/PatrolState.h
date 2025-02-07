@@ -49,7 +49,9 @@ private:
 	F_DIRECTION m_eDir = {};
 	_bool m_isDelay = { false };
 	_bool m_isMove = { false };
+	_bool m_isTurn = { false };
 	_bool m_isBack = { false };
+	_float3 m_vRotate = {};
 
 public:
 	static CPatrolState* Create(void* _pArg);

@@ -1,10 +1,13 @@
-// Flag Macros
-#define FLAG_DEFAULT 0x00
-#define FLAG_TOON 0x01
-#define FLAG_NORMALMAP 0x02
-#define FLAG_HEAO 0x04
-#define FLAG_STEALTH 0x08
-#define FLAG_DARK 0x10
+
+struct Material_PS
+{
+    float3 Albedo; // baseColor
+    float Roughness;
+    float Metallic;
+    float3 dummy;
+};
+
+
 
 /* D3D11_SAMPLER_DESC */
 sampler			LinearSampler = sampler_state
@@ -12,6 +15,7 @@ sampler			LinearSampler = sampler_state
 	Filter = MIN_MAG_MIP_LINEAR;
 	AddressU = wrap;
 	AddressV = wrap;
+    AddressW = wrap;
 };
 
 sampler LinearSampler_Clamp = sampler_state
@@ -19,6 +23,7 @@ sampler LinearSampler_Clamp = sampler_state
     Filter = MIN_MAG_MIP_LINEAR;
     AddressU = clamp;
     AddressV = clamp;
+    AddressW = clamp;
 };
 
 sampler			PointSampler = sampler_state
@@ -26,6 +31,7 @@ sampler			PointSampler = sampler_state
 	Filter = MIN_MAG_MIP_POINT;
 	AddressU = wrap;
 	AddressV = wrap;
+	AddressW = wrap;
 };
 
 sampler MirrorSampler = sampler_state

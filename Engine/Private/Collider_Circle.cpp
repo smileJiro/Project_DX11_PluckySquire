@@ -63,12 +63,11 @@ void CCollider_Circle::Late_Update(_float _fTimeDelta)
 
 }
 
-HRESULT CCollider_Circle::Render()
+HRESULT CCollider_Circle::Render(_float2 _fRenderTargetSize)
 {
     m_pEffect->SetWorld(XMMatrixIdentity());
     m_pEffect->SetView(XMMatrixIdentity());
-    _float2 vRTSize = m_pGameInstance->Get_RT_Size(TEXT("Target_Book_2D"));
-    m_pEffect->SetProjection(XMMatrixOrthographicLH(vRTSize.x, vRTSize.y, 0.0f, 1.0f));
+    m_pEffect->SetProjection(XMMatrixOrthographicLH(_fRenderTargetSize.x, _fRenderTargetSize.y, 0.0f, 1.0f));
     m_pEffect->Apply(m_pContext);
     m_pContext->IASetInputLayout(m_pInputLayout);
 
@@ -109,6 +108,75 @@ void CCollider_Circle::Update_OwnerTransform()
 
     _float3 vOwnerScale = m_pOwner->Get_FinalScale();
     m_fFinalRadius = m_fRadius * m_vScale.x * vOwnerScale.x;
+}
+
+void CCollider_Circle::Block(CCollider* _pOther)
+{
+    switch (_pOther->Get_Type())
+    {
+    case Engine::CCollider::CIRCLE_2D:
+        Block_Circle(static_cast<CCollider_Circle*>(_pOther));
+        break;
+    case Engine::CCollider::AABB_2D:
+        Block_AABB(static_cast<CCollider_AABB*>(_pOther));
+        break;
+    default:
+        break;
+    }
+}
+
+void CCollider_Circle::Block_AABB(CCollider_AABB* _pOther)
+{
+    // 내가 서클임. 밀어내는 방향만 뒤집어
+    
+    // 1. circle 기준 aabb 에 가장 가까운 점을 찾는다. 
+    _float2 vOtherLT = _pOther->Get_LT(); // Min
+    _float2 vOtherRB = _pOther->Get_RB(); // Max
+
+    _float2 vPosition = m_vPosition;
+    _float fFinalRadius = Get_FinalRadius();
+
+    // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
+    _float2 vNearestPoint = {};
+    vNearestPoint.x = clamp(vPosition.x, vOtherLT.x, vOtherRB.x);
+    vNearestPoint.y = clamp(vPosition.y, vOtherRB.y, vOtherLT.y);
+    // 2. circle의 중점에서부터 aabb에 가장 가까운 점까지의 거리를 구한다. (밀려나야 할 축으로도 사용가능하다 뒤집으면 )
+    _vector vDiff =  XMLoadFloat2(&vNearestPoint) - XMLoadFloat2(&vPosition);
+    _float fDiffLen = XMVectorGetX(XMVector2Length(vDiff));
+    _vector vDirection = XMVector2Normalize(vDiff);
+    // 3. radius - 2번길이 == 밀려나야할 길이. 
+    _float fOverLapLen = fFinalRadius - fDiffLen;
+    // 4. 3번의 길이만큼 2번의 벡터를 뒤집은 방향으로 밀어낸다.
+    _vector vOtherPos = _pOther->Get_Owner()->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+    _vector vOtherFinalPos = {};
+    vOtherFinalPos = vOtherPos + fOverLapLen * vDirection;
+
+    _pOther->Get_Owner()->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vOtherFinalPos, 1.0f));
+
+    _pOther->Update_OwnerTransform();
+}
+
+void CCollider_Circle::Block_Circle(CCollider_Circle* _pOther)
+{
+    // 1. 겹치는 길이 만큼 밀어내면 끝. 
+    _float OtherRadius = _pOther->m_fFinalRadius;
+    _float2 vOhterPosition = _pOther->m_vPosition;
+
+    // 2. (두 반지름의 합) - 중점간의 거리 == 밀려야할 거리. 
+    _vector vDiff = XMLoadFloat2(&vOhterPosition) - XMLoadFloat2(&m_vPosition);
+    _float fDiffLen = XMVectorGetX(XMVector2Length(vDiff));
+    _float fOverLapLen = (OtherRadius + m_fFinalRadius) - fDiffLen;
+
+    // 3. 중점간의 거리를 구할때, other - my =>> 정규화 하면 이게 밀려나야할 방향.
+    _vector vDirection = XMVector2Normalize(vDiff);
+
+    // 4. 밀어내기
+    _vector vOtherPos = _pOther->Get_Owner()->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+    _vector vOtherFinalPos = {};
+    vOtherFinalPos = vOtherPos + fOverLapLen * vDirection;
+    _pOther->Get_Owner()->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vOtherFinalPos, 1.0f));
+
+    _pOther->Update_OwnerTransform();
 }
 
 _bool CCollider_Circle::Is_Collision_Circle(CCollider_Circle* _pOther)

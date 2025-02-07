@@ -14,6 +14,7 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_NPC(const _wstring& _strLayerTag);
 
 
 

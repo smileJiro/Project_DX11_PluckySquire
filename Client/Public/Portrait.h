@@ -54,7 +54,7 @@ public:
 
 private:
     HRESULT     DisplayPortrait();
-    void        ChangePosition(_bool _isRender);
+    void        ChangePosition(_bool _isRender, _float2 _RTSize);
 
 private:
     //DialogData          m_DialogData;   // 현재 다이얼로그 데이터

@@ -151,7 +151,6 @@
     <ClInclude Include="..\Public\Camera_Target.h" />
     <ClInclude Include="..\Public\Camera_Tool_Defines.h" />
     <ClInclude Include="..\Public\Camera_Tool_Function.h" />
-    <ClInclude Include="..\Public\Camera_Trigger.h" />
     <ClInclude Include="..\Public\CriticalSectionGuard.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\Level_Camera_Tool.h" />
@@ -183,7 +182,6 @@
     <ClCompile Include="..\Private\Camera_Manager_Tool.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\Camera_Tool_Fuction.cpp" />
-    <ClCompile Include="..\Private\Camera_Trigger.cpp" />
     <ClCompile Include="..\Private\CriticalSectionGuard.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\Level_Camera_Tool.cpp" />

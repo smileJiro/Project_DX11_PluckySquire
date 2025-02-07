@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "Section_2D.h"
 #include "GameInstance.h"
-#include "MapObject.h"
+#include "2DMapObject.h"
 #include "Map_2D.h"
 #include "Section_Manager.h"
+#include "Engine_Macro.h"
+#include "MapObjectFactory.h"
 
 CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection(_pDevice, _pContext)
@@ -15,7 +17,7 @@ HRESULT CSection_2D::Initialize(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
 	if (_pDesc == nullptr)
 		return E_FAIL;
 	if (1 == _pDesc->iLayerGroupCount)
-		_pDesc->iLayerGroupCount = SECTION_2D_RENDERGROUP_LAST;
+		_pDesc->iLayerGroupCount = SECTION_2D_RENDERGROUP::SECTION_2D_RENDERGROUP_LAST;
 
 
 	if (FAILED(__super::Initialize(_pDesc)))
@@ -109,39 +111,29 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 
 			if (FAILED(Ready_Map_2D(&Desc, _iPriorityKey)))
 				return E_FAIL;
+
 			ReadFile(hFile, &iObjectCount, sizeof(_uint), &dwByte, nullptr);
 
 			for (_uint i = 0;i < iObjectCount; ++i)
 			{
-				_uint		iModelIndex = 0;
-				_float2		fPos = {};
-				_bool		isOverride = false;
-
-				ReadFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
-				ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
-				ReadFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
-
-				CMapObject::MAPOBJ_DESC NormalDesc = {};
-				NormalDesc.i2DModelIndex = iModelIndex;
-				NormalDesc.tTransform2DDesc.vInitialPosition = _float3(fPos.x, fPos.y, 0.0f);
-				NormalDesc.is2DImport = true;
-
-				NormalDesc.iModelPrototypeLevelID_2D = CSection_Manager::GetInstance()->Get_SectionLeveID();
-				NormalDesc.isCoordChangeEnable = false;
-				NormalDesc.eStartCoord = COORDINATE_2D;
-
-				CGameObject* pGameObject = nullptr;
-
-				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-					NormalDesc.iModelPrototypeLevelID_2D,
-					L"Layer_2DMapObject",
-					&pGameObject,
-					(void*)&NormalDesc);
-
+				C2DMapObject* pGameObject = 
+					CMapObjectFactory::Bulid_2DObject<C2DMapObject>(
+						(LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID(),
+															m_pGameInstance, 
+															hFile);
 				if (nullptr != pGameObject)
 				{
 					pGameObject->Set_Active(false);
-					Add_GameObject_ToSectionLayer(pGameObject);
+					Event_CreateObject(pGameObject->Get_CurLevelID(), L"Layer_2DMapObject", pGameObject);
+
+					Safe_AddRef(pGameObject);
+
+					auto eRenderLayer = SECTION_2D_OBJECT;
+
+					if (pGameObject->Is_BackGround())
+						eRenderLayer = SECTION_2D_BACKGROUND;
+					
+					Add_GameObject_ToSectionLayer(pGameObject, eRenderLayer);
 				}
 			}
 			CloseHandle(hFile);
@@ -154,6 +146,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 	{
 		return E_FAIL;
 	}
+
+
+
+
 	return S_OK;
 }
 HRESULT CSection_2D::Register_RTV_ToTargetManager()
@@ -169,6 +165,23 @@ HRESULT CSection_2D::Register_RenderGroup_ToRenderer()
 
 
 	return m_pMap->Copy_DefaultMap_ToRenderTarget();
+}
+
+HRESULT CSection_2D::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
+{
+	// Model
+	// 컨테이너 
+	HRESULT hr = __super::Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
+	//if (SUCCEEDED(hr) && nullptr != m_pMap)
+	//{
+	//	_float2 fRenderTargetSize = m_pMap->Get_RenderTarget_Size();
+
+	//	fRenderTargetSize.x /= (_float)DEFAULT_SIZE_BOOK2D_X;
+	//	fRenderTargetSize.y /= (_float)DEFAULT_SIZE_BOOK2D_Y;
+	//	_pGameObject->Set_Scale(COORDINATE_2D, fRenderTargetSize.x, fRenderTargetSize.y,1.f);
+	//}
+
+	return hr;
 }
 
 ID3D11RenderTargetView* CSection_2D::Get_RTV_FromRenderTarget()

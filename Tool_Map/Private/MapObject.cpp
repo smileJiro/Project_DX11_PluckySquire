@@ -60,7 +60,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[2] = false;
 
     SHAPE_COOKING_DESC ShapeCookingDesc = {};
-    ShapeCookingDesc.isLoad = false;
+    ShapeCookingDesc.isLoad = true;
     ShapeCookingDesc.isSave = false;
     //ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
     //ShapeCookingDesc.strFilePath += "3DCollider/";
@@ -240,7 +240,7 @@ HRESULT CMapObject::Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat)
 #ifdef _DEBUG
 
 
-HRESULT CMapObject::Get_Textures(vector<DIFFUSE_INFO>& _Diffuses, _uint _eTextureType)
+HRESULT CMapObject::Get_Textures(vector<TEXTURE_INFO>& _Diffuses, _uint _eTextureType)
 {
 
     CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
@@ -257,7 +257,7 @@ HRESULT CMapObject::Get_Textures(vector<DIFFUSE_INFO>& _Diffuses, _uint _eTextur
         for (auto pMaterial : pMaterials)
         {
             _uint iDiffuseCnt = 0;
-            DIFFUSE_INFO tInfo = { iMaterialCnt, };
+            TEXTURE_INFO tInfo = { iMaterialCnt, };
             ID3D11ShaderResourceView* pSRV = nullptr;
 
             do
@@ -265,7 +265,7 @@ HRESULT CMapObject::Get_Textures(vector<DIFFUSE_INFO>& _Diffuses, _uint _eTextur
                 pSRV = pMaterial->Find_Texture((aiTextureType)_eTextureType, iDiffuseCnt);
                 if (pSRV)
                 {
-                    tInfo.iDiffuseIIndex = iDiffuseCnt;
+                    tInfo.iTextureIndex = iDiffuseCnt;
                     tInfo.pSRV = pSRV;
                     lstrcpy(tInfo.szTextureName, pMaterial->Find_Name((aiTextureType)_eTextureType, iDiffuseCnt)->c_str());
                     _Diffuses.push_back(tInfo);
@@ -280,7 +280,7 @@ HRESULT CMapObject::Get_Textures(vector<DIFFUSE_INFO>& _Diffuses, _uint _eTextur
     return S_OK;
 }
 
-HRESULT CMapObject::Add_Textures(DIFFUSE_INFO& _tDiffuseInfo, _uint _eTextureType)
+HRESULT CMapObject::Add_Textures(TEXTURE_INFO& _tDiffuseInfo, _uint _eTextureType)
 {
     CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
     if (pModel)
@@ -294,6 +294,19 @@ HRESULT CMapObject::Add_Textures(DIFFUSE_INFO& _tDiffuseInfo, _uint _eTextureTyp
         );
     }
     return S_OK;
+}
+HRESULT CMapObject::Delete_Texture(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
+{
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (pModel)
+    {
+        auto pMaterials = static_cast<C3DModel*>(pModel)->Get_Materials();
+        if (_iMaterialIndex >= pMaterials.size())
+            return E_FAIL;
+        return pMaterials[_iMaterialIndex]->Delete_Texture((aiTextureType)_eTextureType, _iIndex);
+    }
+    return S_OK;
+
 }
 HRESULT	CMapObject::Push_Texture(const _string _strTextureName, _uint _eTextureType)
 {
@@ -325,9 +338,9 @@ HRESULT	CMapObject::Push_Texture(const _string _strTextureName, _uint _eTextureT
 
                 if (SUCCEEDED(CreateDDSTextureFromFile(m_pDevice, szName, nullptr, &pSRV)) && nullptr != pSRV)
                 {
-                    CMapObject::DIFFUSE_INFO tAddInfo;
+                    CMapObject::TEXTURE_INFO tAddInfo;
                     iTextureIdx += 1;
-                    tAddInfo.iDiffuseIIndex = iTextureIdx;
+                    tAddInfo.iTextureIndex = iTextureIdx;
                     tAddInfo.iMaterialIndex = 0;
                     tAddInfo.pSRV = pSRV;
                     lstrcpy(tAddInfo.szTextureName, strTextureFileName.c_str());
@@ -350,6 +363,22 @@ HRESULT	CMapObject::Push_Texture(const _string _strTextureName, _uint _eTextureT
     return E_FAIL;
 }
 
+HRESULT CMapObject::Add_Texture_Type(_uint _eTextureType)
+{
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (pModel)
+    {
+        auto pMaterials = static_cast<C3DModel*>(pModel)->Get_Materials();
+        
+        for (auto& pMaterial : pMaterials)
+            if (FAILED(pMaterial->Add_Texture((aiTextureType)_eTextureType)))
+                return E_FAIL;
+
+        return S_OK;
+    }
+    return S_OK;
+}
+
 HRESULT CMapObject::Save_Override_Material(HANDLE _hFile)
 {
     DWORD	dwByte(0);
@@ -363,7 +392,7 @@ HRESULT CMapObject::Save_Override_Material(HANDLE _hFile)
      
         for (_uint iMaterialIndex = 0; iMaterialIndex < pMaterials.size(); ++iMaterialIndex)
         {
-            for (_uint iTexTypeIndex = 1; iTexTypeIndex < AI_TEXTURE_TYPE_MAX; ++iTexTypeIndex)
+            for (_uint iTexTypeIndex = 1; iTexTypeIndex < aiTextureType_UNKNOWN; ++iTexTypeIndex)
             {
                 _uint iTexIndex = Get_TextureIdx(iTexTypeIndex, iMaterialIndex);
                 if (0 < iTexIndex)
@@ -447,6 +476,18 @@ HRESULT CMapObject::Load_Override_Color(HANDLE _hFile)
         break;
     }
     return S_OK;
+}
+
+_uint CMapObject::Get_MaterialCount()
+{
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (pModel)
+    {
+        auto pMaterials = static_cast<C3DModel*>(pModel)->Get_Materials();
+
+        return (_uint)pMaterials.size();
+    }
+    return 0;
 }
 
 

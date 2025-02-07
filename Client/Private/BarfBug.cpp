@@ -37,14 +37,14 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fAlertRange = 5.f;
+    pDesc->fAlertRange = 9.f;
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 10.f;
     pDesc->fAlert2DRange = 500.f;
-    pDesc->fChase2DRange = 1200.f;
+    pDesc->fChase2DRange = 1500.f;
     pDesc->fAttack2DRange = 1000.f;
-    pDesc->fDelayTime = 5.f;
-    pDesc->fCoolTime = 10.f;
+    pDesc->fDelayTime = 1.f;
+    pDesc->fCoolTime = 3.f;
 
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
@@ -93,8 +93,12 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAnimEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("2DAnimEventGenerator"), m_pAnimEventGenerator);
 
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
@@ -104,28 +108,6 @@ HRESULT CBarfBug::Initialize(void* _pArg)
         Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
     }
     Safe_Delete(pDesc->pActorDesc);
-
-
-    /*  Projectile  */
-    Pooling_DESC Pooling_Desc;
-    Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-    Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
-
-    CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
-    pProjDesc->fLifeTime = 5.f;
-    pProjDesc->eStartCoord = COORDINATE_3D;
-    pProjDesc->isCoordChangeEnable = true;
-    pProjDesc->iNumPartObjects = PART_LAST;
-    pProjDesc->iCurLevelID = m_iCurLevelID;
-
-    pProjDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pProjDesc->tTransform2DDesc.fSpeedPerSec = 1000.f;
-
-    pProjDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pProjDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
-
-    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
 
     return S_OK;
 }
@@ -177,13 +159,19 @@ void CBarfBug::Update(_float _fTimeDelta)
     }
 
     //// TestCode : 태웅
-    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
+    if (COORDINATE_2D == Get_CurCoord())
+        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
 void CBarfBug::Late_Update(_float _fTimeDelta)
 {
+
+#ifdef _DEBUG
+    if(COORDINATE_3D == Get_CurCoord())
+        m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND, this);
+#endif
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -192,7 +180,11 @@ HRESULT CBarfBug::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-    m_pColliderCom->Render();
+    if (COORDINATE_3D == Get_CurCoord())
+        m_pDetectionField->Render();
+
+    if (COORDINATE_2D == Get_CurCoord())
+        m_pColliderCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -357,10 +349,16 @@ void CBarfBug::Attack()
 
 void CBarfBug::Turn_Animation(_bool _isCW)
 {
-    if(true == _isCW)
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TURN_RIGHT);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    if (true == _isCW)
+        AnimIdx = TURN_RIGHT;
     else
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TURN_LEFT);
+        AnimIdx = TURN_LEFT;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
 }
 
 void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
@@ -405,6 +403,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             if(false == m_isDelay)
             {
                 Set_AnimChangeable(true);
+                Delay_On();
             }
             break;
 
@@ -418,7 +417,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 {
     CBarfBug::MONSTER_DESC* pDesc = static_cast<CBarfBug::MONSTER_DESC*>(_pArg);
     
-    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
@@ -436,32 +435,59 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.5f;
-    ShapeDesc->fRadius = 0.5f;
+    ShapeDesc->fHalfHeight = 0.2f;
+    ShapeDesc->fRadius = 0.7f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 1.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
+    //마찰용 박스
+    SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
+    BoxDesc->vHalfExtents = { 0.3f, 0.1f, 0.3f };
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    //SHAPE_DATA* ShapeData = new SHAPE_DATA;
+    ShapeData->pShapeDesc = BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc->vHalfExtents.y, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+ //   //맵 오브젝트가 앞에 있으면 탐지를 막기 위한 트리거
+ //   SHAPE_CAPSULE_DESC* TriggerDesc = new SHAPE_CAPSULE_DESC;
+ //   TriggerDesc->fHalfHeight = 0.3f;
+ //   TriggerDesc->fRadius = 0.3f;
+
+ //   /* 해당 Shape의 Flag에 대한 Data 정의 */
+ //   ShapeData->pShapeDesc = TriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+ //   ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+ //   ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+ //   ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+	//XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, TriggerDesc->fRadius * 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+ //   /* 최종으로 결정 된 ShapeData를 PushBack */
+ //   ActorDesc->ShapeDatas.push_back(*ShapeData);
+
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
 
     /* Shapedata 할당해제 */
-    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    {
-        Safe_Delete(ShapeData);
-    }
+    Safe_Delete(ShapeData);
 
     return S_OK;
 }
@@ -495,7 +521,7 @@ HRESULT CBarfBug::Ready_Components()
     DetectionDesc.fRange = m_fAlertRange;
     DetectionDesc.fFOVX = 90.f;
     DetectionDesc.fFOVY = 30.f;
-    DetectionDesc.fOffset = 0.5f;
+    DetectionDesc.fOffset = 0.f;
     DetectionDesc.pOwner = this;
     DetectionDesc.pTarget = m_pTarget;
 #ifdef _DEBUG
@@ -509,9 +535,10 @@ HRESULT CBarfBug::Ready_Components()
     /* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
-    AABBDesc.vExtents = { 75.f, 100.f };
+    AABBDesc.vExtents = { 50.f, 100.f };
     AABBDesc.vScale = { 1.0f, 1.0f };
-    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.7f };
+    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
+    AABBDesc.isBlock = true; // 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;

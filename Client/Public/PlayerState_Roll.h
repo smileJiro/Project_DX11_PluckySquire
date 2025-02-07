@@ -6,7 +6,7 @@ class CPlayerState_Roll :
     public CPlayerState
 {
 public:
-    CPlayerState_Roll(CPlayer* _pOwner, _fvector _vDirection);
+    CPlayerState_Roll(CPlayer* _pOwner);
 
     // CPlayerState을(를) 통해 상속됨
     void Update(_float _fTimeDelta) override;
@@ -15,12 +15,12 @@ public:
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 private:
 	_vector m_vDirection;
-    _float m_fForwardSpeedMax = 25.f;
-    _float m_fForwardSpeedMin = 10.f;
-    _float m_f3DForwardStartProgress = 0.0;
-    _float m_f3DForwardEndProgress = 0.52;
-    _float m_f2DForwardStartProgress = 0;
-    _float m_f2DForwardEndProgress = 1;
+    _float m_fForwardSpeedMax = 13.f;
+    _float m_fForwardSpeedMin = 0.f;
+    _float m_f3DForwardStartProgress = 0.f;
+    _float m_f3DForwardEndProgress = 0.52f;
+    _float m_f2DForwardStartProgress = 0.f;
+    _float m_f2DForwardEndProgress = 1.f;
     _float m_f3DMotionCancelProgress = 0.52f;
     _float m_f2DMotionCancelProgress = 0.8f;
 

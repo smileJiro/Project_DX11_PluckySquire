@@ -205,10 +205,7 @@ HRESULT CSoldier_CrossBow::Ready_ActorDesc(void* _pArg)
     pDesc->pActorDesc = ActorDesc;
 
     /* Shapedata 할당해제 */
-    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    {
-        Safe_Delete(ShapeData);
-    }
+    Safe_Delete(ShapeData);
 
     return S_OK;
 }

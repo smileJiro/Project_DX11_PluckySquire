@@ -21,10 +21,25 @@ protected:
 	virtual ~CCharacter() = default;
 
 public:
+	virtual void			Update(_float _fTimeDelta) override;
+	virtual void			Late_Update(_float _fTimeDelta) override;
+public:
 	STAT& Get_Stat(COORDINATE _eCoord) { return m_tStat[_eCoord]; }
 
+	void Stop_Rotate();
+	void Stop_Move();
+	void Add_Impuls(_fvector _vForce);
+	void Add_Force(_fvector _vForce);
+	_bool Move_To(_fvector _vPosition);
+	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
+	void LookDirectionXZ_Kinematic(_fvector _vDir);
+	void LookDirectionXZ_Dynamic(_fvector _vDir);
+	//속도는 degree로 줘야함 (초당), 목표 방향에 도달시 true 리턴
+	_bool Rotate_To(_fvector _vDirection, _float _fSpeed);
+	_bool Rotate_To_Radians(_fvector _vDirection, _float _fSpeed);
 protected:
 	STAT m_tStat[COORDINATE::COORDINATE_LAST];
+	_vector m_vLookBefore = { 0,0,-1 };
 public:	
 	virtual void Free() override;
 };

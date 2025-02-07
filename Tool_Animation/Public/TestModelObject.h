@@ -20,6 +20,7 @@ protected:
 public:
 	virtual HRESULT Initialize(void* _pArg); 
 	virtual void			Late_Update(_float _fTimeDelta) override;
+	virtual HRESULT			Render() override;
 
 	HRESULT				Export_Model(ofstream& _outfile, const _char* _szDirPath, _bool _bExportTextures);
 	//Set
@@ -37,6 +38,7 @@ private:
 	HRESULT					Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc);
 
 private:
+	_float4x4 m_ViewMatrix{}, m_ProjMatrix{};
 	COORDINATE m_eCurCoord = COORDINATE::COORDINATE_LAST;
 public:
 	static CTestModelObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

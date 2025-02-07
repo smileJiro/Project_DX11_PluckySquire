@@ -6,6 +6,7 @@ class CGameObject;
 class CLevel;
 class CBase;
 class CActor_Dynamic;
+class CActorObject;
 END
 
 BEGIN(Client)
@@ -24,7 +25,18 @@ namespace Client
 	void Event_ChangeBossState(BOSS_STATE _eState, CFSM* _pFSM);
 	void Event_Change_Coordinate(CActorObject* _pActorObject, COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	void Event_Set_Kinematic(CActor_Dynamic* _pActorObject, _bool _bValue);
-	void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag);
+	void Event_Trigger_Enter(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
+	void Event_Trigger_Stay(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
+	void Event_Trigger_Exit(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
+	void Event_Trigger_Exit_ByCollision(_uint _iTriggerType, _int _iTriggerID, _bool _isReturn = true);
+	void Event_Book_Main_Section_Change(const _tchar* _strSectionTag);
+	void Event_Book_Main_Change(_uint _iCameraType);
+	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
+	
+	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);
+	//void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn = true);
+
+	//void Event_Book_Section_Change_Start(const _tchar* _strNextSectionKey, );
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 

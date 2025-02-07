@@ -18,6 +18,22 @@ public:
 		CTransform_2D::TRANSFORM_2D_DESC	tTransform2DDesc = {};
 		// 2D Transform의 Desc, 사용하지 않는다면 채우지 않아도 됌.
 		CTransform_3D::TRANSFORM_3D_DESC	tTransform3DDesc = {};
+#pragma region Build Method
+		void Build_2D_Transform(_float2 _fPos, _float2 _fScale = { 1.f,1.f }, _float _fMoveSpeed = 10.f,
+			_float _fRotationSpeed = 0.f, _float fRotation = 0.f)
+		{
+			tTransform2DDesc.fSpeedPerSec = _fMoveSpeed;
+			tTransform2DDesc.fRotationPerSec = _fRotationSpeed;
+			tTransform2DDesc.vInitialPosition = { _fPos.x, _fPos.y, 0.0f };
+			tTransform2DDesc.vInitialScaling = { _fScale.x, _fScale.y, 1.0f };
+			tTransform2DDesc.fInitialRotation = fRotation;
+		}
+		void Build_3D_Transform(_float4x4 _matWorld)
+		{
+			tTransform3DDesc.matWorld = _matWorld;
+			tTransform3DDesc.isMatrix = true;
+		}
+#pragma endregion
 
 	}CON_TRANSFORM_DESC;
 
@@ -38,8 +54,8 @@ public: /* 2D, 3D */
 	_bool					Go_Right(_float _fTimeDelta);
 	_bool					Go_Up(_float _fTimeDelta);
 	_bool					Go_Down(_float _fTimeDelta);
-	void						Go_Direction(_vector _vDirection, _float _fTimeDelta);
-	void						Go_Direction(_vector _vDirection, _float _fSpeed, _float _fTimeDelta);
+	void					Go_Direction(_vector _vDirection, _float _fTimeDelta);
+	void					Go_Direction(_vector _vDirection, _float _fSpeed, _float _fTimeDelta);
 
 	void					Rotation(_float _fRadian, _fvector _vAxis = { 0.0f, 0.0f, 1.0f, 0.0f }); // 항등상태를 기준으로 지정한 각도로 회전한다.
 	void					RotationXYZ(const _float3& _vRadianXYZ);
@@ -60,8 +76,8 @@ public: /* 3D */
 public:
 	// Get
 	COORDINATE				Get_CurCoord() const { return m_eCurCoord; }
-	CTransform* Get_Transform() const;
-	CTransform* Get_Transform(COORDINATE _eCoordinate) const;
+	CTransform*				Get_Transform() const;
+	CTransform*				Get_Transform(COORDINATE _eCoordinate) const;
 	_matrix					Get_WorldMatrix() const;
 	_matrix					Get_WorldMatrix(COORDINATE _eCoordinate) const;
 	const _float4x4* Get_WorldMatrix_Ptr() const;
@@ -76,6 +92,8 @@ public:
 	void					Set_WorldMatrix(const _float4x4& _WorldMatrix);
 	void					Set_Scale(_float _fX, _float _fY, _float _fZ);
 	void					Set_Scale(const _float3& _vScale);
+	void					Set_Scale(COORDINATE _eCoord, _float _fX, _float _fY, _float _fZ);
+	void					Set_Scale(COORDINATE _eCoord, const _float3& _vScale);
 	void					Set_State(CTransform::STATE _eState, _fvector _vState);
 	void					Set_State(CTransform::STATE _eState, const _float4& _vState);
 	void					Set_SpeedPerSec(_float _fSpeedPerSec);

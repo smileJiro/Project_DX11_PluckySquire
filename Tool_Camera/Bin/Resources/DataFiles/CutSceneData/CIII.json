@@ -1,0 +1,221 @@
+{
+    "CutScene": [
+        {
+            "CutScene_Tag": "Initial",
+            "Sector": [
+                {
+                    "KeyFrames": [
+                        {
+                            "AtOffset": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "At_RatioType": 0,
+                            "Is_LookTarget": true,
+                            "Position": [
+                                -4.628030300140381,
+                                4.236000061035156,
+                                -2.076425075531006
+                            ],
+                            "TimeStamp": -1.0,
+                            "Zoom_Level": 5,
+                            "Zoom_RatioType": 0
+                        },
+                        {
+                            "AtOffset": [
+                                0.0,
+                                5.0,
+                                0.0
+                            ],
+                            "At_RatioType": 0,
+                            "Is_LookTarget": true,
+                            "Position": [
+                                -4.128342151641846,
+                                5.136000156402588,
+                                -0.47944068908691406
+                            ],
+                            "TimeStamp": 0.0,
+                            "Zoom_Level": 5,
+                            "Zoom_RatioType": 0
+                        },
+                        {
+                            "AtOffset": [
+                                0.0,
+                                3.0,
+                                0.0
+                            ],
+                            "At_RatioType": 0,
+                            "Is_LookTarget": true,
+                            "Position": [
+                                -2.889765739440918,
+                                5.335999965667725,
+                                1.3336129188537598
+                            ],
+                            "TimeStamp": 1.0,
+                            "Zoom_Level": 5,
+                            "Zoom_RatioType": 0
+                        },
+                        {
+                            "AtOffset": [
+                                0.0,
+                                3.0,
+                                0.0
+                            ],
+                            "At_RatioType": 0,
+                            "Is_LookTarget": true,
+                            "Position": [
+                                -1.2909146547317505,
+                                6.035999774932861,
+                                2.1531195640563965
+                            ],
+                            "TimeStamp": 2.0,
+                            "Zoom_Level": 5,
+                            "Zoom_RatioType": 0
+                        },
+                        {
+                            "AtOffset": [
+                                0.0,
+                                3.0,
+                                0.0
+                            ],
+                            "At_RatioType": 0,
+                            "Is_LookTarget": true,
+                            "Position": [
+                                0.50258868932724,
+                                5.835999965667725,
+                                2.4998106956481934
+                            ],
+                            "TimeStamp": 3.0,
+                            "Zoom_Level": 5,
+                            "Zoom_RatioType": 0
+                        },
+                        {
+                            "AtOffset": [
+                                0.0,
+                                3.0,
+                                0.0
+                            ],
+                            "At_RatioType": 0,
+                            "Is_LookTarget": true,
+                            "Position": [
+                                2.529526472091675,
+                                4.935999870300293,
+                                2.621072292327881
+                            ],
+                            "TimeStamp": 4.0,
+                            "Zoom_Level": 5,
+                            "Zoom_RatioType": 0
+                        }
+                    ],
+                    "Sector_Duration": 0.0,
+                    "Sector_Type": 0
+                }
+            ]
+        }
+    ],
+    "KeyFrame": [
+        {
+            "AtOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "At_RatioType": 0,
+            "Is_LookTarget": true,
+            "Position": [
+                -4.628030300140381,
+                4.236000061035156,
+                -2.076425075531006
+            ],
+            "TimeStamp": -1.0,
+            "Zoom_Level": 6,
+            "Zoom_RatioType": 0
+        },
+        {
+            "AtOffset": [
+                0.0,
+                5.0,
+                0.0
+            ],
+            "At_RatioType": 0,
+            "Is_LookTarget": true,
+            "Position": [
+                -4.128342151641846,
+                5.136000156402588,
+                -0.47944068908691406
+            ],
+            "TimeStamp": 0.0,
+            "Zoom_Level": 6,
+            "Zoom_RatioType": 0
+        },
+        {
+            "AtOffset": [
+                0.0,
+                3.0,
+                0.0
+            ],
+            "At_RatioType": 0,
+            "Is_LookTarget": true,
+            "Position": [
+                -2.889765739440918,
+                5.335999965667725,
+                1.3336129188537598
+            ],
+            "TimeStamp": 1.0,
+            "Zoom_Level": 6,
+            "Zoom_RatioType": 0
+        },
+        {
+            "AtOffset": [
+                0.0,
+                3.0,
+                0.0
+            ],
+            "At_RatioType": 0,
+            "Is_LookTarget": true,
+            "Position": [
+                -1.2909146547317505,
+                6.035999774932861,
+                2.1531195640563965
+            ],
+            "TimeStamp": 2.0,
+            "Zoom_Level": 6,
+            "Zoom_RatioType": 0
+        },
+        {
+            "AtOffset": [
+                0.0,
+                3.0,
+                0.0
+            ],
+            "At_RatioType": 0,
+            "Is_LookTarget": true,
+            "Position": [
+                0.50258868932724,
+                5.835999965667725,
+                2.4998106956481934
+            ],
+            "TimeStamp": 3.0,
+            "Zoom_Level": 6,
+            "Zoom_RatioType": 0
+        },
+        {
+            "AtOffset": [
+                0.0,
+                3.0,
+                0.0
+            ],
+            "At_RatioType": 0,
+            "Is_LookTarget": true,
+            "Position": [
+                2.529526472091675,
+                4.935999870300293,
+                2.621072292327881
+            ],
+            "TimeStamp": 4.0,
+            "Zoom_Level": 6,
+            "Zoom_RatioType": 0
+        }
+    ]
+}

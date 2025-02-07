@@ -1,0 +1,153 @@
+#include "stdafx.h"
+#include "PrintFloorWord.h"
+#include "GameInstance.h"
+#include "UI_Manager.h"
+#include "Section_2D.h"
+#include "UI_Manager.h"
+
+
+
+CPrintFloorWord::CPrintFloorWord(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CFloorWord(_pDevice, _pContext)
+{
+}
+
+CPrintFloorWord::CPrintFloorWord(const CPrintFloorWord& _Prototype)
+	: CFloorWord(_Prototype)
+{
+}
+
+HRESULT CPrintFloorWord::Initialize_Prototype()
+{
+
+	return S_OK;
+}
+
+HRESULT CPrintFloorWord::Initialize(void* _pArg)
+{
+ 	FLOORTEXT* pDesc = static_cast<FLOORTEXT*>(_pArg);
+
+	m_vRenderPos.x = pDesc->fPosX;
+	m_vRenderPos.y = pDesc->fPosY;
+
+	wsprintf(m_tFloorWord, pDesc->strText.c_str());
+
+	if (FAILED(__super::Initialize_Child(pDesc)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_BACKGROUND);
+
+	return S_OK;
+}
+
+void CPrintFloorWord::Priority_Update(_float _fTimeDelta)
+{
+}
+
+void CPrintFloorWord::Update(_float _fTimeDelta)
+{
+	_float fThisPosX = m_vRenderPos.x;
+	_float fPlayerPosX = Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
+
+	
+	if (250.f > fabs(fThisPosX - fPlayerPosX) && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		m_isFadeIn = true;
+	}
+
+	Add_Amount(_fTimeDelta);
+
+}
+
+void CPrintFloorWord::Late_Update(_float _fTimeDelta)
+{
+}
+
+HRESULT CPrintFloorWord::Render()
+{
+	/* TODO :: 현재 RT 사이즈는 가변적이다. 추후 변경해야한다. */
+
+
+	// 2D 기준
+	_float2 vCalPos = { 0.f, 0.f };
+	// 중점
+	_float2 vMidPoint = { RTSIZE_BOOK2D_X / 2.f, RTSIZE_BOOK2D_Y / 2.f };
+
+
+	vCalPos.x = vMidPoint.x + m_vRenderPos.x;
+	vCalPos.y = vMidPoint.y - m_vRenderPos.y;
+
+
+	m_pGameInstance->Render_Font(TEXT("Font28"), m_tFloorWord, vCalPos, XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
+
+	return S_OK;
+}
+
+
+
+HRESULT CPrintFloorWord::Ready_Components()
+{
+	return S_OK;
+}
+
+
+CPrintFloorWord* CPrintFloorWord::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+	CPrintFloorWord* pInstance = new CPrintFloorWord(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Created CPrintFloorWord Failed");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CGameObject* CPrintFloorWord::Clone(void* _pArg)
+{
+	CPrintFloorWord* pInstance = new CPrintFloorWord(*this);
+
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Clone CPrintFloorWord Failed");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+void CPrintFloorWord::Free()
+{
+	__super::Free();
+}
+
+HRESULT CPrintFloorWord::Cleanup_DeadReferences()
+{
+	return S_OK;
+}
+
+void CPrintFloorWord::Add_Amount(_float _fTimeDelta)
+{
+	if (true == m_isFadeIn && false == m_isFadeInComplete)
+	{
+		m_fAmount += _fTimeDelta * 1.8f;
+
+		if (m_fAmount > 1.f)
+		{
+			m_fAmount = 1.f;
+			m_isFadeInComplete = true;
+		}
+	}
+}
+
+//HRESULT CPrintFloorWord::Cleanup_DeadReferences()
+//{
+//	return S_OK;
+//}
+

@@ -7,13 +7,17 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_2D.h"
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
+#include "Trigger_Manager.h"
 
+#include "MainTable.h"
 #include "Player.h"
 #include "TestTerrain.h"
 #include "Beetle.h"
 #include "BarfBug.h"
+#include "Projectile_BarfBug.h"
 #include "JumpBug.h"
 #include "BirdMonster.h"
 #include "Goblin.h"
@@ -24,8 +28,11 @@
 #include "Soldier_Bomb.h"
 #include "ButterGrump.h"
 
+#include "RayShape.h"
 
-#include "MapObject.h"
+
+#include "2DMapObject.h"
+#include "3DMapObject.h"
 
 
 //#include "UI.h"
@@ -34,8 +41,10 @@
 #include "SettingPanel.h"
 #include "ESC_HeartPoint.h"
 #include "ShopItemBG.h"
+#include "MapObjectFactory.h"
 
 #include "NPC.h"
+
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -46,6 +55,7 @@ HRESULT CLevel_GamePlay::Initialize()
 {
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
+	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
@@ -66,8 +76,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	pDesc->iCurLevelID = LEVEL_GAMEPLAY;
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
-
-
 	/* Collision Test */
 
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -75,16 +83,39 @@ HRESULT CLevel_GamePlay::Initialize()
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER_PROJECTILE);
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::TRIGGER_OBJECT);
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MAPOBJECT);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::INTERACTION_OBEJCT);
 
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 
 
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
 	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	//CCollision_Manager::GetInstance()->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
+
+
+	//RayShape Test
+	CRayShape::RAYSHAPE_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
+	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	Desc.fRadius = 3.f;
+	Desc.fHalfHeight = 2.f;
+	Desc.vOffsetTrans = { 0.f,Desc.fHalfHeight * 0.5f,0.f };
+	Desc.fRotAngle = 90.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), LEVEL_GAMEPLAY, TEXT("Layer_Terrain"), &Desc)))
+		return E_FAIL;
+
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-23.9f, 0.32f, -16.9f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), LEVEL_GAMEPLAY, TEXT("Layer_Terrain"), &Desc)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -95,8 +126,6 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
-
-
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
@@ -106,14 +135,24 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
-		/* Section Test */
-		CSection_Manager::GetInstance()->SetActive_Section(TEXT("Section_Test"), false);
 
-		///* Pooling Test */
-		//_float3 vPosition = _float3(m_pGameInstance->Compute_Random(-5.f, 5.f), m_pGameInstance->Compute_Random(1.f, 1.f), m_pGameInstance->Compute_Random(-5.f, 5.f));
-		////CPooling_Manager::GetInstance()->Create_Objects(TEXT("Pooling_TestBeetle"), 1); // 여러마리 동시 생성. 
-		//
-		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_TestBeetle"), &vPosition); // 한마리 생성.
+		// DXGI 팩토리 생성
+		IDXGIFactory4* pFactory;
+		CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+
+		// 기본 GPU 어댑터 가져오기
+		IDXGIAdapter3* pAdapter;
+		pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
+
+		// VRAM 사용c량 쿼리
+		DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
+		pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
+
+		// 결과 출력 (MB 단위)
+		SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
+		SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
+
+		int a = 0;
 	}
 
 	// Change Camera Free  Or Target
@@ -147,13 +186,6 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
-
-
-
-	if (KEY_DOWN(KEY::U)) {
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
-		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("B_InitialData"));
-	}
 
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
@@ -234,6 +266,18 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	return S_OK;
 }
 
+HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
+{
+	CMainTable::ACTOROBJECT_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+		LEVEL_GAMEPLAY, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_GamePlay::Ready_Layer_Map()
 {
 	if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
@@ -244,6 +288,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Map()
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
+	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	if (nullptr == pPlayer)
+		return E_FAIL;
+
 	CGameObject* pCamera = nullptr;
 
 	// Free Camera
@@ -260,7 +308,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	Desc.eZoomLevel = CCamera::LEVEL_6;
 	Desc.iCameraType = CCamera_Manager::FREE;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
@@ -269,9 +317,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
 
-	TargetDesc.fSmoothSpeed = 5.f;
+	TargetDesc.fSmoothSpeed = 7.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
 	TargetDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
+	TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -282,13 +331,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
 	TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Target"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
-
-	Create_Arm();
+	
+	_float3 vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
+	_float fLength = 7.f;
+	Create_Arm((_uint)COORDINATE_3D, pCamera, vRotation, fLength);
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
@@ -302,16 +353,45 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
 	CutSceneDesc.iCameraType = CCamera_Manager::CUTSCENE;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_CutScene"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_CutScene"),
 		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &CutSceneDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::CUTSCENE, dynamic_cast<CCamera*>(pCamera));
 	
+	// 2D Camera
+	CCamera_2D::CAMERA_2D_DESC Target2DDesc{};
+
+	Target2DDesc.fSmoothSpeed = 5.f;
+	Target2DDesc.eCameraMode = CCamera_2D::DEFAULT;
+	Target2DDesc.vAtOffset = _float3(0.0f, 0.f, 0.0f);
+	Target2DDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_2D);
+
+	Target2DDesc.fFovy = XMConvertToRadians(60.f);
+	Target2DDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	Target2DDesc.fNear = 0.1f;
+	Target2DDesc.fFar = 1000.f;
+	Target2DDesc.vEye = _float3(0.f, 10.f, -7.f);
+	Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
+	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
+	Target2DDesc.iCameraType = CCamera_Manager::TARGET_2D;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
+		LEVEL_GAMEPLAY, _strLayerTag, &pCamera, &Target2DDesc)))
+		return E_FAIL;
+
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
+
+	vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
+	fLength = 12.5f;
+	Create_Arm((_uint)COORDINATE_2D, pCamera, vRotation, fLength);
+
+	// Set Cur Camera
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
-	// Load CutSceneData
+	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData();
+	CCamera_Manager::GetInstance()->Load_ArmData();
 
 	return S_OK;
 }
@@ -328,15 +408,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 		return E_FAIL;
 
 
-	//CPlayer* pPlayer = { nullptr };
-	//pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
-	//
-	//if (nullptr == Uimgr->Get_Player())
-	//{
-	//	CUI_Manager::GetInstance()->Set_Player(pPlayer);
-	//}
+	CPlayer* pPlayer = { nullptr };
+	pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
+
+	if (nullptr == Uimgr->Get_Player())
+	{
+		CUI_Manager::GetInstance()->Set_Player(pPlayer);
+		
+	}
 	
-	//Safe_Release(pPlayer);
+	
 
 	return S_OK;
 }
@@ -368,14 +449,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	//TODO :: SAMPLE
 
 	CModelObject::MODELOBJECT_DESC Desc = {};
-
 	Desc.iCurLevelID = LEVEL_GAMEPLAY;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
-
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_2DDefaultRenderObject"),
-		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
-		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_SampleBook"),
 		LEVEL_GAMEPLAY, L"Layer_Default", &Desc)))
@@ -649,55 +723,67 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 		}
 	}
 
-
-	//CUI::UIOBJDESC pHeartDesc = {};
-	//pHeartDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	//pHeartDesc.fX = g_iWinSizeX /2.f;
-	//pHeartDesc.fY = g_iWinSizeY /2.f + 10.f;
-	//pHeartDesc.fSizeX = 128.f;
-	//pHeartDesc.fSizeY = 128.f;
-	//
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pHeartDesc)))
-	//	return E_FAIL;
-	
-
-#pragma region 로고씬
-
-
-
-#pragma endregion 로고씬
-
-
-	pDesc.fX = g_iWinSizeX / 2.f / 2.f ;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
-	pDesc.fSizeX = 1208.f * 0.7f / 2.f;
-	pDesc.fSizeY = 268.f * 0.7f;
+	pDesc.fX = 0.f; // 전체 사이즈 / RTSIZE 끝으로 변경
+	pDesc.fY = 0.f;// 전체 사이즈 / RTSIZE 끝으로 변경
+	pDesc.fSizeX = 2328.f;
+	pDesc.fSizeY = 504.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	pDesc.fX = g_iWinSizeX / 2.f / 2.f;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
-	pDesc.fSizeX = 256.f * 0.7f / 2.f;
-	pDesc.fSizeY = 256.f * 0.7f;
+	pDesc.fX = DEFAULT_SIZE_BOOK2D_X / RATIO_BOOK2D_X;
+	pDesc.fY = DEFAULT_SIZE_BOOK2D_Y / RATIO_BOOK2D_Y;
+	pDesc.fSizeX = 512.f;
+	pDesc.fSizeY = 512.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	/* 테스트 용 */
+	/* (0.0) ~ MAXSIZE 기준으로 fX, fY 를 설정하여야합니다. */
+	/* 해당 부분은 객체가 투명하며 오직 글자 렌더만 사용합니다. */
+	//CGameObject* pPrintFloorWord = { nullptr };
+	//pDesc.fX = 996.f;
+	//pDesc.fY = -30.f;
+	//pDesc.fSizeX = 0.f;
+	//pDesc.fSizeY = 0.f;
+	//
+	//
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	pDesc.fSizeX = 256.f / 4.f;
+	pDesc.fSizeY = 256.f / 4.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+	
 
 	return S_OK;
 }
 
 HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
-	//CNPC::NPC_DESC NPCDesc;
-	//
-	//NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
-	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-	//	return E_FAIL;
+	CNPC::NPC_DESC NPCDesc;
+
+	NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("dialog_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
+
+	NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_NPC_DJMoonbeard"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -716,18 +802,23 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	CBarfBug::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = LEVEL_GAMEPLAY;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -23.0f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -17.0f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
 
-	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-7.0f, 0.35f, -19.0f);
+	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-18.0f, 0.35f, -17.0f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
+		return E_FAIL;
+
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.0f, 0.35f, -19.0f);
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
 
-	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(10.0f, 0.35f, -19.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -17.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), LEVEL_GAMEPLAY, _strLayerTag, &Monster_Desc)))
@@ -761,6 +852,17 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_ButterGrump"), LEVEL_GAMEPLAY, _strLayerTag, &Boss_Desc)))
 	//	return E_FAIL;
 
+		/*  Projectile  */
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
+
+	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
+	pProjDesc->iCurLevelID = LEVEL_GAMEPLAY;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
+
 	return S_OK;
 }
 
@@ -786,27 +888,31 @@ HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-void CLevel_GamePlay::Create_Arm()
+void CLevel_GamePlay::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength)
 {
 	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
 	if (nullptr == pPlayer)
 		return;
-	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
 
 	CCameraArm::CAMERA_ARM_DESC Desc{};
 
 	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 7.f;
+	Desc.vRotation = _vRotation;
+	Desc.fLength = _fLength;
 	Desc.wszArmTag = TEXT("Player_Arm");
-	Desc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-	
+
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
-	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-
-	pTarget->Add_CurArm(pArm);
+	switch (_iCoordinateType) {
+	case (_uint)COORDINATE_3D:
+		dynamic_cast<CCamera_Target*>(_pCamera)->Add_CurArm(pArm);
+		break;
+	case (_uint)COORDINATE_2D:
+		dynamic_cast<CCamera_2D*>(_pCamera)->Add_CurArm(pArm);
+		break;
+	}
 }
 
 HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
@@ -837,77 +943,23 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 	{
 		_uint		iObjectCnt = 0;
 		_char		szLayerTag[MAX_PATH];
-		wstring		strLayerTag;
+		_string		strLayerTag;
+		_wstring		wstrLayerTag;
 
 		isTempReturn = ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
+		strLayerTag = szLayerTag;
+		wstrLayerTag = m_pGameInstance->StringToWString(strLayerTag);
 
-		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
-			_char		szSaveMeshName[MAX_PATH];
-			_float4x4	vWorld = {};
-
-
-			isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-			isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
-
-
-			CMapObject::MAPOBJ_DESC NormalDesc = {};
-			NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
-			NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
-			NormalDesc.isCoordChangeEnable = false;
-			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
-			NormalDesc.eStartCoord = COORDINATE_3D;
-			NormalDesc.tTransform3DDesc.isMatrix = true;
-			NormalDesc.tTransform3DDesc.matWorld = vWorld;
-			CGameObject* pGameObject = nullptr;
-			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-				LEVEL_GAMEPLAY,
-				strLayerTag,
-				&pGameObject,
-				(void*)&NormalDesc);
-
-			if (pGameObject)
-			{
-				DWORD	dwByte(0);
-				_uint iOverrideCount = 0;
-				C3DModel::COLOR_SHADER_MODE eTextureType;
-				_float4 fDefaultDiffuseColor;
-
-
-				isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-				static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
-
-				switch (eTextureType)
-				{
-				case Engine::C3DModel::COLOR_DEFAULT:
-				case Engine::C3DModel::MIX_DIFFUSE:
-				{
-					isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-					static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
-				}
-				break;
-				default:
-					break;
-				}
-
-				isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
-				if (0 < iOverrideCount)
-				{
-					CModelObject* pModelObject = static_cast<CModelObject*>(pGameObject);
-					for (_uint i = 0; i < iOverrideCount; i++)
-					{
-						_uint iMaterialIndex, iTexTypeIndex, iTexIndex;
-						isTempReturn = ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
-						isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
-						isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
-
-						pModelObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
-					}
-				}
-				//pGameObject->Set_WorldMatrix(vWorld);
-			}
+			C3DMapObject* pGameObject =
+				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
+					(LEVEL_ID)LEVEL_GAMEPLAY,
+					m_pGameInstance,
+					hFile);
+			if (nullptr != pGameObject)
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, wstrLayerTag.c_str(), pGameObject);
 		}
 	}
 	CloseHandle(hFile);

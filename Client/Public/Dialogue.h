@@ -13,7 +13,7 @@ BEGIN(Client)
 class CDialog : public CUI
 {
 public:
-    enum LOC { LOC_DEFAULT, LOC_MIDDLE, LOC_MIDLEFT, LOC_MIDRIGHT, LOC_END };
+    enum LOC { LOC_DEFAULT, LOC_MIDHIGH, LOC_MIDLEFT, LOC_MIDRIGHT, LOC_END };
 
     enum PORTRAITNAME
     {
@@ -43,8 +43,8 @@ public:
 public:
     struct Animation
     {
-        _int duration = 1000;   // 지속 시간 (밀리초)
-        _int speed = 350;      // 속도 (타자기 효과 등)
+        _int duration = 1000;   // 지속 시간
+        _int speed = 350;      // 속도
     };
 
     struct DialogLine
@@ -53,6 +53,10 @@ public:
         wstring Talker;  // 말하는 놈 : 이름 및 초상화를 설정하자.
         wstring text;     // 대화 내용
         _int   BG;     // 배경
+        _int Red;
+        _int Green;
+        _int Blue;
+        
         LOC  location = LOC_DEFAULT;    // 위치 설정
         PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
         Animation animation;   // 애니메이션 정보
@@ -78,12 +82,16 @@ public:
 
 private:
     HRESULT     LoadFromJson(const std::wstring& filePath); // 데이터 로드
-    HRESULT      DisplayText(); // 타이핑 되게하자.
+    HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
+    void        NextDialogue(_float2 _RTSize);
+    void        FirstCalPos(_float2 _RTSize);
 
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터
     _int                m_iCurrentLineIndex = 0; // 현재 출력 중인 라인의 인덱스 (id)
     _tchar			    m_tDialogIndex[MAX_PATH] = {};
+    _float2             m_vCurPos = { 0.f, 0.f };
+    _bool               m_isFirstRefresh = { false };
 
     //vector<DialogData>  m_DialogDatas;
 

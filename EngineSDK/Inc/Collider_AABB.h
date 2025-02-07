@@ -20,12 +20,18 @@ public:
 	HRESULT			Initialize(void* _pArg) override;
 	void			Update(_float _fTimeDelta) override;
 	void			Late_Update(_float _fTimeDelta) override;
+
 #ifdef _DEBUG
-	HRESULT			Render() override;
+	HRESULT			Render(_float2 _fRenderTargetSize) override;
 #endif // _DEBUG
 
-private:
+public:
 	_bool			Is_Collision(CCollider* _pOther) override;
+	void			Block(CCollider* _pOther);
+	void			Block_AABB(CCollider_AABB* _pOther);
+	void			Block_Circle(CCollider_Circle* _pOther);
+
+public:
 	void			Update_OwnerTransform() override;
 
 private:

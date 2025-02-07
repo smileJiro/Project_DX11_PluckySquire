@@ -37,11 +37,18 @@ private:
 	HRESULT Execute_Setup_SimulationFilter(const EVENT& _tEvent);
 	HRESULT Execute_Change_Coordinate(const EVENT& _tEvent);
 	HRESULT Execute_Set_Kinematic(const EVENT& _tEvent);
+	HRESULT	 Execute_SetSceneQueryFlag(const EVENT& _tEvent);
 
 	HRESULT Execute_ChangeMonsterState(const EVENT& _tEvent);
 	HRESULT Execute_ChangeBossState(const EVENT& _tEvent);
 
-	HRESULT	Execute_CameraTrigger(const EVENT& _tEvent);
+	HRESULT	Execute_Trigger_Enter(const EVENT& _tEvent);
+	HRESULT	Execute_Trigger_Stay(const EVENT& _tEvent);
+	HRESULT	Execute_Trigger_Exit(const EVENT& _tEvent);
+	HRESULT	Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent);
+	
+	HRESULT	Execute_Book_Main_Section_Change(const EVENT& _tEvent);
+	HRESULT	Execute_Book_Main_Change(const EVENT& _tEvent);
 
 private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);

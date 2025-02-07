@@ -220,8 +220,8 @@ HRESULT CTask_Manager::Parsing()
 	m_MapObjectNames.clear();
 	m_RepackNeededModels.clear();
 	string strFileFullPath = m_LoadTasks.front().strFilePath;
-	string strFileName = strFileFullPath.substr(strFileFullPath.rfind("\\") + 1, strFileFullPath.size() - strFileFullPath.rfind("\\") - 1);
-	string strFilePath = strFileFullPath.substr(0, strFileFullPath.rfind("\\"));
+	string strFileName = strFileFullPath.substr(strFileFullPath.rfind("/") + 1, strFileFullPath.size() - strFileFullPath.rfind("/") - 1);
+	string strFilePath = strFileFullPath.substr(0, strFileFullPath.rfind("/"));
 
 	wstring strLayerTag = m_LoadTasks.front().strLayerName;
 
@@ -271,7 +271,7 @@ HRESULT CTask_Manager::Parsing()
 	_uint iCompCnt = 0;
 	_uint iFailedCnt = 0;
 
-	_wstring strMaterialPath = m_strUmapJsonPath + L"Material\\";
+	_wstring strMaterialPath = L"../Bin/json/Material/";
 
 	for (auto pair : m_Models)
 	{
@@ -407,7 +407,7 @@ HRESULT CTask_Manager::Parsing()
 	}
 
 
-	wstring strResultFileFath = L"..\\Bin\\json\\Result\\";
+	wstring strResultFileFath = L"../Bin/json/Result/";
 
 	if (FAILED(Export_Result(strResultFileFath, m_pGameInstance->StringToWString(strFileName), ExportStrings)))
 		LOG_TYPE("Export Result Save Error... ", LOG_ERROR);

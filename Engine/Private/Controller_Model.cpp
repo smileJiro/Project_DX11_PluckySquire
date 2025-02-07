@@ -95,12 +95,17 @@ void CController_Model::Play_Animation(_float fTimeDelta, _bool _bReverse)
 {
 	if (m_ModelComs[m_eCurCoord] && m_ModelComs[m_eCurCoord]->Is_AnimModel())
     {
-        if(m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta, _bReverse))
+         if(m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta, _bReverse))
         {
-            for (auto& callback : m_listAnimEndCallBack)
-                callback(m_eCurCoord,m_ModelComs[m_eCurCoord]->Get_CurrentAnimIndex());
+            Invoke_OnAnimEndCallBack(m_eCurCoord, m_ModelComs[m_eCurCoord]->Get_CurrentAnimIndex());
         }
     }
+}
+
+void CController_Model::Invoke_OnAnimEndCallBack(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    for (auto& callback : m_listAnimEndCallBack) 
+        callback(_eCoord, iAnimIdx); 
 }
 
 HRESULT CController_Model::Binding_TextureIndex_To_3D(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
