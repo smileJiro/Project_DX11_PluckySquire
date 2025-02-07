@@ -297,6 +297,7 @@
     </Filter>
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{ae177609-321a-4bf1-ac22-18b52b14a6df}</UniqueIdentifier>
+	</Filter>
     <Filter Include="03.Components\Sneak_DetectionField">
       <UniqueIdentifier>{f6c42eee-acf8-4f6c-9743-0655c7697d90}</UniqueIdentifier>
     </Filter>
