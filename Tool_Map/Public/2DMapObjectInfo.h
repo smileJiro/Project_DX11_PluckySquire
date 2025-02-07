@@ -13,31 +13,6 @@ BEGIN(Map_Tool)
 
 class C2DMapObjectInfo final : public CBase
 {
-public :
-	enum MAPOBJ_MODEL_TYPE
-	{
-		MODEL_NONANIM,
-		MODEL_ANIM,
-		MODEL_END,
-	};
-
-	enum MAPOBJ_ACTIVE_TYPE
-	{
-		ACTIVE_PATROL,
-		ACTIVE_BREAKABLE,
-		ACTIVE_ATTACKABLE,
-		ACTIVE_DIALOG,
-		ACTIVE_MODEL_CLOSE,
-		ACTIVE_END
-	};
-
-
-	enum MAPOBJ_2D_COLLIDIER_TYPE
-	{
-		COLLIDER_AABB,
-		COLLIDER_SQUARE,
-		COLLIDER_END
-	};
 
 private:
 	C2DMapObjectInfo();
@@ -45,14 +20,14 @@ private:
 	virtual ~C2DMapObjectInfo() = default;
 
 public:
-	HRESULT Initialize(json _InfoJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString);
-	HRESULT Export(json& _OutputJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString);
+	HRESULT Initialize(json _InfoJson);
+	HRESULT Export(json& _OutputJson);
 
 	_float2			m_fTextureOffsetSize;
 
 public :
-	MAPOBJ_MODEL_TYPE			Get_ModelType() { return m_eModelType; };
-	void						Set_ModelType(MAPOBJ_MODEL_TYPE _eType) { m_eModelType = _eType; };
+	_uint						Get_ModelType() { return m_eModelType; };
+	void						Set_ModelType(_uint _eType) { m_eModelType = _eType; };
 
 
 	const _string&				Get_SearchTag() { return m_strSearchTag; };
@@ -74,11 +49,11 @@ public :
 	void						Set_Sorting(_bool _isSorting) { m_isSorting = _isSorting; }
 	void						Set_BackGround(_bool _isSorting) { m_isBackGround = _isSorting; }
 
-	MAPOBJ_ACTIVE_TYPE			Get_ActiveType() { return m_eActiveType; };
-	void						Set_ActiveType(MAPOBJ_ACTIVE_TYPE _eType) { m_eActiveType = _eType; };
+	_uint						Get_ActiveType() { return m_eActiveType; };
+	void						Set_ActiveType(_uint _eType) { m_eActiveType = _eType; };
 
-	MAPOBJ_2D_COLLIDIER_TYPE	Get_ColliderType() { return m_eColliderType; };
-	void						Set_ColliderType(MAPOBJ_2D_COLLIDIER_TYPE _eType) { m_eColliderType = _eType; };
+	_uint						Get_ColliderType() { return m_eColliderType; };
+	void						Set_ColliderType(_uint _eType) { m_eColliderType = _eType; };
 	
 	ID3D11ShaderResourceView*	Get_SRV(_float2* _pReturnSize = nullptr);
 	CTexture*					Get_Texture(){ return m_pTexture; }
@@ -133,9 +108,9 @@ private :
 	_bool						m_isModelCreate	= false;
 	_bool						m_isToolRendering = false;
 
-	MAPOBJ_MODEL_TYPE			m_eModelType = MAPOBJ_MODEL_TYPE::MODEL_NONANIM;
-	MAPOBJ_ACTIVE_TYPE			m_eActiveType = MAPOBJ_ACTIVE_TYPE::ACTIVE_END;
-	MAPOBJ_2D_COLLIDIER_TYPE	m_eColliderType = MAPOBJ_2D_COLLIDIER_TYPE::COLLIDER_END;
+	_uint						m_eModelType = 0;
+	_uint						m_eActiveType = 0;
+	_uint						m_eColliderType = 0;
 
 	_bool						m_isSorting = false;
 	_float2						m_fSortingPosition = {};
@@ -152,7 +127,7 @@ private :
 
 
 public:
-	static C2DMapObjectInfo* Create(json _InfoJson, _string* _arrModelTypeString, _string* _arrActiveTypeString, _string* _arrColliderTypeString);
+	static C2DMapObjectInfo* Create(json _InfoJson);
 	static C2DMapObjectInfo* Create();
 	virtual void Free() ;
 

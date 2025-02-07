@@ -821,7 +821,7 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 
 			vector<CMapObject::TEXTURE_INFO> Textures;
 
-			for (_uint iTextureType = 0; iTextureType < AI_TEXTURE_TYPE_MAX; iTextureType++)
+			for (_uint iTextureType = 0; iTextureType < aiTextureType_UNKNOWN; iTextureType++)
 			{
 				if(0 < iTextureType)
 				ImGui::NewLine();

@@ -86,7 +86,7 @@ HRESULT CMaterial::Bind_PixelConstBuffer(CShader* _pShader)
 
 HRESULT CMaterial::Ready_PixelConstBuffer()
 {
-	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+	for (_uint i = 0; i < aiTextureType_UNKNOWN; ++i)
 	{
 		_uint iNumSRVs = 0;
 		if (nullptr == m_MaterialTextures[i])
@@ -146,7 +146,7 @@ void CMaterial::Free()
 {
 	Safe_Release(m_pPixeConstBuffer);
 
-	for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+	for (_uint i = 0; i < aiTextureType_UNKNOWN; ++i)
 		Safe_Release(m_MaterialTextures[i]);
 
 	__super::Free();
