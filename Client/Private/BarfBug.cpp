@@ -93,11 +93,11 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BarfBugAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("2DAnimEventGenerator"), m_pAnimEventGenerator);
 
 

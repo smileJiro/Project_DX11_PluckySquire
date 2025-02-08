@@ -464,7 +464,7 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 
 	for (_uint i = 0; i < CUI::SHOPPANEL::SHOP_END; ++i)
 	{
-		pShopDescs[i].iCurLevelID = LEVEL_GAMEPLAY;
+		pShopDescs[i].iCurLevelID = _eCurLevel;
 	}
 
 	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())

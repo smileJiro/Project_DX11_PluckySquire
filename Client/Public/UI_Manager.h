@@ -38,7 +38,7 @@ private:
 	_bool								m_isESC = { false };
 	_bool								m_isConfirmStore = { false };
 	_bool								m_isUpdateShopPanel = { true };
-	_bool								m_isLogoChooseStage = { false };
+	_bool								m_isLogoChooseStage = { true };
 
 	_int								m_iPreIndex = { 0 };
 	_int								m_iSettingPanelIndex = { 0 };

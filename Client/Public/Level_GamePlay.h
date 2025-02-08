@@ -12,7 +12,7 @@ private:
 	virtual ~CLevel_GamePlay() = default;
 
 public:
-	virtual HRESULT			Initialize() override;
+	virtual HRESULT			Initialize(LEVEL_ID _eLevelID);
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
@@ -34,9 +34,10 @@ private:
 
 	HRESULT Map_Object_Create(_wstring _strFileName);
 
+	LEVEL_ID				m_eLevelID;
 
 public:
-	static CLevel_GamePlay* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CLevel_GamePlay* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;
 };
 

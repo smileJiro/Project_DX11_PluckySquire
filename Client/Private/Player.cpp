@@ -39,6 +39,9 @@ HRESULT CPlayer::Initialize_Prototype()
 HRESULT CPlayer::Initialize(void* _pArg)
 {
     CPlayer::CONTAINEROBJ_DESC* pDesc = static_cast<CPlayer::CONTAINEROBJ_DESC*>(_pArg);
+
+    m_iCurLevelID = pDesc->iCurLevelID;
+
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
@@ -167,7 +170,7 @@ HRESULT CPlayer::Ready_Components()
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
+	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
 
    /* Test 2D Collider */
