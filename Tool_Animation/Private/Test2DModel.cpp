@@ -26,14 +26,28 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 	map<string, json> jPaperFlipBooks;
 	map<string, json> jPaperSprites;
 
-
 	std::filesystem::path path;
 	path = _szRawDataDirPath;
 	json jFile;
-	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
-		if (entry.path().extension() == ".json")
+	for (const auto& entry : std::filesystem::directory_iterator(path)) {
+		//cout << entry.path().string() << endl;
+		if (entry.is_directory())
 		{
-			//cout << entry.path().string() << endl;
+			if ("Frames" == entry.path().filename())
+			{
+
+			}
+			else if ("Textures" == entry.path().filename())
+			{
+
+			}
+			else if("SpriteSheet" == entry.path().filename())
+			{
+
+			}
+		}
+		else if (".json" == entry.path().extension())
+		{
 			std::ifstream input_file(entry.path());
 			if (!input_file.is_open())
 				return E_FAIL;
@@ -62,7 +76,7 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 			}
 
 		}
-		else if (entry.path().extension() == ".png" || entry.path().extension() == ".dds")
+		else if (".png"  == entry.path().extension() || ".dds" ==entry.path().extension() )
 		{
 			if (m_Textures.find(entry.path().filename().replace_extension().string()) != m_Textures.end())
 				continue;

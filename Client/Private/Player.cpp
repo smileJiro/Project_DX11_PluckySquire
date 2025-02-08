@@ -19,6 +19,7 @@
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
 #include "Collision_Manager.h"    
+#include "Interactable.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -417,7 +418,23 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    int a = 0;
+    if (_My.pShapeUserData->iShapeUse == SHAPE_TRIGER)
+    {
+        if (OBJECT_GROUP::INTERACTION_OBEJCT == _Other.pActorUserData->iObjectGroup)
+        {
+            PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
+            if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+            {
+                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
+                if (pInteractable)
+                {
+                    pInteractable->Interact(this);
+                }
+            }
+        }
+    }
+
+
 }
 
 void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
