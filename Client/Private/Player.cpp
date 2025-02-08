@@ -444,12 +444,21 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    int a = 0;
+
+
 }
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    int a = 0;
+    PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
+    if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+    {
+        IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+        if (pInteractable)
+        {
+            pInteractable->Interact(this);
+        }
+    }
 }
 
 void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -577,6 +586,9 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_KEY_SPINLAUNCH] = true;
         }
     }
+    //상호작용
+    if (KEY_DOWN(KEY::E))
+        tResult.bInputStates[PLAYER_KEY_INTERACT] = true;
     //점프
     if (KEY_PRESSING(KEY::SPACE))
         tResult.bInputStates[PLAYER_KEY_JUMP] = true;
