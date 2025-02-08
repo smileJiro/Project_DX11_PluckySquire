@@ -63,19 +63,21 @@ HRESULT C2DMapActionObject::Initialize(void* _pArg)
     }
 
 
+    //Ready_MapActionObjectSetting();
+
     return S_OK;
 }
 
 void C2DMapActionObject::Priority_Update(_float _fTimeDelta)
 {
-    CPartObject::Priority_Update(_fTimeDelta);
+    __super::Priority_Update(_fTimeDelta);
 }
 void C2DMapActionObject::Update(_float _fTimeDelta)
 {
     __super::Update(_fTimeDelta);
     if (true == m_isFadeOut)
     {
-        m_fAlpha = std::min(m_fAlpha - (_fTimeDelta / m_fFadeOutSecond), 0.f);
+        m_fAlpha = std::fmax(m_fAlpha - (_fTimeDelta / m_fFadeOutSecond), 0.f);
     }
 }
 
@@ -86,9 +88,29 @@ void C2DMapActionObject::Late_Update(_float _fTimeDelta)
 
 HRESULT C2DMapActionObject::Render()
 {
-    _float4 fColor = { 1.f,1.f,1.f,m_fAlpha };
-    if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &fColor, sizeof(_float4))))
-        return E_FAIL;
+    switch (m_eType)
+    {
+    case Client::C2DMapActionObject::ACTIVE_TYPE_BREAKABLE:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_PATROL:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_ATTACKABLE:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_DIALOG:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE:
+        {
+            _float4 fColor = { 1.f,1.f,1.f,m_fAlpha };
+            if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &fColor, sizeof(_float4))))
+                return E_FAIL;
+            m_iShaderPasses[COORDINATE_2D] = (_uint)PASS_VTXPOSTEX::MAPOBJECT_MIXCOLOR;
+        }
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_LAST:
+        break;
+    default:
+        break;
+    }
 
     return __super::Render();
 }
@@ -100,8 +122,27 @@ HRESULT C2DMapActionObject::Render_Shadow()
 
 void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    m_isFadeOut = true;
-    m_fAlpha = 1.f;
+    switch (m_eType)
+    {
+    case Client::C2DMapActionObject::ACTIVE_TYPE_BREAKABLE:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_PATROL:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_ATTACKABLE:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_DIALOG:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE:
+    {
+        m_isFadeOut = true;
+        m_fAlpha = 1.f;
+    }
+    break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_LAST:
+        break;
+    default:
+        break;
+    }
 }
 
 void C2DMapActionObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -110,8 +151,27 @@ void C2DMapActionObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider*
 
 void C2DMapActionObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    m_isFadeOut = false;
-    m_fAlpha = 1.f;
+    switch (m_eType)
+    {
+    case Client::C2DMapActionObject::ACTIVE_TYPE_BREAKABLE:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_PATROL:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_ATTACKABLE:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_DIALOG:
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE:
+    {
+        m_isFadeOut = false;
+        m_fAlpha = 1.f;
+    }
+    break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_LAST:
+        break;
+    default:
+        break;
+    }
 }
 
 

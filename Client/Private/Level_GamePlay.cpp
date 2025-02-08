@@ -280,7 +280,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Map()
 {
-	if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+	//if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 		return E_FAIL;
 	return S_OK;
 }
@@ -725,16 +726,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	pDesc.fX = 0.f; // 전체 사이즈 / RTSIZE 끝으로 변경
 	pDesc.fY = 0.f;// 전체 사이즈 / RTSIZE 끝으로 변경
-	pDesc.fSizeX = 2328.f;
-	pDesc.fSizeY = 504.f;
+	pDesc.fSizeX = 2328.f * 0.8f;
+	pDesc.fSizeY = 504.f * 0.8f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
 	pDesc.fX = DEFAULT_SIZE_BOOK2D_X / RATIO_BOOK2D_X;
 	pDesc.fY = DEFAULT_SIZE_BOOK2D_Y / RATIO_BOOK2D_Y;
-	pDesc.fSizeX = 512.f;
-	pDesc.fSizeY = 512.f;
+	pDesc.fSizeX = 512.f * 0.8f;
+	pDesc.fSizeY = 512.f * 0.8f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;

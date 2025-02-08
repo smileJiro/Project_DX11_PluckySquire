@@ -136,7 +136,7 @@ void CNPC_Store::Priority_Update(_float _fTimeDelta)
 void CNPC_Store::Update(_float _fTimeDelta)
 {
 	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
-	
+	//Interact(Uimgr->Get_Player());
 	__super::Update(_fTimeDelta);
 }
 
@@ -228,6 +228,21 @@ void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 			break;
 		}
 	}
+}
+
+void CNPC_Store::Interact(CPlayer* _pUser)
+{
+	m_isColPlayer = true;
+}
+
+_bool CNPC_Store::Is_Interactable(CPlayer* _pUser)
+{
+	return true;
+}
+
+_float CNPC_Store::Get_Distance(CPlayer* _pUser)
+{
+	return XMVector3Length(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION) - _pUser->Get_FinalPosition()).m128_f32[0];
 }
 
 
