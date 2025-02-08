@@ -135,6 +135,7 @@ public: /* For. Font_Manager s*/
 
 public: /* For. Target_Manager */
 	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
+	HRESULT				Add_RenderTarget_MSAA(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
 	HRESULT				Add_MRT(const _wstring& _strMRTTag, const _wstring& _strTargetTag);
 	HRESULT				Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool isClear = true);	/* 지정한 RenderTargets를 셰이더에 바인딩하고 그리기 준비를 하는 */
 	HRESULT				End_MRT(); /* 렌더링을 마친 후, 기존의 BackRTV를 다시 바인딩 한다. */
@@ -146,6 +147,8 @@ public: /* For. Target_Manager */
 	_float2				Get_RT_Size(const _wstring& _strTargetTag);
 	HRESULT				Erase_RenderTarget(const _wstring& _strTargetTag);
 	HRESULT				Erase_MRT(const _wstring& _strMRTTag);
+	/* MSAA 전용 함수 */
+	HRESULT				Resolve_RT_MSAA(const _wstring& _strTargetTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
 #ifdef _DEBUG
 	HRESULT				Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY);	/* 렌더타겟을 디버그용으로 렌더하기위한 함수 */
 	HRESULT				Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect);			/* 디버그 렌더 함수 */

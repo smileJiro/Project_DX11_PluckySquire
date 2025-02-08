@@ -4,15 +4,15 @@
 			"id": "dialog_01",
 			"lines": [
 				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 3,
-					"location": 0,
+					"Portrait": 2,
+					"Talker": "마르티나",
+					"BG": 2,
+					"location": 2,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "마법을 쓰러가볼까요?",
+					"text": "안녕하세요, 용감한 용사 여러분!",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -21,12 +21,82 @@
 					"Portrait": 2,
 					"Talker": "마티나",
 					"BG": 2,
-					"location": 0,
+					"location": 1,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "제가 마법인걸요?",
+					"text": "전 마르티나라고 해요... 만나서 반가워요!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 3,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "새 물건이 들어왔어요. 한번 보세요!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 4,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "LEFT_DOWN의 위치에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 5,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "LEFT_HIGH의 위치에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 6,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "RIGHT_HIGH의 위치에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 7,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "RIGHT_DOWN의 위치에요",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0

@@ -78,6 +78,51 @@ _float CState::Get_CurCoordRange(MONSTER_STATE _eState)
 	return fRange;
 }
 
+_bool CState::Check_Target3D(_bool _isSneak)
+{
+	MONSTER_STATE eState = MONSTER_STATE::ALERT;
+	if (true == _isSneak)
+		eState = MONSTER_STATE::SNEAK_ALERT;
+
+	if (m_pOwner->IsTarget_In_Detection())
+	{
+		//------테스트
+		_vector vTargetDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
+		_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+		_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(vTargetDir));
+		_float3 vOutPos;
+		CActorObject* pActor = nullptr;
+
+		//레이 받는 물체가 현재 maintable이 존재해서 동작하는데, 없으면 동작안하는 코드
+		if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(eState), &vOutPos, &pActor))
+		{
+			if (OBJECT_GROUP::RAY_OBJECT ^ static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup)
+			{
+				//플레이어가 레이 오브젝트보다 가까우면 인식
+				if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos) - m_pOwner->Get_FinalPosition()))
+				{
+					Event_ChangeMonsterState(eState, m_pFSM);
+					return true;
+				}
+			}
+		}
+		//레이 충돌 안했을 때(장애물이 없었을 때)
+		else
+		{
+			Event_ChangeMonsterState(eState, m_pFSM);
+			return true;
+		}
+		//---------
+	}
+
+	return false;
+}
+
+void CState::Set_Sneak_InvestigatePos(_fvector _vPosition)
+{
+	XMStoreFloat3(&m_vSneakPos, _vPosition);
+}
+
 
 void CState::Set_Owner(CMonster* _pOwner)
 {

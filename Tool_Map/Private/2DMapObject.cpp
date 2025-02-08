@@ -2,6 +2,8 @@
 #include "2DMapObject.h"
 #include "Engine_Defines.h"
 #include "GameInstance.h"
+#include "Collider.h"
+//#include "Coll.h"
 
 
 C2DMapObject::C2DMapObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -86,7 +88,13 @@ void C2DMapObject::Late_Update(_float fTimeDelta)
 
 HRESULT C2DMapObject::Render()
 {
-	return __super::Render();
+	HRESULT hr = __super::Render();
+#ifdef _DEBUG
+	if (m_pColliderCom)
+		m_pColliderCom->Render();
+#endif // _DEBUG
+
+	return hr;
 }
 
 void C2DMapObject::Set_OffsetPos(_float2 _fPos)
@@ -202,6 +210,76 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 	XMStoreFloat4x4(&m_ProjMatrix, 
 		XMMatrixOrthographicLH((_float)m_fRenderTargetSize.x,
 			m_fRenderTargetSize.y, 0.0f, 1.0f));
+
+
+
+
+	if (m_pModelInfo->Is_Collider())
+	{
+
+		_float2 fPos = m_pModelInfo->Get_Collider_Offset_Pos();
+
+		fPos.x *= RATIO_BOOK2D_X;
+		fPos.y *= RATIO_BOOK2D_Y;
+		fPos.y *= -1.f;
+
+
+		CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_2D);
+
+		C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
+		const _matrix* matLocal = p2DModel->Get_CurrentSpriteTransform();
+
+		if (nullptr != matLocal)
+		{
+			_float2 fSibalOffset;
+			fSibalOffset.x = (*matLocal).r[3].m128_f32[0] * RATIO_BOOK2D_X;
+			fSibalOffset.y = (*matLocal).r[3].m128_f32[1] * RATIO_BOOK2D_Y;
+
+			//_matrix matPos = XMMatrixTranslation(fPos.x, fPos.y, 1.f);
+			//matPos *= *matLocal;
+
+			fPos.x += fSibalOffset.x;
+			fPos.y += fSibalOffset.y;
+		}
+
+		if (CCollider::AABB_2D == m_pModelInfo->Get_ColliderType())
+		{
+			_float2 fExtent = m_pModelInfo->Get_Collider_Extent();
+			fExtent.x *= RATIO_BOOK2D_X;
+			fExtent.y *= RATIO_BOOK2D_Y;
+			fExtent.x *= 0.5f;
+			fExtent.y *= 0.5f;
+
+			CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+			AABBDesc.pOwner = this;
+			AABBDesc.vExtents = fExtent;
+			AABBDesc.vScale = { 1.0f, 1.0f };
+			AABBDesc.vOffsetPosition = fPos;
+			AABBDesc.isBlock = !m_isActive;
+			if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+				TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+				return E_FAIL;
+		}
+		else if (CCollider::CIRCLE_2D == m_pModelInfo->Get_ColliderType())
+		{
+			_float fRadius = m_pModelInfo->Get_Collider_Radius();
+			fRadius *= RATIO_BOOK2D_X;
+
+			/* Test 2D Collider */
+			CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+			CircleDesc.pOwner = this;
+			CircleDesc.fRadius = fRadius;
+			CircleDesc.vScale = { 1.0f, 1.0f };
+			CircleDesc.vOffsetPosition = fPos;
+			CircleDesc.isBlock = !m_isActive;
+			if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+				TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &CircleDesc)))
+				return E_FAIL;
+		}
+	}
+
+
+
 
 	return S_OK;
 }

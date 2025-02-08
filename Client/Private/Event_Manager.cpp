@@ -21,6 +21,8 @@
 #include "Camera_Target.h"
 #include "Camera_2D.h"
 
+#include "Trigger_Manager.h"
+
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
 CEvent_Manager::CEvent_Manager()
@@ -407,6 +409,9 @@ HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
+	{
+		CTrigger_Manager::GetInstance()->Resister_TriggerEvent(*pStr, iTriggerID);
+	}
 		break;
 	}
 

@@ -184,6 +184,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\2DMapActionObject.h" />
+    <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
@@ -285,7 +287,7 @@
     <ClInclude Include="..\Public\Sneak_IdleState.h" />
     <ClInclude Include="..\Public\Sneak_InvestigateState.h" />
     <ClInclude Include="..\Public\Sneak_PatrolState.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
@@ -327,6 +329,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\2DMapActionObject.cpp" />
+    <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
@@ -426,7 +430,7 @@
     <ClCompile Include="..\Private\Sneak_IdleState.cpp" />
     <ClCompile Include="..\Private\Sneak_InvestigateState.cpp" />
     <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
