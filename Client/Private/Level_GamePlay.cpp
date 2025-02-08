@@ -492,7 +492,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	Desc.iCurLevelID = m_eLevelID;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
-		m_eLevelID, L"Layer_Default", &Desc)))
+		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
 
