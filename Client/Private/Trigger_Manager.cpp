@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Trigger_Manager.h"
+#include "Section.h"
 
 #include "GameInstance.h"
 
@@ -26,7 +27,7 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
     return S_OK;
 }
 
-HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath)
+HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection)
 {
 	ifstream file(_szFilePath);
 
@@ -36,7 +37,6 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 		file.close();
 		return E_FAIL;
 	}
-
 	json Result;
 	file >> Result;
 	file.close();
@@ -89,7 +89,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 				}
 				else if (COORDINATE_2D == Desc.eStartCoord)
 				{
-					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc)))
+					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc, _pSection)))
 						return E_FAIL;
 				}
 			}
@@ -156,7 +156,7 @@ HRESULT CTrigger_Manager::Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject
 }
 
 
-HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
+HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection)
 {
 	return E_NOTIMPL;
 }
@@ -230,6 +230,7 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
 		break;
 	}
+
 }
 
 _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box)
