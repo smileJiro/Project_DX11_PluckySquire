@@ -64,11 +64,11 @@ public:
 
 public:
 	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath);
-	HRESULT						Load_TriggerEvents(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath);
+	HRESULT						Load_TriggerEvents(_wstring _szFilePath);
 
 public:
 	// Event Trigger
-	void						On_End() { m_isEventEnd = true; }
+	void						On_End(_wstring _szEventTag);	// 끝나는 Action의 EventTag를 넘겨주고 현재 실행 중인 Action인지 확인(ex CutScene_1)
 
 	void						Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID);
 
