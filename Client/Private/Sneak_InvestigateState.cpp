@@ -38,12 +38,9 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	_vector vDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
 	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
-	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
-	{
-		//공격 준비로 전환
-		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ATTACK, m_pFSM);
-		return;
-	}
+	
+	//플레이어 시야 들어오면 인식 전환
+	Check_Target3D(true);
 
 	//이동하다 소리가 나면 범위 내에서 가장 먼 위치로 다음 위치를 갱신
 	if (m_pOwner->IsTarget_In_Sneak_Detection())
@@ -51,14 +48,14 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
 	}
 
-	//위치에 도착했는데 안 보이면 경계상태로 이동
+	//위치에 도착했는데 안 보이면 경계상태로 이동(수정해야함)
 	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 	}
 	else
 	{
-		//소리 난 위치로 장애물 피해서 추적
+		//소리 난 위치로 장애물 피해서 추적(수정해야함)
 		m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
 		m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 	}

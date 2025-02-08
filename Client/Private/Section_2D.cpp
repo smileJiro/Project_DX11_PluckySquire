@@ -6,6 +6,7 @@
 #include "Section_Manager.h"
 #include "Engine_Macro.h"
 #include "MapObjectFactory.h"
+#include "Trigger_Manager.h"
 
 CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection(_pDevice, _pContext)
@@ -146,8 +147,22 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 	{
 		return E_FAIL;
 	}
+	_wstring strPath = L"../Bin/MapSaveFiles/2D/Trigger/";
+	strPath += m_strName;
+	strPath += L".json";
 
-
+	if (filesystem::exists(filesystem::path(strPath))) 
+	{
+		CTrigger_Manager::GetInstance()->Load_Trigger(
+			LEVEL_STATIC,
+			(LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID(),
+			strPath, 
+			this
+			);
+	}
+	else 
+	{
+	}
 
 
 	return S_OK;

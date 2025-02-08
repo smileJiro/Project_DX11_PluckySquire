@@ -313,12 +313,6 @@
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain">
       <UniqueIdentifier>{441416e8-4de7-4552-b5ef-b2d6f2278881}</UniqueIdentifier>
     </Filter>
-    <Filter Include="92.TriggerManager">
-      <UniqueIdentifier>{01c9cacb-3329-4753-ba74-b0632caf502d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="91.MapObjectFactory">
-      <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MapObject\2D\0. Super">
       <UniqueIdentifier>{b9229a37-ad55-422f-9e39-3e7347e6b1e9}</UniqueIdentifier>
     </Filter>
@@ -333,6 +327,15 @@
     </Filter>
     <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
       <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Trigger">
+      <UniqueIdentifier>{dbb54d55-f3f8-4dc6-a444-7f4d131040fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Trigger\Manager">
+      <UniqueIdentifier>{523303ea-d22e-4750-8a8e-1d10035d79a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92.MapObjectFactory">
+      <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -656,9 +659,6 @@
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Trigger_Manager.h">
-      <Filter>92.TriggerManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
@@ -718,7 +718,7 @@
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapObjectFactory.h">
-      <Filter>91.MapObjectFactory</Filter>
+      <Filter>92.MapObjectFactory</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\2DMapActionObject.h">
@@ -751,6 +751,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\NPC_DJMoonBeard.h">
       <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TriggerObject.h">
+      <Filter>02.GameObjects\Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Trigger_Manager.h">
+      <Filter>02.GameObjects\Trigger\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1065,9 +1071,6 @@
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Trigger_Manager.cpp">
-      <Filter>92.TriggerManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
@@ -1154,6 +1157,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp">
       <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TriggerObject.cpp">
+      <Filter>02.GameObjects\Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Trigger_Manager.cpp">
+      <Filter>02.GameObjects\Trigger\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

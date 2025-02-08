@@ -6,6 +6,8 @@
 #include "Camera_Free.h"
 #include "Camera_Manager_Tool.h"
 
+#include "TriggerObject.h"
+
 #include "ModelObject.h"
 #include "Layer.h"
 
