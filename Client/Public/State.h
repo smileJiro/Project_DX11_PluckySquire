@@ -23,6 +23,7 @@ public:
 		_float fAttack2DRange;
 		_float fDelayTime;
 		_float fCoolTime;
+		_int iCurLevel;
 	}STATEDESC;
 
 protected:
@@ -64,6 +65,7 @@ protected:
 	//상태를 가지는 몬스터
 	CMonster* m_pOwner = { nullptr };
 	CFSM* m_pFSM = { nullptr };
+	_int m_iCurLevel = { LEVEL_END };
 
 	_float	m_fAlertRange = {};
 	_float	m_fChaseRange = {};

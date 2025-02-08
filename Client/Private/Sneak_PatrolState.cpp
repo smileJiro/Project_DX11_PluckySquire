@@ -78,10 +78,14 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 	{
 		if (m_pOwner->Get_CurCoord() == COORDINATE_LAST)
 			return;
-		//적 발견 시 ALERT 전환
+		
 		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 		{	
-			Check_Target3D(true);
+			//적 발견 시 ALERT 전환
+			if (Check_Target3D(true))
+			{
+				return;
+			}
 
 			//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
 			if (m_pOwner->IsTarget_In_Sneak_Detection())
@@ -92,7 +96,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 		}
 	}
 
-	//정해진 웨이포인트에서 순찰해야함
+	//다음 웨이포인트 설정
 	if (false == m_isTurn)
 	{
 		Determine_Direction();
@@ -110,6 +114,7 @@ void CSneak_PatrolState::State_Exit()
 	m_fAccTime = 0.f;
 	m_fAccDistance = 0.f;
 	m_isTurn = false;
+	m_isMove = false;
 }
 
 void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
@@ -117,8 +122,8 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 	if (m_Waypoints.size() <= m_iCurWayIndex)
 		return;
 
-	//기본적으로 추적중에 y값 상태 변화는 없다고 가정
-	_vector vDir = XMVector3Normalize(Set_Sneak_PatrolDirection(_iDir));
+
+	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex])-m_pOwner->Get_FinalPosition());
 
 	if (true == m_isTurn && false == m_isMove)
 	{
@@ -204,6 +209,8 @@ void CSneak_PatrolState::Determine_Direction()
 	{
 		m_fDelayTime = m_pGameInstance->Compute_Random(0.f, 2.f);
 	}
+
+	m_isTurn = true;
 }
 
 _vector CSneak_PatrolState::Set_Sneak_PatrolDirection(_int _iDir)

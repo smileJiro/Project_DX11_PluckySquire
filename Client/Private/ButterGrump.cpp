@@ -321,11 +321,12 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 HRESULT CButterGrump::Ready_Components()
 {
     /* Com_FSM */
-    CFSM_Boss::FSMBOSSDESC Desc;
-    Desc.pOwner = this;
+    CFSM_Boss::FSMBOSSDESC FSMDesc;
+    FSMDesc.pOwner = this;
+    FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM_Boss"),
-        TEXT("Com_FSM_Boss"), reinterpret_cast<CComponent**>(&m_pBossFSM), &Desc)))
+        TEXT("Com_FSM_Boss"), reinterpret_cast<CComponent**>(&m_pBossFSM), &FSMDesc)))
         return E_FAIL;
 
 

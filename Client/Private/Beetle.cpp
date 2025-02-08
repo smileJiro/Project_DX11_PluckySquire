@@ -200,6 +200,20 @@ void CBeetle::Change_Animation()
     }
 }
 
+void CBeetle::Turn_Animation(_bool _isCW)
+{
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    if (true == _isCW)
+        AnimIdx = TURN_RIGHT;
+    else
+        AnimIdx = TURN_LEFT;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
+}
+
 void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -297,14 +311,15 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 HRESULT CBeetle::Ready_Components()
 {
     /* Com_FSM */
-    CFSM::FSMDESC Desc;
-    Desc.fAlertRange = m_fAlertRange;
-    Desc.fChaseRange = m_fChaseRange;
-    Desc.fAttackRange = m_fAttackRange;
-    Desc.pOwner = this;
+    CFSM::FSMDESC FSMDesc;
+    FSMDesc.fAlertRange = m_fAlertRange;
+    FSMDesc.fChaseRange = m_fChaseRange;
+    FSMDesc.fAttackRange = m_fAttackRange;
+    FSMDesc.pOwner = this;
+    FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
-        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
+        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
 #ifdef _DEBUG
