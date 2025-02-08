@@ -12,6 +12,7 @@
 #include "Collision_Manager.h"
 #include "Trigger_Manager.h"
 
+#include "CubeMap.h"
 #include "MainTable.h"
 #include "Player.h"
 #include "TestTerrain.h"
@@ -27,6 +28,7 @@
 #include "Soldier_CrossBow.h"
 #include "Soldier_Bomb.h"
 #include "ButterGrump.h"
+
 
 #include "RayShape.h"
 
@@ -55,6 +57,7 @@ HRESULT CLevel_GamePlay::Initialize()
 {
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
+	//Ready_CubeMap(TEXT("Layer_CubeMap"));
 	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
@@ -262,6 +265,21 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_CubeMap(const _wstring& _strLayerTag)
+{
+	CCubeMap::CUBEMAP_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+	Desc.iRenderGroupID = RG_3D;
+	Desc.iPriorityID = PR3D_PRIORITY;
+	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+		LEVEL_GAMEPLAY, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

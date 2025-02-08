@@ -4,11 +4,11 @@
 BEGIN(Engine)
 class CShader;
 class CVIBuffer_Rect;
-class CRenderTarget final : public CBase
+class CRenderTarget : public CBase
 {
 public:
 
-private:
+protected:
 	CRenderTarget(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CRenderTarget() = default;
 
@@ -22,7 +22,7 @@ public:
 #endif // _DEBUG
 
 public:
-	HRESULT Clear();
+	virtual HRESULT Clear();
 	HRESULT Bind_ShaderResource(CShader* _pShader, const _char* _pConstantName);
 
 	HRESULT Copy_Resource(ID3D11Texture2D* _pDest);
@@ -32,8 +32,9 @@ public:
 	ID3D11ShaderResourceView*	Get_SRV() const { return m_pSRV; }
 	_float2						Get_Size() const { return m_vSize; }
 	const _wstring&				Get_Name() const { return m_strName; }
-private:
+protected:
 	_wstring					m_strName;
+	DXGI_FORMAT					m_ePixelFormat = {};
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
 	ID3D11Texture2D*			m_pTexture2D = nullptr;
@@ -42,7 +43,7 @@ private:
 	_float4						m_vClearColor = {};
 	_float2						m_vSize = {};
 #ifdef _DEBUG
-private:
+protected:
 	_float4x4					m_WorldMatrix = {}; /* 디버그용 렌더를 하기 위해 사용 할 WorldMatrix */
 #endif // _DEBUG
 

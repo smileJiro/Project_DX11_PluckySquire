@@ -10,6 +10,7 @@
 #include "Camera_2D.h"
 
 /* For. Main Table */
+#include "CubeMap.h"
 #include "MainTable.h"
 
 /* For. Trigger*/
@@ -185,6 +186,17 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+
+    ///* For. Prototype_Component_Texture_BRDF_Shilick */
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
+    //    return E_FAIL;
+    //
+    ///* For. Prototype_Component_Texture_TestEnv */
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3))))
+    //    return E_FAIL;
+    //
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
 		return E_FAIL;
@@ -271,6 +283,11 @@ HRESULT CLoader::Loading_Level_Static()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_Component_VIBuffer_Cube */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+        CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
     /* For. Prototype_Component_Actor_Dynamic */
@@ -290,6 +307,12 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+    /* For. Prototype_GameObject_CubeMap */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+        CCubeMap::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     /* For. Prototype_GameObject_MainTable */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
         CMainTable::Create(m_pDevice, m_pContext))))

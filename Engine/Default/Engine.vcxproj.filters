@@ -283,6 +283,12 @@
     <Filter Include="01.Utility\96.D3DUtils">
       <UniqueIdentifier>{d4356aa0-e49f-4339-aca3-67d29a98dd5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Objects\CubeMap">
+      <UniqueIdentifier>{e11a649e-44dd-42e9-80cb-7d87582dbe4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\09.RenderTargets\MSAA">
+      <UniqueIdentifier>{1043a63e-dc1b-48e6-9471-7d9ebdd66dd9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -579,6 +585,12 @@
     <ClInclude Include="..\public\D3DUtils.h">
       <Filter>01.Utility\96.D3DUtils</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CubeMap.h">
+      <Filter>01.Utility\03.Objects\CubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderTarget_MSAA.h">
+      <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -862,6 +874,12 @@
     </ClCompile>
     <ClCompile Include="..\private\D3DUtils.cpp">
       <Filter>01.Utility\96.D3DUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CubeMap.cpp">
+      <Filter>01.Utility\03.Objects\CubeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RenderTarget_MSAA.cpp">
+      <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
