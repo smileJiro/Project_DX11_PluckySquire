@@ -143,6 +143,9 @@ protected: // Initial
 	_bool						m_isInitialData = { false };
 	_float2						m_InitialTime = { 0.3f, 0.f };
 
+protected: // EventTag (ex CutScene_1 ...)
+	_wstring					m_szEventTag = {};
+
 public:
 	virtual CGameObject* Clone(void* _pArg) = 0;
 	virtual void Free() override;

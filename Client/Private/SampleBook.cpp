@@ -64,7 +64,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	m_pAnimEventGenerator = 
 		static_cast<CAnimEventGenerator*> 
 		(m_pGameInstance->
-			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
+			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
 	
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
@@ -139,8 +139,6 @@ void CSampleBook::Update(_float _fTimeDelta)
 		{
 			m_isAction = true;
 			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
-			//Set_ReverseAnimation(false);
-			//Set_Animation(8);
 		}
 	}
 	if (KEY_DOWN(KEY::N))
@@ -149,8 +147,6 @@ void CSampleBook::Update(_float _fTimeDelta)
 		{
 			m_isAction = true;
 			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
-		/*	Set_ReverseAnimation(true);
-			Set_Animation(8);*/
 		}
 	}
 
@@ -390,7 +386,7 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 		if (NEXT == m_eCurAction)
 		{
 			if (SECTION_MGR->Has_Next_Section())
-				Event_Book_Main_Section_Change(SECTION_MGR->Get_Next_Section_Key()->c_str());
+				Event_Book_Main_Section_Change_End(SECTION_MGR->Get_Next_Section_Key()->c_str());
 		}
 		else if (PREVIOUS == m_eCurAction)
 		{
@@ -437,6 +433,11 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 				return;
 		}
 	}
+}
+
+HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
+{
+	return E_NOTIMPL;
 }
 
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

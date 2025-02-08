@@ -66,7 +66,7 @@ void CLogo_BG::Update(_float _fTimeDelta)
 				CUI_Manager::GetInstance()->Set_LogoIndex(iIndex);
 			}
 		}
-		else if (KEY_DOWN(KEY::E) && true == Uimgr->Get_LogoChanseStage())
+		else if (KEY_DOWN(KEY::ENTER) && true == Uimgr->Get_LogoChanseStage())
 		{
 			ProcesssByIndex(iIndex);
 		}
@@ -94,6 +94,24 @@ HRESULT CLogo_BG::Render()
 
 	__super::Render(0, PASS_VTXPOSTEX::COLOR_ALPHA);
 
+	_wstring strMenuText[] = {
+		TEXT("게임 시작")
+		,TEXT("옵션")
+		,TEXT("크레딧")
+		,TEXT("바탕화면으로 나가기")
+	};
+	
+	_wstring strMenuOverrideText[] = {
+		TEXT("챕터 2 메인 맵")
+		,TEXT("챕터 4 일반 맵")
+		,TEXT("크레딧")
+		,TEXT("바탕화면으로 나가기")
+	};
+
+	_wstring* strCurText = nullptr;
+
+	//strCurText = strMenuText;
+	strCurText = strMenuOverrideText;
 	
 	if (false == Uimgr->Get_LogoChanseStage())
 	{
@@ -117,16 +135,17 @@ HRESULT CLogo_BG::Render()
 			wsprintf(wMouseTalk, TEXT("자, 시작해 볼까요!"));
 			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.35f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("게임 시작"));
+
+			wsprintf(wMouseTalk, strCurText[0].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("옵션"));
+			wsprintf(wMouseTalk, strCurText[1].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.65f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("크레딧"));
+			wsprintf(wMouseTalk, strCurText[2].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.56f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("바탕화면으로 나가기"));
+			wsprintf(wMouseTalk, strCurText[3].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.2f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 		}
@@ -136,16 +155,16 @@ HRESULT CLogo_BG::Render()
 			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 
-			wsprintf(wMouseTalk, TEXT("게임 시작"));
+			wsprintf(wMouseTalk, strCurText[0].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("옵션"));
+			wsprintf(wMouseTalk, strCurText[1].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.65f, g_iWinSizeY / 2.4f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("크레딧"));
+			wsprintf(wMouseTalk, strCurText[2].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.56f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("바탕화면으로 나가기"));
+			wsprintf(wMouseTalk, strCurText[3].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.2f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 		else if (2 == iIndex)
@@ -154,16 +173,16 @@ HRESULT CLogo_BG::Render()
 			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.3f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 
-			wsprintf(wMouseTalk, TEXT("게임 시작"));
+			wsprintf(wMouseTalk, strCurText[0].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("옵션"));
+			wsprintf(wMouseTalk, strCurText[1].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.65f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("크레딧"));
+			wsprintf(wMouseTalk, strCurText[2].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.56f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("바탕화면으로 나가기"));
+			wsprintf(wMouseTalk, strCurText[3].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.2f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 		else if (3 == iIndex)
@@ -171,16 +190,16 @@ HRESULT CLogo_BG::Render()
 			wsprintf(wMouseTalk, TEXT("또 들러 주세요!"));
 			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.45f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("게임 시작"));
+			wsprintf(wMouseTalk, strCurText[0].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("옵션"));
+			wsprintf(wMouseTalk, strCurText[1].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.65f, g_iWinSizeY / 2.4f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("크레딧"));
+			wsprintf(wMouseTalk, strCurText[2].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.56f, g_iWinSizeY - g_iWinSizeY / 1.98f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-			wsprintf(wMouseTalk, TEXT("바탕화면으로 나가기"));
+			wsprintf(wMouseTalk, strCurText[3].c_str());
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.2f, g_iWinSizeY - g_iWinSizeY / 2.4f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
@@ -204,25 +223,25 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 	case 0 :
 	{
 		Uimgr->Set_LogoChangeState(false);
-		Event_LevelChange(LEVEL_LOADING, LEVEL_GAMEPLAY);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_CHAPTER_2);
 	}
 	break;
 
 	case 1:
 	{
-		int a = 0;
+		Uimgr->Set_LogoChangeState(false);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_CHAPTER_4);
 	}
 	break;
 
 	case 2:
 	{
-
 	}
 	break;
 
 	case 3:
 	{
-
+		DestroyWindow(g_hWnd);
 	}
 	break;
 	}

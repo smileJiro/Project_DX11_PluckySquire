@@ -36,42 +36,9 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
-	//if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
-	//{
-	//	//m_pOwner->Attack();
-	//}
-	//else
-	//{
-	//	Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
-	//}
-
-	Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
-
-	////공격 범위 벗어나고 추적 범위 내면 Chase 전환
-	//if (fDis > Get_CurCoordRange(MONSTER_STATE::ATTACK) && fDis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
-	//{
-	//	Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
-	//	return;
-	//}
-	////범위 전부를 벗어나면 Idle 전환
-	//if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
-	//{
-	//	Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-	//}
-	//else
-	//{
-	//	//타겟 방향으로 회전 후 공격
-	//	/*if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
-	//	{
-	//		m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
-	//	}
-	//	else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
-	//	{
-	//		m_pOwner->Change_Dir();
-	//	}*/
-	//	m_pOwner->Attack();
-	//}
+	//컷씬으로 들어가며 초기화
+	//Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
+	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 }
 
 void CSneak_AttackState::State_Exit()

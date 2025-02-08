@@ -28,9 +28,6 @@
 #include "CustomFont.h"
 #include "RenderTarget.h"
 
-/* Trigger */
-#include "TriggerObject.h"
-
 /* Camera */
 #include "Camera_Free.h"
 #include "CameraArm.h"

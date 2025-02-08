@@ -222,7 +222,7 @@ void CMonster::Active_OnEnable()
 
 
 	// 2. 몬스터 할거 하고
-//	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+//	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0);
 //	if (nullptr == m_pTarget)
 //	{
 //#ifdef _DEBUG
@@ -302,6 +302,7 @@ void CMonster::Free()
 
 	Safe_Release(m_pFSM);
 	Safe_Release(m_pDetectionField);
+	Safe_Release(m_pSneak_DetectionField);
 #ifdef _DEBUG
 	Safe_Release(m_pDraw);
 #endif // _DEBUG

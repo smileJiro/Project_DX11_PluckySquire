@@ -460,6 +460,7 @@ public: /* 2D Ãæµ¹ */
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
 	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
+	//_float Get_FootHeightThreshold() { return m_fFootHeightThreshold; }
 	_vector Get_RootBonePosition();
 	_float Get_ArmHeight() { return m_fArmHeight; }
 	_float Get_ArmLength() { return m_fArmLength; }
@@ -502,6 +503,7 @@ private:
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360.f;
 	_float m_fStepSlopeThreshold = 0.3f;
+	//_float m_fFootHeightThreshold = 0.1f;
 	_float m_fAirRotateSpeed = 40;
 	_float m_fAirRunSpeed = 10.f;
 	_bool m_bOnGround = false;

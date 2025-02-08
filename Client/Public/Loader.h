@@ -41,7 +41,8 @@ private:
 private:
 	HRESULT Loading_Level_Static();
 	HRESULT Loading_Level_Logo();
-	HRESULT Loading_Level_GamePlay();
+	HRESULT Loading_Level_Chapter_2();
+	HRESULT Loading_Level_Chapter_4();
 
 
 

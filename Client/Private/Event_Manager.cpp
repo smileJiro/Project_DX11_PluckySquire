@@ -21,6 +21,8 @@
 #include "Camera_Target.h"
 #include "Camera_2D.h"
 
+#include "SampleBook.h"
+
 #include "Trigger_Manager.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
@@ -139,9 +141,14 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Trigger_Exit_ByCollision(_tEvent);
 	}
 	break;
-	case Client::EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE:
+	case Client::EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_START:
 	{
-		Execute_Book_Main_Section_Change(_tEvent);
+		Execute_Book_Main_Section_Change_Start(_tEvent);
+	}
+	break;	
+	case Client::EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_END:
+	{
+		Execute_Book_Main_Section_Change_End(_tEvent);
 	}
 	break;
 	case Client::EVENT_TYPE::SET_SCENEQUERYFLAG:
@@ -234,8 +241,11 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 	case Client::LEVEL_LOGO:
 		pChangeLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 		break;
-	case Client::LEVEL_GAMEPLAY:
-		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+	case Client::LEVEL_CHAPTER_2:
+		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		break;
+	case Client::LEVEL_CHAPTER_4:
+		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	default:
 		break;
@@ -514,7 +524,21 @@ HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Execute_Book_Main_Section_Change(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_Book_Main_Section_Change_Start(const EVENT& _tEvent)
+{
+	
+	CSampleBook::BOOK_PAGE_ACTION eAction = (CSampleBook::BOOK_PAGE_ACTION)(_tEvent.Parameters[0]);
+	_float3* pPosition = (_float3*)(_tEvent.Parameters[1]);
+	
+	static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(),L"Layer_Book",0))
+		->Execute_Action(eAction, *pPosition);
+	Safe_Delete(pPosition);
+	pPosition = nullptr;
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Book_Main_Section_Change_End(const EVENT& _tEvent)
 {
 	_wstring strLayerTag = reinterpret_cast<const _tchar*>(_tEvent.Parameters[0]);
 	return SECTION_MGR->Change_CurSection(strLayerTag);

@@ -75,7 +75,7 @@ _bool CSneak_DetectionField::IsTarget_In_SneakDetection()
 
 	if (m_fRadius >= m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition()))
 	{
-		if (static_cast<CPlayer*>(m_pTarget)->Is_SneakMode())
+		if (false == static_cast<CPlayer*>(m_pTarget)->Is_SneakMode())
 		{
 			m_isColl = true;
 		}

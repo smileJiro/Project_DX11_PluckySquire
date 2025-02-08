@@ -29,7 +29,7 @@
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "A",
-        "Trigger_Type": 0
+        "Trigger_Type": 1
     },
     {
         "Collider_Info": {
@@ -56,7 +56,7 @@
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "A",
-        "Trigger_Type": 2
+        "Trigger_Type": 3
     },
     {
         "Collider_Info": {
@@ -83,6 +83,33 @@
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "A",
-        "Trigger_Type": 3
+        "Trigger_Type": 4
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                2.200000047683716,
+                0.5,
+                1.899999976158142
+            ],
+            "Position": [
+                26.56399917602539,
+                0.5329999923706055,
+                -11.458999633789063
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Event_Test",
+        "Trigger_Type": 0
     }
 ]

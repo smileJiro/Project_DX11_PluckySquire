@@ -13,6 +13,8 @@
 #include "Camera_CutScene.h"
 #include "2DModel.h"
 
+#include "TriggerObject.h"
+
 #include "StateMachine.h"
 
 #include "MapObject.h"

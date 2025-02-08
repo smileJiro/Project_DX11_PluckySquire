@@ -29,7 +29,7 @@
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "A",
-        "Trigger_Type": 0
+        "Trigger_Type": 1
     },
     {
         "Collider_Info": {
@@ -56,7 +56,7 @@
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "A",
-        "Trigger_Type": 2
+        "Trigger_Type": 3
     },
     {
         "Collider_Info": {
@@ -83,6 +83,6 @@
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "A",
-        "Trigger_Type": 3
+        "Trigger_Type": 4
     }
 ]
