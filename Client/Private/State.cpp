@@ -80,6 +80,9 @@ _float CState::Get_CurCoordRange(MONSTER_STATE _eState)
 
 _bool CState::Check_Target3D(_bool _isSneak)
 {
+	if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+		return false;
+
 	MONSTER_STATE eState = MONSTER_STATE::ALERT;
 	if (true == _isSneak)
 		eState = MONSTER_STATE::SNEAK_ALERT;
@@ -94,7 +97,7 @@ _bool CState::Check_Target3D(_bool _isSneak)
 		CActorObject* pActor = nullptr;
 
 		//레이 받는 물체가 현재 maintable이 존재해서 동작하는데, 없으면 동작안하는 코드
-		if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(eState), &vOutPos, &pActor))
+		if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
 		{
 			if (OBJECT_GROUP::RAY_OBJECT ^ static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup)
 			{

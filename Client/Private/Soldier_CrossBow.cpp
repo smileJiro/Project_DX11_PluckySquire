@@ -165,7 +165,7 @@ HRESULT CSoldier_CrossBow::Ready_ActorDesc(void* _pArg)
 {
     CSoldier_CrossBow::MONSTER_DESC* pDesc = static_cast<CSoldier_CrossBow::MONSTER_DESC*>(_pArg);
 
-    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
@@ -199,7 +199,7 @@ HRESULT CSoldier_CrossBow::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;

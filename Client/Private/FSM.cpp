@@ -10,7 +10,7 @@
 #include "MeleeAttackState.h"
 #include "RangedAttackState.h"
 #include "Sneak_IdleState.h"
-//#include "Sneak_PatrolState.h"
+#include "Sneak_PatrolState.h"
 #include "Sneak_AlertState.h"
 #include "Sneak_AwareState.h"
 #include "Sneak_InvestigateState.h"
@@ -211,13 +211,13 @@ HRESULT CFSM::Add_SneakState()
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::SNEAK_IDLE, pState);
 
-	//pState = CSneak_PatrolState::Create(&Desc);
-	//if (nullptr == pState)
-	//	return E_FAIL;
-	//pState->Set_Owner(m_pOwner);
-	//pState->Set_FSM(this);
-	//m_States.emplace((_uint)MONSTER_STATE::SNEAK_PATROL, pState);
-	//Set_PatrolBound();
+	pState = CSneak_PatrolState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_PATROL, pState);
+	Set_PatrolBound();
 
 	pState = CSneak_AwareState::Create(&Desc);
 	if (nullptr == pState)

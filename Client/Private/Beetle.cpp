@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
+#include "DetectionField.h"
+#include "Sneak_DetectionField.h"
 
 CBeetle::CBeetle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -33,6 +35,8 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 2.f;
 
+    pDesc->isSneakMode = true;
+
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
@@ -52,7 +56,13 @@ HRESULT CBeetle::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
-    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+
+    m_pFSM->Add_SneakState();
+
+	if (false == m_isSneakMode)
+        m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+    else
+        m_pFSM->Set_State((_uint)MONSTER_STATE::SNEAK_IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -87,15 +97,23 @@ void CBeetle::Update(_float _fTimeDelta)
 
 void CBeetle::Late_Update(_float _fTimeDelta)
 {
+#ifdef _DEBUG
+    if (COORDINATE_3D == Get_CurCoord())
+        m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND, this);
+#endif
+
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
 HRESULT CBeetle::Render()
 {
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
-
 #ifdef _DEBUG
-
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        m_pDetectionField->Render();
+        m_pSneak_DetectionField->Render();
+    }
 #endif // _DEBUG
 
     /* Font Render */
@@ -213,7 +231,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 {
     CBeetle::MONSTER_DESC* pDesc = static_cast<CBeetle::MONSTER_DESC*>(_pArg);
 
-    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
@@ -240,14 +258,29 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    //마찰용 박스
+    SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
+    BoxDesc->vHalfExtents = { 0.3f, 0.1f, 0.3f };
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    //SHAPE_DATA* ShapeData = new SHAPE_DATA;
+    ShapeData->pShapeDesc = BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc->vHalfExtents.y, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -269,6 +302,43 @@ HRESULT CBeetle::Ready_Components()
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    /* Com_DebugDraw_For_Client */
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
+        return E_FAIL;
+#endif // _DEBUG
+
+    /* Com_DetectionField */
+    CDetectionField::DETECTIONFIELDDESC DetectionDesc;
+    DetectionDesc.fRange = m_fAlertRange;
+    DetectionDesc.fFOVX = 90.f;
+    DetectionDesc.fFOVY = 30.f;
+    DetectionDesc.fOffset = 0.f;
+    DetectionDesc.pOwner = this;
+    DetectionDesc.pTarget = m_pTarget;
+#ifdef _DEBUG
+    DetectionDesc.pDraw = m_pDraw;
+#endif // _DEBUG
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+        TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
+        return E_FAIL;
+
+    /* Com_Sneak_DetectionField */
+    CSneak_DetectionField::SNEAKDETECTIONFIELDDESC Sneak_DetectionDesc;
+	Sneak_DetectionDesc.fRadius = m_fAlertRange * 1.5f;
+    Sneak_DetectionDesc.fOffset = 0.f;
+    Sneak_DetectionDesc.pOwner = this;
+    Sneak_DetectionDesc.pTarget = m_pTarget;
+#ifdef _DEBUG
+    Sneak_DetectionDesc.pDraw = m_pDraw;
+#endif // _DEBUG
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Sneak_DetectionField"),
+        TEXT("Com_Sneak_DetectionField"), reinterpret_cast<CComponent**>(&m_pSneak_DetectionField), &Sneak_DetectionDesc)))
         return E_FAIL;
 
     return S_OK;
