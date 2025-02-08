@@ -6,6 +6,7 @@
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "Section.h"
 
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 

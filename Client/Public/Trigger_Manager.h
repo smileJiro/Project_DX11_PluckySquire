@@ -31,6 +31,7 @@ END
 
 BEGIN(Client)
 
+class CSection;
 class CTrigger_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CTrigger_Manager)
@@ -64,7 +65,7 @@ public:
 
 public:
 	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection = nullptr);
-	HRESULT						Load_TriggerEvents(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath);
+	HRESULT						Load_TriggerEvents(_wstring _szFilePath);
 
 public:
 	// Event Trigger
