@@ -221,7 +221,7 @@ HRESULT CToolAnimation2D::Export(ofstream& _outfile)
 	iCount = (_uint)m_strName.length();
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	_outfile.write(m_strName.c_str(), iCount);
-	
+	cout << m_strName.c_str() << "," << endl;
 	//FramesPerSecond
 	_outfile.write(reinterpret_cast<const char*>(&m_fFramesPerSecond), sizeof(_float));
 	//FrameCount

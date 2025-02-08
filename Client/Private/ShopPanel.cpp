@@ -137,10 +137,10 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		/* RTSIZE 를 가져올 수 있는 방법을 논의해봐야한다. */
 
 		_float2 BGPos = Uimgr->Get_ShopPos();
-		/* 나중에 수정 필요 */
+		/* TODO :: 나중에 수정 필요 */
 		_float2 vMiddlePoint = { RTSIZE_BOOK2D_X / 2 , RTSIZE_BOOK2D_Y / 2 };
 		_float2 vCalPos = { 0.f, 0.f };
-		/* 나중에 수정 필요 */
+		/* TODO :: 나중에 수정 필요 */
 		_float2 vRTSize = { RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y };
 
 
@@ -181,10 +181,6 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
 	}
-
-
-
-
 
 	if (true == CUI_Manager::GetInstance()->Get_ConfirmStore())
 	{
