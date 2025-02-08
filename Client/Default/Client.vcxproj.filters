@@ -319,6 +319,9 @@
     <Filter Include="91.MapObjectFactory">
       <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MapObject\2D\0. Super">
+      <UniqueIdentifier>{b9229a37-ad55-422f-9e39-3e7347e6b1e9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="05.Interact">
       <UniqueIdentifier>{6f7c500f-8dd0-45d5-9288-58dfccb1c72d}</UniqueIdentifier>
     </Filter>
@@ -327,6 +330,9 @@
     </Filter>
     <Filter Include="02.GameObjects\Item\Manager">
       <UniqueIdentifier>{f161f807-a9d6-422f-b0f8-628fdb80b8b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
+      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -705,9 +711,6 @@
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\2DMapObject.h">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\3DMapObject.h">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
@@ -716,6 +719,16 @@
     </ClInclude>
     <ClInclude Include="..\Public\MapObjectFactory.h">
       <Filter>91.MapObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
+    <ClInclude Include="..\Public\2DMapActionObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapObject.h">
+      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_SpinAttack.h">
       <Filter>03.Components\PlayerState</Filter>
@@ -735,6 +748,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Item.h">
       <Filter>02.GameObjects\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC_DJMoonBeard.h">
+      <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1101,14 +1117,21 @@
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\2DMapObject.cpp">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\3DMapObject.cpp">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_JotMain.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
+    <ClCompile Include="..\Private\2DMapActionObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapDefaultObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_SpinAttack.cpp">
       <Filter>03.Components\PlayerState</Filter>
@@ -1128,6 +1151,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Item.cpp">
       <Filter>02.GameObjects\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp">
+      <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

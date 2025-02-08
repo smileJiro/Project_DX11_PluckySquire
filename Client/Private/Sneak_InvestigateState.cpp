@@ -45,10 +45,16 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		return;
 	}
 
-	//추적 범위 벗어나면 IDLE 전환
+	//이동하다 소리가 나면 범위 내에서 가장 먼 위치로 다음 위치를 갱신
+	if (m_pOwner->IsTarget_In_Sneak_Detection())
+	{
+		Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
+	}
+
+	//위치에 도착했는데 안 보이면 경계상태로 이동
 	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 	}
 	else
 	{

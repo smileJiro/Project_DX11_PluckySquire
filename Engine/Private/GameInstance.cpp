@@ -756,6 +756,14 @@ HRESULT CGameInstance::Add_RenderTarget(const _wstring& _strTargetTag, _uint _iW
 	return m_pTarget_Manager->Add_RenderTarget(_strTargetTag, _iWidth, _iHeight, _ePixelFormat, _vClearColor, _ppOut);
 }
 
+HRESULT CGameInstance::Add_RenderTarget_MSAA(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut)
+{
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	return m_pTarget_Manager->Add_RenderTarget_MSAA(_strTargetTag, _iWidth, _iHeight, _ePixelFormat, _vClearColor, _ppOut);
+}
+
 HRESULT CGameInstance::Add_MRT(const _wstring& _strMRTTag, const _wstring& _strTargetTag)
 {
 	if (nullptr == m_pTarget_Manager)
@@ -846,6 +854,14 @@ HRESULT CGameInstance::Erase_MRT(const _wstring& _strMRTTag)
 		return E_FAIL;
 
 	return m_pTarget_Manager->Erase_MRT(_strMRTTag);
+}
+
+HRESULT CGameInstance::Resolve_RT_MSAA(const _wstring& _strTargetTag)
+{
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	return m_pTarget_Manager->Resolve_RT_MSAA(_strTargetTag);
 }
 
 const _float4x4* CGameInstance::Get_Shadow_Transform_Ptr(CShadow::D3DTRANSFORMSTATE _eState)

@@ -15,6 +15,7 @@ HRESULT CRenderTarget::Initialize(_wstring _strName, _uint _iWidth, _uint _iHeig
 	m_vClearColor = _vClearColor;
 	m_vSize.x = (_float)_iWidth;
 	m_vSize.y = (_float)_iHeight;
+	m_ePixelFormat = _ePixelFormat;
 	/* 구조체에 RenderTarget의 값을 할당한 뒤, RenderTarget을 생성. */
 	D3D11_TEXTURE2D_DESC			TextureDesc{};
 
@@ -128,9 +129,9 @@ CRenderTarget* CRenderTarget::Create(ID3D11Device* _pDevice, ID3D11DeviceContext
 
 void CRenderTarget::Free()
 {
-	Safe_Release(m_pTexture2D);
-	Safe_Release(m_pRTV);
 	Safe_Release(m_pSRV);
+	Safe_Release(m_pRTV);
+	Safe_Release(m_pTexture2D);
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);

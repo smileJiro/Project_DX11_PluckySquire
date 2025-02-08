@@ -12,6 +12,7 @@
 #include "Collision_Manager.h"
 #include "Trigger_Manager.h"
 
+#include "CubeMap.h"
 #include "MainTable.h"
 #include "Player.h"
 #include "TestTerrain.h"
@@ -27,6 +28,7 @@
 #include "Soldier_CrossBow.h"
 #include "Soldier_Bomb.h"
 #include "ButterGrump.h"
+
 
 #include "RayShape.h"
 
@@ -55,6 +57,7 @@ HRESULT CLevel_GamePlay::Initialize()
 {
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
+	//Ready_CubeMap(TEXT("Layer_CubeMap"));
 	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
@@ -266,6 +269,21 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	return S_OK;
 }
 
+HRESULT CLevel_GamePlay::Ready_CubeMap(const _wstring& _strLayerTag)
+{
+	CCubeMap::CUBEMAP_DESC Desc;
+	Desc.iCurLevelID = LEVEL_GAMEPLAY;
+	Desc.iRenderGroupID = RG_3D;
+	Desc.iPriorityID = PR3D_PRIORITY;
+	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+		LEVEL_GAMEPLAY, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 {
 	CMainTable::ACTOROBJECT_DESC Desc;
@@ -280,7 +298,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Map()
 {
-	if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+	//if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 		return E_FAIL;
 	return S_OK;
 }
@@ -725,16 +744,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	pDesc.fX = 0.f; // 전체 사이즈 / RTSIZE 끝으로 변경
 	pDesc.fY = 0.f;// 전체 사이즈 / RTSIZE 끝으로 변경
-	pDesc.fSizeX = 2328.f;
-	pDesc.fSizeY = 504.f;
+	pDesc.fSizeX = 2328.f * 0.8f;
+	pDesc.fSizeY = 504.f * 0.8f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
 	pDesc.fX = DEFAULT_SIZE_BOOK2D_X / RATIO_BOOK2D_X;
 	pDesc.fY = DEFAULT_SIZE_BOOK2D_Y / RATIO_BOOK2D_Y;
-	pDesc.fSizeX = 512.f;
-	pDesc.fSizeY = 512.f;
+	pDesc.fSizeX = 512.f * 0.8f;
+	pDesc.fSizeY = 512.f * 0.8f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
@@ -774,6 +793,15 @@ HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iSubIndex = 0;
 	wsprintf(NPCDesc.strDialogueIndex, TEXT("dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
+
+	NPCDesc.iCurLevelID = LEVEL_GAMEPLAY;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_NPC_DJMoonbeard"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -934,22 +962,29 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 	{
 		_uint		iObjectCnt = 0;
 		_char		szLayerTag[MAX_PATH];
-		wstring		strLayerTag;
+		_string		strLayerTag;
+		_wstring		wstrLayerTag;
 
 		isTempReturn = ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
-
-		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
+		strLayerTag = szLayerTag;
+		wstrLayerTag = m_pGameInstance->StringToWString(strLayerTag);
 
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
+			if (i == 694)
+			{
+				int a = 1;
+			
+			}
+
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)LEVEL_GAMEPLAY,
 					m_pGameInstance,
 					hFile);
 			if (nullptr != pGameObject)
-				Event_CreateObject(LEVEL_GAMEPLAY, strLayerTag.c_str(), pGameObject);
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, wstrLayerTag.c_str(), pGameObject);
 		}
 	}
 	CloseHandle(hFile);
