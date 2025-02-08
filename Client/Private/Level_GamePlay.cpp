@@ -280,7 +280,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Map()
 {
-	if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+	//if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 		return E_FAIL;
 	return S_OK;
 }

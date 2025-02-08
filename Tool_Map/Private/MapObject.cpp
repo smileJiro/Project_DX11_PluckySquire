@@ -171,7 +171,8 @@ HRESULT CMapObject::Render()
 {
     if (FAILED(CModelObject::Bind_ShaderResources_WVP()))
         return E_FAIL;
-
+    if (m_strModelName == L"ToyBrick_20")
+        int a = 1;
     switch (m_eColorShaderMode)
     {
         case Engine::C3DModel::COLOR_DEFAULT:

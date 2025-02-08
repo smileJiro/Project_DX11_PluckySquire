@@ -164,11 +164,14 @@ PS_OUT PS_MIX_COLOR(PS_IN In)
 
     Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
 
-    Out.vColor = saturate(mul(Out.vColor,float4(g_vColors.x, g_vColors.y, g_vColors.z, g_vColors.w)));
-    
-    if (Out.vColor.a < 0.01f)
+
+    if (Out.vColor.a < 0.01f || g_vColors.w < 0.2f)
         discard;
-    
+
+    Out.vColor.a = g_vColors.w;
+
+    //Out.vColor = saturate(mul(Out.vColor,float4(g_vColors.x, g_vColors.y, g_vColors.z, g_vColors.w)));
+
     return Out;
 }
 
@@ -249,12 +252,12 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_UIALPHA();
     }
     
-    pass UI_MIXCOLOR
+    pass MAPOBJECT_MIXCOLOR
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
+        SetBlendState(BS_AlphaBlend_WithDepth, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_SPRITE2D();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MIX_COLOR();
     }

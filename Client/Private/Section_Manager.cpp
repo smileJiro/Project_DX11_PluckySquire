@@ -32,7 +32,11 @@ HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 
     return S_OK;
 }
-
+/// <summary>
+/// _iNextChangeLevelID가 -1일 때, 리소스를 전부 로드한 뒤의 _iChangeLevelID레벨로 이동할 시점이라고 판단 
+/// </summary>
+/// <param name="_iChangeLevelID"></param>
+/// <param name="_iNextChangeLevelID"></param>
 HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
     m_iCurLevelID = _iChangeLevelID;
@@ -79,12 +83,13 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 
 HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 {
-    if(m_pCurSection)
-        CCollision_Manager::GetInstance()->Register_Section(m_pCurSection->Get_SectionName());
-
     return S_OK;
 }
 
+/// <summary>
+/// 섹션 키로 섹션 객체를 직접 찾는다.
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
 CSection* CSection_Manager::Find_Section(const _wstring& _strSectionTag)
 {
     auto& iter = m_CurLevelSections.find(_strSectionTag);
@@ -95,6 +100,11 @@ CSection* CSection_Manager::Find_Section(const _wstring& _strSectionTag)
     return (*iter).second;
 }
 
+/// <summary>
+/// 섹션 키로 해당 섹션에 오브젝트를 추가한다.
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
+/// <param name="_pGameObject">오브젝트</param>
 HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
 {
     CSection* pSection = Find_Section(_strSectionTag);
@@ -107,6 +117,11 @@ HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSect
     return S_OK;
 }
 
+/// <summary>
+/// 섹션 키로 해당 섹션에 해당 오브젝트를 제거한다.
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
+/// <param name="_pGameObject">오브젝트</param>
 HRESULT CSection_Manager::Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
 {
     CSection* pSection = Find_Section(_strSectionTag);
@@ -118,13 +133,21 @@ HRESULT CSection_Manager::Remove_GameObject_ToSectionLayer(const _wstring& _strS
 
     return S_OK;
 }
-
+/// <summary>
+/// x책에 활성화된 섹션에 오브젝트를 집어넣는다.
+/// </summary>
+/// <param name="_pGameObject">오브젝트</param>
+/// <param name="_iLayerIndex">레이어 지정 (ref. Section_2D::SECTION_2D_RENDERGROUP)</param>
 HRESULT CSection_Manager::Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
     if (nullptr == m_pCurSection)
         return E_FAIL;
     return m_pCurSection->Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
 }
+/// <summary>
+/// 책에 활성화된 섹션에서 오브젝트를 제거한다.
+/// </summary>
+/// <param name="_pGameObject">오브젝트</param>
 HRESULT CSection_Manager::Remove_GameObject_ToCurSectionLayer(CGameObject* _pGameObject)
 {
     if (nullptr == m_pCurSection)
@@ -132,6 +155,11 @@ HRESULT CSection_Manager::Remove_GameObject_ToCurSectionLayer(CGameObject* _pGam
     return m_pCurSection->Remove_GameObject_ToSectionLayer(_pGameObject);
 }
 
+/// <summary>
+/// 해당 섹션의 활성화 여부를 결정한다.
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
+/// <param name="_isActive">활성화 여부</param>
 HRESULT CSection_Manager::SetActive_Section(const _wstring& _strSectionTag, _bool _isActive)
 {
     CSection* pSection = Find_Section(_strSectionTag);
@@ -144,6 +172,9 @@ HRESULT CSection_Manager::SetActive_Section(const _wstring& _strSectionTag, _boo
     return S_OK;
 }
 
+/// <summary>
+/// 섹션 루프 - 현재 활성화된 섹션에게 준비 작업을 진행하고, 렌더그룹에 오브젝트를 삽입하게끔 한다.
+/// </summary>
 HRESULT CSection_Manager::Section_AddRenderGroup_Process()
 {
     for (auto& pSection : m_CurActiveSections)
@@ -170,6 +201,10 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
     return S_OK;
 }
 
+/// <summary>
+/// 해당 섹션의 렌더타겟 사이즈를 가져온다.
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
 _float2 CSection_Manager::Get_Section_RenderTarget_Size(const _wstring _strSectionKey)
 {
     CSection* pSection = Find_Section(_strSectionKey);
@@ -181,8 +216,14 @@ _float2 CSection_Manager::Get_Section_RenderTarget_Size(const _wstring _strSecti
     return pSection_2D->Get_RenderTarget_Size();
 }
 
+/// <summary>
+/// 해당 섹션으로 책 활성화 섹션을 변경한다..
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
 HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 {
+    // Clear_Section
+    //CCollision_Manager::GetInstance()->Register_Section();
     auto iter = m_CurLevelSections.find(_strSectionKey);
     if (iter != m_CurLevelSections.end())
     {
@@ -191,6 +232,8 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 
         m_pCurSection = (*iter).second;
 
+        if (m_pCurSection)
+            CCollision_Manager::GetInstance()->Register_Section(m_pCurSection->Get_SectionName());
         Section_Active(m_pCurSection->Get_SectionName(), m_iCurActiveSectionIndex);
 
     
@@ -201,6 +244,10 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
         return E_FAIL;
 }
 
+/// <summary>
+/// 오브젝트가 현재 활성화된 책 섹션에 포함되어 있는가 확인한다.
+/// </summary>
+/// <param name="_pGameObject">오브젝트</param>
 _bool CSection_Manager::Is_CurSection(CGameObject* _pGameObject)
 {
     if(nullptr != m_pCurSection)
@@ -208,6 +255,10 @@ _bool CSection_Manager::Is_CurSection(CGameObject* _pGameObject)
     return false;
 }
 
+/// <summary>
+/// 오브젝트가 섹션에 포함되어있는지 확인하고, 있으면 섹션 키 포인트, 없으면 nullptr을 반환
+/// </summary>
+/// <param name="_pGameObject">오브젝트</param>
 const _wstring* CSection_Manager::Get_SectionKey(CGameObject* _pGameObject)
 {
     const _wstring* pReturn = nullptr;
@@ -220,6 +271,10 @@ const _wstring* CSection_Manager::Get_SectionKey(CGameObject* _pGameObject)
     return pReturn;
 }
 
+/// <summary>
+/// 책 렌더타겟을 언맵하여 책 렌더타겟 기준 좌표에서 3D 공간의 World Position을 획득한다.
+/// </summary>
+/// <param name="_v2DTransformPosition">책 렌더타겟 기준 좌표(Proj 좌표)</param>
 _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition)
 {
     // 맵핑하여 데이터 접근
@@ -282,7 +337,10 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
 
     return XMVectorSet(x, y, z, 1.0f);
 }
-
+/// <summary>
+/// 해당 섹션을 Section_2D로 간주하고, 2DMap의 RTV을 가져온다.
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
 ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstring& _strSectionTag)
 {
     /* Section 2D 인경우만 사용가능하다 */
@@ -294,7 +352,10 @@ ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstrin
 
     return pSection_2D->Get_RTV_FromRenderTarget();
 }
-
+/// <summary>
+/// 해당 섹션을 Section_2D로 간주하고, 2DMap의 SRV을 가져온다.
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
 ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget(const _wstring& _strSectionTag)
 {
     CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
@@ -303,7 +364,10 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget(const _wstr
 
     return pSection_2D->Get_SRV_FromRenderTarget();
 }
-
+/// <summary>
+/// 해당 섹션을 Section_2D로 간주하고, 2DMap의 SRV을 가져온다.
+/// </summary>
+/// <param name="_strSectionTag">활성화된 섹션 인덱스</param>
 ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget(_uint _iCurActiveIndex)
 {
     if (0 >= _iCurActiveIndex || m_iMaxCurActiveSectionCount <= _iCurActiveIndex || nullptr == m_CurActiveSections[_iCurActiveIndex])
@@ -315,7 +379,9 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget(_uint _iCur
 
     return pSection_2D->Get_SRV_FromRenderTarget();
 }
-
+/// <summary>
+/// 현재 책에 활성화된 메인 섹션을 Section_2D로 간주하고, 2DMap의 SRV을 가져온다.
+/// </summary>
 ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget()
 {
     CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(m_pCurSection);
@@ -324,7 +390,7 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget()
 
     return pSection_2D->Get_SRV_FromRenderTarget();
 }
-
+//뭐지 이거 필요한가
 ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromTexture(const _wstring& _strSectionTag, _uint _iTextureIndex)
 {
     CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
@@ -333,7 +399,12 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromTexture(const _wstring& 
 
     return pSection_2D->Get_SRV_FromTexture(_iTextureIndex);
 }
-
+/// <summary>
+/// 책의 활성화 섹션을 지정할 때, 양옆 지정된 숫자만큼의 페이지를 활성화된 섹션으로 간주한다.
+/// 재귀함수
+/// </summary>
+/// <param name="_strSectionTag">기준 활성화 섹션 키</param>
+/// <param name="iCurSectionIndex">기준 활성화 섹션 인덱스</param>
 void CSection_Manager::Section_Active(const _wstring& _strSectionTag, _uint iCurSectionIndex)
 {
     CSection* pCurSection = Find_Section(_strSectionTag);
@@ -500,12 +571,3 @@ void CSection_Manager::Free()
 
     __super::Free();
 }
-// TODO : Section 생성 시 Key와 Section Class 내부의 strName 일치.
-// 현재 복수의 섹션을 생성하고 Layer에 삽입하는 것 까진 테스트 완 
-// Renderer와 연동하는 작업 해야하고, 동적인 RTV 삽입 삭제에 대한 처리가 가능해야함
-// 문제 1 : 개발자 입장에서 어떻게 Section의 RenderGroupTag를 알게하나 
-// 해결 1 : Section 안에 있는 Object는 원래 Section이 RenderGroup을 지정하여 전달하기에 상관없다.
-// 그러면 기존 프레임 워크에서 존재하던 3D 오브젝트들은 어떤식으로 처리할지, 기본 RenderGroup을 어떻게 편하게 접근하게 할지.
-// Default 한 Object들은 최대한 기존 프레임워크 방향대로 그리게하고, Section이 생성되고 해당 Section 내부의 Object들은 Section에 의해서 
-// Renderer에 전달되어야한다. 
-// Player 같은 경우 Section 간의 이동 처리도 필요하고, Section 자체를 탈출할수도 있어야함. 
