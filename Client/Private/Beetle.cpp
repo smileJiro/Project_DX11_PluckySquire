@@ -28,7 +28,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->fAlertRange = 5.f;
@@ -221,6 +221,9 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
 
+    case CAUGHT:
+        Set_AnimChangeable(true);
+        break;
 
     default:
         break;

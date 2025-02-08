@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+BEGIN(Client)
 class CSoldier_Spear final : public CMonster
 {
 public:
@@ -78,3 +79,4 @@ public:
 	virtual void			Free() override;
 };
 
+END
