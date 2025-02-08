@@ -50,7 +50,7 @@ public:
 	{
 		function<void(_wstring)>	Action;
 		_wstring					EventTag;			// 진짜 사용할 EventTag, Trigger의 EventTag와 같음(ex CutScene_1)
-		_bool						isSequence = {};
+		_bool						isSequence = {};	// True -> 해당 Action이 끝난 다음에 다음 Action이 실행한다, false -> 다음 Action도 바로 실행한다
 		_bool						isOn = { false };
 	} ACTION;
 
@@ -91,7 +91,7 @@ private:
 	// Event Trigger
 	unordered_map<_wstring, queue<ACTION>>				m_TriggerEvents;
 	unordered_map<_wstring, function<void(_wstring)>>	m_Actions;
-	queue<ACTION>*										m_pCurTriggerEvent = { nullptr };
+	queue<ACTION>										m_CurTriggerEvent = {};
 
 	_int												m_iTriggerID = {};
 	_bool												m_isEventEnd = { false };

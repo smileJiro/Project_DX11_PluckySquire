@@ -132,8 +132,6 @@ HRESULT CTrigger_Manager::Load_TriggerEvents(_wstring _szFilePath)
 	for (auto& Trigger_Event : Result) {
 		_wstring szTriggerEventTag = m_pGameInstance->StringToWString(Trigger_Event["Trigger_EventTag"]);
 
-		//m_TriggerEvents[szTriggerEventTag] = { queue<ACTION>() };
-
 		if (Trigger_Event.contains("Actions") && Trigger_Event["Actions"].is_array()) {
 
 			for (auto& Action : Trigger_Event["Actions"]) {
@@ -155,13 +153,10 @@ HRESULT CTrigger_Manager::Load_TriggerEvents(_wstring _szFilePath)
 
 void CTrigger_Manager::On_End(_wstring _szEventTag)
 {
-	if (nullptr == m_pCurTriggerEvent)
+	if (m_CurTriggerEvent.size() <= 0)
 		return;
 
-	//if (m_pCurTriggerEvent->size() <= 0)
-	//	return;
-
-	if(_szEventTag == m_pCurTriggerEvent->front().EventTag)
+	if(_szEventTag == m_CurTriggerEvent.front().EventTag)
 		m_isEventEnd = true;
 }
 
@@ -170,7 +165,7 @@ void CTrigger_Manager::Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iT
 	auto iterator = m_TriggerEvents.find(_TriggerEventTag);
 
 	if (iterator != m_TriggerEvents.end()) {
-		m_pCurTriggerEvent = &(iterator->second);
+		m_CurTriggerEvent = iterator->second;
 	}
 
 	m_iTriggerID = _iTriggerID;
@@ -357,31 +352,31 @@ _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, P
 
 void CTrigger_Manager::Execute_Trigger_Event()
 {
-	if (nullptr == m_pCurTriggerEvent)
-		return;
+	//if (nullptr == m_pCurTriggerEvent)
+	//	return;
 
-	if (m_pCurTriggerEvent->size() <= 0)
+	if (m_CurTriggerEvent.size() <= 0)
 		return;
 
 	// 바로 실행
-	if (false == m_pCurTriggerEvent->front().isSequence) {
-		m_pCurTriggerEvent->front().Action(m_pCurTriggerEvent->front().EventTag);
-		m_pCurTriggerEvent->pop();
+	if (false == m_CurTriggerEvent.front().isSequence) {
+		m_CurTriggerEvent.front().Action(m_CurTriggerEvent.front().EventTag);
+		m_CurTriggerEvent.pop();
 
 		Execute_Trigger_Event();
 	}
 	// 될 때까지 기다리기
 	else {
 		// 처음 시작
-		if (false == m_pCurTriggerEvent->front().isOn) {
-			m_pCurTriggerEvent->front().Action(m_pCurTriggerEvent->front().EventTag);
-			m_pCurTriggerEvent->front().isOn = true;
+		if (false == m_CurTriggerEvent.front().isOn) {
+			m_CurTriggerEvent.front().Action(m_CurTriggerEvent.front().EventTag);
+			m_CurTriggerEvent.front().isOn = true;
 		}
 		// 실행 중, 끝나서 m_isEventEnd가 true가 될 때까지 대기
 		else {
 			// 해당 Event가 끝남
 			if (true == m_isEventEnd) {
-				m_pCurTriggerEvent->pop();
+				m_CurTriggerEvent.pop();
 				m_isEventEnd = false;
 			}
 			// 해당 Event가 아직 안 끝남

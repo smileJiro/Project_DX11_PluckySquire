@@ -67,14 +67,11 @@ public:
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
 	_vector				Get_ArmVector() { return XMLoadFloat3(&m_vArm); }
-	//_vector				Get_TargetState(TARGET_STATE _eTargetState) const { return XMLoadFloat4x4(m_pTargetWorldMatrix).r[_eTargetState]; }
 	CTransform_3D*		Get_TransformCom() { return m_pTransform; }
 
 	void				Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID);
 	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);	// 돌아갈지 안 돌아갈지에 따라 삭제 혹은 이동
 
-	//void				Change_Target(const _float4x4* _pTargetWorldMatrix) { m_pTargetWorldMatrix = _pTargetWorldMatrix; }
-	//_vector			Calculate_CameraPos(_float fTimeDelta);					// Arm과 Length에 따라 카메라 위치 결정
 	_bool				Move_To_NextArm(_float _fTimeDelta);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 

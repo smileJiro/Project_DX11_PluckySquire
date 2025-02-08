@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 
 #include "Camera_Manager.h"
+#include "Trigger_Manager.h"
 
 CCamera_CutScene::CCamera_CutScene(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCamera{ _pDevice, _pContext }
@@ -65,7 +66,7 @@ _bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName)
 		return false;
 
 	m_isStartCutScene = true;
-	
+	m_szEventTag = _wszCutSceneName;
 
 	return true;
 }
@@ -225,17 +226,13 @@ void CCamera_CutScene::After_CutScene(_float _fTimeDelta)
 	if (false == m_isFinishCutScene)
 		return;
 
+	CTrigger_Manager::GetInstance()->On_End(m_szEventTag);
+
 	// 해당 함수까지 끝난다면 카메라 전환 등 동작 수행
+	// 확 돌지, 점진적으로 돌아야 하는 건지 여기서 결정
+	// 멈춰 있을지도 이 이전에 얼마나 멈출 건지, 그 정보를 CutScene Data가 가지고 있어야 함
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET);
 	m_isFinishCutScene = false;
-	
-	/*m_fSimulationTime.y += _fTimeDelta;
-
-	if (m_fSimulationTime.y > m_fSimulationTime.x) {
-		m_isFinishCutScene = false;
-		m_fSimulationTime.y = 0.f;
-		
-	}*/
 }
 
 CCamera_CutScene* CCamera_CutScene::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
