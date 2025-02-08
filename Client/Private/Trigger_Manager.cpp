@@ -238,7 +238,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 	switch (_tDesc.iTriggerType) {
 		case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
 		{
-			if (_TriggerJson.contains("MapTrigger_InfoMapTrigger_Info")) 
+			if (_TriggerJson.contains("MapTrigger_Info")) 
 			{
 				_float3 fNextPosition = { _TriggerJson["MapTrigger_Info"][szKey][0].get<_float>(),  _TriggerJson["MapTrigger_Info"][szKey][1].get<_float>(), 1.f};
 				static_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), fNextPosition);

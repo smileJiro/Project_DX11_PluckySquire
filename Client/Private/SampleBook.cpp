@@ -133,22 +133,18 @@ void CSampleBook::Priority_Update(_float _fTimeDelta)
 void CSampleBook::Update(_float _fTimeDelta)
 {
 	
-	if (KEY_DOWN(KEY::M))
-	{
-		if (Book_Action(NEXT))
-		{
-			m_isAction = true;
-			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
-		}
-	}
-	if (KEY_DOWN(KEY::N))
-	{
-		if (Book_Action(PREVIOUS))
-		{
-			m_isAction = true;
-			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
-		}
-	}
+	//if (KEY_DOWN(KEY::M))
+	//{
+	//	if (Book_Action(NEXT))
+	//	{
+	//		m_isAction = true;
+	//		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
+	//	}
+	//}
+	//if (KEY_DOWN(KEY::N))
+	//{
+
+	//}
 
 	if (CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()) {
 		if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
@@ -429,6 +425,8 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 		
 		if (nullptr != strMoveSectionName)
 		{
+			_vector vNewPos = XMVectorSet(m_fNextPos.x, m_fNextPos.y, 0.f, 1.f);
+			pGameObject->Set_Position(vNewPos);
 			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(*strMoveSectionName,pGameObject)))
 				return;
 		}
@@ -437,7 +435,13 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
 {
-	return E_NOTIMPL;
+	if (Book_Action(_eAction))
+	{
+		m_fNextPos = _fNextPosition;
+		m_isAction = true;
+		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
+	}
+	return S_OK;
 }
 
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
