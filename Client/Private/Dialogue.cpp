@@ -313,7 +313,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		 {
 			 _float2 vPos = { 0.f , 0.f };
 
-			 vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
+			 vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
 			 vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
 
 

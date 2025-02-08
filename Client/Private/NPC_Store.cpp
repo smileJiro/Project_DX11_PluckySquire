@@ -176,7 +176,7 @@ HRESULT CNPC_Store::Render()
 
 void CNPC_Store::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	m_isColPlayer = true;
+	
 }
 
 void CNPC_Store::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
