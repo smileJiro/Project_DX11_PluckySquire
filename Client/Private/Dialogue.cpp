@@ -267,11 +267,6 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	// 노출 시킬 글자의 수
 	_int icurrentLength = static_cast<int>(strDisplaytext.length());
 
-	
-
-
-	// 여기서부터 어떻게노출을 시킬것인가?
-	// 
 	if (icurrentLength < iFullWord)
 	{
 		fWaitTime += fSpeed;
@@ -313,7 +308,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		 {
 			 _float2 vPos = { 0.f , 0.f };
 
-			 vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
+			 vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
 			 vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
 
 
@@ -566,11 +561,6 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		break;
 
 		}
-		//}
-		//else if (COORDINATE::COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
-		//{
-		//
-		//}
 
 		Uimgr->Set_CalDialoguePos(_float3(vPos.x, vPos.y, 0.f));
 		m_vCurPos = vPos;
@@ -585,6 +575,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			Uimgr->Set_PortraitRender(false);
 			Uimgr->Set_DialogueLineIndex(0);
 			m_isFirstRefresh = false;
+			isOpenPanel(_strDialogue);
 		}
 	}
 }
@@ -694,6 +685,24 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 
 	}
 	m_isFirstRefresh = true;
+
+
+}
+
+void CDialog::isOpenPanel(_tchar* _DialogId)
+{
+	_tchar NpcName[MAX_PATH] = {};
+	_tchar strSrcName[MAX_PATH] = {};
+	wsprintf(NpcName, Uimgr->Get_Dialogue(_DialogId)[0].lines[0].Talker.c_str());
+	
+	// 상점용
+	wsprintf(strSrcName, TEXT("마르티나"));
+	if (0 == wcscmp(NpcName, strSrcName))
+	{
+		//상점 오픈하게
+		//	bool 변수로
+		Uimgr->Set_DialogueFinishShopPanel(true);
+	}
 
 
 }

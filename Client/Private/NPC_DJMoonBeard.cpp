@@ -138,16 +138,18 @@ void CNPC_DJMoonBeard::Update(_float _fTimeDelta)
 	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
 	
 	__super::Update(_fTimeDelta);
+	if (KEY_DOWN(KEY::E) && true == m_isColPlayer)
+	{
+		Throw_Dialogue();
+	}
+	
 }
 
 void CNPC_DJMoonBeard::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
 
-	if (KEY_DOWN(KEY::E) && true == m_isColPlayer)
-	{
-		Throw_Dialogue();
-	}
+	
 }
 
 HRESULT CNPC_DJMoonBeard::Render()
@@ -158,6 +160,19 @@ HRESULT CNPC_DJMoonBeard::Render()
 #endif // _DEBUG
 
 	return S_OK;
+}
+
+void CNPC_DJMoonBeard::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CNPC_DJMoonBeard::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CNPC_DJMoonBeard::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	m_isColPlayer = false;
 }
 
 

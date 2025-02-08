@@ -43,13 +43,6 @@ void CLogo_BG::Priority_Update(_float _fTimeDelta)
 
 void CLogo_BG::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::E))
-	{
-		Uimgr->Set_LogoChangeState(true);
-		m_vColor = { 246.f / 255.f , 127.f / 255.f, 98.f / 255.f, 1.f };
-	}
-
-	
 	if (true == Uimgr->Get_LogoChanseStage())
 	{
 		_int iIndex = CUI_Manager::GetInstance()->Get_LogoIndex();
@@ -73,11 +66,20 @@ void CLogo_BG::Update(_float _fTimeDelta)
 				CUI_Manager::GetInstance()->Set_LogoIndex(iIndex);
 			}
 		}
-		else if (KEY_DOWN(KEY::E))
+		else if (KEY_DOWN(KEY::E) && true == Uimgr->Get_LogoChanseStage())
 		{
 			ProcesssByIndex(iIndex);
 		}
 	}
+
+	if (KEY_DOWN(KEY::E))
+	{
+		Uimgr->Set_LogoChangeState(true);
+		m_vColor = { 246.f / 255.f , 127.f / 255.f, 98.f / 255.f, 1.f };
+	}
+
+	
+	
 }
 
 void CLogo_BG::Late_Update(_float _fTimeDelta)
@@ -208,7 +210,7 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 
 	case 1:
 	{
-
+		int a = 0;
 	}
 	break;
 

@@ -94,6 +94,7 @@ private:
     HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
     void        NextDialogue(_float2 _RTSize);
     void        FirstCalPos(_float2 _RTSize);
+    void        isOpenPanel(_tchar* _DialogId);
 
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터
