@@ -1,11 +1,14 @@
 #pragma once
+#include "Camera_Tool_Defines.h"
 #include "ActorObject.h"
 
-BEGIN(Engine)
-
+BEGIN(Engin)
 class CCollider;
+END
 
-class ENGINE_DLL CTriggerObject : public CActorObject
+BEGIN(Camera_Tool)
+
+class CTriggerObject : public CActorObject
 {
 public:
 	enum TRIGGER_CONDITION

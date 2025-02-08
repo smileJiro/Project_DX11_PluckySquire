@@ -293,6 +293,7 @@
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
     <ClInclude Include="..\Public\Soldier_Spear.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
+    <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\Trigger_Manager.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
@@ -436,6 +437,7 @@
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
     <ClCompile Include="..\Private\Soldier_Spear.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
+    <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\Trigger_Manager.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
