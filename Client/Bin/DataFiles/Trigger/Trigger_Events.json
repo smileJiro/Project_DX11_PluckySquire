@@ -1,0 +1,17 @@
+[
+    {
+      "Trigger_EventTag": "Event_Test",
+      "Actions": [
+        {
+          "ActionTag": "Camera_Move",
+          "EventTag": "A",
+          "Is_Sequence": false
+        },
+        {
+          "ActionTag": "Dialogue",
+          "EventTag": "Test",
+          "Is_Sequence": true
+        }
+      ]
+    }
+]

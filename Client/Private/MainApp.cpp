@@ -71,6 +71,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
 	CCollision_Manager::GetInstance()->Update();			// 충돌 검사 수행.
+	CTrigger_Manager::GetInstance()->Update();
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
