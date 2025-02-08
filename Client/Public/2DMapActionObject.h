@@ -43,9 +43,9 @@ public:
 private :
 	MAPOBJ_2D_ACTION_TYPE			m_eType;
 
-	_bool							m_isFadeOut = true;
+	_bool							m_isFadeOut = false;
 	_float							m_fAlpha = 1.f;
-	_float							m_fFadeOutSecond = 1.f;
+	_float							m_fFadeOutSecond = 0.3f;
 public:
 	static C2DMapActionObject*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*		Clone(void* _pArg) override;

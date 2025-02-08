@@ -89,7 +89,7 @@ private:
 	void				Object_Clear(_bool _bSelected = true);
 
 	void				Save_Popup();
-
+	void				Save_Trigger();
 
 	// 2D 맵, 오브젝트 출력
 	void				Save(_bool _bSelected = true);
@@ -99,7 +99,7 @@ private:
 	void				Load_3D_Map(_bool _bSelected = true);
 
 
-	C2DMapObject*	Picking_2DMap();
+	C2DMapObject*		Picking_2DMap();
 
 #pragma endregion
 

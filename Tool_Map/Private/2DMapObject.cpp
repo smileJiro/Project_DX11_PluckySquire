@@ -3,7 +3,7 @@
 #include "Engine_Defines.h"
 #include "GameInstance.h"
 #include "Collider.h"
-#include "Coll.h"
+//#include "Coll.h"
 
 
 C2DMapObject::C2DMapObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

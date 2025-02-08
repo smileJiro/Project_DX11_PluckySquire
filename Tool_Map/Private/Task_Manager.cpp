@@ -133,8 +133,11 @@ HRESULT CTask_Manager::Parsing(json _jsonObj)
 							// 유효성 체크 END
 
 
+
 							string strModelKey = jsonObj.value()["Properties"]["StaticMesh"].at("ObjectName");
 							strModelKey = strModelKey.substr(strModelKey.find("'") + 1, strModelKey.size() - strModelKey.find("'") - 2);
+
+
 
 							// 필요없는 오브젝트 거르기
 							if (Check_EgnoreObject(strModelKey))
@@ -293,15 +296,19 @@ HRESULT CTask_Manager::Parsing()
 			pGameObject->Set_Scale(pair.second.fScale.x, pair.second.fScale.y, pair.second.fScale.z);
 			CMapObject* pMapObject = static_cast<CMapObject*>(pGameObject);
 			pMapObject->Create_Complete();
-
-			if (pair.second.isOverrideMaterial)
+			_bool isStatic_override = false;
+			if (ContainString(pair.first,"ToyBrick_"))
+				isStatic_override = true;
+			if (isStatic_override || pair.second.isOverrideMaterial)
 			{
-				OverrideMaterialModels.push_back(pair);
 				_string strMaterialKey = pair.second.szMaterialKey;
 				// override material 목록 출력용 벡터 삽입
 
 				_wstring strModelName = pMapObject->Get_ModelName();
-
+				if (strMaterialKey != "" || !isStatic_override)
+					OverrideMaterialModels.push_back(pair);
+				else
+					strMaterialKey = "MI_ToyBricks_6";
 
 				//TODO :: 페이퍼클립의 경우, 마테리얼에 색상정보가 없어서!!!!!!
 				// 일단 파일이름 보고 걍 대충 디폴트색상만 지정해둠... .orz
@@ -309,24 +316,24 @@ HRESULT CTask_Manager::Parsing()
 				{
 					_float4 fColor = {};
 
-					if (ContainString(pair.second.szMaterialKey, "blue"))
+					if (ContainString(strMaterialKey, "blue"))
 					{
 						fColor = _float4(0.608f, 0.796f, 0.906f, 1.f);
 
 					}
-					else if (ContainString(pair.second.szMaterialKey, "green"))
+					else if (ContainString(strMaterialKey, "green"))
 					{
 						fColor = _float4(0.663f, 0.922f, 0.647f, 1.f);
 					}
-					else if (ContainString(pair.second.szMaterialKey, "red"))
+					else if (ContainString(strMaterialKey, "red"))
 					{
 						fColor = _float4(0.949f, 0.063f, 0.561f, 1.f);
 					}
-					else if (ContainString(pair.second.szMaterialKey, "metal"))
+					else if (ContainString(strMaterialKey, "metal"))
 					{
 						fColor = _float4(0.682f, 0.663f, 0.675f, 1.f);
 					}
-					else if (ContainString(pair.second.szMaterialKey, "yellow"))
+					else if (ContainString(strMaterialKey, "yellow"))
 					{
 						fColor = _float4(0.961f, 0.773f, 0.369f, 1.f);
 					}
@@ -340,7 +347,11 @@ HRESULT CTask_Manager::Parsing()
 				}
 
 				std::string filePathDialog = WstringToString(strMaterialPath);
-				filePathDialog += pair.second.szMaterialKey;
+				if (strMaterialKey == "MI_ToyBricks_6")
+				{
+					int a = 1;
+				}
+				filePathDialog += strMaterialKey;
 				filePathDialog += ".json";
 				std::ifstream inputFile(filePathDialog);
 				if (!inputFile.is_open())
@@ -408,8 +419,10 @@ HRESULT CTask_Manager::Parsing()
 
 
 	wstring strResultFileFath = L"../Bin/json/Result/";
+	
+	auto filrPair = Get_FileName_From_Path(StringToWstring(strFileName));
 
-	if (FAILED(Export_Result(strResultFileFath, m_pGameInstance->StringToWString(strFileName), ExportStrings)))
+	if (FAILED(Export_Result(strResultFileFath, filrPair.first, ExportStrings)))
 		LOG_TYPE("Export Result Save Error... ", LOG_ERROR);
 
 

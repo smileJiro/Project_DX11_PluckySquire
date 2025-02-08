@@ -14,6 +14,7 @@ public:
 		_bool					isViewportSizeChange = false;
 		_float2					vViewportSize = {};
 		ID3D11DepthStencilView* pDSV = nullptr;
+		
 	}RG_MRT_DESC;
 
 protected:
