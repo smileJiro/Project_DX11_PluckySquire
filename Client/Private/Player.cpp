@@ -426,7 +426,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
             if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
             {
                 IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
-                if (pInteractable)
+                if (pInteractable && pInteractable->Is_Interactable(this))
                 {
                     pInteractable->Interact(this);
                 }
@@ -454,7 +454,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
     if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
     {
         IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
-        if (pInteractable)
+        if (pInteractable && pInteractable->Is_Interactable(this))
         {
             pInteractable->Interact(this);
         }
