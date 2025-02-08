@@ -46,15 +46,31 @@ public:
 		RETURN_MASK_END
 	};
 
+	typedef struct tagTriggerEvent
+	{
+		function<void(_wstring)>	Action;
+		_wstring					EventTag;			// 진짜 사용할 EventTag, Trigger의 EventTag와 같음(ex CutScene_1)
+		_bool						isSequence = {};
+		_bool						isOn = { false };
+	} ACTION;
+
 private:
 	CTrigger_Manager();
 	virtual ~CTrigger_Manager() = default;
 
 public:
 	HRESULT						Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	void						Update();
 
 public:
 	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection = nullptr);
+	HRESULT						Load_TriggerEvents(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath);
+
+public:
+	// Event Trigger
+	void						On_End() { m_isEventEnd = true; }
+
+	void						Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID);
 
 
 #pragma region Load 관련 함수 (COORDNATE 분기)
@@ -72,9 +88,21 @@ private:
 	ID3D11DeviceContext*		m_pContext = nullptr;
 
 private:
+	// Event Trigger
+	unordered_map<_wstring, queue<ACTION>>				m_TriggerEvents;
+	unordered_map<_wstring, function<void(_wstring)>>	m_Actions;
+	queue<ACTION>*										m_pCurTriggerEvent = { nullptr };
+
+	_int												m_iTriggerID = {};
+	_bool												m_isEventEnd = { false };
+
+private:
 	void						Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger);
+	void						Resister_Trigger_Action();
 
 	_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
+
+	void						Execute_Trigger_Event();
 
 public:
 	virtual void				Free() override;

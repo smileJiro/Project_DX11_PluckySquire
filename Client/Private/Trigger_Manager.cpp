@@ -4,6 +4,9 @@
 
 #include "GameInstance.h"
 
+#include "Camera_Manager.h"
+#include "Camera_Target.h"
+
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 
 CTrigger_Manager::CTrigger_Manager()
@@ -24,7 +27,15 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 
+	Resister_Trigger_Action();
+
     return S_OK;
+}
+
+
+void CTrigger_Manager::Update()
+{
+	Execute_Trigger_Event();
 }
 
 HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection)
@@ -102,6 +113,52 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 	}
 
 	return S_OK;
+}
+
+HRESULT CTrigger_Manager::Load_TriggerEvents(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath)
+{
+	ifstream file(_szFilePath);
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 열 수 없습니다.");
+		file.close();
+		return E_FAIL;
+	}
+
+	json Result;
+	file >> Result;
+	file.close();
+
+	for (auto& Trigger_Event : Result) {
+		_wstring szTriggerEventTag = Trigger_Event["Trigger_EventTag"];
+
+		if (Trigger_Event.contains("Actions"), Trigger_Event["Actions"].is_array()) {
+
+			for (auto& Action : Trigger_Event["Actions"]) {
+				ACTION tAction;
+
+				_wstring szActionTag = m_pGameInstance->StringToWString(Action["ActionTag"]);
+				tAction.Action = m_Actions[szActionTag];
+				tAction.EventTag = m_pGameInstance->StringToWString(Action["EventTag"]);
+				tAction.isSequence = Action["Is_Sequence"];
+				tAction.isOn = false;
+			}
+		}
+	}
+
+	return S_OK;
+}
+
+void CTrigger_Manager::Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
+{
+	auto iterator = m_TriggerEvents.find(_TriggerEventTag);
+
+	if (iterator != m_TriggerEvents.end()) {
+		m_pCurTriggerEvent = &(iterator->second);
+	}
+
+	m_iTriggerID = _iTriggerID;
 }
 
 HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
@@ -228,9 +285,22 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
+	{
+		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+			});
+	}
 		break;
 	}
 
+}
+
+void CTrigger_Manager::Resister_Trigger_Action()
+{
+	m_Actions[TEXT("Camera_Move")] = [this](_wstring _wszEventTag) {
+		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(_wszEventTag, m_iTriggerID))
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+		};
 }
 
 _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box)
@@ -264,6 +334,43 @@ _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, P
 	}
 
 	return EXIT_RETURN_MASK::NONE;
+}
+
+void CTrigger_Manager::Execute_Trigger_Event()
+{
+	if (nullptr == m_pCurTriggerEvent)
+		return;
+
+	if (m_pCurTriggerEvent->size() <= 0)
+		return;
+
+	// 바로 실행
+	if (false == m_pCurTriggerEvent->front().isSequence) {
+		m_pCurTriggerEvent->front().Action(m_pCurTriggerEvent->front().EventTag);
+		m_pCurTriggerEvent->pop();
+
+		Execute_Trigger_Event();
+	}
+	// 될 때까지 기다리기
+	else {
+		// 처음 시작
+		if (false == m_pCurTriggerEvent->front().isOn) {
+			m_pCurTriggerEvent->front().Action(m_pCurTriggerEvent->front().EventTag);
+			m_pCurTriggerEvent->front().isOn = true;
+		}
+		// 실행 중, 끝나서 m_isEventEnd가 true가 될 때까지 대기
+		else {
+			// 해당 Event가 끝남
+			if (true == m_isEventEnd) {
+				m_pCurTriggerEvent->pop();
+			}
+			// 해당 Event가 아직 안 끝남
+			else { 
+
+			}
+
+		}
+	}
 }
 
 void CTrigger_Manager::Free()
