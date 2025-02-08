@@ -13,7 +13,16 @@ BEGIN(Client)
 class CDialog : public CUI
 {
 public:
-    enum LOC { LOC_DEFAULT, LOC_MIDHIGH, LOC_MIDLEFT, LOC_MIDRIGHT, LOC_END };
+    enum LOC { 
+        LOC_MIDDOWN, 
+        LOC_MIDHIGH, // Default 인자
+        LOC_MIDLEFT, 
+        LOC_MIDRIGHT, 
+        LOC_LEFTDOWN,
+        LOC_LEFTHIGH,
+        LOC_RIGHTHIGH,
+        LOC_RIGHDOWN,
+        LOC_END };
 
     enum PORTRAITNAME
     {
@@ -57,7 +66,7 @@ public:
         _int Green;
         _int Blue;
         
-        LOC  location = LOC_DEFAULT;    // 위치 설정
+        LOC  location = LOC_MIDHIGH;    // 위치 설정
         PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
         Animation animation;   // 애니메이션 정보
     };

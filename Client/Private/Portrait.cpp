@@ -107,7 +107,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 
 	switch (currentLine.location)
 	{
-	case CDialog::LOC_DEFAULT:  // 啊款单 酒贰
+	case CDialog::LOC_MIDDOWN:  // 啊款单 酒贰
 	{
 		// 3D 技泼
 		//if (3D)
@@ -121,7 +121,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 		//2D 
 	//else
 	//{
-		vTexPos.x = vTexPos.x - _RTSize.x * 0.146f;
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
 		vTexPos.y = vTexPos.y;
 	//
 	// }
@@ -131,20 +131,50 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 
 	case CDialog::LOC_MIDHIGH:   // 沥 啊款单
 	{
-		vTexPos.x = vTexPos.x - _RTSize.x * 0.146f;
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
 		vTexPos.y = vTexPos.y;
 	}
 	break;
 
 	case CDialog::LOC_MIDLEFT:  // 啊款单 谅螟
 	{
-		//vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+		vTexPos.y = vTexPos.y;
 	}
 	break;
 
 	case CDialog::LOC_MIDRIGHT: // 啊款单 快螟
 	{
-		//vTexPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+		vTexPos.y = vTexPos.y;
+	}
+	break;
+	case CDialog::LOC_LEFTDOWN: // 啊款单 快螟
+	{
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+		vTexPos.y = vTexPos.y;
+
+	}
+	break;
+
+	case CDialog::LOC_LEFTHIGH: // 啊款单 快螟
+	{
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+		vTexPos.y = vTexPos.y;
+	}
+	break;
+
+	case CDialog::LOC_RIGHTHIGH: // 啊款单 快螟
+	{
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+		vTexPos.y = vTexPos.y;
+	}
+	break;
+
+	case CDialog::LOC_RIGHDOWN: // 啊款单 快螟
+	{
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+		vTexPos.y = vTexPos.y;
 	}
 	break;
 	}

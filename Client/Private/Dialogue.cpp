@@ -224,6 +224,7 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 	return S_OK;
 }
 
+// 폰트 렌더 해주는 역할
 HRESULT CDialog::DisplayText(_float2 _vRTSize)
 {
 	if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
@@ -290,7 +291,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	// 3D 기준
 	switch (currentLine.location)
 	{
-	case LOC_DEFAULT:  // 가운데 아래
+	case LOC_MIDDOWN:  // 가운데 아래
 	{	
 	
 		 if (COORDINATE_3D ==  Uimgr->Get_Player()->Get_CurCoord())
@@ -313,7 +314,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 			 _float2 vPos = { 0.f , 0.f };
 
 			 vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
-			 vPos.y = vTextPos2D.y + _vRTSize.y * 0.1f;
+			 vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
 
 
 			 vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
@@ -325,25 +326,85 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	{
 		_float2 vPos = { 0.f , 0.f };
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.1f;
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
 
 
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 	}
 	break;
 	//
-	//case LOC_MIDLEFT:  // 가운데 좌측
-	//{
-	//	vTextPos2D = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
-	//}
-	//break;
-	//
-	//case LOC_MIDRIGHT: // 가운데 우측
-	//{
-	//	vTextPos2D = _float2(g_iWinSizeX / 2.f, g_iWinSizeY / 2.f);
-	//}
-	//break;
+	case LOC_MIDLEFT:  // 가운데 좌측
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	break;
+	
+	case LOC_MIDRIGHT: // 가운데 우측
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	break;
+
+	case LOC_LEFTDOWN: // 가운데 우측
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	break;
+
+	case LOC_LEFTHIGH: // 가운데 우측
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	break;
+
+	case LOC_RIGHTHIGH: // 가운데 우측
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	break;
+
+	case LOC_RIGHDOWN: // 가운데 우측
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	break;
 	}
 
 	// 2D 기준
@@ -358,7 +419,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 	// 대상 이름 출력
 	wsprintf(m_tFont, currentLine.Talker.c_str());
-	pGameInstance->Render_Font(TEXT("Font28"), m_tFont, vCalPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font20"), m_tFont, vCalPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	
 
 	vCalPos.x += _vRTSize.x * 0.03f;
@@ -366,7 +427,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 	// 대화 내용 출력
 	wsprintf(m_tFont, strDisplaytext.c_str());
-	pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vCalPos.x - 120.f, vCalPos.y + 120.f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 120.f, vCalPos.y + 120.f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	
 	Safe_Release(pGameInstance);
 
@@ -378,7 +439,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 }
 
-// Json->Location에 따른 위치 변경
+// 다음 다이얼로그에서 Json->Location에 따른 위치 변경
 void CDialog::NextDialogue(_float2 _RTSize)
 {
 	_tchar _strDialogue[MAX_PATH] = {};
@@ -400,7 +461,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		
 		switch (Uimgr->Get_DialogueLine(_strDialogue, Uimgr->Get_DialogueLineIndex()).location)
 		{
-		case LOC_DEFAULT:
+		case LOC_MIDDOWN:
 		{
 			/* 예시 */
 			//if (0 > m_pNpc->Get_State(CTransform::STATE_POSITION))
@@ -427,10 +488,10 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			//vPos.y -= vPos.y * 1.35f;
 			int a = 0;
 
-				//vPos.x = _RTSize.x - _RTSize.x * 1.25f;
-				//vPos.y = _RTSize.y - _RTSize.y * 1.35f;
-			//}
-			
+			//vPos.x = _RTSize.x - _RTSize.x * 1.25f;
+			//vPos.y = _RTSize.y - _RTSize.y * 1.35f;
+		//}
+
 		}
 		break;
 
@@ -439,15 +500,71 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = Uimgr->Get_DialoguePos().x;
 			vPos.y = Uimgr->Get_DialoguePos().y;
 
-			vPos.y += _RTSize.y * 0.25f;
+			vPos.y += _RTSize.y * 0.21f;
 		}
 		break;
 
 		case LOC_MIDLEFT:
 		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
 
+			vPos.x -= _RTSize.x * 0.14f;
+			vPos.y += _RTSize.y * 0.05f;
 		}
 		break;
+
+
+		case LOC_MIDRIGHT:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x += _RTSize.x * 0.165f;
+			vPos.y += _RTSize.y * 0.05f;
+		}
+		break;
+
+		case LOC_LEFTDOWN:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x -= _RTSize.x * 0.165f;
+			vPos.y -= _RTSize.y * 0.14f;
+		}
+		break;
+
+		case LOC_LEFTHIGH:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x -= _RTSize.x * 0.165f;
+			vPos.y += _RTSize.y * 0.19f;
+		}
+		break;
+
+		case LOC_RIGHTHIGH:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x += _RTSize.x * 0.165f;
+			vPos.y += _RTSize.y * 0.19f;
+		}
+		break;
+
+		case LOC_RIGHDOWN:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x += _RTSize.x * 0.165f;
+			vPos.y -= _RTSize.y * 0.14f;
+		}
+		break;
+
 		}
 		//}
 		//else if (COORDINATE::COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
@@ -472,6 +589,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 	}
 }
 
+// 처음 다이얼로그 입장 시 위치 계산해주는 함수
 void CDialog::FirstCalPos(_float2 _RTSize)
 {
 	_tchar _strDialogue[MAX_PATH] = {};
@@ -490,7 +608,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 
 		switch (Uimgr->Get_DialogueLine(_strDialogue, Uimgr->Get_DialogueLineIndex()).location)
 		{
-		case LOC_DEFAULT:
+		case LOC_MIDDOWN:
 		{
 			vPos.x = Uimgr->Get_DialoguePos().x;
 			vPos.y = Uimgr->Get_DialoguePos().y;
@@ -504,13 +622,67 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = Uimgr->Get_DialoguePos().x;
 			vPos.y = Uimgr->Get_DialoguePos().y;
 
-			vPos.y += _RTSize.y * 0.25f;
+			vPos.y += _RTSize.y * 0.21f;
 		}
 		break;
 
 		case LOC_MIDLEFT:
 		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
 
+			vPos.x -= _RTSize.x * 0.14f;
+			vPos.y += _RTSize.y * 0.05f;
+		}
+		break;
+
+		case LOC_MIDRIGHT:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x += _RTSize.x * 0.165f;
+			vPos.y += _RTSize.y * 0.05f;
+		}
+		break;
+
+		case LOC_LEFTDOWN:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x -= _RTSize.x * 0.165f;
+			vPos.y -= _RTSize.y * 0.14f;
+		}
+		break;
+
+		case LOC_LEFTHIGH:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x -= _RTSize.x * 0.165f;
+			vPos.y += _RTSize.y * 0.19f;
+		}
+		break;
+
+		case LOC_RIGHTHIGH:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x += _RTSize.x * 0.165f;
+			vPos.y += _RTSize.y * 0.19f;
+		}
+		break;
+
+		case LOC_RIGHDOWN:
+		{
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.x += _RTSize.x * 0.165f;
+			vPos.y -= _RTSize.y * 0.14f;
 		}
 		break;
 		}
