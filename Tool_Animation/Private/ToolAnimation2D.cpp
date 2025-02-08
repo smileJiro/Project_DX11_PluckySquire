@@ -10,7 +10,7 @@ CToolSpriteFrame::CToolSpriteFrame(const CToolSpriteFrame& _Prototype)
 CToolSpriteFrame::~CToolSpriteFrame()
 {
 }
-HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, CTexture*>& _Textures)
+HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, string _strUpperKey, map<string, CTexture*>& _Textures)
 {
 	json& jProperties = _jData["Properties"];
 
@@ -21,16 +21,15 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	_uint iStart;
 	_uint iCount;
 	json& jBakedSourceTexture = jProperties["BakedSourceTexture"];
-	//string  strTextureUpperKey = filesystem::path(jBakedSourceTexture["ObjectPath"].get<string>()).parent_path().parent_path().filename().string();
-	//string strTextureName;
-	//strTextureName = jBakedSourceTexture["ObjectName"];
-	//iStart = (_uint)(strTextureName.find_first_of('\'')) + 1;
-	//iCount = (_uint)strTextureName.find_last_of('\'') - iStart;
-	//strTextureName = strTextureName.substr(iStart, iCount);
-	//string strSourceTextureKey = strTextureUpperKey + "$";
-	//strSourceTextureKey += strTextureName;
 
-	string  strTextureKey = WstringToString( MakeTextureKey( filesystem::path(jBakedSourceTexture["ObjectPath"].get<string>())));
+	string strTextureName = jBakedSourceTexture["ObjectName"];
+	iStart = (_uint)(strTextureName.find_first_of('\'')) + 1;
+	iCount = (_uint)strTextureName.find_last_of('\'') - iStart;
+	strTextureName = strTextureName.substr(iStart, iCount);
+
+	string  strTextureKey = _strUpperKey + "$";
+	strTextureKey += strTextureName;
+
 	m_pTexture = _Textures[strTextureKey];
 
 	m_fPixelsPerUnrealUnit = jProperties["PixelsPerUnrealUnit"];
@@ -130,11 +129,11 @@ HRESULT CToolSpriteFrame::Export(ofstream& _outfile)
 	return S_OK;
 }
 
-CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, CTexture*>& _Textures)
+CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, string _strUpperKey, map<string, CTexture*>& _Textures)
 {
 	CToolSpriteFrame* pInstance = new CToolSpriteFrame();
 
-	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _jData, _Textures)))
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _jData, _strUpperKey,_Textures)))
 	{
 		MSG_BOX("SpriteFrame Create Failed");
 		Safe_Release(pInstance);
@@ -189,7 +188,7 @@ CToolAnimation2D::CToolAnimation2D(const CToolAnimation2D& _Prototype)
 }
 
 
-HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, map<string, CTexture*>& _Textures)
+HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, string _strUpperKey, map<string, CTexture*>& _Textures)
 {
 	m_strName = _jData["Name"];
 	json& jProperties = _jData["Properties"];
@@ -206,9 +205,10 @@ HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 		string strSpriteFileName = jKeyFrame["Sprite"]["ObjectName"];
 		_uint iStart = (_uint)(strSpriteFileName.find_first_of('\'')) + 1;
 		_uint iCount = (_uint)strSpriteFileName.find_last_of('\'') - iStart;
-		strSpriteFileName = strSpriteFileName.substr(iStart, iCount);
-		json& jSpriteFIle = _jPaperSprites[strSpriteFileName];
-		m_SpriteFrames.push_back({ CToolSpriteFrame::Create(_pDevice, _pContext, jSpriteFIle, _Textures), iFrameRun });
+		strSpriteFileName =strSpriteFileName.substr(iStart, iCount);
+		string strSpriteKey = _strUpperKey + "$" + strSpriteFileName;
+		json& jSpriteFIle = _jPaperSprites[strSpriteKey];
+		m_SpriteFrames.push_back({ CToolSpriteFrame::Create(_pDevice, _pContext, jSpriteFIle,_strUpperKey, _Textures), iFrameRun });
 	}
 	m_iFrameCount = (_uint)m_SpriteFrames.size();
 	return S_OK;
@@ -258,11 +258,11 @@ _uint CToolAnimation2D::Get_CurrentFrame()
 
 
 
-CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, map<string, CTexture*>& _Textures)
+CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, string _strUpperKey, map<string, CTexture*>& _Textures)
 {
 	CToolAnimation2D* pInstance = new CToolAnimation2D();
 
-	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _jData, _jPaperSprites, _Textures)))
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _jData, _jPaperSprites,_strUpperKey, _Textures)))
 	{
 		MSG_BOX("Animation2D Create Failed");
 		Safe_Release(pInstance);

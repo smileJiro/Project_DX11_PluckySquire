@@ -29,7 +29,7 @@ public:
     _bool	                Is_LoopAnimation(_uint iAnimIndex);
     void						Get_AnimationNames(list<string>& _Names);
 private:
-    HRESULT Read_JsonFIle(std::filesystem::path _path);
+    HRESULT Read_JsonFIle(string _strSuperKey, std::filesystem::path _path);
     HRESULT Read_TextureFIle(string _strUpperKey, std::filesystem::path _path);
 private:
 

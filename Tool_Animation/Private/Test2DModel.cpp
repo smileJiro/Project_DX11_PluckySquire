@@ -30,12 +30,19 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
 		 if (".json" == entry.path().extension())
 		{
-			Read_JsonFIle(entry.path());
+			 string strUpperKye = entry.path().parent_path().parent_path().filename().string();
+			if(FAILED(Read_JsonFIle(strUpperKye,entry.path())))
+			{
+				return E_FAIL;
+			}
 		}
 		else if (".png"  == entry.path().extension() || ".dds" ==entry.path().extension() )
 		{
 			string strUpperKye = entry.path().parent_path().parent_path().filename().string();
-			Read_TextureFIle(strUpperKye, entry.path());
+			if(FAILED(Read_TextureFIle(strUpperKye, entry.path())))
+			{
+				return E_FAIL;
+			}
 		}
 		else
 		{
@@ -50,9 +57,9 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 	{
 		for (auto& j : m_jPaperFlipBooks)
 		{
-			string strName = j.second["Name"];
-
-			CToolAnimation2D* pAnim =CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, m_jPaperSprites, m_Textures);
+			string strSuperKey = j.first.substr(0,j.first.find('$') );
+			
+			CToolAnimation2D* pAnim =CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, m_jPaperSprites, strSuperKey,m_Textures);
 			if (nullptr == pAnim)
 				return E_FAIL;
 			m_Animation2Ds.push_back(pAnim);
@@ -60,13 +67,13 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 	}
 	else
 	{
-		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, m_jPaperSprites.begin()->second, m_Textures);
+		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, m_jPaperSprites.begin()->second, "", m_Textures);
 		if (nullptr == m_pNonAnimSprite)
 			return E_FAIL;
 	}
 	return S_OK;
 }
-HRESULT CTest2DModel::Read_JsonFIle(std::filesystem::path _path)
+HRESULT CTest2DModel::Read_JsonFIle(string _strSuperKey, std::filesystem::path _path)
 {
 	json jFile;
 	std::ifstream input_file(_path);
@@ -82,15 +89,15 @@ HRESULT CTest2DModel::Read_JsonFIle(std::filesystem::path _path)
 		string strType = jObj["Type"];
 		if (strType._Equal("PaperSprite"))
 		{
-			string strName = jObj["Name"];
-
-			m_jPaperSprites.insert({ strName, jObj });
+			string strKey = jObj["Name"];
+			strKey = _strSuperKey + "$" + strKey;
+			m_jPaperSprites.insert({ strKey, jObj });
 		}
 		else if (strType._Equal("PaperFlipbook"))
 		{
-			string strName = jObj["Name"];
-
-			m_jPaperFlipBooks.insert({ strName,jObj });
+			string strKey = jObj["Name"];
+			strKey = _strSuperKey + "$" + strKey;
+			m_jPaperFlipBooks.insert({ strKey,jObj });
 		}
 		else
 		{
@@ -105,7 +112,6 @@ HRESULT CTest2DModel::Read_TextureFIle(string _strUpperKey, std::filesystem::pat
 	string strTextureName = _path.filename().replace_extension().string();
 	string strTextureKey = _strUpperKey + "$";
 	strTextureKey += strTextureName;
-	strTextureKey = WstringToString(MakeTextureKey(_path));
 	if (m_Textures.find(strTextureKey) != m_Textures.end())
 	{
 		cout << "텍스처 중복" << strTextureKey << endl;
