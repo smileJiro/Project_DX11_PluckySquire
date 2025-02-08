@@ -64,7 +64,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	m_pAnimEventGenerator = 
 		static_cast<CAnimEventGenerator*> 
 		(m_pGameInstance->
-			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
+			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
 	
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 

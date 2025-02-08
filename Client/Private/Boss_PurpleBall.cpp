@@ -137,8 +137,8 @@ HRESULT CBoss_PurpleBall::Ready_PartObjects()
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     //BodyDesc.strModelPrototypeTag_2D = TEXT("barfBug_Rig");
     BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
-    //BodyDesc.iModelPrototypeLevelID_2D = LEVEL_GAMEPLAY;
-    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+    //BodyDesc.iModelPrototypeLevelID_2D = LEVEL_CHAPTER_2;
+    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXMESH::DEFAULT;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::TEST_PROJECTILE;
 

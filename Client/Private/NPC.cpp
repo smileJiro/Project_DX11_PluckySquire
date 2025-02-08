@@ -144,7 +144,7 @@ void CNPC::Active_OnEnable()
 
 
 	// 2. 몬스터 할거 하고
-//	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+//	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0);
 //	if (nullptr == m_pTarget)
 //	{
 //#ifdef _DEBUG

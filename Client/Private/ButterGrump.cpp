@@ -324,7 +324,7 @@ HRESULT CButterGrump::Ready_Components()
     CFSM_Boss::FSMBOSSDESC Desc;
     Desc.pOwner = this;
 
-    if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_FSM_Boss"),
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM_Boss"),
         TEXT("Com_FSM_Boss"), reinterpret_cast<CComponent**>(&m_pBossFSM), &Desc)))
         return E_FAIL;
 
@@ -343,7 +343,7 @@ HRESULT CButterGrump::Ready_PartObjects()
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("buttergrump_Rig");
-	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_GAMEPLAY;
+	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -365,7 +365,7 @@ HRESULT CButterGrump::Ready_PartObjects()
 HRESULT CButterGrump::Ready_Projectiles()
 {
     Pooling_DESC Pooling_Desc;
-    Pooling_Desc.iPrototypeLevelID = LEVEL_GAMEPLAY;
+    Pooling_Desc.iPrototypeLevelID = m_iCurLevelID;
     Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
 
