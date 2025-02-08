@@ -86,29 +86,31 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     //마찰용 박스
- //   SHAPE_BOX_DESC BoxDesc = {};
-	//_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
- //   BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
- //   SHAPE_DATA BoxShapeData;
- //   BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
- //   BoxShapeData.pShapeDesc = &BoxDesc;
- //   XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
- //   BoxShapeData.iShapeUse = SHAPE_FOOT;
- //   BoxShapeData.isTrigger = false;                    
- //   BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
- //   ActorDesc.ShapeDatas.push_back(BoxShapeData);
-    SHAPE_CAPSULE_DESC capDesc = {};
-    _float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
-    capDesc.fHalfHeight = fHalfWidth;
-    capDesc.fRadius = CapsuleDesc.fRadius;
-    SHAPE_DATA capShapeData;
-    capShapeData.eShapeType = SHAPE_TYPE::CAPSULE;
-    capShapeData.pShapeDesc = &capDesc;
-    XMStoreFloat4x4(&capShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, capDesc.fRadius, 0.0f));
-    capShapeData.iShapeUse = SHAPE_FOOT;
-    capShapeData.isTrigger = false;
-    capShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
-    ActorDesc.ShapeDatas.push_back(capShapeData);
+    SHAPE_BOX_DESC BoxDesc = {};
+	_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
+    BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
+    SHAPE_DATA BoxShapeData;
+    BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
+    BoxShapeData.pShapeDesc = &BoxDesc;
+    XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
+    BoxShapeData.iShapeUse = SHAPE_FOOT;
+    BoxShapeData.isTrigger = false;                    
+    BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    ActorDesc.ShapeDatas.push_back(BoxShapeData);
+
+    //마찰용 캡슐로 테스트해봤어요
+    //SHAPE_CAPSULE_DESC capDesc = {};
+    //_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
+    //capDesc.fHalfHeight = fHalfWidth;
+    //capDesc.fRadius = CapsuleDesc.fRadius;
+    //SHAPE_DATA capShapeData;
+    //capShapeData.eShapeType = SHAPE_TYPE::CAPSULE;
+    //capShapeData.pShapeDesc = &capDesc;
+    //XMStoreFloat4x4(&capShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, capDesc.fRadius, 0.0f));
+    //capShapeData.iShapeUse = SHAPE_FOOT;
+    //capShapeData.isTrigger = false;
+    //capShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    //ActorDesc.ShapeDatas.push_back(capShapeData);
 
     //충돌 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
