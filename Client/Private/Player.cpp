@@ -19,6 +19,7 @@
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
 #include "Collision_Manager.h"    
+#include "Interactable.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -159,6 +160,7 @@ HRESULT CPlayer::Ready_Components()
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
+    Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -281,23 +283,16 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
-
-
-    ////cout << "m_bOnGround : " << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
 
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == Get_CurCoord())
     {
         _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
-        //cout << "bSleep : " << bSleep;
         if (false == bSleep)
         {
-
             m_bOnGround = false;
         }
-
-
     }
     else
     {
@@ -460,7 +455,23 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    int a = 0;
+    if (_My.pShapeUserData->iShapeUse == SHAPE_TRIGER)
+    {
+        if (OBJECT_GROUP::INTERACTION_OBEJCT == _Other.pActorUserData->iObjectGroup)
+        {
+            PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
+            if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+            {
+                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
+                if (pInteractable && pInteractable->Is_Interactable(this))
+                {
+                    pInteractable->Interact(this);
+                }
+            }
+        }
+    }
+
+
 }
 
 void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -470,12 +481,21 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    int a = 0;
+
+
 }
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    int a = 0;
+    PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
+    if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+    {
+        IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+        if (pInteractable && pInteractable->Is_Interactable(this))
+        {
+            pInteractable->Interact(this);
+        }
+    }
 }
 
 void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -603,6 +623,9 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_KEY_SPINLAUNCH] = true;
         }
     }
+    //상호작용
+    if (KEY_DOWN(KEY::E))
+        tResult.bInputStates[PLAYER_KEY_INTERACT] = true;
     //점프
     if (KEY_PRESSING(KEY::SPACE))
         tResult.bInputStates[PLAYER_KEY_JUMP] = true;

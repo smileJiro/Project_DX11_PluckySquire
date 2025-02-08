@@ -237,6 +237,11 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 		int a = 0;
 	}
+
+	if (KEY_DOWN(KEY::T)) {
+		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, LEVEL_GAMEPLAY, TEXT("../Bin/DataFiles/Trigger/Test.json"));
+		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
+	}
 		
 }
 
@@ -298,8 +303,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Map()
 {
-	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
-	//if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
+	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 		return E_FAIL;
 	return S_OK;
 }

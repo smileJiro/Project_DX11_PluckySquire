@@ -21,4 +21,5 @@ namespace AnimTool
 	std::wstring OpenFileDialog(LPCWSTR szFilter);
 	std::wstring OpenDirectoryDialog();
 	std::wstring SaveFileDialog(LPCWSTR szFilter,const std::wstring& defaultName = L"");
+	std::wstring MakeTextureKey(const filesystem::path& _path);
 }

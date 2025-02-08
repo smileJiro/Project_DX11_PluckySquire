@@ -31,6 +31,7 @@ END
 
 BEGIN(Client)
 
+class CSection;
 class CTrigger_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CTrigger_Manager)
@@ -46,15 +47,31 @@ public:
 		RETURN_MASK_END
 	};
 
+	typedef struct tagTriggerEvent
+	{
+		function<void(_wstring)>	Action;
+		_wstring					EventTag;			// 진짜 사용할 EventTag, Trigger의 EventTag와 같음(ex CutScene_1)
+		_bool						isSequence = {};	// True -> 해당 Action이 끝난 다음에 다음 Action이 실행한다, false -> 다음 Action도 바로 실행한다
+		_bool						isOn = { false };
+	} ACTION;
+
 private:
 	CTrigger_Manager();
 	virtual ~CTrigger_Manager() = default;
 
 public:
 	HRESULT						Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	void						Update();
 
 public:
-	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath);
+	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection = nullptr);
+	HRESULT						Load_TriggerEvents(_wstring _szFilePath);
+
+public:
+	// Event Trigger
+	void						On_End(_wstring _szEventTag);	// 끝나는 Action의 EventTag를 넘겨주고 현재 실행 중인 Action인지 확인(ex CutScene_1)
+
+	void						Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID);
 
 
 #pragma region Load 관련 함수 (COORDNATE 분기)
@@ -63,7 +80,7 @@ private :
 	HRESULT						After_Initialize_Trigger_3D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
 
 	HRESULT						Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
-	HRESULT						After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
+	HRESULT						After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection);
 #pragma endregion
 
 private:
@@ -72,9 +89,21 @@ private:
 	ID3D11DeviceContext*		m_pContext = nullptr;
 
 private:
+	// Event Trigger
+	unordered_map<_wstring, queue<ACTION>>				m_TriggerEvents;
+	unordered_map<_wstring, function<void(_wstring)>>	m_Actions;
+	queue<ACTION>										m_CurTriggerEvent = {};
+
+	_int												m_iTriggerID = {};
+	_bool												m_isEventEnd = { false };
+
+private:
 	void						Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger);
+	void						Resister_Trigger_Action();
 
 	_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
+
+	void						Execute_Trigger_Event();
 
 public:
 	virtual void				Free() override;

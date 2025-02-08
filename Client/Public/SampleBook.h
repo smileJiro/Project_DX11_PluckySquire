@@ -54,8 +54,9 @@ public:
 	void					PageAction_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void					PageAction_Call_PlayerEvent();
 
-public :
 
+public:						
+	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);
 
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
