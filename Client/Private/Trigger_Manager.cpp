@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "Trigger_Manager.h"
+#include "Section.h"
 
 #include "GameInstance.h"
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "Section_2D.h"
 
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 
@@ -31,12 +33,13 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
     return S_OK;
 }
 
+
 void CTrigger_Manager::Update()
 {
 	Execute_Trigger_Event();
 }
 
-HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath)
+HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection)
 {
 	ifstream file(_szFilePath);
 
@@ -46,7 +49,6 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 		file.close();
 		return E_FAIL;
 	}
-
 	json Result;
 	file >> Result;
 	file.close();
@@ -99,7 +101,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 				}
 				else if (COORDINATE_2D == Desc.eStartCoord)
 				{
-					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc)))
+					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc, _pSection)))
 						return E_FAIL;
 				}
 			}
@@ -182,7 +184,7 @@ HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject
 	_tDesc.fRadius = ColliderInfoJson["Radius"];
 
 	return S_OK;
-}
+} 
 
 HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
 {
@@ -219,13 +221,35 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTrigge
 
 HRESULT CTrigger_Manager::Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
 {
+	json& ColliderInfoJson = _TriggerJson["Collider_Info"];
+
+	_tDesc.tTransform2DDesc.vInitialPosition = { ColliderInfoJson["Position"][0].get<_float>(),  ColliderInfoJson["Position"][1].get<_float>() , 1.f };
+	_tDesc.tTransform2DDesc.vInitialScaling = { ColliderInfoJson["Scale"][0].get<_float>(),  ColliderInfoJson["Scale"][1].get<_float>() ,1.f };
+
 	return S_OK;
 }
 
 
-HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
+HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection)
 {
-	return E_NOTIMPL;
+		// Custom Data
+	_string szKey = "Next_Position";
+
+	switch (_tDesc.iTriggerType) {
+		case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
+		{
+			if (_TriggerJson.contains("MapTrigger_InfoMapTrigger_Info")) 
+			{
+				_float3 fNextPosition = { _TriggerJson["MapTrigger_Info"][szKey][0].get<_float>(),  _TriggerJson["MapTrigger_Info"][szKey][1].get<_float>(), 1.f};
+				static_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), fNextPosition);
+			}
+		}
+		break;
+	}
+
+	if (nullptr != _pSection)
+		_pSection->Add_GameObject_ToSectionLayer(_pTriggerObject, CSection_2D::SECTION_2D_TRIGGER);
+	return S_OK;
 }
 
 void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger)
@@ -293,6 +317,18 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
+		break;
+	case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
+		_pTrigger->Resister_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			_float3 fNextPosition = any_cast<_float3>(_pTrigger->Get_CustomData(TEXT("Next_Position")));
+			if (_wstring::npos != _szEventTag.rfind(L"Next"))
+			{
+				Event_Book_Main_Section_Change_Start(1,&fNextPosition);
+			}
+			{
+				Event_Book_Main_Section_Change_Start(0, &fNextPosition);
+			}
+			});
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
 	{

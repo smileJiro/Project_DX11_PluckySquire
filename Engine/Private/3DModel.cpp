@@ -69,16 +69,28 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	m_eAnimType = bAnim ? ANIM : NONANIM;
 
 	if (FAILED(Ready_Bones(inFile, -1)))
+	{
+		inFile.close();
 		return E_FAIL;
+	}
 
 	if (FAILED(Ready_Meshes(inFile)))
+	{
+		inFile.close();
 		return E_FAIL;
+	}
 
 	if (FAILED(Ready_Materials(inFile, pModelFilePath)))
+	{
+		inFile.close();
 		return E_FAIL;
+	}
 
 	if (FAILED(Ready_Animations(inFile)))
+	{
+		inFile.close();
 		return E_FAIL;
+	}
 	inFile.close();
 	//std::cout << pModelFilePath << endl;
 

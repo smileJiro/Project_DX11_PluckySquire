@@ -31,6 +31,7 @@ END
 
 BEGIN(Client)
 
+class CSection;
 class CTrigger_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CTrigger_Manager)
@@ -63,7 +64,7 @@ public:
 	void						Update();
 
 public:
-	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath);
+	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection = nullptr);
 	HRESULT						Load_TriggerEvents(_wstring _szFilePath);
 
 public:
@@ -79,7 +80,7 @@ private :
 	HRESULT						After_Initialize_Trigger_3D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
 
 	HRESULT						Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
-	HRESULT						After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
+	HRESULT						After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection);
 #pragma endregion
 
 private:

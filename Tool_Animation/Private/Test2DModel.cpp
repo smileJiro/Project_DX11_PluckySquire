@@ -23,89 +23,36 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 	//	PaperFlipBook 컨테이너를 순회하면서	Animation2D를 생성.
 	//    Animation2D를 생성할 때 PaperSprite 컨테이너에서 LookUp해서 CSpriteFrame생성.
 
-	map<string, json> jPaperFlipBooks;
-	map<string, json> jPaperSprites;
 
 	std::filesystem::path path;
 	path = _szRawDataDirPath;
-	json jFile;
-	for (const auto& entry : std::filesystem::directory_iterator(path)) {
-		//cout << entry.path().string() << endl;
-		if (entry.is_directory())
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+		 if (".json" == entry.path().extension())
 		{
-			if ("Frames" == entry.path().filename())
-			{
-
-			}
-			else if ("Textures" == entry.path().filename())
-			{
-
-			}
-			else if("SpriteSheet" == entry.path().filename())
-			{
-
-			}
-		}
-		else if (".json" == entry.path().extension())
-		{
-			std::ifstream input_file(entry.path());
-			if (!input_file.is_open())
-				return E_FAIL;
-			input_file >> jFile;
-			input_file.close();
-
-			for (auto& jObj : jFile)
-			{
-				string strType = jObj["Type"];
-				if (strType._Equal("PaperSprite"))
-				{
-					string strName = jObj["Name"];
-
-					jPaperSprites.insert({ strName, jObj });
-				}
-				else if (strType._Equal("PaperFlipbook"))
-				{
-					string strName = jObj["Name"];
-
-					jPaperFlipBooks.insert({ strName,jObj });
-				}
-				else
-				{
-					continue;
-				}
-			}
-
+			Read_JsonFIle(entry.path());
 		}
 		else if (".png"  == entry.path().extension() || ".dds" ==entry.path().extension() )
 		{
-			if (m_Textures.find(entry.path().filename().replace_extension().string()) != m_Textures.end())
-				continue;
-			ID3D11ShaderResourceView* pSRV = { nullptr };
-			HRESULT hr = DirectX::CreateWICTextureFromFile(m_pDevice, entry.path().c_str(), nullptr, &pSRV);
-			if (FAILED(hr))
-				return E_FAIL;
-			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext );
-			if (nullptr == pTexture)
-				return E_FAIL;
-			string strTextureName = entry.path().filename().replace_extension().string();
-			wstring wstrTextureName = StringToWstring(strTextureName);
-			pTexture->Add_Texture(pSRV, wstrTextureName.c_str());
-			auto result = m_Textures.insert({ strTextureName, pTexture });
-			if (result.second == false)
-				Safe_Release(pTexture);
+			string strUpperKye = entry.path().parent_path().parent_path().filename().string();
+			Read_TextureFIle(strUpperKye, entry.path());
+		}
+		else
+		{
+			continue;
 		}
 	}
 
 
-	m_eAnimType = jPaperFlipBooks.size() > 0 ? ANIM : NONANIM;
+	m_eAnimType = m_jPaperFlipBooks.size() > 0 ? ANIM : NONANIM;
 
 	if (ANIM == m_eAnimType)
 	{
-		for (auto& j : jPaperFlipBooks)
+		for (auto& j : m_jPaperFlipBooks)
 		{
 			string strName = j.second["Name"];
 
-			CToolAnimation2D* pAnim =CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, jPaperSprites, m_Textures);
+			CToolAnimation2D* pAnim =CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, m_jPaperSprites, m_Textures);
 			if (nullptr == pAnim)
 				return E_FAIL;
 			m_Animation2Ds.push_back(pAnim);
@@ -113,10 +60,75 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 	}
 	else
 	{
-		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, jPaperSprites.begin()->second, m_Textures);
+		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, m_jPaperSprites.begin()->second, m_Textures);
 		if (nullptr == m_pNonAnimSprite)
 			return E_FAIL;
 	}
+	return S_OK;
+}
+HRESULT CTest2DModel::Read_JsonFIle(std::filesystem::path _path)
+{
+	json jFile;
+	std::ifstream input_file(_path);
+	if (!input_file.is_open())
+	{
+		cout <<"Failed to Open : " + _path.filename().string()<<endl;
+		return E_FAIL;
+	}
+	input_file >> jFile;
+	input_file.close();
+	for (auto& jObj : jFile)
+	{
+		string strType = jObj["Type"];
+		if (strType._Equal("PaperSprite"))
+		{
+			string strName = jObj["Name"];
+
+			m_jPaperSprites.insert({ strName, jObj });
+		}
+		else if (strType._Equal("PaperFlipbook"))
+		{
+			string strName = jObj["Name"];
+
+			m_jPaperFlipBooks.insert({ strName,jObj });
+		}
+		else
+		{
+			continue;
+		}
+	}
+	return S_OK;
+}
+
+HRESULT CTest2DModel::Read_TextureFIle(string _strUpperKey, std::filesystem::path _path)
+{
+	string strTextureName = _path.filename().replace_extension().string();
+	string strTextureKey = _strUpperKey + "$";
+	strTextureKey += strTextureName;
+	strTextureKey = WstringToString(MakeTextureKey(_path));
+	if (m_Textures.find(strTextureKey) != m_Textures.end())
+	{
+		cout << "텍스처 중복" << strTextureKey << endl;
+		return E_FAIL;
+	}
+	ID3D11ShaderResourceView* pSRV = { nullptr };
+	HRESULT hr = DirectX::CreateWICTextureFromFile(m_pDevice, _path.c_str(), nullptr, &pSRV);
+	if (FAILED(hr))
+	{
+		cout << "CreateWICTextureFromFile 실패" << strTextureKey << endl;
+		return E_FAIL;
+	}
+	CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext);
+	if (nullptr == pTexture)
+	{
+		cout << "텍스처 생성 실패" << strTextureKey << endl;
+		return E_FAIL;
+	}
+	wstring wstrTextureName = StringToWstring(strTextureKey);
+	pTexture->Add_Texture(pSRV, wstrTextureName.c_str());
+	auto result = m_Textures.insert({ strTextureKey, pTexture });
+	if (result.second == false)
+		Safe_Release(pTexture);
 	return S_OK;
 }
 
@@ -157,6 +169,7 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 			path.replace_extension(".dds");
 			if (FAILED(DirectX::CreateWICTextureFromFile(m_pDevice, path.c_str(), nullptr, &pSRV)))
 			{
+				cout << "failed to create Textrue : " << szTextureName << endl;
 				return E_FAIL;
 			}
 		}
@@ -215,7 +228,7 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 	_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
 	for (auto& pTexture : m_Textures)
 	{
-		string strTextureName = pTexture.first;
+		string strTextureName = WstringToString( *pTexture.second->Get_SRVName(0));
 		iCount = (_uint)strTextureName.length();
 		//cout << strTextureName << endl;
 		_outfile.write(reinterpret_cast<const char*>(&iCount), sizeof(_uint));
@@ -288,6 +301,7 @@ void CTest2DModel::Get_AnimationNames(list<string>& _Names)
 		_Names.push_back(static_cast<CToolAnimation2D*>(pAnimation)->Get_Name());
 	}
 }
+
 
 
 

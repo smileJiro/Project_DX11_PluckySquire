@@ -21,11 +21,17 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	_uint iStart;
 	_uint iCount;
 	json& jBakedSourceTexture = jProperties["BakedSourceTexture"];
-	string strSourceTexture = jBakedSourceTexture["ObjectName"];
-	iStart = (_uint)(strSourceTexture.find_first_of('\'')) + 1;
-	iCount = (_uint)strSourceTexture.find_last_of('\'') - iStart;
-	strSourceTexture = strSourceTexture.substr(iStart, iCount);
-	m_pTexture = _Textures[strSourceTexture];
+	//string  strTextureUpperKey = filesystem::path(jBakedSourceTexture["ObjectPath"].get<string>()).parent_path().parent_path().filename().string();
+	//string strTextureName;
+	//strTextureName = jBakedSourceTexture["ObjectName"];
+	//iStart = (_uint)(strTextureName.find_first_of('\'')) + 1;
+	//iCount = (_uint)strTextureName.find_last_of('\'') - iStart;
+	//strTextureName = strTextureName.substr(iStart, iCount);
+	//string strSourceTextureKey = strTextureUpperKey + "$";
+	//strSourceTextureKey += strTextureName;
+
+	string  strTextureKey = WstringToString( MakeTextureKey( filesystem::path(jBakedSourceTexture["ObjectPath"].get<string>())));
+	m_pTexture = _Textures[strTextureKey];
 
 	m_fPixelsPerUnrealUnit = jProperties["PixelsPerUnrealUnit"];
 
