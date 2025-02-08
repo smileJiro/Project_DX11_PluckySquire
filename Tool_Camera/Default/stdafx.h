@@ -14,5 +14,6 @@
 #include <memory.h>
 #include <tchar.h>
 #include <filesystem>
+#include <functional>
 
 #include "Camera_Tool_Defines.h"

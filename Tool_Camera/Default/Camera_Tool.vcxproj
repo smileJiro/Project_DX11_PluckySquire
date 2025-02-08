@@ -172,6 +172,7 @@
     <ClInclude Include="..\Public\Test_Body_Player.h" />
     <ClInclude Include="..\Public\Test_Player.h" />
     <ClInclude Include="..\Public\Test_Terrain.h" />
+    <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="Camera_Tool.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Resource.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="..\Private\Test_Body_Player.cpp" />
     <ClCompile Include="..\Private\Test_Player.cpp" />
     <ClCompile Include="..\Private\Test_Terrain.cpp" />
+    <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="Camera_Tool.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "TriggerObject.h"
 #include "GameInstance.h"
 

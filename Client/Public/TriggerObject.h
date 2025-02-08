@@ -2,10 +2,11 @@
 #include "ActorObject.h"
 
 BEGIN(Engine)
-
 class CCollider;
+END
 
-class ENGINE_DLL CTriggerObject : public CActorObject
+BEGIN(Client)
+class CTriggerObject : public CActorObject
 {
 public:
 	enum TRIGGER_CONDITION

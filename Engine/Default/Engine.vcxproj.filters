@@ -244,9 +244,6 @@
     <Filter Include="01.Utility\14.RenderGroup\RenderGroup_MRT">
       <UniqueIdentifier>{396e807a-38e4-4963-88dd-89969174e94d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Objects\Trigger">
-      <UniqueIdentifier>{48dd45cb-48ea-425a-baa8-4b28491a2eab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh_Particle">
       <UniqueIdentifier>{c4dbee5e-b0ec-4fea-bcd9-f258a7028cd4}</UniqueIdentifier>
     </Filter>
@@ -549,9 +546,6 @@
     <ClInclude Include="..\Public\RenderGroup_MRT.h">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_MRT</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\TriggerObject.h">
-      <Filter>01.Utility\03.Objects\Trigger</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\AnimEventGenerator.h">
       <Filter>01.Utility\04.Components\AnimEvent</Filter>
     </ClInclude>
@@ -838,9 +832,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup.cpp">
       <Filter>01.Utility\14.RenderGroup</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\TriggerObject.cpp">
-      <Filter>01.Utility\03.Objects\Trigger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AnimEventGenerator.cpp">
       <Filter>01.Utility\04.Components\AnimEvent</Filter>

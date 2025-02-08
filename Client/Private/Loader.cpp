@@ -88,6 +88,9 @@
 #include "Boss_PurpleBall.h"
 #include "FSM_Boss.h"
 
+// Trigger
+#include "TriggerObject.h"
+
 
 // Sample
 #include "SampleBook.h"

@@ -284,7 +284,6 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Transform.h" />
     <ClInclude Include="..\public\Transform_2D.h" />
     <ClInclude Include="..\Public\Transform_3D.h" />
-    <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\UIObject.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
@@ -383,7 +382,6 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Transform.cpp" />
     <ClCompile Include="..\private\Transform_2D.cpp" />
     <ClCompile Include="..\Private\Transform_3D.cpp" />
-    <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />
