@@ -12,6 +12,14 @@ enum class UI_DEPTHTYPE
 	LAST,
 };
 
+enum class PASS_VTXCUBE
+{
+	DEFAULT,
+	HDRI_ENV,
+
+	LAST
+};
+
 enum class PASS_VTXPOSTEX
 {
 	DEFAULT,
