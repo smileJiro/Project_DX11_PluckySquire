@@ -16,12 +16,14 @@ public:
 	void Switch_RunAnimation2D(F_DIRECTION _eFDir);
 	void Switch_RunAnimation3D(_bool _bStealth);
     _bool Is_Sneaking() { return m_bSneakBefore; }
+    //_bool Foot_On();
 
 private:
 	_float m_fSpeed = 7.f;
     _float m_fRotateSpeed = 1080.f;
 	_float m_fSneakSpeed = 3.0f;
 	_bool m_bSneakBefore = false;
+	//_float m_fFootHitPointY = 0.f;
 };
 
 END

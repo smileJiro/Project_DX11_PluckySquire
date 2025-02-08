@@ -859,12 +859,13 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 							_string strButtonText = "ADD ";
 							_string strMaterialText = "Material ";
 							strButtonText += arrEnumText[iTextureType];
+							_string strButtonID = strButtonText + std::to_string(iMaterialIdx);
 							strMaterialText += std::to_string(iMaterialIdx);
 
 							ImGui::BulletText(strMaterialText.c_str());
 							//ImGui::SameLine();
 							Begin_Draw_ColorButton("#AddButton_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
-
+							ImGui::PushID(strButtonID.c_str());
 							if (StyleButton(MINI, strButtonText.c_str()))
 #pragma region ADD BUTTON
 							{
@@ -923,6 +924,7 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 								}
 							}
 #pragma endregion
+							ImGui::PopID();
 							End_Draw_ColorButton();
 
 							iMaterialIdx++;

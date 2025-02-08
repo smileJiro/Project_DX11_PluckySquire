@@ -98,6 +98,20 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
 
+    //마찰용 캡슐로 테스트해봤어요
+    //SHAPE_CAPSULE_DESC capDesc = {};
+    //_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
+    //capDesc.fHalfHeight = fHalfWidth;
+    //capDesc.fRadius = CapsuleDesc.fRadius;
+    //SHAPE_DATA capShapeData;
+    //capShapeData.eShapeType = SHAPE_TYPE::CAPSULE;
+    //capShapeData.pShapeDesc = &capDesc;
+    //XMStoreFloat4x4(&capShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, capDesc.fRadius, 0.0f));
+    //capShapeData.iShapeUse = SHAPE_FOOT;
+    //capShapeData.isTrigger = false;
+    //capShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    //ActorDesc.ShapeDatas.push_back(capShapeData);
+
     //충돌 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     ShapeData.iShapeUse = SHAPE_TRIGER;
@@ -330,6 +344,22 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
         break;
     case Client::CPlayer::SHAPE_FOOT:
         //cout << "   COntatct Enter";
+
+        //TestCode
+    //    for (auto& pxPairData : _ContactPointDatas)
+    //    {
+    //        if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+    //        {
+    //            //경사로 벽인지 판단하는데, 낮은 높이애들만 할 것이므로 안씀
+    //            //if (abs(pxPairData.normal.y) < m_fFootSlopeThreshold)
+    //            //높이가 한계점 이하이면
+				//if (Get_FinalPosition().m128_f32[1] < pxPairData.position.y && pxPairData.position.y - m_fFootHeightThreshold <= Get_FinalPosition().m128_f32[1])
+    //            {
+    //                Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+    //            }
+    //        }
+    //    }
+
         break;
 	case Client::CPlayer::SHAPE_TRIGER:
 		break;
@@ -397,6 +427,21 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
         break;
     case Client::CPlayer::SHAPE_FOOT:
         //cout << "   COntatct Exit";
+
+         //TestCode
+        //for (auto& pxPairData : _ContactPointDatas)
+        //{
+        //    if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+        //    {
+        //        //경사로 벽인지 판단하는데, 낮은 높이애들만 할 것이므로 안씀
+        //        //if (abs(pxPairData.normal.y) < m_fFootSlopeThreshold)
+        //        //높이가 한계점 이하이면
+        //        if (!(Get_FinalPosition().m128_f32[1] < pxPairData.position.y && pxPairData.position.y - m_fFootHeightThreshold <= Get_FinalPosition().m128_f32[1]))
+        //        {
+        //            Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
+        //        }
+        //    }
+        //}
         break;
     case Client::CPlayer::SHAPE_TRIGER:
         break;
@@ -894,6 +939,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
 
+    if (KEY_DOWN(KEY::TAB))
+    {
+        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 24.f));
+    }
 
 }
 
