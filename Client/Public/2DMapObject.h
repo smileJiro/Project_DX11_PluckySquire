@@ -1,11 +1,15 @@
 #pragma once
 #include "MapObject.h"
-#include "3DModel.h"
+
+
+BEGIN(Engine)
+class CCollider;
+END
 
 
 BEGIN(Client)
 
-class C2DMapObject final : public CMapObject
+class C2DMapObject abstract : public CMapObject
 {
 public:
 	typedef struct tag2DMapObjectDesc : public CMapObject::MODELOBJECT_DESC
@@ -14,6 +18,7 @@ public:
 		_bool is2DImport = false;
 
 		_bool isActive = false;
+		_bool isBackGround = false;
 		_bool isSorting = false;
 		_bool isCollider = false;
 
@@ -27,7 +32,7 @@ public:
 		_float	fCollider_Radius = 0.f;
 
 	}MAPOBJ_DESC;
-private:
+protected:
 	C2DMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C2DMapObject(const C2DMapObject& _Prototype);
 	virtual ~C2DMapObject() = default;
@@ -41,15 +46,26 @@ public:
 	virtual HRESULT					Render() override;
 	virtual HRESULT					Render_Shadow() override;
 
-private:
-	_float4x4						m_matWorld = {};
+
+public:
+	_bool							Is_Active() { return m_isActive; };
+	_bool							Is_Collider() { return m_isCollider; };
+	_bool							Is_Sorting() { return m_isSorting; };
+	_bool							Is_BackGround() { return m_isBackGround; };
+
+protected:
+	HRESULT							Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock);
+
+protected:
+	CCollider*						m_pColliderCom = { nullptr };
 
 
+	_bool							m_isActive = false;
+	_bool							m_isCollider = false;
+	_bool							m_isBackGround = false;
 	_bool							m_isSorting = true;
 
 public:
-	static C2DMapObject*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CGameObject*	Clone(void* _pArg) override;
 	virtual void			Free() override;
 };
 END

@@ -5,7 +5,7 @@ class ENGINE_DLL CCamera abstract : public CGameObject
 {
 public:
 	enum ZOOM_LEVEL { LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, LEVEL_10, ZOOM_LAST,};
-	enum RATIO_TYPE { EASE_IN, EASE_OUT, LERP, RATIO_TYPE_LAST};
+	enum RATIO_TYPE { EASE_IN, EASE_OUT, LERP, EASE_IN_OUT, RATIO_TYPE_LAST};
 	enum SHAKE_TYPE { SHAKE_XY, SHAKE_X, SHAKE_Y, SHAKE_LAST };
 
 public:
@@ -78,6 +78,8 @@ public:
 
 public:
 	virtual void	Change_Target(const _float4x4* _pTargetWorldMatrix) {};
+	virtual void	Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) {};
+	virtual INITIAL_DATA Get_InitialData() { return INITIAL_DATA(); };
 
 protected:
 	/* 뷰, 투영 행렬을 구성하는 기능 */
@@ -89,8 +91,7 @@ protected:
 	_float			m_fAspect = { 0.f };
 	_float			m_fNear = { 0.f };
 	_float			m_fFar = { 0.f };
-	
-	//_float3			m_vOffset = { 0.0f, 0.0f, 0.0f };
+
 public:
 	void		Start_Zoom(_float _fZoomTime, ZOOM_LEVEL _eZoomLevel, RATIO_TYPE _eRatioType);
 	void		Start_Changing_AtOffset(_float _fAtOffsetTime, _vector _vNextAtOffset, _uint _iRatioType);
@@ -98,16 +99,16 @@ public:
 	void		Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int _iShakeCount, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 
 public:
-	//void		Start_Shake(SHAKE_TYPE _eType, _float _fShakeTime, _int _iShakeCount, _float _fPower = 1.0f);
 	void		End_Shake();
 
 protected:
 	void		Action_Zoom(_float _fTimeDelta);
 	void		Change_AtOffset(_float _fTimeDelta);
-	//void		Action_Shake(_float _fTimeDelta);
 	void		Action_Shake(_float _fTimeDelta);
 
 	_float		Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
+
+	virtual void		Switching(_float _fTimeDelta) {};
 
 protected: /* Zoom */
 	_float		m_ZoomLevels[(_uint)ZOOM_LAST] = {};
@@ -137,13 +138,15 @@ protected: /* Shake */
 	_float						m_fShakeForce = {};
 	_float3						m_vShakeOffset = {};
 
-
+protected: // Initial
+	INITIAL_DATA				m_tInitialData = {};
+	_bool						m_isInitialData = { false };
+	_float2						m_InitialTime = { 0.3f, 0.f };
 
 public:
 	virtual CGameObject* Clone(void* _pArg) = 0;
 	virtual void Free() override;
 	virtual HRESULT Cleanup_DeadReferences(); // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
-
 };
 
 END

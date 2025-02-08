@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Interaction_Heart.h"
 #include "UI_Manager.h"
+#include "Section_2D.h"
 
 
 
@@ -26,39 +27,30 @@ HRESULT CInteraction_Heart::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	
-	m_isRender = true;
+	m_isRender = false;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 
 	return S_OK;
 }
 
 void CInteraction_Heart::Priority_Update(_float _fTimeDelta)
 {
-	// 캐릭터를 따라다니는 하트으
+
 }
 
 void CInteraction_Heart::Update(_float _fTimeDelta)
 {
-	m_vPlayerPos = CUI_Manager::GetInstance()->Get_Player()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-	_float fPlayerPosX = m_vPlayerPos.m128_f32[1];
-	_float fPlayerPosY = m_vPlayerPos.m128_f32[2];
+	// 캐릭터를 따라다니는 하트 // 타격받았을때만 노출되게 변경해야한다.
 
-
-	//fPlayerPosX = g_iWinSizeX / 2.f;
-	//fPlayerPosY = g_iWinSizeY / 2.f;
-
-	fPlayerPosX = fPlayerPosX + g_iWinSizeX * 0.5f;
-	fPlayerPosY = -fPlayerPosY + g_iWinSizeY * 0.5f;
-
-
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, 
-		XMVectorSet(fPlayerPosX, fPlayerPosY, 0.f, 1.f));
-
+	if (true == m_isRender)
+	{
+		Cal_HeartPos();
+	}
+	
 
 	__super::Update(_fTimeDelta);
 
@@ -66,13 +58,19 @@ void CInteraction_Heart::Update(_float _fTimeDelta)
 
 void CInteraction_Heart::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+
 } 
 
 HRESULT CInteraction_Heart::Render()
 {
+	
 	if (true == m_isRender)
+	{
+		// TODO :: 일단은...
+
 		__super::Render(m_PlayerHP);
+	}
+
 
 	return S_OK;
 }
@@ -136,5 +134,23 @@ void CInteraction_Heart::Free()
 HRESULT CInteraction_Heart::Cleanup_DeadReferences()
 {
 	return S_OK;
+}
+
+void CInteraction_Heart::Cal_HeartPos()
+{
+	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		// TODO :: 해당 부분은 가변적이다. 추후 변경해야한다.
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
+		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+
+		_float2 vCalPos = { 0.f, 0.f };
+
+		vCalPos.x = vPlayerPos.x;
+		vCalPos.y = vPlayerPos.y + RTSize.y * 0.175f;
+
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
+	}
 }
 

@@ -31,6 +31,8 @@ public:
 	CCamera*			Get_Camera(_uint _iCameraType) { return m_Cameras[_iCameraType]; }
 	_vector				Get_CameraVector(CTransform::STATE _eState);						// 현재 카메라 Right, Up, Look, Pos 가져오는 함수
 	_uint				Get_CameraType() { return m_eCurrentCameraType; }
+	_uint				Get_CameraMode(_uint _iCameraType);
+	_uint				Get_CurCameraMode();
 
 #ifdef _DEBUG
 	void				Start_ZoomIn();
@@ -41,11 +43,11 @@ public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
 	
 	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);		// 카메라 모드 전환(아마 Target Camera만 적용)							
-	void				Change_CameraType(_uint _iCurrentCameraType);
+	void				Change_CameraType(_uint _iCurrentCameraType, _bool _isInitialData = false, _float _fInitialTime = 0.3f);
 	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix);
 	
 	_bool				Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
-	_bool				Set_NextCutSceneData(_wstring _wszCutSceneName, CUTSCENE_INITIAL_DATA* _pInitialData = nullptr);
+	_bool				Set_NextCutSceneData(_wstring _wszCutSceneName);
 	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
 	void				Set_Freeze(_uint _iFreezeType);
 

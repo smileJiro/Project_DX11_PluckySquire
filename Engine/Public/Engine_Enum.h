@@ -12,6 +12,14 @@ enum class UI_DEPTHTYPE
 	LAST,
 };
 
+enum class PASS_VTXCUBE
+{
+	DEFAULT,
+	HDRI_ENV,
+
+	LAST
+};
+
 enum class PASS_VTXPOSTEX
 {
 	DEFAULT,
@@ -21,7 +29,8 @@ enum class PASS_VTXPOSTEX
 	SPRITE2D,
 	UI_POINTSAMPLE,
 	UI_ALPHA,
-
+	MAPOBJECT_MIXCOLOR,
+	DIALOGUE_BG_COLOR,
 	LAST
 };
 

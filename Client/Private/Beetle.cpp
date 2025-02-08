@@ -49,6 +49,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
@@ -128,6 +129,53 @@ void CBeetle::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKSTRIKE);
             break;
 
+         //잠입의 경우 idle 애니메이션 랜덤 재생
+        case MONSTER_STATE::SNEAK_IDLE:
+        {
+            _uint iNum = (_uint)ceil(m_pGameInstance->Compute_Random(0, 4));
+            switch (iNum)
+            {
+            case 1:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PAUSE1);
+                break;
+            case 2:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PAUSE2);
+                break;
+            case 3:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WAIT1);
+                break;
+            case 4:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WAIT2);
+                break;
+            }
+            
+            break;
+        }
+
+        case MONSTER_STATE::SNEAK_PATROL:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
+            break;
+
+        case MONSTER_STATE::SNEAK_AWARE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PAUSE2);
+            break;
+                
+        case MONSTER_STATE::SNEAK_INVESTIGATE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
+            break;
+
+        case MONSTER_STATE::SNEAK_ALERT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+            break;
+
+        case MONSTER_STATE::SNEAK_CHASE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
+            break;
+
+        case MONSTER_STATE::SNEAK_ATTACK:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CAUGHT);
+            break;
+
         default:
             break;
         }
@@ -150,6 +198,11 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     case ATTACKRECOVERY:
         pModelObject->Switch_Animation(ATTACKSTRIKE);
         break;
+
+    case PAUSE2:
+        Set_AnimChangeable(true);
+        break;
+
 
     default:
         break;

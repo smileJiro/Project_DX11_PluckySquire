@@ -184,6 +184,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\2DMapActionObject.h" />
+    <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
@@ -208,6 +210,9 @@
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\Collision_Manager.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
+    <ClInclude Include="..\Public\Interactable.h" />
+    <ClInclude Include="..\Public\Item.h" />
+    <ClInclude Include="..\Public\Item_Manager.h" />
     <ClInclude Include="..\public\MainTable.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
@@ -237,11 +242,13 @@
     <ClInclude Include="..\Public\Logo_Choose.h" />
     <ClInclude Include="..\Public\Logo_Props.h" />
     <ClInclude Include="..\Public\MapObject.h" />
+    <ClInclude Include="..\Public\MapObjectFactory.h" />
     <ClInclude Include="..\Public\Map_2D.h" />
     <ClInclude Include="..\Public\Monster_Body.h" />
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\Npc_Body.h" />
     <ClInclude Include="..\Public\Npc_Logo.h" />
+    <ClInclude Include="..\Public\NPC_DJMoonBeard.h" />
     <ClInclude Include="..\public\NPC_Store.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerBody.h" />
@@ -249,6 +256,7 @@
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\PlayerState_JumpDown.h" />
     <ClInclude Include="..\Public\PlayerState_Roll.h" />
+    <ClInclude Include="..\Public\PlayerState_SpinAttack.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h" />
     <ClInclude Include="..\Public\PlayerSword.h" />
     <ClInclude Include="..\Public\Popuff.h" />
@@ -271,6 +279,16 @@
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
     <ClInclude Include="..\Public\ShopPanel_YesNo.h" />
+    <ClInclude Include="..\Public\Sneak_AlertState.h" />
+    <ClInclude Include="..\Public\Sneak_AttackState.h" />
+    <ClInclude Include="..\Public\Sneak_AwareState.h" />
+    <ClInclude Include="..\Public\Sneak_ChaseState.h" />
+    <ClInclude Include="..\Public\Sneak_DetectionField.h" />
+    <ClInclude Include="..\Public\Sneak_IdleState.h" />
+    <ClInclude Include="..\Public\Sneak_InvestigateState.h" />
+    <ClInclude Include="..\Public\Sneak_PatrolState.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
     <ClInclude Include="..\Public\Soldier_Spear.h" />
@@ -302,6 +320,7 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
     <ClInclude Include="..\Public\UI.h" />
+    <ClInclude Include="..\Public\UI_JotMain.h" />
     <ClInclude Include="..\public\UI_Manager.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
@@ -310,6 +329,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\2DMapActionObject.cpp" />
+    <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
@@ -336,6 +357,9 @@
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
+    <ClCompile Include="..\Private\Item.cpp" />
+    <ClCompile Include="..\Private\Item_Manager.cpp" />
+    <ClCompile Include="..\Private\Interactable.cpp" />
     <ClCompile Include="..\private\MainTable.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
@@ -367,6 +391,7 @@
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\Npc_Body.cpp" />
     <ClCompile Include="..\Private\Npc_Logo.cpp" />
+    <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp" />
     <ClCompile Include="..\private\NPC_Store.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerBody.cpp" />
@@ -374,6 +399,7 @@
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
     <ClCompile Include="..\Private\PlayerState_JumpDown.cpp" />
     <ClCompile Include="..\Private\PlayerState_Roll.cpp" />
+    <ClCompile Include="..\Private\PlayerState_SpinAttack.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp" />
     <ClCompile Include="..\Private\PlayerSword.cpp" />
     <ClCompile Include="..\Private\Popuff.cpp" />
@@ -396,6 +422,16 @@
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_BG.cpp" />
     <ClCompile Include="..\Private\ShopPanel_YesNo.cpp" />
+    <ClCompile Include="..\Private\Sneak_AlertState.cpp" />
+    <ClCompile Include="..\Private\Sneak_AttackState.cpp" />
+    <ClCompile Include="..\Private\Sneak_AwareState.cpp" />
+    <ClCompile Include="..\Private\Sneak_ChaseState.cpp" />
+    <ClCompile Include="..\Private\Sneak_DetectionField.cpp" />
+    <ClCompile Include="..\Private\Sneak_IdleState.cpp" />
+    <ClCompile Include="..\Private\Sneak_InvestigateState.cpp" />
+    <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
     <ClCompile Include="..\Private\Soldier_Spear.cpp" />
@@ -413,7 +449,9 @@
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
     <ClCompile Include="..\private\SettingPanelBG.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
-    <ClCompile Include="..\Private\Level_GamePlay.cpp" />
+    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Level_Static.cpp" />
@@ -428,6 +466,7 @@
     <ClCompile Include="..\private\TestTerrain.cpp" />
     <ClCompile Include="..\Private\Transition.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
+    <ClCompile Include="..\Private\UI_JotMain.cpp" />
     <ClCompile Include="..\private\UI_Manager.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

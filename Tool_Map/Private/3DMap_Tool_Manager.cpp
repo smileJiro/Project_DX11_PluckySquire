@@ -1686,7 +1686,7 @@ void C3DMap_Tool_Manager::Object_Open_PreviewMode()
 
 		CGameObject* pGameObject = nullptr;
 
-		m_pGameInstance->Add_GameObject_ToLayer( LEVEL_TOOL_3D_MAP, TEXT("Prototype_GameObject_MapObject"),
+		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
 			LEVEL_TOOL_3D_MAP, L"Layer_MapObject", &pGameObject, (void*)&NormalDesc);
 		
 		if (nullptr != pGameObject)

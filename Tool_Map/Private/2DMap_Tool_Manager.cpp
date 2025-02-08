@@ -5,7 +5,6 @@
 #include "Transform.h"
 #include "VIBuffer_Terrain.h"
 #include "MapObject.h"
-#include <DirectXCollision.h>
 #include <filesystem>
 #include "gizmo/ImGuizmo.h"
 #include "Imgui_Manager.h"
@@ -121,8 +120,8 @@ void C2DMap_Tool_Manager::Input_Logic()
 		if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
 		{
 			C2DTrigger_Sample::TRIGGER_2D_DESC TriggerDesc = {};
-			TriggerDesc.tTransform2DDesc.vInitialPosition = {0.f,0.f,1.f};
-			TriggerDesc.tTransform2DDesc.vInitialScaling = {100.f,100.f,1.f};
+			TriggerDesc.tTransform2DDesc.vInitialPosition = { 0.f,0.f,1.f };
+			TriggerDesc.tTransform2DDesc.vInitialScaling = { 100.f,100.f,1.f };
 			//TriggerDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 			TriggerDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 			TriggerDesc.eStartCoord = COORDINATE_2D;
@@ -140,9 +139,9 @@ void C2DMap_Tool_Manager::Input_Logic()
 				//LOG_TYPE(strNotExistTextureMessage, LOG_ERROR);
 				//NotExistTextures.push_back(strNotExistTextureMessage);
 			}
-		
+
 		}
-		if(ImGui::IsKeyPressed(ImGuiKey_MouseLeft) && nullptr != m_DefaultRenderObject && m_DefaultRenderObject->Is_2DMode())
+		if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft) && nullptr != m_DefaultRenderObject && m_DefaultRenderObject->Is_2DMode())
 		{
 			C2DMapObject* pPickingObject = Picking_2DMap();
 			m_pPickingObject = pPickingObject;
@@ -312,10 +311,10 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 							strTileMapName = TargetJson["TileMap"]["ObjectName"];
 							strTileMapName = OutName(strTileMapName);
 						}
-						else 
-						
+						else
+
 						{
-						
+
 						}
 
 					}
@@ -334,10 +333,10 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 					return;
 				}
 			}
-			else 
+			else
 			{
-					LOG_TYPE("Tile Map Not Exist! -> " + strTileMapName, LOG_ERROR);
-			
+				LOG_TYPE("Tile Map Not Exist! -> " + strTileMapName, LOG_ERROR);
+
 			}
 			if (!MapColors.empty())
 			{
@@ -399,8 +398,8 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 				wstring strResultFileFath = L"../Bin/json/Result/";
 
 				if (!NotExistTextures.empty())
-					m_pTaskManager->Export_Result(strResultFileFath, StringToWstring(strFileName),NotExistTextures);
-					LOG_TYPE(_wstring(L"=====  2D Map Read End  =====") + szName, LOG_LOAD);
+					m_pTaskManager->Export_Result(strResultFileFath, StringToWstring(strFileName), NotExistTextures);
+				LOG_TYPE(_wstring(L"=====  2D Map Read End  =====") + szName, LOG_LOAD);
 
 			}
 		}
@@ -883,7 +882,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					{
 						C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
 						NormalDesc.strProtoTag = StringToWstring(m_pPickingInfo->Get_ModelName());
-						NormalDesc.fDefaultPosition = {0.f,0.f};
+						NormalDesc.fDefaultPosition = { 0.f,0.f };
 						NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 						NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 
@@ -1100,8 +1099,8 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 								_float2 fDrawExtent = fExtent;
 								fDrawExtent.x *= fRatio;
 								fDrawExtent.y *= fRatio;
-								ImVec2 DrawPosMin = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f) - (fDrawExtent.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f) - (fDrawExtent.y * 0.5f) };
-								ImVec2 DrawPosMax = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f) + (fDrawExtent.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f) + (fDrawExtent.y * 0.5f) };
+								ImVec2 DrawPosMin = { imagePos.x + (m_fOffsetPos.x * fRatio) + (fDefaultSize.x * 0.5f) - (fDrawExtent.x * 0.5f), imagePos.y + (m_fOffsetPos.y * fRatio) + (fDefaultSize.y * 0.5f) - (fDrawExtent.y * 0.5f) };
+								ImVec2 DrawPosMax = { imagePos.x + (m_fOffsetPos.x * fRatio) + (fDefaultSize.x * 0.5f) + (fDrawExtent.x * 0.5f), imagePos.y + (m_fOffsetPos.y * fRatio) + (fDefaultSize.y * 0.5f) + (fDrawExtent.y * 0.5f) };
 								drawList->AddRect(DrawPosMin, DrawPosMax, IM_COL32(255, 0, 0, 255), 0.0f, ImDrawFlags_None, 2.0f);
 								ImGui::SetNextItemWidth(50.f);
 								if (ImGui::DragFloat("##ExtentX", &fExtent.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
@@ -1116,14 +1115,14 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 							if (isSquare)
 							{
-								ImVec2 DrawPos = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f)};
+								ImVec2 DrawPos = { imagePos.x + (m_fOffsetPos.x * fRatio) + (fDefaultSize.x * 0.5f), imagePos.y + (m_fOffsetPos.y * fRatio) + (fDefaultSize.y * 0.5f) };
 								drawList->AddCircle(DrawPos, fRadius * fRatio, IM_COL32(255, 0, 0, 255));
 								ImGui::SetNextItemWidth(110.f);
 								if (ImGui::DragFloat("Radius", &fRadius, 1.f, -FLT_MAX, FLT_MAX, "%.1f"))
 									m_pPickingInfo->Set_Collider_Radius(fRadius);
 
 							}
-							
+
 						}
 						Begin_Draw_ColorButton("NO_Style", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 						if (ImGui::Button("Close"))
@@ -1138,7 +1137,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					End_Draw_ColorButton();
 
 				}
-				
+
 
 			}
 
@@ -1243,7 +1242,7 @@ void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
 		Begin_Draw_ColorButton("Save_FileStyle", (ImVec4)ImColor::HSV(0.3f, 0.6f, 0.6f));
 		if (ImGui::Button("Trigger Save"))
 		{
-			//Save_Trigger(L"../../Client/Bin/SettingFile/", L"Trigger");
+			Save_Trigger();
 		}
 		ImGui::SameLine();
 		if (ImGui::BeginPopup("Save_Popup"))
@@ -1293,7 +1292,7 @@ void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
 		ImGui::SeparatorText("Trigger List");
 		if (ImGui::BeginListBox("##Trigger List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 		{
-			auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP,L"Layer_Trigger");
+			auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_Trigger");
 			if (pLayer)
 			{
 				auto& TriggerList = pLayer->Get_GameObjects();
@@ -1335,7 +1334,8 @@ void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
 			Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
 			if (ImGui::Button("OK"))
 			{
-				m_TriggerEvents.clear();
+				//m_TriggerEvents.clear();
+
 				ImGui::CloseCurrentPopup();
 			}
 			End_Draw_ColorButton();
@@ -1386,11 +1386,11 @@ void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
 			ImGui::Text("Trigger Position");
 
 			ImGui::SetNextItemWidth(100.f);
-			if (ImGui::DragFloat("##TriggerScaleX", &fScale.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
+			if (ImGui::DragFloat("##TriggerScaleX", &fScale.x, 1.f, 0.f, FLT_MAX, "x:%.1f"))
 				m_pPickingTrigger->Set_Scale(fScale);
 			ImGui::SameLine();
 			ImGui::SetNextItemWidth(100.f);
-			if (ImGui::DragFloat("##TriggerScaleY", &fScale.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
+			if (ImGui::DragFloat("##TriggerScaleY", &fScale.y, 1.f, 0.f, FLT_MAX, "y:%.1f"))
 				m_pPickingTrigger->Set_Scale(fScale);
 			ImGui::SameLine();
 			ImGui::Text("Trigger Scale");
@@ -1424,14 +1424,14 @@ void C2DMap_Tool_Manager::TriggerEvent_Imgui(_bool bLock)
 {
 	ImGui::Begin("Trigger Event");
 	{
-		string m_strConditionNames[] = { "Collision Enter", 
+		string m_strConditionNames[] = { "Collision Enter",
 											"Collision",
 											"Collision Exit", };
-		string m_strEventNames[] = { "Object Spawn", 
+		string m_strEventNames[] = { "Object Spawn",
 										"CutScene Event",
 										"Map_Change",
 										"Popup_UI",
-									};
+		};
 
 
 		ImGui::SeparatorText("Trigger Event List");
@@ -1631,7 +1631,7 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 		m_pTileRenderObject->Set_OutputPath(strModelPath);
 
 	strcpy_s(szSaveMapName, strBackGroundName.c_str());
-	
+
 	//2. 맵 이름
 	WriteFile(hFile, &szSaveMapName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 
@@ -1653,16 +1653,19 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 	Load_SaveFileList();
 }
 
+
+
+
 C2DMapObject* C2DMap_Tool_Manager::Picking_2DMap()
 {
 	_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
 	if (m_DefaultRenderObject->IsCursor_In(fCursorPos))
 	{
-		auto pLayerMaps = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP,L"Layer_2DMapObject");
+		auto pLayerMaps = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
 		if (nullptr != pLayerMaps)
 		{
 			auto Objects = pLayerMaps->Get_GameObjects();
-		
+
 			for (auto& pObject : Objects)
 			{
 				C2DMapObject* pMapObject = static_cast<C2DMapObject*>(pObject);
@@ -1670,7 +1673,7 @@ C2DMapObject* C2DMap_Tool_Manager::Picking_2DMap()
 					return pMapObject;
 			}
 		}
-	
+
 	}
 
 	return nullptr;
@@ -1946,26 +1949,26 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 C2DMapObjectInfo* C2DMap_Tool_Manager::Find_Info(const _wstring _strTag)
 {
 	for (auto pInfo : m_ObjectInfoLists)
-		if(ContainString(WstringToString(_strTag), pInfo->Get_SearchTag()))
+		if (ContainString(WstringToString(_strTag), pInfo->Get_SearchTag()))
 			return pInfo;
 	return nullptr;
 }
 
 HRESULT C2DMap_Tool_Manager::Update_Model_Index()
 {
-		auto pLayerMaps = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
-		if (nullptr != pLayerMaps)
-		{
-			auto Objects = pLayerMaps->Get_GameObjects();
+	auto pLayerMaps = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
+	if (nullptr != pLayerMaps)
+	{
+		auto Objects = pLayerMaps->Get_GameObjects();
 
-			for (auto& pObject : Objects)
-			{
-				C2DMapObject* pMapObject = static_cast<C2DMapObject*>(pObject);
-				if (FAILED(pMapObject->Update_Model_Index()))
-					return E_FAIL;
-			}
+		for (auto& pObject : Objects)
+		{
+			C2DMapObject* pMapObject = static_cast<C2DMapObject*>(pObject);
+			if (FAILED(pMapObject->Update_Model_Index()))
+				return E_FAIL;
 		}
-		return S_OK;
+	}
+	return S_OK;
 }
 
 
@@ -2133,7 +2136,7 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 	{
 		log = "Load Failed... File Open Error - File Path : ";
 		log += filename;
-			LOG_TYPE(log, LOG_ERROR);
+		LOG_TYPE(log, LOG_ERROR);
 		return;
 	}
 
@@ -2144,26 +2147,26 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 
 	_uint iObjectCnt = 0;
 	ReadFile(hFile, &szSaveMapName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-	
+
 	// 텍스쳐로 렌더하는 모드로 바까주고
 	m_DefaultRenderObject->Set_Texture_Mode(szSaveMapName);
 	// 타일 렌더하는 객체 지우고 !
 	Event_DeleteObject(m_pTileRenderObject);
 	m_pTileRenderObject = nullptr;
-	
+
 	_uint iLayerCount = 0;
 
 	ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
 
 	WriteFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
-	for (_uint i = 0; i < iLayerCount ; ++i)
+	for (_uint i = 0; i < iLayerCount; ++i)
 	{
 
 		C2DMapObject* pObject = C2DMapObject::Create(m_pDevice, m_pContext, hFile, m_ObjectInfoLists);
 		if (nullptr != pObject)
 		{
-			Event_CreateObject(LEVEL_TOOL_2D_MAP ,L"Layer_2DMapObject", pObject);
+			Event_CreateObject(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject", pObject);
 		}
 	}
 
@@ -2200,6 +2203,85 @@ void C2DMap_Tool_Manager::Save_Popup()
 {
 	ImGui::OpenPopup("Save_Popup");
 	strcpy_s(m_szSaveFileName, m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]).c_str());
+}
+
+void C2DMap_Tool_Manager::Save_Trigger()
+{
+	_tchar originalDir[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, originalDir);
+	SetCurrentDirectory(originalDir);
+	_wstring strTriggerPath = L"../../Client/Bin/MapSaveFiles/2D/Trigger/";
+	_wstring strTriggerName = m_arrSelectName[SAVE_LIST] + L".json";
+	_tchar szName[MAX_PATH];
+	lstrcpy(szName, strTriggerName.c_str());
+
+	OPENFILENAME ofn = {};
+
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = g_hWnd;
+	ofn.lpstrFile = szName;
+	ofn.nMaxFile = sizeof(szName);
+	ofn.lpstrFilter = L".json\0*.y\0";
+	ofn.nFilterIndex = 0;
+	ofn.lpstrFileTitle = nullptr;
+	ofn.nMaxFileTitle = 0;
+	wstring strPath = strTriggerPath;
+	if (GetFullPathName(strTriggerPath.c_str(), MAX_PATH, originalDir, NULL))
+		ofn.lpstrInitialDir = originalDir;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
+	if (GetSaveFileName(&ofn))
+	{
+		json Result = json::array();
+
+		auto pLayerMaps = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_Trigger");
+
+		auto& pTriggers = pLayerMaps->Get_GameObjects();
+
+		for (auto& Trigger : pTriggers) {
+
+			C2DTrigger_Sample* pTrigger = static_cast<C2DTrigger_Sample*>(Trigger);
+
+			const _string& strTriggerKey = pTrigger->Get_TriggerKey();
+
+			auto iter = find_if(m_TriggerEvents.begin(), m_TriggerEvents.end(), [&strTriggerKey](TRIGGER_EVENT& _tTriggerEvent) {
+				return strTriggerKey == _tTriggerEvent.strEventName;
+				});
+			if (iter == m_TriggerEvents.end())
+				continue;
+
+			TRIGGER_EVENT& tCurEvent = *iter;
+
+			_vector vPosition = Trigger->Get_FinalPosition();
+			_float3 fScale = pTrigger->Get_FinalScale();
+			json Trigger_json;
+			auto& Collider_Json = Trigger_json["Collider_Info"];
+			Trigger_json["Trigger_Coordinate"] = COORDINATE_2D;
+			Trigger_json["Trigger_Type"] = tCurEvent.uTriggerEvent;
+			Trigger_json["Trigger_EventTag"] = strTriggerKey;
+			Trigger_json["Trigger_ConditionType"] = tCurEvent.uTriggerCondition;
+			Trigger_json["Fillter_MyGroup"] = 2;
+			Trigger_json["Fillter_OtherGroupMask"] = 128;
+			Collider_Json["Position"] = { XMVectorGetX(vPosition), XMVectorGetY(vPosition)};
+			Collider_Json["Scale"] = { fScale.x, fScale.y };
+
+			//auto& Collider_Json = Trigger_json["Event_Param_Info"];
+
+			Result.push_back(Trigger_json);
+		}
+
+		ofstream file(szName);
+
+		if (!file.is_open())
+		{
+			MSG_BOX("파일을 저장할 수 없습니다.");
+			file.close();
+			return;
+		}
+
+		file << Result.dump(4);
+		file.close();
+	}
+
 }
 
 
@@ -2255,7 +2337,7 @@ void C2DMap_Tool_Manager::Save_2DModelList()
 	const std::string strPath = WstringToString(wstrPath);
 
 	std::ofstream file(strPath);
-	if (file.is_open()) 
+	if (file.is_open())
 	{
 		file << Outputjson.dump(1);
 		file.close();
@@ -2284,12 +2366,13 @@ void C2DMap_Tool_Manager::Load_String()
 	_wstring strModelPath = L"../../Client/Bin/MapSaveFiles/2D/Default2DOption/Active_Data.json";
 	std::ifstream inputFile(strModelPath);
 
-	if (!inputFile.is_open()) 
+	if (!inputFile.is_open())
 	{
 		throw std::runtime_error("json Error : Active_Data.json");
 		return;
 	}
 	json ActiveJson;
+	inputFile >> ActiveJson;
 	if (ActiveJson.is_array())
 	{
 		m_ActiveTypeTexts.reserve(ActiveJson.size());

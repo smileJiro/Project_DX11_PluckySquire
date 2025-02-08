@@ -149,7 +149,7 @@ void CCameraArm::Set_WorldMatrix()
     m_pTransform->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
     m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 
-    // 초기 회전
+    //// 초기 회전
     _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
     m_pTransform->TurnAngle(m_vRotation.x, vCrossX);
     m_pTransform->TurnAngle(m_vRotation.y);

@@ -34,7 +34,7 @@ HRESULT C2DTrigger_Sample::Initialize(void* _pArg)
     AABBDesc.vExtents = { 1.f, 1.f };
     AABBDesc.vScale = { 1.f, 1.f };
     AABBDesc.vOffsetPosition = { 0.f, 0.f };
-    if (FAILED(Add_Component(LEVEL_TOOL_2D_MAP, TEXT("Prototype_Component_Collider_AABB"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;
     

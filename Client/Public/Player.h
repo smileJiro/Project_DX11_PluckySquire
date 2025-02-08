@@ -11,23 +11,34 @@ BEGIN(Client)
 class CStateMachine;
 enum PLAYER_INPUT
 {
-	PLAYER_KEY_MOVE,
+	PLAYER_INPUT_MOVE,
 	PLAYER_KEY_JUMP,
 	PLAYER_KEY_ATTACK,
 	PLAYER_KEY_ROLL,
 	PLAYER_KEY_THROWSWORD,
 	PLAYER_KEY_INTERACT,
 	PLAYER_KEY_SNEAK,
+	PLAYER_KEY_SPINATTACK,
+	PLAYER_KEY_SPINCHARGING,
+	PLAYER_KEY_SPINLAUNCH,
 	PLAYER_KEY_LAST
 };
 typedef struct tagPlayerInputResult
 {
 	_vector vMoveDir = {0,0,0};
-	_bool bKeyStates[PLAYER_KEY_LAST] = {false,};
+	_bool bInputStates[PLAYER_KEY_LAST] = {false,};
+
 }PLAYER_INPUT_RESULT;
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
+	enum PLAYER_MODE
+	{
+		PLAYER_MODE_NORMAL,
+		PLAYER_MODE_SWORD,
+		PLAYER_MODE_SNEAK,
+		PLAYER_MODE_LAST
+	};
 	enum SHAPE_USE
 	{
 		SHAPE_BODY = 0,
@@ -52,6 +63,7 @@ public:
 		ROLL,
 		THROWSWORD,
 		CLAMBER,
+		SPINATTACK,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -432,12 +444,13 @@ public: /* 2D 충돌 */
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	CController_Transform* Get_Transform() {return m_pControllerTransform;}
 	_bool Is_OnGround() {return m_bOnGround;}
-	_bool Is_SneakMode() {return m_bSneakMode;}
+	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();
+	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
+	_bool Is_SwordHandling();
+	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_float Get_UpForce();
 	_float Get_AnimProgress();
-	_bool Is_SwordEquiped();
-	_bool Is_CarryingObject();
 	_vector Get_CenterPosition();
 	_vector  Get_HeadPosition();
 	_float Get_HeadHeight() { return m_fHeadHeight; }
@@ -452,12 +465,15 @@ public: /* 2D 충돌 */
 	_float Get_ArmLength() { return m_fArmLength; }
 	_float Get_AirRotationSpeed() { return m_fAirRotateSpeed; }
 	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
+	_float Get_MoveSpeed(COORDINATE _eCoord) { return m_tStat[_eCoord].fMoveSpeed; }
+	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
+	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
-	void Set_StealthMode(_bool _bNewMode);
+	void Set_Mode(PLAYER_MODE _eNewMode);
 	void Set_2DDirection(E_DIRECTION _eEDir);
 	void Set_3DTargetDirection(_fvector _vDir);
 	void Set_WallNormal(_fvector _vNormal) { m_vWallNormal = _vNormal; }
@@ -483,17 +499,18 @@ private:
 	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
 	_float m_fFootLength = 0.25;
-	_float m_fStepSlopeThreshold = 0.3f;
-	_bool m_bOnGround = false;
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360.f;
-	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
-	_vector m_v3DTargetDirection = { 0,0,-1 };
-	_bool m_bSneakMode = false;
-	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
-	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
+	_float m_fStepSlopeThreshold = 0.3f;
 	_float m_fAirRotateSpeed = 40;
 	_float m_fAirRunSpeed = 10.f;
+	_bool m_bOnGround = false;
+	_uint m_iSpinAttackLevel = 1;
+	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
+	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
+	_vector m_v3DTargetDirection = { 0,0,-1 };
+	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
+	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
 
 	//Components
 	CStateMachine* m_pStateMachine = nullptr;

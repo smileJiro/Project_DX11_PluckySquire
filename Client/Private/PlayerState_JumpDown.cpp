@@ -15,13 +15,13 @@ CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 	//바닥일 때
 	if (m_pOwner->Is_OnGround())
 	{
 
 		m_pOwner->Stop_Rotate();
-		if (tKeyResult.bKeyStates[PLAYER_INPUT::PLAYER_KEY_MOVE])
+		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 		{
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
@@ -42,23 +42,23 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 
 	// 이하 공중일 때
 
-	if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+	if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 	{
 		m_pOwner->Set_State(CPlayer::ROLL);
 		return;
 	}
-	else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+	else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
 	{
 		m_pOwner->Set_State(CPlayer::THROWSWORD);
 		return;
 	}
-	else if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+	else if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
 	{
 		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 		return;
 	}
 
-	if (tKeyResult.bKeyStates[PLAYER_INPUT::PLAYER_KEY_MOVE])
+	if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 	{
 		//기어오르기 체크
 		if (Try_Clamber())
@@ -109,7 +109,7 @@ void CPlayerState_JumpDown::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 void CPlayerState_JumpDown::Switch_To_JumpDownAnimation()
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	_bool bSword = m_pOwner->Is_SwordEquiped();
+	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	
 	if (COORDINATE_2D == eCoord)

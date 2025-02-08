@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "2DMapObject.h"
 #include "GameInstance.h"
+#include "Collider_AABB.h"
+#include "Collider_Circle.h"
+#include "Collision_Manager.h"
+#include "Section_Manager.h"
+#include "2DModel.h"
 
 
 C2DMapObject::C2DMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -28,21 +33,24 @@ HRESULT C2DMapObject::Initialize(void* _pArg)
     if (pDesc->is2DImport)
     {
         m_isSorting = pDesc->isSorting;
+        m_isBackGround = pDesc->isBackGround;
+        m_isCollider = pDesc->isCollider;
+        m_isActive = pDesc->isActive;
     }
 
-    if (FAILED(__super::Initialize(_pArg)))
-        return E_FAIL;
-
-    return S_OK;
+    return __super::Initialize(_pArg);
 }
 
 void C2DMapObject::Priority_Update(_float _fTimeDelta)
 {
-    CPartObject::Priority_Update(_fTimeDelta);
+    __super::Priority_Update(_fTimeDelta);
 }
 void C2DMapObject::Update(_float _fTimeDelta)
 {
-    CModelObject::Update(_fTimeDelta);
+    if (m_pColliderCom)
+        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MAPOBJECT, m_pColliderCom);
+
+    __super::Update(_fTimeDelta);
 }
 
 void C2DMapObject::Late_Update(_float _fTimeDelta)
@@ -52,7 +60,15 @@ void C2DMapObject::Late_Update(_float _fTimeDelta)
 
 HRESULT C2DMapObject::Render()
 {
-    return __super::Render();
+    HRESULT hr = __super::Render();
+#ifdef _DEBUG
+    if(m_pColliderCom)
+        m_pColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif // _DEBUG
+
+
+
+    return hr;
 }
 
 HRESULT C2DMapObject::Render_Shadow()
@@ -60,34 +76,71 @@ HRESULT C2DMapObject::Render_Shadow()
     return S_OK;
 }
 
-
-C2DMapObject* C2DMapObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
 {
-    C2DMapObject* pInstance = new C2DMapObject(_pDevice, _pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype()))
+    Desc->fCollider_Offset_Pos.x *= RATIO_BOOK2D_X;
+    Desc->fCollider_Offset_Pos.y *= RATIO_BOOK2D_Y;
+    Desc->fCollider_Offset_Pos.y *= -1.f;
+
+
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_2D);
+
+    C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
+    const _matrix* matLocal = p2DModel->Get_CurrentSpriteTransform();
+
+    if (nullptr != matLocal)
     {
-        MSG_BOX("Failed to Created : C2DMapObject");
-        Safe_Release(pInstance);
+        _float2 fSibalOffset;
+        fSibalOffset.x = (*matLocal).r[3].m128_f32[0] * RATIO_BOOK2D_X;
+        fSibalOffset.y = (*matLocal).r[3].m128_f32[1] * RATIO_BOOK2D_Y;
+
+        //_matrix matPos = XMMatrixTranslation(Desc->fCollider_Offset_Pos.x, Desc->fCollider_Offset_Pos.y, 1.f);
+        //matPos *= *matLocal;
+
+        Desc->fCollider_Offset_Pos.x += fSibalOffset.x;
+        Desc->fCollider_Offset_Pos.y += fSibalOffset.y;
     }
 
-    return pInstance;
-}
-
-CGameObject* C2DMapObject::Clone(void* _pArg)
-{
-    C2DMapObject* pInstance = new C2DMapObject(*this);
-
-    if (FAILED(pInstance->Initialize(_pArg)))
+    if (CCollider::AABB_2D == Desc->eColliderType)
     {
-        MSG_BOX("Failed to Cloned : C2DMapObject");
-        Safe_Release(pInstance);
+        Desc->fCollider_Extent.x *= RATIO_BOOK2D_X;
+        Desc->fCollider_Extent.y *= RATIO_BOOK2D_Y;
+        Desc->fCollider_Extent.x *= 0.5f;
+        Desc->fCollider_Extent.y *= 0.5f;
+
+        CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+        AABBDesc.pOwner = this;
+        AABBDesc.vExtents = Desc->fCollider_Extent;
+        AABBDesc.vScale = { 1.0f, 1.0f };
+        AABBDesc.vOffsetPosition = Desc->fCollider_Offset_Pos;
+        AABBDesc.isBlock = _isBlock;
+        if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+            return E_FAIL;
+    }
+    else if (CCollider::CIRCLE_2D == Desc->eColliderType)
+    {
+
+        Desc->fCollider_Radius *= RATIO_BOOK2D_X;
+
+        /* Test 2D Collider */
+        CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+        CircleDesc.pOwner = this;
+        CircleDesc.fRadius = Desc->fCollider_Radius;
+        CircleDesc.vScale = { 1.0f, 1.0f };
+        CircleDesc.vOffsetPosition = Desc->fCollider_Offset_Pos;
+        CircleDesc.isBlock = _isBlock;
+        if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &CircleDesc)))
+            return E_FAIL;
     }
 
-    return pInstance;
+    return S_OK;
 }
 
 void C2DMapObject::Free()
 {
+    Safe_Release(m_pColliderCom);
     __super::Free();
 }

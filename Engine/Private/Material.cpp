@@ -116,9 +116,7 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 		case aiTextureType_AMBIENT_OCCLUSION:
 			m_tPixelConstData.useAOMap = iNumSRVs;
 			break;
-		case aiTextureType_UNKNOWN:
-			if (iNumSRVs != 0)
-				int a = 0;
+		case aiTextureType_BASE_COLOR: // ORMH
 			m_tPixelConstData.useORMHMap = iNumSRVs;
 			break;
 		default:

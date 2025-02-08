@@ -44,6 +44,9 @@ public:
 #ifdef _DEBUG
 	_float3						Get_ArmRotation();
 #endif
+public:
+	_uint						Get_CameraMode() { return m_eCameraMode; }
+	virtual INITIAL_DATA		Get_InitialData() override;
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
@@ -55,7 +58,7 @@ public:
 	void						Set_Freeze(_uint _iFreezeMask);
 
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
-	void						Switch_CameraView();
+	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
 
 private:
 	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
@@ -72,6 +75,8 @@ private:
 
 	// Freeze
 	_uint						m_iFreezeMask = {};
+	_bool						m_bFreezeExit = { false };
+	_float2						m_fFreezeExitTime = { 0.4f, 0.f };
 
 private:
 	void						Key_Input(_float _fTimeDelta);
@@ -83,6 +88,7 @@ private:
 	void						Move_To_PreArm(_float _fTimeDelta);
 
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
+	virtual	void				Switching(_float _fTimeDelta) override;
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

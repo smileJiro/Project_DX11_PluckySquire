@@ -23,29 +23,29 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 
 	if (fProgress >= fMotionCancelProgress)
 	{
-		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+		 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 
-		if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
+		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		{
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
 		}
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_ATTACK])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
 		{
 			m_pOwner->Set_State(CPlayer::ATTACK);
 			return;
 		}
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_JUMP])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
 		{
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
 			return;
 		}
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_ROLL])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 		{
 			m_pOwner->Set_State(CPlayer::ROLL);
 			return;
 		}
-		else if (tKeyResult.bKeyStates[PLAYER_KEY_THROWSWORD])
+		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
 		{
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
 			return;
@@ -69,7 +69,7 @@ void CPlayerState_Roll::Enter()
 {
 
     COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	_bool bSwrodEquiped = m_pOwner->Is_SwordEquiped();
+	_bool bSwrodEquiped = m_pOwner->Is_SwordHandling();
 
     if (COORDINATE_2D == eCoord)
     {
@@ -102,8 +102,8 @@ void CPlayerState_Roll::Enter()
     }
     else
     {
-		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-		if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
+		 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
+		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 			m_vDirection = m_pOwner->Get_3DTargetDirection();
 		else
 			m_vDirection = m_pOwner->Get_LookDirection();

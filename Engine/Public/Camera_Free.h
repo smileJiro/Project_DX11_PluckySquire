@@ -44,6 +44,8 @@ public:
 	//void					Set_CamRotation(_bool _b) { m_bCameraRotation = _b; }
 	//void					Set_CamMove(_bool _b) { m_bCameraMove = _b; }
 
+	virtual INITIAL_DATA	Get_InitialData() override;
+
 private:
 	_float					m_fMouseSensor = {};
 	_uint					m_iModeKey[4];

@@ -10,6 +10,7 @@
 #include "Camera_2D.h"
 
 /* For. Main Table */
+#include "CubeMap.h"
 #include "MainTable.h"
 
 /* For. Trigger*/
@@ -35,12 +36,15 @@
 #include "ShopPanel_YesNo.h"
 #include "FloorWord.h"
 #include "PrintFloorWord.h"
+#include "Npc_Logo.h"
+#include "UI_JotMain.h"
 /* For. UI*/
 
 /* For. NPC*/
 #include "Npc_Body.h"
 #include "NPC_Store.h"
-#include "Npc_Logo.h"
+#include "NPC_DJMoonBeard.h"
+
 
 
 #include "ModelObject.h"
@@ -55,9 +59,12 @@
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
-#include "2DMapObject.h"
+#include "2DMapDefaultObject.h"
+#include "2DMapActionObject.h"
 #include "3DMapObject.h"
+#include "MapObjectFactory.h"
 #include "DetectionField.h"
+#include "Sneak_DetectionField.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -179,6 +186,17 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+
+    ///* For. Prototype_Component_Texture_BRDF_Shilick */
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
+    //    return E_FAIL;
+    //
+    ///* For. Prototype_Component_Texture_TestEnv */
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
+    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3))))
+    //    return E_FAIL;
+    //
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
 		return E_FAIL;
@@ -265,6 +283,11 @@ HRESULT CLoader::Loading_Level_Static()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_Component_VIBuffer_Cube */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+        CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
     /* For. Prototype_Component_Actor_Dynamic */
@@ -284,6 +307,12 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+    /* For. Prototype_GameObject_CubeMap */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+        CCubeMap::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     /* For. Prototype_GameObject_MainTable */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
         CMainTable::Create(m_pDevice, m_pContext))))
@@ -335,7 +364,11 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
-        C2DMapObject::Create(m_pDevice, m_pContext))))
+        C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DActionMapObject"),
+        C2DMapActionObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
@@ -471,7 +504,9 @@ HRESULT CLoader::Loading_Level_Logo()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_Logo"), CLogo::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Obejct_NPC_Logo"), CNPC_Logo::Create(m_pDevice, m_pContext))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_NPC_Logo"), CNPC_Logo::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_JOT"), CUI_JotMain::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
@@ -497,6 +532,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Sneak_DetectionField"),
+        CSneak_DetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"),
@@ -640,13 +678,17 @@ HRESULT CLoader::Loading_Level_GamePlay()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_DJMoonBeard"),
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
+		return E_FAIL;
 
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     
-    //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
+
+    //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;
-    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+    if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_GAMEPLAY,
@@ -723,6 +765,9 @@ HRESULT CLoader::Loading_Level_GamePlay()
     ///////////////////////////////// UI /////////////////////////////////
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_StoreNPC"), 
         CNPC_Store::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_NPC_DJMoonbeard"),
+		CNPC_DJMoonBeard::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
     /* Boss */
@@ -1021,70 +1066,13 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
         strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
         for (size_t i = 0; i < iObjectCnt; i++)
         {
-            _char		szSaveMeshName[MAX_PATH];
-            _float4x4	vWorld = {};
-
-
-            isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-            isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
-
-
-            C3DMapObject::MAPOBJ_3D_DESC NormalDesc = {};
-
-            NormalDesc.strModelPrototypeTag_3D = m_pGameInstance->StringToWString(szSaveMeshName).c_str();
-            NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
-            NormalDesc.isCoordChangeEnable = false;
-            NormalDesc.iModelPrototypeLevelID_3D = _eProtoLevelId;
-            NormalDesc.isCulling = false;
-            NormalDesc.eStartCoord = COORDINATE_3D;
-            NormalDesc.tTransform3DDesc.isMatrix = true;
-            NormalDesc.tTransform3DDesc.matWorld = vWorld;
-            CGameObject* pGameObject = nullptr;
-            m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
-                _eObjectLevelId,
-                strLayerTag,
-                &pGameObject,
-                (void*)&NormalDesc);
-
-            if (pGameObject)
-            {
-                DWORD	dwByte(0);
-                _uint iOverrideCount = 0;
-                C3DModel::COLOR_SHADER_MODE eTextureType;
-                _float4 fDefaultDiffuseColor;
-
-
-                isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-                C3DMapObject* pMapObject = static_cast<C3DMapObject*>(pGameObject);
-
-                pMapObject->Set_Color_Shader_Mode(eTextureType);
-                switch (eTextureType)
-                {
-                case Engine::C3DModel::COLOR_DEFAULT:
-                case Engine::C3DModel::MIX_DIFFUSE:
-                {
-                    isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-                    pMapObject->Set_Diffuse_Color(fDefaultDiffuseColor);
-                }
-                break;
-                default:
-                    break;
-                }
-
-                isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
-                if (0 < iOverrideCount)
-                {
-                    for (_uint i = 0; i < iOverrideCount; i++)
-                    {
-                        _uint iMaterialIndex, iTexTypeIndex, iTexIndex;
-                        isTempReturn = ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
-                        isTempReturn = ReadFile(hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
-                        isTempReturn = ReadFile(hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
-
-                        pMapObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
-                    }
-                }
-            }
+            C3DMapObject* pGameObject =
+                CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
+                    (LEVEL_ID)_eObjectLevelId,
+                    m_pGameInstance,
+                    hFile, false, true);
+            if (nullptr != pGameObject)
+                m_pGameInstance->Add_GameObject_ToLayer(_eObjectLevelId, strLayerTag.c_str(), pGameObject);
         }
     }
     CloseHandle(hFile);

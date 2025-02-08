@@ -1,5 +1,6 @@
 #include "Target_Manager.h"
 #include "RenderTarget.h"
+#include "RenderTarget_MSAA.h"
 
 CTarget_Manager::CTarget_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -24,6 +25,23 @@ HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& _strTargetTag, _uint _
         return E_FAIL;
 
 
+
+    m_RenderTargets.emplace(_strTargetTag, pRenderTarget);
+
+    if (_pReturnRT != nullptr)
+        *_pReturnRT = pRenderTarget;
+
+    return S_OK;
+}
+
+HRESULT CTarget_Manager::Add_RenderTarget_MSAA(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _pReturnRT)
+{
+    if (nullptr != Find_RenderTarget(_strTargetTag))
+        return E_FAIL;
+
+    CRenderTarget_MSAA* pRenderTarget = CRenderTarget_MSAA::Create(m_pDevice, m_pContext, _strTargetTag, _iWidth, _iHeight, _ePixelFormat, _vClearColor);
+    if (nullptr == pRenderTarget)
+        return E_FAIL;
 
     m_RenderTargets.emplace(_strTargetTag, pRenderTarget);
 
@@ -165,6 +183,15 @@ HRESULT CTarget_Manager::Copy_BackBuffer_RT_Resource(const _wstring& _strTargetT
 
     m_pContext->CopyResource(pRenderTarget->Get_Resource(), pBackBufferResource);
     return S_OK;
+}
+
+HRESULT CTarget_Manager::Resolve_RT_MSAA(const _wstring& _strTargetTag)
+{
+    CRenderTarget_MSAA* pRenderTarget_MSAA = dynamic_cast<CRenderTarget_MSAA*>(Find_RenderTarget(_strTargetTag));
+    if (nullptr == pRenderTarget_MSAA)
+        return E_FAIL;
+
+    return pRenderTarget_MSAA->Resolve_MSAA();
 }
 
 HRESULT CTarget_Manager::Erase_RenderTarget(const _wstring& _strTargetTag)

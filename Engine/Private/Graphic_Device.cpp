@@ -128,17 +128,17 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND _hWnd, _bool _isWindowed, _uint _i
 
 	/* float4(1.f, 1.f, 1.f, 1.f) */
 	/* float4(1.f, 0.f, 0.f, 1.f) */
-	SwapChain.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; /*DXGI_FORMAT_R16G16B16A16_FLOAT*/ /* 만든 픽셀하나의 데이터 정보 : 32BIT픽셀생성하되 부호가 없는 정규화된 수를 저장할께 */
+	SwapChain.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // DXGI_FORMAT_B8G8R8A8_UNORM; /*DXGI_FORMAT_R16G16B16A16_FLOAT*/ /* 만든 픽셀하나의 데이터 정보 : 32BIT픽셀생성하되 부호가 없는 정규화된 수를 저장할께 */
 	SwapChain.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	SwapChain.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
 	/* 스케치북에 사과를 그릴꺼야. */
 	/* RENDER_TARGET : 그림을 당하는 대상. 스케치북 */
 	SwapChain.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	SwapChain.BufferCount = 1;
+	SwapChain.BufferCount = 2;
 
 	/*스왑하는 형태 : 모니터 주사율에 따라 조절해도 됨. */
-	SwapChain.BufferDesc.RefreshRate.Numerator = 144;
+	SwapChain.BufferDesc.RefreshRate.Numerator = 60;
 	SwapChain.BufferDesc.RefreshRate.Denominator = 1;
 
 	/* 멀티샘플링 : 안티얼라이징 (계단현상방지) */
@@ -148,8 +148,8 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND _hWnd, _bool _isWindowed, _uint _i
 
 	SwapChain.OutputWindow = _hWnd;
 	SwapChain.Windowed = _isWindowed;
-	SwapChain.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-
+	SwapChain.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	SwapChain.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	if (FAILED(pFactory->CreateSwapChain(m_pDevice, &SwapChain, &m_pSwapChain)))
 		return E_FAIL;
 
