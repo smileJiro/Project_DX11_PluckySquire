@@ -42,7 +42,7 @@ private:
 
 	_int								m_iPreIndex = { 0 };
 	_int								m_iSettingPanelIndex = { 0 };
-	_int								m_iLogoIndex = { 1 };
+	_int								m_iLogoIndex = { 0 };
 	_bool								m_isStoreYesORNo = { true };
 
 	_int								m_iCurrentLevel = { -1 };
@@ -104,15 +104,11 @@ public:
 	_bool								Get_DialogueFinishShopPanel() { return m_isDialogueFinishShopPanel; }
 	void								Set_DialogueFinishShopPanel(_bool _Finish) { m_isDialogueFinishShopPanel = _Finish; }
 
-
-
 	vector<CLogo_Props*>				Get_LogoProps() { return m_LogoProps; }
 	void								pushBack_LogoPorp(CLogo_Props* _props) { m_LogoProps.push_back(_props); Safe_AddRef(_props); }
 	
-
-
 	_tchar*								Get_DialogId() { return m_tDialogId; }
-	void								Set_DialogId(const _tchar* _id) { wsprintf(m_tDialogId, _id); }
+	void								Set_DialogId(const _tchar* _id, _bool _DisplayDialogue = true) { wsprintf(m_tDialogId, _id); m_isDisplayDialogue = _DisplayDialogue; }
 
 	_int								Get_DialogueLineIndex() { return m_iCurrnetLineIndex; }
 	void								Set_DialogueLineIndex(_int _index) { m_iCurrnetLineIndex = _index; }

@@ -267,11 +267,6 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	// 노출 시킬 글자의 수
 	_int icurrentLength = static_cast<int>(strDisplaytext.length());
 
-	
-
-
-	// 여기서부터 어떻게노출을 시킬것인가?
-	// 
 	if (icurrentLength < iFullWord)
 	{
 		fWaitTime += fSpeed;
@@ -566,11 +561,6 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		break;
 
 		}
-		//}
-		//else if (COORDINATE::COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
-		//{
-		//
-		//}
 
 		Uimgr->Set_CalDialoguePos(_float3(vPos.x, vPos.y, 0.f));
 		m_vCurPos = vPos;

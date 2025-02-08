@@ -496,8 +496,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 
 			case CUI::SHOPPANEL::SHOP_DIALOGUEBG:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fSizeX = 2320.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fSizeY = 424.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_DIALOGUEBG;
@@ -516,8 +516,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			{
 				CGameObject* pShopYesOrNo = { nullptr };
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iCurLevelID = m_iCurLevelID;
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeX = 800.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeY = 416.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_CHOOSEBG;
@@ -533,8 +533,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			
 			case CUI::SHOPPANEL::SHOP_BULB:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fSizeX = 640.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fSizeY = 272.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BULB;
@@ -550,8 +550,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			
 			case CUI::SHOPPANEL::SHOP_BACKESC:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fSizeX = 72.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fSizeY = 72.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ESCBG;
@@ -563,8 +563,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
 				Safe_Release(pShopPanel);
 			
-				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fSizeX = 144.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fSizeY = 144.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BACKESC;
@@ -580,8 +580,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			
 			case CUI::SHOPPANEL::SHOP_BACKARROW:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fSizeX = 72.f * 1.2f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fSizeY = 72.f * 1.2f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BACKARROW;
@@ -598,8 +598,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			
 			case CUI::SHOPPANEL::SHOP_ENTER:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fSizeX = 72.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fSizeY = 72.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ENTERBG;
@@ -611,8 +611,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
 				Safe_Release(pShopPanel);
 			
-				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fSizeX = 144.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fSizeY = 144.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ENTER;
