@@ -45,33 +45,33 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-	if (!m_isOpenPanel || CUI_Manager::GetInstance()->Get_ConfirmStore())
-	{
-		Update_KeyInput(_fTimeDelta, -1);
-		return;
-	}
-
+	//if (!m_isOpenPanel || CUI_Manager::GetInstance()->Get_ConfirmStore())
+	//{
+	//	Update_KeyInput(_fTimeDelta, -1);
+	//	return;
+	//}
+	//
 	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
-
-
-	if (!isInPanel(cursorPos))
-	{
-		Update_KeyInput(_fTimeDelta, -1);
-		return;
-	}
-
+	//
+	//
+	//if (!isInPanel(cursorPos))
+	//{
+	//	Update_KeyInput(_fTimeDelta, -1);
+	//	return;
+	//}
+	//
 	_int iIndex = isInPanelItem(cursorPos);
-
-	if (iIndex != -1 && iIndex != m_iPreindex)
-	{
-		CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
-		m_iPreindex = iIndex;
-	}
+	//
+	//if (iIndex != -1 && iIndex != m_iPreindex)
+	//{
+	//	CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
+	//	m_iPreindex = iIndex;
+	//}
 
 	
 		Update_KeyInput(_fTimeDelta, iIndex);
 		
-	
+		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
 	
 
 
@@ -339,30 +339,30 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta, _int _index)
 	bool iskeyESC = KEY_DOWN(KEY::ESC);
 	bool iskeyE = KEY_DOWN(KEY::E);
 
-	if (true == iskeyI) /* && SHOP_END != m_eShopPanel*/
-	{
-		if (true == Uimgr->Get_isESC())
-			return;
-
-		isFontPrint();
-
-		for (auto iter : Uimgr->Get_ShopPanels())
-		{
-			if (SHOP_END != iter.second->Get_ShopPanel())
-			{
-				iter.second->Child_Update(_fTimeDelta);
-			}
-		}
-
-
-		for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
-		{
-			for (int j = 0; j < 3; ++j)
-			{
-				Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
-			}
-		}
-	}
+	//if (true == iskeyI) /* && SHOP_END != m_eShopPanel*/
+	//{
+	//	if (true == Uimgr->Get_isESC())
+	//		return;
+	//
+	//	isFontPrint();
+	//
+	//	for (auto iter : Uimgr->Get_ShopPanels())
+	//	{
+	//		if (SHOP_END != iter.second->Get_ShopPanel())
+	//		{
+	//			iter.second->Child_Update(_fTimeDelta);
+	//		}
+	//	}
+	//
+	//
+	//	for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
+	//	{
+	//		for (int j = 0; j < 3; ++j)
+	//		{
+	//			Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
+	//		}
+	//	}
+	//}
 
 	if (false == m_isOpenPanel)
 		return;
@@ -429,6 +429,27 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta, _int _index)
 
 	}
 
+	if (KEY_DOWN(KEY::K))
+	{
+		Uimgr->Set_DialogueFinishShopPanel(false);
+		instruct_ChildUpdate(_fTimeDelta);
+	}
+
+}
+
+void CShopPanel::ChangeState_Panel(_float _fTimeDelta, _bool _isOpenState)
+{
+	_bool isDialogueFinishShopPanel = Uimgr->Get_DialogueFinishShopPanel();
+
+	if (m_isPreState != isDialogueFinishShopPanel)
+	{
+		m_isPreState = isDialogueFinishShopPanel;
+
+		if (true == isDialogueFinishShopPanel) /* && SHOP_END != m_eShopPanel*/
+		{
+			instruct_ChildUpdate(_fTimeDelta);
+		}
+	}
 }
 
 HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag, _float2 _vRTSize)
@@ -694,6 +715,31 @@ void CShopPanel::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 
 				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
 			}
+		}
+	}
+}
+
+void CShopPanel::instruct_ChildUpdate(_float _fTimeDelta)
+{
+	if (true == Uimgr->Get_isESC())
+		return;
+
+	isFontPrint();
+
+	for (auto iter : Uimgr->Get_ShopPanels())
+	{
+		if (SHOP_END != iter.second->Get_ShopPanel())
+		{
+			iter.second->Child_Update(_fTimeDelta);
+		}
+	}
+
+
+	for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
 		}
 	}
 }

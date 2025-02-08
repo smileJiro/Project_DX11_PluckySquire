@@ -585,6 +585,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			Uimgr->Set_PortraitRender(false);
 			Uimgr->Set_DialogueLineIndex(0);
 			m_isFirstRefresh = false;
+			isOpenPanel(_strDialogue);
 		}
 	}
 }
@@ -694,6 +695,24 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 
 	}
 	m_isFirstRefresh = true;
+
+
+}
+
+void CDialog::isOpenPanel(_tchar* _DialogId)
+{
+	_tchar NpcName[MAX_PATH] = {};
+	_tchar strSrcName[MAX_PATH] = {};
+	wsprintf(NpcName, Uimgr->Get_Dialogue(_DialogId)[0].lines[0].Talker.c_str());
+	
+	// 상점용
+	wsprintf(strSrcName, TEXT("마르티나"));
+	if (0 == wcscmp(NpcName, strSrcName))
+	{
+		//상점 오픈하게
+		//	bool 변수로
+		Uimgr->Set_DialogueFinishShopPanel(true);
+	}
 
 
 }

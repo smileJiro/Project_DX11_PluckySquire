@@ -53,6 +53,7 @@ private:
 	_int								m_iCurrnetLineIndex = { 0 };
 	_bool								m_isPortraitRender = { false };
 	_bool								m_isDisplayDialogue = { false };
+	_bool								m_isDialogueFinishShopPanel = { false };
 	_float4								m_vDialoguePos = { 0.f, 0.f, 0.f, 1.f };
 	_float3								m_vCalDialoguePos = { 0.f, 0.f, 0.f };
 	_float2								m_vShopPos = { 0.f, 0.f };
@@ -100,6 +101,8 @@ public:
 	void								Set_CalDialoguePos(_float3 _vPos) { m_vCalDialoguePos = _vPos; }
 	void								Set_DisplayDialogue(_bool _Display) { m_isDisplayDialogue = _Display; }
 	_bool								Get_DisplayDialogue() { return m_isDisplayDialogue; }
+	_bool								Get_DialogueFinishShopPanel() { return m_isDialogueFinishShopPanel; }
+	void								Set_DialogueFinishShopPanel(_bool _Finish) { m_isDialogueFinishShopPanel = _Finish; }
 
 
 
