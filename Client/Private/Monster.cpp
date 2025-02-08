@@ -302,6 +302,7 @@ void CMonster::Free()
 
 	Safe_Release(m_pFSM);
 	Safe_Release(m_pDetectionField);
+	Safe_Release(m_pSneak_DetectionField);
 #ifdef _DEBUG
 	Safe_Release(m_pDraw);
 #endif // _DEBUG

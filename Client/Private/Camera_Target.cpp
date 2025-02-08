@@ -3,6 +3,8 @@
 
 #include "GameInstance.h"
 
+#include "Trigger_Manager.h"
+
 CCamera_Target::CCamera_Target(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera{ pDevice, pContext }
 {
@@ -158,6 +160,7 @@ _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID
 		return false;
 
 	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
+	m_szEventTag = _wszNextArmName;
 
 	if (nullptr != pData->second) {
 
@@ -262,6 +265,7 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_NextArm(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
+		CTrigger_Manager::GetInstance()->On_End(m_szEventTag);
 		//return;
 	}
 

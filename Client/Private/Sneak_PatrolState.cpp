@@ -256,7 +256,7 @@ void CSneak_PatrolState::Check_Bound(_float _fTimeDelta)
 	if (true == isOut)
 	{
 		m_isBack = true;
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 	}
 	//반대방향으로 진행해도 경계를 벗어나는 경우가 있나?
 	if (true == m_isBack)
