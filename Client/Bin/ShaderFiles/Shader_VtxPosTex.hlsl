@@ -158,6 +158,20 @@ PS_OUT PS_DIALOGUE_BG_COLOR(PS_IN In)
 }
 
 
+PS_OUT PS_MIX_COLOR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+
+    Out.vColor = saturate(mul(Out.vColor,float4(g_vColors.x, g_vColors.y, g_vColors.z, g_vColors.w)));
+    
+    if (Out.vColor.a < 0.01f)
+        discard;
+    
+    return Out;
+}
+
 
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
@@ -233,6 +247,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_UIALPHA();
+    }
+    
+    pass UI_MIXCOLOR
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MIX_COLOR();
     }
 
     pass DIALOGUE_BG_COLOR

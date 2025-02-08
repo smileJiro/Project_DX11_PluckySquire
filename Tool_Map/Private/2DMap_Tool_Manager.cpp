@@ -1100,8 +1100,8 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 								_float2 fDrawExtent = fExtent;
 								fDrawExtent.x *= fRatio;
 								fDrawExtent.y *= fRatio;
-								ImVec2 DrawPosMin = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f) - (fDrawExtent.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f) - (fDrawExtent.y * 0.5f) };
-								ImVec2 DrawPosMax = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f) + (fDrawExtent.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f) + (fDrawExtent.y * 0.5f) };
+								ImVec2 DrawPosMin = { imagePos.x + (m_fOffsetPos.x * fRatio) + (fDefaultSize.x * 0.5f) - (fDrawExtent.x * 0.5f), imagePos.y + (m_fOffsetPos.y * fRatio) + (fDefaultSize.y * 0.5f) - (fDrawExtent.y * 0.5f) };
+								ImVec2 DrawPosMax = { imagePos.x + (m_fOffsetPos.x * fRatio) + (fDefaultSize.x * 0.5f) + (fDrawExtent.x * 0.5f), imagePos.y + (m_fOffsetPos.y * fRatio) + (fDefaultSize.y * 0.5f) + (fDrawExtent.y * 0.5f) };
 								drawList->AddRect(DrawPosMin, DrawPosMax, IM_COL32(255, 0, 0, 255), 0.0f, ImDrawFlags_None, 2.0f);
 								ImGui::SetNextItemWidth(50.f);
 								if (ImGui::DragFloat("##ExtentX", &fExtent.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
@@ -1116,7 +1116,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 							if (isSquare)
 							{
-								ImVec2 DrawPos = { imagePos.x + m_fOffsetPos.x + (fDefaultSize.x * 0.5f), imagePos.y + m_fOffsetPos.y + (fDefaultSize.y * 0.5f)};
+								ImVec2 DrawPos = { imagePos.x + (m_fOffsetPos.x * fRatio) + (fDefaultSize.x * 0.5f), imagePos.y + (m_fOffsetPos.y * fRatio) + (fDefaultSize.y * 0.5f)};
 								drawList->AddCircle(DrawPos, fRadius * fRatio, IM_COL32(255, 0, 0, 255));
 								ImGui::SetNextItemWidth(110.f);
 								if (ImGui::DragFloat("Radius", &fRadius, 1.f, -FLT_MAX, FLT_MAX, "%.1f"))

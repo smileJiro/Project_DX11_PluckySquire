@@ -58,7 +58,8 @@
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
-#include "2DMapObject.h"
+#include "2DMapDefaultObject.h"
+#include "2DMapActionObject.h"
 #include "3DMapObject.h"
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
@@ -340,7 +341,11 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
-        C2DMapObject::Create(m_pDevice, m_pContext))))
+        C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DActionMapObject"),
+        C2DMapActionObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),

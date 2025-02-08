@@ -51,11 +51,11 @@ public:
 		NormalDesc.fCollider_Extent = tInfo.fCollider_Extent;
 		NormalDesc.fCollider_Radius = tInfo.fCollider_Radius;
 		
-		if (NormalDesc.isActive)
+		if (!NormalDesc.isActive)
 			strObjectTag = L"Prototype_GameObject_2DMapObject";
 		else
-			strObjectTag = L"Prototype_GameObject_2DMapObject";
-			//strObjectTag = L"Prototype_GameObject_2DActiveMapObject";
+			//strObjectTag = L"Prototype_GameObject_2DMapObject";
+			strObjectTag = L"Prototype_GameObject_2DActionMapObject";
 		
 		CBase* pBase = _pGameInstance->
 			Clone_Prototype(
