@@ -60,7 +60,17 @@ void CShopPanel::Update(_float _fTimeDelta)
 	//	return;
 	//}
 	//
-	_int iIndex = isInPanelItem(cursorPos);
+
+	if (true == Uimgr->Get_DialogueFinishShopPanel())
+	{
+		_int iIndex = isInPanelItem(cursorPos);
+
+		Update_KeyInput(_fTimeDelta, iIndex);
+
+		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
+	}
+
+	
 	//
 	//if (iIndex != -1 && iIndex != m_iPreindex)
 	//{
@@ -69,9 +79,7 @@ void CShopPanel::Update(_float _fTimeDelta)
 	//}
 
 	
-		Update_KeyInput(_fTimeDelta, iIndex);
 		
-		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
 	
 
 
