@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Trigger_Manager.h"
+#include "Section.h"
 
 #include "GameInstance.h"
 
@@ -31,12 +32,13 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
     return S_OK;
 }
 
+
 void CTrigger_Manager::Update()
 {
 	Execute_Trigger_Event();
 }
 
-HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath)
+HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection)
 {
 	ifstream file(_szFilePath);
 
@@ -46,7 +48,6 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 		file.close();
 		return E_FAIL;
 	}
-
 	json Result;
 	file >> Result;
 	file.close();
@@ -99,7 +100,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 				}
 				else if (COORDINATE_2D == Desc.eStartCoord)
 				{
-					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc)))
+					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc, _pSection)))
 						return E_FAIL;
 				}
 			}
@@ -114,7 +115,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 	return S_OK;
 }
 
-HRESULT CTrigger_Manager::Load_TriggerEvents(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath)
+HRESULT CTrigger_Manager::Load_TriggerEvents(_wstring _szFilePath)
 {
 	ifstream file(_szFilePath);
 
@@ -130,9 +131,11 @@ HRESULT CTrigger_Manager::Load_TriggerEvents(LEVEL_ID _eProtoLevelId, LEVEL_ID _
 	file.close();
 
 	for (auto& Trigger_Event : Result) {
-		_wstring szTriggerEventTag = Trigger_Event["Trigger_EventTag"];
+		_wstring szTriggerEventTag = m_pGameInstance->StringToWString(Trigger_Event["Trigger_EventTag"]);
 
-		if (Trigger_Event.contains("Actions"), Trigger_Event["Actions"].is_array()) {
+		//m_TriggerEvents[szTriggerEventTag] = { queue<ACTION>() };
+
+		if (Trigger_Event.contains("Actions") && Trigger_Event["Actions"].is_array()) {
 
 			for (auto& Action : Trigger_Event["Actions"]) {
 				ACTION tAction;
@@ -142,11 +145,25 @@ HRESULT CTrigger_Manager::Load_TriggerEvents(LEVEL_ID _eProtoLevelId, LEVEL_ID _
 				tAction.EventTag = m_pGameInstance->StringToWString(Action["EventTag"]);
 				tAction.isSequence = Action["Is_Sequence"];
 				tAction.isOn = false;
+
+				m_TriggerEvents[szTriggerEventTag].push(tAction);
 			}
 		}
 	}
 
 	return S_OK;
+}
+
+void CTrigger_Manager::On_End(_wstring _szEventTag)
+{
+	if (nullptr == m_pCurTriggerEvent)
+		return;
+
+	//if (m_pCurTriggerEvent->size() <= 0)
+	//	return;
+
+	if(_szEventTag == m_pCurTriggerEvent->front().EventTag)
+		m_isEventEnd = true;
 }
 
 void CTrigger_Manager::Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
@@ -212,7 +229,7 @@ HRESULT CTrigger_Manager::Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject
 }
 
 
-HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
+HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection)
 {
 	return E_NOTIMPL;
 }
@@ -291,13 +308,19 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	}
 		break;
 	}
+
 }
 
 void CTrigger_Manager::Resister_Trigger_Action()
 {
-	m_Actions[TEXT("Camera_Move")] = [this](_wstring _wszEventTag) {
+	m_Actions[TEXT("Camera_Arm_Move")] = [this](_wstring _wszEventTag) {
 		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(_wszEventTag, m_iTriggerID))
 			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+		};
+
+	m_Actions[TEXT("Camera_Arm_Return")] = [this](_wstring _wszEventTag) {
+		CCamera_Manager::GetInstance()->Set_PreArmDataState(m_iTriggerID, true);
+		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::RETURN_TO_PREARM);
 		};
 }
 
@@ -361,6 +384,7 @@ void CTrigger_Manager::Execute_Trigger_Event()
 			// 해당 Event가 끝남
 			if (true == m_isEventEnd) {
 				m_pCurTriggerEvent->pop();
+				m_isEventEnd = false;
 			}
 			// 해당 Event가 아직 안 끝남
 			else { 
