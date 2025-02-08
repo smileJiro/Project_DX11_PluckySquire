@@ -160,22 +160,6 @@ HRESULT CNPC_DJMoonBeard::Render()
 	return S_OK;
 }
 
-void CNPC_DJMoonBeard::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
-	m_isColPlayer = true;
-}
-
-void CNPC_DJMoonBeard::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
-	int a = 0;
-}
-
-void CNPC_DJMoonBeard::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
-	m_isColPlayer = false;
-}
-
-
 
 void CNPC_DJMoonBeard::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
@@ -282,6 +266,20 @@ HRESULT CNPC_DJMoonBeard::Ready_PartObjects()
 
 }
 
+void CNPC_DJMoonBeard::Interact(CPlayer* _pUser)
+{
+	m_isColPlayer = true;
+}
+
+_bool CNPC_DJMoonBeard::Is_Interactable(CPlayer* _pUser)
+{
+	return true;
+}
+
+_float CNPC_DJMoonBeard::Get_Distance(CPlayer* _pUser)
+{
+	return XMVector3Length(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION) - _pUser->Get_FinalPosition()).m128_f32[0];
+}
 
 
 CNPC_DJMoonBeard* CNPC_DJMoonBeard::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

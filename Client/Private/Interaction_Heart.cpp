@@ -66,7 +66,7 @@ HRESULT CInteraction_Heart::Render()
 	
 	if (true == m_isRender)
 	{
-		// 일단은...
+		// TODO :: 일단은...
 
 		__super::Render(m_PlayerHP);
 	}
