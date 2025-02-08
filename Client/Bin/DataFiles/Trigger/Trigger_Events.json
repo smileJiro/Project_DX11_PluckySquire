@@ -3,12 +3,17 @@
       "Trigger_EventTag": "Event_Test",
       "Actions": [
         {
-          "ActionTag": "Camera_Move",
+          "ActionTag": "Camera_Arm_Return",
           "EventTag": "A",
           "Is_Sequence": false
         },
         {
           "ActionTag": "Dialogue",
+          "EventTag": "Test",
+          "Is_Sequence": false
+        },
+        {
+          "ActionTag": "Camera_Arm_Return",
           "EventTag": "Test",
           "Is_Sequence": true
         }
