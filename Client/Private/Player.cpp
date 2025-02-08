@@ -148,6 +148,7 @@ HRESULT CPlayer::Ready_Components()
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
+    Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -270,23 +271,16 @@ void CPlayer::Update(_float _fTimeDelta)
     _uint iSectionKey = RG_2D + PR2D_SECTION_START;
     CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
-
-
-    ////cout << "m_bOnGround : " << m_bOnGround << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
 
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == Get_CurCoord())
     {
         _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
-        //cout << "bSleep : " << bSleep;
         if (false == bSleep)
         {
-
             m_bOnGround = false;
         }
-
-
     }
     else
     {
