@@ -53,16 +53,27 @@ HRESULT CPortrait::Initialize(void* _pArg)
 
 void CPortrait::Update(_float _fTimeDelta)
 {
+	
+
+
+
+}
+
+void CPortrait::Late_Update(_float _fTimeDelta)
+{
+	
+}
+
+HRESULT CPortrait::Render()
+{
 	m_isRender = Uimgr->Get_PortraitRender();
 
 	if (true == m_isRender)
 	{
-		//Uimgr->Set_DialogId(TEXT("dialog_01"));
 		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
 
-		//Uimgr->Get_DialogueLine()
 		if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
-			return;
+			return E_FAIL;
 
 		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
 		m_ePortraitFace = (CDialog::PORTRAITNAME)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
@@ -71,23 +82,9 @@ void CPortrait::Update(_float _fTimeDelta)
 		/* 추후 진행에따라 변경을 해야한다. */
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 		ChangePosition(m_isRender, RTSize);
-	}
 
-
-
-}
-
-void CPortrait::Late_Update(_float _fTimeDelta)
-{
-}
-
-HRESULT CPortrait::Render()
-{
-	if (true == m_isRender)
-	{
 		__super::Render((_int)m_ePortraitFace, PASS_VTXPOSTEX::DEFAULT);
 	}
-		
 	return S_OK;
 }
 
