@@ -92,6 +92,20 @@ HRESULT CLogo_BG::Render()
 
 	__super::Render(0, PASS_VTXPOSTEX::COLOR_ALPHA);
 
+	_wstring strMenuText[] = {
+		TEXT("게임 시작")
+		,TEXT("옵션")
+		,TEXT("크레딧")
+		,TEXT("바탕화면으로 나가기")
+	};
+	
+	_wstring strMenuOverrideText[] = {
+		TEXT("챕터 1")
+		,TEXT("챕터 2")
+		,TEXT("크레딧")
+		,TEXT("바탕화면으로 나가기")
+	};
+
 	
 	if (false == Uimgr->Get_LogoChanseStage())
 	{
@@ -114,6 +128,7 @@ HRESULT CLogo_BG::Render()
 		{
 			wsprintf(wMouseTalk, TEXT("자, 시작해 볼까요!"));
 			m_pGameInstance->Render_Font(TEXT("Font30"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.35f, g_iWinSizeY / 15.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+
 
 			wsprintf(wMouseTalk, TEXT("게임 시작"));
 			m_pGameInstance->Render_Font(TEXT("Font40"), wMouseTalk, _float2(g_iWinSizeX - g_iWinSizeX / 2.48f, g_iWinSizeY / 3.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
@@ -208,19 +223,20 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 
 	case 1:
 	{
-
 	}
 	break;
 
 	case 2:
 	{
-
+		Uimgr->Set_LogoChangeState(false);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_GAMEPLAY);
 	}
 	break;
 
 	case 3:
 	{
-
+		Uimgr->Set_LogoChangeState(false);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_GAMEPLAY);
 	}
 	break;
 	}

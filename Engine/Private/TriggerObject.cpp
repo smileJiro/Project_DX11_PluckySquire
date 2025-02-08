@@ -31,20 +31,34 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
         if (FAILED(Initialize_3D_Trigger(&ActorDesc, pDesc)))
             return E_FAIL;
     }
-    else if (COORDINATE_2D == pDesc->eStartCoord)
-    {
-        if (FAILED(Initialize_2D_Trigger(&ActorDesc, pDesc)))
-            return E_FAIL;
-    }
+
 
     if (FAILED(__super::Initialize(pDesc))) {
         MSG_BOX("Trigger Initialize Falied");
         return E_FAIL;
     }
 
-    ActorDesc->pOwner = nullptr;
-    Safe_Delete(ActorDesc);
+    if (COORDINATE_2D == pDesc->eStartCoord)
+    {
+        if (FAILED(Initialize_2D_Trigger(pDesc)))
+            return E_FAIL;
+    }
 
+    if (nullptr != ActorDesc)
+    {
+        ActorDesc->pOwner = nullptr;
+        Safe_Delete(ActorDesc);
+    }
+
+    return S_OK;
+}
+
+HRESULT CTriggerObject::Render()
+{
+#ifdef _DEBUG
+    if(m_pColliderCom)
+        return m_pColliderCom->Render();
+#endif // _DEBUG
     return S_OK;
 }
 
@@ -93,7 +107,7 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
     (*_pActorDesc)->ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    (*_pActorDesc)->tFilterData.MyGroup = _pDesc->iFillterMyGroup;
+    (*_pActorDesc)->tFilterData.MyGroup = m_iMyColliderGroup = _pDesc->iFillterMyGroup;
     (*_pActorDesc)->tFilterData.OtherGroupMask = _pDesc->iFillterOtherGroupMask;
 
     /* Actor Component Finished */
@@ -102,8 +116,16 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
     return S_OK;
 }
 
-HRESULT CTriggerObject::Initialize_2D_Trigger(CActor::ACTOR_DESC** _pActorDesc, TRIGGEROBJECT_DESC* _pDesc)
+HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
 {
+    CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+    AABBDesc.pOwner = this;
+    AABBDesc.vExtents = { 1.f, 1.f };
+    AABBDesc.vScale = { 1.f, 1.f };
+    AABBDesc.vOffsetPosition = { 0.f, 0.f };
+    if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+        return E_FAIL;
     return S_OK;
 }
 
@@ -168,6 +190,27 @@ void CTriggerObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Othe
 
     if (false != m_CollisionExitHandler) {
         m_CollisionExitHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
+    }
+}
+
+void CTriggerObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    if (false != m_EnterHandler) {
+        m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
+    }
+}
+
+void CTriggerObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    if (false != m_StayHandler) {
+        m_StayHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
+    }
+}
+
+void CTriggerObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    if (false != m_ExitHandler) {
+        m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }
 

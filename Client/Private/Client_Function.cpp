@@ -176,10 +176,25 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Event_Book_Main_Section_Change(const _tchar* _strSectionTag)
+	void Event_Book_Main_Section_Change_Start(_uint _iPageDirection, _float3* _fNextPosition)
 	{
 		EVENT tEvent;
-		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE;
+		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_START;
+		tEvent.Parameters.resize(1);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iPageDirection;
+		_float3* pPosition = nullptr;
+		if (nullptr != _fNextPosition)
+			pPosition = new _float3(*_fNextPosition);
+		tEvent.Parameters[0] = (DWORD_PTR)pPosition;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+	
+	void Event_Book_Main_Section_Change_End(const _tchar* _strSectionTag)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_END;
 		tEvent.Parameters.resize(1);
 
 		tEvent.Parameters[0] = (DWORD_PTR)_strSectionTag;

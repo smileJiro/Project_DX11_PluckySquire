@@ -3,6 +3,8 @@
 
 BEGIN(Engine)
 
+class CCollider;
+
 class ENGINE_DLL CTriggerObject : public CActorObject
 {
 public:
@@ -39,8 +41,10 @@ public:
 	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
 	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
 	
+	virtual HRESULT				Render() override;
+
 	virtual HRESULT				Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, TRIGGEROBJECT_DESC* _pDesc);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
-	virtual HRESULT				Initialize_2D_Trigger(CActor::ACTOR_DESC** _pActorDesc, TRIGGEROBJECT_DESC* _pDesc);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+	virtual HRESULT				Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
 
 
 	virtual void				Late_Update(_float _fTimeDelta);
@@ -68,11 +72,17 @@ public:
 	virtual void				OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void				OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void				OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other) override;
+public:
+	virtual void				On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void				On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void				On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 protected:
+	class CCollider*			m_pColliderCom = { nullptr };
 	SHAPE_TYPE					m_eShapeType = { SHAPE_TYPE::LAST };
 	_uint						m_iTriggerType;
 
+	_int						m_iMyColliderGroup = {};
 	_int						m_iTriggerID = {};
 	_wstring					m_szEventTag = {};
 	TRIGGER_CONDITION			m_eConditionType = { CONDITION_END };
