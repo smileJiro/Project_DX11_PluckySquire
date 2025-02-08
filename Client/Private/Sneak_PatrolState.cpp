@@ -77,39 +77,18 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 		//적 발견 시 ALERT 전환
 		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 		{	
-			if (m_pOwner->IsTarget_In_Detection())
+			Check_Target3D(true);
+
+			//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
+			if (m_pOwner->IsTarget_In_Sneak_Detection())
 			{
-				//------테스트
-				_vector vTargetDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
-				_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
-				_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(vTargetDir));
-				_float3 vOutPos;
-				CActorObject* pActor = nullptr;
-				if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::SNEAK_ALERT), &vOutPos, &pActor))
-				{
-					if (!(OBJECT_GROUP::RAY_OBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup))
-					{
-						//플레이어가 레이 오브젝트보다 가까우면 인식
-						if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos) - m_pOwner->Get_FinalPosition()))
-						{
-							Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ALERT, m_pFSM);
-							return;
-						}
-					}
-				}
-				//레이 충돌 안했을 때(장애물이 없었을 때)
-				else
-				{
-					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ALERT, m_pFSM);
-					return;
-				}
-				//---------
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
+				return;
 			}
 		}
 	}
 
-
-	//정해진 웨이포인트에서 순찰
+	//정해진 웨이포인트에서 순찰해야함
 	if (false == m_isTurn)
 	{
 		Determine_Direction();

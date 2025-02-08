@@ -49,7 +49,7 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 			if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
 			{
 				//
-				if (!(OBJECT_GROUP::RAY_OBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup))
+				if (OBJECT_GROUP::RAY_OBJECT ^ static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup)
 				{
 					//플레이어가 레이 오브젝트보다 가까우면 인식
 					if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos) - m_pOwner->Get_FinalPosition()))
@@ -71,6 +71,7 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 		//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
 		if (m_pOwner->IsTarget_In_Sneak_Detection())
 		{
+			Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 			return;
 		}

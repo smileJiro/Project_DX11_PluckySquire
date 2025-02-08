@@ -55,6 +55,8 @@ public:
 
 protected:
 	_float Get_CurCoordRange(MONSTER_STATE _eState);
+	_bool Check_Target3D(_bool _isSneak = false);
+	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
 
 protected:
 	CGameInstance* m_pGameInstance = { nullptr };
@@ -71,6 +73,7 @@ protected:
 	_float	m_fAttack2DRange = {};
 	_float	m_fDelayTime = {};
 	_float	m_fCoolTime = {};
+	_float3 m_vSneakPos = {};
 
 public:
 	virtual void Free() override;
