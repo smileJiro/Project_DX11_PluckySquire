@@ -954,6 +954,12 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
+			if (i == 694)
+			{
+				int a = 1;
+			
+			}
+
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)LEVEL_GAMEPLAY,
