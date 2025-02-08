@@ -182,6 +182,13 @@ namespace AnimTool
 		return L""; // 취소 시 빈 문자열 반환
 	}
 
+	std::wstring MakeTextureKey(const filesystem::path& _path)
+	{
+		wstring wstrKey = _path.parent_path().parent_path().filename().wstring() + L"$";
+		wstrKey  += _path.filename().replace_extension();
+		return wstrKey;
+	}
+
 
 
 	F_DIRECTION To_FDirection(_vector _vDir)
