@@ -1120,7 +1120,11 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 
 
 								_bool isClicked = false;
-								if (tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex && ImGui::IsItemClicked(ImGuiMouseButton_Right))
+								if (
+									//tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex 
+									//&& 
+									ImGui::IsItemClicked(ImGuiMouseButton_Right)
+									)
 								{
 									ImGui::OpenPopup("##ModelPreviewPopup");
 

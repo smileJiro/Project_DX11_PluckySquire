@@ -46,11 +46,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 		else
 		{
 			auto SectionInfo = _SectionJson["Section_Info"];
-			Desc.eSectionType = SectionInfo["Section_Type"];
-			Desc.eSectionPlayType = SectionInfo["Section_Play_Type"];
+			Desc.eSectionRenderType = SectionInfo["Section_Render_Type"];
 		}
 
-		switch (Desc.eSectionType)
+		switch (Desc.eSectionRenderType)
 		{
 			case Client::CSection_2D::ON_SECTION_BOOK:
 			{

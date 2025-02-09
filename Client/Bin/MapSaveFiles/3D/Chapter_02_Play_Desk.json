@@ -44,10 +44,6 @@
   "Desk_Lamp_Desk_Lamp",
   "Desk_Lamp_Desk_Lamp_02",
   "domino_02",
-  "domino_05",
-  "domino_04",
-  "domino_01",
-  "domino_03",
   "Fries_Fries_04",
   "Gemstones_01_Aset_nature_rock_S_vdsmbagiw_03_LOD3",
   "Gemstones_01_Aset_nature_rock_S_vdsmbagiw_02_LOD3",
@@ -55,7 +51,6 @@
   "giftbox_01_mesh",
   "Glowsticks_03",
   "Glowsticks_05",
-  "Glue_01",
   "Grapes_Grape_01",
   "Grapes_Grape_03",
   "SM_InsectBox",
@@ -226,6 +221,7 @@
   "WoodenSideWalls_01_05",
   "WoodenSideWalls_01_06",
   "Wristband_02",
-  "Wristband_03"
+  "Wristband_03",
+  "GlueUpdate"
  ]
 }

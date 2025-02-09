@@ -174,15 +174,27 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
 
    /* Test 2D Collider */
-   CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
-   AABBDesc.pOwner = this;
-   AABBDesc.fRadius = 50.f;
-   AABBDesc.vScale = { 1.0f, 1.0f };
-   AABBDesc.vOffsetPosition = { 0.f,  AABBDesc.fRadius  };
-   AABBDesc.isBlock = false;
+   CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+   CircleDesc.pOwner = this;
+   CircleDesc.fRadius = 20.f;
+   CircleDesc.vScale = { 1.0f, 1.0f };
+   CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius*0.5f };
+   CircleDesc.isBlock = false;
+   CircleDesc.isTrigger = false;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+       TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_pBody2DColliderCom), &CircleDesc)))
        return E_FAIL; 
+
+
+   CircleDesc.pOwner = this;
+   CircleDesc.fRadius = m_f2DAttackRange;
+   CircleDesc.vScale = { 1.0f, 1.0f };
+   CircleDesc.vOffsetPosition = { 0.f, CircleDesc.vOffsetPosition.y };
+   CircleDesc.isBlock = false;
+   CircleDesc.isTrigger = true;
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+       TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_pBody2DTriggerCom), &CircleDesc)))
+       return E_FAIL;
 
     return S_OK;
 }
@@ -283,15 +295,19 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
+    COORDINATE eCoord  =  Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+    {
+        //// TestCode : 태웅
+        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
+        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DTriggerCom);
 
-    //// TestCode : 태웅
-    _uint iSectionKey = RG_2D + PR2D_SECTION_START;
-    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
+    }
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    if (COORDINATE_3D == Get_CurCoord())
+    if (COORDINATE_3D == eCoord)
     {
         _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
         if (false == bSleep)
@@ -319,7 +335,10 @@ HRESULT CPlayer::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-    m_pColliderCom->Render();
+    if(m_pBody2DColliderCom->Is_Active())
+        m_pBody2DColliderCom->Render();
+    if(m_pBody2DTriggerCom->Is_Active())
+        m_pBody2DTriggerCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -487,7 +506,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 
-
+    int a = 0;
 }
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -534,8 +553,16 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPlayer::Attack()
 {
-    Stop_Move();
-    Add_Impuls(Get_LookDirection() * m_fAttackForwardingForce);
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        Stop_Move();
+        Add_Impuls(Get_LookDirection() * m_fAttackForwardingForce);
+    }
+    else
+    {
+		//_vector vDir = EDir_To_Vector(m_e2DDirection_E);
+		//m_pControllerTransform->Go_Direction(vDir, m_fAttackForwardingForce, 0.1f);
+    }
 }
 
 void CPlayer::Move(_fvector _vForce, _float _fTimeDelta)
@@ -979,7 +1006,8 @@ CGameObject* CPlayer::Clone(void* _pArg)
 void CPlayer::Free()
 {
     // test
-    Safe_Release(m_pColliderCom);
+    Safe_Release(m_pBody2DColliderCom);
+    Safe_Release(m_pBody2DTriggerCom);
 
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
