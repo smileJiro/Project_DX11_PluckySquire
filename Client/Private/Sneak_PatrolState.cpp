@@ -201,7 +201,7 @@ void CSneak_PatrolState::Determine_Direction()
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(1.f, 3.f));
 	else
 	{
-		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 2.f));
+		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
 	}
 
 	m_isTurn = true;
