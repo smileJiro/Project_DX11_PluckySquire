@@ -47,7 +47,7 @@ private:
 	_bool m_isMove = { false };
 	_bool m_isTurn = { false };
 	_float3 m_vRotate = {};
-	_int m_iCurWayIndex = { -1 };
+	_int m_iCurWayIndex = { 0 };
 	_bool m_isBack = { false };
 
 	vector<_float3> m_Waypoints = {};
