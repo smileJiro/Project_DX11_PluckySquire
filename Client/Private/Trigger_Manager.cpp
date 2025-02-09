@@ -300,7 +300,6 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	{
 		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
-			Uimgr->Set_DialogId(TEXT("Event_Dialogue_01"));
 			});
 
 		_pTrigger->Resister_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
