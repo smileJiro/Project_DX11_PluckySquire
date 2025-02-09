@@ -57,8 +57,8 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				{
 					
 					auto BookInfo = _SectionJson["Book_Info"];
-					if (BookInfo.contains("Book_Type"))
-						Desc.eBookType = BookInfo["Book_Type"];
+					//if (BookInfo.contains("Book_Type"))
+					//	Desc.eBookType = BookInfo["Book_Type"];
 					if (BookInfo.contains("Next_Page_Tag"))
 					{
 						_string strNextPageTag = BookInfo["Next_Page_Tag"];
