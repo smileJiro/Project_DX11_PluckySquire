@@ -122,6 +122,10 @@ HRESULT CLevel_GamePlay::Initialize(LEVEL_ID _eLevelID)
 		return E_FAIL;
 
 
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, -20.19f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -859,6 +863,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	//	return E_FAIL;
 
 	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-17.f, 6.55f, 23.f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.f, 0.35f, -22.f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Monster_Desc)))
