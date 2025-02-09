@@ -300,14 +300,14 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 		"METALNESS",
 		"DIFFUSE_ROUGHNESS",
 		"AMBIENT_OCCLUSION",
-		"UNKNOWN",
-		"SHEEN",
-		"CLEARCOAT",
-		"TRANSMISSION",
-		"MAYA_BASE",
-		"MAYA_SPECULAR",
-		"MAYA_SPECULAR_COLOR",
-		"MAYA_SPECULAR_ROUGHNESS",
+		//"UNKNOWN",
+		//"SHEEN",
+		//"CLEARCOAT",
+		//"TRANSMISSION",
+		//"MAYA_BASE",
+		//"MAYA_SPECULAR",
+		//"MAYA_SPECULAR_COLOR",
+		//"MAYA_SPECULAR_ROUGHNESS",
 	};
 	static _uint __iDeleteTextureIndex = 0;
 	static _uint __iSelectTextureIndex = 0;
