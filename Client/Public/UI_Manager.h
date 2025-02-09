@@ -109,7 +109,7 @@ public:
 	
 	_tchar*								Get_DialogId() { 
 		return m_tDialogId; }
-	void								Set_DialogId(const _tchar* _id, _bool _DisplayDialogue = true) { wsprintf(m_tDialogId, _id); m_isDisplayDialogue = _DisplayDialogue; }
+	void								Set_DialogId(const _tchar* _id, _bool _DisplayDialogue = true, _bool _DisPlayPortrait = true) { wsprintf(m_tDialogId, _id); m_isDisplayDialogue = _DisplayDialogue; m_isPortraitRender = _DisPlayPortrait; }
 
 	_int								Get_DialogueLineIndex() { return m_iCurrnetLineIndex; }
 	void								Set_DialogueLineIndex(_int _index) { m_iCurrnetLineIndex = _index; }
