@@ -337,6 +337,9 @@
     <Filter Include="92.MapObjectFactory">
       <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Section\Narration_2D">
+      <UniqueIdentifier>{2cf6df63-166f-40b0-a42a-1b4a0737937f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -363,7 +366,7 @@
     <ClInclude Include="..\Public\Level_Logo.h">
       <Filter>01.Levels\02.Logo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_GamePlay.h">
+    <ClInclude Include="..\Public\Level_Chapter_02.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Client_Macro.h">
@@ -743,10 +746,10 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
-    <ClInclude Include="..\Public\Item_Manager.h">
+    <ClInclude Include="..\Public\PlayerData_Manager.h">
       <Filter>02.GameObjects\Item\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Item.h">
+    <ClInclude Include="..\Public\PlayerItem.h">
       <Filter>02.GameObjects\Item</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NPC_DJMoonBeard.h">
@@ -757,6 +760,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Trigger_Manager.h">
       <Filter>02.GameObjects\Trigger\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_04.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -775,7 +781,7 @@
     <ClCompile Include="..\Private\Level_Logo.cpp">
       <Filter>01.Levels\02.Logo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+    <ClCompile Include="..\Private\Level_Chapter_02.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -1149,10 +1155,10 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
-    <ClCompile Include="..\Private\Item_Manager.cpp">
+    <ClCompile Include="..\Private\PlayerData_Manager.cpp">
       <Filter>02.GameObjects\Item\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Item.cpp">
+    <ClCompile Include="..\Private\PlayerItem.cpp">
       <Filter>02.GameObjects\Item</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp">
@@ -1163,6 +1169,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Trigger_Manager.cpp">
       <Filter>02.GameObjects\Trigger\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Chapter_04.cpp">
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

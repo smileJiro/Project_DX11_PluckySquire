@@ -537,22 +537,53 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
         for (auto ChildJson : ChapterJson)
         {
             
+            if (!ChildJson.contains("Section_Type"))
+                continue;
+            SECTION_2D_PLAY_TYPE eType = ChildJson["Section_Type"];
 
 
-            CSection_2D* pSection_2D = CSection_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
-            if (nullptr == pSection_2D)
+            CSection* pSection = nullptr;
+
+            switch (eType)
             {
-                MSG_BOX("Failed Create CSection_2D");
-                return E_FAIL;
-            } 
-            m_iPriorityGenKey += 10;
+            case Client::CSection_Manager::PLAYMAP:
+            {
+                pSection = CSection_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+                if (nullptr == pSection)
+                {
+                    MSG_BOX("Failed Create CSection_2D");
+                    return E_FAIL;
+                }
+                m_iPriorityGenKey += 10;
+            }
+                break;
+            case Client::CSection_Manager::NARRAION:
+            {
+                // TODO :: 상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
+				//pSection = CNarration_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+				//if (nullptr == pSection)
+				//{
+				//	MSG_BOX("Failed Create CNarration_2D");
+				//	return E_FAIL;
+				//}
+				//m_iPriorityGenKey += 10;
+
+
+            }
+                break;
+            case Client::CSection_Manager::SECTION_2D_PLAY_TYPE_LAST:
+                break;
+            }
+
+
+
             
 
     
 
             if (m_CurLevelSections.empty())
-                strStartSectionKey = pSection_2D->Get_SectionName();
-            m_CurLevelSections.try_emplace(pSection_2D->Get_SectionName(), pSection_2D);
+                strStartSectionKey = pSection->Get_SectionName();
+            m_CurLevelSections.try_emplace(pSection->Get_SectionName(), pSection);
             iIndex++;
         }
     }
