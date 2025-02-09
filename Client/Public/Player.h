@@ -484,6 +484,8 @@ private:
 	//_float m_fFootHeightThreshold = 0.1f;
 	_float m_fAirRotateSpeed = 40;
 	_float m_fAirRunSpeed = 10.f;
+	_float m_f2DAttackRange = 100.f;
+	_float m_f2DAttackAngle = 180.f;
 	_bool m_bOnGround = false;
 	_uint m_iSpinAttackLevel = 1;
 	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
@@ -495,7 +497,8 @@ private:
 	//Components
 	CStateMachine* m_pStateMachine = nullptr;
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
-	CCollider* m_pColliderCom = nullptr;
+	CCollider* m_pBody2DColliderCom = nullptr;
+	CCollider* m_pBody2DTriggerCom = nullptr;
 
 	//Parts
 	class CPlayerSword* m_pSword = nullptr;
