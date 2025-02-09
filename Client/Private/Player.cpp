@@ -299,7 +299,6 @@ void CPlayer::Update(_float _fTimeDelta)
     if (COORDINATE_2D == eCoord)
     {
         //// TestCode : еб©У
-        _uint iSectionKey = RG_2D + PR2D_SECTION_START;
         CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
         CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DTriggerCom);
 

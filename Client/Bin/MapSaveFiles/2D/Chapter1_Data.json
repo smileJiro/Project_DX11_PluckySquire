@@ -2,6 +2,7 @@
   {
     "Section_Name": "Chapter1_P0506",
     "Section_File_Name": "Chapter1_P0506.m2chc",
+    "Section_Type": 0,
     "Section_Default": 0,
     "Book_Info": {
       "Next_Page_Tag": "Chapter1_P0708"
@@ -10,6 +11,7 @@
   {
     "Section_Name": "Chapter1_P0708",
     "Section_File_Name": "Chapter1_P0708.m2chc",
+    "Section_Type": 0,
     "Section_Default": 0,
     "Book_Info": {
 	  "Next_Page_Tag": "Chapter1_P0910",
@@ -19,6 +21,7 @@
   {
     "Section_Name": "Chapter1_P0910",
     "Section_File_Name": "Chapter1_P0910.m2chc",
+    "Section_Type": 0,
     "Section_Default": 0,
     "Book_Info": {
       "Pre_Page_Tag": "Chapter1_P0708"
