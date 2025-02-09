@@ -42,6 +42,11 @@ void CFSM::Set_PatrolBound()
 	static_cast<CPatrolState*>(m_States[(_uint)MONSTER_STATE::PATROL])->Set_Bound(vPosition);
 }
 
+void CFSM::Set_Sneak_StopTime(_float _fStopTime)
+{
+	static_cast<CSneak_IdleState*>(m_States[(_uint)MONSTER_STATE::SNEAK_IDLE])->Set_Sneak_StopTime(_fStopTime);
+}
+
 HRESULT CFSM::Initialize_Prototype()
 {
 	return S_OK;

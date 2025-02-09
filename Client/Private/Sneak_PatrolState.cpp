@@ -125,6 +125,7 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 
 	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex])-m_pOwner->Get_FinalPosition());
 
+	//회전
 	if (true == m_isTurn && false == m_isMove)
 	{
 		if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
@@ -144,20 +145,13 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 		}
 	}
 
+	//이동
 	if (true == m_isMove)
 	{
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
-		//m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-		//m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
-		m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
-	}
-
-	if (true == m_isMove)
-	{
-		m_fAccDistance += m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
-		if (m_fMoveDistance <= m_fAccDistance)
+		//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+		//웨이포인트 도달 했는지 체크 후 도달 했으면 idle로 전환
+		if (m_pOwner->Move_To(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex])))
 		{
-			m_fAccDistance = 0.f;
 			m_isTurn = false;
 			m_isMove = false;
 
@@ -204,10 +198,10 @@ void CSneak_PatrolState::Determine_Direction()
 
 	//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
 	if (0 == m_iCurWayIndex || m_Waypoints.size() - 1 == m_iCurWayIndex)
-		m_fDelayTime = m_pGameInstance->Compute_Random(1.f, 3.f);
+		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(1.f, 3.f));
 	else
 	{
-		m_fDelayTime = m_pGameInstance->Compute_Random(0.f, 2.f);
+		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 2.f));
 	}
 
 	m_isTurn = true;

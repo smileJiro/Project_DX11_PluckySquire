@@ -36,7 +36,6 @@ private:
 
 private:
 	_float m_fAccTime = { 0.f };
-	_float m_fDelayTime = {};
 	_float m_fAccDistance = { 0.f };
 	_float m_fMoveDistance = {};
 	_float m_fSneak_PatrolOffset = {};

@@ -17,8 +17,6 @@ HRESULT CSneak_IdleState::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_fDelayTime = 3.f;
-
 	return S_OK;
 }
 
@@ -48,7 +46,7 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 			return;
 		}
 	}
-	
+
 	if (m_fDelayTime <= m_fAccTime)
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_PATROL, m_pFSM);

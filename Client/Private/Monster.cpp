@@ -79,7 +79,8 @@ HRESULT CMonster::Render()
 
 void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-
+	if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+		int a = 10;
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
