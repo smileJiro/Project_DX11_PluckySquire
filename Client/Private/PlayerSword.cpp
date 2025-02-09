@@ -68,14 +68,14 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::PLAYER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
-
+    m_pActorCom-> Set_ShapeEnable(0, true);
     return S_OK;
 }
 
@@ -131,20 +131,25 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
 {
     if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
     {
-        if (Is_ComingBack())
+        if (Is_Flying()&& Is_ComingBack())
         {
-
             Set_State(HANDLING);
+            Set_AttackEnable(false);
         }
     }
-    else if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+    else 
     {
-        if (Is_Outing())
+        if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
         {
-            m_fOutingForce = 0;
-            m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition()), 0);
-            Set_State(STUCK);
-         }
+            if (Is_Flying() && Is_Outing())
+            {
+                m_fOutingForce = 0;
+                m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition()), 0);
+                Set_State(STUCK);
+            }
+        }
+        cout << "_Other.pActorUserData->pOwner" << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << endl;
+		Event_Hit(m_pPlayer,_Other.pActorUserData->pOwner, m_pPlayer->Get_AttackDamg());
     }
 }
 
@@ -163,6 +168,7 @@ void CPlayerSword::Throw( _fvector _vDirection)
     m_fOutingForce = m_fThrowingPower;
     m_vThrowDirection = _vDirection;
 	Set_State(FLYING);
+    Set_AttackEnable(true);
 }
 
 
@@ -199,6 +205,7 @@ void CPlayerSword::On_StateChange()
             //m_pActorCom->Set_AngularVelocity(vAngularVelocity);
 
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
+           // m_pActorCom->Update(0);
         }
 
         break;
@@ -234,6 +241,11 @@ void CPlayerSword::On_StateChange()
         break;
     }
     m_ePastState = m_eCurrentState;
+}
+
+void CPlayerSword::Set_AttackEnable(_bool _bOn)
+{
+    //m_pActorCom->Set_ShapeEnable(0, _bOn);
 }
 
 CPlayerSword* CPlayerSword::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

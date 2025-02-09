@@ -66,10 +66,12 @@ void CPlayerState_Attack::Enter()
     m_pOwner->LookDirectionXZ_Dynamic(vDir);
     m_pOwner->Stop_Rotate();
 	Switch_To_AttackAnimation(m_iComboCount);
+    m_pOwner->Set_AttackTriggerActive(true);
 }
 
 void CPlayerState_Attack::Exit()
 {
+    m_pOwner->Set_AttackTriggerActive(false);
 }
 
 void CPlayerState_Attack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

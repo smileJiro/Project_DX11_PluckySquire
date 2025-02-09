@@ -559,6 +559,19 @@ HRESULT CEvent_Manager::Execute_Book_Main_Change(const EVENT& _tEvent)
 	return S_OK;
 }
 
+HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
+{
+	CGameObject* pHitter = (CGameObject*)_tEvent.Parameters[0];
+	CGameObject* pVIctim = (CGameObject*)_tEvent.Parameters[1];
+	_float fDamg = (_uint)_tEvent.Parameters[2];
+
+	if (nullptr == pHitter || nullptr == pVIctim)
+		return E_FAIL;
+
+	pVIctim->On_Hit(pHitter, fDamg);
+	return S_OK;
+}
+
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
 	CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
