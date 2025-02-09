@@ -32,6 +32,7 @@ protected:
 public:
 	//void Set_Owner(CMonster* _pOwner);
 	void Set_PatrolBound();
+	void Set_Sneak_StopTime(_float _fStopTime);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
