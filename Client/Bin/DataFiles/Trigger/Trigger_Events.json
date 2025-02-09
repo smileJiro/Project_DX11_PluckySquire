@@ -8,7 +8,12 @@
           "Is_Sequence": true
         },
         {
-          "ActionTag": "Camera_Arm_Return",
+          "ActionTag": "Dialogue",
+          "EventTag": "Event_Dialogue_01",
+          "Is_Sequence": true
+        },
+        {
+          "ActionTag": "Camera_Armw_Return",
           "EventTag": "A",
           "Is_Sequence": false
         }

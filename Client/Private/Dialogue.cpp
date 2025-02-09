@@ -5,6 +5,8 @@
 #include "Section_Manager.h"
 #include "Section_2D.h"
 
+#include "Trigger_Manager.h"
+
 CDialog::CDialog(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
 {
@@ -45,7 +47,7 @@ HRESULT CDialog::Initialize(void* _pArg)
 
 	m_isRender = false;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
 	return S_OK;
 }
 
@@ -60,6 +62,8 @@ void CDialog::Update(_float _fTimeDelta)
 		// 이건 각 스테이지 마다 RTSIZE가 변경될 수 있다. 가변적으로 사용하여야한다.
 		_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 		NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
+
+		CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
 	}
 
 
@@ -76,7 +80,7 @@ void CDialog::Update(_float _fTimeDelta)
 
 void CDialog::Late_Update(_float _fTimeDelta)
 {
-
+	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 }
 
 HRESULT CDialog::Render()
@@ -583,12 +587,15 @@ void CDialog::NextDialogue(_float2 _RTSize)
 // 처음 다이얼로그 입장 시 위치 계산해주는 함수
 void CDialog::FirstCalPos(_float2 _RTSize)
 {
+
+
 	_tchar _strDialogue[MAX_PATH] = {};
 	wsprintf(_strDialogue, Uimgr->Get_DialogId());
 	if (Uimgr->Get_DialogueLineIndex() <= Uimgr->Get_Dialogue(_strDialogue)[0].lines.size())
 	{
 		Uimgr->Set_DialogueLineIndex(Uimgr->Get_DialogueLineIndex());
 
+		_float3 v3DPos = {};
 		_float2 vPos = {};
 		if (false == m_isRender)
 		{
@@ -601,10 +608,31 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 		case LOC_MIDDOWN:
 		{
-			vPos.x = Uimgr->Get_DialoguePos().x;
-			vPos.y = Uimgr->Get_DialoguePos().y;
+			if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+			{
+				vPos.x = Uimgr->Get_DialoguePos().x;
+				vPos.y = Uimgr->Get_DialoguePos().y;
 
-			vPos.y -= _RTSize.y * 0.13f;
+				vPos.y -= _RTSize.y * 0.13f;
+			}
+			else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			{
+				//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
+				vPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
+				Uimgr->Set_CalDialoguePos(_float3(vPos.x, vPos.y, 0.f));
+				m_vCurPos = vPos;
+
+				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - g_iWinSizeX * 0.5f, -vPos.y + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+				//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
+				m_isFirstRefresh = true;
+				
+
+				return;
+			}
+
+			
 		}
 		break;
 

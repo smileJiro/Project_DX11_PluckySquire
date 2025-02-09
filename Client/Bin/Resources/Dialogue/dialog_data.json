@@ -163,6 +163,39 @@
 					"Blue": 234
 				}
 			]
+		},
+		{
+			"id": "Event_Dialogue_01",
+			"lines": [
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이벤트 트리거 테스트입니다.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이벤트 트리거 테스트2입니다.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
 		}
 	]
 }
