@@ -4,17 +4,18 @@
 #include "GameInstance.h"
 #include "CriticalSectionGuard.h"
 
+/* For. Camera*/
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 #include "Camera_2D.h"
 
+/* For. etc Bulb, PlayerItem*/
+#include "PlayerItem.h"
+
 /* For. Main Table */
 #include "CubeMap.h"
 #include "MainTable.h"
-
-/* For. Trigger*/
-
 
 /* For. UI*/
 #include "Pick_Bulb.h"
@@ -343,13 +344,19 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     // ============ Triger
-    /* For. Prototype_GameObject_Camera_Trigger */
+    /* For. Prototype_GameObject_TriggerObject */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TriggerObject"),
         CTriggerObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"),
         CRayShape::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    // ============ etc Bulb, PlayerItem
+     /* For. Prototype_GameObject_PlayerItem */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerItem"),
+        CPlayerItem::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     

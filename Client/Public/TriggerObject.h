@@ -31,6 +31,10 @@ public:
 		_uint						iTriggerType = {};
 		_wstring					szEventTag = {};
 		TRIGGER_CONDITION			eConditionType = { CONDITION_END };
+
+		// Model 상속을 위한 추가 데이터
+		_uint						iActorType = { (_uint)ACTOR_TYPE::STATIC };
+		_bool						isTrigger = { true };
 	}TRIGGEROBJECT_DESC;
 
 protected:
