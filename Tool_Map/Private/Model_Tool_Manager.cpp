@@ -636,9 +636,12 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 								ImGui::EndTooltip();
 							}
 
-
 							_bool isClicked = false;
-							if (tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex && ImGui::IsItemClicked(ImGuiMouseButton_Right))
+							if (
+								//tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex 
+								//&& 
+								ImGui::IsItemClicked(ImGuiMouseButton_Right)
+								)
 							{
 								ImGui::OpenPopup("##ModelPreviewPopup");
 

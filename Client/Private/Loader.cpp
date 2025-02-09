@@ -711,6 +711,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
+
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/2DAnim/"))))
         return E_FAIL;
