@@ -54,6 +54,7 @@ HRESULT CCollider::Initialize(void* _pArg)
     m_vOffsetPosition = pDesc->vOffsetPosition;
     m_vScale = pDesc->vScale;
     m_isBlock = pDesc->isBlock;
+    m_isTrigger = pDesc->isTrigger;
 
     // Add Desc 
     if (FAILED(__super::Initialize(_pArg)))

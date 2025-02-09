@@ -36,7 +36,6 @@ HRESULT CFloorWord::Initialize(void* _pArg)
 		m_isMake = true;
 		if (FAILED(Load_Json(TEXT("../Bin/Resources/Dialogue/FloorWord_Section01.json"), TEXT("Layer_UI"))))
 			return E_FAIL;
-
 	}
 
 

@@ -107,6 +107,7 @@ HRESULT CAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 	_infIle.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
 	m_strName.resize(iCount);
 	_infIle.read(const_cast<char*>(m_strName.c_str()), iCount);
+	//cout << m_strName.c_str() << "," << endl;
 	//FramesPerSecond
 	_infIle.read(reinterpret_cast<char*>(&m_fFramesPerSecond), sizeof(_float));
 	//FrameCount

@@ -650,10 +650,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 
 
     ///// 상점 관련
-
-
-
-
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Texture_BACK"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_backspace.dds"), 1))))
 		return E_FAIL;
@@ -1248,7 +1244,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
                 C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
             {
-                string str = "Failed to Create 2DModel";
+                string str = "Failed to Create 2DModel : ";
                 str += entry.path().filename().replace_extension().string();
                 MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
                 return E_FAIL;
