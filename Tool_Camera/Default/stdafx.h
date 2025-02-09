@@ -13,7 +13,9 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-#include <filesystem>
+#include <iostream>
 #include <functional>
+#include <filesystem>
+#include <stack>
 
 #include "Camera_Tool_Defines.h"

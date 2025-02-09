@@ -2,12 +2,11 @@
 #include "Camera_Tool_Defines.h"
 #include "ActorObject.h"
 
-BEGIN(Engin)
+BEGIN(Engine)
 class CCollider;
 END
 
 BEGIN(Camera_Tool)
-
 class CTriggerObject : public CActorObject
 {
 public:

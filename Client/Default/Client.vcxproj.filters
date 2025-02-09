@@ -743,10 +743,10 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
-    <ClInclude Include="..\Public\Item_Manager.h">
+    <ClInclude Include="..\Public\PlayerData_Manager.h">
       <Filter>02.GameObjects\Item\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Item.h">
+    <ClInclude Include="..\Public\PlayerItem.h">
       <Filter>02.GameObjects\Item</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NPC_DJMoonBeard.h">
@@ -1149,10 +1149,10 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
-    <ClCompile Include="..\Private\Item_Manager.cpp">
+    <ClCompile Include="..\Private\PlayerData_Manager.cpp">
       <Filter>02.GameObjects\Item\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Item.cpp">
+    <ClCompile Include="..\Private\PlayerItem.cpp">
       <Filter>02.GameObjects\Item</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp">
