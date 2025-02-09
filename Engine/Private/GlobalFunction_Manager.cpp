@@ -185,6 +185,12 @@ _uint CGlobalFunction_Manager::Compare_VectorLength(_fvector _vVector1, _fvector
 		return 2;
 }
 
+_fvector CGlobalFunction_Manager::Rotate_Vector(_fvector _vAxis, _fvector _vVector, _float _fDegrees)
+{
+	_vector vQuaternion = XMQuaternionRotationAxis(_vAxis, XMConvertToRadians(_fDegrees));
+	return XMVector3Rotate(_vVector, vQuaternion);
+}
+
 _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 {
 	POINT ptCursorPos;

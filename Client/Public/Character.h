@@ -30,7 +30,8 @@ public:
 	void Stop_Move();
 	void Add_Impuls(_fvector _vForce);
 	void Add_Force(_fvector _vForce);
-	_bool Move_To(_fvector _vPosition);
+	_bool Move_To(_fvector _vPosition, _float _fEpsilon = 0.5f);
+	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
 	void LookDirectionXZ_Kinematic(_fvector _vDir);
 	void LookDirectionXZ_Dynamic(_fvector _vDir);

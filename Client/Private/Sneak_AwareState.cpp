@@ -30,8 +30,7 @@ void CSneak_AwareState::State_Enter()
 }
 
 void CSneak_AwareState::State_Update(_float _fTimeDelta)
-{
-	if (nullptr == m_pOwner)
+{	if (nullptr == m_pOwner)
 		return;
 	
 	if (nullptr != m_pTarget)
