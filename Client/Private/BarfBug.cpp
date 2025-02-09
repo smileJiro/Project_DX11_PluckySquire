@@ -504,6 +504,7 @@ HRESULT CBarfBug::Ready_Components()
     FSMDesc.fAttack2DRange = m_fAttack2DRange;
     FSMDesc.isMelee = false;
     FSMDesc.pOwner = this;
+    FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))

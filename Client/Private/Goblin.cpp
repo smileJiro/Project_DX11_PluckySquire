@@ -209,17 +209,18 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
 HRESULT CGoblin::Ready_Components()
 {
     /* Com_FSM */
-    CFSM::FSMDESC Desc;
-    Desc.fAlertRange = m_fAlertRange;
-    Desc.fChaseRange = m_fChaseRange;
-    Desc.fAttackRange = m_fAttackRange;
-    Desc.fAlert2DRange = m_fAlert2DRange;
-    Desc.fChase2DRange = m_fChase2DRange;
-    Desc.fAttack2DRange = m_fAttack2DRange;
-    Desc.pOwner = this;
+    CFSM::FSMDESC FSMDesc;
+    FSMDesc.fAlertRange = m_fAlertRange;
+    FSMDesc.fChaseRange = m_fChaseRange;
+    FSMDesc.fAttackRange = m_fAttackRange;
+    FSMDesc.fAlert2DRange = m_fAlert2DRange;
+    FSMDesc.fChase2DRange = m_fChase2DRange;
+    FSMDesc.fAttack2DRange = m_fAttack2DRange;
+    FSMDesc.pOwner = this;
+    FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
-        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
+        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
     return S_OK;

@@ -22,7 +22,11 @@ HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 	m_fSneak_Patrol2DOffset = m_fSneak_PatrolOffset * 100.f;
 	m_iPrevDir = -1;
 	m_iDir = -1;
-	m_fDelayTime = 1.f;
+	//m_fDelayTime = 1.f;
+
+	m_Waypoints.push_back(_float3(-17.f, 6.55f, 23.f));
+	m_Waypoints.push_back(_float3(-20.f, 6.55f, 23.f));
+	m_Waypoints.push_back(_float3(-23.f, 6.55f, 20.5f));
 		
 	return S_OK;
 }
@@ -74,10 +78,14 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 	{
 		if (m_pOwner->Get_CurCoord() == COORDINATE_LAST)
 			return;
-		//적 발견 시 ALERT 전환
+		
 		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 		{	
-			Check_Target3D(true);
+			//적 발견 시 ALERT 전환
+			if (Check_Target3D(true))
+			{
+				return;
+			}
 
 			//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
 			if (m_pOwner->IsTarget_In_Sneak_Detection())
@@ -88,14 +96,14 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 		}
 	}
 
-	//정해진 웨이포인트에서 순찰해야함
+	//다음 웨이포인트 설정
 	if (false == m_isTurn)
 	{
 		Determine_Direction();
 	}
 	
 	//정해진 웨이포인트가 아니면 복귀 해야함
-	Check_Bound(_fTimeDelta);
+	//Check_Bound(_fTimeDelta);
 
 	//이동
 	Sneak_PatrolMove(_fTimeDelta, m_iDir);
@@ -106,15 +114,16 @@ void CSneak_PatrolState::State_Exit()
 	m_fAccTime = 0.f;
 	m_fAccDistance = 0.f;
 	m_isTurn = false;
+	m_isMove = false;
 }
 
 void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 {
-	if (0 > _iDir || 7 < _iDir)
+	if (m_Waypoints.size() <= m_iCurWayIndex)
 		return;
 
-	//기본적으로 추적중에 y값 상태 변화는 없다고 가정
-	_vector vDir = XMVector3Normalize(Set_Sneak_PatrolDirection(_iDir));
+
+	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex])-m_pOwner->Get_FinalPosition());
 
 	if (true == m_isTurn && false == m_isMove)
 	{
@@ -162,19 +171,46 @@ void CSneak_PatrolState::Determine_Direction()
 	if (COORDINATE::COORDINATE_LAST == m_pOwner->Get_CurCoord())
 		return;
 
-	while (true)
-	{
-		//8 방향 중 랜덤 방향 지정
-		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
 
-		if (m_iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
+	//다음 웨이 포인트로 넘어감.
+	if (false == m_isBack)
+	{
+		++m_iCurWayIndex;
+
+		if (m_Waypoints.size() - 1 == m_iCurWayIndex)
+			m_isBack = true;
+
+		//예외처리
+		if (m_Waypoints.size()-1 < m_iCurWayIndex)
 		{
-			m_iPrevDir = m_iDir;
-			m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-			m_isTurn = true;
-			break;
+			m_iCurWayIndex = m_Waypoints.size() - 1;
+			m_isBack = true;
 		}
 	}
+	else
+	{
+		--m_iCurWayIndex;
+		
+		if (0 == m_iCurWayIndex)
+			m_isBack = false;
+
+		//예외처리
+		if (0 > m_iCurWayIndex)
+		{
+			m_iCurWayIndex = 0;
+			m_isBack = false;
+		}
+	}
+
+	//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
+	if (0 == m_iCurWayIndex || m_Waypoints.size() - 1 == m_iCurWayIndex)
+		m_fDelayTime = m_pGameInstance->Compute_Random(1.f, 3.f);
+	else
+	{
+		m_fDelayTime = m_pGameInstance->Compute_Random(0.f, 2.f);
+	}
+
+	m_isTurn = true;
 }
 
 _vector CSneak_PatrolState::Set_Sneak_PatrolDirection(_int _iDir)

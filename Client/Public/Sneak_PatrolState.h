@@ -47,8 +47,11 @@ private:
 	_bool m_isDelay = { false };
 	_bool m_isMove = { false };
 	_bool m_isTurn = { false };
-	_bool m_isBack = { false };
 	_float3 m_vRotate = {};
+	_int m_iCurWayIndex = { -1 };
+	_bool m_isBack = { false };
+
+	vector<_float3> m_Waypoints = {};
 
 public:
 	static CSneak_PatrolState* Create(void* _pArg);
