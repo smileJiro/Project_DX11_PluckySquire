@@ -174,14 +174,14 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
 
    /* Test 2D Collider */
-   CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
-   AABBDesc.pOwner = this;
-   AABBDesc.fRadius = 50.f;
-   AABBDesc.vScale = { 1.0f, 1.0f };
-   AABBDesc.vOffsetPosition = { 0.f,  AABBDesc.fRadius  };
-   AABBDesc.isBlock = false;
+   CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+   CircleDesc.pOwner = this;
+   CircleDesc.fRadius = 20.f;
+   CircleDesc.vScale = { 1.0f, 1.0f };
+   CircleDesc.vOffsetPosition = { 0.f,  CircleDesc.fRadius  };
+   CircleDesc.isBlock = false;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+       TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &CircleDesc)))
        return E_FAIL; 
 
     return S_OK;
@@ -283,15 +283,19 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
+    COORDINATE eCoord  =  Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+    {
+        //// TestCode : еб©У
+        _uint iSectionKey = RG_2D + PR2D_SECTION_START;
+        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
 
-    //// TestCode : еб©У
-    _uint iSectionKey = RG_2D + PR2D_SECTION_START;
-    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
+    }
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    if (COORDINATE_3D == Get_CurCoord())
+    if (COORDINATE_3D == eCoord)
     {
         _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
         if (false == bSleep)
