@@ -79,6 +79,10 @@ private:
     PORT        m_ePortrait;
     CDialog::PORTRAITNAME    m_ePortraitFace;
     _tchar			    m_tDialogIndex[MAX_PATH] = {};
+    _bool               m_isAddSectionRender = { false };
+    _bool               m_isDialoging = { false };
+	_float2             m_vDisplay3DSize = { 0.f, 0.f };
+	_float2             m_vDisplay2DSize = { 0.f, 0.f };
 
 };
 

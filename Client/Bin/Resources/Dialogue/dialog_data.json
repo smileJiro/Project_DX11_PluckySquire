@@ -8,6 +8,8 @@
 					"Talker": "마르티나",
 					"BG": 2,
 					"location": 2,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -22,6 +24,8 @@
 					"Talker": "마티나",
 					"BG": 2,
 					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -36,6 +40,8 @@
 					"Talker": "마티나",
 					"BG": 2,
 					"location": 3,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -50,6 +56,8 @@
 					"Talker": "마티나",
 					"BG": 2,
 					"location": 4,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -64,6 +72,8 @@
 					"Talker": "마티나",
 					"BG": 2,
 					"location": 5,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -78,6 +88,8 @@
 					"Talker": "마티나",
 					"BG": 2,
 					"location": 6,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -92,6 +104,8 @@
 					"Talker": "마티나",
 					"BG": 2,
 					"location": 7,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -111,6 +125,8 @@
 					"Talker": "달수염",
 					"BG": 0,
 					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -125,6 +141,8 @@
 					"Talker": "달수염",
 					"BG": 0,
 					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -139,6 +157,8 @@
 					"Talker": "달수염",
 					"BG": 0,
 					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -153,6 +173,8 @@
 					"Talker": "달수염",
 					"BG": 0,
 					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -172,6 +194,8 @@
 					"Talker": "",
 					"BG": 9,
 					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -180,6 +204,22 @@
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
+				},
+				{
+					"Portrait": 16,
+					"Talker": "테스트",
+					"BG": 0,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이벤트 트리거 테스트2입니다.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
 				}
 			]
 		}
