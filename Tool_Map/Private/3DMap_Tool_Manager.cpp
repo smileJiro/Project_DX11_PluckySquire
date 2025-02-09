@@ -763,37 +763,59 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 		_string arrEnumText[] =
 		{
 			"NONE",
-			"DIFFUSE",
-			"SPECULAR",
+			"DIFFUSE", // ALBEDO, DIFFUSE, BASECOLOR
+			"SPECULAR", // ½ºÆåÅ§·¯
 			"AMBIENT",
 			"EMISSIVE",
-			"HEIGHT",
-			"NORMALS",
+			"HEIGHT",	// HEIGHT
+			"NORMALS", // NORMAL
 			"SHININESS",
 			"OPACITY",
 			"DISPLACEMENT",
 			"LIGHTMAP",
 			"REFLECTION",
-			"BASE_COLOR",
+			"BASE_COLOR", // ORM
 			"NORMAL_CAMERA",
-			"EMISSION_COLOR",
-			"METALNESS",
-			"DIFFUSE_ROUGHNESS",
-			"AMBIENT_OCCLUSION",
-			"UNKNOWN",
-			"SHEEN",
-			"CLEARCOAT",
-			"TRANSMISSION",
-			"MAYA_BASE",
-			"MAYA_SPECULAR",
-			"MAYA_SPECULAR_COLOR",
-			"MAYA_SPECULAR_ROUGHNESS",
+			"EMISSION_COLOR", //ÀÌ¹Ì½Ãºê
+			"METALNESS", // ¸ÞÅ»¸¯
+			"DIFFUSE_ROUGHNESS", // ·¯ÇÁ´Ï½º
+			"AMBIENT_OCCLUSION", // AO
+			//"UNKNOWN",
+			//"SHEEN",
+			//"CLEARCOAT",
+			//"TRANSMISSION",
+			//"MAYA_BASE",
+			//"MAYA_SPECULAR",
+			//"MAYA_SPECULAR_COLOR",
+			//"MAYA_SPECULAR_ROUGHNESS",
 		};
-
+		static _uint __iDeleteTextureIndex = 0;
+		static _uint __iSelectTextureIndex = 0;
+		static _uint __iTextureType = 0;
+		static _uint __iMaterialIndex = 0;
 
 		if (m_arrObjects[OBJECT_PICKING])
 		{
 			CMapObject* pTargetObj = m_arrObjects[OBJECT_PICKING];
+
+			if (ImGui::BeginPopup("##ModelPreviewPopup"))
+			{
+				ImGui::Text("Really?");
+				Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+				if (ImGui::Button("OK"))
+				{
+					if (SUCCEEDED(pTargetObj->Delete_Texture(__iDeleteTextureIndex, __iTextureType, __iMaterialIndex)))
+					{
+					}
+					ImGui::CloseCurrentPopup();
+				}
+				End_Draw_ColorButton();
+				ImGui::EndPopup();
+			}
+
+
+			ImGui::SeparatorText("Model Info");
+
 
 			_wstring strModelName = pTargetObj->Get_ModelName();
 			_wstring strModelPath = L"-";
@@ -801,29 +823,153 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 
 			auto iter = find_if(m_ObjectFileLists.begin(), m_ObjectFileLists.end(), [&strModelName](const pair<_wstring, _wstring>& PairFileInfo)
 				->_bool {
-				
-				return PairFileInfo.first == strModelName;
+					return PairFileInfo.first == strModelName;
 				});
 
 			if (iter != m_ObjectFileLists.end())
 				strModelPath = (*iter).second;
 			ImGui::BulletText("Model Path : %s", WstringToString(strModelPath).c_str());
 
-			if (StyleButton(MINI, "Model RePackaging"))
-			{
+			_wstring strfilePath = Get_Path_From_FullPath((*iter).second.c_str());
+			_tchar szOpenPath[MAX_PATH];
+
+
+#pragma region Button1
+			Begin_Draw_ColorButton("Model_RePacking_Style", (ImVec4(1.f, 0.56f, 0.32f, 1.f)));
+			if (StyleButton(ALIGN_SQUARE, "Model RePackaging"))
 				m_pMapParsingManager->Register_RePackaging((*iter).second, pTargetObj);
-			}
-			
-			if (StyleButton(MINI, "Model Path Open"))
+			End_Draw_ColorButton();
+#pragma endregion
+
+
+#pragma region Button2
+			Begin_Draw_ColorButton("Model_Path_Style", (ImVec4(0.32f, 0.56f, 0.f, 1.f)));
+			if (StyleButton(ALIGN_SQUARE, "Model Path Open"))
 			{
-				ShellExecute(NULL, L"open", L"explorer.exe", (*iter).second.c_str(), NULL, SW_SHOWNORMAL);
+				if (GetFullPathName(strfilePath.c_str(), MAX_PATH, szOpenPath, NULL))
+					ShellExecute(NULL, L"open", L"explorer.exe", szOpenPath, NULL, SW_SHOWNORMAL);
 			}
+			End_Draw_ColorButton();
+#pragma endregion
+
+
+#pragma region Button3
+			static _uint __iSelectTextureTypeIndex = aiTextureType_BASE_COLOR;
+			static _uint __iSelectTextureIntoMaterialIndex = 0;
+			Begin_Draw_ColorButton("#AddTextureButton_Style", (ImVec4(0.3f, 0.3f, 1.f, 1.f)));
+			if (StartPopupButton(ALIGN_SQUARE, "Add New Texture Type"))
+			{
+				_uint iMaterialCount = pTargetObj->Get_MaterialCount();
+#ifdef _DEBUG
+				if (ImGui::BeginListBox("##MaterialNames", ImVec2(200.f, 3 * ImGui::GetTextLineHeightWithSpacing())))
+				{
+					_uint iIndex = 0;
+					for (_uint i = 0; i < iMaterialCount; ++i)
+					{
+						string strMaterialName = "Material_";
+						strMaterialName += std::to_string(i);
+						if (ImGui::Selectable(strMaterialName.c_str(), i == __iSelectTextureIntoMaterialIndex))
+						{
+							if (i != __iSelectTextureIntoMaterialIndex)
+								__iSelectTextureIntoMaterialIndex = i;
+						}
+						iIndex++;
+					}
+					ImGui::EndListBox();
+				}
+#endif // _DEBUG
+
+				if (ImGui::BeginListBox("##TextureEnumNameList", ImVec2(200.f, 5 * ImGui::GetTextLineHeightWithSpacing())))
+				{
+					_uint iIndex = 1;
+					for (_uint i = 1; i < aiTextureType_UNKNOWN; ++i)
+					{
+						if (ImGui::Selectable(arrEnumText[i].c_str(), iIndex == __iSelectTextureTypeIndex))
+						{
+							if (iIndex != __iSelectTextureTypeIndex)
+							{
+								__iSelectTextureTypeIndex = iIndex;
+							}
+						}
+						iIndex++;
+					}
+					ImGui::EndListBox();
+				}
+
+
+				if (StyleButton(MINI, "Add Texture Type"))
+				{
+					_tchar originalDir[MAX_PATH];
+					GetCurrentDirectory(MAX_PATH, originalDir);
+					_wstring strModelPath = L"../../Client/Bin/resources/Models/NonAnim/";
+
+					OPENFILENAME ofn = {};
+					ZeroMemory(&ofn, sizeof(ofn));
+					_tchar szName[MAX_PATH] = {};
+					ofn.lStructSize = sizeof(OPENFILENAME);
+					ofn.hwndOwner = g_hWnd;
+					ofn.lpstrFile = szName;
+					ofn.nMaxFile = sizeof(szName);
+					ofn.lpstrFilter = L".dds\0*.dds\0";
+					ofn.nFilterIndex = 0;
+					ofn.lpstrFileTitle = nullptr;
+					ofn.nMaxFileTitle = 0;
+					wstring strPath = strModelPath + pTargetObj->Get_ModelName();
+					if (GetFullPathName(strfilePath.c_str(), MAX_PATH, szOpenPath, NULL))
+						ofn.lpstrInitialDir = szOpenPath;
+					else
+						ofn.lpstrInitialDir = strPath.c_str();
+					ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+					if (GetOpenFileName(&ofn))
+					{
+						SetCurrentDirectory(originalDir);
+						const _wstring strFilePath = szName;
+
+						ID3D11ShaderResourceView* pSRV = { nullptr };
+						HRESULT		hr = E_FAIL;
+						if (_string::npos != strFilePath.rfind(L".dds") || _string::npos != strFilePath.rfind(L".DDS"))
+						{
+							hr = CreateDDSTextureFromFile(m_pDevice, szName, nullptr, &pSRV);
+							if (SUCCEEDED(hr))
+							{
+								auto PairResult = Get_FileName_From_Path(strFilePath);
+
+
+								CMapObject::TEXTURE_INFO tAddInfo;
+								tAddInfo.iTextureIndex = 0;
+								tAddInfo.iMaterialIndex = __iSelectTextureIntoMaterialIndex;
+								tAddInfo.pSRV = pSRV;
+
+								_wstring strNameAndExt = PairResult.first + L"." + PairResult.second;
+
+								lstrcpy(tAddInfo.szTextureName, strNameAndExt.c_str());
+								if (FAILED(pTargetObj->Add_Textures(tAddInfo, __iSelectTextureTypeIndex)))
+								{
+									LOG_TYPE("Add Texture Failed... -> " + WstringToString(strModelName), LOG_ERROR);
+									Safe_Release(pSRV);
+									return;
+								}
+							}
+
+						}
+					}
+					pTargetObj->Add_Texture_Type(__iSelectTextureTypeIndex);
+				}
+
+
+				ImGui::EndPopup();
+			}
+			End_Draw_ColorButton();
+#pragma endregion
+
+
+
 
 			vector<CMapObject::TEXTURE_INFO> Textures;
 
 			for (_uint iTextureType = 0; iTextureType < aiTextureType_UNKNOWN; iTextureType++)
 			{
-				if(0 < iTextureType)
 				ImGui::NewLine();
 
 				Textures.clear();
@@ -836,10 +982,6 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 					ImGui::SeparatorText(arrEnumText[iTextureType].c_str());
 
 					_uint iMaterialIdx = 0;
-
-					if (0 < iMaterialIdx)
-						ImGui::NewLine();
-
 					for (auto& tDiffuseInfo : Textures)
 					{
 						_uint iMaxDiffuseIdx = 0;
@@ -854,27 +996,28 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 							});
 
 
+
 						if (tDiffuseInfo.iMaterialIndex == iMaterialIdx)
 						{
 							_string strButtonText = "ADD ";
 							_string strMaterialText = "Material ";
 							strButtonText += arrEnumText[iTextureType];
-							_string strButtonID = strButtonText + std::to_string(iMaterialIdx);
 							strMaterialText += std::to_string(iMaterialIdx);
 
+							if (iMaterialIdx > 0)
+								ImGui::NewLine();
 							ImGui::BulletText(strMaterialText.c_str());
 							//ImGui::SameLine();
 							Begin_Draw_ColorButton("#AddButton_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
-							ImGui::PushID(strButtonID.c_str());
 							if (StyleButton(MINI, strButtonText.c_str()))
 #pragma region ADD BUTTON
 							{
 								_tchar originalDir[MAX_PATH];
 								GetCurrentDirectory(MAX_PATH, originalDir);
-
 								_wstring strModelPath = L"../../Client/Bin/resources/Models/NonAnim/";
 
 								OPENFILENAME ofn = {};
+								ZeroMemory(&ofn, sizeof(ofn));
 								_tchar szName[MAX_PATH] = {};
 								ofn.lStructSize = sizeof(OPENFILENAME);
 								ofn.hwndOwner = g_hWnd;
@@ -885,7 +1028,10 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 								ofn.lpstrFileTitle = nullptr;
 								ofn.nMaxFileTitle = 0;
 								wstring strPath = strModelPath + pTargetObj->Get_ModelName();
-								ofn.lpstrInitialDir = strPath.c_str();
+								if (GetFullPathName(strfilePath.c_str(), MAX_PATH, szOpenPath, NULL))
+									ofn.lpstrInitialDir = szOpenPath;
+								else
+									ofn.lpstrInitialDir = strPath.c_str();
 								ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 
 								if (GetOpenFileName(&ofn))
@@ -909,12 +1055,12 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 											tAddInfo.iMaterialIndex = iMaterialIdx;
 											tAddInfo.pSRV = pSRV;
 
-											_wstring strNameAndExt = PairResult.first + L"."+PairResult.second;
+											_wstring strNameAndExt = PairResult.first + L"." + PairResult.second;
 
 											lstrcpy(tAddInfo.szTextureName, strNameAndExt.c_str());
 											if (FAILED(pTargetObj->Add_Textures(tAddInfo, iTextureType)))
 											{
-												LOG_TYPE("Add Texture Failed... -> "+ WstringToString(strModelName), LOG_ERROR);
+												LOG_TYPE("Add Texture Failed... -> " + WstringToString(strModelName), LOG_ERROR);
 												Safe_Release(pSRV);
 												return;
 											}
@@ -924,7 +1070,6 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 								}
 							}
 #pragma endregion
-							ImGui::PopID();
 							End_Draw_ColorButton();
 
 							iMaterialIdx++;
@@ -957,13 +1102,34 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 								);
 								ImGui::EndTooltip();
 							}
+
+
+							_bool isClicked = false;
+							if (tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex && ImGui::IsItemClicked(ImGuiMouseButton_Right))
+							{
+								ImGui::OpenPopup("##ModelPreviewPopup");
+
+								isClicked = true;
+							}
+
+							if (isClicked)
+							{
+								__iDeleteTextureIndex = tDiffuseInfo.iTextureIndex;
+								__iSelectTextureIndex = iCurrenrTextureIndex;
+								__iTextureType = iTextureType;
+								__iMaterialIndex = tDiffuseInfo.iMaterialIndex;
+
+								_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
+								ImGui::SetNextWindowPos({ fCursorPos.x + 150.f, fCursorPos.y + 100.f });
+							}
 						}
 						ImGui::SameLine();
 					}
+
+
+
 				}
-
 			}
-
 		}
 	}
 
