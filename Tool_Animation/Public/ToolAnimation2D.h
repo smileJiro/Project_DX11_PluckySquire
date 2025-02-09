@@ -11,17 +11,18 @@ private:
 	~CToolSpriteFrame();
 
 public:
-	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, string _strUpperKey, map<string, CTexture*>& _Textures);
+	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures);
 	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, std::filesystem::path _szDir, json& jFile);
 
 	HRESULT				Export(ofstream& _outfile);
-
+	HRESULT				Copy_Textures(const filesystem::path& _szDestPath);
 	CTexture* Get_Texture() { return m_pTexture; }
 
 private:
+	filesystem::path m_pathFinalTexturePath = "";
 	vector<_float4> vBakedRenderDatas;
 public:
-	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, string _strUpperKey, map<string, CTexture*>& _Textures);
+	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData,const filesystem::path& _RootDir, map<string, CTexture*>& _Textures);
 	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 	static CToolSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext,std::filesystem::path _szDir, json& jFile);
 	virtual CToolSpriteFrame* Clone();
@@ -36,11 +37,11 @@ private:
 	CToolAnimation2D(const CToolAnimation2D& _Prototype);
 
 public:
-	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, string _strUpperKey, map<string, CTexture*>& _Textures);
+	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures);
 
 
     HRESULT			Export(ofstream& _outfile);
-
+	HRESULT			Copy_Textures(const filesystem::path& _szDestPath);
 	//Set
 	void						Set_CurrentFrame(_uint _iFrameIndex);
 	//Get
@@ -52,7 +53,7 @@ private:
 	map<string, CTexture*> m_AnimTextures;
 
 public:
-	static CToolAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, string _strUpperKey, map<string, CTexture*>& _Textures);
+	static CToolAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures);
 	static CToolAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 	virtual CToolAnimation2D* Clone();
 	virtual void Free() override;

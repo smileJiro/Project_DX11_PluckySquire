@@ -63,6 +63,7 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 			if (nullptr == pTexture)
 			{
 				inFile.close();
+				cout << "Failed Create Texture : " << path << endl;
 				return E_FAIL;
 			}
 		}

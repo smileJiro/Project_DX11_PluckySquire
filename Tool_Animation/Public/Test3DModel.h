@@ -14,7 +14,7 @@ protected:
 public:
 
 	HRESULT				Export_Model(ofstream& _outfile);
-
+	HRESULT				Copy_Textures(const filesystem::path& _szDestPath);
 	//Set
 	void						Set_Progress(_float _fTrackPos);
 	//Get

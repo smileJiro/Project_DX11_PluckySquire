@@ -18,7 +18,7 @@ public:
     virtual HRESULT	Initialize_Prototype(const _char* _szModel2DFilePath);
 
     HRESULT				Export_Model(ofstream& _outfile);
-
+    HRESULT				Copy_Textures(const filesystem::path& _szDestPath);
     //Set
     void						Set_Progerss(_float _fProgerss);
 
@@ -29,8 +29,8 @@ public:
     _bool	                Is_LoopAnimation(_uint iAnimIndex);
     void						Get_AnimationNames(list<string>& _Names);
 private:
-    HRESULT Read_JsonFIle(string _strSuperKey, std::filesystem::path _path);
-    HRESULT Read_TextureFIle(string _strUpperKey, std::filesystem::path _path);
+    HRESULT Read_JsonFIle(std::filesystem::path _path);
+    HRESULT Read_TextureFIle(std::filesystem::path _path);
 private:
 
     map<string, json> m_jPaperFlipBooks;

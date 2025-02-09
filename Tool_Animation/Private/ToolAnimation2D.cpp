@@ -10,7 +10,7 @@ CToolSpriteFrame::CToolSpriteFrame(const CToolSpriteFrame& _Prototype)
 CToolSpriteFrame::~CToolSpriteFrame()
 {
 }
-HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, string _strUpperKey, map<string, CTexture*>& _Textures)
+HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures)
 {
 	json& jProperties = _jData["Properties"];
 
@@ -22,15 +22,79 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	_uint iCount;
 	json& jBakedSourceTexture = jProperties["BakedSourceTexture"];
 
-	string strTextureName = jBakedSourceTexture["ObjectName"];
-	iStart = (_uint)(strTextureName.find_first_of('\'')) + 1;
-	iCount = (_uint)strTextureName.find_last_of('\'') - iStart;
-	strTextureName = strTextureName.substr(iStart, iCount);
+	//string strTextureName = jBakedSourceTexture["ObjectName"];
+	//iStart = (_uint)(strTextureName.find_first_of('\'')) + 1;
+	//iCount = (_uint)strTextureName.find_last_of('\'') - iStart;
+	//strTextureName = strTextureName.substr(iStart, iCount);
+	string strRootFolderName = _RootDir.parent_path().filename().string();
+	filesystem::path pathObjectPath = jBakedSourceTexture["ObjectPath"].get<string>();
+	string  strTextureKey = MakeTextureKey(pathObjectPath);
+	if (_Textures.find(strTextureKey) == _Textures.end())
+	{
+		//ObjectPath에서 Root의 이름과 같은 폴더를 만날 때 까지 거슬러 올라감
+		//Root의 이름과 같은 폴더를 만나면 그 폴더를 기준으로 상대경로를 만들어서 Texture를 로드함.
+		filesystem::path pathCurFolderName = pathObjectPath.parent_path().filename();
+		filesystem::path pathSubPath = pathObjectPath.filename().replace_extension(".png");
+		while (strRootFolderName != pathCurFolderName)
+		{
+			pathSubPath = pathCurFolderName / pathSubPath;
+			string strParentPath = pathObjectPath.parent_path().string();
+			if (strParentPath._Equal("/"))
+			{
+				pathSubPath = jBakedSourceTexture["ObjectPath"].get<string>();
+				pathSubPath = pathSubPath.filename().replace_extension(".png");
+				break;
+			}
+			pathObjectPath = strParentPath;
+			pathCurFolderName = pathObjectPath.parent_path().filename().string();
+		}
+		ID3D11ShaderResourceView* pSRV = { nullptr };
+		//정확한 경로에 들어있으면 그대로 로드
+		if (filesystem::exists(_RootDir / (pathSubPath)))
+		{
+			m_pathFinalTexturePath = _RootDir / (pathSubPath);
+		}
+		//정확한 경로에 없으면 이름이 같은 텍스처라도 찾아봄.
+		else
+		{
+			for (const auto& entry : std::filesystem::recursive_directory_iterator(_RootDir))
+			{
+				if (".png" == entry.path().extension() || ".dds" == entry.path().extension())
+				{
+					if (entry.path().filename().string() == pathSubPath.filename().string())
+					{
+						m_pathFinalTexturePath = entry.path();
+						break;
+					}
+				}
+			}
+		}
+		if (m_pathFinalTexturePath.empty())
+		{
+			cout << "Failed to Find Texture File : " << pathSubPath << endl;
+			return E_FAIL;
+		}
+		HRESULT hr = DirectX::CreateWICTextureFromFile(_pDevice, m_pathFinalTexturePath.wstring().c_str(), nullptr, &pSRV);
+		if (FAILED(hr))
+		{
+			m_pathFinalTexturePath.replace_extension(".dds");
+			if (FAILED(DirectX::CreateWICTextureFromFile(_pDevice, m_pathFinalTexturePath.wstring().c_str(), nullptr, &pSRV)))
+			{
+				cout << "Failed to Create Texture form file : " << pathSubPath << endl;
+				return E_FAIL;
+			}
+		}
+		m_pTexture = CTexture::Create(_pDevice, _pContext);
+		if (nullptr == m_pTexture)
+			return E_FAIL;
+		m_pTexture->Add_Texture(pSRV, StringToWstring( strTextureKey));
 
-	string  strTextureKey = _strUpperKey + "$";
-	strTextureKey += strTextureName;
-
-	m_pTexture = _Textures[strTextureKey];
+		_Textures.insert({strTextureKey, m_pTexture });
+	}
+	else
+	{
+		m_pTexture = _Textures[strTextureKey];
+	}
 
 	m_fPixelsPerUnrealUnit = jProperties["PixelsPerUnrealUnit"];
 
@@ -129,11 +193,24 @@ HRESULT CToolSpriteFrame::Export(ofstream& _outfile)
 	return S_OK;
 }
 
-CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, string _strUpperKey, map<string, CTexture*>& _Textures)
+HRESULT CToolSpriteFrame::Copy_Textures(const filesystem::path& _szDestPath)
+{
+	if (false == filesystem::exists(m_pathFinalTexturePath))
+	{
+		return E_FAIL;
+	}
+
+	filesystem::path dest = _szDestPath;
+	dest /= *m_pTexture->Get_SRVName(0) + L".png";
+	filesystem::copy_file(m_pathFinalTexturePath, dest, filesystem::copy_options::overwrite_existing);
+	return S_OK;
+}
+
+CToolSpriteFrame* CToolSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures)
 {
 	CToolSpriteFrame* pInstance = new CToolSpriteFrame();
 
-	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _jData, _strUpperKey,_Textures)))
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _jData, _RootDir,_Textures)))
 	{
 		MSG_BOX("SpriteFrame Create Failed");
 		Safe_Release(pInstance);
@@ -188,7 +265,7 @@ CToolAnimation2D::CToolAnimation2D(const CToolAnimation2D& _Prototype)
 }
 
 
-HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, string _strUpperKey, map<string, CTexture*>& _Textures)
+HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures)
 {
 	m_strName = _jData["Name"];
 	json& jProperties = _jData["Properties"];
@@ -201,17 +278,18 @@ HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 		_uint iFrameRun = jKeyFrame["FrameRun"];
 
 		if (jKeyFrame["Sprite"].is_null())
-			continue;
-		string strSpriteFileName = jKeyFrame["Sprite"]["ObjectName"];
-		_uint iStart = (_uint)(strSpriteFileName.find_first_of('\'')) + 1;
-		_uint iCount = (_uint)strSpriteFileName.find_last_of('\'') - iStart;
-		strSpriteFileName =strSpriteFileName.substr(iStart, iCount);
-		string strSpriteKey = _strUpperKey + "$" + strSpriteFileName;
+			continue; 
+		//string strSpriteFileName = jKeyFrame["Sprite"]["ObjectName"];
+		//_uint iStart = (_uint)(strSpriteFileName.find_first_of('\'')) + 1;
+		//_uint iCount = (_uint)strSpriteFileName.find_last_of('\'') - iStart;
+		//strSpriteFileName =strSpriteFileName.substr(iStart, iCount);
+		string strSpriteKey = filesystem::path(jKeyFrame["Sprite"]["ObjectPath"].get<string>()).filename().replace_extension().string();
 		json& jSpriteFIle = _jPaperSprites[strSpriteKey];
-		m_SpriteFrames.push_back({ CToolSpriteFrame::Create(_pDevice, _pContext, jSpriteFIle,_strUpperKey, _Textures), iFrameRun });
+
+		m_SpriteFrames.push_back({ CToolSpriteFrame::Create(_pDevice, _pContext, jSpriteFIle,_RootDir, _Textures), iFrameRun });
 	}
 	m_iFrameCount = (_uint)m_SpriteFrames.size();
-	return S_OK;
+	return S_OK; 
 }
 
 HRESULT CToolAnimation2D::Export(ofstream& _outfile)
@@ -242,6 +320,15 @@ HRESULT CToolAnimation2D::Export(ofstream& _outfile)
     return S_OK;
 }
 
+HRESULT CToolAnimation2D::Copy_Textures(const filesystem::path& _szDestPath)
+{
+	for (auto& pairSpriteFrame : m_SpriteFrames)
+	{
+		static_cast<CToolSpriteFrame*>(pairSpriteFrame.first)->Copy_Textures(_szDestPath);
+	}
+	return S_OK;
+}
+
 void CToolAnimation2D::Set_CurrentFrame(_uint _iFrameIndex)
 {
 	m_iCurrentFrame = _iFrameIndex;
@@ -258,11 +345,11 @@ _uint CToolAnimation2D::Get_CurrentFrame()
 
 
 
-CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, string _strUpperKey, map<string, CTexture*>& _Textures)
+CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures)
 {
 	CToolAnimation2D* pInstance = new CToolAnimation2D();
 
-	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _jData, _jPaperSprites,_strUpperKey, _Textures)))
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, _jData, _jPaperSprites,_RootDir, _Textures)))
 	{
 		MSG_BOX("Animation2D Create Failed");
 		Safe_Release(pInstance);
