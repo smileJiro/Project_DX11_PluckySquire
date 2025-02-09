@@ -5,11 +5,11 @@ class CGameObject;
 END
 
 BEGIN(Client)
-class CLevel_GamePlay final : public CLevel
+class CLevel_Chapter_04 final : public CLevel
 {
 private:
-	CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual ~CLevel_GamePlay() = default;
+	CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual ~CLevel_Chapter_04() = default;
 
 public:
 	virtual HRESULT			Initialize(LEVEL_ID _eLevelID);
@@ -37,7 +37,7 @@ private:
 	LEVEL_ID				m_eLevelID;
 
 public:
-	static CLevel_GamePlay* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
+	static CLevel_Chapter_04* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;
 };
 

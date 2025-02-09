@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Level_GamePlay.h"
+#include "Level_Chapter_04.h"
 
 #include "GameInstance.h"
 #include "Pooling_Manager.h"
@@ -48,12 +48,12 @@
 #include "NPC.h"
 
 
-CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CLevel_Chapter_04::CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
 }
 
-HRESULT CLevel_GamePlay::Initialize(LEVEL_ID _eLevelID)
+HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
 	Ready_Lights();
@@ -129,7 +129,7 @@ HRESULT CLevel_GamePlay::Initialize(LEVEL_ID _eLevelID)
 	return S_OK;
 }
 
-void CLevel_GamePlay::Update(_float _fTimeDelta)
+void CLevel_Chapter_04::Update(_float _fTimeDelta)
 {
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
@@ -250,7 +250,7 @@ void CLevel_GamePlay::Update(_float _fTimeDelta)
 
 }
 
-HRESULT CLevel_GamePlay::Render()
+HRESULT CLevel_Chapter_04::Render()
 {
 #ifdef _DEBUG
 	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
@@ -260,7 +260,7 @@ HRESULT CLevel_GamePlay::Render()
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Lights()
+HRESULT CLevel_Chapter_04::Ready_Lights()
 {
 	LIGHT_DESC LightDesc{};
 
@@ -279,7 +279,7 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_CubeMap(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_04::Ready_CubeMap(const _wstring& _strLayerTag)
 {
 	CCubeMap::CUBEMAP_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
@@ -294,7 +294,7 @@ HRESULT CLevel_GamePlay::Ready_CubeMap(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_04::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 {
 	CMainTable::ACTOROBJECT_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
@@ -306,7 +306,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Map()
+HRESULT CLevel_Chapter_04::Ready_Layer_Map()
 {
 	LEVEL_ID eLevelID = (LEVEL_ID)m_eLevelID;
 
@@ -330,7 +330,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Map()
 }
 
 
-HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
+HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
 	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0);
 	if (nullptr == pPlayer)
@@ -440,7 +440,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameO
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
+HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
 	CGameObject** pGameObject = nullptr;
 
@@ -466,7 +466,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _wstring& _strLayerTag, CGameO
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_04::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 {
 	/* Test Terrain */
 	//CTestTerrain::MODELOBJECT_DESC TerrainDesc{};
@@ -503,7 +503,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 {
 	CUI::UIOBJDESC pDesc = {};
 	CUI::UIOBJDESC pDescs[CUI::SETTINGPANEL::SETTING_END] = {};
@@ -807,7 +807,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
 	CNPC::NPC_DESC NPCDesc;
 
@@ -832,7 +832,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
+HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
 	//CBeetle::MONSTER_DESC Monster_Desc;
 	//Monster_Desc.iCurLevelID = m_eLevelID;
@@ -911,7 +911,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _wstring& _strLayerTag, CGame
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_04::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
 	CEmitter::SetID_2D(RG_2D);
 	CEmitter::SetID_3D(RG_3D);
@@ -933,7 +933,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-void CLevel_GamePlay::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength)
+void CLevel_Chapter_04::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength)
 {
 	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0);
 	if (nullptr == pPlayer)
@@ -960,7 +960,7 @@ void CLevel_GamePlay::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, 
 	}
 }
 
-HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
+HRESULT CLevel_Chapter_04::Map_Object_Create(_wstring _strFileName)
 {
 	wstring strFileName = _strFileName;
 
@@ -1019,20 +1019,20 @@ HRESULT CLevel_GamePlay::Map_Object_Create(_wstring _strFileName)
 	return S_OK;
 }
 
-CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID)
+CLevel_Chapter_04* CLevel_Chapter_04::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID)
 {
-	CLevel_GamePlay* pInstance = new CLevel_GamePlay(_pDevice, _pContext);
+	CLevel_Chapter_04* pInstance = new CLevel_Chapter_04(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize(_eLevelID)))
 	{
-		MSG_BOX("Failed to Created : CLevel_GamePlay");
+		MSG_BOX("Failed to Created : CLevel_Chapter_04");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CLevel_GamePlay::Free()
+void CLevel_Chapter_04::Free()
 {
 
 

@@ -363,7 +363,7 @@
     <ClInclude Include="..\Public\Level_Logo.h">
       <Filter>01.Levels\02.Logo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_GamePlay.h">
+    <ClInclude Include="..\Public\Level_Chapter_02.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Client_Macro.h">
@@ -758,6 +758,9 @@
     <ClInclude Include="..\Public\Trigger_Manager.h">
       <Filter>02.GameObjects\Trigger\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_04.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -775,7 +778,7 @@
     <ClCompile Include="..\Private\Level_Logo.cpp">
       <Filter>01.Levels\02.Logo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+    <ClCompile Include="..\Private\Level_Chapter_02.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -1163,6 +1166,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Trigger_Manager.cpp">
       <Filter>02.GameObjects\Trigger\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Chapter_04.cpp">
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
