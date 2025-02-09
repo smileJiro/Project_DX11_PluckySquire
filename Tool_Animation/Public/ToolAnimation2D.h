@@ -13,6 +13,7 @@ private:
 public:
 	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures);
 	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, std::filesystem::path _szDir, json& jFile);
+	virtual HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 
 	HRESULT				Export(ofstream& _outfile);
 	HRESULT				Copy_Textures(const filesystem::path& _szDestPath);
@@ -38,6 +39,7 @@ private:
 
 public:
 	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json& _jData, map<string, json>& _jPaperSprites, const filesystem::path& _RootDir, map<string, CTexture*>& _Textures);
+	HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
 
 
     HRESULT			Export(ofstream& _outfile);

@@ -41,8 +41,12 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		{
 			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
 			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
-			m_pOwner->Set_2DDirection(eNewDir);
-			Switch_RunAnimation2D(eFDir);
+			if (m_eOldFDir != eFDir)
+			{
+				m_pOwner->Set_2DDirection(eNewDir);
+				Switch_RunAnimation2D(eFDir);
+				m_eOldFDir = eFDir;
+			}
 		}
 		else
 		{
@@ -79,8 +83,7 @@ void CPlayerState_Run::Enter()
 
 	if (COORDINATE_2D == eCoord)
 	{
-		F_DIRECTION eFDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
-		Switch_RunAnimation2D(eFDir);
+
 	}
 	else
 	{

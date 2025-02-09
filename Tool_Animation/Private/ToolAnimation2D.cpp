@@ -138,7 +138,7 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	iCount = (_uint)strSourceTexture.find_last_of('\'') - iStart;
 	strSourceTexture = strSourceTexture.substr(iStart, iCount);
 	_szDir += strSourceTexture + ".png";
-
+	m_pathFinalTexturePath = _szDir;
 	ID3D11ShaderResourceView* pSRV = { nullptr };
 	HRESULT hr = DirectX::CreateWICTextureFromFile(_pDevice, _szDir.wstring().c_str(), nullptr, &pSRV);
 	if (FAILED(hr))
@@ -176,6 +176,34 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	_float fYOffset = fMinY + fHeight / 2; //117
 	m_matSpriteTransform = XMMatrixScaling(fWidth, fHeight, 1);
 	m_matSpriteTransform *= XMMatrixTranslation(fXOffset, fYOffset, 0);
+	return S_OK;
+}
+
+HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)
+{
+
+	//StartUV
+	_infIle.read(reinterpret_cast<char*>(&m_vSpriteStartUV), sizeof(_float2));
+	//EndUV
+	_infIle.read(reinterpret_cast<char*>(&m_vSpriteEndUV), sizeof(_float2));
+	//PixelsPerUnrealUnit
+	_infIle.read(reinterpret_cast<char*>(&m_fPixelsPerUnrealUnit), sizeof(_float));
+	//Texture
+	_uint iCount = 0;
+	_infIle.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+	_char szTextureName[MAX_PATH] = "";
+	_infIle.read(szTextureName, iCount);
+	szTextureName[iCount] = '\0';
+	m_pathFinalTexturePath = szDirPath;
+	m_pathFinalTexturePath /= szTextureName;      
+	m_pathFinalTexturePath += L".png";
+	auto pairTexture = _Textures.find(szTextureName);
+	if (pairTexture == _Textures.end())
+		return E_FAIL;
+	m_pTexture = pairTexture->second;
+	if (nullptr == m_pTexture)
+		return E_FAIL;
+	_infIle.read(reinterpret_cast<char*>(&m_matSpriteTransform), sizeof(_matrix));
 	return S_OK;
 }
 
@@ -292,6 +320,38 @@ HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	return S_OK; 
 }
 
+HRESULT CToolAnimation2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)
+{
+
+	_uint iCount = 0;
+	//Name
+	_infIle.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+	m_strName.resize(iCount);
+	_infIle.read(const_cast<char*>(m_strName.c_str()), iCount);
+	//cout << m_strName.c_str() << "," << endl;
+	//FramesPerSecond
+	_infIle.read(reinterpret_cast<char*>(&m_fFramesPerSecond), sizeof(_float));
+	//FrameCount
+	_infIle.read(reinterpret_cast<char*>(&m_iFrameCount), sizeof(_uint));
+	//Loop
+	_infIle.read(reinterpret_cast<char*>(&m_bLoop), sizeof(_bool));
+	//SpeedMagnifier
+	_infIle.read(reinterpret_cast<char*>(&m_fSpeedMagnifier), sizeof(_float));
+	//SpriteFrames
+	_infIle.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+	m_SpriteFrames.reserve(iCount);
+	for (_uint i = 0; i < iCount; i++)
+	{
+		CToolSpriteFrame* pSpriteFrame = CToolSpriteFrame::Create(_pDevice, _pContext, szDirPath, _infIle, _Textures);
+		if (nullptr == pSpriteFrame)
+			return E_FAIL;
+		_uint iFrameRun = 0;
+		_infIle.read(reinterpret_cast<char*>(&iFrameRun), sizeof(_uint));
+		m_SpriteFrames.push_back({ pSpriteFrame,iFrameRun });
+	}
+
+	return S_OK;
+}
 HRESULT CToolAnimation2D::Export(ofstream& _outfile)
 {
 	_uint iCount = 0;
@@ -362,7 +422,7 @@ CToolAnimation2D* CToolAnimation2D::Create(ID3D11Device* _pDevice, ID3D11DeviceC
 {
 	CToolAnimation2D* pInstance = new CToolAnimation2D();
 
-	if (FAILED(static_cast<CAnimation2D*>(pInstance)->Initialize(_pDevice, _pContext, _szDirPath, _infIle, _Textures)))
+	if (FAILED(static_cast<CToolAnimation2D*>(pInstance)->Initialize(_pDevice, _pContext, _szDirPath, _infIle, _Textures)))
 	{
 		MSG_BOX("Animation2D Create Failed");
 		Safe_Release(pInstance);
