@@ -29,11 +29,14 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    pDesc->fAlertRange = 5.f;
+    pDesc->fAlertRange = 3.f;
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 2.f;
+
+    pDesc->fFOVX = 90.f;
+    pDesc->fFOVY = 30.f;
 
     pDesc->isSneakMode = true;
 
@@ -68,6 +71,8 @@ HRESULT CBeetle::Initialize(void* _pArg)
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, TURN_LEFT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, TURN_RIGHT, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBeetle::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -200,6 +205,20 @@ void CBeetle::Change_Animation()
     }
 }
 
+void CBeetle::Turn_Animation(_bool _isCW)
+{
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    if (true == _isCW)
+        AnimIdx = TURN_RIGHT;
+    else
+        AnimIdx = TURN_LEFT;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
+}
+
 void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -259,27 +278,43 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius+0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     //마찰용 박스
     SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
-    BoxDesc->vHalfExtents = { 0.3f, 0.1f, 0.3f };
+    BoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, ShapeDesc->fRadius };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     //SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc->vHalfExtents.y, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    //닿은 물체의 씬 쿼리를 켜는 트리거
+    SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
+	RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(pDesc->fFOVX * 0.5f) * 0.5f, 0.1f, pDesc->fAlertRange * 0.5f };
+
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    //SHAPE_DATA* ShapeData = new SHAPE_DATA;
+    ShapeData->pShapeDesc = RayBoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y + 0.5f, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
@@ -297,14 +332,15 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 HRESULT CBeetle::Ready_Components()
 {
     /* Com_FSM */
-    CFSM::FSMDESC Desc;
-    Desc.fAlertRange = m_fAlertRange;
-    Desc.fChaseRange = m_fChaseRange;
-    Desc.fAttackRange = m_fAttackRange;
-    Desc.pOwner = this;
+    CFSM::FSMDESC FSMDesc;
+    FSMDesc.fAlertRange = m_fAlertRange;
+    FSMDesc.fChaseRange = m_fChaseRange;
+    FSMDesc.fAttackRange = m_fAttackRange;
+    FSMDesc.pOwner = this;
+    FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
-        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
+        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
 #ifdef _DEBUG
@@ -317,8 +353,8 @@ HRESULT CBeetle::Ready_Components()
     /* Com_DetectionField */
     CDetectionField::DETECTIONFIELDDESC DetectionDesc;
     DetectionDesc.fRange = m_fAlertRange;
-    DetectionDesc.fFOVX = 90.f;
-    DetectionDesc.fFOVY = 30.f;
+    DetectionDesc.fFOVX = m_fFOVX;
+    DetectionDesc.fFOVY = m_fFOVY;
     DetectionDesc.fOffset = 0.f;
     DetectionDesc.pOwner = this;
     DetectionDesc.pTarget = m_pTarget;

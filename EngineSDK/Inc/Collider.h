@@ -15,6 +15,7 @@ public:
 		_float2			vOffsetPosition = {};
 		_float2			vScale = { 1.0f, 1.0f };
 		_bool			isBlock = false;
+		_bool			isTrigger = false;
 	}COLLIDER_DESC;
 protected:
 	CCollider(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -40,6 +41,7 @@ public:
 	CGameObject*			Get_Owner() const { return m_pOwner; }
 	_float2					Get_Position() const { return m_vPosition; }
 	_bool					Is_Block() const { return m_isBlock; }
+	_bool					Is_Trigger() const { return m_isTrigger; }
 	// Set 
 #ifdef _DEBUG
 	void					Set_DebugColor(const _float4& _vDebugColor) { m_vDebugColor = _vDebugColor; }
@@ -51,8 +53,8 @@ protected:
 protected:
 	_uint					m_iColliderID = 0;
 	TYPE					m_eType = TYPE::TYPE_LAST;
+	_bool					m_isTrigger = false;
 	_bool					m_isBlock = false;
-
 protected:
 	CGameObject*			m_pOwner = nullptr;
 

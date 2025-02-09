@@ -46,6 +46,9 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
+    pDesc->fFOVX = 90.f;
+    pDesc->fFOVY = 30.f;
+
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -93,11 +96,11 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBugAttackAnimEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BarfBugAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("2DAnimEventGenerator"), m_pAnimEventGenerator);
 
 
@@ -504,6 +507,7 @@ HRESULT CBarfBug::Ready_Components()
     FSMDesc.fAttack2DRange = m_fAttack2DRange;
     FSMDesc.isMelee = false;
     FSMDesc.pOwner = this;
+    FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
@@ -519,8 +523,8 @@ HRESULT CBarfBug::Ready_Components()
     /* Com_DetectionField */
     CDetectionField::DETECTIONFIELDDESC DetectionDesc;
     DetectionDesc.fRange = m_fAlertRange;
-    DetectionDesc.fFOVX = 90.f;
-    DetectionDesc.fFOVY = 30.f;
+    DetectionDesc.fFOVX = m_fFOVX;
+    DetectionDesc.fFOVY = m_fFOVY;
     DetectionDesc.fOffset = 0.f;
     DetectionDesc.pOwner = this;
     DetectionDesc.pTarget = m_pTarget;

@@ -43,11 +43,11 @@ HRESULT C2DMapActionObject::Initialize(void* _pArg)
 
     switch (m_eType)
     {
-    case Client::C2DMapActionObject::ACTIVE_TYPE_BREAKABLE:
     case Client::C2DMapActionObject::ACTIVE_TYPE_DIALOG:
     case Client::C2DMapActionObject::ACTIVE_TYPE_ATTACKABLE:
         isBlock = true;
         break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_BREAKABLE:
     case Client::C2DMapActionObject::ACTIVE_TYPE_PATROL:
     case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE:
         isBlock = false;

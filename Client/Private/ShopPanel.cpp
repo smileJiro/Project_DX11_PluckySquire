@@ -60,7 +60,17 @@ void CShopPanel::Update(_float _fTimeDelta)
 	//	return;
 	//}
 	//
-	_int iIndex = isInPanelItem(cursorPos);
+
+	if (true == Uimgr->Get_DialogueFinishShopPanel())
+	{
+		_int iIndex = isInPanelItem(cursorPos);
+
+		Update_KeyInput(_fTimeDelta, iIndex);
+
+		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
+	}
+
+	
 	//
 	//if (iIndex != -1 && iIndex != m_iPreindex)
 	//{
@@ -69,9 +79,7 @@ void CShopPanel::Update(_float _fTimeDelta)
 	//}
 
 	
-		Update_KeyInput(_fTimeDelta, iIndex);
 		
-		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
 	
 
 
@@ -129,10 +137,10 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		/* RTSIZE 를 가져올 수 있는 방법을 논의해봐야한다. */
 
 		_float2 BGPos = Uimgr->Get_ShopPos();
-		/* 나중에 수정 필요 */
+		/* TODO :: 나중에 수정 필요 */
 		_float2 vMiddlePoint = { RTSIZE_BOOK2D_X / 2 , RTSIZE_BOOK2D_Y / 2 };
 		_float2 vCalPos = { 0.f, 0.f };
-		/* 나중에 수정 필요 */
+		/* TODO :: 나중에 수정 필요 */
 		_float2 vRTSize = { RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y };
 
 
@@ -173,10 +181,6 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
 	}
-
-
-
-
 
 	if (true == CUI_Manager::GetInstance()->Get_ConfirmStore())
 	{
@@ -464,7 +468,7 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 
 	for (_uint i = 0; i < CUI::SHOPPANEL::SHOP_END; ++i)
 	{
-		pShopDescs[i].iCurLevelID = LEVEL_GAMEPLAY;
+		pShopDescs[i].iCurLevelID = _eCurLevel;
 	}
 
 	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())

@@ -17,26 +17,29 @@ CTest2DModel::CTest2DModel(const CTest2DModel& _Prototype)
 //Read RawData jsons
 HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataDirPath)
 {
-
 	//모든 json파일 순회하면서 읽음. 
 	//Type이 PaperSprite인 경우와 PaperFlipBook인 경우로 컨테이너를 나눠서 저장.
 	//	PaperFlipBook 컨테이너를 순회하면서	Animation2D를 생성.
 	//    Animation2D를 생성할 때 PaperSprite 컨테이너에서 LookUp해서 CSpriteFrame생성.
-
-
 	std::filesystem::path path;
 	path = _szRawDataDirPath;
 
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
 		 if (".json" == entry.path().extension())
 		{
-			Read_JsonFIle(entry.path());
+			if(FAILED(Read_JsonFIle(entry.path())))
+			{
+				return E_FAIL;
+			}
 		}
-		else if (".png"  == entry.path().extension() || ".dds" ==entry.path().extension() )
-		{
-			string strUpperKye = entry.path().parent_path().parent_path().filename().string();
-			Read_TextureFIle(strUpperKye, entry.path());
-		}
+		//else if (".png"  == entry.path().extension() || ".dds" ==entry.path().extension() )
+		//{
+
+		//	if(FAILED(Read_TextureFIle( entry.path())))
+		//	{
+		//		return E_FAIL;
+		//	}
+		//}
 		else
 		{
 			continue;
@@ -50,9 +53,7 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 	{
 		for (auto& j : m_jPaperFlipBooks)
 		{
-			string strName = j.second["Name"];
-
-			CToolAnimation2D* pAnim =CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, m_jPaperSprites, m_Textures);
+			CToolAnimation2D* pAnim =CToolAnimation2D::Create(m_pDevice, m_pContext, j.second, m_jPaperSprites, path,m_Textures);
 			if (nullptr == pAnim)
 				return E_FAIL;
 			m_Animation2Ds.push_back(pAnim);
@@ -60,7 +61,7 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 	}
 	else
 	{
-		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, m_jPaperSprites.begin()->second, m_Textures);
+		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, m_jPaperSprites.begin()->second, path, m_Textures);
 		if (nullptr == m_pNonAnimSprite)
 			return E_FAIL;
 	}
@@ -77,20 +78,19 @@ HRESULT CTest2DModel::Read_JsonFIle(std::filesystem::path _path)
 	}
 	input_file >> jFile;
 	input_file.close();
+	string strKey =(_path).filename().replace_extension().string();
 	for (auto& jObj : jFile)
 	{
 		string strType = jObj["Type"];
 		if (strType._Equal("PaperSprite"))
 		{
-			string strName = jObj["Name"];
-
-			m_jPaperSprites.insert({ strName, jObj });
+			m_jPaperSprites.insert({ strKey, jObj });
+			return S_OK;
 		}
 		else if (strType._Equal("PaperFlipbook"))
 		{
-			string strName = jObj["Name"];
-
-			m_jPaperFlipBooks.insert({ strName,jObj });
+			m_jPaperFlipBooks.insert({ strKey,jObj });
+			return S_OK;
 		}
 		else
 		{
@@ -100,12 +100,10 @@ HRESULT CTest2DModel::Read_JsonFIle(std::filesystem::path _path)
 	return S_OK;
 }
 
-HRESULT CTest2DModel::Read_TextureFIle(string _strUpperKey, std::filesystem::path _path)
+HRESULT CTest2DModel::Read_TextureFIle(std::filesystem::path _path)
 {
-	string strTextureName = _path.filename().replace_extension().string();
-	string strTextureKey = _strUpperKey + "$";
-	strTextureKey += strTextureName;
-	strTextureKey = WstringToString(MakeTextureKey(_path));
+	//string strTextureName = _path.filename().replace_extension().string();
+	string strTextureKey = MakeTextureKey(_path);
 	if (m_Textures.find(strTextureKey) != m_Textures.end())
 	{
 		cout << "텍스처 중복" << strTextureKey << endl;
@@ -124,8 +122,8 @@ HRESULT CTest2DModel::Read_TextureFIle(string _strUpperKey, std::filesystem::pat
 		cout << "텍스처 생성 실패" << strTextureKey << endl;
 		return E_FAIL;
 	}
-	wstring wstrTextureName = StringToWstring(strTextureKey);
-	pTexture->Add_Texture(pSRV, wstrTextureName.c_str());
+	wstring wstrTextureKey = StringToWstring(strTextureKey);
+	pTexture->Add_Texture(pSRV, wstrTextureKey.c_str());
 	auto result = m_Textures.insert({ strTextureKey, pTexture });
 	if (result.second == false)
 		Safe_Release(pTexture);
@@ -252,6 +250,23 @@ HRESULT CTest2DModel::Export_Model(ofstream& _outfile)
 		static_cast<CToolSpriteFrame*>(m_pNonAnimSprite)->Export(_outfile);
 	}
 
+
+	return S_OK;
+}
+
+HRESULT CTest2DModel::Copy_Textures(const filesystem::path& _szDestPath)
+{
+	if (Is_AnimModel())
+	{
+		for (auto& pAnim : m_Animation2Ds)
+		{
+			static_cast<CToolAnimation2D*>( pAnim)->Copy_Textures(_szDestPath);
+		}
+	}
+	else
+	{
+		static_cast<CToolSpriteFrame*>(m_pNonAnimSprite)->Copy_Textures(_szDestPath);
+	}
 
 	return S_OK;
 }

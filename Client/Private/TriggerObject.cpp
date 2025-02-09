@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TriggerObject.h"
 #include "GameInstance.h"
+#include "Collision_Manager.h"
 
 _int CTriggerObject::g_iNextID = -1;
 
@@ -119,6 +120,9 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
 
 HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
 {
+    m_iTriggerType = _pDesc->iTriggerType;
+    m_szEventTag = _pDesc->szEventTag;
+    m_eConditionType = _pDesc->eConditionType;
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
     AABBDesc.vExtents = { 1.f, 1.f };
@@ -128,6 +132,14 @@ HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;
     return S_OK;
+}
+
+void CTriggerObject::Update(_float _fTimeDelta)
+{
+    if(nullptr!= m_pColliderCom)
+        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName,TRIGGER_OBJECT, m_pColliderCom);
+
+    __super::Update(_fTimeDelta);
 }
 
 void CTriggerObject::Late_Update(_float _fTimeDelta)
@@ -242,5 +254,7 @@ CGameObject* CTriggerObject::Clone(void* _pArg)
 
 void CTriggerObject::Free()
 {
+
+    Safe_Release(m_pColliderCom);
     __super::Free();
 }

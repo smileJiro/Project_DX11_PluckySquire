@@ -8,6 +8,8 @@
 #include "Camera_Target.h"
 #include "Section_2D.h"
 
+#include "UI_Manager.h"
+
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 
 CTrigger_Manager::CTrigger_Manager()
@@ -238,7 +240,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 	switch (_tDesc.iTriggerType) {
 		case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
 		{
-			if (_TriggerJson.contains("MapTrigger_InfoMapTrigger_Info")) 
+			if (_TriggerJson.contains("MapTrigger_Info")) 
 			{
 				_float3 fNextPosition = { _TriggerJson["MapTrigger_Info"][szKey][0].get<_float>(),  _TriggerJson["MapTrigger_Info"][szKey][1].get<_float>(), 1.f};
 				static_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), fNextPosition);
@@ -350,6 +352,10 @@ void CTrigger_Manager::Resister_Trigger_Action()
 	m_Actions[TEXT("Camera_Arm_Return")] = [this](_wstring _wszEventTag) {
 		CCamera_Manager::GetInstance()->Set_PreArmDataState(m_iTriggerID, true);
 		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::RETURN_TO_PREARM);
+		};
+
+	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
+		Uimgr->Set_DialogId(TEXT("Event_Dialogue_01"));
 		};
 }
 

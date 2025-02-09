@@ -241,8 +241,11 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 	case Client::LEVEL_LOGO:
 		pChangeLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 		break;
-	case Client::LEVEL_GAMEPLAY:
-		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+	case Client::LEVEL_CHAPTER_2:
+		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		break;
+	case Client::LEVEL_CHAPTER_4:
+		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	default:
 		break;
