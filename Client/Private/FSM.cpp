@@ -42,6 +42,11 @@ void CFSM::Set_PatrolBound()
 	static_cast<CPatrolState*>(m_States[(_uint)MONSTER_STATE::PATROL])->Set_Bound(vPosition);
 }
 
+void CFSM::Set_Sneak_StopTime(_float _fStopTime)
+{
+	static_cast<CSneak_IdleState*>(m_States[(_uint)MONSTER_STATE::SNEAK_IDLE])->Set_Sneak_StopTime(_fStopTime);
+}
+
 HRESULT CFSM::Initialize_Prototype()
 {
 	return S_OK;
@@ -60,6 +65,7 @@ HRESULT CFSM::Initialize(void* _pArg)
 	m_fDelayTime = pDesc->fDelayTime;
 	m_fCoolTime = pDesc->fCoolTime;
 	m_pOwner = pDesc->pOwner;
+	m_iCurLevel = pDesc->iCurLevel;
 
 	return S_OK;
 }
@@ -83,6 +89,7 @@ HRESULT CFSM::Add_State(_uint _iState)
 	Desc.fAlert2DRange = m_fAlert2DRange;
 	Desc.fChase2DRange = m_fChase2DRange;
 	Desc.fAttack2DRange = m_fAttack2DRange;
+	Desc.iCurLevel = m_iCurLevel;
 
 	switch ((MONSTER_STATE)_iState)
 	{
@@ -203,6 +210,7 @@ HRESULT CFSM::Add_SneakState()
 	Desc.fAlert2DRange = m_fAlert2DRange;
 	Desc.fChase2DRange = m_fChase2DRange;
 	Desc.fAttack2DRange = m_fAttack2DRange;
+	Desc.iCurLevel = m_iCurLevel;
 	
 	pState = CSneak_IdleState::Create(&Desc);
 	if (nullptr == pState)

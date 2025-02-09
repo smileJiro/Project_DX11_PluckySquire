@@ -172,46 +172,46 @@ void CTriggerObject::Resister_ExitHandler_ByCollision(function<void(_uint, _int,
 
 void CTriggerObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (false != m_EnterHandler) {
+    if (!m_EnterHandler) {
         m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }
 
 void CTriggerObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (false != m_StayHandler) {
+    if (!m_StayHandler) {
         m_StayHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }
 
 void CTriggerObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (false != m_ExitHandler) {
+    if (!m_ExitHandler) {
         m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 
-    if (false != m_CollisionExitHandler) {
+    if (!m_CollisionExitHandler) {
         m_CollisionExitHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
     }
 }
 
 void CTriggerObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (false != m_EnterHandler) {
+    if (!m_EnterHandler) {
         m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }
 
 void CTriggerObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (false != m_StayHandler) {
+    if (!m_StayHandler) {
         m_StayHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }
 
 void CTriggerObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (false != m_ExitHandler) {
+    if (!m_ExitHandler) {
         m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }

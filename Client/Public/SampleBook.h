@@ -62,7 +62,7 @@ private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
 	ID3D11Texture2D*		m_pStagingTexture = nullptr;
-
+	_float3					m_fNextPos = {};
 	_bool					m_isAction = { false };
 
 public:

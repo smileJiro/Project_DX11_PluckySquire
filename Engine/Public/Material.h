@@ -67,6 +67,9 @@ public:
 		m_MaterialTextures[_eTextureType]->Delete_Texture(_iIndex);
 		return S_OK;
 	}
+
+	HRESULT	Update_PixelConstBuffer();
+
 #endif // _DEBUG
 	HRESULT Bind_PixelConstBuffer(CShader* _pShader);
 protected:

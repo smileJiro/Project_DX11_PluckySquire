@@ -107,8 +107,9 @@ public:
 	vector<CLogo_Props*>				Get_LogoProps() { return m_LogoProps; }
 	void								pushBack_LogoPorp(CLogo_Props* _props) { m_LogoProps.push_back(_props); Safe_AddRef(_props); }
 	
-	_tchar*								Get_DialogId() { return m_tDialogId; }
-	void								Set_DialogId(const _tchar* _id, _bool _DisplayDialogue = true) { wsprintf(m_tDialogId, _id); m_isDisplayDialogue = _DisplayDialogue; }
+	_tchar*								Get_DialogId() { 
+		return m_tDialogId; }
+	void								Set_DialogId(const _tchar* _id, _bool _DisplayDialogue = true, _bool _DisPlayPortrait = true) { wsprintf(m_tDialogId, _id); m_isDisplayDialogue = _DisplayDialogue; m_isPortraitRender = _DisPlayPortrait; }
 
 	_int								Get_DialogueLineIndex() { return m_iCurrnetLineIndex; }
 	void								Set_DialogueLineIndex(_int _index) { m_iCurrnetLineIndex = _index; }

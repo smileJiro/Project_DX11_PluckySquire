@@ -27,6 +27,7 @@ HRESULT CFSM_Boss::Initialize(void* _pArg)
 {
 	FSMBOSSDESC* pDesc = static_cast<FSMBOSSDESC*>(_pArg);
 	m_pOwner = pDesc->pOwner;
+	m_iCurLevel = pDesc->iCurLevel;
 
 	m_iAttackIdx = (_uint)(BOSS_STATE::ATTACK);
 	return S_OK;

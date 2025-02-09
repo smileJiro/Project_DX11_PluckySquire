@@ -180,13 +180,13 @@ namespace Client
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_START;
-		tEvent.Parameters.resize(1);
+		tEvent.Parameters.resize(2);
 
 		tEvent.Parameters[0] = (DWORD_PTR)_iPageDirection;
 		_float3* pPosition = nullptr;
 		if (nullptr != _fNextPosition)
 			pPosition = new _float3(*_fNextPosition);
-		tEvent.Parameters[0] = (DWORD_PTR)pPosition;
+		tEvent.Parameters[1] = (DWORD_PTR)pPosition;
 
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
