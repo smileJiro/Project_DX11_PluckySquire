@@ -8,6 +8,8 @@
 #include "Camera_Target.h"
 #include "Section_2D.h"
 
+#include "UI_Manager.h"
+
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 
 CTrigger_Manager::CTrigger_Manager()
@@ -298,6 +300,7 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	{
 		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+			Uimgr->Set_DialogId(TEXT("Event_Dialogue_01"));
 			});
 
 		_pTrigger->Resister_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
@@ -350,6 +353,10 @@ void CTrigger_Manager::Resister_Trigger_Action()
 	m_Actions[TEXT("Camera_Arm_Return")] = [this](_wstring _wszEventTag) {
 		CCamera_Manager::GetInstance()->Set_PreArmDataState(m_iTriggerID, true);
 		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::RETURN_TO_PREARM);
+		};
+
+	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
+		Uimgr->Set_DialogId(TEXT("Event_Dialogue_01"));
 		};
 }
 
