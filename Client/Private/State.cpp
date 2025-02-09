@@ -97,7 +97,6 @@ _bool CState::Check_Target3D(_bool _isSneak)
 		_float3 vOutPos;
 		CActorObject* pActor = nullptr;
 
-		//레이 받는 물체가 현재 maintable이 존재해서 동작하는데, 없으면 동작안하는 코드
 		if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
 		{
 			if (OBJECT_GROUP::RAY_OBJECT ^ static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup)

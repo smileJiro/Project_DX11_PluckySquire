@@ -31,6 +31,8 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fAttack2DRange = pDesc->fAttack2DRange;
 	m_fDelayTime = pDesc->fDelayTime;
 	m_fCoolTime = pDesc->fCoolTime;
+	m_fFOVX = pDesc->fFOVX;
+	m_fFOVY = pDesc->fFOVY;
 
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
@@ -79,7 +81,6 @@ HRESULT CMonster::Render()
 
 void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -93,13 +94,19 @@ void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	//if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	//{
+	//	++m_iDetect_Block_Count;
+	//	//처음만 처리
+	//	if(1 == m_iDetect_Block_Count)
+	//		m_isDetect_Block = true;
+	//	cout <<"P"<< m_iDetect_Block_Count << endl;
+	//}
+
+	//지금은 트리거가 레이용 트리거만 있으므로 따로처리안함 나중에 트리거 또 달일 생기면 처리해야함
 	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
 	{
-		++m_iDetect_Block_Count;
-		//처음만 처리
-		if(1 == m_iDetect_Block_Count)
-			m_isDetect_Block = true;
-		cout <<"P"<< m_iDetect_Block_Count << endl;
+		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
 	}
 }
 
@@ -109,12 +116,17 @@ void CMonster::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	//if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	//{
+	//	--m_iDetect_Block_Count;
+	//	if(0 == m_iDetect_Block_Count)
+	//		m_isDetect_Block = false;
+	//	cout <<"M"<< m_iDetect_Block_Count << endl;
+	//}
+
 	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
 	{
-		--m_iDetect_Block_Count;
-		if(0 == m_iDetect_Block_Count)
-			m_isDetect_Block = false;
-		cout <<"M"<< m_iDetect_Block_Count << endl;
+		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
 	}
 }
 

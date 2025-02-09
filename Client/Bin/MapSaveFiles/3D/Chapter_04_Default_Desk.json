@@ -18,14 +18,9 @@
   "chess_rook_01",
   "coin_20p_01",
   "desk_lamp_01",
-  "domino_01",
-  "domino_03",
-  "domino_04",
-  "domino_05",
   "Eye_02_02_V2_",
   "Eye_01_02_V2_",
   "giftbox_01_mesh",
-  "Glue_01",
   "paperclip_01",
   "SafetyPin_02",
   "Pin_02",
@@ -152,6 +147,7 @@
   "wooden_platform_01",
   "Wristband_01",
   "Wristband_03",
-  "Wristband_02"
+  "Wristband_02",
+  "GlueUpdate"
  ]
 }

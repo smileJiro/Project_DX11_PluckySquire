@@ -17,9 +17,14 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+public:
+	void Set_Sneak_StopTime(_float _fStopTime) 
+	{
+		m_fDelayTime = _fStopTime;
+	}
+
 private:
 	_float m_fAccTime = { 0.f };
-	_float m_fDelayTime = {};
 
 public:
 	static CSneak_IdleState* Create(void* _pArg);
