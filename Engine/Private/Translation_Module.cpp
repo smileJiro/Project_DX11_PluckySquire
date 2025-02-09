@@ -1,5 +1,6 @@
 #include "Translation_Module.h"
 #include "GameInstance.h"
+#include "Compute_Shader.h"
 
 const _char* CTranslation_Module::g_szModuleNames[9] = { "POINT_VELOCITY", "LINEAR_VELOCITY", "INIT_ACCELERATION", "GRAVITY", "DRAG",
         "VORTEX_ACCELERATION", "POINT_ACCELERATION", "LIMIT_ACCELERATION", "POSITION_BY_NUMBER" };
@@ -150,8 +151,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _float fAmount = m_FloatDatas["Amount"];
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
+
             XMStoreFloat3((_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset),
                 XMLoadFloat4((_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset)) - vOrigin * fAmount);
         }
@@ -163,8 +163,6 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _float3 vAmount = m_Float3Datas["Amount"];
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
             *(_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset) = vAmount;
         }
         break;
@@ -173,8 +171,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     {
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
+
             *(_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset)
                 = *(_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset);
         }
@@ -187,8 +184,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
 
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
+
             _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
             XMStoreFloat3(pAcceleration, XMLoadFloat3(pAcceleration) + vAmount);
         }
@@ -200,8 +196,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _float fAmount = m_FloatDatas["Amount"];
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
+
             _float3* pVelocity = (_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset);        
             XMStoreFloat3(pVelocity, XMLoadFloat3(pVelocity) * (1.f - fAmount * _fTimeDelta));
         }
@@ -215,8 +210,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _float fPullAmount = m_FloatDatas["Pull Amount"];
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
+
             _vector vDiff = XMVectorSetW(XMLoadFloat4((_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset)) - vOrigin, 0.f);
             _vector vR = vDiff - XMVector3Dot(vAxis, vDiff) * vAxis;
             //// ¹Ð¾î³»´Â Èû + ´ç±â´Â Èû
@@ -234,8 +228,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _vector vAmount = XMLoadFloat3(&m_Float3Datas["Amount"]);
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
+
             _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
             _float4* pPosition = (_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset);
 
@@ -251,8 +244,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _float fAmount = m_FloatDatas["Amount"];
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
+
             _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
             _vector vAccel = XMLoadFloat3(pAcceleration);
             _float fLength = XMVectorGetX(XMVector3Length(vAccel));
@@ -269,8 +261,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _float3 vRandomOffset = m_Float3Datas["Random Offset"];
         for (_int i = 0; i < _iNumInstance; ++i)
         {
-            if (0.f > *(_pBuffer + (i * _iTotalSize) + _iLifeTimeOffset + 1))
-                continue;
+
             _float4* pPosition = (_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset);
             
             XMStoreFloat4(pPosition, vAxis * fOffset * i + XMVectorSet(m_pGameInstance->Compute_Random(-vRandomOffset.x, vRandomOffset.x),
@@ -286,6 +277,81 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         break;
 
     }
+}
+
+_int CTranslation_Module::Update_Translation(_float _fTimeDelta, CCompute_Shader* _pCShader)
+{
+    if (false == m_isActive)
+        return -1;
+
+    switch (m_eModuleName)
+    {
+    case POINT_VELOCITY:
+    {
+        _pCShader->Bind_RawValue("g_vOrigin", &m_Float3Datas["Origin"], sizeof(_float3));
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
+        
+        return 3;
+        break;
+    }
+    case LINEAR_VELOCITY:
+    {
+        _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
+
+        return 4;
+        break;
+    }
+    case INIT_ACCELERATION:
+    {
+        return 5;
+
+        break;
+    }
+    case GRAVITY:
+    {
+        _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
+        return 6;
+
+        break;
+    }
+    case DRAG:
+    {
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
+
+        return 7;
+        break;
+    }
+    case VORTEX_ACCELERATION:
+    {
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
+        _pCShader->Bind_RawValue("g_Pull", &m_FloatDatas["Pull Amount"], sizeof(_float));
+        _pCShader->Bind_RawValue("g_vOrigin", &m_Float3Datas["Origin Point"], sizeof(_float3));
+        _pCShader->Bind_RawValue("g_vAxis", &m_Float3Datas["Axis"], sizeof(_float3));
+
+
+        return 8;
+        break;
+    }
+    case POINT_ACCELERATION:
+    {
+        _pCShader->Bind_RawValue("g_vOrigin", &m_Float3Datas["Origin"], sizeof(_float3));
+        _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
+
+        return 9;
+        break;
+    }
+    case LIMIT_ACCELERATION:
+    {
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
+                
+        return 10;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return -1;
 }
 
 CTranslation_Module* CTranslation_Module::Create(const json& _jsonModuleInfo)

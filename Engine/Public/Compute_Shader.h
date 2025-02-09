@@ -11,19 +11,27 @@ private:
 	virtual ~CCompute_Shader() = default;
 
 public:
-	HRESULT Initialize_Prototype(const _tchar* _pShaderFilePath, const _char* _szEntry);
+	HRESULT Initialize_Prototype(const _tchar* _pShaderFilePath);
 	virtual HRESULT Initialize(void* _pArg) override;
 
-
 public:
-	HRESULT Compute(ID3D11UnorderedAccessView** _pUAV, _uint _iThreadGroupCountX, _uint _iThreadGroupCountY, _uint _iThreadGroupCountZ);
+	HRESULT Bind_RawValue(const _char* _pConstantName, const void* _pData, _uint _iLength);
+	HRESULT Bind_Matrix(const _char* _pConstantName, const _float4x4* _pMatrix);
 
+	HRESULT Set_SRVs(ID3D11ShaderResourceView** _ppSRVs, _uint _iCount);
+	HRESULT Set_UAVs(ID3D11UnorderedAccessView** _ppUAVs, _uint _iCount);
+public:
+	HRESULT Begin(_uint _iPassIndex);
+	HRESULT Compute(_uint _iThreadGroupCountX, _uint _iThreadGroupCountY, _uint _iThreadGroupCountZ);
+	HRESULT End_Compute();
 
 private:
-	ID3D11ComputeShader* m_pComputeShader = { nullptr };
+	ID3DX11Effect* m_pEffect = { nullptr };
+	_uint			m_iNumLayouts = { 0 }; // NumLayouts == NumPasses
+	//map<_string, ID3D11ComputeShader*> m_ComputeShaders;
 
 public:
-	static CCompute_Shader* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pShaderFilePath, const _char* _szEntry);
+	static CCompute_Shader* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pShaderFilePath);
 	virtual CComponent* Clone(void* _pArg) override;
 	virtual void Free() override;
 };

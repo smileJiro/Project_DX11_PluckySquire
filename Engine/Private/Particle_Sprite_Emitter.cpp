@@ -81,7 +81,7 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
 
     if (false == _jsonInfo.contains("Buffer"))
         return E_FAIL;
-    m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, _jsonInfo["Buffer"]);
+    m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, _jsonInfo["Buffer"], m_FloatDatas["SpawnRate"]);
     if (nullptr == m_pParticleBufferCom)
         return E_FAIL;
 
@@ -127,7 +127,6 @@ void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
     __super::Late_Update(_fTimeDelta);
 
     if (m_isActive && m_iAccLoop)
-        //m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
         m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_PARTICLE, this);
 }
 
@@ -139,14 +138,22 @@ HRESULT CParticle_Sprite_Emitter::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
     
-    if (FAILED(m_pShaderCom->Begin(m_iShaderPass)))
+    if (FAILED(m_pShaderCom->Begin_NoInput(m_iShaderPass)))
         return E_FAIL;
     
     
-    if (FAILED(m_pParticleBufferCom->Bind_BufferDesc()))
+    //if (FAILED(m_pParticleBufferCom->Bind_BufferDesc()))
+    //    return E_FAIL;
+    //if (FAILED(m_pParticleBufferCom->Render()))
+    //    return E_FAIL;
+
+    if (FAILED(m_pParticleBufferCom->Bind_BufferBySRV()))
         return E_FAIL;
-    if (FAILED(m_pParticleBufferCom->Render()))
+    if (FAILED(m_pParticleBufferCom->Render_BySRV()))
         return E_FAIL;
+
+
+
 
     return S_OK;
 }
@@ -162,36 +169,53 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
 {
     if (nullptr == m_pParticleBufferCom)
         return;
-    
-    // Map
-    m_pParticleBufferCom->Begin_Update(_fTimeDelta);
 
-    // Spawn
+    m_pComputeShader->Bind_RawValue("g_fTimeDelta", &_fTimeDelta, sizeof(_float));
+
+
     if (STOP_SPAWN != m_eNowEvent)
     {
         if (SPAWN_RATE == m_eSpawnType)
         {
+            _float fAbsolute;
             if (RELATIVE_POSITION == m_eSpawnPosition)
-                m_pParticleBufferCom->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"], nullptr);
+            {
+                fAbsolute = 0.f;
+                m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
+            }
             else if (ABSOLUTE_POSITION == m_eSpawnPosition)
-                m_pParticleBufferCom->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"],
-                    &m_WorldMatrices[COORDINATE_3D]);
+            {
+                fAbsolute = 1.f;
+                m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
+                m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &m_WorldMatrices[COORDINATE_3D]);
+            }
+            m_pComputeShader->Begin(1);
 
         }
         else if (BURST_SPAWN == m_eSpawnType)
         {
+            _float fAbsolute;
             if (RELATIVE_POSITION == m_eSpawnPosition)
-                m_pParticleBufferCom->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"], nullptr);
+            {
+                fAbsolute = 0.f;
+                m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
+            }
             else if (ABSOLUTE_POSITION == m_eSpawnPosition)
-                m_pParticleBufferCom->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"],
-                    &m_WorldMatrices[COORDINATE_3D]);
+            {
+                fAbsolute = 1.f;
+                m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
+                m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &m_WorldMatrices[COORDINATE_3D]);
+            }
+            m_pComputeShader->Begin(2);
 
             m_eNowEvent = STOP_SPAWN;
             m_fInactiveDelayTime = m_fActiveTime;
         }
+        m_pParticleBufferCom->Begin_Compute(m_pComputeShader);
+        m_pParticleBufferCom->Spawn_Rate(m_pComputeShader);
+        m_pComputeShader->End_Compute();
     }
 
-    // Module Update
     for (auto pModule : m_Modules)
     {
         if (pModule->Is_Init())
@@ -200,36 +224,32 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
         CEffect_Module::DATA_APPLY eData = pModule->Get_ApplyType();
         CEffect_Module::MODULE_TYPE eType = pModule->Get_Type();
 
-        if (CEffect_Module::MODULE_TYPE::MODULE_KEYFRAME == eType)
-        {
-            if (CEffect_Module::DATA_APPLY::COLOR == eData)
-            {
-                m_pParticleBufferCom->Update_ColorKeyframe(pModule);
-            }
-
-            else if (CEffect_Module::DATA_APPLY::SCALE == eData)
-            {
-                m_pParticleBufferCom->Update_ScaleKeyframe(pModule);
-            }
-        }
-        else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
+        if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
         {
             if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
             {
-                m_pParticleBufferCom->Update_Translation(_fTimeDelta, pModule);
+                m_pParticleBufferCom->Update_Translation(_fTimeDelta, pModule, m_pComputeShader);
             }
         }
     }
 
-    // Kill Or Revive
+
+    _float fKill;
     if (KILL == m_ePooling)
-        m_pParticleBufferCom->Update_Buffer(_fTimeDelta, false);
-    else if (REVIVE == m_ePooling)
-        m_pParticleBufferCom->Update_Buffer(_fTimeDelta, true);
+    {
+        fKill = D3D11_FLOAT32_MAX * -1.f;
+    }
+    else
+    {
+        fKill = 0.f;
+    }
+    m_pComputeShader->Bind_RawValue("g_fKill", &fKill, sizeof(_float));
+    m_pComputeShader->Begin(0);
+    m_pParticleBufferCom->Begin_Compute(m_pComputeShader);
+    m_pParticleBufferCom->Update_All(_fTimeDelta, m_pComputeShader);
+    m_pComputeShader->End_Compute();
 
 
-    // Unmap
-    m_pParticleBufferCom->End_Update(_fTimeDelta);
 
 }
 
@@ -389,7 +409,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
     {
         if (nullptr != m_pParticleBufferCom)
         {
-            m_pParticleBufferCom->Tool_Reset_Buffers();
+            m_pParticleBufferCom->Tool_Reset_Buffers(m_FloatDatas["SpawnRate"]);
 
             for (auto pModule : m_Modules)
             {
@@ -619,7 +639,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 
             if (m_isToolChanged)
             {
-                m_pParticleBufferCom->Tool_Reset_Buffers();
+                m_pParticleBufferCom->Tool_Reset_Buffers(m_FloatDatas["SpawnRate"]);
 
                 for (auto pModule : m_Modules)
                 {
@@ -629,22 +649,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
                     m_pParticleBufferCom->Initialize_Module(pModule);
                 }
             }
-        }
-
-        else if (m_isToolChanged)
-        {
-            m_isToolChanged = false;
-
-            for (auto pModule : m_Modules)
-            {
-                if (false == pModule->Is_Init())
-                    continue;
-
-                m_pParticleBufferCom->Initialize_Module(pModule);
-            }
-        }
-
-        
+        }        
     }
     else
     {
@@ -660,7 +665,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 
         if (ImGui::Button("Create_Buffer"))
         {
-            m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, iNumInstanceInput);
+            m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, iNumInstanceInput, m_FloatDatas["SpawnRate"]);
 
             if (nullptr != m_pParticleBufferCom)
                 m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);

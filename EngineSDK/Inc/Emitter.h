@@ -22,6 +22,7 @@ public:
 	{
 		_uint iProtoShaderLevel;
 		const _tchar* szShaderTag = L"";
+		const _tchar* szComputeShaderTag = L"";
 	} PARTICLE_EMITTER_DESC;
 
 protected:
@@ -60,6 +61,7 @@ protected:
 
 protected:
 	class CShader* m_pShaderCom = { nullptr };			
+	class CCompute_Shader* m_pComputeShader = { nullptr };
 
 protected:
 	EFFECT_TYPE		m_eEffectType = { NONE };								// Sprite or Mesh?

@@ -199,7 +199,7 @@ HRESULT CMainEffectTool::Ready_Prototype_Static()
 
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_ComputeShader"),
-		CCompute_Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_CsTest.hlsl"), "main")
+		CCompute_Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_CS_Sprite.hlsl"))
 		)))
 		return E_FAIL;
 

@@ -28,11 +28,19 @@ public:
 	virtual void	End_Update(_float _fTimeDelta) = 0;
 	virtual HRESULT Render();
 
+	virtual void	Begin_Compute(class CCompute_Shader* _pCShader) = 0;
+	virtual void	Update_All(_float _fTimeDelta, class CCompute_Shader* _pCShader) = 0;
+
 	virtual	void	Update_Translation(_float _fTimeDelta, class CEffect_Module* _pTranslationModule) = 0;
+	virtual	void	Update_Translation(_float _fTimeDelta, class CEffect_Module* _pTranslationModule, class CCompute_Shader* _pCShader) = 0;
 	virtual void	Update_ColorKeyframe(class CEffect_Module* _pColorModule) = 0;
 	virtual void	Update_ScaleKeyframe(class CEffect_Module* _pColorModule) = 0;
 
+
+
 	virtual HRESULT Bind_BufferDesc();
+	HRESULT Bind_BufferBySRV();
+	HRESULT Render_BySRV();
 	virtual void	Reset_Buffers();
 
 public:
@@ -49,11 +57,15 @@ protected:
 	_uint						m_iNumIndexCountPerInstance = {};	// Instance 한 개당 Index 할당 개수
 	_uint						m_iInstanceStride = {};				// Instance Buffer 자료형의 크기
 
+	ID3D11Buffer*				m_pBuffer = { nullptr };
+	ID3D11Buffer*				m_pBufferInitial = { nullptr };
+	ID3D11UnorderedAccessView*	m_pUAV = { nullptr };
+	ID3D11ShaderResourceView*	m_pSRVInitial = { nullptr };
+	ID3D11ShaderResourceView*	m_pSRV = { nullptr };
+
+
 
 protected:
-	//SPAWN_TYPE					m_eSpawnType = BURST;
-	//_float						m_fAccSpawnTime = 0.f;
-	//_float						m_fSpawnTime = 0.f;
 	_float						m_fSpawnRemainTime = 0.f;
 	_uint						m_iSpawnIndex = 0;
 
@@ -140,8 +152,8 @@ protected:
 	void				 Tool_Adjust_Shape();
 
 	void				 Tool_Create_ShapeData();
-	virtual void		 Tool_Reset_Instance() {}
-	virtual void		 Tool_Reset_Buffers() {} // Count 자체가 바뀌어버린 경우
+	virtual void		 Tool_Reset_Instance(_float _fSpawnRate) {}
+	virtual void		 Tool_Reset_Buffers(_float _fSpawnRate) {} // Count 자체가 바뀌어버린 경우
 
 
 	_bool		Is_ToolData(const _string& _strTag)
@@ -192,13 +204,6 @@ NLOHMANN_JSON_SERIALIZE_ENUM(CVIBuffer_Instance::SETTING_TYPE, {
 {CVIBuffer_Instance::SETTING_TYPE::RANDOMRANGE, "RANDOMRANGE"},
 
 	});
-
-//NLOHMANN_JSON_SERIALIZE_ENUM(CVIBuffer_Instance::SPAWN_TYPE, {
-//{CVIBuffer_Instance::SPAWN_TYPE::BURST, "BURST"},
-//{CVIBuffer_Instance::SPAWN_TYPE::SPAWN, "SPAWN"},
-//
-//
-//	});
 
 
 END

@@ -19,6 +19,8 @@ public:
 	//virtual void	Update_Translations(_float _fTimeDelta, _float4* _pPosition, _float3* _pVelocity, _float3* _pAcceleration) override;
 	virtual void	Update_Translations(_float _fTimeDelta, _float* _pBuffer, _uint _iNumInstance,
 		_uint _iPositionOffset, _uint _iVelocityOffset, _uint _iAccelerationOffset, _uint _iLifeTimeOffset, _uint _iTotalSize);
+	virtual _int Update_Translation(_float _fTimeDelta, CCompute_Shader* _pCShader) override;
+
 private:
 	MODULE_NAME		m_eModuleName;
 

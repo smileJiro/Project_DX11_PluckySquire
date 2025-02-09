@@ -128,6 +128,7 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 			Desc.szShaderTag = pDesc->szSingleSpriteShaderTags;
 			Desc.iProtoRectLevel = pDesc->iSingleSpriteBufferLevel;
 			Desc.szRectTag = pDesc->szSingleSpriteBufferTags;
+			Desc.szComputeShaderTag = pDesc->szComputeShaderTag;
 
 			CEmitter* pEmitter = static_cast<CEmitter*>(_pPrototype->m_Emitters[i]->Clone(&Desc));
 			if (nullptr == pEmitter)
@@ -143,18 +144,24 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 			{
 				Desc.iProtoShaderLevel = pDesc->iModelShaderLevel;
 				Desc.szShaderTag = pDesc->szModelShaderTags;
+				Desc.szComputeShaderTag = pDesc->szComputeShaderTag;
+
 			}
 
 			else if (CEmitter::SPRITE == _pPrototype->m_Emitters[i]->Get_Type())
 			{
 				Desc.iProtoShaderLevel = pDesc->iSpriteShaderLevel;
 				Desc.szShaderTag = pDesc->szSpriteShaderTags;
+				Desc.szComputeShaderTag = pDesc->szComputeShaderTag;
+
 			}
 
 			else if (CEmitter::EFFECT == _pPrototype->m_Emitters[i]->Get_Type())
 			{
 				Desc.iProtoShaderLevel = pDesc->iEffectShaderLevel;
 				Desc.szShaderTag = pDesc->szEffectShaderTags;
+				Desc.szComputeShaderTag = pDesc->szComputeShaderTag;
+
 			}
 
 			Desc.iCurLevelID = pDesc->iCurLevelID;

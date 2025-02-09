@@ -25,7 +25,7 @@ CVIBuffer_Mesh_Particle::CVIBuffer_Mesh_Particle(const CVIBuffer_Mesh_Particle& 
 }
 
 
-HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const json& _jsonBufferInfo, _fmatrix _PreTransformMatrix)
+HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const json& _jsonBufferInfo, _fmatrix _PreTransformMatrix, _float _fSpawnRate)
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -84,19 +84,6 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const j
 		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 	}
 
-	//if (1 < m_iNumInstances)
-	//{
-	//	for (size_t i = 1; i < m_iNumInstances; ++i)
-	//	{
-	//		for (size_t j = 0; j < iNumFaces; ++j)
-	//		{
-	//			pIndices[iNumIndices++] = m_vecIndexBuffer[j];
-	//			pIndices[iNumIndices++] = m_vecIndexBuffer[j + 1];
-	//			pIndices[iNumIndices++] = m_vecIndexBuffer[j + 2];
-	//		}
-	//	}
-	//}
-
 
 
 	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
@@ -149,18 +136,10 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const j
 	if (FAILED(Set_ShapeData(_jsonBufferInfo)))
 		return E_FAIL;
 
-	// Spawn ¼³Á¤
-	//if (_jsonBufferInfo.contains("Spawn"))
-	//{
-	//	//m_eSpawnType = _jsonBufferInfo["Spawn"]["Type"];
-	//	m_fSpawnTime = _jsonBufferInfo["Spawn"]["Time"];
-	//	//if (_jsonBufferInfo["Spawn"].contains("Count"))
-	//	//	m_iSpawnCount = _jsonBufferInfo["Spawn"]["Count"];
-	//}
 
 	for (_uint i = 0; i < m_iNumInstances; ++i)
 	{
-		Set_Instance(i);
+		Set_Instance(i, _fSpawnRate);
 	}
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
@@ -404,7 +383,20 @@ void CVIBuffer_Mesh_Particle::Reset_Buffers()
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
+void CVIBuffer_Mesh_Particle::Begin_Compute(CCompute_Shader* _pCShader)
+{
+}
+
+void CVIBuffer_Mesh_Particle::Update_All(_float _fTimeDelta, CCompute_Shader* _pCShader)
+{
+}
+
+
 void CVIBuffer_Mesh_Particle::Update_Translation(_float _fTimeDelta, CEffect_Module* _pTranslationModule)
+{
+}
+
+void CVIBuffer_Mesh_Particle::Update_Translation(_float _fTimeDelta, CEffect_Module* _pTranslationModule, CCompute_Shader* _pCShader)
 {
 }
 
@@ -475,7 +467,7 @@ HRESULT CVIBuffer_Mesh_Particle::Ready_VertexBuffer(ifstream& _inFile, _fmatrix 
 	return S_OK;
 }
 
-void CVIBuffer_Mesh_Particle::Set_Instance(_int _iIndex)
+void CVIBuffer_Mesh_Particle::Set_Instance(_int _iIndex, _float _fSpawnRate)
 {
 	_float3 vScale = Compute_ScaleValue();
 	_float3 vRotation = Compute_RotationValue();
@@ -575,11 +567,11 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Particles()
 	return S_OK;
 }
 
-CVIBuffer_Mesh_Particle* CVIBuffer_Mesh_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& _inFile, const json& _jsonBufferInfo, _fmatrix _PreTransformMatrix)
+CVIBuffer_Mesh_Particle* CVIBuffer_Mesh_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& _inFile, const json& _jsonBufferInfo, _fmatrix _PreTransformMatrix, _float _fSpawnRate)
 {
 	CVIBuffer_Mesh_Particle* pInstance = new CVIBuffer_Mesh_Particle(_pDevice, _pContext);
 	
-	if (FAILED(pInstance->Initialize_Prototype(_inFile, _jsonBufferInfo, _PreTransformMatrix)))
+	if (FAILED(pInstance->Initialize_Prototype(_inFile, _jsonBufferInfo, _PreTransformMatrix, _fSpawnRate)))
 	{
 		MSG_BOX("Failed to Created : CVIBuffer_Mesh_Particle");
 		Safe_Release(pInstance);
@@ -627,7 +619,7 @@ void CVIBuffer_Mesh_Particle::Free()
 
 #ifdef _DEBUG
 
-HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix)
+HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix, _float _fSpawnRate)
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -716,7 +708,7 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _
 
 	for (_uint i = 0; i < m_iNumInstances; ++i)
 	{
-		Set_Instance(i);
+		Set_Instance(i, _fSpawnRate);
 	}
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
@@ -739,11 +731,11 @@ void CVIBuffer_Mesh_Particle::Tool_Setting()
 
 }
 
-void CVIBuffer_Mesh_Particle::Tool_Reset_Instance()
+void CVIBuffer_Mesh_Particle::Tool_Reset_Instance(_float _fSpawnRate)
 {
 	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
-		Set_Instance(i);
+		Set_Instance(i, _fSpawnRate);
 	}
 
 	if (FAILED(Initialize_Particles()))
@@ -757,7 +749,7 @@ void CVIBuffer_Mesh_Particle::Tool_Reset_Instance()
 	m_isToolChanged = true;
 }
 
-void CVIBuffer_Mesh_Particle::Tool_Reset_Buffers()
+void CVIBuffer_Mesh_Particle::Tool_Reset_Buffers(_float _fSpawnRate)
 {
 	m_isToolReset = true;
 
@@ -821,7 +813,7 @@ void CVIBuffer_Mesh_Particle::Tool_Reset_Buffers()
 
 	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
-		Set_Instance(i);
+		Set_Instance(i, _fSpawnRate);
 	}
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
@@ -860,11 +852,11 @@ HRESULT CVIBuffer_Mesh_Particle::Save_Buffer(json& _jsonBufferInfo)
 	return S_OK;
 }
 
-CVIBuffer_Mesh_Particle* CVIBuffer_Mesh_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix)
+CVIBuffer_Mesh_Particle* CVIBuffer_Mesh_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix, _float _fSpawnRate)
 {
 	CVIBuffer_Mesh_Particle* pInstance = new CVIBuffer_Mesh_Particle(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_inFile, _iNumInstances, _PreTransformMatrix)))
+	if (FAILED(pInstance->Initialize_Prototype(_inFile, _iNumInstances, _PreTransformMatrix, _fSpawnRate)))
 	{
 		MSG_BOX("Failed to Created : CVIBuffer_Mesh_Particle");
 		Safe_Release(pInstance);

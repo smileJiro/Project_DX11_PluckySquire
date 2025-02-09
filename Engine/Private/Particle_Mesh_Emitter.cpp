@@ -369,7 +369,7 @@ HRESULT CParticle_Mesh_Emitter::Ready_Meshes(ifstream& _inFile, const json& _jso
 	_inFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
 	for (_uint i = 0; i < m_iNumMeshes; i++)
 	{
-		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _jsonBufferInfo, XMLoadFloat4x4(&m_PreTransformMatrix));
+		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _jsonBufferInfo, XMLoadFloat4x4(&m_PreTransformMatrix), m_FloatDatas["SpawnRate"]);
 		if (nullptr == pMesh)
 			return E_FAIL;
 
@@ -593,7 +593,7 @@ HRESULT CParticle_Mesh_Emitter::Ready_Meshes(ifstream& _inFile, _uint _iNumInsta
 	_inFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
 	for (_uint i = 0; i < m_iNumMeshes; i++)
 	{
-		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _iNumInstance, XMLoadFloat4x4(&m_PreTransformMatrix));
+		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _iNumInstance, XMLoadFloat4x4(&m_PreTransformMatrix), m_FloatDatas["SpawnRate"]);
 		if (nullptr == pMesh)
 			return E_FAIL;
 

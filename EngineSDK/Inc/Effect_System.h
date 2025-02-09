@@ -20,6 +20,7 @@ public:
 		const _tchar* szSingleSpriteShaderTags = L"";
 		_uint iSingleSpriteBufferLevel = 0;
 		const _tchar* szSingleSpriteBufferTags = L"";
+		const _tchar* szComputeShaderTag = L"";
 
 		//vector<_uint> EmitterShaderLevels;
 		//vector<const _tchar*> ShaderTags;
@@ -70,7 +71,7 @@ private:
 	_int						m_iInputNumInstances = { 0 };
 	_uint						m_iToolEventID = { 0 };
 	_float						m_fToolAccTime = { 0.f };
-	_float						m_fToolRepeatTime = { 3.f };
+	_float						m_fToolRepeatTime = { 100.f };
 	_float						m_fDebugTimeScale = { 1.f };
 private:
 	void						Tool_ShowList();

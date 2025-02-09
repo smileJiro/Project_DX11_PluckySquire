@@ -206,7 +206,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPoint.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_CsTest.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_CS_Sprite.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

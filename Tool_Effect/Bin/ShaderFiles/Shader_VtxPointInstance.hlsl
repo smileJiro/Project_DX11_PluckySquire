@@ -48,7 +48,10 @@ struct VS_IN
     float4 vTexcoord : TEXCOORD2;
     float3 vVelocity : TEXCOORD3;
     float3 vAcceleration : TEXCOORD4;
+    float fAlive : TEXCOORD5;
 };
+
+
 
 struct VS_OUT
 {
@@ -73,76 +76,6 @@ struct VS_ROUT
 
 };
 
-
-// Rendering PipeLine : Vertex Shader // 
-VS_OUT VS_MAIN(VS_IN In)
-{
-    VS_OUT Out = (VS_OUT) 0;
-    
-    // Scale 값을 별도로 추출하여, PSize에 곱하여 줄 것이다. 그리고 , Instancing Matrix에서는 Scale을 1로 고정시킬 것 이다. 
-    float fScaleX = length(In.InstancingMatrix._11_12_13);
-    float fScaleY = length(In.InstancingMatrix._21_22_23);
-    //float fScaleZ = length(In.InstancingMatrix._31_32_33);
-   
-    matrix FinalMatrix = float4x4(  In.InstancingMatrix._11_12_13_14,
-                                    In.InstancingMatrix._21_22_23_24,
-                                    In.InstancingMatrix._31_32_33_34,
-                                    In.InstancingMatrix._41_42_43_44);
-    
-    // Size에 대한 값을 psize 하나로 처리하기 위해 기존 InstancingMatrix의 Scale을 1로 밀어버리고 곱하였다. 
-    vector vPostion = mul(float4(In.vPosition, 1.0f), FinalMatrix);
-    // Geometry Shader에서 기하도형을 구성하기위해 Camera의 WorldPos 를 사용할 예정이다. >> 정점을 World까지만 변환 후 GeometryShader에서 도형 찍고 View, Projection 곱하자. 
-    Out.vPosition = mul(vPostion, g_WorldMatrix);
-    Out.vPSize = float2(In.vPSize.x * fScaleX, In.vPSize.y * fScaleY);
-    Out.vLifeTime = In.vLifeTime;
-    Out.vTexcoord = In.vTexcoord;
-    Out.vColor = In.vColor;
-    
-    float fScaleVelocity = length(In.vVelocity);
-    
-    Out.vVelocity = normalize(mul(float4(In.vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
-    
-    return Out;
-}
-
-VS_ROUT VS_RMAIN(VS_IN In)
-{
-    VS_ROUT Out = (VS_ROUT) 0;
-    
-    // Scale 값을 별도로 추출하여, PSize에 곱하여 줄 것이다. 그리고 , Instancing Matrix에서는 Scale을 1로 고정시킬 것 이다. 
-    float fScaleX = length(In.InstancingMatrix._11_12_13);
-    float fScaleY = length(In.InstancingMatrix._21_22_23);
-    //float fScaleZ = length(In.InstancingMatrix._31_32_33);
-   
-    matrix FinalMatrix = float4x4(In.InstancingMatrix._11_12_13_14,
-                                    In.InstancingMatrix._21_22_23_24,
-                                    In.InstancingMatrix._31_32_33_34,
-                                    In.InstancingMatrix._41_42_43_44);
-    
-    // Size에 대한 값을 psize 하나로 처리하기 위해 기존 InstancingMatrix의 Scale을 1로 밀어버리고 곱하였다. 
-    vector vPostion = mul(float4(In.vPosition, 1.0f), FinalMatrix);
-    // Geometry Shader에서 기하도형을 구성하기위해 Camera의 WorldPos 를 사용할 예정이다. >> 정점을 World까지만 변환 후 GeometryShader에서 도형 찍고 View, Projection 곱하자. 
-    Out.vPosition = mul(vPostion, g_WorldMatrix);
-    Out.vPSize = float2(In.vPSize.x * fScaleX, In.vPSize.y * fScaleY);
-    Out.vLifeTime = In.vLifeTime;
-    Out.vTexcoord = In.vTexcoord;
-    Out.vColor = In.vColor;
-    Out.vVelocity = In.vVelocity;
-    Out.vUp = mul((In.InstancingMatrix._21_22_23_24), g_WorldMatrix);
-    
-    //VS_ROUT Out = (VS_ROUT) 0;
-  
-    //Out.vPosition = float4(In.vPosition, 1.f);
-    //Out.vPSize = float2(In.vPSize.x, In.vPSize.y);
-    
-    //Out.InstancingMatrix = In.InstancingMatrix;
-    //Out.vLifeTime = In.vLifeTime;
-    //Out.vTexcoord = In.vTexcoord;
-    //Out.vColor = In.vColor;
-    //Out.vVelocity = In.vVelocity;
-    
-    return Out;
-}
 
 
 
@@ -179,6 +112,170 @@ struct GS_RIN
     float3 vUp : TEXCOORD4;
 
 };
+
+// Rendering PipeLine : PixelShader //
+struct PS_IN
+{
+    float4 vPosition : SV_POSITION;
+    float2 vLifeTime : TEXCOORD0;
+    float4 vColor : TEXCOORD1;
+    float2 vTexcoord : TEXCOORD2;
+    float fWeight : TEXCOORD3;
+};
+
+struct PS_OUT
+{
+    float4 vColor : SV_TARGET0;
+};
+
+struct  Sprite_Particle
+{
+    row_major float4x4 InstancingMatrix : WORLD;
+    float2 vLifeTime : TEXCOORD0;
+    float4 vColor : TEXCOORD1;
+    float4 vTexcoord : TEXCOORD2;
+    float3 vVelocity : TEXCOORD3;
+    float3 vAcceleration : TEXCOORD4;
+    float fAlive : TEXCOORD5;
+};
+
+StructuredBuffer<Sprite_Particle> Particles : register(t0);
+
+VS_OUT VS_SRV_MAIN(uint iVertexID : SV_VertexID)
+{
+    VS_OUT Out;
+ 
+    float fAlive = step(0.f, Particles[iVertexID].vLifeTime.y) * step(Particles[iVertexID].vLifeTime.y, Particles[iVertexID].vLifeTime.x);
+    
+    float fScaleX = length(Particles[iVertexID].InstancingMatrix._11_12_13) * fAlive;
+    float fScaleY = length(Particles[iVertexID].InstancingMatrix._21_22_23) * fAlive;
+   
+    matrix FinalMatrix = float4x4(Particles[iVertexID].InstancingMatrix._11_12_13_14,
+                                    Particles[iVertexID].InstancingMatrix._21_22_23_24,
+                                    Particles[iVertexID].InstancingMatrix._31_32_33_34,
+                                    Particles[iVertexID].InstancingMatrix._41_42_43_44);
+    
+    vector vPostion = mul(float4(0.f, 0.f, 0.f, 1.0f), FinalMatrix);
+
+    Out.vPosition = mul(vPostion, g_WorldMatrix);
+    Out.vPSize = float2(fScaleX, fScaleY);
+    Out.vLifeTime = Particles[iVertexID].vLifeTime;
+    Out.vTexcoord = Particles[iVertexID].vTexcoord;
+    Out.vColor = Particles[iVertexID].vColor;
+    
+    float fScaleVelocity = length(Particles[iVertexID].vVelocity);
+    
+    Out.vVelocity = normalize(mul(float4(Particles[iVertexID].vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
+    
+    
+    return Out;
+}
+
+VS_ROUT VS_SRV_RMAIN(uint iVertexID : SV_VertexID)
+{
+    VS_ROUT Out;
+    
+    float fAlive = step(0.f, Particles[iVertexID].vLifeTime.y) * step(Particles[iVertexID].vLifeTime.y, Particles[iVertexID].vLifeTime.x);
+
+    float fScaleX = length(Particles[iVertexID].InstancingMatrix._11_12_13) * fAlive;
+    float fScaleY = length(Particles[iVertexID].InstancingMatrix._21_22_23) * fAlive;
+   
+    matrix FinalMatrix = float4x4(Particles[iVertexID].InstancingMatrix._11_12_13_14,
+                                    Particles[iVertexID].InstancingMatrix._21_22_23_24,
+                                    Particles[iVertexID].InstancingMatrix._31_32_33_34,
+                                    Particles[iVertexID].InstancingMatrix._41_42_43_44);
+    
+    vector vPostion = mul(float4(0.f, 0.f, 0.f, 1.0f), FinalMatrix);
+
+    Out.vPosition = mul(vPostion, g_WorldMatrix);
+    Out.vPSize = float2(fScaleX, fScaleY);
+    Out.vLifeTime = Particles[iVertexID].vLifeTime;
+    Out.vTexcoord = Particles[iVertexID].vTexcoord;
+    Out.vColor = Particles[iVertexID].vColor;
+    
+    float fScaleVelocity = length(Particles[iVertexID].vVelocity);
+    
+    Out.vVelocity = normalize(mul(float4(Particles[iVertexID].vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
+    Out.vUp = mul((Particles[iVertexID].InstancingMatrix._21_22_23_24), g_WorldMatrix);
+    
+    return Out;
+}
+
+
+
+// Rendering PipeLine : Vertex Shader // 
+VS_OUT VS_MAIN(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT) 0;
+    
+    // y가 크면 -> 0의 크기
+    float fAlive = step(In.vLifeTime.y, In.vLifeTime.x) /** step(0.f, In.vLifeTime.y)*/;
+    
+    // Scale 값을 별도로 추출하여, PSize에 곱하여 줄 것이다. 그리고 , Instancing Matrix에서는 Scale을 1로 고정시킬 것 이다. 
+    float fScaleX = length(In.InstancingMatrix._11_12_13) * fAlive;
+    float fScaleY = length(In.InstancingMatrix._21_22_23) * fAlive;
+    //float fScaleZ = length(In.InstancingMatrix._31_32_33);
+   
+    matrix FinalMatrix = float4x4(  In.InstancingMatrix._11_12_13_14,
+                                    In.InstancingMatrix._21_22_23_24,
+                                    In.InstancingMatrix._31_32_33_34,
+                                    In.InstancingMatrix._41_42_43_44);
+    
+    // Size에 대한 값을 psize 하나로 처리하기 위해 기존 InstancingMatrix의 Scale을 1로 밀어버리고 곱하였다. 
+    vector vPostion = mul(float4(In.vPosition, 1.0f), FinalMatrix);
+    // Geometry Shader에서 기하도형을 구성하기위해 Camera의 WorldPos 를 사용할 예정이다. >> 정점을 World까지만 변환 후 GeometryShader에서 도형 찍고 View, Projection 곱하자. 
+    Out.vPosition = mul(vPostion, g_WorldMatrix);
+    Out.vPSize = float2(In.vPSize.x * fScaleX, In.vPSize.y * fScaleY);
+    Out.vLifeTime = In.vLifeTime;
+    Out.vTexcoord = In.vTexcoord;
+    Out.vColor = In.vColor;
+    
+    float fScaleVelocity = length(In.vVelocity);
+    
+    Out.vVelocity = normalize(mul(float4(In.vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
+    
+    return Out;
+}
+
+VS_ROUT VS_RMAIN(VS_IN In)
+{
+    VS_ROUT Out = (VS_ROUT) 0;
+    float fAlive = step(In.vLifeTime.y, In.vLifeTime.x) /** step(0.f, In.vLifeTime.y)*/;
+
+    // Scale 값을 별도로 추출하여, PSize에 곱하여 줄 것이다. 그리고 , Instancing Matrix에서는 Scale을 1로 고정시킬 것 이다. 
+    float fScaleX = length(In.InstancingMatrix._11_12_13) * fAlive;
+    float fScaleY = length(In.InstancingMatrix._21_22_23) * fAlive;
+    //float fScaleZ = length(In.InstancingMatrix._31_32_33);
+   
+    matrix FinalMatrix = float4x4(In.InstancingMatrix._11_12_13_14,
+                                    In.InstancingMatrix._21_22_23_24,
+                                    In.InstancingMatrix._31_32_33_34,
+                                    In.InstancingMatrix._41_42_43_44);
+    
+    // Size에 대한 값을 psize 하나로 처리하기 위해 기존 InstancingMatrix의 Scale을 1로 밀어버리고 곱하였다. 
+    vector vPostion = mul(float4(In.vPosition, 1.0f), FinalMatrix);
+    // Geometry Shader에서 기하도형을 구성하기위해 Camera의 WorldPos 를 사용할 예정이다. >> 정점을 World까지만 변환 후 GeometryShader에서 도형 찍고 View, Projection 곱하자. 
+    Out.vPosition = mul(vPostion, g_WorldMatrix);
+    Out.vPSize = float2(In.vPSize.x * fScaleX, In.vPSize.y * fScaleY);
+    Out.vLifeTime = In.vLifeTime;
+    Out.vTexcoord = In.vTexcoord;
+    Out.vColor = In.vColor;
+    Out.vVelocity = In.vVelocity;
+    Out.vUp = mul((In.InstancingMatrix._21_22_23_24), g_WorldMatrix);
+    
+    //VS_ROUT Out = (VS_ROUT) 0;
+  
+    //Out.vPosition = float4(In.vPosition, 1.f);
+    //Out.vPSize = float2(In.vPSize.x, In.vPSize.y);
+    
+    //Out.InstancingMatrix = In.InstancingMatrix;
+    //Out.vLifeTime = In.vLifeTime;
+    //Out.vTexcoord = In.vTexcoord;
+    //Out.vColor = In.vColor;
+    //Out.vVelocity = In.vVelocity;
+    
+    return Out;
+}
 
 //GS_MAIN(triangle GS_IN In[3])
 //GS_MAIN(line GS_IN In[2])
@@ -408,22 +505,6 @@ void GS_VELOCITYBILLBOARD(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStr
 
 
 
-// Rendering PipeLine : PixelShader //
-struct PS_IN
-{
-    float4 vPosition : SV_POSITION;
-    float2 vLifeTime : TEXCOORD0;
-    float4 vColor : TEXCOORD1;
-    float2 vTexcoord : TEXCOORD2;
-    float fWeight : TEXCOORD3;
-};
-
-struct PS_OUT
-{
-    float4 vColor : SV_TARGET0;
-};
-
-
 /* PixelShader */
 PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
@@ -540,7 +621,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDED();
         ComputeShader = NULL;
@@ -554,7 +635,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDBLOOM();
         ComputeShader = NULL;
@@ -568,7 +649,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_RMAIN();
+        VertexShader = compile vs_5_0 VS_SRV_RMAIN();
         GeometryShader = compile gs_5_0 GS_NEWBILLBOARD();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDED();
         ComputeShader = NULL;
@@ -582,7 +663,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_RMAIN();
+        VertexShader = compile vs_5_0 VS_SRV_RMAIN();
         GeometryShader = compile gs_5_0 GS_NEWBILLBOARD();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDBLOOM();
         ComputeShader = NULL;
@@ -596,7 +677,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_VELOCITYBILLBOARD();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDED();
         ComputeShader = NULL;
@@ -610,7 +691,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_VELOCITYBILLBOARD();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDBLOOM();
         ComputeShader = NULL;

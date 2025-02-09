@@ -3,6 +3,8 @@
 #include "Translation_Module.h"
 #include "Keyframe_Module.h"
 
+#include "Compute_Shader.h"
+
 CVIBuffer_Point_Particle::CVIBuffer_Point_Particle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer_Instance(_pDevice, _pContext)
 {
@@ -20,7 +22,7 @@ CVIBuffer_Point_Particle::CVIBuffer_Point_Particle(const CVIBuffer_Point_Particl
 {
 }
 
-HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferInfo)
+HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferInfo, _float _fSpawnRate)
 {
 	
 	if (FAILED(__super::Initialize_Prototype()))
@@ -88,6 +90,7 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 
 #pragma endregion
 
+
 #pragma region INSTANCE_BUFFER
 	m_iInstanceStride = sizeof(VTXPOINTINSTANCE);
 	m_iNumIndexCountPerInstance = 6;
@@ -146,18 +149,11 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 	if (FAILED(Set_ShapeData(_jsonBufferInfo)))
 		return E_FAIL;	
 
-	// Spawn 설정
-	//if (_jsonBufferInfo.contains("Spawn"))
-	//{
-	//	//m_eSpawnType = _jsonBufferInfo["Spawn"]["Type"];
-	//	m_fSpawnTime = _jsonBufferInfo["Spawn"]["Time"];
-	//}
-
 
 
 	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
-		Set_Instance(i);
+		Set_Instance(i, _fSpawnRate);
 	}
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
@@ -180,14 +176,14 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Module(CEffect_Module* _pModule)
 	{
 		if (CEffect_Module::DATA_APPLY::COLOR == eData)
 		{
-			_pModule->Update_ColorKeyframe((_float*)m_pInstanceVertices, m_iNumInstances, 18, 16, 32);
+			_pModule->Update_ColorKeyframe((_float*)m_pInstanceVertices, m_iNumInstances, 18, 16, 33);
 		}
 	}
 	else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
 	{
 		if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
 		{
-			_pModule->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 26, 29, 16, 32);
+			_pModule->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 26, 29, 16, 33);
 		}
 	}
 
@@ -201,7 +197,61 @@ HRESULT CVIBuffer_Point_Particle::Initialize(void* _pArg)
 {
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
-	
+
+	D3D11_BUFFER_DESC BufferDesc = {};
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+
+	BufferDesc.ByteWidth = m_iNumInstances * m_iInstanceStride;
+	BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	BufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | // Compute Shader
+		D3D11_BIND_SHADER_RESOURCE;   // Vertex Shader
+	BufferDesc.StructureByteStride = m_iInstanceStride;
+	BufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+	D3D11_SUBRESOURCE_DATA BufferData = {};
+	ZeroMemory(&BufferData, sizeof D3D11_SUBRESOURCE_DATA);
+	BufferData.pSysMem = m_pInstanceVertices;
+	if (FAILED(m_pDevice->CreateBuffer(&BufferDesc, &BufferData, &m_pBuffer)))
+		return E_FAIL;
+
+	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
+	ZeroMemory(&UAVDesc, sizeof D3D11_UNORDERED_ACCESS_VIEW_DESC);
+	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	UAVDesc.Buffer.NumElements = m_iNumInstances;
+	if (FAILED(m_pDevice->CreateUnorderedAccessView(m_pBuffer, &UAVDesc, &m_pUAV)))
+		return E_FAIL;
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.BufferEx.NumElements = m_iNumInstances;
+
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pBuffer, &SRVDesc, &m_pSRV)))
+		return E_FAIL;	
+
+
+
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+	m_pBuffer->GetDesc(&BufferDesc);
+
+	m_pBufferInitial = nullptr;
+	HRESULT hr = m_pDevice->CreateBuffer(&BufferDesc, nullptr, &m_pBufferInitial);
+	if (FAILED(hr))
+		return hr;
+	m_pContext->CopyResource(m_pBufferInitial, m_pBuffer);
+
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.Buffer.NumElements = m_iNumInstances;
+
+	hr = m_pDevice->CreateShaderResourceView(m_pBufferInitial, &SRVDesc, &m_pSRVInitial);
+	if (FAILED(hr))
+		return E_FAIL;
+
+
 	Reset_Buffers();
 
 	return S_OK;
@@ -211,9 +261,10 @@ void CVIBuffer_Point_Particle::Begin_Update(_float _fTimeDelta)
 {
 	//m_fAccSpawnTime += _fTimeDelta;
 
-	D3D11_MAPPED_SUBRESOURCE		SubResource{};
-	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-	m_pUpdateVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
+
+	//D3D11_MAPPED_SUBRESOURCE		SubResource{};
+	//m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	//m_pUpdateVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
 
 	//if (SPAWN == m_eSpawnType)
 	//{
@@ -354,41 +405,66 @@ void CVIBuffer_Point_Particle::End_Update(_float _fTimeDelta)
 
 void CVIBuffer_Point_Particle::Reset_Buffers()
 {
-	m_iSpawnIndex = 0;
-	m_fSpawnRemainTime = 0.f;
+	//m_iSpawnIndex = 0;
+	////m_fSpawnRemainTime = 0.f;
 
-	D3D11_MAPPED_SUBRESOURCE		SubResource{};
+	//D3D11_MAPPED_SUBRESOURCE		SubResource{};
 
-	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	//m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
-	VTXPOINTINSTANCE* pVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
+	//VTXPOINTINSTANCE* pVertices = static_cast<VTXPOINTINSTANCE*>(SubResource.pData);
 
-	for (size_t i = 0; i < m_iNumInstances; i++)
-	{
-		// TODO : 
-		//if (SPAWN == m_eSpawnType)
-		{
-			pVertices[i].vLifeTime.y = 0.f;
-			ZeroMemory(&pVertices[i].vRight, sizeof(_float4));
-			ZeroMemory(&pVertices[i].vUp, sizeof(_float4));
-			ZeroMemory(&pVertices[i].vLook, sizeof(_float4));
-		}
-		//else if (BURST == m_eSpawnType)
-		//{
-		//	pVertices[i] = m_pInstanceVertices[i];
-		//	pVertices[i].vLifeTime.y = 0.f;
-		//}
-	}
+	//for (size_t i = 0; i < m_iNumInstances; i++)
+	//{
+	//	// TODO : 
+	//	//if (SPAWN == m_eSpawnType)
+	//	{
+	//		pVertices[i].vLifeTime.y = 0.f;
+	//		ZeroMemory(&pVertices[i].vRight, sizeof(_float4));
+	//		ZeroMemory(&pVertices[i].vUp, sizeof(_float4));
+	//		ZeroMemory(&pVertices[i].vLook, sizeof(_float4));
+	//	}
+	//	//else if (BURST == m_eSpawnType)
+	//	//{
+	//	//	pVertices[i] = m_pInstanceVertices[i];
+	//	//	pVertices[i].vLifeTime.y = 0.f;
+	//	//}
+	//}
 
-	m_pContext->Unmap(m_pVBInstance, 0);
+	//m_pContext->Unmap(m_pVBInstance, 0);
 }
+
+void CVIBuffer_Point_Particle::Begin_Compute(CCompute_Shader* _pCShader)
+{
+	_pCShader->Set_SRVs(&m_pSRVInitial, 1);
+	_pCShader->Set_UAVs(&m_pUAV, 1);
+}
+
+void CVIBuffer_Point_Particle::Update_All(_float _fTimeDelta, CCompute_Shader* _pCShader)
+{
+	_pCShader->Compute((_uint)(ceil(m_iNumInstances / 256.f)), 1, 1);
+}
+
+
 
 void CVIBuffer_Point_Particle::Update_Translation(_float _fTimeDelta, CEffect_Module* _pTranslationModule)
 {
 	_pTranslationModule->Update_Translations(_fTimeDelta, (_float*)m_pUpdateVertices, m_iNumInstances, 12, 26, 29, 16, 32);
-
 	//for (_int i = 0; i < m_iNumInstances; ++i)
 	//	_pTranslationModule->Update_Translations(_fTimeDelta, &m_pUpdateVertices[i].vTranslation, &m_pUpdateVertices[i].vVelocity, &m_pUpdateVertices[i].vAcceleration);
+}
+
+void CVIBuffer_Point_Particle::Update_Translation(_float _fTimeDelta, CEffect_Module* _pTranslationModule, CCompute_Shader* _pCShader)
+{
+	_int iEntry = _pTranslationModule->Update_Translation(_fTimeDelta, _pCShader);
+	if (0 <= iEntry)
+	{
+		_pCShader->Begin(iEntry);
+		Begin_Compute(_pCShader);
+		_pCShader->Compute((_uint)(ceil(m_iNumInstances / 256.f)), 1, 1);
+		_pCShader->End_Compute();
+	}
+
 }
 
 void CVIBuffer_Point_Particle::Update_ColorKeyframe(CEffect_Module* _pColorModule)
@@ -400,6 +476,11 @@ void CVIBuffer_Point_Particle::Update_ScaleKeyframe(CEffect_Module* _pColorModul
 {
 	_pColorModule->Update_ScaleKeyframe((_float*)m_pUpdateVertices, m_iNumInstances, 0, 4, 8, 16, 32);
 
+}
+
+void CVIBuffer_Point_Particle::Spawn_Rate(CCompute_Shader* _pCShader)
+{
+	_pCShader->Compute((_uint)(ceil(m_iNumInstances / 256.f)), 1, 1);
 }
 
 void CVIBuffer_Point_Particle::Set_UV(_Out_ _float4* _pOutUV, _float _fIndex)
@@ -477,7 +558,7 @@ void CVIBuffer_Point_Particle::Set_Position(_int _iIndex)
 	XMStoreFloat4(&m_pInstanceVertices[_iIndex].vTranslation, vPosition);
 }
 
-void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex)
+void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex, _float _fSpawnRate)
 {
 	_float3 vScale = Compute_ScaleValue();
 	_float3 vRotation = Compute_RotationValue();
@@ -489,9 +570,11 @@ void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex)
 
 	Set_Position(_iIndex);
 
+	_float fSpawnTime = 60.f / max(_fSpawnRate, 0.01f);
+
 	m_pInstanceVertices[_iIndex].vLifeTime = _float2(
 		Compute_LifeTime(),
-		0.f
+		0.f - fSpawnTime * _iIndex
 	);
 
 	// UV Logic 설정
@@ -504,9 +587,7 @@ void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex)
 		Set_UV(&m_pInstanceVertices[_iIndex].vUV, 0);
 	}
 
-	//m_pInstanceVertices[_iIndex].vVelocity = _float3(m_pGameInstance->Compute_Random(-1.f, 1.f), m_pGameInstance->Compute_Random(-1.f, 1.f), m_pGameInstance->Compute_Random(-1.f, 1.f));
-
-
+	m_pInstanceVertices[_iIndex].fAlive = 0.f;
 
 	m_pInstanceVertices[_iIndex].vColor = Compute_ColorValue();
 }
@@ -514,11 +595,11 @@ void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex)
 
 
 
-CVIBuffer_Point_Particle* CVIBuffer_Point_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonBufferInfo)
+CVIBuffer_Point_Particle* CVIBuffer_Point_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonBufferInfo, _float _fSpawnRate)
 {
 	CVIBuffer_Point_Particle* pInstance = new CVIBuffer_Point_Particle(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_jsonBufferInfo)))
+	if (FAILED(pInstance->Initialize_Prototype(_jsonBufferInfo, _fSpawnRate)))
 	{
 		MSG_BOX("Failed to Created : CVIBuffer_Point_Particle");
 		Safe_Release(pInstance);
@@ -555,6 +636,8 @@ void CVIBuffer_Point_Particle::Free()
 	}
 #endif
 
+
+
 	__super::Free();
 }
 
@@ -564,11 +647,11 @@ void CVIBuffer_Point_Particle::Tool_Setting()
 	__super::Tool_Setting();
 
 }
-void CVIBuffer_Point_Particle::Tool_Reset_Instance()
+void CVIBuffer_Point_Particle::Tool_Reset_Instance(_float _fSpawnRate)
 {
 	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
-		Set_Instance(i);
+		Set_Instance(i, _fSpawnRate);
 	}
 
 	// TODO: Initialize 하는 부분
@@ -593,7 +676,7 @@ void CVIBuffer_Point_Particle::Tool_Reset_Instance()
 
 	//m_pContext->Unmap(m_pVBInstance, 0);
 }
-void CVIBuffer_Point_Particle::Tool_Reset_Buffers()
+void CVIBuffer_Point_Particle::Tool_Reset_Buffers(_float _fSpawnRate)
 {
 	m_isToolReset = true;
 
@@ -648,7 +731,7 @@ void CVIBuffer_Point_Particle::Tool_Reset_Buffers()
 
 	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
-		Set_Instance(i);
+		Set_Instance(i, _fSpawnRate);
 	}
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
@@ -698,7 +781,7 @@ HRESULT CVIBuffer_Point_Particle::Save_Buffer(json& _jsonBufferInfo)
 }
 
 // m_pVBInstance까지 Create 실행합니다.
-HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances)
+HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances, _float _fSpawnRate)
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -785,7 +868,7 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances)
 
 	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
-		Set_Instance(i);
+		Set_Instance(i, _fSpawnRate);
 	}
 
 	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
@@ -799,11 +882,11 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(_uint _iNumInstances)
 
 	return S_OK;
 }
-CVIBuffer_Point_Particle* CVIBuffer_Point_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iNumInstances)
+CVIBuffer_Point_Particle* CVIBuffer_Point_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iNumInstances, _float _fSpawnRate)
 {
 	CVIBuffer_Point_Particle* pInstance = new CVIBuffer_Point_Particle(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_iNumInstances)))
+	if (FAILED(pInstance->Initialize_Prototype(_iNumInstances, _fSpawnRate)))
 	{
 		MSG_BOX("Failed to Created : CVIBuffer_Point_Particle");
 		Safe_Release(pInstance);

@@ -241,6 +241,10 @@ HRESULT CEmitter::Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc)
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
+	if (FAILED(Add_Component(_pDesc->iProtoShaderLevel, _pDesc->szComputeShaderTag,
+		TEXT("Com_ComputeShader"), reinterpret_cast<CComponent**>(&m_pComputeShader))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -263,6 +267,7 @@ HRESULT CEmitter::Bind_Float4(const _char* _szDataName, const _char* _szConstant
 void CEmitter::Free()
 {
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pComputeShader);
 
 	for (auto& pModule : m_Modules)
 		Safe_Release(pModule);
@@ -337,6 +342,11 @@ void CEmitter::Tool_Update(_float fTimeDelta)
 			ImGui::DragFloat("Spawn Rate", &m_FloatDatas["SpawnRate"], 1.f, 10.f);			
 		}
 
+		if (BURST_SPAWN == m_eSpawnType)
+		{
+			m_FloatDatas["SpawnRate"] = 0.f;
+		}
+
 		ImGui::TreePop();
 	}
 
@@ -369,12 +379,6 @@ void CEmitter::Tool_Update(_float fTimeDelta)
 		ImGui::TreePop();
 	}
 
-	/*if (ImGui::RadioButton("Initially Start", m_isToolProgress))
-	{
-		m_isToolProgress = !m_isToolProgress;
-		m_isToolChanged = true;
-
-	}*/
 
 	if (ImGui::InputInt("Event", (_int*)&m_iEventID))
 		m_isToolChanged = true;

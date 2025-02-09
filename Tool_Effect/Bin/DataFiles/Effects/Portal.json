@@ -19,9 +19,9 @@
                 },
                 "Count": 200,
                 "LifeTime": {
-                    "Arg1": 2.0,
+                    "Arg1": 12.0,
                     "Arg2": 2.5,
-                    "SetType": "RANDOMLINEAR"
+                    "SetType": "DIRECTSET"
                 },
                 "Position": {
                     "Arg1": [
@@ -99,6 +99,10 @@
             "DelayTime": 0.0,
             "Event": 0,
             "Float": [
+                {
+                    "Name": "",
+                    "Value": 0.0
+                },
                 {
                     "Name": "AlphaTest",
                     "Value": 0.0
@@ -268,12 +272,12 @@
                     "Type": "MODULE_KEYFRAME"
                 }
             ],
-            "Pooling": "KILL",
+            "Pooling": "REVIVE",
             "ShaderPass": "VELOCITY_BILLBOARD_BLOOM",
             "SpawnPosition": "RELATIVE_POSITION",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Particles/T_FX_CMN_Dust_01.dds",
-            "Time": 3.4028234663852886e+38,
+            "Time": 100.0,
             "Transform": [
                 0.30000001192092896,
                 0.0,
@@ -311,11 +315,11 @@
                     ],
                     "SetType": "DIRECTSET"
                 },
-                "Count": 200,
+                "Count": 512,
                 "LifeTime": {
-                    "Arg1": 0.0,
+                    "Arg1": 3.0,
                     "Arg2": 0.0,
-                    "SetType": "UNSET"
+                    "SetType": "DIRECTSET"
                 },
                 "Position": {
                     "Arg1": [
@@ -389,6 +393,10 @@
             "DelayTime": 0.20000000298023224,
             "Event": 0,
             "Float": [
+                {
+                    "Name": "",
+                    "Value": 0.0
+                },
                 {
                     "Name": "AlphaTest",
                     "Value": 0.26499998569488525
@@ -518,7 +526,7 @@
             "SpawnPosition": "RELATIVE_POSITION",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Flash_02.dds",
-            "Time": 3.4028234663852886e+38,
+            "Time": 5.0,
             "Transform": [
                 1.0,
                 0.0,

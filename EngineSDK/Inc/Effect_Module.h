@@ -4,6 +4,7 @@
 BEGIN(Engine)
 
 class CGameInstance;
+class CCompute_Shader;
 
 class CEffect_Module : public CBase
 {
@@ -22,6 +23,8 @@ public:
 	virtual void	Update_Translations(_float _fTimeDelta, _float* _pBuffer, _uint _iNumInstance, 
 		_uint _iPositionOffset, _uint _iVelocityOffset, _uint _iAccelerationOffset, _uint _iLifeTimeOffset, _uint _iTotalSize);
 	//virtual void	Update_Translations(_float _fTimeDelta, _float4* _pPosition, _float3* _pVelocity, _float3* _pAcceleration);
+	
+	virtual _int	Update_Translation(_float _fTimeDelta, class CCompute_Shader* _pCShader);
 
 	// 개별적인 이펙트에서만 적용
 	virtual void	Update_ColorKeyframe(_float  _fCurTime, _float4* _pColor);
