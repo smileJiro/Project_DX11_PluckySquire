@@ -245,7 +245,7 @@ void CPlayerSword::On_StateChange()
 
 void CPlayerSword::Set_AttackEnable(_bool _bOn)
 {
-    //m_pActorCom->Set_ShapeEnable(0, _bOn);
+    m_pActorCom->Set_ShapeEnable(0, _bOn);
 }
 
 CPlayerSword* CPlayerSword::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
