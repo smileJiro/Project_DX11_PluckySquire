@@ -474,6 +474,7 @@ HRESULT CLoader::Loading_Level_Static()
         CPopuff::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+
     lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 
     //if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))

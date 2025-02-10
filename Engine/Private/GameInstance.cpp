@@ -1342,7 +1342,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	// Engine Manager Class Release
 	// 여기서 Manger Class->Free() 호출 >>> 참조 중이던 CGameInstance에 대한 Safe_Release() 호출 됌.
 
-	Safe_Release(m_pCubeMap);
+
 	Safe_Release(m_pFrustum);
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);
@@ -1366,6 +1366,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);
+	Safe_Release(m_pCubeMap);
 	Safe_Release(m_pPhysx_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);

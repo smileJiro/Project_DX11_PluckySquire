@@ -525,34 +525,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass Light_Directional // 1
-    {
-        SetRasterizerState(RS_Default);
-        // 깊이버퍼를 기록하지 않겠다. >>> 깊이버퍼를 기록해버리면 기존 object들의 깊이값이 모두 의미가 없어짐. 직교투영 사각형으로 그리다보니 0 값으로 다 채워질 거임.
-        SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_LIGHT_DIRECTIONAL(); // 방향성 조명에 대한 shade 값을 계산하는 pixelshader 
-        ComputeShader = NULL;
-
-    }
-
-    pass Light_Point // 2
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_LIGHT_POINT();
-        ComputeShader = NULL;
-
-    }
-
-    pass Final // 3
+    pass Lighting // 1
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -560,12 +533,21 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_FINAL();
-        ComputeShader = NULL;
-
+        PixelShader = compile ps_5_0 PS_MAIN_LIGHTING();
     }
 
-    pass AfterEffect // 4
+    pass Combine // 2
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_COMBINE();
+    }
+
+    pass AfterEffect // 3
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -578,7 +560,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass AfterParticle // 5
+    pass AfterParticle // 4
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -591,7 +573,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass DOWNSAMPLE1 // 6
+    pass DOWNSAMPLE1 // 5
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -604,7 +586,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass DOWNSAMPLE2 // 7
+    pass DOWNSAMPLE2 // 6
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -617,7 +599,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass Blur // 8
+    pass Blur // 7
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -630,5 +612,25 @@ technique11 DefaultTechnique
 
     }
 
+    pass PBR_Light_Point // 8
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PBR_LIGHT_POINT();
+    }
+
+    pass PBR_Directional // 9
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PBR_LIGHT_DIRECTIONAL();
+    }
 }
