@@ -1,139 +1,61 @@
 #include "Translation_Module.h"
+#include "GameInstance.h"
+#include "Compute_Shader.h"
 
+const _char* CTranslation_Module::g_szModuleNames[9] = { "POINT_VELOCITY", "LINEAR_VELOCITY", "INIT_ACCELERATION", "GRAVITY", "DRAG",
+        "VORTEX_ACCELERATION", "POINT_ACCELERATION", "LIMIT_ACCELERATION", "POSITION_BY_NUMBER" };
 
 CTranslation_Module::CTranslation_Module()
+    : CEffect_Module()
+{
+    m_eModuleType = MODULE_TRANSLATION;
+    m_eApplyTo = TRANSLATION;
+}
+
+CTranslation_Module::CTranslation_Module(const CTranslation_Module& _Prototype)
+    : CEffect_Module(_Prototype)
+    , m_Float3Datas(_Prototype.m_Float3Datas)
+    , m_FloatDatas(_Prototype.m_FloatDatas)
+    , m_eModuleName(_Prototype.m_eModuleName)
 {
 }
 
 HRESULT CTranslation_Module::Initialize(const json& _jsonModuleInfo)
 {
-    if (false == _jsonModuleInfo.contains("Type"))
+    if (FAILED(__super::Initialize(_jsonModuleInfo)))
         return E_FAIL;
-    m_eModuleType = _jsonModuleInfo["Type"];
+
+    if (false == _jsonModuleInfo.contains("Module"))
+        return E_FAIL;
+    m_eModuleName = _jsonModuleInfo["Module"];
 #ifdef _DEBUG
-    m_strTypeName = _jsonModuleInfo["Type"];
-
+    m_strTypeName = _jsonModuleInfo["Module"];
 #endif
-
-    if (false == _jsonModuleInfo.contains("Order"))
-        return E_FAIL;
-    m_iOrder = _jsonModuleInfo["Order"];
-
-    if (false == _jsonModuleInfo.contains("Init"))
-        return E_FAIL;
-    m_isInit = _jsonModuleInfo["Init"];
-
-
-    switch (m_eModuleType)
+    
+    if (_jsonModuleInfo.contains("Datas"))
     {
-    case MODULENONE:
-        break;
-    case POINT_VELOCITY:
-    {
-        m_eApplyData = TRANSLATION;
+        if (_jsonModuleInfo["Datas"].contains("Float"))
+        {
+            for (_int i = 0; i < _jsonModuleInfo["Datas"]["Float"].size(); ++i)
+            {
+                m_FloatDatas.emplace(_jsonModuleInfo["Datas"]["Float"][i]["Name"], _jsonModuleInfo["Datas"]["Float"][i]["Value"]);
+            }
+        }
 
-        if (false == _jsonModuleInfo.contains("Origin"))
-            return E_FAIL;
-        if (FAILED(Add_Float3("Origin", _jsonModuleInfo)))
-            return E_FAIL;
+        if (_jsonModuleInfo["Datas"].contains("Float3"))
+        {
+            for (_int i = 0; i < _jsonModuleInfo["Datas"]["Float3"].size(); ++i)
+            {
+                _float3 vData;
+                vData.x = _jsonModuleInfo["Datas"]["Float3"][i]["Value"][0];
+                vData.y = _jsonModuleInfo["Datas"]["Float3"][i]["Value"][1];
+                vData.z = _jsonModuleInfo["Datas"]["Float3"][i]["Value"][2];
 
-        if (false == _jsonModuleInfo.contains("Amount"))
-            return E_FAIL;
-        m_FloatDatas.emplace("Amount", _jsonModuleInfo["Amount"]);
-
-        break;
+                m_Float3Datas.emplace(_jsonModuleInfo["Datas"]["Float3"][i]["Name"], vData);
+            }
+        }
     }
-    case LINEAR_VELOCITY:
-    {
-        m_eApplyData = TRANSLATION;
-
-        if (false == _jsonModuleInfo.contains("Amount"))
-            return E_FAIL;
-        if (FAILED(Add_Float3("Amount", _jsonModuleInfo)))
-            return E_FAIL;
-
-        break;
-    }
-    case INIT_ACCELERATION:
-    {
-        m_eApplyData = TRANSLATION;
-        break;
-    }
-    case GRAVITY:
-    {
-        m_eApplyData = TRANSLATION;
-
-        if (false == _jsonModuleInfo.contains("Amount"))
-            return E_FAIL;
-        if (FAILED(Add_Float3("Amount", _jsonModuleInfo)))
-            return E_FAIL;
-
-        break;
-    }
-    case DRAG:
-    {
-        m_eApplyData = TRANSLATION;
-
-        if (false == _jsonModuleInfo.contains("Amount"))
-            return E_FAIL;
-        m_FloatDatas.emplace("Amount", _jsonModuleInfo["Amount"]);
-
-        break;
-    }
-    case VORTEX_ACCELERATION:
-    {
-        m_eApplyData = TRANSLATION;
-
-        if (false == _jsonModuleInfo.contains("Amount"))
-            return E_FAIL;
-        m_FloatDatas.emplace("Amount", _jsonModuleInfo["Amount"]);
-
-        if (false == _jsonModuleInfo.contains("Axis"))
-            return E_FAIL;
-        if (FAILED(Add_Float3("Axis", _jsonModuleInfo)))
-            return E_FAIL;
-
-        if (false == _jsonModuleInfo.contains("Pull Amount"))
-            return E_FAIL;
-        m_FloatDatas.emplace("Pull Amount", _jsonModuleInfo["Pull Amount"]);
-
-        if (false == _jsonModuleInfo.contains("Origin Point"))
-            return E_FAIL;
-        if (FAILED(Add_Float3("Origin Point", _jsonModuleInfo)))
-            return E_FAIL;
-
-        break;
-    }
-
-    case POINT_ACCELERATION:
-    {
-        m_eApplyData = TRANSLATION;
-
-        if (false == _jsonModuleInfo.contains("Origin"))
-            return E_FAIL;
-        if (FAILED(Add_Float3("Origin", _jsonModuleInfo)))
-            return E_FAIL;
-
-        if (false == _jsonModuleInfo.contains("Amount"))
-            return E_FAIL;
-        if (FAILED(Add_Float3("Amount", _jsonModuleInfo)))
-            return E_FAIL;
-
-        break;
-    }
-    case LIMIT_ACCELERATION:
-    {
-        m_eApplyData = TRANSLATION;
-
-        if (false == _jsonModuleInfo.contains("Amount"))
-            return E_FAIL;
-        m_FloatDatas.emplace("Amount", _jsonModuleInfo["Amount"]);
-
-        break;
-    }
-    default:
-        break;
-    }
+ 
 
 
     return S_OK;
@@ -141,99 +63,295 @@ HRESULT CTranslation_Module::Initialize(const json& _jsonModuleInfo)
 
 
 
+//
+//void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float4* _pPosition, _float3* _pVelocity, _float3* _pAcceleration)
+//{
+//    if (false == m_isActive)
+//        return;
+//
+//    switch (m_eModuleName)
+//    {
+//    case POINT_VELOCITY:
+//    {
+//        XMStoreFloat3(_pVelocity, XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin"]) * m_FloatDatas["Amount"]);
+//        break;
+//    }   
+//    case LINEAR_VELOCITY:
+//    {
+//
+//        *_pVelocity = m_Float3Datas["Amount"];
+//        break;
+//    }
+//    case INIT_ACCELERATION:
+//    {
+//        *_pAcceleration = *_pVelocity;
+//        break;
+//    }
+//    case GRAVITY:
+//    {
+//        XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) + XMLoadFloat3(&m_Float3Datas["Amount"]) * _fTimeDelta);
+//        break;
+//    }
+//    case DRAG:
+//    {
+//        _vector vVelocity = XMLoadFloat3(_pVelocity) * (1.f - m_FloatDatas["Amount"] * _fTimeDelta);
+//        //_float fLength = XMVectorGetX(XMVector3Length(vVelocity));
+//       
+//
+//        //XMStoreFloat3(_pVelocity, XMLoadFloat3(_pVelocity) - XMLoadFloat3(_pVelocity) * m_FloatDatas["Amount"] * _fTimeDelta);
+//        XMStoreFloat3(_pVelocity, vVelocity);
+//        break;
+//    }
+//    case VORTEX_ACCELERATION:
+//    {   
+//        _vector vDiff = XMVectorSetW(XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin Point"]), 0.f);
+//        _vector vR = vDiff - XMVector3Dot(XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"])), vDiff) * XMLoadFloat3(&m_Float3Datas["Axis"]);
+//        //// ¹Ð¾î³»´Â Èû + ´ç±â´Â Èû
+//        _vector vVortex = XMVector3Normalize(XMVector3Cross(XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"])), vR)) * m_FloatDatas["Amount"];
+//        _vector vPull = - XMVector3Normalize(vR) * m_FloatDatas["Pull Amount"];
+//        //
+//        XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) + (vVortex + vPull) * _fTimeDelta);
+//
+//
+//        break;
+//    }
+//
+//    case POINT_ACCELERATION:
+//    {
+//        XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) +
+//        XMVectorGetX(XMVector3Length(XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin"]))) * _fTimeDelta * XMLoadFloat3(&m_Float3Datas["Amount"]));
+//
+//        break;
+//    }
+//    case LIMIT_ACCELERATION:
+//    {
+//        _vector vAccel = XMLoadFloat3(_pAcceleration);
+//        _float fLength = XMVectorGetX(XMVector3Length(vAccel));
+//
+//        XMStoreFloat3(_pAcceleration, XMVector3Normalize(vAccel) * max(fLength, m_FloatDatas["Amount"]));
+//
+//        break;
+//    }
+//
+//    default:
+//        break;
+//    }
+//}
 
-void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float4* _pPosition, _float3* _pVelocity, _float3* _pAcceleration)
+void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuffer, _uint _iNumInstance, _uint _iPositionOffset, _uint _iVelocityOffset, _uint _iAccelerationOffset, _uint _iLifeTimeOffset, _uint _iTotalSize)
 {
     if (false == m_isActive)
         return;
 
-    switch (m_eModuleType)
+    switch (m_eModuleName)
     {
     case POINT_VELOCITY:
     {
-        XMStoreFloat3(_pVelocity, XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin"]) * m_FloatDatas["Amount"]);
+        _vector vOrigin = XMLoadFloat3(&m_Float3Datas["Origin"]);
+        _float fAmount = m_FloatDatas["Amount"];
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
+
+            XMStoreFloat3((_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset),
+                XMLoadFloat4((_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset)) - vOrigin * fAmount);
+        }
+        
         break;
-    }   
+    }
     case LINEAR_VELOCITY:
     {
-
-        *_pVelocity = m_Float3Datas["Amount"];
+        _float3 vAmount = m_Float3Datas["Amount"];
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
+            *(_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset) = vAmount;
+        }
         break;
     }
     case INIT_ACCELERATION:
     {
-        *_pAcceleration = *_pVelocity;
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
+
+            *(_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset)
+                = *(_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset);
+        }
+
         break;
     }
     case GRAVITY:
     {
-        XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) + XMLoadFloat3(&m_Float3Datas["Amount"]) * _fTimeDelta);
+        _vector vAmount = XMLoadFloat3(&m_Float3Datas["Amount"]) * _fTimeDelta;
+
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
+
+            _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
+            XMStoreFloat3(pAcceleration, XMLoadFloat3(pAcceleration) + vAmount);
+        }
+
         break;
     }
     case DRAG:
     {
-        _vector vVelocity = XMLoadFloat3(_pVelocity) * (1.f - m_FloatDatas["Amount"] * _fTimeDelta);
-        //_float fLength = XMVectorGetX(XMVector3Length(vVelocity));
-       
+        _float fAmount = m_FloatDatas["Amount"];
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
 
-        //XMStoreFloat3(_pVelocity, XMLoadFloat3(_pVelocity) - XMLoadFloat3(_pVelocity) * m_FloatDatas["Amount"] * _fTimeDelta);
-        XMStoreFloat3(_pVelocity, vVelocity);
+            _float3* pVelocity = (_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset);        
+            XMStoreFloat3(pVelocity, XMLoadFloat3(pVelocity) * (1.f - fAmount * _fTimeDelta));
+        }
         break;
     }
     case VORTEX_ACCELERATION:
-    {   
-        _vector vDiff = XMVectorSetW(XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin Point"]), 0.f);
-        _vector vR = vDiff - XMVector3Dot(XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"])), vDiff) * XMLoadFloat3(&m_Float3Datas["Axis"]);
-        //// ¹Ð¾î³»´Â Èû + ´ç±â´Â Èû
-        _vector vVortex = XMVector3Normalize(XMVector3Cross(XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"])), vR)) * m_FloatDatas["Amount"];
-        _vector vPull = - XMVector3Normalize(vR) * m_FloatDatas["Pull Amount"];
-        //
-        XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) + (vVortex + vPull) * _fTimeDelta);
+    {
+        _vector vOrigin = XMLoadFloat3(&m_Float3Datas["Origin Point"]);
+        _vector vAxis = XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"]));
+        _float fAmount = m_FloatDatas["Amount"];
+        _float fPullAmount = m_FloatDatas["Pull Amount"];
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
 
+            _vector vDiff = XMVectorSetW(XMLoadFloat4((_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset)) - vOrigin, 0.f);
+            _vector vR = vDiff - XMVector3Dot(vAxis, vDiff) * vAxis;
+            //// ¹Ð¾î³»´Â Èû + ´ç±â´Â Èû
+            _vector vVortex = XMVector3Normalize(XMVector3Cross(vAxis, vR)) * fAmount;
+            _vector vPull = -XMVector3Normalize(vR) * fPullAmount;
+            //
+            XMStoreFloat3((_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset), XMLoadFloat3((_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset)) + (vVortex + vPull) * _fTimeDelta);
+        }
 
         break;
     }
-
     case POINT_ACCELERATION:
     {
-        XMStoreFloat3(_pAcceleration, XMLoadFloat3(_pAcceleration) +
-        XMVectorGetX(XMVector3Length(XMLoadFloat4(_pPosition) - XMLoadFloat3(&m_Float3Datas["Origin"]))) * _fTimeDelta * XMLoadFloat3(&m_Float3Datas["Amount"]));
+        _vector vOrigin = XMLoadFloat3(&m_Float3Datas["Origin"]);
+        _vector vAmount = XMLoadFloat3(&m_Float3Datas["Amount"]);
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
 
+            _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
+            _float4* pPosition = (_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset);
+
+            XMStoreFloat3(pAcceleration, XMLoadFloat3(pAcceleration) +
+                XMVectorGetX(XMVector3Length(XMLoadFloat4(pPosition) - vOrigin)) * _fTimeDelta * vAmount);
+
+        }
+      
         break;
     }
     case LIMIT_ACCELERATION:
     {
-        _vector vAccel = XMLoadFloat3(_pAcceleration);
-        _float fLength = XMVectorGetX(XMVector3Length(vAccel));
+        _float fAmount = m_FloatDatas["Amount"];
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
 
-        XMStoreFloat3(_pAcceleration, XMVector3Normalize(vAccel) * max(fLength, m_FloatDatas["Amount"]));
+            _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
+            _vector vAccel = XMLoadFloat3(pAcceleration);
+            _float fLength = XMVectorGetX(XMVector3Length(vAccel));
+
+            XMStoreFloat3(pAcceleration, XMVector3Normalize(vAccel) * max(fLength, fAmount));
+        }
+        
+        break;
+    }
+    case POSITION_BY_NUMBER:
+    {
+        _vector vAxis = XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"]));
+        _float fOffset = m_FloatDatas["Offset"];
+        _float3 vRandomOffset = m_Float3Datas["Random Offset"];
+        for (_int i = 0; i < _iNumInstance; ++i)
+        {
+
+            _float4* pPosition = (_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset);
+            
+            XMStoreFloat4(pPosition, vAxis * fOffset * i + XMVectorSet(m_pGameInstance->Compute_Random(-vRandomOffset.x, vRandomOffset.x),
+                m_pGameInstance->Compute_Random(-vRandomOffset.y, vRandomOffset.y),
+                m_pGameInstance->Compute_Random(-vRandomOffset.z, vRandomOffset.z)
+                , 1.f));
+        }
 
         break;
     }
 
     default:
         break;
+
     }
 }
 
-
-
-
-
-HRESULT CTranslation_Module::Add_Float3(const _char* _szTag, const json& _jsonInfo)
+_int CTranslation_Module::Update_Module(CCompute_Shader* _pCShader)
 {
-    if (3 > _jsonInfo[_szTag].size())
-        return E_FAIL;
-    
-    _float3 vAdd;
-    for (_int i = 0; i < 3; ++i)
-        *((_float*)(&vAdd) + i) = _jsonInfo[_szTag][i];
+    if (false == m_isActive)
+        return -1;
 
-    m_Float3Datas.emplace(_szTag, vAdd);
+    switch (m_eModuleName)
+    {
+    case POINT_VELOCITY:
+    {
+        _pCShader->Bind_RawValue("g_vOrigin", &m_Float3Datas["Origin"], sizeof(_float3));
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
+
+        return 4;
+        break;
+    }
+    case LINEAR_VELOCITY:
+    {
+        _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
+
+        return 5;
+        break;
+    }
+    case INIT_ACCELERATION:
+    {
+        return 6;
+
+        break;
+    }
+    case GRAVITY:
+    {
+        _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
+        return 7;
+
+        break;
+    }
+    case DRAG:
+    {
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
+
+        return 8;
+        break;
+    }
+    case VORTEX_ACCELERATION:
+    {
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
+        _pCShader->Bind_RawValue("g_Pull", &m_FloatDatas["Pull Amount"], sizeof(_float));
+        _pCShader->Bind_RawValue("g_vOrigin", &m_Float3Datas["Origin Point"], sizeof(_float3));
+        _pCShader->Bind_RawValue("g_vAxis", &m_Float3Datas["Axis"], sizeof(_float3));
 
 
+        return 9;
+        break;
+    }
+    case POINT_ACCELERATION:
+    {
+        _pCShader->Bind_RawValue("g_vOrigin", &m_Float3Datas["Origin"], sizeof(_float3));
+        _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
 
-    return S_OK;
+        return 10;
+        break;
+    }
+    case LIMIT_ACCELERATION:
+    {
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
+
+        return 11;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return -1;
 }
 
 CTranslation_Module* CTranslation_Module::Create(const json& _jsonModuleInfo)
@@ -249,6 +367,11 @@ CTranslation_Module* CTranslation_Module::Create(const json& _jsonModuleInfo)
     return pInstance;
 }
 
+CEffect_Module* CTranslation_Module::Clone()
+{
+    return new CTranslation_Module(*this);
+}
+
 void CTranslation_Module::Free()
 {
     m_Float3Datas.clear();
@@ -259,50 +382,51 @@ void CTranslation_Module::Free()
 }
 #ifdef _DEBUG
 
-HRESULT CTranslation_Module::Initialize(MODULE_TYPE eType, const _string& _strTypeName)
+HRESULT CTranslation_Module::Initialize(MODULE_NAME _eType, const _string& _strTypeName)
 {
-    m_eModuleType = eType;
+    m_eModuleName = _eType;
     m_strTypeName = _strTypeName;
 
-    switch (m_eModuleType)
+    switch (m_eModuleName)
     {
-    case MODULENONE:
-        break;
     case LINEAR_VELOCITY:
         m_isInit = true;
-        m_Float3Datas.emplace("Amount", _float3(0.f, 0.f, 0.f));
+        //m_Float3Datas.emplace("Amount", _float3(0.f, 0.f, 0.f));
         break;
     case POINT_VELOCITY:
         m_isInit = true;
-        m_Float3Datas.emplace("Origin", _float3(0.f, 0.f, 0.f));
-        m_FloatDatas.emplace("Amount", 0.f);
+       //m_Float3Datas.emplace("Origin", _float3(0.f, 0.f, 0.f));
+       //m_FloatDatas.emplace("Amount", 0.f);
         break;
     case INIT_ACCELERATION:
         m_isInit = true;
         break;
     case GRAVITY:
         m_isInit = false;
-        m_Float3Datas.emplace("Amount", _float3(0.f, -5.f, 0.f));
+        //m_Float3Datas.emplace("Amount", _float3(0.f, -5.f, 0.f));
         break;
     case DRAG:
         m_isInit = false;
-        m_FloatDatas.emplace("Amount", 0.f);
+        //m_FloatDatas.emplace("Amount", 0.f);
         break;
     case VORTEX_ACCELERATION:
         m_isInit = false;
-        m_FloatDatas.emplace("Amount", 0.f);
-        m_FloatDatas.emplace("Pull Amount", 0.f);
-        m_Float3Datas.emplace("Axis", _float3(0.f, 1.f, 0.f));
-        m_Float3Datas.emplace("Origin Point", _float3(0.f, 0.f, 0.f));
+        //m_FloatDatas.emplace("Amount", 0.f);
+        //m_FloatDatas.emplace("Pull Amount", 0.f);
+        //m_Float3Datas.emplace("Axis", _float3(0.f, 1.f, 0.f));
+        //m_Float3Datas.emplace("Origin Point", _float3(0.f, 0.f, 0.f));
         break;
     case POINT_ACCELERATION:
         m_isInit = false;
-        m_Float3Datas.emplace("Origin", _float3(0.f, 0.f, 0.f));
-        m_Float3Datas.emplace("Amount", _float3(0.f, 0.f, 0.f));
+        //m_Float3Datas.emplace("Origin", _float3(0.f, 0.f, 0.f));
+        //m_Float3Datas.emplace("Amount", _float3(0.f, 0.f, 0.f));
         break;
     case LIMIT_ACCELERATION:
         m_isInit = false;
-        m_FloatDatas.emplace("Amount", 10.f);
+        //m_FloatDatas.emplace("Amount", 10.f);
+        break;
+    case POSITION_BY_NUMBER:
+        m_isInit = true;
         break;
     }
 
@@ -311,37 +435,17 @@ HRESULT CTranslation_Module::Initialize(MODULE_TYPE eType, const _string& _strTy
 
 void CTranslation_Module::Tool_Module_Update()
 {
-    ImGui::Text("Type :");
-    ImGui::SameLine();
-    ImGui::Text(m_strTypeName.c_str());
-
-    if (ImGui::RadioButton("Active", m_isActive))
-    {
-        m_isActive = !m_isActive;
-    }
-
-    static _char szName[MAX_PATH] = "";
-    if (ImGui::InputText("Set_Module_Name", szName, MAX_PATH))
-    {
-        if (0 != strcmp(szName, ""))
-            m_strTypeName = szName;
-    }
-
-    if (ImGui::RadioButton("Is_Init ?", m_isInit))
-    {
-        m_isInit = !m_isInit;
-        m_isChanged = true;
-    }
+    __super::Tool_Module_Update();
 
     for (auto& Pair : m_FloatDatas)
     {
-        if (ImGui::InputFloat(Pair.first.c_str(), &(Pair.second)))
+        if (ImGui::DragFloat(Pair.first.c_str(), &(Pair.second), 0.01f))
             m_isChanged = true;
     }
 
     for (auto& Pair : m_Float3Datas)
     {
-        if (ImGui::InputFloat3(Pair.first.c_str(), (_float*)&(Pair.second)))
+        if (ImGui::DragFloat3(Pair.first.c_str(), (_float*)&(Pair.second), 0.01f))
             m_isChanged = true;
 
     }
@@ -349,11 +453,34 @@ void CTranslation_Module::Tool_Module_Update()
 }
 HRESULT CTranslation_Module::Save_Module(json& _jsonModuleInfo)
 {
-    _jsonModuleInfo["Init"] = m_isInit;
-    _jsonModuleInfo["Type"] = m_eModuleType;
-    _jsonModuleInfo["Order"] = m_iOrder;
+    if (FAILED(__super::Save_Module(_jsonModuleInfo)))
+        return E_FAIL;
+    
+    _jsonModuleInfo["Module"] = m_eModuleName;
     
     for (auto& Pair : m_FloatDatas)
+    {
+        json jsonInfo;
+        jsonInfo["Value"] = Pair.second;
+        jsonInfo["Name"] = Pair.first.c_str();
+
+        _jsonModuleInfo["Datas"]["Float"].push_back(jsonInfo);
+    }
+
+    for (auto& Pair : m_Float3Datas)
+    {
+        json jsonInfo;
+        jsonInfo["Value"][0] = Pair.second.x;
+        jsonInfo["Value"][1] = Pair.second.y;
+        jsonInfo["Value"][2] = Pair.second.z;
+
+        jsonInfo["Name"] = Pair.first.c_str();
+
+        _jsonModuleInfo["Datas"]["Float3"].push_back(jsonInfo);
+    }
+
+
+   /* for (auto& Pair : m_FloatDatas)
     {
         _jsonModuleInfo[Pair.first.c_str()] = Pair.second;
     }
@@ -363,12 +490,12 @@ HRESULT CTranslation_Module::Save_Module(json& _jsonModuleInfo)
         _jsonModuleInfo[Pair.first.c_str()].push_back(Pair.second.x);
         _jsonModuleInfo[Pair.first.c_str()].push_back(Pair.second.y);
         _jsonModuleInfo[Pair.first.c_str()].push_back(Pair.second.z);
-    }
+    }*/
 
 
     return S_OK;
 }
-CTranslation_Module* CTranslation_Module::Create(MODULE_TYPE eType , const _string& _strTypeName)
+CTranslation_Module* CTranslation_Module::Create(MODULE_NAME eType , const _string& _strTypeName)
 {
     CTranslation_Module* pInstance = new CTranslation_Module();
 

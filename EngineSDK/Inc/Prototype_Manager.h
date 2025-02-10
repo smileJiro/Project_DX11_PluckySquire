@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Rect_Vertical.h"
+#include "VIBuffer_Point.h"
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Point_Particle.h"
@@ -21,15 +22,13 @@
 #include "DebugDraw_For_Client.h"
 #include "Collider_Circle.h"
 #include "Collider_AABB.h"
+#include "Compute_Shader.h"
 
 /* Etc */
 #include "Transform_2D.h"
 #include "Transform_3D.h"
 #include "CustomFont.h"
 #include "RenderTarget.h"
-
-/* Trigger */
-#include "TriggerObject.h"
 
 /* Camera */
 #include "Camera_Free.h"

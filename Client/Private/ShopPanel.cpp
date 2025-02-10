@@ -45,37 +45,14 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-	if (!m_isOpenPanel || CUI_Manager::GetInstance()->Get_ConfirmStore())
-	{
-		Update_KeyInput(_fTimeDelta, -1);
+	//if (!m_isOpenPanel || true == CUI_Manager::GetInstance()->Get_ConfirmStore())
+	//{
+	//	Update_KeyInput(_fTimeDelta, -1);
+	//	//return;
+	//}
+
+	if (false == Uimgr->Get_DialogueFinishShopPanel())
 		return;
-	}
-
-	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
-
-
-	if (!isInPanel(cursorPos))
-	{
-		Update_KeyInput(_fTimeDelta, -1);
-		return;
-	}
-
-	_int iIndex = isInPanelItem(cursorPos);
-
-	if (iIndex != -1 && iIndex != m_iPreindex)
-	{
-		CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
-		m_iPreindex = iIndex;
-	}
-
-	
-		Update_KeyInput(_fTimeDelta, iIndex);
-		
-	
-	
-
-
-
 
 	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
@@ -85,6 +62,45 @@ void CShopPanel::Update(_float _fTimeDelta)
 		Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
 		Uimgr->Set_ShopUpdate(false);
 	}
+
+	
+	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
+	_int iIndex = isInPanelItem(cursorPos);
+	
+	// 다이얼로그가 끝나면 상점을 오픈 시킨다.
+	if (true == Uimgr->Get_DialogueFinishShopPanel())
+	{
+		//Update_KeyInput(_fTimeDelta, iIndex);
+		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
+	}
+
+	// 해당 인덱스를 체크해서 true로한다.
+	if (iIndex != -1 && iIndex != m_iPreindex)
+	{
+		CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
+		m_iPreindex = iIndex;
+	}
+
+
+
+	
+	if (isInPanel(cursorPos))
+	{
+		Update_KeyInput(_fTimeDelta, iIndex);
+		return;
+	}
+	
+	
+
+
+	
+		
+	
+
+
+
+
+
 	
 
 	
@@ -129,10 +145,10 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		/* RTSIZE 를 가져올 수 있는 방법을 논의해봐야한다. */
 
 		_float2 BGPos = Uimgr->Get_ShopPos();
-		/* 나중에 수정 필요 */
+		/* TODO :: 나중에 수정 필요 */
 		_float2 vMiddlePoint = { RTSIZE_BOOK2D_X / 2 , RTSIZE_BOOK2D_Y / 2 };
 		_float2 vCalPos = { 0.f, 0.f };
-		/* 나중에 수정 필요 */
+		/* TODO :: 나중에 수정 필요 */
 		_float2 vRTSize = { RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y };
 
 
@@ -173,10 +189,6 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
 	}
-
-
-
-
 
 	if (true == CUI_Manager::GetInstance()->Get_ConfirmStore())
 	{
@@ -339,30 +351,30 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta, _int _index)
 	bool iskeyESC = KEY_DOWN(KEY::ESC);
 	bool iskeyE = KEY_DOWN(KEY::E);
 
-	if (true == iskeyI) /* && SHOP_END != m_eShopPanel*/
-	{
-		if (true == Uimgr->Get_isESC())
-			return;
-
-		isFontPrint();
-
-		for (auto iter : Uimgr->Get_ShopPanels())
-		{
-			if (SHOP_END != iter.second->Get_ShopPanel())
-			{
-				iter.second->Child_Update(_fTimeDelta);
-			}
-		}
-
-
-		for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
-		{
-			for (int j = 0; j < 3; ++j)
-			{
-				Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
-			}
-		}
-	}
+	//if (true == iskeyI) /* && SHOP_END != m_eShopPanel*/
+	//{
+	//	if (true == Uimgr->Get_isESC())
+	//		return;
+	//
+	//	isFontPrint();
+	//
+	//	for (auto iter : Uimgr->Get_ShopPanels())
+	//	{
+	//		if (SHOP_END != iter.second->Get_ShopPanel())
+	//		{
+	//			iter.second->Child_Update(_fTimeDelta);
+	//		}
+	//	}
+	//
+	//
+	//	for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
+	//	{
+	//		for (int j = 0; j < 3; ++j)
+	//		{
+	//			Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
+	//		}
+	//	}
+	//}
 
 	if (false == m_isOpenPanel)
 		return;
@@ -429,6 +441,28 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta, _int _index)
 
 	}
 
+	if (KEY_DOWN(KEY::K))
+	{
+		Uimgr->Set_DialogueFinishShopPanel(false);
+		instruct_ChildUpdate(_fTimeDelta);
+		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
+	}
+
+}
+
+void CShopPanel::ChangeState_Panel(_float _fTimeDelta, _bool _isOpenState)
+{
+	_bool isDialogueFinishShopPanel = Uimgr->Get_DialogueFinishShopPanel();
+
+	if (m_isPreState != isDialogueFinishShopPanel)
+	{
+		m_isPreState = isDialogueFinishShopPanel;
+
+		if (true == isDialogueFinishShopPanel) /* && SHOP_END != m_eShopPanel*/
+		{
+			instruct_ChildUpdate(_fTimeDelta);
+		}
+	}
 }
 
 HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag, _float2 _vRTSize)
@@ -443,7 +477,7 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 
 	for (_uint i = 0; i < CUI::SHOPPANEL::SHOP_END; ++i)
 	{
-		pShopDescs[i].iCurLevelID = LEVEL_GAMEPLAY;
+		pShopDescs[i].iCurLevelID = _eCurLevel;
 	}
 
 	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
@@ -475,8 +509,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 
 			case CUI::SHOPPANEL::SHOP_DIALOGUEBG:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fSizeX = 2320.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fSizeY = 424.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_DIALOGUEBG;
@@ -495,8 +529,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			{
 				CGameObject* pShopYesOrNo = { nullptr };
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iCurLevelID = m_iCurLevelID;
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeX = 800.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeY = 416.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_CHOOSEBG;
@@ -512,8 +546,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			
 			case CUI::SHOPPANEL::SHOP_BULB:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fSizeX = 640.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fSizeY = 272.f * 0.8f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BULB;
@@ -529,8 +563,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			
 			case CUI::SHOPPANEL::SHOP_BACKESC:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fSizeX = 72.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fSizeY = 72.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ESCBG;
@@ -542,8 +576,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
 				Safe_Release(pShopPanel);
 			
-				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fSizeX = 144.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fSizeY = 144.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BACKESC;
@@ -559,8 +593,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			
 			case CUI::SHOPPANEL::SHOP_BACKARROW:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fSizeX = 72.f * 1.2f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fSizeY = 72.f * 1.2f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BACKARROW;
@@ -577,8 +611,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 			
 			case CUI::SHOPPANEL::SHOP_ENTER:
 			{
-				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fSizeX = 72.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fSizeY = 72.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ENTERBG;
@@ -590,8 +624,8 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
 				Safe_Release(pShopPanel);
 			
-				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fX = 0.f;
-				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fY = 0.f;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fX = DEFAULT_SIZE_BOOK2D_X;
+				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fY = DEFAULT_SIZE_BOOK2D_Y;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fSizeX = 144.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fSizeY = 144.f;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ENTER;
@@ -694,6 +728,31 @@ void CShopPanel::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 
 				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
 			}
+		}
+	}
+}
+
+void CShopPanel::instruct_ChildUpdate(_float _fTimeDelta)
+{
+	if (true == Uimgr->Get_isESC())
+		return;
+
+	isFontPrint();
+
+	for (auto iter : Uimgr->Get_ShopPanels())
+	{
+		if (SHOP_END != iter.second->Get_ShopPanel())
+		{
+			iter.second->Child_Update(_fTimeDelta);
+		}
+	}
+
+
+	for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
 		}
 	}
 }

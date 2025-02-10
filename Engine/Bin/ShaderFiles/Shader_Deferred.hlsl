@@ -72,7 +72,9 @@ float g_fExposure = 1.0f;
 /* Effect */
 // Weighted Blended
 Texture2D g_AccumulateTexture, g_RevealageTexture;
-Texture2D g_EffectColorTexture;
+
+// Effect Texture
+Texture2D g_EffectColorTexture, g_BloomTexture, g_BloomTexture2;
 
 static const float3 Fdielectric = 0.04f;
 //Texture2D g_EffectTexture, g_Effect_BrightnessTexture, g_Effect_Blur_XTeuxture, g_Effect_Blur_YTeuxture, g_Effect_DistortionTeuxture;
@@ -378,41 +380,125 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     return Out;
 }
 
+float2 g_TexelSize = { 1.0f / 400.f, 1.0f / 225.f };
+
+
+PS_OUT PS_DOWNSAMPLE1(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = 0;
+    
+    vColor += g_BloomTexture.Sample(LinearSampler_Clamp, In.vTexcoord + g_TexelSize * float2(-0.5, -0.5));
+    vColor += g_BloomTexture.Sample(LinearSampler_Clamp, In.vTexcoord + g_TexelSize * float2(0.5, -0.5));
+    vColor += g_BloomTexture.Sample(LinearSampler_Clamp, In.vTexcoord + g_TexelSize * float2(-0.5, 0.5));
+    vColor += g_BloomTexture.Sample(LinearSampler_Clamp, In.vTexcoord + g_TexelSize * float2(0.5, 0.5));
+
+    Out.vColor = vColor * 0.25f;
+    
+    return Out;
+
+}
+
+PS_OUT PS_DOWNSAMPLE2(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = 0;
+    
+    for (int y = -3; y <= 2; y++)
+    {
+        for (int x = -3; x <= 2; x++)
+        {
+            float2 fOffset = g_TexelSize * float2(x + 0.5f, y + 0.5f);
+            vColor += g_BloomTexture.Sample(LinearSampler_Clamp, In.vTexcoord + fOffset);
+        }
+    }
+
+    // 평균 계산 (총 36개 샘플을 사용했으므로 1/36을 곱함)
+    Out.vColor = vColor * (1.0f / 36.0f);
+    
+    return Out;
+}
+
+float g_fWeights2[11] =
+{
+    0.0483939,
+0.057938,
+0.0666445,
+0.0736536,
+0.0782081,
+0.079788,
+0.0782081,
+0.0736536,
+0.0666445,
+0.057938,
+0.0483939,
+};
+float g_fDivide = 0.729464;
+
+PS_OUT PS_BLUR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float2 vTexcoord = 0.f;
+
+    for (int i = -5; i < 5; i++)
+    {
+        for (int j = -5; j < 5; ++j)
+        {
+            vTexcoord = float2(In.vTexcoord.x, In.vTexcoord.y) + float2(g_TexelSize.x * i, g_TexelSize.y * j);
+
+            Out.vColor += g_fWeights2[i + 5] * g_fWeights2[j + 5] * g_BloomTexture.Sample(LinearSampler_Clamp, vTexcoord);
+        }
+    }
+
+    Out.vColor = Out.vColor / (g_fDivide * g_fDivide) * 3.f;
+
+    return Out;
+}
+
+
+
 PS_OUT PS_AFTER_EFFECT(PS_IN In)
 {   
     PS_OUT Out = (PS_OUT) 0;
     
+    vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
     vector vColor = g_EffectColorTexture.Sample(LinearSampler, In.vTexcoord);
-    Out.vColor = vColor;
+    vector vBloom1 = g_BloomTexture.Sample(LinearSampler, In.vTexcoord);    
+    vector vBloom2 = g_BloomTexture2.Sample(LinearSampler, In.vTexcoord);    
+   
+    vector vAccum = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
+    float fRevealage = g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r;
+    
+    vector vBloomColor = vBloom1 * 0.5f + vBloom2 * 0.5f;
+    vector vParticle = float4(vAccum.rgb / max(0.001, vAccum.a), fRevealage);
+    
+    vFinal.rgb = vFinal.rgb * (1 - vColor.a) + vColor.rgb * vColor.a;
+    vFinal.rgb = vFinal.rgb * fRevealage + vParticle.rgb * (1 - fRevealage);
+    vFinal.rgb = vFinal.rgb + vBloomColor.rgb;
+    
+    
+    Out.vColor = vFinal;
+    
         
     return Out;
 }
 
 PS_OUT PS_AFTER_PARTICLE(PS_IN In)
-{
+{     
     PS_OUT Out = (PS_OUT) 0;
-    
-    vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
-    vector vAccumulate = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
+        
     float fRevealage = g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r;
+    vector vBloom2 = g_BloomTexture2.Sample(LinearSampler, In.vTexcoord);
 
-    // 투명도 계산
-    float alpha = 1.0 - fRevealage;
+    float4 vBloomParticle = float4(vBloom2.rgb / max(0.001, vBloom2.a), fRevealage);
     
-    // 가중치 정규화된 컬러 계산
-    float3 transparentColor = vAccumulate.rgb / max(0.001, vAccumulate.a);
-    
-    // 최종 블렌딩
-    Out.vColor.rgb = lerp(vFinal.rgb, transparentColor, alpha);
-    //Out.vColor.rgb = vAccumulate.rgb;
-    Out.vColor.a = 1.0;   
-    //}
- 
+    Out.vColor = vBloomParticle;
+        
     return Out;
 }
-
-
-
 
 // Debug PixelShader 
 PS_OUT PS_MAIN_DEBUG(PS_IN In)
@@ -423,6 +509,7 @@ PS_OUT PS_MAIN_DEBUG(PS_IN In)
 
     return Out;
 }
+
 technique11 DefaultTechnique
 {
     pass Debug // 0
@@ -434,9 +521,38 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DEBUG();
+        ComputeShader = NULL;
+
     }
 
-    pass Lighting // 1
+    pass Light_Directional // 1
+    {
+        SetRasterizerState(RS_Default);
+        // 깊이버퍼를 기록하지 않겠다. >>> 깊이버퍼를 기록해버리면 기존 object들의 깊이값이 모두 의미가 없어짐. 직교투영 사각형으로 그리다보니 0 값으로 다 채워질 거임.
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_LIGHT_DIRECTIONAL(); // 방향성 조명에 대한 shade 값을 계산하는 pixelshader 
+        ComputeShader = NULL;
+
+    }
+
+    pass Light_Point // 2
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_LIGHT_POINT();
+        ComputeShader = NULL;
+
+    }
+
+    pass Final // 3
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -444,32 +560,38 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_LIGHTING();
+        PixelShader = compile ps_5_0 PS_MAIN_FINAL();
+        ComputeShader = NULL;
+
     }
 
-    pass Combine // 2
+    pass AfterEffect // 4
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_COMBINE();
-    }
-
-    pass AfterEffect // 3
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_AFTER_EFFECT();
+        ComputeShader = NULL;
+
     }
 
-    pass AfterParticle // 4
+    pass AfterParticle // 5
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_InvAlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_AFTER_PARTICLE();
+        ComputeShader = NULL;
+
+    }
+
+    pass DOWNSAMPLE1 // 6
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -477,28 +599,36 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_AFTER_PARTICLE();
+        PixelShader = compile ps_5_0 PS_DOWNSAMPLE1();
+        ComputeShader = NULL;
+
     }
 
-    pass PBR_Light_Point
+    pass DOWNSAMPLE2 // 7
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_PBR_LIGHT_POINT();
+        PixelShader = compile ps_5_0 PS_DOWNSAMPLE2();
+        ComputeShader = NULL;
+
     }
 
-    pass PBR_Directional_Point
+    pass Blur // 8
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_PBR_LIGHT_DIRECTIONAL();
+        PixelShader = compile ps_5_0 PS_BLUR();
+        ComputeShader = NULL;
+
     }
+
+
 }

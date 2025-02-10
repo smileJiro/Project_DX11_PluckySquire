@@ -176,10 +176,25 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Event_Book_Main_Section_Change(const _tchar* _strSectionTag)
+	void Event_Book_Main_Section_Change_Start(_uint _iPageDirection, _float3* _fNextPosition)
 	{
 		EVENT tEvent;
-		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE;
+		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_START;
+		tEvent.Parameters.resize(2);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iPageDirection;
+		_float3* pPosition = nullptr;
+		if (nullptr != _fNextPosition)
+			pPosition = new _float3(*_fNextPosition);
+		tEvent.Parameters[1] = (DWORD_PTR)pPosition;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+	
+	void Event_Book_Main_Section_Change_End(const _tchar* _strSectionTag)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_END;
 		tEvent.Parameters.resize(1);
 
 		tEvent.Parameters[0] = (DWORD_PTR)_strSectionTag;
@@ -208,6 +223,18 @@ namespace Client
 		tEvent.Parameters[2] = (DWORD_PTR)_bEnable;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
+
+	void Event_Hit(CGameObject* _pHitter, CGameObject* _pVictim, _float _fDamg)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::HIT;
+		tEvent.Parameters.resize(3);
+		tEvent.Parameters[0] = (DWORD_PTR)_pHitter;
+		tEvent.Parameters[1] = (DWORD_PTR)_pVictim;
+		tEvent.Parameters[2] = (DWORD_PTR)_fDamg;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID)
 	//{
@@ -270,6 +297,15 @@ namespace Client
 		/* Ver.14 */
 		//std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		//return converter.to_bytes(_strWide);
+	}
+
+	std::string MatrixToString(_float4x4 vMatrix)
+	{
+		string strMatrix = to_string( vMatrix.m[0][0] ) +" " + to_string(vMatrix.m[0][1] )+ " " + to_string(vMatrix.m[0][2]) + " " + to_string(vMatrix.m[0][3]) + "\n";
+		strMatrix += to_string(vMatrix.m[1][0]) + " " + to_string(vMatrix.m[1][1]) + " " + to_string(vMatrix.m[1][2]) + " " + to_string(vMatrix.m[1][3]) + "\n";
+		strMatrix += to_string(vMatrix.m[2][0]) + " " + to_string(vMatrix.m[2][1]) + " " + to_string(vMatrix.m[2][2]) + " " + to_string(vMatrix.m[2][3]) + "\n";
+		strMatrix += to_string(vMatrix.m[3][0]) + " " + to_string(vMatrix.m[3][1]) + " " + to_string(vMatrix.m[3][2]) + " " + to_string(vMatrix.m[3][3]) + "\n";
+		return strMatrix;
 	}
 
 	F_DIRECTION To_FDirection(_vector _vDir)

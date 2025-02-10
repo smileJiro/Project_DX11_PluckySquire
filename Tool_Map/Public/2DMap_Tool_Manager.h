@@ -10,6 +10,7 @@ BEGIN(Engine)
 class CGameInstance;
 class CGameObject;
 class CLayer;
+class CRenderGroup;
 END
 
 
@@ -24,6 +25,7 @@ class CTask_Manager;
 class C2DMapObject;
 class C2DDefault_RenderObject;
 class C2DTile_RenderObject;
+class CRenderGroup_2D;
 
 
 class C2DMap_Tool_Manager final : public CBase
@@ -95,7 +97,10 @@ private:
 	void				Save(_bool _bSelected = true);
 	// 2D 맵, 오브젝트 입력
 	void				Load(_bool _bSelected = true);
-
+	
+	// .umap -> 2D Map
+	void				Import(const _string& _strFileName, json& _MapFileJson, _float4* _fColor);
+	
 	void				Load_3D_Map(_bool _bSelected = true);
 
 
@@ -110,16 +115,26 @@ private:
 	HRESULT				Update_Model_Index();
 
 
+	HRESULT				Change_RenderGroup(_float2 _fRenderTargetSize);
+	HRESULT				Clear_RenderGroup();
+
+private:
+
+	_bool				Check_Import_Egnore_2DObject(const _string& _strTag);
+
+
 private:
 	ID3D11Device*					m_pDevice;
 	ID3D11DeviceContext*			m_pContext;
-	CGameInstance*					m_pGameInstance = { nullptr };
+	Engine::CGameInstance*			m_pGameInstance = { nullptr };
 	CImguiLogger*					m_pLogger = nullptr;
 	CTask_Manager*					m_pTaskManager;
-	C2DTile_RenderObject*			m_pTileRenderObject = nullptr;
 	
-	_wstring						m_arrSelectName[LIST_END];
+	C2DDefault_RenderObject*		m_DefaultRenderObject;
+	C2DTile_RenderObject*			m_pTileRenderObject = nullptr;
+	class CRenderGroup_2D*				m_p2DRenderGroup = nullptr;
 
+	_wstring						m_arrSelectName[LIST_END];
 	vector<C2DMapObjectInfo*>		m_ObjectInfoLists;
 	vector<TRIGGER_EVENT>			m_TriggerEvents;
 	vector<_wstring>				m_SaveFileLists;
@@ -127,18 +142,25 @@ private:
 	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
 	C2DMapObject*					m_pPickingObject = nullptr;
 	class C2DTrigger_Sample*		m_pPickingTrigger = nullptr;
-	_int							m_SelectTriggerEventIdx = -1;
-
+	
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
 	_char							m_szSaveFileName[MAX_PATH];
 
-	C2DDefault_RenderObject*		m_DefaultRenderObject;
 	
 	vector<_string>					m_ModelTypeTexts;
 	vector<_string>					m_ActiveTypeTexts;
 	vector<_string>					m_ColliderTypeTexts;
 
+	vector<_string>					m_Egnore2DObjectrTags;
+
 	_float2		m_fOffsetPos = { 0.f, 0.f };
+
+	_int							m_SelectTriggerEventIdx = -1;
+
+
+	const _wstring					m_strRTKey = L"Target_2D";
+	const _wstring					m_strMRTKey = L"MRT_2D";
+	const _wstring					m_strDSVKey = L"DSV_2D";
 
 public:
 	virtual void Free();

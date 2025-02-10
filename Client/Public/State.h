@@ -23,6 +23,7 @@ public:
 		_float fAttack2DRange;
 		_float fDelayTime;
 		_float fCoolTime;
+		_int iCurLevel;
 	}STATEDESC;
 
 protected:
@@ -57,6 +58,7 @@ protected:
 	_float Get_CurCoordRange(MONSTER_STATE _eState);
 	_bool Check_Target3D(_bool _isSneak = false);
 	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
+	void Determine_AvoidDirection(_fvector& _vDestination, _float3* _vDirection);
 
 protected:
 	CGameInstance* m_pGameInstance = { nullptr };
@@ -64,6 +66,7 @@ protected:
 	//상태를 가지는 몬스터
 	CMonster* m_pOwner = { nullptr };
 	CFSM* m_pFSM = { nullptr };
+	_int m_iCurLevel = { LEVEL_END };
 
 	_float	m_fAlertRange = {};
 	_float	m_fChaseRange = {};
@@ -74,6 +77,7 @@ protected:
 	_float	m_fDelayTime = {};
 	_float	m_fCoolTime = {};
 	_float3 m_vSneakPos = {};
+	_float m_fRayDis = { 2.f };
 
 public:
 	virtual void Free() override;

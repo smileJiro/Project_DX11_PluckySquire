@@ -105,6 +105,25 @@ HRESULT CShader::Begin(_uint _iPassIndex)
     return S_OK;
 }
 
+HRESULT CShader::Begin_NoInput(_uint _iPassIndex)
+{
+    /* Object를 렌더링하기 전 PassIndex에 해당하는 InputLayout을 IA에 세팅한다. */
+    if (_iPassIndex >= m_iNumLayouts)
+        return E_FAIL;
+
+    ID3DX11EffectPass* pPass = m_pEffect->GetTechniqueByIndex(0)->GetPassByIndex(_iPassIndex);
+    if (pPass == nullptr)
+        return E_FAIL;
+
+
+    // pPass에 담겨있는 데이터가 어떠한 타입의 데이터인지 모른다. 
+    // 그래서 해당 pass 를 사용해서 그리기 연산을 수행하겠다! 라는 의미로 Apply() 함수를 호출.
+    pPass->Apply(0, m_pContext);
+
+    m_pContext->IASetInputLayout(nullptr);
+    return S_OK;
+}
+
 HRESULT CShader::Bind_RawValue(const _char* _pConstantName, const void* _pData, _uint _iLength)
 {
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(_pConstantName);
@@ -115,6 +134,7 @@ HRESULT CShader::Bind_RawValue(const _char* _pConstantName, const void* _pData, 
     return pVariable->SetRawValue(_pData, 0, _iLength);
 }
 
+
 HRESULT CShader::Bind_Matrix(const _char* _pConstantName, const _float4x4* _pMatrix)
 {
     // 상수 데이터 변수의 이름과 전송하고자하는 데이터를 매개변수로 받는다. 
@@ -123,6 +143,10 @@ HRESULT CShader::Bind_Matrix(const _char* _pConstantName, const _float4x4* _pMat
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(_pConstantName);
     if (nullptr == pVariable)
         return E_FAIL;
+    _bool b = pVariable->IsValid();
+    if (true == pVariable->IsValid()) {
+        int a;
+    }
     // 해당 자료형이 무슨 자료형인지 나만안다고. >>> 그래서 캐스팅 해줘야함 (AsMatrix() 가 캐스팅 함수)
     ID3DX11EffectMatrixVariable* pMatrixVariable = pVariable->AsMatrix();
     if (nullptr == pMatrixVariable)

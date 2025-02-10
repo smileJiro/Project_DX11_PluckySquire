@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "Shader.h"
 
+
 CTexture::CTexture(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
 	, m_iNumSRVs(0)
@@ -16,6 +17,7 @@ CTexture::CTexture(const CTexture& _Prototype)
 {
 	for (auto& pSRV : m_SRVs)
 		Safe_AddRef(pSRV);
+
 }
 
 HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)

@@ -4,7 +4,6 @@
 #include "UI_Manager.h"
 #include "Dialogue.h"
 #include "Section_Manager.h"
-#include "Section_2D.h"
 
 CPortrait::CPortrait(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
@@ -24,6 +23,7 @@ HRESULT CPortrait::Initialize_Prototype()
 HRESULT CPortrait::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
+	m_vDisplay3DSize = _float2(pDesc->fSizeX * 0.5f, pDesc->fSizeY * 0.5f);
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -42,10 +42,10 @@ HRESULT CPortrait::Initialize(void* _pArg)
 	_float2 vCalScale = { 0.f, 0.f };
 	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
+	m_vDisplay2DSize = vCalScale;
+	m_pControllerTransform->Set_Scale(m_vDisplay2DSize.x, m_vDisplay2DSize.y, 1.f);
 
-	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 
 	return S_OK;
 }
@@ -53,16 +53,46 @@ HRESULT CPortrait::Initialize(void* _pArg)
 
 void CPortrait::Update(_float _fTimeDelta)
 {
-	m_isRender = Uimgr->Get_PortraitRender();
+
+
+
+
+}
+
+void CPortrait::Late_Update(_float _fTimeDelta)
+{
+	if (true == Uimgr->Get_DisplayDialogue() && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
+	}
+	else if (true == Uimgr->Get_DisplayDialogue() && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		if (!m_isAddSectionRender)
+		{
+			m_isAddSectionRender = true;
+			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+		}
+	}
+}
+
+HRESULT CPortrait::Render()
+{
+	if (true == Uimgr->Get_PortraitRender())
+	{
+		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+		m_isRender = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex()).isPortrait;
+	}
+	else
+	{
+		m_isRender = false;
+	}
 
 	if (true == m_isRender)
 	{
-		//Uimgr->Set_DialogId(TEXT("dialog_01"));
 		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
 
-		//Uimgr->Get_DialogueLine()
 		if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
-			return;
+			return E_FAIL;
 
 		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
 		m_ePortraitFace = (CDialog::PORTRAITNAME)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
@@ -71,23 +101,9 @@ void CPortrait::Update(_float _fTimeDelta)
 		/* 추후 진행에따라 변경을 해야한다. */
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 		ChangePosition(m_isRender, RTSize);
-	}
 
-
-
-}
-
-void CPortrait::Late_Update(_float _fTimeDelta)
-{
-}
-
-HRESULT CPortrait::Render()
-{
-	if (true == m_isRender)
-	{
 		__super::Render((_int)m_ePortraitFace, PASS_VTXPOSTEX::DEFAULT);
 	}
-		
 	return S_OK;
 }
 
@@ -102,13 +118,58 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 		return;
 
 	_float3 vTexPos = Uimgr->Get_CalDialoguePos();
-	
+
 	const auto& currentLine = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex());
+
+	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_Scale(m_vDisplay2DSize.x, m_vDisplay2DSize.y, 1.f);
+	}
+	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_Scale(m_vDisplay3DSize.x, m_vDisplay3DSize.y, 1.f);
+	}
 
 	switch (currentLine.location)
 	{
 	case CDialog::LOC_MIDDOWN:  // 가운데 아래
 	{
+
+
+
+		if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+		{
+			if (!m_isAddSectionRender)
+			{
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				m_isAddSectionRender = true;
+			}
+
+			vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+			vTexPos.y = vTexPos.y;
+
+			//vPos.y -= _RTSize.y * 0.13f;
+		}
+		else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+		{
+			if (true == m_isAddSectionRender)
+			{
+				CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+				m_isAddSectionRender = false;
+			}
+
+			vTexPos = _float3(g_iWinSizeX / 5.3f, g_iWinSizeY - g_iWinSizeY / 6.85f, 0.f);
+
+			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vTexPos.x - g_iWinSizeX * 0.5f, -vTexPos.y + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+			return;
+
+		}
+
+
+
+
+
 		// 3D 세팅
 		//if (3D)
 		//{
@@ -121,8 +182,8 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 		//2D 
 	//else
 	//{
-		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
-		vTexPos.y = vTexPos.y;
+		//vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+		//vTexPos.y = vTexPos.y;
 	//
 	// }
 		

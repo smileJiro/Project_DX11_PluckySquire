@@ -4,8 +4,8 @@
 BEGIN(Client)
 typedef struct tagCharacterStat
 {
-	_float fJumpPower = 0;
-	_float fMoveSpeed = 0;
+	_float fDamg = 0.f;
+	_float fHP = 1.f;
 }STAT;
 class CCharacter abstract :   public CContainerObject
 {
@@ -24,13 +24,14 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 public:
-	STAT& Get_Stat(COORDINATE _eCoord) { return m_tStat[_eCoord]; }
+	STAT& Get_Stat() { return m_tStat; }
 
 	void Stop_Rotate();
 	void Stop_Move();
 	void Add_Impuls(_fvector _vForce);
 	void Add_Force(_fvector _vForce);
-	_bool Move_To(_fvector _vPosition);
+	_bool Move_To(_fvector _vPosition, _float _fEpsilon = 0.5f);
+	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
 	void LookDirectionXZ_Kinematic(_fvector _vDir);
 	void LookDirectionXZ_Dynamic(_fvector _vDir);
@@ -38,7 +39,7 @@ public:
 	_bool Rotate_To(_fvector _vDirection, _float _fSpeed);
 	_bool Rotate_To_Radians(_fvector _vDirection, _float _fSpeed);
 protected:
-	STAT m_tStat[COORDINATE::COORDINATE_LAST];
+	STAT m_tStat;
 	_vector m_vLookBefore = { 0,0,-1 };
 public:	
 	virtual void Free() override;

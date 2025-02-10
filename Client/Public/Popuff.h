@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+BEGIN(Client)
 class CPopuff final : public CMonster
 {
 public:
@@ -41,3 +42,4 @@ public:
 	virtual void			Free() override;
 };
 
+END

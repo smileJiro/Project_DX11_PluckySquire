@@ -549,6 +549,7 @@ HRESULT CLevel_AnimTool::Export_Model(const wstring& _wstrPath)
 	if (FAILED(m_pTestModelObj->Export_Model(outFile, path.remove_filename().string().c_str(), m_bExportTextures)))
 	{
 		MSG_BOX("내보내기 실패.");
+		outFile.close();
 		return E_FAIL;
 	}
 	outFile.close();
@@ -567,6 +568,7 @@ HRESULT CLevel_AnimTool::Load_AnimEvents(wstring _wstrPath)
 		string str = "파일을 열 수 없습니다.";
 		str += WstringToString( _wstrPath);
 		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+		inFile.close();
 		return E_FAIL;
 	}
 	m_AnimEvents.clear();
@@ -607,7 +609,9 @@ HRESULT CLevel_AnimTool::Export_AnimEvents(const wstring& _wstrPath)
 	std::ofstream outFile(path, std::ios::binary);
 	if (!outFile)
 	{
+		outFile.close();
 		MSG_BOX("파일 열기 실패.");
+		return E_FAIL;
 	}
 	_uint iAnimIndexCount = (_uint)m_AnimEvents.size();
 	outFile.write(reinterpret_cast<char*>(&iAnimIndexCount), sizeof(_uint));
@@ -622,6 +626,7 @@ HRESULT CLevel_AnimTool::Export_AnimEvents(const wstring& _wstrPath)
 			tEvent.WriteFile(outFile);
 		}
 	}
+	outFile.close();
 	return S_OK;
 }
 
@@ -660,9 +665,11 @@ HRESULT CLevel_AnimTool::Convert_SingleSprite2DModels(const wstring& _wstrPath)
 			if (!outFile)
 			{
 				MSG_BOX("파일 열기 실패.");
+				outFile.close();
 				return E_FAIL;
 			}
 			pTmpModel->Export_Model(outFile);
+			outFile.close();
 		}
 		
 	}
@@ -674,21 +681,8 @@ HRESULT CLevel_AnimTool::Copy_Textures(CTestModelObject* _pModel, std::filesyste
 	assert(_pModel);
 	assert(!_wstrSrcPath.empty());
 	assert(!_wstrDstPath.empty());
-	set<wstring> TextureNames;
-	_pModel->Get_TextureNames(TextureNames);
 
-	for (const auto& entry : std::filesystem::recursive_directory_iterator(_wstrSrcPath)) {
-		if (entry.path().extension() == ".png" ) 
-		{
-			if (TextureNames.find(entry.path().filename().replace_extension()) != TextureNames.end())
-			{
-				std::filesystem::path dstPath = _wstrDstPath;
-				dstPath += entry.path().filename();
-				std::filesystem::copy(entry.path(), dstPath, std::filesystem::copy_options::overwrite_existing);
-			}
-		}
-	}
-
+	_pModel->Copy_Textures( _wstrDstPath);
 
 	return S_OK;
 }

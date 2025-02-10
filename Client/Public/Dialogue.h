@@ -65,6 +65,9 @@ public:
         _int Red;
         _int Green;
         _int Blue;
+
+        _bool is2D;
+        _bool isPortrait;
         
         LOC  location = LOC_MIDHIGH;    // 위치 설정
         PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
@@ -94,6 +97,7 @@ private:
     HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
     void        NextDialogue(_float2 _RTSize);
     void        FirstCalPos(_float2 _RTSize);
+    void        isOpenPanel(_tchar* _DialogId);
 
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터
@@ -101,6 +105,9 @@ private:
     _tchar			    m_tDialogIndex[MAX_PATH] = {};
     _float2             m_vCurPos = { 0.f, 0.f };
     _bool               m_isFirstRefresh = { false };
+	_float2             m_vDisplay3DSize = { 0.f, 0.f };
+	_float2             m_vDisplay2DSize = { 0.f, 0.f };
+    _bool               m_isAddSectionRender = { false };
 
     //vector<DialogData>  m_DialogDatas;
 

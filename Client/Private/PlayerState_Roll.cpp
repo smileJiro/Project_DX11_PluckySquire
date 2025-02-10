@@ -20,7 +20,7 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 	_float fForwardStartProgress = eCoord == COORDINATE_2D ? m_f2DForwardStartProgress : m_f3DForwardStartProgress;
 	_float fForwardEndProgress= eCoord == COORDINATE_2D ? m_f2DForwardEndProgress : m_f3DForwardEndProgress;
 	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
-
+	m_pOwner->Stop_Rotate();
 	if (fProgress >= fMotionCancelProgress)
 	{
 		 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();

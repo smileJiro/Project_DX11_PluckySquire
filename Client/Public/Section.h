@@ -8,14 +8,17 @@ class CGameInstance;
 END
 
 BEGIN(Client)
-class CSection : public CBase
+class CSection abstract: public CBase
 {
 public:
 	typedef struct tagSectionDesc
 	{
 		_int	 iLayerGroupCount = 1;
 		_wstring strSectionName;
+		_uint iGroupID = RG_2D;
+		_uint iPriorityID = 0;
 	}SECTION_DESC;
+
 protected:
 	CSection(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CSection() = default;
@@ -47,7 +50,8 @@ public:
 		_iOutputGroupID = m_iGroupID; 
 	_iOutputPriorityID = m_iPriorityID; 
 	return true; };
-
+	
+	virtual HRESULT Section_AddRenderGroup_Process() abstract;
 
 	_bool			Is_CurSection(CGameObject* _pGameObject);
 
@@ -79,7 +83,6 @@ protected:
 	_uint						m_iLayerGroupCount = {};
 	_wstring					m_strName;
 	CLayer**					m_Layers = nullptr;
-
 private:
 	
 	_bool Has_Exist_Layer(_uint _iLayerIndex) { return _iLayerIndex < m_iLayerGroupCount && nullptr != m_Layers[_iLayerIndex];  }
@@ -89,7 +92,7 @@ private:
 	virtual void Active_OnDisable();
 
 public:
-	static CSection* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc);
+	//static CSection* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc);
 	void Free() override;
 };
 

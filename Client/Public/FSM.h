@@ -21,6 +21,7 @@ public:
 		_float fDelayTime;
 		_float fCoolTime;
 		CMonster* pOwner;
+		_int iCurLevel;
 	}FSMDESC;
 
 protected:
@@ -31,6 +32,7 @@ protected:
 public:
 	//void Set_Owner(CMonster* _pOwner);
 	void Set_PatrolBound();
+	void Set_Sneak_StopTime(_float _fStopTime);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -48,6 +50,7 @@ public:
 protected:
 	CState* m_pCurState = { nullptr };
 	CMonster* m_pOwner = { nullptr };
+	_int m_iCurLevel = { LEVEL_END };
 
 protected:
 	map<_uint, CState*> m_States;

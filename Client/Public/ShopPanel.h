@@ -39,10 +39,11 @@ private:
 	_bool					isInPanel(_float2 _vMousePos);
 	_int					isInPanelItem(_float2 _vMousePos);
 	void					Update_KeyInput(_float _fTimeDelta, _int _index = -1);
-
+	void					ChangeState_Panel(_float _fTimeDelta, _bool _isOpenState);
 	HRESULT					Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag, _float2 _vRTSize);
 	HRESULT					Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag);
 	void					Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos);
+	void					instruct_ChildUpdate(_float _fTimeDelta);
 	
 
 protected:
@@ -69,6 +70,7 @@ protected:
 
 	SKILLSHOP			m_eSkillShopIcon = SKILLSHOP_END;
 	_bool				m_isChooseItem = { false };
+	_bool				m_isPreState = { false };
 
 
 private:
@@ -76,6 +78,9 @@ private:
 	_int				m_iPreindex = { 0 };
 	_bool				m_isConfirmItem = { false };
 	_uint				m_iConfirmItemIndex = { 0 };
+
+
+
 
 
 };

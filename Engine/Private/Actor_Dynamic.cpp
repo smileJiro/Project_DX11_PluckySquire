@@ -40,13 +40,16 @@ void CActor_Dynamic::Update(_float _fTimeDelta)
 
 		_matrix OwnerWorldMatrix = m_pOwner->Get_FinalWorldMatrix();
 		_float4x4 FinalMatrix = {};
-		XMStoreFloat4x4(&FinalMatrix, XMLoadFloat4x4(&m_OffsetMatrix) * OwnerWorldMatrix);
+		_matrix matTranslation = XMMatrixTranslation(OwnerWorldMatrix.r[3].m128_f32[0], OwnerWorldMatrix.r[3].m128_f32[1], OwnerWorldMatrix.r[3].m128_f32[2]);
+		XMStoreFloat4x4(&FinalMatrix, XMLoadFloat4x4(&m_OffsetMatrix) * matTranslation);
 		PxMat44 PxFinalMatrix((_float*)(&FinalMatrix));
 		PxTransform pxTransform{ PxFinalMatrix };
-		if(pxTransform.isValid())
-			static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(pxTransform);
+		if (pxTransform.isValid())
+			static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(pxTransform.getNormalized());
+		else
+			return;
 	}
-
+	 
 }
 
 void CActor_Dynamic::Late_Update(_float _fTimeDelta)
@@ -59,12 +62,16 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 			return;
 
+		_float3 vOwnerScale = m_pOwner->Get_ControllerTransform()->Get_Scale();
+
 		PxTransform DynamicTransform = static_cast<PxRigidDynamic*>(m_pActor)->getGlobalPose();
 		_matrix TranslationMatrix = XMMatrixTranslation(DynamicTransform.p.x, DynamicTransform.p.y, DynamicTransform.p.z);
 		_matrix QuatMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(DynamicTransform.q.x, DynamicTransform.q.y, DynamicTransform.q.z, DynamicTransform.q.w));
 		_float4x4 WorldMatrix = {};
 		XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
 		m_pOwner->Set_WorldMatrix(WorldMatrix);
+
+		m_pOwner->Set_Scale(vOwnerScale);
 	}
 	
 #ifdef _DEBUG
@@ -106,8 +113,9 @@ void CActor_Dynamic::Set_Dynamic()
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
 	PxTransform pxTransform;
 	pDynamic->getKinematicTarget(pxTransform);
+	
 	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false); // Kinematic 
-	pDynamic->setGlobalPose(pxTransform);
+	pDynamic->setGlobalPose(pxTransform.getNormalized());
 }
 
 void CActor_Dynamic::Set_SleepThreshold(_float _fThreshold)
@@ -199,6 +207,7 @@ void CActor_Dynamic::Set_Rotation(_fvector _vLook)
 	PxTransform newTransform(currentPosition, newRotation);
 	pDynamicActor->setGlobalPose(newTransform, m_isActive); 
 }
+
 
 void CActor_Dynamic::Set_LinearDamping(_float _fValue)
 {

@@ -44,6 +44,8 @@ private:
 	HRESULT Ready_RenderTargets();
 	HRESULT Ready_RenderGroup();
 
+	void	Set_EffectRG();
+
 public:
 	static CMainApp* Create();
 	virtual void Free() override;

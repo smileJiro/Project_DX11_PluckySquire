@@ -168,6 +168,8 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+        ComputeShader = NULL;
+
     }
     
     pass AlphaPass // 1
@@ -178,6 +180,8 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+        ComputeShader = NULL;
+
     }
 
     pass NoneCullPass // 2
@@ -188,6 +192,8 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+        ComputeShader = NULL;
+
     }
 
     pass LightDepth // 3
@@ -199,6 +205,8 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_LIGHTDEPTH();
+        ComputeShader = NULL;
+
     }
 
     pass RenderTargetMappingPass // 4
@@ -209,6 +217,8 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+        ComputeShader = NULL;
+
     }
 
 }

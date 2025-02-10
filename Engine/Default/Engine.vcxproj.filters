@@ -187,9 +187,6 @@
     <Filter Include="01.Utility\03.Objects\Effect\Emitter">
       <UniqueIdentifier>{78145474-8460-4e67-a217-cab6f3d801f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Objects\Effect\Emitter\Sprite">
-      <UniqueIdentifier>{eb2f84bd-65ed-409e-ac8d-d5cf7088ee14}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00.System\03.Physx">
       <UniqueIdentifier>{07b9728a-0ce5-4ee1-a194-7f177c43d688}</UniqueIdentifier>
     </Filter>
@@ -223,9 +220,6 @@
     <Filter Include="00.System\03.Physx\EventCallBack">
       <UniqueIdentifier>{e50015aa-fe43-413b-a4bd-e7a60c293656}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Objects\Effect\Emitter\Mesh">
-      <UniqueIdentifier>{4e29ca39-e287-4460-82aa-ca6105e1e3cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.Objects\Camera\CutScene_Sector">
       <UniqueIdentifier>{cba30df6-e1fa-4802-a037-b3c7f69f9b94}</UniqueIdentifier>
     </Filter>
@@ -243,9 +237,6 @@
     </Filter>
     <Filter Include="01.Utility\14.RenderGroup\RenderGroup_MRT">
       <UniqueIdentifier>{396e807a-38e4-4963-88dd-89969174e94d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03.Objects\Trigger">
-      <UniqueIdentifier>{48dd45cb-48ea-425a-baa8-4b28491a2eab}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh_Particle">
       <UniqueIdentifier>{c4dbee5e-b0ec-4fea-bcd9-f258a7028cd4}</UniqueIdentifier>
@@ -279,6 +270,24 @@
     </Filter>
     <Filter Include="01.Utility\03.Objects\Effect\Emitter\Module">
       <UniqueIdentifier>{039afc39-1618-4d44-b246-cb6b27ea3789}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect\Emitter\MeshEffect\Model">
+      <UniqueIdentifier>{52076843-30ec-474a-8026-59ad8bbe349d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect\Emitter\SpriteEffect">
+      <UniqueIdentifier>{bb525374-3fa0-44d5-8737-da1c8b5f9da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect\Emitter\MeshParticle">
+      <UniqueIdentifier>{4e29ca39-e287-4460-82aa-ca6105e1e3cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\Effect\Emitter\SpriteParticle">
+      <UniqueIdentifier>{eb2f84bd-65ed-409e-ac8d-d5cf7088ee14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Point">
+      <UniqueIdentifier>{8f793989-4e46-4f40-9c31-6e133e58f3ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Shader\ComputeShader">
+      <UniqueIdentifier>{63be8360-f437-4f97-b7d2-a3a47cbc0d5a}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Utility\96.D3DUtils">
       <UniqueIdentifier>{d4356aa0-e49f-4339-aca3-67d29a98dd5e}</UniqueIdentifier>
@@ -496,7 +505,7 @@
       <Filter>01.Utility\03.Objects\Effect\Emitter</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Particle_Sprite_Emitter.h">
-      <Filter>01.Utility\03.Objects\Effect\Emitter\Sprite</Filter>
+      <Filter>01.Utility\03.Objects\Effect\Emitter\SpriteParticle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Physx_Manager.h">
       <Filter>00.System\03.Physx</Filter>
@@ -526,7 +535,7 @@
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh_Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h">
-      <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
+      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshParticle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Animation2D.h">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
@@ -549,9 +558,6 @@
     <ClInclude Include="..\Public\RenderGroup_MRT.h">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_MRT</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\TriggerObject.h">
-      <Filter>01.Utility\03.Objects\Trigger</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\AnimEventGenerator.h">
       <Filter>01.Utility\04.Components\AnimEvent</Filter>
     </ClInclude>
@@ -573,14 +579,23 @@
     <ClInclude Include="..\public\MeshEffect_Emitter.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\EffectModel.h">
-      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Keyframe_Module.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Effect_Module.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EffectModel.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpriteEffect_Emitter.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\SpriteEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Point.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Compute_Shader.h">
+      <Filter>01.Utility\04.Components\Shader\ComputeShader</Filter>
     </ClInclude>
     <ClInclude Include="..\public\D3DUtils.h">
       <Filter>01.Utility\96.D3DUtils</Filter>
@@ -786,7 +801,7 @@
       <Filter>01.Utility\03.Objects\Effect\Emitter</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp">
-      <Filter>01.Utility\03.Objects\Effect\Emitter\Sprite</Filter>
+      <Filter>01.Utility\03.Objects\Effect\Emitter\SpriteParticle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Physx_Manager.cpp">
       <Filter>00.System\03.Physx</Filter>
@@ -816,7 +831,7 @@
       <Filter>01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh_Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp">
-      <Filter>01.Utility\03.Objects\Effect\Emitter\Mesh</Filter>
+      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshParticle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Animation2D.cpp">
       <Filter>01.Utility\04.Components\Model\Animation</Filter>
@@ -839,9 +854,6 @@
     <ClCompile Include="..\Private\RenderGroup.cpp">
       <Filter>01.Utility\14.RenderGroup</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\TriggerObject.cpp">
-      <Filter>01.Utility\03.Objects\Trigger</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\AnimEventGenerator.cpp">
       <Filter>01.Utility\04.Components\AnimEvent</Filter>
     </ClCompile>
@@ -863,14 +875,23 @@
     <ClCompile Include="..\private\MeshEffect_Emitter.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\EffectModel.cpp">
-      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Keyframe_Module.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Module.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EffectModel.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\MeshEffect\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpriteEffect_Emitter.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\SpriteEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Point.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Compute_Shader.cpp">
+      <Filter>01.Utility\04.Components\Shader\ComputeShader</Filter>
     </ClCompile>
     <ClCompile Include="..\private\D3DUtils.cpp">
       <Filter>01.Utility\96.D3DUtils</Filter>

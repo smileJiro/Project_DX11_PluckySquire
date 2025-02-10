@@ -30,7 +30,9 @@ private:
 private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 
-
+	HRESULT Ready_RenderTargets();
+	HRESULT Ready_RenderGroup();
+	void Imgui_FPS(_float _fTimeDelta);
 
 public:
 	static CMap_Tool_MainApp* Create();

@@ -3,6 +3,9 @@
 #include "VIBuffer_Mesh_Particle.h"
 #include "Material.h"
 #include "Bone.h"
+#include "Effect_Module.h"
+#include "Translation_Module.h"
+#include "Keyframe_Module.h"
 
 CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CEmitter(_pDevice, _pContext)
@@ -43,53 +46,6 @@ CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Pr
 
 }
 
-//HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const _char* _szModelPath, const _tchar* _szInfoPath)
-//{
-//	//XMMATRIX matPreTransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-//	//matPreTransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
-//	//XMStoreFloat4x4(&m_PreTransformMatrix, matPreTransform);
-//
-//	json jsonEmitterInfo;
-//	if (FAILED(m_pGameInstance->Load_Json(_szInfoPath, &jsonEmitterInfo)))
-//		return E_FAIL;
-//
-//	if (false == jsonEmitterInfo.contains("Emitters"))
-//		return E_FAIL;
-//
-//	if (false == jsonEmitterInfo["Emitters"].contains("PreTransform"))
-//		return E_FAIL;
-//
-//	for (size_t i = 0; i < sizeof(_float4x4) / sizeof(_float); ++i)
-//	{
-//		*((_float*)(&m_PreTransformMatrix) + i) = jsonEmitterInfo["Emitters"]["PreTransform"][i];
-//	}
-//
-//
-//	std::ifstream inFile(_szModelPath, std::ios::binary);
-//	if (!inFile) {
-//		string str = "파일을 열 수 없습니다.";
-//		str += _szModelPath;
-//		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
-//		return E_FAIL;
-//	}
-//
-//	_bool bAnim;
-//	inFile.read(reinterpret_cast<char*>(&bAnim), 1);
-//	if (FAILED(Ready_Bones(inFile, -1)))
-//		return E_FAIL;
-//
-//
-//	// TODO: 바꿔!!
-//	if (FAILED(Ready_Meshes(inFile, jsonEmitterInfo["Emitters"][0]["Buffer"])))
-//		return E_FAIL;
-//
-//	if (FAILED(Ready_Materials(inFile, _szModelPath)))
-//		return E_FAIL;
-//
-//	inFile.close();
-//
-//	return S_OK;
-//}
 
 HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const json& _jsonInfo)
 {
@@ -107,7 +63,6 @@ HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const json& _jsonInfo)
 			*((_float*)(&m_PreTransformMatrix) + i) = _jsonInfo["PreTransform"][i];
 		}
 	}
-
 
 	if (false == _jsonInfo.contains("Model"))
 		return E_FAIL;
@@ -139,6 +94,11 @@ HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const json& _jsonInfo)
 
 	inFile.close();
 
+	if (_jsonInfo.contains("ShaderPass"))
+	{
+		EFFECT_SHADERPASS eShaderPass = _jsonInfo["ShaderPass"];
+		m_iShaderPass = eShaderPass;
+	}
 
 
 	return S_OK;
@@ -150,11 +110,11 @@ HRESULT CParticle_Mesh_Emitter::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	if (false == m_isWorld)
-	{
-		for (auto& pParticle : m_ParticleMeshes)
-			pParticle->Set_SpawnMatrix(m_pParentMatrices[COORDINATE_3D]);
-	}
+	//if (false == m_isWorld)
+	//{
+	//	for (auto& pParticle : m_ParticleMeshes)
+	//		pParticle->Set_SpawnMatrix(m_pParentMatrices[COORDINATE_3D]);
+	//}
 
 	return S_OK;
 }
@@ -175,8 +135,6 @@ void CParticle_Mesh_Emitter::Late_Update(_float _fTimeDelta)
 	if (m_isActive && m_iAccLoop)
 		m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_PARTICLE, this);
 
-		//m_pGameInstance->Add_RenderObject(CRenderer::RG_EFFECT, this);
-
 }
 
 HRESULT CParticle_Mesh_Emitter::Render()
@@ -194,11 +152,16 @@ HRESULT CParticle_Mesh_Emitter::Render()
 			return E_FAIL;
 
 		// PASS 설정
-		if (FAILED(m_pShaderCom->Begin(0)))
+		if (FAILED(m_pShaderCom->Begin(m_iShaderPass)))
 			return E_FAIL;
 
-		m_ParticleMeshes[i]->Bind_BufferDesc();
-		m_ParticleMeshes[i]->Render();
+		if (FAILED(m_ParticleMeshes[i]->Bind_BufferBySRV()))
+			return E_FAIL;
+		if (FAILED(m_ParticleMeshes[i]->Render_BySRV()))
+			return E_FAIL;
+
+		//m_ParticleMeshes[i]->Bind_BufferDesc();
+		//m_ParticleMeshes[i]->Render();
 	}
 
 
@@ -207,26 +170,165 @@ HRESULT CParticle_Mesh_Emitter::Render()
 
 void CParticle_Mesh_Emitter::Reset()
 {
-	m_fAccTime = 0.f;
-
+	if (0 < m_ParticleMeshes.size())
+		m_ParticleMeshes[0]->Reset_Buffers(m_pComputeShader);
 }
 
-void CParticle_Mesh_Emitter::On_Event()
+
+
+void CParticle_Mesh_Emitter::Update_Emitter(_float _fTimeDelta)
 {
+	if (0 ==  m_ParticleMeshes.size())
+		return;
+
+	for (_int i = 0; i < m_ParticleMeshes.size(); ++i)
+	{
+		m_pComputeShader->Bind_RawValue("g_fTimeDelta", &_fTimeDelta, sizeof(_float));
+
+		_float fKill;
+		if (KILL == m_ePooling)
+		{
+			fKill = D3D11_FLOAT32_MAX * -1.f;
+		}
+		else
+		{
+			fKill = 0.f;
+		}
+		m_pComputeShader->Bind_RawValue("g_fKill", &fKill, sizeof(_float));
+		m_pComputeShader->Begin(0);
+		m_ParticleMeshes[i]->Begin_Compute(m_pComputeShader);
+		m_ParticleMeshes[i]->Compute(m_pComputeShader);
+		m_pComputeShader->End_Compute();
+
+		if (STOP_SPAWN != m_eNowEvent)
+		{
+			if (SPAWN_RATE == m_eSpawnType)
+			{
+				_float fAbsolute;
+				if (RELATIVE_POSITION == m_eSpawnPosition)
+				{
+					fAbsolute = 0.f;
+					m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
+				}
+				else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+				{
+					fAbsolute = 1.f;
+					m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
+					m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &m_WorldMatrices[COORDINATE_3D]);
+				}
+				m_pComputeShader->Begin(1);
+
+			}
+			else if (BURST_SPAWN == m_eSpawnType)
+			{
+				_float fAbsolute;
+				if (RELATIVE_POSITION == m_eSpawnPosition)
+				{
+					fAbsolute = 0.f;
+					m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
+				}
+				else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+				{
+					fAbsolute = 1.f;
+					m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
+					m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &m_WorldMatrices[COORDINATE_3D]);
+				}
+				m_pComputeShader->Begin(2);
+
+				m_eNowEvent = STOP_SPAWN;
+				m_fInactiveDelayTime = m_fActiveTime;
+			}
+			m_ParticleMeshes[i]->Begin_Compute(m_pComputeShader);
+			m_ParticleMeshes[i]->Compute(m_pComputeShader);
+			m_pComputeShader->End_Compute();
+		}
+
+		for (auto pModule : m_Modules)
+		{
+			if (pModule->Is_Init())
+				continue;
+
+			m_ParticleMeshes[i]->Update_Module(pModule, m_pComputeShader);
+		}
+	}
 }
 
-void CParticle_Mesh_Emitter::Off_Event()
-{
-}
+// Map
+//m_ParticleMeshes[i]->Begin_Update(_fTimeDelta);
+//
+//// Spawn
+//if (STOP_SPAWN != m_eNowEvent)
+//{
+//	if (SPAWN_RATE == m_eSpawnType)
+//	{
+//		if (RELATIVE_POSITION == m_eSpawnPosition)
+//			m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"], nullptr);
+//		else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+//			m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"],
+//				&m_WorldMatrices[COORDINATE_3D]);
+//
+//	}
+//	else if (BURST_SPAWN == m_eSpawnType)
+//	{
+//		if (RELATIVE_POSITION == m_eSpawnPosition)
+//			m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"], nullptr);
+//		else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+//			m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"],
+//				&m_WorldMatrices[COORDINATE_3D]);
+//
+//		m_eNowEvent = STOP_SPAWN;
+//		m_fInactiveDelayTime = m_fActiveTime;
+//	}
+//}
+//
+//// Module
+//for (auto pModule : m_Modules)
+//{
+//	if (pModule->Is_Init())
+//		continue;
+//
+//	CEffect_Module::DATA_APPLY eData = pModule->Get_ApplyType();
+//	CEffect_Module::MODULE_TYPE eType = pModule->Get_Type();
+//
+//	if (CEffect_Module::MODULE_TYPE::MODULE_KEYFRAME == eType)
+//	{
+//		if (CEffect_Module::DATA_APPLY::COLOR == eData)
+//		{
+//			m_ParticleMeshes[i]->Update_ColorKeyframe(pModule);
+//		}
+//
+//		else if (CEffect_Module::DATA_APPLY::SCALE == eData)
+//		{
+//			m_ParticleMeshes[i]->Update_ScaleKeyframe(pModule);
+//		}
+//	}
+//	else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
+//	{
+//		if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
+//		{
+//			m_ParticleMeshes[i]->Update_Translation(_fTimeDelta, pModule);
+//		}
+//	}
+//}
+//
+//// Kill Or Revive
+//if (KILL == m_ePooling)
+//m_ParticleMeshes[i]->Update_Buffer(_fTimeDelta, false);
+//else if (REVIVE == m_ePooling)
+//m_ParticleMeshes[i]->Update_Buffer(_fTimeDelta, true);
+//
+//// UnMap
+//m_ParticleMeshes[i]->End_Update(_fTimeDelta);
+
 
 HRESULT CParticle_Mesh_Emitter::Bind_ShaderResources()
 {
-	if (m_isWorld)
+	if (RELATIVE_POSITION == m_eSpawnPosition)
 	{
 		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
 			return E_FAIL;
 	}
-	else
+	else if (ABSOLUTE_POSITION == m_eSpawnPosition)
 	{
 		if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 			return E_FAIL;
@@ -297,7 +399,7 @@ HRESULT CParticle_Mesh_Emitter::Ready_Meshes(ifstream& _inFile, const json& _jso
 	_inFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
 	for (_uint i = 0; i < m_iNumMeshes; i++)
 	{
-		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _jsonBufferInfo, XMLoadFloat4x4(&m_PreTransformMatrix));
+		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _jsonBufferInfo, XMLoadFloat4x4(&m_PreTransformMatrix), m_FloatDatas["SpawnRate"]);
 		if (nullptr == pMesh)
 			return E_FAIL;
 
@@ -324,19 +426,6 @@ HRESULT CParticle_Mesh_Emitter::Ready_Materials(ifstream& _inFile, const _char* 
 	return S_OK;
 }
 
-
-
-//CParticle_Mesh_Emitter* CParticle_Mesh_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szModelPath, const _tchar* _szInfoPath)
-//{
-//	CParticle_Mesh_Emitter* pInstance = new CParticle_Mesh_Emitter(_pDevice, _pContext);
-//
-//	if (FAILED(pInstance->Initialize_Prototype(_szModelPath, _szInfoPath)))
-//	{
-//		MSG_BOX("Failed to Created : CParticle_Mesh_Emitter");
-//		Safe_Release(pInstance);
-//	}
-//	return pInstance;
-//}
 
 CParticle_Mesh_Emitter* CParticle_Mesh_Emitter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonInfo)
 {
@@ -400,12 +489,209 @@ void CParticle_Mesh_Emitter::Tool_Update(_float _fTimeDelta)
 {
 	ImGui::Begin("Adjust_Mesh_Emitter");
 
+	if (ImGui::Button("Reset"))
+	{
+		if (nullptr != m_ParticleMeshes[0])
+		{
+			m_ParticleMeshes[0]->Tool_Reset_Buffers(m_FloatDatas["SpawnRate"], m_pComputeShader, m_Modules);
+			m_isToolChanged = true;
+		}
+	}
+
+
 	if (ImGui::TreeNode("Set Emitter State"))
 	{
 		__super::Tool_Update(_fTimeDelta);
 
 		ImGui::TreePop();
 	}
+
+	if (ImGui::TreeNode("Modules"))
+	{
+		if (ImGui::BeginListBox("List"))
+		{
+			if (ImGui::ArrowButton("Order Up", ImGuiDir::ImGuiDir_Up))
+			{
+				if (0 < m_iNowModuleIndex && 1 < m_Modules.size())
+				{
+					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex - 1]);
+
+					for (_int i = 0; i < m_Modules.size(); ++i)
+					{
+						m_Modules[i]->Set_Order(i);
+					}
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("Order Down", ImGuiDir::ImGuiDir_Down))
+			{
+				if (m_Modules.size() - 1 > m_iNowModuleIndex && 1 < m_Modules.size())
+				{
+					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex + 1]);
+
+					for (_int i = 0; i < m_Modules.size(); ++i)
+					{
+						m_Modules[i]->Set_Order(i);
+					}
+
+				}
+			}
+
+			int n = 0;
+			for (auto& pModule : m_Modules)
+			{
+				const bool is_selected = (m_iNowModuleIndex == n);
+				if (ImGui::Selectable(pModule->Get_TypeName().c_str(), is_selected))
+				{
+					m_iNowModuleIndex = is_selected ? -1 : n;
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+				++n;
+			}
+
+			if (-1 != m_iNowModuleIndex)
+			{
+				if (ImGui::Button("Delete Module"))
+				{
+					Safe_Release(m_Modules[m_iNowModuleIndex]);
+
+					auto iter = m_Modules.begin() + m_iNowModuleIndex;
+					m_Modules.erase(iter);
+
+					m_iNowModuleIndex = -1;
+					m_isToolChanged = true;
+				}
+			}
+
+			ImGui::EndListBox();
+
+			if (ImGui::TreeNode("Add Keyframe Module"))
+			{
+				static _int item_selected_idx = 0;
+				const char* combo_preview_value = CKeyframe_Module::g_szModuleNames[item_selected_idx];
+
+				if (ImGui::BeginCombo("Keyframe Module", combo_preview_value))
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(CKeyframe_Module::g_szModuleNames); n++)
+					{
+						const bool is_selected = (item_selected_idx == n);
+
+						if (ImGui::Selectable(CKeyframe_Module::g_szModuleNames[n], is_selected))
+						{
+							item_selected_idx = n;
+
+							CKeyframe_Module* pModule = CKeyframe_Module::Create(m_pDevice, m_pContext, (CKeyframe_Module::MODULE_NAME)n, m_ParticleMeshes[0]->Get_NumInstance());
+							if (nullptr != pModule)
+							{
+								pModule->Set_Order((_int)m_Modules.size());
+								m_Modules.push_back(pModule);
+
+								sort(m_Modules.begin(), m_Modules.end(), [](const CEffect_Module* pSrc, const CEffect_Module* pDst)
+									{
+										return pSrc->Get_Order() < pDst->Get_Order();
+									}
+								);
+							}
+
+							m_isToolChanged = true;
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Add Translation Module"))
+			{
+				static _int item_selected_idx = 0;
+				const char* combo_preview_value = CTranslation_Module::g_szModuleNames[item_selected_idx];
+
+				if (ImGui::BeginCombo("Module Type", combo_preview_value))
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(CTranslation_Module::g_szModuleNames); n++)
+					{
+						const bool is_selected = (item_selected_idx == n);
+
+						if (ImGui::Selectable(CTranslation_Module::g_szModuleNames[n], is_selected))
+						{
+							item_selected_idx = n;
+
+							CTranslation_Module* pModule = CTranslation_Module::Create((CTranslation_Module::MODULE_NAME)n, CTranslation_Module::g_szModuleNames[n]);
+							if (nullptr != pModule)
+							{
+								pModule->Set_Order((_int)m_Modules.size());
+								m_Modules.push_back(pModule);
+
+								sort(m_Modules.begin(), m_Modules.end(), [](const CEffect_Module* pSrc, const CEffect_Module* pDst)
+									{
+										return pSrc->Get_Order() < pDst->Get_Order();
+									}
+								);
+								m_isToolChanged = true;
+
+							}
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+
+
+				ImGui::TreePop();
+			}
+
+
+			if (-1 != m_iNowModuleIndex && m_iNowModuleIndex < m_Modules.size())
+			{
+				if (ImGui::TreeNode("Adjust Modules"))
+				{
+					m_Modules[m_iNowModuleIndex]->Tool_Module_Update();
+
+					ImGui::TreePop();
+				}
+			}
+		}
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Pass"))
+	{
+		const _char* items[] = { "Default" };
+		static _int item_selected_idx = 0;
+		const char* combo_preview_value = items[item_selected_idx];
+
+		if (ImGui::BeginCombo("Shader Type", combo_preview_value))
+		{
+			item_selected_idx = m_iShaderPass;
+			ImGui::SetItemDefaultFocus();
+
+			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+			{
+				const bool is_selected = (item_selected_idx == n);
+
+				if (ImGui::Selectable(items[n], is_selected))
+				{
+					item_selected_idx = n;
+					if (m_iShaderPass != n)
+					{
+						m_iShaderPass = (EFFECT_SHADERPASS)n;
+
+					}
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::TreePop();
+	}
+
 
 	if (m_ParticleMeshes.size())
 	{
@@ -511,6 +797,10 @@ HRESULT CParticle_Mesh_Emitter::Save(json& _jsonOut)
 
 	_jsonOut["Buffer"] = jsonBufferInfo;
 
+	EFFECT_SHADERPASS eShaderPass = (EFFECT_SHADERPASS)m_iShaderPass;
+	_jsonOut["ShaderPass"] = eShaderPass;
+
+
 	return S_OK;
 }
 
@@ -521,7 +811,7 @@ HRESULT CParticle_Mesh_Emitter::Ready_Meshes(ifstream& _inFile, _uint _iNumInsta
 	_inFile.read(reinterpret_cast<char*>(&m_iNumMeshes), sizeof(_uint));
 	for (_uint i = 0; i < m_iNumMeshes; i++)
 	{
-		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _iNumInstance, XMLoadFloat4x4(&m_PreTransformMatrix));
+		CVIBuffer_Mesh_Particle* pMesh = CVIBuffer_Mesh_Particle::Create(m_pDevice, m_pContext, _inFile, _iNumInstance, XMLoadFloat4x4(&m_PreTransformMatrix), m_FloatDatas["SpawnRate"]);
 		if (nullptr == pMesh)
 			return E_FAIL;
 

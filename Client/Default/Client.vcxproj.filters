@@ -229,6 +229,15 @@
     <Filter Include="94.RenderGroups%28Custom%29">
       <UniqueIdentifier>{c595985d-5f7d-4dc1-ab8b-866af8cedab7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Lights">
+      <UniqueIdentifier>{b50802f1-31a2-421f-960a-eb214682a952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Final">
+      <UniqueIdentifier>{a6bd0c49-f206-48f3-87ac-708d992e073a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\2D">
+      <UniqueIdentifier>{0791b9f7-464c-4734-9777-7e162be1d4c9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\NPC\00. NPC_Store">
       <UniqueIdentifier>{a27943b2-2eef-4b1a-b1a1-44b51bd7431f}</UniqueIdentifier>
     </Filter>
@@ -252,9 +261,6 @@
     </Filter>
     <Filter Include="03.Components\FSM\State\Standby">
       <UniqueIdentifier>{2948d6bd-59da-4c44-a0b0-3e1dad4f129a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\SampleBook">
-      <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\MainTable">
       <UniqueIdentifier>{25fd5475-9ebe-44bd-bbee-d5b4f8d1ad20}</UniqueIdentifier>
@@ -289,20 +295,11 @@
     <Filter Include="02.GameObjects\NPC\01. LogoNpc">
       <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\NPC\99. TEST_NPC">
-      <UniqueIdentifier>{6b81b8a5-a804-493a-8b27-4ce5cfa0487c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation">
       <UniqueIdentifier>{ea4268ec-e206-417e-ae3b-254a0e2ac7a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain">
       <UniqueIdentifier>{441416e8-4de7-4552-b5ef-b2d6f2278881}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="92.TriggerManager">
-      <UniqueIdentifier>{01c9cacb-3329-4753-ba74-b0632caf502d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="91.MapObjectFactory">
-      <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\MapObject\2D\0. Super">
       <UniqueIdentifier>{b9229a37-ad55-422f-9e39-3e7347e6b1e9}</UniqueIdentifier>
@@ -310,13 +307,49 @@
     <Filter Include="05.Interact">
       <UniqueIdentifier>{6f7c500f-8dd0-45d5-9288-58dfccb1c72d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
+      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Item">
       <UniqueIdentifier>{e99d4142-b01f-4107-b0e6-76300adbb590}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Item\Manager">
       <UniqueIdentifier>{f161f807-a9d6-422f-b0f8-628fdb80b8b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
+    <Filter Include="02.GameObjects\Trigger">
+      <UniqueIdentifier>{dbb54d55-f3f8-4dc6-a444-7f4d131040fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Trigger\Manager">
+      <UniqueIdentifier>{523303ea-d22e-4750-8a8e-1d10035d79a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92.MapObjectFactory">
+      <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Narration_2D">
+      <UniqueIdentifier>{2cf6df63-166f-40b0-a42a-1b4a0737937f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\PlayerItem">
+      <UniqueIdentifier>{e99d4142-b01f-4107-b0e6-76300adbb590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\PlayerItem\Manager">
+      <UniqueIdentifier>{f161f807-a9d6-422f-b0f8-628fdb80b8b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Effect">
+      <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Effect\Particle">
+      <UniqueIdentifier>{b4013fc9-ec4f-4335-95e6-a1f74b53dff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Effect\DownSample">
+      <UniqueIdentifier>{c4d4b597-4c32-478f-b32c-18e57039bab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Effect\Blur">
+      <UniqueIdentifier>{6ed673f2-7181-4cc7-b13c-1a65650eabf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\99. Social_Npc">
+      <UniqueIdentifier>{6b81b8a5-a804-493a-8b27-4ce5cfa0487c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard">
       <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
     </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\Old">
@@ -346,6 +379,15 @@
     <Filter Include="94.RenderGroups%28Custom%29\PBR\Combine">
       <UniqueIdentifier>{04255060-6660-4590-bec6-5e64f6a90ffa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MapObject\SampleBook">
+      <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\SampleSpsk">
+      <UniqueIdentifier>{91867589-9ea6-47bf-af9a-3c553d912c42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\3D\0. Super">
+      <UniqueIdentifier>{5d40ea1d-b154-4325-ae2f-46cb3cf9249a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -372,7 +414,7 @@
     <ClInclude Include="..\Public\Level_Logo.h">
       <Filter>01.Levels\02.Logo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_GamePlay.h">
+    <ClInclude Include="..\Public\Level_Chapter_02.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Client_Macro.h">
@@ -573,7 +615,7 @@
       <Filter>02.GameObjects\MapObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SampleBook.h">
-      <Filter>02.GameObjects\SampleBook</Filter>
+      <Filter>02.GameObjects\MapObject\SampleBook</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Section.h">
       <Filter>04.Section</Filter>
@@ -600,7 +642,7 @@
       <Filter>94.RenderGroups%28Custom%29\Old\Final</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
-      <Filter>94.RenderGroups%28Custom%29\Old\AfterEffect</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Roll.h">
       <Filter>03.Components\PlayerState</Filter>
@@ -668,9 +710,6 @@
     <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Trigger_Manager.h">
-      <Filter>92.TriggerManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
@@ -723,14 +762,11 @@
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\3DMapObject.h">
-      <Filter>02.GameObjects\MapObject\3D</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_JotMain.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapObjectFactory.h">
-      <Filter>91.MapObjectFactory</Filter>
+      <Filter>92.MapObjectFactory</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\2DMapActionObject.h">
@@ -738,9 +774,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\2DMapObject.h">
       <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\2DMapDefaultObject.h">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_SpinAttack.h">
       <Filter>03.Components\PlayerState</Filter>
@@ -755,14 +788,53 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
-    <ClInclude Include="..\Public\Item_Manager.h">
-      <Filter>02.GameObjects\Item\Manager</Filter>
+    <ClInclude Include="..\Public\PlayerData_Manager.h">
+      <Filter>02.GameObjects\PlayerItem\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Item.h">
-      <Filter>02.GameObjects\Item</Filter>
+    <ClInclude Include="..\Public\PlayerItem.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NPC_DJMoonBeard.h">
-      <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
+    <ClInclude Include="..\Public\TriggerObject.h">
+      <Filter>02.GameObjects\Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Trigger_Manager.h">
+      <Filter>02.GameObjects\Trigger\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_04.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_Narration.h">
+      <Filter>04.Section\Narration_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC_Social.h">
+      <Filter>02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_OnlySocial.h">
+      <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_PlayMap.h">
+      <Filter>04.Section\Section_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_AfterParticle.h">
+      <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_DownSample.h">
+      <Filter>94.RenderGroups%28Custom%29\Effect\DownSample</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_Blur.h">
+      <Filter>94.RenderGroups%28Custom%29\Effect\Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapObject.h">
+      <Filter>02.GameObjects\MapObject\3D\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapSpskObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_Lighting.h">
       <Filter>94.RenderGroups%28Custom%29\PBR\Lighting</Filter>
@@ -787,7 +859,7 @@
     <ClCompile Include="..\Private\Level_Logo.cpp">
       <Filter>01.Levels\02.Logo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+    <ClCompile Include="..\Private\Level_Chapter_02.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -988,7 +1060,7 @@
       <Filter>02.GameObjects\MapObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SampleBook.cpp">
-      <Filter>02.GameObjects\SampleBook</Filter>
+      <Filter>02.GameObjects\MapObject\SampleBook</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Section.cpp">
       <Filter>04.Section</Filter>
@@ -1015,7 +1087,7 @@
       <Filter>94.RenderGroups%28Custom%29\Old\Final</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
-      <Filter>94.RenderGroups%28Custom%29\Old\AfterEffect</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Roll.cpp">
       <Filter>03.Components\PlayerState</Filter>
@@ -1083,9 +1155,6 @@
     <ClCompile Include="..\Private\PlayerState_ThrowSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Trigger_Manager.cpp">
-      <Filter>92.TriggerManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpDown.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
@@ -1135,9 +1204,6 @@
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\3DMapObject.cpp">
-      <Filter>02.GameObjects\MapObject\3D</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_JotMain.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClCompile>
@@ -1147,9 +1213,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\2DMapObject.cpp">
       <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\2DMapDefaultObject.cpp">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_SpinAttack.cpp">
       <Filter>03.Components\PlayerState</Filter>
@@ -1164,14 +1227,53 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
-    <ClCompile Include="..\Private\Item_Manager.cpp">
-      <Filter>02.GameObjects\Item\Manager</Filter>
+    <ClCompile Include="..\Private\PlayerData_Manager.cpp">
+      <Filter>02.GameObjects\PlayerItem\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Item.cpp">
-      <Filter>02.GameObjects\Item</Filter>
+    <ClCompile Include="..\Private\PlayerItem.cpp">
+      <Filter>02.GameObjects\PlayerItem</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp">
-      <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
+    <ClCompile Include="..\Private\TriggerObject.cpp">
+      <Filter>02.GameObjects\Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Trigger_Manager.cpp">
+      <Filter>02.GameObjects\Trigger\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Chapter_04.cpp">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Section_2D_Narration.cpp">
+      <Filter>04.Section\Narration_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC_Social.cpp">
+      <Filter>02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC_OnlySocial.cpp">
+      <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Section_2D_PlayMap.cpp">
+      <Filter>04.Section\Section_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RenderGroup_AfterParticle.cpp">
+      <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RenderGroup_DownSample.cpp">
+      <Filter>94.RenderGroups%28Custom%29\Effect\DownSample</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RenderGroup_Blur.cpp">
+      <Filter>94.RenderGroups%28Custom%29\Effect\Blur</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapDefaultObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapDefaultObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D\0. Super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapSpskObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp">
       <Filter>94.RenderGroups%28Custom%29\PBR\Lighting</Filter>

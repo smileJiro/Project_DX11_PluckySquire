@@ -16,6 +16,9 @@
 #include "2DDefault_RenderObject.h"
 #include "2DMapObject.h"
 #include "2DTrigger_Sample.h"
+#include "RenderGroup.h"
+#include "RenderGroup_2D.h"
+#include "Sample_Skechspace.h"
 #include <commdlg.h>
 using namespace std::filesystem;
 
@@ -54,9 +57,13 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	if (nullptr == m_pTaskManager)
 		return E_FAIL;
 
-	m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
+	m_arrSelectName[SAVE_LIST] = L"Room_Enviroment";
 	Load_3D_Map(false);
 
+
+	m_Egnore2DObjectrTags.push_back("InvisibleCollision");
+	m_Egnore2DObjectrTags.push_back("Event");
+	m_Egnore2DObjectrTags.push_back("Goblin");
 
 	CGameObject* pGameObject = nullptr;
 
@@ -69,15 +76,27 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	}
 
 
-	CModelObject::MODELOBJECT_DESC Desc = {};
+	//CModelObject::MODELOBJECT_DESC Desc = {};
+
+	//Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
+	//	LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
+	//	return E_FAIL;
+	//
+	CSample_Skechspace::SAMPLE_SKSP_DESC Desc = {};
 
 	Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
+	Desc.isPreview = false;
+	Desc.strModelPrototypeTag_3D = TEXT("Desk_C02_Sketchspace_Left_01");
 
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
 		LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
 		return E_FAIL;
+
+	Change_RenderGroup(_float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y));
 
 	return S_OK;
 }
@@ -206,9 +225,6 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 			m_fOffsetPos = { 0.f,0.f };
 			LOG_TYPE(_wstring(L"=====  2D Map Read Start  -> ") + szName, LOG_LOAD);
 
-			string arrAxisKey[3] = { "X","Y","Z" };
-			string arrColorKey[4] = { "R","G","B","A" };
-			_string strTileMapName = "";
 			//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1718.json";
 			//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1112.json";
 			const std::string filePathDialog = WstringToString(szName);
@@ -219,189 +235,13 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 				return;
 			}
 
-			vector<pair<_string, _float3>> MapObjectInfos;
-			vector<pair<_string, _float4>> MapColors;
 			json jsonDialogs;
 			inputFile >> jsonDialogs;
-			if (jsonDialogs.is_array())
-			{
-				for (auto ChildJson : jsonDialogs)
-				{
-					if (
-						ChildJson.is_object() &&
-						ChildJson.contains("Type") &&
-						ChildJson.contains("Properties") &&
-						ChildJson.contains("Outer") &&
-						ChildJson["Type"] == "CapsuleComponent")
-					{
-						if (ChildJson["Properties"].contains("RelativeLocation"))
-						{
-							_string strText = ChildJson["Outer"];
-							auto TargetJson = ChildJson["Properties"];
-							_float3 fValuePos = {};
-							for (_uint i = 0; i < 3; i++)
-							{
-								_float fValue = TargetJson["RelativeLocation"].at(arrAxisKey[i]);
-								//if (i == 0)
-								//{
-								//	fValue = ((_int)fValue % RTSIZE_BOOK2D_X + RTSIZE_BOOK2D_X) % RTSIZE_BOOK2D_X;
-								//}
-								//else if (i == 1)
-								//{
-								//	fValue = ((_int)fValue % RTSIZE_BOOK2D_Y + RTSIZE_BOOK2D_Y) % RTSIZE_BOOK2D_Y;
 
-								//}
-								memcpy((&fValuePos.x) + i, &fValue, sizeof(_float));
-							}
-
-							if (!ContainString(strText, "Goblin"))
-								MapObjectInfos.push_back(make_pair(strText, fValuePos));
-						}
-
-					}
-#pragma region Find Map Color
-
-
-					else if (
-						ChildJson.is_object() &&
-						ChildJson.contains("Type") &&
-						ChildJson.contains("Properties") &&
-						ChildJson.contains("Outer") &&
-						ChildJson["Type"] == "MaterialInstanceDynamic")
-					{
-						if (ChildJson["Properties"].contains("VectorParameterValues"))
-						{
-							auto TargetJson = ChildJson["Properties"];
-							if (TargetJson["VectorParameterValues"].is_array())
-							{
-								for (auto& values : TargetJson["VectorParameterValues"])
-								{
-									if (values.contains("ParameterValue"))
-									{
-										_string strText = ChildJson["Outer"];
-
-										_float4 fValueColor = {};
-										for (_uint i = 0; i < 4; i++)
-										{
-											_float fValue = values["ParameterValue"].at(arrColorKey[i]);
-
-											memcpy((&fValueColor.x) + i, &fValue, sizeof(_float));
-										}
-										MapColors.push_back(make_pair(strText, fValueColor));
-									}
-								}
-							}
-
-						}
-
-					}
-#pragma endregion
-					else if (
-						ChildJson.is_object() &&
-						ChildJson.contains("Type") &&
-						ChildJson.contains("Properties") &&
-						ChildJson.contains("Outer") &&
-						ChildJson["Type"] ==
-						"PaperTileMapComponent")
-					{
-						if (ChildJson["Properties"].contains("TileMap"))
-						{
-							auto TargetJson = ChildJson["Properties"];
-
-							strTileMapName = TargetJson["TileMap"]["ObjectName"];
-							strTileMapName = OutName(strTileMapName);
-						}
-						else
-
-						{
-
-						}
-
-					}
-				}
-			}
+			Import(strFileName, jsonDialogs, &fColor);
 
 			inputFile.close();
 
-
-
-			if (strTileMapName != "")
-			{
-				if (FAILED(Setting_TileMap(strTileMapName)))
-				{
-					LOG_TYPE("Tile Map Load Error! -> " + strTileMapName, LOG_ERROR);
-					return;
-				}
-			}
-			else
-			{
-				LOG_TYPE("Tile Map Not Exist! -> " + strTileMapName, LOG_ERROR);
-
-			}
-			if (!MapColors.empty())
-			{
-				fColor = MapColors.front().second;
-				m_DefaultRenderObject->Set_Default_Render_Mode();
-				m_DefaultRenderObject->Set_Color(MapColors.front().second);
-			}
-			else
-			{
-				LOG_TYPE("Tile Color Not Exist! -> " + strTileMapName, LOG_ERROR);
-
-				m_DefaultRenderObject->Set_Color(fColor);
-			}
-
-			if (!MapObjectInfos.empty())
-			{
-				_float2 fMin = { MapObjectInfos.front().second.x, MapObjectInfos.front().second.y };
-				_float2 fMax = fMin;
-				for_each(MapObjectInfos.begin(), MapObjectInfos.end(), [&fMin, &fMax](pair<_string, _float3>& Pair) {
-					fMin.x = min(fMin.x, Pair.second.x);
-					fMin.y = min(fMin.y, Pair.second.y);
-					fMax.x = max(fMax.x, Pair.second.x);
-					fMax.y = max(fMax.y, Pair.second.y);
-					});
-				std::sort(MapObjectInfos.begin(), MapObjectInfos.end(), [](pair<_string, _float3>& FirstPair, pair<_string, _float3>& SecoundPair) {
-					return FirstPair.second.x > SecoundPair.second.x;
-					});
-				_float2 fMapCenterOffset = { (fMin.x + fMax.x) * 0.5f,(fMin.y + fMax.y) * 0.5f };
-				for_each(MapObjectInfos.begin(), MapObjectInfos.end(), [&fMapCenterOffset](pair<_string, _float3>& Pair) {
-					Pair.second.x -= fMapCenterOffset.x;
-					Pair.second.y -= fMapCenterOffset.y;
-					});
-				vector<_string> NotExistTextures;
-				for (auto& Pair : MapObjectInfos)
-				{
-					C2DMapObject::MAPOBJ_2D_DESC NormalDesc = {};
-					NormalDesc.strProtoTag = StringToWstring(Pair.first);
-					NormalDesc.fDefaultPosition.x = Pair.second.x;
-					NormalDesc.fDefaultPosition.y = Pair.second.y;
-					NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
-					NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
-
-					NormalDesc.pInfo = Find_Info(NormalDesc.strProtoTag);
-
-
-					CGameObject* pGameObject = nullptr;
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
-						LEVEL_TOOL_2D_MAP,
-						L"Layer_2DMapObject",
-						&pGameObject,
-						(void*)&NormalDesc)))
-					{
-						_string strNotExistTextureMessage = WstringToString(_wstring(L"2D Texture Info not Exist ->") + NormalDesc.strProtoTag);
-						LOG_TYPE(strNotExistTextureMessage, LOG_ERROR);
-						NotExistTextures.push_back(strNotExistTextureMessage);
-					}
-
-				}
-				wstring strResultFileFath = L"../Bin/json/Result/";
-
-				if (!NotExistTextures.empty())
-					m_pTaskManager->Export_Result(strResultFileFath, StringToWstring(strFileName), NotExistTextures);
-				LOG_TYPE(_wstring(L"=====  2D Map Read End  =====") + szName, LOG_LOAD);
-
-			}
 		}
 
 	}
@@ -465,10 +305,48 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
 		if (GetSaveFileName(&ofn))
 		{
-			m_pTileRenderObject->Set_OutputPath(szName);
+			Event_Capcher(szName);
 		}
 	}
+	if (ImGui::Button("In 2D Map Texture"))
+	{
+		_tchar originalDir[MAX_PATH];
+		GetCurrentDirectory(MAX_PATH, originalDir);
+		_wstring strModelPath = L"../../Client/Bin/Resources/Textures/Map/";
 
+		OPENFILENAME ofn = {};
+		ZeroMemory(&ofn, sizeof(ofn));
+		_tchar szName[MAX_PATH] = {};
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = g_hWnd;
+		ofn.lpstrFile = szName;
+		ofn.nMaxFile = sizeof(szName);
+		ofn.lpstrFilter = L".dds\0*.dds\0";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = nullptr;
+		ofn.nMaxFileTitle = 0;
+		if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
+			ofn.lpstrInitialDir = originalDir;
+		else
+			ofn.lpstrInitialDir = strModelPath.c_str();
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetOpenFileName(&ofn))
+		{
+			_wstring strPath = szName;
+
+			auto& Pair = Get_FileName_From_Path(strPath);
+
+
+			m_DefaultRenderObject->Set_Texture_Mode(WstringToString(Pair.first + L"." + Pair.second));
+			_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
+
+			if (fSize.x != -1.f)
+			{
+				Change_RenderGroup(fSize);
+			}
+		}
+	}
 	if (ImGui::Button("SampleBook Mode Toggle"))
 	{
 		_bool is2DMode = m_DefaultRenderObject->Toggle_Mode();
@@ -505,101 +383,6 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 
 	}
 
-
-	// 2D Tile Collider Export Sample
-	/*if (ImGui::Button("Go2"))
-	{
-		_uint iTileXSize = 0;
-		_uint iTileYSize = 0;
-		_uint iTileWidthInTiles = 0;
-		_uint iTileHeightInTiles = 0;
-		string arrAxisKey[2] = { "X","Y" };
-
-		const std::string filePathDialog = "../Bin/json/2DMapJson/Tile/C01_P1718_TD_Tilemap.json";
-		std::ifstream inputFile(filePathDialog);
-		if (!inputFile.is_open()) {
-			throw std::runtime_error("json Error :  " + filePathDialog);
-			return;
-		}
-
-		vector<vector<_float2>> MapObjectInfos;
-		vector<pair<_string, _float4>> MapColors;
-		json jsonDialogs;
-		inputFile >> jsonDialogs;
-		if (jsonDialogs.is_array())
-		{
-			for (auto& ChildJson : jsonDialogs)
-			{
-				if (
-					ChildJson.is_object() &&
-					ChildJson.contains("Type") &&
-					ChildJson.contains("Properties") &&
-					ChildJson["Type"] == "PaperTileSet")
-				{
-					auto PropertiesJson = ChildJson["Properties"];
-					if (PropertiesJson.contains("TileSize"))
-					{
-						iTileXSize = PropertiesJson["TileSize"]["X"];
-						iTileYSize = PropertiesJson["TileSize"]["Y"];
-					}
-
-					if (PropertiesJson.contains("WidthInTiles"))
-						iTileWidthInTiles = PropertiesJson["WidthInTiles"];
-					if (PropertiesJson.contains("HeightInTiles"))
-						iTileHeightInTiles = PropertiesJson["HeightInTiles"];
-					if (PropertiesJson.contains("PerTileData"))
-					{
-
-						for (auto& MapData : PropertiesJson["PerTileData"])
-						{
-							if (MapData.contains("CollisionData")
-								&&
-								MapData["CollisionData"].contains("Shapes")
-								&&
-								MapData["CollisionData"]["Shapes"].is_array()
-								)
-							{
-								for (auto& Shape : MapData["CollisionData"]["Shapes"])
-								{
-
-									if (Shape.contains("Vertices"))
-									{
-										vector<_float2> Vertices;
-										for (auto Vertices : Shape["Vertices"])
-										{
-											_float2 fTarget = {};
-
-											for (size_t i = 0; i < 2; i++)
-											{
-												_float fValue = Vertices.at(arrAxisKey[i]);
-												memcpy((&fTarget.x) + i, &fValue, sizeof(_float));
-											}
-											Vertices.push_back(fTarget);
-										}
-										MapObjectInfos.push_back(Vertices);
-									}
-
-								}
-
-							}
-						}
-					}
-
-				}
-			}
-		}
-
-		inputFile.close();
-
-
-
-		if (!MapObjectInfos.empty())
-		{
-			int a = 1;
-
-		}
-
-	}*/
 
 
 
@@ -858,12 +641,14 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 									m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(strFileName.c_str()), pModel);
 									C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
 									m_pPickingInfo->Set_Model(p2DModel);
+									m_pPickingInfo->Set_ModelName(strFileName.c_str());
 									m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
 								}
 							}
 							else
 							{
 								m_pPickingInfo->Set_Model((C2DModel*)pProtoModel);
+								m_pPickingInfo->Set_ModelName(strFileName.c_str());
 								m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
 
 							}
@@ -885,7 +670,8 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 						NormalDesc.fDefaultPosition = { 0.f,0.f };
 						NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 						NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
-
+						NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
+						NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
 						NormalDesc.pInfo = m_pPickingInfo;
 
 
@@ -1776,8 +1562,7 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 
 	if (!IndexsInfos.empty())
 	{
-		if (nullptr != m_pTileRenderObject)
-			Event_DeleteObject(m_pTileRenderObject);
+
 
 
 
@@ -1971,7 +1756,369 @@ HRESULT C2DMap_Tool_Manager::Update_Model_Index()
 	return S_OK;
 }
 
+HRESULT C2DMap_Tool_Manager::Change_RenderGroup(_float2 _fRenderTargetSize)
+{
 
+	if(nullptr != m_p2DRenderGroup)
+		Clear_RenderGroup();
+
+	/* Target Book2D */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(m_strRTKey, (_uint)_fRenderTargetSize.x, (_uint)_fRenderTargetSize.y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(m_strDSVKey, (_uint)_fRenderTargetSize.x, (_uint)_fRenderTargetSize.y)))
+		return E_FAIL;
+
+	/* MRT_Book_2D*/
+	if (FAILED(m_pGameInstance->Add_MRT(m_strMRTKey, m_strRTKey)))
+		return E_FAIL;
+
+
+	CRenderGroup_2D::RG_2D_DESC RG_Book2DDesc;
+	RG_Book2DDesc.iRenderGroupID = RENDERGROUP::RG_2D;
+	RG_Book2DDesc.iPriorityID = PRIORITY_2D::PR2D_BOOK_SECTION;
+	RG_Book2DDesc.isViewportSizeChange = true;
+	RG_Book2DDesc.strMRTTag = m_strMRTKey;
+	RG_Book2DDesc.pDSV = m_pGameInstance->Find_DSV(m_strDSVKey);
+	RG_Book2DDesc.vViewportSize = _fRenderTargetSize;
+	RG_Book2DDesc.fRenderTargetSize = _fRenderTargetSize;
+	RG_Book2DDesc.isClear = true;
+	if (nullptr == RG_Book2DDesc.pDSV)
+	{
+		MSG_BOX("Book2D DSV가 없대.");
+		return E_FAIL;
+	}
+	m_p2DRenderGroup = CRenderGroup_2D::Create(m_pDevice, m_pContext, &RG_Book2DDesc);
+	if (nullptr == m_p2DRenderGroup)
+	{
+		MSG_BOX("Failed Create PR3D_BOOK2D");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pGameInstance->Add_RenderGroup(m_p2DRenderGroup->Get_RenderGroupID(),
+		m_p2DRenderGroup->Get_PriorityID(), m_p2DRenderGroup)))
+		return E_FAIL;
+
+
+	if (FAILED(m_DefaultRenderObject->Change_RenderGroup(_fRenderTargetSize, m_p2DRenderGroup->Get_RenderGroupID(),
+		m_p2DRenderGroup->Get_PriorityID())))
+		return E_FAIL;
+
+	m_DefaultRenderObject->Set_Default_RenderTarget_Name(m_strRTKey);
+
+	return S_OK;
+}
+
+HRESULT C2DMap_Tool_Manager::Clear_RenderGroup()
+{
+
+	m_pGameInstance->Erase_RenderGroup_New(RENDERGROUP::RG_2D, PRIORITY_2D::PR2D_BOOK_SECTION);
+	m_pGameInstance->Erase_DSV_ToRenderer(m_strDSVKey);
+	m_pGameInstance->Erase_RenderTarget(m_strRTKey);
+	m_pGameInstance->Erase_MRT(m_strMRTKey);
+
+	Safe_Release(m_p2DRenderGroup);
+
+	return S_OK;
+}
+
+_bool C2DMap_Tool_Manager::Check_Import_Egnore_2DObject(const _string& _strTag)
+{
+	auto iter = find_if(m_Egnore2DObjectrTags.begin(), m_Egnore2DObjectrTags.end(), [&_strTag]
+	(const _string& strEgnoreObjectTag)->_bool {
+			return ContainString(_strTag,strEgnoreObjectTag);
+		});
+	return iter != m_Egnore2DObjectrTags.end();
+}
+
+
+
+void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson, _float4* _fColor)
+{
+
+	string arrAxisKey[3] = { "X","Y","Z" };
+	string arrColorKey[4] = { "R","G","B","A" };
+
+	vector<pair<_string, _float3>> MapObjectInfos;
+	vector<pair<_string, _float4>> MapColors;
+
+	_string strTileMapName = "";
+
+	_bool	isBook = true;
+	_float2 fLevelSizePixels = {-1.f, -1.f};
+	_float2 fRenderResolution = { -1.f, -1.f };
+
+
+
+#pragma region Import - Json 읽어들이기
+
+	if (_MapFileJson.is_array())
+	{
+		for (auto ChildJson : _MapFileJson)
+		{
+			if (
+				ChildJson.is_object() &&
+				ChildJson.contains("Type") &&
+				ChildJson.contains("Properties") &&
+				ChildJson.contains("Outer") &&
+				ChildJson["Type"] == "MinigameController_BP_C")
+			{
+				auto TargetJson = ChildJson["Properties"];
+
+
+
+				if (TargetJson.contains("CurrentAssignedBook"))
+				{
+					if (TargetJson["CurrentAssignedBook"].contains("SubPathString"))
+					{
+						_string strStageText = TargetJson["CurrentAssignedBook"]["SubPathString"];
+
+
+						// 책 일때
+						if (ContainString(strStageText, "Book_MAIN"))
+						{
+							isBook = true;
+						}
+						// 렌더타겟 일때
+						else
+						{
+							isBook = false;
+						}
+					}
+				}
+
+				if (TargetJson.contains("LevelSizePixels"))
+				{
+					_float2 fScale = {};
+					for (_uint i = 0; i < 2; i++)
+					{
+						_float fValue = TargetJson["LevelSizePixels"].at(arrAxisKey[i]);
+						reinterpret_cast<_float*>(&fScale.x)[i] = fValue;
+					}
+					fLevelSizePixels = fScale;
+					fLevelSizePixels.x *= RATIO_BOOK2D_X;
+					fLevelSizePixels.y *= RATIO_BOOK2D_Y;
+				}
+				if (TargetJson.contains("RenderResolution"))
+				{
+					_float2 fScale = {};
+					for (_uint i = 0; i < 2; i++)
+					{
+						_float fValue = TargetJson["RenderResolution"].at(arrAxisKey[i]);
+						reinterpret_cast<_float*>(&fScale.x)[i] = fValue;
+					}
+					fRenderResolution = fScale;
+					fRenderResolution.x *= RATIO_BOOK2D_X;
+					fRenderResolution.y *= RATIO_BOOK2D_Y;
+				}
+
+
+			}
+
+			if (
+				ChildJson.is_object() &&
+				ChildJson.contains("Type") &&
+				ChildJson.contains("Properties") &&
+				ChildJson.contains("Outer") &&
+				ChildJson["Type"] == "CapsuleComponent")
+			{
+				if (ChildJson["Properties"].contains("RelativeLocation"))
+				{
+					_string strText = ChildJson["Outer"];
+					auto TargetJson = ChildJson["Properties"];
+					_float3 fValuePos = {};
+					for (_uint i = 0; i < 3; i++)
+					{
+						_float fValue = TargetJson["RelativeLocation"].at(arrAxisKey[i]);
+						memcpy((&fValuePos.x) + i, &fValue, sizeof(_float));
+					}
+
+					if (!Check_Import_Egnore_2DObject(strText))
+						MapObjectInfos.push_back(make_pair(strText, fValuePos));
+				}
+
+			}
+#pragma region Find Map Color
+
+
+			else if (
+				ChildJson.is_object() &&
+				ChildJson.contains("Type") &&
+				ChildJson.contains("Properties") &&
+				ChildJson.contains("Outer") &&
+				ChildJson["Type"] == "MaterialInstanceDynamic")
+			{
+				if (ChildJson["Properties"].contains("VectorParameterValues"))
+				{
+					auto TargetJson = ChildJson["Properties"];
+					if (TargetJson["VectorParameterValues"].is_array())
+					{
+						for (auto& values : TargetJson["VectorParameterValues"])
+						{
+							if (values.contains("ParameterValue"))
+							{
+								_string strText = ChildJson["Outer"];
+
+								_float4 fValueColor = {};
+								for (_uint i = 0; i < 4; i++)
+								{
+									_float fValue = values["ParameterValue"].at(arrColorKey[i]);
+
+									memcpy((&fValueColor.x) + i, &fValue, sizeof(_float));
+								}
+								MapColors.push_back(make_pair(strText, fValueColor));
+							}
+						}
+					}
+
+				}
+
+			}
+#pragma endregion
+			else if (
+				ChildJson.is_object() &&
+				ChildJson.contains("Type") &&
+				ChildJson.contains("Properties") &&
+				ChildJson.contains("Outer") &&
+				ChildJson["Type"] ==
+				"PaperTileMapComponent")
+			{
+				if (ChildJson["Properties"].contains("TileMap"))
+				{
+					auto TargetJson = ChildJson["Properties"];
+
+					strTileMapName = TargetJson["TileMap"]["ObjectName"];
+					strTileMapName = OutName(strTileMapName);
+				}
+				else
+				{
+
+				}
+
+			}
+		}
+	}
+
+#pragma endregion
+
+
+#pragma region 렌더타겟 생성
+
+
+
+	CRenderGroup_2D* pTargetRenderGroup = nullptr;
+
+	if (m_p2DRenderGroup != nullptr)
+	{
+		_float2 fLgcRenderTargetSize = m_p2DRenderGroup->Get_RenderTarget_Size();
+	
+		if ((_int)round(fRenderResolution.x) != (_int)round(fLgcRenderTargetSize.x)
+			||
+			(_int)round(fRenderResolution.y) != (_int)round(fLgcRenderTargetSize.y))
+		{
+			Clear_RenderGroup();
+			Change_RenderGroup(fRenderResolution);
+		}
+	}
+#pragma endregion
+
+
+#pragma region 타일 맵 검사 및 생성
+
+	if (nullptr != m_pTileRenderObject)
+		Event_DeleteObject(m_pTileRenderObject);
+	m_pTileRenderObject = nullptr;
+	if (strTileMapName != "")
+	{
+		if (FAILED(Setting_TileMap(strTileMapName)))
+		{
+			LOG_TYPE("Tile Map Load Error! -> " + strTileMapName, LOG_ERROR);
+			return;
+		}
+	}
+	else
+	{
+		LOG_TYPE("Tile Map Not Exist! -> " + strTileMapName, LOG_ERROR);
+
+	}
+#pragma endregion
+
+#pragma region 맵 컬러 검사 및 반영(하나만 함)
+
+	if (!MapColors.empty())
+	{
+		*_fColor = MapColors.front().second;
+		m_DefaultRenderObject->Set_Default_Render_Mode();
+		m_DefaultRenderObject->Set_Color(MapColors.front().second);
+	}
+	else
+	{
+		LOG_TYPE("Tile Color Not Exist! -> " + strTileMapName, LOG_ERROR);
+
+		m_DefaultRenderObject->Set_Color(*_fColor);
+	}
+
+#pragma endregion
+
+#pragma region 맵 오브젝트 소팅, 반영
+
+	if (!MapObjectInfos.empty())
+	{
+		_float2 fMin = { MapObjectInfos.front().second.x, MapObjectInfos.front().second.y };
+		_float2 fMax = fMin;
+		for_each(MapObjectInfos.begin(), MapObjectInfos.end(), [&fMin, &fMax](pair<_string, _float3>& Pair) {
+			fMin.x = min(fMin.x, Pair.second.x);
+			fMin.y = min(fMin.y, Pair.second.y);
+			fMax.x = max(fMax.x, Pair.second.x);
+			fMax.y = max(fMax.y, Pair.second.y);
+			});
+		std::sort(MapObjectInfos.begin(), MapObjectInfos.end(), [](pair<_string, _float3>& FirstPair, pair<_string, _float3>& SecoundPair) {
+			return FirstPair.second.x > SecoundPair.second.x;
+			});
+		_float2 fMapCenterOffset = { (fMin.x + fMax.x) * 0.5f,(fMin.y + fMax.y) * 0.5f };
+		for_each(MapObjectInfos.begin(), MapObjectInfos.end(), [&fMapCenterOffset](pair<_string, _float3>& Pair) {
+			Pair.second.x -= fMapCenterOffset.x;
+			Pair.second.y -= fMapCenterOffset.y;
+			});
+
+		vector<_string> NotExistTextures;
+
+		for (auto& Pair : MapObjectInfos)
+		{
+			C2DMapObject::MAPOBJ_2D_DESC NormalDesc = {};
+			NormalDesc.strProtoTag = StringToWstring(Pair.first);
+			NormalDesc.fDefaultPosition.x = Pair.second.x;
+			NormalDesc.fDefaultPosition.y = Pair.second.y;
+			NormalDesc.fRenderTargetSize = { (_float)fRenderResolution.x, (_float)fRenderResolution.y };
+			NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+			NormalDesc.pInfo = Find_Info(NormalDesc.strProtoTag);
+			NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
+			NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
+
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
+				LEVEL_TOOL_2D_MAP,
+				L"Layer_2DMapObject",
+				&pGameObject,
+				(void*)&NormalDesc)))
+			{
+				_string strNotExistTextureMessage = WstringToString(_wstring(L"2D Texture Info not Exist ->") + NormalDesc.strProtoTag);
+				LOG_TYPE(strNotExistTextureMessage, LOG_ERROR);
+				NotExistTextures.push_back(strNotExistTextureMessage);
+			}
+
+		}
+		wstring strResultFileFath = L"../Bin/json/Result/";
+
+		if (!NotExistTextures.empty())
+			m_pTaskManager->Export_Result(strResultFileFath, StringToWstring(_strFileName), NotExistTextures);
+		LOG_TYPE(_string("=====  2D Map Read End  =====") + _strFileName, LOG_LOAD);
+
+	}
+#pragma endregion
+
+
+}
 
 void C2DMap_Tool_Manager::Load_3D_Map(_bool _bSelected)
 {
@@ -2209,7 +2356,7 @@ void C2DMap_Tool_Manager::Save_Trigger()
 {
 	_tchar originalDir[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, originalDir);
-	SetCurrentDirectory(originalDir);
+	//SetCurrentDirectory(originalDir);
 	_wstring strTriggerPath = L"../../Client/Bin/MapSaveFiles/2D/Trigger/";
 	_wstring strTriggerName = m_arrSelectName[SAVE_LIST] + L".json";
 	_tchar szName[MAX_PATH];

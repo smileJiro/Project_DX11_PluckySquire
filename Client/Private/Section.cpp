@@ -21,6 +21,8 @@ HRESULT CSection::Initialize(SECTION_DESC* pDesc)
 
     m_iLayerGroupCount = pDesc->iLayerGroupCount;
     m_Layers = new CLayer*[m_iLayerGroupCount];
+    m_iGroupID = pDesc->iGroupID;
+    m_iPriorityID = pDesc->iPriorityID;
 
     /* Create Layer */
     for (_uint i = 0; i < m_iLayerGroupCount; i++)
@@ -29,6 +31,7 @@ HRESULT CSection::Initialize(SECTION_DESC* pDesc)
     if (nullptr == m_Layers[i])
         return E_FAIL;
     }
+
 
     return S_OK;
 }
@@ -153,16 +156,16 @@ void CSection::Active_OnDisable()
     SetActive_GameObjects(false);
 }
 
-CSection* CSection::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc)
-{
-    CSection* pInstance = new CSection(_pDevice, _pContext);
-    if (FAILED(pInstance->Initialize(pDesc)))
-    {
-        MSG_BOX("Failed Create CSection Class");
-        Safe_Release(pInstance);
-    }
-    return pInstance;
-}
+//CSection* CSection::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc)
+//{
+//    CSection* pInstance = new CSection(_pDevice, _pContext);
+//    if (FAILED(pInstance->Initialize(pDesc)))
+//    {
+//        MSG_BOX("Failed Create CSection Class");
+//        Safe_Release(pInstance);
+//    }
+//    return pInstance;
+//}
 
 void CSection::Free()
 {

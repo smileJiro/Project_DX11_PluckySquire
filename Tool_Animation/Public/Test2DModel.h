@@ -18,7 +18,7 @@ public:
     virtual HRESULT	Initialize_Prototype(const _char* _szModel2DFilePath);
 
     HRESULT				Export_Model(ofstream& _outfile);
-
+    HRESULT				Copy_Textures(const filesystem::path& _szDestPath);
     //Set
     void						Set_Progerss(_float _fProgerss);
 
@@ -29,7 +29,12 @@ public:
     _bool	                Is_LoopAnimation(_uint iAnimIndex);
     void						Get_AnimationNames(list<string>& _Names);
 private:
+    HRESULT Read_JsonFIle(std::filesystem::path _path);
+    HRESULT Read_TextureFIle(std::filesystem::path _path);
+private:
 
+    map<string, json> m_jPaperFlipBooks;
+    map<string, json> m_jPaperSprites;
 public:
     static CTest2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool _bRawData, const _char* pPath);
     static CTest2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, std::filesystem::path _szDir, json& jFile);

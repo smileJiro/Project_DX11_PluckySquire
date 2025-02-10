@@ -23,6 +23,7 @@ public:
 	virtual HRESULT			Render() override;
 
 	HRESULT				Export_Model(ofstream& _outfile, const _char* _szDirPath, _bool _bExportTextures);
+	HRESULT				Copy_Textures(const filesystem::path& _szDestPath);
 	//Set
 	void						Set_2DProjMatrix(_fmatrix _vProjMatrix);
 	void						Set_Progerss(_float _fTrackPos);
@@ -34,6 +35,7 @@ public:
 	_float					Get_AnimSpeedMagnifier(COORDINATE _eCoord, _uint iAnimIndex);
 	_bool					Is_LoopAnimation(COORDINATE _eCoord, _uint iAnimIndex);
 	void						Get_AnimatinNames(list<string>& _Names);
+
 private:
 	HRESULT					Ready_TestComponents(TESTMODELOBJ_DESC* _pDesc);
 

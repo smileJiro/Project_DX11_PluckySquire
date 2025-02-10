@@ -6,6 +6,8 @@
 #include "Camera_Free.h"
 #include "Camera_Manager_Tool.h"
 
+#include "TriggerObject.h"
+
 #include "ModelObject.h"
 #include "Layer.h"
 
@@ -39,13 +41,35 @@ void CLevel_Trigger_Tool::Update(_float _fTimeDelta)
 	Show_TriggerTool();
 	Show_Info();
 	Show_SaveLoadFileWindow();
+
+	Show_BulbTool();
 }
 
 HRESULT CLevel_Trigger_Tool::Render()
 {
 #ifdef _DEBUG
 	//SetWindowText(g_hWnd, TEXT("Camera Tool Level"));
-	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
+
+	//m_pEffect->SetWorld(XMMatrixIdentity());
+ //   m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
+ //   m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
+
+ //   m_pEffect->Apply(m_pContext);
+
+ //   m_pContext->OMSetDepthStencilState(m_pDepthStencilState, 0);
+ //   m_pContext->IASetInputLayout(m_pInputLayout);
+
+ //   m_pBatch->Begin();
+
+ //   _vector vColor = { 1.f, 1.f, 0.f };
+
+ //   m_pBatch->DrawLine(
+ //       VertexPositionColor(XMLoadFloat3(&m_vBulbCreatedPoint), vColor),  // 衛濛薄, 說除儀
+ //       VertexPositionColor(XMLoadFloat3(&m_vBulbLine), vColor)     // 部薄, 說除儀
+ //   );
+
+ //   m_pBatch->End();
 #endif
 
 	return S_OK;
@@ -295,6 +319,33 @@ void CLevel_Trigger_Tool::Show_SaveLoadFileWindow()
 
 	if (ImGui::Button("Load")) {
 		Load_TriggerData();
+	}
+
+	ImGui::End();
+}
+
+void CLevel_Trigger_Tool::Show_BulbTool()
+{
+	ImGui::Begin("Bulb Tool");
+
+	Set_TriggerBasicInfo();
+	Set_TriggerInfoByType();
+
+	ImGui::NewLine();
+	ImGui::Checkbox("Create Trigger", &m_isCreate);
+	ImGui::SameLine();
+	ImGui::Checkbox("Edit Trigger", &m_isEdit);
+
+	Set_CurTrigger();
+	Delete_Trigger();
+
+	if (true == m_isCreate && false == m_isEdit) {
+		Create_Trigger();
+
+	}
+
+	if (false == m_isCreate && true == m_isEdit) {
+		Edit_Trigger();
 	}
 
 	ImGui::End();
@@ -1208,6 +1259,10 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 		m_Triggers.push_back(make_pair(Data, dynamic_cast<CTriggerObject*>(pTrigger)));
 		Safe_AddRef(pTrigger);
 	}
+}
+
+void CLevel_Trigger_Tool::Create_Bulb()
+{
 }
 
 _float3 CLevel_Trigger_Tool::Quaternion_ToEuler(const _float4 _q)

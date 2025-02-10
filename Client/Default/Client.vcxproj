@@ -187,7 +187,9 @@
     <ClInclude Include="..\Public\2DMapActionObject.h" />
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
+    <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
+    <ClInclude Include="..\Public\3DMapSpskObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
@@ -211,8 +213,11 @@
     <ClInclude Include="..\public\Collision_Manager.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
     <ClInclude Include="..\Public\Interactable.h" />
-    <ClInclude Include="..\Public\Item.h" />
-    <ClInclude Include="..\Public\Item_Manager.h" />
+    <ClInclude Include="..\Public\Level_Chapter_04.h" />
+    <ClInclude Include="..\Public\Section_2D_Narration.h" />
+    <ClInclude Include="..\Public\Npc_OnlySocial.h" />
+    <ClInclude Include="..\Public\PlayerItem.h" />
+    <ClInclude Include="..\Public\PlayerData_Manager.h" />
     <ClInclude Include="..\public\MainTable.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
@@ -248,7 +253,7 @@
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\Npc_Body.h" />
     <ClInclude Include="..\Public\Npc_Logo.h" />
-    <ClInclude Include="..\Public\NPC_DJMoonBeard.h" />
+    <ClInclude Include="..\Public\NPC_Social.h" />
     <ClInclude Include="..\public\NPC_Store.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerBody.h" />
@@ -264,8 +269,11 @@
     <ClInclude Include="..\Public\PrintFloorWord.h" />
     <ClInclude Include="..\Public\Rat.h" />
     <ClInclude Include="..\public\RayShape.h" />
+    <ClInclude Include="..\public\RenderGroup_Blur.h" />
     <ClInclude Include="..\Public\RenderGroup_2D.h" />
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
+    <ClInclude Include="..\public\RenderGroup_AfterParticle.h" />
+    <ClInclude Include="..\public\RenderGroup_DownSample.h" />
     <ClInclude Include="..\Public\RenderGroup_Combine.h" />
     <ClInclude Include="..\Public\RenderGroup_Final.h" />
     <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
@@ -274,6 +282,7 @@
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\public\Section.h" />
     <ClInclude Include="..\public\Section_2D.h" />
+    <ClInclude Include="..\Public\Section_2D_PlayMap.h" />
     <ClInclude Include="..\public\Section_Manager.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
     <ClInclude Include="..\Public\ShopItemBG.h" />
@@ -295,6 +304,7 @@
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
     <ClInclude Include="..\Public\Soldier_Spear.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
+    <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\Trigger_Manager.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
@@ -309,7 +319,7 @@
     <ClInclude Include="..\Public\RangedAttackState.h" />
     <ClInclude Include="..\public\SettingPanelBG.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
-    <ClInclude Include="..\Public\Level_GamePlay.h" />
+    <ClInclude Include="..\Public\Level_Chapter_02.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Level_Static.h" />
@@ -334,7 +344,9 @@
     <ClCompile Include="..\Private\2DMapActionObject.cpp" />
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
+    <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />
+    <ClCompile Include="..\Private\3DMapSpskObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp">
@@ -359,8 +371,11 @@
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
-    <ClCompile Include="..\Private\Item.cpp" />
-    <ClCompile Include="..\Private\Item_Manager.cpp" />
+    <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
+    <ClCompile Include="..\Private\Section_2D_Narration.cpp" />
+    <ClCompile Include="..\Private\NPC_OnlySocial.cpp" />
+    <ClCompile Include="..\Private\PlayerItem.cpp" />
+    <ClCompile Include="..\Private\PlayerData_Manager.cpp" />
     <ClCompile Include="..\Private\Interactable.cpp" />
     <ClCompile Include="..\private\MainTable.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
@@ -393,7 +408,7 @@
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\Npc_Body.cpp" />
     <ClCompile Include="..\Private\Npc_Logo.cpp" />
-    <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp" />
+    <ClCompile Include="..\Private\NPC_Social.cpp" />
     <ClCompile Include="..\private\NPC_Store.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerBody.cpp" />
@@ -409,8 +424,11 @@
     <ClCompile Include="..\Private\PrintFloorWord.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
     <ClCompile Include="..\private\RayShape.cpp" />
+    <ClCompile Include="..\private\RenderGroup_Blur.cpp" />
     <ClCompile Include="..\Private\RenderGroup_2D.cpp" />
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
+    <ClCompile Include="..\private\RenderGroup_AfterParticle.cpp" />
+    <ClCompile Include="..\private\RenderGroup_DownSample.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Combine.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
@@ -419,6 +437,7 @@
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\private\Section.cpp" />
     <ClCompile Include="..\private\Section_2D.cpp" />
+    <ClCompile Include="..\Private\Section_2D_PlayMap.cpp" />
     <ClCompile Include="..\private\Section_Manager.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\ShopItemBG.cpp" />
@@ -440,6 +459,7 @@
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
     <ClCompile Include="..\Private\Soldier_Spear.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
+    <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\Trigger_Manager.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
@@ -453,7 +473,7 @@
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
     <ClCompile Include="..\private\SettingPanelBG.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+    <ClCompile Include="..\Private\Level_Chapter_02.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp" />

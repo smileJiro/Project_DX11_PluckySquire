@@ -12,10 +12,9 @@ CSneak_AwareState::CSneak_AwareState()
 HRESULT CSneak_AwareState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
-	m_fChase2DRange = pDesc->fChase2DRange;
 	m_fAttackRange = pDesc->fAttackRange;
-	m_fAttack2DRange = pDesc->fAttack2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -30,8 +29,7 @@ void CSneak_AwareState::State_Enter()
 }
 
 void CSneak_AwareState::State_Update(_float _fTimeDelta)
-{
-	if (nullptr == m_pOwner)
+{	if (nullptr == m_pOwner)
 		return;
 	
 	if (nullptr != m_pTarget)
@@ -50,6 +48,12 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 			Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
 			return;
+		}
+
+		//인식 되지 않고 소리도 안나면 idle 전환 (지금 애니메이션 재생동안은 전환 안되니까)
+		else
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 		}
 	}
 }

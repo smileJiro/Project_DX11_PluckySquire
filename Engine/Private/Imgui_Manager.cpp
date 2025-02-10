@@ -209,7 +209,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_RT_FullScreen()
 	if (ImGui::TreeNode("MRTs"))
 	{
 		map<const _wstring, list<CRenderTarget*>> MRTs = m_pGameInstance->Get_MRTs();
-		ImVec2 imageSize(800, 450); // 이미지 크기 설정
+		ImVec2 imageSize(1600, 900); // 이미지 크기 설정
 		ID3D11ShaderResourceView* pSelectImage = nullptr;
 		if (MRTs.empty())
 		{

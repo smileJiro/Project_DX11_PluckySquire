@@ -24,17 +24,28 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 
 	_float fProgress =m_pOwner->Get_AnimProgress();
 	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
-
+	if (COORDINATE_2D == eCoord &&
+        fProgress >= m_f2DForwardStartProgress && fProgress <= m_f2DForwardEndProgress)
+	{
+        m_pOwner->Move(EDir_To_Vector( m_pOwner->Get_2DDirection())  *m_f2DForwardSpeed, _fTimeDelta);
+	}
 	if (fProgress >= fMotionCancelProgress)
 	{
-
+        if(m_pOwner->Is_AttackTriggerActive())
+            m_pOwner->Set_AttackTriggerActive(false); 
         if (m_bCombo)
         {
             m_iComboCount++;
             if (2 >= m_iComboCount)
             {
+                if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+                {
+                    E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
+                    F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+                    m_pOwner->Set_2DDirection(eNewDir);
+                }
                 Switch_To_AttackAnimation(m_iComboCount);
-
+                m_pOwner->Set_AttackTriggerActive(true);
             }
             m_bCombo = false;
         }
@@ -46,8 +57,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
                 m_pOwner->Set_State(CPlayer::ROLL);
             else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
                 m_pOwner->Set_State(CPlayer::THROWSWORD);
-            //else if (tKeyResult.bKeyStates[PLAYER_KEY_MOVE])
-            //    m_pOwner->Set_State(CPlayer::RUN);
+
         }
 	}
 	
@@ -55,21 +65,32 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 
 void CPlayerState_Attack::Enter()
 {
-    COORDINATE eCoord = m_pOwner->Get_CurCoord();
-
      PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
-    _vector vDir;
-    if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
-        vDir = m_pOwner->Get_3DTargetDirection();
+    COORDINATE eCoord = m_pOwner->Get_CurCoord();
+    if (COORDINATE_3D == eCoord)
+    {
+        _vector vDir;
+        if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+            vDir = m_pOwner->Get_3DTargetDirection();
+        else
+            vDir = m_pOwner->Get_LookDirection();
+        m_pOwner->LookDirectionXZ_Dynamic(vDir);
+        m_pOwner->Stop_Rotate();
+    }
     else
-        vDir = m_pOwner->Get_LookDirection();
-    m_pOwner->LookDirectionXZ_Dynamic(vDir);
-    m_pOwner->Stop_Rotate();
+    {
+	    m_f2DForwardSpeed = m_pOwner->Get_2DAttackForwardingSpeed();
+
+    }
+
 	Switch_To_AttackAnimation(m_iComboCount);
+    m_pOwner->Set_AttackTriggerActive(true);
 }
 
 void CPlayerState_Attack::Exit()
 {
+    if (m_pOwner->Is_AttackTriggerActive())
+        m_pOwner->Set_AttackTriggerActive(false);
 }
 
 void CPlayerState_Attack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

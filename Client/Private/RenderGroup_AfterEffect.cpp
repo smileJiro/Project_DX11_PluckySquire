@@ -25,14 +25,22 @@ HRESULT CRenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Rect* _p
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_FinalTexture", TEXT("Target_Combine"))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_AccumulateTexture", TEXT("Target_EffectAccumulate"))))
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_EffectColorTexture", TEXT("Target_EffectColor"))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_RevealageTexture", TEXT("Target_EffectRevealage"))))
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_AccumulateTexture", TEXT("Target_ParticleAccumulate"))))
         return E_FAIL;
 
-    /* Final Pass */
-    _pRTShader->Begin((_uint)PASS_DEFERRED::AFTER_PARTICLE);
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_RevealageTexture", TEXT("Target_ParticleRevelage"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_BloomTexture", TEXT("Target_DownBlur1"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_BloomTexture2", TEXT("Target_DownBlur2"))))
+        return E_FAIL;
+
+    _pRTShader->Begin((_uint)PASS_DEFERRED::AFTER_EFFECT);
 
     _pRTBuffer->Bind_BufferDesc();
 

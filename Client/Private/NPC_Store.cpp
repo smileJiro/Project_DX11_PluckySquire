@@ -66,7 +66,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
-	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"), &tAnimEventDesc));
+	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"), &tAnimEventDesc));
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
@@ -142,8 +142,6 @@ void CNPC_Store::Update(_float _fTimeDelta)
 
 void CNPC_Store::Late_Update(_float _fTimeDelta)
 {
-	
-
 	__super::Late_Update(_fTimeDelta);
 
 	//CGameObject* pPlayer;
@@ -154,15 +152,14 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_MenuOpen);
 	}
 
-	if (KEY_DOWN(KEY::E) && true == m_isColPlayer)
+	if (KEY_DOWN(KEY::E) && true == m_isColPlayer && false == m_isDialoging)
 	{
+		m_isDialoging = true;
 		Throw_Dialogue();
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
-
-		
 	}
 
-	//if (static_cast<CModelObject*>(m_PartObjects[PART_BODY])->)
+	ChangeState_Panel();
 
 
 }
@@ -179,7 +176,7 @@ HRESULT CNPC_Store::Render()
 
 void CNPC_Store::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	m_isColPlayer = true;
+	
 }
 
 void CNPC_Store::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -217,7 +214,7 @@ void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 			break;
 
 		case ANIM_2D::Martina_talk:
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
 			break;
 
 		case ANIM_2D::Martina_idle01:
@@ -227,6 +224,14 @@ void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		default:
 			break;
 		}
+	}
+}
+
+void CNPC_Store::ChangeState_Panel()
+{
+	if (KEY_DOWN(KEY::K) && true == m_isDialoging && false == Uimgr->Get_DialogueFinishShopPanel())
+	{
+		m_isDialoging = false;
 	}
 }
 

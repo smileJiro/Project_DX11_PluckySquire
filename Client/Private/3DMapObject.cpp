@@ -92,7 +92,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     pDesc->pActorDesc = &ActorDesc;
 
                     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
+                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER;
                 }
             }
         }
@@ -167,31 +167,6 @@ HRESULT C3DMapObject::Render_Shadow()
 }
 
 
-C3DMapObject* C3DMapObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-{
-    C3DMapObject* pInstance = new C3DMapObject(_pDevice, _pContext);
-
-    if (FAILED(pInstance->Initialize_Prototype()))
-    {
-        MSG_BOX("Failed to Created : C3DMapObject");
-        Safe_Release(pInstance);
-    }
-
-    return pInstance;
-}
-
-CGameObject* C3DMapObject::Clone(void* _pArg)
-{
-    C3DMapObject* pInstance = new C3DMapObject(*this);
-
-    if (FAILED(pInstance->Initialize(_pArg)))
-    {
-        MSG_BOX("Failed to Cloned : C3DMapObject");
-        Safe_Release(pInstance);
-    }
-
-    return pInstance;
-}
 
 void C3DMapObject::Free()
 {

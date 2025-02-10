@@ -58,7 +58,7 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 
 	pDesc->Build_2D_Transform(m_fDefaultPosition);
 
-	
+	m_pModelInfo = pDesc->pInfo;
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -82,7 +82,7 @@ void C2DMapObject::Update(_float fTimeDelta)
 
 void C2DMapObject::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	Register_RenderGroup(RG_2D, PR2D_BOOK_SECTION);
 	__super::Late_Update(fTimeDelta);
 }
 
@@ -104,9 +104,27 @@ void C2DMapObject::Set_OffsetPos(_float2 _fPos)
 
 _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 {
+	_float2 fSize = {};
+
+	if (m_fRenderTargetSize.x > m_fRenderTargetSize.y)
+	{
+		_float fBookY = m_fRenderTargetSize.y * ((_float)g_iWinSizeX / (_float)m_fRenderTargetSize.x);
+		fSize.x = g_iWinSizeX;
+		fSize.y = fBookY;
+	}
+	else
+	{
+		_float fBookX = m_fRenderTargetSize.x * ((_float)g_iWinSizeY / (_float)m_fRenderTargetSize.y);
+		fSize.x = fBookX;
+		fSize.y = g_iWinSizeY;
+	}
+
+
+
+
 	_float2 fConvertRenderTargetSize = {};
-	fConvertRenderTargetSize.x = g_iWinSizeX;
-	fConvertRenderTargetSize.y = m_fRenderTargetSize.y * ((_float)g_iWinSizeX / (_float)m_fRenderTargetSize.x);
+	fConvertRenderTargetSize.x = fSize.x;
+	fConvertRenderTargetSize.y = fSize.y;
 
 	_float fOffX = (g_iWinSizeX - fConvertRenderTargetSize.x) * 0.5f;
 	_float fOffY = (g_iWinSizeY - fConvertRenderTargetSize.y) * 0.5f;

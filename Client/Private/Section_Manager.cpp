@@ -2,7 +2,8 @@
 #include "Section_Manager.h"
 #include "GameInstance.h"
 
-#include "Section_2D.h"
+#include "Section_2D_PlayMap.h"
+#include "Section_2D_Narration.h"
 #include "Collision_Manager.h"
 
 IMPLEMENT_SINGLETON(CSection_Manager)
@@ -62,7 +63,11 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
     case Client::LEVEL_LOGO:
         strJsonPath = L"";
         break;
-    case Client::LEVEL_GAMEPLAY:
+    case Client::LEVEL_CHAPTER_2:
+        strJsonPath = L"Chapter1";
+        isSectionLoading = true;
+        break;
+    case Client::LEVEL_CHAPTER_4:
         strJsonPath = L"Chapter1";
         isSectionLoading = true;
         break;
@@ -86,10 +91,7 @@ HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
     return S_OK;
 }
 
-/// <summary>
-/// 섹션 키로 섹션 객체를 직접 찾는다.
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
+
 CSection* CSection_Manager::Find_Section(const _wstring& _strSectionTag)
 {
     auto& iter = m_CurLevelSections.find(_strSectionTag);
@@ -100,11 +102,7 @@ CSection* CSection_Manager::Find_Section(const _wstring& _strSectionTag)
     return (*iter).second;
 }
 
-/// <summary>
-/// 섹션 키로 해당 섹션에 오브젝트를 추가한다.
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
-/// <param name="_pGameObject">오브젝트</param>
+
 HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
 {
     CSection* pSection = Find_Section(_strSectionTag);
@@ -117,11 +115,7 @@ HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSect
     return S_OK;
 }
 
-/// <summary>
-/// 섹션 키로 해당 섹션에 해당 오브젝트를 제거한다.
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
-/// <param name="_pGameObject">오브젝트</param>
+
 HRESULT CSection_Manager::Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
 {
     CSection* pSection = Find_Section(_strSectionTag);
@@ -133,21 +127,14 @@ HRESULT CSection_Manager::Remove_GameObject_ToSectionLayer(const _wstring& _strS
 
     return S_OK;
 }
-/// <summary>
-/// x책에 활성화된 섹션에 오브젝트를 집어넣는다.
-/// </summary>
-/// <param name="_pGameObject">오브젝트</param>
-/// <param name="_iLayerIndex">레이어 지정 (ref. Section_2D::SECTION_2D_RENDERGROUP)</param>
+
 HRESULT CSection_Manager::Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
     if (nullptr == m_pCurSection)
         return E_FAIL;
     return m_pCurSection->Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
 }
-/// <summary>
-/// 책에 활성화된 섹션에서 오브젝트를 제거한다.
-/// </summary>
-/// <param name="_pGameObject">오브젝트</param>
+
 HRESULT CSection_Manager::Remove_GameObject_ToCurSectionLayer(CGameObject* _pGameObject)
 {
     if (nullptr == m_pCurSection)
@@ -155,11 +142,7 @@ HRESULT CSection_Manager::Remove_GameObject_ToCurSectionLayer(CGameObject* _pGam
     return m_pCurSection->Remove_GameObject_ToSectionLayer(_pGameObject);
 }
 
-/// <summary>
-/// 해당 섹션의 활성화 여부를 결정한다.
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
-/// <param name="_isActive">활성화 여부</param>
+
 HRESULT CSection_Manager::SetActive_Section(const _wstring& _strSectionTag, _bool _isActive)
 {
     CSection* pSection = Find_Section(_strSectionTag);
@@ -172,39 +155,22 @@ HRESULT CSection_Manager::SetActive_Section(const _wstring& _strSectionTag, _boo
     return S_OK;
 }
 
-/// <summary>
-/// 섹션 루프 - 현재 활성화된 섹션에게 준비 작업을 진행하고, 렌더그룹에 오브젝트를 삽입하게끔 한다.
-/// </summary>
+
 HRESULT CSection_Manager::Section_AddRenderGroup_Process()
 {
     for (auto& pSection : m_CurActiveSections)
     {
-        if (pSection == nullptr)
-            continue;
-        CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(pSection);
-        if (nullptr == pSection_2D)
+		if (pSection == nullptr)
+			continue;
+        
+        if (FAILED(pSection->Section_AddRenderGroup_Process()))
             return E_FAIL;
-
-        pSection_2D->Register_RenderGroup_ToRenderer();
-
-        pSection_2D->Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
-            return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
-            },CSection_2D::SECTION_2D_RENDERGROUP::SECTION_2D_OBJECT);
-
-        if (nullptr != pSection)
-        {
-            if(FAILED(pSection->Add_RenderGroup_GameObjects()))
-                return E_FAIL;
-        }
     }
 
     return S_OK;
 }
 
-/// <summary>
-/// 해당 섹션의 렌더타겟 사이즈를 가져온다.
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
+
 _float2 CSection_Manager::Get_Section_RenderTarget_Size(const _wstring _strSectionKey)
 {
     CSection* pSection = Find_Section(_strSectionKey);
@@ -216,10 +182,7 @@ _float2 CSection_Manager::Get_Section_RenderTarget_Size(const _wstring _strSecti
     return pSection_2D->Get_RenderTarget_Size();
 }
 
-/// <summary>
-/// 해당 섹션으로 책 활성화 섹션을 변경한다..
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
+
 HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 {
     // Clear_Section
@@ -244,10 +207,7 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
         return E_FAIL;
 }
 
-/// <summary>
-/// 오브젝트가 현재 활성화된 책 섹션에 포함되어 있는가 확인한다.
-/// </summary>
-/// <param name="_pGameObject">오브젝트</param>
+
 _bool CSection_Manager::Is_CurSection(CGameObject* _pGameObject)
 {
     if(nullptr != m_pCurSection)
@@ -255,10 +215,7 @@ _bool CSection_Manager::Is_CurSection(CGameObject* _pGameObject)
     return false;
 }
 
-/// <summary>
-/// 오브젝트가 섹션에 포함되어있는지 확인하고, 있으면 섹션 키 포인트, 없으면 nullptr을 반환
-/// </summary>
-/// <param name="_pGameObject">오브젝트</param>
+
 const _wstring* CSection_Manager::Get_SectionKey(CGameObject* _pGameObject)
 {
     const _wstring* pReturn = nullptr;
@@ -415,7 +372,7 @@ void CSection_Manager::Section_Active(const _wstring& _strSectionTag, _uint iCur
     if (FAILED(pCurSection->SetActive_GameObjects(true)))
         return;
 
-    if (0 >= iCurSectionIndex || m_iMaxCurActiveSectionCount <= iCurSectionIndex)
+    if (0 >= iCurSectionIndex || m_iMaxCurActiveSectionCount <= iCurSectionIndex + 1)
         return;
 
     _uint iPreIndex = iCurSectionIndex - 1;
@@ -532,21 +489,54 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
         _uint iIndex = 0;
         for (auto ChildJson : ChapterJson)
         {
+            
+            if (!ChildJson.contains("Section_Type"))
+                continue;
+            SECTION_2D_PLAY_TYPE eType = ChildJson["Section_Type"];
 
-            CSection_2D* pSection_2D = CSection_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
-            if (nullptr == pSection_2D)
+
+            CSection* pSection = nullptr;
+
+            switch (eType)
             {
-                MSG_BOX("Failed Create CSection_2D");
-                return E_FAIL;
-            } 
-            m_iPriorityGenKey += 10;
+            case Client::CSection_Manager::PLAYMAP:
+            {
+                pSection = CSection_2D_PlayMap::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+                if (nullptr == pSection)
+                {
+                    MSG_BOX("Failed Create CSection_2D");
+                    return E_FAIL;
+                }
+                m_iPriorityGenKey += 10;
+            }
+                break;
+            case Client::CSection_Manager::NARRAION:
+            {
+                // TODO :: 상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
+				pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+				if (nullptr == pSection)
+				{
+					MSG_BOX("Failed Create CNarration_2D");
+					return E_FAIL;
+				}
+				m_iPriorityGenKey += 10;
+
+
+            }
+                break;
+            case Client::CSection_Manager::SECTION_2D_PLAY_TYPE_LAST:
+                break;
+            }
+
+
+
             
 
     
 
             if (m_CurLevelSections.empty())
-                strStartSectionKey = pSection_2D->Get_SectionName();
-            m_CurLevelSections.try_emplace(pSection_2D->Get_SectionName(), pSection_2D);
+                strStartSectionKey = pSection->Get_SectionName();
+            m_CurLevelSections.try_emplace(pSection->Get_SectionName(), pSection);
             iIndex++;
         }
     }

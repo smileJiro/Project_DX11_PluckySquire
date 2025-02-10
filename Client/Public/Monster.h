@@ -26,6 +26,8 @@ public:
 		_float fAttack2DRange;
 		_float fDelayTime;
 		_float fCoolTime;
+		_float fFOVX;
+		_float fFOVY;
 		_bool isSneakMode = false;
 	}MONSTER_DESC;
 
@@ -76,6 +78,11 @@ public:
 	_bool IsCool()
 	{
 		return m_isCool;
+	}
+
+	_float3 Get_RayOffset() const
+	{
+		return m_vRayOffset;
 	}
 
 public:
@@ -155,6 +162,12 @@ protected:
 	_bool m_isCool = { false };
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
+
+	//시야각
+	_float m_fFOVX = { 0.f };
+	_float m_fFOVY = { 0.f };
+
+	_float3 m_vRayOffset = { 0.f,0.f,0.f };
 
 	//잠입 모드
 	_bool m_isSneakMode = { false };

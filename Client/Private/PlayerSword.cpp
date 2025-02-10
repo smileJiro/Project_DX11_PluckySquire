@@ -68,14 +68,14 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::PLAYER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
-
+    //m_pActorCom-> Set_ShapeEnable(0, true);
     return S_OK;
 }
 
@@ -131,26 +131,35 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
 {
     if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
     {
-        if (Is_ComingBack())
+        if (Is_Flying()&& Is_ComingBack())
         {
-
             Set_State(HANDLING);
+
         }
     }
-    else if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+    else 
     {
-        if (Is_Outing())
+        if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
         {
-            m_fOutingForce = 0;
-            m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition()), 0);
-            Set_State(STUCK);
-         }
+            if (Is_Flying() && Is_Outing())
+            {
+                m_fOutingForce = 0;
+                m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition()), 0);
+                Set_State(STUCK);
+            }
+        }
+        else if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+        {
+			m_pPlayer->Attack(_Other.pActorUserData->pOwner);
+        }
     }
 }
 
 void CPlayerSword::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    int a = 0;
+    if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+    {
+    }
 }
 
 void CPlayerSword::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -163,6 +172,7 @@ void CPlayerSword::Throw( _fvector _vDirection)
     m_fOutingForce = m_fThrowingPower;
     m_vThrowDirection = _vDirection;
 	Set_State(FLYING);
+    Set_AttackEnable(true);
 }
 
 
@@ -199,20 +209,20 @@ void CPlayerSword::On_StateChange()
             //m_pActorCom->Set_AngularVelocity(vAngularVelocity);
 
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
+           // m_pActorCom->Update(0);
+            Set_AttackEnable(false);
         }
 
         break;
     }
     case Client::CPlayerSword::FLYING:
     {
-
         m_pSocketMatrix = nullptr;
         m_pParentMatrices[COORDINATE_3D] = nullptr;
-        _matrix matWorld = XMMatrixIdentity(); 
-        matWorld.r[3] = XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_3D]).r[3];
-        XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], matWorld);
-        m_pActorCom->Update(0.0f);
+        m_pActorCom->Update(0);
+        _vector vLook = XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK), 0);
         static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
+        static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(vLook);
         break;
     }
     case Client::CPlayerSword::STUCK:
@@ -225,6 +235,8 @@ void CPlayerSword::On_StateChange()
             pDynamicActor->Set_LinearVelocity({ 0.f,0.f,0.f });
             pDynamicActor->Set_AngularVelocity(vSpeed);
             pDynamicActor->Set_Rotation(m_vStuckDirection);
+            static_cast<CActor_Dynamic*>(m_pActorCom)->Late_Update(0);
+            static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
         }
 
         break;
@@ -234,6 +246,17 @@ void CPlayerSword::On_StateChange()
         break;
     }
     m_ePastState = m_eCurrentState;
+}
+
+void CPlayerSword::Set_AttackEnable(_bool _bOn)
+{
+    m_pActorCom->Set_ShapeEnable(0, _bOn);
+	m_bAttackEnable = _bOn;
+}
+
+_bool CPlayerSword::Is_AttackEnable()
+{
+    return    m_bAttackEnable;
 }
 
 CPlayerSword* CPlayerSword::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
