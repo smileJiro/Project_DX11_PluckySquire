@@ -35,10 +35,6 @@ public:
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 
 	void Throw(_fvector _vDirection);
-	_bool Is_Flying() { return FLYING == m_eCurrentState; }
-	_bool Is_ComingBack() { return Is_Flying() && 0 > m_fOutingForce; }
-	_bool Is_Outing() { return Is_Flying() && 0 < m_fOutingForce; }
-	_bool Is_SwordHandling() { return HANDLING == m_eCurrentState; }
 	void Switch_Grip(_bool _bForehand);
 
 	void Set_State(SWORD_STATE _eNewState);
@@ -46,7 +42,14 @@ public:
 
 	//Set
 	void Set_AttackEnable(_bool _bOn);
+	//Get
+	_bool Is_AttackEnable();
+	_bool Is_Flying() { return FLYING == m_eCurrentState; }
+	_bool Is_ComingBack() { return Is_Flying() && 0 > m_fOutingForce; }
+	_bool Is_Outing() { return Is_Flying() && 0 < m_fOutingForce; }
+	_bool Is_SwordHandling() { return HANDLING == m_eCurrentState; }
 private:
+	_bool m_bAttackEnable = false;
 	_float m_fThrowingPower = 15.f;
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};

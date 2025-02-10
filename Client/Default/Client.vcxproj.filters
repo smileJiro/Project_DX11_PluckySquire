@@ -316,6 +316,9 @@
     <Filter Include="05.Interact">
       <UniqueIdentifier>{6f7c500f-8dd0-45d5-9288-58dfccb1c72d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
+      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Item">
       <UniqueIdentifier>{e99d4142-b01f-4107-b0e6-76300adbb590}</UniqueIdentifier>
     </Filter>
@@ -333,6 +336,12 @@
     </Filter>
     <Filter Include="04.Section\Narration_2D">
       <UniqueIdentifier>{2cf6df63-166f-40b0-a42a-1b4a0737937f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\PlayerItem">
+      <UniqueIdentifier>{e99d4142-b01f-4107-b0e6-76300adbb590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\PlayerItem\Manager">
+      <UniqueIdentifier>{f161f807-a9d6-422f-b0f8-628fdb80b8b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\NPC\99. Social_Npc">
       <UniqueIdentifier>{6b81b8a5-a804-493a-8b27-4ce5cfa0487c}</UniqueIdentifier>
@@ -747,10 +756,10 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\PlayerData_Manager.h">
-      <Filter>02.GameObjects\Item\Manager</Filter>
+      <Filter>02.GameObjects\PlayerItem\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerItem.h">
-      <Filter>02.GameObjects\Item</Filter>
+      <Filter>02.GameObjects\PlayerItem</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\TriggerObject.h">
       <Filter>02.GameObjects\Trigger</Filter>
@@ -1162,10 +1171,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
     <ClCompile Include="..\Private\PlayerData_Manager.cpp">
-      <Filter>02.GameObjects\Item\Manager</Filter>
+      <Filter>02.GameObjects\PlayerItem\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerItem.cpp">
-      <Filter>02.GameObjects\Item</Filter>
+      <Filter>02.GameObjects\PlayerItem</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\TriggerObject.cpp">
       <Filter>02.GameObjects\Trigger</Filter>

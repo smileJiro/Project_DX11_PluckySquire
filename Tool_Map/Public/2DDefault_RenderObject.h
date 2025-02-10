@@ -17,7 +17,7 @@ class C2DDefault_RenderObject final : public CUIObject
 public:
 	typedef struct tagDefaultRenderObjectDesc: public CUIObject::UIOBJECT_DESC
 	{
-
+		_float2 fRenderTargetSize;
 	}DEFAULT_RENDER_OBJECT_DESC;
 
 private:
@@ -35,6 +35,7 @@ public:
 
 	_bool	Toggle_Mode() { m_is2DMode = !m_is2DMode; return m_is2DMode; }
 
+	HRESULT	Change_RenderGroup(_float2 _fRenderTargetSize, _int _iRenderGroupID, _int _iPriorityID);
 
 
 	void Texture_Output(const _wstring& _strTexturePath);
@@ -57,6 +58,12 @@ private:
 	_float4x4		m_TargetProjMatrix{};
 	_float4			m_fBackColor = {1.f,0.f,1.f,1.f};
 	_float2			m_fTargetSize = {};
+
+
+
+	_int			m_iRenderGroupID = RG_2D;
+	_int			m_iPriorityID = PR2D_BOOK_SECTION;
+
 private:
 	HRESULT Ready_Components();
 	HRESULT Bind_ShaderResources();
