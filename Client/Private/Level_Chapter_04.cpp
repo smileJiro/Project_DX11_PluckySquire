@@ -139,11 +139,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
-	if (KEY_DOWN(KEY::ENTER) && !IO.WantCaptureKeyboard)
-	{
-		Event_LevelChange(LEVEL_LOADING, LEVEL_LOGO);
-	}
-
 	if (KEY_DOWN(KEY::NUM6))
 	{
 
