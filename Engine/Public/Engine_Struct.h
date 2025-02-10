@@ -173,6 +173,18 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXMESH;
 
+	typedef struct ENGINE_DLL tagVtxMeshID
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexcoord;
+		XMFLOAT3		vTangent;
+		unsigned int	iInstanceID;
+
+		static const unsigned int					iNumElements = { 5 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
+	}VTXMESHID;
+
 	typedef struct ENGINE_DLL tagVtxAnimMesh
 	{
 		XMFLOAT3		vPosition;
@@ -189,6 +201,9 @@ namespace Engine
 	{
 		_float3 vPosition;
 		_float2 vSize;	
+
+		static const unsigned int					iNumElements = { 2 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	} VTXPOINT;
 
 	/* Sprite(Point) Particle¿« ¿ŒΩ∫≈œΩÃ */
@@ -200,6 +215,7 @@ namespace Engine
 		XMFLOAT4		vUV;
 		XMFLOAT3		vVelocity;
 		XMFLOAT3		vAcceleration;
+		float			fAlive;
 	}VTXPOINTINSTANCE;
 
 
@@ -210,17 +226,18 @@ namespace Engine
 		XMFLOAT4		vColor;
 		XMFLOAT3		vVelocity;
 		XMFLOAT3		vAcceleration;
+		float			fAlive;
 	}VTXMESHINSTANCE;
 
 	typedef struct ENGINE_DLL tagPointParticle
 	{
-		static const unsigned int iNumElements = { 11 };		// Position + Size + VTXPOINTINSTANCE
+		static const unsigned int iNumElements = { 12 };		// Position + Size + VTXPOINTINSTANCE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXPOINTPARTICLE;
 
 	typedef struct ENGINE_DLL tagMeshParticle
 	{
-		static const unsigned int iNumElements = { 12 };		// Mesh + VTXMESHINSTACNE
+		static const unsigned int iNumElements = { 13 };		// Mesh + VTXMESHINSTACNE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXMESHPARTICLE;
 

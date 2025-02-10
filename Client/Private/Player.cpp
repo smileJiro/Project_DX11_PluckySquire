@@ -159,8 +159,8 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
-    Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
-    Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
+    Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
+    Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -314,8 +314,8 @@ void CPlayer::Update(_float _fTimeDelta)
 
     }
 
-    __super::Update(_fTimeDelta); /* Part Object Update */
 
+    __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == eCoord)
     {
@@ -325,10 +325,7 @@ void CPlayer::Update(_float _fTimeDelta)
             m_bOnGround = false;
         }
     }
-    else
-    {
-        m_bOnGround = false;
-    }
+
 
 }
 
@@ -336,6 +333,25 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
+    COORDINATE eCoord = Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+    {
+        m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
+
+        m_f2DHeight += m_f2DUpForce * _fTimeDelta;
+        if (0 > m_f2DHeight)
+        {
+            m_f2DHeight = 0;
+            m_bOnGround = true;
+            m_f2DUpForce = 0;
+        }
+        else if (0 == m_f2DHeight)
+            m_bOnGround = true;
+        else
+            m_bOnGround = false;
+        // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
+        m_pBody->Set_Position({ 0,m_f2DHeight,0 });
+    }
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
     //cout << endl;
 }
@@ -520,7 +536,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
 {
     if (_pMyCollider == m_pAttack2DTriggerCom)
     {
-        Event_Hit(this, _pOtherObject, m_tStat.fDamg);
+        Attack(_pOtherObject);
     }
 }
 
@@ -580,18 +596,21 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 }
 
 
-void CPlayer::Attack()
+void CPlayer::Move_Attack_3D()
 {
     if (COORDINATE_3D == Get_CurCoord())
     {
         Stop_Move();
         Add_Impuls(Get_LookDirection() * m_fAttackForwardingForce);
     }
-    else
-    {
-		//_vector vDir = EDir_To_Vector(m_e2DDirection_E);
-		//m_pControllerTransform->Go_Direction(vDir, m_fAttackForwardingForce, 0.1f);
-    }
+}
+
+void CPlayer::Attack(CGameObject* _pVictim)
+{
+    if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
+        return;
+    Event_Hit(this, _pVictim, m_tStat.fDamg);
+    m_AttckedObjects.insert(_pVictim);
 }
 
 void CPlayer::Move(_fvector _vForce, _float _fTimeDelta)
@@ -609,7 +628,7 @@ void CPlayer::Move(_fvector _vForce, _float _fTimeDelta)
     }
     else
     {
-        m_pControllerTransform->Go_Direction(XMVector4Normalize(_vForce), _fTimeDelta);
+        m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX( XMVector3Length(_vForce)), _fTimeDelta);
     }
 }
 
@@ -642,7 +661,7 @@ void CPlayer::Jump()
 
     if (COORDINATE_2D == eCoord)
     {
-        //m_f2DUpForce = m_tStat[COORDINATE_2D].fJumpPower;
+        m_f2DUpForce = m_f2DJumpPower;
     }
     else
     {
@@ -688,7 +707,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     if (KEY_DOWN(KEY::E))
         tResult.bInputStates[PLAYER_KEY_INTERACT] = true;
     //점프
-    if (KEY_PRESSING(KEY::SPACE))
+    if (KEY_DOWN(KEY::SPACE))
         tResult.bInputStates[PLAYER_KEY_JUMP] = true;
     //구르기 & 잠입
     else if (KEY_PRESSING(KEY::LSHIFT))
@@ -745,13 +764,27 @@ _bool CPlayer::Is_Sneaking()
         return false;
 }
 
+_bool CPlayer::Is_AttackTriggerActive()
+{
+    COORDINATE eCoord = Get_CurCoord();
+
+    if (COORDINATE_2D == eCoord)
+    {
+        return m_pAttack2DTriggerCom->Is_Active();
+    }
+    else
+    {
+        return m_pSword->Is_AttackEnable();
+    }
+}
+
 _float CPlayer::Get_UpForce()
 {
     COORDINATE eCoord = Get_CurCoord();
 
     if (COORDINATE_2D == eCoord)
     {
-        return -1.f;
+        return m_f2DUpForce;
     }
     else
     {
@@ -935,6 +968,8 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
 }
 void CPlayer::Set_AttackTriggerActive(_bool _bOn)
 {
+    if (false == _bOn)
+        Flush_AttckedSet();
 	if (COORDINATE_2D == Get_CurCoord())
 	{
         m_pAttack2DTriggerCom->Set_Active(_bOn);

@@ -21,8 +21,12 @@ namespace Client
 		PR3D_FINAL =		50,
 		PR3D_BLEND =		60,
 		PR3D_EFFECT =		70,
-		PR3D_AFTEREFFECT =	80,
-		PR3D_UI =			90,
+		PR3D_PARTICLE =		80,
+		PR3D_AFTERPARTICLE =90,
+		PR3D_BLURDOWN =		100,
+		PR3D_BLUR =			110,
+		PR3D_AFTEREFFECT =	120,
+		PR3D_UI =			130,
 
 		PR3D_LAST = 999
 	};
@@ -62,6 +66,17 @@ namespace Client
 
 		LEVEL_END
 	};
+
+
+	enum SECTION_PLAYMAP_2D_RENDERGROUP
+	{
+		SECTION_2D_PLAYMAP_BACKGROUND,
+		SECTION_2D_PLAYMAP_OBJECT,
+		SECTION_2D_PLAYMAP_TRIGGER,
+		SECTION_2D_PLAYMAP_UI,
+		SECTION_2D_PLAYMAP_RENDERGROUP_LAST,
+	};
+
 	// 비트연산자를 통해 SimulationFilter를 설정해야해서 enum으로 하겠음. enum class는 비트연산자 쓰려면 형변환많이하고 번거로워서.
 	enum OBJECT_GROUP // 아래 GROUP은 예시임. 편한대로 사용하시면 됨.
 	{

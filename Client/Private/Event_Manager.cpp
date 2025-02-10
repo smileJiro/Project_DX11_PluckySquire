@@ -161,10 +161,12 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 	{
 		Execute_Book_Main_Change(_tEvent);
 	}
+	break;
 	case Client::EVENT_TYPE::HIT:
 	{
 		Execute_Hit(_tEvent);
 	}
+	break;
 	break;
 	default:
 		break;

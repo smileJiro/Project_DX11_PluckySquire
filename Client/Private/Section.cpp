@@ -21,6 +21,8 @@ HRESULT CSection::Initialize(SECTION_DESC* pDesc)
 
     m_iLayerGroupCount = pDesc->iLayerGroupCount;
     m_Layers = new CLayer*[m_iLayerGroupCount];
+    m_iGroupID = pDesc->iGroupID;
+    m_iPriorityID = pDesc->iPriorityID;
 
     /* Create Layer */
     for (_uint i = 0; i < m_iLayerGroupCount; i++)
@@ -29,6 +31,7 @@ HRESULT CSection::Initialize(SECTION_DESC* pDesc)
     if (nullptr == m_Layers[i])
         return E_FAIL;
     }
+
 
     return S_OK;
 }

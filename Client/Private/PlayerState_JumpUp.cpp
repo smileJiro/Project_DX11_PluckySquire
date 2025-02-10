@@ -37,17 +37,39 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 		return;
 	}
-	if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
-		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
-		m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
+		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+		{
+			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
+			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
+		}
+		else
+			m_pOwner->Stop_Rotate();
 	}
 	else
-		m_pOwner->Stop_Rotate();
+	{
+		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+		{
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
+
+			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
+			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+			if (m_eOldFDir != eFDir)
+			{
+				m_pOwner->Set_2DDirection(eNewDir);
+				m_eOldFDir = eFDir;
+			}
+		}
+	}
 }
 
 void CPlayerState_JumpUp::Enter()
 {
+	m_fAirRunSpeed = m_pOwner->Get_AirRunSpeed();
+	m_fAirRotateSpeed = m_pOwner->Get_AirRotationSpeed();
+	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
 	m_pOwner->LookDirectionXZ_Dynamic(m_pOwner->Get_3DTargetDirection());
 	m_pOwner->Jump();
 	Switch_JumpAnimation();

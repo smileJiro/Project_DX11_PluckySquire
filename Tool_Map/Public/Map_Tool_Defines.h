@@ -26,7 +26,7 @@ namespace Map_Tool
 		DELETE_OBJECT,
 		LEVEL_CHANGE,
 		SET_ACTIVE,
-		HR,
+		CAPCHER,
 
 		LAST,
 	};
@@ -70,6 +70,8 @@ namespace Map_Tool
 		PR2D_AFTER = 990,
 		PR2D_LAST = 999
 	};
+
+
 }
 
 extern HINSTANCE g_hInst;

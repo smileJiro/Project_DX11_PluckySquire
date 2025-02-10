@@ -57,7 +57,6 @@ void CModelObject::Late_Update(_float _fTimeDelta)
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
         m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
-            
     }
 
     /* Update Parent Matrix */

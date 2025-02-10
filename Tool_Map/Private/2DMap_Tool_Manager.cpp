@@ -56,7 +56,7 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	if (nullptr == m_pTaskManager)
 		return E_FAIL;
 
-	m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
+	m_arrSelectName[SAVE_LIST] = L"Room_Enviroment";
 	Load_3D_Map(false);
 
 
@@ -75,16 +75,25 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	}
 
 
+	//CModelObject::MODELOBJECT_DESC Desc = {};
+
+	//Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
+	//	LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
+	//	return E_FAIL;
+	//
 	CModelObject::MODELOBJECT_DESC Desc = {};
 
 	Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
 
-	Change_RenderGroup(_float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
 		LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
 		return E_FAIL;
+
+	Change_RenderGroup(_float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y));
 
 	return S_OK;
 }
@@ -293,10 +302,48 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
 		if (GetSaveFileName(&ofn))
 		{
-			m_pTileRenderObject->Set_OutputPath(szName);
+			Event_Capcher(szName);
 		}
 	}
+	if (ImGui::Button("In 2D Map Texture"))
+	{
+		_tchar originalDir[MAX_PATH];
+		GetCurrentDirectory(MAX_PATH, originalDir);
+		_wstring strModelPath = L"../../Client/Bin/Resources/Textures/Map/";
 
+		OPENFILENAME ofn = {};
+		ZeroMemory(&ofn, sizeof(ofn));
+		_tchar szName[MAX_PATH] = {};
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = g_hWnd;
+		ofn.lpstrFile = szName;
+		ofn.nMaxFile = sizeof(szName);
+		ofn.lpstrFilter = L".dds\0*.dds\0";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = nullptr;
+		ofn.nMaxFileTitle = 0;
+		if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
+			ofn.lpstrInitialDir = originalDir;
+		else
+			ofn.lpstrInitialDir = strModelPath.c_str();
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetOpenFileName(&ofn))
+		{
+			_wstring strPath = szName;
+
+			auto& Pair = Get_FileName_From_Path(strPath);
+
+
+			m_DefaultRenderObject->Set_Texture_Mode(WstringToString(Pair.first + L"." + Pair.second));
+			_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
+
+			if (fSize.x != -1.f)
+			{
+				Change_RenderGroup(fSize);
+			}
+		}
+	}
 	if (ImGui::Button("SampleBook Mode Toggle"))
 	{
 		_bool is2DMode = m_DefaultRenderObject->Toggle_Mode();
@@ -1512,8 +1559,7 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 
 	if (!IndexsInfos.empty())
 	{
-		if (nullptr != m_pTileRenderObject)
-			Event_DeleteObject(m_pTileRenderObject);
+
 
 
 
@@ -1709,6 +1755,10 @@ HRESULT C2DMap_Tool_Manager::Update_Model_Index()
 
 HRESULT C2DMap_Tool_Manager::Change_RenderGroup(_float2 _fRenderTargetSize)
 {
+
+	if(nullptr != m_p2DRenderGroup)
+		Clear_RenderGroup();
+
 	/* Target Book2D */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(m_strRTKey, (_uint)_fRenderTargetSize.x, (_uint)_fRenderTargetSize.y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
 		return E_FAIL;
@@ -1721,13 +1771,14 @@ HRESULT C2DMap_Tool_Manager::Change_RenderGroup(_float2 _fRenderTargetSize)
 		return E_FAIL;
 
 
-	CRenderGroup_2D::RG_MRT_DESC RG_Book2DDesc;
+	CRenderGroup_2D::RG_2D_DESC RG_Book2DDesc;
 	RG_Book2DDesc.iRenderGroupID = RENDERGROUP::RG_2D;
 	RG_Book2DDesc.iPriorityID = PRIORITY_2D::PR2D_BOOK_SECTION;
 	RG_Book2DDesc.isViewportSizeChange = true;
 	RG_Book2DDesc.strMRTTag = m_strMRTKey;
 	RG_Book2DDesc.pDSV = m_pGameInstance->Find_DSV(m_strDSVKey);
 	RG_Book2DDesc.vViewportSize = _fRenderTargetSize;
+	RG_Book2DDesc.fRenderTargetSize = _fRenderTargetSize;
 	RG_Book2DDesc.isClear = true;
 	if (nullptr == RG_Book2DDesc.pDSV)
 	{
@@ -1750,6 +1801,7 @@ HRESULT C2DMap_Tool_Manager::Change_RenderGroup(_float2 _fRenderTargetSize)
 		m_p2DRenderGroup->Get_PriorityID())))
 		return E_FAIL;
 
+	m_DefaultRenderObject->Set_Default_RenderTarget_Name(m_strRTKey);
 
 	return S_OK;
 }
@@ -1837,10 +1889,12 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 					_float2 fScale = {};
 					for (_uint i = 0; i < 2; i++)
 					{
-						_float fValue = TargetJson["fLevelSizePixels"].at(arrAxisKey[i]);
+						_float fValue = TargetJson["LevelSizePixels"].at(arrAxisKey[i]);
 						reinterpret_cast<_float*>(&fScale.x)[i] = fValue;
 					}
-					int a = 1;
+					fLevelSizePixels = fScale;
+					fLevelSizePixels.x *= RATIO_BOOK2D_X;
+					fLevelSizePixels.y *= RATIO_BOOK2D_Y;
 				}
 				if (TargetJson.contains("RenderResolution"))
 				{
@@ -1850,7 +1904,9 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 						_float fValue = TargetJson["RenderResolution"].at(arrAxisKey[i]);
 						reinterpret_cast<_float*>(&fScale.x)[i] = fValue;
 					}
-					int a = 1;
+					fRenderResolution = fScale;
+					fRenderResolution.x *= RATIO_BOOK2D_X;
+					fRenderResolution.y *= RATIO_BOOK2D_Y;
 				}
 
 
@@ -1871,15 +1927,6 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 					for (_uint i = 0; i < 3; i++)
 					{
 						_float fValue = TargetJson["RelativeLocation"].at(arrAxisKey[i]);
-						//if (i == 0)
-						//{
-						//	fValue = ((_int)fValue % RTSIZE_BOOK2D_X + RTSIZE_BOOK2D_X) % RTSIZE_BOOK2D_X;
-						//}
-						//else if (i == 1)
-						//{
-						//	fValue = ((_int)fValue % RTSIZE_BOOK2D_Y + RTSIZE_BOOK2D_Y) % RTSIZE_BOOK2D_Y;
-
-						//}
 						memcpy((&fValuePos.x) + i, &fValue, sizeof(_float));
 					}
 
@@ -1962,12 +2009,12 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 	{
 		_float2 fLgcRenderTargetSize = m_p2DRenderGroup->Get_RenderTarget_Size();
 	
-		if (fLevelSizePixels.x != fLgcRenderTargetSize.x
+		if ((_int)round(fRenderResolution.x) != (_int)round(fLgcRenderTargetSize.x)
 			||
-			fLevelSizePixels.y != fLgcRenderTargetSize.y)
+			(_int)round(fRenderResolution.y) != (_int)round(fLgcRenderTargetSize.y))
 		{
 			Clear_RenderGroup();
-			Change_RenderGroup(fLevelSizePixels);
+			Change_RenderGroup(fRenderResolution);
 		}
 	}
 #pragma endregion
@@ -1975,6 +2022,9 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 
 #pragma region 타일 맵 검사 및 생성
 
+	if (nullptr != m_pTileRenderObject)
+		Event_DeleteObject(m_pTileRenderObject);
+	m_pTileRenderObject = nullptr;
 	if (strTileMapName != "")
 	{
 		if (FAILED(Setting_TileMap(strTileMapName)))
@@ -2036,7 +2086,7 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 			NormalDesc.strProtoTag = StringToWstring(Pair.first);
 			NormalDesc.fDefaultPosition.x = Pair.second.x;
 			NormalDesc.fDefaultPosition.y = Pair.second.y;
-			NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
+			NormalDesc.fRenderTargetSize = { (_float)fRenderResolution.x, (_float)fRenderResolution.y };
 			NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 			NormalDesc.pInfo = Find_Info(NormalDesc.strProtoTag);
 			NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
@@ -2303,7 +2353,7 @@ void C2DMap_Tool_Manager::Save_Trigger()
 {
 	_tchar originalDir[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, originalDir);
-	SetCurrentDirectory(originalDir);
+	//SetCurrentDirectory(originalDir);
 	_wstring strTriggerPath = L"../../Client/Bin/MapSaveFiles/2D/Trigger/";
 	_wstring strTriggerName = m_arrSelectName[SAVE_LIST] + L".json";
 	_tchar szName[MAX_PATH];

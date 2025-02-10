@@ -125,16 +125,21 @@ PS_COLOR PS_DISSOLVE(PS_IN In)
 {
     PS_COLOR Out = (PS_COLOR) 0;
     
-    float fAlpha = g_AlphaTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_AlphaUVScale.x, g_AlphaUVScale.y) + float2(g_AlphaUVScale.z, g_AlphaUVScale.w) * g_fTimeAcc)).r;
-    float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y) + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc)).r;
+    float fAlpha = g_AlphaTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_AlphaUVScale.x, g_AlphaUVScale.y))
+    + float2(g_AlphaUVScale.z, g_AlphaUVScale.w) * g_fTimeAcc).r;
+    float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
+    + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc).r;
+    
     fAlpha = fMaskAlpha * fAlpha;
     
-    float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y) + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) * g_fTimeAcc)).r;
-    float fDissolveFactor = step(g_fTimeAcc * g_fDissolveFactor, fDissolve);
-    if (fDissolveFactor < 0.05f)
+    float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
+    + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) * g_fTimeAcc).r;
+    
+    float fDissolveFactor = smoothstep(g_fTimeAcc * g_fDissolveFactor - g_fDissolveEdgeWidth, g_fTimeAcc * g_fDissolveFactor + g_fDissolveEdgeWidth, fDissolve); //float fDissolveFactor = step(g_fTimeAcc * g_fDissolveFactor, fDissolve);
+    if (fDissolveFactor < 0.05)
         discard;
     
-    float3 vColor = g_vColor.rgb * fDissolveFactor;
+    float3 vColor = g_vColor.rgb;
     fAlpha = g_vColor.a * fAlpha * fDissolveFactor;
     
     if (fAlpha < g_fAlphaTest)
@@ -149,20 +154,84 @@ PS_COLOR PS_DISSOLVE(PS_IN In)
     return Out;
 }
 
-
-PS_COLOR PS_DISSOLVE_UV(PS_IN In)
+struct PS_BRIGHTCOLOR
 {
-    PS_COLOR Out = (PS_COLOR) 0;
-    
-    //float fNoise = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord).r;
-    //float fDissolveFactor = step(fNoise, g_fTimeAcc);
-    //fDissolveFactor = min(fDissolveFactor, step(length(In.vTexcoord), g_fTimeAcc));
+    float4 vDiffuse : SV_TARGET0;
+    float4 vBloom : SV_TARGET1;
+};
+
+float g_fBloomThreshold;
+float3 g_fBrightness = float3(0.2126, 0.7152, 0.0722);
+
+PS_BRIGHTCOLOR PS_BLOOM(PS_IN In)
+{
+    PS_BRIGHTCOLOR Out = (PS_BRIGHTCOLOR) 0;
         
-    //float3 vColor = g_vColor * fDissolveFactor;
-    //float fAlpha = g_fAlpha * fDissolveFactor;
+    float fAlpha = g_AlphaTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_AlphaUVScale.x, g_AlphaUVScale.y))
+    + float2(g_AlphaUVScale.z, g_AlphaUVScale.w) * g_fTimeAcc).r;
+    float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
+    + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc).r;
+    
+    fAlpha = fMaskAlpha * fAlpha;
+    
+    float3 vColor = g_vColor;
+    fAlpha = g_vColor.a * fAlpha;
+
+    float fLuminance = dot(vColor.rgb, g_fBrightness);
+    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / (1.0 - g_fBloomThreshold);
+    
+    Out.vDiffuse.rgb = vColor;
+    Out.vDiffuse.a = fAlpha;
+    
+    Out.vBloom = float4(vColor * fBrightness, fAlpha * fBrightness);
+   
+    if (fAlpha < g_fAlphaTest)
+        discard;
+    if (length(vColor) < g_fColorTest)
+        discard;
+    
     
     return Out;
 }
+
+PS_BRIGHTCOLOR PS_BLOOMDISSOLVE(PS_IN In)
+{
+    PS_BRIGHTCOLOR Out = (PS_BRIGHTCOLOR) 0;
+        
+    float fAlpha = g_AlphaTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_AlphaUVScale.x, g_AlphaUVScale.y))
+    + float2(g_AlphaUVScale.z, g_AlphaUVScale.w) * g_fTimeAcc).r;
+    float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
+    + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc).r;
+    
+    fAlpha = fMaskAlpha * fAlpha;
+    
+    float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
+    + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) * g_fTimeAcc).r;
+    
+    float fDissolveFactor = smoothstep(g_fTimeAcc * g_fDissolveFactor - g_fDissolveEdgeWidth, g_fTimeAcc * g_fDissolveFactor + g_fDissolveEdgeWidth, fDissolve); //float fDissolveFactor = step(g_fTimeAcc * g_fDissolveFactor, fDissolve);
+    if (fDissolveFactor < 0.05)
+        discard;
+    
+    float3 vColor = g_vColor;
+    fAlpha = g_vColor.a * fAlpha * fDissolveFactor;
+
+    float fLuminance = dot(vColor.rgb, g_fBrightness);
+    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / (1.0 - g_fBloomThreshold);
+    
+    Out.vDiffuse.rgb = vColor;
+    Out.vDiffuse.a = fAlpha;
+    
+    Out.vBloom = float4(vColor * fBrightness, fAlpha * fBrightness);
+   
+    if (fAlpha < g_fAlphaTest)
+        discard;
+    if (length(vColor) < g_fColorTest)
+        discard;
+    
+    
+    return Out;
+}
+
 
 
 technique11 DefaultTechnique
@@ -176,6 +245,8 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+        ComputeShader = NULL;
+
     }
 
     pass Dissolve // 1
@@ -187,9 +258,11 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DISSOLVE();
+        ComputeShader = NULL;
+
     }
 
-    pass Dissolve_UV // 2
+    pass BLOOM // 2
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -197,7 +270,22 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_DISSOLVE_UV();
+        PixelShader = compile ps_5_0 PS_BLOOM();
+        ComputeShader = NULL;
+
+    }
+
+    pass BLOOMDISSOLVE // 3
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_BLOOMDISSOLVE();
+        ComputeShader = NULL;
+
     }
 
 }

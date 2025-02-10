@@ -10,13 +10,14 @@ class CBone;
 
 class ENGINE_DLL CParticle_Mesh_Emitter : public CEmitter
 {
+public:
+	enum EFFECT_SHADERPASS {DEFAULT};
 private:
 	CParticle_Mesh_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Prototype);
 	virtual ~CParticle_Mesh_Emitter() = default;
 
 public:
-	//HRESULT						Initialize_Prototype(const _char* _szModelPath, const _tchar* _szInfoPath);
 	HRESULT						Initialize_Prototype(const json& _jsonInfo);
 	virtual HRESULT				Initialize(void* _pArg) override;
 	virtual void				Priority_Update(_float _fTimeDelta) override;
@@ -39,8 +40,7 @@ private:
 
 
 private:
-	virtual void					On_Event() override;
-	virtual void					Off_Event() override;
+	virtual void					Update_Emitter(_float _fTimeDelta) override;
 
 	HRESULT					Bind_ShaderResources();
 	HRESULT					Bind_Material(class CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
@@ -84,4 +84,13 @@ public:
 
 };
 
+END
+
+
+BEGIN(Engine)
+NLOHMANN_JSON_SERIALIZE_ENUM(CParticle_Mesh_Emitter::EFFECT_SHADERPASS, {
+{CParticle_Mesh_Emitter::EFFECT_SHADERPASS::DEFAULT, "DEFAULT"},
+
+
+	});
 END

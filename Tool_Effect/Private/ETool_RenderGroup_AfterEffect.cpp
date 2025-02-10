@@ -4,7 +4,7 @@
 
 
 CETool_RenderGroup_AfterEffect::CETool_RenderGroup_AfterEffect(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    : CRenderGroup_MRT(_pDevice, _pContext)
+    : CRenderGroup(_pDevice, _pContext)
 {
 }
 
@@ -18,17 +18,28 @@ HRESULT CETool_RenderGroup_AfterEffect::Initialize(void* _pArg)
 
 HRESULT CETool_RenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer)
 {
-    if (FAILED(m_pGameInstance->Begin_MRT(m_strMRTTag, m_pDSV, m_isClear)))
-        return E_FAIL;
-
     _pRTShader->Bind_Matrix("g_WorldMatrix", m_pGameInstance->Get_WorldMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_ViewMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
 
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_FinalTexture", TEXT("Target_Final"))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_EffectColorTexture", TEXT("Target_EffectColor"))))
         return E_FAIL;
 
-    // TODO: 
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_AccumulateTexture", TEXT("Target_ParticleAccumulate"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_RevealageTexture", TEXT("Target_ParticleRevelage"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_BloomTexture", TEXT("Target_DownBlur1"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_BloomTexture2", TEXT("Target_DownBlur2"))))
+        return E_FAIL;
+
 
     _pRTShader->Begin((_uint)PASS_DEFERRED::AFTER_EFFECT);
 
@@ -36,8 +47,6 @@ HRESULT CETool_RenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Re
 
     _pRTBuffer->Render();
 
-    if (FAILED(m_pGameInstance->End_MRT()))
-        return E_FAIL;
 
     return S_OK;
 }

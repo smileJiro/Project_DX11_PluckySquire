@@ -77,6 +77,11 @@ HRESULT CEvent_Manager::Excute(const EVENT& _tEvent)
 		Excute_SetActive(_tEvent);
 	}
 	break;
+	case Map_Tool::EVENT_TYPE::CAPCHER:
+	{
+		Excute_Capcher(_tEvent);
+	}
+	break;
 	default:
 		break;
 	}
@@ -208,6 +213,29 @@ HRESULT CEvent_Manager::Excute_SetActive(const EVENT& _tEvent)
 	else
 		pBase->Set_Active(isActive);
 
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Excute_Capcher(const EVENT& _tEvent)
+{
+	_wstring* pStr = (_wstring*)_tEvent.Parameters[0];
+	ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(L"Target_2D");
+	ID3D11Texture2D* pTexture2D = nullptr;
+	ID3D11Resource* pResource = nullptr;
+
+	pSRV->GetResource(&pResource);
+	if (pResource)
+	{
+		HRESULT hr = pResource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&pTexture2D));
+		pResource->Release();
+
+		if (SUCCEEDED(hr) && pTexture2D)
+		{
+			if (FAILED(SaveDDSTextureToFile(m_pContext, pTexture2D, pStr->c_str())))
+				return E_FAIL;
+		}
+	}
+	Safe_Delete(pStr);
 	return S_OK;
 }
 

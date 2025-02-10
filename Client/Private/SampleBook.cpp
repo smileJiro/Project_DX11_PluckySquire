@@ -132,19 +132,18 @@ void CSampleBook::Priority_Update(_float _fTimeDelta)
 
 void CSampleBook::Update(_float _fTimeDelta)
 {
-	
-	//if (KEY_DOWN(KEY::M))
-	//{
-	//	if (Book_Action(NEXT))
-	//	{
-	//		m_isAction = true;
-	//		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
-	//	}
-	//}
-	//if (KEY_DOWN(KEY::N))
-	//{
+	_float3 fDefaultPos = { };
 
-	//}
+	if (KEY_DOWN(KEY::M))
+	{
+		Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
+
+	}
+	if (KEY_DOWN(KEY::N))
+	{
+		Event_Book_Main_Section_Change_Start(0, &fDefaultPos);
+
+	}
 
 	if (CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()) {
 		if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
