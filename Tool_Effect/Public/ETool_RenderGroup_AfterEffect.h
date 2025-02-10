@@ -1,9 +1,9 @@
 #pragma once
-#include "RenderGroup_MRT.h"
+#include "RenderGroup.h"
 #include "EffectTool_Defines.h"
 BEGIN(EffectTool)
 
-class CETool_RenderGroup_AfterEffect :public CRenderGroup_MRT
+class CETool_RenderGroup_AfterEffect :public CRenderGroup
 {
 private:
 	CETool_RenderGroup_AfterEffect(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

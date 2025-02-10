@@ -14,6 +14,7 @@ CPlayerState_JumpUp::CPlayerState_JumpUp(CPlayer* _pOwner)
 void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 {
 	_float fUpForce = m_pOwner->Get_UpForce();
+	cout << m_pOwner->Get_UpForce() << endl;
 	if (0 > fUpForce)
 	{
 		m_pOwner->Set_State(CPlayer::JUMP_DOWN);
@@ -37,17 +38,31 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 		return;
 	}
-	if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
-		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
-		m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
+		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+		{
+			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
+			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
+		}
+		else
+			m_pOwner->Stop_Rotate();
 	}
 	else
-		m_pOwner->Stop_Rotate();
+	{
+		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+		{
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
+		}
+	}
 }
 
 void CPlayerState_JumpUp::Enter()
 {
+	m_fAirRunSpeed = m_pOwner->Get_AirRunSpeed();
+	m_fAirRotateSpeed = m_pOwner->Get_AirRotationSpeed();
+	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
 	m_pOwner->LookDirectionXZ_Dynamic(m_pOwner->Get_3DTargetDirection());
 	m_pOwner->Jump();
 	Switch_JumpAnimation();

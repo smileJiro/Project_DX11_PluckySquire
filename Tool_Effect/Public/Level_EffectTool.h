@@ -51,7 +51,7 @@ private:
 	void					Tool_System_List();
 	void					Tool_Adjust_System(_float _fTimeDelta);
 	void					Tool_Texture();
-	void					Tool_ControlModel();
+	void					Tool_ControlModel(_float _fTimeDelta);
 
 	HRESULT					Load_Textures(const _char* _szExtension, const _char* _szPath, map<const _wstring, class CTexture*>& _TextureMaps);
 	HRESULT					Save_All();

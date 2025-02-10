@@ -5,12 +5,13 @@ BEGIN(Engine)
 
 class CEffectModel;
 class CTexture;
+class CEffect_Module;
 
 class ENGINE_DLL CMeshEffect_Emitter : public CEmitter
 {
 public:
 	enum TEXTURE_TYPE { ALPHA, MASK, NOISE, TEXTURE_END };
-	enum EFFECT_SHADERPASS { DEFAULT, DISSOLVE, DISSOLVE_UVANIM };
+	enum EFFECT_SHADERPASS { DEFAULT, DISSOLVE, BLOOM, BLOOM_DISSOLVE };
 
 private:
 	CMeshEffect_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -31,27 +32,19 @@ public:
 private:
 	CEffectModel* m_pEffectModelCom = { nullptr };
 	vector<class CTexture*>	m_Textures;
+	
 
 private:
-	EFFECT_SHADERPASS		m_eShaderPass = DEFAULT;
+	_float4		m_vColor = {1.f, 1.f, 1.f, 1.f};
+
 
 private:
-	map<const _string, _float> m_FloatDatas;
-	map<const _string, _float2> m_Float2Datas;
-	map<const _string, _float4> m_Float4Datas;
-private:
-	_float4		m_vColor = {};
+	virtual void					Update_Emitter(_float _fTimeDelta) override;
 
-private:
-	virtual void					On_Event() override;
-	virtual void					Off_Event() override;
 
 	HRESULT							Bind_ShaderResources();
 	HRESULT							Bind_ShaderValue_ByPass();
 	HRESULT							Bind_Texture(TEXTURE_TYPE _eType, const _char* _szConstantName);
-	HRESULT							Bind_Float(const _char* _szDataName, const _char* _szConstantName);
-	HRESULT							Bind_Float2(const _char* _szDataName, const _char* _szConstantName);
-	HRESULT							Bind_Float4(const _char* _szDataName, const _char* _szConstantName);
 	virtual HRESULT					Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc) override;
 	HRESULT							Load_TextureInfo(const json& _jsonInfo);
 
@@ -72,6 +65,7 @@ public:
 	void						Set_Texture(class CTexture* _pTextureCom, _uint _iType);
 
 private:
+	_float4	m_vDefaultColor = {};
 	_string m_strModelPath;
 	_float4x4 m_PreTransformMatrix = {};
 
@@ -95,7 +89,8 @@ NLOHMANN_JSON_SERIALIZE_ENUM(CMeshEffect_Emitter::TEXTURE_TYPE, {
 NLOHMANN_JSON_SERIALIZE_ENUM(CMeshEffect_Emitter::EFFECT_SHADERPASS, {
 {CMeshEffect_Emitter::EFFECT_SHADERPASS::DEFAULT, "DEFAULT"},
 {CMeshEffect_Emitter::EFFECT_SHADERPASS::DISSOLVE, "DISSOLVE"},
-{CMeshEffect_Emitter::EFFECT_SHADERPASS::DISSOLVE_UVANIM, "DISSOLVE_UVANIM"},
+{CMeshEffect_Emitter::EFFECT_SHADERPASS::BLOOM, "BLOOM"},
+{CMeshEffect_Emitter::EFFECT_SHADERPASS::BLOOM_DISSOLVE, "BLOOM_DISSOLVE"},
 
 	});
 END

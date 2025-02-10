@@ -16,6 +16,7 @@ public:
 public:
 	// 어떠한 Pass를 사용하여 Render를 수행할 것 인지 지정하고 그에 맞는 InputLayout을 IA에 전달.
 	HRESULT Begin(_uint _iPassIndex);
+	HRESULT Begin_NoInput(_uint _iPassIndex);
 	HRESULT Bind_RawValue(const _char* _pConstantName, const void* _pData, _uint _iLength);
 	// 셰이더에 상수데이터를 바인딩. (셰이더에서 사용 중인 상수 데이터의 이름, 바인딩 할 행렬)
 	HRESULT Bind_Matrix(const _char* _pConstantName, const _float4x4* _pMatrix);
