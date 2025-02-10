@@ -212,6 +212,7 @@
     <ClInclude Include="..\Public\FloorWord.h" />
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
+    <ClInclude Include="..\Public\Section_2D_Narration.h" />
     <ClInclude Include="..\Public\Narration_2D.h" />
     <ClInclude Include="..\Public\Npc_OnlySocial.h" />
     <ClInclude Include="..\Public\PlayerItem.h" />
@@ -275,6 +276,7 @@
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\public\Section.h" />
     <ClInclude Include="..\public\Section_2D.h" />
+    <ClInclude Include="..\Public\Section_2D_PlayMap.h" />
     <ClInclude Include="..\public\Section_Manager.h" />
     <ClInclude Include="..\Public\SettingPanel.h" />
     <ClInclude Include="..\Public\ShopItemBG.h" />
@@ -362,6 +364,7 @@
     <ClCompile Include="..\private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
+    <ClCompile Include="..\Private\Section_2D_Narration.cpp" />
     <ClCompile Include="..\Private\Narration_2D.cpp" />
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp" />
     <ClCompile Include="..\Private\PlayerItem.cpp" />
@@ -422,6 +425,7 @@
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\private\Section.cpp" />
     <ClCompile Include="..\private\Section_2D.cpp" />
+    <ClCompile Include="..\Private\Section_2D_PlayMap.cpp" />
     <ClCompile Include="..\private\Section_Manager.cpp" />
     <ClCompile Include="..\Private\SettingPanel.cpp" />
     <ClCompile Include="..\Private\ShopItemBG.cpp" />

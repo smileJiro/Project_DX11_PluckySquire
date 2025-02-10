@@ -3,8 +3,6 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "Section_Manager.h"
-#include "Section_2D.h"
-
 #include "Trigger_Manager.h"
 
 CDialog::CDialog(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -50,7 +48,7 @@ HRESULT CDialog::Initialize(void* _pArg)
 
 	m_isRender = false;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 	m_isAddSectionRender = true;
 
 	return S_OK;
@@ -505,7 +503,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			{
 				if (!m_isAddSectionRender)
 				{
-					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 					m_isAddSectionRender = true;
 				}
 
@@ -539,7 +537,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -554,7 +552,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -571,7 +569,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -587,7 +585,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -603,7 +601,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -619,7 +617,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -635,7 +633,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -696,7 +694,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_Scale(m_vDisplay3DSize.x, m_vDisplay3DSize.y, 1.f);
 		}
-		
+
 
 		switch (Uimgr->Get_DialogueLine(_strDialogue, Uimgr->Get_DialogueLineIndex()).location)
 		{
@@ -706,7 +704,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			{
 				if (!m_isAddSectionRender)
 				{
-					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 					m_isAddSectionRender = true;
 				}
 
@@ -725,19 +723,19 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 
 				vPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY - g_iWinSizeY / 8.f);
 				Uimgr->Set_CalDialoguePos(_float3(vPos.x, vPos.y, 0.f));
-				
+
 				m_vCurPos = vPos;
 
 				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - g_iWinSizeX * 0.5f, -vPos.y + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
 				//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 				m_isFirstRefresh = true;
-				
+
 
 				return;
 			}
 
-			
+
 		}
 		break;
 
@@ -745,7 +743,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -760,7 +758,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -776,7 +774,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -792,7 +790,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -808,7 +806,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -824,7 +822,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
@@ -840,7 +838,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 
