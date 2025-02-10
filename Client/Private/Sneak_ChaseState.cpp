@@ -53,13 +53,22 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	else
 	{
 		//추적 (장애물 피해 가도록 수정해야함)
-		m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
-		//m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
+		if (false == m_isTurn)
+		{
+			Determine_AvoidDirection(m_pTarget->Get_FinalPosition(), &m_vDir);
+			m_isTurn = true;
+		}
+		else if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+		{
+			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+			m_isTurn = false;
+		}
 	}
 }
 
 void CSneak_ChaseState::State_Exit()
 {
+	m_isTurn = false;
 }
 
 CSneak_ChaseState* CSneak_ChaseState::Create(void* _pArg)

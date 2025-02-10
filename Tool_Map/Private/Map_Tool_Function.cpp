@@ -58,6 +58,18 @@ namespace Map_Tool
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	
+	void Event_Capcher(const _tchar* _strFIlePath)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::CAPCHER;
+		tEvent.Parameters.resize(1); // NumParameters
+
+		tEvent.Parameters[0] = (DWORD_PTR)new _wstring(_strFIlePath);
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 
 	std::wstring StringToWstring(const std::string& _str)
 	{
@@ -195,7 +207,7 @@ namespace Map_Tool
 
 		if (GetOpenFileName(&ofn))
 		{
-			SetCurrentDirectory(originalDir);
+			//SetCurrentDirectory(originalDir);
 			_strReturnDirectory = szName;
 			return true;
 		}

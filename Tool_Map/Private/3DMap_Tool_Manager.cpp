@@ -923,7 +923,7 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 
 					if (GetOpenFileName(&ofn))
 					{
-						SetCurrentDirectory(originalDir);
+						//SetCurrentDirectory(originalDir);
 						const _wstring strFilePath = szName;
 
 						ID3D11ShaderResourceView* pSRV = { nullptr };
@@ -1050,7 +1050,7 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 
 								if (GetOpenFileName(&ofn))
 								{
-									SetCurrentDirectory(originalDir);
+									//SetCurrentDirectory(originalDir);
 									const _wstring strFilePath = szName;
 
 									ID3D11ShaderResourceView* pSRV = { nullptr };
