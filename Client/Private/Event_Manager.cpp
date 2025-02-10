@@ -593,7 +593,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 
 	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
-	
+	CCamera_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
 	Uimgr->Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);

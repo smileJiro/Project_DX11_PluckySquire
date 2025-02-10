@@ -14,7 +14,6 @@ CPlayerState_JumpUp::CPlayerState_JumpUp(CPlayer* _pOwner)
 void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 {
 	_float fUpForce = m_pOwner->Get_UpForce();
-	cout << m_pOwner->Get_UpForce() << endl;
 	if (0 > fUpForce)
 	{
 		m_pOwner->Set_State(CPlayer::JUMP_DOWN);
@@ -54,6 +53,14 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 		{
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
+
+			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
+			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+			if (m_eOldFDir != eFDir)
+			{
+				m_pOwner->Set_2DDirection(eNewDir);
+				m_eOldFDir = eFDir;
+			}
 		}
 	}
 }

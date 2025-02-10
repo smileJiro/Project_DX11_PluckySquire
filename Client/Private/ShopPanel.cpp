@@ -45,45 +45,14 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-	//if (!m_isOpenPanel || CUI_Manager::GetInstance()->Get_ConfirmStore())
+	//if (!m_isOpenPanel || true == CUI_Manager::GetInstance()->Get_ConfirmStore())
 	//{
 	//	Update_KeyInput(_fTimeDelta, -1);
-	//	return;
-	//}
-	//
-	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
-	//
-	//
-	//if (!isInPanel(cursorPos))
-	//{
-	//	Update_KeyInput(_fTimeDelta, -1);
-	//	return;
-	//}
-	//
-
-	if (true == Uimgr->Get_DialogueFinishShopPanel())
-	{
-		_int iIndex = isInPanelItem(cursorPos);
-
-		Update_KeyInput(_fTimeDelta, iIndex);
-
-		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
-	}
-
-	
-	//
-	//if (iIndex != -1 && iIndex != m_iPreindex)
-	//{
-	//	CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
-	//	m_iPreindex = iIndex;
+	//	//return;
 	//}
 
-	
-		
-	
-
-
-
+	if (false == Uimgr->Get_DialogueFinishShopPanel())
+		return;
 
 	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
@@ -93,6 +62,45 @@ void CShopPanel::Update(_float _fTimeDelta)
 		Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
 		Uimgr->Set_ShopUpdate(false);
 	}
+
+	
+	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
+	_int iIndex = isInPanelItem(cursorPos);
+	
+	// 다이얼로그가 끝나면 상점을 오픈 시킨다.
+	if (true == Uimgr->Get_DialogueFinishShopPanel())
+	{
+		//Update_KeyInput(_fTimeDelta, iIndex);
+		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
+	}
+
+	// 해당 인덱스를 체크해서 true로한다.
+	if (iIndex != -1 && iIndex != m_iPreindex)
+	{
+		CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
+		m_iPreindex = iIndex;
+	}
+
+
+
+	
+	if (isInPanel(cursorPos))
+	{
+		Update_KeyInput(_fTimeDelta, iIndex);
+		return;
+	}
+	
+	
+
+
+	
+		
+	
+
+
+
+
+
 	
 
 	
@@ -437,6 +445,7 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta, _int _index)
 	{
 		Uimgr->Set_DialogueFinishShopPanel(false);
 		instruct_ChildUpdate(_fTimeDelta);
+		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
 	}
 
 }

@@ -125,10 +125,16 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
 		return E_FAIL;
 
+	/*Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	Desc.fRadius = 1.f;
+	Desc.fHalfHeight = 2.f;
+	Desc.vOffsetTrans = { 0.f,Desc.fRadius,0.f };
+	Desc.fRotAngle = 0.f;
 
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, -20.19f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-		return E_FAIL;
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);*/
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -499,7 +505,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_Item(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
 
 
 	return S_OK;

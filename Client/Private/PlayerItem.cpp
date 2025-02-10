@@ -2,6 +2,7 @@
 #include "PlayerItem.h"
 
 #include "GameInstance.h"
+#include "Trigger_Manager.h"
 
 CPlayerItem::CPlayerItem(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CTriggerObject(_pDevice, _pContext)
@@ -37,6 +38,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 
 	pDesc->iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 	m_szModelTag = pDesc->szModelTag;
+	m_szItemTag = pDesc->szItemTag;
 	pDesc->vLocalPosOffset = { 0.f, 0.f, 0.f };
 	pDesc->FreezeRotation[0] = true;
 	pDesc->FreezeRotation[1] = false;
@@ -58,7 +60,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	ShapeData.isTrigger = true;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.f, 0.f, 0.f)); //여기임
 	SHAPE_SPHERE_DESC SphereDesc = {};
-	SphereDesc.fRadius = 0.5f;
+	SphereDesc.fRadius = 1.f;
 	ShapeData.pShapeDesc = &SphereDesc;
 
 	m_pActorCom->Add_Shape(ShapeData);
@@ -90,13 +92,14 @@ void CPlayerItem::Update(_float _fTimeDelta)
 		printf("Actor is Kinematic! AngularVelocity will not be applied.\n");
 	}
 	
+	// Phyxis Manager Update 때문에 일단 Update 위로 올림
+	Action_Mode(_fTimeDelta);
+
 	__super::Update(_fTimeDelta);
 }
 
 void CPlayerItem::Late_Update(_float _fTimeDelta)
 {
-	Action_Mode(_fTimeDelta);
-
 	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_NONBLEND, this);
 
 	__super::Late_Update(_fTimeDelta);
@@ -141,14 +144,80 @@ void CPlayerItem::Action_Mode(_float _fTimeDelta)
 		Action_Disappear(_fTimeDelta);
 		break;
 	}
+
+	Check_PosY();
 }
 
 void CPlayerItem::Action_Getting(_float _fTimeDelta)
 {
+	if (false == m_isScaleDown) {
+		m_fScaleTime.y += _fTimeDelta;
+		_float fRatio = m_fScaleTime.y / m_fScaleTime.x;
+
+		if (fRatio >= 1.f) {
+			m_fScaleTime.y = 0.f;
+			m_isScaleDown = true;
+			m_isRender = false;
+
+			m_fOriginY = XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+		}
+
+		_float fScale = m_pGameInstance->Lerp(m_fOriginScale, 0.3f, fRatio);
+		m_pControllerTransform->Set_Scale(fScale, fScale, fScale);
+	}
+	else if (false == m_isFinishWait) {
+		m_fWaitTime.y += _fTimeDelta;
+		_float fRatio = m_fWaitTime.y / m_fWaitTime.x;
+
+		if (fRatio >= 1.f) {
+			m_fWaitTime.y = 0.f;
+			m_isFinishWait = true;
+			m_isRender = true;
+			m_isStop = false;
+
+			// 위치 위로 수정
+			m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, 1.f, 0.f, 0.f), 3.f);
+			m_pActorCom->Get_RigidActor()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+		}
+	}
+	else {
+		m_fScaleTime.y += _fTimeDelta;
+		_float fRatio = m_fScaleTime.y / m_fScaleTime.x;
+
+		if (fRatio >= 1.f) {
+			m_fScaleTime.y = 0.f;
+			m_isScaleDown = false;
+			m_isFinishWait = false;
+
+			CTrigger_Manager::GetInstance()->On_End(m_szItemTag);
+			m_iItemMode = ITEM_MODE::DEFAULT;
+		}
+
+		_float fScale = m_pGameInstance->Lerp(0.3f, m_fOriginScale, fRatio);
+		m_pControllerTransform->Set_Scale(fScale, fScale, fScale);
+	}
 }
 
 void CPlayerItem::Action_Disappear(_float _fTimeDelta)
 {
+	// 마지막에? 사실 뭐 딱히 할 필요는 없음
+	m_isStop = false; 
+}
+
+void CPlayerItem::Check_PosY()
+{
+	if (true == m_isStop)
+		return;
+
+	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	_float fOffset = abs(m_fOriginY - XMVectorGetY(vPos));
+	
+	PxVec3 velocity = static_cast<PxRigidDynamic*>(m_pActorCom->Get_RigidActor())->getLinearVelocity();
+
+	if (fOffset > 1.5f) {
+		m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.f);
+		m_isStop = true;
+	}
 }
 
 HRESULT CPlayerItem::Bind_ShaderResources_WVP()
@@ -165,7 +234,7 @@ HRESULT CPlayerItem::Bind_ShaderResources_WVP()
 	return S_OK;
 }
 
-CTriggerObject* CPlayerItem::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CPlayerItem* CPlayerItem::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CPlayerItem* pInstance = new CPlayerItem(_pDevice, _pContext);
 
