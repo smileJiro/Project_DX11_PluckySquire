@@ -18,6 +18,7 @@ public:
 private:
 	void Switch_JumpAnimation();
 private:
+    F_DIRECTION m_eOldFDir = F_DIRECTION::F_DIR_LAST;
     _float m_fAirRunSpeed = 10.f;
     _float m_fAirRunSpeed2D = 300.f;
 	_float m_fAirRotateSpeed = 100.f;
