@@ -163,8 +163,12 @@ public :
 #pragma endregion
 
 public:
+	// 간접사용 *(추후 통합)
 	_vector Get_WorldPosition_FromWorldPosMap(const _wstring& _strSectionTag,  _float2 _v2DTransformPosition);
 	_vector Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition);
+	
+	// 실사용
+	_vector Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_pTargetTexture, _float2 _v2DTransformPosition);
 public:
 	// Get
 	_int							Get_SectionLeveID() { return m_iCurLevelID; }
@@ -195,6 +199,9 @@ public:
 		m_pBookWorldPosMap = _pBookWorldPosMap; 
 	}
 
+	_uint							Generate_WorldPos_Priority_ID() { return m_iWorldPriorityGenKey++; }
+
+
 private:
 	/// <summary>
 	/// 해당 섹션을 활성화 섹션 리스트에 추가하고, 앞뒤 페이지가 있을 경우 카피를 한번 돌려줌.
@@ -210,6 +217,7 @@ private:
 	
 	// 발급할 Prority Key Start 지점.
 	_uint							m_iPriorityGenKey = PR2D_SECTION_START;
+	_uint							m_iWorldPriorityGenKey = PRWORLD_SKETCH_START;
 	// 전체 섹션 목록
 	map<_wstring, CSection*>		m_CurLevelSections;
 

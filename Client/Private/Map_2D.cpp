@@ -3,7 +3,10 @@
 #include "GameInstance.h"
 #include "RenderTarget.h"
 #include "RenderGroup_2D.h"
-
+#include "RenderGroup_WorldPos.h"
+#include "ModelObject.h"
+#include "3DMapSpskObject.h"
+#include "Section_Manager.h"
 
 CMap_2D::CMap_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:m_pDevice(_pDevice)
@@ -136,6 +139,56 @@ HRESULT CMap_2D::Create_Default_MapTexture()
 	
 	if (nullptr == m_pTextureCom)
 		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CMap_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
+{
+	_wstring strWorldRVTag = m_strRTKey + L"_WorldPosMap";
+	_wstring strWorldMRTTag = m_strMRTKey + L"_WorldPosMap";
+	_wstring strWorldDSVTag = m_strDSVKey + L"_WorldPosMap";
+
+	_uint iPriorityID = SECTION_MGR->Generate_WorldPos_Priority_ID();
+
+	/* Target_WorldPosMap_Book */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(strWorldRVTag, (_uint)m_fRenderTargetSize.x, (_uint)m_fRenderTargetSize.y, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(strWorldMRTTag, strWorldRVTag)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(strWorldDSVTag, m_fRenderTargetSize.x, m_fRenderTargetSize.y)))
+		return E_FAIL;
+
+	CRenderGroup_WorldPos::RG_MRT_DESC Desc;
+	Desc.iRenderGroupID = RG_WORLDPOSMAP;
+	Desc.iPriorityID = iPriorityID;
+	Desc.isClear = false;
+	Desc.isViewportSizeChange = true;
+	Desc.pDSV = m_pGameInstance->Find_DSV(strWorldDSVTag);
+	Desc.strMRTTag = strWorldMRTTag;
+	Desc.vViewportSize = { m_fRenderTargetSize.x , m_fRenderTargetSize.y };
+
+	CRenderGroup_WorldPos* pRenderGroup_WorldPos = CRenderGroup_WorldPos::Create(m_pDevice, m_pContext, &Desc);
+	if (nullptr == pRenderGroup_WorldPos)
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_WorldPos->Get_RenderGroupID(),
+		pRenderGroup_WorldPos->Get_PriorityID(), pRenderGroup_WorldPos)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_WorldPos);
+
+	D3D11_TEXTURE2D_DESC desc = {};
+	desc.Width = m_fRenderTargetSize.x; // 원본 텍스처 너비
+	desc.Height = m_fRenderTargetSize.y; // 원본 텍스처 높이
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 원본 텍스처와 동일한 포맷
+	desc.SampleDesc.Count = 1;
+	desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
+	desc.BindFlags = 0; // 바인딩 없음
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	m_pDevice->CreateTexture2D(&desc, nullptr, &m_pWorldTexture);
+
+	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, _pModel);
+
 	return S_OK;
 }
 
