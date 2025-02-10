@@ -144,6 +144,10 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 		}
 	}
 
+	Imgui_Debug_IBLGlobalVariable();
+
+
+
 	HWND hWnd = GetFocus();
 	auto& io = ImGui::GetIO();
 	if (nullptr != hWnd && !io.WantCaptureKeyboard)
@@ -439,6 +443,37 @@ HRESULT CImgui_Manager::Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag
 
 HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject)
 {
+	return S_OK;
+}
+
+HRESULT CImgui_Manager::Imgui_Debug_IBLGlobalVariable()
+{
+	//
+	ImGui::Begin("IBL_GlobalVarialbe");
+	CONST_IBL tConstIBLData = m_pGameInstance->Get_GlobalIBLData();
+
+	ImGui::SliderFloat("StrengthIBL", &tConstIBLData.fStrengthIBL, 0.0f, 10.0f);
+	ImGui::SliderInt("SpecularBaseMipLevel", &tConstIBLData.iSpecularBaseMipLevel, 0, 10);
+	ImGui::SliderFloat("RoughnessToMipFactor", &tConstIBLData.fRoughnessToMipFactor, 0.0f, 20.0f);
+	ImGui::SliderFloat("HDRMaxLuminance", &tConstIBLData.fHDRMaxLuminance, 0.5f, 50.0f);
+
+	int iSelectedFlag = tConstIBLData.iToneMappingFlag;
+	if (ImGui::RadioButton("TONE_LINEAR", iSelectedFlag == 0))
+		iSelectedFlag = 0; // Flag 1 선택
+	if (ImGui::RadioButton("TONE_FILMIC", iSelectedFlag == 1))
+		iSelectedFlag = 1; // Flag 1 선택
+	if (ImGui::RadioButton("TONE_UNCHARTED2", iSelectedFlag == 2))
+		iSelectedFlag = 2; // Flag 1 선택
+	if (ImGui::RadioButton("TONE_LUMAREINHARD", iSelectedFlag == 3))
+		iSelectedFlag = 3; // Flag 1 선택
+	tConstIBLData.iToneMappingFlag = iSelectedFlag;
+
+	ImGui::SliderFloat("Exposure", &tConstIBLData.fExposure, 0.1f, 10.0f);
+	ImGui::SliderFloat("Gamma", &tConstIBLData.fGamma, 0.1f, 5.0f);
+
+
+	m_pGameInstance->Set_GlobalIBLData(tConstIBLData, true);
+	ImGui::End();
 	return S_OK;
 }
 
