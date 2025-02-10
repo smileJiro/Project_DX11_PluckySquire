@@ -102,6 +102,29 @@ HRESULT CVIBuffer_Instance::Render()
 	return S_OK;
 }
 
+void CVIBuffer_Instance::Begin_Compute(CCompute_Shader* _pCShader)
+{
+	_pCShader->Set_SRVs(&m_pSRVInitial, 1);
+	_pCShader->Set_UAVs(&m_pUAV, 1);
+}
+
+void CVIBuffer_Instance::Compute(CCompute_Shader* _pCShader)
+{
+	_pCShader->Compute((_uint)(ceil(m_iNumInstances / 256.f)), 1, 1);
+}
+
+
+void CVIBuffer_Instance::Update_Module(CEffect_Module* _pModule, CCompute_Shader* _pCShader)
+{
+	_int iEntry = _pModule->Update_Module(_pCShader);
+	if (0 <= iEntry)
+	{
+		_pCShader->Begin(iEntry);
+		Begin_Compute(_pCShader);
+		_pCShader->Compute((_uint)(ceil(m_iNumInstances / 256.f)), 1, 1);
+		_pCShader->End_Compute();
+	}
+}
 
 HRESULT CVIBuffer_Instance::Bind_BufferDesc()
 {
@@ -135,9 +158,6 @@ HRESULT CVIBuffer_Instance::Bind_BufferBySRV()
 	m_pContext->VSSetShaderResources(0, 1, &m_pSRV);
 	m_pContext->IASetPrimitiveTopology(m_ePrimitiveTopology);
 
-	//_uint iOffset = 0;
-	//m_pContext->IASetVertexBuffers(0, 1, &m_pBuffer, &m_iInstanceStride, &iOffset);
-
 
 	return S_OK;
 }
@@ -152,10 +172,14 @@ HRESULT CVIBuffer_Instance::Render_BySRV()
 	return S_OK;
 }
 
-void CVIBuffer_Instance::Reset_Buffers()
+void CVIBuffer_Instance::Reset_Buffers(CCompute_Shader* _pCShader)
 {
-	
+	_pCShader->Begin(3);
+	Begin_Compute(_pCShader);
+	Compute(_pCShader);
+	_pCShader->End_Compute();
 }
+
 
 
 

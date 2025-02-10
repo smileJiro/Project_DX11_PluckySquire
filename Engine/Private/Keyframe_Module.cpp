@@ -1,10 +1,15 @@
 #include "Keyframe_Module.h"
+#include "Compute_Shader.h"
 
 const _char* CKeyframe_Module::g_szModuleNames[2] = {"COLOR_KEYFRAME", "SCALE_KEYFRAME"};
 
-CKeyframe_Module::CKeyframe_Module()
+CKeyframe_Module::CKeyframe_Module(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+    : m_pDevice(_pDevice)
+    , m_pContext(_pContext)
 {
     m_eModuleType = MODULE_KEYFRAME;
+    Safe_AddRef(_pDevice);
+    Safe_AddRef(_pContext);
 }
 
 CKeyframe_Module::CKeyframe_Module(const CKeyframe_Module& _Prototype)
@@ -13,7 +18,16 @@ CKeyframe_Module::CKeyframe_Module(const CKeyframe_Module& _Prototype)
     , m_Keyframes(_Prototype.m_Keyframes)
     , m_KeyframeDatas(_Prototype.m_KeyframeDatas)
     , m_KeyCurrentIndicies(_Prototype.m_KeyCurrentIndicies)
-{
+    , m_pDevice(_Prototype.m_pDevice)
+    , m_pContext(_Prototype.m_pContext)
+    //, m_pKeyframeDataTexture(_Prototype.m_pKeyframeDataTexture)
+    //, m_pSRVKeyframeDatas(_Prototype.m_pSRVKeyframeDatas)
+{    
+    Safe_AddRef(m_pDevice);
+    Safe_AddRef(m_pContext);
+
+    //Safe_AddRef(m_pSRVKeyframeDatas);
+    //Safe_AddRef(m_pKeyframeDataTexture);
 }
 
 HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInstance)
@@ -21,6 +35,7 @@ HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInst
 	if (FAILED(__super::Initialize(_jsonModuleInfo)))
 		return E_FAIL;
 
+    //_float4* pKeyFrameDatas = new _float4[128];
     if (_jsonModuleInfo.contains("Keyframe"))
     {
         for (_int i = 0; i < _jsonModuleInfo["Keyframe"].size(); ++i)
@@ -34,9 +49,27 @@ HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInst
             }
 
             m_Keyframes.push_back(fKeyframe);
-            m_KeyframeDatas.push_back(vkeyframeData);            
+            m_KeyframeDatas.push_back(vkeyframeData);
         }
     }
+
+    //for (_uint i = 0; i < (_uint)m_Keyframes.size() - 1; ++i)
+    //{
+    //    _uint iFirst = clamp(_uint(m_Keyframes[i] * 128.f), 0U, 127U);
+    //    _uint iSecond = clamp(_uint(m_Keyframes[i + 1] * 128.f), 0U, 127U);
+
+    //    for (_uint j = iFirst; j < iSecond; ++j)
+    //    {
+    //        _float fCurTime = (_float)j / (_float)128.f;
+    //        _float fRatio = (fCurTime - m_Keyframes[i]) / (m_Keyframes[i + 1] - m_Keyframes[i]);
+    //        _float4 vKeyframe;
+
+    //        XMStoreFloat4(&vKeyframe, XMVectorLerp(XMLoadFloat4(&m_KeyframeDatas[i]), XMLoadFloat4(&m_KeyframeDatas[i + 1]), fRatio));
+    //               
+    //        pKeyFrameDatas[j] = vKeyframe;
+    //    }
+    //}
+
 
     if (_jsonModuleInfo.contains("Module"))
     {
@@ -46,8 +79,68 @@ HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInst
 #endif
     }
 
-   m_KeyCurrentIndicies.resize(_iNumInstance, 0);
+    m_KeyCurrentIndicies.resize(_iNumInstance, 0);
     
+
+#pragma region SRV
+    //m_pKeyframeDataTexture = { nullptr };
+
+    //D3D11_TEXTURE2D_DESC	TextureDesc{};
+
+    //TextureDesc.Width = 128;
+    //TextureDesc.Height = 16;
+    //TextureDesc.MipLevels = 1;
+    //TextureDesc.ArraySize = 1;
+    //TextureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+
+    //TextureDesc.SampleDesc.Quality = 0;
+    //TextureDesc.SampleDesc.Count = 1;
+
+    //TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+    //TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    //TextureDesc.CPUAccessFlags = 0;
+    //TextureDesc.MiscFlags = 0;
+
+    //_float4* pPixel = new _float4[128 * 16];
+    //ZeroMemory(pPixel, sizeof(_float4) * 128 * 16);
+
+    //for (size_t i = 0; i < 16; i++)
+    //{
+    //    for (size_t j = 0; j < 128; j++)
+    //    {
+    //        _uint		iIndex = i * 128 + j;
+
+    //        pPixel[iIndex] = pKeyFrameDatas[j];
+    //    }
+    //}
+
+    //D3D11_SUBRESOURCE_DATA		InitialData{};
+
+    //InitialData.pSysMem = pPixel;
+    //InitialData.SysMemPitch = 128 * sizeof(_float4);
+
+    //if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &m_pKeyframeDataTexture)))
+    //    return E_FAIL;
+
+    //Safe_Delete_Array(pPixel);
+    //Safe_Delete_Array(pKeyFrameDatas);
+
+    //// D3D11_SHADER_RESOURCE_VIEW_DESC 설정 (기본적인 2D 텍스처)
+    //D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+    //srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    //srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    //srvDesc.Texture2D.MostDetailedMip = 0;
+    //srvDesc.Texture2D.MipLevels = 1;
+
+    //// SRV 생성
+    //HRESULT hr = m_pDevice->CreateShaderResourceView(m_pKeyframeDataTexture, nullptr, &m_pSRVKeyframeDatas);
+    //if (FAILED(hr))
+    //    return E_FAIL;
+ 
+#pragma endregion SRV
+
+
+
 
 	return S_OK;
 }
@@ -229,10 +322,37 @@ void CKeyframe_Module::Update_ScaleKeyframe(_float* _pBuffer, _uint _iNumInstanc
     }
 }
 
-
-CKeyframe_Module* CKeyframe_Module::Create(const json& _jsonModuleInfo, _int _iNumInstance)
+_int CKeyframe_Module::Update_Module(CCompute_Shader* _pCShader)
 {
-    CKeyframe_Module* pInstance = new CKeyframe_Module();
+    if (false == m_isActive)
+        return -1;
+
+    if (1 >= m_Keyframes.size())
+        return -1;
+
+    switch (m_eModuleName)
+    {
+    case COLOR_KEYFRAME:
+    {      
+        //_pCShader->Set_SRVs(&m_pSRVKeyframeDatas, 1, 2);
+        return -1;
+        break;
+    }
+    case SCALE_KEYFRAME:
+    {
+        return -1;
+        break;
+    }
+
+    }
+
+    return -1;
+}
+
+
+CKeyframe_Module* CKeyframe_Module::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonModuleInfo, _int _iNumInstance)
+{
+    CKeyframe_Module* pInstance = new CKeyframe_Module(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize(_jsonModuleInfo, _iNumInstance)))
     {
@@ -250,8 +370,15 @@ CEffect_Module* CKeyframe_Module::Clone()
 
 void CKeyframe_Module::Free()
 {
+    Safe_Release(m_pDevice);
+    Safe_Release(m_pContext);
+
+    //Safe_Release(m_pSRVKeyframeDatas);
+    //Safe_Release(m_pKeyframeDataTexture);
+
     m_KeyframeDatas.clear();
     m_Keyframes.clear();
+
 
     __super::Free();
 }
@@ -262,6 +389,7 @@ HRESULT CKeyframe_Module::Initialize(MODULE_NAME _eModuleName, _int _iNumInstanc
 {
     m_eModuleName = _eModuleName;
     
+
     switch (m_eModuleName)
     {
     case COLOR_KEYFRAME:
@@ -352,6 +480,8 @@ void CKeyframe_Module::Tool_Module_Update()
         m_isChanged = true;
     }
 
+   
+
 }
 
 HRESULT CKeyframe_Module::Save_Module(json& _jsonModuleInfo)
@@ -379,9 +509,9 @@ HRESULT CKeyframe_Module::Save_Module(json& _jsonModuleInfo)
     return S_OK;
 }
 
-CKeyframe_Module* CKeyframe_Module::Create(MODULE_NAME _eModuleName, _int _iNumInstance)
+CKeyframe_Module* CKeyframe_Module::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, MODULE_NAME _eModuleName, _int _iNumInstance)
 {
-    CKeyframe_Module* pInstance = new CKeyframe_Module();
+    CKeyframe_Module* pInstance = new CKeyframe_Module(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize(_eModuleName, _iNumInstance)))
     {

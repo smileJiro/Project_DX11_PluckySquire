@@ -10,6 +10,8 @@ class CBone;
 
 class ENGINE_DLL CParticle_Mesh_Emitter : public CEmitter
 {
+public:
+	enum EFFECT_SHADERPASS {DEFAULT};
 private:
 	CParticle_Mesh_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Prototype);
@@ -82,4 +84,13 @@ public:
 
 };
 
+END
+
+
+BEGIN(Engine)
+NLOHMANN_JSON_SERIALIZE_ENUM(CParticle_Mesh_Emitter::EFFECT_SHADERPASS, {
+{CParticle_Mesh_Emitter::EFFECT_SHADERPASS::DEFAULT, "DEFAULT"},
+
+
+	});
 END

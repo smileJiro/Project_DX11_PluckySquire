@@ -21,10 +21,7 @@ public:
 	virtual HRESULT Initialize(const json& _jsonModuleInfo);
 
 	virtual void	Update_Translations(_float _fTimeDelta, _float* _pBuffer, _uint _iNumInstance, 
-		_uint _iPositionOffset, _uint _iVelocityOffset, _uint _iAccelerationOffset, _uint _iLifeTimeOffset, _uint _iTotalSize);
-	//virtual void	Update_Translations(_float _fTimeDelta, _float4* _pPosition, _float3* _pVelocity, _float3* _pAcceleration);
-	
-	virtual _int	Update_Translation(_float _fTimeDelta, class CCompute_Shader* _pCShader);
+		_uint _iPositionOffset, _uint _iVelocityOffset, _uint _iAccelerationOffset, _uint _iLifeTimeOffset, _uint _iTotalSize);	
 
 	// 개별적인 이펙트에서만 적용
 	virtual void	Update_ColorKeyframe(_float  _fCurTime, _float4* _pColor);
@@ -33,6 +30,8 @@ public:
 	// 여러개의 파티클에서 적용
 	virtual void	Update_ColorKeyframe(_float* _pBuffer, _uint _iNumInstance, _uint _iColorOffset, _uint _iLifeTimeOffset, _uint _iTotalSize);
 	virtual void	Update_ScaleKeyframe(_float* _pBuffer, _uint _iNumInstance, _uint _iRightOffset, _uint _iUpOffset, _uint _iLookOffset, _uint _iLifeTimeOffset, _uint _iTotalSize);
+
+	virtual _int	Update_Module(class CCompute_Shader* _pCShader);
 
 public:
 	_bool		Is_Init() const { return m_isInit; }

@@ -28,20 +28,20 @@ public:
 	virtual void	End_Update(_float _fTimeDelta) = 0;
 	virtual HRESULT Render();
 
-	virtual void	Begin_Compute(class CCompute_Shader* _pCShader) = 0;
-	virtual void	Update_All(_float _fTimeDelta, class CCompute_Shader* _pCShader) = 0;
+	virtual void	Begin_Compute(class CCompute_Shader* _pCShader);
+	virtual void	Compute(class CCompute_Shader* _pCShader);
 
 	virtual	void	Update_Translation(_float _fTimeDelta, class CEffect_Module* _pTranslationModule) = 0;
-	virtual	void	Update_Translation(_float _fTimeDelta, class CEffect_Module* _pTranslationModule, class CCompute_Shader* _pCShader) = 0;
 	virtual void	Update_ColorKeyframe(class CEffect_Module* _pColorModule) = 0;
 	virtual void	Update_ScaleKeyframe(class CEffect_Module* _pColorModule) = 0;
 
+	virtual	void	Update_Module(class CEffect_Module* _pModule, class CCompute_Shader* _pCShader);
 
 
 	virtual HRESULT Bind_BufferDesc();
-	HRESULT Bind_BufferBySRV();
-	HRESULT Render_BySRV();
-	virtual void	Reset_Buffers();
+	virtual HRESULT Bind_BufferBySRV();
+	virtual HRESULT Render_BySRV();
+	virtual void	Reset_Buffers(class CCompute_Shader* _pCShader);
 
 public:
 	_uint	Get_NumInstance() const { return m_iNumInstances; }
@@ -152,7 +152,6 @@ protected:
 	void				 Tool_Adjust_Shape();
 
 	void				 Tool_Create_ShapeData();
-	virtual void		 Tool_Reset_Instance(_float _fSpawnRate) {}
 	virtual void		 Tool_Reset_Buffers(_float _fSpawnRate) {} // Count 자체가 바뀌어버린 경우
 
 

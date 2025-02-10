@@ -11,18 +11,36 @@ struct Sprite_Particle
     float fAlive : TEXCOORD5;
 };
 
+struct Keyframe
+{
+    float fKeyframe;
+};
+
+struct KeyframeData
+{
+    float4 vKeyframeData;
+};
+
+
 RWStructuredBuffer<Sprite_Particle> Particles : register(u0);
 StructuredBuffer<Sprite_Particle> InitialParticle : register(t0);
+Texture2D<float4> KeyframeTexture : register(t2);
 
-float3 g_vOrigin;
-float3 g_vAxis;
 float g_fAmount;
 float g_Pull;
+float3 g_vOrigin;
+float3 g_vAxis;
 float3 g_vAmount;
+
+float g_Pos1, g_Pos2;
+float4 g_Data1, g_Data2;
+
+
 float g_fTimeDelta;
 float4x4 g_SpawnMatrix;
 float g_fAbsolute;
 float g_fKill;
+
 
 
 [numthreads(256, 1, 1)]
@@ -88,6 +106,20 @@ void CS_Burst(int3 dispatchThreadID : SV_DispatchThreadID)
     Particles[dispatchThreadID.x].vAcceleration = InitialParticle[dispatchThreadID.x].vAcceleration;
 }
 
+[numthreads(256, 1, 1)]
+void CS_Reset(int3 dispatchThreadID : SV_DispatchThreadID)
+{
+    
+    Particles[dispatchThreadID.x].InstancingMatrix = InitialParticle[dispatchThreadID.x].InstancingMatrix;
+    Particles[dispatchThreadID.x].fAlive = InitialParticle[dispatchThreadID.x].fAlive;
+    Particles[dispatchThreadID.x].vLifeTime = InitialParticle[dispatchThreadID.x].vLifeTime;
+    Particles[dispatchThreadID.x].vColor = InitialParticle[dispatchThreadID.x].vColor;
+    Particles[dispatchThreadID.x].vTexcoord = InitialParticle[dispatchThreadID.x].vTexcoord;
+    Particles[dispatchThreadID.x].vVelocity = InitialParticle[dispatchThreadID.x].vVelocity;
+    Particles[dispatchThreadID.x].vAcceleration = InitialParticle[dispatchThreadID.x].vAcceleration;
+}
+
+
 
 [numthreads(256, 1, 1)]
 void CS_POINTVELOCITY(int3 dispatchThreadID : SV_DispatchThreadID)
@@ -126,9 +158,10 @@ void CS_VORTEX_ACCELERATION(int3 dispatchThreadID : SV_DispatchThreadID)
     float3 vR = vDiff - dot(normalize(g_vAxis), vDiff) * normalize(g_vAxis);
     
     float3 vVortex = normalize(cross(normalize(g_vAxis), vR)) * g_fAmount;
-    float vPull = vR * g_Pull * -1.f;
+    float3 vPull = vR * g_Pull * -1.f;
     
-    Particles[dispatchThreadID.x].vAcceleration += (vVortex + vPull) * g_fTimeDelta;
+    Particles[dispatchThreadID.x].vAcceleration = Particles[dispatchThreadID.x].vAcceleration
+    + (vVortex + vPull) * g_fTimeDelta;
 
 }
 
@@ -141,7 +174,22 @@ void CS_POINT_ACCELERATION(int3 dispatchThreadID : SV_DispatchThreadID)
 [numthreads(256, 1, 1)]
 void CS_LIMIT_ACCELERATION(int3 dispatchThreadID : SV_DispatchThreadID)
 {
-    Particles[dispatchThreadID.x].vAcceleration = normalize(Particles[dispatchThreadID.x].vAcceleration) * max(g_fAmount, length(Particles[dispatchThreadID.x].vAcceleration));
+    Particles[dispatchThreadID.x].vAcceleration = normalize(Particles[dispatchThreadID.x].vAcceleration) * min(g_fAmount, length(Particles[dispatchThreadID.x].vAcceleration));
+
+}
+
+[numthreads(256, 1, 1)]
+void CS_COLORKEYFRAME(int3 dispatchThreadID : SV_DispatchThreadID)
+{
+    //// pos1이 크면 Before = 1
+    //float fBefore = step(Particles[dispatchThreadID.x].vLifeTime.y, g_Pos1) * step(Particles[dispatchThreadID.x].vLifeTime.y, g_Pos2);
+    //// lifetime이 pos2 보다 크면 after = 1
+    //float fAfter = step(g_Pos2, Particles[dispatchThreadID.x].vLifeTime.y) * step(g_Pos1, Particles[dispatchThreadID.x].vLifeTime.y);
+    //float fBetween = step(g_Pos1, Particles[dispatchThreadID.x].vLifeTime.y) * step(Particles[dispatchThreadID.x].vLifeTime.y, g_Pos2);
+    
+    //float fRatio = (Particles[dispatchThreadID.x].vLifeTime.y - g_Pos1) / (g_Pos2 - g_Pos1) * fBetween;
+    float fNormalizeTime = clamp(Particles[dispatchThreadID.x].vLifeTime.y / Particles[dispatchThreadID.x].vLifeTime.x, 0.f, 1.f);
+    Particles[dispatchThreadID.x].vColor = KeyframeTexture.SampleLevel(LinearSampler, float2(fNormalizeTime, 0.5f), 0);
 
 }
 
@@ -175,8 +223,15 @@ technique11 DefaultTechnique
         ComputeShader = compile cs_5_0 CS_Burst();
     }
 
+    pass Reset // 3
+    {
+        VertexShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = NULL;
+        ComputeShader = compile cs_5_0 CS_Reset();
+    }
 
-    pass PointVelocity // 3
+    pass PointVelocity // 4
     {
         VertexShader = NULL;
         GeometryShader = NULL;
@@ -184,21 +239,21 @@ technique11 DefaultTechnique
         ComputeShader = compile cs_5_0 CS_POINTVELOCITY();
     }
 
-    pass LinearVelocity // 4
+    pass LinearVelocity // 5
     {
         VertexShader = NULL;
         GeometryShader = NULL;
         PixelShader = NULL;
         ComputeShader = compile cs_5_0 CS_LINEARVELOCITY();
     }
-    pass InitAccel // 5
+    pass InitAccel // 6
     {
         VertexShader = NULL;
         GeometryShader = NULL;
         PixelShader = NULL;
         ComputeShader = compile cs_5_0 CS_INIT_ACCELERATION();
     }
-    pass Gravity // 6
+    pass Gravity // 7
     {
         VertexShader = NULL;
         GeometryShader = NULL;
@@ -206,14 +261,14 @@ technique11 DefaultTechnique
         ComputeShader = compile cs_5_0 CS_GRAVITY();
 
     }
-    pass Drag // 7
+    pass Drag // 8
     {
         VertexShader = NULL;
         GeometryShader = NULL;
         PixelShader = NULL;
         ComputeShader = compile cs_5_0 CS_DRAG();
     }
-    pass Vortex // 8
+    pass Vortex // 9
     {
         VertexShader = NULL;
         GeometryShader = NULL;
@@ -221,7 +276,7 @@ technique11 DefaultTechnique
         ComputeShader = compile cs_5_0 CS_VORTEX_ACCELERATION();
     }
 
-    pass PointAccel // 9
+    pass PointAccel // 10
     {
         VertexShader = NULL;
         GeometryShader = NULL;
@@ -229,12 +284,21 @@ technique11 DefaultTechnique
         ComputeShader = compile cs_5_0 CS_POINT_ACCELERATION();
     }
 
-    pass LimitAccel // 10
+    pass LimitAccel // 11
     {
         VertexShader = NULL;
         GeometryShader = NULL;
         PixelShader = NULL;
         ComputeShader = compile cs_5_0 CS_LIMIT_ACCELERATION();
+    }
+
+
+    pass ColorKeyframe // 12
+    {
+        VertexShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = NULL;
+        ComputeShader = compile cs_5_0 CS_COLORKEYFRAME();
     }
 
 

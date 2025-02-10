@@ -24,6 +24,7 @@ struct VS_IN
     float4 vColor : TEXCOORD2;
     float3 vVelocity : TEXCOORD3;
     float3 vForce : TEXCOORD4;
+    float fAlive : TEXCOORD5;
 };
 
 struct VS_OUT
@@ -38,28 +39,15 @@ struct VS_OUT
     float4 vColor : TEXCOORD4;
 };
 
-// Rendering PipeLine : Vertex Shader // 
-VS_OUT VS_MAIN(VS_IN In)
+struct Mesh_Particle
 {
-    VS_OUT Out = (VS_OUT) 0;
-
-    matrix matWV, matWVP;
-    matrix InstancingMatrix = float4x4(In.InstancingMatrix._11_12_13_14, In.InstancingMatrix._21_22_23_24, In.InstancingMatrix._31_32_33_34, In.InstancingMatrix._41_42_43_44);
-    vector vPosition = mul(float4(In.vPosition, 1.0f), InstancingMatrix);
-    
-    matWV = mul(g_WorldMatrix, g_ViewMatrix);
-    matWVP = mul(matWV, g_ProjMatrix);
-
-    Out.vPosition = mul(vPosition, matWVP);
-    Out.vNormal = normalize(mul(float4(In.vNormal, 0), InstancingMatrix * g_WorldMatrix));
-    Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = mul(vPosition, g_WorldMatrix);
-    Out.vProjPos = Out.vPosition;
- 
-    Out.vLifeTime = In.vLifeTime;
-    Out.vColor = In.vColor;
-    return Out;
-}
+    row_major float4x4 InstancingMatrix : WORLD;
+    float2 vLifeTime : TEXCOORD0;
+    float4 vColor : TEXCOORD1;
+    float3 vVelocity : TEXCOORD2;
+    float3 vAcceleration : TEXCOORD3;
+    float fAlive : TEXCOORD4;
+};
 
 // Rendering PipeLine : PixelShader //
 struct PS_IN
@@ -80,6 +68,47 @@ struct PS_OUT
     float vRevealage : SV_TARGET1;
 };
 
+struct VS_MESH
+{
+    float3 vPosition : POSITION;
+    float3 vNormal : NORMAL0;
+    float2 vTexcoord : TEXCOORD0;
+    float3 vTangent : TANGENT0;
+    uint iInstanceID : SV_InstanceID;
+};
+
+StructuredBuffer<Mesh_Particle> Particles : register(t0);
+
+// Rendering PipeLine : Vertex Shader // 
+VS_OUT VS_SRV_MAIN(VS_MESH In)
+{
+    VS_OUT Out = (VS_OUT) 0;
+
+    matrix matWV, matWVP;
+    matrix InstancingMatrix = float4x4(Particles[In.iInstanceID].InstancingMatrix._11_12_13_14,
+    Particles[In.iInstanceID].InstancingMatrix._21_22_23_24,
+    Particles[In.iInstanceID].InstancingMatrix._31_32_33_34,
+    Particles[In.iInstanceID].InstancingMatrix._41_42_43_44);
+    vector vPosition = mul(float4(In.vPosition, 1.0f), InstancingMatrix);
+    //vector vPosition = float4(In.vPosition, 1.0f);
+    
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    Out.vPosition = mul(vPosition, matWVP);
+    Out.vNormal = normalize(mul(float4(In.vNormal, 0), InstancingMatrix * g_WorldMatrix));
+    //Out.vNormal = normalize(mul(float4(In.vNormal, 0), g_WorldMatrix));
+    Out.vTexcoord = In.vTexcoord;
+    Out.vWorldPos = mul(vPosition, g_WorldMatrix);
+    Out.vProjPos = Out.vPosition;
+ 
+    Out.vLifeTime = Particles[In.iInstanceID].vLifeTime;
+    Out.vColor = Particles[In.iInstanceID].vColor;
+    return Out;
+}
+
+
+
 /* PixelShader */
 PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
@@ -87,12 +116,6 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 
     float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
     vMtrlDiffuse *= In.vColor;
-    
-    //Out.vAccumulate = vMtrlDiffuse;
-    //Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-    //    
-    //float fFlag = g_iFlag;
-    //Out.vDepth.a = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
     
     float fWeight = clamp(10.f / (1e-5 + pow(In.vProjPos.w / 10.f, 3.0f) + pow(In.vProjPos.w / 200.f, 6.f)), 1e-2, 3e3)
     * max(min(1.0, max(max(vMtrlDiffuse.r, vMtrlDiffuse.g), vMtrlDiffuse.b) * vMtrlDiffuse.a), vMtrlDiffuse.a);
@@ -117,7 +140,7 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_WriteNone, 0);
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
         ComputeShader = NULL;

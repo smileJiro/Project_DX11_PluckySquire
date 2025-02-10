@@ -345,7 +345,7 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 			Desc.isCoordChangeEnable = false;
 			Desc.iProtoShaderLevel = LEVEL_STATIC;
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxModelInstance";
-			Desc.szComputeShaderTag = L"Prototype_ComputeShader";
+			Desc.szComputeShaderTag = L"Prototype_ComputeShader_Mesh";
 
 			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::MESH, &Desc)))
 			{
@@ -366,7 +366,7 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxPoint";
 			Desc.iProtoRectLevel = LEVEL_STATIC;
 			Desc.szRectTag = L"Prototype_Component_VIBuffer_Point";
-			Desc.szComputeShaderTag = L"Prototype_ComputeShader";
+			Desc.szComputeShaderTag = nullptr;
 
 			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::SINGLE_SPRITE, &Desc)))
 			{
@@ -386,7 +386,7 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 			Desc.isCoordChangeEnable = false;
 			Desc.iProtoShaderLevel = LEVEL_STATIC;
 			Desc.szShaderTag = L"Prototype_Component_Shader_Effect";
-			Desc.szComputeShaderTag = L"Prototype_ComputeShader";
+			Desc.szComputeShaderTag = nullptr;
 
 			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::EFFECT, &Desc)))
 			{
@@ -710,7 +710,8 @@ HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
 	Desc.szSingleSpriteShaderTags = L"Prototype_Component_Shader_VtxPoint";
 	Desc.iSingleSpriteBufferLevel = LEVEL_STATIC;
 	Desc.szSingleSpriteBufferTags = L"Prototype_Component_VIBuffer_Point";
-	Desc.szComputeShaderTag = L"Prototype_ComputeShader";
+	Desc.szSpriteComputeShaderTag = L"Prototype_ComputeShader";
+	Desc.szMeshComputeShaderTag = L"Prototype_ComputeShader_Mesh";
 
 	
 	std::filesystem::path path;

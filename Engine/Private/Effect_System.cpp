@@ -109,10 +109,7 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	//if (_pPrototype->m_Emitters.size() != pDesc->EmitterShaderLevels.size())
-	//	return E_FAIL;
-	//if (_pPrototype->m_Emitters.size() != pDesc->ShaderTags.size())
-	//	return E_FAIL;
+
 
 	for (_uint i = 0; i < _pPrototype->m_Emitters.size(); ++i)
 	{
@@ -128,7 +125,7 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 			Desc.szShaderTag = pDesc->szSingleSpriteShaderTags;
 			Desc.iProtoRectLevel = pDesc->iSingleSpriteBufferLevel;
 			Desc.szRectTag = pDesc->szSingleSpriteBufferTags;
-			Desc.szComputeShaderTag = pDesc->szComputeShaderTag;
+			Desc.szComputeShaderTag = nullptr;
 
 			CEmitter* pEmitter = static_cast<CEmitter*>(_pPrototype->m_Emitters[i]->Clone(&Desc));
 			if (nullptr == pEmitter)
@@ -144,7 +141,7 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 			{
 				Desc.iProtoShaderLevel = pDesc->iModelShaderLevel;
 				Desc.szShaderTag = pDesc->szModelShaderTags;
-				Desc.szComputeShaderTag = pDesc->szComputeShaderTag;
+				Desc.szComputeShaderTag = pDesc->szMeshComputeShaderTag;
 
 			}
 
@@ -152,7 +149,7 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 			{
 				Desc.iProtoShaderLevel = pDesc->iSpriteShaderLevel;
 				Desc.szShaderTag = pDesc->szSpriteShaderTags;
-				Desc.szComputeShaderTag = pDesc->szComputeShaderTag;
+				Desc.szComputeShaderTag = pDesc->szSpriteComputeShaderTag;
 
 			}
 
@@ -160,7 +157,7 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 			{
 				Desc.iProtoShaderLevel = pDesc->iEffectShaderLevel;
 				Desc.szShaderTag = pDesc->szEffectShaderTags;
-				Desc.szComputeShaderTag = pDesc->szComputeShaderTag;
+				Desc.szComputeShaderTag = nullptr;
 
 			}
 

@@ -149,15 +149,30 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const j
 #pragma endregion
 
 
-	if (FAILED(Initialize_Particles()))
-		return E_FAIL;
-
 
 	return S_OK;
 }
 
 HRESULT CVIBuffer_Mesh_Particle::Initialize_Module(CEffect_Module* _pModule)
 {
+	CEffect_Module::DATA_APPLY eData = _pModule->Get_ApplyType();
+	CEffect_Module::MODULE_TYPE eType = _pModule->Get_Type();
+
+	if (CEffect_Module::MODULE_TYPE::MODULE_KEYFRAME == eType)
+	{
+		if (CEffect_Module::DATA_APPLY::COLOR == eData)
+		{
+		}
+	}
+	else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
+	{
+		if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
+		{
+			_pModule->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 22, 25, 16, 29);
+		}
+	}
+
+
 	return S_OK;
 }
 
@@ -165,6 +180,58 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize(void* _pArg)
 {
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
+
+	D3D11_BUFFER_DESC BufferDesc = {};
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+
+	BufferDesc.ByteWidth = m_iNumInstances * m_iInstanceStride;
+	BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	BufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | // Compute Shader
+		D3D11_BIND_SHADER_RESOURCE;   // Vertex Shader
+	BufferDesc.StructureByteStride = m_iInstanceStride;
+	BufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+	D3D11_SUBRESOURCE_DATA BufferData = {};
+	ZeroMemory(&BufferData, sizeof D3D11_SUBRESOURCE_DATA);
+	BufferData.pSysMem = m_pInstanceVertices;
+	if (FAILED(m_pDevice->CreateBuffer(&BufferDesc, &BufferData, &m_pBuffer)))
+		return E_FAIL;
+
+	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
+	ZeroMemory(&UAVDesc, sizeof D3D11_UNORDERED_ACCESS_VIEW_DESC);
+	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	UAVDesc.Buffer.NumElements = m_iNumInstances;
+	if (FAILED(m_pDevice->CreateUnorderedAccessView(m_pBuffer, &UAVDesc, &m_pUAV)))
+		return E_FAIL;
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.BufferEx.NumElements = m_iNumInstances;
+
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pBuffer, &SRVDesc, &m_pSRV)))
+		return E_FAIL;
+
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+	m_pBuffer->GetDesc(&BufferDesc);
+
+	m_pBufferInitial = nullptr;
+	HRESULT hr = m_pDevice->CreateBuffer(&BufferDesc, nullptr, &m_pBufferInitial);
+	if (FAILED(hr))
+		return hr;
+	m_pContext->CopyResource(m_pBufferInitial, m_pBuffer);
+
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.Buffer.NumElements = m_iNumInstances;
+
+	hr = m_pDevice->CreateShaderResourceView(m_pBufferInitial, &SRVDesc, &m_pSRVInitial);
+	if (FAILED(hr))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -353,60 +420,85 @@ void CVIBuffer_Mesh_Particle::End_Update(_float _fTimeDelta)
 //	m_pContext->Unmap(m_pVBInstance, 0);
 //}
 
-void CVIBuffer_Mesh_Particle::Reset_Buffers()
-{
-	m_iSpawnIndex = 0;
-	m_fSpawnRemainTime = 0.f;
+/*{
+   //m_iSpawnIndex = 0;
+   //m_fSpawnRemainTime = 0.f;
 
-	D3D11_MAPPED_SUBRESOURCE		SubResource{};
+   //D3D11_MAPPED_SUBRESOURCE		SubResource{};
 
-	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+   //m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
-	VTXMESHINSTANCE* pVertices = static_cast<VTXMESHINSTANCE*>(SubResource.pData);
+   //VTXMESHINSTANCE* pVertices = static_cast<VTXMESHINSTANCE*>(SubResource.pData);
 
-	for (size_t i = 0; i < m_iNumInstances; i++)
-	{
-		//if (SPAWN == m_eSpawnType)
-		{
-			pVertices[i].vLifeTime.y = -0.1f;
-			ZeroMemory(&pVertices[i].vRight, sizeof(_float4));
-			ZeroMemory(&pVertices[i].vUp, sizeof(_float4));
-			ZeroMemory(&pVertices[i].vLook, sizeof(_float4));
-		}
-		//else if (BURST == m_eSpawnType)
-		//{
-		//	pVertices[i] = m_pInstanceVertices[i];
-		//	pVertices[i].vLifeTime.y = 0.f;
-		//}
-	}
+   //for (size_t i = 0; i < m_iNumInstances; i++)
+   //{
+   //	//if (SPAWN == m_eSpawnType)
+   //	{
+   //		pVertices[i].vLifeTime.y = -0.1f;
+   //		ZeroMemory(&pVertices[i].vRight, sizeof(_float4));
+   //		ZeroMemory(&pVertices[i].vUp, sizeof(_float4));
+   //		ZeroMemory(&pVertices[i].vLook, sizeof(_float4));
+   //	}
+   //	//else if (BURST == m_eSpawnType)
+   //	//{
+   //	//	pVertices[i] = m_pInstanceVertices[i];
+   //	//	pVertices[i].vLifeTime.y = 0.f;
+   //	//}
+   //}
 
-	m_pContext->Unmap(m_pVBInstance, 0);
-}
-
-void CVIBuffer_Mesh_Particle::Begin_Compute(CCompute_Shader* _pCShader)
-{
-}
-
-void CVIBuffer_Mesh_Particle::Update_All(_float _fTimeDelta, CCompute_Shader* _pCShader)
-{
-}
+   //m_pContext->Unmap(m_pVBInstance, 0);
+}*/
 
 
 void CVIBuffer_Mesh_Particle::Update_Translation(_float _fTimeDelta, CEffect_Module* _pTranslationModule)
 {
-}
-
-void CVIBuffer_Mesh_Particle::Update_Translation(_float _fTimeDelta, CEffect_Module* _pTranslationModule, CCompute_Shader* _pCShader)
-{
+	// DONOTUSE
 }
 
 void CVIBuffer_Mesh_Particle::Update_ColorKeyframe(CEffect_Module* _pColorModule)
-{
+{	
+	// DONOTUSE
 }
 
 void CVIBuffer_Mesh_Particle::Update_ScaleKeyframe(CEffect_Module* _pColorModule)
-{
+{	
+	// DONOTUSE
 }
+
+HRESULT CVIBuffer_Mesh_Particle::Bind_BufferBySRV()
+{	
+	ID3D11Buffer* pVertexBuffer[] = {
+		m_pVB,
+	};
+
+	_uint		iVertexStrides[] = {
+		m_iVertexStride,
+	};
+
+	_uint		iOffsets[] = {
+		0
+	};
+	//m_pContext->IASetInputLayout();
+	m_pContext->IASetVertexBuffers(0, 1, pVertexBuffer, iVertexStrides, iOffsets);
+	m_pContext->IASetIndexBuffer(m_pIB, m_eIndexFormat, 0);
+	m_pContext->IASetPrimitiveTopology(m_ePrimitiveTopology);	
+	m_pContext->VSSetShaderResources(0, 1, &m_pSRV);
+
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Mesh_Particle::Render_BySRV()
+{
+	m_pContext->DrawIndexedInstanced(m_iNumIndexCountPerInstance, m_iNumInstances, 0, 0, 0);
+
+	ID3D11ShaderResourceView* nullSRV[6] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	m_pContext->VSSetShaderResources(0, 6, nullSRV); // VS에서도 해제
+
+
+	return S_OK;
+}
+
 
 HRESULT CVIBuffer_Mesh_Particle::Ready_VertexBuffer(ifstream& _inFile, _fmatrix _PreTransformMatrix)
 {
@@ -481,7 +573,7 @@ void CVIBuffer_Mesh_Particle::Set_Instance(_int _iIndex, _float _fSpawnRate)
 
 	m_pInstanceVertices[_iIndex].vLifeTime = _float2(
 		Compute_LifeTime(),
-		0.f
+		0.f - _fSpawnRate * _iIndex
 	);
 
 	m_pInstanceVertices[_iIndex].vColor = Compute_ColorValue();
@@ -548,23 +640,6 @@ void CVIBuffer_Mesh_Particle::Set_Position(_int _iIndex)
 
 	vPosition = XMVectorSetW(vPosition, 1.f);
 	XMStoreFloat4(&m_pInstanceVertices[_iIndex].vTranslation, vPosition);
-}
-
-HRESULT CVIBuffer_Mesh_Particle::Initialize_Particles()
-{
-	/*for (auto& pModule : m_Modules)
-	{
-		if (false == pModule->Is_Init())
-			continue;
-
-		for (_uint i = 0; i < m_iNumInstances; ++i)
-		{
-			pModule->Update_Translations(0.f, &m_pInstanceVertices[i].vTranslation, &m_pInstanceVertices[i].vVelocity, &m_pInstanceVertices[i].vAcceleration);
-		}
-	}*/
-
-
-	return S_OK;
 }
 
 CVIBuffer_Mesh_Particle* CVIBuffer_Mesh_Particle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ifstream& _inFile, const json& _jsonBufferInfo, _fmatrix _PreTransformMatrix, _float _fSpawnRate)
@@ -690,7 +765,7 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _
 #pragma endregion
 
 #pragma region INSTANCE_BUFFER
-	m_iInstanceStride = sizeof(VTXMESHINSTANCE);
+	m_iInstanceStride = sizeof(VTXMESH);
 	m_iNumIndexCountPerInstance = iNumFaces * 3;
 
 	ZeroMemory(&m_InstanceBufferDesc, sizeof m_InstanceBufferDesc);
@@ -716,11 +791,62 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _
 
 #pragma endregion
 
-	if (FAILED(__super::Initialize(nullptr)))
+	//if (FAILED(__super::Initialize(nullptr)))
+	//	return E_FAIL;
+
+	D3D11_BUFFER_DESC BufferDesc = {};
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+
+	BufferDesc.ByteWidth = m_iNumInstances * m_iInstanceStride;
+	BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	BufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | // Compute Shader
+		D3D11_BIND_SHADER_RESOURCE;   // Vertex Shader
+	BufferDesc.StructureByteStride = m_iInstanceStride;
+	BufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+	D3D11_SUBRESOURCE_DATA BufferData = {};
+	ZeroMemory(&BufferData, sizeof D3D11_SUBRESOURCE_DATA);
+	BufferData.pSysMem = m_pInstanceVertices;
+	if (FAILED(m_pDevice->CreateBuffer(&BufferDesc, &BufferData, &m_pBuffer)))
 		return E_FAIL;
 
-	if (FAILED(Initialize_Particles()))
+	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
+	ZeroMemory(&UAVDesc, sizeof D3D11_UNORDERED_ACCESS_VIEW_DESC);
+	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	UAVDesc.Buffer.NumElements = m_iNumInstances;
+	if (FAILED(m_pDevice->CreateUnorderedAccessView(m_pBuffer, &UAVDesc, &m_pUAV)))
 		return E_FAIL;
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.BufferEx.NumElements = m_iNumInstances;
+
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pBuffer, &SRVDesc, &m_pSRV)))
+		return E_FAIL;
+
+
+
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+	m_pBuffer->GetDesc(&BufferDesc);
+
+	m_pBufferInitial = nullptr;
+	HRESULT hr = m_pDevice->CreateBuffer(&BufferDesc, nullptr, &m_pBufferInitial);
+	if (FAILED(hr))
+		return hr;
+	m_pContext->CopyResource(m_pBufferInitial, m_pBuffer);
+
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.Buffer.NumElements = m_iNumInstances;
+
+	hr = m_pDevice->CreateShaderResourceView(m_pBufferInitial, &SRVDesc, &m_pSRVInitial);
+	if (FAILED(hr))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -731,82 +857,22 @@ void CVIBuffer_Mesh_Particle::Tool_Setting()
 
 }
 
-void CVIBuffer_Mesh_Particle::Tool_Reset_Instance(_float _fSpawnRate)
+void CVIBuffer_Mesh_Particle::Tool_Reset_Buffers(_float _fSpawnRate, class CCompute_Shader* _pCShader, vector<class CEffect_Module*>& _Modules)
 {
-	for (_uint i = 0; i < m_iNumInstances; i++)
-	{
-		Set_Instance(i, _fSpawnRate);
-	}
-
-	if (FAILED(Initialize_Particles()))
-	{
-		MSG_BOX("Module 초기화 실패!!");
-		return;
-	}
-
-	Reset_Buffers();
-
-	m_isToolChanged = true;
-}
-
-void CVIBuffer_Mesh_Particle::Tool_Reset_Buffers(_float _fSpawnRate)
-{
-	m_isToolReset = true;
+	if (m_isToolReset)
+		Safe_Delete_Array(m_pInstanceVertices);
 
 	//Safe_Release(m_pVB);
-	Safe_Release(m_pIB);
-	Safe_Release(m_pVBInstance);
+	//Safe_Release(m_pIB);
+	//Safe_Release(m_pVBInstance);
 
+	Safe_Release(m_pBuffer);
+	Safe_Release(m_pUAV);
+	Safe_Release(m_pSRV);
+	Safe_Release(m_pBufferInitial);
+	Safe_Release(m_pSRVInitial);
 
-#pragma region INDEX_BUFFER
-	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
-	//m_iNumIndices = m_iNumFaces * 3 /** m_iNumInstances*/;
-
-	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
-	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.StructureByteStride = 0;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags = 0;
-
-	_uint* pIndices = new _uint[m_iNumIndices];
-	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
-
-	_uint		iNumIndices = { 0 };
-
-	for (size_t i = 0; i < m_iNumIndices; ++i)
-	{
-		pIndices[i] = m_vecIndexBuffer[i];
-		//pIndices[iNumIndices++] = m_vecIndexBuffer[i + 1];
-		//pIndices[iNumIndices++] = m_vecIndexBuffer[i + 2];
-	}
-	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_SubResourceDesc.pSysMem = pIndices;
-
-	if (FAILED(__super::Create_Buffer(&m_pIB)))
-	{
-		MSG_BOX("Index Buffer 만들기 실패!!");
-		Safe_Delete_Array(pIndices);
-		return;
-	}
-
-	Safe_Delete_Array(pIndices);
-
-#pragma endregion
-//
-#pragma region INSTANCE_BUFFER
-	m_iInstanceStride = sizeof(VTXMESHINSTANCE);
-	m_iNumIndexCountPerInstance = m_iNumFaces * 3;
-
-	ZeroMemory(&m_InstanceBufferDesc, sizeof m_InstanceBufferDesc);
-
-	/* 정점버퍼를 몇 바이트 할당할까요? */
-	m_InstanceBufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstances;
-	m_InstanceBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	m_InstanceBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	m_InstanceBufferDesc.StructureByteStride = m_iInstanceStride;
-	m_InstanceBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	m_InstanceBufferDesc.MiscFlags = 0;
+	m_isToolReset = true;
 
 	m_pInstanceVertices = new VTXMESHINSTANCE[m_iNumInstances];
 	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
@@ -816,26 +882,139 @@ void CVIBuffer_Mesh_Particle::Tool_Reset_Buffers(_float _fSpawnRate)
 		Set_Instance(i, _fSpawnRate);
 	}
 
-	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
-	m_InstanceInitialDesc.pSysMem = m_pInstanceVertices;
-
-	if (FAILED(m_pDevice->CreateBuffer(&m_InstanceBufferDesc, &m_InstanceInitialDesc, &m_pVBInstance)))
+	for (_int i = 0; i < _Modules.size(); ++i)
 	{
-		MSG_BOX("Instance 버퍼 만들기 실패!!");
-		return;
+		if (_Modules[i]->Is_Init())
+			_Modules[i]->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 22, 25, 16, 29);
 	}
 
-	if (FAILED(Initialize_Particles()))
-	{
-		MSG_BOX("Module 초기화 실패!!");
-		return;
-	}
+	D3D11_BUFFER_DESC BufferDesc = {};
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
 
-	Reset_Buffers();
+	BufferDesc.ByteWidth = m_iNumInstances * m_iInstanceStride;
+	BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	BufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | // Compute Shader
+		D3D11_BIND_SHADER_RESOURCE;   // Vertex Shader
+	BufferDesc.StructureByteStride = m_iInstanceStride;
+	BufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 
-	m_isToolChanged = true;
+	D3D11_SUBRESOURCE_DATA BufferData = {};
+	ZeroMemory(&BufferData, sizeof D3D11_SUBRESOURCE_DATA);
+	BufferData.pSysMem = m_pInstanceVertices;
+	if (FAILED(m_pDevice->CreateBuffer(&BufferDesc, &BufferData, &m_pBuffer)))
+		MSG_BOX("실패");
 
-#pragma endregion
+	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
+	ZeroMemory(&UAVDesc, sizeof D3D11_UNORDERED_ACCESS_VIEW_DESC);
+	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	UAVDesc.Buffer.NumElements = m_iNumInstances;
+	if (FAILED(m_pDevice->CreateUnorderedAccessView(m_pBuffer, &UAVDesc, &m_pUAV)))
+		MSG_BOX("실패");
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.BufferEx.NumElements = m_iNumInstances;
+
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pBuffer, &SRVDesc, &m_pSRV)))
+		MSG_BOX("실패");
+
+
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+	m_pBuffer->GetDesc(&BufferDesc);
+
+	m_pBufferInitial = nullptr;
+	HRESULT hr = m_pDevice->CreateBuffer(&BufferDesc, nullptr, &m_pBufferInitial);
+	if (FAILED(hr))
+		MSG_BOX("실패");
+	m_pContext->CopyResource(m_pBufferInitial, m_pBuffer);
+
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.Buffer.NumElements = m_iNumInstances;
+
+	hr = m_pDevice->CreateShaderResourceView(m_pBufferInitial, &SRVDesc, &m_pSRVInitial);
+	if (FAILED(hr))
+		MSG_BOX("실패");
+
+	Reset_Buffers(_pCShader);
+//#pragma region INDEX_BUFFER
+//	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+//	//m_iNumIndices = m_iNumFaces * 3 /** m_iNumInstances*/;
+//
+//	m_BufferDesc.ByteWidth = m_iIndexStride * m_iNumIndices;
+//	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+//	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+//	m_BufferDesc.StructureByteStride = 0;
+//	m_BufferDesc.CPUAccessFlags = 0;
+//	m_BufferDesc.MiscFlags = 0;
+//
+//	_uint* pIndices = new _uint[m_iNumIndices];
+//	ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
+//
+//	_uint		iNumIndices = { 0 };
+//
+//	for (size_t i = 0; i < m_iNumIndices; ++i)
+//	{
+//		pIndices[i] = m_vecIndexBuffer[i];
+//		//pIndices[iNumIndices++] = m_vecIndexBuffer[i + 1];
+//		//pIndices[iNumIndices++] = m_vecIndexBuffer[i + 2];
+//	}
+//	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
+//	m_SubResourceDesc.pSysMem = pIndices;
+//
+//	if (FAILED(__super::Create_Buffer(&m_pIB)))
+//	{
+//		MSG_BOX("Index Buffer 만들기 실패!!");
+//		Safe_Delete_Array(pIndices);
+//		return;
+//	}
+//
+//	Safe_Delete_Array(pIndices);
+//
+//#pragma endregion
+////
+//#pragma region INSTANCE_BUFFER
+//	m_iInstanceStride = sizeof(VTXMESHINSTANCE);
+//	m_iNumIndexCountPerInstance = m_iNumFaces * 3;
+//
+//	ZeroMemory(&m_InstanceBufferDesc, sizeof m_InstanceBufferDesc);
+//
+//	/* 정점버퍼를 몇 바이트 할당할까요? */
+//	m_InstanceBufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstances;
+//	m_InstanceBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+//	m_InstanceBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+//	m_InstanceBufferDesc.StructureByteStride = m_iInstanceStride;
+//	m_InstanceBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+//	m_InstanceBufferDesc.MiscFlags = 0;
+//
+//	m_pInstanceVertices = new VTXMESHINSTANCE[m_iNumInstances];
+//	ZeroMemory(m_pInstanceVertices, m_iInstanceStride * m_iNumInstances);
+//
+//	for (_uint i = 0; i < m_iNumInstances; i++)
+//	{
+//		Set_Instance(i, _fSpawnRate);
+//	}
+//
+//	ZeroMemory(&m_InstanceInitialDesc, sizeof m_InstanceInitialDesc);
+//	m_InstanceInitialDesc.pSysMem = m_pInstanceVertices;
+//
+//	if (FAILED(m_pDevice->CreateBuffer(&m_InstanceBufferDesc, &m_InstanceInitialDesc, &m_pVBInstance)))
+//	{
+//		MSG_BOX("Instance 버퍼 만들기 실패!!");
+//		return;
+//	}
+//
+//	//Reset_Buffers();
+//
+//	m_isToolChanged = true;
+//
+//#pragma endregion
+
+
 }
 
 void CVIBuffer_Mesh_Particle::Tool_Update(_float _fTimeDelta)

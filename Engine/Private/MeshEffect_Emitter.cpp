@@ -609,7 +609,7 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 							{
 								item_selected_idx = n;
 
-								CKeyframe_Module* pModule = CKeyframe_Module::Create((CKeyframe_Module::MODULE_NAME)n, 1);
+								CKeyframe_Module* pModule = CKeyframe_Module::Create(m_pDevice, m_pContext, (CKeyframe_Module::MODULE_NAME)n, 1);
 								if (nullptr != pModule)
 								{
 									pModule->Set_Order((_int)m_Modules.size());

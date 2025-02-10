@@ -78,7 +78,7 @@ HRESULT CEmitter::Initialize_Prototype(const json& _jsonInfo)
 			CEffect_Module* pOutModule = { nullptr };
 
 			if (CEffect_Module::MODULE_KEYFRAME == eType)
-				pOutModule = CKeyframe_Module::Create(_jsonInfo["Modules"][i], 1);
+				pOutModule = CKeyframe_Module::Create(m_pDevice, m_pContext, _jsonInfo["Modules"][i], 1);
 			if (CEffect_Module::MODULE_TRANSLATION == eType)
 				pOutModule = CTranslation_Module::Create(_jsonInfo["Modules"][i]);
 
@@ -241,9 +241,14 @@ HRESULT CEmitter::Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc)
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
-	if (FAILED(Add_Component(_pDesc->iProtoShaderLevel, _pDesc->szComputeShaderTag,
-		TEXT("Com_ComputeShader"), reinterpret_cast<CComponent**>(&m_pComputeShader))))
-		return E_FAIL;
+	if (nullptr != _pDesc->szComputeShaderTag)
+	{
+		if (FAILED(Add_Component(_pDesc->iProtoShaderLevel, _pDesc->szComputeShaderTag,
+			TEXT("Com_ComputeShader"), reinterpret_cast<CComponent**>(&m_pComputeShader))))
+			return E_FAIL;
+
+	}
+
 
 	return S_OK;
 }

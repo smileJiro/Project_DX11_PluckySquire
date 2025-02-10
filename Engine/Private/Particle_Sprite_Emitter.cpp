@@ -23,38 +23,6 @@ CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitte
 }
 
 
-/* 
-    Json을 통해서 데이터를 불러옵니다
-    Prototype Initialize 상황에서 Texture, Buffer을 같이 로드합니다.
-*/
-//HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const _tchar* _szFilePath)
-//{
-//    json jsonEffectInfo;
-//    if (false == jsonEffectInfo.contains("Texture"))
-//        return E_FAIL;
-//
-//    _string strTexturePath = jsonEffectInfo["Texture"];
-//    m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
-//    if (nullptr == m_pTextureCom)
-//        return E_FAIL;
-//
-//#ifdef  _DEBUG
-//    m_pTextureCom->Add_SRVName(STRINGTOWSTRING(jsonEffectInfo["Texture"]));
-//#endif //  _DEBUG
-//
-//
-//
-//    if (false == jsonEffectInfo.contains("Buffer"))
-//        return E_FAIL;
-//
-//    m_pParticleBufferCom = CVIBuffer_Point_Particle::Create(m_pDevice, m_pContext, jsonEffectInfo["Buffer"]);
-//    if (nullptr == m_pParticleBufferCom)
-//        return E_FAIL;
-//
-//
-//    return S_OK;
-//}
-
 HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
 {
     if (FAILED(__super::Initialize_Prototype(_jsonInfo)))
@@ -102,13 +70,7 @@ HRESULT CParticle_Sprite_Emitter::Initialize(void* _pArg)
 {
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
-
-    //if (false == m_isWorld)
-    //{
-    //    m_pParticleBufferCom->Set_SpawnMatrix(m_pParentMatrices[COORDINATE_3D]);
-    //}
-
-   
+  
 
     return S_OK;
 }
@@ -161,7 +123,7 @@ HRESULT CParticle_Sprite_Emitter::Render()
 void CParticle_Sprite_Emitter::Reset()
 {
     if (m_pParticleBufferCom)
-        m_pParticleBufferCom->Reset_Buffers();
+        m_pParticleBufferCom->Reset_Buffers(m_pComputeShader);
 }
 
 
@@ -172,6 +134,21 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
 
     m_pComputeShader->Bind_RawValue("g_fTimeDelta", &_fTimeDelta, sizeof(_float));
 
+
+    _float fKill;
+    if (KILL == m_ePooling)
+    {
+        fKill = D3D11_FLOAT32_MAX * -1.f;
+    }
+    else
+    {
+        fKill = 0.f;
+    }
+    m_pComputeShader->Bind_RawValue("g_fKill", &fKill, sizeof(_float));
+    m_pComputeShader->Begin(0);
+    m_pParticleBufferCom->Begin_Compute(m_pComputeShader);
+    m_pParticleBufferCom->Compute(m_pComputeShader);
+    m_pComputeShader->End_Compute();
 
     if (STOP_SPAWN != m_eNowEvent)
     {
@@ -212,7 +189,7 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
             m_fInactiveDelayTime = m_fActiveTime;
         }
         m_pParticleBufferCom->Begin_Compute(m_pComputeShader);
-        m_pParticleBufferCom->Spawn_Rate(m_pComputeShader);
+        m_pParticleBufferCom->Compute(m_pComputeShader);
         m_pComputeShader->End_Compute();
     }
 
@@ -220,34 +197,12 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
     {
         if (pModule->Is_Init())
             continue;
-
-        CEffect_Module::DATA_APPLY eData = pModule->Get_ApplyType();
-        CEffect_Module::MODULE_TYPE eType = pModule->Get_Type();
-
-        if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
-        {
-            if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
-            {
-                m_pParticleBufferCom->Update_Translation(_fTimeDelta, pModule, m_pComputeShader);
-            }
-        }
+        
+        m_pParticleBufferCom->Update_Module(pModule, m_pComputeShader);
     }
 
 
-    _float fKill;
-    if (KILL == m_ePooling)
-    {
-        fKill = D3D11_FLOAT32_MAX * -1.f;
-    }
-    else
-    {
-        fKill = 0.f;
-    }
-    m_pComputeShader->Bind_RawValue("g_fKill", &fKill, sizeof(_float));
-    m_pComputeShader->Begin(0);
-    m_pParticleBufferCom->Begin_Compute(m_pComputeShader);
-    m_pParticleBufferCom->Update_All(_fTimeDelta, m_pComputeShader);
-    m_pComputeShader->End_Compute();
+
 
 
 
@@ -347,9 +302,7 @@ HRESULT CParticle_Sprite_Emitter::Ready_Components(const PARTICLE_EMITTER_DESC* 
     if (nullptr != m_pParticleBufferCom)
     {
         m_Components.emplace(L"Com_Buffer", m_pParticleBufferCom);
-        Safe_AddRef(m_pParticleBufferCom);
-
-        
+        Safe_AddRef(m_pParticleBufferCom);        
     }
 
     return S_OK;
@@ -409,20 +362,10 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
     {
         if (nullptr != m_pParticleBufferCom)
         {
-            m_pParticleBufferCom->Tool_Reset_Buffers(m_FloatDatas["SpawnRate"]);
-
-            for (auto pModule : m_Modules)
-            {
-                if (false == pModule->Is_Init())
-                    continue;
-
-                m_pParticleBufferCom->Initialize_Module(pModule);
-            }
+            m_pParticleBufferCom->Tool_Reset_Buffers(m_FloatDatas["SpawnRate"], m_pComputeShader, m_Modules);
             m_isToolChanged = true;
         }
-
     }
-
 
     if (ImGui::TreeNode("Set Emitter State"))
     {
@@ -506,7 +449,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
                         {
                             item_selected_idx = n;
 
-                            CKeyframe_Module* pModule = CKeyframe_Module::Create((CKeyframe_Module::MODULE_NAME)n, m_pParticleBufferCom->Get_NumInstance());
+                            CKeyframe_Module* pModule = CKeyframe_Module::Create(m_pDevice, m_pContext, (CKeyframe_Module::MODULE_NAME)n, m_pParticleBufferCom->Get_NumInstance());
                             if (nullptr != pModule)
                             {
                                 pModule->Set_Order((_int)m_Modules.size());
@@ -639,15 +582,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
 
             if (m_isToolChanged)
             {
-                m_pParticleBufferCom->Tool_Reset_Buffers(m_FloatDatas["SpawnRate"]);
-
-                for (auto pModule : m_Modules)
-                {
-                    if (false == pModule->Is_Init())
-                        continue;
-
-                    m_pParticleBufferCom->Initialize_Module(pModule);
-                }
+                m_pParticleBufferCom->Tool_Reset_Buffers(m_FloatDatas["SpawnRate"], m_pComputeShader, m_Modules);
             }
         }        
     }

@@ -10,7 +10,7 @@ public:
 	enum MODULE_NAME { COLOR_KEYFRAME, SCALE_KEYFRAME };
 
 private:
-	CKeyframe_Module();
+	CKeyframe_Module(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CKeyframe_Module(const CKeyframe_Module& _Prototype);
 	virtual ~CKeyframe_Module() = default;
 
@@ -23,16 +23,20 @@ public:
 	virtual void	Update_ColorKeyframe(_float* _pBuffer, _uint _iNumInstance, _uint _iColorOffset, _uint _iLifeTimeOffset, _uint _iTotalSize) override;
 	virtual void	Update_ScaleKeyframe(_float* _pBuffer, _uint _iNumInstance, _uint _iRightOffset, _uint _iUpOffset, _uint _iLookOffset, _uint _iLifeTimeOffset, _uint _iTotalSize) override;
 
+	virtual _int	Update_Module(class CCompute_Shader* _pCShader) override;
 
 private:
-	MODULE_NAME		m_eModuleName;
-	vector<_float>	m_Keyframes;
-	vector<_float4> m_KeyframeDatas;
-	vector<_uint>	m_KeyCurrentIndicies;
+	ID3D11Device*			m_pDevice = { nullptr };
+	ID3D11DeviceContext*	m_pContext = { nullptr };
 
+private:
+	MODULE_NAME				m_eModuleName;
+	vector<_float>			m_Keyframes;
+	vector<_float4>			m_KeyframeDatas;
+	vector<_uint>			m_KeyCurrentIndicies;
 
 public:
-	static CKeyframe_Module* Create(const json& _jsonModuleInfo, _int _iNumInstance);
+	static CKeyframe_Module* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonModuleInfo, _int _iNumInstance);
 	virtual CEffect_Module* Clone();
 	virtual void Free() override;
 
@@ -47,7 +51,7 @@ public:
 
 
 public:
-	static CKeyframe_Module* Create(MODULE_NAME _eModuleName, _int _iNumInstance);
+	static CKeyframe_Module* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, MODULE_NAME _eModuleName, _int _iNumInstance);
 
 
 	static const _char* g_szModuleNames[2];

@@ -20,7 +20,8 @@ public:
 		const _tchar* szSingleSpriteShaderTags = L"";
 		_uint iSingleSpriteBufferLevel = 0;
 		const _tchar* szSingleSpriteBufferTags = L"";
-		const _tchar* szComputeShaderTag = L"";
+		const _tchar* szSpriteComputeShaderTag = L"";
+		const _tchar* szMeshComputeShaderTag = L"";
 
 		//vector<_uint> EmitterShaderLevels;
 		//vector<const _tchar*> ShaderTags;

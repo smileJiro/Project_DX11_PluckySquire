@@ -46,12 +46,6 @@ void CEffect_Module::Update_Translations(_float _fTimeDelta, _float* _pBuffer, _
 {
 }
 
-_int CEffect_Module::Update_Translation(_float _fTimeDelta, CCompute_Shader* _pCShader)
-{
-    return 0;
-}
-
-
 
 void CEffect_Module::Update_ColorKeyframe(_float _fCurTime, _float4* _pColor)
 {
@@ -67,6 +61,11 @@ void CEffect_Module::Update_ColorKeyframe(_float* _pBuffer, _uint _iNumInstance,
 
 void CEffect_Module::Update_ScaleKeyframe(_float* _pBuffer, _uint _iNumInstance, _uint _iRightOffset, _uint _iUpOffset, _uint _iLookOffset, _uint _iLifeTimeOffset, _uint _iTotalSize)
 {
+}
+
+_int CEffect_Module::Update_Module(CCompute_Shader* _pCShader)
+{
+    return 0;
 }
 
 

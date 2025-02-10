@@ -96,7 +96,7 @@ HRESULT CCompute_Shader::Bind_Matrix(const _char* _pConstantName, const _float4x
     return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(_pMatrix));
 }
 
-HRESULT CCompute_Shader::Set_SRVs(ID3D11ShaderResourceView** _ppSRVs, _uint _iCount)
+HRESULT CCompute_Shader::Set_SRVs(ID3D11ShaderResourceView** _ppSRVs, _uint _iCount, _uint _iStartSlot)
 {
     if (nullptr == _ppSRVs)
     {
@@ -107,13 +107,13 @@ HRESULT CCompute_Shader::Set_SRVs(ID3D11ShaderResourceView** _ppSRVs, _uint _iCo
 
     else
     {
-        m_pContext->CSSetShaderResources(0, _iCount, _ppSRVs);
+        m_pContext->CSSetShaderResources(_iStartSlot, _iCount, _ppSRVs);
     }
 
     return S_OK;
 }
 
-HRESULT CCompute_Shader::Set_UAVs(ID3D11UnorderedAccessView** _ppUAVs, _uint _iCount)
+HRESULT CCompute_Shader::Set_UAVs(ID3D11UnorderedAccessView** _ppUAVs, _uint _iCount, _uint _iStartSlot)
 {
     if (nullptr == _ppUAVs)
     {
@@ -124,7 +124,7 @@ HRESULT CCompute_Shader::Set_UAVs(ID3D11UnorderedAccessView** _ppUAVs, _uint _iC
 
     else
     {
-        m_pContext->CSSetUnorderedAccessViews(0, _iCount, _ppUAVs, &_iCount);
+        m_pContext->CSSetUnorderedAccessViews(_iStartSlot, _iCount, _ppUAVs, &_iCount);
     }
 
     return S_OK;
@@ -141,6 +141,7 @@ HRESULT CCompute_Shader::Begin(_uint _iPassIndex)
     pPass->Apply(0, m_pContext);
     m_pContext->IASetInputLayout(nullptr);
 
+    return S_OK;
 }
 
 HRESULT CCompute_Shader::Compute(_uint _iThreadGroupCountX, _uint _iThreadGroupCountY, _uint _iThreadGroupCountZ)

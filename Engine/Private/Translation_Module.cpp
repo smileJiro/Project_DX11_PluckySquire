@@ -279,7 +279,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     }
 }
 
-_int CTranslation_Module::Update_Translation(_float _fTimeDelta, CCompute_Shader* _pCShader)
+_int CTranslation_Module::Update_Module(CCompute_Shader* _pCShader)
 {
     if (false == m_isActive)
         return -1;
@@ -290,27 +290,27 @@ _int CTranslation_Module::Update_Translation(_float _fTimeDelta, CCompute_Shader
     {
         _pCShader->Bind_RawValue("g_vOrigin", &m_Float3Datas["Origin"], sizeof(_float3));
         _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
-        
-        return 3;
+
+        return 4;
         break;
     }
     case LINEAR_VELOCITY:
     {
         _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
 
-        return 4;
+        return 5;
         break;
     }
     case INIT_ACCELERATION:
     {
-        return 5;
+        return 6;
 
         break;
     }
     case GRAVITY:
     {
         _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
-        return 6;
+        return 7;
 
         break;
     }
@@ -318,7 +318,7 @@ _int CTranslation_Module::Update_Translation(_float _fTimeDelta, CCompute_Shader
     {
         _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
 
-        return 7;
+        return 8;
         break;
     }
     case VORTEX_ACCELERATION:
@@ -329,7 +329,7 @@ _int CTranslation_Module::Update_Translation(_float _fTimeDelta, CCompute_Shader
         _pCShader->Bind_RawValue("g_vAxis", &m_Float3Datas["Axis"], sizeof(_float3));
 
 
-        return 8;
+        return 9;
         break;
     }
     case POINT_ACCELERATION:
@@ -337,14 +337,14 @@ _int CTranslation_Module::Update_Translation(_float _fTimeDelta, CCompute_Shader
         _pCShader->Bind_RawValue("g_vOrigin", &m_Float3Datas["Origin"], sizeof(_float3));
         _pCShader->Bind_RawValue("g_vAmount", &m_Float3Datas["Amount"], sizeof(_float3));
 
-        return 9;
+        return 10;
         break;
     }
     case LIMIT_ACCELERATION:
     {
         _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
-                
-        return 10;
+
+        return 11;
         break;
     }
     default:

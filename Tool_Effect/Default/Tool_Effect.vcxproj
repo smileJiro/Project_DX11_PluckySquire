@@ -196,6 +196,7 @@
     <Image Include="Tool_Effect.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_CS_Mesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_CS_Sprite.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
