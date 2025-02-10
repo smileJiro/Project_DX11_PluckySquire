@@ -191,13 +191,13 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 	
-	void Event_Book_Main_Section_Change_End(const _tchar* _strSectionTag)
+	void Event_Book_Main_Section_Change_End(const _wstring& _strSectionTag)
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_END;
 		tEvent.Parameters.resize(1);
 
-		tEvent.Parameters[0] = (DWORD_PTR)_strSectionTag;
+		tEvent.Parameters[0] = (DWORD_PTR)new _wstring(_strSectionTag);
 
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}

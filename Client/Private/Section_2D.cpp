@@ -7,8 +7,10 @@
 #include "Engine_Macro.h"
 #include "Trigger_Manager.h"
 
-CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CSection(_pDevice, _pContext)
+CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, SECTION_2D_RENDER_TYPE _eRenderType)
+	:	m_eMySectionPlayType(_ePlayType),
+		m_eMySectionRenderType(_eRenderType),
+		CSection(_pDevice, _pContext)
 {
 }
 
@@ -53,7 +55,6 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 	else if (_SectionJson.contains("Section_Info"))
 	{
 		auto SectionInfo = _SectionJson["Section_Info"];
-		Desc.eSectionRenderType = SectionInfo["Section_Render_Type"];
 	}
 	else 
 	{
@@ -62,9 +63,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 	}
 
 
-	switch (Desc.eSectionRenderType)
+	switch (m_eMySectionPlayType)
 	{
-		case Client::CSection_2D::ON_SECTION_BOOK:
+		case Client::CSection_2D::NARRAION:
+		case Client::CSection_2D::PLAYMAP:
 		{
 			if (_SectionJson.contains("Section_Info"))
 			{
@@ -82,7 +84,7 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 			}
 		}
 		break;
-		case Client::CSection_2D::ON_SECTION_3D_IN_2D:
+		case Client::CSection_2D::SPSK:
 		{
 			// TODO :: Sketchspace 0210¹Ú¿¹½½ 
 		}

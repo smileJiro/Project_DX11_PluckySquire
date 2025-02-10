@@ -2213,6 +2213,7 @@ void C2DMap_Tool_Manager::Load_3D_Map(_bool _bSelected)
 
 			if (pGameObject)
 			{
+				static_cast<CMapObject*>(pGameObject)->Load_Spsk(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Color(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Material(hFile);
 

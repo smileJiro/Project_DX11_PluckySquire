@@ -325,9 +325,6 @@
     <Filter Include="92.MapObjectFactory">
       <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Section\Narration_2D">
-      <UniqueIdentifier>{2cf6df63-166f-40b0-a42a-1b4a0737937f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\PlayerItem">
       <UniqueIdentifier>{e99d4142-b01f-4107-b0e6-76300adbb590}</UniqueIdentifier>
     </Filter>
@@ -382,11 +379,23 @@
     <Filter Include="02.GameObjects\MapObject\SampleBook">
       <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MapObject\SampleSpsk">
-      <UniqueIdentifier>{91867589-9ea6-47bf-af9a-3c553d912c42}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MapObject\3D\0. Super">
       <UniqueIdentifier>{5d40ea1d-b154-4325-ae2f-46cb3cf9249a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D\Narration_2D">
+      <UniqueIdentifier>{2cf6df63-166f-40b0-a42a-1b4a0737937f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D\PlayMap_2D">
+      <UniqueIdentifier>{d5ea85eb-df55-4648-b741-7354bb1b5bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D\00. super">
+      <UniqueIdentifier>{7211fadd-dd86-4fbc-bf86-ab9c88007f52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\00. super">
+      <UniqueIdentifier>{3bb00301-bb7a-48d6-baf2-f23e8cba6be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D\PlayMap_2D\00. super">
+      <UniqueIdentifier>{df0f7f72-4249-4e4f-a50a-e5e2a76d3121}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -617,12 +626,6 @@
     <ClInclude Include="..\Public\SampleBook.h">
       <Filter>02.GameObjects\MapObject\SampleBook</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Section.h">
-      <Filter>04.Section</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Section_2D.h">
-      <Filter>04.Section\Section_2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Map_2D.h">
       <Filter>04.Section\Section_2D\Map_2D</Filter>
     </ClInclude>
@@ -804,16 +807,13 @@
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Section_2D_Narration.h">
-      <Filter>04.Section\Narration_2D</Filter>
+      <Filter>04.Section\Section_2D\Narration_2D</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NPC_Social.h">
       <Filter>02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Npc_OnlySocial.h">
       <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Section_2D_PlayMap.h">
-      <Filter>04.Section\Section_2D</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RenderGroup_AfterParticle.h">
       <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
@@ -833,14 +833,29 @@
     <ClInclude Include="..\Public\3DMapObject.h">
       <Filter>02.GameObjects\MapObject\3D\0. Super</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\3DMapSpskObject.h">
-      <Filter>02.GameObjects\MapObject\3D</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_Lighting.h">
       <Filter>94.RenderGroups%28Custom%29\PBR\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_Combine.h">
       <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapSpskObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Section_2D.h">
+      <Filter>04.Section\Section_2D\00. super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Section.h">
+      <Filter>04.Section\00. super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_PlayMap_Book.h">
+      <Filter>04.Section\Section_2D\PlayMap_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_PlayMap_Sksp.h">
+      <Filter>04.Section\Section_2D\PlayMap_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_PlayMap.h">
+      <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1062,12 +1077,6 @@
     <ClCompile Include="..\Private\SampleBook.cpp">
       <Filter>02.GameObjects\MapObject\SampleBook</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Section.cpp">
-      <Filter>04.Section</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Section_2D.cpp">
-      <Filter>04.Section\Section_2D</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Map_2D.cpp">
       <Filter>04.Section\Section_2D\Map_2D</Filter>
     </ClCompile>
@@ -1243,16 +1252,13 @@
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Section_2D_Narration.cpp">
-      <Filter>04.Section\Narration_2D</Filter>
+      <Filter>04.Section\Section_2D\Narration_2D</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC_Social.cpp">
       <Filter>02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp">
       <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Section_2D_PlayMap.cpp">
-      <Filter>04.Section\Section_2D</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RenderGroup_AfterParticle.cpp">
       <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
@@ -1272,14 +1278,29 @@
     <ClCompile Include="..\Private\3DMapObject.cpp">
       <Filter>02.GameObjects\MapObject\3D\0. Super</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\3DMapSpskObject.cpp">
-      <Filter>02.GameObjects\MapObject\3D</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp">
       <Filter>94.RenderGroups%28Custom%29\PBR\Lighting</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_Combine.cpp">
       <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapSpskObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Section_2D.cpp">
+      <Filter>04.Section\Section_2D\00. super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Section.cpp">
+      <Filter>04.Section\00. super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Section_2D_PlayMap_Book.cpp">
+      <Filter>04.Section\Section_2D\PlayMap_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Section_2D_PlayMap_Sksp.cpp">
+      <Filter>04.Section\Section_2D\PlayMap_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Section_2D_PlayMap.cpp">
+      <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

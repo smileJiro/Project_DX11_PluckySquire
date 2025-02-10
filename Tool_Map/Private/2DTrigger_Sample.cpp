@@ -58,7 +58,7 @@ void C2DTrigger_Sample::Update(_float _fTimeDelta)
 void C2DTrigger_Sample::Late_Update(_float _fTimeDelta)
 {
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-        Register_RenderGroup(RG_3D, PR3D_NONBLEND);
+        Register_RenderGroup(RG_3D, PR3D_GEOMETRY);
     else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
         Register_RenderGroup(RG_2D, PR2D_BOOK_SECTION);
 
