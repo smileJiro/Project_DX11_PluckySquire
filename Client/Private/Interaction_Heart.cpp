@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Interaction_Heart.h"
 #include "UI_Manager.h"
-#include "Section_2D.h"
 
 
 
@@ -32,7 +31,7 @@ HRESULT CInteraction_Heart::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 
 	return S_OK;
 }

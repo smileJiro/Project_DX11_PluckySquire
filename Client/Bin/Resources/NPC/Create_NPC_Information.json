@@ -1,0 +1,16 @@
+{
+	"NPC_OnlySocial": [
+		{
+			"strAnimaionName": "Prototype_Component_NPC_DJMoonBeard",
+			"strCreateSection": 3,
+			"strDialogueId": "DJ_Moobeard_Dialogue_01",
+			"iStartAnimation": 0,
+			"vPositionX": 616.0,
+			"vPositionY": -29.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"is2D": true
+		}
+	]
+}

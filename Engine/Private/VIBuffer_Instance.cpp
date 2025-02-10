@@ -1,6 +1,7 @@
 #include "VIBuffer_Instance.h"
 #include "GameInstance.h"
-#include "Translation_Module.h"
+#include "Effect_Module.h"
+
 
 CVIBuffer_Instance::CVIBuffer_Instance(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CVIBuffer(_pDevice, _pContext)
@@ -15,8 +16,8 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& _Prototype)
 	, m_iNumIndexCountPerInstance(_Prototype.m_iNumIndexCountPerInstance)
 	, m_iInstanceStride(_Prototype.m_iInstanceStride)
 
-	, m_eSpawnType(_Prototype.m_eSpawnType)
-	, m_fSpawnTime(_Prototype.m_fSpawnTime)
+	//, m_eSpawnType(_Prototype.m_eSpawnType)
+	//, m_fSpawnTime(_Prototype.m_fSpawnTime)
 	, m_eShapeType(_Prototype.m_eShapeType)
 	, m_ShapeDatas(_Prototype.m_ShapeDatas)
 	, m_SetDatas(_Prototype.m_SetDatas)
@@ -28,11 +29,7 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& _Prototype)
 	, m_vShapeScale(_Prototype.m_vShapeScale)
 	, m_vShapeRotation(_Prototype.m_vShapeRotation)
 	, m_vShapePosition(_Prototype.m_vShapePosition)
-	, m_Modules(_Prototype.m_Modules)
-
 {
-	for (auto& pModule : m_Modules)
-		Safe_AddRef(pModule);
 }
 
 HRESULT CVIBuffer_Instance::Initialize_Prototype()
@@ -105,6 +102,30 @@ HRESULT CVIBuffer_Instance::Render()
 	return S_OK;
 }
 
+void CVIBuffer_Instance::Begin_Compute(CCompute_Shader* _pCShader)
+{
+	_pCShader->Set_SRVs(&m_pSRVInitial, 1);
+	_pCShader->Set_UAVs(&m_pUAV, 1);
+}
+
+void CVIBuffer_Instance::Compute(CCompute_Shader* _pCShader)
+{
+	_pCShader->Compute((_uint)(ceil(m_iNumInstances / 256.f)), 1, 1);
+}
+
+
+void CVIBuffer_Instance::Update_Module(CEffect_Module* _pModule, CCompute_Shader* _pCShader)
+{
+	_int iEntry = _pModule->Update_Module(_pCShader);
+	if (0 <= iEntry)
+	{
+		_pCShader->Begin(iEntry);
+		Begin_Compute(_pCShader);
+		_pCShader->Compute((_uint)(ceil(m_iNumInstances / 256.f)), 1, 1);
+		_pCShader->End_Compute();
+	}
+}
+
 HRESULT CVIBuffer_Instance::Bind_BufferDesc()
 {
 	ID3D11Buffer* pVertexBuffer[] = {
@@ -132,9 +153,33 @@ HRESULT CVIBuffer_Instance::Bind_BufferDesc()
 	return S_OK;
 }
 
-void CVIBuffer_Instance::Reset_Buffers()
+HRESULT CVIBuffer_Instance::Bind_BufferBySRV()
 {
+	m_pContext->VSSetShaderResources(0, 1, &m_pSRV);
+	m_pContext->IASetPrimitiveTopology(m_ePrimitiveTopology);
+
+
+	return S_OK;
 }
+
+HRESULT CVIBuffer_Instance::Render_BySRV()
+{
+	m_pContext->Draw(_uint(m_iNumInstances), 0);
+
+	ID3D11ShaderResourceView* nullSRV[6] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	m_pContext->VSSetShaderResources(0, 6, nullSRV); // VS에서도 해제
+
+	return S_OK;
+}
+
+void CVIBuffer_Instance::Reset_Buffers(CCompute_Shader* _pCShader)
+{
+	_pCShader->Begin(3);
+	Begin_Compute(_pCShader);
+	Compute(_pCShader);
+	_pCShader->End_Compute();
+}
+
 
 
 
@@ -703,32 +748,17 @@ HRESULT CVIBuffer_Instance::Set_Float4Data(PARTICLE_DATA eData, const json& _jso
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Instance::Ready_Modules(const json _jsonInfo)
-{
-	if (_jsonInfo.contains("Module"))
-	{
-		for (_int i = 0; i < _jsonInfo["Module"].size(); ++i)
-		{
-			CTranslation_Module* pModule = CTranslation_Module::Create(_jsonInfo["Module"][i]);
-			if (nullptr == pModule)
-				return E_FAIL;
-			
-			m_Modules.push_back(pModule);
-		}
-	}
-
-	sort(m_Modules.begin(), m_Modules.end(), [](const CTranslation_Module* pSrc, const CTranslation_Module* pDst)
-		{
-			return pSrc->Get_Order() < pDst->Get_Order();
-		}
-	);
-
-	return S_OK;
-}
 
 
 void CVIBuffer_Instance::Free()
 {
+	Safe_Release(m_pBuffer);
+	Safe_Release(m_pBufferInitial);
+
+	Safe_Release(m_pUAV);
+	Safe_Release(m_pSRVInitial);
+	Safe_Release(m_pSRV);
+
 
 	Safe_Release(m_pVBInstance);
 	if (false == m_isCloned)
@@ -740,8 +770,6 @@ void CVIBuffer_Instance::Free()
 		Safe_Delete_Array(m_pSetColors);
 	}
 	
-	for (auto& pModule : m_Modules)
-		Safe_Release(pModule);
 
 	__super::Free();
 }
@@ -786,8 +814,8 @@ HRESULT CVIBuffer_Instance::Save_Buffer(json& _jsonBufferInfo)
 		_jsonBufferInfo["Color"]["Arg2"].push_back(*((_float*)(&m_pSetColors[1]) + i));
 	}
 
-	_jsonBufferInfo["Spawn"]["Type"] = m_eSpawnType;
-	_jsonBufferInfo["Spawn"]["Time"] = m_fSpawnTime;
+	//_jsonBufferInfo["Spawn"]["Type"] = m_eSpawnType;
+	//_jsonBufferInfo["Spawn"]["Time"] = m_fSpawnTime;
 	//_jsonBufferInfo["Spawn"]["Count"] = m_iSpawnCount;
 
 	_jsonBufferInfo["Scale"]["SetType"] = m_SetDatas[P_SCALE];
@@ -801,15 +829,6 @@ HRESULT CVIBuffer_Instance::Save_Buffer(json& _jsonBufferInfo)
 	_jsonBufferInfo["Color"]["Arg1"].push_back(m_pSetColors[0].w);
 	_jsonBufferInfo["Color"]["Arg2"].push_back(m_pSetColors[1].w);
 
-	for (auto& pModule : m_Modules)
-	{
-		json jsonModuleInfo;
-
-		if (FAILED(pModule->Save_Module(jsonModuleInfo)))
-			return E_FAIL;
-
-		_jsonBufferInfo["Module"].push_back(jsonModuleInfo);
-	}
 
 	return S_OK;
 }
@@ -817,51 +836,12 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 {
 	if (ImGui::TreeNode("Defaults"))
 	{
-		if (ImGui::TreeNode("Spawn"))
-		{
-			const _char* items[] = {"Burst", "Spawn"};
-			static _int item_selected_idx = 0;
-			const char* combo_preview_value = items[item_selected_idx];
-
-			if (ImGui::BeginCombo("Spawn Type", combo_preview_value))
-			{
-				item_selected_idx = m_eSpawnType;
-				ImGui::SetItemDefaultFocus();
-
-				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
-				{
-					const bool is_selected = (item_selected_idx == n);
-
-					if (ImGui::Selectable(items[n], is_selected))
-					{
-						item_selected_idx = n;
-						m_eSpawnType = (SPAWN_TYPE)n;
-						if (SPAWN == m_eSpawnType && 0.f >= m_fSpawnTime)
-							m_fSpawnTime = 0.001f;
-						Tool_Reset_Instance();
-					}
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-				}
-				ImGui::EndCombo();
-			}
-
-			if (ImGui::InputFloat("Spawn Time", &m_fSpawnTime, 0.01f, 0.1f, "%.4f"))
-			{
-
-				if (SPAWN == m_eSpawnType && 0.f >= m_fSpawnTime)
-					m_fSpawnTime = 0.001f;
-				Tool_Reset_Instance();
-			}
-
-			ImGui::TreePop();
-		}
-
+	
 		if (ImGui::TreeNode("Change Counts"))
 		{
 			if (ImGui::InputInt("Instance Count", (_int*)&m_iNumInstances))
 			{
-				Tool_Reset_Buffers();
+				m_isToolChanged = true;
 			}
 
 			ImGui::TreePop();
@@ -888,7 +868,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 						if (m_SetDatas[P_SCALE] != n)
 						{
 							m_SetDatas[P_SCALE] = (SETTING_TYPE)n;
-							Tool_Reset_Instance();
+							m_isToolChanged = true;
 						}
 					}
 					if (is_selected)
@@ -912,7 +892,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 							*((_float*)(&m_pSetScales[0]) + i) = 1.f;
 						}
 					}
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -928,7 +908,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 							*((_float*)(&m_pSetScales[0]) + i) = 1.f;
 						}
 					}
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat3("Set_Scale2", (_float*)(&m_pSetScales[1])))
 				{
@@ -939,7 +919,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 							*((_float*)(&m_pSetScales[1]) + i) = 1.f;
 						}
 					}
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -970,8 +950,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 						if (m_SetDatas[P_ROTATION] != n)
 						{
 							m_SetDatas[P_ROTATION] = (SETTING_TYPE)n;
-							Tool_Reset_Instance();
-
+							m_isToolChanged = true;
 						}
 					}
 					if (is_selected)
@@ -987,7 +966,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			{
 				if (ImGui::InputFloat3("Set_Rotation", (_float*)(&m_pSetRotations[0])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -996,11 +975,11 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			{
 				if (ImGui::InputFloat3("Set_Rotation1", (_float*)(&m_pSetRotations[0])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat3("Set_Rotation2", (_float*)(&m_pSetRotations[1])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -1030,7 +1009,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 						if (m_SetDatas[P_POSITION] != n)
 						{
 							m_SetDatas[P_POSITION] = (SETTING_TYPE)n;
-							Tool_Reset_Instance();
+							m_isToolChanged = true;
 						}
 					}
 					if (is_selected)
@@ -1046,7 +1025,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			{
 				if (ImGui::InputFloat3("Set_Position", (_float*)(&m_pSetPositions[0])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -1055,11 +1034,11 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			{
 				if (ImGui::InputFloat3("Set_Position1", (_float*)(&m_pSetPositions[0])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat3("Set_Position2", (_float*)(&m_pSetPositions[1])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -1089,7 +1068,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 						if (m_SetDatas[P_COLOR] != n)
 						{
 							m_SetDatas[P_COLOR] = (SETTING_TYPE)n;
-							Tool_Reset_Instance();
+							m_isToolChanged = true;
 						}
 					}
 					if (is_selected)
@@ -1105,7 +1084,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			{
 				if (ImGui::InputFloat4("Set_Color", (_float*)(&m_pSetColors[0])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -1114,11 +1093,11 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			{
 				if (ImGui::InputFloat4("Set_Color1", (_float*)(&m_pSetColors[0])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat4("Set_Color2", (_float*)(&m_pSetColors[1])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -1146,7 +1125,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 						if (m_SetDatas[P_LIFETIME] != n)
 						{
 							m_SetDatas[P_LIFETIME] = (SETTING_TYPE)n;
-							Tool_Reset_Instance();
+							m_isToolChanged = true;
 						}
 					}
 					if (is_selected)
@@ -1162,7 +1141,7 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			{
 				if (ImGui::InputFloat("Set_LifeTime", (_float*)(&m_pSetLifeTimes[0])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -1171,11 +1150,11 @@ void CVIBuffer_Instance::Tool_Adjust_DefaultData()
 			{
 				if (ImGui::InputFloat("Set_LifeTimeMin", (_float*)(&m_pSetLifeTimes[0])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Set_LifeTimeMax", (_float*)(&m_pSetLifeTimes[1])))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 				break;
 			}
@@ -1233,26 +1212,26 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		{
 			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Sphere_Radius"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+				m_isToolChanged = true;
 			}
 
 			if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Sphere_Surface"], 0.f, 1.f))
 			{
-				Tool_Reset_Instance();
+				m_isToolChanged = true;
 			}
 
 			if (ImGui::TreeNode("Input Section"))
 			{
 				if (ImGui::InputFloat("Radius", &m_ShapeDatas["Sphere_Radius"]))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 
 				if (ImGui::InputFloat("Surface", &m_ShapeDatas["Sphere_Surface"]))
 				{
 					m_ShapeDatas["Sphere_Surface"] = clamp(m_ShapeDatas["Sphere_Surface"], 0.f, 0.9999f);
 
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 
 
@@ -1266,32 +1245,32 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		{
 			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Cylinder_Radius"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+				m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Height", &m_ShapeDatas["Cylinder_Height"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+				m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Mid Point", &m_ShapeDatas["MidPoint"], -20.f, 20.f))
 			{
-				Tool_Reset_Instance();
+				m_isToolChanged = true;
 			}
 
 			if (ImGui::TreeNode("Input Section"))
 			{
 				if (ImGui::InputFloat("Radius", &m_ShapeDatas["Cylinder_Radius"]))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 
 				if (ImGui::InputFloat("Height", &m_ShapeDatas["Cylinder_Height"]))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 
 				if (ImGui::InputFloat("Mid Point", &m_ShapeDatas["MidPoint"]))
 				{
-					Tool_Reset_Instance();
+					m_isToolChanged = true;
 				}
 
 				ImGui::TreePop();
@@ -1304,27 +1283,27 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		{
 			if (ImGui::SliderFloat("Width", &m_ShapeDatas["Width"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+				m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Height", &m_ShapeDatas["Height"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+				m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Depth", &m_ShapeDatas["Depth"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+				m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("MidX", &m_ShapeDatas["MidX"], -20.f, 20.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("MidY", &m_ShapeDatas["MidY"], -20.f, 20.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("MidZ", &m_ShapeDatas["MidZ"], -20.f, 20.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 
 			_bool isSurface = Is_ShapeData("Box_Surface");
@@ -1343,7 +1322,7 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 					m_ShapeDatas.emplace("Box_Surface", 0.f);
 				}
 
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			isSurface = Is_ShapeData("Box_Surface");
 
@@ -1351,7 +1330,7 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 			{
 				if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Box_Surface"], -100.f, 100.f))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 			}
 	
@@ -1360,34 +1339,34 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 			{
 				if (ImGui::InputFloat("Width", &m_ShapeDatas["Width"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Height", &m_ShapeDatas["Height"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Depth", &m_ShapeDatas["Depth"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("MidX", &m_ShapeDatas["MidX"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("MidY", &m_ShapeDatas["MidY"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("MidZ", &m_ShapeDatas["MidZ"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 
 				if (isSurface)
 				{
 					if (ImGui::InputFloat("Surface", &m_ShapeDatas["Box_Surface"]))
 					{
-						Tool_Reset_Instance();
+							m_isToolChanged = true;
 					}
 				}
 
@@ -1400,19 +1379,19 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		{
 			if (ImGui::SliderFloat("Large_Radius", &m_ShapeDatas["LargeRadius"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Handle_Radius", &m_ShapeDatas["HandleRadius"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("U_Distribution", &m_ShapeDatas["U_Distribution"], 0.f, 1.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("V_Distribution", &m_ShapeDatas["V_Distribution"], 0.f, 1.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 
 			
@@ -1421,23 +1400,23 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 			{
 				if (ImGui::InputFloat("Large_Radius", &m_ShapeDatas["LargeRadius"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Handle_Radius", &m_ShapeDatas["HandleRadius"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("U_Distribution", &m_ShapeDatas["U_Distribution"]))
 				{
 					m_ShapeDatas["U_Distribution"] = clamp(m_ShapeDatas["U_Distribution"], 0.f, 0.9999f);
 
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("V_Distribution", &m_ShapeDatas["V_Distribution"]))
 				{
 					m_ShapeDatas["V_Distribution"] = clamp(m_ShapeDatas["V_Distribution"], 0.f, 0.9999f);
 
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 
 				ImGui::TreePop();
@@ -1450,34 +1429,34 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		{
 			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Ring_Radius"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Coverage", &m_ShapeDatas["Coverage"], 0.f, 1.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Ring_Distribution", &m_ShapeDatas["Ring_Distribution"], 0.f, 1.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 
 			if (ImGui::TreeNode("Input Section"))
 			{
 				if (ImGui::InputFloat("Radius", &m_ShapeDatas["Ring_Radius"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Coverage", &m_ShapeDatas["Coverage"]))
 				{
 					m_ShapeDatas["Coverage"] = clamp(m_ShapeDatas["Coverage"], 0.f, 0.9999f);
 
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Ring_Distribution", &m_ShapeDatas["Ring_Distribution"]))
 				{
 					m_ShapeDatas["Ring_Distribution"] = clamp(m_ShapeDatas["Ring_Distribution"], 0.f, 0.9999f);
 
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 
 				ImGui::TreePop();
@@ -1490,23 +1469,23 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		{
 			if (ImGui::SliderFloat("Length", &m_ShapeDatas["Length"], -100.f, 100.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Outer_Angle", &m_ShapeDatas["Outer_Angle"], -360.f, 360.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Inner_Angle", &m_ShapeDatas["Inner_Angle"], -360.f, 360.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Radial_Angle", &m_ShapeDatas["Radial_Angle"], -360.f, 360.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Cone_Surface"], 0.f, 1.f))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 			_bool isFlatten = m_ShapeDatas["Flatten"] > 0.5f ? true : false;
 			if (ImGui::RadioButton("Flatten", isFlatten))
@@ -1516,32 +1495,32 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 				else
 					m_ShapeDatas["Flatten"] = 1.f;
 
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 
 			if (ImGui::TreeNode("Input Section"))
 			{
 				if (ImGui::InputFloat("Length", &m_ShapeDatas["Length"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Outer_Angle", &m_ShapeDatas["Outer_Angle"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Inner_Angle", &m_ShapeDatas["Inner_Angle"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Radial_Angle", &m_ShapeDatas["Radial_Angle"]))
 				{
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 				if (ImGui::InputFloat("Surface", &m_ShapeDatas["Cone_Surface"]))
 				{
 					m_ShapeDatas["Cone_Surface"] = clamp(m_ShapeDatas["Cone_Surface"], 0.f, 0.9999f);
 
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 
 				ImGui::TreePop();
@@ -1568,19 +1547,19 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 					{
 						*((_float*)(&m_vShapeScale) + i) = 1.f;
 					}
-					Tool_Reset_Instance();
+						m_isToolChanged = true;
 				}
 			}
 
 			if (ImGui::InputFloat3("Shape_Rotation", (_float*)(&m_vShapeRotation)))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 
 
 			if (ImGui::InputFloat3("Shape_Position", (_float*)(&m_vShapePosition)))
 			{
-				Tool_Reset_Instance();
+					m_isToolChanged = true;
 			}
 
 
@@ -1592,143 +1571,6 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 	}
 }
 
-void CVIBuffer_Instance::Tool_Modules()
-{
-	// Add Module
-	Tool_Add_Module();
-	// Adjust Module
-	Tool_Adjust_Modules();
-}
-
-void CVIBuffer_Instance::Tool_Add_Module()
-{
-	if (ImGui::TreeNode("Add Module"))
-	{
-		const _char* Moduleitems[] = { "NONE", "POINT_VELOCITY", "LINEAR_VELOCITY", "INIT_ACCELERATION",
-"GRAVITY", "DRAG", "VORTEX_ACCELERATION", "POINT_ACCELERATION", "LIMIT_ACCELERATION"};
-
-		static _int item_selected_idx = 0;
-		const char* combo_preview_value = Moduleitems[item_selected_idx];
-
-		if (ImGui::BeginCombo("Module Type", combo_preview_value))
-		{
-
-			for (int n = 0; n < IM_ARRAYSIZE(Moduleitems); n++)
-			{
-				const bool is_selected = (item_selected_idx == n);
-
-				if (ImGui::Selectable(Moduleitems[n], is_selected))
-				{
-					item_selected_idx = n;
-					
-					CTranslation_Module* pModule = CTranslation_Module::Create((CTranslation_Module::MODULE_TYPE)n, Moduleitems[n]);
-					if (nullptr != pModule)
-					{
-						pModule->Set_Order((_int)m_Modules.size());
-						m_Modules.push_back(pModule);
-
-						sort(m_Modules.begin(), m_Modules.end(), [](const CTranslation_Module* pSrc, const CTranslation_Module* pDst)
-							{
-								return pSrc->Get_Order() < pDst->Get_Order();
-							}
-						);
-
-						Tool_Reset_Buffers();
-					}
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-
-		ImGui::TreePop();
-	}
-
-}
-
-void CVIBuffer_Instance::Tool_Adjust_Modules()
-{
-	if (ImGui::TreeNode("Module Lists"))
-	{
-		if (ImGui::BeginListBox("List"))
-		{
-			if (ImGui::ArrowButton("Order Up", ImGuiDir::ImGuiDir_Up))
-			{
-				if (0 < m_iNowModuleIndex && 1 < m_Modules.size())
-				{
-					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex - 1]);
-				
-					for (_int i = 0; i < m_Modules.size(); ++i)
-					{
-						m_Modules[i]->Set_Order(i);
-					}
-				}
-			}
-			ImGui::SameLine();
-			if (ImGui::ArrowButton("Order Down", ImGuiDir::ImGuiDir_Down))
-			{
-				if (m_Modules.size() - 1 > m_iNowModuleIndex && 1 < m_Modules.size())
-				{
-					swap(m_Modules[m_iNowModuleIndex], m_Modules[m_iNowModuleIndex + 1]);
-
-					for (_int i = 0; i < m_Modules.size(); ++i)
-					{
-						m_Modules[i]->Set_Order(i);
-					}
-
-				}
-			}
-
-			int n = 0;
-			for (auto& pModule : m_Modules)
-			{
-				const bool is_selected = (m_iNowModuleIndex == n);
-				if (ImGui::Selectable(pModule->Get_TypeName().c_str(), is_selected))
-				{
-					m_iNowModuleIndex = is_selected ? -1 : n; 
-				}
-
-				if (is_selected)
-					ImGui::SetItemDefaultFocus(); 
-				++n;
-			}
-			ImGui::EndListBox();
-		}
-
-		if (-1 != m_iNowModuleIndex)
-		{
-			if (ImGui::Button("Delete Module"))
-			{
-				Safe_Release(m_Modules[m_iNowModuleIndex]);
-
-				auto iter = m_Modules.begin() + m_iNowModuleIndex;
-				m_Modules.erase(iter);
-
-				m_iNowModuleIndex = -1;
-
-				Tool_Reset_Buffers();
-			}
-		}
-
-
-		ImGui::TreePop();
-	}
-	
-	if (-1 != m_iNowModuleIndex)
-	{
-		if (ImGui::TreeNode("Adjust Modules"))
-		{
-			m_Modules[m_iNowModuleIndex]->Tool_Module_Update();
-
-
-			ImGui::TreePop();
-		}
-
-		if (m_Modules[m_iNowModuleIndex]->Is_Changed())
-			Tool_Reset_Buffers();
-	}
-}
 
 void CVIBuffer_Instance::Tool_Create_ShapeData()
 {
@@ -1805,7 +1647,7 @@ void CVIBuffer_Instance::Tool_Create_ShapeData()
 	
 	}
 
-	Tool_Reset_Instance();
+		m_isToolChanged = true;
 
 }
 

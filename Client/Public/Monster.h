@@ -80,6 +80,11 @@ public:
 		return m_isCool;
 	}
 
+	_float3 Get_RayOffset() const
+	{
+		return m_vRayOffset;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -161,6 +166,8 @@ protected:
 	//시야각
 	_float m_fFOVX = { 0.f };
 	_float m_fFOVY = { 0.f };
+
+	_float3 m_vRayOffset = { 0.f,0.f,0.f };
 
 	//잠입 모드
 	_bool m_isSneakMode = { false };

@@ -19,6 +19,9 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+private:
+	void Move();
+
 public:
 	static CSneak_InvestigateState* Create(void* _pArg);
 

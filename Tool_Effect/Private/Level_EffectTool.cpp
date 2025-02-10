@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Level_EffectTool.h"
 
+#include "SpriteEffect_Emitter.h"
 #include "ModelObject.h"
 #include "3DModel.h"
 
@@ -197,6 +198,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 	Desc.iShaderPass_3D = 0;
 	Desc.iPriorityID_3D = PR3D_NONBLEND;
 	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_ModelObject"),
 		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
@@ -219,7 +221,7 @@ void CLevel_EffectTool::Update_Particle_Tool(_float _fTimeDelta)
 	ImGui::End();
 
 	Tool_Texture();
-	Tool_ControlModel();
+	Tool_ControlModel(_fTimeDelta);
 }
 
 void CLevel_EffectTool::Tool_System_List()
@@ -325,6 +327,7 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 			Desc.isCoordChangeEnable = false;
 			Desc.iProtoShaderLevel = LEVEL_STATIC;
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxPointInstance";
+			Desc.szComputeShaderTag = L"Prototype_ComputeShader";
 			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::SPRITE, &Desc)))
 			{
 				MSG_BOX("Sprite Emitter 만들기 실패");
@@ -342,13 +345,55 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 			Desc.isCoordChangeEnable = false;
 			Desc.iProtoShaderLevel = LEVEL_STATIC;
 			Desc.szShaderTag = L"Prototype_Component_Shader_VtxModelInstance";
+			Desc.szComputeShaderTag = L"Prototype_ComputeShader_Mesh";
+
 			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::MESH, &Desc)))
 			{
 				MSG_BOX("Mesh Emitter 만들기 실패");
 			}
 
 		}
+		ImGui::SameLine();
 
+		if (ImGui::Button("New_Sprite_Effect"))
+		{
+			CSpriteEffect_Emitter::SPRITE_EMITTER_DESC Desc = {};
+
+			Desc.eStartCoord = COORDINATE_3D;
+			Desc.iCurLevelID = LEVEL_TOOL;
+			Desc.isCoordChangeEnable = false;
+			Desc.iProtoShaderLevel = LEVEL_STATIC;
+			Desc.szShaderTag = L"Prototype_Component_Shader_VtxPoint";
+			Desc.iProtoRectLevel = LEVEL_STATIC;
+			Desc.szRectTag = L"Prototype_Component_VIBuffer_Point";
+			Desc.szComputeShaderTag = nullptr;
+
+			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::SINGLE_SPRITE, &Desc)))
+			{
+				MSG_BOX("Effect 만들기 실패");
+			}
+
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("New_Effect"))
+		{
+			CEmitter::PARTICLE_EMITTER_DESC Desc = {};
+
+			Desc.eStartCoord = COORDINATE_3D;
+			Desc.iCurLevelID = LEVEL_TOOL;
+			Desc.isCoordChangeEnable = false;
+			Desc.iProtoShaderLevel = LEVEL_STATIC;
+			Desc.szShaderTag = L"Prototype_Component_Shader_Effect";
+			Desc.szComputeShaderTag = nullptr;
+
+			if (FAILED(m_pNowItem->Add_New_Emitter(CEmitter::EFFECT, &Desc)))
+			{
+				MSG_BOX("Effect 만들기 실패");
+			}
+		}
+	
 
 
 		if (ImGui::Button("Save_this_system"))
@@ -371,7 +416,7 @@ void CLevel_EffectTool::Tool_Texture()
 	{
 		if (m_pParticleTexture)
 		{
-			ImVec2 imageSize(100, 100); // 이미지 크기 설정
+			ImVec2 imageSize(300, 300); // 이미지 크기 설정
 			ID3D11ShaderResourceView* pSelectImage = m_pParticleTexture->Get_SRV(0);
 			if (nullptr != pSelectImage)
 			{
@@ -434,7 +479,7 @@ void CLevel_EffectTool::Tool_Texture()
 		{
 			Load_Textures(".dds", m_szParticleTexturePath, m_ParticleTextures);
 		}
-
+		ImGui::SameLine();
 		if (ImGui::Button("Load_PNGTextures"))
 		{
 			Load_Textures(".png", m_szParticleTexturePath, m_ParticleTextures);
@@ -452,7 +497,7 @@ void CLevel_EffectTool::Tool_Texture()
 	{
 		if (m_pEffectTexture)
 		{
-			ImVec2 imageSize(100, 100); // 이미지 크기 설정
+			ImVec2 imageSize(300, 300); // 이미지 크기 설정
 			ID3D11ShaderResourceView* pSelectImage = m_pEffectTexture->Get_SRV(0);
 			if (nullptr != pSelectImage)
 			{
@@ -461,12 +506,12 @@ void CLevel_EffectTool::Tool_Texture()
 
 			if (m_pNowItem)
 			{
-				if (ImGui::Button("Alpha"))
+				if (ImGui::Button("Alpha/Diffuse"))
 				{
 					m_pNowItem->Set_Texture(m_pEffectTexture, 0);
 				}
 				ImGui::SameLine();
-				if (ImGui::Button("Mask"))
+				if (ImGui::Button("Mask/Normal"))
 				{
 					m_pNowItem->Set_Texture(m_pEffectTexture, 1);
 				}
@@ -526,7 +571,7 @@ void CLevel_EffectTool::Tool_Texture()
 		{
 			Load_Textures(".dds", m_szEffectTexturePath, m_EffectTextures);
 		}
-
+		ImGui::SameLine();
 		if (ImGui::Button("Load_PNGTextures"))
 		{
 			Load_Textures(".png", m_szEffectTexturePath, m_EffectTextures);
@@ -541,7 +586,7 @@ void CLevel_EffectTool::Tool_Texture()
 
 }
 
-void CLevel_EffectTool::Tool_ControlModel()
+void CLevel_EffectTool::Tool_ControlModel(_float _fTimeDelta)
 {
 
 	for (auto& pModel : m_ModelObjects)
@@ -552,6 +597,9 @@ void CLevel_EffectTool::Tool_ControlModel()
 
 			_float fTime = static_cast<C3DModel*>(pModel->Get_Model(COORDINATE_3D))->Get_AnimTime();
 			ImGui::Text("Current Anim Time : %.4f", fTime);
+			
+			_float4x4 matIdentity;
+			XMStoreFloat4x4(&matIdentity, XMMatrixIdentity());
 
 			static _bool isLoop = { true };
 			if (ImGui::RadioButton("Loop", isLoop))
@@ -562,8 +610,9 @@ void CLevel_EffectTool::Tool_ControlModel()
 			static _int iAnim = { 0 };
 			ImGui::InputInt("Anim Index", &iAnim);
 
-			if (ImGui::Button("Anim Reset and Effect Reset"))
+			if (ImGui::Button("Reset All"))
 			{
+				pModel->Set_WorldMatrix(matIdentity);
 				pModel->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
 				pModel->Set_Animation(iAnim);
 				if (m_pNowItem)
@@ -572,6 +621,20 @@ void CLevel_EffectTool::Tool_ControlModel()
 				}
 			}
 
+			static _float fSpeed = { 0.f };
+			ImGui::DragFloat("Speed", &fSpeed);
+			ImGui::PushButtonRepeat(true);
+			if (ImGui::Button("Reset All and Speed"))
+			{
+				pModel->Get_ControllerTransform()->Go_Straight(_fTimeDelta * fSpeed);
+				pModel->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
+				pModel->Set_Animation(iAnim);
+				if (m_pNowItem)
+				{
+					m_pNowItem->Tool_Reset(0);
+				}
+			}
+			ImGui::PopButtonRepeat();
 			ImGui::End();
 			break;
 		}
@@ -643,6 +706,13 @@ HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
 	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxModelInstance";
 	Desc.iEffectShaderLevel = LEVEL_STATIC;
 	Desc.szEffectShaderTags = L"Prototype_Component_Shader_Effect";
+	Desc.iSingleSpriteShaderLevel = LEVEL_STATIC;
+	Desc.szSingleSpriteShaderTags = L"Prototype_Component_Shader_VtxPoint";
+	Desc.iSingleSpriteBufferLevel = LEVEL_STATIC;
+	Desc.szSingleSpriteBufferTags = L"Prototype_Component_VIBuffer_Point";
+	Desc.szSpriteComputeShaderTag = L"Prototype_ComputeShader";
+	Desc.szMeshComputeShaderTag = L"Prototype_ComputeShader_Mesh";
+
 	
 	std::filesystem::path path;
 	path = _szPath;

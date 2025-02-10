@@ -22,13 +22,12 @@ private:
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
 
-
-
 private:
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 	HRESULT Ready_Prototype_Static();
 	HRESULT Ready_RenderTargets();
 	HRESULT Ready_RenderGroup();
+	
 	void	Set_EffectRG();
 
 public:
