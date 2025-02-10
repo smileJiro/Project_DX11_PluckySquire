@@ -267,8 +267,11 @@
     <ClInclude Include="..\Public\PrintFloorWord.h" />
     <ClInclude Include="..\Public\Rat.h" />
     <ClInclude Include="..\public\RayShape.h" />
+    <ClInclude Include="..\public\RenderGroup_Blur.h" />
     <ClInclude Include="..\Public\RenderGroup_2D.h" />
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
+    <ClInclude Include="..\public\RenderGroup_AfterParticle.h" />
+    <ClInclude Include="..\public\RenderGroup_DownSample.h" />
     <ClInclude Include="..\Public\RenderGroup_Final.h" />
     <ClInclude Include="..\public\RenderGroup_Lights.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h" />
@@ -415,8 +418,11 @@
     <ClCompile Include="..\Private\PrintFloorWord.cpp" />
     <ClCompile Include="..\Private\Rat.cpp" />
     <ClCompile Include="..\private\RayShape.cpp" />
+    <ClCompile Include="..\private\RenderGroup_Blur.cpp" />
     <ClCompile Include="..\Private\RenderGroup_2D.cpp" />
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
+    <ClCompile Include="..\private\RenderGroup_AfterParticle.cpp" />
+    <ClCompile Include="..\private\RenderGroup_DownSample.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
     <ClCompile Include="..\private\RenderGroup_Lights.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp" />

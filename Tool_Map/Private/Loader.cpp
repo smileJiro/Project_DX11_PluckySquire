@@ -12,6 +12,7 @@
 #include "2DTile_RenderObject.h"
 #include "2DMapObject.h"
 #include "SampleBook.h"
+#include "Sample_Skechspace.h"
 #include "BackGround.h"
 #include "2DModel.h"
 #include "2DTrigger_Sample.h"
@@ -266,12 +267,11 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, L"book",
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DMapObject/book/book.model", matPretransform))))
+    if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
         return E_FAIL;
-
-    //if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
-    //    return E_FAIL;
+    
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_2D_MAP,  L"../../Client/Bin/Resources/Models/3DMapObject/", matPretransform)))
+        return E_FAIL;
     
     //if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;
@@ -295,6 +295,9 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
         CSampleBook::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
+        CSample_Skechspace::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTrigger"),
         C2DTrigger_Sample::Create(m_pDevice, m_pContext))))

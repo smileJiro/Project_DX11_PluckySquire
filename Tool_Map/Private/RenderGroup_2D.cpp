@@ -14,7 +14,6 @@ HRESULT CRenderGroup_2D::Initialize(void* _pArg)
     if (nullptr == _pArg)
         return E_FAIL;
 
-
     RG_2D_DESC* pDesc = static_cast<RG_2D_DESC*>(_pArg);
     
     XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());

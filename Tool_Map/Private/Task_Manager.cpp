@@ -100,7 +100,7 @@ HRESULT CTask_Manager::Open_ParsingDialog(const wstring& _strLayerName)
 
 	if (GetOpenFileName(&ofn))
 	{
-		SetCurrentDirectory(originalDir);
+		//SetCurrentDirectory(originalDir);
 		const _string strFilePath = m_pGameInstance->WStringToString(szName);
 		Register_Parsing(strFilePath, _strLayerName);
 	}

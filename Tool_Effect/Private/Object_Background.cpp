@@ -25,7 +25,7 @@ HRESULT CObject_Background::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-    m_pControllerTransform->Set_Scale(_float3(7.f, 7.f, 1.f));
+    m_pControllerTransform->Set_Scale(_float3(10.f, 10.f, 1.f));
     m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 5.f, 1.f));
 
     return S_OK;

@@ -1,0 +1,143 @@
+{
+    "Emitters": [
+        {
+            "Buffer": {
+                "Color": {
+                    "Arg1": [
+                        0.0,
+                        1.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Arg2": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "Count": 3,
+                "LifeTime": {
+                    "Arg1": 5.0,
+                    "Arg2": 0.0,
+                    "SetType": "DIRECTSET"
+                },
+                "Position": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "DIRECTSET"
+                },
+                "Rotation": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "UNSET"
+                },
+                "Scale": {
+                    "Arg1": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Arg2": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "SetType": "DIRECTSET"
+                },
+                "ShapeLocation": {
+                    "HandleRadius": 1.0,
+                    "LargeRadius": 3.0,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Shape": "TORUS",
+                    "U_Distribution": 0.0,
+                    "V_Distribution": 0.0
+                }
+            },
+            "DelayTime": 0.0,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "SpawnRate",
+                    "Value": 0.0
+                }
+            ],
+            "LoopTime": 1,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Bird_01.model",
+            "Pooling": "KILL",
+            "PreTransform": [
+                -0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ShaderPass": "DEFAULT",
+            "SpawnPosition": "RELATIVE_POSITION",
+            "SpawnType": "SPAWN_RATE",
+            "Time": 5.0,
+            "Transform": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "MESH"
+        }
+    ],
+    "Name": "New02"
+}

@@ -555,5 +555,68 @@
    }
   },
   "TextureName": "honey_peaks_tree"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "SKSP_06_BGR_back",
+  "Sorting": false,
+  "TextureName": "D02_SKSP08_New_bottomy"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_LeafyWalls",
+  "Sorting": false,
+  "TextureName": "D02_SKSP08_New_front_hedges"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_RabbitHole_BP",
+  "Sorting": false,
+  "TextureName": "D02_SKSP08_New_hole_front"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Underpass_BP",
+  "Sorting": false,
+  "TextureName": "D02_SKSP08_New_hole_sides"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Mushroom_BP",
+  "Sorting": false,
+  "TextureName": "D02_SKSP08_New_mushie"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Mushroom2_BP",
+  "Sorting": false,
+  "TextureName": "D02_SKSP08_New_mushie_2"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownDecal_BP5",
+  "Sorting": false,
+  "TextureName": "D02_SKSP08_New_toppy"
  }
 ]

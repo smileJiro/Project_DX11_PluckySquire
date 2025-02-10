@@ -4,6 +4,8 @@
 #include "Particle_Sprite_Emitter.h"
 #include "Particle_Mesh_Emitter.h"
 #include "MeshEffect_Emitter.h"
+#include "SpriteEffect_Emitter.h"
+
 CEffect_System::CEffect_System(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CPartObject(_pDevice, _pContext)
 {
@@ -67,6 +69,14 @@ HRESULT CEffect_System::Initialize_Prototype(const _tchar* _szFilePath)
 			m_Emitters.push_back(pEffect);
 		}
 
+		else if (CEmitter::SINGLE_SPRITE == eType)
+		{
+			CSpriteEffect_Emitter* pEffect = CSpriteEffect_Emitter::Create(m_pDevice, m_pContext, jsonEffectInfo["Emitters"][i]);
+			if (nullptr == pEffect)
+				return E_FAIL;
+			m_Emitters.push_back(pEffect);
+		}
+
 	}
 
 #ifdef _DEBUG
@@ -99,42 +109,69 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	//if (_pPrototype->m_Emitters.size() != pDesc->EmitterShaderLevels.size())
-	//	return E_FAIL;
-	//if (_pPrototype->m_Emitters.size() != pDesc->ShaderTags.size())
-	//	return E_FAIL;
+
 
 	for (_uint i = 0; i < _pPrototype->m_Emitters.size(); ++i)
 	{
-		CEmitter::PARTICLE_EMITTER_DESC Desc = {};
-
-		if (CEmitter::MESH == _pPrototype->m_Emitters[i]->Get_Type())
+		if (CEmitter::SINGLE_SPRITE == _pPrototype->m_Emitters[i]->Get_Type())
 		{
-			Desc.iProtoShaderLevel = pDesc->iModelShaderLevel;
-			Desc.szShaderTag = pDesc->szModelShaderTags;
+			CSpriteEffect_Emitter::SPRITE_EMITTER_DESC Desc = {};
+
+			Desc.iCurLevelID = pDesc->iCurLevelID;
+			Desc.eStartCoord = COORDINATE_3D;
+			Desc.isCoordChangeEnable = false;
+			Desc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
+			Desc.iProtoShaderLevel = pDesc->iSingleSpriteShaderLevel;
+			Desc.szShaderTag = pDesc->szSingleSpriteShaderTags;
+			Desc.iProtoRectLevel = pDesc->iSingleSpriteBufferLevel;
+			Desc.szRectTag = pDesc->szSingleSpriteBufferTags;
+			Desc.szComputeShaderTag = nullptr;
+
+			CEmitter* pEmitter = static_cast<CEmitter*>(_pPrototype->m_Emitters[i]->Clone(&Desc));
+			if (nullptr == pEmitter)
+				return E_FAIL;
+			m_Emitters.push_back(pEmitter);
+		}
+		else
+		{
+
+			CEmitter::PARTICLE_EMITTER_DESC Desc = {};
+
+			if (CEmitter::MESH == _pPrototype->m_Emitters[i]->Get_Type())
+			{
+				Desc.iProtoShaderLevel = pDesc->iModelShaderLevel;
+				Desc.szShaderTag = pDesc->szModelShaderTags;
+				Desc.szComputeShaderTag = pDesc->szMeshComputeShaderTag;
+
+			}
+
+			else if (CEmitter::SPRITE == _pPrototype->m_Emitters[i]->Get_Type())
+			{
+				Desc.iProtoShaderLevel = pDesc->iSpriteShaderLevel;
+				Desc.szShaderTag = pDesc->szSpriteShaderTags;
+				Desc.szComputeShaderTag = pDesc->szSpriteComputeShaderTag;
+
+			}
+
+			else if (CEmitter::EFFECT == _pPrototype->m_Emitters[i]->Get_Type())
+			{
+				Desc.iProtoShaderLevel = pDesc->iEffectShaderLevel;
+				Desc.szShaderTag = pDesc->szEffectShaderTags;
+				Desc.szComputeShaderTag = nullptr;
+
+			}
+
+			Desc.iCurLevelID = pDesc->iCurLevelID;
+			Desc.eStartCoord = COORDINATE_3D;
+			Desc.isCoordChangeEnable = false;
+			Desc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
+
+			CEmitter* pEmitter = static_cast<CEmitter*>(_pPrototype->m_Emitters[i]->Clone(&Desc));
+			if (nullptr == pEmitter)
+				return E_FAIL;
+			m_Emitters.push_back(pEmitter);
 		}
 
-		else if (CEmitter::SPRITE == _pPrototype->m_Emitters[i]->Get_Type())
-		{
-			Desc.iProtoShaderLevel = pDesc->iSpriteShaderLevel;
-			Desc.szShaderTag = pDesc->szSpriteShaderTags;
-		}
-
-		else if (CEmitter::EFFECT == _pPrototype->m_Emitters[i]->Get_Type())
-		{
-			Desc.iProtoShaderLevel = pDesc->iEffectShaderLevel;
-			Desc.szShaderTag = pDesc->szEffectShaderTags;
-		}
-
-		Desc.iCurLevelID = pDesc->iCurLevelID;
-		Desc.eStartCoord = COORDINATE_3D;
-		Desc.isCoordChangeEnable = false;
-		Desc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
-
-		CEmitter* pEmitter = static_cast<CEmitter*>(_pPrototype->m_Emitters[i]->Clone(&Desc));
-		if (nullptr == pEmitter)
-			return E_FAIL;
-		m_Emitters.push_back(pEmitter);
 	}
 
 
@@ -193,14 +230,29 @@ HRESULT CEffect_System::Render()
 	return S_OK;
 }
 
-void CEffect_System::Active_Effect(_uint _iEventID, _bool _isActive)
+void CEffect_System::Active_Effect(_bool _isActive, _bool _isReset, _uint _iEventID)
 {
 	for (auto& pEmitter : m_Emitters)
 	{
 		if (_iEventID == pEmitter->Get_EventID())
+		{
 			pEmitter->Set_Active(_isActive);
+
+			if (_isReset)
+				pEmitter->Reset();
+		}
 	}
-			
+}
+
+void CEffect_System::Stop_Spawn(_float _fDelayTime, _uint _iEventID)
+{
+	for (auto& pEmitter : m_Emitters)
+	{
+		if (_iEventID == pEmitter->Get_EventID())
+		{
+			pEmitter->Stop_Spawn(_fDelayTime);
+		}
+	}
 }
 
 
@@ -287,6 +339,23 @@ HRESULT CEffect_System::Add_New_Emitter(CEmitter::EFFECT_TYPE _eType, void* _pAr
 
 	}
 
+	else if (CEmitter::EFFECT == _eType)
+	{
+		CMeshEffect_Emitter* pOut = CMeshEffect_Emitter::Create(m_pDevice, m_pContext, _pArg);
+		if (nullptr == pOut)
+			return E_FAIL;
+
+		m_Emitters.push_back(pOut);
+	}
+
+	else if (CEmitter::SINGLE_SPRITE == _eType)
+	{
+		CSpriteEffect_Emitter* pOut = CSpriteEffect_Emitter::Create(m_pDevice, m_pContext, _pArg);
+		if (nullptr == pOut)
+			return E_FAIL;
+
+		m_Emitters.push_back(pOut);
+	}
 
 
 
@@ -317,9 +386,18 @@ void CEffect_System::Tool_ShowList()
 					ImGui::SetItemDefaultFocus();
 				++n;
 			}
+
+			if (m_pNowItem && ImGui::Button("Delete Emitter"))
+			{
+				if (m_pNowItem == m_Emitters[iNowIndex])
+				{
+					Safe_Release(m_pNowItem);
+					m_pNowItem = nullptr;
+					m_Emitters.erase(m_Emitters.begin() + iNowIndex);
+				}
+			}
+
 			ImGui::EndListBox();
-
-
 		}
 
 		ImGui::TreePop();
@@ -415,9 +493,10 @@ void CEffect_System::Tool_Reset(_uint _iEvent)
 	for (auto& pEmitter : m_Emitters)
 	{
 		if (_iEvent == pEmitter->Get_EventID())
+		{
 			pEmitter->Set_Active(true);
-		else if (false == pEmitter->Is_Active())
-			pEmitter->Set_Active(false);
+			pEmitter->Reset();
+		}
 
 	}
 	m_fToolAccTime = 0.f;
@@ -431,9 +510,14 @@ void CEffect_System::Set_Texture(CTexture* _pTextureCom, _uint _iType)
 			static_cast<CParticle_Sprite_Emitter*>(m_pNowItem)->Set_Texture(_pTextureCom);
 		}
 
-		if (CEmitter::EFFECT == m_pNowItem->Get_Type())
+		else if (CEmitter::EFFECT == m_pNowItem->Get_Type())
 		{
 			static_cast<CMeshEffect_Emitter*>(m_pNowItem)->Set_Texture(_pTextureCom, _iType);
+		}
+
+		else if (CEmitter::SINGLE_SPRITE == m_pNowItem->Get_Type())
+		{
+			static_cast<CSpriteEffect_Emitter*>(m_pNowItem)->Set_Texture(_pTextureCom, _iType);
 		}
 	}
 }

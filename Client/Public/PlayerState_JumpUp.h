@@ -19,6 +19,7 @@ private:
 	void Switch_JumpAnimation();
 private:
     _float m_fAirRunSpeed = 10.f;
+    _float m_fAirRunSpeed2D = 300.f;
 	_float m_fAirRotateSpeed = 100.f;
 };
 
