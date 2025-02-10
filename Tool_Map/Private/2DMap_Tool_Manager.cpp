@@ -56,8 +56,8 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	if (nullptr == m_pTaskManager)
 		return E_FAIL;
 
-	m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
-	Load_3D_Map(false);
+	//m_arrSelectName[SAVE_LIST] = L"Chapter_04_Default_Desk";
+	//Load_3D_Map(false);
 
 
 	m_Egnore2DObjectrTags.push_back("InvisibleCollision");

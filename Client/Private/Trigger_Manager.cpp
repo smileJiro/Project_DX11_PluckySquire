@@ -6,7 +6,7 @@
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
-#include "Section_2D.h"
+#include "Section_2D_PlayMap.h"
 
 #include "UI_Manager.h"
 
@@ -250,7 +250,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 	}
 
 	if (nullptr != _pSection)
-		_pSection->Add_GameObject_ToSectionLayer(_pTriggerObject, CSection_2D::SECTION_2D_TRIGGER);
+		_pSection->Add_GameObject_ToSectionLayer(_pTriggerObject, SECTION_2D_PLAYMAP_TRIGGER);
 	return S_OK;
 }
 

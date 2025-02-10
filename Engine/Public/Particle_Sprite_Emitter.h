@@ -6,6 +6,9 @@ BEGIN(Engine)
 
 class ENGINE_DLL CParticle_Sprite_Emitter : public CEmitter
 {
+public:
+	enum EFFECT_SHADERPASS { DEFAULT, DEFAULT_BLOOM, 
+		ROTATION_BILLBOARD, ROTATION_BILLBOARD_BLOOM, VELOCITY_BILLBOARD, VELOCITY_BILLBOARD_BLOOM};
 
 private:
 	CParticle_Sprite_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -29,15 +32,17 @@ private:
 	class CTexture*					m_pTextureCom = { nullptr };
 
 private:
-	_float							m_fAlphaDiscard = { 0.f };
-	_float							m_fRGBDiscard = { 0.f };
+	//_float							m_fAlphaDiscard = { 0.f };
+	//_float							m_fRGBDiscard = { 0.f };
+	//_float							m_fBloomThreshold = { 0.f };
 	
 
 private:
-	virtual void					On_Event() override;
-	virtual void					Off_Event() override;
+	virtual void					Update_Emitter(_float _fTimeDelta) override;
+
 
 	HRESULT							Bind_ShaderResources();
+	HRESULT							Bind_ShaderValue_ByPass();
 	virtual HRESULT					Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc) override;
 
 public:
@@ -63,4 +68,16 @@ public:
 #endif
 };
 
+END
+
+BEGIN(Engine)
+NLOHMANN_JSON_SERIALIZE_ENUM(CParticle_Sprite_Emitter::EFFECT_SHADERPASS, {
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::DEFAULT, "DEFAULT"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::DEFAULT_BLOOM, "DEFAULT_BLOOM"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::ROTATION_BILLBOARD, "ROTATION_BILLBOARD"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::ROTATION_BILLBOARD_BLOOM, "ROTATION_BILLBOARD_BLOOM"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::VELOCITY_BILLBOARD, "VELOCITY_BILLBOARD"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::VELOCITY_BILLBOARD_BLOOM, "VELOCITY_BILLBOARD_BLOOM"},
+
+	});
 END

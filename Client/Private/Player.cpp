@@ -314,8 +314,8 @@ void CPlayer::Update(_float _fTimeDelta)
 
     }
 
-    __super::Update(_fTimeDelta); /* Part Object Update */
 
+    __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == eCoord)
     {
@@ -325,10 +325,7 @@ void CPlayer::Update(_float _fTimeDelta)
             m_bOnGround = false;
         }
     }
-    else
-    {
-        m_bOnGround = false;
-    }
+
 
 }
 
@@ -336,6 +333,25 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {
+    COORDINATE eCoord = Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+    {
+        m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
+
+        m_f2DHeight += m_f2DUpForce * _fTimeDelta;
+        if (0 > m_f2DHeight)
+        {
+            m_f2DHeight = 0;
+            m_bOnGround = true;
+            m_f2DUpForce = 0;
+        }
+        else if (0 == m_f2DHeight)
+            m_bOnGround = true;
+        else
+            m_bOnGround = false;
+        // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
+        m_pBody->Set_Position({ 0,m_f2DHeight,0 });
+    }
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
     //cout << endl;
 }
@@ -645,7 +661,7 @@ void CPlayer::Jump()
 
     if (COORDINATE_2D == eCoord)
     {
-        //m_f2DUpForce = m_tStat[COORDINATE_2D].fJumpPower;
+        m_f2DUpForce = m_f2DJumpPower;
     }
     else
     {
@@ -691,7 +707,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     if (KEY_DOWN(KEY::E))
         tResult.bInputStates[PLAYER_KEY_INTERACT] = true;
     //점프
-    if (KEY_PRESSING(KEY::SPACE))
+    if (KEY_DOWN(KEY::SPACE))
         tResult.bInputStates[PLAYER_KEY_JUMP] = true;
     //구르기 & 잠입
     else if (KEY_PRESSING(KEY::LSHIFT))
@@ -768,7 +784,7 @@ _float CPlayer::Get_UpForce()
 
     if (COORDINATE_2D == eCoord)
     {
-        return -1.f;
+        return m_f2DUpForce;
     }
     else
     {

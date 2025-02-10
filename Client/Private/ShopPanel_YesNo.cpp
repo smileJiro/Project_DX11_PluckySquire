@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "ShopPanel_YesNo.h"
 #include "UI_Manager.h"
-#include "Section_2D.h"
 
 
 
@@ -80,7 +79,7 @@ void CShopPanel_YesNo::isRender()
 	if (m_isRender == false)
 	{
 		m_isRender = true;
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 	}
 	else if (m_isRender == true)
 	{

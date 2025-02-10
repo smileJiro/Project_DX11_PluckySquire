@@ -72,17 +72,34 @@ void CPlayerState_Idle::Exit()
 
 void CPlayerState_Idle::Switch_IdleAnimation2D(F_DIRECTION _eFDir)
 {
+	_bool bSword = m_pOwner->Is_SwordHandling();
+	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	switch (_eFDir)
 	{
 	case Client::F_DIRECTION::LEFT:
 	case Client::F_DIRECTION::RIGHT:
-		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_RIGHT);
+		if (bCarrying)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CARRY_IDLE_RIGHT);
+		else if (bSword)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_RIGHT);
+		else
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_RIGHT);
 		break;
 	case Client::F_DIRECTION::UP:
-		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP);
+		if (bCarrying)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CARRY_IDLE_UP);
+		else if (bSword)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_UP);
+		else
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP);
 		break;
 	case Client::F_DIRECTION::DOWN:
-		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_DOWN);
+		if (bCarrying)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CARRY_IDLE_DOWN);
+		else if (bSword)
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_DOWN);
+		else
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_DOWN);
 		break;
 	case Client::F_DIRECTION::F_DIR_LAST:
 	default:

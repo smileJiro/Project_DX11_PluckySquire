@@ -1,13 +1,13 @@
 #pragma once
 #include "Base.h"
-#include "Section_2D.h"
+#include "Section.h"
 
 BEGIN(Engine)
 class CGameInstance;
-
 END
 
 BEGIN(Client)
+
 
 class CSection_Manager final : public CBase
 {
@@ -32,33 +32,78 @@ public:
 	HRESULT							Level_Enter(_int _iChangeLevelID);	// Create Next Level Section;
 
 public:
-	// 0. 원하는 Section Find
+	/// <summary>
+	/// 섹션 키로 섹션 객체를 직접 찾는다.
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
 	CSection*						Find_Section(const _wstring& _strSectionTag);
-	// 1. 원하는 Section에 Object 추가 / 삭제.
+
+	/// <summary>
+	/// 섹션 키로 해당 섹션에 오브젝트를 추가한다.
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
+	/// <param name="_pGameObject">오브젝트</param>
 	HRESULT							Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
+
+	/// <summary>
+/// 섹션 키로 해당 섹션에 해당 오브젝트를 제거한다.
+/// </summary>
+/// <param name="_strSectionTag">섹션 키</param>
+/// <param name="_pGameObject">오브젝트</param>
 	HRESULT							Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
 	
-	// 2. 현재 활성화된 Section에 Object 추가/삭제
-	HRESULT							Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = CSection_2D::SECTION_2D_OBJECT);
+	/// <summary>
+	/// 활성화된 섹션에 오브젝트를 집어넣는다.
+	/// </summary>
+	/// <param name="_pGameObject">오브젝트</param>
+	/// <param name="_iLayerIndex">레이어 지정 (ref. Section_2D::SECTION_2D_RENDERGROUP)</param>
+	HRESULT							Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = SECTION_2D_PLAYMAP_OBJECT);
+
+	/// <summary>
+	/// 활성화된 섹션에서 오브젝트를 제거한다.
+	/// </summary>
+	/// <param name="_pGameObject">오브젝트</param>
 	HRESULT							Remove_GameObject_ToCurSectionLayer(CGameObject* _pGameObject);
 	
-	// 3. 원하는 Section 활성, 비활성 
+	/// <summary>
+	/// 해당 섹션의 활성화 여부를 결정한다.
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
+	/// <param name="_isActive">활성화 여부</param>
 	HRESULT							SetActive_Section(const _wstring& _strSectionTag, _bool _isActive);
-	// 4. 외부에서도 Section을 추가하게 할지 말지 
 
+	/// <summary>
+	/// 섹션 루프 - 현재 활성화된 섹션에게 준비 작업을 진행하고, 렌더그룹에 오브젝트를 삽입하게끔 한다.
+	/// </summary>
 	HRESULT							Section_AddRenderGroup_Process();
 
+	/// <summary>
+	/// 해당 섹션의 렌더타겟 사이즈를 가져온다.
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
 	_float2							Get_Section_RenderTarget_Size(const _wstring _strSectionKey);
 
 public :
 #pragma region 	활성화 섹션 관련 함수.
 
-	// 활성화 섹션 변경. (자동으로 이전, 다음 섹션을 연결짓는다.)
+	/// <summary>
+	/// 해당 섹션으로 책 활성화 섹션을 변경한다..
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
 	HRESULT							Change_CurSection(const _wstring _strSectionKey);
-	// 현재 활성화된 메인 섹션에 있는지 검사한다. 
+
+	/// <summary>
+	/// 오브젝트가 현재 활성화된 책 섹션에 포함되어 있는가 확인한다.
+	/// </summary>
+	/// <param name="_pGameObject">오브젝트</param>
 	_bool							Is_CurSection(CGameObject* _pGameObject);
-	// 해당 객체가 등록된 섹션을 찾고, 있다면 그 섹션 키를 반환한다.
+
+	/// <summary>
+	/// 오브젝트가 섹션에 포함되어있는지 확인하고, 있으면 섹션 키 포인트, 없으면 nullptr을 반환
+	/// </summary>
+	/// <param name="_pGameObject">오브젝트</param>
 	const _wstring*					Get_SectionKey(CGameObject* _pGameObject);
+
 	// 현재 섹션의 렌더그룹 키를 반환한다. 
 	_bool							Get_CurSectionRenderGroupKey(_uint& _iOutputGroupID, _uint& _iOutputPriorityID)
 	{

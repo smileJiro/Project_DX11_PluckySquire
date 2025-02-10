@@ -4,7 +4,6 @@
 #include "UI_Manager.h"
 #include "Dialogue.h"
 #include "Section_Manager.h"
-#include "Section_2D.h"
 
 CPortrait::CPortrait(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
@@ -46,7 +45,7 @@ HRESULT CPortrait::Initialize(void* _pArg)
 	m_vDisplay2DSize = vCalScale;
 	m_pControllerTransform->Set_Scale(m_vDisplay2DSize.x, m_vDisplay2DSize.y, 1.f);
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 
 	return S_OK;
 }
@@ -54,7 +53,7 @@ HRESULT CPortrait::Initialize(void* _pArg)
 
 void CPortrait::Update(_float _fTimeDelta)
 {
-	
+
 
 
 
@@ -71,7 +70,7 @@ void CPortrait::Late_Update(_float _fTimeDelta)
 		if (!m_isAddSectionRender)
 		{
 			m_isAddSectionRender = true;
-			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 		}
 	}
 }
@@ -119,7 +118,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 		return;
 
 	_float3 vTexPos = Uimgr->Get_CalDialoguePos();
-	
+
 	const auto& currentLine = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex());
 
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
@@ -142,7 +141,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, CSection_2D::SECTION_2D_UI);
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}
 

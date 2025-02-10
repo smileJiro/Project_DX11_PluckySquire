@@ -57,23 +57,36 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 		return;
 	}
-
-	if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+	if (COORDINATE_3D == eCoord)
 	{
-		//기어오르기 체크
-		if (Try_Clamber())
-			return;
+		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+		{
+			//기어오르기 체크
+			if (Try_Clamber())
+				return;
 
-		//공중 무빙
-		m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_pOwner->Get_AirRunSpeed());
-		m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_pOwner->Get_AirRotationSpeed());
+			//공중 무빙
+			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
+			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
+		}
+		else
+			m_pOwner->Stop_Rotate();
 	}
 	else
-		m_pOwner->Stop_Rotate();
+	{
+		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
+		{
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
+		}
+	}
+
 }
 
 void CPlayerState_JumpDown::Enter()
 {
+	m_fAirRunSpeed = m_pOwner->Get_AirRunSpeed();
+	m_fAirRotateSpeed = m_pOwner->Get_AirRotationSpeed();
+	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
 	Switch_To_JumpDownAnimation();
 
 	m_fArmYPositionBefore = XMVectorGetY(m_pOwner->Get_FinalPosition()) + m_pOwner->Get_ArmHeight();

@@ -242,7 +242,7 @@ HRESULT C2DDefault_RenderObject::Bind_ShaderResources()
 		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_DiffuseTexture", TEXT("Target_Book_2D"))))
+		if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_DiffuseTexture", m_DefaultRenderTargetName)))
 			return E_FAIL;
 	}
 	
