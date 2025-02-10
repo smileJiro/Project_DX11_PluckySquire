@@ -764,6 +764,9 @@
     <ClInclude Include="..\Public\Level_Chapter_04.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Narration_2D.h">
+      <Filter>04.Section\Narration_2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1172,6 +1175,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Chapter_04.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Narration_2D.cpp">
+      <Filter>04.Section\Narration_2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

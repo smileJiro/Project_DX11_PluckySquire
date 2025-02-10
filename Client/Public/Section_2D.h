@@ -64,6 +64,8 @@ public:
 
 	_float2								Get_RenderTarget_Size();
 
+	virtual HRESULT Section_AddRenderGroup_Process() override;
+
 
 	// 맵 연결 생각안해놨는데, 일단 해보자.
 

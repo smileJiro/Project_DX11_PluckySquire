@@ -153,16 +153,16 @@ void CSection::Active_OnDisable()
     SetActive_GameObjects(false);
 }
 
-CSection* CSection::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc)
-{
-    CSection* pInstance = new CSection(_pDevice, _pContext);
-    if (FAILED(pInstance->Initialize(pDesc)))
-    {
-        MSG_BOX("Failed Create CSection Class");
-        Safe_Release(pInstance);
-    }
-    return pInstance;
-}
+//CSection* CSection::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc)
+//{
+//    CSection* pInstance = new CSection(_pDevice, _pContext);
+//    if (FAILED(pInstance->Initialize(pDesc)))
+//    {
+//        MSG_BOX("Failed Create CSection Class");
+//        Safe_Release(pInstance);
+//    }
+//    return pInstance;
+//}
 
 void CSection::Free()
 {
