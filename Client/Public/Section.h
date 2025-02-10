@@ -8,7 +8,7 @@ class CGameInstance;
 END
 
 BEGIN(Client)
-class CSection : public CBase
+class CSection abstract: public CBase
 {
 public:
 	typedef struct tagSectionDesc
@@ -47,7 +47,8 @@ public:
 		_iOutputGroupID = m_iGroupID; 
 	_iOutputPriorityID = m_iPriorityID; 
 	return true; };
-
+	
+	virtual HRESULT Section_AddRenderGroup_Process() abstract;
 
 	_bool			Is_CurSection(CGameObject* _pGameObject);
 
@@ -89,7 +90,7 @@ private:
 	virtual void Active_OnDisable();
 
 public:
-	static CSection* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc);
+	//static CSection* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc);
 	void Free() override;
 };
 

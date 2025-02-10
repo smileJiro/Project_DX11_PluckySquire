@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 
 #include "Section_2D.h"
+#include "Narration_2D.h"
 #include "Collision_Manager.h"
 
 IMPLEMENT_SINGLETON(CSection_Manager)
@@ -183,23 +184,11 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
 {
     for (auto& pSection : m_CurActiveSections)
     {
-        if (pSection == nullptr)
-            continue;
-        CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(pSection);
-        if (nullptr == pSection_2D)
+		if (pSection == nullptr)
+			continue;
+        
+        if (FAILED(pSection->Section_AddRenderGroup_Process()))
             return E_FAIL;
-
-        pSection_2D->Register_RenderGroup_ToRenderer();
-
-        pSection_2D->Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
-            return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
-            },CSection_2D::SECTION_2D_RENDERGROUP::SECTION_2D_OBJECT);
-
-        if (nullptr != pSection)
-        {
-            if(FAILED(pSection->Add_RenderGroup_GameObjects()))
-                return E_FAIL;
-        }
     }
 
     return S_OK;
@@ -559,7 +548,16 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
                 break;
             case Client::CSection_Manager::NARRAION:
             {
-                // TODO ::상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
+                // TODO :: 상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
+				pSection = CNarration_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+				if (nullptr == pSection)
+				{
+					MSG_BOX("Failed Create CNarration_2D");
+					return E_FAIL;
+				}
+				m_iPriorityGenKey += 10;
+
+
             }
                 break;
             case Client::CSection_Manager::SECTION_2D_PLAY_TYPE_LAST:
