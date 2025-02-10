@@ -125,7 +125,7 @@ void C3DMapObject::Late_Update(_float _fTimeDelta)
         /* Add Render Group */
         if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
         {
-            Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
+            Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
             //if(nullptr != m_pActorCom)
             //    m_pActorCom->Set_ShapeRayCastFlag(true);
         }
@@ -167,31 +167,6 @@ HRESULT C3DMapObject::Render_Shadow()
 }
 
 
-C3DMapObject* C3DMapObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-{
-    C3DMapObject* pInstance = new C3DMapObject(_pDevice, _pContext);
-
-    if (FAILED(pInstance->Initialize_Prototype()))
-    {
-        MSG_BOX("Failed to Created : C3DMapObject");
-        Safe_Release(pInstance);
-    }
-
-    return pInstance;
-}
-
-CGameObject* C3DMapObject::Clone(void* _pArg)
-{
-    C3DMapObject* pInstance = new C3DMapObject(*this);
-
-    if (FAILED(pInstance->Initialize(_pArg)))
-    {
-        MSG_BOX("Failed to Cloned : C3DMapObject");
-        Safe_Release(pInstance);
-    }
-
-    return pInstance;
-}
 
 void C3DMapObject::Free()
 {

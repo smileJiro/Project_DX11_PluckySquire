@@ -48,7 +48,7 @@ void CTestTerrain::Late_Update(_float _fTimeDelta)
 
 	/* Add Render Group */
 	if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
+		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
 
 	/* Update Parent Matrix */
 	CPartObject::Late_Update(_fTimeDelta);

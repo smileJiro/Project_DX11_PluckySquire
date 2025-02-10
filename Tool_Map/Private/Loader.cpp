@@ -233,6 +233,7 @@ HRESULT CLoader::Loading_Level_3D_Model_Tool()
         TEXT("../../Client/Bin/Resources/Models"), matPretransform)))
         return E_FAIL;
 
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -328,6 +329,9 @@ HRESULT CLoader::Loading_Level_3D_Map_Tool()
         TEXT("../../Client/Bin/Resources/Models/NonAnim"), matPretransform)))
         return E_FAIL;
 
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_3D_MAP,
+        L"../../Client/Bin/Resources/Models/3DMapObject/", matPretransform)))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 

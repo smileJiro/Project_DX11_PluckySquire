@@ -11,7 +11,7 @@ CLight_Manager::CLight_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 }
 
 
-const LIGHT_DESC* CLight_Manager::Get_LightDesc(_uint iIndex) const
+const CONST_LIGHT* CLight_Manager::Get_LightDesc(_uint iIndex) const
 {
 	auto	iter = m_Lights.begin();
 
@@ -26,9 +26,9 @@ HRESULT CLight_Manager::Initialize()
 	return S_OK;
 }
 
-HRESULT CLight_Manager::Add_Light(const LIGHT_DESC& LightDesc)
+HRESULT CLight_Manager::Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType)
 {
-	CLight* pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
+	CLight* pLight = CLight::Create(m_pDevice, m_pContext, LightDesc, _eType);
 
 	if (nullptr == pLight)
 		return E_FAIL;

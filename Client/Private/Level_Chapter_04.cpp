@@ -61,7 +61,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_eLevelID = _eLevelID;
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
-	//Ready_CubeMap(TEXT("Layer_CubeMap"));
+	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
@@ -269,17 +269,19 @@ HRESULT CLevel_Chapter_04::Render()
 
 HRESULT CLevel_Chapter_04::Ready_Lights()
 {
-	LIGHT_DESC LightDesc{};
+	CONST_LIGHT LightDesc{};
 
 	ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTOINAL;
-	LightDesc.vDirection = _float4(-1.f, -1.f, 0.5f, 0.f);
-	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	LightDesc.fFallOutStart = 20.0f;
+	LightDesc.fFallOutEnd = 1000.0f;
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
 		return E_FAIL;
 
 
@@ -288,6 +290,7 @@ HRESULT CLevel_Chapter_04::Ready_Lights()
 
 HRESULT CLevel_Chapter_04::Ready_CubeMap(const _wstring& _strLayerTag)
 {
+	CGameObject* pCubeMap = nullptr;
 	CCubeMap::CUBEMAP_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.iRenderGroupID = RG_3D;
@@ -295,8 +298,10 @@ HRESULT CLevel_Chapter_04::Ready_CubeMap(const _wstring& _strLayerTag)
 	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
 	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
-		m_eLevelID, _strLayerTag, &Desc)))
+		m_eLevelID, _strLayerTag, &pCubeMap, &Desc)))
 		return E_FAIL;
+
+	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
 
 	return S_OK;
 }

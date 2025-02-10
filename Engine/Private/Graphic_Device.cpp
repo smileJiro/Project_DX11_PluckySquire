@@ -103,7 +103,6 @@ HRESULT CGraphic_Device::Present()
 		return E_FAIL;
 	}
 
-
 	return m_pSwapChain->Present(0, 0);
 }
 

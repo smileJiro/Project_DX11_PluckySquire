@@ -35,6 +35,15 @@ HRESULT CNewRenderer::Initialize()
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.f, 1.f));
 
+
+	/* Create IBL Const Buffer */
+	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tGlobalIBLData, D3D11_USAGE_DYNAMIC, &m_pGlobalIBLConstBuffer)))
+		return E_FAIL;
+
+	/* Default 값으로 Shader에 바인딩 */
+	if(FAILED(m_pShader->Bind_ConstBuffer("GlobalIBLConstData", m_pGlobalIBLConstBuffer)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -175,6 +184,25 @@ HRESULT CNewRenderer::Erase_DSV(const _wstring _strDSVTag)
 	m_DSVs.erase(iter);
 
 	return S_OK;
+}
+
+void CNewRenderer::Update_Imgui()
+{
+	for (auto& Pair : m_RenderGroups)
+	{
+		Pair.second->Update_Imgui();
+	}
+}
+
+void CNewRenderer::Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer)
+{
+	m_tGlobalIBLData = _tGlobalIBLData;
+
+	if (true == _isUpdateConstBuffer)
+	{
+		m_pGameInstance->UpdateConstBuffer(m_tGlobalIBLData, m_pGlobalIBLConstBuffer);
+		m_pShader->Bind_ConstBuffer("GlobalIBLConstData", m_pGlobalIBLConstBuffer);
+	}
 }
 
 HRESULT CNewRenderer::Render_Debug()

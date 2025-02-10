@@ -52,6 +52,11 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 
 				CreateDDSTextureFromFileEx(m_pDevice, szTextureFilePath, 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
 										   DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
+
+#ifdef _DEBUG
+				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+				pSRV->GetDesc(&srvDesc);
+#endif // _DEBUG
 			}
 			else
 			{
@@ -109,6 +114,12 @@ HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _i
 				miscFlags |= D3D11_RESOURCE_MISC_TEXTURECUBE;
 				CreateDDSTextureFromFileEx(m_pDevice, wszFullPath, 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
 					DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
+
+
+#ifdef _DEBUG
+				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+				pSRV->GetDesc(&srvDesc);
+#endif // _DEBUG
 			}
 			else
 			{
@@ -147,8 +158,6 @@ HRESULT CTexture::Bind_ShaderResource(CShader* _pShader, const _char* _pConstant
 
 
 	_pShader->Bind_SRV(_pConstantName, m_SRVs[_iSRVIndex]);
-
-	
 	return S_OK;
 }
 
@@ -200,11 +209,11 @@ const _float2 CTexture::Get_Size(_uint _iSRVIndex)
 	return fReturn;
 }
 
-CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures)
+CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
 {
 	CTexture* pInstance = new CTexture(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_szTextureFilePath, _iNumTextures)))
+	if (FAILED(pInstance->Initialize_Prototype(_szTextureFilePath, _iNumTextures, _isCubeMap)))
 	{
 		MSG_BOX("Failed to Created : CTexture");
 		Safe_Release(pInstance);
@@ -217,11 +226,11 @@ CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 	return new CTexture(_pDevice, _pContext);
 
 }
-CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures)
+CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
 {
 	CTexture* pInstance = new CTexture(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_pTextureFilePath, _iNumTextures)))
+	if (FAILED(pInstance->Initialize_Prototype(_pTextureFilePath, _iNumTextures, _isCubeMap)))
 	{
 		MSG_BOX("Failed to Created : CTexture");
 		Safe_Release(pInstance);

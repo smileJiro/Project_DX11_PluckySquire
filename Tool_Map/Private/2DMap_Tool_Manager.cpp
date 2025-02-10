@@ -18,6 +18,7 @@
 #include "2DTrigger_Sample.h"
 #include "RenderGroup.h"
 #include "RenderGroup_2D.h"
+#include "Sample_Skechspace.h"
 #include <commdlg.h>
 using namespace std::filesystem;
 
@@ -84,10 +85,12 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	//	LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
 	//	return E_FAIL;
 	//
-	CModelObject::MODELOBJECT_DESC Desc = {};
+	CSample_Skechspace::SAMPLE_SKSP_DESC Desc = {};
 
 	Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
+	Desc.isPreview = false;
+	Desc.strModelPrototypeTag_3D = TEXT("Desk_C02_Sketchspace_Left_01");
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
 		LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))

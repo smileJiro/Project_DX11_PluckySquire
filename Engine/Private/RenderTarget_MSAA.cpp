@@ -39,16 +39,14 @@ HRESULT CRenderTarget_MSAA::Initialize(_wstring _strName, _uint _iWidth, _uint _
 	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &m_pTexture2D_MSAA)))
 		return E_FAIL;
 
-	if (FAILED(m_pDevice->CreateRenderTargetView(m_pTexture2D, nullptr, &m_pRTV_MSAA)))
+	if (FAILED(m_pDevice->CreateRenderTargetView(m_pTexture2D_MSAA, nullptr, &m_pRTV_MSAA)))
 		return E_FAIL;
 
-	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, nullptr, &m_pSRV_MSAA)))
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D_MSAA, nullptr, &m_pSRV_MSAA)))
 		return E_FAIL;
 
 	if (FAILED(Ready_DSV_MSAA(_iWidth, _iHeight)))
 		return E_FAIL;
-
-	m_pGameInstance->Add_DSV_ToRenderer(m_strName, m_pDSV_MSAA);
 
     return S_OK;
 }
@@ -63,13 +61,18 @@ HRESULT CRenderTarget_MSAA::Clear()
 HRESULT CRenderTarget_MSAA::Resolve_MSAA()
 {
 	/* MSAA Texture를 단일 샘플 텍스쳐로 변경 후 카피 */
+
 	m_pContext->ResolveSubresource(m_pTexture2D, 0, m_pTexture2D_MSAA, 0, m_ePixelFormat);
+	m_pContext->PSSetShaderResources(0, 1, &m_pSRV);
 	return S_OK;
 }
 
 HRESULT CRenderTarget_MSAA::Ready_DSV_MSAA(_uint _iWidth, _uint _iHeight)
 {
 	if (nullptr == m_pDevice)
+		return E_FAIL;
+	/* MSAA RenderTargetView */
+	if (FAILED(m_pDevice->CheckMultisampleQualityLevels(m_ePixelFormat, 4, &m_iNumQualityLevels)))
 		return E_FAIL;
 
 	ID3D11Texture2D* pDepthStencilTexture = nullptr;
@@ -98,6 +101,9 @@ HRESULT CRenderTarget_MSAA::Ready_DSV_MSAA(_uint _iWidth, _uint _iHeight)
 		return E_FAIL;
 
 	Safe_Release(pDepthStencilTexture);
+	m_pGameInstance->Add_DSV_ToRenderer(m_strName, m_pDSV_MSAA);
+
+
 	return S_OK;
 }
 

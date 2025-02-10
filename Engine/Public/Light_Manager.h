@@ -11,11 +11,11 @@ private:
 	virtual ~CLight_Manager() = default;
 
 public:
-	const LIGHT_DESC* Get_LightDesc(_uint iIndex) const;
+	const CONST_LIGHT* Get_LightDesc(_uint iIndex) const;
 
 public:
 	HRESULT Initialize();
-	HRESULT Add_Light(const LIGHT_DESC& LightDesc);
+	HRESULT Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType);
 	HRESULT Render(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
 
 public:

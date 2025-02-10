@@ -22,6 +22,10 @@ protected:
 
 public:
 	virtual HRESULT				Initialize(void* _pArg);
+#ifdef _DEBUG
+	virtual void				Update_Imgui() { return; }
+#endif // _DEBUG
+
 	virtual HRESULT				Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer);
 
 	virtual HRESULT				Add_RenderObject(CGameObject* _pGameObject);

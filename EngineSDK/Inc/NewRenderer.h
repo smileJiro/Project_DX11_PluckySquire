@@ -31,6 +31,9 @@ public: /* DSV */
 	HRESULT								Add_DSV(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
 	HRESULT								Erase_DSV(const _wstring _strDSVTag);
 #ifdef _DEBUG
+
+public:
+	void Update_Imgui();
 public: 
 	HRESULT Add_DebugComponent(CComponent* pDebugCom)
 	{
@@ -59,8 +62,16 @@ private: /* 직교 투영으로 그리기 위한 */
 	_float4x4							m_WorldMatrix{}, m_ViewMatrix{}, m_ProjMatrix{};
 	_uint								m_iOriginViewportWidth{}, m_iOriginViewportHeight{};
 	map<_wstring, ID3D11DepthStencilView*> m_DSVs;
+
 private:
 	map<_int, CRenderGroup*>			m_RenderGroups;
+
+public:
+	CONST_IBL Get_GlobalIBLData() const { return m_tGlobalIBLData; }
+	void Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer = false);
+private:
+	CONST_IBL							m_tGlobalIBLData = {};
+	ID3D11Buffer*						m_pGlobalIBLConstBuffer = nullptr;
 
 #ifdef _DEBUG
 private:

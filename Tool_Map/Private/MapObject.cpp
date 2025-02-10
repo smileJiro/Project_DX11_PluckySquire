@@ -441,6 +441,22 @@ HRESULT CMapObject::Save_Override_Color(HANDLE _hFile)
     return S_OK;
 }
 
+HRESULT CMapObject::Save_Spsk(HANDLE _hFile)
+{
+    DWORD	dwByte(0);
+    _uint iSpsk = m_isSpsk ? 1 : 0;
+    WriteFile(_hFile, &iSpsk, sizeof(_uint), &dwByte, nullptr);
+
+    if (m_isSpsk)
+    {
+        _char		szSaveSpskName[MAX_PATH];
+        strcpy_s(szSaveSpskName, m_strSpskTag.c_str());
+        WriteFile(_hFile, &szSaveSpskName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+    }
+
+    return S_OK;
+}
+
 
 
 HRESULT CMapObject::Load_Override_Material(HANDLE _hFile)
@@ -479,6 +495,23 @@ HRESULT CMapObject::Load_Override_Color(HANDLE _hFile)
     default:
         break;
     }
+    return S_OK;
+}
+
+HRESULT CMapObject::Load_Spsk(HANDLE _hFile)
+{
+    DWORD	dwByte(0);
+    _uint iSpsk =  0;
+    ReadFile(_hFile, &iSpsk, sizeof(_uint), &dwByte, nullptr);
+
+    m_isSpsk = 1 == iSpsk ? true : false;
+    if (m_isSpsk)
+    {
+        _char		szSaveSpskName[MAX_PATH];
+        ReadFile(_hFile, &szSaveSpskName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+        m_strSpskTag = szSaveSpskName;
+    }
+
     return S_OK;
 }
 

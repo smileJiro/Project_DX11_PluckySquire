@@ -93,6 +93,8 @@ public: /* For. NewRenderer*/
 	const _float4x4*	Get_WorldMatrix_Renderer() const;
 	const _float4x4*	Get_ViewMatrix_Renderer() const;
 	const _float4x4*	Get_ProjMatrix_Renderer() const;
+	CONST_IBL			Get_GlobalIBLData() const;
+	void				Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer = false);
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);
@@ -116,8 +118,8 @@ public: /* For. PipeLine */
 	_float*				Get_FarZ();
 
 public: /* For. Light_Manager */
-	HRESULT				Add_Light(const LIGHT_DESC& _LightDesc);
-	const LIGHT_DESC*	Get_LightDesc(_uint _iIndex) const;
+	HRESULT				Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType);
+	const CONST_LIGHT*	Get_LightDesc(_uint _iIndex) const;
 	HRESULT				Render_Lights(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
 
 public: /* For. Collision_Manager */
@@ -149,6 +151,7 @@ public: /* For. Target_Manager */
 	HRESULT				Erase_MRT(const _wstring& _strMRTTag);
 	/* MSAA 전용 함수 */
 	HRESULT				Resolve_RT_MSAA(const _wstring& _strTargetTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
+	HRESULT				Resolve_MRT_MSAA(const _wstring& _strMRTTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
 #ifdef _DEBUG
 	HRESULT				Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY);	/* 렌더타겟을 디버그용으로 렌더하기위한 함수 */
 	HRESULT				Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect);			/* 디버그 렌더 함수 */
@@ -212,7 +215,7 @@ public: /* For. GlobalFunction_Manager */
 	_fvector			Rotate_Vector(_fvector _vAxis, _fvector _vVector, _float _fDegrees);		//각도 넣어서 벡터 회전
 
 	//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
-	_uint					Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);	
+	_uint				Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);	
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();
@@ -248,6 +251,9 @@ public: /* For. D3DUtils */
 	template<typename T_CONSTANT>
 	HRESULT				UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer);
 
+public: /* For. CubeMap */
+	void				Set_CubeMap(class CCubeMap* _pCubeMap);
+	HRESULT				Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDFConstName, const _char* _pSpecularConstName, const _char* _pIrradianceConstName);
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -270,6 +276,7 @@ private:
 	class CPhysx_Manager* m_pPhysx_Manager = nullptr;
 	class CFrustum* m_pFrustum = nullptr;
 	class CD3DUtils* m_pD3DUtils = nullptr;
+	class CCubeMap* m_pCubeMap = nullptr;
 private:
 	HWND m_hWnd = nullptr;
 	HINSTANCE m_hInstance = nullptr;

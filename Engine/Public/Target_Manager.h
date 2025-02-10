@@ -25,6 +25,7 @@ public:
 
 public: /* MSAA 전용 함수 */
 	HRESULT	Resolve_RT_MSAA(const _wstring& _strTargetTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
+	HRESULT	Resolve_MRT_MSAA(const _wstring& _strMRTTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
 public: /* 특정 RTV 및 MRT를 삭제하는 함수 */
 	HRESULT Erase_RenderTarget(const _wstring& _strTargetTag);
 	HRESULT Erase_MRT(const _wstring& _strMRTTag);

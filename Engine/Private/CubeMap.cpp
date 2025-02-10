@@ -27,7 +27,7 @@ HRESULT CCubeMap::Initialize(void* _pArg)
 	pDesc->eStartCoord = COORDINATE_3D;
 	pDesc->isCoordChangeEnable = false;
 	pDesc->tTransform3DDesc.vInitialPosition = { 0.0f, 0.0f, 0.0f };
-	pDesc->tTransform3DDesc.vInitialScaling = { 1.0f, 1.0f, 1.0f };
+	pDesc->tTransform3DDesc.vInitialScaling = { 50.0f, 50.0f, 50.0f };
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -131,6 +131,20 @@ HRESULT CCubeMap::Bind_ShaderResources()
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CCubeMap::Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDFConstName, const _char* _pSpecularConstName, const _char* _pIrradianceConstName)
+{
+	if(FAILED(m_pBRDFTextureCom->Bind_ShaderResource(_pShaderCom, _pBRDFConstName, 0)))
+		return E_FAIL;
+
+	if (FAILED(m_pCubeTexturesCom->Bind_ShaderResource(_pShaderCom, _pSpecularConstName, TEX_TYPE::TEX_SPEC)))
+		return E_FAIL;
+
+	if (FAILED(m_pCubeTexturesCom->Bind_ShaderResource(_pShaderCom, _pIrradianceConstName, TEX_TYPE::TEX_IRR)))
 		return E_FAIL;
 
 	return S_OK;
