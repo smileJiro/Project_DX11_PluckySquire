@@ -19,6 +19,10 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+private:
+	_bool m_isTurn = { false };
+	_float3 m_vDir = {};
+
 public:
 	static CSneak_ChaseState* Create(void* _pArg);
 
