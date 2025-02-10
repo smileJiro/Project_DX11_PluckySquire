@@ -149,7 +149,5 @@ CSection_2D_PlayMap* CSection_2D_PlayMap::Create(ID3D11Device* _pDevice, ID3D11D
 }
 void CSection_2D_PlayMap::Free()
 {
-	Safe_Release(m_pMap);
-
 	__super::Free();
 }

@@ -82,7 +82,5 @@ CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3
 }
 void CSection_2D_Narration::Free()
 {
-	Safe_Release(m_pMap);
-
 	__super::Free();
 }

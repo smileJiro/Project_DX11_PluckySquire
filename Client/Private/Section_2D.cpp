@@ -19,7 +19,7 @@ HRESULT CSection_2D::Initialize(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
 
 	m_fRenderResolution = _pDesc->fRenderResolution;
 	m_fLevelSizePixels = _pDesc->fLevelSizePixels;
-
+	_pDesc->iLayerGroupCount = SECTION_2D_PLAYMAP_RENDERGROUP_LAST;
 	if (FAILED(__super::Initialize(_pDesc)))
 		return E_FAIL;
 
