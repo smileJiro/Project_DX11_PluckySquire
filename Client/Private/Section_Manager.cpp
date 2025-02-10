@@ -252,16 +252,16 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(const _wstring& _str
     if(nullptr == pSection)
         return _vector();
 
-
     CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
-
 
     if (nullptr == p2DSection)
         return _vector();
 
-    //p2DSection->
+     ID3D11Texture2D* pTexture2D = p2DSection->Get_WorldTexture();
 
-     ID3D11Texture2D* pTexture2D = {};
+     if(nullptr != pTexture2D)
+         return Get_WorldPosition_FromWorldPosMap(pTexture2D, _v2DTransformPosition);
+     return _vector();
 
 }
 
@@ -270,6 +270,11 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(const _wstring& _str
 /// </summary>
 /// <param name="_v2DTransformPosition">√• ∑ª¥ı≈∏∞Ÿ ±‚¡ÿ ¡¬«•(Proj ¡¬«•)</param>
 _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition)
+{
+    return Get_WorldPosition_FromWorldPosMap(m_pBookWorldPosMap, _v2DTransformPosition);
+}
+
+_vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_pTargetTexture, _float2 _v2DTransformPosition)
 {
     // ∏ «Œ«œø© µ•¿Ã≈Õ ¡¢±Ÿ
     D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -292,8 +297,8 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
 
     if (iWidth * iHeight <= iIndex || 0 > iIndex)
         return XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-    
-    
+
+
     _uint iDefaultIndex = iIndex * 4;
 
     // float4 µ•¿Ã≈Õ ¿–±‚
@@ -307,7 +312,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
         0.f == z
         )
     {
-        _vector vLerpPos =  XMVectorLerp(XMVectorSet(
+        _vector vLerpPos = XMVectorLerp(XMVectorSet(
             fData[iDefaultIndex - 4],
             fData[iDefaultIndex - 3],
             fData[iDefaultIndex - 2],

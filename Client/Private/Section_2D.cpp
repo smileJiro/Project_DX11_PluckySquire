@@ -140,6 +140,14 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 	return m_pMap->Get_RenderTarget_Size();
 }
 
+HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
+{
+	if (nullptr == m_pMap)
+		return E_FAIL;
+
+	return m_pMap->Register_Capcher_WorldTexture(_pModel);
+}
+
 HRESULT CSection_2D::Ready_Map_2D(_wstring _strMapFIleName)
 {
 	m_pMap = CMap_2D::Create(m_pDevice, m_pContext, _strMapFIleName, m_fLevelSizePixels, m_iPriorityID);
