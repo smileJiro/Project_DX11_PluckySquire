@@ -730,9 +730,6 @@
     <ClInclude Include="..\Public\2DMapObject.h">
       <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\2DMapDefaultObject.h">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_SpinAttack.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -764,8 +761,14 @@
     <ClInclude Include="..\Public\Level_Chapter_04.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Narration_2D.h">
+    <ClInclude Include="..\Public\Section_2D_Narration.h">
       <Filter>04.Section\Narration_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_PlayMap.h">
+      <Filter>04.Section\Section_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1142,9 +1145,6 @@
     <ClCompile Include="..\Private\2DMapObject.cpp">
       <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\2DMapDefaultObject.cpp">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_SpinAttack.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
@@ -1176,8 +1176,14 @@
     <ClCompile Include="..\Private\Level_Chapter_04.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Narration_2D.cpp">
+    <ClCompile Include="..\Private\Section_2D_Narration.cpp">
       <Filter>04.Section\Narration_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Section_2D_PlayMap.cpp">
+      <Filter>04.Section\Section_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapDefaultObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

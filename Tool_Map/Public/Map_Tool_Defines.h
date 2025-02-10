@@ -70,6 +70,8 @@ namespace Map_Tool
 		PR2D_AFTER = 990,
 		PR2D_LAST = 999
 	};
+
+
 }
 
 extern HINSTANCE g_hInst;
