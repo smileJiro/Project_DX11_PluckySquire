@@ -47,7 +47,6 @@ void CNPC_OnlySocial::Priority_Update(_float _fTimeDelta)
 
 void CNPC_OnlySocial::Update(_float _fTimeDelta)
 {
-	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
 	
 	__super::Update(_fTimeDelta);
 	

@@ -41,9 +41,6 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_iStartAnimation = pDesc->iStartAnimation;
 	m_vPosition = _float3(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ);
 	m_vCollsionScale = _float2(pDesc->CollsionScaleX, pDesc->CollsionScaleY);
-	m_is2D = pDesc->is2D;
-	//wsprintf(m_strDialogueIndex, pDesc->strDialogueId.c_str());
-
 
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = true;

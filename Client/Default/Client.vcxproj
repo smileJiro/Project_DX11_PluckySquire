@@ -213,7 +213,6 @@
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Section_2D_Narration.h" />
-    <ClInclude Include="..\Public\Narration_2D.h" />
     <ClInclude Include="..\Public\Npc_OnlySocial.h" />
     <ClInclude Include="..\Public\PlayerItem.h" />
     <ClInclude Include="..\Public\PlayerData_Manager.h" />
@@ -365,7 +364,6 @@
     <ClCompile Include="..\Private\FloorWord.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Section_2D_Narration.cpp" />
-    <ClCompile Include="..\Private\Narration_2D.cpp" />
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp" />
     <ClCompile Include="..\Private\PlayerItem.cpp" />
     <ClCompile Include="..\Private\PlayerData_Manager.cpp" />
