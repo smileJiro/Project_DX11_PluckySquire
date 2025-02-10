@@ -148,8 +148,10 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
                 Set_State(STUCK);
             }
         }
-        cout << "_Other.pActorUserData->pOwner" << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << endl;
-		Event_Hit(m_pPlayer,_Other.pActorUserData->pOwner, m_pPlayer->Get_AttackDamg());
+        else if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+        {
+		    Event_Hit(m_pPlayer,_Other.pActorUserData->pOwner, m_pPlayer->Get_AttackDamg());
+        }
     }
 }
 

@@ -349,6 +349,8 @@ HRESULT CPlayer::Render()
         m_pBody2DColliderCom->Render();
     if(m_pBody2DTriggerCom->Is_Active())
         m_pBody2DTriggerCom->Render();
+    if (m_pAttack2DTriggerCom->Is_Active())
+        m_pAttack2DTriggerCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
