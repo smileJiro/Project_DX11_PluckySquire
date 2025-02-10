@@ -26,29 +26,36 @@ HRESULT C2DDefault_RenderObject::Initialize(void* pArg)
 	DEFAULT_RENDER_OBJECT_DESC Desc = {};
 	pDesc = &Desc;
 
+
+
+
 	if (pArg != nullptr)
 		pDesc = static_cast<DEFAULT_RENDER_OBJECT_DESC*>(pArg);
 	
-	_float fBookY = RTSIZE_BOOK2D_Y * ((_float)g_iWinSizeX / (_float)RTSIZE_BOOK2D_X);
-	pDesc->fX = g_iWinSizeX >> 1;
-	pDesc->fY = (_float)((_uint)fBookY >> 1);
-	pDesc->fSizeX = g_iWinSizeX;
-	pDesc->fSizeY = fBookY;
+	pDesc->eStartCoord = COORDINATE_2D;
+	pDesc->iCurLevelID = m_iCurLevelID = LEVEL_TOOL_2D_MAP;
 
-	if (FAILED(__super::Initialize(pDesc)))
+
+
+	if (FAILED(CGameObject::Initialize(pDesc)))
 		return E_FAIL;
+
+
+	Change_RenderGroup(_float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y), RG_2D, PR2D_BOOK_SECTION);
+
+	
+
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_fTargetSize = { (_float)RTSIZE_BOOK2D_X ,(_float)RTSIZE_BOOK2D_Y };
 
 	return S_OK;
 }
 
 void C2DDefault_RenderObject::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	Register_RenderGroup(m_iRenderGroupID, m_iPriorityID);
 	m_isBackColorRender = false;
 }
 
@@ -59,7 +66,7 @@ void C2DDefault_RenderObject::Update(_float fTimeDelta)
 
 void C2DDefault_RenderObject::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	Register_RenderGroup(RG_3D, PR3D_UI);
 }
 
 HRESULT C2DDefault_RenderObject::Render()
@@ -96,6 +103,32 @@ HRESULT C2DDefault_RenderObject::Render()
 	m_pVIBufferCom->Bind_BufferDesc();
 
 	m_pVIBufferCom->Render();
+
+	return S_OK;
+}
+
+HRESULT C2DDefault_RenderObject::Change_RenderGroup(_float2 _fRenderTargetSize, _int _iRenderGroupID, _int _iPriorityID)
+{
+	m_fTargetSize = _fRenderTargetSize;
+
+
+	_float fBookY = _fRenderTargetSize.y * ((_float)g_iWinSizeX / (_float)_fRenderTargetSize.x);
+	m_fX = g_iWinSizeX >> 1;
+	m_fY = (_float)((_uint)fBookY >> 1);
+	m_fSizeX = g_iWinSizeX;
+	m_fSizeY = fBookY;
+
+
+
+	/* 직교튀영을 위한 뷰ㅡ, 투영행르을 만들었다. */
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, 0.f, 1.f));
+
+
+	/* 던져준 fX, fY,  fSizeX, fSizeY로 그려질 수 있도록 월드행렬의 상태를 제어해둔다. */
+	m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
 
 	return S_OK;
 }
@@ -187,16 +220,16 @@ HRESULT C2DDefault_RenderObject::Bind_ShaderResources()
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
 		return E_FAIL;
 
-	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
+	//if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+	//	return E_FAIL;
 
 	if (!m_isBackColorRender)
 	{ 
-		XMStoreFloat4x4(&m_TargetProjMatrix, XMMatrixOrthographicLH((_float)m_fTargetSize.x, (_float)m_fTargetSize.y, 0.0f, 1.0f));
+		//XMStoreFloat4x4(&m_TargetProjMatrix, XMMatrixOrthographicLH((_float)m_fTargetSize.x, (_float)m_fTargetSize.y, 0.0f, 1.0f));
 		if (FAILED(m_pShader->Bind_RawValue("g_vColors", &m_fBackColor, sizeof(_float4))))
 			return E_FAIL;
-		if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_TargetProjMatrix)))
-			return E_FAIL;
+		//if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_TargetProjMatrix)))
+		//	return E_FAIL;
 
 		if (nullptr != m_pTextureCom)
 		{

@@ -452,7 +452,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	SHAPE_USERDATA* pShapeUserData = new SHAPE_USERDATA;
 	pShapeUserData->iShapeInstanceID = m_pGameInstance->Create_ShapeID();
 	pShapeUserData->iShapeUse = _ShapeData.iShapeUse;
-	pShapeUserData->iShapeIndex = m_Shapes.size();
+	pShapeUserData->iShapeIndex = (_uint)m_Shapes.size();
 	pShape->userData = pShapeUserData;
 	m_pGameInstance->Add_ShapeUserData(pShapeUserData);
 

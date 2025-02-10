@@ -38,8 +38,8 @@ HRESULT C3DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	m_pLogger = _pLogger;
 	Safe_AddRef(m_pLogger);
 
-	ZeroMemory(m_szSaveFileName,sizeof(m_szSaveFileName));
-	ZeroMemory(m_szImportLayerTag,sizeof(m_szSaveFileName));
+	ZeroMemory(m_szSaveFileName, sizeof(m_szSaveFileName));
+	ZeroMemory(m_szImportLayerTag, sizeof(m_szSaveFileName));
 
 
 	m_pGameInstance->Set_DebugRender(true);
@@ -54,7 +54,7 @@ HRESULT C3DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Cell");
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Camera");
 
-	
+
 	m_pMapParsingManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pMapParsingManager)
 		return E_FAIL;
@@ -78,13 +78,13 @@ void C3DMap_Tool_Manager::Update_Tool()
 void C3DMap_Tool_Manager::Update_Imgui_Logic()
 {
 	// 참 조 정 리 
-	for (_uint i = 0 ; i < (_uint)OBJECT_END; ++i)
+	for (_uint i = 0; i < (_uint)OBJECT_END; ++i)
 	{
 		if (m_arrObjects[i] && m_arrObjects[i]->Is_Dead())
 			m_arrObjects[i] = nullptr;
 	}
-	
-	
+
+
 	Navigation_Imgui(m_arrObjects[OBJECT_PREVIEW]);
 	Object_Create_Imgui();
 	SaveLoad_Imgui();
@@ -172,7 +172,7 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 		// 검색 입력 필드
 		ImGui::InputText("##Search", searchBuffer, IM_ARRAYSIZE(searchBuffer));
 		filteredItems.clear();
-		_wstring searchTerm  = StringToWstring(searchBuffer);
+		_wstring searchTerm = StringToWstring(searchBuffer);
 		std::transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::tolower);
 		for (const auto& item : m_ObjectFileLists)
 		{
@@ -211,7 +211,7 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 					_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
 					ImGui::SetNextWindowPos({ fCursorPos.x + 150.f, fCursorPos.y + 100.f });
 				}
-				
+
 
 			}
 			if (ImGui::BeginPopup("##ModelPreviewPopup"))
@@ -263,7 +263,7 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 			Init_Egnore_Layer();
 
 		}
-		if(ImGui::BeginPopup("Clear_Popup"))
+		if (ImGui::BeginPopup("Clear_Popup"))
 		{
 			auto pLayerMaps = m_pGameInstance->Get_Layers_Ptr();
 
@@ -402,10 +402,10 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 					strSaveLayerTags.push_back(strLayerTag);
 			}
 
-			for (const auto& pLayerName : strSaveLayerTags) 
+			for (const auto& pLayerName : strSaveLayerTags)
 			{
 				string strLayerName = WstringToString(pLayerName);
-				if (ImGui::Selectable(strLayerName.c_str(), pLayerName == m_strPickingLayerTag)) 
+				if (ImGui::Selectable(strLayerName.c_str(), pLayerName == m_strPickingLayerTag))
 				{
 					m_strPickingLayerTag = pLayerName;
 				}
@@ -676,7 +676,7 @@ void C3DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 
 			if (strSaveLayerTags.empty())
 				ImGui::CloseCurrentPopup();
-			else 
+			else
 			{
 				for (auto& strSaveLayerTag : strSaveLayerTags)
 				{
@@ -752,7 +752,7 @@ void C3DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 }
 
 
-void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock) 
+void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 {
 #ifdef _DEBUG
 
@@ -954,7 +954,8 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 
 						}
 					}
-					pTargetObj->Add_Texture_Type(__iSelectTextureTypeIndex);
+					//if (FAILED(pTargetObj->Add_Texture_Type(__iSelectTextureTypeIndex)))
+					//	MSG_BOX("Add Texture Failed!");
 				}
 
 
@@ -968,7 +969,7 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 
 			vector<CMapObject::TEXTURE_INFO> Textures;
 
-			for (_uint iTextureType = 0; iTextureType < aiTextureType_UNKNOWN; iTextureType++)
+			for (_uint iTextureType = 1; iTextureType < aiTextureType_UNKNOWN; iTextureType++)
 			{
 				ImGui::NewLine();
 
@@ -979,7 +980,18 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 					0 < Textures.size()
 					)
 				{
+
+					auto CheckIter = find_if(Textures.begin(), Textures.end(), [](CMapObject::TEXTURE_INFO& tInfo) {
+						return nullptr != tInfo.pSRV;
+						});
+					if (Textures.end() == CheckIter)
+					{
+						continue;
+					}
+
 					ImGui::SeparatorText(arrEnumText[iTextureType].c_str());
+					
+
 
 					_uint iMaterialIdx = 0;
 					for (auto& tDiffuseInfo : Textures)
@@ -1003,11 +1015,13 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 							_string strMaterialText = "Material ";
 							strButtonText += arrEnumText[iTextureType];
 							strMaterialText += std::to_string(iMaterialIdx);
+							_string strAddButtonID = strButtonText + "_" + strMaterialText;
 
 							if (iMaterialIdx > 0)
 								ImGui::NewLine();
 							ImGui::BulletText(strMaterialText.c_str());
 							//ImGui::SameLine();
+							ImGui::PushID(strAddButtonID.c_str());
 							Begin_Draw_ColorButton("#AddButton_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
 							if (StyleButton(MINI, strButtonText.c_str()))
 #pragma region ADD BUTTON
@@ -1071,59 +1085,67 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 							}
 #pragma endregion
 							End_Draw_ColorButton();
-
+							ImGui::PopID();
 							iMaterialIdx++;
 						}
-
-						string strButtonTag = std::to_string(tDiffuseInfo.iMaterialIndex) + "_" + std::to_string(tDiffuseInfo.iTextureIndex) + "_" + arrEnumText[iTextureType];
-						ImVec2 size = ImVec2(48.0f, 48.0f);
-						ImVec2 uv0 = ImVec2(0.0f, 0.0f);
-						ImVec2 uv1 = ImVec2(1.0f, 1.0f);
-						ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-						ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-						_uint iCurrenrTextureIndex = pTargetObj->Get_TextureIdx(iTextureType, tDiffuseInfo.iMaterialIndex);
-
-						if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
-							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.6f, 0.9f, 1.0f)); // 선택된 버튼의 배경색
-
-						if (ImGui::ImageButton(strButtonTag.c_str(), (ImTextureID)tDiffuseInfo.pSRV, size, uv0, uv1, bg_col, tint_col))
-							pTargetObj->Change_TextureIdx(tDiffuseInfo.iTextureIndex, iTextureType, tDiffuseInfo.iMaterialIndex);
-
-						if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
-							ImGui::PopStyleColor(1);
-
-						if (ImGui::IsItemHovered())
+						if (nullptr != tDiffuseInfo.pSRV)
 						{
-							if (ImGui::BeginItemTooltip())
+							string strButtonTag = std::to_string(tDiffuseInfo.iMaterialIndex) + "_" + std::to_string(tDiffuseInfo.iTextureIndex) + "_" + arrEnumText[iTextureType];
+							ImVec2 size = ImVec2(48.0f, 48.0f);
+							ImVec2 uv0 = ImVec2(0.0f, 0.0f);
+							ImVec2 uv1 = ImVec2(1.0f, 1.0f);
+							ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
+							ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+							_uint iCurrenrTextureIndex = pTargetObj->Get_TextureIdx(iTextureType, tDiffuseInfo.iMaterialIndex);
+
+							if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
+								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.6f, 0.9f, 1.0f)); // 선택된 버튼의 배경색
+
+							if (ImGui::ImageButton(strButtonTag.c_str(), (ImTextureID)tDiffuseInfo.pSRV, size, uv0, uv1, bg_col, tint_col))
+								pTargetObj->Change_TextureIdx(tDiffuseInfo.iTextureIndex, iTextureType, tDiffuseInfo.iMaterialIndex);
+
+							if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
+								ImGui::PopStyleColor(1);
+
+							if (ImGui::IsItemHovered())
 							{
-								ImGui::SeparatorText(WstringToString(tDiffuseInfo.szTextureName).c_str());
-								ImGui::Image((ImTextureID)tDiffuseInfo.pSRV,
-									ImVec2(256.f, 256.f)
-								);
-								ImGui::EndTooltip();
+								if (ImGui::BeginItemTooltip())
+								{
+									ImGui::SeparatorText(WstringToString(tDiffuseInfo.szTextureName).c_str());
+									ImGui::Image((ImTextureID)tDiffuseInfo.pSRV,
+										ImVec2(256.f, 256.f)
+									);
+									ImGui::EndTooltip();
+								}
+
+
+								_bool isClicked = false;
+								if (
+									//tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex 
+									//&& 
+									ImGui::IsItemClicked(ImGuiMouseButton_Right)
+									)
+								{
+									ImGui::OpenPopup("##ModelPreviewPopup");
+
+									isClicked = true;
+								}
+
+								if (isClicked)
+								{
+									__iDeleteTextureIndex = tDiffuseInfo.iTextureIndex;
+									__iSelectTextureIndex = iCurrenrTextureIndex;
+									__iTextureType = iTextureType;
+									__iMaterialIndex = tDiffuseInfo.iMaterialIndex;
+
+									_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
+									ImGui::SetNextWindowPos({ fCursorPos.x + 150.f, fCursorPos.y + 100.f });
+								}
 							}
+							ImGui::SameLine();
 
 
-							_bool isClicked = false;
-							if (tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex && ImGui::IsItemClicked(ImGuiMouseButton_Right))
-							{
-								ImGui::OpenPopup("##ModelPreviewPopup");
-
-								isClicked = true;
-							}
-
-							if (isClicked)
-							{
-								__iDeleteTextureIndex = tDiffuseInfo.iTextureIndex;
-								__iSelectTextureIndex = iCurrenrTextureIndex;
-								__iTextureType = iTextureType;
-								__iMaterialIndex = tDiffuseInfo.iMaterialIndex;
-
-								_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
-								ImGui::SetNextWindowPos({ fCursorPos.x + 150.f, fCursorPos.y + 100.f });
-							}
 						}
-						ImGui::SameLine();
 					}
 
 
@@ -1154,7 +1176,7 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 		return;
 	}
 	// 1. 레이어 검사 후 저장할 레이어 벡터에 삽입 END
-	
+
 
 	// 2. 저장 파일 경로 및 네이밍 무결성 검사 & 핸들 오픈 
 
@@ -1166,7 +1188,7 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 			log = "Save Failed... file Name Error - File Name : ";
 			log += filename;
 			if (_bSelected)
-			LOG_TYPE(log, LOG_ERROR);
+				LOG_TYPE(log, LOG_ERROR);
 		}
 
 		return;
@@ -1231,14 +1253,14 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 		_char		szSaveMeshName[MAX_PATH];
 		_char		szLayerTag[MAX_PATH];
 		string		strLayerTag = m_pGameInstance->WStringToString(LayerPair.first).c_str();
-		CLayer*		pLayer = LayerPair.second;
+		CLayer* pLayer = LayerPair.second;
 
 
 
 		strcpy_s(szLayerTag, strLayerTag.c_str());
 
 		//	세이브 파라미터 1. 레이어 태그
-		WriteFile(hFile, &szLayerTag, (DWORD)(sizeof(_char)* MAX_PATH), &dwByte, nullptr);
+		WriteFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 
 		_uint iAllCount = 0;
 		if (LayerPair.second != nullptr)
@@ -1263,7 +1285,7 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 		{
 			auto ObjList = pLayer->Get_GameObjects();
 
-			for_each(ObjList.begin(), ObjList.end(), [&vecSaveModelProtos ,&_bSelected, &log, &iCount, &hFile, &dwByte, &szSaveMeshName, this](CGameObject* pGameObject)
+			for_each(ObjList.begin(), ObjList.end(), [&vecSaveModelProtos, &_bSelected, &log, &iCount, &hFile, &dwByte, &szSaveMeshName, this](CGameObject* pGameObject)
 				{
 					CMapObject* pObject = static_cast<CMapObject*>(pGameObject);
 					_string strModelName = m_pGameInstance->WStringToString(pObject->Get_ModelName()).c_str();
@@ -1273,8 +1295,8 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 						return _strName == strModelName; });
 					if (iter == vecSaveModelProtos.end())
 						vecSaveModelProtos.push_back(strModelName);
-					
-					
+
+
 					//	세이브 파라미터 3. 메쉬 이름
 					WriteFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 					//	세이브 파라미터 4. 월드 매트릭스
@@ -1366,7 +1388,7 @@ HRESULT C3DMap_Tool_Manager::Setting_Action_Layer(vector<pair<wstring, CLayer*>>
 void C3DMap_Tool_Manager::Load(_bool _bSelected)
 {
 	//Object_Clear(false);
-	
+
 	string filename = m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]);
 	string log = "";
 
@@ -1431,7 +1453,7 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 		ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
 		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
-			
+
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
 			_char		szSaveMeshName[MAX_PATH];
@@ -1478,9 +1500,9 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 		}
 	}
 
-	
 
-	
+
+
 	CloseHandle(hFile);
 	log = "Load Complete! FileName : ";
 	log += m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]);
@@ -1513,7 +1535,7 @@ void C3DMap_Tool_Manager::Object_Clear(_bool _bSelected)
 			auto ObjList = pLayer->Get_GameObjects();
 			for_each(ObjList.begin(), ObjList.end(), [](CGameObject* pGameObject)
 				{
-				OBJECT_DESTROY(pGameObject);
+					OBJECT_DESTROY(pGameObject);
 				});
 		}
 	}
@@ -1550,7 +1572,7 @@ HRESULT C3DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject
 	_float3  vReturnPos = {};
 	_float3  vReturnNewPos = {};
 	CMapObject* pReturnObject = nullptr;
-	for_each(List.begin(), List.end(), [this, &fCursorPos,  &fDist, &fNewDist, &vReturnNewPos, &vReturnPos, &pReturnObject](CGameObject* pGameObject)
+	for_each(List.begin(), List.end(), [this, &fCursorPos, &fDist, &fNewDist, &vReturnNewPos, &vReturnPos, &pReturnObject](CGameObject* pGameObject)
 		{
 			CMapObject* pMapObject = dynamic_cast<CMapObject*>(pGameObject);
 			if (pMapObject)
@@ -1679,7 +1701,7 @@ CMapObject* C3DMap_Tool_Manager::Picking_On_Object()
 	}
 
 	return E_FAIL;*/
-//}
+	//}
 
 HRESULT C3DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3* pLayDir)
 {
@@ -1780,7 +1802,7 @@ HRESULT C3DMap_Tool_Manager::Compute_World_PickingLay(_float3* pLayPos, _float3*
 void C3DMap_Tool_Manager::Load_ModelList()
 {
 	m_ObjectFileLists.clear();
-	_wstring strPath 
+	_wstring strPath
 		= STATIC_3D_MODEL_FILE_PATH;
 
 	for (const auto& entry : ::recursive_directory_iterator(strPath))
@@ -1805,11 +1827,11 @@ void C3DMap_Tool_Manager::Load_SaveFileList()
 	m_SaveFileLists.clear();
 	for (const auto& entry : ::recursive_directory_iterator(MAP_3D_DEFAULT_PATH))
 	{
-			if (entry.path().extension() == ".mchc")
-			{
-				wstring strKey = entry.path().stem().wstring();
-				m_SaveFileLists.push_back(strKey);
-			}
+		if (entry.path().extension() == ".mchc")
+		{
+			wstring strKey = entry.path().stem().wstring();
+			m_SaveFileLists.push_back(strKey);
+		}
 	}
 }
 
@@ -1818,7 +1840,7 @@ void C3DMap_Tool_Manager::Object_Open_PickingMode()
 	CMapObject* pGameObj = Picking_On_Object();
 	if (pGameObj)
 	{
-		
+
 		Object_Clear_PickingMode();
 		m_arrObjects[OBJECT_PICKING] = pGameObj;
 		m_arrObjects[OBJECT_PICKING]->Set_Mode(CMapObject::PICKING);
@@ -1856,7 +1878,7 @@ void C3DMap_Tool_Manager::Object_Open_PreviewMode()
 
 		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
 			LEVEL_TOOL_3D_MAP, L"Layer_MapObject", &pGameObject, (void*)&NormalDesc);
-		
+
 		if (nullptr != pGameObject)
 		{
 			m_arrObjects[OBJECT_PREVIEW] = static_cast<CMapObject*>(pGameObject);

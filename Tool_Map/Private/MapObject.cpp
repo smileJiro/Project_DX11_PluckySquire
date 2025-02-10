@@ -158,9 +158,9 @@ void CMapObject::Late_Update(_float _fTimeDelta)
     if (m_eMode != PREVIEW)
     {
         if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-            m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+            Register_RenderGroup(RG_3D, PR3D_NONBLEND);
         else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-            m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+            Register_RenderGroup(RG_2D, PR2D_BOOK_SECTION);
     }
 
     /* Update Parent Matrix */
@@ -264,13 +264,14 @@ HRESULT CMapObject::Get_Textures(vector<TEXTURE_INFO>& _Diffuses, _uint _eTextur
             do
             {
                 pSRV = pMaterial->Find_Texture((aiTextureType)_eTextureType, iDiffuseCnt);
-                if (pSRV)
+
+                tInfo.iTextureIndex = iDiffuseCnt;
+                tInfo.pSRV = pSRV;
+                if (pSRV != nullptr)
                 {
-                    tInfo.iTextureIndex = iDiffuseCnt;
-                    tInfo.pSRV = pSRV;
                     lstrcpy(tInfo.szTextureName, pMaterial->Find_Name((aiTextureType)_eTextureType, iDiffuseCnt)->c_str());
-                    _Diffuses.push_back(tInfo);
                 }
+                _Diffuses.push_back(tInfo);
                 iDiffuseCnt++;
             } while (nullptr != pSRV);
             iMaterialCnt++;
@@ -289,10 +290,12 @@ HRESULT CMapObject::Add_Textures(TEXTURE_INFO& _tDiffuseInfo, _uint _eTextureTyp
         auto pMaterials = static_cast<C3DModel*>(pModel)->Get_Materials();
         if (_tDiffuseInfo.iMaterialIndex >= pMaterials.size())
             return E_FAIL;
-        return pMaterials[_tDiffuseInfo.iMaterialIndex]->Add_Texture((aiTextureType)_eTextureType,
+        if (FAILED(pMaterials[_tDiffuseInfo.iMaterialIndex]->Add_Texture((aiTextureType)_eTextureType,
             _tDiffuseInfo.pSRV
             , _tDiffuseInfo.szTextureName
-        );
+        )))
+            return E_FAIL;
+        return pMaterials[_tDiffuseInfo.iMaterialIndex]->Update_PixelConstBuffer();
     }
     return S_OK;
 }

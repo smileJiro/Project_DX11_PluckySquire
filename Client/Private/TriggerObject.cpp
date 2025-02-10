@@ -49,6 +49,9 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
     if (nullptr != ActorDesc)
     {
         ActorDesc->pOwner = nullptr;
+
+        for (auto& ShapeData : ActorDesc->ShapeDatas)
+            Safe_Delete(ShapeData.pShapeDesc);
         Safe_Delete(ActorDesc);
     }
 
@@ -75,35 +78,41 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
     m_eConditionType = _pDesc->eConditionType;
     //m_eCoordiNate = _pDesc->eCoordiNate; StartCoordinate가 있는데?
 
-    _pDesc->eActorType = ACTOR_TYPE::STATIC;
+    _pDesc->eActorType = (ACTOR_TYPE)_pDesc->iActorType;;
     *_pActorDesc = new CActor::ACTOR_DESC();
 
     /* Actor의 주인 오브젝트 포인터 */
     (*_pActorDesc)->pOwner = this;
+    (*_pActorDesc)->FreezeRotation_XYZ[0] = _pDesc->FreezeRotation[0];
+    (*_pActorDesc)->FreezeRotation_XYZ[1] = _pDesc->FreezeRotation[1];
+    (*_pActorDesc)->FreezeRotation_XYZ[2] = _pDesc->FreezeRotation[2];
 
     // Static이라서 FreezeRotation, FreezePosition은 채우지 않음
 
     /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_BOX_DESC ShapeBoxDesc = {};
-    SHAPE_SPHERE_DESC ShapeSpereDesc = {};
+    SHAPE_BOX_DESC* ShapeBoxDesc;
+    SHAPE_SPHERE_DESC* ShapeSpereDesc;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
 
     switch (_pDesc->eShapeType) {
     case SHAPE_TYPE::BOX:
-        ShapeBoxDesc.vHalfExtents = _pDesc->vHalfExtents;
-        ShapeData.pShapeDesc = &ShapeBoxDesc;
+        ShapeBoxDesc = new SHAPE_BOX_DESC();
+        ShapeBoxDesc->vHalfExtents = _pDesc->vHalfExtents;
+        ShapeData.pShapeDesc = ShapeBoxDesc;
         break;
     case SHAPE_TYPE::SPHERE:
-        ShapeSpereDesc.fRadius = _pDesc->fRadius;
-        ShapeData.pShapeDesc = &ShapeSpereDesc;
+        ShapeSpereDesc = new SHAPE_SPHERE_DESC();
+        ShapeSpereDesc->fRadius = _pDesc->fRadius;
+        ShapeData.pShapeDesc = ShapeSpereDesc;
         break;
     }
 
     ShapeData.eShapeType = _pDesc->eShapeType;
-    ShapeData.isTrigger = true;
-    ShapeData.isSceneQuery = true;
+    ShapeData.isTrigger = _pDesc->isTrigger;
+    ShapeData.isSceneQuery = false;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation( _pDesc->vLocalPosOffset.x, _pDesc->vLocalPosOffset.y, _pDesc->vLocalPosOffset.z ));
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     (*_pActorDesc)->ShapeDatas.push_back(ShapeData);
@@ -183,46 +192,49 @@ void CTriggerObject::Resister_ExitHandler_ByCollision(function<void(_uint, _int,
 
 void CTriggerObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (false != m_EnterHandler) {
-        m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
+    if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup) {
+        if (m_EnterHandler) {
+            m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
+        }
     }
+  
 }
 
 void CTriggerObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (false != m_StayHandler) {
+    if (m_StayHandler) {
         m_StayHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }
 
 void CTriggerObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (false != m_ExitHandler) {
+    if (m_ExitHandler) {
         m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 
-    if (false != m_CollisionExitHandler) {
+    if (m_CollisionExitHandler) {
         m_CollisionExitHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
     }
 }
 
 void CTriggerObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (false != m_EnterHandler) {
+    if (m_EnterHandler) {
         m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }
 
 void CTriggerObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (false != m_StayHandler) {
+    if (m_StayHandler) {
         m_StayHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }
 
 void CTriggerObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (false != m_ExitHandler) {
+    if (m_ExitHandler) {
         m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
 }

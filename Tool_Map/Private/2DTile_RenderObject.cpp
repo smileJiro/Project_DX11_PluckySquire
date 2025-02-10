@@ -69,8 +69,7 @@ void C2DTile_RenderObject::Priority_Update(_float fTimeDelta)
 
 void C2DTile_RenderObject::Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
-
+	Register_RenderGroup(RG_2D, PR2D_BOOK_SECTION);
 }
 
 void C2DTile_RenderObject::Late_Update(_float fTimeDelta)
@@ -194,10 +193,10 @@ HRESULT C2DTile_RenderObject::Bind_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", 0)))
 		return E_FAIL;
-	if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
-	if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
+	//if (FAILED(m_pShader->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+	//	return E_FAIL;
+	//if (FAILED(m_pShader->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

@@ -82,7 +82,7 @@ void C2DMapObject::Update(_float fTimeDelta)
 
 void C2DMapObject::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	Register_RenderGroup(RG_2D, PR2D_BOOK_SECTION);
 	__super::Late_Update(fTimeDelta);
 }
 

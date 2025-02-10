@@ -144,11 +144,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
-
-	m_tStat[COORDINATE_3D].fMoveSpeed = 10.f;
-	m_tStat[COORDINATE_3D].fJumpPower = 11.f;	
-    m_tStat[COORDINATE_2D].fMoveSpeed = 500.f;
-	m_tStat[COORDINATE_2D].fJumpPower = 10.f;
      
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
     return S_OK;
@@ -174,16 +169,38 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
 
    /* Test 2D Collider */
-   CCollider_Circle::COLLIDER_CIRCLE_DESC AABBDesc = {};
-   AABBDesc.pOwner = this;
-   AABBDesc.fRadius = 50.f;
-   AABBDesc.vScale = { 1.0f, 1.0f };
-   AABBDesc.vOffsetPosition = { 0.f,  AABBDesc.fRadius  };
-   AABBDesc.isBlock = false;
+   CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+   CircleDesc.pOwner = this;
+   CircleDesc.fRadius = 20.f;
+   CircleDesc.vScale = { 1.0f, 1.0f };
+   CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius*0.5f };
+   CircleDesc.isBlock = false;
+   CircleDesc.isTrigger = false;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+       TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_pBody2DColliderCom), &CircleDesc)))
        return E_FAIL; 
 
+
+   CircleDesc.pOwner = this;
+   CircleDesc.fRadius = m_f2DInteractRange;
+   CircleDesc.vScale = { 1.0f, 1.0f };
+   CircleDesc.vOffsetPosition = { 0.f, m_f2DCenterYOffset };
+   CircleDesc.isBlock = false;
+   CircleDesc.isTrigger = true; 
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+       TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_pBody2DTriggerCom), &CircleDesc)))
+       return E_FAIL;
+
+   CircleDesc.pOwner = this;
+   CircleDesc.fRadius = m_f2DAttackRange;
+   CircleDesc.vScale = { 1.0f, 1.0f };
+   CircleDesc.vOffsetPosition = { 0.f, m_f2DCenterYOffset };
+   CircleDesc.isBlock = false;
+   CircleDesc.isTrigger = true;
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_pAttack2DTriggerCom), &CircleDesc)))
+       return E_FAIL;
+   m_pAttack2DTriggerCom->Set_Active(false);
     return S_OK;
 }
 
@@ -283,15 +300,24 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
+    COORDINATE eCoord  =  Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+    {
+        //// TestCode : 태웅
+        _uint iSectionKey = RG_2D + PR2D_SECTION_START;
+        if(m_pBody2DColliderCom->Is_Active())
+            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
+		if (m_pBody2DTriggerCom->Is_Active())
+            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pBody2DTriggerCom);
+		if (m_pAttack2DTriggerCom->Is_Active())
+			CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
 
-    //// TestCode : 태웅
-    _uint iSectionKey = RG_2D + PR2D_SECTION_START;
-    CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pColliderCom);
+    }
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    if (COORDINATE_3D == Get_CurCoord())
+    if (COORDINATE_3D == eCoord)
     {
         _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
         if (false == bSleep)
@@ -319,7 +345,12 @@ HRESULT CPlayer::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-    m_pColliderCom->Render();
+    if(m_pBody2DColliderCom->Is_Active())
+        m_pBody2DColliderCom->Render();
+    if(m_pBody2DTriggerCom->Is_Active())
+        m_pBody2DTriggerCom->Render();
+    if (m_pAttack2DTriggerCom->Is_Active())
+        m_pAttack2DTriggerCom->Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -455,7 +486,8 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    int a = 0;
+
+
 }
 
 void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -486,21 +518,27 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-
-
+    if (_pMyCollider == m_pAttack2DTriggerCom)
+    {
+        Event_Hit(this, _pOtherObject, m_tStat.fDamg);
+    }
 }
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
-    if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+    if (_pMyCollider == m_pBody2DTriggerCom)
     {
-        IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
-        if (pInteractable && pInteractable->Is_Interactable(this))
+        PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
+        if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
         {
-            pInteractable->Interact(this);
+            IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+            if (pInteractable && pInteractable->Is_Interactable(this))
+            {
+                pInteractable->Interact(this);
+            }
         }
     }
+
 }
 
 void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -511,7 +549,17 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
+}
 
+void CPlayer::On_Hit(CGameObject* _pHitter, _float _fDamg)
+{
+    cout << " Player Get Damg" << _fDamg << endl;
+    m_tStat.fHP -= _fDamg;
+    if (m_tStat.fHP < 0)
+    {
+        m_tStat.fHP = 0;
+        Set_State(DIE);
+    }
 }
 
 HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -534,8 +582,16 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPlayer::Attack()
 {
-    Stop_Move();
-    Add_Impuls(Get_LookDirection() * m_fAttackForwardingForce);
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        Stop_Move();
+        Add_Impuls(Get_LookDirection() * m_fAttackForwardingForce);
+    }
+    else
+    {
+		//_vector vDir = EDir_To_Vector(m_e2DDirection_E);
+		//m_pControllerTransform->Go_Direction(vDir, m_fAttackForwardingForce, 0.1f);
+    }
 }
 
 void CPlayer::Move(_fvector _vForce, _float _fTimeDelta)
@@ -592,7 +648,7 @@ void CPlayer::Jump()
     {
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
         _vector vVelocity = pDynamicActor->Get_LinearVelocity();
-        pDynamicActor->Add_Impulse(_float3{ 0, m_tStat[COORDINATE_3D].fJumpPower ,0 });
+        pDynamicActor->Add_Impulse(_float3{ 0, m_f3DMoveSpeed ,0 });
         //pDynamicActor->Set_LinearDamping(2);
     }
 }
@@ -877,6 +933,18 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
         pDynamicActor->Set_Dynamic();
     }
 }
+void CPlayer::Set_AttackTriggerActive(_bool _bOn)
+{
+	if (COORDINATE_2D == Get_CurCoord())
+	{
+        m_pAttack2DTriggerCom->Set_Active(_bOn);
+	}
+	else
+	{
+		m_pSword->Set_AttackEnable(_bOn);
+	}
+
+}
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {
 	for (_int i = PLAYER_PART_SWORD; i < PLAYER_PART_LAST; ++i)
@@ -979,7 +1047,9 @@ CGameObject* CPlayer::Clone(void* _pArg)
 void CPlayer::Free()
 {
     // test
-    Safe_Release(m_pColliderCom);
+    Safe_Release(m_pBody2DColliderCom);
+    Safe_Release(m_pBody2DTriggerCom);
+    Safe_Release(m_pAttack2DTriggerCom);
 
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);

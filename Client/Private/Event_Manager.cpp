@@ -5,7 +5,8 @@
 #include "Level_Static.h"
 #include "Level_Loading.h"
 #include "Level_Logo.h"
-#include "Level_GamePlay.h"
+#include "Level_Chapter_02.h"
+#include "Level_Chapter_04.h"
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
@@ -160,6 +161,10 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 	{
 		Execute_Book_Main_Change(_tEvent);
 	}
+	case Client::EVENT_TYPE::HIT:
+	{
+		Execute_Hit(_tEvent);
+	}
 	break;
 	default:
 		break;
@@ -242,10 +247,10 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 		pChangeLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 		break;
 	case Client::LEVEL_CHAPTER_2:
-		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		pChangeLevel = CLevel_Chapter_02::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	case Client::LEVEL_CHAPTER_4:
-		pChangeLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		pChangeLevel = CLevel_Chapter_04::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	default:
 		break;
@@ -556,6 +561,19 @@ HRESULT CEvent_Manager::Execute_Book_Main_Change(const EVENT& _tEvent)
 		break;
 	}
 
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
+{
+	CGameObject* pHitter = (CGameObject*)_tEvent.Parameters[0];
+	CGameObject* pVIctim = (CGameObject*)_tEvent.Parameters[1];
+	_float fDamg = (_uint)_tEvent.Parameters[2];
+
+	if (nullptr == pHitter || nullptr == pVIctim)
+		return E_FAIL;
+
+	pVIctim->On_Hit(pHitter, fDamg);
 	return S_OK;
 }
 

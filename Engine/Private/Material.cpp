@@ -23,7 +23,7 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			_char* strTexturePath = new _char[strLen + 1];
 			inFile.read(strTexturePath, sizeof(_char) * strLen);
 			strTexturePath[strLen] = '\0';
-			cout << strTexturePath << endl;
+			//cout << strTexturePath << endl;
 			string strTexturePathStr = strTexturePath;
 
 			_char		szFileName[MAX_PATH] = "";
@@ -124,11 +124,27 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 		}
 
 	}
+
+	D3D11_USAGE eUsage = D3D11_USAGE_DEFAULT;
+
+#ifdef _DEBUG
+	eUsage = D3D11_USAGE_DYNAMIC;
+#endif // _DEBUG
+
+
 	// Create ConstantBuffer
-	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tPixelConstData, D3D11_USAGE_DEFAULT, &m_pPixeConstBuffer)))
+	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tPixelConstData, eUsage, &m_pPixeConstBuffer)))
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CMaterial::Update_PixelConstBuffer()
+{
+	if (FAILED(Ready_PixelConstBuffer()))
+			return E_FAIL;
+
+	return m_pGameInstance->UpdateConstBuffer(m_tPixelConstData, m_pPixeConstBuffer);
 }
 
 CMaterial* CMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* szDirPath, ifstream& inFile)

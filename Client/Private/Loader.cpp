@@ -4,17 +4,18 @@
 #include "GameInstance.h"
 #include "CriticalSectionGuard.h"
 
+/* For. Camera*/
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 #include "Camera_2D.h"
 
+/* For. etc Bulb, PlayerItem*/
+#include "PlayerItem.h"
+
 /* For. Main Table */
 #include "CubeMap.h"
 #include "MainTable.h"
-
-/* For. Trigger*/
-
 
 /* For. UI*/
 #include "Pick_Bulb.h"
@@ -347,13 +348,19 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     // ============ Triger
-    /* For. Prototype_GameObject_Camera_Trigger */
+    /* For. Prototype_GameObject_TriggerObject */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TriggerObject"),
         CTriggerObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"),
         CRayShape::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    // ============ etc Bulb, PlayerItem
+     /* For. Prototype_GameObject_PlayerItem */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerItem"),
+        CPlayerItem::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     
@@ -650,10 +657,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 
 
     ///// 상점 관련
-
-
-
-
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Texture_BACK"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_backspace.dds"), 1))))
 		return E_FAIL;
@@ -711,6 +714,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
+
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/2DAnim/"))))
         return E_FAIL;
@@ -1247,7 +1251,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
                 C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
             {
-                string str = "Failed to Create 2DModel";
+                string str = "Failed to Create 2DModel : ";
                 str += entry.path().filename().replace_extension().string();
                 MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
                 return E_FAIL;

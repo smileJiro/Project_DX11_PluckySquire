@@ -206,6 +206,11 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
     __super::OnContact_Exit(_My, _Other, _ContactPointDatas);
 }
 
+void CBarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
+{
+	cout << "BarfBug Get Damg" <<this<<", "<< _fDamg << endl;
+}
+
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
