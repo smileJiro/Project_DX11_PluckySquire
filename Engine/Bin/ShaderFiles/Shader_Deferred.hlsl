@@ -217,44 +217,6 @@ PS_OUT PS_MAIN_FINAL(PS_IN In)
 
 float2 g_TexelSize = { 1.0f / 400.f, 1.0f / 225.f };
 
-PS_OUT PS_BLURX(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
- 
-    float2 vTexcoord = 0.f;
-
-    for (int i = -6; i < 7; i++)
-    {
-        vTexcoord = float2(In.vTexcoord.x + g_TexelSize.x * i, In.vTexcoord.y);
-
-        Out.vColor += g_fWeights[i + 6] * g_BloomTexture.Sample(LinearSampler_Clamp, vTexcoord);
-    }
-
-    Out.vColor /= 3.f;
-    
-    return Out;
-
-}
-
-PS_OUT PS_BLURY(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
- 
-    float2 vTexcoord = 0.f;
-
-    for (int i = -6; i < 7; i++)
-    {
-        vTexcoord = float2(In.vTexcoord.x, In.vTexcoord.y + g_TexelSize.y * i);
-
-        Out.vColor += g_fWeights[i + 6] * g_BloomTexture.Sample(LinearSampler_Clamp, vTexcoord);
-    }
-
-    Out.vColor /= 3.f;
-    
-    return Out;
-
-}
-
 
 PS_OUT PS_DOWNSAMPLE1(PS_IN In)
 {
@@ -455,34 +417,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass BlurX // 6
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_BLURX();
-        ComputeShader = NULL;
-
-    }
-
-    pass BlurY // 7
-
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_BLURY();
-        ComputeShader = NULL;
-
-    }
-
-    pass DOWNSAMPLE1 // 8
+    pass DOWNSAMPLE1 // 6
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -495,7 +430,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass DOWNSAMPLE2 // 9
+    pass DOWNSAMPLE2 // 7
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -508,7 +443,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass Blur // 10
+    pass Blur // 8
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);

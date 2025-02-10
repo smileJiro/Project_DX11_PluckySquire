@@ -168,7 +168,7 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Module(CEffect_Module* _pModule)
 	{
 		if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
 		{
-			_pModule->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 22, 25, 16, 29);
+			_pModule->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 22, 25, 16, 30);
 		}
 	}
 

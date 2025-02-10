@@ -33,7 +33,7 @@ public:
 		CActorObject*			pOwner = nullptr;
 		vector<SHAPE_DATA>		ShapeDatas;
 		_float4x4				ActorOffsetMatrix = {};
-		_bool					FreezeRotation_XYZ[3] = { true, false, true };
+		_bool					FreezeRotation_XYZ[3] = { false, true, false };
 		_bool					FreezePosition_XYZ[3] = { false, false, false };
 		
 		FILTER_DATA				tFilterData = {};

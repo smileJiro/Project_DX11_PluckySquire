@@ -17,6 +17,9 @@
 #include "RenderGroup_MRT.h"
 #include "RenderGroup_Lights.h"
 #include "RenderGroup_Final.h"
+#include "RenderGroup_AfterParticle.h"
+#include "RenderGroup_DownSample.h"
+#include "RenderGroup_Blur.h"
 #include "RenderGroup_AfterEffect.h"
 
 CMainApp::CMainApp()
@@ -58,6 +61,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Ready_Font()))
 		return E_FAIL;
+
+	Set_EffectRG();
 
 	return S_OK;
 }
@@ -278,7 +283,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 	CRenderGroup_MRT::RG_MRT_DESC RG_EffectDesc;
 	RG_EffectDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_EffectDesc.iPriorityID = PRIORITY_3D::PR3D_EFFECT;
-	RG_EffectDesc.strMRTTag = TEXT("MRT_Weighted_Blended");
+	RG_EffectDesc.strMRTTag = TEXT("MRT_Effect");
 
 	CRenderGroup_MRT* pRenderGroup_Effect = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_EffectDesc);
 	if (nullptr == pRenderGroup_Effect)
@@ -290,6 +295,75 @@ HRESULT CMainApp::Ready_RenderGroup()
 		return E_FAIL;
 	Safe_Release(pRenderGroup_Effect);
 	pRenderGroup_Effect = nullptr;
+
+	/* RG_3D, PR3D_PARTICLE */
+	CRenderGroup_MRT::RG_MRT_DESC RG_ParticleDesc;
+	RG_ParticleDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_ParticleDesc.iPriorityID = PRIORITY_3D::PR3D_PARTICLE;
+	RG_ParticleDesc.strMRTTag = TEXT("MRT_Weighted_Blended");
+	RG_ParticleDesc.isClear = true;
+
+	CRenderGroup_MRT* pRenderGroup_Particle = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_ParticleDesc);
+	if (nullptr == pRenderGroup_Particle)
+	{
+		MSG_BOX("Failed Create PR3D_PARTICLE");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Particle->Get_RenderGroupID(), pRenderGroup_Particle->Get_PriorityID(), pRenderGroup_Particle)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Particle);
+	pRenderGroup_Particle = nullptr;
+
+	/* RG_3D, PR3D_AFTERPARTICLE */
+	CRenderGroup_MRT::RG_MRT_DESC RG_AfterParticleDesc;
+	RG_AfterParticleDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_AfterParticleDesc.iPriorityID = PRIORITY_3D::PR3D_AFTERPARTICLE;
+	RG_AfterParticleDesc.strMRTTag = TEXT("MRT_AfterParticle");
+	RG_AfterParticleDesc.isClear = false;
+
+	CRenderGroup_AfterParticle* pRenderGroup_AfterParticle = CRenderGroup_AfterParticle::Create(m_pDevice, m_pContext, &RG_AfterParticleDesc);
+	if (nullptr == pRenderGroup_AfterParticle)
+	{
+		MSG_BOX("Failed Create PR3D_AFTERPARTICLE");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_AfterParticle->Get_RenderGroupID(), pRenderGroup_AfterParticle->Get_PriorityID(), pRenderGroup_AfterParticle)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_AfterParticle);
+	pRenderGroup_AfterParticle = nullptr;
+
+	/* RG_3D, PR3D_DOWNSAMPLE */
+	CRenderGroup_DownSample::RG_MRT_DESC RG_DOWNBLUR_DESC;
+	RG_DOWNBLUR_DESC.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_DOWNBLUR_DESC.iPriorityID = PRIORITY_3D::PR3D_BLURDOWN;
+	RG_DOWNBLUR_DESC.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_Downsample1"));
+
+	CRenderGroup_DownSample* pRenderGroup_BlurDown = CRenderGroup_DownSample::Create(m_pDevice, m_pContext, &RG_DOWNBLUR_DESC);
+	if (nullptr == pRenderGroup_BlurDown)
+	{
+		MSG_BOX("Failed Create MRT_DOWNSample");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_BlurDown->Get_RenderGroupID(), pRenderGroup_BlurDown->Get_PriorityID(), pRenderGroup_BlurDown)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_BlurDown);
+	pRenderGroup_BlurDown = nullptr;
+
+	CRenderGroup_Blur::RG_MRT_DESC RG_BLUR_DESC;
+	RG_BLUR_DESC.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_BLUR_DESC.iPriorityID = PRIORITY_3D::PR3D_BLUR;
+	RG_BLUR_DESC.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_Downsample1"));
+
+	CRenderGroup_Blur* pRenderGroup_Blur = CRenderGroup_Blur::Create(m_pDevice, m_pContext, &RG_BLUR_DESC);
+	if (nullptr == pRenderGroup_Blur)
+	{
+		MSG_BOX("Failed Create MRT_BLUR");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Blur->Get_RenderGroupID(), pRenderGroup_Blur->Get_PriorityID(), pRenderGroup_Blur)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Blur);
+	pRenderGroup_Blur = nullptr;
 
 	/* RG_3D, PR3D_AFTEREFFECT */
 	CRenderGroup_AfterEffect::RG_DESC RG_AfterEffectDesc;
@@ -305,6 +379,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 		return E_FAIL;
 	Safe_Release(pRenderGroup_AfterEffect);
 	pRenderGroup_AfterEffect = nullptr;
+
 
 	/* RG_3D, PR3D_UI */
 	CRenderGroup::RG_DESC RG_UIDesc;
@@ -322,6 +397,14 @@ HRESULT CMainApp::Ready_RenderGroup()
 	pRenderGroup = nullptr;
 
 	return S_OK;
+}
+
+void CMainApp::Set_EffectRG()
+{
+	CEmitter::SetID_2D(RG_2D);
+	CEmitter::SetID_3D(RG_3D);
+	CEmitter::SetID_Particle(PR3D_PARTICLE);
+	CEmitter::SetID_Effect(PR3D_EFFECT);
 }
 
 HRESULT CMainApp::Ready_RenderTargets()
@@ -359,12 +442,31 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Final"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
-	/* Target_EffectAccumulate */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectAccumulate"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectColor"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
 
-	/* Target_EffectRevealage */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectRevealage"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16_FLOAT, _float4(1.0f, 0.f, 0.0f, 0.0f))))
+	/* Target_Bloom */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Bloom"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+	/* Target_DownSample */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DownSample1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f), DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DownSample2"), (_uint)(g_iWinSizeX / 24.f), (_uint)(g_iWinSizeY / 24.f), DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+	/* Target_Blur */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DownBlur1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f), DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DownBlur2"), (_uint)(g_iWinSizeX / 24.f), (_uint)(g_iWinSizeY / 24.f), DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+
+	/* Target_ParticleAccumulate */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ParticleAccumulate"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+	/* Target_ParticleRevealage */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ParticleRevelage"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16_FLOAT, _float4(1.0f, 0.f, 0.0f, 0.0f))))
+		return E_FAIL;
+	/* Target_ParticleBloom */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ParticleBloom"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.f, 0.0f, 0.0f))))
 		return E_FAIL;
 
 	/* RTV를 모아두는 MRT를 세팅 */
@@ -397,10 +499,35 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Final"), TEXT("Target_Final"))))
 		return E_FAIL;
 
-	/* MRT_Weighted_Blended*/
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_EffectAccumulate"))))
+	/* MRT_EFFECT */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_EffectColor"))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_EffectRevealage"))))
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_Bloom"))))
+		return E_FAIL;
+
+	///* MRT_BLUR */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Blur1"), TEXT("Target_DownBlur1"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Blur2"), TEXT("Target_DownBlur2"))))
+		return E_FAIL;
+
+	/* MRT_DownSmample*/
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_DownSample1"), TEXT("Target_DownSample1"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_DownSample2"), TEXT("Target_DownSample2"))))
+		return E_FAIL;
+
+
+	/* MRT_Weighted_Blended*/
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_ParticleAccumulate"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_ParticleRevelage"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Weighted_Blended"), TEXT("Target_ParticleBloom"))))
+		return E_FAIL;
+
+	/* MRT_AfterParticle */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_AfterParticle"), TEXT("Target_Bloom"))))
 		return E_FAIL;
 
 	/* Settiong DSV */
@@ -410,6 +537,13 @@ HRESULT CMainApp::Ready_RenderTargets()
 
 
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), g_iShadowWidth, g_iShadowHeight)))
+		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Downsample1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Downsample2"), (_uint)(g_iWinSizeX / 24.f), (_uint)(g_iWinSizeY / 24.f))))
 		return E_FAIL;
 
 
@@ -423,7 +557,6 @@ HRESULT CMainApp::Ready_RenderTargets()
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fX, fY + fSizeY * 1.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), fX, fY + fSizeY * 2.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_LightDepth"), fX, fY + fSizeY * 4.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
-	m_pGameInstance->Ready_RT_Debug(TEXT("Target_EffectAccumulate"), fX, fY, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 
 
 	return S_OK;

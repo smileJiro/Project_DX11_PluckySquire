@@ -470,8 +470,8 @@ HRESULT CLoader::Loading_Level_Static()
 
     lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 
-    if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
-        return E_FAIL;
+    //if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
+    //    return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

@@ -317,8 +317,7 @@ HRESULT CMainEffectTool::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Blur2"), TEXT("Target_DownBlur2"))))
 		return E_FAIL;
 
-
-
+	/* MRT_DownSmample*/
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_DownSample1"), TEXT("Target_DownSample1"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_DownSample2"), TEXT("Target_DownSample2"))))
