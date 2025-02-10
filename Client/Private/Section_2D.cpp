@@ -228,7 +228,21 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 		return _float2(-1,-1);
 
 	return m_pMap->Get_RenderTarget_Size();
-};
+}
+HRESULT CSection_2D::Section_AddRenderGroup_Process()
+{
+	Register_RenderGroup_ToRenderer();
+
+	Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
+		return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
+		}, CSection_2D::SECTION_2D_RENDERGROUP::SECTION_2D_OBJECT);
+
+	if (FAILED(Add_RenderGroup_GameObjects()))
+		return E_FAIL;
+
+	return S_OK;
+}
+;
 
 HRESULT CSection_2D::Ready_Map_2D(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
 {
