@@ -159,8 +159,8 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
-    Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
-    Bind_AnimEventFunc("Attack", bind(&CPlayer::Attack, this));
+    Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
+    Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -520,7 +520,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
 {
     if (_pMyCollider == m_pAttack2DTriggerCom)
     {
-        Event_Hit(this, _pOtherObject, m_tStat.fDamg);
+        Attack(_pOtherObject);
     }
 }
 
@@ -580,18 +580,21 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 }
 
 
-void CPlayer::Attack()
+void CPlayer::Move_Attack_3D()
 {
     if (COORDINATE_3D == Get_CurCoord())
     {
         Stop_Move();
         Add_Impuls(Get_LookDirection() * m_fAttackForwardingForce);
     }
-    else
-    {
-		//_vector vDir = EDir_To_Vector(m_e2DDirection_E);
-		//m_pControllerTransform->Go_Direction(vDir, m_fAttackForwardingForce, 0.1f);
-    }
+}
+
+void CPlayer::Attack(CGameObject* _pVictim)
+{
+    if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
+        return;
+    Event_Hit(this, _pVictim, m_tStat.fDamg);
+    m_AttckedObjects.insert(_pVictim);
 }
 
 void CPlayer::Move(_fvector _vForce, _float _fTimeDelta)
@@ -609,7 +612,7 @@ void CPlayer::Move(_fvector _vForce, _float _fTimeDelta)
     }
     else
     {
-        m_pControllerTransform->Go_Direction(XMVector4Normalize(_vForce), _fTimeDelta);
+        m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX( XMVector3Length(_vForce)), _fTimeDelta);
     }
 }
 
@@ -743,6 +746,20 @@ _bool CPlayer::Is_Sneaking()
         return  static_cast<CPlayerState_Run*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
     else
         return false;
+}
+
+_bool CPlayer::Is_AttackTriggerActive()
+{
+    COORDINATE eCoord = Get_CurCoord();
+
+    if (COORDINATE_2D == eCoord)
+    {
+        return m_pAttack2DTriggerCom->Is_Active();
+    }
+    else
+    {
+        return m_pSword->Is_AttackEnable();
+    }
 }
 
 _float CPlayer::Get_UpForce()
@@ -935,6 +952,8 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
 }
 void CPlayer::Set_AttackTriggerActive(_bool _bOn)
 {
+    if (false == _bOn)
+        Flush_AttckedSet();
 	if (COORDINATE_2D == Get_CurCoord())
 	{
         m_pAttack2DTriggerCom->Set_Active(_bOn);
@@ -990,10 +1009,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     if (KEY_DOWN(KEY::B))
     {
         // 도형 크기 바꾸기
-        SHAPE_CAPSULE_DESC Desc;
-        Desc.fRadius = 1.f;
-        Desc.fHalfHeight = 1.f;
-        m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
+        //SHAPE_CAPSULE_DESC Desc;
+        //Desc.fRadius = 1.f;
+        //Desc.fHalfHeight = 1.f;
+        //m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
     }
     if (KEY_DOWN(KEY::F2))
     {

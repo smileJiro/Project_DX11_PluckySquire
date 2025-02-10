@@ -73,7 +73,7 @@ void CPartObject::Update(_float _fTimeDelta)
         break;
     }
 
-    __super::Update(_fTimeDelta);
+     __super::Update(_fTimeDelta);
 }
 
 void CPartObject::Late_Update(_float _fTimeDelta)
