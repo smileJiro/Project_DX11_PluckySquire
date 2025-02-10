@@ -222,9 +222,6 @@
     <ClInclude Include="..\Public\2DTrigger_Sample.h">
       <Filter>03. GameObject\2D\2DTrigger_Sample</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\RenderGroup_Lights.h">
-      <Filter>96. RenderTarget</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_WorldPos.h">
       <Filter>96. RenderTarget</Filter>
     </ClInclude>
@@ -234,11 +231,26 @@
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
       <Filter>96. RenderTarget</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\RenderGroup_Final.h">
-      <Filter>96. RenderTarget</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Sample_Skechspace.h">
       <Filter>03. GameObject\2D\SampleSkechspace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_DirectLights.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_DownSample.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_AfterParticle.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Blur.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Combine.h">
+      <Filter>96. RenderTarget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -346,12 +358,6 @@
     <ClCompile Include="..\Private\2DTrigger_Sample.cpp">
       <Filter>03. GameObject\2D\2DTrigger_Sample</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\RenderGroup_Final.cpp">
-      <Filter>96. RenderTarget</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\RenderGroup_Lights.cpp">
-      <Filter>96. RenderTarget</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp">
       <Filter>96. RenderTarget</Filter>
     </ClCompile>
@@ -363,6 +369,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\Sample_Skechspace.cpp">
       <Filter>03. GameObject\2D\SampleSkechspace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_DirectLights.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_DownSample.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Lighting.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_AfterParticle.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Blur.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Combine.cpp">
+      <Filter>96. RenderTarget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

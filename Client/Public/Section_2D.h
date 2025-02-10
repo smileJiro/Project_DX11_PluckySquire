@@ -7,12 +7,19 @@ class CSection_2D abstract : public CSection
 public:
 	enum SECTION_2D_RENDER_TYPE
 	{
-		NONE_SECTION,
-		ON_SECTION_BOOK,
-		ON_SECTION_3D_IN_2D,
-		SECTION_LAST
+		SECTION_2D_BOOK,
+		SECTION_2D_SPSK,
+		SECTION_2D_RENDER_TYPE_LAST,
 	};
 
+
+	enum SECTION_2D_PLAY_TYPE
+	{
+		PLAYMAP,
+		NARRAION,
+		SPSK,
+		SECTION_2D_PLAY_TYPE_LAST
+	};
 	// 섹션 내부 렌더그룹.
 
 public:
@@ -22,11 +29,9 @@ public:
 		_wstring				strMapName;
 		_float2					fRenderResolution;
 		_float2					fLevelSizePixels;
-		SECTION_2D_RENDER_TYPE	eSectionRenderType = {};
 
 		void Book_2D_Build(const _wstring _strBookSectionName)
 		{
-			eSectionRenderType = ON_SECTION_BOOK;
 			strSectionName = _strBookSectionName;
 			fRenderResolution = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 			fLevelSizePixels = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
@@ -35,7 +40,7 @@ public:
 	}SECTION_2D_DESC;
 
 protected:
-	CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, SECTION_2D_RENDER_TYPE _eRenderType);
 	virtual ~CSection_2D() = default;
 
 public:
@@ -90,27 +95,32 @@ public:
 	/// </summary>
 	/// <param name="_strPrePageTag">현재 섹션 객체에 등록되어 있는 Tag를 반환한다.</param>
 	/// <returns>현재 섹션 객체에 등록되어 있는 해당 페이지 정보 Tag가 빈 String이라면, false를 반환한다.</returns>
-	_bool								Is_PrePage(_wstring& _strPrePageTag) { _strPrePageTag = m_strPrePageTag; return L"" != m_strPrePageTag; };
+	_bool								Has_PrePage(_wstring& _strPrePageTag) { _strPrePageTag = m_strPrePageTag; return L"" != m_strPrePageTag; };
+	_bool								Has_PrePage() { return L"" != m_strPrePageTag; };
 	
 	/// <summary>
 	/// 다음 페이지 정보가 존재하는가?
 	/// </summary>
 	/// <param name="_strPrePageTag">현재 섹션 객체에 등록되어 있는 Tag를 반환한다.</param>
 	/// <returns>현재 섹션 객체에 등록되어 있는 해당 페이지 정보 Tag가 빈 String이라면, false를 반환한다.</returns>
-	_bool								Is_NextPage(_wstring& _strNextPageTag) { _strNextPageTag = m_strNextPageTag; return L"" != m_strNextPageTag; };
+	_bool								Has_NextPage(_wstring& _strNextPageTag) { _strNextPageTag = m_strNextPageTag; return L"" != m_strNextPageTag; };
+	_bool								Has_NextPage() { return L"" != m_strNextPageTag; };
+
 protected:
-	
+	SECTION_2D_RENDER_TYPE	m_eMySectionRenderType;
+	SECTION_2D_PLAY_TYPE	m_eMySectionPlayType;
+
 	// BackGround & RenderGroup(RT,DSV) 관리객체
-	CMap_2D*		m_pMap = nullptr;
+	CMap_2D*				m_pMap = nullptr;
 
 	// 실제 렌더 타겟 사이즈
-	_float2			m_fRenderResolution = {};
+	_float2					m_fRenderResolution = {};
 	
 	// 맵 크기
-	_float2			m_fLevelSizePixels = {};
+	_float2					m_fLevelSizePixels = {};
 
-	_wstring		m_strNextPageTag = L"";
-	_wstring		m_strPrePageTag = L"";
+	_wstring				m_strNextPageTag = L"";
+	_wstring				m_strPrePageTag = L"";
 
 protected:
 	/// <summary>

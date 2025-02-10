@@ -11,6 +11,15 @@ private:
 	C3DMapSpskObject(const C3DMapSpskObject& _Prototype);
 	virtual ~C3DMapSpskObject() = default;
 
+public :
+	virtual HRESULT					Initialize(void* _pArg) override;
+	virtual HRESULT					Render() override;
+	virtual HRESULT					Render_Shadow() override;
+
+
+public :
+	_string m_strRenderSectionTag = "";
+
 public:
 	static C3DMapSpskObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
