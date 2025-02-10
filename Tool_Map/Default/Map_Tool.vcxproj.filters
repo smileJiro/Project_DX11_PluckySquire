@@ -103,6 +103,9 @@
     <Filter Include="03. GameObject\2D\2DTrigger_Sample">
       <UniqueIdentifier>{45070a33-09a7-4123-95a3-009b611822de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. RenderTarget">
+      <UniqueIdentifier>{7b1f45a1-3b74-4d38-a37f-f99be2bbb9ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -216,6 +219,21 @@
     <ClInclude Include="..\Public\2DTrigger_Sample.h">
       <Filter>03. GameObject\2D\2DTrigger_Sample</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Lights.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_WorldPos.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_2D.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Final.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -321,6 +339,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\2DTrigger_Sample.cpp">
       <Filter>03. GameObject\2D\2DTrigger_Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Final.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Lights.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_2D.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
+      <Filter>96. RenderTarget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

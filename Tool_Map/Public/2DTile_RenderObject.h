@@ -59,6 +59,9 @@ public:
 	HRESULT Set_Texture(TILE_TEXTURE_INFO& _tTextureInfo, ID3D11ShaderResourceView* _pTexture);
 	HRESULT	Set_Index(_uint _iTileIndex, _int _iTextureInfoIndex, _int _iTextureUVIndex);
 	void	Set_OutputPath(const _wstring& _strPath) { m_strOutputPath = _strPath; }
+
+
+
 private:
 	CShader* m_pShader = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
