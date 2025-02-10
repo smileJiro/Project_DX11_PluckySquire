@@ -63,7 +63,8 @@
 #include "StateMachine.h"
 #include "2DMapDefaultObject.h"
 #include "2DMapActionObject.h"
-#include "3DMapObject.h"
+#include "3DMapDefaultObject.h"
+#include "3DMapSpskObject.h"
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
@@ -382,12 +383,16 @@ HRESULT CLoader::Loading_Level_Static()
         C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DActionMapObject"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMap_ActionObject"),
         C2DMapActionObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
-        C3DMapObject::Create(m_pDevice, m_pContext))))
+        C3DMapDefaultObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+        
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SpskObject"),
+        C3DMapSpskObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),

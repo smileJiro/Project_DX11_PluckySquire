@@ -187,7 +187,9 @@
     <ClInclude Include="..\Public\2DMapActionObject.h" />
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
+    <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
+    <ClInclude Include="..\Public\3DMapSpskObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
@@ -340,7 +342,9 @@
     <ClCompile Include="..\Private\2DMapActionObject.cpp" />
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
+    <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />
+    <ClCompile Include="..\Private\3DMapSpskObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp">

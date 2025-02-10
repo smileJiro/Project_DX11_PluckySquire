@@ -262,9 +262,6 @@
     <Filter Include="03.Components\FSM\State\Standby">
       <UniqueIdentifier>{2948d6bd-59da-4c44-a0b0-3e1dad4f129a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\SampleBook">
-      <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MainTable">
       <UniqueIdentifier>{25fd5475-9ebe-44bd-bbee-d5b4f8d1ad20}</UniqueIdentifier>
     </Filter>
@@ -357,6 +354,15 @@
     </Filter>
     <Filter Include="02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard">
       <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\SampleBook">
+      <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\SampleSpsk">
+      <UniqueIdentifier>{91867589-9ea6-47bf-af9a-3c553d912c42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\3D\0. Super">
+      <UniqueIdentifier>{5d40ea1d-b154-4325-ae2f-46cb3cf9249a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -585,7 +591,7 @@
       <Filter>02.GameObjects\MapObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SampleBook.h">
-      <Filter>02.GameObjects\SampleBook</Filter>
+      <Filter>02.GameObjects\MapObject\SampleBook</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Section.h">
       <Filter>04.Section</Filter>
@@ -732,9 +738,6 @@
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\3DMapObject.h">
-      <Filter>02.GameObjects\MapObject\3D</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_JotMain.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClInclude>
@@ -788,9 +791,6 @@
     <ClInclude Include="..\Public\Section_2D_PlayMap.h">
       <Filter>04.Section\Section_2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\2DMapDefaultObject.h">
-      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\RenderGroup_AfterParticle.h">
       <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
     </ClInclude>
@@ -799,6 +799,18 @@
     </ClInclude>
     <ClInclude Include="..\public\RenderGroup_Blur.h">
       <Filter>94.RenderGroups%28Custom%29\Effect\Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapObject.h">
+      <Filter>02.GameObjects\MapObject\3D\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapSpskObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1018,7 +1030,7 @@
       <Filter>02.GameObjects\MapObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SampleBook.cpp">
-      <Filter>02.GameObjects\SampleBook</Filter>
+      <Filter>02.GameObjects\MapObject\SampleBook</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Section.cpp">
       <Filter>04.Section</Filter>
@@ -1162,9 +1174,6 @@
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\3DMapObject.cpp">
-      <Filter>02.GameObjects\MapObject\3D</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_JotMain.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClCompile>
@@ -1215,9 +1224,6 @@
     <ClCompile Include="..\Private\Section_2D_PlayMap.cpp">
       <Filter>04.Section\Section_2D</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\2DMapDefaultObject.cpp">
-      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\RenderGroup_AfterParticle.cpp">
       <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
     </ClCompile>
@@ -1226,6 +1232,18 @@
     </ClCompile>
     <ClCompile Include="..\private\RenderGroup_Blur.cpp">
       <Filter>94.RenderGroups%28Custom%29\Effect\Blur</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\2DMapDefaultObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapDefaultObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D\0. Super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\3DMapSpskObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
