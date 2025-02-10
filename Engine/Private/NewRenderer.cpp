@@ -286,6 +286,7 @@ void CNewRenderer::Free()
 	}
 	m_DSVs.clear();
 
+	Safe_Release(m_pGlobalIBLConstBuffer);
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pShader);
 	Safe_Release(m_pGameInstance);
