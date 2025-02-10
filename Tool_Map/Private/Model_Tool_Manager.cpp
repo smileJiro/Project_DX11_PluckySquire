@@ -444,7 +444,7 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 
 				if (GetOpenFileName(&ofn))
 				{
-					SetCurrentDirectory(originalDir);
+					//SetCurrentDirectory(originalDir);
 					const _wstring strFilePath = szName;
 
 					ID3D11ShaderResourceView* pSRV = { nullptr };
@@ -568,7 +568,7 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 
 							if (GetOpenFileName(&ofn))
 							{
-								SetCurrentDirectory(originalDir);
+								//SetCurrentDirectory(originalDir);
 								const _wstring strFilePath = szName;
 
 								ID3D11ShaderResourceView* pSRV = { nullptr };

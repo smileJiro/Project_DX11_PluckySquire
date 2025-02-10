@@ -61,7 +61,7 @@ public:
 
 private:
 	_float4x4 m_ProjMatrix, m_ViewMatrix;
-	C2DMapObjectInfo* m_pModelInfo;
+	C2DMapObjectInfo* m_pModelInfo = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 
 	_wstring		m_strKey = {};

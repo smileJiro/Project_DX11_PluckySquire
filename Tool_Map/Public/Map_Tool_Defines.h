@@ -26,7 +26,7 @@ namespace Map_Tool
 		DELETE_OBJECT,
 		LEVEL_CHANGE,
 		SET_ACTIVE,
-		HR,
+		CAPCHER,
 
 		LAST,
 	};

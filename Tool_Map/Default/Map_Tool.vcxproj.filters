@@ -106,6 +106,9 @@
     <Filter Include="96. RenderTarget">
       <UniqueIdentifier>{7b1f45a1-3b74-4d38-a37f-f99be2bbb9ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. GameObject\2D\SampleSkechspace">
+      <UniqueIdentifier>{1be6a70e-f39c-4c46-93e7-edd7275f5756}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Map_Tool_Defines.h">
@@ -234,6 +237,9 @@
     <ClInclude Include="..\Public\RenderGroup_Final.h">
       <Filter>96. RenderTarget</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Sample_Skechspace.h">
+      <Filter>03. GameObject\2D\SampleSkechspace</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -354,6 +360,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
       <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sample_Skechspace.cpp">
+      <Filter>03. GameObject\2D\SampleSkechspace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
