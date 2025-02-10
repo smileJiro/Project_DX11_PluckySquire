@@ -109,8 +109,6 @@ public:
 	SECTION_2D_RENDER_TYPE				Get_Section_2D_RenderType() { return m_eMySectionRenderType; }
 	SECTION_2D_PLAY_TYPE				Get_Section_2D_PlayType() { return m_eMySectionPlayType;}
 
-	ID
-
 
 protected:
 	SECTION_2D_RENDER_TYPE	m_eMySectionRenderType;
