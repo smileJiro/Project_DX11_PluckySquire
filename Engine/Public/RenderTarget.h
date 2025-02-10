@@ -28,7 +28,7 @@ public:
 	HRESULT Copy_Resource(ID3D11Texture2D* _pDest);
 	ID3D11Texture2D* Get_Resource() { return m_pTexture2D; }
 public:
-	ID3D11RenderTargetView*		Get_RTV() const { return m_pRTV; }
+	virtual ID3D11RenderTargetView*		Get_RTV() const { return m_pRTV; }
 	ID3D11ShaderResourceView*	Get_SRV() const { return m_pSRV; }
 	_float2						Get_Size() const { return m_vSize; }
 	const _wstring&				Get_Name() const { return m_strName; }

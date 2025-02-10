@@ -19,7 +19,7 @@ cbuffer BasicPixelConstData : register(b0)
 
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-Texture2D g_DiffuseTexture, g_NormalTexture, g_ORMHTexture; // PBR
+Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
 
 float g_fFarZ = 1000.f;
 int g_iFlag = 0;
@@ -87,17 +87,26 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    float3 vAlbedo = useAlbedoMap ? g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f).rgb : Material.Albedo;
+    float3 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f).rgb : Material.Albedo;
     float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
-    float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(0.0f, 0.0f, 0.0f, 0.0f);
-    
+    float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
+    if (false == useORMHMap)
+    {
+        vORMH.r = useAOMap ? g_AOTexture.Sample(LinearSampler, In.vTexcoord).r : Material.AO;
+        vORMH.g = useRoughnessMap ? g_RoughnessTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Roughness;
+        vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
+    }
     Out.vDiffuse = float4(vAlbedo, 1.0f);
     // 1,0,0
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
     Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+
+    //Out.vDiffuse = 1.0f; // Test Code
+    //vORMH.g = 0.02f;// TestCode
+    //vORMH.b = 1.00f;// TestCode
     Out.vORMH = vORMH;
-    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 0.0f);
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
     
     return Out;
 }
@@ -112,7 +121,7 @@ PS_OUT_LIGHTDEPTH PS_MAIN_LIGHTDEPTH(PS_IN In)
 {
     PS_OUT_LIGHTDEPTH Out = (PS_OUT_LIGHTDEPTH) 0;
     
-    float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    float4 vMtrlDiffuse = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
     
     if (vMtrlDiffuse.a < 0.01f)
         discard;
@@ -143,7 +152,7 @@ PS_OUT PS_MIX_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    float4 vMtrlDiffuse = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
     if (vMtrlDiffuse.a < 0.1f)
         discard;
     

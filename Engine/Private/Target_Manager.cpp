@@ -194,6 +194,20 @@ HRESULT CTarget_Manager::Resolve_RT_MSAA(const _wstring& _strTargetTag)
     return pRenderTarget_MSAA->Resolve_MSAA();
 }
 
+HRESULT CTarget_Manager::Resolve_MRT_MSAA(const _wstring& _strMRTTag)
+{
+    list<CRenderTarget*>* pMRTs_MSAA = Find_MRT(_strMRTTag);
+    if (nullptr == pMRTs_MSAA)
+        return E_FAIL;
+
+    for (auto& pRenderTarget : *pMRTs_MSAA)
+    {
+        static_cast<CRenderTarget_MSAA*>(pRenderTarget)->Resolve_MSAA();
+    }
+
+    return S_OK;
+}
+
 HRESULT CTarget_Manager::Erase_RenderTarget(const _wstring& _strTargetTag)
 {
     auto iter = m_RenderTargets.find(_strTargetTag);

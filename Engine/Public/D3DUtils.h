@@ -11,7 +11,6 @@ private:
 public:
 	HRESULT Initialize();
 
-
 public:
 	template<typename T_CONSTANT>
 	HRESULT CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer);

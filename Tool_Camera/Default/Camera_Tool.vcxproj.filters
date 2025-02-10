@@ -88,6 +88,12 @@
     <Filter Include="02. GameObjects\Trigger">
       <UniqueIdentifier>{96567386-0d6a-42b1-8fa5-cf6247c1f703}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\Bulb">
+      <UniqueIdentifier>{750518bf-a5c1-4f1b-829c-49dd21e97c7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bulb\BulbLine">
+      <UniqueIdentifier>{2c6b7252-8be5-47f7-a861-316a7cfa3ed4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera_Tool.h">
@@ -183,6 +189,12 @@
     <ClInclude Include="..\Public\TriggerObject.h">
       <Filter>02. GameObjects\Trigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BulbLine.h">
+      <Filter>02. GameObjects\Bulb\BulbLine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bulb.h">
+      <Filter>02. GameObjects\Bulb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp">
@@ -268,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\TriggerObject.cpp">
       <Filter>02. GameObjects\Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BulbLine.cpp">
+      <Filter>02. GameObjects\Bulb\BulbLine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bulb.cpp">
+      <Filter>02. GameObjects\Bulb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

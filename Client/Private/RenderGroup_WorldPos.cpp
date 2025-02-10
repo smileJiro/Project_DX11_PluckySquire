@@ -19,7 +19,7 @@ HRESULT CRenderGroup_WorldPos::Initialize(void* _pArg)
 HRESULT CRenderGroup_WorldPos::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer)
 {
   /* Diffuse, Normal 등등에 대한 정보를 각각의 RTV에 저장하는 단계. */
-    if (FAILED(m_pGameInstance->Begin_MRT(m_strMRTTag, m_pDSV, m_isClear))) // MRT_GameObjects 라는 타겟에 각각 diffuse, normal을 저장하기 위해 바인딩하는 과정. 
+    if (FAILED(m_pGameInstance->Begin_MRT(m_strMRTTag, m_pDSV, m_isClear))) // MRT_Geometry 라는 타겟에 각각 diffuse, normal을 저장하기 위해 바인딩하는 과정. 
         return E_FAIL;
 
     if (true == m_isViewportSizeChange)

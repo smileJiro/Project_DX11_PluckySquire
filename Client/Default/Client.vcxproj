@@ -187,7 +187,9 @@
     <ClInclude Include="..\Public\2DMapActionObject.h" />
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
+    <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
+    <ClInclude Include="..\Public\3DMapSpskObject.h" />
     <ClInclude Include="..\Public\AlertState.h" />
     <ClInclude Include="..\Public\ArrowForStamp.h" />
     <ClInclude Include="..\Public\BarfBug.h" />
@@ -272,8 +274,10 @@
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
     <ClInclude Include="..\public\RenderGroup_AfterParticle.h" />
     <ClInclude Include="..\public\RenderGroup_DownSample.h" />
+    <ClInclude Include="..\Public\RenderGroup_Combine.h" />
     <ClInclude Include="..\Public\RenderGroup_Final.h" />
-    <ClInclude Include="..\public\RenderGroup_Lights.h" />
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
+    <ClInclude Include="..\public\RenderGroup_DirectLights.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\public\Section.h" />
@@ -340,7 +344,9 @@
     <ClCompile Include="..\Private\2DMapActionObject.cpp" />
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
+    <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />
+    <ClCompile Include="..\Private\3DMapSpskObject.cpp" />
     <ClCompile Include="..\Private\AlertState.cpp" />
     <ClCompile Include="..\Private\ArrowForStamp.cpp" />
     <ClCompile Include="..\Private\BarfBug.cpp">
@@ -423,8 +429,10 @@
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
     <ClCompile Include="..\private\RenderGroup_AfterParticle.cpp" />
     <ClCompile Include="..\private\RenderGroup_DownSample.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Combine.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
-    <ClCompile Include="..\private\RenderGroup_Lights.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
+    <ClCompile Include="..\private\RenderGroup_DirectLights.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\private\Section.cpp" />

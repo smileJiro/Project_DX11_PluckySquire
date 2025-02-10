@@ -228,7 +228,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
+    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
     m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
@@ -249,7 +249,7 @@ HRESULT CPlayer::Ready_PartObjects()
     SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     SwordDesc.iRenderGroupID_3D = RG_3D;
-    SwordDesc.iPriorityID_3D = PR3D_NONBLEND;
+    SwordDesc.iPriorityID_3D = PR3D_GEOMETRY;
     SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));

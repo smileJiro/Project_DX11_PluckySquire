@@ -9,6 +9,9 @@
 #include <DirectXMath.h>
 #include "DirectXCollision.h"
 #include <dxgi1_4.h> // DXGI 1.4 헤더 필요
+#include <d3d11sdklayers.h> // 디버그 기능 관련
+#include <dxgidebug.h>
+
 using namespace DirectX;
 
 #include "Effects11\d3dx11effect.h"
@@ -34,7 +37,7 @@ using namespace DirectX;
 // 코드
 #pragma comment(lib, "imguidll.lib")
 #pragma comment(lib, "dxgi.lib")
-
+#pragma comment(lib, "dxguid.lib")
 /* Sound */
 #include <Windows.h>
 #include <mmsystem.h>

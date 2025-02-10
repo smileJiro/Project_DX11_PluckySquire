@@ -10,7 +10,7 @@ public:
 	{
 		_wstring				strMRTTag;
 		_bool					isClear = true;
-
+		_bool					isMSAAResolving = false;
 		_bool					isViewportSizeChange = false;
 		_float2					vViewportSize = {};
 		ID3D11DepthStencilView* pDSV = nullptr;
@@ -32,6 +32,7 @@ protected:
 	_wstring					m_strMRTTag;
 	ID3D11DepthStencilView*		m_pDSV = nullptr; // dsv는 참 애매해 ㅅㅂ, 렌더러 등록이맞어
 	_bool						m_isClear = true;
+	_bool						m_isMSAAResolving = false;
 
 	_bool						m_isViewportSizeChange = false;
 	_float2						m_vViewportSize = {};

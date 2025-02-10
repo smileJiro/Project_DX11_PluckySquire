@@ -1,10 +1,18 @@
 
+#define PI 3.1415926
+
+#define TONE_LINEAR 0
+#define TONE_FILMIC 1
+#define TONE_UNCHARTED2 2
+#define TONE_LUMAREINHARD 3
+
 struct Material_PS
 {
     float3 Albedo; // baseColor
     float Roughness;
     float Metallic;
-    float3 dummy;
+    float AO;
+    float2 dummy;
 };
 
 

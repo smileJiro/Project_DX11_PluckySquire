@@ -25,21 +25,18 @@ HRESULT CSample_Skechspace::Initialize_Prototype()
 HRESULT CSample_Skechspace::Initialize(void* _pArg)
 {
 
-    MODELOBJECT_DESC* pDesc = static_cast<MODELOBJECT_DESC*>(_pArg);
+    SAMPLE_SKSP_DESC* pDesc = static_cast<SAMPLE_SKSP_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    pDesc->strModelPrototypeTag_3D = TEXT("Desk_C02_Sketchspace_Left_01");
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     pDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
-
+    m_isPreView = pDesc->isPreview;
 
     __super::Initialize(_pArg);
-    Set_AnimationLoop(COORDINATE_3D, 4, true);
-    Set_Animation(0);
 
 
     Set_Position(XMVectorSet(2.f, 0.f, -17.3f, 1.f));
@@ -81,8 +78,15 @@ HRESULT CSample_Skechspace::Render()
         auto pMesh = pModel->Get_Mesh(i);
         _uint iMaterialIndex = pMesh->Get_MaterialIndex();
       
-        if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_DiffuseTexture", TEXT("Target_2D"))))
-            return E_FAIL;
+        if(m_isPreView)
+        { 
+        
+        }
+        else
+        {
+            if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_DiffuseTexture", TEXT("Target_2D"))))
+                return E_FAIL;
+        }
 
         pShader->Begin(iShaderPass);
         pMesh->Bind_BufferDesc();
