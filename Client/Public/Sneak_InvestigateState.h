@@ -20,7 +20,11 @@ public:
 	virtual void State_Exit() override;
 
 private:
-	void Move();
+	void Determine_Direction();
+
+private:
+	_bool m_isTurn = { false };
+	_float3 m_vDir = {};
 
 public:
 	static CSneak_InvestigateState* Create(void* _pArg);
