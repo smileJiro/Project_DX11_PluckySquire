@@ -213,6 +213,7 @@
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Narration_2D.h" />
+    <ClInclude Include="..\Public\Npc_OnlySocial.h" />
     <ClInclude Include="..\Public\PlayerItem.h" />
     <ClInclude Include="..\Public\PlayerData_Manager.h" />
     <ClInclude Include="..\public\MainTable.h" />
@@ -250,7 +251,7 @@
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\Npc_Body.h" />
     <ClInclude Include="..\Public\Npc_Logo.h" />
-    <ClInclude Include="..\Public\NPC_DJMoonBeard.h" />
+    <ClInclude Include="..\Public\NPC_Social.h" />
     <ClInclude Include="..\public\NPC_Store.h" />
     <ClInclude Include="..\Public\PatrolState.h" />
     <ClInclude Include="..\Public\PlayerBody.h" />
@@ -362,6 +363,7 @@
     <ClCompile Include="..\Private\FloorWord.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Narration_2D.cpp" />
+    <ClCompile Include="..\Private\NPC_OnlySocial.cpp" />
     <ClCompile Include="..\Private\PlayerItem.cpp" />
     <ClCompile Include="..\Private\PlayerData_Manager.cpp" />
     <ClCompile Include="..\Private\Interactable.cpp" />
@@ -396,7 +398,7 @@
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\Npc_Body.cpp" />
     <ClCompile Include="..\Private\Npc_Logo.cpp" />
-    <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp" />
+    <ClCompile Include="..\Private\NPC_Social.cpp" />
     <ClCompile Include="..\private\NPC_Store.cpp" />
     <ClCompile Include="..\Private\PatrolState.cpp" />
     <ClCompile Include="..\Private\PlayerBody.cpp" />

@@ -5,7 +5,7 @@
 
 
 BEGIN(Client)
-class CNPC_DJMoonBeard final: public CNPC, public IInteractable
+class CNPC_Social final: public CNPC, public IInteractable
 {
 
 public:
@@ -27,9 +27,9 @@ public:
 
 
 private:
-	CNPC_DJMoonBeard(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CNPC_DJMoonBeard(const CNPC_DJMoonBeard& _Prototype);
-	virtual ~CNPC_DJMoonBeard() = default;
+	CNPC_Social(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CNPC_Social(const CNPC_Social& _Prototype);
+	virtual ~CNPC_Social() = default;
 
 
 
@@ -53,7 +53,7 @@ protected:
 	virtual HRESULT Ready_PartObjects() override;
 
 public:
-	static CNPC_DJMoonBeard*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CNPC_Social*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*		Clone(void* _pArg) override; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void				Free() override;
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
@@ -65,6 +65,17 @@ protected:
 	virtual void Interact(CPlayer* _pUser);
 	virtual _bool Is_Interactable(CPlayer* _pUser);
 	virtual _float Get_Distance(CPlayer* _pUser);
+
+
+private:
+	_wstring		m_strAnimaionName = {};
+	_int			m_iCreateSection = { 0 };
+	_wstring		m_strDialogueID = {};
+	_int			m_iStartAnimation = { 0 };
+	_float3			m_vPosition = { 0.f, 0.f, 0.f };
+	_float2			m_vCollsionScale = { 0.f, 0.f };
+	_bool			m_is2D = true;
+	
 
 
 

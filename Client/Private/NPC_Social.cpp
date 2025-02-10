@@ -1,34 +1,50 @@
 #include "stdafx.h"
-#include "NPC_DJMoonBeard.h"
+#include "NPC_Social.h"
 #include "ModelObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
 #include "UI_Manager.h"
 #include "StateMachine.h"
+#include "Npc_OnlySocial.h"
 
 
 
-CNPC_DJMoonBeard::CNPC_DJMoonBeard(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CNPC_Social::CNPC_Social(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CNPC(_pDevice, _pContext)
 {
 }
 
-CNPC_DJMoonBeard::CNPC_DJMoonBeard(const CNPC_DJMoonBeard& _Prototype)
+CNPC_Social::CNPC_Social(const CNPC_Social& _Prototype)
 	:CNPC(_Prototype)
 {
 }
 
 
 
-HRESULT CNPC_DJMoonBeard::Initialize_Prototype()
+HRESULT CNPC_Social::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CNPC_DJMoonBeard::Initialize(void* _pArg)
+HRESULT CNPC_Social::Initialize(void* _pArg)
 {
-	CNPC_DJMoonBeard::NPC_DESC* pDesc = static_cast<CNPC_DJMoonBeard::NPC_DESC*>(_pArg);
+	CNPC_OnlySocial::NPC_ONLYSOCIAL* pDesc = static_cast<CNPC_OnlySocial::NPC_ONLYSOCIAL*>(_pArg);
+
+
+
+
+
+	m_strAnimaionName = pDesc->strAnimationName;
+	m_iCreateSection = pDesc->strCreateSection;
+	m_strDialogueID = pDesc->strDialogueId;
+	m_iStartAnimation = pDesc->iStartAnimation;
+	m_vPosition = _float3(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ);
+	m_vCollsionScale = _float2(pDesc->CollsionScaleX, pDesc->CollsionScaleY);
+	m_is2D = pDesc->is2D;
+	//wsprintf(m_strDialogueIndex, pDesc->strDialogueId.c_str());
+
+
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = true;
 	pDesc->iNumPartObjects = PART_END;
@@ -60,17 +76,17 @@ HRESULT CNPC_DJMoonBeard::Initialize(void* _pArg)
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, DJ_MoonBeard_Animation, true);
-	pModelObject->Set_Animation(ANIM_2D::DJ_MoonBeard_Animation);
+	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, m_iStartAnimation, true);
+	pModelObject->Set_Animation(m_iStartAnimation);
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
-	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_NPC_DJMoonBeard"), &tAnimEventDesc));
+	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, m_strAnimaionName, &tAnimEventDesc));
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_DJMoonBeard::On_AnimEnd, this , placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(616.f, -29.f, 0.f, 1.f));
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Social::On_AnimEnd, this , placeholders::_1, placeholders::_2));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z, 1.f));
 
 	
 	//CActor::ACTOR_DESC ActorDesc;
@@ -128,12 +144,12 @@ HRESULT CNPC_DJMoonBeard::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CNPC_DJMoonBeard::Priority_Update(_float _fTimeDelta)
+void CNPC_Social::Priority_Update(_float _fTimeDelta)
 {
 	__super::Priority_Update(_fTimeDelta);
 }
 
-void CNPC_DJMoonBeard::Update(_float _fTimeDelta)
+void CNPC_Social::Update(_float _fTimeDelta)
 {
 	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
 	
@@ -142,7 +158,7 @@ void CNPC_DJMoonBeard::Update(_float _fTimeDelta)
 	
 }
 
-void CNPC_DJMoonBeard::Late_Update(_float _fTimeDelta)
+void CNPC_Social::Late_Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::E) && true == m_isColPlayer)
 	{
@@ -154,7 +170,7 @@ void CNPC_DJMoonBeard::Late_Update(_float _fTimeDelta)
 	
 }
 
-HRESULT CNPC_DJMoonBeard::Render()
+HRESULT CNPC_Social::Render()
 {
 #ifdef _DEBUG
 	if(COORDINATE_2D ==Get_CurCoord())
@@ -164,29 +180,29 @@ HRESULT CNPC_DJMoonBeard::Render()
 	return S_OK;
 }
 
-void CNPC_DJMoonBeard::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+void CNPC_Social::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 }
 
-void CNPC_DJMoonBeard::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+void CNPC_Social::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 }
 
-void CNPC_DJMoonBeard::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+void CNPC_Social::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 	m_isColPlayer = false;
 }
 
 
-void CNPC_DJMoonBeard::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+void CNPC_Social::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	
 }
 
 
-HRESULT CNPC_DJMoonBeard::Ready_ActorDesc(void* _pArg)
+HRESULT CNPC_Social::Ready_ActorDesc(void* _pArg)
 {
-	CNPC_DJMoonBeard::NPC_DESC* pDesc = static_cast<CNPC_DJMoonBeard::NPC_DESC*>(_pArg);
+	CNPC_Social::NPC_DESC* pDesc = static_cast<CNPC_Social::NPC_DESC*>(_pArg);
 
 	pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
 	CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
@@ -234,11 +250,11 @@ HRESULT CNPC_DJMoonBeard::Ready_ActorDesc(void* _pArg)
 	return S_OK;
 }
 
-HRESULT CNPC_DJMoonBeard::Ready_Components()
+HRESULT CNPC_Social::Ready_Components()
 {
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = { 70.f, 70.f };
+	AABBDesc.vExtents = { m_vCollsionScale.x, m_vCollsionScale.y };
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
 	//AABBDesc.vOffsetPosition = { 0.f, 0.f };
@@ -249,7 +265,7 @@ HRESULT CNPC_DJMoonBeard::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CNPC_DJMoonBeard::Ready_PartObjects()
+HRESULT CNPC_Social::Ready_PartObjects()
 {
 
 	CModelObject::MODELOBJECT_DESC NPCBodyDesc{};
@@ -257,7 +273,7 @@ HRESULT CNPC_DJMoonBeard::Ready_PartObjects()
 	NPCBodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
 	NPCBodyDesc.iCurLevelID = m_iCurLevelID;
 	NPCBodyDesc.isCoordChangeEnable = false;
-	NPCBodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_NPC_DJMoonBeard");
+	NPCBodyDesc.strModelPrototypeTag_2D = m_strAnimaionName;
 	//NPCBodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
 	NPCBodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 	//NPCBodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
@@ -283,25 +299,25 @@ HRESULT CNPC_DJMoonBeard::Ready_PartObjects()
 
 }
 
-void CNPC_DJMoonBeard::Interact(CPlayer* _pUser)
+void CNPC_Social::Interact(CPlayer* _pUser)
 {
 	m_isColPlayer = true;
 }
 
-_bool CNPC_DJMoonBeard::Is_Interactable(CPlayer* _pUser)
+_bool CNPC_Social::Is_Interactable(CPlayer* _pUser)
 {
 	return true;
 }
 
-_float CNPC_DJMoonBeard::Get_Distance(CPlayer* _pUser)
+_float CNPC_Social::Get_Distance(CPlayer* _pUser)
 {
 	return XMVector3Length(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION) - _pUser->Get_FinalPosition()).m128_f32[0];
 }
 
 
-CNPC_DJMoonBeard* CNPC_DJMoonBeard::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CNPC_Social* CNPC_Social::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CNPC_DJMoonBeard* pInstance = new CNPC_DJMoonBeard(_pDevice, _pContext);
+	CNPC_Social* pInstance = new CNPC_Social(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -313,13 +329,13 @@ CNPC_DJMoonBeard* CNPC_DJMoonBeard::Create(ID3D11Device* _pDevice, ID3D11DeviceC
 	return pInstance;
 }
 
-CGameObject* CNPC_DJMoonBeard::Clone(void* _pArg)
+CGameObject* CNPC_Social::Clone(void* _pArg)
 {
-	CNPC_DJMoonBeard* pInstance = new CNPC_DJMoonBeard(*this);
+	CNPC_Social* pInstance = new CNPC_Social(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Clone CNPC_DJMoonBeard Failed");
+		MSG_BOX("Clone CNPC_Social Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -327,13 +343,13 @@ CGameObject* CNPC_DJMoonBeard::Clone(void* _pArg)
 	return pInstance;
 }
 
-void CNPC_DJMoonBeard::Free()
+void CNPC_Social::Free()
 {
 	Safe_Release(m_pColliderCom);
 	__super::Free();
 }
 
-HRESULT CNPC_DJMoonBeard::Cleanup_DeadReferences()
+HRESULT CNPC_Social::Cleanup_DeadReferences()
 {
 	return S_OK;
 }
