@@ -27,20 +27,33 @@ HRESULT CPlayerData_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceCont
 
 HRESULT CPlayerData_Manager::Spawn_Item(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos)
 {
+	// ItemTag
+	// first: Flipping_Glove						second: latch_glove
+
+	// ItemState
+	// ItemState[Flipping_Glove].first: bool		ItemState[Filiping_Glove].second: GameObject*
+
 	CPlayerItem::PLAYERITEM_DESC Desc = {};
 
 	Desc.iCurLevelID = _iLevelID;
 	Desc.tTransform3DDesc.vInitialPosition = _vPos;
 
-	_wstring szModelTag;
-
 	for (auto& ItemTag : m_ItemTags) {
-		if (ItemTag.first == _szItemTag) 
-			szModelTag = ItemTag.second;
+		if (ItemTag.first == _szItemTag) {
+			Desc.szModelTag = ItemTag.second;
+			Desc.szEventTag = TEXT("Get_") + ItemTag.first;
+			break;
+		}
 	}
 
-	Desc.szModelTag = szModelTag;
-	Desc.szEventTag = TEXT("Get_") + Desc.szModelTag;
+	CGameObject* pPlayerItem;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_iPrototypeLevelID, TEXT("Prototype_GameObject_PlayerItem"),
+		_iLevelID, TEXT("Layer_Terrain"), &pPlayerItem, &Desc)))
+		return E_FAIL;
+
+	m_ItemState[_szItemTag].second = dynamic_cast<CPlayerItem*>(pPlayerItem);
+	Safe_AddRef(m_ItemState[_szItemTag].second);
 
 	return S_OK;
 }
@@ -87,6 +100,9 @@ void CPlayerData_Manager::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
+
+	for (auto& PlayerItem : m_ItemState)
+		Safe_Release(PlayerItem.second.second);
 
 	__super::Free();
 }

@@ -8,7 +8,7 @@ class C3DModel;
 END
 
 BEGIN(Client)
-class CPlayerItem abstract : public CTriggerObject
+class CPlayerItem : public CTriggerObject
 {
 public:
 	enum ITEM_MODE
@@ -60,8 +60,11 @@ private:
 	void						Action_Getting(_float _fTimeDelta);
 	void						Action_Disappear(_float _fTimeDelta);
 
+	HRESULT						Bind_ShaderResources_WVP();
+
 public:
-	virtual CGameObject*		Clone(void* _pArg) = 0;
+	static CTriggerObject*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject*		Clone(void* _pArg);
 	virtual void				Free() override;
 };
 END

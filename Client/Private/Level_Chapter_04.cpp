@@ -11,6 +11,7 @@
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
 #include "Trigger_Manager.h"
+#include "PlayerData_Manager.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -498,6 +499,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
+
+	// Test(PlayerItem: Glove, Stamp)
+	CPlayerData_Manager::GetInstance()->Spawn_Item(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
 
 
 	return S_OK;
