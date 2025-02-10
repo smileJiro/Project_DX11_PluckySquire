@@ -13,7 +13,6 @@ HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 	m_fAlertRange = pDesc->fAlertRange;
-	m_fAlert2DRange = pDesc->fAlert2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;

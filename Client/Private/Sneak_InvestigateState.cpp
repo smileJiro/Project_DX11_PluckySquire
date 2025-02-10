@@ -12,10 +12,9 @@ CSneak_InvestigateState::CSneak_InvestigateState()
 HRESULT CSneak_InvestigateState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
-	m_fChase2DRange = pDesc->fChase2DRange;
 	m_fAttackRange = pDesc->fAttackRange;
-	m_fAttack2DRange = pDesc->fAttack2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -62,59 +61,67 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		//m_pOwner->Move_To(XMLoadFloat3(&m_vSneakPos)-m_pOwner->Get_FinalPosition());
 		//m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 
-		_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
-		_float3 vRayDir; XMStoreFloat3(&vRayDir, vDir);
+		_float3 vPos; XMStoreFloat3(&vPos, XMVector3Transform(XMLoadFloat3(&m_pOwner->Get_RayOffset()), m_pOwner->Get_FinalWorldMatrix()));
+		_vector vRayDir = XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_vSneakPos) - XMLoadFloat3(&vPos), 0.f));
+		_float3 vRayDirection; XMStoreFloat3(&vRayDirection, vRayDir);
 		_vector vResult = XMVectorZero();
 
 		//레이 사거리 임시
-		_float fRayDis = 0.7f;
+		_float fRayDis = 1.f;
 		//가운데 레이
-		if (m_pGameInstance->RayCast_Nearest(vPos, vRayDir, fRayDis))
+		if (m_pGameInstance->RayCast_Nearest(vPos, vRayDirection, fRayDis))
 		{
 			_vector AxisY = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 			//레이에 막혔으면 왼쪽, 오른쪽 대각선 순으로 레이 쏨
-			_float3 vDirLeftDiag; XMStoreFloat3(&vDirLeftDiag, XMVector3Normalize(m_pGameInstance->Rotate_Vector(AxisY, vDir, -45.f)));
-			_float3 vDirRightDiag; XMStoreFloat3(&vDirRightDiag, XMVector3Normalize(m_pGameInstance->Rotate_Vector(AxisY, vDir, 45.f)));
+			_float3 vDirLeftDiag; XMStoreFloat3(&vDirLeftDiag, XMVector3Normalize(m_pGameInstance->Rotate_Vector(AxisY, vRayDir, -45.f)));
+			_float3 vDirRightDiag; XMStoreFloat3(&vDirRightDiag, XMVector3Normalize(m_pGameInstance->Rotate_Vector(AxisY, vRayDir, 45.f)));
 			if (m_pGameInstance->RayCast_Nearest(vPos, vDirLeftDiag, fRayDis))
 			{
 				if (m_pGameInstance->RayCast_Nearest(vPos, vDirRightDiag, fRayDis))
 				{
 					//왼쪽, 오른쪽으로 쏘는데 더하지 않고 우선순위대로 하나만 씀
-					_float3 vDirLeft; XMStoreFloat3(&vDirLeft, XMVector3Normalize(m_pGameInstance->Rotate_Vector(AxisY, vDir, -90.f)));
-					_float3 vDirRight; XMStoreFloat3(&vDirRight, XMVector3Normalize(m_pGameInstance->Rotate_Vector(AxisY, vDir, 90.f)));
+					_float3 vDirLeft; XMStoreFloat3(&vDirLeft, XMVector3Normalize(m_pGameInstance->Rotate_Vector(AxisY, vRayDir, -90.f)));
+					_float3 vDirRight; XMStoreFloat3(&vDirRight, XMVector3Normalize(m_pGameInstance->Rotate_Vector(AxisY, vRayDir, 90.f)));
 
 					if (false == m_pGameInstance->RayCast_Nearest(vPos, vDirLeft, fRayDis))
 					{
-						vResult += vDir;
+						vResult += vRayDir;
+						cout << "왼쪽" << endl;
 					}
 					else if (false == m_pGameInstance->RayCast_Nearest(vPos, vDirRight, fRayDis))
 					{
-						vResult += vDir;
+						vResult += vRayDir;
+						cout << "오른쪽" << endl;
 					}
 
 					//전부 다 막혔을 때는 뒤로감 (임시처리)
 					else
 					{
-						vResult = -1.f * vDir;
+						vResult = -1.f * vRayDir;
+						cout << "뒤" << endl;
 					}
 
 				}
 				else
 				{
-					vResult += vDir;
+					vResult += vRayDir;
+					cout << "오른쪽 대각선" << endl;
 				}
 			}
 			else
 			{
-				vResult += vDir;
+				vResult += vRayDir;
+				cout << "왼쪽 대각선" << endl;
 			}
 		}
 		//막히지 않은 쪽의 방향 벡터 더함
 		else
 		{
-			vResult += vDir;
+			vResult += vRayDir;
+			cout << "가운데" << endl;
 		}
 
+		m_pOwner->Rotate_To_Radians(vResult, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 		static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(vResult, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 	}
 }

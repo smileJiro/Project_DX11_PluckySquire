@@ -112,7 +112,9 @@ void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
 	{
 		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
-		cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Enter" << endl;
+		//cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Enter" << endl;
+		if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
+			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << " Enter" << endl;
 	}
 }
 
@@ -133,7 +135,9 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
 	{
 		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
-		cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Exit" << endl;
+		//cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Exit" << endl;
+		if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
+			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << " Exit" << endl;
 	}
 }
 
