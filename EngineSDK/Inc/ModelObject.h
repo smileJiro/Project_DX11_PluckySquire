@@ -26,6 +26,9 @@ public:
 		_uint iRenderGroupID_3D = 0;
 		_uint iPriorityID_3D = 0;
 
+		// 모델의 머티리얼 클래스가 얕은복사라 같은모델이지만 별도의 머티리얼 컬러를 가지는 경우에 대한 처리가 어려움이있어 생성된 desc
+		_bool isDeepCopyConstBuffer = false;
+		_float4 vMaterialDefaultColor = {};
 
 	#pragma region Build Method
 	void Build_2D_Model(_uint _iLevelID, const 

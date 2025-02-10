@@ -198,6 +198,9 @@ HRESULT CSampleBook::Render()
 		auto pMesh = pModel->Get_Mesh(i);
 		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
+		
+		if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
+			return E_FAIL;
 
 		switch (iMaterialIndex)
 		{
@@ -281,6 +284,27 @@ HRESULT CSampleBook::Render()
 			{
 				continue;
 			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
+			{
+				int a = 0;
+			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, 0)))
+			{
+				int a = 0;
+			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, 0)))
+			{
+				int a = 0;
+			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, 0)))
+			{
+				int a = 0;
+			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, 0)))
+			{
+				int a = 0;
+			}
+			
 			break;
 		}
 

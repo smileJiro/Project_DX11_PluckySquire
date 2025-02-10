@@ -9,6 +9,7 @@ class ENGINE_DLL CMaterial  : public CComponent
 {
 protected:
 	CMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CMaterial(const CMaterial& _Rhs); // 프로토타입용 복사생성자 아님. (모두 얕은복사하지만, constBuffer 만 깊은복사 생성하는 복사생성자.)
 	virtual ~CMaterial() = default;
 
 public:
@@ -87,6 +88,7 @@ public:
 	virtual void Free() override;
 
 	// CComponent을(를) 통해 상속됨
+	CMaterial* Clone_DeepCopyConstBuffer();
 	CComponent* Clone(void* pArg) override;
 };
 

@@ -316,8 +316,31 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     float fMetallic = vORMHDesc.b;
     float fHeight = vORMHDesc.a;
     
+/* 2. Direction Light 연산 수행 */
+    float3 vLightVector = normalize(c_DirectLight.vDirection) * -1.0f; // 전역 조명은 방향성이 이미 명확함
+    //float fLightDist = length(vLightVector); // 조명의 길이 자체가 무의미.
+    //vLightVector /= fLightDist;
+    float3 vHalfway = normalize(vPixelToEye + vLightVector);
     
-    Out.vColor = 1.0f;
+    float NdotI = max(0.0f, dot(vNormalWorld, vLightVector));
+    float NdotH = max(0.0f, dot(vNormalWorld, vHalfway));
+    float NdotO = max(0.0f, dot(vNormalWorld, vPixelToEye));
+    
+    float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
+    float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
+    float3 kd = lerp(float3(1.0f, 1.0f, 1.0f) - F, float3(0.0f, 0.0f, 0.0f), fMetallic); // 물체의 확산반사계수 : 메탈릭 수치에 따라 보정되는 값임 >>> F로 반사되는 에너지를 제외한 에너지를 확산반사의 양으로 사용함.
+    float3 vDiffuseBRDF = kd * vAlbedo;
+    
+    float D = NdfGGX(NdotH, fRoughness);
+    float3 G = SchlickGGX(NdotI, NdotO, fRoughness);
+    float3 vSpecularBRDf = (F * D * G) / max(1e-5f, 4.0f * NdotI * NdotO);
+
+    //float fAttenuation = pow(saturate((c_DirectLight.fFallOutEnd - fLightDist) / (c_DirectLight.fFallOutEnd - c_DirectLight.fFallOutStart)), 2.0f); //saturate((c_DirectLight.fFallOutEnd - fLightDist) / (c_DirectLight.fFallOutEnd - c_DirectLight.fFallOutStart));
+    //float3 vFinalRadiance = ;
+    
+    float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * c_DirectLight.vRadiance * NdotI;
+    
+    Out.vColor = float4(DirectLighting.rgb, 1.0f);
     return Out;
 }
 

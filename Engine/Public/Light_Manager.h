@@ -3,7 +3,7 @@
 #include "Base.h"
 
 BEGIN(Engine)
-
+class CLight;
 class CLight_Manager final : public CBase
 {
 private:
@@ -19,12 +19,12 @@ public:
 	HRESULT Render(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
 
 public:
-	void Level_Exit();
+	void	Level_Exit();
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
-	list<class CLight*>	 m_Lights;
+	list<CLight*>	 m_Lights;
 
 private:
 	void Clear();

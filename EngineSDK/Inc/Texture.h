@@ -9,8 +9,8 @@ private:
 	virtual ~CTexture() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap = false);
-	virtual HRESULT Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isCubeMap = false);
+	virtual HRESULT Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isSRGB = false, _bool _isCubeMap = false);
+	virtual HRESULT Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isSRGB = false, _bool _isCubeMap = false);
 	virtual HRESULT Initialize(void* _pArg) override;
 
 public:

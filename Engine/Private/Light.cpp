@@ -43,12 +43,24 @@ HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 
 	if (KEY_DOWN(KEY::F))
 	{
-		m_tLightConstData.vPosition = { 0.0f, 50.f, 0.0f };
-		m_tLightConstData.fFallOutStart = 900.f;
-		m_tLightConstData.fFallOutEnd = 1000.f;
-		m_tLightConstData.vDiffuse = { 0.9f, 0.9f, 0.9f, 1.0f };
-		m_tLightConstData.vSpecular = { 0.2f, 0.2f, 0.2f, 1.0f };
-		m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer);
+		if (m_eType == LIGHT_TYPE::POINT)
+		{
+			m_tLightConstData.vPosition = { 0.0f, 20.f, 0.0f };
+			m_tLightConstData.fFallOutStart = 1.f;
+			m_tLightConstData.fFallOutEnd = 30.f;
+			m_tLightConstData.vDiffuse = { 0.0f, 0.0f, 9.0f, 1.0f };
+			m_tLightConstData.vSpecular = { 0.0f, 0.0f, 1.0f, 1.0f };
+			m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer);
+		}
+		if (m_eType == LIGHT_TYPE::DIRECTOINAL)
+		{
+			m_tLightConstData.vDirection = { 0.0f, -1.0f, 1.0f };
+			m_tLightConstData.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+			m_tLightConstData.vDiffuse = _float4(0.1f, 0.1f, 0.1f, 1.0f);
+			m_tLightConstData.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.0f);
+			m_tLightConstData.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.0f);
+			m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer);
+		}
 	}
 
 
@@ -75,19 +87,19 @@ HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	_pVIBuffer->Render();
 
 
-	m_pEffect->SetWorld(XMMatrixIdentity());
-	m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
-	m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
-
-	m_pEffect->Apply(m_pContext);
-	m_pContext->IASetInputLayout(m_pInputLayout);
-	m_pBatch->Begin();
-	BoundingSphere sphere = {};
-	sphere.Center = m_tLightConstData.vPosition;
-	sphere.Radius = 2.0f;
-	DX::Draw(m_pBatch, sphere, XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f));
-
-	m_pBatch->End();
+	//m_pEffect->SetWorld(XMMatrixIdentity());
+	//m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
+	//m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
+	//
+	//m_pEffect->Apply(m_pContext);
+	//m_pContext->IASetInputLayout(m_pInputLayout);
+	//m_pBatch->Begin();
+	//BoundingSphere sphere = {};
+	//sphere.Center = m_tLightConstData.vPosition;
+	//sphere.Radius = 2.0f;
+	//DX::Draw(m_pBatch, sphere, XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f));
+	//
+	//m_pBatch->End();
 	return S_OK;
 }
 

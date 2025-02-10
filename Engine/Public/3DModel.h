@@ -21,6 +21,13 @@ public:
 		COLOR_SHADER_MODE_LAST
 	};
 
+public:
+	typedef struct tag3DModelDesc
+	{
+		// 모델의 머티리얼 클래스가 얕은복사라 같은모델이지만 별도의 머티리얼 컬러를 가지는 경우에 대한 처리가 어려움이있어 생성된 desc
+		_bool isDeepCopyConstBuffer = false;
+		_float4 vMaterialDefaultColor = {};
+	};
 protected:
 	C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C3DModel(const C3DModel& _Prototype);
