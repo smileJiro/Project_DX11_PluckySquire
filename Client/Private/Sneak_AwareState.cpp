@@ -12,10 +12,9 @@ CSneak_AwareState::CSneak_AwareState()
 HRESULT CSneak_AwareState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
-	m_fChase2DRange = pDesc->fChase2DRange;
 	m_fAttackRange = pDesc->fAttackRange;
-	m_fAttack2DRange = pDesc->fAttack2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -30,8 +29,7 @@ void CSneak_AwareState::State_Enter()
 }
 
 void CSneak_AwareState::State_Update(_float _fTimeDelta)
-{
-	if (nullptr == m_pOwner)
+{	if (nullptr == m_pOwner)
 		return;
 	
 	if (nullptr != m_pTarget)

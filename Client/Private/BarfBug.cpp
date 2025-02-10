@@ -170,11 +170,6 @@ void CBarfBug::Update(_float _fTimeDelta)
 
 void CBarfBug::Late_Update(_float _fTimeDelta)
 {
-
-#ifdef _DEBUG
-    if(COORDINATE_3D == Get_CurCoord())
-        m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND, this);
-#endif
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 

@@ -413,41 +413,44 @@ public: /* 2D 충돌 */
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual void		On_Hit(CGameObject* _pHitter, _float _fDamg) override;
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-	void Attack();
+	void Move_Attack_3D();
+	void Attack(CGameObject* _pVictim);
 	void Move(_fvector _vForce, _float _fTimeDelta);
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();
 	void	ThrowSword();
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	//Get
-	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
-	CController_Transform* Get_Transform() {return m_pControllerTransform;}
 	_bool Is_OnGround() {return m_bOnGround;}
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
 	_bool Is_SwordHandling();
 	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
+	_bool Is_AttackTriggerActive();
 	_float Get_UpForce();
 	_float Get_AnimProgress();
-	_vector Get_CenterPosition();
-	_vector  Get_HeadPosition();
 	_float Get_HeadHeight() { return m_fHeadHeight; }
-	_vector Get_LookDirection();
-	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
-	STATE Get_CurrentStateID();
-	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
-	_vector Get_WallNormal() { return m_vWallNormal; }
 	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
-	//_float Get_FootHeightThreshold() { return m_fFootHeightThreshold; }
-	_vector Get_RootBonePosition();
 	_float Get_ArmHeight() { return m_fArmHeight; }
 	_float Get_ArmLength() { return m_fArmLength; }
 	_float Get_AirRotationSpeed() { return m_fAirRotateSpeed; }
-	_float Get_AirRunSpeed() { return m_fAirRunSpeed; } 
+	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
 	_float Get_MoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed; }
 	_float Get_AttackDamg() { return m_tStat.fDamg; }
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
+	_uint Get_2DAttackForwardingSpeed() { return m_f2DAttackForwardSpeed; }
+	_vector Get_CenterPosition();
+	_vector  Get_HeadPosition();
+	_vector Get_LookDirection();
+	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
+	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
+	_vector Get_WallNormal() { return m_vWallNormal; }
+	//_float Get_FootHeightThreshold() { return m_fFootHeightThreshold; }
+	_vector Get_RootBonePosition();
+	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
+	CController_Transform* Get_Transform() { return m_pControllerTransform; }
+	STATE Get_CurrentStateID();
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
 
 	//Set
@@ -462,6 +465,7 @@ public: /* 2D 충돌 */
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
 	void Set_AttackTriggerActive(_bool _bOn);
+	void Flush_AttckedSet() { m_AttckedObjects.clear(); }
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
@@ -482,6 +486,7 @@ private:
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
 	_float m_fFootLength = 0.25;
 	_float m_fAttackForwardingForce = 12.f;
+	_float m_f2DAttackForwardSpeed = 700.f;
 	_float m_fGroundRotateSpeed = 360.f;
 	_float m_fStepSlopeThreshold = 0.3f;
 	//_float m_fFootHeightThreshold = 0.1f;
@@ -518,7 +523,7 @@ private:
 
 	CGameObject* m_pCarryingObject = nullptr;
 
-
+	set<CGameObject*> m_AttckedObjects;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

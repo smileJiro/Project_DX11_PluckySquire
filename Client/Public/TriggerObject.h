@@ -35,6 +35,8 @@ public:
 		// Model 상속을 위한 추가 데이터
 		_uint						iActorType = { (_uint)ACTOR_TYPE::STATIC };
 		_bool						isTrigger = { true };
+		_float3						vLocalPosOffset = {};
+		_bool						FreezeRotation[3] = { true, false, true };
 	}TRIGGEROBJECT_DESC;
 
 protected:
@@ -43,8 +45,8 @@ protected:
 	virtual ~CTriggerObject() = default;
 
 public:
-	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
-	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+	virtual HRESULT				Initialize_Prototype() override;								// 프로토 타입 전용 Initialize
+	virtual HRESULT				Initialize(void* _pArg) override; 							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
 	virtual HRESULT				Render() override;
 
 	virtual HRESULT				Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, TRIGGEROBJECT_DESC* _pDesc);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
@@ -52,7 +54,7 @@ public:
 
 
 	virtual	void				Update(_float _fTimeDelta) override;
-	virtual void				Late_Update(_float _fTimeDelta);
+	virtual void				Late_Update(_float _fTimeDelta) override;
 
 public:
 	_uint						Get_TriggerType() { return m_iTriggerType; }
