@@ -3,7 +3,7 @@
 #include "Engine_Defines.h"
 #include "GameInstance.h"
 #include "Collider.h"
-#include "Coll.h"
+//#include "Coll.h"
 
 
 C2DMapObject::C2DMapObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -82,7 +82,7 @@ void C2DMapObject::Update(_float fTimeDelta)
 
 void C2DMapObject::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+	Register_RenderGroup(RG_2D, PR2D_BOOK_SECTION);
 	__super::Late_Update(fTimeDelta);
 }
 

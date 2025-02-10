@@ -11,6 +11,7 @@
 #include "Section_Manager.h"
 #include "Collision_Manager.h"
 #include "Trigger_Manager.h"
+#include "PlayerData_Manager.h"
 
 
 #include "RenderGroup_MRT.h"
@@ -71,6 +72,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
 	CCollision_Manager::GetInstance()->Update();			// 충돌 검사 수행.
+	CTrigger_Manager::GetInstance()->Update();
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
@@ -147,6 +149,8 @@ HRESULT CMainApp::Initialize_Client_Manager()
 	if (FAILED(CSection_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 	if (FAILED(CTrigger_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+	if (FAILED(CPlayerData_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -454,6 +458,7 @@ void CMainApp::Free()
 	CSection_Manager::DestroyInstance();
 	CCollision_Manager::DestroyInstance();
 	CTrigger_Manager::DestroyInstance();
+	CPlayerData_Manager::DestroyInstance();
 
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();

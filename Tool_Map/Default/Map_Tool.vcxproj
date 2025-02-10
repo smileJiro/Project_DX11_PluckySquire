@@ -109,7 +109,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MAPTOOL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/;.\</AdditionalIncludeDirectories>
@@ -162,6 +162,11 @@
     <ClInclude Include="..\Public\Level_3D_Map_Tool.h" />
     <ClInclude Include="..\Public\Level_Model_Tool.h" />
     <ClInclude Include="..\Public\Model_Tool_Manager.h" />
+    <ClInclude Include="..\Public\RenderGroup_2D.h" />
+    <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
+    <ClInclude Include="..\Public\RenderGroup_Final.h" />
+    <ClInclude Include="..\Public\RenderGroup_Lights.h" />
+    <ClInclude Include="..\Public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\Public\Task_Manager.h" />
     <ClInclude Include="..\Public\3DMap_Tool_Manager.h" />
@@ -200,6 +205,11 @@
     <ClCompile Include="..\Private\Level_3D_Map_Tool.cpp" />
     <ClCompile Include="..\Private\Level_Model_Tool.cpp" />
     <ClCompile Include="..\Private\Model_Tool_Manager.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_2D.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Lights.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\Private\Task_Manager.cpp" />
     <ClCompile Include="..\Private\3DMap_Tool_Manager.cpp" />

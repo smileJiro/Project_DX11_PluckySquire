@@ -4,15 +4,17 @@
 			"id": "dialog_01",
 			"lines": [
 				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 3,
-					"location": 1,
+					"Portrait": 2,
+					"Talker": "마르티나",
+					"BG": 2,
+					"location": 2,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "마법을 쓰러가볼까요?",
+					"text": "안녕하세요, 용감한 용사 여러분!",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -22,11 +24,93 @@
 					"Talker": "마티나",
 					"BG": 2,
 					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "제가 마법인걸요?",
+					"text": "전 마르티나라고 해요... 만나서 반가워요!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 3,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "새 물건이 들어왔어요. 한번 보세요!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 4,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "LEFT_DOWN의 위치에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 5,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "LEFT_HIGH의 위치에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 6,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "RIGHT_HIGH의 위치에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마티나",
+					"BG": 2,
+					"location": 7,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "RIGHT_DOWN의 위치에요",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -41,6 +125,8 @@
 					"Talker": "달수염",
 					"BG": 0,
 					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -55,6 +141,8 @@
 					"Talker": "달수염",
 					"BG": 0,
 					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -69,6 +157,8 @@
 					"Talker": "달수염",
 					"BG": 0,
 					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -83,11 +173,50 @@
 					"Talker": "달수염",
 					"BG": 0,
 					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
 					"text": "목적지는... 댄스 시티!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "Event_Dialogue_01",
+			"lines": [
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이벤트 트리거 테스트입니다.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 16,
+					"Talker": "테스트",
+					"BG": 0,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이벤트 트리거 테스트2입니다.",
 					"Red": 161,
 					"Green": 210,
 					"Blue": 234

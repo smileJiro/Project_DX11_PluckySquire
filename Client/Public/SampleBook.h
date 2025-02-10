@@ -54,14 +54,15 @@ public:
 	void					PageAction_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void					PageAction_Call_PlayerEvent();
 
-public :
 
+public:						
+	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);
 
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
 	ID3D11Texture2D*		m_pStagingTexture = nullptr;
-
+	_float3					m_fNextPos = {};
 	_bool					m_isAction = { false };
 
 public:

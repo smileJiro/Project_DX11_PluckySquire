@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+BEGIN(Client)
 class CBeetle final : public CMonster
 {
 public:
@@ -54,6 +55,7 @@ public:
 
 public:
 	virtual void Change_Animation() override;
+	virtual void Turn_Animation(_bool _isCW) override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
@@ -67,3 +69,4 @@ public:
 	virtual void			Free() override;
 };
 
+END

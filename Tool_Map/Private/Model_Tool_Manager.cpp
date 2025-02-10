@@ -300,14 +300,14 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 		"METALNESS",
 		"DIFFUSE_ROUGHNESS",
 		"AMBIENT_OCCLUSION",
-		"UNKNOWN",
-		"SHEEN",
-		"CLEARCOAT",
-		"TRANSMISSION",
-		"MAYA_BASE",
-		"MAYA_SPECULAR",
-		"MAYA_SPECULAR_COLOR",
-		"MAYA_SPECULAR_ROUGHNESS",
+		//"UNKNOWN",
+		//"SHEEN",
+		//"CLEARCOAT",
+		//"TRANSMISSION",
+		//"MAYA_BASE",
+		//"MAYA_SPECULAR",
+		//"MAYA_SPECULAR_COLOR",
+		//"MAYA_SPECULAR_ROUGHNESS",
 	};
 	static _uint __iDeleteTextureIndex = 0;
 	static _uint __iSelectTextureIndex = 0;
@@ -385,7 +385,7 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 			if (ImGui::BeginListBox("##MaterialNames", ImVec2(200.f, 3 * ImGui::GetTextLineHeightWithSpacing())))
 			{
 				_uint iIndex = 0;
-				for (_uint i = 0 ; i < iMaterialCount; ++i)
+				for (_uint i = 0; i < iMaterialCount; ++i)
 				{
 					string strMaterialName = "Material_";
 					strMaterialName += std::to_string(i);
@@ -403,7 +403,7 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 			if (ImGui::BeginListBox("##TextureEnumNameList", ImVec2(200.f, 5 * ImGui::GetTextLineHeightWithSpacing())))
 			{
 				_uint iIndex = 1;
-				for (_uint i = 1 ; i < aiTextureType_UNKNOWN ; ++i)
+				for (_uint i = 1; i < aiTextureType_UNKNOWN; ++i)
 				{
 					if (ImGui::Selectable(arrEnumText[i].c_str(), iIndex == __iSelectTextureTypeIndex))
 					{
@@ -491,7 +491,7 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 
 		vector<CMapObject::TEXTURE_INFO> Textures;
 
-		for (_uint iTextureType = 0; iTextureType < aiTextureType_UNKNOWN; iTextureType++)
+		for (_uint iTextureType = 1; iTextureType < aiTextureType_UNKNOWN; iTextureType++)
 		{
 			ImGui::NewLine();
 
@@ -502,6 +502,15 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 				0 < Textures.size()
 				)
 			{
+
+				auto CheckIter = find_if(Textures.begin(), Textures.end(), [](CMapObject::TEXTURE_INFO& tInfo) {
+					return nullptr != tInfo.pSRV;
+					});
+				if (Textures.end() == CheckIter)
+				{
+					continue;
+				}
+
 				ImGui::SeparatorText(arrEnumText[iTextureType].c_str());
 
 				_uint iMaterialIdx = 0;
@@ -597,56 +606,61 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 
 						iMaterialIdx++;
 					}
-
-					string strButtonTag = std::to_string(tDiffuseInfo.iMaterialIndex) + "_" + std::to_string(tDiffuseInfo.iTextureIndex) + "_" + arrEnumText[iTextureType];
-					ImVec2 size = ImVec2(48.0f, 48.0f);
-					ImVec2 uv0 = ImVec2(0.0f, 0.0f);
-					ImVec2 uv1 = ImVec2(1.0f, 1.0f);
-					ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-					_uint iCurrenrTextureIndex = pTargetObj->Get_TextureIdx(iTextureType, tDiffuseInfo.iMaterialIndex);
-
-					if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
-						ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.6f, 0.9f, 1.0f)); // 선택된 버튼의 배경색
-
-					if (ImGui::ImageButton(strButtonTag.c_str(), (ImTextureID)tDiffuseInfo.pSRV, size, uv0, uv1, bg_col, tint_col))
-						pTargetObj->Change_TextureIdx(tDiffuseInfo.iTextureIndex, iTextureType, tDiffuseInfo.iMaterialIndex);
-
-					if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
-						ImGui::PopStyleColor(1);
-
-					if (ImGui::IsItemHovered())
+					if (nullptr != tDiffuseInfo.pSRV)
 					{
-						if (ImGui::BeginItemTooltip())
+						string strButtonTag = std::to_string(tDiffuseInfo.iMaterialIndex) + "_" + std::to_string(tDiffuseInfo.iTextureIndex) + "_" + arrEnumText[iTextureType];
+						ImVec2 size = ImVec2(48.0f, 48.0f);
+						ImVec2 uv0 = ImVec2(0.0f, 0.0f);
+						ImVec2 uv1 = ImVec2(1.0f, 1.0f);
+						ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
+						ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+						_uint iCurrenrTextureIndex = pTargetObj->Get_TextureIdx(iTextureType, tDiffuseInfo.iMaterialIndex);
+
+						if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
+							ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.6f, 0.9f, 1.0f)); // 선택된 버튼의 배경색
+
+						if (ImGui::ImageButton(strButtonTag.c_str(), (ImTextureID)tDiffuseInfo.pSRV, size, uv0, uv1, bg_col, tint_col))
+							pTargetObj->Change_TextureIdx(tDiffuseInfo.iTextureIndex, iTextureType, tDiffuseInfo.iMaterialIndex);
+
+						if (tDiffuseInfo.iTextureIndex == iCurrenrTextureIndex)
+							ImGui::PopStyleColor(1);
+
+						if (ImGui::IsItemHovered())
 						{
-							ImGui::SeparatorText(WstringToString(tDiffuseInfo.szTextureName).c_str());
-							ImGui::Image((ImTextureID)tDiffuseInfo.pSRV,
-								ImVec2(256.f, 256.f)
-							);
-							ImGui::EndTooltip();
+							if (ImGui::BeginItemTooltip())
+							{
+								ImGui::SeparatorText(WstringToString(tDiffuseInfo.szTextureName).c_str());
+								ImGui::Image((ImTextureID)tDiffuseInfo.pSRV,
+									ImVec2(256.f, 256.f)
+								);
+								ImGui::EndTooltip();
+							}
+
+							_bool isClicked = false;
+							if (
+								//tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex 
+								//&& 
+								ImGui::IsItemClicked(ImGuiMouseButton_Right)
+								)
+							{
+								ImGui::OpenPopup("##ModelPreviewPopup");
+
+								isClicked = true;
+							}
+
+							if (isClicked)
+							{
+								__iDeleteTextureIndex = tDiffuseInfo.iTextureIndex;
+								__iSelectTextureIndex = iCurrenrTextureIndex;
+								__iTextureType = iTextureType;
+								__iMaterialIndex = tDiffuseInfo.iMaterialIndex;
+
+								_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
+								ImGui::SetNextWindowPos({ fCursorPos.x + 150.f, fCursorPos.y + 100.f });
+							}
 						}
-
-
-						_bool isClicked = false;
-						if (tDiffuseInfo.iTextureIndex != iCurrenrTextureIndex && ImGui::IsItemClicked(ImGuiMouseButton_Right))
-						{
-							ImGui::OpenPopup("##ModelPreviewPopup");
-
-							isClicked = true;
-						}
-
-						if (isClicked)
-						{
-							__iDeleteTextureIndex = tDiffuseInfo.iTextureIndex;
-							__iSelectTextureIndex = iCurrenrTextureIndex;
-							__iTextureType = iTextureType;
-							__iMaterialIndex = tDiffuseInfo.iMaterialIndex;
-
-							_float2 fCursorPos = m_pGameInstance->Get_CursorPos();
-							ImGui::SetNextWindowPos({ fCursorPos.x + 150.f, fCursorPos.y + 100.f });
-						}
+						ImGui::SameLine();
 					}
-					ImGui::SameLine();
 				}
 
 

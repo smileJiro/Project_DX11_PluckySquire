@@ -674,21 +674,8 @@ HRESULT CLevel_AnimTool::Copy_Textures(CTestModelObject* _pModel, std::filesyste
 	assert(_pModel);
 	assert(!_wstrSrcPath.empty());
 	assert(!_wstrDstPath.empty());
-	set<wstring> TextureNames;
-	_pModel->Get_TextureNames(TextureNames);
 
-	for (const auto& entry : std::filesystem::recursive_directory_iterator(_wstrSrcPath)) {
-		if (entry.path().extension() == ".png" ) 
-		{
-			if (TextureNames.find(entry.path().filename().replace_extension()) != TextureNames.end())
-			{
-				std::filesystem::path dstPath = _wstrDstPath;
-				dstPath += entry.path().filename();
-				std::filesystem::copy(entry.path(), dstPath, std::filesystem::copy_options::overwrite_existing);
-			}
-		}
-	}
-
+	_pModel->Copy_Textures( _wstrDstPath);
 
 	return S_OK;
 }

@@ -6,33 +6,19 @@ class CSection_2D final : public CSection
 {
 
 public:
-	enum SECTION_2D_TYPE
+	enum SECTION_2D_RENDER_TYPE
 	{
 		NONE_SECTION,
 		ON_SECTION_BOOK,
 		ON_SECTION_3D_IN_2D,
 		SECTION_LAST
 	};
-	
-	enum SECTION_2D_PLAY_TYPE
-	{
-		PLAYMAP,
-		NARRAION,
-		SECTION_2D_PLAY_TYPE_LAST
-	};
-
-	enum BOOK_2D_TYPE
-	{
-		BOOK_DOUBLE,
-		BOOK_SINGLE_LEFT,
-		BOOK_SINGLE_RIGHT,
-		BOOK_2D_TYPE_LAST
-	};
 
 	enum SECTION_2D_RENDERGROUP
 	{
 		SECTION_2D_BACKGROUND,
 		SECTION_2D_OBJECT,
+		SECTION_2D_TRIGGER,
 		SECTION_2D_UI,
 		SECTION_2D_RENDERGROUP_LAST,
 	};
@@ -44,19 +30,13 @@ public :
 		_wstring				strFileName;
 		_wstring				strMapName;
 		_float2					fRenderTarget_Size;
-		SECTION_2D_TYPE			eSectionType = {};
-		SECTION_2D_PLAY_TYPE	eSectionPlayType = {};
-		BOOK_2D_TYPE			eBookType = {};
+		SECTION_2D_RENDER_TYPE	eSectionRenderType = {};
 
-		void Book_2D_Build(const _wstring _strBookSectionName, SECTION_2D_PLAY_TYPE _ePlayType = PLAYMAP, BOOK_2D_TYPE _eType = BOOK_DOUBLE)
+		void Book_2D_Build(const _wstring _strBookSectionName)
 		{
-			eSectionType = ON_SECTION_BOOK;
-			eBookType = _eType;
+			eSectionRenderType = ON_SECTION_BOOK;
 			strSectionName = _strBookSectionName;
-			eSectionPlayType = _ePlayType;
 			fRenderTarget_Size = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
-			if (BOOK_DOUBLE != eBookType)
-				fRenderTarget_Size.x *= 0.5f;
 		}
 
 	}SECTION_2D_DESC;
@@ -83,6 +63,8 @@ public:
 	ID3D11ShaderResourceView*			Get_SRV_FromTexture(_uint _iTextureIndex);
 
 	_float2								Get_RenderTarget_Size();
+
+	virtual HRESULT Section_AddRenderGroup_Process() override;
 
 
 	// 맵 연결 생각안해놨는데, 일단 해보자.

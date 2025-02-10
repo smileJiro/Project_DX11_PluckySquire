@@ -106,7 +106,7 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 
-    _vector vDirection = XMVector3Normalize(_vDirection);
+	_vector vDirection = XMVector3Normalize(XMVectorSetY(_vDirection, 0.f));
     _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     _float3 vLookDiff; XMStoreFloat3(&vLookDiff, vDirection - vLook);
     _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, vDirection - m_vLookBefore);
@@ -149,6 +149,8 @@ _bool CCharacter::Move_To(_fvector _vPosition)
     static _float fEpsilon = 0.5f;
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
     _vector vDir = _vPosition - Get_FinalPosition();
+    vDir.m128_f32[1] = 0.f;
+    vDir.m128_f32[3] = 0.f;
     _float fLength = XMVectorGetX(XMVector3Length(vDir));
     if (fEpsilon >= fLength)
     {

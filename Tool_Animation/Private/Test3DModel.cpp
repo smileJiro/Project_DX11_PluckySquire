@@ -39,6 +39,15 @@ HRESULT CTest3DModel::Export_Model(ofstream& _outfile)
 	return S_OK;
 }
 
+HRESULT CTest3DModel::Copy_Textures(const filesystem::path& _szDestPath)
+{
+	for (auto& pMaterial : m_Materials)
+	{
+		static_cast<CToolMaterial*>(pMaterial)->Copy_Texture(_szDestPath);
+	}
+	return S_OK;
+}
+
 void CTest3DModel::Set_Progress(_float _fTrackPos)
 {
 	if (m_Animations.empty())

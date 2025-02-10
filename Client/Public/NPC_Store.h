@@ -1,10 +1,11 @@
 #pragma once
 #include "Npc.h"
+#include "Interactable.h"
 
 
 
 BEGIN(Client)
-class CNPC_Store final: public CNPC
+class CNPC_Store final: public CNPC, public IInteractable
 {
 
 public:
@@ -57,9 +58,13 @@ public:
 
 
 protected:
-	virtual HRESULT Ready_ActorDesc(void* _pArg) override;
-	virtual HRESULT Ready_Components() override;
-	virtual HRESULT Ready_PartObjects() override;
+	virtual HRESULT				Ready_ActorDesc(void* _pArg) override;
+	virtual HRESULT				Ready_Components() override;
+	virtual HRESULT				Ready_PartObjects() override;
+
+	virtual void				Interact(CPlayer* _pUser);
+	virtual _bool				Is_Interactable(CPlayer* _pUser);
+	virtual _float				Get_Distance(CPlayer* _pUser);
 
 public:
 	static CNPC_Store*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -69,8 +74,12 @@ public:
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-protected:
-	//virtual HRESULT Ready_Components();
+	void						ChangeState_Panel();
+
+private:
+	_bool						m_isDialoging = { false };
+	_bool						m_isOpenSate = { false };
+
 
 
 

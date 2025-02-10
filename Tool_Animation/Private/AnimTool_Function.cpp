@@ -182,6 +182,32 @@ namespace AnimTool
 		return L""; // 취소 시 빈 문자열 반환
 	}
 
+	std::string Get_SuperKey(const filesystem::path& _path)
+	{
+		filesystem::path strPath = _path;
+		string strSuperKey = strPath.parent_path().filename().string();
+		while (strSuperKey._Equal("Frames" ) || strSuperKey._Equal("Textures") || strSuperKey._Equal("Sprites"))
+		{
+			strPath = strPath.parent_path();
+			strSuperKey = strPath.parent_path().filename().string();
+		}
+		return strSuperKey;
+	}
+
+	std::string Get_TextureName_FromKey(string _strKey)
+	{
+		size_t iPos = _strKey.find("$");
+		if (iPos != string::npos)
+			return _strKey.substr(iPos + 1);
+	}
+
+	std::string MakeTextureKey(const filesystem::path& _path)
+	{
+		string wstrKey = Get_SuperKey(_path) + "$";
+		wstrKey  += _path.filename().replace_extension().string();
+		return wstrKey;
+	}
+
 
 
 	F_DIRECTION To_FDirection(_vector _vDir)

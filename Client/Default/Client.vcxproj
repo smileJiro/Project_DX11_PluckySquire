@@ -211,8 +211,10 @@
     <ClInclude Include="..\public\Collision_Manager.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
     <ClInclude Include="..\Public\Interactable.h" />
-    <ClInclude Include="..\Public\Item.h" />
-    <ClInclude Include="..\Public\Item_Manager.h" />
+    <ClInclude Include="..\Public\Level_Chapter_04.h" />
+    <ClInclude Include="..\Public\Narration_2D.h" />
+    <ClInclude Include="..\Public\PlayerItem.h" />
+    <ClInclude Include="..\Public\PlayerData_Manager.h" />
     <ClInclude Include="..\public\MainTable.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
@@ -287,12 +289,13 @@
     <ClInclude Include="..\Public\Sneak_IdleState.h" />
     <ClInclude Include="..\Public\Sneak_InvestigateState.h" />
     <ClInclude Include="..\Public\Sneak_PatrolState.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
     <ClInclude Include="..\Public\Soldier_Spear.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
+    <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\Trigger_Manager.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
     <ClInclude Include="..\Public\MeleeAttackState.h" />
@@ -307,7 +310,7 @@
     <ClInclude Include="..\Public\RangedAttackState.h" />
     <ClInclude Include="..\public\SettingPanelBG.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
-    <ClInclude Include="..\Public\Level_GamePlay.h" />
+    <ClInclude Include="..\Public\Level_Chapter_02.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Level_Static.h" />
@@ -357,8 +360,10 @@
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
-    <ClCompile Include="..\Private\Item.cpp" />
-    <ClCompile Include="..\Private\Item_Manager.cpp" />
+    <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
+    <ClCompile Include="..\Private\Narration_2D.cpp" />
+    <ClCompile Include="..\Private\PlayerItem.cpp" />
+    <ClCompile Include="..\Private\PlayerData_Manager.cpp" />
     <ClCompile Include="..\Private\Interactable.cpp" />
     <ClCompile Include="..\private\MainTable.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
@@ -430,12 +435,13 @@
     <ClCompile Include="..\Private\Sneak_IdleState.cpp" />
     <ClCompile Include="..\Private\Sneak_InvestigateState.cpp" />
     <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
     <ClCompile Include="..\Private\Soldier_Spear.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
+    <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\Trigger_Manager.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
     <ClCompile Include="..\Private\MeleeAttackState.cpp" />
@@ -449,7 +455,7 @@
     <ClCompile Include="..\Private\RangedAttackState.cpp" />
     <ClCompile Include="..\private\SettingPanelBG.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+    <ClCompile Include="..\Private\Level_Chapter_02.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp" />

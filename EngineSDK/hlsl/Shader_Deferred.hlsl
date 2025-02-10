@@ -359,7 +359,6 @@ PS_OUT PS_AFTER_EFFECT(PS_IN In)
     return Out;
 }
 
-
 PS_OUT PS_AFTER_PARTICLE(PS_IN In)
 {     
     PS_OUT Out = (PS_OUT) 0;

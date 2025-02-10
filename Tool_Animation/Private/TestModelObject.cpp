@@ -234,6 +234,22 @@ HRESULT CTestModelObject::Export_Model(ofstream& _outfile, const _char* _szDirPa
     return S_OK;
 }
 
+HRESULT CTestModelObject::Copy_Textures(const filesystem::path& _szDestPath)
+{
+    assert(m_pControllerModel);
+    assert(COORDINATE_LAST != m_eCurCoord);
+    switch (m_eCurCoord)
+    {
+    case Engine::COORDINATE_2D:
+        return static_cast<CTest2DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Copy_Textures(_szDestPath);
+    case Engine::COORDINATE_3D:
+        return static_cast<CTest3DModel*>(m_pControllerModel->Get_Model(m_eCurCoord))->Copy_Textures(_szDestPath);
+    default:
+        return E_FAIL;
+    }
+    return S_OK;
+}
+
 
 CTestModelObject* CTestModelObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

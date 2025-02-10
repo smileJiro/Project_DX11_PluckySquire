@@ -12,8 +12,9 @@ CState::CState()
 
 HRESULT CState::Initialize(void* _pArg)
 {
+	m_iCurLevel = static_cast<STATEDESC*>(_pArg)->iCurLevel;
 	//플레이어 위치 가져오기
-	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_GAMEPLAY, TEXT("Layer_Player"), 0);
+	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevel, TEXT("Layer_Player"), 0);
 	if (nullptr == m_pTarget)
 	{
 	#ifdef _DEBUG
@@ -76,6 +77,53 @@ _float CState::Get_CurCoordRange(MONSTER_STATE _eState)
 	}
 
 	return fRange;
+}
+
+_bool CState::Check_Target3D(_bool _isSneak)
+{
+	if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+		return false;
+
+	MONSTER_STATE eState = MONSTER_STATE::ALERT;
+	if (true == _isSneak)
+		eState = MONSTER_STATE::SNEAK_ALERT;
+
+	if (m_pOwner->IsTarget_In_Detection())
+	{
+		//------테스트
+		_vector vTargetDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
+		_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+		_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(vTargetDir));
+		_float3 vOutPos;
+		CActorObject* pActor = nullptr;
+
+		if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
+		{
+			if (OBJECT_GROUP::RAY_OBJECT ^ static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup)
+			{
+				//플레이어가 레이 오브젝트보다 가까우면 인식
+				if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos) - m_pOwner->Get_FinalPosition()))
+				{
+					Event_ChangeMonsterState(eState, m_pFSM);
+					return true;
+				}
+			}
+		}
+		//레이 충돌 안했을 때(장애물이 없었을 때)
+		else
+		{
+			Event_ChangeMonsterState(eState, m_pFSM);
+			return true;
+		}
+		//---------
+	}
+
+	return false;
+}
+
+void CState::Set_Sneak_InvestigatePos(_fvector _vPosition)
+{
+	XMStoreFloat3(&m_vSneakPos, _vPosition);
 }
 
 

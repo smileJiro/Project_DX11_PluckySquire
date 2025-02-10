@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "Shader.h"
 
+
 CTexture::CTexture(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
 	, m_iNumSRVs(0)
@@ -16,9 +17,10 @@ CTexture::CTexture(const CTexture& _Prototype)
 {
 	for (auto& pSRV : m_SRVs)
 		Safe_AddRef(pSRV);
+
 }
 
-HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures)
+HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
 {
 	/* TextureFilePath 에서 확장자의 이름, %d >>> 숫자로 바꾸기, 등을 수행 후 Load 하고 m_SRVs 에 Pushback */
 
@@ -42,7 +44,20 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 
 		if (false == lstrcmpW(szEXT, TEXT(".dds")))
 		{
-			hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+			if (_isCubeMap) 
+			{
+				UINT miscFlags = 0;
+				// CubeMap인 경우 해당 Flag를 추가하여 TextureFile Create
+				miscFlags |= D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+				CreateDDSTextureFromFileEx(m_pDevice, szTextureFilePath, 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
+										   DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
+			}
+			else
+			{
+				hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+			}
+
 		}
 		else if (false == lstrcmpW(szEXT, TEXT(".tga")))
 		{
@@ -63,7 +78,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 	return S_OK;
 }
 
-HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures)
+HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
 {
 	m_iNumSRVs = _iNumTextures;
 
@@ -87,7 +102,18 @@ HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _i
 
 		if (false == strcmp(szEXT, ".dds"))
 		{
-			hr = DirectX::CreateDDSTextureFromFile(m_pDevice, wszFullPath, nullptr, &pSRV);
+			if (_isCubeMap)
+			{
+				UINT miscFlags = 0;
+				// CubeMap인 경우 해당 Flag를 추가하여 TextureFile Create
+				miscFlags |= D3D11_RESOURCE_MISC_TEXTURECUBE;
+				CreateDDSTextureFromFileEx(m_pDevice, wszFullPath, 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
+					DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
+			}
+			else
+			{
+				hr = DirectX::CreateDDSTextureFromFile(m_pDevice, wszFullPath, nullptr, &pSRV);
+			}
 		}
 		else if (false == strcmp(szEXT, ".tga"))
 		{
@@ -122,6 +148,7 @@ HRESULT CTexture::Bind_ShaderResource(CShader* _pShader, const _char* _pConstant
 
 	_pShader->Bind_SRV(_pConstantName, m_SRVs[_iSRVIndex]);
 
+	
 	return S_OK;
 }
 

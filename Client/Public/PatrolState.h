@@ -53,6 +53,8 @@ private:
 	_bool m_isBack = { false };
 	_float3 m_vRotate = {};
 
+	vector<_float3> m_Waypoints = {};
+
 public:
 	static CPatrolState* Create(void* _pArg);
 

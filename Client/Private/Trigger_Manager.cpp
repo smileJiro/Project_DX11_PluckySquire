@@ -1,7 +1,14 @@
 #include "stdafx.h"
 #include "Trigger_Manager.h"
+#include "Section.h"
 
 #include "GameInstance.h"
+
+#include "Camera_Manager.h"
+#include "Camera_Target.h"
+#include "Section_2D.h"
+
+#include "UI_Manager.h"
 
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 
@@ -23,10 +30,18 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 
+	Resister_Trigger_Action();
+
     return S_OK;
 }
 
-HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath)
+
+void CTrigger_Manager::Update()
+{
+	Execute_Trigger_Event();
+}
+
+HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection)
 {
 	ifstream file(_szFilePath);
 
@@ -36,7 +51,6 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 		file.close();
 		return E_FAIL;
 	}
-
 	json Result;
 	file >> Result;
 	file.close();
@@ -89,7 +103,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 				}
 				else if (COORDINATE_2D == Desc.eStartCoord)
 				{
-					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc)))
+					if (FAILED(After_Initialize_Trigger_2D(Trigger_json, static_cast<CTriggerObject*>(pTrigger), Desc, _pSection)))
 						return E_FAIL;
 				}
 			}
@@ -104,6 +118,63 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 	return S_OK;
 }
 
+HRESULT CTrigger_Manager::Load_TriggerEvents(_wstring _szFilePath)
+{
+	ifstream file(_szFilePath);
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 열 수 없습니다.");
+		file.close();
+		return E_FAIL;
+	}
+
+	json Result;
+	file >> Result;
+	file.close();
+
+	for (auto& Trigger_Event : Result) {
+		_wstring szTriggerEventTag = m_pGameInstance->StringToWString(Trigger_Event["Trigger_EventTag"]);
+
+		if (Trigger_Event.contains("Actions") && Trigger_Event["Actions"].is_array()) {
+
+			for (auto& Action : Trigger_Event["Actions"]) {
+				ACTION tAction;
+
+				_wstring szActionTag = m_pGameInstance->StringToWString(Action["ActionTag"]);
+				tAction.Action = m_Actions[szActionTag];
+				tAction.EventTag = m_pGameInstance->StringToWString(Action["EventTag"]);
+				tAction.isSequence = Action["Is_Sequence"];
+				tAction.isOn = false;
+
+				m_TriggerEvents[szTriggerEventTag].push(tAction);
+			}
+		}
+	}
+
+	return S_OK;
+}
+
+void CTrigger_Manager::On_End(_wstring _szEventTag)
+{
+	if (m_CurTriggerEvent.size() <= 0)
+		return;
+
+	if(_szEventTag == m_CurTriggerEvent.front().EventTag)
+		m_isEventEnd = true;
+}
+
+void CTrigger_Manager::Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
+{
+	auto iterator = m_TriggerEvents.find(_TriggerEventTag);
+
+	if (iterator != m_TriggerEvents.end()) {
+		m_CurTriggerEvent = iterator->second;
+	}
+
+	m_iTriggerID = _iTriggerID;
+}
+
 HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
 {
 	json& ColliderInfoJson = _TriggerJson["Collider_Info"];
@@ -115,7 +186,7 @@ HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject
 	_tDesc.fRadius = ColliderInfoJson["Radius"];
 
 	return S_OK;
-}
+} 
 
 HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
 {
@@ -152,13 +223,35 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTrigge
 
 HRESULT CTrigger_Manager::Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
 {
+	json& ColliderInfoJson = _TriggerJson["Collider_Info"];
+
+	_tDesc.tTransform2DDesc.vInitialPosition = { ColliderInfoJson["Position"][0].get<_float>(),  ColliderInfoJson["Position"][1].get<_float>() , 1.f };
+	_tDesc.tTransform2DDesc.vInitialScaling = { ColliderInfoJson["Scale"][0].get<_float>(),  ColliderInfoJson["Scale"][1].get<_float>() ,1.f };
+
 	return S_OK;
 }
 
 
-HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
+HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection)
 {
-	return E_NOTIMPL;
+		// Custom Data
+	_string szKey = "Next_Position";
+
+	switch (_tDesc.iTriggerType) {
+		case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
+		{
+			if (_TriggerJson.contains("MapTrigger_Info")) 
+			{
+				_float3 fNextPosition = { _TriggerJson["MapTrigger_Info"][szKey][0].get<_float>(),  _TriggerJson["MapTrigger_Info"][szKey][1].get<_float>(), 1.f};
+				static_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), fNextPosition);
+			}
+		}
+		break;
+	}
+
+	if (nullptr != _pSection)
+		_pSection->Add_GameObject_ToSectionLayer(_pTriggerObject, CSection_2D::SECTION_2D_TRIGGER);
+	return S_OK;
 }
 
 void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger)
@@ -227,9 +320,43 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;
+	case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
+		_pTrigger->Resister_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			_float3 fNextPosition = any_cast<_float3>(_pTrigger->Get_CustomData(TEXT("Next_Position")));
+			if (_wstring::npos != _szEventTag.rfind(L"Next"))
+			{
+				Event_Book_Main_Section_Change_Start(1,&fNextPosition);
+			}
+			{
+				Event_Book_Main_Section_Change_Start(0, &fNextPosition);
+			}
+			});
+		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
+	{
+		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+			});
+	}
 		break;
 	}
+}
+
+void CTrigger_Manager::Resister_Trigger_Action()
+{
+	m_Actions[TEXT("Camera_Arm_Move")] = [this](_wstring _wszEventTag) {
+		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(_wszEventTag, m_iTriggerID))
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+		};
+
+	m_Actions[TEXT("Camera_Arm_Return")] = [this](_wstring _wszEventTag) {
+		CCamera_Manager::GetInstance()->Set_PreArmDataState(m_iTriggerID, true);
+		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::RETURN_TO_PREARM);
+		};
+
+	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
+		Uimgr->Set_DialogId(TEXT("Event_Dialogue_01"));
+		};
 }
 
 _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box)
@@ -263,6 +390,44 @@ _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, P
 	}
 
 	return EXIT_RETURN_MASK::NONE;
+}
+
+void CTrigger_Manager::Execute_Trigger_Event()
+{
+	//if (nullptr == m_pCurTriggerEvent)
+	//	return;
+
+	if (m_CurTriggerEvent.size() <= 0)
+		return;
+
+	// 바로 실행
+	if (false == m_CurTriggerEvent.front().isSequence) {
+		m_CurTriggerEvent.front().Action(m_CurTriggerEvent.front().EventTag);
+		m_CurTriggerEvent.pop();
+
+		Execute_Trigger_Event();
+	}
+	// 될 때까지 기다리기
+	else {
+		// 처음 시작
+		if (false == m_CurTriggerEvent.front().isOn) {
+			m_CurTriggerEvent.front().Action(m_CurTriggerEvent.front().EventTag);
+			m_CurTriggerEvent.front().isOn = true;
+		}
+		// 실행 중, 끝나서 m_isEventEnd가 true가 될 때까지 대기
+		else {
+			// 해당 Event가 끝남
+			if (true == m_isEventEnd) {
+				m_CurTriggerEvent.pop();
+				m_isEventEnd = false;
+			}
+			// 해당 Event가 아직 안 끝남
+			else { 
+
+			}
+
+		}
+	}
 }
 
 void CTrigger_Manager::Free()

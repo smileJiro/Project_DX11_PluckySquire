@@ -43,10 +43,12 @@ void CActor_Dynamic::Update(_float _fTimeDelta)
 		XMStoreFloat4x4(&FinalMatrix, XMLoadFloat4x4(&m_OffsetMatrix) * OwnerWorldMatrix);
 		PxMat44 PxFinalMatrix((_float*)(&FinalMatrix));
 		PxTransform pxTransform{ PxFinalMatrix };
-		if(pxTransform.isValid())
+		if (pxTransform.isValid())
 			static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(pxTransform);
+		else
+			return;
 	}
-
+	 
 }
 
 void CActor_Dynamic::Late_Update(_float _fTimeDelta)
@@ -59,12 +61,16 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 			return;
 
+		_float3 vOwnerScale = m_pOwner->Get_ControllerTransform()->Get_Scale();
+
 		PxTransform DynamicTransform = static_cast<PxRigidDynamic*>(m_pActor)->getGlobalPose();
 		_matrix TranslationMatrix = XMMatrixTranslation(DynamicTransform.p.x, DynamicTransform.p.y, DynamicTransform.p.z);
 		_matrix QuatMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(DynamicTransform.q.x, DynamicTransform.q.y, DynamicTransform.q.z, DynamicTransform.q.w));
 		_float4x4 WorldMatrix = {};
 		XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
 		m_pOwner->Set_WorldMatrix(WorldMatrix);
+
+		m_pOwner->Set_Scale(vOwnerScale);
 	}
 	
 #ifdef _DEBUG

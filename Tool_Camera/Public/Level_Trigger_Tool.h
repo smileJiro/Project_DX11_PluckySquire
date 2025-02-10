@@ -3,7 +3,6 @@
 
 BEGIN(Engine)
 class CGameObject;
-class CTriggerObject;
 END
 
 BEGIN(Camera_Tool)
@@ -12,12 +11,14 @@ class CLevel_Trigger_Tool final : public CLevel
 {
 	enum TRIGGER_TYPE
 	{
+		EVENT_TRIGGER,
 		ARM_TRIGGER,
 		CUTSCENE_TRIGGER,
 		FREEZE_X_TRIGGER,
 		FREEZE_Z_TRIGGER,
 		TELEPORT_TRIGGER,
-		EVENT_TRIGGER,
+		SECTION_CHANGE_TRIGGER,
+
 		TRIGGER_TYPE_END
 	};
 
@@ -61,8 +62,8 @@ public:
 	HRESULT				Ready_DataFiles();
 
 private:
-	list<pair<TRIGGEROBJECT_DATA, CTriggerObject*>>		m_Triggers;
-	pair<TRIGGEROBJECT_DATA, CTriggerObject*>*			m_pCurTrigger = { nullptr };
+	list<pair<TRIGGEROBJECT_DATA, class CTriggerObject*>>		m_Triggers;
+	pair<TRIGGEROBJECT_DATA, class CTriggerObject*>*			m_pCurTrigger = { nullptr };
 
 	_float3				m_vPosition = {};
 	_float3				m_vRotation = {};

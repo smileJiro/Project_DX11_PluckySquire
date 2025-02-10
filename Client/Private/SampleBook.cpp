@@ -64,7 +64,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	m_pAnimEventGenerator = 
 		static_cast<CAnimEventGenerator*> 
 		(m_pGameInstance->
-			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_GAMEPLAY, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
+			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
 	
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
@@ -133,26 +133,18 @@ void CSampleBook::Priority_Update(_float _fTimeDelta)
 void CSampleBook::Update(_float _fTimeDelta)
 {
 	
-	if (KEY_DOWN(KEY::M))
-	{
-		if (Book_Action(NEXT))
-		{
-			m_isAction = true;
-			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
-			//Set_ReverseAnimation(false);
-			//Set_Animation(8);
-		}
-	}
-	if (KEY_DOWN(KEY::N))
-	{
-		if (Book_Action(PREVIOUS))
-		{
-			m_isAction = true;
-			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
-		/*	Set_ReverseAnimation(true);
-			Set_Animation(8);*/
-		}
-	}
+	//if (KEY_DOWN(KEY::M))
+	//{
+	//	if (Book_Action(NEXT))
+	//	{
+	//		m_isAction = true;
+	//		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
+	//	}
+	//}
+	//if (KEY_DOWN(KEY::N))
+	//{
+
+	//}
 
 	if (CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()) {
 		if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
@@ -390,7 +382,7 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 		if (NEXT == m_eCurAction)
 		{
 			if (SECTION_MGR->Has_Next_Section())
-				Event_Book_Main_Section_Change(SECTION_MGR->Get_Next_Section_Key()->c_str());
+				Event_Book_Main_Section_Change_End(SECTION_MGR->Get_Next_Section_Key()->c_str());
 		}
 		else if (PREVIOUS == m_eCurAction)
 		{
@@ -433,10 +425,23 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 		
 		if (nullptr != strMoveSectionName)
 		{
+			_vector vNewPos = XMVectorSet(m_fNextPos.x, m_fNextPos.y, 0.f, 1.f);
+			pGameObject->Set_Position(vNewPos);
 			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(*strMoveSectionName,pGameObject)))
 				return;
 		}
 	}
+}
+
+HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
+{
+	if (Book_Action(_eAction))
+	{
+		m_fNextPos = _fNextPosition;
+		m_isAction = true;
+		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
+	}
+	return S_OK;
 }
 
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

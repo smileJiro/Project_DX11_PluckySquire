@@ -1,10 +1,11 @@
 #pragma once
 #include "Npc.h"
+#include "Interactable.h"
 
 
 
 BEGIN(Client)
-class CNPC_DJMoonBeard final: public CNPC
+class CNPC_DJMoonBeard final: public CNPC, public IInteractable
 {
 
 public:
@@ -59,8 +60,11 @@ public:
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+
 protected:
-	//virtual HRESULT Ready_Components();
+	virtual void Interact(CPlayer* _pUser);
+	virtual _bool Is_Interactable(CPlayer* _pUser);
+	virtual _float Get_Distance(CPlayer* _pUser);
 
 
 

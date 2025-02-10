@@ -30,6 +30,7 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		string str = "파일을 열 수 없습니다.";
 		str += _szModel2DFilePath;
 		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+		inFile.close();
 		return E_FAIL;
 	}
 	_char		szDrive[MAX_PATH] = "";
@@ -60,7 +61,11 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 			path.replace_extension(".dds");
 			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str());
 			if (nullptr == pTexture)
+			{
+				inFile.close();
+				cout << "Failed Create Texture : " << path << endl;
 				return E_FAIL;
+			}
 		}
 		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
 		m_Textures.insert({ szTextureName,pTexture });
@@ -76,7 +81,10 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		{
 			CAnimation2D* pAnimation = CAnimation2D::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
 			if (nullptr == pAnimation)
+			{
+				inFile.close();
 				return E_FAIL;
+			}
 			m_Animation2Ds.push_back(pAnimation);
 		}
 	}
@@ -85,7 +93,10 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 	{
 		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
 		if (nullptr == m_pNonAnimSprite)
+		{
+			inFile.close();
 			return E_FAIL;
+		}
 	}
 	return S_OK;
 }

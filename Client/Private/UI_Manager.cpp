@@ -90,18 +90,6 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 
 void CUI_Manager::Set_ChooseItem(_int _iIndex)
 {
-
-
-
-
-
-
-
-
-
-
-
-	// ¿øº»
 	if (-1 == _iIndex)
 	{
 		return;
@@ -172,8 +160,8 @@ CDialog::DialogLine CUI_Manager::Get_DialogueLine(const _wstring& _id, _int _Lin
 void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 {
 	m_DialogDatas.push_back(_DialogData);
-
 }
+
 HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	if (_iChangeLevelID == LEVEL_LOADING)

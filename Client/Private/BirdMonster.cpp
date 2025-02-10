@@ -156,7 +156,7 @@ HRESULT CBirdMonster::Ready_ActorDesc(void* _pArg)
 {
     CBirdMonster::MONSTER_DESC* pDesc = static_cast<CBirdMonster::MONSTER_DESC*>(_pArg);
 
-    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
@@ -190,7 +190,7 @@ HRESULT CBirdMonster::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -204,14 +204,15 @@ HRESULT CBirdMonster::Ready_ActorDesc(void* _pArg)
 HRESULT CBirdMonster::Ready_Components()
 {
     /* Com_FSM */
-    CFSM::FSMDESC Desc;
-    Desc.fAlertRange = m_fAlertRange;
-    Desc.fChaseRange = m_fChaseRange;
-    Desc.fAttackRange = m_fAttackRange;
-    Desc.pOwner = this;
+    CFSM::FSMDESC FSMDesc;
+    FSMDesc.fAlertRange = m_fAlertRange;
+    FSMDesc.fChaseRange = m_fChaseRange;
+    FSMDesc.fAttackRange = m_fAttackRange;
+    FSMDesc.pOwner = this;
+    FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
-        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &Desc)))
+        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
     return S_OK;

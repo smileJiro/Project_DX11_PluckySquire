@@ -238,9 +238,6 @@
     <Filter Include="01.Utility\14.RenderGroup\RenderGroup_MRT">
       <UniqueIdentifier>{396e807a-38e4-4963-88dd-89969174e94d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Objects\Trigger">
-      <UniqueIdentifier>{48dd45cb-48ea-425a-baa8-4b28491a2eab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\04.Components\VIBuffer\Instancing\Particle\Mesh_Particle">
       <UniqueIdentifier>{c4dbee5e-b0ec-4fea-bcd9-f258a7028cd4}</UniqueIdentifier>
     </Filter>
@@ -294,6 +291,12 @@
     </Filter>
     <Filter Include="01.Utility\96.D3DUtils">
       <UniqueIdentifier>{d4356aa0-e49f-4339-aca3-67d29a98dd5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Objects\CubeMap">
+      <UniqueIdentifier>{e11a649e-44dd-42e9-80cb-7d87582dbe4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\09.RenderTargets\MSAA">
+      <UniqueIdentifier>{1043a63e-dc1b-48e6-9471-7d9ebdd66dd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -555,9 +558,6 @@
     <ClInclude Include="..\Public\RenderGroup_MRT.h">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_MRT</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\TriggerObject.h">
-      <Filter>01.Utility\03.Objects\Trigger</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\AnimEventGenerator.h">
       <Filter>01.Utility\04.Components\AnimEvent</Filter>
     </ClInclude>
@@ -599,6 +599,12 @@
     </ClInclude>
     <ClInclude Include="..\public\D3DUtils.h">
       <Filter>01.Utility\96.D3DUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CubeMap.h">
+      <Filter>01.Utility\03.Objects\CubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderTarget_MSAA.h">
+      <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -848,9 +854,6 @@
     <ClCompile Include="..\Private\RenderGroup.cpp">
       <Filter>01.Utility\14.RenderGroup</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\TriggerObject.cpp">
-      <Filter>01.Utility\03.Objects\Trigger</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\AnimEventGenerator.cpp">
       <Filter>01.Utility\04.Components\AnimEvent</Filter>
     </ClCompile>
@@ -892,6 +895,12 @@
     </ClCompile>
     <ClCompile Include="..\private\D3DUtils.cpp">
       <Filter>01.Utility\96.D3DUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CubeMap.cpp">
+      <Filter>01.Utility\03.Objects\CubeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RenderTarget_MSAA.cpp">
+      <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,16 @@ BEGIN(Client)
 class CDialog : public CUI
 {
 public:
-    enum LOC { LOC_DEFAULT, LOC_MIDHIGH, LOC_MIDLEFT, LOC_MIDRIGHT, LOC_END };
+    enum LOC { 
+        LOC_MIDDOWN, 
+        LOC_MIDHIGH, // Default 인자
+        LOC_MIDLEFT, 
+        LOC_MIDRIGHT, 
+        LOC_LEFTDOWN,
+        LOC_LEFTHIGH,
+        LOC_RIGHTHIGH,
+        LOC_RIGHDOWN,
+        LOC_END };
 
     enum PORTRAITNAME
     {
@@ -56,8 +65,11 @@ public:
         _int Red;
         _int Green;
         _int Blue;
+
+        _bool is2D;
+        _bool isPortrait;
         
-        LOC  location = LOC_DEFAULT;    // 위치 설정
+        LOC  location = LOC_MIDHIGH;    // 위치 설정
         PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
         Animation animation;   // 애니메이션 정보
     };
@@ -85,6 +97,7 @@ private:
     HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
     void        NextDialogue(_float2 _RTSize);
     void        FirstCalPos(_float2 _RTSize);
+    void        isOpenPanel(_tchar* _DialogId);
 
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터
@@ -92,6 +105,9 @@ private:
     _tchar			    m_tDialogIndex[MAX_PATH] = {};
     _float2             m_vCurPos = { 0.f, 0.f };
     _bool               m_isFirstRefresh = { false };
+	_float2             m_vDisplay3DSize = { 0.f, 0.f };
+	_float2             m_vDisplay2DSize = { 0.f, 0.f };
+    _bool               m_isAddSectionRender = { false };
 
     //vector<DialogData>  m_DialogDatas;
 

@@ -33,7 +33,7 @@ public:
 		CActorObject*			pOwner = nullptr;
 		vector<SHAPE_DATA>		ShapeDatas;
 		_float4x4				ActorOffsetMatrix = {};
-		_bool					FreezeRotation_XYZ[3] = { false, true, false };
+		_bool					FreezeRotation_XYZ[3] = { true, false, true };
 		_bool					FreezePosition_XYZ[3] = { false, false, false };
 		
 		FILTER_DATA				tFilterData = {};
@@ -93,7 +93,7 @@ public:
 	HRESULT						Set_ShapeGeometry(_int _iShapeIndex, PxGeometryType::Enum _eType, SHAPE_DESC* _pDesc); // shape 크기변경
 	HRESULT						Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable);
 	HRESULT						Set_AllShapeEnable(_bool _isEnable);
-	void								Set_ShapeRayCastFlag(_bool _isRayCast);
+	void									Set_ShapeRayCastFlag(_bool _isRayCast);
 
 protected:
 	PxRigidActor*				m_pActor = nullptr; 

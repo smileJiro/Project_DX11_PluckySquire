@@ -1,0 +1,17 @@
+{
+	"EventTexts": [
+		{
+			"id": "dialog_01",
+			"lines": [
+				{
+					"BG": 0,
+					"text": "테스트입니다!",
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					}
+				}
+			]
+		}
+	]
+}

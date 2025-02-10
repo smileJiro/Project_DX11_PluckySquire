@@ -219,6 +219,7 @@ call UpdateLib.bat</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\public\Controller_Transform.h" />
+    <ClInclude Include="..\public\CubeMap.h" />
     <ClInclude Include="..\public\CustomFont.h" />
     <ClInclude Include="..\Public\CutScene_Sector.h" />
     <ClInclude Include="..\public\D3DUtils.h" />
@@ -233,6 +234,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Emitter.h" />
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
     <ClInclude Include="..\public\SpriteEffect_Emitter.h" />
+    <ClInclude Include="..\public\RenderTarget_MSAA.h" />
     <ClInclude Include="..\public\Translation_Module.h" />
     <ClInclude Include="..\public\Effect_System.h" />
     <ClInclude Include="..\public\Particle_Sprite_Emitter.h" />
@@ -284,7 +286,6 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Transform.h" />
     <ClInclude Include="..\public\Transform_2D.h" />
     <ClInclude Include="..\Public\Transform_3D.h" />
-    <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\UIObject.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
@@ -324,6 +325,7 @@ call UpdateLib.bat</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\Controller_Transform.cpp" />
+    <ClCompile Include="..\private\CubeMap.cpp" />
     <ClCompile Include="..\private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CutScene_Sector.cpp" />
     <ClCompile Include="..\private\D3DUtils.cpp" />
@@ -337,6 +339,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\NewRenderer.cpp" />
     <ClCompile Include="..\private\Emitter.cpp" />
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />
+    <ClCompile Include="..\private\RenderTarget_MSAA.cpp" />
     <ClCompile Include="..\private\SpriteEffect_Emitter.cpp" />
     <ClCompile Include="..\private\Translation_Module.cpp" />
     <ClCompile Include="..\private\Effect_System.cpp" />
@@ -384,7 +387,6 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Transform.cpp" />
     <ClCompile Include="..\private\Transform_2D.cpp" />
     <ClCompile Include="..\Private\Transform_3D.cpp" />
-    <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />

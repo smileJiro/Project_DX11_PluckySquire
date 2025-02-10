@@ -13,6 +13,7 @@ public:
 	typedef struct tagFSMBossDesc
 	{
 		CMonster* pOwner;
+		_int iCurLevel;
 	}FSMBOSSDESC;
 
 private:

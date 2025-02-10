@@ -13,6 +13,8 @@ CPlayerState_Run::CPlayerState_Run(CPlayer* _pOwner)
 
 void CPlayerState_Run::Update(_float _fTimeDelta)
 {
+	//Foot_On();
+
 	_float fUpForce = m_pOwner->Get_UpForce();
 	_bool bOnGround = m_pOwner->Is_OnGround();
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
@@ -39,8 +41,12 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		{
 			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
 			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
-			m_pOwner->Set_2DDirection(eNewDir);
-			Switch_RunAnimation2D(eFDir);
+			if (m_eOldFDir != eFDir)
+			{
+				m_pOwner->Set_2DDirection(eNewDir);
+				Switch_RunAnimation2D(eFDir);
+				m_eOldFDir = eFDir;
+			}
 		}
 		else
 		{
@@ -77,8 +83,7 @@ void CPlayerState_Run::Enter()
 
 	if (COORDINATE_2D == eCoord)
 	{
-		F_DIRECTION eFDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
-		Switch_RunAnimation2D(eFDir);
+
 	}
 	else
 	{
@@ -155,4 +160,122 @@ void CPlayerState_Run::Switch_RunAnimation3D(_bool _bStealth)
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT);
 	}
 }
+
+//_bool CPlayerState_Run::Foot_On()
+//{
+//	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
+//
+//	_bool isRaycast = false;
+//	_float fFootHitPointY = 0.f;
+//	_float3 vOrigin;
+//	_float3 vOriginLeft;
+//	_float3 vOriginRight;
+//	PxCapsuleGeometry capsule;
+//	m_pOwner->Get_ActorCom()->Get_Shapes()[CPlayer::SHAPE_FOOT]->getCapsuleGeometry(capsule);
+//
+//	XMStoreFloat3(&vOrigin, vPlayerPos + capsule.radius * XMVectorSetY(m_pOwner->Get_LookDirection(), 0.f));
+//	vOrigin.y += capsule.radius * 2.f;
+//	_vector vSide = XMVector3Cross(XMVectorSetY(m_pOwner->Get_LookDirection(), 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
+//	XMStoreFloat3(&vOriginLeft, XMLoadFloat3(&vOrigin) - capsule.halfHeight * XMVector3Normalize(vSide));
+//	XMStoreFloat3(&vOriginRight, XMLoadFloat3(&vOrigin) + capsule.halfHeight * XMVector3Normalize(vSide));
+//	_float3 vRayDir = { 0,-1,0 };
+//	list<CActorObject*> hitActors;
+//	list<RAYCASTHIT> raycasthits;
+//	_float fHeightThreshold = m_pOwner->Get_FootHeightThreshold();
+//
+//	if (m_pGameInstance->RayCast(vOrigin, vRayDir, capsule.radius * 2.f, hitActors, raycasthits))
+//	{
+//		
+//		auto& iterHitPoint = raycasthits.begin();
+//		for (auto& pActor : hitActors)
+//		{
+//			if (iterHitPoint->vPosition.y <= vPlayerPos.m128_f32[1])
+//			{
+//				iterHitPoint++;
+//				continue;
+//			}
+//			if (m_pOwner != pActor)
+//			{
+//				if (iterHitPoint->vPosition.y - fHeightThreshold <= vPlayerPos.m128_f32[1])
+//				{
+//					if (fFootHitPointY < iterHitPoint->vPosition.y)
+//					{
+//						fFootHitPointY = iterHitPoint->vPosition.y;
+//						isRaycast = true;
+//					}
+//
+//					//m_pOwner->Get_ActorCom()->Set_GlobalPose(_float3(vPlayerPos.m128_f32[0], iterHitPoint->vPosition.y, vPlayerPos.m128_f32[2]));
+//				}
+//			}
+//			iterHitPoint++;
+//		}
+//	}
+//
+//	if (m_pGameInstance->RayCast(vOriginLeft, vRayDir, capsule.radius*2.f, hitActors, raycasthits))
+//	{
+//		
+//		auto& iterHitPoint = raycasthits.begin();
+//		for (auto& pActor : hitActors)
+//		{
+//			if (iterHitPoint->vPosition.y <= vPlayerPos.m128_f32[1])
+//			{
+//				iterHitPoint++;
+//				continue;
+//			}
+//			if (m_pOwner != pActor)
+//			{
+//				if (iterHitPoint->vPosition.y - fHeightThreshold <= vPlayerPos.m128_f32[1])
+//				{
+//					if (fFootHitPointY < iterHitPoint->vPosition.y)
+//					{
+//						fFootHitPointY = iterHitPoint->vPosition.y;
+//						isRaycast = true;
+//					}
+//
+//					//m_pOwner->Get_ActorCom()->Set_GlobalPose(_float3(vPlayerPos.m128_f32[0], iterHitPoint->vPosition.y, vPlayerPos.m128_f32[2]));
+//				}
+//			}
+//			iterHitPoint++;
+//		}
+//	}
+//
+//	if (m_pGameInstance->RayCast(vOriginRight, vRayDir, capsule.radius*2.f, hitActors, raycasthits))
+//	{
+//		
+//		auto& iterHitPoint = raycasthits.begin();
+//		for (auto& pActor : hitActors)
+//		{
+//			if (iterHitPoint->vPosition.y <= vPlayerPos.m128_f32[1])
+//			{
+//				iterHitPoint++;
+//				continue;
+//			}
+//			if (m_pOwner != pActor)
+//			{
+//				if (iterHitPoint->vPosition.y - fHeightThreshold <= vPlayerPos.m128_f32[1])
+//				{
+//					if (fFootHitPointY < iterHitPoint->vPosition.y)
+//					{
+//						fFootHitPointY = iterHitPoint->vPosition.y;
+//						isRaycast = true;
+//					}
+//					
+//					//m_pOwner->Get_ActorCom()->Set_GlobalPose(_float3(vPlayerPos.m128_f32[0], iterHitPoint->vPosition.y, vPlayerPos.m128_f32[2]));
+//				}
+//			}
+//			iterHitPoint++;
+//		}
+//	}
+//
+//	if(isRaycast && fFootHitPointY != vPlayerPos.m128_f32[1])
+//	{
+//		//m_pOwner->Get_ActorCom()->Set_GlobalPose(_float3(vPlayerPos.m128_f32[0], fFootHitPointY, vPlayerPos.m128_f32[2]));
+//		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom());
+//		_vector vVelocity = pDynamicActor->Get_LinearVelocity();
+//		vVelocity.m128_f32[1] += fFootHitPointY - vPlayerPos.m128_f32[1];
+//		pDynamicActor->Set_LinearVelocity(vVelocity);
+//	}
+//
+//	return true;
+//}
 

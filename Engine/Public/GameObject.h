@@ -12,6 +12,7 @@ public:
 	{
 		// 객체의 레벨 아이디
 		_uint iCurLevelID;
+		_uint iCollisionGroupID = 0;
 	}GAMEOBJECT_DESC;
 
 protected:
@@ -32,8 +33,7 @@ public:
 	virtual void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
 	virtual void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
 	virtual void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
-
-
+	virtual void						On_Hit(CGameObject* _pHitter, _float _fDamg) { return; }
 protected:/* Component Update */
 	void						Priority_Update_Component(_float _fTimeDelta);
 	void						Update_Component(_float _fTimeDelta);
@@ -61,10 +61,10 @@ public:
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_bool						Is_Pooling() const								{ return m_isPooling; }
-	_int						Get_CurLevelID() const							{ return m_iCurLevelID; }
+	_int							Get_CurLevelID() const							{ return m_iCurLevelID; }
 	_uint						Get_GameObjectInstanceID() const				{ return m_iInstanceID; }
-	const _wstring&				Get_Include_Section_Name()						{ return m_strSectionName; }
-
+	const _wstring&	Get_Include_Section_Name()						{ return m_strSectionName; }
+	_uint						Get_CollisionGroupID() const { return m_iCollisionGroupID; }
 	// Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
 	void						Set_WorldMatrix(_float4x4 _WorldMatrix)			{ m_pControllerTransform->Set_WorldMatrix(_WorldMatrix); }
@@ -93,6 +93,7 @@ private:
 	static _uint				g_iInstanceIDCount;
 
 protected:
+	_uint						m_iCollisionGroupID = 0;
 	_uint						m_iInstanceID;
 	_wstring					m_strName;
 	_uint						m_iCurLevelID = 0;

@@ -34,7 +34,7 @@ HRESULT C2DTrigger_Sample::Initialize(void* _pArg)
     AABBDesc.vExtents = { 1.f, 1.f };
     AABBDesc.vScale = { 1.f, 1.f };
     AABBDesc.vOffsetPosition = { 0.f, 0.f };
-    if (FAILED(Add_Component(LEVEL_TOOL_2D_MAP, TEXT("Prototype_Component_Collider_AABB"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;
     
@@ -58,9 +58,9 @@ void C2DTrigger_Sample::Update(_float _fTimeDelta)
 void C2DTrigger_Sample::Late_Update(_float _fTimeDelta)
 {
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+        Register_RenderGroup(RG_3D, PR3D_NONBLEND);
     else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_BOOK_2D, this);
+        Register_RenderGroup(RG_2D, PR2D_BOOK_SECTION);
 
     /* Update Parent Matrix */
     __super::Late_Update(_fTimeDelta);

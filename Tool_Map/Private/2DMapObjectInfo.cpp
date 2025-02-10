@@ -167,6 +167,7 @@ void C2DMapObjectInfo::Set_Model(C2DModel* _pModel)
 	{
 		m_isModelCreate = true;
 		m_pModel = static_cast<C2DModel*>(_pModel);
+		
 		m_pTexture = _pModel->Get_Texture();
 		if (m_pTexture != nullptr)
 		{

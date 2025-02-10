@@ -36,7 +36,6 @@ HRESULT CFloorWord::Initialize(void* _pArg)
 		m_isMake = true;
 		if (FAILED(Load_Json(TEXT("../Bin/Resources/Dialogue/FloorWord_Section01.json"), TEXT("Layer_UI"))))
 			return E_FAIL;
-
 	}
 
 
@@ -156,7 +155,7 @@ HRESULT CFloorWord::Load_Json(const wstring& filePath, const _wstring& _strLayer
 		tFloorText.tHightLight.fDefultSize = text["highlight"]["defaultSize"].get<_float>();
 		tFloorText.tHightLight.fHighlightSize = text["highlight"]["highlightSize"].get<_float>();
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_PrintFloorWord"), LEVEL_GAMEPLAY, _strLayerTag, &pGameObject, &tFloorText)))
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_PrintFloorWord"), m_iCurLevelID, _strLayerTag, &pGameObject, &tFloorText)))
 			return E_FAIL;
 
 		//Uimgr->PushBack_FloorWords(tFloorText);

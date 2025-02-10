@@ -6,6 +6,7 @@
 #include "Section_Manager.h"
 #include "Engine_Macro.h"
 #include "MapObjectFactory.h"
+#include "Trigger_Manager.h"
 
 CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection(_pDevice, _pContext)
@@ -45,11 +46,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 		else
 		{
 			auto SectionInfo = _SectionJson["Section_Info"];
-			Desc.eSectionType = SectionInfo["Section_Type"];
-			Desc.eSectionPlayType = SectionInfo["Section_Play_Type"];
+			Desc.eSectionRenderType = SectionInfo["Section_Render_Type"];
 		}
 
-		switch (Desc.eSectionType)
+		switch (Desc.eSectionRenderType)
 		{
 			case Client::CSection_2D::ON_SECTION_BOOK:
 			{
@@ -57,8 +57,8 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 				{
 					
 					auto BookInfo = _SectionJson["Book_Info"];
-					if (BookInfo.contains("Book_Type"))
-						Desc.eBookType = BookInfo["Book_Type"];
+					//if (BookInfo.contains("Book_Type"))
+					//	Desc.eBookType = BookInfo["Book_Type"];
 					if (BookInfo.contains("Next_Page_Tag"))
 					{
 						_string strNextPageTag = BookInfo["Next_Page_Tag"];
@@ -146,8 +146,22 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 	{
 		return E_FAIL;
 	}
+	_wstring strPath = L"../Bin/MapSaveFiles/2D/Trigger/";
+	strPath += m_strName;
+	strPath += L".json";
 
-
+	if (filesystem::exists(filesystem::path(strPath))) 
+	{
+		CTrigger_Manager::GetInstance()->Load_Trigger(
+			LEVEL_STATIC,
+			(LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID(),
+			strPath, 
+			this
+			);
+	}
+	else 
+	{
+	}
 
 
 	return S_OK;
@@ -214,7 +228,21 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 		return _float2(-1,-1);
 
 	return m_pMap->Get_RenderTarget_Size();
-};
+}
+HRESULT CSection_2D::Section_AddRenderGroup_Process()
+{
+	Register_RenderGroup_ToRenderer();
+
+	Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
+		return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
+		}, CSection_2D::SECTION_2D_RENDERGROUP::SECTION_2D_OBJECT);
+
+	if (FAILED(Add_RenderGroup_GameObjects()))
+		return E_FAIL;
+
+	return S_OK;
+}
+;
 
 HRESULT CSection_2D::Ready_Map_2D(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
 {
