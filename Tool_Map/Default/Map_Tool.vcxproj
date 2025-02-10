@@ -168,6 +168,7 @@
     <ClInclude Include="..\Public\RenderGroup_Lights.h" />
     <ClInclude Include="..\Public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
+    <ClInclude Include="..\Public\Sample_Skechspace.h" />
     <ClInclude Include="..\Public\Task_Manager.h" />
     <ClInclude Include="..\Public\3DMap_Tool_Manager.h" />
     <ClInclude Include="..\Public\MapObject.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="..\Private\RenderGroup_Lights.cpp" />
     <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
+    <ClCompile Include="..\Private\Sample_Skechspace.cpp" />
     <ClCompile Include="..\Private\Task_Manager.cpp" />
     <ClCompile Include="..\Private\3DMap_Tool_Manager.cpp" />
     <ClCompile Include="..\Private\MapObject.cpp" />

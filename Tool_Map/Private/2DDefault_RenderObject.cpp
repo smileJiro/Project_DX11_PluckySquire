@@ -82,7 +82,7 @@ HRESULT C2DDefault_RenderObject::Render()
 
 		if (m_isDefaultRenderMode)
 		{
-			m_pShader->Begin(3);
+			m_pShader->Begin((_uint)PASS_VTXPOSTEX::COLOR_ALPHA);
 		}
 		else 
 		{
@@ -112,12 +112,23 @@ HRESULT C2DDefault_RenderObject::Change_RenderGroup(_float2 _fRenderTargetSize, 
 	m_fTargetSize = _fRenderTargetSize;
 
 
-	_float fBookY = _fRenderTargetSize.y * ((_float)g_iWinSizeX / (_float)_fRenderTargetSize.x);
-	m_fX = g_iWinSizeX >> 1;
-	m_fY = (_float)((_uint)fBookY >> 1);
-	m_fSizeX = g_iWinSizeX;
-	m_fSizeY = fBookY;
 
+	if (_fRenderTargetSize.x > _fRenderTargetSize.y)
+	{
+		_float fBookY = _fRenderTargetSize.y * ((_float)g_iWinSizeX / (_float)_fRenderTargetSize.x);
+		m_fX = g_iWinSizeX >> 1;
+		m_fY = (_float)((_uint)fBookY >> 1);
+		m_fSizeX = g_iWinSizeX;
+		m_fSizeY = fBookY;
+	}
+	else 
+	{
+		_float fBookX = _fRenderTargetSize.x * ((_float)g_iWinSizeY / (_float)_fRenderTargetSize.y);
+		m_fX = (_float)((_uint)fBookX >> 1);
+		m_fY = g_iWinSizeY >> 1;
+		m_fSizeX = fBookX;
+		m_fSizeY = g_iWinSizeY;
+	}
 
 
 	/* 직교튀영을 위한 뷰ㅡ, 투영행르을 만들었다. */
@@ -176,6 +187,13 @@ void C2DDefault_RenderObject::Set_Default_Render_Mode()
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTextureCom);
 	m_isDefaultRenderMode = true;
+}
+
+_float2 C2DDefault_RenderObject::Get_Texture_Size()
+{
+	if (nullptr != m_pTextureCom)
+		return m_pTextureCom->Get_Size();
+	return _float2(-1.f,-1.f);
 }
 
 _bool C2DDefault_RenderObject::IsCursor_In(_float2 _fCursorPos)

@@ -132,7 +132,7 @@ private:
 	
 	C2DDefault_RenderObject*		m_DefaultRenderObject;
 	C2DTile_RenderObject*			m_pTileRenderObject = nullptr;
-	class CRenderGroup_2D*				m_p2DRenderGroup;
+	class CRenderGroup_2D*				m_p2DRenderGroup = nullptr;
 
 	_wstring						m_arrSelectName[LIST_END];
 	vector<C2DMapObjectInfo*>		m_ObjectInfoLists;

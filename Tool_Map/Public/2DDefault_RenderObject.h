@@ -43,6 +43,8 @@ public:
 	void Set_Default_Render_Mode();
 	void Set_Default_RenderTarget_Name(const _wstring& _strRenderTargetTag) { m_DefaultRenderTargetName = _strRenderTargetTag; };
 
+	_float2 Get_Texture_Size();
+
 public :
 	void Set_Color(_float4& fColor) { m_fBackColor = fColor; }
 
