@@ -64,6 +64,7 @@ public:
 		THROWSWORD,
 		CLAMBER,
 		SPINATTACK,
+		DIE,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -410,8 +411,8 @@ public: /* 2D 충돌 */
 	void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+	virtual void		On_Hit(CGameObject* _pHitter, _float _fDamg) override;
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-
 	void Attack();
 	void Move(_fvector _vForce, _float _fTimeDelta);
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
@@ -443,8 +444,9 @@ public: /* 2D 충돌 */
 	_float Get_ArmHeight() { return m_fArmHeight; }
 	_float Get_ArmLength() { return m_fArmLength; }
 	_float Get_AirRotationSpeed() { return m_fAirRotateSpeed; }
-	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
-	_float Get_MoveSpeed(COORDINATE _eCoord) { return m_tStat[_eCoord].fMoveSpeed; }
+	_float Get_AirRunSpeed() { return m_fAirRunSpeed; } 
+	_float Get_MoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed; }
+	_float Get_AttackDamg() { return m_tStat.fDamg; }
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
 
@@ -459,6 +461,7 @@ public: /* 2D 충돌 */
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
+	void Set_AttackTriggerActive(_bool _bOn);
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
@@ -482,11 +485,18 @@ private:
 	_float m_fGroundRotateSpeed = 360.f;
 	_float m_fStepSlopeThreshold = 0.3f;
 	//_float m_fFootHeightThreshold = 0.1f;
-	_float m_fAirRotateSpeed = 40;
+	_float m_f3DMoveSpeed= 10.f;
+	_float m_f2DMoveSpeed= 400.f;
+	_float m_f3DJumpPower = 11.f;
+	_float m_f2DJumpPower = 10.f;
+	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 10.f;
-	_float m_f2DAttackRange = 100.f;
+	_float m_f2DCenterYOffset= 36.f;
+	_float m_f2DInteractRange = 93.f;
+	_float m_f2DAttackRange = 93.f;
 	_float m_f2DAttackAngle = 180.f;
 	_bool m_bOnGround = false;
+	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 1;
 	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
 	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
@@ -499,6 +509,7 @@ private:
 	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 	CCollider* m_pBody2DTriggerCom = nullptr;
+	CCollider* m_pAttack2DTriggerCom = nullptr;
 
 	//Parts
 	class CPlayerSword* m_pSword = nullptr;

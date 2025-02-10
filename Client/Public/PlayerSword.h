@@ -43,6 +43,9 @@ public:
 
 	void Set_State(SWORD_STATE _eNewState);
 	void On_StateChange();
+
+	//Set
+	void Set_AttackEnable(_bool _bOn);
 private:
 	_float m_fThrowingPower = 15.f;
 	_vector m_vThrowDirection = {};

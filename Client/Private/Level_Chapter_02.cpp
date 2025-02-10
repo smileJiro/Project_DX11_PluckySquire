@@ -50,7 +50,9 @@
 
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CLevel(_pDevice, _pContext)
+	: 
+	m_eLevelID(LEVEL_CHAPTER_2)
+	,CLevel(_pDevice, _pContext)
 {
 }
 
@@ -89,6 +91,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::TRIGGER_OBJECT);
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MAPOBJECT);
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::INTERACTION_OBEJCT);
+	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT);
 
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	CCollision_Manager::GetInstance()->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);

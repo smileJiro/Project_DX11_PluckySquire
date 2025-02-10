@@ -72,7 +72,8 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
             // 본격적인 충돌 검사 수행.
             CGameObject* pLeftObject = pLeftCollider->Get_Owner();
             CGameObject* pRightObject = pRightCollider->Get_Owner();
-
+            if (pLeftCollider->Is_Trigger() || pRightCollider->Is_Trigger())
+                int a = 0;
             if (true == pLeftCollider->Is_Collision(pRightCollider))
             {
                 if (true == iter->second)
@@ -87,6 +88,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
                     }
                     else
                     {
+
                         pLeftObject->On_Collision2D_Stay(pLeftCollider, pRightCollider, pRightObject);
                         pRightObject->On_Collision2D_Stay(pRightCollider, pLeftCollider, pLeftObject);
 

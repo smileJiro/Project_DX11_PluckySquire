@@ -331,6 +331,9 @@
     <Filter Include="92.MapObjectFactory">
       <UniqueIdentifier>{5b301df2-7e82-40c8-a272-7575178a0be5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Section\Narration_2D">
+      <UniqueIdentifier>{2cf6df63-166f-40b0-a42a-1b4a0737937f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\PlayerItem">
       <UniqueIdentifier>{e99d4142-b01f-4107-b0e6-76300adbb590}</UniqueIdentifier>
     </Filter>
@@ -761,6 +764,9 @@
     <ClInclude Include="..\Public\Level_Chapter_04.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Narration_2D.h">
+      <Filter>04.Section\Narration_2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1169,6 +1175,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Chapter_04.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Narration_2D.cpp">
+      <Filter>04.Section\Narration_2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

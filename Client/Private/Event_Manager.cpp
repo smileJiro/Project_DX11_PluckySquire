@@ -161,6 +161,10 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 	{
 		Execute_Book_Main_Change(_tEvent);
 	}
+	case Client::EVENT_TYPE::HIT:
+	{
+		Execute_Hit(_tEvent);
+	}
 	break;
 	default:
 		break;
@@ -557,6 +561,19 @@ HRESULT CEvent_Manager::Execute_Book_Main_Change(const EVENT& _tEvent)
 		break;
 	}
 
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
+{
+	CGameObject* pHitter = (CGameObject*)_tEvent.Parameters[0];
+	CGameObject* pVIctim = (CGameObject*)_tEvent.Parameters[1];
+	_float fDamg = (_uint)_tEvent.Parameters[2];
+
+	if (nullptr == pHitter || nullptr == pVIctim)
+		return E_FAIL;
+
+	pVIctim->On_Hit(pHitter, fDamg);
 	return S_OK;
 }
 

@@ -50,7 +50,9 @@
 
 
 CLevel_Chapter_04::CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CLevel(_pDevice, _pContext)
+	:
+	m_eLevelID(LEVEL_CHAPTER_2)
+	, CLevel(_pDevice, _pContext)
 {
 }
 

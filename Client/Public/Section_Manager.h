@@ -1,6 +1,6 @@
 #pragma once
 #include "Base.h"
-#include "Section.h"
+#include "Section_2D.h"
 
 BEGIN(Engine)
 class CGameInstance;
@@ -12,6 +12,13 @@ BEGIN(Client)
 class CSection_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CSection_Manager)
+public :
+	enum SECTION_2D_PLAY_TYPE
+	{
+		PLAYMAP,
+		NARRAION,
+		SECTION_2D_PLAY_TYPE_LAST
+	};
 
 private:
 	CSection_Manager();
@@ -32,7 +39,7 @@ public:
 	HRESULT							Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
 	
 	// 2. 현재 활성화된 Section에 Object 추가/삭제
-	HRESULT							Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 1);
+	HRESULT							Add_GameObject_ToCurSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = CSection_2D::SECTION_2D_OBJECT);
 	HRESULT							Remove_GameObject_ToCurSectionLayer(CGameObject* _pGameObject);
 	
 	// 3. 원하는 Section 활성, 비활성 
