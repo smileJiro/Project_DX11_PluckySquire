@@ -532,8 +532,6 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
         _uint iIndex = 0;
         for (auto ChildJson : ChapterJson)
         {
-            
-
 
             CSection_2D* pSection_2D = CSection_2D::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
             if (nullptr == pSection_2D)

@@ -125,7 +125,7 @@ void C3DMapObject::Late_Update(_float _fTimeDelta)
         /* Add Render Group */
         if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
         {
-            Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_NONBLEND);
+            Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
             //if(nullptr != m_pActorCom)
             //    m_pActorCom->Set_ShapeRayCastFlag(true);
         }

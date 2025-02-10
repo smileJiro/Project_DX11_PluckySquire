@@ -268,7 +268,10 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\PipeLine.h" />
     <ClInclude Include="..\Public\Prototype_Manager.h" />
     <ClInclude Include="..\public\Ray.h" />
-    <ClInclude Include="..\Public\Renderer.h" />
+    <ClInclude Include="..\Public\Renderer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\RenderGroup.h" />
     <ClInclude Include="..\Public\RenderGroup_MRT.h" />
     <ClInclude Include="..\public\RenderTarget.h" />
@@ -367,7 +370,10 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\PipeLine.cpp" />
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />
     <ClCompile Include="..\private\Ray.cpp" />
-    <ClCompile Include="..\Private\Renderer.cpp" />
+    <ClCompile Include="..\Private\Renderer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\RenderGroup.cpp" />
     <ClCompile Include="..\Private\RenderGroup_MRT.cpp" />
     <ClCompile Include="..\private\RenderTarget.cpp" />

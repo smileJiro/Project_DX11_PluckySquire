@@ -229,18 +229,6 @@
     <Filter Include="94.RenderGroups%28Custom%29">
       <UniqueIdentifier>{c595985d-5f7d-4dc1-ab8b-866af8cedab7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="94.RenderGroups%28Custom%29\Lights">
-      <UniqueIdentifier>{b50802f1-31a2-421f-960a-eb214682a952}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94.RenderGroups%28Custom%29\Final">
-      <UniqueIdentifier>{a6bd0c49-f206-48f3-87ac-708d992e073a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94.RenderGroups%28Custom%29\AfterEffect">
-      <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94.RenderGroups%28Custom%29\2D">
-      <UniqueIdentifier>{0791b9f7-464c-4734-9777-7e162be1d4c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\NPC\00. NPC_Store">
       <UniqueIdentifier>{a27943b2-2eef-4b1a-b1a1-44b51bd7431f}</UniqueIdentifier>
     </Filter>
@@ -276,9 +264,6 @@
     </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord">
       <UniqueIdentifier>{5da31b5a-443d-4563-9471-219ed56959d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="94.RenderGroups%28Custom%29\WorldPos">
-      <UniqueIdentifier>{21bef96e-904c-4c92-a5cb-988c87a95a6f}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord">
       <UniqueIdentifier>{70e90ba6-55ed-4e3e-975a-616aa3fcc798}</UniqueIdentifier>
@@ -333,6 +318,33 @@
     </Filter>
     <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
       <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Old">
+      <UniqueIdentifier>{627d460b-795c-4203-a3a0-b23870676a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Old\AfterEffect">
+      <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Old\Final">
+      <UniqueIdentifier>{a6bd0c49-f206-48f3-87ac-708d992e073a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Old\Lights">
+      <UniqueIdentifier>{b50802f1-31a2-421f-960a-eb214682a952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Old\WorldPos">
+      <UniqueIdentifier>{21bef96e-904c-4c92-a5cb-988c87a95a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Old\2D">
+      <UniqueIdentifier>{0791b9f7-464c-4734-9777-7e162be1d4c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\PBR">
+      <UniqueIdentifier>{5987c152-d093-41d4-b75f-0bc1d14fb67d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\PBR\Lighting">
+      <UniqueIdentifier>{dc3b9744-b5c5-4c64-8344-4437efde3f28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\PBR\Combine">
+      <UniqueIdentifier>{04255060-6660-4590-bec6-5e64f6a90ffa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -581,14 +593,14 @@
     <ClInclude Include="..\Public\Camera_CutScene.h">
       <Filter>02.GameObjects\Camera\CutScene</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\RenderGroup_Lights.h">
-      <Filter>94.RenderGroups%28Custom%29\Lights</Filter>
+    <ClInclude Include="..\public\RenderGroup_DirectLights.h">
+      <Filter>94.RenderGroups%28Custom%29\Old\Lights</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_Final.h">
-      <Filter>94.RenderGroups%28Custom%29\Final</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Old\Final</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
-      <Filter>94.RenderGroups%28Custom%29\AfterEffect</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Old\AfterEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Roll.h">
       <Filter>03.Components\PlayerState</Filter>
@@ -609,7 +621,7 @@
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_2D.h">
-      <Filter>94.RenderGroups%28Custom%29\2D</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Old\2D</Filter>
     </ClInclude>
     <ClInclude Include="..\public\NPC_Store.h">
       <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
@@ -679,7 +691,7 @@
     </ClInclude>
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h">
-      <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Old\WorldPos</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Sneak_IdleState.h">
       <Filter>03.Components\FSM\State\Idle</Filter>
@@ -751,6 +763,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\NPC_DJMoonBeard.h">
       <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h">
+      <Filter>94.RenderGroups%28Custom%29\PBR\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Combine.h">
+      <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -990,14 +1008,14 @@
     <ClCompile Include="..\Private\Camera_CutScene.cpp">
       <Filter>02.GameObjects\Camera\CutScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\RenderGroup_Lights.cpp">
-      <Filter>94.RenderGroups%28Custom%29\Lights</Filter>
+    <ClCompile Include="..\private\RenderGroup_DirectLights.cpp">
+      <Filter>94.RenderGroups%28Custom%29\Old\Lights</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_Final.cpp">
-      <Filter>94.RenderGroups%28Custom%29\Final</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Old\Final</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
-      <Filter>94.RenderGroups%28Custom%29\AfterEffect</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Old\AfterEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Roll.cpp">
       <Filter>03.Components\PlayerState</Filter>
@@ -1018,7 +1036,7 @@
       <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_2D.cpp">
-      <Filter>94.RenderGroups%28Custom%29\2D</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Old\2D</Filter>
     </ClCompile>
     <ClCompile Include="..\private\NPC_Store.cpp">
       <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
@@ -1081,7 +1099,7 @@
     </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp">
-      <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+      <Filter>94.RenderGroups%28Custom%29\Old\WorldPos</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\Camera_2D.cpp">
@@ -1154,6 +1172,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\NPC_DJMoonBeard.cpp">
       <Filter>02.GameObjects\NPC\02. NPC_DJMoonBeard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Lighting.cpp">
+      <Filter>94.RenderGroups%28Custom%29\PBR\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Combine.cpp">
+      <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

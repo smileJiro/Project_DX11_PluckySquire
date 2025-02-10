@@ -43,7 +43,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
 
 	pDesc->iRenderGroupID_3D = RG_3D;
-	pDesc->iPriorityID_3D = PR3D_NONBLEND;
+	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 
 	__super::Initialize(_pArg);
 	Set_AnimationLoop(COORDINATE_3D, 0, true);
@@ -267,7 +267,7 @@ HRESULT CSampleBook::Render()
 						if (SECTION_MGR->Has_Next_Section())
 							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Next_Section_Key()));
 						else
-							if (FAILED(pModel->Bind_Material(pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+							if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
 								continue;
 					}
 					else
@@ -280,13 +280,13 @@ HRESULT CSampleBook::Render()
 
 				if (nullptr != pResourceView)
 				{
-					pShader->Bind_SRV("g_DiffuseTexture", pResourceView);
+					pShader->Bind_SRV("g_AlbedoTexture", pResourceView);
 					iShaderPass = 4;
 				}
 		}
 		break;
 		default:
-			if (FAILED(pModel->Bind_Material(pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+			if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
 			{
 				continue;
 			}

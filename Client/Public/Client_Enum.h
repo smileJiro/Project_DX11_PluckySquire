@@ -14,15 +14,18 @@ namespace Client
 
 	enum PRIORITY_3D
 	{
-		PR3D_PRIORITY =		10,
-		PR3D_SHADOW =		20,
-		PR3D_NONBLEND =		30,
-		PR3D_LIGHTS =		40,
-		PR3D_FINAL =		50,
-		PR3D_BLEND =		60,
-		PR3D_EFFECT =		70,
-		PR3D_AFTEREFFECT =	80,
-		PR3D_UI =			90,
+		PR3D_PRIORITY =			10,
+		PR3D_SHADOW =			20,
+		PR3D_GEOMETRY =			30,
+		PR3D_DIRECTLIGHTS =		40,
+		PR3D_LIGHTNG =			50, // >>> ¸®Á¹ºù
+		PR3D_BLOOM =			52, // PostProcessing
+		PR3D_SSAO =				54, // PostProcessing
+		PR3D_COMBINE =			60, // ToneMapping
+		PR3D_BLEND =			70,
+		PR3D_EFFECT =			80,
+		PR3D_AFTEREFFECT =		90,
+		PR3D_UI =				100,
 
 		PR3D_LAST = 999
 	};

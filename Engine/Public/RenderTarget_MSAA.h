@@ -10,7 +10,7 @@ protected:
 
 public:
 	HRESULT						Initialize(_wstring _strName, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor);
-
+	virtual ID3D11RenderTargetView* Get_RTV() const { return m_pRTV_MSAA; }
 	virtual HRESULT				Clear() override; // Clear() 함수는 직접 렌더링을 수행하고있는 RTV를 지워야한다. >>> 그래서 MSAA RTV를 지우는 용으로 override
 	HRESULT						Resolve_MSAA();
 private:

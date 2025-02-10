@@ -7,12 +7,27 @@ namespace Engine
 	class CActorObject;
 	class CActor;
 
+#pragma region Shader ConstantBuffer Struct
+	
+	typedef struct tagGlobalIBLConstData
+	{
+		float fStrengthIBL = 1.0f;
+		int iSpecularBaseMipLevel = 2;
+		float fRoughnessToMipFactor = 5.0f;
+		float fHDRMaxLuminance = 1000.f;		// 16byte
+
+		int iToneMappingFlag = 0;
+		float fExposure = 1.0f;
+		float fGamma = 2.2f;
+		float dummy1;
+	}CONST_IBL;
 	typedef struct tagMaterialDefault
 	{
 		XMFLOAT3	Albedo = XMFLOAT3(1.0f, 1.0f, 1.0f); // 12byte
-		float		Roughness = 0.0f;					 // 16byte(o)
-		float		Metallic = 0.0f;						 // 4byte
-		XMFLOAT3	dummy;								 // 16byte(o)
+		float		Roughness = 0.5f;					 // 16byte(o)
+		float		Metallic = 0.0f;					 // 4byte
+		float		AO = 0.7f;
+		XMFLOAT2	dummy;								 // 16byte
 	}MATERIAL_PS;
 	typedef struct tagBasicPixelConstData // 동적변화가 없는 애들위주로.
 	{
@@ -32,6 +47,24 @@ namespace Engine
 		// float expose = 1.0f;
 		// float gamma = 1.0f; // 추후 hdr 톤매핑 시 사용.
 	}CONST_PS;
+
+
+	typedef struct tagLightConstData
+	{
+		XMFLOAT3		vRadiance;		// 빛의 세기와 컬러를 결정.
+		float			fFallOutStart;	// 감쇠(att) 시작 거리 : 해당 지점 이전은 반드시 1
+		XMFLOAT3		vDirection;
+		float			fFallOutEnd;	// 감쇠(att) 끝 거리 : 해당 지점이후는 0 >>> 이게 조명의 Range 역할도 함께 함.
+		XMFLOAT3		vPosition;
+		float			fSpotPower;
+
+		// 후보정 값으로 남겨두겠음. 분위기 연출 등 
+		XMFLOAT4		vDiffuse;
+		XMFLOAT4		vAmbient;
+		XMFLOAT4		vSpecular;
+	}CONST_LIGHT;
+
+#pragma endregion // Shader ConstantBuffer Struct
 
 	typedef struct tagActorUserData
 	{
@@ -95,20 +128,6 @@ namespace Engine
 		_uint			iStaticLevelID;
 		_bool			isNewRenderer = false;
 	}ENGINE_DESC;
-
-	typedef struct
-	{
-		enum TYPE { TYPE_POINT, TYPE_DIRECTOINAL, TYPE_END };
-
-		TYPE			eType;
-		XMFLOAT4		vDirection;
-		XMFLOAT4		vPosition;
-		float			fRange;
-
-		XMFLOAT4		vDiffuse;
-		XMFLOAT4		vAmbient;
-		XMFLOAT4		vSpecular;
-	}LIGHT_DESC;
 
 	typedef struct
 	{

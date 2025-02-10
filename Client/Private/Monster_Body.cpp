@@ -108,7 +108,7 @@ HRESULT CMonster_Body::Ready_Desc(void** _pArg)
 			BodyDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
 			BodyDesc->iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 			BodyDesc->iRenderGroupID_3D = RG_3D;
-			BodyDesc->iPriorityID_3D = PR3D_NONBLEND;
+			BodyDesc->iPriorityID_3D = PR3D_GEOMETRY;
 		}
 	}
 	else
@@ -121,7 +121,7 @@ HRESULT CMonster_Body::Ready_Desc(void** _pArg)
 
 		/* ÅÂ¿õ : ·»´õ·¯ °ü·Ã Ãß°¡ */
 		BodyDesc->iRenderGroupID_3D = RG_3D;
-		BodyDesc->iPriorityID_3D = PR3D_NONBLEND;
+		BodyDesc->iPriorityID_3D = PR3D_GEOMETRY;
 	}
 
 	

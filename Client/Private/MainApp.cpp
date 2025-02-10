@@ -14,9 +14,10 @@
 
 
 #include "RenderGroup_MRT.h"
-#include "RenderGroup_Lights.h"
-#include "RenderGroup_Final.h"
+#include "RenderGroup_DirectLights.h"
+#include "RenderGroup_Lighting.h"
 #include "RenderGroup_AfterEffect.h"
+#include "RenderGroup_Combine.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -57,6 +58,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Ready_Font()))
 		return E_FAIL;
+
+	int a = sizeof(CONST_LIGHT);
 
 	return S_OK;
 }
@@ -182,17 +185,12 @@ HRESULT CMainApp::Ready_RenderGroup()
 	CRenderGroup* pRenderGroup = nullptr;
 	CRenderGroup_MRT* pRenderGroup_MRT = nullptr;
 
-
-	
-	
-	Safe_Release(pRenderGroup_MRT);
-	pRenderGroup_MRT = nullptr;
-
 	/* RG_3D, PR3D_PRIORITY */
 	CRenderGroup_MRT::RG_MRT_DESC RGPriorityDesc;
 	RGPriorityDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RGPriorityDesc.iPriorityID = PRIORITY_3D::PR3D_PRIORITY;
-	RGPriorityDesc.strMRTTag = TEXT("MRT_Final");
+	RGPriorityDesc.strMRTTag = TEXT("MRT_Lighting");
+	RGPriorityDesc.pDSV = m_pGameInstance->Find_DSV(TEXT("Target_Lighting"));
 	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RGPriorityDesc);
 	if (nullptr == pRenderGroup_MRT)
 	{
@@ -204,15 +202,15 @@ HRESULT CMainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_MRT);
 	pRenderGroup_MRT = nullptr;
 
-	/* RG_3D, PR3D_NONBLEND */
+	/* RG_3D, PR3D_GEOMETRY */
 	CRenderGroup_MRT::RG_MRT_DESC RG_MRTDesc;
 	RG_MRTDesc.iRenderGroupID = RENDERGROUP::RG_3D;
-	RG_MRTDesc.iPriorityID = PRIORITY_3D::PR3D_NONBLEND;
-	RG_MRTDesc.strMRTTag = TEXT("MRT_GameObjects");
+	RG_MRTDesc.iPriorityID = PRIORITY_3D::PR3D_GEOMETRY;
+	RG_MRTDesc.strMRTTag = TEXT("MRT_Geometry");
 	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_MRTDesc);
 	if (nullptr == pRenderGroup_MRT)
 	{
-		MSG_BOX("Failed Create PR3D_NONBLEND");
+		MSG_BOX("Failed Create PR3D_GEOMETRY");
 		return E_FAIL;
 	}
 	if(FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_MRT->Get_RenderGroupID(), pRenderGroup_MRT->Get_PriorityID(), pRenderGroup_MRT)))
@@ -220,44 +218,64 @@ HRESULT CMainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_MRT);
 	pRenderGroup_MRT = nullptr;
 
-	/* RG_3D, PR3D_LIGHTS */
-	CRenderGroup_Lights::RG_MRT_DESC RG_LightDesc;
-	RG_LightDesc.iRenderGroupID = RENDERGROUP::RG_3D;
-	RG_LightDesc.iPriorityID = PRIORITY_3D::PR3D_LIGHTS;
-	RG_LightDesc.strMRTTag = TEXT("MRT_LightAcc");
-	CRenderGroup_Lights* pRenderGroup_Lights = CRenderGroup_Lights::Create(m_pDevice, m_pContext, &RG_LightDesc);
-	if (nullptr == pRenderGroup_Lights)
+	/* RG_3D, PR3D_DIRECTLIGHTS */
+	//MRT_DirectLightAcc;
+	CRenderGroup_DirectLights::RG_MRT_DESC RG_DirectLightsDesc;
+	RG_DirectLightsDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_DirectLightsDesc.iPriorityID = PRIORITY_3D::PR3D_DIRECTLIGHTS;
+	RG_DirectLightsDesc.strMRTTag = TEXT("MRT_DirectLightAcc");
+	RG_DirectLightsDesc.isClear = true;
+	CRenderGroup_DirectLights* pRenderGroup_DirectLights = CRenderGroup_DirectLights::Create(m_pDevice, m_pContext, &RG_DirectLightsDesc);
+	if (nullptr == pRenderGroup_DirectLights)
 	{
-		MSG_BOX("Failed Create PR3D_LIGHTS");
+		MSG_BOX("Failed Create PR3D_DIRECTLIGHTS");
 		return E_FAIL;
 	}
-	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Lights->Get_RenderGroupID(), pRenderGroup_Lights->Get_PriorityID(), pRenderGroup_Lights)))
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_DirectLights->Get_RenderGroupID(), pRenderGroup_DirectLights->Get_PriorityID(), pRenderGroup_DirectLights)))
 		return E_FAIL;
-	Safe_Release(pRenderGroup_Lights);
-	pRenderGroup_Lights = nullptr;
+	Safe_Release(pRenderGroup_DirectLights);
+	pRenderGroup_DirectLights = nullptr;
 
-	/* RG_3D, PR3D_FINAL */
-	CRenderGroup_Final::RG_MRT_DESC RG_FinalDesc;
-	RG_FinalDesc.iRenderGroupID = RENDERGROUP::RG_3D;
-	RG_FinalDesc.iPriorityID = PRIORITY_3D::PR3D_FINAL;
-	RG_FinalDesc.strMRTTag = TEXT("MRT_Final");
-	RG_FinalDesc.isClear = false;
-	CRenderGroup_Final* pRenderGroup_Final = CRenderGroup_Final::Create(m_pDevice, m_pContext, &RG_FinalDesc);
-	if (nullptr == pRenderGroup_Final)
+	/* RG_3D, PR3D_LIGHTNG */
+	CRenderGroup_Lighting::RG_MRT_DESC RG_LightingDesc;
+	RG_LightingDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_LightingDesc.iPriorityID = PRIORITY_3D::PR3D_LIGHTNG;
+	RG_LightingDesc.strMRTTag = TEXT("MRT_Lighting");
+	RG_LightingDesc.isClear = false;
+	RG_LightingDesc.pDSV = m_pGameInstance->Find_DSV(TEXT("Target_Lighting"));
+	CRenderGroup_Lighting* pRenderGroup_Lighting = CRenderGroup_Lighting::Create(m_pDevice, m_pContext, &RG_LightingDesc);
+	if (nullptr == pRenderGroup_Lighting)
 	{
-		MSG_BOX("Failed Create PR3D_FINAL");
+		MSG_BOX("Failed Create PR3D_LIGHTNG");
 		return E_FAIL;
 	}
-	if(FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Final->Get_RenderGroupID(), pRenderGroup_Final->Get_PriorityID(), pRenderGroup_Final)))
+	if(FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Lighting->Get_RenderGroupID(), pRenderGroup_Lighting->Get_PriorityID(), pRenderGroup_Lighting)))
 		return E_FAIL;
-	Safe_Release(pRenderGroup_Final);
-	pRenderGroup_Final = nullptr;
+	Safe_Release(pRenderGroup_Lighting);
+	pRenderGroup_Lighting = nullptr;
+
+	/* RG_3D, PR3D_COMBINE */
+	CRenderGroup_Combine::RG_MRT_DESC RG_CombineDesc;
+	RG_CombineDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_CombineDesc.iPriorityID = PRIORITY_3D::PR3D_COMBINE;
+	RG_CombineDesc.strMRTTag = TEXT("MRT_Combine");
+	RG_CombineDesc.isClear = true;
+	CRenderGroup_Combine* pRenderGroup_Combine = CRenderGroup_Combine::Create(m_pDevice, m_pContext, &RG_CombineDesc);
+	if (nullptr == pRenderGroup_Combine)
+	{
+		MSG_BOX("Failed Create PR3D_COMBINE");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Combine->Get_RenderGroupID(), pRenderGroup_Combine->Get_PriorityID(), pRenderGroup_Combine)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Combine);
+	pRenderGroup_Combine = nullptr;
 
 	/* RG_3D, PR3D_BLEND */
 	CRenderGroup_MRT::RG_MRT_DESC RG_BlendDesc;
 	RG_BlendDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_BlendDesc.iPriorityID = PRIORITY_3D::PR3D_BLEND;
-	RG_BlendDesc.strMRTTag = TEXT("MRT_Final");
+	RG_BlendDesc.strMRTTag = TEXT("MRT_Combine");
 	RG_BlendDesc.isClear = false;
 	CRenderGroup_MRT* pRenderGroup_Blend = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_BlendDesc);
 	if (nullptr == pRenderGroup_Blend)
@@ -322,9 +340,8 @@ HRESULT CMainApp::Ready_RenderGroup()
 
 HRESULT CMainApp::Ready_RenderTargets()
 {
-
-	/* Target Diffuse */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Diffuse"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+	/* Target_Albedo */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Albedo"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
 
 	/* Target_Normal */
@@ -339,20 +356,30 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
 
-	/* Target_Shade */ /* HDR */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+#pragma region Light,Shadow(Old)
+	///* Target_Shade */ /* HDR */
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	//	return E_FAIL;
+	//
+	///* Target_Specular */ /* HDR */
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	//	return E_FAIL;
+
+	///* Target_LightDepth */
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_LightDepth"), g_iShadowWidth, g_iShadowHeight, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
+	//	return E_FAIL;
+
+#pragma endregion
+	/* Target_DirectLightAcc */ 
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DirectLightAcc"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
-	/* Target_Specular */ /* HDR */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	/* Target_Lighting */ /* HDR */
+	if (FAILED(m_pGameInstance->Add_RenderTarget_MSAA(TEXT("Target_Lighting"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
-	/* Target_LightDepth */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_LightDepth"), g_iShadowWidth, g_iShadowHeight, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
-		return E_FAIL;
-
-	/* Target_Final */ /* HDR */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Final"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
+	/* Target_Combine */ 
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Combine"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* Target_EffectAccumulate */
@@ -365,32 +392,37 @@ HRESULT CMainApp::Ready_RenderTargets()
 
 	/* RTV를 모아두는 MRT를 세팅 */
 
-	/* MRT_Book_2D*/
-	//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Book_2D"), TEXT("Target_Book_2D"))))
-	//	return E_FAIL;
-
-	/* MRT_GameObjects */
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
+	/* MRT_Geometry */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_Albedo"))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Normal"))))
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_Normal"))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_ORMH"))))
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_ORMH"))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Depth"))))
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_Depth"))))
 		return E_FAIL;
 
-	/* MRT_LightAcc */
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
+#pragma region LightAcc(Old)
+	///* MRT_LightAcc */
+//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
+//	return E_FAIL;
+//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
+//	return E_FAIL;
+//
+///* MRT_Shadow */
+//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Shadow"), TEXT("Target_LightDepth"))))
+//	return E_FAIL;
+#pragma endregion
+	/* MRT_DirectLightAcc*/
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_DirectLightAcc"), TEXT("Target_DirectLightAcc"))))
 		return E_FAIL;
 
-	/* MRT_Shadow */
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Shadow"), TEXT("Target_LightDepth"))))
+	/* MRT_Lighting */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lighting"), TEXT("Target_Lighting"))))
 		return E_FAIL;
 
-	/* MRT_Final */
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Final"), TEXT("Target_Final"))))
+	/* MRT_Combine */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Combine"), TEXT("Target_Combine"))))
 		return E_FAIL;
 
 	/* MRT_Weighted_Blended*/
@@ -411,10 +443,8 @@ HRESULT CMainApp::Ready_RenderTargets()
 	_float fX = (_float)g_iWinSizeX * 0.2f * 0.5f;
 	_float fY = (_float)g_iWinSizeY * 0.2f * 0.5f;
 
-	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), fX, fY, fSizeX, fSizeY);
+	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Albedo"), fX, fY, fSizeX, fSizeY);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fX, fY + fSizeY * 1.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
-	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), fX, fY + fSizeY * 2.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
-	m_pGameInstance->Ready_RT_Debug(TEXT("Target_LightDepth"), fX, fY + fSizeY * 4.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_EffectAccumulate"), fX, fY, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 
 

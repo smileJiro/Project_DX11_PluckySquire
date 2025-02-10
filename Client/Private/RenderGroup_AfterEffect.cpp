@@ -22,7 +22,7 @@ HRESULT CRenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Rect* _p
     _pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
 
     // 파이널(가제)타겟 + 지금까지 그려진 이펙트를 합쳐서 그려낸다.
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_FinalTexture", TEXT("Target_Final"))))
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_FinalTexture", TEXT("Target_Combine"))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_AccumulateTexture", TEXT("Target_EffectAccumulate"))))

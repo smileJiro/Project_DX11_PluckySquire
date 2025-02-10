@@ -17,6 +17,7 @@
 #include "Physx_Manager.h"
 #include "NewRenderer.h"
 #include "Frustum.h"
+#include "CubeMap.h"
 #include "GlobalFunction_Manager.h"
 
 
@@ -162,6 +163,7 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	
 
 #ifdef _DEBUG
+	m_pNewRenderer->Update_Imgui();
 	m_pImgui_Manager->Imgui_Debug_Render();
 #endif
 
@@ -532,6 +534,16 @@ const _float4x4* CGameInstance::Get_ProjMatrix_Renderer() const
 	return m_pNewRenderer->Get_ProjMatrix();
 }
 
+CONST_IBL CGameInstance::Get_GlobalIBLData() const
+{
+	return m_pNewRenderer->Get_GlobalIBLData();
+}
+
+void CGameInstance::Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer)
+{
+	m_pNewRenderer->Set_GlobalIBLData(_tGlobalIBLData, _isUpdateConstBuffer);
+}
+
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
 {
 	if (nullptr == m_pNewRenderer)
@@ -666,15 +678,15 @@ _float* CGameInstance::Get_FarZ()
 }
 
 
-HRESULT CGameInstance::Add_Light(const LIGHT_DESC& _LightDesc)
+HRESULT CGameInstance::Add_Light(const CONST_LIGHT& _LightDesc, LIGHT_TYPE _eType)
 {
 	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 
-	return m_pLight_Manager->Add_Light(_LightDesc);
+	return m_pLight_Manager->Add_Light(_LightDesc, _eType);
 }
 
-const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint _iIndex) const
+const CONST_LIGHT* CGameInstance::Get_LightDesc(_uint _iIndex) const
 {
 	if (nullptr == m_pLight_Manager)
 		return nullptr;
@@ -862,6 +874,14 @@ HRESULT CGameInstance::Resolve_RT_MSAA(const _wstring& _strTargetTag)
 		return E_FAIL;
 
 	return m_pTarget_Manager->Resolve_RT_MSAA(_strTargetTag);
+}
+
+HRESULT CGameInstance::Resolve_MRT_MSAA(const _wstring& _strMRTTag)
+{
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	return m_pTarget_Manager->Resolve_MRT_MSAA(_strMRTTag);
 }
 
 const _float4x4* CGameInstance::Get_Shadow_Transform_Ptr(CShadow::D3DTRANSFORMSTATE _eState)
@@ -1247,6 +1267,23 @@ _bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRan
 	return m_pFrustum->isIn_InWorldSpace(_vWorldPos, _fRange);
 }
 
+void CGameInstance::Set_CubeMap(CCubeMap* _pCubeMap)
+{
+	if (nullptr != m_pCubeMap)
+		Safe_Release(m_pCubeMap);
+
+	m_pCubeMap = _pCubeMap;
+	Safe_AddRef(_pCubeMap);
+}
+
+HRESULT CGameInstance::Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDFConstName, const _char* _pSpecularConstName, const _char* _pIrradianceConstName)
+{
+	if (nullptr == m_pCubeMap)
+		return E_FAIL;
+
+	return m_pCubeMap->Bind_IBLTexture(_pShaderCom, _pBRDFConstName, _pSpecularConstName, _pIrradianceConstName);
+}
+
 HRESULT CGameInstance::Physx_Render()
 {
 	if (nullptr == m_pPhysx_Manager)
@@ -1300,6 +1337,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	// Engine Manager Class Release
 	// 여기서 Manger Class->Free() 호출 >>> 참조 중이던 CGameInstance에 대한 Safe_Release() 호출 됌.
 
+	Safe_Release(m_pCubeMap);
 	Safe_Release(m_pFrustum);
 	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pGlobalFunction_Manager);

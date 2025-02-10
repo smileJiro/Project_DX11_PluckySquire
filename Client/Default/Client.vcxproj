@@ -266,8 +266,10 @@
     <ClInclude Include="..\public\RayShape.h" />
     <ClInclude Include="..\Public\RenderGroup_2D.h" />
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
+    <ClInclude Include="..\Public\RenderGroup_Combine.h" />
     <ClInclude Include="..\Public\RenderGroup_Final.h" />
-    <ClInclude Include="..\public\RenderGroup_Lights.h" />
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
+    <ClInclude Include="..\public\RenderGroup_DirectLights.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\public\Section.h" />
@@ -409,8 +411,10 @@
     <ClCompile Include="..\private\RayShape.cpp" />
     <ClCompile Include="..\Private\RenderGroup_2D.cpp" />
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Combine.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
-    <ClCompile Include="..\private\RenderGroup_Lights.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
+    <ClCompile Include="..\private\RenderGroup_DirectLights.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\private\Section.cpp" />
