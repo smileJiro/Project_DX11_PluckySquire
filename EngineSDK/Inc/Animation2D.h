@@ -13,6 +13,7 @@ protected:
 
 public:
 	virtual HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath,ifstream& _infIle, map<string, CTexture*>& _Textures);
+	virtual HRESULT			Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szTexturePath);
 
 	HRESULT Bind_ShaderResource(class CShader* _pShader);
 	const _matrix* Get_Transform() const { 
@@ -30,6 +31,7 @@ protected:
 	CTexture* m_pTexture = { nullptr };
 public:
 	static CSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);
+	static CSpriteFrame* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szTexturePath);
 	virtual CSpriteFrame* Clone();
 	virtual void Free() override;
 };

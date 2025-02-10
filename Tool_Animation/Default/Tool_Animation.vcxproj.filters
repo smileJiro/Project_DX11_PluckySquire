@@ -89,6 +89,7 @@
     <ClInclude Include="..\Public\ToolBone.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Backgorund.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\TestTerrain.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="..\Private\ToolBone.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Backgorund.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool_Animation.rc">

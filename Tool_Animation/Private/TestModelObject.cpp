@@ -36,7 +36,7 @@ HRESULT CTestModelObject::Initialize(void* _pArg)
     // 2025-01-16 박예슬 수정 : Viewport Desc -> Rendertarget Size
     _float2 fRTSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
 
-    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)fRTSize.x, (_float)fRTSize.y, 0.0f, 1.0f));
+    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.0f, 1.0f));
 
 
     return S_OK;

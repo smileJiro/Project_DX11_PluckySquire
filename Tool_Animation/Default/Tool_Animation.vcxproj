@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\AnimTool_Defines.h" />
     <ClInclude Include="..\Public\AnimTool_MainApp.h" />
+    <ClInclude Include="..\Public\Backgorund.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
     <ClInclude Include="..\Public\CriticalSectionGuard.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClCompile Include="..\Private\AnimTool_Function.cpp" />
     <ClCompile Include="..\Private\AnimTool_MainApp.cpp" />
+    <ClCompile Include="..\Private\Backgorund.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
     <ClCompile Include="..\Private\CriticalSectionGuard.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
