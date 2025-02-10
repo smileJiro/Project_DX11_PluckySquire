@@ -990,10 +990,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     if (KEY_DOWN(KEY::B))
     {
         // 도형 크기 바꾸기
-        SHAPE_CAPSULE_DESC Desc;
-        Desc.fRadius = 1.f;
-        Desc.fHalfHeight = 1.f;
-        m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
+        //SHAPE_CAPSULE_DESC Desc;
+        //Desc.fRadius = 1.f;
+        //Desc.fHalfHeight = 1.f;
+        //m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
     }
     if (KEY_DOWN(KEY::F2))
     {

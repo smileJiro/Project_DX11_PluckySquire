@@ -146,6 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\Bulb.h" />
+    <ClInclude Include="..\Public\BulbLine.h" />
     <ClInclude Include="..\Public\Camera_CutScene.h" />
     <ClInclude Include="..\Public\Camera_Manager_Tool.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
@@ -179,6 +181,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\Bulb.cpp" />
+    <ClCompile Include="..\Private\BulbLine.cpp" />
     <ClCompile Include="..\Private\Camera_CutScene.cpp" />
     <ClCompile Include="..\Private\Camera_Manager_Tool.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />

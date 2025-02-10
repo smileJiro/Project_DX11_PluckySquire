@@ -28,6 +28,16 @@ void CCamera_Manager::Update(_float fTimeDelta)
 	_int a = 0;
 }
 
+void CCamera_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	m_iCurLevelID = _iChangeLevelID;
+
+	for (auto& Camera : m_Cameras) {
+		Safe_Release(Camera);
+		Camera = nullptr;
+	}
+}
+
 _vector CCamera_Manager::Get_CameraVector(CTransform::STATE _eState)
 {
 	CController_Transform* pConTrans = m_Cameras[m_eCurrentCameraType]->Get_ControllerTransform();

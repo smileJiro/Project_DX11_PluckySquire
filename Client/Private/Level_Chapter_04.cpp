@@ -503,7 +503,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_Item(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
 
 
 	return S_OK;

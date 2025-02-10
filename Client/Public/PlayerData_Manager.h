@@ -33,10 +33,10 @@ public:
 	_uint					Get_BulbCount() { return m_iBulbCount; }
 
 public:
-	HRESULT					Spawn_Item(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos);
+	HRESULT					Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos);
 	HRESULT					Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag);
 	
-	void					Get_Item(_wstring _szItemTag);
+	void					Get_PlayerItem(_wstring _szItemTag);
 
 private: 
 	CGameInstance*						m_pGameInstance = { nullptr };
